@@ -1,0 +1,374 @@
+[26-Nov-2024 03:05:01 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function wc_get_product() in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:370
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor/m in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 370
+[26-Nov-2024 03:05:47 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function wc_get_product() in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:370
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor/m in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 370
+[26-Nov-2024 03:16:42 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function wc_get_product() in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:370
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor/m in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 370
+[26-Nov-2024 03:28:20 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function wc_get_product() in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:370
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor/m in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 370
+[26-Nov-2024 03:28:53 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function wc_get_product() in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:370
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor/m in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 370
+[26-Nov-2024 03:31:28 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function wc_get_product() in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:370
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor/m in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 370
+[26-Nov-2024 03:31:39 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function wc_get_product() in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:370
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor/m in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 370
+[26-Nov-2024 03:53:37 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function tutor_utils() in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php:26
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require()
+#1 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/modules/element-cache/module.php(73): Elementor\Element_Base->print_element()
+#6 /DATA/k1807225/public_html/wp-includes/shortcodes.php(434): El in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php on line 26
+[26-Nov-2024 03:56:20 UTC] PHP Fatal error:  Uncaught Error: Call to a member function get_price() on bool in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:373
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 373
+[26-Nov-2024 03:56:50 UTC] PHP Fatal error:  Uncaught Error: Call to a member function get_price() on bool in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:373
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course-tab/course-2.php(89): get_woocommerce_course_price('435')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course-tab.php(347): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course_Tab->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugin in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 373
+[26-Nov-2024 04:00:18 UTC] PHP Fatal error:  Uncaught Error: Call to a member function get_price() on bool in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:373
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 373
+[26-Nov-2024 04:15:31 UTC] PHP Fatal error:  Uncaught Error: Call to a member function get_price() on bool in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:373
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 373
+[26-Nov-2024 04:16:01 UTC] PHP Fatal error:  Uncaught Error: Call to a member function get_price() on bool in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:373
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 373
+[26-Nov-2024 04:16:06 UTC] PHP Fatal error:  Uncaught Error: Call to a member function get_price() on bool in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:373
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-2.php(37): get_woocommerce_course_price('435')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor/ in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 373
+[26-Nov-2024 04:16:13 UTC] PHP Fatal error:  Uncaught Error: Call to a member function get_price() on bool in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:373
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course-tab/course-2.php(89): get_woocommerce_course_price('435')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course-tab.php(347): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course_Tab->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugin in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 373
+[26-Nov-2024 04:19:13 UTC] PHP Fatal error:  Uncaught Error: Call to a member function get_price() on bool in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:373
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course-tab/course-2.php(89): get_woocommerce_course_price('435')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course-tab.php(347): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course_Tab->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugin in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 373
+[26-Nov-2024 04:19:35 UTC] PHP Fatal error:  Uncaught Error: Call to a member function get_price() on bool in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:373
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course-tab/course-2.php(89): get_woocommerce_course_price('435')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course-tab.php(347): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course_Tab->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugin in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 373
+[26-Nov-2024 04:19:41 UTC] PHP Fatal error:  Uncaught Error: Call to a member function get_price() on bool in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:373
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 373
+[26-Nov-2024 04:21:59 UTC] PHP Fatal error:  Uncaught Error: Call to a member function get_price() on bool in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php:373
+Stack trace:
+#0 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/view/course/course-1.php(33): get_woocommerce_course_price('1699')
+#1 /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/elementor/widgets/course.php(262): require('/DATA/k1807225/...')
+#2 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/controls-stack.php(2325): Elementor\Kadu_Course->render()
+#3 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(635): Elementor\Controls_Stack->render_by_mode()
+#4 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/widget-base.php(776): Elementor\Widget_Base->render_content()
+#5 /DATA/k1807225/public_html/wp-content/plugins/elementor/includes/base/element-base.php(483): Elementor\Widget_Base->print_content()
+#6 /DATA/k1807225/public_html/wp-content/plugins/elementor in /DATA/k1807225/public_html/wp-content/plugins/kadu-plugin/inc/helper.php on line 373
+[08-Dec-2025 01:41:00 Asia/Jakarta] PHP Warning:  file_put_contents(/DATA/k1807225/public_html/psb.alhasan.co.id/index.html): Failed to open stream: No such file or directory in /DATA/k1807225/public_html/kerjabakti.php on line 80
+[07-Dec-2025 23:23:27 Etc/UTC] PHP Notice:  getimagesize(): Error reading from /DATA/k1807225/public_html/594214224_1137500744834718_136776808176300155_n.jpg! in /DATA/k1807225/public_html/waf-content.php on line 1629
+[02-Jan-2026 00:03:08 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_berita.php on line 3
+[04-Jan-2026 18:59:53 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_berita.php on line 3
+[04-Jan-2026 19:04:38 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_santri.php on line 3
+[04-Jan-2026 21:14:54 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_master_santri.php on line 3
+[04-Jan-2026 21:25:20 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "else" in /DATA/k1807225/public_html/admin_master_santri.php on line 304
+[04-Jan-2026 21:25:50 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "else" in /DATA/k1807225/public_html/admin_master_santri.php on line 304
+[04-Jan-2026 21:25:52 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "else" in /DATA/k1807225/public_html/admin_master_santri.php on line 304
+[04-Jan-2026 21:25:53 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "else" in /DATA/k1807225/public_html/admin_master_santri.php on line 304
+[04-Jan-2026 21:35:51 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Field 'id_tahun' doesn't have a default value in /DATA/k1807225/public_html/admin_santri.php:15
+Stack trace:
+#0 /DATA/k1807225/public_html/admin_santri.php(15): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin_santri.php on line 15
+[04-Jan-2026 21:35:57 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Field 'id_tahun' doesn't have a default value in /DATA/k1807225/public_html/admin_santri.php:15
+Stack trace:
+#0 /DATA/k1807225/public_html/admin_santri.php(15): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin_santri.php on line 15
+[05-Jan-2026 15:14:57 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_master_santri.php on line 3
+[06-Jan-2026 08:14:50 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_data.php on line 3
+[06-Jan-2026 21:21:46 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_data.php on line 3
+[06-Jan-2026 21:31:56 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Field 'id_tahun' doesn't have a default value in /DATA/k1807225/public_html/admin_santri.php:15
+Stack trace:
+#0 /DATA/k1807225/public_html/admin_santri.php(15): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin_santri.php on line 15
+[06-Jan-2026 22:30:35 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_master_santri.php on line 3
+[13-Jan-2026 14:13:13 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[13-Jan-2026 22:36:29 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AH AL ADAWIYAH ','35')' at line 1 in /DATA/k1807225/public_html/admin_kamar.php:9
+Stack trace:
+#0 /DATA/k1807225/public_html/admin_kamar.php(9): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin_kamar.php on line 9
+[13-Jan-2026 22:36:34 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AH AL ADAWIYAH ','35')' at line 1 in /DATA/k1807225/public_html/admin_kamar.php:9
+Stack trace:
+#0 /DATA/k1807225/public_html/admin_kamar.php(9): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin_kamar.php on line 9
+[13-Jan-2026 22:38:26 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AH AL ADAWIYAH ','35')' at line 1 in /DATA/k1807225/public_html/admin_kamar.php:9
+Stack trace:
+#0 /DATA/k1807225/public_html/admin_kamar.php(9): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin_kamar.php on line 9
+[15-Jan-2026 09:20:44 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_dashboard.php on line 3
+[23-Jan-2026 08:50:33 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_dashboard.php on line 3
+[23-Jan-2026 22:19:39 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AH AL ADAWIYAH ','25')' at line 1 in /DATA/k1807225/public_html/admin_kamar.php:9
+Stack trace:
+#0 /DATA/k1807225/public_html/admin_kamar.php(9): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin_kamar.php on line 9
+[28-Jan-2026 19:23:55 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_dashboard.php on line 3
+[07-Feb-2026 10:39:36 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_dashboard.php on line 3
+[15-Feb-2026 21:44:09 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3144428831' for key 'nisn' in /DATA/k1807225/public_html/proses_psb.php:31
+Stack trace:
+#0 /DATA/k1807225/public_html/proses_psb.php(31): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/proses_psb.php on line 31
+[15-Feb-2026 21:44:15 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3144428831' for key 'nisn' in /DATA/k1807225/public_html/proses_psb.php:31
+Stack trace:
+#0 /DATA/k1807225/public_html/proses_psb.php(31): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/proses_psb.php on line 31
+[15-Feb-2026 21:44:21 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3144428831' for key 'nisn' in /DATA/k1807225/public_html/proses_psb.php:31
+Stack trace:
+#0 /DATA/k1807225/public_html/proses_psb.php(31): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/proses_psb.php on line 31
+[15-Feb-2026 21:44:32 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3144428831' for key 'nisn' in /DATA/k1807225/public_html/proses_psb.php:31
+Stack trace:
+#0 /DATA/k1807225/public_html/proses_psb.php(31): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/proses_psb.php on line 31
+[15-Feb-2026 21:49:59 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3144428831' for key 'nisn' in /DATA/k1807225/public_html/proses_psb.php:31
+Stack trace:
+#0 /DATA/k1807225/public_html/proses_psb.php(31): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/proses_psb.php on line 31
+[15-Feb-2026 21:50:24 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3144428831' for key 'nisn' in /DATA/k1807225/public_html/proses_psb.php:31
+Stack trace:
+#0 /DATA/k1807225/public_html/proses_psb.php(31): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/proses_psb.php on line 31
+[15-Feb-2026 21:50:26 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3144428831' for key 'nisn' in /DATA/k1807225/public_html/proses_psb.php:31
+Stack trace:
+#0 /DATA/k1807225/public_html/proses_psb.php(31): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/proses_psb.php on line 31
+[15-Feb-2026 21:50:28 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3144428831' for key 'nisn' in /DATA/k1807225/public_html/proses_psb.php:31
+Stack trace:
+#0 /DATA/k1807225/public_html/proses_psb.php(31): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/proses_psb.php on line 31
+[21-Feb-2026 00:27:40 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /DATA/k1807225/public_html/koneksi.php:8
+Stack trace:
+#0 /DATA/k1807225/public_html/koneksi.php(8): mysqli_connect()
+#1 /DATA/k1807225/public_html/index.php(180): include('/DATA/k1807225/...')
+#2 {main}
+  thrown in /DATA/k1807225/public_html/koneksi.php on line 8
+[25-Feb-2026 10:59:29 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[11-Mar-2026 12:07:02 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_guru.php on line 3
+[14-Mar-2026 11:22:12 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''2''' at line 1 in /DATA/k1807225/public_html/detail.php:6
+Stack trace:
+#0 /DATA/k1807225/public_html/detail.php(6): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/detail.php on line 6
+[14-Mar-2026 11:22:53 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column '10' in 'ORDER BY' in /DATA/k1807225/public_html/detail.php:6
+Stack trace:
+#0 /DATA/k1807225/public_html/detail.php(6): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/detail.php on line 6
+[14-Mar-2026 11:22:58 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column '9' in 'ORDER BY' in /DATA/k1807225/public_html/detail.php:6
+Stack trace:
+#0 /DATA/k1807225/public_html/detail.php(6): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/detail.php on line 6
+[14-Mar-2026 11:23:01 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column '8' in 'ORDER BY' in /DATA/k1807225/public_html/detail.php:6
+Stack trace:
+#0 /DATA/k1807225/public_html/detail.php(6): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/detail.php on line 6
+[14-Mar-2026 11:23:03 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column '7' in 'ORDER BY' in /DATA/k1807225/public_html/detail.php:6
+Stack trace:
+#0 /DATA/k1807225/public_html/detail.php(6): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/detail.php on line 6
+[14-Mar-2026 11:23:07 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column '6' in 'ORDER BY' in /DATA/k1807225/public_html/detail.php:6
+Stack trace:
+#0 /DATA/k1807225/public_html/detail.php(6): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/detail.php on line 6
+[14-Mar-2026 17:45:43 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''2''' at line 1 in /DATA/k1807225/public_html/detail.php:6
+Stack trace:
+#0 /DATA/k1807225/public_html/detail.php(6): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/detail.php on line 6
+[17-Mar-2026 15:28:32 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[03-Apr-2026 22:20:41 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[11-Apr-2026 23:59:25 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[14-Apr-2026 22:32:06 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin_kamar.php on line 3
+[23-Apr-2026 23:46:04 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Incorrect date value: '' for column `k1807225_webalhasan`.`psb_pendaftar`.`tgl_lahir` at row 1 in /DATA/k1807225/public_html/proses_psb.php:31
+Stack trace:
+#0 /DATA/k1807225/public_html/proses_psb.php(31): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/proses_psb.php on line 31
+[23-Apr-2026 23:46:05 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Incorrect date value: '' for column `k1807225_webalhasan`.`psb_pendaftar`.`tgl_lahir` at row 1 in /DATA/k1807225/public_html/proses_psb.php:31
+Stack trace:
+#0 /DATA/k1807225/public_html/proses_psb.php(31): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/proses_psb.php on line 31
+[23-Apr-2026 23:46:06 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Incorrect date value: '' for column `k1807225_webalhasan`.`psb_pendaftar`.`tgl_lahir` at row 1 in /DATA/k1807225/public_html/proses_psb.php:31
+Stack trace:
+#0 /DATA/k1807225/public_html/proses_psb.php(31): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/proses_psb.php on line 31
+[23-Apr-2026 23:46:14 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Incorrect date value: '' for column `k1807225_webalhasan`.`psb_pendaftar`.`tgl_lahir` at row 1 in /DATA/k1807225/public_html/proses_psb.php:31
+Stack trace:
+#0 /DATA/k1807225/public_html/proses_psb.php(31): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/proses_psb.php on line 31
+[25-Apr-2026 04:37:38 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[29-Apr-2026 17:03:21 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[29-Apr-2026 17:03:21 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[29-Apr-2026 17:03:23 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''3''' at line 1 in /DATA/k1807225/public_html/detail.php:6
+Stack trace:
+#0 /DATA/k1807225/public_html/detail.php(6): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/detail.php on line 6
+[05-May-2026 05:44:21 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[22-May-2026 08:51:42 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[10-Jun-2026 13:11:43 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[13-Jun-2026 11:21:34 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[16-Jun-2026 23:42:07 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[18-Jun-2026 14:04:26 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[01-Jul-2026 11:49:57 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[01-Jul-2026 19:31:34 Asia/Jakarta] PHP Parse error:  syntax error, unexpected identifier "tgl_daftar", expecting ")" in /DATA/k1807225/public_html/cetak_bukti.php on line 115
+[02-Jul-2026 18:41:10 Asia/Jakarta] PHP Parse error:  syntax error, unexpected identifier "tab", expecting "," or ";" in /DATA/k1807225/public_html/jadwal_ngaji.php on line 33
+[02-Jul-2026 18:41:12 Asia/Jakarta] PHP Parse error:  syntax error, unexpected identifier "tab", expecting "," or ";" in /DATA/k1807225/public_html/jadwal_ngaji.php on line 33
+[09-Jul-2026 23:00:43 Asia/Jakarta] PHP Parse error:  syntax error, unexpected identifier "container", expecting "," or ";" in /DATA/k1807225/public_html/biaya_psb.php on line 236
+[19-Jul-2026 10:12:25 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[24-Jul-2026 01:34:03 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[24-Jul-2026 09:12:07 Asia/Jakarta] PHP Warning:  Undefined array key "id" in /DATA/k1807225/public_html/detail.php on line 5
+[05-Aug-2026 17:52:04 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''PSB-2026-1656''' at line 1 in /DATA/k1807225/public_html/cetak_bukti.php:5
+Stack trace:
+#0 /DATA/k1807225/public_html/cetak_bukti.php(5): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/cetak_bukti.php on line 5
+[05-Aug-2026 17:52:11 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column '100' in 'ORDER BY' in /DATA/k1807225/public_html/cetak_bukti.php:5
+Stack trace:
+#0 /DATA/k1807225/public_html/cetak_bukti.php(5): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/cetak_bukti.php on line 5
+[05-Aug-2026 17:52:18 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column '30' in 'ORDER BY' in /DATA/k1807225/public_html/cetak_bukti.php:5
+Stack trace:
+#0 /DATA/k1807225/public_html/cetak_bukti.php(5): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/cetak_bukti.php on line 5
+[05-Aug-2026 17:52:20 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column '27' in 'ORDER BY' in /DATA/k1807225/public_html/cetak_bukti.php:5
+Stack trace:
+#0 /DATA/k1807225/public_html/cetak_bukti.php(5): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/cetak_bukti.php on line 5

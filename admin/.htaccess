@@ -1,0 +1,13 @@
+# Mencegah orang melihat daftar file di dalam folder admin
+Options -Indexes
+
+# Mencegah eksekusi script berbahaya jika ada celah upload
+<FilesMatch "\.(php4|php5|php3|php2|php|phtml|mac|pl|cgi|exe|sh|cgi|fcgi|pl)$">
+    SetHandler application/x-httpd-alt-php83
+</FilesMatch>
+
+# Blokir akses ke file .htaccess ini sendiri
+<Files ~ "^\.ht">
+    Order allow,deny
+    Deny from all
+</Files>

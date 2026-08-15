@@ -1,0 +1,1007 @@
+[28-Apr-2026 21:52:15 Asia/Jakarta] PHP Warning:  include(koneksi.php): Failed to open stream: No such file or directory in /DATA/k1807225/public_html/admin/cetak_bukti.php on line 2
+[28-Apr-2026 21:52:15 Asia/Jakarta] PHP Warning:  include(): Failed opening 'koneksi.php' for inclusion (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /DATA/k1807225/public_html/admin/cetak_bukti.php on line 2
+[28-Apr-2026 21:52:15 Asia/Jakarta] PHP Warning:  Undefined variable $koneksi in /DATA/k1807225/public_html/admin/cetak_bukti.php on line 5
+[28-Apr-2026 21:52:15 Asia/Jakarta] PHP Fatal error:  Uncaught TypeError: mysqli_query(): Argument #1 ($mysql) must be of type mysqli, null given in /DATA/k1807225/public_html/admin/cetak_bukti.php:5
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/cetak_bukti.php(5): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/cetak_bukti.php on line 5
+[02-Jul-2026 16:00:06 Asia/Jakarta] PHP Warning:  include(koneksi.php): Failed to open stream: No such file or directory in /DATA/k1807225/public_html/admin/admin_data.php on line 7
+[02-Jul-2026 16:00:06 Asia/Jakarta] PHP Warning:  include(): Failed opening 'koneksi.php' for inclusion (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /DATA/k1807225/public_html/admin/admin_data.php on line 7
+[02-Jul-2026 16:00:06 Asia/Jakarta] PHP Warning:  Undefined variable $koneksi in /DATA/k1807225/public_html/admin/admin_data.php on line 36
+[02-Jul-2026 16:00:06 Asia/Jakarta] PHP Fatal error:  Uncaught TypeError: mysqli_query(): Argument #1 ($mysql) must be of type mysqli, null given in /DATA/k1807225/public_html/admin/admin_data.php:36
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(36): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 36
+[02-Jul-2026 16:00:11 Asia/Jakarta] PHP Warning:  include(koneksi.php): Failed to open stream: No such file or directory in /DATA/k1807225/public_html/admin/admin_data.php on line 7
+[02-Jul-2026 16:00:11 Asia/Jakarta] PHP Warning:  include(): Failed opening 'koneksi.php' for inclusion (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /DATA/k1807225/public_html/admin/admin_data.php on line 7
+[02-Jul-2026 16:00:11 Asia/Jakarta] PHP Warning:  Undefined variable $koneksi in /DATA/k1807225/public_html/admin/admin_data.php on line 36
+[02-Jul-2026 16:00:11 Asia/Jakarta] PHP Fatal error:  Uncaught TypeError: mysqli_query(): Argument #1 ($mysql) must be of type mysqli, null given in /DATA/k1807225/public_html/admin/admin_data.php:36
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(36): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 36
+[02-Jul-2026 16:00:17 Asia/Jakarta] PHP Warning:  include(koneksi.php): Failed to open stream: No such file or directory in /DATA/k1807225/public_html/admin/admin_data.php on line 7
+[02-Jul-2026 16:00:17 Asia/Jakarta] PHP Warning:  include(): Failed opening 'koneksi.php' for inclusion (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /DATA/k1807225/public_html/admin/admin_data.php on line 7
+[02-Jul-2026 16:00:17 Asia/Jakarta] PHP Warning:  Undefined variable $koneksi in /DATA/k1807225/public_html/admin/admin_data.php on line 36
+[02-Jul-2026 16:00:17 Asia/Jakarta] PHP Fatal error:  Uncaught TypeError: mysqli_query(): Argument #1 ($mysql) must be of type mysqli, null given in /DATA/k1807225/public_html/admin/admin_data.php:36
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(36): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 36
+[02-Jul-2026 16:08:53 Asia/Jakarta] PHP Warning:  move_uploaded_file(file_download/1395998881_BUKU PANDUAN SANTRI BARU.pdf): Failed to open stream: No such file or directory in /DATA/k1807225/public_html/admin/admin_download.php on line 15
+[02-Jul-2026 16:08:53 Asia/Jakarta] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpM8ZXtV' to 'file_download/1395998881_BUKU PANDUAN SANTRI BARU.pdf' in /DATA/k1807225/public_html/admin/admin_download.php on line 15
+[02-Jul-2026 16:56:05 Asia/Jakarta] PHP Warning:  require_once(SimpleXLSXGen.php): Failed to open stream: No such file or directory in /DATA/k1807225/public_html/admin/export_santri.php on line 7
+[02-Jul-2026 16:56:05 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required 'SimpleXLSXGen.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /DATA/k1807225/public_html/admin/export_santri.php:7
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/export_santri.php on line 7
+[02-Jul-2026 16:56:11 Asia/Jakarta] PHP Warning:  require_once(SimpleXLSXGen.php): Failed to open stream: No such file or directory in /DATA/k1807225/public_html/admin/export_santri.php on line 7
+[02-Jul-2026 16:56:11 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required 'SimpleXLSXGen.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /DATA/k1807225/public_html/admin/export_santri.php:7
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/export_santri.php on line 7
+[02-Jul-2026 16:57:22 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSXGen" not found in /DATA/k1807225/public_html/admin/export_santri.php:52
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/export_santri.php on line 52
+[02-Jul-2026 18:36:36 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'da Shubuh', '05.00 - 06.00 WIB', '3', 'Fiqih', 'Riyadlul Badi\'ah', '2', 'Aul...' at line 2 in /DATA/k1807225/public_html/admin/admin_jadwal_ngaji.php:24
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_jadwal_ngaji.php(24): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_jadwal_ngaji.php on line 24
+[02-Jul-2026 18:37:00 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'da Shubuh', '05.00 - 06.00 WIB', '3', 'Fiqih', 'Riyadlul Badi\'ah', '2', 'Aul...' at line 2 in /DATA/k1807225/public_html/admin/admin_jadwal_ngaji.php:24
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_jadwal_ngaji.php(24): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_jadwal_ngaji.php on line 24
+[02-Jul-2026 18:38:27 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'da Shubuh', '05.00 - 06.00 WIB', '3', 'Fiqih', 'Riyadlul Badi\'ah', '2', 'Aul...' at line 2 in /DATA/k1807225/public_html/admin/admin_jadwal_ngaji.php:24
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_jadwal_ngaji.php(24): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_jadwal_ngaji.php on line 24
+[04-Jul-2026 19:12:50 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSX" not found in /DATA/k1807225/public_html/admin/proses_import_santri.php:15
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_import_santri.php on line 15
+[04-Jul-2026 19:12:55 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSX" not found in /DATA/k1807225/public_html/admin/proses_import_santri.php:15
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_import_santri.php on line 15
+[04-Jul-2026 19:13:10 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSX" not found in /DATA/k1807225/public_html/admin/proses_import_santri.php:15
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_import_santri.php on line 15
+[04-Jul-2026 19:17:15 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSX" not found in /DATA/k1807225/public_html/admin/proses_import_santri.php:15
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_import_santri.php on line 15
+[04-Jul-2026 19:20:07 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSX" not found in /DATA/k1807225/public_html/admin/proses_import_santri.php:15
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_import_santri.php on line 15
+[04-Jul-2026 22:21:10 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSXGen" not found in /DATA/k1807225/public_html/admin/export_santri.php:93
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/export_santri.php on line 93
+[05-Jul-2026 21:29:03 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin/admin_download.php on line 3
+[06-Jul-2026 12:59:15 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin/admin_kelas.php on line 3
+[09-Jul-2026 16:33:15 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin/admin_kelas.php on line 3
+[09-Jul-2026 16:39:02 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin/admin_kamar.php on line 3
+[09-Jul-2026 16:45:44 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin/admin_kamar.php on line 3
+[09-Jul-2026 16:52:13 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin/admin_kamar.php on line 3
+[09-Jul-2026 21:55:11 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSXGen" not found in /DATA/k1807225/public_html/admin/export_psb.php:63
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/export_psb.php on line 63
+[09-Jul-2026 21:55:27 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSXGen" not found in /DATA/k1807225/public_html/admin/export_psb.php:63
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/export_psb.php on line 63
+[10-Jul-2026 08:50:20 Asia/Jakarta] PHP Warning:  Undefined array key "username" in /DATA/k1807225/public_html/admin/cek_login.php on line 5
+[10-Jul-2026 08:50:20 Asia/Jakarta] PHP Warning:  Undefined array key "password" in /DATA/k1807225/public_html/admin/cek_login.php on line 6
+[10-Jul-2026 10:34:13 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''%') ORDER BY id DESC' at line 1 in /DATA/k1807225/public_html/admin/admin_data.php:188
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(188): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 188
+[10-Jul-2026 14:21:35 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3104547394' for key 'nisn' in /DATA/k1807225/public_html/admin/admin_data.php:44
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(44): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 44
+[10-Jul-2026 14:21:42 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3104547394' for key 'nisn' in /DATA/k1807225/public_html/admin/admin_data.php:44
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(44): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 44
+[10-Jul-2026 14:21:47 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3104547394' for key 'nisn' in /DATA/k1807225/public_html/admin/admin_data.php:44
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(44): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 44
+[10-Jul-2026 14:22:00 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3104547394' for key 'nisn' in /DATA/k1807225/public_html/admin/admin_data.php:44
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(44): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 44
+[10-Jul-2026 14:25:43 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3104547394' for key 'nisn' in /DATA/k1807225/public_html/admin/admin_data.php:44
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(44): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 44
+[10-Jul-2026 14:28:05 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3104547394' for key 'nisn' in /DATA/k1807225/public_html/admin/admin_data.php:44
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(44): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 44
+[10-Jul-2026 14:28:11 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '3104547394' for key 'nisn' in /DATA/k1807225/public_html/admin/admin_data.php:44
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(44): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 44
+[10-Jul-2026 16:48:01 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry 'TMP2607108805' for key 'nisn' in /DATA/k1807225/public_html/admin/admin_data.php:44
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(44): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 44
+[10-Jul-2026 22:47:57 Asia/Jakarta] PHP Warning:  Undefined array key "username" in /DATA/k1807225/public_html/admin/cek_login.php on line 5
+[10-Jul-2026 22:47:57 Asia/Jakarta] PHP Warning:  Undefined array key "password" in /DATA/k1807225/public_html/admin/cek_login.php on line 6
+[10-Jul-2026 23:06:41 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'dan%' OR s.nis LIKE '%sa'dan%')
+                                      GROUP B...' at line 8 in /DATA/k1807225/public_html/admin/admin_santri.php:256
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_santri.php(256): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_santri.php on line 256
+[11-Jul-2026 00:52:32 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Incorrect date value: '' for column `k1807225_webalhasan`.`santri`.`tgl_lahir` at row 1 in /DATA/k1807225/public_html/admin/admin_master_santri.php:114
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_master_santri.php(114): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_master_santri.php on line 114
+[11-Jul-2026 11:15:35 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin/admin_berita.php on line 3
+[11-Jul-2026 13:48:12 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin/admin_kamar.php on line 3
+[11-Jul-2026 14:13:44 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '0114199718' for key 'nisn' in /DATA/k1807225/public_html/admin/admin_data.php:44
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(44): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 44
+[11-Jul-2026 14:17:21 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry '0114199718' for key 'nisn' in /DATA/k1807225/public_html/admin/admin_data.php:44
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/admin_data.php(44): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/admin_data.php on line 44
+[11-Jul-2026 15:13:56 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSXGen" not found in /DATA/k1807225/public_html/admin/export_santri.php:93
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/export_santri.php on line 93
+[11-Jul-2026 16:19:25 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin/admin_pelanggaran.php on line 3
+[11-Jul-2026 18:55:00 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 239
+[11-Jul-2026 18:55:00 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 239
+[11-Jul-2026 18:55:00 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 239
+[11-Jul-2026 18:55:00 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 239
+[11-Jul-2026 18:55:00 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 239
+[11-Jul-2026 18:55:54 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 18:55:54 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 18:55:54 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 18:55:54 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 18:55:54 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 18:56:15 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 18:56:15 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 18:56:15 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 18:56:15 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 18:56:15 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 21:14:22 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 21:14:22 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 21:14:22 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 21:14:22 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 21:14:22 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 23:18:39 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 23:18:39 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 23:18:39 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 23:18:39 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[11-Jul-2026 23:18:39 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 09:37:39 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 09:37:39 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 09:37:39 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 09:37:39 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 09:37:39 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 09:51:17 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 09:51:17 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 09:51:17 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 09:51:17 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 09:51:17 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:07:19 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:07:19 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:07:19 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:07:19 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:07:19 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:10:25 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:10:25 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:10:25 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:10:25 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:10:25 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:17:34 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:17:34 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:17:34 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:17:34 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:17:34 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:17:46 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:17:46 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:17:46 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:17:46 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:17:46 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:18:25 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:18:25 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:18:25 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:18:25 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:18:25 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:28:55 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:28:55 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:28:55 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:28:55 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:28:55 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:28:59 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:28:59 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:28:59 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:28:59 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:28:59 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:30:47 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:30:47 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:30:47 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:30:47 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:30:47 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:39:18 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:39:18 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:39:18 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:39:18 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:39:18 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:43:10 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:43:10 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:43:10 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:43:10 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 10:43:10 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:25:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:25:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:25:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:25:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:25:51 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:27:08 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:27:08 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:27:08 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:27:08 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:27:08 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:41:04 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:41:04 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:41:04 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:41:04 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 11:41:04 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:02:14 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:02:14 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:02:14 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:02:14 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:02:14 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:32:25 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:32:25 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:32:25 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:32:25 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:32:25 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:34:55 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:34:55 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:34:55 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:34:55 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:34:55 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:41:32 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:41:32 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:41:32 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:41:32 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:41:32 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:53:16 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:53:16 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:53:16 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:53:16 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 12:53:16 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:01:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:01:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:01:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:01:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:01:51 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:04:03 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:04:03 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:04:03 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:04:03 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:04:03 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:04:24 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:04:24 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:04:24 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:04:24 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:04:24 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:15:29 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:15:29 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:15:29 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:15:29 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:15:29 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:25:15 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:25:15 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:25:15 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:25:15 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:25:15 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:56:28 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:56:28 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:56:28 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:56:28 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 13:56:28 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:04:48 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:04:48 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:04:48 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:04:48 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:04:48 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:09:13 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:09:13 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:09:13 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:09:13 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:09:13 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:16:11 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:16:11 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:16:11 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:16:11 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:16:11 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:26:40 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:26:40 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:26:40 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:26:40 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:26:40 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:28:28 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:28:28 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:28:28 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:28:28 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:28:28 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:38:14 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:38:14 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:38:14 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:38:14 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 14:38:14 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:26:45 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:26:45 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:26:45 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:26:45 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:26:45 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:38:40 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:38:40 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:38:40 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:38:40 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:38:40 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:50:18 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:50:18 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:50:18 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:50:18 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 15:50:18 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 16:01:11 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 16:01:11 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 16:01:11 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 16:01:11 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 16:01:11 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 16:33:27 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 16:33:27 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 16:33:27 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 16:33:27 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 16:33:27 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:24:22 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:24:22 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:24:22 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:24:22 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:24:22 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:31:53 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:31:53 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:31:53 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:31:53 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:31:53 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:31:57 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:31:57 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:31:57 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:31:57 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:31:57 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:37:17 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:37:17 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:37:17 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:37:17 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 20:37:17 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 22:06:31 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 22:06:31 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 22:06:31 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 22:06:31 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 22:06:31 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 22:56:55 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 22:56:55 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 22:56:55 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 22:56:55 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[12-Jul-2026 22:56:55 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[13-Jul-2026 15:48:54 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[13-Jul-2026 15:48:54 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[13-Jul-2026 15:48:54 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[13-Jul-2026 15:48:54 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[13-Jul-2026 15:48:54 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 07:47:13 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 07:47:13 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 07:47:13 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 07:47:13 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 07:47:13 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 08:37:25 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 08:37:25 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 08:37:25 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 08:37:25 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 08:37:25 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 10:26:57 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 10:26:57 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 10:26:57 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 10:26:57 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 10:26:57 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 12:45:56 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin/admin_guru.php on line 3
+[14-Jul-2026 12:46:03 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 12:46:03 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 12:46:03 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 12:46:03 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 12:46:03 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 21:08:41 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 21:08:41 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 21:08:41 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 21:08:41 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[14-Jul-2026 21:08:41 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 08:44:39 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 08:44:39 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 08:44:39 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 08:44:39 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 08:44:39 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 11:27:13 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 11:27:13 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 11:27:13 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 11:27:13 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 11:27:13 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 13:54:00 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 13:54:00 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 13:54:00 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 13:54:00 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 13:54:00 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 14:10:48 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 14:10:48 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 14:10:48 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 14:10:48 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 14:10:48 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 14:10:49 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 14:10:49 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 14:10:49 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 14:10:49 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 14:10:49 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:04:14 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:04:14 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:04:14 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:04:14 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:04:14 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:18:41 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:18:41 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:18:41 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:18:41 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:18:41 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:43:37 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:43:37 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:43:37 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:43:37 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[15-Jul-2026 21:43:37 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 09:01:36 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 09:01:36 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 09:01:36 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 09:01:36 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 09:01:36 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 09:56:17 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 09:56:17 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 09:56:17 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 09:56:17 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 09:56:17 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 22:35:57 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 22:35:57 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 22:35:57 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 22:35:57 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 22:35:57 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:13:27 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:13:27 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:13:27 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:13:27 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:13:27 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:34:36 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:34:36 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:34:36 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:34:36 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:34:36 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:34:48 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:34:48 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:34:48 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:34:48 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:34:48 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:37:16 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:37:16 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:37:16 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:37:16 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:37:16 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:49:52 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:49:52 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:49:52 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:49:52 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[16-Jul-2026 23:49:52 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:39:38 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:39:38 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:39:38 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:39:38 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:39:38 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:45:18 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:45:18 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:45:18 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:45:18 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:45:18 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:45:43 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:45:43 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:45:43 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:45:43 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 07:45:43 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 08:13:48 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 08:13:48 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 08:13:48 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 08:13:48 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 08:13:48 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 08:42:38 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 08:42:38 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 08:42:38 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 08:42:38 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 08:42:38 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 10:23:02 Asia/Jakarta] PHP Warning:  Undefined array key "status" in /DATA/k1807225/public_html/admin/admin_kamar.php on line 3
+[17-Jul-2026 10:23:34 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 10:23:34 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 10:23:34 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 10:23:34 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 10:23:34 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 21:30:43 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 21:30:43 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 21:30:43 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 21:30:43 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 21:30:43 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:02:41 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:02:41 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:02:41 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:02:41 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:02:41 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:21:07 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:21:07 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:21:07 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:21:07 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:21:07 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:31:49 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:31:49 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:31:49 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:31:49 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 22:31:49 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 23:34:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 23:34:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 23:34:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 23:34:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 23:34:51 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 23:37:40 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 23:37:40 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 23:37:40 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 23:37:40 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[17-Jul-2026 23:37:40 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 11:33:14 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 11:33:14 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 11:33:14 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 11:33:14 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 11:33:14 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 11:41:20 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 11:41:20 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 11:41:20 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 11:41:20 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 11:41:20 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 12:32:53 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 12:32:53 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 12:32:53 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 12:32:53 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[18-Jul-2026 12:32:53 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 19:49:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 19:49:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 19:49:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 19:49:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 19:49:51 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 20:02:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 20:02:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 20:02:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 20:02:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 20:02:51 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 20:35:08 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 20:35:08 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 20:35:08 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 20:35:08 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[19-Jul-2026 20:35:08 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 10:03:08 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 10:03:08 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 10:03:08 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 10:03:08 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 10:03:08 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 13:43:55 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 13:43:55 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 13:43:55 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 13:43:55 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 13:43:55 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 15:15:59 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 15:15:59 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 15:15:59 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 15:15:59 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 15:15:59 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 16:30:41 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 16:30:41 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 16:30:41 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 16:30:41 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 16:30:41 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 19:17:32 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 19:17:32 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 19:17:32 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 19:17:32 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[20-Jul-2026 19:17:32 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:01:59 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:01:59 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:01:59 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:01:59 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:01:59 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:21:41 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:21:41 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:21:41 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:21:41 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:21:41 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:32:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:32:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:32:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:32:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:32:51 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:37:22 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 10:38:13 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:38:13 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:38:13 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:38:13 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:38:13 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:58:33 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:58:33 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:58:33 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:58:33 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 10:58:33 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:19:00 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:19:00 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:19:00 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:19:00 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:19:00 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:25:18 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:26:21 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:29:31 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:29:31 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MININ CIAMIS', 'SMP Terpadu Al Hasan', 'default.jpg')' at line 4 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:56
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(56): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 56
+[21-Jul-2026 14:29:35 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:29:35 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MININ CIAMIS', 'SMP Terpadu Al Hasan', 'default.jpg')' at line 4 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:56
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(56): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 56
+[21-Jul-2026 14:29:40 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:29:40 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MININ CIAMIS', 'SMP Terpadu Al Hasan', 'default.jpg')' at line 4 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:56
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(56): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 56
+[21-Jul-2026 14:30:05 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:05 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:05 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:05 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:05 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:21 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:30:21 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MININ CIAMIS', 'SMP Terpadu Al Hasan', 'default.jpg')' at line 4 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:56
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(56): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 56
+[21-Jul-2026 14:30:41 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:41 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:41 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:41 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:41 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:43 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:43 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:43 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:43 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:30:43 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:31:43 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:31:43 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MININ CIAMIS', 'SMP Terpadu Al Hasan', 'default.jpg')' at line 4 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:56
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(56): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 56
+[21-Jul-2026 14:32:18 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:32:18 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MININ CIAMIS', 'SMP Terpadu Al Hasan', 'default.jpg')' at line 4 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:56
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(56): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 56
+[21-Jul-2026 14:33:28 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:33:28 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MININ CIAMIS', 'SMP Terpadu Al Hasan', 'default.jpg')' at line 4 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:56
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(56): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 56
+[21-Jul-2026 14:34:07 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:34:07 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:34:07 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:34:07 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:34:07 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:34:24 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:34:24 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MININ CIAMIS', 'SMP Terpadu Al Hasan', 'default.jpg')' at line 4 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:56
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(56): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 56
+[21-Jul-2026 14:36:29 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:36:29 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MININ CIAMIS', 'SMP Terpadu Al Hasan', 'default.jpg')' at line 4 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:56
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(56): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 56
+[21-Jul-2026 14:36:43 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:36:43 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MININ CIAMIS', 'SMP Terpadu Al Hasan', 'default.jpg')' at line 4 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:56
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(56): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 56
+[21-Jul-2026 14:38:21 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:38:21 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MININ CIAMIS', 'SMP Terpadu Al Hasan', 'default.jpg')' at line 4 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:56
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(56): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 56
+[21-Jul-2026 14:44:56 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:44:56 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:44:56 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:44:56 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:44:56 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:48:03 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:49:08 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 14:49:25 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:49:25 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:49:25 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:49:25 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 14:49:25 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 15:15:58 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 15:20:37 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 15:23:23 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 15:25:37 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 15:28:58 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 15:31:41 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 15:32:28 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:29:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 18:29:51 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 18:29:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 18:29:51 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 18:29:51 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 18:32:37 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:35:45 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:37:05 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:38:37 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:38:48 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:39:19 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:39:51 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:40:08 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:40:32 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:40:51 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:41:30 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:41:43 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:43:40 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:44:28 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:45:03 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:45:25 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:45:25 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'BANI', 'L', 'CIAMIS', '1970-01-01', 'CIMANGGU RT 4 RW 9', 'JALATRANG', 'CIPAK...' at line 4 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:56
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(56): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 56
+[21-Jul-2026 18:47:08 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:49:03 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:49:23 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:49:49 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:51:20 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:53:45 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:54:05 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:54:38 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 18:54:51 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:15:44 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:16:24 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:16:51 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:18:11 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:18:31 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:18:58 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:19:28 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:20:08 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:20:55 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:21:48 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:22:01 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:22:21 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:23:36 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:24:09 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:24:36 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:24:49 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:25:04 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:25:30 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:25:49 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:26:05 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:26:29 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:31:57 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:35:10 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[21-Jul-2026 19:35:36 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 19:35:36 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 19:35:36 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 19:35:36 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[21-Jul-2026 19:35:36 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:29:40 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:29:40 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:29:40 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:29:40 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:29:40 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:31:33 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:31:33 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:31:33 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:31:33 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:31:33 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:38:15 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:38:15 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:38:15 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:38:15 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 18:38:15 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 20:12:58 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 20:12:58 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 20:12:58 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 20:12:58 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 20:12:58 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 21:14:34 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 21:14:34 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 21:14:34 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 21:14:34 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 21:14:34 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 22:20:29 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 22:20:29 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 22:20:29 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 22:20:29 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 22:20:29 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 22:21:22 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSXGen" not found in /DATA/k1807225/public_html/admin/export_santri.php:93
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/export_santri.php on line 93
+[22-Jul-2026 22:21:35 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSXGen" not found in /DATA/k1807225/public_html/admin/export_santri.php:93
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/export_santri.php on line 93
+[22-Jul-2026 23:16:39 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:16:39 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:16:39 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:16:39 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:16:39 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:19:13 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:19:13 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:19:13 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:19:13 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:19:13 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:20:55 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:20:55 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:20:55 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:20:55 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:20:55 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:31:14 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:31:14 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:31:14 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:31:14 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:31:14 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:33:32 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:33:32 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:33:32 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:33:32 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[22-Jul-2026 23:33:32 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[23-Jul-2026 14:24:57 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[23-Jul-2026 14:24:57 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[23-Jul-2026 14:24:57 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[23-Jul-2026 14:24:57 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[23-Jul-2026 14:24:57 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[28-Jul-2026 08:53:20 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[28-Jul-2026 08:53:20 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[28-Jul-2026 08:53:20 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[28-Jul-2026 08:53:20 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[28-Jul-2026 08:53:20 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[29-Jul-2026 12:34:19 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[29-Jul-2026 12:34:19 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[29-Jul-2026 12:34:19 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[29-Jul-2026 12:34:19 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[29-Jul-2026 12:34:19 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[31-Jul-2026 08:45:35 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[31-Jul-2026 08:45:35 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[31-Jul-2026 08:45:35 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[31-Jul-2026 08:45:35 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[31-Jul-2026 08:45:35 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[31-Jul-2026 08:45:50 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[31-Jul-2026 08:45:50 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[31-Jul-2026 08:45:50 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[31-Jul-2026 08:45:50 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[31-Jul-2026 08:45:50 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[04-Aug-2026 14:15:42 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[04-Aug-2026 14:15:42 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[04-Aug-2026 14:15:42 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[04-Aug-2026 14:15:42 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[04-Aug-2026 14:15:42 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[05-Aug-2026 09:04:11 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[05-Aug-2026 09:04:11 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[05-Aug-2026 09:04:11 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[05-Aug-2026 09:04:11 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[05-Aug-2026 09:04:11 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[05-Aug-2026 09:08:49 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[05-Aug-2026 09:08:49 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[05-Aug-2026 09:08:49 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[05-Aug-2026 09:08:49 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[05-Aug-2026 09:08:49 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 07:41:47 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 07:41:47 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 07:41:47 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 07:41:47 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 07:41:47 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 09:08:25 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 09:08:25 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 09:08:25 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 09:08:25 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 09:08:25 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 09:37:05 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 09:37:05 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 09:37:05 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 09:37:05 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 09:37:05 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 10:45:01 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 10:45:01 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 10:45:01 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 10:45:01 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 10:45:01 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 11:06:58 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 11:06:58 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 11:06:58 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 11:06:58 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[07-Aug-2026 11:06:58 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[09-Aug-2026 16:35:55 Asia/Jakarta] PHP Warning:  Undefined variable $smkn1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[09-Aug-2026 16:35:55 Asia/Jakarta] PHP Warning:  Undefined variable $smkn2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[09-Aug-2026 16:35:55 Asia/Jakarta] PHP Warning:  Undefined variable $sman1 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[09-Aug-2026 16:35:55 Asia/Jakarta] PHP Warning:  Undefined variable $sman2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[09-Aug-2026 16:35:55 Asia/Jakarta] PHP Warning:  Undefined variable $man2 in /DATA/k1807225/public_html/admin/admin_dashboard.php on line 240
+[09-Aug-2026 16:37:19 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[09-Aug-2026 16:37:19 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Data truncated for column 'status' at row 1 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:70
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(70): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 70
+[09-Aug-2026 16:40:00 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 2) in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 20
+[09-Aug-2026 16:40:00 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Data truncated for column 'status' at row 1 in /DATA/k1807225/public_html/admin/proses_psb_admin.php:70
+Stack trace:
+#0 /DATA/k1807225/public_html/admin/proses_psb_admin.php(70): mysqli_query()
+#1 {main}
+  thrown in /DATA/k1807225/public_html/admin/proses_psb_admin.php on line 70
+[09-Aug-2026 19:51:43 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSXGen" not found in /DATA/k1807225/public_html/admin/export_santri.php:93
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/export_santri.php on line 93
+[09-Aug-2026 20:02:34 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/admin_master_santri.php on line 2) in /DATA/k1807225/public_html/admin/admin_master_santri.php on line 773
+[09-Aug-2026 20:02:36 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSXGen" not found in /DATA/k1807225/public_html/admin/export_santri.php:93
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/export_santri.php on line 93
+[09-Aug-2026 20:02:41 Asia/Jakarta] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from /DATA/k1807225/public_html/admin/admin_master_santri.php on line 2) in /DATA/k1807225/public_html/admin/admin_master_santri.php on line 773
+[09-Aug-2026 20:02:43 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Class "SimpleXLSXGen" not found in /DATA/k1807225/public_html/admin/export_santri.php:93
+Stack trace:
+#0 {main}
+  thrown in /DATA/k1807225/public_html/admin/export_santri.php on line 93
+[09-Aug-2026 23:17:00 Asia/Jakarta] PHP Warning:  Undefined array key "username" in /DATA/k1807225/public_html/admin/cek_login.php on line 5
+[09-Aug-2026 23:17:00 Asia/Jakarta] PHP Warning:  Undefined array key "password" in /DATA/k1807225/public_html/admin/cek_login.php on line 6
