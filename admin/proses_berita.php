@@ -1,5 +1,5 @@
 <?php
-include '../koneksi.php';
+require_once __DIR__ . '/_guard.php';
 
 $act = $_GET['act'];
 

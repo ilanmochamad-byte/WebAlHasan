@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/_guard.php'; ?>
 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse" style="min-height: 100vh;">
     <div class="position-sticky pt-3">
         <div class="text-center mb-4 text-white">
@@ -28,6 +29,8 @@
             <li class="nav-item"><a class="nav-link text-white" href="admin_rekap_santri.php"><i class ="fa fa-list-alt"></i> Rekapitulasi Santri</a></li>
             <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_tahun.php') ? 'active bg-success' : ''; ?>" href="admin_tahun.php"><i class="fas fa-calendar-alt me-2"></i> Tahun Ajaran</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_guru.php"><i class="fas fa-chalkboard-teacher me-2"></i> Guru & Pembimbing</a></li>
+            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_akun.php') ? 'active bg-success' : ''; ?>" href="admin_akun.php"><i class="fas fa-user-shield me-2"></i> Akun & Hak Akses</a></li>
+            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'ubah_password.php') ? 'active bg-success' : ''; ?>" href="ubah_password.php"><i class="fas fa-key me-2"></i> Ganti Password</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_kelas.php"><i class="fas fa-school me-2"></i> Data Kelas</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_jadwal_ngaji.php"><i class="fas fa-book-open me-2"></i> Jadwal Pengajian</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_kamar.php"><i class="fas fa-bed me-2"></i> Data Kamar</a></li>
@@ -66,3 +69,19 @@
         </ul>
     </div>
 </nav>
+<script>
+    window.ALHASAN_CSRF = <?= json_encode(\App\Http\Csrf::token(), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('form[method="post"], form[method="POST"]').forEach(function (form) {
+            if (form.querySelector('input[name="_csrf"]')) return;
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = '_csrf';
+            input.value = window.ALHASAN_CSRF;
+            form.appendChild(input);
+        });
+        if (window.jQuery) {
+            window.jQuery.ajaxSetup({headers: {'X-CSRF-Token': window.ALHASAN_CSRF}});
+        }
+    });
+</script>

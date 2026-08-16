@@ -1,18 +1,36 @@
 <?php
-session_start();
 
-// Ambil data dari form
-$username = $_POST['username'];
-$password = $_POST['password'];
+declare(strict_types=1);
 
-// Cek kredensial (Ganti password ini nanti jika sudah live)
-if($username == "admin" && $password == "alhasan123"){
-    // Buat session
-    $_SESSION['status'] = "login";
-    $_SESSION['admin'] = "Administrator";
-    header("Location: admin_dashboard.php");
-} else {
-    // Login gagal
-    header("Location: admin_login.php?pesan=gagal");
+use App\Auth\AuthService;
+use App\Http\Csrf;
+
+require_once dirname(__DIR__) . '/app/bootstrap.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: ' . app_url('/admin/admin_login.php'));
+    exit;
 }
-?>
+
+Csrf::requireValid($_POST['_csrf'] ?? null);
+
+$service = new AuthService(auth_repository(), audit_logger());
+$authenticated = $service->attempt((string) ($_POST['username'] ?? ''), (string) ($_POST['password'] ?? ''));
+
+if (!$authenticated) {
+    header('Location: ' . app_url('/admin/admin_login.php?pesan=gagal'));
+    exit;
+}
+
+if (!empty($_SESSION['force_password_change'])) {
+    header('Location: ' . app_url('/admin/ubah_password.php'));
+    exit;
+}
+
+if (!in_array('admin', $_SESSION['roles'] ?? [], true)) {
+    http_response_code(403);
+    exit('Login berhasil, tetapi akun ini tidak memiliki hak untuk membuka panel admin.');
+}
+
+header('Location: ' . app_url('/admin/admin_dashboard.php'));
+exit;

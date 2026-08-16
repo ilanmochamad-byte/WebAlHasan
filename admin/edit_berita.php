@@ -1,7 +1,5 @@
 <?php
-session_start();
-if($_SESSION['status'] != "login"){ header("Location: admin_login.php"); exit; }
-include '../koneksi.php';
+require_once __DIR__ . '/_guard.php';
 
 // Ambil ID dari URL
 $id = $_GET['id'];
@@ -28,6 +26,7 @@ $d = mysqli_fetch_array($query);
             </div>
             <div class="card-body">
                 <form action="proses_berita.php?act=update" method="post" enctype="multipart/form-data">
+                    <?= \App\Http\Csrf::input() ?>
                     
                     <input type="hidden" name="id" value="<?php echo $d['id']; ?>">
                     <input type="hidden" name="gbr_lama" value="<?php echo $d['gambar']; ?>">

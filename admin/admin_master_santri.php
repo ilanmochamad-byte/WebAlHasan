@@ -1,8 +1,5 @@
 <?php
-// Pastikan session_start() hanya dipanggil sekali di bagian paling atas
-session_start();
-if(!isset($_SESSION['status']) || $_SESSION['status'] != "login"){ header("Location: admin_login.php"); exit; }
-include '../koneksi.php';
+require_once __DIR__ . '/_guard.php';
 
 // --- 1. FUNGSI GENERATE NIS OTOMATIS BERDASARKAN UNIT ---
 function generateNIS($koneksi, $unit) {
@@ -756,6 +753,7 @@ $id_tahun = $tahun_aktif ? $tahun_aktif['id'] : 0;
             const jsonRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
             
             const formData = new FormData();
+            formData.append('_csrf', window.ALHASAN_CSRF);
             formData.append('payload', JSON.stringify(jsonRows));
 
             fetch('proses_import_santri.php', { method: 'POST', body: formData })

@@ -1,7 +1,5 @@
 <?php
-session_start();
-if(!isset($_SESSION['status']) || $_SESSION['status'] != "login"){ header("Location: ../admin_login.php"); exit; }
-include '../koneksi.php';
+require_once __DIR__ . '/_guard.php';
 
 // Panggil library pembentuk Excel murni bebas error warning
 require_once 'SimpleXLSXGen.php';

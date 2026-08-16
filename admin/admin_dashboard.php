@@ -1,7 +1,5 @@
 <?php
-session_start();
-if(!isset($_SESSION['status']) || $_SESSION['status'] != "login"){ header("Location: ../admin_login.php"); exit; }
-include '../koneksi.php';
+require_once __DIR__ . '/_guard.php';
 
 // --- 1. DATA SUMMARY CARDS ---
 $jml_psb = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar"));

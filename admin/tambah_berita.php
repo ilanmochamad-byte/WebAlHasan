@@ -1,6 +1,5 @@
 <?php
-session_start();
-if($_SESSION['status'] != "login"){ header("Location: admin_login.php"); exit; }
+require_once __DIR__ . '/_guard.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,6 +19,7 @@ if($_SESSION['status'] != "login"){ header("Location: admin_login.php"); exit; }
             </div>
             <div class="card-body">
                 <form action="proses_berita.php?act=tambah" method="post" enctype="multipart/form-data">
+                    <?= \App\Http\Csrf::input() ?>
                     
                     <div class="mb-3">
                         <label class="fw-bold mb-1">Judul Berita</label>

@@ -1,0 +1,7 @@
+.env
+.env.local
+storage/backups/
+storage/logs/
+*.log
+.DS_Store
+

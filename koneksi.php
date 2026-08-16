@@ -1,13 +1,7 @@
 <?php
-// koneksi.php
-$host = "localhost";
-$user = "k1807225_userwebalhasan"; // User database Anda
-$pass = "Alhasan120!@#";            // Password database Anda
-$db   = "k1807225_webalhasan";      // Nama database Anda
 
-$koneksi = mysqli_connect($host, $user, $pass, $db);
+// Jembatan kompatibilitas untuk modul lama. Konfigurasi sebenarnya dibaca dari
+// environment oleh bootstrap; variabel $koneksi tetap tersedia seperti dahulu.
+require_once __DIR__ . '/app/bootstrap.php';
 
-if (!$koneksi) {
-    die("Koneksi Gagal: " . mysqli_connect_error());
-}
-?>
+$koneksi = app_db();

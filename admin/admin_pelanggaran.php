@@ -1,7 +1,5 @@
 <?php
-session_start();
-if($_SESSION['status'] != "login"){ header("Location: admin_login.php"); exit; }
-include '../koneksi.php';
+require_once __DIR__ . '/_guard.php';
 
 if(isset($_POST['tambah'])){
     $id_santri = $_POST['id_santri'];

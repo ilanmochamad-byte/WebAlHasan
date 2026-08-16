@@ -1,12 +1,5 @@
 <?php
-session_start();
-include '../koneksi.php';
-
-// Cek login dulu
-if($_SESSION['status'] != "login"){
-    header("Location: admin_login.php");
-    exit;
-}
+require_once __DIR__ . '/_guard.php';
 
 $id = $_GET['id'];
 mysqli_query($koneksi, "DELETE FROM psb_pendaftar WHERE id='$id'");

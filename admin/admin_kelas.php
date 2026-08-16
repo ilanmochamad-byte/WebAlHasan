@@ -1,7 +1,5 @@
 <?php
-session_start();
-if($_SESSION['status'] != "login"){ header("Location: admin_login.php"); exit; }
-include '../koneksi.php';
+require_once __DIR__ . '/_guard.php';
 
 // Ambil Tahun Ajaran Aktif untuk menampilkan data plotting
 $q_tahun = mysqli_query($koneksi, "SELECT id, tahun, semester FROM tahun_ajaran WHERE status='Aktif' LIMIT 1");

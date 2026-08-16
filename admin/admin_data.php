@@ -1,10 +1,5 @@
 <?php
-session_start();
-if(!isset($_SESSION['status']) || $_SESSION['status'] != "login"){
-    header("Location: admin_login.php");
-    exit;
-}
-include '../koneksi.php';
+require_once __DIR__ . '/_guard.php';
 
 // PROSES TAMBAH MANUAL
 if(isset($_POST['tambah_manual'])){
@@ -573,6 +568,7 @@ if(isset($_POST['tambah_manual'])){
                 });
                 
                 const formData = new FormData();
+                formData.append('_csrf', window.ALHASAN_CSRF);
                 formData.append('payload', JSON.stringify(jsonRows));
 
                 fetch('proses_import_psb.php', {

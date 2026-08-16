@@ -1,7 +1,5 @@
 <?php
-session_start();
-if($_SESSION['status'] != "login"){ header("Location: admin_login.php"); exit; }
-include '../koneksi.php';
+require_once __DIR__ . '/_guard.php';
 
 // Proses Upload & Hapus (Tetap sama seperti logika file Anda)
 if(isset($_POST['upload_foto'])){

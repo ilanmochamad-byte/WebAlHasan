@@ -1,0 +1,14 @@
+Options -Indexes
+RewriteEngine On
+
+# Folder internal aplikasi tidak boleh dilayani langsung oleh web server.
+RewriteRule ^(?:app|bin|database|docs|storage|tests)(?:/|$) - [F,L,NC]
+
+# Rahasia, dump, log, dan dokumen implementasi tidak boleh diunduh.
+<FilesMatch "^(?:\.env(?:\..*)?|error_log|PRD\.md|.*\.sql)$">
+    Require all denied
+</FilesMatch>
+
+# Teruskan bearer token ke PHP pada konfigurasi Apache/FastCGI yang membuang header Authorization.
+SetEnvIf Authorization "(.+)" HTTP_AUTHORIZATION=$1
+

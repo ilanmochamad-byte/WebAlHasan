@@ -1,7 +1,5 @@
 <?php
-session_start();
-if(!isset($_SESSION['status']) || $_SESSION['status'] != "login"){ header("Location: admin_login.php"); exit; }
-include '../koneksi.php';
+require_once __DIR__ . '/_guard.php';
 
 // Filter Status Pembayaran (Default: Lunas)
 $filter_status = isset($_GET['status']) ? mysqli_real_escape_string($koneksi, $_GET['status']) : 'Lunas';
