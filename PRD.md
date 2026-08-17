@@ -175,7 +175,7 @@ Santri, orang tua, dan pengurus merupakan data yang dikelola admin pada V1, teta
 - [ ] Guru dapat ditetapkan sebagai murobi tanpa memperoleh akses approval izin pada V1.
 - [ ] Ekspor CSV menghasilkan jumlah baris yang sama dengan hasil filter pada UI.
 - [ ] Audit menyimpan pelaku dan waktu untuk perubahan master data tanpa menyimpan nilai rahasia.
-- [ ] Seluruh file PHP yang ditambah atau diubah lolos `php -l`.
+- [x] Seluruh file PHP yang ditambah atau diubah lolos `php -l`.
 
 ### Fase 3: Jadwal dan Pertemuan Pengajian (memerlukan master data Fase 2)
 

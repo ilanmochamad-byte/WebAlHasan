@@ -33,7 +33,7 @@ if(!empty($_GET['kab_kota'])) {
 }
 if(!empty($_GET['id_kelas'])) {
     $id_kelas = (int)$_GET['id_kelas'];
-    $join .= " LEFT JOIN plotting_kelas pk ON s.id = pk.id_santri AND pk.id_tahun = '$id_tahun' ";
+    $join .= " LEFT JOIN plotting_kelas pk ON s.id = pk.id_santri AND pk.id_tahun = '$id_tahun' AND pk.status = 'Aktif' ";
     $where .= " AND pk.id_kelas = '$id_kelas'";
 }
 
@@ -41,7 +41,7 @@ if(!empty($_GET['id_kelas'])) {
 $query_str = "SELECT s.*, k.nama_kelas, km.nama_kamar 
               FROM santri s 
               $join
-              LEFT JOIN kelas k ON (SELECT id_kelas FROM plotting_kelas WHERE id_santri=s.id AND id_tahun='$id_tahun' LIMIT 1) = k.id
+              LEFT JOIN kelas k ON (SELECT id_kelas FROM plotting_kelas WHERE id_santri=s.id AND id_tahun='$id_tahun' AND status='Aktif' LIMIT 1) = k.id
               LEFT JOIN plotting_kamar pkm ON s.id = pkm.id_santri AND pkm.id_tahun = '$id_tahun'
               LEFT JOIN kamar km ON pkm.id_kamar = km.id
               $where ORDER BY s.nis ASC";

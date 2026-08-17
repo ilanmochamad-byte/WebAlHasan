@@ -22,7 +22,7 @@ if(isset($_POST['bulk_mutasi'])){
     }
 
     // Ambil semua santri yang berada di kelas tersebut pada tahun ajaran aktif
-    $q_santri = mysqli_query($koneksi, "SELECT s.* FROM plotting_kelas pk JOIN santri s ON pk.id_santri = s.id WHERE pk.id_kelas='$id_kelas' AND pk.id_tahun='$id_tahun'");
+    $q_santri = mysqli_query($koneksi, "SELECT s.* FROM plotting_kelas pk JOIN santri s ON pk.id_santri = s.id WHERE pk.id_kelas='$id_kelas' AND pk.id_tahun='$id_tahun' AND pk.status='Aktif' AND s.archived_at IS NULL");
     
     if(mysqli_num_rows($q_santri) == 0) {
         echo "<script>alert('Gagal: Tidak ditemukan santri aktif di kelas tersebut pada tahun ajaran ini.'); window.location='admin_master_santri.php';</script>";
@@ -51,10 +51,9 @@ if(isset($_POST['bulk_mutasi'])){
         );
 
         if(mysqli_stmt_execute($stmt)){
-            // Hapus dari santri aktif dan hapus seluruh plotting kelas & kamarnya
-            mysqli_query($koneksi, "DELETE FROM santri WHERE id='$id_santri'");
-            mysqli_query($koneksi, "DELETE FROM plotting_kelas WHERE id_santri='$id_santri'");
-            mysqli_query($koneksi, "DELETE FROM plotting_kamar WHERE id_santri='$id_santri'");
+            // Data sumber tidak dihapus: santri diarsipkan dan riwayat penempatan dipertahankan.
+            master_data_service()->endActiveClass((int)$id_santri);
+            master_data_service()->setSantriState((int)$id_santri, 'archive');
             $berhasil++;
         }
     }
@@ -94,9 +93,8 @@ if(isset($_POST['mutasi'])){
         );
 
         if(mysqli_stmt_execute($stmt)){
-            mysqli_query($koneksi, "DELETE FROM santri WHERE id='$id_santri'");
-            mysqli_query($koneksi, "DELETE FROM plotting_kelas WHERE id_santri='$id_santri'");
-            mysqli_query($koneksi, "DELETE FROM plotting_kamar WHERE id_santri='$id_santri'");
+            master_data_service()->endActiveClass((int)$id_santri);
+            master_data_service()->setSantriState((int)$id_santri, 'archive');
             echo "<script>alert('Berhasil: Santri telah dipindahkan ke Data Alumni!'); window.location='admin_master_santri.php';</script>";
         } else {
             echo "<script>alert('Gagal memindahkan data!'); window.location='admin_master_santri.php';</script>";

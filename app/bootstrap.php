@@ -7,6 +7,8 @@ use App\Auth\AuthRepository;
 use App\Auth\Authorization;
 use App\Database\Connection;
 use App\Http\Session;
+use App\MasterData\MasterDataRepository;
+use App\MasterData\MasterDataService;
 use App\Support\Env;
 
 if (!defined('APP_ROOT')) {
@@ -109,4 +111,10 @@ function audit_logger(): AuditLogger
 {
     static $logger;
     return $logger ??= new AuditLogger(app_db());
+}
+
+function master_data_service(): MasterDataService
+{
+    static $service;
+    return $service ??= new MasterDataService(new MasterDataRepository(app_db()), audit_logger());
 }

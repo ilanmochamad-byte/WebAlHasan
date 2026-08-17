@@ -24,14 +24,17 @@
             </li>
 
             <li class="nav-item mt-3 text-white-50 small fw-bold px-3">MASTER DATA & AKADEMIK</li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_master_santri.php') ? 'active bg-success' : ''; ?>" href="admin_master_santri.php"><i class="fa fa-address-book"></i> Master Data Santri</a></li>
+            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_master_santri.php') ? 'active bg-success' : ''; ?>" href="admin_master_santri.php"><i class="fa fa-address-book me-2"></i> Master Data Santri</a></li>
+            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_wali.php') ? 'active bg-success' : ''; ?>" href="admin_wali.php"><i class="fas fa-people-roof me-2"></i> Orang Tua / Wali</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_santri.php"><i class="fa fa-address-card"></i> Data Santri</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_rekap_santri.php"><i class ="fa fa-list-alt"></i> Rekapitulasi Santri</a></li>
             <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_tahun.php') ? 'active bg-success' : ''; ?>" href="admin_tahun.php"><i class="fas fa-calendar-alt me-2"></i> Tahun Ajaran</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="admin_guru.php"><i class="fas fa-chalkboard-teacher me-2"></i> Guru & Pembimbing</a></li>
+            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_guru.php') ? 'active bg-success' : ''; ?>" href="admin_guru.php"><i class="fas fa-chalkboard-teacher me-2"></i> Guru & Pembimbing</a></li>
+            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_pengurus.php') ? 'active bg-success' : ''; ?>" href="admin_pengurus.php"><i class="fas fa-user-tie me-2"></i> Pengurus</a></li>
+            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_murobi.php') ? 'active bg-success' : ''; ?>" href="admin_murobi.php"><i class="fas fa-user-group me-2"></i> Penugasan Murobi</a></li>
             <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_akun.php') ? 'active bg-success' : ''; ?>" href="admin_akun.php"><i class="fas fa-user-shield me-2"></i> Akun & Hak Akses</a></li>
             <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'ubah_password.php') ? 'active bg-success' : ''; ?>" href="ubah_password.php"><i class="fas fa-key me-2"></i> Ganti Password</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="admin_kelas.php"><i class="fas fa-school me-2"></i> Data Kelas</a></li>
+            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_kelas.php') ? 'active bg-success' : ''; ?>" href="admin_kelas.php"><i class="fas fa-school me-2"></i> Data Kelas</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_jadwal_ngaji.php"><i class="fas fa-book-open me-2"></i> Jadwal Pengajian</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_kamar.php"><i class="fas fa-bed me-2"></i> Data Kamar</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_izin.php"><i class="fas fa-envelope-open-text me-2"></i> Perizinan</a></li>

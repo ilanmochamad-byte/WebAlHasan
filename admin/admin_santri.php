@@ -36,8 +36,15 @@ if(isset($_POST['action']) && $_POST['action'] == 'update_plot'){
     }
 
     if($tipe == 'kelas'){
-        mysqli_query($koneksi, "DELETE FROM plotting_kelas WHERE id_santri='$id_santri' AND id_tahun='$id_tahun'");
-        if(!empty($id_val)){ mysqli_query($koneksi, "INSERT INTO plotting_kelas (id_santri, id_kelas, id_tahun) VALUES ('$id_santri', '$id_val', '$id_tahun')"); }
+        try {
+            if(!empty($id_val)){
+                master_data_service()->assignActiveClass(['santri_id' => (int)$id_santri, 'kelas_id' => (int)$id_val, 'tanggal_mulai' => date('Y-m-d')], (int)$currentUser['id']);
+            } else {
+                master_data_service()->endActiveClass((int)$id_santri);
+            }
+        } catch (Throwable $exception) {
+            echo json_encode(['status'=>'error', 'msg'=>$exception->getMessage()]); exit;
+        }
     } else if($tipe == 'kamar'){
         mysqli_query($koneksi, "DELETE FROM plotting_kamar WHERE id_santri='$id_santri' AND id_tahun='$id_tahun'");
         if(!empty($id_val)){ mysqli_query($koneksi, "INSERT INTO plotting_kamar (id_santri, id_kamar, id_tahun) VALUES ('$id_santri', '$id_val', '$id_tahun')"); }
@@ -83,8 +90,15 @@ if(isset($_POST['action']) && $_POST['action'] == 'bulk_update_plot'){
     foreach($id_santris as $id_santri){
         $id_s = mysqli_real_escape_string($koneksi, $id_santri);
         if($tipe == 'kelas'){
-            mysqli_query($koneksi, "DELETE FROM plotting_kelas WHERE id_santri='$id_s' AND id_tahun='$id_tahun'");
-            if(!empty($id_val)){ mysqli_query($koneksi, "INSERT INTO plotting_kelas (id_santri, id_kelas, id_tahun) VALUES ('$id_s', '$id_val', '$id_tahun')"); }
+            try {
+                if(!empty($id_val)){
+                    master_data_service()->assignActiveClass(['santri_id' => (int)$id_s, 'kelas_id' => (int)$id_val, 'tanggal_mulai' => date('Y-m-d')], (int)$currentUser['id']);
+                } else {
+                    master_data_service()->endActiveClass((int)$id_s);
+                }
+            } catch (Throwable $exception) {
+                echo json_encode(['status'=>'error', 'msg'=>$exception->getMessage()]); exit;
+            }
         } else if($tipe == 'kamar'){
             mysqli_query($koneksi, "DELETE FROM plotting_kamar WHERE id_santri='$id_s' AND id_tahun='$id_tahun'");
             if(!empty($id_val)){ mysqli_query($koneksi, "INSERT INTO plotting_kamar (id_santri, id_kamar, id_tahun) VALUES ('$id_s', '$id_val', '$id_tahun')"); }
@@ -227,7 +241,7 @@ while($km = mysqli_fetch_assoc($qKm)) { $list_kamar[] = $km; }
                         </thead>
                         <tbody>
                             <?php
-                            $where = "WHERE 1=1";
+                            $where = "WHERE s.is_active=1 AND s.archived_at IS NULL";
                             if(!empty($_GET['jk'])) $where .= " AND s.jenis_kelamin = '$_GET[jk]'";
                             if(!empty($_GET['sekolah'])) $where .= " AND s.sekolah_saat_ini = '$_GET[sekolah]'";
                             if(!empty($_GET['cari'])) $where .= " AND (s.nama_santri LIKE '%$_GET[cari]%' OR s.nis LIKE '%$_GET[cari]%')";
@@ -240,7 +254,7 @@ while($km = mysqli_fetch_assoc($qKm)) { $list_kamar[] = $km; }
                             $query = "SELECT s.id, s.nis, s.nama_santri, s.jenis_kelamin, s.sekolah_saat_ini, s.foto, 
                                              k.id as id_kelas_aktif, km.id as id_kamar_aktif
                                       FROM santri s
-                                      LEFT JOIN plotting_kelas pk ON s.id = pk.id_santri AND pk.id_tahun='$id_tahun'
+                                      LEFT JOIN plotting_kelas pk ON s.id = pk.id_santri AND pk.id_tahun='$id_tahun' AND pk.status='Aktif'
                                       LEFT JOIN kelas k ON pk.id_kelas = k.id
                                       LEFT JOIN plotting_kamar pkm ON s.id = pkm.id_santri AND pkm.id_tahun='$id_tahun'
                                       LEFT JOIN kamar km ON pkm.id_kamar = km.id

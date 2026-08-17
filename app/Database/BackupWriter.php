@@ -60,11 +60,17 @@ final class BackupWriter
 
     public function duplicateReport(): array
     {
+        $membershipStatus = $this->db->query("SHOW COLUMNS FROM plotting_kelas LIKE 'status'");
+        $membershipCondition = $membershipStatus && $membershipStatus->num_rows > 0 ? " WHERE status = 'Aktif'" : '';
         $checks = [
             'users.username' => "SELECT username business_key, COUNT(*) total FROM users GROUP BY username HAVING COUNT(*) > 1",
             'users.guru_id' => "SELECT CAST(guru_id AS CHAR) business_key, COUNT(*) total FROM users WHERE guru_id IS NOT NULL GROUP BY guru_id HAVING COUNT(*) > 1",
             'guru.nip' => "SELECT nip business_key, COUNT(*) total FROM guru WHERE nip IS NOT NULL AND TRIM(nip) <> '' GROUP BY nip HAVING COUNT(*) > 1",
             'santri.nis' => "SELECT nis business_key, COUNT(*) total FROM santri GROUP BY nis HAVING COUNT(*) > 1",
+            'tahun_ajaran.tahun_semester' => "SELECT CONCAT(tahun, '|', semester) business_key, COUNT(*) total FROM tahun_ajaran GROUP BY tahun, semester HAVING COUNT(*) > 1",
+            'tahun_ajaran.status_aktif' => "SELECT 'active_rows' business_key, COUNT(*) total FROM tahun_ajaran WHERE status = 'Aktif' HAVING COUNT(*) <> 1",
+            'kelas.nama_jenjang' => "SELECT CONCAT(TRIM(nama_kelas), '|', TRIM(jenjang)) business_key, COUNT(*) total FROM kelas GROUP BY TRIM(nama_kelas), TRIM(jenjang) HAVING COUNT(*) > 1",
+            'plotting_kelas.santri_tahun' => "SELECT CONCAT(id_santri, '|', id_tahun) business_key, COUNT(*) total FROM plotting_kelas{$membershipCondition} GROUP BY id_santri, id_tahun HAVING COUNT(*) > 1",
         ];
         $report = [];
         foreach ($checks as $name => $sql) {
@@ -96,4 +102,3 @@ final class BackupWriter
         return "'" . $this->db->real_escape_string((string) $value) . "'";
     }
 }
-

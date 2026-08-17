@@ -6,7 +6,7 @@ $q_tahun = mysqli_query($koneksi, "SELECT id FROM tahun_ajaran WHERE status='Akt
 $tahun_aktif = mysqli_fetch_array($q_tahun);
 $id_tahun = $tahun_aktif ? $tahun_aktif['id'] : 0;
 
-$where = "WHERE 1=1";
+$where = "WHERE s.is_active=1 AND s.archived_at IS NULL";
 if(!empty($_GET['jk'])) $where .= " AND s.jenis_kelamin = '$_GET[jk]'";
 if(!empty($_GET['kecamatan'])) $where .= " AND s.kecamatan LIKE '%$_GET[kecamatan]%'";
 if(!empty($_GET['kab_kota'])) $where .= " AND s.kab_kota LIKE '%$_GET[kab_kota]%'";
@@ -15,7 +15,7 @@ if(!empty($_GET['id_kelas'])) $where .= " AND pk.id_kelas = '$_GET[id_kelas]'";
 
 $query = "SELECT s.*, k.nama_kelas, km.nama_kamar 
           FROM santri s 
-          LEFT JOIN plotting_kelas pk ON s.id = pk.id_santri AND pk.id_tahun = '$id_tahun'
+          LEFT JOIN plotting_kelas pk ON s.id = pk.id_santri AND pk.id_tahun = '$id_tahun' AND pk.status = 'Aktif'
           LEFT JOIN kelas k ON pk.id_kelas = k.id 
           LEFT JOIN plotting_kamar pkm ON s.id = pkm.id_santri AND pkm.id_tahun = '$id_tahun'
           LEFT JOIN kamar km ON pkm.id_kamar = km.id

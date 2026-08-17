@@ -23,7 +23,7 @@ final class AccountService
             'name' => trim((string) ($input['name'] ?? '')),
             'username' => strtolower(trim((string) ($input['username'] ?? ''))),
             'email' => strtolower(trim((string) ($input['email'] ?? ''))),
-            'phone' => preg_replace('/[^0-9+]/', '', (string) ($input['phone'] ?? '')),
+            'phone' => preg_replace('/[^0-9+]/', '', trim((string) ($input['phone'] ?? ''))),
         ];
         if ($data['guru_id'] < 1 || $data['name'] === '') {
             throw new InvalidArgumentException('Guru dan nama akun wajib diisi.');
@@ -33,6 +33,14 @@ final class AccountService
         }
         if ($data['email'] !== '' && !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException('Format email tidak valid.');
+        }
+        if (str_starts_with($data['phone'], '+62')) {
+            $data['phone'] = '0' . substr($data['phone'], 3);
+        } elseif (str_starts_with($data['phone'], '62')) {
+            $data['phone'] = '0' . substr($data['phone'], 2);
+        }
+        if ($data['phone'] !== '' && !preg_match('/^0[0-9]{8,15}$/', $data['phone'])) {
+            throw new InvalidArgumentException('Nomor HP harus berupa 9–16 digit dan diawali 0.');
         }
         $data['email'] = $data['email'] === '' ? null : $data['email'];
         $data['phone'] = $data['phone'] === '' ? null : $data['phone'];

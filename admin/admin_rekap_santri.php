@@ -84,7 +84,7 @@ $id_tahun = $tahun_aktif ? $tahun_aktif['id'] : 0;
                                         SUM(CASE WHEN s.jenis_kelamin = 'P' THEN 1 ELSE 0 END) as total_p,
                                         COUNT(s.id) as total_kelas
                                     FROM kelas k
-                                    LEFT JOIN plotting_kelas pk ON k.id = pk.id_kelas AND pk.id_tahun = '$id_tahun'
+                                    LEFT JOIN plotting_kelas pk ON k.id = pk.id_kelas AND pk.id_tahun = '$id_tahun' AND pk.status = 'Aktif'
                                     LEFT JOIN santri s ON pk.id_santri = s.id
                                     GROUP BY k.id, k.nama_kelas, k.jenjang
                                     ORDER BY k.jenjang ASC, k.nama_kelas ASC
@@ -139,7 +139,7 @@ $id_tahun = $tahun_aktif ? $tahun_aktif['id'] : 0;
                                         SUM(CASE WHEN jenis_kelamin = 'P' THEN 1 ELSE 0 END) as total_p,
                                         COUNT(id) as total_semua
                                     FROM santri 
-                                    WHERE id NOT IN (SELECT id_santri FROM plotting_kelas WHERE id_tahun = '$id_tahun')
+                                    WHERE is_active = 1 AND archived_at IS NULL AND id NOT IN (SELECT id_santri FROM plotting_kelas WHERE id_tahun = '$id_tahun' AND status = 'Aktif')
                                 ");
                                 $d_belum = mysqli_fetch_array($q_belum);
                                 $blm_l = $d_belum['total_l'] ? $d_belum['total_l'] : 0;
