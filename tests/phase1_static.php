@@ -20,6 +20,16 @@ $assert(!preg_match('/\$pass\s*=\s*[\'\"][^\'\"]+[\'\"]/', $connectionSource), '
 $guardSource = (string) file_get_contents($root . '/admin/_guard.php');
 $assert(str_contains($guardSource, 'Csrf::requireValid'), 'Seluruh POST pada route admin dijaga CSRF di server');
 
+foreach (['index.php', 'berita.php', 'detail.php', 'download.php', 'galeri.php'] as $publicPage) {
+    $source = (string) file_get_contents($root . '/' . $publicPage);
+    $connectionPosition = strpos($source, 'koneksi.php');
+    $headerPosition = strpos($source, 'header.php');
+    $assert(
+        $connectionPosition !== false && $headerPosition !== false && $connectionPosition < $headerPosition,
+        $publicPage . ' memuat bootstrap/koneksi sebelum menghasilkan header HTML'
+    );
+}
+
 $protectedExceptions = ['SimpleXLSX.php', 'SimpleXLSXGen.php', 'admin_login.php', 'cek_login.php', 'logout.php', 'ubah_password.php'];
 foreach (glob($root . '/admin/*.php') ?: [] as $file) {
     if (in_array(basename($file), $protectedExceptions, true)) {

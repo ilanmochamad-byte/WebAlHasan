@@ -14,6 +14,12 @@
 3. Pastikan migrasi tercatat di `schema_migrations` dan jalankan kembali status.
 4. Uji login admin dari URL lama, role guru (harus ditolak dari panel admin), ganti password wajib, logout, dan form akun tanpa CSRF.
 
+Jika password admin pada dump tidak diketahui atau tidak cocok, reset tanpa menaruh password di source code:
+
+`php bin/reset_admin_password.php admin`
+
+Masukkan password sementara dua kali saat diminta. Akun akan diaktifkan, role `admin` dipastikan tersedia, dan pengguna wajib mengganti password setelah login pertama.
+
 Migrasi menambahkan tabel `roles`, `user_roles`, `api_tokens`, dan `audit_logs`, kolom `users.force_password_change`, serta unique index pada `users.guru_id`. Tidak ada tabel atau kolom lama yang dihapus.
 
 ## Rollback skema
@@ -32,4 +38,3 @@ Migrasi menambahkan tabel `roles`, `user_roles`, `api_tokens`, dan `audit_logs`,
 5. Catat tanggal, operator, lokasi backup, dan hasil uji pada tiket/deployment log produksi.
 
 Jika rollback SQL gagal karena migrasi sebelumnya berhenti di tengah, pulihkan backup ke database staging/baru dan alihkan aplikasi hanya setelah hasil verifikasi jumlah baris lulus.
-

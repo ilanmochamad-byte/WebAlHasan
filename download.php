@@ -1,5 +1,7 @@
-<?php include 'header.php'; ?>
-<?php include 'koneksi.php'; ?>
+<?php
+require_once __DIR__ . '/koneksi.php';
+include 'header.php';
+?>
 
 <section class="py-5 mt-5">
     <div class="container py-4">

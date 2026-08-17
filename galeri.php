@@ -1,5 +1,7 @@
-<?php include 'header.php'; ?>
-<?php include 'koneksi.php'; ?>
+<?php
+require_once __DIR__ . '/koneksi.php';
+include 'header.php';
+?>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet" />
 

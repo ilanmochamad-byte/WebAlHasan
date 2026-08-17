@@ -1,4 +1,7 @@
-<?php include 'header.php'; ?>
+<?php
+require_once __DIR__ . '/koneksi.php';
+include 'header.php';
+?>
 
 <section class="hero-section">
     <div class="container" data-aos="fade-up">
@@ -177,7 +180,7 @@
         <div class="row g-4">
             <?php
             // MENGHUBUNGKAN KE DATABASE
-            include 'koneksi.php';
+            // Koneksi sudah dimuat sebelum header agar session dapat dimulai dengan aman.
             
             // QUERY MENGAMBIL 3 BERITA TERBARU
             $query = "SELECT * FROM berita ORDER BY id DESC LIMIT 3";

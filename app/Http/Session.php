@@ -12,6 +12,15 @@ final class Session
             return;
         }
 
+        if (headers_sent($file, $line)) {
+            error_log(sprintf(
+                'Session tidak dimulai karena output sudah dikirim oleh %s pada baris %d.',
+                $file ?: 'file tidak diketahui',
+                $line
+            ));
+            return;
+        }
+
         session_name($config['name']);
         session_set_cookie_params([
             'lifetime' => 0,
@@ -37,4 +46,3 @@ final class Session
         session_destroy();
     }
 }
-
