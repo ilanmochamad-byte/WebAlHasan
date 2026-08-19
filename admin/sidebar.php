@@ -35,7 +35,8 @@
             <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_akun.php') ? 'active bg-success' : ''; ?>" href="admin_akun.php"><i class="fas fa-user-shield me-2"></i> Akun & Hak Akses</a></li>
             <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'ubah_password.php') ? 'active bg-success' : ''; ?>" href="ubah_password.php"><i class="fas fa-key me-2"></i> Ganti Password</a></li>
             <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_kelas.php') ? 'active bg-success' : ''; ?>" href="admin_kelas.php"><i class="fas fa-school me-2"></i> Data Kelas</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="admin_jadwal_ngaji.php"><i class="fas fa-book-open me-2"></i> Jadwal Pengajian</a></li>
+            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_jadwal_ngaji.php') ? 'active bg-success' : ''; ?>" href="admin_jadwal_ngaji.php"><i class="fas fa-book-open me-2"></i> Jadwal Pengajian</a></li>
+            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'pertemuan_pengajian.php') ? 'active bg-success' : ''; ?>" href="pertemuan_pengajian.php"><i class="fas fa-calendar-check me-2"></i> Pertemuan Pengajian</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_kamar.php"><i class="fas fa-bed me-2"></i> Data Kamar</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_izin.php"><i class="fas fa-envelope-open-text me-2"></i> Perizinan</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_pelanggaran.php"><i class="fas fa-exclamation-triangle me-2"></i> Pelanggaran</a></li>

@@ -205,7 +205,7 @@ Santri, orang tua, dan pengurus merupakan data yang dikelola admin pada V1, teta
 - [ ] Sistem menolak pembuatan pertemuan kedua untuk jadwal dan tanggal yang sama.
 - [ ] Pertemuan yang dibuka menyimpan snapshot daftar santri kelas pada saat pembukaan.
 - [ ] Jadwal nonaktif tidak muncul sebagai tugas aktif guru.
-- [ ] Seluruh file PHP yang ditambah atau diubah lolos `php -l`.
+- [x] Seluruh file PHP yang ditambah atau diubah lolos `php -l`.
 
 ### Fase 4: REST API dan Aplikasi Guru (memerlukan jadwal/pertemuan Fase 3)
 

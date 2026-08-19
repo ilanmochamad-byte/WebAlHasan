@@ -30,7 +30,7 @@ foreach (['index.php', 'berita.php', 'detail.php', 'download.php', 'galeri.php']
     );
 }
 
-$protectedExceptions = ['SimpleXLSX.php', 'SimpleXLSXGen.php', 'admin_login.php', 'cek_login.php', 'logout.php', 'ubah_password.php'];
+$protectedExceptions = ['SimpleXLSX.php', 'SimpleXLSXGen.php', 'admin_login.php', 'cek_login.php', 'logout.php', 'ubah_password.php', 'pertemuan_pengajian.php'];
 foreach (glob($root . '/admin/*.php') ?: [] as $file) {
     if (in_array(basename($file), $protectedExceptions, true)) {
         continue;
@@ -38,6 +38,11 @@ foreach (glob($root . '/admin/*.php') ?: [] as $file) {
     $source = (string) file_get_contents($file);
     $assert(str_contains($source, '_guard.php') || basename($file) === '_guard.php', basename($file) . ' memakai guard role admin');
 }
+$meetingSource = (string) file_get_contents($root . '/admin/pertemuan_pengajian.php');
+$assert(
+    str_contains($meetingSource, 'requireWebUser()') && str_contains($meetingSource, "in_array('admin'") && str_contains($meetingSource, "in_array('guru'"),
+    'pertemuan_pengajian.php memakai guard pengguna dan membatasi role admin/guru'
+);
 
 $migration = (string) file_get_contents($root . '/database/migrations/001_phase1_security.sql');
 foreach (['roles', 'user_roles', 'api_tokens', 'audit_logs', 'users_guru_unique', 'force_password_change'] as $required) {

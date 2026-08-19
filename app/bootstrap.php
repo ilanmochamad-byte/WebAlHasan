@@ -9,6 +9,8 @@ use App\Database\Connection;
 use App\Http\Session;
 use App\MasterData\MasterDataRepository;
 use App\MasterData\MasterDataService;
+use App\Schedule\ScheduleRepository;
+use App\Schedule\ScheduleService;
 use App\Support\Env;
 
 if (!defined('APP_ROOT')) {
@@ -117,4 +119,10 @@ function master_data_service(): MasterDataService
 {
     static $service;
     return $service ??= new MasterDataService(new MasterDataRepository(app_db()), audit_logger());
+}
+
+function schedule_service(): ScheduleService
+{
+    static $service;
+    return $service ??= new ScheduleService(new ScheduleRepository(app_db()), audit_logger());
 }

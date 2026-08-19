@@ -27,9 +27,14 @@ if (!empty($_SESSION['force_password_change'])) {
     exit;
 }
 
+if (in_array('guru', $_SESSION['roles'] ?? [], true) && !in_array('admin', $_SESSION['roles'] ?? [], true)) {
+    header('Location: ' . app_url('/admin/pertemuan_pengajian.php'));
+    exit;
+}
+
 if (!in_array('admin', $_SESSION['roles'] ?? [], true)) {
     http_response_code(403);
-    exit('Login berhasil, tetapi akun ini tidak memiliki hak untuk membuka panel admin.');
+    exit('Login berhasil, tetapi akun ini tidak memiliki hak jadwal atau panel admin.');
 }
 
 header('Location: ' . app_url('/admin/admin_dashboard.php'));

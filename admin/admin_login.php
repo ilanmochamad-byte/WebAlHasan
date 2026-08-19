@@ -6,9 +6,15 @@ use App\Http\Csrf;
 
 require_once dirname(__DIR__) . '/app/bootstrap.php';
 
-if (authorization()->currentUser() !== null && in_array('admin', $_SESSION['roles'] ?? [], true) && empty($_SESSION['force_password_change'])) {
-    header('Location: ' . app_url('/admin/admin_dashboard.php'));
-    exit;
+if (authorization()->currentUser() !== null && empty($_SESSION['force_password_change'])) {
+    if (in_array('admin', $_SESSION['roles'] ?? [], true)) {
+        header('Location: ' . app_url('/admin/admin_dashboard.php'));
+        exit;
+    }
+    if (in_array('guru', $_SESSION['roles'] ?? [], true)) {
+        header('Location: ' . app_url('/admin/pertemuan_pengajian.php'));
+        exit;
+    }
 }
 
 $message = match ($_GET['pesan'] ?? '') {
@@ -23,7 +29,7 @@ $message = match ($_GET['pesan'] ?? '') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin - PP Al Hasan</title>
+    <title>Login Pengguna - PP Al Hasan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background-color: #f0f2f5; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
@@ -35,7 +41,7 @@ $message = match ($_GET['pesan'] ?? '') {
 <body>
 <main class="login-card">
     <div class="text-center mb-4">
-        <h1 class="h4 fw-bold text-success">Admin Panel</h1>
+        <h1 class="h4 fw-bold text-success">Login Sistem</h1>
         <p class="text-muted">Website Pesantren Al Hasan Ciamis</p>
     </div>
 
