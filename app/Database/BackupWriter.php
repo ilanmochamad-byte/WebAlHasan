@@ -28,6 +28,16 @@ final class BackupWriter
         $counts = [];
         foreach ($tables as $table) {
             $escapedTable = '`' . str_replace('`', '``', $table) . '`';
+            $columns = $this->insertableColumns($table);
+            if ($columns === []) {
+                fclose($handle);
+                throw new RuntimeException('Tabel tidak memiliki kolom yang dapat diekspor: ' . $table);
+            }
+            $escapedColumns = array_map(
+                static fn (string $column): string => '`' . str_replace('`', '``', $column) . '`',
+                $columns
+            );
+            $columnList = implode(', ', $escapedColumns);
             $createResult = $this->db->query('SHOW CREATE TABLE ' . $escapedTable);
             if ($createResult === false) {
                 fclose($handle);
@@ -36,7 +46,7 @@ final class BackupWriter
             $create = $createResult->fetch_array(MYSQLI_NUM);
             fwrite($handle, 'DROP TABLE IF EXISTS ' . $escapedTable . ";\n" . $create[1] . ";\n\n");
 
-            $result = $this->db->query('SELECT * FROM ' . $escapedTable, MYSQLI_USE_RESULT);
+            $result = $this->db->query('SELECT ' . $columnList . ' FROM ' . $escapedTable, MYSQLI_USE_RESULT);
             if ($result === false) {
                 fclose($handle);
                 throw new RuntimeException('Data tabel gagal dibaca: ' . $table);
@@ -44,7 +54,10 @@ final class BackupWriter
             $count = 0;
             while ($row = $result->fetch_assoc()) {
                 $values = array_map(fn (mixed $value): string => $this->sqlValue($value), array_values($row));
-                fwrite($handle, 'INSERT INTO ' . $escapedTable . ' VALUES (' . implode(', ', $values) . ");\n");
+                fwrite(
+                    $handle,
+                    'INSERT INTO ' . $escapedTable . ' (' . $columnList . ') VALUES (' . implode(', ', $values) . ");\n"
+                );
                 $count++;
             }
             $result->free();
@@ -92,6 +105,26 @@ final class BackupWriter
         }
         sort($tables, SORT_STRING);
         return $tables;
+    }
+
+    private function insertableColumns(string $table): array
+    {
+        $escapedTable = '`' . str_replace('`', '``', $table) . '`';
+        $result = $this->db->query('SHOW FULL COLUMNS FROM ' . $escapedTable);
+        if ($result === false) {
+            throw new RuntimeException('Kolom tabel gagal dibaca: ' . $table);
+        }
+
+        $columns = [];
+        while ($row = $result->fetch_assoc()) {
+            $extra = strtoupper((string) ($row['Extra'] ?? ''));
+            if (str_contains($extra, 'GENERATED')) {
+                continue;
+            }
+            $columns[] = (string) $row['Field'];
+        }
+
+        return $columns;
     }
 
     private function sqlValue(mixed $value): string

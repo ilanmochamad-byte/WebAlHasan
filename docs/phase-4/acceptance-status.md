@@ -1,36 +1,40 @@
 # Status Penerimaan Fase 4
 
-Tanggal pemeriksaan lokal: 19 Agustus 2026.
+Tanggal pemeriksaan dan pemasangan produksi: 19 Agustus 2026.
 
-## Sudah lulus
+## Hasil akhir
 
-- Kontrak `/api/v1` diperiksa oleh `tests/phase4_static.php`: 37 pemeriksaan lulus.
-- Seluruh file PHP lolos pemeriksaan sintaks.
-- Pengujian statis Fase 1, Fase 2, dan Fase 3 tetap lulus.
-- `npm run lint` lulus pada proyek Expo.
-- `npx tsc --noEmit` lulus dengan TypeScript strict.
-- `npx expo install --check` menyatakan dependency sesuai peta lokal Expo 57.
-- Ekspor bundle Android, iOS, dan web berhasil.
-- Alur UI login, beranda, detail tugas, pembukaan pertemuan, pengisian, penyimpanan,
-  pembacaan ulang, validasi koreksi, dan logout telah diperiksa memakai server mock lokal.
+- Seluruh 12 kriteria penerimaan Fase 4 pada `PRD.md` lulus dan telah dicentang.
+- Kontrak `/api/v1` diperiksa oleh `tests/phase4_static.php`; seluruh pemeriksaan lulus.
+- Seluruh file PHP lolos pemeriksaan sintaks, dan pengujian statis Fase 1–3 tetap lulus.
+- Pengujian integrasi dijalankan dua kali pada `k1807225_webalhasan_test`; seluruh 13
+  skenario lulus, termasuk login aktif/salah/nonaktif, kepemilikan Guru A–B, transaksi,
+  idempotensi, constraint unik, baca ulang/koreksi, dan pencabutan token.
+- Migrasi aditif `004_phase4_api_attendance.sql` diterapkan ke produksi dan tercatat pada
+  `schema_migrations` tanpa mengubah data lama.
+- Smoke test HTTPS `https://alhasan.co.id/api/v1/` mengembalikan `200` dan envelope JSON.
+- Backup SQL setelah perbaikan generated column berhasil dipulihkan ke database uji;
+  seluruh jumlah baris pada manifest cocok, termasuk 4 migrasi, 1 pertemuan, 1 absensi
+  guru, 35 peserta snapshot, dan 35 absensi santri.
+- `npm run lint`, `npx tsc --noEmit`, pemeriksaan dependency Expo 57, serta ekspor bundle
+  Android, iOS, dan web lulus.
+- Uji manual aplikasi native Android terhadap API produksi lulus: SecureStore memulihkan
+  token, profil dan jadwal tampil, pertemuan dibuka, 35 santri ditandai hadir, absensi
+  disimpan dan dibaca ulang, status menjadi `Selesai`, logout mencabut sesi, dan restart
+  aplikasi tetap menampilkan login.
 
-## Belum boleh ditandai lulus
+## Catatan data uji produksi
 
-Pengujian integrasi `tests/phase4_integration.php` belum dapat dijalankan karena mesin
-lokal tidak menyediakan MySQL. Karena itu, sepuluh kriteria penerimaan yang melibatkan
-akun, kepemilikan data, transaksi, constraint unik, idempotensi, pembacaan ulang, dan
-pencabutan token tetap tidak dicentang di `PRD.md`.
+Uji penerimaan membuat satu pertemuan produksi untuk jadwal Fiqih tanggal 24 Agustus
+2026 dengan catatan `Uji penerimaan Fase 4`, satu absensi guru hadir, dan 35 absensi
+santri hadir. Data ini dipertahankan sebagai jejak uji/audit dan tidak dihapus.
 
-Pengujian integrasi harus dijalankan pada database khusus yang namanya berakhiran
-`_test`. Skrip sengaja menolak database lain agar fixture dan pembersihan data uji tidak
-pernah diarahkan ke database produksi.
+## Risiko tersisa
 
-## Gerbang sebelum produksi
-
-1. Jalankan backup dan manifest pra-migrasi.
-2. Terapkan migrasi aditif `004_phase4_api_attendance.sql`.
-3. Jalankan pengujian integrasi pada salinan database khusus `_test`.
-4. Jalankan smoke test HTTP `/api/v1` dengan akun guru uji aktif dan nonaktif.
-5. Hubungkan aplikasi ke URL HTTPS produksi melalui `EXPO_PUBLIC_API_BASE_URL`.
-6. Ulangi alur manual pada perangkat Android atau iOS nyata.
-
+- Build store Android/iOS belum dibuat atau didistribusikan; pengujian memakai development
+  client pada emulator Android API 36.
+- Audit dependency melaporkan kerentanan transitive tanpa temuan critical; rekomendasi
+  perbaikan otomatis menurunkan Expo/React Native sehingga tidak diterapkan karena akan
+  melanggar baseline Expo 57 dan React Native 0.86.
+- Database uji dan backup di hosting sengaja belum dihapus agar bukti restore tetap dapat
+  diaudit; penghapusan memerlukan persetujuan eksplisit.

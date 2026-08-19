@@ -234,16 +234,16 @@ Santri, orang tua, dan pengurus merupakan data yang dikelola admin pada V1, teta
 
 **Kriteria penerimaan:**
 
-- [ ] Akun guru aktif dapat login melalui aplikasi dan menerima profil tanpa password/token hash.
-- [ ] Akun nonaktif atau password salah ditolak dengan `401` dan pesan generik.
-- [ ] Guru A menerima `403` ketika meminta detail atau menyimpan absensi jadwal Guru B.
-- [ ] Beranda hanya menampilkan jadwal milik guru yang login pada semester aktif.
-- [ ] Guru dapat membuka satu pertemuan, mengisi kehadiran dirinya dan seluruh santri, lalu menyimpan hingga berhasil.
-- [ ] Mengirim payload yang sama dua kali dengan `idempotency_key` yang sama menghasilkan satu pertemuan dan satu catatan per peserta.
-- [ ] Query duplikasi pertemuan–santri dan pertemuan–guru masing-masing mengembalikan 0 baris.
-- [ ] Kegagalan di tengah transaksi tidak meninggalkan daftar absensi yang tersimpan sebagian.
-- [ ] Absensi tersimpan dapat dibuka kembali dengan nilai yang sama dan koreksi memperbarui baris yang sama.
-- [ ] Logout menyebabkan token lama tidak dapat mengakses endpoint terproteksi.
+- [x] Akun guru aktif dapat login melalui aplikasi dan menerima profil tanpa password/token hash.
+- [x] Akun nonaktif atau password salah ditolak dengan `401` dan pesan generik.
+- [x] Guru A menerima `403` ketika meminta detail atau menyimpan absensi jadwal Guru B.
+- [x] Beranda hanya menampilkan jadwal milik guru yang login pada semester aktif.
+- [x] Guru dapat membuka satu pertemuan, mengisi kehadiran dirinya dan seluruh santri, lalu menyimpan hingga berhasil.
+- [x] Mengirim payload yang sama dua kali dengan `idempotency_key` yang sama menghasilkan satu pertemuan dan satu catatan per peserta.
+- [x] Query duplikasi pertemuan–santri dan pertemuan–guru masing-masing mengembalikan 0 baris.
+- [x] Kegagalan di tengah transaksi tidak meninggalkan daftar absensi yang tersimpan sebagian.
+- [x] Absensi tersimpan dapat dibuka kembali dengan nilai yang sama dan koreksi memperbarui baris yang sama.
+- [x] Logout menyebabkan token lama tidak dapat mengakses endpoint terproteksi.
 - [x] `npm run lint` dan `npx tsc --noEmit` lulus pada proyek mobile.
 - [x] Seluruh file PHP yang ditambah atau diubah lolos `php -l`.
 

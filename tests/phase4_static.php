@@ -45,4 +45,12 @@ foreach (['/auth/login', '/auth/logout', '/profile', '/schedules/today', '/meeti
 }
 $assert(str_contains($source('.env.example'), 'API_TOKEN_HASH_SECRET=') && str_contains($source('.env.example'), 'API_TOKEN_TTL_DAYS=30'), 'Secret token dan TTL dikonfigurasi melalui environment');
 
+$backupWriter = $source('app/Database/BackupWriter.php');
+$assert(
+    str_contains($backupWriter, 'SHOW FULL COLUMNS FROM')
+    && str_contains($backupWriter, "str_contains(\$extra, 'GENERATED')")
+    && str_contains($backupWriter, "'INSERT INTO ' . \$escapedTable . ' (' . \$columnList . ') VALUES ('"),
+    'Backup SQL mengecualikan generated column dan menulis daftar kolom eksplisit'
+);
+
 exit($failures === [] ? 0 : 1);

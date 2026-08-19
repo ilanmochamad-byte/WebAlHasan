@@ -74,3 +74,16 @@ berkas yang dapat diunduh publik.
   tanpa persetujuan eksplisit dan backup terverifikasi; rollback tersebut menghapus data
   absensi Fase 4.
 
+## Catatan pelaksanaan 19 Agustus 2026
+
+- Hosting memakai PHP 8.3.32, MariaDB 10.6.27, dan document root `/public_html`.
+- Secret hash token dibuat langsung di server, tidak pernah ditampilkan, dan `.env`
+  dibatasi ke permission `0600`.
+- Database uji `k1807225_webalhasan_test` dibuat dari salinan produksi dan digunakan
+  untuk migrasi, restore, serta pengujian integrasi.
+- Migrasi 004 diterapkan ke produksi setelah seluruh pengujian pada database uji lulus.
+- Backup terverifikasi tersimpan di
+  `storage/backups/20260819_230000_fixed`; `database.sql` berhasil dipulihkan dan seluruh
+  jumlah baris cocok dengan `manifest.json`.
+- Backup native pra-migrasi tetap tersedia di
+  `storage/backups/20260819_222851/database.native.sql` sebagai lapisan pemulihan tambahan.
