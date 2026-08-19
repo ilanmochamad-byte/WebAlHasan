@@ -3,8 +3,14 @@
 declare(strict_types=1);
 
 use App\Audit\AuditLogger;
+use App\Api\ApiAuthRepository;
+use App\Api\ApiAuthService;
+use App\Api\TeacherRepository;
+use App\Api\TeacherService;
+use App\Auth\ApiTokenAuthenticator;
 use App\Auth\AuthRepository;
 use App\Auth\Authorization;
+use App\Auth\TokenHasher;
 use App\Database\Connection;
 use App\Http\Session;
 use App\MasterData\MasterDataRepository;
@@ -47,6 +53,10 @@ $GLOBALS['app_config'] = [
     'session' => [
         'name' => Env::get('SESSION_NAME', 'alhasan_admin'),
         'secure' => Env::bool('SESSION_SECURE_COOKIE', !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+    ],
+    'api' => [
+        'token_hash_secret' => Env::get('API_TOKEN_HASH_SECRET', ''),
+        'token_ttl_days' => (int) Env::get('API_TOKEN_TTL_DAYS', '30'),
     ],
 ];
 
@@ -125,4 +135,38 @@ function schedule_service(): ScheduleService
 {
     static $service;
     return $service ??= new ScheduleService(new ScheduleRepository(app_db()), audit_logger());
+}
+
+function token_hasher(): TokenHasher
+{
+    static $hasher;
+    return $hasher ??= new TokenHasher((string) app_config('api.token_hash_secret'), (string) app_config('env'));
+}
+
+function api_authenticator(): ApiTokenAuthenticator
+{
+    static $authenticator;
+    return $authenticator ??= new ApiTokenAuthenticator(app_db(), token_hasher());
+}
+
+function api_auth_service(): ApiAuthService
+{
+    static $service;
+    return $service ??= new ApiAuthService(
+        new ApiAuthRepository(app_db()),
+        token_hasher(),
+        audit_logger(),
+        (int) app_config('api.token_ttl_days'),
+        (string) app_config('timezone')
+    );
+}
+
+function teacher_api_service(): TeacherService
+{
+    static $service;
+    return $service ??= new TeacherService(
+        new TeacherRepository(app_db()),
+        audit_logger(),
+        (string) app_config('timezone')
+    );
 }
