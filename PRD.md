@@ -244,8 +244,8 @@ Santri, orang tua, dan pengurus merupakan data yang dikelola admin pada V1, teta
 - [ ] Kegagalan di tengah transaksi tidak meninggalkan daftar absensi yang tersimpan sebagian.
 - [ ] Absensi tersimpan dapat dibuka kembali dengan nilai yang sama dan koreksi memperbarui baris yang sama.
 - [ ] Logout menyebabkan token lama tidak dapat mengakses endpoint terproteksi.
-- [ ] `npm run lint` dan `npx tsc --noEmit` lulus pada proyek mobile.
-- [ ] Seluruh file PHP yang ditambah atau diubah lolos `php -l`.
+- [x] `npm run lint` dan `npx tsc --noEmit` lulus pada proyek mobile.
+- [x] Seluruh file PHP yang ditambah atau diubah lolos `php -l`.
 
 ### Fase 5: Laporan, Cetak, dan Kesiapan Rilis (memerlukan absensi Fase 4)
 
