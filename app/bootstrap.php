@@ -15,6 +15,8 @@ use App\Database\Connection;
 use App\Http\Session;
 use App\MasterData\MasterDataRepository;
 use App\MasterData\MasterDataService;
+use App\Report\ReportRepository;
+use App\Report\ReportService;
 use App\Schedule\ScheduleRepository;
 use App\Schedule\ScheduleService;
 use App\Support\Env;
@@ -167,6 +169,15 @@ function teacher_api_service(): TeacherService
     return $service ??= new TeacherService(
         new TeacherRepository(app_db()),
         audit_logger(),
+        (string) app_config('timezone')
+    );
+}
+
+function report_service(): ReportService
+{
+    static $service;
+    return $service ??= new ReportService(
+        new ReportRepository(app_db()),
         (string) app_config('timezone')
     );
 }

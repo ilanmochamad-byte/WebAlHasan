@@ -37,6 +37,7 @@
             <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_kelas.php') ? 'active bg-success' : ''; ?>" href="admin_kelas.php"><i class="fas fa-school me-2"></i> Data Kelas</a></li>
             <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_jadwal_ngaji.php') ? 'active bg-success' : ''; ?>" href="admin_jadwal_ngaji.php"><i class="fas fa-book-open me-2"></i> Jadwal Pengajian</a></li>
             <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'pertemuan_pengajian.php') ? 'active bg-success' : ''; ?>" href="pertemuan_pengajian.php"><i class="fas fa-calendar-check me-2"></i> Pertemuan Pengajian</a></li>
+            <li class="nav-item"><a class="nav-link text-white <?php echo in_array(basename($_SERVER['PHP_SELF']), ['admin_laporan_absensi.php', 'laporan_absensi_detail.php'], true) ? 'active bg-success' : ''; ?>" href="admin_laporan_absensi.php"><i class="fas fa-chart-column me-2"></i> Laporan Absensi</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_kamar.php"><i class="fas fa-bed me-2"></i> Data Kamar</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_izin.php"><i class="fas fa-envelope-open-text me-2"></i> Perizinan</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_pelanggaran.php"><i class="fas fa-exclamation-triangle me-2"></i> Pelanggaran</a></li>

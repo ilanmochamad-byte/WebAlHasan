@@ -1,6 +1,6 @@
 # Kontrak REST API `/api/v1`
 
-Versi: Fase 4, 19 Agustus 2026. Semua waktu server menggunakan zona `APP_TIMEZONE` dan semua trafik produksi wajib HTTPS.
+Versi: Fase 5, 20 Agustus 2026. Semua waktu server menggunakan zona `APP_TIMEZONE` dan semua trafik produksi wajib HTTPS.
 
 ## Konvensi
 
@@ -12,7 +12,7 @@ Versi: Fase 4, 19 Agustus 2026. Semua waktu server menggunakan zona `APP_TIMEZON
 - Gagal: `{"success":false,"data":null,"error":{"code":"KODE","message":"Pesan","details":{}}}`.
 - `401` berarti kredensial/token tidak valid; `403` berarti role atau kepemilikan ditolak; `404` sumber daya tidak ada; `409` konflik atau kunci idempotensi dipakai untuk payload berbeda; `422` validasi gagal.
 - Pagination memakai `page` (mulai 1) dan `per_page` (1–100). Metadata: `pagination.current_page`, `per_page`, `total`, dan `total_pages`.
-- Rentang tanggal inklusif, format `YYYY-MM-DD`, maksimal 92 hari.
+- Rentang tanggal inklusif dan berformat `YYYY-MM-DD`. Batas 92 hari hanya berlaku pada daftar kejadian jadwal; laporan tidak dipotong diam-diam.
 - Status absensi: `Hadir`, `Terlambat`, `Izin`, `Sakit`, `Alpa`.
 
 ## Autentikasi
@@ -104,6 +104,43 @@ Menyimpan kehadiran guru dan seluruh snapshot santri dalam satu transaksi. Dafta
 ```
 
 Sukses pertama `200`. Retry kunci dan payload yang sama mengembalikan response yang sama tanpa baris tambahan. Kunci sama dengan payload berbeda mengembalikan `409 IDEMPOTENCY_CONFLICT`. Error validasi mengembalikan `422`; seluruh transaksi dibatalkan sehingga tidak ada absensi sebagian.
+
+## Laporan Fase 5
+
+Seluruh endpoint laporan memerlukan bearer token. Untuk role `guru`, server mengambil
+`guru_id` dari token dan selalu menambahkannya sebagai batas query. Mengirim
+`teacher_id` guru lain menghasilkan `403`; memilih `schedule_id` di luar kepemilikan
+tidak pernah mengembalikan baris, dan detail pertemuan guru lain menghasilkan `403`.
+
+Filter laporan: `date_from`, `date_to`, `academic_year_id`, `teacher_id`, `class_id`,
+`schedule_id`, `status`, `page`, dan `per_page`. `date_from`/`date_to` default ke awal
+bulan berjalan dan hari ini. Status adalah `Hadir`, `Terlambat`, `Izin`, `Sakit`, atau
+`Alpa`.
+
+### `GET /api/v1/reports`
+
+Mengembalikan `summary`, rekap `schedules`, baris `items`, `pagination`, filter
+ternormalisasi, dan label `active_filters`. Baris detail menyatukan kehadiran guru dan
+santri. `summary.detail_count` dan jumlah lima status dihitung dari sumber query yang
+sama. UI memakai pagination maksimal 100 baris per halaman.
+
+### `GET /api/v1/reports/filters`
+
+Mengembalikan pilihan tahun ajaran, guru, kelas, jadwal, dan status yang pernah
+memiliki pertemuan. Untuk guru, pilihan guru/jadwal juga dibatasi ke kepemilikannya.
+
+### `GET /api/v1/reports/meetings/{meeting_id}`
+
+Mengembalikan identitas pertemuan, kehadiran guru, seluruh peserta snapshot, status,
+catatan, pencatat, waktu pencatatan, dan waktu perubahan. Endpoint bersifat read-only.
+
+### `GET /api/v1/reports/print`
+
+Menerima seluruh filter laporan kecuali pagination dan mengembalikan `{ "html": "..." }`.
+HTML memuat seluruh hasil filter, identitas Pesantren Al Hasan, jenis laporan, filter
+aktif, waktu pembuatan, pembuat, dan nomor halaman. Aplikasi mengubah HTML ini menjadi
+PDF lokal melalui `expo-print`, kemudian membuka dialog cetak atau berbagi. HTML tetap
+berada di dalam envelope JSON standar API.
 
 ## Contoh error
 

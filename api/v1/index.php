@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Api\ApiException;
 use App\Http\JsonResponse;
 use App\Http\Request;
+use App\Report\PrintRenderer;
 
 require_once dirname(__DIR__, 2) . '/app/bootstrap.php';
 
@@ -44,6 +45,20 @@ try {
     }
     if ($method === 'GET' && $path === '/meetings') {
         JsonResponse::success(teacher_api_service()->meetings($user, $_GET));
+    }
+    if ($method === 'GET' && $path === '/reports') {
+        JsonResponse::success(report_service()->report($_GET, $user));
+    }
+    if ($method === 'GET' && $path === '/reports/filters') {
+        JsonResponse::success(report_service()->options($user));
+    }
+    if ($method === 'GET' && $path === '/reports/print') {
+        JsonResponse::success([
+            'html' => PrintRenderer::report(report_service()->exportRows($_GET, $user)),
+        ]);
+    }
+    if ($method === 'GET' && preg_match('#^/reports/meetings/(\d+)$#', $path, $matches)) {
+        JsonResponse::success(report_service()->meeting((int) $matches[1], $user));
     }
     if ($method === 'GET' && preg_match('#^/schedules/(\d+)$#', $path, $matches)) {
         JsonResponse::success(teacher_api_service()->schedule((int) $matches[1], isset($_GET['date']) ? (string) $_GET['date'] : null, $user));

@@ -270,16 +270,16 @@ Santri, orang tua, dan pengurus merupakan data yang dikelola admin pada V1, teta
 
 **Kriteria penerimaan:**
 
-- [ ] Admin dapat menghasilkan laporan rentang tanggal yang menampilkan guru, kelas, jadwal, jumlah pertemuan, dan rekap status.
-- [ ] Guru tidak dapat melihat laporan guru lain melalui UI maupun perubahan parameter API.
-- [ ] Jumlah pada ringkasan laporan sama dengan jumlah detail untuk filter yang sama.
-- [ ] Ekspor CSV memuat seluruh baris sesuai filter dan header kolom yang terdokumentasi.
-- [ ] Halaman cetak dapat dicetak dari browser tanpa menu navigasi dan tanpa memotong kolom utama.
+- [x] Admin dapat menghasilkan laporan rentang tanggal yang menampilkan guru, kelas, jadwal, jumlah pertemuan, dan rekap status.
+- [x] Guru tidak dapat melihat laporan guru lain melalui UI maupun perubahan parameter API.
+- [x] Jumlah pada ringkasan laporan sama dengan jumlah detail untuk filter yang sama.
+- [x] Ekspor CSV memuat seluruh baris sesuai filter dan header kolom yang terdokumentasi.
+- [x] Halaman cetak dapat dicetak dari browser tanpa menu navigasi dan tanpa memotong kolom utama.
 - [ ] Laporan dapat dibuka dari aplikasi dan diteruskan ke dialog cetak/berbagi perangkat.
-- [ ] Pengujian pada data dengan sedikitnya 1.000 catatan absensi menghasilkan halaman pertama laporan dalam waktu maksimal 2 detik pada lingkungan uji.
-- [ ] Backup dapat dipulihkan pada basis data uji dan jumlah baris tabel inti sama dengan sebelum pemulihan.
-- [ ] `npm run lint`, `npx tsc --noEmit`, pemeriksaan sintaks PHP, dan pengujian backend/API yang disediakan semuanya lulus.
-- [ ] Uji manual dari login guru hingga cetak laporan selesai tanpa duplikasi catatan absensi.
+- [x] Pengujian pada data dengan sedikitnya 1.000 catatan absensi menghasilkan halaman pertama laporan dalam waktu maksimal 2 detik pada lingkungan uji.
+- [x] Backup dapat dipulihkan pada basis data uji dan jumlah baris tabel inti sama dengan sebelum pemulihan.
+- [x] `npm run lint`, `npx tsc --noEmit`, pemeriksaan sintaks PHP, dan pengujian backend/API yang disediakan semuanya lulus.
+- [x] Uji manual dari login guru hingga cetak laporan selesai tanpa duplikasi catatan absensi.
 
 ## 7. Metrik Keberhasilan
 

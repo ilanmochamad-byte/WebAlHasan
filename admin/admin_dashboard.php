@@ -33,6 +33,20 @@ $tot_isi = mysqli_fetch_assoc($q_isi)['terisi'] ?? 0;
 $persen_kamar = ($tot_kapasitas > 0) ? round(($tot_isi / $tot_kapasitas) * 100) : 0;
 // Logika warna: Merah (>85%), Kuning (>60%), Hijau (Aman)
 $warna_kamar = $persen_kamar > 85 ? 'bg-danger' : ($persen_kamar > 60 ? 'bg-warning' : 'bg-success');
+
+// Ringkasan Fase 5 memakai query laporan read-only yang sama dengan halaman detail.
+$reportFrom = (string) ($_GET['report_from'] ?? date('Y-m-01'));
+$reportTo = (string) ($_GET['report_to'] ?? date('Y-m-d'));
+$attendanceDashboard = null;
+$attendanceDashboardError = null;
+try {
+    $attendanceDashboard = report_service()->dashboardSummary([
+        'date_from' => $reportFrom,
+        'date_to' => $reportTo,
+    ], $currentUser);
+} catch (\App\Api\ApiException $exception) {
+    $attendanceDashboardError = $exception->getMessage();
+}
 ?>
 
 <!DOCTYPE html>
@@ -80,6 +94,27 @@ $warna_kamar = $persen_kamar > 85 ? 'bg-danger' : ($persen_kamar > 60 ? 'bg-warn
                     </div>
                 </div>
             </div>
+
+            <section class="card card-custom mb-4" aria-labelledby="ringkasan-absensi">
+                <div class="card-header bg-white border-0 pt-4 d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <div><h2 id="ringkasan-absensi" class="h5 fw-bold mb-1">Ringkasan Pertemuan & Absensi</h2><p class="text-muted small mb-0">Total berasal dari sumber laporan Fase 5 yang sama.</p></div>
+                    <form method="get" class="d-flex flex-wrap gap-2 align-items-end">
+                        <div><label class="form-label small mb-1" for="report_from">Dari</label><input class="form-control form-control-sm" id="report_from" name="report_from" type="date" value="<?= htmlspecialchars($reportFrom, ENT_QUOTES, 'UTF-8') ?>"></div>
+                        <div><label class="form-label small mb-1" for="report_to">Sampai</label><input class="form-control form-control-sm" id="report_to" name="report_to" type="date" value="<?= htmlspecialchars($reportTo, ENT_QUOTES, 'UTF-8') ?>"></div>
+                        <button class="btn btn-sm btn-success" type="submit">Tampilkan</button>
+                        <a class="btn btn-sm btn-outline-success" href="admin_laporan_absensi.php?date_from=<?= urlencode($reportFrom) ?>&amp;date_to=<?= urlencode($reportTo) ?>">Buka laporan</a>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <?php if ($attendanceDashboardError !== null): ?><div class="alert alert-danger mb-0"><?= htmlspecialchars($attendanceDashboardError, ENT_QUOTES, 'UTF-8') ?></div>
+                    <?php elseif ($attendanceDashboard !== null): $attendanceSummary = $attendanceDashboard['summary']; ?>
+                    <div class="row g-3">
+                        <div class="col-6 col-lg"><div class="border rounded p-3 h-100"><div class="text-muted small">Pertemuan</div><div class="fs-3 fw-bold"><?= $attendanceSummary['meeting_count'] ?></div></div></div>
+                        <?php foreach ($attendanceSummary['statuses'] as $attendanceStatus => $attendanceCount): ?><div class="col-6 col-lg"><div class="border rounded p-3 h-100"><div class="text-muted small"><?= htmlspecialchars($attendanceStatus, ENT_QUOTES, 'UTF-8') ?></div><div class="fs-3 fw-bold"><?= $attendanceCount ?></div></div></div><?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+                </div>
+            </section>
 
             <div class="row g-4 mb-4">
                 <div class="col-xl-3 col-md-6">
