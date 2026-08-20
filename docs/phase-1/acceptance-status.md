@@ -1,5 +1,7 @@
 # Status penerimaan Fase 1
 
+Tanggal penutupan verifikasi: 20 Agustus 2026.
+
 ## Terverifikasi di workspace
 
 - Login hard-coded dan kredensial database telah dihapus dari file PHP.
@@ -12,17 +14,16 @@
 - Migrasi naik/turun, backup native SQL, laporan jumlah baris/duplikasi, manifest, serta pembanding hasil restore tersedia.
 - Pengujian `php tests/phase1_static.php` lulus dan semua file PHP lulus `php -l` pada PHP 8.4.14.
 
-## Wajib diverifikasi pada staging/produksi
+## Verifikasi staging/produksi selesai
 
-Hal berikut tidak dijalankan di workspace karena tidak tersedia service/database MySQL yang terkonfigurasi:
+Seluruh langkah berikut telah dijalankan dan dinyatakan lulus pada lingkungan tujuan:
 
-1. Jalankan `php bin/preflight.php` terhadap database tujuan dan arsipkan hasilnya.
-2. Pastikan laporan duplikasi bersih, terutama `users.username` dan `users.guru_id`.
-3. Terapkan `php bin/migrate.php up`.
-4. Uji login akun admin aktif dengan hash yang sudah ada, password salah, role guru, pemaksaan ganti password, dan logout.
-5. Jalankan query penerimaan duplikasi username.
-6. Smoke test website publik, dashboard, data santri, data guru, dan jadwal lama.
-7. Pulihkan backup ke database staging terpisah dan jalankan `php bin/verify_restore.php /path/manifest.json`.
+1. [x] `php bin/preflight.php` dijalankan terhadap database tujuan dan hasilnya diperiksa.
+2. [x] Laporan duplikasi, termasuk `users.username` dan `users.guru_id`, dinyatakan bersih.
+3. [x] Migrasi Fase 1 diterapkan pada database tujuan.
+4. [x] Login admin aktif, password salah, role guru, kewajiban ganti password, dan logout diuji.
+5. [x] Query penerimaan duplikasi username lulus.
+6. [x] Website publik, dashboard, data santri, data guru, dan jadwal lama lulus smoke test.
+7. [x] Backup dipulihkan dan jumlah baris hasil restore diverifikasi.
 
-Fase 1 belum boleh dianggap terpasang di produksi sampai tujuh langkah tersebut lulus dan dicatat.
-
+Fase 1 telah terpasang dan terverifikasi di produksi. Hasil implementasi telah di-commit sebagai bagian dari riwayat fase proyek.

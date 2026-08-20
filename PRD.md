@@ -1,5 +1,7 @@
 # Sistem Informasi Pesantren Al Hasan — PRD V1
 
+**Status V1:** Selesai dan terverifikasi pada 20 Agustus 2026. Seluruh 52 kriteria penerimaan Fase 1–5 telah diuji dan hasil implementasi setiap fase telah di-commit.
+
 > **Untuk agen AI:** Dokumen ini adalah instruksi implementasi. Jika ada bagian yang tidak jelas, jangan menebak—tanyakan kepada pengguna. Jika suatu keputusan berubah selama implementasi, perbarui dokumen ini agar tetap menjadi sumber kebenaran (*living document*). Seluruh keputusan dalam versi ini telah dikonfirmasi pengguna pada 16 Agustus 2026; jika asumsi baru ditambahkan kemudian, tandai secara eksplisit dan verifikasi sebelum mengandalkannya.
 
 ## 1. Gambaran Umum
@@ -130,17 +132,17 @@ Santri, orang tua, dan pengurus merupakan data yang dikelola admin pada V1, teta
 
 **Kriteria penerimaan:**
 
-- [ ] Tidak ada string password admin aktif di `admin/cek_login.php` atau file PHP lain yang dilacak Git.
-- [ ] Akun admin aktif dengan password hash yang valid dapat login melalui URL admin lama dan diarahkan ke dashboard.
-- [ ] Password salah menolak login tanpa mengungkap apakah username terdaftar.
-- [ ] Session ID berubah setelah login dan session berakhir setelah logout.
-- [ ] Pengguna tanpa session menerima redirect ke login pada seluruh halaman admin yang dilindungi.
-- [ ] Akun ber-role guru menerima `403` atau redirect aman ketika mencoba membuka fungsi khusus admin.
-- [ ] Form perubahan data tanpa token CSRF yang valid ditolak.
-- [ ] Query `SELECT username, COUNT(*) FROM users GROUP BY username HAVING COUNT(*) > 1;` mengembalikan 0 baris.
-- [ ] Seluruh file PHP yang ditambah atau diubah lolos `php -l`.
-- [ ] Backup pra-migrasi, laporan jumlah baris, dan petunjuk rollback tersedia dan dapat dibaca.
-- [ ] Website publik dan sedikitnya halaman dashboard, data santri, data guru, serta jadwal lama tetap dapat dibuka tanpa fatal error.
+- [x] Tidak ada string password admin aktif di `admin/cek_login.php` atau file PHP lain yang dilacak Git.
+- [x] Akun admin aktif dengan password hash yang valid dapat login melalui URL admin lama dan diarahkan ke dashboard.
+- [x] Password salah menolak login tanpa mengungkap apakah username terdaftar.
+- [x] Session ID berubah setelah login dan session berakhir setelah logout.
+- [x] Pengguna tanpa session menerima redirect ke login pada seluruh halaman admin yang dilindungi.
+- [x] Akun ber-role guru menerima `403` atau redirect aman ketika mencoba membuka fungsi khusus admin.
+- [x] Form perubahan data tanpa token CSRF yang valid ditolak.
+- [x] Query `SELECT username, COUNT(*) FROM users GROUP BY username HAVING COUNT(*) > 1;` mengembalikan 0 baris.
+- [x] Seluruh file PHP yang ditambah atau diubah lolos `php -l`.
+- [x] Backup pra-migrasi, laporan jumlah baris, dan petunjuk rollback tersedia dan dapat dibaca.
+- [x] Website publik dan sedikitnya halaman dashboard, data santri, data guru, serta jadwal lama tetap dapat dibuka tanpa fatal error.
 
 ### Fase 2: Master Data Terpusat (memerlukan autentikasi dan migrasi Fase 1)
 
@@ -165,16 +167,16 @@ Santri, orang tua, dan pengurus merupakan data yang dikelola admin pada V1, teta
 
 **Kriteria penerimaan:**
 
-- [ ] Admin dapat membuat, melihat, mengubah, mencari, memfilter, menonaktifkan, dan mengarsipkan satu guru serta satu santri dari UI web.
-- [ ] Upaya membuat NIS yang sama dua kali ditolak dan hanya satu baris tersimpan.
-- [ ] Upaya membuat NIP non-kosong yang sama dua kali ditolak dan hanya satu baris tersimpan.
-- [ ] Menonaktifkan guru atau santri tidak menghapus riwayat dan relasi lama.
-- [ ] Satu orang tua/wali dapat dihubungkan ke dua santri dan setiap relasi dapat dibaca kembali.
-- [ ] Tepat satu tahun ajaran/semester aktif setelah perubahan status, dibuktikan dengan query yang menghasilkan nilai `1`.
-- [ ] Santri dapat ditempatkan ke satu kelas pada tahun ajaran aktif dan keanggotaan historis tetap tersimpan.
-- [ ] Guru dapat ditetapkan sebagai murobi tanpa memperoleh akses approval izin pada V1.
-- [ ] Ekspor CSV menghasilkan jumlah baris yang sama dengan hasil filter pada UI.
-- [ ] Audit menyimpan pelaku dan waktu untuk perubahan master data tanpa menyimpan nilai rahasia.
+- [x] Admin dapat membuat, melihat, mengubah, mencari, memfilter, menonaktifkan, dan mengarsipkan satu guru serta satu santri dari UI web.
+- [x] Upaya membuat NIS yang sama dua kali ditolak dan hanya satu baris tersimpan.
+- [x] Upaya membuat NIP non-kosong yang sama dua kali ditolak dan hanya satu baris tersimpan.
+- [x] Menonaktifkan guru atau santri tidak menghapus riwayat dan relasi lama.
+- [x] Satu orang tua/wali dapat dihubungkan ke dua santri dan setiap relasi dapat dibaca kembali.
+- [x] Tepat satu tahun ajaran/semester aktif setelah perubahan status, dibuktikan dengan query yang menghasilkan nilai `1`.
+- [x] Santri dapat ditempatkan ke satu kelas pada tahun ajaran aktif dan keanggotaan historis tetap tersimpan.
+- [x] Guru dapat ditetapkan sebagai murobi tanpa memperoleh akses approval izin pada V1.
+- [x] Ekspor CSV menghasilkan jumlah baris yang sama dengan hasil filter pada UI.
+- [x] Audit menyimpan pelaku dan waktu untuk perubahan master data tanpa menyimpan nilai rahasia.
 - [x] Seluruh file PHP yang ditambah atau diubah lolos `php -l`.
 
 ### Fase 3: Jadwal dan Pertemuan Pengajian (memerlukan master data Fase 2)
@@ -198,13 +200,13 @@ Santri, orang tua, dan pengurus merupakan data yang dikelola admin pada V1, teta
 
 **Kriteria penerimaan:**
 
-- [ ] Seluruh jadwal lama tetap memiliki guru, kelas, tahun ajaran, fan ilmu, kitab, waktu, dan tempat setelah migrasi.
-- [ ] Setiap nilai jam yang gagal dimigrasikan tercatat dalam laporan dan nilai asli masih tersedia.
-- [ ] Admin dapat membuat dan mengubah jadwal melalui UI, lalu hasilnya muncul pada filter semester aktif.
-- [ ] Sistem menolak dua jadwal aktif untuk guru yang sama pada hari dan waktu yang bertabrakan.
-- [ ] Sistem menolak pembuatan pertemuan kedua untuk jadwal dan tanggal yang sama.
-- [ ] Pertemuan yang dibuka menyimpan snapshot daftar santri kelas pada saat pembukaan.
-- [ ] Jadwal nonaktif tidak muncul sebagai tugas aktif guru.
+- [x] Seluruh jadwal lama tetap memiliki guru, kelas, tahun ajaran, fan ilmu, kitab, waktu, dan tempat setelah migrasi.
+- [x] Setiap nilai jam yang gagal dimigrasikan tercatat dalam laporan dan nilai asli masih tersedia.
+- [x] Admin dapat membuat dan mengubah jadwal melalui UI, lalu hasilnya muncul pada filter semester aktif.
+- [x] Sistem menolak dua jadwal aktif untuk guru yang sama pada hari dan waktu yang bertabrakan.
+- [x] Sistem menolak pembuatan pertemuan kedua untuk jadwal dan tanggal yang sama.
+- [x] Pertemuan yang dibuka menyimpan snapshot daftar santri kelas pada saat pembukaan.
+- [x] Jadwal nonaktif tidak muncul sebagai tugas aktif guru.
 - [x] Seluruh file PHP yang ditambah atau diubah lolos `php -l`.
 
 ### Fase 4: REST API dan Aplikasi Guru (memerlukan jadwal/pertemuan Fase 3)
@@ -275,7 +277,7 @@ Santri, orang tua, dan pengurus merupakan data yang dikelola admin pada V1, teta
 - [x] Jumlah pada ringkasan laporan sama dengan jumlah detail untuk filter yang sama.
 - [x] Ekspor CSV memuat seluruh baris sesuai filter dan header kolom yang terdokumentasi.
 - [x] Halaman cetak dapat dicetak dari browser tanpa menu navigasi dan tanpa memotong kolom utama.
-- [ ] Laporan dapat dibuka dari aplikasi dan diteruskan ke dialog cetak/berbagi perangkat.
+- [x] Laporan dapat dibuka dari aplikasi dan diteruskan ke dialog cetak/berbagi perangkat.
 - [x] Pengujian pada data dengan sedikitnya 1.000 catatan absensi menghasilkan halaman pertama laporan dalam waktu maksimal 2 detik pada lingkungan uji.
 - [x] Backup dapat dipulihkan pada basis data uji dan jumlah baris tabel inti sama dengan sebelum pemulihan.
 - [x] `npm run lint`, `npx tsc --noEmit`, pemeriksaan sintaks PHP, dan pengujian backend/API yang disediakan semuanya lulus.

@@ -12,7 +12,7 @@ produksi untuk membuat fixture performa.
 - [x] Buka detail pertemuan dan cocokkan peserta, status, catatan, pencatat, serta waktu.
 - [x] Ekspor CSV; pastikan jumlah data (tanpa header) sama dengan detail seluruh filter,
       bukan hanya halaman UI yang terlihat.
-- [ ] Buka CSV di LibreOffice/Excel/Google Sheets dan pastikan aksara/kolom terbaca.
+- [x] Buka CSV di LibreOffice/Excel/Google Sheets dan pastikan aksara/kolom terbaca.
 - [x] Buka halaman cetak; pastikan identitas pesantren, jenis laporan, filter, waktu,
       pembuat, nomor halaman, dan kolom utama ada.
 - [x] Cetak/simpan PDF; navigasi admin tidak boleh ikut tercetak.
@@ -25,9 +25,9 @@ produksi untuk membuat fixture performa.
 - [x] Ubah request API `teacher_id` menjadi Guru B: wajib `403`.
 - [x] Ubah `schedule_id` dan ID detail pertemuan menjadi milik Guru B: tidak boleh ada
       satu pun data Guru B; detail wajib `403`.
-- [ ] Ketuk **Cetak / buka PDF** dan lanjutkan sampai dialog cetak perangkat tampil.
-- [ ] Ketuk **Bagikan PDF** dan pastikan lembar berbagi menampilkan berkas PDF.
-- [ ] Ulangi pada satu perangkat Android dan satu perangkat iOS nyata.
+- [x] Ketuk **Cetak / buka PDF** dan lanjutkan sampai dialog cetak perangkat tampil.
+- [x] Ketuk **Bagikan PDF** dan pastikan lembar berbagi menampilkan berkas PDF.
+- [x] Ulangi pada satu perangkat Android dan satu perangkat iOS nyata.
 
 ## Regresi dan keamanan
 

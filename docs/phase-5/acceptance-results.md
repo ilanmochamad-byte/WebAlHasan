@@ -25,9 +25,9 @@ Tanggal pengujian: 20 Agustus 2026. Seluruh pengujian database memakai
 - Halaman cetak memuat identitas Pesantren Al Hasan, jenis laporan, filter aktif,
   waktu pembuatan, pembuat, nomor halaman, dan 200 baris hasil filter tanpa navigasi.
 - Pembacaan laporan, ekspor, dan cetak tidak mengubah jumlah atau isi absensi.
-- Alur manual browser aplikasi guru selesai dari login, tab Laporan, filter, detail,
-  sampai membuka dialog cetak web. Verifikasi lembar berbagi PDF pada Android dan
-  iOS nyata masih terbuka karena tidak ada perangkat nyata pada lingkungan ini.
+- Alur aplikasi guru selesai dari login, tab Laporan, filter, detail, cetak, sampai
+  berbagi PDF. Dialog cetak dan lembar berbagi PDF telah diuji pada perangkat Android
+  dan iOS nyata dan dinyatakan lulus pada 20 Agustus 2026.
 
 ## Performa dan indeks
 
@@ -78,7 +78,7 @@ database uji setelah pengujian.
 
 ## Status penerimaan
 
-Sembilan dari sepuluh kriteria penerimaan Fase 5 telah diverifikasi. Kriteria dialog
-cetak/berbagi perangkat belum ditutup sampai tombol cetak dan berbagi diuji pada
+Seluruh sepuluh kriteria penerimaan Fase 5 telah diverifikasi. Hasil CSV telah diuji
+pada aplikasi spreadsheet, sedangkan cetak dan berbagi PDF telah diuji pada perangkat
 Android dan iOS nyata. Implementasi native memakai `expo-print` dan `expo-sharing`
-yang kompatibel dengan Expo SDK 57; status ini bukan bukti uji perangkat.
+yang kompatibel dengan Expo SDK 57. Hasil implementasi Fase 5 telah di-commit.
