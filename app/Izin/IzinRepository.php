@@ -43,11 +43,13 @@ final class IzinRepository
                JOIN santri s ON s.id = CASE WHEN pa.target_type = 'Kamar' THEN pkm.id_santri ELSE pkl.id_santri END
                LEFT JOIN kamar km ON km.id = pa.kamar_id
                LEFT JOIN kelas kl ON kl.id = pa.kelas_id
+                    AND kl.is_active = 1 AND kl.archived_at IS NULL
               WHERE pa.pengurus_id = ?
                 AND pa.is_active = 1 AND pa.archived_at IS NULL
                 AND pa.tanggal_mulai <= ?
                 AND (pa.tanggal_selesai IS NULL OR pa.tanggal_selesai >= ?)
                 AND s.is_active = 1 AND s.archived_at IS NULL
+                AND (pa.target_type = 'Kamar' OR (pa.target_type = 'Kelas' AND kl.id IS NOT NULL))
               ORDER BY s.nama_santri, s.id",
             [$pengurusId, $onDate, $onDate]
         );
@@ -80,11 +82,13 @@ final class IzinRepository
                  JOIN santri s ON s.id = CASE WHEN pa.target_type = 'Kamar' THEN pkm.id_santri ELSE pkl.id_santri END
                  LEFT JOIN kamar km ON km.id = pa.kamar_id
                  LEFT JOIN kelas kl ON kl.id = pa.kelas_id
+                      AND kl.is_active = 1 AND kl.archived_at IS NULL
                 WHERE pa.pengurus_id = ?
                   AND pa.is_active = 1 AND pa.archived_at IS NULL
                   AND pa.tanggal_mulai <= ?
                   AND (pa.tanggal_selesai IS NULL OR pa.tanggal_selesai >= ?)
-                  AND s.is_active = 1 AND s.archived_at IS NULL" . $filter;
+                  AND s.is_active = 1 AND s.archived_at IS NULL
+                  AND (pa.target_type = 'Kamar' OR (pa.target_type = 'Kelas' AND kl.id IS NOT NULL))" . $filter;
 
         $scopeParams = array_merge([$pengurusId, $onDate, $onDate], $extra);
 
@@ -130,11 +134,13 @@ final class IzinRepository
                JOIN santri s ON s.id = CASE WHEN pa.target_type = 'Kamar' THEN pkm.id_santri ELSE pkl.id_santri END
                LEFT JOIN kamar km ON km.id = pa.kamar_id
                LEFT JOIN kelas kl ON kl.id = pa.kelas_id
+                    AND kl.is_active = 1 AND kl.archived_at IS NULL
               WHERE pa.pengurus_id = ? AND s.id = ?
                 AND pa.is_active = 1 AND pa.archived_at IS NULL
                 AND pa.tanggal_mulai <= ?
                 AND (pa.tanggal_selesai IS NULL OR pa.tanggal_selesai >= ?)
                 AND s.is_active = 1 AND s.archived_at IS NULL
+                AND (pa.target_type = 'Kamar' OR (pa.target_type = 'Kelas' AND kl.id IS NOT NULL))
               ORDER BY pa.id
               LIMIT 1",
             [$pengurusId, $santriId, $onDate, $onDate]

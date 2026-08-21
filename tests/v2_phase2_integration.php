@@ -157,7 +157,8 @@ try {
     $kamarTiga = $exec('INSERT INTO kamar (nama_kamar, kapasitas) VALUES (?, 20)', ['Kamar F2C ' . $suffix]);
     $created['kamar'] = [$kamarSatu, $kamarDua, $kamarTiga];
     $kelasSatu = $exec("INSERT INTO kelas (nama_kelas, jenjang, is_active) VALUES (?, 'Uji', 1)", ['Kelas F2 ' . $suffix]);
-    $created['kelas'][] = $kelasSatu;
+    $kelasNonaktif = $exec("INSERT INTO kelas (nama_kelas, jenjang, is_active) VALUES (?, 'Uji', 1)", ['Kelas F2 Nonaktif ' . $suffix]);
+    $created['kelas'] = [$kelasSatu, $kelasNonaktif];
 
     $santriSql = "INSERT INTO santri (nis, nama_santri, jenis_kelamin, tempat_lahir, tgl_lahir, alamat, desa, kecamatan,
                     kab_kota, provinsi, nama_ayah, no_hp_ayah, nama_ibu, no_hp_ibu, asal_sekolah, sekolah_saat_ini, is_active)
@@ -166,24 +167,28 @@ try {
     $santriGanda = $exec($santriSql, ['F2B' . $suffix, 'Santri Dua Murobi ' . $suffix]);   // routing = 2 kandidat
     $santriNol = $exec($santriSql, ['F2C' . $suffix, 'Santri Tanpa Murobi ' . $suffix]);   // routing = 0 kandidat
     $santriLuar = $exec($santriSql, ['F2D' . $suffix, 'Santri Luar Cakupan ' . $suffix]);  // di luar cakupan pengurus A
-    $created['santri'] = [$santriSatu, $santriGanda, $santriNol, $santriLuar];
+    $santriKelasNonaktif = $exec($santriSql, ['F2E' . $suffix, 'Santri Kelas Nonaktif ' . $suffix]);
+    $created['santri'] = [$santriSatu, $santriGanda, $santriNol, $santriLuar, $santriKelasNonaktif];
 
     $created['plotting_kamar'][] = $exec('INSERT INTO plotting_kamar (id_santri, id_kamar, id_tahun) VALUES (?, ?, ?)', [$santriSatu, $kamarSatu, $yearId]);
     $created['plotting_kamar'][] = $exec('INSERT INTO plotting_kamar (id_santri, id_kamar, id_tahun) VALUES (?, ?, ?)', [$santriGanda, $kamarDua, $yearId]);
     $created['plotting_kamar'][] = $exec('INSERT INTO plotting_kamar (id_santri, id_kamar, id_tahun) VALUES (?, ?, ?)', [$santriNol, $kamarTiga, $yearId]);
     $created['plotting_kelas'][] = $exec("INSERT INTO plotting_kelas (id_santri, id_kelas, id_tahun, status) VALUES (?, ?, ?, 'Aktif')", [$santriGanda, $kelasSatu, $yearId]);
+    $created['plotting_kelas'][] = $exec("INSERT INTO plotting_kelas (id_santri, id_kelas, id_tahun, status) VALUES (?, ?, ?, 'Aktif')", [$santriKelasNonaktif, $kelasNonaktif, $yearId]);
 
     $guruSatu = $exec("INSERT INTO guru (nip, nama_guru, status, is_active) VALUES (?, ?, 'Guru', 1)", ['F2G1' . $suffix, 'Guru Murobi Satu ' . $suffix]);
     $guruDua = $exec("INSERT INTO guru (nip, nama_guru, status, is_active) VALUES (?, ?, 'Guru', 1)", ['F2G2' . $suffix, 'Guru Murobi Dua ' . $suffix]);
     $guruTiga = $exec("INSERT INTO guru (nip, nama_guru, status, is_active) VALUES (?, ?, 'Guru', 1)", ['F2G3' . $suffix, 'Guru Murobi Tiga ' . $suffix]);
     $guruBiasa = $exec("INSERT INTO guru (nip, nama_guru, status, is_active) VALUES (?, ?, 'Guru', 1)", ['F2G4' . $suffix, 'Guru Tanpa Penugasan ' . $suffix]);
-    $created['guru'] = [$guruSatu, $guruDua, $guruTiga, $guruBiasa];
+    $guruKelasNonaktif = $exec("INSERT INTO guru (nip, nama_guru, status, is_active) VALUES (?, ?, 'Guru', 1)", ['F2G5' . $suffix, 'Guru Kelas Nonaktif ' . $suffix]);
+    $created['guru'] = [$guruSatu, $guruDua, $guruTiga, $guruBiasa, $guruKelasNonaktif];
 
     $murobiSql = "INSERT INTO murobi_assignments (guru_id, tahun_ajaran_id, target_type, kamar_id, kelas_id, tanggal_mulai, is_active)
                   VALUES (?, ?, ?, ?, ?, DATE_SUB(CURDATE(), INTERVAL 30 DAY), 1)";
     $created['murobi'][] = $exec($murobiSql, [$guruSatu, $yearId, 'Kamar', $kamarSatu, null]);
     $created['murobi'][] = $exec($murobiSql, [$guruDua, $yearId, 'Kamar', $kamarDua, null]);
     $created['murobi'][] = $exec($murobiSql, [$guruTiga, $yearId, 'Kelas', null, $kelasSatu]);
+    $created['murobi'][] = $exec($murobiSql, [$guruKelasNonaktif, $yearId, 'Kelas', null, $kelasNonaktif]);
 
     $pengurusA = $exec("INSERT INTO pengurus (nama, nomor_identitas, jabatan, is_active) VALUES (?, ?, 'Keamanan', 1)", ['Pengurus F2A ' . $suffix, 'F2PA' . $suffix]);
     $pengurusB = $exec("INSERT INTO pengurus (nama, nomor_identitas, jabatan, is_active) VALUES (?, ?, 'Keamanan', 1)", ['Pengurus F2B ' . $suffix, 'F2PB' . $suffix]);
@@ -213,9 +218,10 @@ try {
     $userMurobiSatu = $makeUser('f2.m1.' . $lower, 'Akun Murobi Satu', $guruSatu, null, null, 'guru');
     $userMurobiDua = $makeUser('f2.m2.' . $lower, 'Akun Murobi Dua', $guruDua, null, null, 'guru');
     $userGuruBiasa = $makeUser('f2.gb.' . $lower, 'Akun Guru Biasa', $guruBiasa, null, null, 'guru');
+    $userGuruKelasNonaktif = $makeUser('f2.gn.' . $lower, 'Akun Guru Kelas Nonaktif', $guruKelasNonaktif, null, null, 'guru');
     $userOrtuSatu = $makeUser('f2.o1.' . $lower, 'Akun Ortu Satu', null, null, $waliSatu, 'orang_tua');
     $userOrtuDua = $makeUser('f2.o2.' . $lower, 'Akun Ortu Dua', null, null, $waliDua, 'orang_tua');
-    $created['users'] = [$userPengurusA, $userPengurusB, $userMurobiSatu, $userMurobiDua, $userGuruBiasa, $userOrtuSatu, $userOrtuDua];
+    $created['users'] = [$userPengurusA, $userPengurusB, $userMurobiSatu, $userMurobiDua, $userGuruBiasa, $userGuruKelasNonaktif, $userOrtuSatu, $userOrtuDua];
 
     $loadUser = static fn (int $id): array => auth_repository()->findActiveById($id) ?? throw new RuntimeException('Akun uji tidak ditemukan: ' . $id);
 
@@ -231,6 +237,17 @@ try {
             'tanggal_selesai' => '',
         ], $adminId);
     }
+    // Penugasan dibuat saat kelas masih aktif, lalu kelas dinonaktifkan. Scope
+    // dan routing tidak boleh memakai referensi master yang sudah nonaktif.
+    $created['pembimbing'][] = $pembimbing->create([
+        'pengurus_id' => $pengurusA,
+        'tahun_ajaran_id' => $yearId,
+        'target_type' => 'Kelas',
+        'kelas_id' => $kelasNonaktif,
+        'tanggal_mulai' => date('Y-m-d', strtotime('-10 days')),
+        'tanggal_selesai' => '',
+    ], $adminId);
+    $exec('UPDATE kelas SET is_active = 0 WHERE id = ?', [$kelasNonaktif]);
     // Pengurus B membina kamar lain agar cakupannya benar-benar terpisah.
     $kamarPengurusB = $exec('INSERT INTO kamar (nama_kamar, kapasitas) VALUES (?, 10)', ['Kamar F2D ' . $suffix]);
     $created['kamar'][] = $kamarPengurusB;
@@ -260,9 +277,10 @@ try {
         'KP-1a Pengurus melihat seluruh santri dalam cakupan pembimbingnya'
     );
     $assert(!in_array($santriLuar, $idsPilihan, true), 'KP-1b Santri di luar cakupan tidak muncul pada daftar pilihan');
+    $assert(!in_array($santriKelasNonaktif, $idsPilihan, true), 'KP-1c Santri pada kelas nonaktif tidak muncul pada daftar pilihan');
 
     $pencarian = $workflow->selectableSantri($loadUser($userPengurusA), 'Santri Luar', 1, 100);
-    $assert($pencarian['rows'] === [], 'KP-1c Pencarian tidak dapat memunculkan santri di luar cakupan');
+    $assert($pencarian['rows'] === [], 'KP-1d Pencarian tidak dapat memunculkan santri di luar cakupan');
 
     $sebelum = $countPengajuan();
     $expectStatus(403, static fn () => $workflow->create(
@@ -270,8 +288,19 @@ try {
         ['santri_id' => $santriLuar, 'tgl_izin' => $besok, 'tgl_kembali' => $lusa, 'alasan' => 'Percobaan di luar cakupan'],
         $key('luar'),
         $meta
-    ), 'KP-1d Pengajuan untuk santri di luar cakupan ditolak 403');
-    $assert($countPengajuan() === $sebelum, 'KP-1e Penolakan cakupan tidak menyimpan baris pengajuan');
+    ), 'KP-1e Pengajuan untuk santri di luar cakupan ditolak 403');
+    $expectStatus(403, static fn () => $workflow->create(
+        $loadUser($userPengurusA),
+        ['santri_id' => $santriKelasNonaktif, 'tgl_izin' => $besok, 'tgl_kembali' => $lusa, 'alasan' => 'Kelas sudah nonaktif'],
+        $key('kelas-nonaktif'),
+        $meta
+    ), 'KP-1f Pengajuan melalui penugasan kelas nonaktif ditolak 403');
+    $assert($workflow->routingCandidates(['santri_id' => $santriKelasNonaktif]) === [], 'KP-1g Kelas nonaktif tidak menghasilkan kandidat routing');
+    $assert(
+        !in_array(Capabilities::MUROBI, capabilities()->forUser($loadUser($userGuruKelasNonaktif)), true),
+        'KP-1h Penugasan pada kelas nonaktif tidak memberi kemampuan murobi'
+    );
+    $assert($countPengajuan() === $sebelum, 'KP-1i Penolakan cakupan tidak menyimpan baris pengajuan');
 
     // =====================================================================
     // KP-2. Validasi tanggal

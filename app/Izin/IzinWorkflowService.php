@@ -6,6 +6,7 @@ namespace App\Izin;
 
 use App\Audit\AuditLogger;
 use App\Auth\Capabilities;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -105,20 +106,6 @@ final class IzinWorkflowService
         $catatan = $this->optionalText((string) ($input['catatan_pengurus'] ?? ''), 'Catatan pengurus', 1000);
 
         $onDate = $this->today();
-        $year = $this->read->activeYear();
-        if ($year === null) {
-            throw IzinException::invalid('Tidak ada tahun ajaran aktif. Hubungi admin sebelum membuat pengajuan.');
-        }
-
-        // Cakupan santri diperiksa SEBELUM transaksi dan diperiksa ulang di dalamnya.
-        $assignment = null;
-        if ($scope['mode'] === Capabilities::PENGURUS) {
-            $assignment = $this->read->pembimbingAssignmentFor((int) $scope['pengurus_id'], $santriId, $onDate);
-            if ($assignment === null) {
-                throw IzinException::forbidden('Santri tersebut berada di luar cakupan penugasan pembimbing aktif Anda.');
-            }
-        }
-
         $payload = [
             'santri_id' => $santriId,
             'tgl_izin' => $tglIzin,
@@ -130,7 +117,7 @@ final class IzinWorkflowService
 
         return $this->transactional(function () use (
             $user, $userId, $scope, $key, $payload, $santriId, $tglIzin, $tglKembali,
-            $alasan, $catatan, $assignment, $year, $onDate, $meta
+            $alasan, $catatan, $onDate, $meta
         ): array {
             $replay = $this->idempotency->begin($userId, IzinIdempotency::OP_CREATE, $key, $payload);
             if ($replay !== null) {
@@ -141,6 +128,21 @@ final class IzinWorkflowService
             $santri = $this->write->lockSantri($santriId);
             if ($santri === null || (int) $santri['is_active'] !== 1 || $santri['archived_at'] !== null) {
                 throw IzinException::invalid('Santri tidak ditemukan atau sudah tidak aktif.');
+            }
+
+            // Cakupan dan tahun ajaran dibaca ulang DI DALAM transaksi setelah
+            // santri dikunci. Perubahan master data di antara tampilan form dan
+            // pengiriman tidak boleh meloloskan penugasan yang sudah tidak aktif.
+            $assignment = null;
+            if ($scope['mode'] === Capabilities::PENGURUS) {
+                $assignment = $this->read->pembimbingAssignmentFor((int) $scope['pengurus_id'], $santriId, $onDate);
+                if ($assignment === null) {
+                    throw IzinException::forbidden('Santri tersebut berada di luar cakupan penugasan pembimbing aktif Anda.');
+                }
+            }
+            $year = $this->read->activeYear();
+            if ($year === null) {
+                throw IzinException::invalid('Tidak ada tahun ajaran aktif. Hubungi admin sebelum membuat pengajuan.');
             }
 
             $overlap = $this->write->findOverlap($santriId, $tglIzin, $tglKembali);
@@ -200,7 +202,7 @@ final class IzinWorkflowService
             ];
             $this->idempotency->complete($userId, IzinIdempotency::OP_CREATE, $key, 201, $response, $pengajuanId);
 
-            $this->audit->log('izin_pengajuan_created', 'izin_pengajuan', $pengajuanId, null, [
+            $this->auditOrFail('izin_pengajuan_created', 'izin_pengajuan', $pengajuanId, null, [
                 'santri_id' => $santriId,
                 'pengurus_id' => $scope['mode'] === Capabilities::PENGURUS ? (int) $scope['pengurus_id'] : null,
                 'kapasitas_pengaju' => $kapasitas,
@@ -208,7 +210,7 @@ final class IzinWorkflowService
                 'tgl_kembali' => $tglKembali,
                 'tahun_ajaran_id' => (int) $year['id'],
             ], $userId);
-            $this->audit->log('izin_routing_resolved', 'izin_pengajuan', $pengajuanId, null, [
+            $this->auditOrFail('izin_routing_resolved', 'izin_pengajuan', $pengajuanId, null, [
                 'status' => (string) $routing['status'],
                 'murobi_guru_id' => $routing['murobi_guru_id'],
                 'jumlah_kandidat' => (int) $routing['jumlah'],
@@ -290,7 +292,7 @@ final class IzinWorkflowService
                 'version' => $version + 1,
             ];
             $this->idempotency->complete($userId, IzinIdempotency::OP_ASSIGN, $key, 200, $response, $pengajuanId);
-            $this->audit->log(
+            $this->auditOrFail(
                 'izin_murobi_assigned',
                 'izin_pengajuan',
                 $pengajuanId,
@@ -412,7 +414,7 @@ final class IzinWorkflowService
                 'version' => $version + 1,
             ];
             $this->idempotency->complete($userId, IzinIdempotency::OP_DECISION, $key, 201, $response, $pengajuanId);
-            $this->audit->log(
+            $this->auditOrFail(
                 'izin_decision_recorded',
                 'izin_pengajuan',
                 $pengajuanId,
@@ -491,7 +493,7 @@ final class IzinWorkflowService
 
             $response = ['id' => $pengajuanId, 'status' => 'Dibatalkan', 'version' => $version + 1];
             $this->idempotency->complete($userId, IzinIdempotency::OP_CANCEL, $key, 200, $response, $pengajuanId);
-            $this->audit->log(
+            $this->auditOrFail(
                 'izin_cancelled',
                 'izin_pengajuan',
                 $pengajuanId,
@@ -598,7 +600,7 @@ final class IzinWorkflowService
                 'version' => $version + 1,
             ];
             $this->idempotency->complete($userId, IzinIdempotency::OP_CORRECTION, $key, 200, $response, $pengajuanId);
-            $this->audit->log(
+            $this->auditOrFail(
                 'izin_decision_corrected',
                 'izin_pengajuan',
                 $pengajuanId,
@@ -764,6 +766,24 @@ final class IzinWorkflowService
         } catch (Throwable $exception) {
             $this->write->rollback();
             throw $exception;
+        }
+    }
+
+    /**
+     * Audit Fase 2 merupakan bagian wajib dari transaksi. AuditLogger tetap
+     * kompatibel dengan pemanggil V1 yang bersifat best-effort, sedangkan jalur
+     * perizinan menggagalkan transaksi bila jejak audit tidak dapat disimpan.
+     */
+    private function auditOrFail(
+        string $action,
+        string $entityType,
+        ?int $entityId,
+        ?array $before,
+        ?array $after,
+        int $actorUserId
+    ): void {
+        if (!$this->audit->log($action, $entityType, $entityId, $before, $after, $actorUserId)) {
+            throw new RuntimeException('Audit perubahan perizinan tidak dapat disimpan. Transaksi dibatalkan.');
         }
     }
 

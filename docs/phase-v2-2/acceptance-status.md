@@ -13,7 +13,7 @@ Penanda bukti:
 
 | # | Kriteria | Status | Bukti |
 |---|---|---|---|
-| 1 | Pengurus hanya dapat memilih santri dalam cakupan pembimbingnya | ✅ | `KP-1a`/`KP-1b` daftar pilihan hanya memuat santri kamar binaan; `KP-1c` pencarian tidak dapat memunculkan santri luar; `KP-1d` pengiriman paksa ke santri luar → **403**; `KP-1e` tidak ada baris tersimpan |
+| 1 | Pengurus hanya dapat memilih santri dalam cakupan pembimbingnya | ✅ | `KP-1a`/`KP-1b` daftar pilihan hanya memuat santri binaan; `KP-1c` kelas nonaktif tidak masuk pilihan; `KP-1d` pencarian tidak memunculkan santri luar; `KP-1e`/`KP-1f` pengiriman paksa ke luar cakupan/kelas nonaktif → **403**; `KP-1g`/`KP-1h` kelas nonaktif tidak menjadi kandidat routing/kemampuan murobi; `KP-1i` tidak ada baris tersimpan |
 | 2 | Pengajuan dengan tanggal kembali sebelum tanggal izin ditolak `422` dan tidak menyimpan baris | ✅ | `KP-2a` **422** pada layanan, `WEB-11` **422** lewat HTTP, `KP-2d` jumlah baris tidak berubah; `KP-2b` tanggal tak ada di kalender juga **422** |
 | 3 | Dua request identik dengan idempotency key sama menghasilkan satu pengajuan | ✅ | `KP-3a`–`KP-3c` dua panggilan berurutan → satu ID, penanda `idempotent_replay`; `KP-13e` dua **proses bersamaan** → satu baris; `WEB-9`/`WEB-10` refresh POST tidak menambah baris; `KP-3d` kunci sama + isi beda → **409** |
 | 4 | Pengajuan tumpang tindih untuk santri dan rentang aktif yang sama ditolak `409` | ✅ | `KP-4a` rentang identik **409**; `KP-4b` bersinggungan sebagian **409**; `WEB-12` **409** lewat HTTP; `KP-4c` tanpa baris tersimpan; `KP-4d` rentang lepas tetap diterima |
@@ -32,16 +32,16 @@ Penanda bukti:
 |---|---|---|---|
 | 1 | Pengurus melihat santri dalam cakupan penugasan pembimbing aktif | ✅ | `IzinRepository::santriForPengurusPaged()`; `KP-1a`–`KP-1c` |
 | 2 | Pengurus membuat pengajuan dengan santri, tanggal, alasan, catatan | ✅ | `portal/izin_buat.php` + `IzinWorkflowService::create()`; `WEB-7` |
-| 3 | Validasi server menolak santri di luar cakupan, tanggal terbalik, data tidak aktif, tumpang tindih | ✅ | `KP-1d`, `KP-2a`–`KP-2c`, `KP-4a`/`KP-4b`; santri nonaktif ditolak di dalam transaksi setelah baris dikunci |
+| 3 | Validasi server menolak santri di luar cakupan, tanggal terbalik, data tidak aktif, tumpang tindih | ✅ | `KP-1e`/`KP-1f`, `KP-2a`–`KP-2c`, `KP-4a`/`KP-4b`; santri nonaktif dan kelas nonaktif ditolak di dalam transaksi setelah baris santri dikunci |
 | 4 | Create memakai transaksi dan idempotency key | ✅ | `ST` (transactional + 5 mutasi ber-idempotensi); `KP-3a`–`KP-3c`, `KP-13e` |
-| 5 | Routing memilih murobi dari penugasan aktif yang cocok kamar/kelas dan tahun ajaran | ✅ | `IzinRouter::resolve()`; `KP-5b`; `ST` memastikan query memakai `murobi_assignments` + tahun ajaran aktif + `plotting_kamar`/`plotting_kelas` |
+| 5 | Routing memilih murobi dari penugasan aktif yang cocok kamar/kelas dan tahun ajaran | ✅ | `IzinRouter::resolve()`; `KP-1g`, `KP-5b`; `ST` memastikan query memakai `murobi_assignments` + tahun ajaran aktif + plotting dan menolak master kelas nonaktif/arsip |
 | 6 | Kasus tanpa kandidat atau lebih dari satu masuk antrean penetapan admin | ✅ | `KP-6a`–`KP-6f` |
 | 7 | Murobi hanya melihat dan memutus pengajuan yang diarahkan kepadanya | ✅ | `KP-5c`/`KP-5d`, `KP-7a`/`KP-7b`, `WEB-13`/`WEB-14` |
 | 8 | Admin menetapkan/menetapkan ulang murobi dan memutus sebagai pengganti dengan alasan wajib | ✅ | `KP-8a`–`KP-8g` (alasan wajib, guru tak layak ditolak, non-admin 403, penetapan ulang tercatat), `KP-9a`–`KP-9c` |
 | 9 | Keputusan memakai transaksi, optimistic version, dan idempotency key | ✅ | `KP-12d` versi kedaluwarsa **409**; `KP-13a`–`KP-13d` konkurensi; `ST` |
 | 10 | Pengurus membatalkan pengajuan sebelum keputusan dengan alasan | ✅ | `KP-11b` tanpa alasan **422**; `KP-11c` berhasil; `KP-12c` setelah keputusan **409**; `KP-11a` lintas pengurus **403** |
 | 11 | Orang tua melihat status dan riwayat santri yang terhubung | ✅ | `KP-10a`, `WEB-25`, `WEB-26` |
-| 12 | Seluruh transisi status, routing, keputusan, pembatalan, koreksi tercatat pada riwayat dan audit | ✅ | `KP-8g`, `KP-11d`/`KP-11e`, `KP-14f`/`KP-14g`, `KP-15a`–`KP-15c` |
+| 12 | Seluruh transisi status, routing, keputusan, pembatalan, koreksi tercatat pada riwayat dan audit | ✅ | `KP-8g`, `KP-11d`/`KP-11e`, `KP-14f`/`KP-14g`, `KP-15a`–`KP-15c`; `ST` memastikan kegagalan audit membatalkan transaksi perizinan |
 | 13 | Daftar, detail, pencarian, filter, pagination, empty/error state untuk tiap peran | ✅ | `KP-15e`–`KP-15g`; halaman `portal/izin.php`, `portal/izin_antrean.php`, `portal/izin_buat.php`, `portal/izin_detail.php`; `WEB-4`, `WEB-19` |
 | 14 | Modul `admin/admin_izin.php` diarsipkan lewat redirect kompatibel setelah regresi lulus; file/data tidak dihapus | ✅ | Redirect dipasang **setelah** seluruh suite Fase 2 + regresi lulus. `WEB-20` **302** ke portal, `WEB-21` `?id=<n>` → detail pengajuan yang sama; `ST` memastikan kode lama tetap utuh, tabel `perizinan` tidak disentuh, dan flag `IZIN_LEGACY_ENABLED` mati secara bawaan |
 

@@ -15,8 +15,8 @@ produksi tidak memuat baris `perizinan`, empat baris izin warisan (ID `3`, `7`,
 
 | Suite | Jenis | Hasil | Jumlah pemeriksaan |
 |---|---|---|---|
-| `tests/v2_phase2_static.php` | statis | ✅ lulus (0 gagal) | 135 |
-| `tests/v2_phase2_integration.php` | integrasi DB | ✅ lulus (0 gagal) | 90 |
+| `tests/v2_phase2_static.php` | statis | ✅ lulus (0 gagal) | 139 |
+| `tests/v2_phase2_integration.php` | integrasi DB | ✅ lulus (0 gagal) | 94 |
 | `tests/v2_phase2_web_smoke.php` | HTTP end-to-end | ✅ lulus (0 gagal) | 35 |
 | `bin/v2_phase2_verify.php` | verifikasi pasca-migrasi | ✅ lulus (0 berbeda) | 26 |
 | `bin/v2_phase2_preflight.php` | preflight | ✅ keluar 0 | backup + manifest + konflik |
@@ -50,7 +50,7 @@ statis pada `tests/v2_phase1_static.php` maupun `tests/v2_phase2_static.php`.
 
 ## 3. `php -l` seluruh berkas PHP baru/diubah
 
-Dieksekusi di dalam `tests/v2_phase2_static.php` (23 berkas, seluruhnya lulus):
+Dieksekusi di dalam `tests/v2_phase2_static.php` (25 berkas, seluruhnya lulus):
 
 **Baru** — `app/Izin/IzinRouter.php`, `app/Izin/IzinIdempotency.php`,
 `app/Izin/IzinWriteRepository.php`, `app/Izin/IzinWorkflowService.php`,
@@ -59,7 +59,8 @@ Dieksekusi di dalam `tests/v2_phase2_static.php` (23 berkas, seluruhnya lulus):
 `tests/v2_phase2_static.php`, `tests/v2_phase2_integration.php`,
 `tests/v2_phase2_concurrency_worker.php`, `tests/v2_phase2_web_smoke.php`.
 
-**Diubah** — `app/bootstrap.php`, `app/Izin/IzinException.php`,
+**Diubah** — `app/bootstrap.php`, `app/Audit/AuditLogger.php`,
+`app/Auth/Capabilities.php`, `app/Izin/IzinException.php`,
 `app/Izin/IzinRepository.php`, `app/Izin/IzinService.php`, `portal/_ui.php`,
 `portal/index.php`, `portal/izin.php`, `portal/izin_detail.php`,
 `admin/admin_izin.php`, `admin/sidebar.php`.
@@ -68,7 +69,7 @@ Dieksekusi di dalam `tests/v2_phase2_static.php` (23 berkas, seluruhnya lulus):
 
 | Pengujian diminta | Di mana diuji | Hasil |
 |---|---|---|
-| Akses santri di luar cakupan | `KP-1a`–`KP-1e` | ✅ 403, daftar pilihan bersih, pencarian tidak membocorkan, tidak ada baris tersimpan |
+| Akses santri di luar cakupan / kelas nonaktif | `KP-1a`–`KP-1i` | ✅ 403, daftar pilihan bersih, kelas nonaktif tidak menjadi cakupan/routing/capability, tidak ada baris tersimpan |
 | Validasi tanggal | `KP-2a`–`KP-2d`, `WEB-11` | ✅ 422 untuk tanggal terbalik, tanggal tidak ada di kalender, alasan kosong; tanpa baris tersimpan |
 | Idempotensi pengajuan | `KP-3a`–`KP-3d`, `KP-13e`, `WEB-9`, `WEB-10` | ✅ satu pengajuan untuk kunci sama (berurutan, bersamaan, dan refresh POST); isi berbeda dengan kunci sama → 409 |
 | Pengajuan tumpang tindih | `KP-4a`–`KP-4d`, `KP-11g`, `WEB-12` | ✅ 409 untuk rentang identik maupun bersinggungan sebagian; rentang lepas diterima; pembatalan melepas slot |
@@ -83,7 +84,7 @@ Dieksekusi di dalam `tests/v2_phase2_static.php` (23 berkas, seluruhnya lulus):
 | Koreksi tanpa kehilangan riwayat | `KP-14a`–`KP-14h` | ✅ nilai sebelum/sesudah tersimpan, riwayat bertambah, baris keputusan tidak dihapus/diduplikasi |
 | Kelengkapan audit | `KP-15a`–`KP-15d` | ✅ enam aksi audit tercatat, seluruh riwayat punya pelaku/alasan/waktu, tanpa credential |
 | Regresi Fase 1 dan V1 | §2 di atas | ✅ 11 suite lulus |
-| `php -l` seluruh berkas baru/diubah | §3 di atas | ✅ 23 berkas |
+| `php -l` seluruh berkas baru/diubah | §3 di atas | ✅ 25 berkas |
 
 ## 5. Bukti konkurensi
 
@@ -127,3 +128,18 @@ Diuji langsung terhadap `webalhasan_test`:
 - Alur mobile/API perizinan — **di luar ruang lingkup Fase 2** (Fase 3).
 - Notifikasi in-app/push/WhatsApp — **di luar ruang lingkup Fase 2** (Fase 4).
 - Migrasi pada basis data produksi — belum dan tidak boleh dijalankan otomatis.
+
+## 8. Koreksi hasil audit Codex
+
+Audit independen setelah commit implementasi menemukan dan memperbaiki dua celah
+yang belum dicakup suite awal:
+
+1. target kelas yang kemudian dinonaktifkan/diarsipkan tidak lagi dianggap sebagai
+   cakupan pembimbing, kandidat routing, atau sumber kemampuan murobi;
+2. audit perizinan kini wajib berhasil di dalam transaksi; kegagalan menyimpan
+   audit membatalkan seluruh mutasi, bukan menghasilkan perubahan tanpa jejak.
+
+Pemeriksaan cakupan dan tahun ajaran pada pembuatan juga dipindahkan ke dalam
+transaksi setelah baris santri dikunci. Seluruh suite pada §1–§2, smoke HTTP,
+konkurensi dua proses, preflight/verify, migrasi mentah dua kali, dan rollback
+mentah dua kali dijalankan ulang setelah koreksi dan seluruhnya lulus.

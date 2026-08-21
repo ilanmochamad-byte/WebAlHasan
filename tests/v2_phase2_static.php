@@ -83,6 +83,7 @@ $service = $source('app/Izin/IzinService.php');
 $workflow = $source('app/Izin/IzinWorkflowService.php');
 $router = $source('app/Izin/IzinRouter.php');
 $idempotency = $source('app/Izin/IzinIdempotency.php');
+$auditLogger = $source('app/Audit/AuditLogger.php');
 
 $assert(
     !preg_match('/\b(INSERT INTO|UPDATE\s+izin|DELETE\s+FROM)\b/i', $readRepository),
@@ -160,8 +161,13 @@ $assert(
 );
 $assert(
     str_contains($router, 'murobi_assignments') && str_contains($router, "ta.status = 'Aktif'")
-    && str_contains($router, 'plotting_kamar') && str_contains($router, 'plotting_kelas'),
+    && str_contains($router, 'plotting_kamar') && str_contains($router, 'plotting_kelas')
+    && str_contains($router, 'kl.is_active = 1 AND kl.archived_at IS NULL'),
     'Routing menilai penugasan murobi aktif, tahun ajaran aktif, serta kamar/kelas santri'
+);
+$assert(
+    substr_count($readRepository, 'kl.is_active = 1 AND kl.archived_at IS NULL') >= 3,
+    'Cakupan pembimbing menolak target kelas yang sudah nonaktif atau diarsipkan'
 );
 $assert(
     str_contains($router, 'isEligibleMurobi'),
@@ -211,8 +217,14 @@ foreach ([
     $assert(str_contains($workflow, "'" . $action . "'"), 'Audit mencatat aksi ' . $action);
 }
 $assert(
-    substr_count($workflow, '$this->audit->log(') === 6,
+    substr_count($workflow, '$this->auditOrFail(') === 6,
     'Seluruh mutasi menulis audit (pembuatan menulis dua peristiwa: pengajuan dan routing)'
+);
+$assert(
+    str_contains($workflow, 'Audit perubahan perizinan tidak dapat disimpan. Transaksi dibatalkan.')
+    && str_contains($auditLogger, '): bool')
+    && str_contains($auditLogger, 'return false;'),
+    'Kegagalan audit membatalkan transaksi perizinan, bukan diabaikan'
 );
 $assert(
     substr_count($workflow, '$this->write->insertRiwayat(') === 6,
@@ -378,6 +390,8 @@ $phpFiles = [
     'app/Izin/IzinIdempotency.php',
     'app/Izin/IzinWriteRepository.php',
     'app/Izin/IzinWorkflowService.php',
+    'app/Audit/AuditLogger.php',
+    'app/Auth/Capabilities.php',
     'portal/izin_buat.php',
     'portal/izin_aksi.php',
     'portal/izin_antrean.php',

@@ -54,12 +54,13 @@ final class IzinRouter
                     AND pkl.status = 'Aktif'
                LEFT JOIN kamar km ON km.id = ma.kamar_id
                LEFT JOIN kelas kl ON kl.id = ma.kelas_id
+                    AND kl.is_active = 1 AND kl.archived_at IS NULL
               WHERE ma.is_active = 1 AND ma.archived_at IS NULL
                 AND ma.tanggal_mulai <= ?
                 AND (ma.tanggal_selesai IS NULL OR ma.tanggal_selesai >= ?)
                 AND (
                         (ma.target_type = 'Kamar' AND pkm.id IS NOT NULL)
-                     OR (ma.target_type = 'Kelas' AND pkl.id IS NOT NULL)
+                     OR (ma.target_type = 'Kelas' AND pkl.id IS NOT NULL AND kl.id IS NOT NULL)
                     )
               ORDER BY g.nama_guru, g.id, ma.id",
             [$santriId, $santriId, $onDate, $onDate]
@@ -139,9 +140,12 @@ final class IzinRouter
                JOIN guru g ON g.id = ma.guru_id AND g.is_active = 1 AND g.archived_at IS NULL
                JOIN tahun_ajaran ta ON ta.id = ma.tahun_ajaran_id
                     AND ta.status = 'Aktif' AND ta.archived_at IS NULL
+               LEFT JOIN kelas kl ON kl.id = ma.kelas_id
+                    AND kl.is_active = 1 AND kl.archived_at IS NULL
               WHERE ma.is_active = 1 AND ma.archived_at IS NULL
                 AND ma.tanggal_mulai <= ?
                 AND (ma.tanggal_selesai IS NULL OR ma.tanggal_selesai >= ?)
+                AND (ma.target_type = 'Kamar' OR (ma.target_type = 'Kelas' AND kl.id IS NOT NULL))
               ORDER BY g.nama_guru, g.id",
             [$onDate, $onDate]
         );
@@ -155,10 +159,13 @@ final class IzinRouter
                JOIN guru g ON g.id = ma.guru_id AND g.is_active = 1 AND g.archived_at IS NULL
                JOIN tahun_ajaran ta ON ta.id = ma.tahun_ajaran_id
                     AND ta.status = 'Aktif' AND ta.archived_at IS NULL
+               LEFT JOIN kelas kl ON kl.id = ma.kelas_id
+                    AND kl.is_active = 1 AND kl.archived_at IS NULL
               WHERE ma.guru_id = ?
                 AND ma.is_active = 1 AND ma.archived_at IS NULL
                 AND ma.tanggal_mulai <= ?
                 AND (ma.tanggal_selesai IS NULL OR ma.tanggal_selesai >= ?)
+                AND (ma.target_type = 'Kamar' OR (ma.target_type = 'Kelas' AND kl.id IS NOT NULL))
               LIMIT 1",
             [$guruId, $onDate, $onDate]
         ) !== [];

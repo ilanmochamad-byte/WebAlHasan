@@ -20,7 +20,7 @@ final class AuditLogger
         ?array $before = null,
         ?array $after = null,
         ?int $actorUserId = null
-    ): void {
+    ): bool {
         try {
             $actorUserId ??= isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
             $beforeJson = $before === null ? null : json_encode($before, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -32,14 +32,16 @@ final class AuditLogger
                 'INSERT INTO audit_logs (actor_user_id, action, entity_type, entity_id, before_json, after_json, ip_address, user_agent, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())'
             );
             if ($statement === false) {
-                return;
+                return false;
             }
             $statement->bind_param('ississss', $actorUserId, $action, $entityType, $entityId, $beforeJson, $afterJson, $ip, $userAgent);
-            $statement->execute();
+            $saved = $statement->execute();
             $statement->close();
+
+            return $saved;
         } catch (Throwable $exception) {
             error_log('Audit log gagal: ' . $exception->getMessage());
+            return false;
         }
     }
 }
-
