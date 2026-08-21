@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Account\AccountRepository;
+use App\Account\AccountService;
+use App\Account\PerizinanAccountRepository;
+use App\Account\PerizinanAccountService;
 use App\Audit\AuditLogger;
 use App\Api\ApiAuthRepository;
 use App\Api\ApiAuthService;
@@ -10,9 +14,15 @@ use App\Api\TeacherService;
 use App\Auth\ApiTokenAuthenticator;
 use App\Auth\AuthRepository;
 use App\Auth\Authorization;
+use App\Auth\Capabilities;
+use App\Auth\PortalGuard;
 use App\Auth\TokenHasher;
 use App\Database\Connection;
 use App\Http\Session;
+use App\Izin\IzinRepository;
+use App\Izin\IzinService;
+use App\Izin\PembimbingRepository;
+use App\Izin\PembimbingService;
 use App\MasterData\MasterDataRepository;
 use App\MasterData\MasterDataService;
 use App\Report\ReportRepository;
@@ -179,5 +189,47 @@ function report_service(): ReportService
     return $service ??= new ReportService(
         new ReportRepository(app_db()),
         (string) app_config('timezone')
+    );
+}
+
+// --- V2 Fase 1: fondasi perizinan (aditif; tidak mengubah layanan V1 di atas) ---
+
+function account_service(): AccountService
+{
+    static $service;
+    return $service ??= new AccountService(new AccountRepository(app_db()), audit_logger());
+}
+
+function capabilities(): Capabilities
+{
+    static $capabilities;
+    return $capabilities ??= new Capabilities(app_db());
+}
+
+function portal_guard(): PortalGuard
+{
+    static $guard;
+    return $guard ??= new PortalGuard(authorization(), capabilities());
+}
+
+function izin_service(): IzinService
+{
+    static $service;
+    return $service ??= new IzinService(new IzinRepository(app_db()), capabilities());
+}
+
+function pembimbing_service(): PembimbingService
+{
+    static $service;
+    return $service ??= new PembimbingService(new PembimbingRepository(app_db()), audit_logger());
+}
+
+function perizinan_account_service(): PerizinanAccountService
+{
+    static $service;
+    return $service ??= new PerizinanAccountService(
+        new PerizinanAccountRepository(app_db()),
+        account_service(),
+        audit_logger()
     );
 }

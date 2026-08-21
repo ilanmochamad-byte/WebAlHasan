@@ -33,7 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="post" class="d-flex gap-2">
             <?= Csrf::input() ?>
             <button class="btn btn-danger" type="submit">Ya, keluar</button>
-            <a class="btn btn-outline-secondary" href="<?= in_array('admin', $user['roles'], true) ? 'admin_dashboard.php' : 'ubah_password.php' ?>">Batal</a>
+            <?php
+            $cancelUrl = match (true) {
+                in_array('admin', $user['roles'], true) => 'admin_dashboard.php',
+                in_array('guru', $user['roles'], true) => 'pertemuan_pengajian.php',
+                in_array('pengurus', $user['roles'], true), in_array('orang_tua', $user['roles'], true) => app_url('/portal/index.php'),
+                default => 'ubah_password.php',
+            };
+            ?>
+            <a class="btn btn-outline-secondary" href="<?= htmlspecialchars($cancelUrl, ENT_QUOTES, 'UTF-8') ?>">Batal</a>
         </form>
     </div></div>
 </main>
