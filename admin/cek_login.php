@@ -27,15 +27,24 @@ if (!empty($_SESSION['force_password_change'])) {
     exit;
 }
 
-if (in_array('guru', $_SESSION['roles'] ?? [], true) && !in_array('admin', $_SESSION['roles'] ?? [], true)) {
+$roles = $_SESSION['roles'] ?? [];
+
+if (in_array('admin', $roles, true)) {
+    header('Location: ' . app_url('/admin/admin_dashboard.php'));
+    exit;
+}
+
+if (in_array('guru', $roles, true)) {
     header('Location: ' . app_url('/admin/pertemuan_pengajian.php'));
     exit;
 }
 
-if (!in_array('admin', $_SESSION['roles'] ?? [], true)) {
-    http_response_code(403);
-    exit('Login berhasil, tetapi akun ini tidak memiliki hak jadwal atau panel admin.');
+// V2: pengurus dan orang tua diarahkan ke portal perizinan. Kemampuan tetap
+// diverifikasi ulang oleh guard portal di sisi server.
+if (in_array('pengurus', $roles, true) || in_array('orang_tua', $roles, true)) {
+    header('Location: ' . app_url('/portal/index.php'));
+    exit;
 }
 
-header('Location: ' . app_url('/admin/admin_dashboard.php'));
-exit;
+http_response_code(403);
+exit('Login berhasil, tetapi akun ini tidak memiliki hak jadwal, portal perizinan, atau panel admin.');

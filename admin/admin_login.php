@@ -15,6 +15,10 @@ if (authorization()->currentUser() !== null && empty($_SESSION['force_password_c
         header('Location: ' . app_url('/admin/pertemuan_pengajian.php'));
         exit;
     }
+    if (in_array('pengurus', $_SESSION['roles'] ?? [], true) || in_array('orang_tua', $_SESSION['roles'] ?? [], true)) {
+        header('Location: ' . app_url('/portal/index.php'));
+        exit;
+    }
 }
 
 $message = match ($_GET['pesan'] ?? '') {

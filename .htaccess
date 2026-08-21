@@ -5,7 +5,7 @@ RewriteEngine On
 RewriteRule ^(?:app|bin|database|docs|storage|tests)(?:/|$) - [F,L,NC]
 
 # Rahasia, dump, log, dan dokumen implementasi tidak boleh diunduh.
-<FilesMatch "^(?:\.env(?:\..*)?|error_log|PRD\.md|.*\.sql)$">
+<FilesMatch "^(?:\.env(?:\..*)?|error_log|PRD\.md|PRD-V2\.md|AGENTS\.md|.*\.sql)$">
     Require all denied
 </FilesMatch>
 
