@@ -332,7 +332,8 @@ foreach (['teacher_api_service', 'report_service', 'schedule_service', 'master_d
     $assert(str_contains($bootstrap, 'function ' . $legacyHelper), 'Helper lama ' . $legacyHelper . '() dipertahankan');
 }
 $assert(
-    str_contains($source('admin/cek_login.php'), "app_url('/portal/index.php')"),
+    str_contains($source('app/Auth/LandingRouter.php'), "app_url('/portal/index.php')")
+    && str_contains($source('admin/cek_login.php'), 'landing_router()->url($user)'),
     'Alur login V1/Fase 1 tidak diubah oleh Fase 2'
 );
 
@@ -383,6 +384,86 @@ $assert(
     'Uji dua keputusan bersamaan memakai dua proses PHP yang benar-benar terpisah'
 );
 
+// --- 9b. Hotfix navigasi murobi --------------------------------------------
+// Masalah: seluruh role `guru` diarahkan ke jadwal mengajar tanpa memeriksa
+// capability murobi, sehingga murobi tidak pernah sampai ke antrean keputusan.
+$landing = $source('app/Auth/LandingRouter.php');
+$cekLogin = $source('admin/cek_login.php');
+$halamanLogin = $source('admin/admin_login.php');
+$halamanSandi = $source('admin/ubah_password.php');
+$halamanJadwal = $source('admin/pertemuan_pengajian.php');
+$portalUi = $source('portal/_ui.php');
+
+$assert(is_file($root . '/app/Auth/LandingRouter.php'), 'Tujuan pasca-login punya satu sumber kebenaran: app/Auth/LandingRouter.php');
+$assert(
+    str_contains($landing, '$this->capabilities->has($user, Capabilities::MUROBI)')
+    && !preg_match("/in_array\('murobi', \\\$roles/", $landing),
+    'Cabang murobi memakai Capabilities, bukan role mentah'
+);
+$assert(
+    strpos($landing, "in_array('admin', \$roles, true)") < strpos($landing, 'Capabilities::MUROBI')
+    && strpos($landing, 'Capabilities::MUROBI') < strpos($landing, "in_array('guru', \$roles, true)"),
+    'Urutan tujuan: admin, lalu murobi (capability), baru guru biasa'
+);
+$assert(
+    str_contains($landing, "app_url('/portal/izin_antrean.php?mode=' . Capabilities::MUROBI)"),
+    'Murobi diarahkan ke /portal/izin_antrean.php?mode=murobi'
+);
+$assert(
+    str_contains($landing, 'bukan kontrol akses'),
+    'LandingRouter menegaskan dirinya bukan pengganti pemeriksaan otorisasi'
+);
+foreach ([
+    'admin/cek_login.php' => $cekLogin,
+    'admin/admin_login.php' => $halamanLogin,
+    'admin/ubah_password.php' => $halamanSandi,
+] as $path => $code) {
+    $assert(str_contains($code, 'landing_router()'), basename($path) . ' memakai LandingRouter yang sama');
+    $assert(
+        !preg_match("/in_array\('guru',[^\n]*\n[^\n]*pertemuan_pengajian/", $code)
+        && !str_contains($code, "in_array('guru', \$_SESSION['roles'] ?? [], true)"),
+        basename($path) . ' tidak lagi mengarahkan seluruh role guru ke jadwal tanpa memeriksa capability'
+    );
+}
+$assert(
+    str_contains($source('app/bootstrap.php'), 'function landing_router'),
+    'bootstrap menyediakan landing_router()'
+);
+$assert(
+    str_contains($halamanJadwal, 'capabilities()->has($currentUser, Capabilities::MUROBI)')
+    && str_contains($halamanJadwal, '$bolehAntreanIzin'),
+    'Halaman jadwal menghitung hak antrean dari capability murobi'
+);
+$assert(
+    str_contains($halamanJadwal, 'if ($bolehAntreanIzin):')
+    && str_contains($halamanJadwal, "app_url('/portal/izin_antrean.php?mode=' . Capabilities::MUROBI)"),
+    'Tautan Antrean Perizinan pada halaman jadwal hanya dirender untuk murobi aktif'
+);
+$assert(
+    str_contains($halamanJadwal, 'BUKAN kontrol akses'),
+    'Halaman jadwal menegaskan tautan bukan pengganti pemeriksaan server'
+);
+$assert(
+    str_contains($halamanJadwal, "!in_array('admin', \$currentUser['roles'], true) && !in_array('guru', \$currentUser['roles'], true)")
+    && str_contains($halamanJadwal, 'http_response_code(403)'),
+    'Guard server halaman jadwal tidak dilonggarkan oleh hotfix'
+);
+$assert(
+    str_contains($portalUi, "in_array('guru', \$user['roles'] ?? [], true)")
+    && str_contains($portalUi, "app_url('/admin/pertemuan_pengajian.php')"),
+    'Portal menyediakan jalan kembali ke jadwal mengajar bagi akun ber-role guru'
+);
+$assert(
+    str_contains($source('portal/_guard.php'), 'requireAnyPerizinan')
+    && str_contains($source('app/Auth/PortalGuard.php'), 'http_response_code(403)'),
+    'Guard portal tetap menolak akun tanpa kemampuan perizinan dengan 403'
+);
+$assert(
+    is_file($root . '/tests/v2_phase2_navigasi_murobi.php')
+    && str_contains($source('tests/v2_phase2_navigasi_murobi.php'), '_test'),
+    'Tersedia uji navigasi murobi yang hanya berjalan pada database *_test'
+);
+
 // --- 10. Lint seluruh berkas PHP baru/diubah -------------------------------
 $phpFiles = [
     // baru
@@ -401,6 +482,8 @@ $phpFiles = [
     'tests/v2_phase2_integration.php',
     'tests/v2_phase2_concurrency_worker.php',
     'tests/v2_phase2_web_smoke.php',
+    'app/Auth/LandingRouter.php',
+    'tests/v2_phase2_navigasi_murobi.php',
     // diubah
     'app/bootstrap.php',
     'app/Izin/IzinException.php',
@@ -412,6 +495,10 @@ $phpFiles = [
     'portal/izin_detail.php',
     'admin/admin_izin.php',
     'admin/sidebar.php',
+    'admin/cek_login.php',
+    'admin/admin_login.php',
+    'admin/ubah_password.php',
+    'admin/pertemuan_pengajian.php',
 ];
 foreach ($phpFiles as $file) {
     $output = [];

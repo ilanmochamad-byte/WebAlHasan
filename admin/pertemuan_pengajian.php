@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Auth\Capabilities;
 use App\Http\Csrf;
 use App\Schedule\ScheduleException;
 
@@ -12,6 +13,12 @@ if (!in_array('admin', $currentUser['roles'], true) && !in_array('guru', $curren
     http_response_code(403);
     exit('Akses ditolak. Akun tidak memiliki hak jadwal atau pertemuan.');
 }
+
+// Tautan ke antrean perizinan hanya untuk akun yang benar-benar memiliki
+// capability murobi (guru + penugasan murobi aktif). Menyembunyikan tautan ini
+// BUKAN kontrol akses: `/portal/*` tetap dijaga PortalGuard di sisi server dan
+// menolak guru tanpa penugasan dengan 403 meskipun URL-nya diketik manual.
+$bolehAntreanIzin = capabilities()->has($currentUser, Capabilities::MUROBI);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     Csrf::requireValid($_POST['_csrf'] ?? null);
 }
@@ -72,7 +79,7 @@ $selectedScheduleId = (int) ($_GET['schedule_id'] ?? 0);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-light">
-<nav class="navbar navbar-dark bg-dark"><div class="container"><span class="navbar-brand"><i class="fas fa-mosque me-2"></i>Pertemuan Pengajian</span><div class="d-flex gap-2"><?php if (in_array('admin', $currentUser['roles'], true)): ?><a class="btn btn-sm btn-outline-light" href="admin_jadwal_ngaji.php">Kelola Jadwal</a><?php endif; ?><a class="btn btn-sm btn-outline-danger" href="logout.php">Keluar</a></div></div></nav>
+<nav class="navbar navbar-dark bg-dark"><div class="container"><span class="navbar-brand"><i class="fas fa-mosque me-2"></i>Pertemuan Pengajian</span><div class="d-flex gap-2"><?php if ($bolehAntreanIzin): ?><a class="btn btn-sm btn-success" href="<?= $escape(app_url('/portal/izin_antrean.php?mode=' . Capabilities::MUROBI)) ?>"><i class="fas fa-file-shield me-1"></i>Antrean Perizinan</a><?php endif; ?><?php if (in_array('admin', $currentUser['roles'], true)): ?><a class="btn btn-sm btn-outline-light" href="admin_jadwal_ngaji.php">Kelola Jadwal</a><?php endif; ?><a class="btn btn-sm btn-outline-danger" href="logout.php">Keluar</a></div></div></nav>
 <main class="container py-4">
     <?php if (is_array($message)): ?><div class="alert alert-<?= $escape($message['type']) ?>" role="alert"><?= $escape($message['message']) ?></div><?php endif; ?>
     <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4 gap-2"><div><h1 class="h3 mb-1">Jadwal dan Pertemuan</h1><p class="text-muted mb-0"><?= in_array('admin', $currentUser['roles'], true) ? 'Admin dapat membuka seluruh jadwal aktif.' : 'Hanya jadwal aktif milik Anda yang ditampilkan.' ?></p></div><span class="badge text-bg-secondary"><?= $escape($currentUser['name']) ?></span></div>

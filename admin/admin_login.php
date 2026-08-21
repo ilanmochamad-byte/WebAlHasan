@@ -6,17 +6,13 @@ use App\Http\Csrf;
 
 require_once dirname(__DIR__) . '/app/bootstrap.php';
 
-if (authorization()->currentUser() !== null && empty($_SESSION['force_password_change'])) {
-    if (in_array('admin', $_SESSION['roles'] ?? [], true)) {
-        header('Location: ' . app_url('/admin/admin_dashboard.php'));
-        exit;
-    }
-    if (in_array('guru', $_SESSION['roles'] ?? [], true)) {
-        header('Location: ' . app_url('/admin/pertemuan_pengajian.php'));
-        exit;
-    }
-    if (in_array('pengurus', $_SESSION['roles'] ?? [], true) || in_array('orang_tua', $_SESSION['roles'] ?? [], true)) {
-        header('Location: ' . app_url('/portal/index.php'));
+// Sesi yang masih hidup dikembalikan ke tujuan yang sama dengan alur login biasa
+// (LandingRouter), sehingga murobi tidak pernah terlempar balik ke jadwal.
+$activeUser = authorization()->currentUser();
+if ($activeUser !== null && empty($_SESSION['force_password_change'])) {
+    $destination = landing_router()->url($activeUser);
+    if ($destination !== null) {
+        header('Location: ' . $destination);
         exit;
     }
 }

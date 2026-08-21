@@ -27,22 +27,15 @@ if (!empty($_SESSION['force_password_change'])) {
     exit;
 }
 
-$roles = $_SESSION['roles'] ?? [];
+// Tujuan pasca-login ditentukan LandingRouter dari capability nyata akun, bukan
+// dari role mentah: guru dengan penugasan murobi aktif mendarat di antrean
+// keputusan izin, guru tanpa penugasan tetap mendarat di jadwal mengajar.
+// Kemampuan tetap diverifikasi ulang oleh guard halaman tujuan di sisi server.
+$user = authorization()->currentUser();
+$destination = $user === null ? null : landing_router()->url($user);
 
-if (in_array('admin', $roles, true)) {
-    header('Location: ' . app_url('/admin/admin_dashboard.php'));
-    exit;
-}
-
-if (in_array('guru', $roles, true)) {
-    header('Location: ' . app_url('/admin/pertemuan_pengajian.php'));
-    exit;
-}
-
-// V2: pengurus dan orang tua diarahkan ke portal perizinan. Kemampuan tetap
-// diverifikasi ulang oleh guard portal di sisi server.
-if (in_array('pengurus', $roles, true) || in_array('orang_tua', $roles, true)) {
-    header('Location: ' . app_url('/portal/index.php'));
+if ($destination !== null) {
+    header('Location: ' . $destination);
     exit;
 }
 

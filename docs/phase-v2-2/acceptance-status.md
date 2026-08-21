@@ -52,6 +52,7 @@ Penanda bukti:
 | Anonim | 302 → login | 302 → login | 302 → login | 302 → login | 302 → login | 302 → login |
 | Pengurus | 200 | 200 | 200 | 200 | **403** | **403** |
 | Murobi (guru + penugasan) | 200 | 200 | 200 | **403** | **403** | **403** |
+| Guru tanpa penugasan murobi | **403** | **403** | **403** | **403** | **403** | **403** |
 | Orang tua | 200 | 200 | 200 | **403** | **403** | **403** |
 | Admin | 200 | 200 | 200 | 200 | 200 | 200 |
 
@@ -65,6 +66,18 @@ Isolasi detail lintas peran (`/portal/izin_detail.php?id=…`):
 Kode status mutasi (`/portal/izin_aksi.php`): sukses **303**, tanpa CSRF **419**,
 di luar cakupan **403**, validasi **422**, konflik status/versi/tumpang tindih **409**.
 
+Tujuan setelah login (hotfix navigasi murobi, `App\Auth\LandingRouter`):
+
+| Akun | Tujuan | Bukti |
+|---|---|---|
+| Admin | `/admin/admin_dashboard.php` | `NAV-3` |
+| Guru + penugasan murobi aktif | `/portal/izin_antrean.php?mode=murobi` | `NAV-1`, `NAV-6` |
+| Guru tanpa penugasan murobi | `/admin/pertemuan_pengajian.php` | `NAV-2` |
+| Pengurus / orang tua | `/portal/index.php` | `NAV-4`, `NAV-5` |
+
+Tautan navigasi dua arah dirender bersyarat dan **bukan** kontrol akses: guru
+non-murobi yang mengetik URL portal tetap menerima **403** (`NAV-16`).
+
 ## 4. Yang MASIH harus diuji manusia sebelum rilis
 
 Fase 2 **belum boleh dinyatakan selesai untuk produksi** sebelum langkah berikut
@@ -77,6 +90,9 @@ dikerjakan manusia (lihat `docs/phase-v2-2/cpanel-deployment.md`):
       dump `k1807225_webalhasan.sql` yang dipakai di sini).
 - [ ] Persetujuan pengguna atas pengarsipan `admin/admin_izin.php`.
 - [ ] Uji asap pasca-deploy di cPanel sesuai runbook.
+- [ ] **Hotfix navigasi murobi:** login akun murobi produksi dan pastikan mendarat
+      di antrean keputusan, tautan dua arah jadwal ⇄ antrean berfungsi, serta guru
+      non-murobi tetap mendarat di jadwal tanpa tautan perizinan.
 
 Seluruh kriteria penerimaan otomatis Fase 2 sudah memiliki bukti pengujian.
 Butir manual di atas berada di luar jangkauan agen dan sengaja dibiarkan terbuka.
