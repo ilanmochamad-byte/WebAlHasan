@@ -247,9 +247,30 @@ foreach (['teacher_api_service', 'report_service', 'schedule_service', 'master_d
     $assert(str_contains($bootstrap, 'function ' . $legacyHelper), 'Helper V1 ' . $legacyHelper . '() dipertahankan');
 }
 $router = $source('api/v1/index.php');
+// Sejak V2 Fase 3 endpoint perizinan sudah ditambahkan secara ADITIF di bawah
+// `/api/v1`. Yang dijaga di sini adalah janji Fase 1: seluruh rute V1 tetap ada
+// dengan metode dan path yang sama sehingga aplikasi guru tidak perlu diubah.
+foreach ([
+    "'/auth/login'",
+    "'/profile'",
+    "'/auth/logout'",
+    "'/schedules/today'",
+    "'/schedules'",
+    "'/meetings'",
+    "'/reports'",
+    "'/reports/filters'",
+    "'/reports/print'",
+    '#^/schedules/(\d+)$#',
+    '#^/schedules/(\d+)/meetings$#',
+    '#^/meetings/(\d+)(?:/attendance)?$#',
+    '#^/meetings/(\d+)/attendance$#',
+    '#^/reports/meetings/(\d+)$#',
+] as $rute) {
+    $assert(str_contains($router, $rute), 'Rute API V1 dipertahankan: ' . $rute);
+}
 $assert(
-    !str_contains($router, 'izin_service()') && !str_contains($router, '/izin'),
-    'Kontrak API V1 belum berubah pada Fase 1 (endpoint perizinan menyusul pada Fase 3)'
+    str_contains($router, 'assertScheduleAccess($user)'),
+    'Endpoint jadwal/laporan V1 tetap dijaga penjaga role admin/guru yang sama'
 );
 $login = $source('admin/cek_login.php');
 // Sejak hotfix navigasi murobi, aturan tujuan pasca-login berada pada satu sumber

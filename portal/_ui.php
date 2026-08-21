@@ -148,6 +148,21 @@ function portal_footer(): void
     ?>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// V2 Fase 3 — paritas web dengan aplikasi: tombol mutasi dinonaktifkan selama
+// request berjalan sehingga klik ganda tidak mengirim dua permintaan.
+// Ini hanya peningkatan tampilan. Pengaman sebenarnya tetap kunci idempotensi
+// per formulir dan optimistic version di server, sehingga tanpa JavaScript pun
+// perilaku sistem tidak berubah.
+document.querySelectorAll('form[method="post"]').forEach(function (form) {
+    form.addEventListener('submit', function () {
+        form.querySelectorAll('button[type="submit"], button:not([type])').forEach(function (button) {
+            button.disabled = true;
+            button.setAttribute('aria-busy', 'true');
+        });
+    });
+});
+</script>
 </body>
 </html>
     <?php
