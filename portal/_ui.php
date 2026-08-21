@@ -120,6 +120,11 @@ function portal_header(string $title, array $capabilities, string $activeMode, a
                 <?php if (array_intersect([Capabilities::PENGURUS, Capabilities::ADMIN], $capabilities) !== []): ?>
                     <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/izin_buat.php')) ?>">Buat Pengajuan</a></li>
                 <?php endif; ?>
+                <?php if (in_array('guru', $user['roles'] ?? [], true)): ?>
+                    <?php // Jalan kembali bagi guru/murobi: satu sesi, tanpa login ulang (PRD 5.6).
+                          // Halaman tujuan tetap memeriksa haknya sendiri di server. ?>
+                    <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/admin/pertemuan_pengajian.php')) ?>">Jadwal Mengajar</a></li>
+                <?php endif; ?>
                 <?php if (in_array(Capabilities::ADMIN, $capabilities, true)): ?>
                     <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/admin/admin_dashboard.php')) ?>">Panel Admin</a></li>
                 <?php endif; ?>

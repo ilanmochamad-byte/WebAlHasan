@@ -10,12 +10,12 @@ $user = authorization()->requireWebUser();
 $error = null;
 $success = false;
 
-$continue = match (true) {
-    in_array('admin', $user['roles'], true) => [app_url('/admin/admin_dashboard.php'), 'Lanjut ke dashboard'],
-    in_array('guru', $user['roles'], true) => [app_url('/admin/pertemuan_pengajian.php'), 'Lanjut ke tugas pengajian'],
-    in_array('pengurus', $user['roles'], true), in_array('orang_tua', $user['roles'], true) => [app_url('/portal/index.php'), 'Lanjut ke portal perizinan'],
-    default => [app_url('/admin/logout.php'), 'Keluar'],
-};
+// Tujuan setelah ganti password memakai LandingRouter yang sama dengan alur login,
+// sehingga murobi yang baru mengganti password awal langsung menuju antreannya.
+$destination = landing_router()->destination($user);
+$continue = $destination['url'] === null
+    ? [app_url('/admin/logout.php'), 'Keluar']
+    : [$destination['url'], $destination['label']];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     Csrf::requireValid($_POST['_csrf'] ?? null);

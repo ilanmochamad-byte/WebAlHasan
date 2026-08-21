@@ -15,6 +15,7 @@ use App\Auth\ApiTokenAuthenticator;
 use App\Auth\AuthRepository;
 use App\Auth\Authorization;
 use App\Auth\Capabilities;
+use App\Auth\LandingRouter;
 use App\Auth\PortalGuard;
 use App\Auth\TokenHasher;
 use App\Database\Connection;
@@ -214,6 +215,16 @@ function portal_guard(): PortalGuard
 {
     static $guard;
     return $guard ??= new PortalGuard(authorization(), capabilities());
+}
+
+/**
+ * Tujuan navigasi setelah autentikasi (berbasis capability, bukan role saja).
+ * Bukan kontrol akses: halaman tujuan tetap menjaga dirinya sendiri.
+ */
+function landing_router(): LandingRouter
+{
+    static $router;
+    return $router ??= new LandingRouter(capabilities());
 }
 
 function izin_repository(): IzinRepository

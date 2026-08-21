@@ -143,3 +143,55 @@ Pemeriksaan cakupan dan tahun ajaran pada pembuatan juga dipindahkan ke dalam
 transaksi setelah baris santri dikunci. Seluruh suite pada §1–§2, smoke HTTP,
 konkurensi dua proses, preflight/verify, migrasi mentah dua kali, dan rollback
 mentah dua kali dijalankan ulang setelah koreksi dan seluruhnya lulus.
+
+## 9. Hotfix navigasi murobi (pasca-deployment)
+
+**Laporan lapangan:** setelah Fase 2 dirilis, akun murobi yang login selalu
+mendarat di `admin/pertemuan_pengajian.php` dan tidak punya jalan menuju antrean
+keputusan; antreannya sendiri sudah benar di `/portal/izin_antrean.php?mode=murobi`.
+
+**Akar masalah (dikonfirmasi lewat reproduksi HTTP sebelum kode diubah).** Tiga
+titik pengarahan memutuskan tujuan dari **role mentah**, bukan capability:
+
+| Berkas | Baris masalah | Akibat |
+|---|---|---|
+| `admin/cek_login.php` | `in_array('guru', $roles)` → jadwal | murobi tidak pernah sampai ke antrean |
+| `admin/admin_login.php` | pemeriksaan role yang sama pada sesi hidup | murobi terlempar balik ke jadwal |
+| `admin/ubah_password.php` | `match` berbasis role | tawaran lanjut mengarah ke jadwal |
+
+Ditambah dua celah navigasi: halaman jadwal tidak punya tautan ke portal, dan
+portal tidak punya tautan balik ke jadwal.
+
+Reproduksi (`tests/v2_phase2_navigasi_murobi.php` terhadap kode **sebelum**
+perbaikan) menghasilkan tepat lima kegagalan — `NAV-1`, `NAV-6`, `NAV-8`,
+`NAV-12`, `NAV-25` — sementara seluruh pemeriksaan otorisasi, isi antrean, dan
+isolasi antarmurobi tetap lulus. Ini membuktikan masalahnya murni navigasi, bukan
+otorisasi maupun cakupan data.
+
+**Perbaikan.** Aturan tujuan pasca-login dipusatkan pada `App\Auth\LandingRouter`
+yang menilai `Capabilities` (role `guru` **dan** `murobi_assignments` aktif),
+lalu dipakai bersama oleh ketiga berkas di atas. Urutannya: admin → murobi
+(capability) → guru biasa → pengurus/orang tua. Tautan dua arah ditambahkan dan
+dirender bersyarat, tanpa mengubah satu pun pemeriksaan otorisasi server.
+
+**Hasil pengujian setelah perbaikan:**
+
+| Suite | Hasil | Jumlah |
+|---|---|---|
+| `tests/v2_phase2_navigasi_murobi.php` (baru) | ✅ lulus | 32 |
+| `tests/v2_phase2_static.php` | ✅ lulus | 164 |
+| `tests/v2_phase2_integration.php` | ✅ lulus | 94 |
+| `tests/v2_phase2_web_smoke.php` | ✅ lulus | 35 |
+| `bin/v2_phase2_verify.php` | ✅ lulus | 26 |
+| `tests/phase1–5_static` + `v2_phase1_static` | ✅ lulus | 329 |
+| `tests/phase2–5_integration` + `v2_phase1_integration` | ✅ lulus | 97 |
+
+Dua pemeriksaan statis Fase 1 yang tadinya mengunci **lokasi** logika pengarahan
+(string `in_array('guru', …)` di dalam `cek_login.php`/`ubah_password.php`)
+diperbarui agar mengunci **perilaku** pada sumber kebenaran barunya
+(`LandingRouter`). Jaminannya tidak berkurang: admin, guru biasa, pengurus, dan
+orang tua tetap mendarat di tempat yang sama, dan hal itu kini juga dibuktikan
+lewat HTTP nyata oleh `NAV-2`–`NAV-5`.
+
+Tidak ada perubahan pada migrasi, aturan routing, aturan keputusan, cakupan data,
+maupun kontrak API. Fase 3 tidak disentuh.

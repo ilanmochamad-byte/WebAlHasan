@@ -44,6 +44,7 @@ php bin/v2_phase2_verify.php storage/backups/v2-phase2/<timestamp>/manifest.json
 php tests/v2_phase2_static.php
 V2_PHASE2_RUN_INTEGRATION=1 php tests/v2_phase2_integration.php
 V2_PHASE2_RUN_WEB=1        php tests/v2_phase2_web_smoke.php
+V2_PHASE2_RUN_NAV=1        php tests/v2_phase2_navigasi_murobi.php
 V2_PHASE1_RUN_INTEGRATION=1 php tests/v2_phase1_integration.php
 PHASE4_RUN_INTEGRATION=1 php tests/phase4_integration.php
 PHASE5_RUN_INTEGRATION=1 php tests/phase5_integration.php
@@ -77,6 +78,14 @@ Lanjutkan ke produksi hanya bila seluruhnya lulus.
    | `database/migrations/007_…sql` | `admin/sidebar.php` |
    | `database/rollbacks/007_…sql` | `.env.example` |
    | `tests/v2_phase2_*.php` | |
+   | `app/Auth/LandingRouter.php` | `admin/cek_login.php` |
+   | | `admin/admin_login.php` |
+   | | `admin/ubah_password.php` |
+   | | `admin/pertemuan_pengajian.php` |
+
+   Empat berkas `admin/*` terakhir dan `app/Auth/LandingRouter.php` berasal dari
+   hotfix navigasi murobi; keduanya tidak menyentuh basis data sehingga dapat
+   diunggah tanpa migrasi tambahan.
 
    Direktori `tests/` dan `bin/` sebaiknya tidak dapat diakses dari web (skrip
    `bin/` sudah menolak akses non-CLI, tetapi pembatasan `.htaccess` tetap dianjurkan).
@@ -113,7 +122,10 @@ Lanjutkan ke produksi hanya bila seluruhnya lulus.
 | 6 | Klik **Kirim** dua kali / refresh POST | tetap satu pengajuan |
 | 7 | Kirim pengajuan dengan tanggal kembali lebih awal | ditolak **422** dengan pesan jelas |
 | 8 | Kirim pengajuan tumpang tindih | ditolak **409** dengan nomor pengajuan bentrok |
-| 9 | Login murobi tujuan → **Antrean** | pengajuan muncul; tombol keputusan tersedia |
+| 9 | Login murobi tujuan | **langsung mendarat di antrean keputusan** (`/portal/izin_antrean.php?mode=murobi`); pengajuan muncul dan tombol keputusan tersedia |
+| 9b | Dari antrean klik **Jadwal Mengajar** | halaman jadwal terbuka tanpa login ulang |
+| 9c | Dari jadwal klik **Antrean Perizinan** | kembali ke antrean tanpa login ulang |
+| 9d | Login guru **tanpa** penugasan murobi | mendarat di jadwal mengajar; tidak ada tombol Antrean Perizinan; mengetik URL portal tetap **403** |
 | 10 | Setujui dengan alasan | status berubah; riwayat bertambah |
 | 11 | Coba putuskan lagi | ditolak **409** |
 | 12 | Login murobi lain, buka ID pengajuan tadi | **403** |

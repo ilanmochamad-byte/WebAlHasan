@@ -252,18 +252,25 @@ $assert(
     'Kontrak API V1 belum berubah pada Fase 1 (endpoint perizinan menyusul pada Fase 3)'
 );
 $login = $source('admin/cek_login.php');
+// Sejak hotfix navigasi murobi, aturan tujuan pasca-login berada pada satu sumber
+// kebenaran (App\Auth\LandingRouter) dan dipakai bersama oleh cek_login.php,
+// admin_login.php, serta ubah_password.php. Perilakunya tidak berubah untuk
+// admin, guru biasa, pengurus, dan orang tua.
+$landingRouter = $source('app/Auth/LandingRouter.php');
 $assert(
-    str_contains($login, "in_array('admin', \$roles, true)")
-    && str_contains($login, "in_array('guru', \$roles, true)")
-    && str_contains($login, "app_url('/portal/index.php')"),
+    str_contains($login, 'landing_router()->url($user)')
+    && str_contains($landingRouter, "in_array('admin', \$roles, true)")
+    && str_contains($landingRouter, "in_array('guru', \$roles, true)")
+    && str_contains($landingRouter, "app_url('/admin/pertemuan_pengajian.php')")
+    && str_contains($landingRouter, "app_url('/portal/index.php')"),
     'Alur login lama admin/guru dipertahankan dan pengurus/orang tua diarahkan ke portal'
 );
 $passwordPage = $source('admin/ubah_password.php');
 $assert(
-    str_contains($passwordPage, "in_array('pengurus', \$user['roles'], true)")
-    && str_contains($passwordPage, "in_array('orang_tua', \$user['roles'], true)")
-    && str_contains($passwordPage, "app_url('/portal/index.php')")
-    && str_contains($passwordPage, 'Lanjut ke portal perizinan'),
+    str_contains($passwordPage, 'landing_router()->destination($user)')
+    && str_contains($landingRouter, "in_array('pengurus', \$roles, true) || in_array('orang_tua', \$roles, true)")
+    && str_contains($landingRouter, "app_url('/portal/index.php')")
+    && str_contains($landingRouter, 'Lanjut ke portal perizinan'),
     'Akun pengurus/orang tua diarahkan ke portal setelah mengganti password awal'
 );
 $assert(
