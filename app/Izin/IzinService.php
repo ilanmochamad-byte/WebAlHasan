@@ -111,7 +111,20 @@ final class IzinService
             'pengajuan' => $this->present($row),
             'keputusan' => $this->repository->decision($id),
             'riwayat' => $this->repository->history($id),
+            // Fase 2: koreksi keputusan disimpan sebagai peristiwa terpisah sehingga
+            // nilai sebelum/sesudah tetap terbaca tanpa menimpa keputusan pertama.
+            'koreksi' => $this->repository->corrections($id),
         ];
+    }
+
+    /**
+     * Jumlah pengajuan yang menunggu tindakan pengguna pada cakupannya.
+     *
+     * @param array{id:int, roles:array<int,string>, guru_id:int|null} $user
+     */
+    public function queueCount(array $user, ?string $preferred = null): int
+    {
+        return $this->repository->queueCount($this->scopeFor($user, $preferred));
     }
 
     /**

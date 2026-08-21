@@ -42,7 +42,7 @@
             <li class="nav-item"><a class="nav-link text-white <?php echo in_array(basename($_SERVER['PHP_SELF']), ['admin_laporan_absensi.php', 'laporan_absensi_detail.php'], true) ? 'active bg-success' : ''; ?>" href="admin_laporan_absensi.php"><i class="fas fa-chart-column me-2"></i> Laporan Absensi</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_kamar.php"><i class="fas fa-bed me-2"></i> Data Kamar</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="<?php echo htmlspecialchars(app_url('/portal/izin.php'), ENT_QUOTES, 'UTF-8'); ?>"><i class="fas fa-file-shield me-2"></i> Perizinan V2 (Portal)</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="admin_izin.php"><i class="fas fa-envelope-open-text me-2"></i> Perizinan (Modul Lama)</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="<?php echo htmlspecialchars(app_url('/portal/izin_antrean.php'), ENT_QUOTES, 'UTF-8'); ?>"><i class="fas fa-inbox me-2"></i> Antrean Penetapan Admin</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="admin_pelanggaran.php"><i class="fas fa-exclamation-triangle me-2"></i> Pelanggaran</a></li>
 
             <li class="nav-item mt-3 text-white-50 small fw-bold px-3">KEUANGAN</li>

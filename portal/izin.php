@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Auth\Capabilities;
 use App\Izin\IzinException;
 use App\Izin\IzinRepository;
 
@@ -27,11 +28,20 @@ try {
 $scope = $result['scope'];
 portal_header('Daftar Perizinan', $userCapabilities, $scope['mode'], $currentUser);
 ?>
-<div class="border-bottom pb-3 mb-4">
-    <h1 class="h3 mb-1">Daftar Perizinan</h1>
-    <p class="text-muted mb-0"><?= portal_e($scope['label']) ?> — <?= (int) $result['total'] ?> pengajuan.</p>
+<div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Daftar Perizinan</h1>
+        <p class="text-muted mb-0"><?= portal_e($scope['label']) ?> — <?= (int) $result['total'] ?> pengajuan.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-primary" href="<?= portal_e(app_url('/portal/izin_antrean.php') . '?mode=' . rawurlencode($scope['mode'])) ?>">Antrean</a>
+        <?php if (in_array($scope['mode'], [Capabilities::PENGURUS, Capabilities::ADMIN], true)): ?>
+            <a class="btn btn-success" href="<?= portal_e(app_url('/portal/izin_buat.php') . '?mode=' . rawurlencode($scope['mode'])) ?>">Buat pengajuan</a>
+        <?php endif; ?>
+    </div>
 </div>
 
+<?php portal_flash_render(); ?>
 <?php portal_mode_switcher($userCapabilities, $scope['mode'], app_url('/portal/izin.php')); ?>
 
 <form method="get" class="card border-0 shadow-sm mb-4"><div class="card-body row g-3">
