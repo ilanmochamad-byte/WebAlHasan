@@ -453,7 +453,16 @@ try {
     }
     $idsUser = array_values(array_filter(array_map('intval', $created['users'])));
     if ($idsUser !== []) {
-        $db->query('DELETE FROM izin_idempotency_keys WHERE user_id IN (' . implode(',', $idsUser) . ')');
+        $daftarUser = implode(',', $idsUser);
+        $db->query('DELETE FROM izin_idempotency_keys WHERE user_id IN (' . $daftarUser . ')');
+        // Login dan perubahan password mencatat entity `user`. Hapus hanya jejak
+        // milik akun fixture, bukan seluruh audit yang kebetulan dibuat dalam
+        // rentang waktu yang sama oleh suite/proses lain.
+        $db->query('DELETE FROM audit_logs WHERE entity_type = \'user\' AND entity_id IN (' . $daftarUser . ')');
+    }
+    $idsPembimbing = array_values(array_filter(array_map('intval', $created['pembimbing'])));
+    if ($idsPembimbing !== []) {
+        $db->query('DELETE FROM audit_logs WHERE entity_type = \'pembimbing_assignment\' AND entity_id IN (' . implode(',', $idsPembimbing) . ')');
     }
     $cleanup = [
         'pembimbing_assignments' => ['id', $created['pembimbing']],
@@ -475,8 +484,6 @@ try {
         }
         $db->query('DELETE FROM `' . $table . '` WHERE `' . $column . '` IN (' . implode(',', $ids) . ')');
     }
-    $db->query("DELETE FROM audit_logs WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 MINUTE)
-        AND action IN ('pembimbing_assignment_created','login_success','login_failed')");
     $db->query('SET FOREIGN_KEY_CHECKS=1');
     echo '[bersih] Fixture uji navigasi dihapus.' . PHP_EOL;
 }

@@ -18,7 +18,7 @@ produksi tidak memuat baris `perizinan`, empat baris izin warisan (ID `3`, `7`,
 | `tests/v2_phase2_static.php` | statis | ✅ lulus (0 gagal) | 139 |
 | `tests/v2_phase2_integration.php` | integrasi DB | ✅ lulus (0 gagal) | 94 |
 | `tests/v2_phase2_web_smoke.php` | HTTP end-to-end | ✅ lulus (0 gagal) | 35 |
-| `bin/v2_phase2_verify.php` | verifikasi pasca-migrasi | ✅ lulus (0 berbeda) | 26 |
+| `bin/v2_phase2_verify.php` | verifikasi pasca-migrasi + manifest | ✅ lulus (0 berbeda) | 35 (26 inti + 9 manifest) |
 | `bin/v2_phase2_preflight.php` | preflight | ✅ keluar 0 | backup + manifest + konflik |
 
 ## 2. Regresi V1 dan V2 Fase 1
@@ -182,7 +182,7 @@ dirender bersyarat, tanpa mengubah satu pun pemeriksaan otorisasi server.
 | `tests/v2_phase2_static.php` | ✅ lulus | 164 |
 | `tests/v2_phase2_integration.php` | ✅ lulus | 94 |
 | `tests/v2_phase2_web_smoke.php` | ✅ lulus | 35 |
-| `bin/v2_phase2_verify.php` | ✅ lulus | 26 |
+| `bin/v2_phase2_verify.php` | ✅ lulus | 35 (26 inti + 9 manifest) |
 | `tests/phase1–5_static` + `v2_phase1_static` | ✅ lulus | 329 |
 | `tests/phase2–5_integration` + `v2_phase1_integration` | ✅ lulus | 97 |
 
