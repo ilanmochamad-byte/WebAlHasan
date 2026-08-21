@@ -12,6 +12,7 @@ $requestedMode = isset($_GET['mode']) ? (string) $_GET['mode'] : null;
 try {
     $overview = izin_service()->list($currentUser, [], 1, 5, $requestedMode);
     $santri = izin_service()->santriInScope($currentUser, $requestedMode);
+    $antrean = izin_service()->queueCount($currentUser, $requestedMode);
 } catch (IzinException $exception) {
     http_response_code($exception->status());
     exit(portal_e($exception->getMessage()));
@@ -27,13 +28,28 @@ portal_header('Ringkasan', $userCapabilities, $scope['mode'], $currentUser);
         <h1 class="h3 mb-1">Ringkasan Perizinan</h1>
         <p class="text-muted mb-0"><?= portal_e($scope['label']) ?></p>
     </div>
-    <a class="btn btn-success" href="<?= portal_e(app_url('/portal/izin.php') . '?mode=' . rawurlencode($scope['mode'])) ?>">Buka daftar lengkap</a>
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-primary" href="<?= portal_e(app_url('/portal/izin_antrean.php') . '?mode=' . rawurlencode($scope['mode'])) ?>">
+            Antrean <span class="badge text-bg-light border"><?= (int) $antrean ?></span>
+        </a>
+        <?php if (in_array($scope['mode'], [Capabilities::PENGURUS, Capabilities::ADMIN], true)): ?>
+            <a class="btn btn-success" href="<?= portal_e(app_url('/portal/izin_buat.php') . '?mode=' . rawurlencode($scope['mode'])) ?>">Buat pengajuan</a>
+        <?php endif; ?>
+        <a class="btn btn-outline-secondary" href="<?= portal_e(app_url('/portal/izin.php') . '?mode=' . rawurlencode($scope['mode'])) ?>">Daftar lengkap</a>
+    </div>
 </div>
 
+<?php portal_flash_render(); ?>
 <?php portal_mode_switcher($userCapabilities, $scope['mode'], app_url('/portal/index.php')); ?>
 
 <div class="alert alert-info small">
-    Fase 1 bersifat <strong>baca-saja</strong>. Pengajuan, keputusan, dan pembatalan mulai tersedia pada Fase 2.
+    <?php if ($scope['mode'] === Capabilities::ORANG_TUA): ?>
+        Akun orang tua bersifat <strong>baca-saja</strong>: Anda dapat melihat status dan riwayat izin santri yang terhubung,
+        tetapi tidak dapat membuat, mengubah, menyetujui, atau menolak pengajuan.
+    <?php else: ?>
+        Alur Fase 2 aktif: pengajuan oleh pengurus, routing otomatis ke murobi, penetapan admin bila routing tidak tunggal,
+        keputusan, pembatalan, dan koreksi. Setiap perubahan tercatat pada riwayat dan audit.
+    <?php endif; ?>
     Data izin sebelum V2 ditandai <span class="badge text-bg-light border">Data warisan</span> karena sistem lama tidak mencatat pelakunya.
 </div>
 

@@ -32,4 +32,14 @@ class IzinException extends RuntimeException
     {
         return new self($message, 422);
     }
+
+    /**
+     * Konflik status/versi/idempotensi: permintaan sah tetapi bentrok dengan
+     * keadaan data saat ini (mis. pengajuan tumpang tindih, keputusan kedua,
+     * atau versi yang sudah berubah).
+     */
+    public static function conflict(string $message): self
+    {
+        return new self($message, 409);
+    }
 }

@@ -17,6 +17,54 @@ function portal_csrf(): string
     return Csrf::input();
 }
 
+/**
+ * Kunci idempotensi untuk satu formulir mutasi.
+ *
+ * Dibuat saat formulir dirender lalu dikirim sebagai field tersembunyi, sehingga
+ * klik ganda, refresh POST, atau retry jaringan memakai kunci yang SAMA dan hanya
+ * menghasilkan satu pengajuan/keputusan (PRD 5.6).
+ */
+function portal_idempotency_key(): string
+{
+    return bin2hex(random_bytes(16));
+}
+
+/**
+ * @param 'sukses'|'gagal'|'info' $jenis
+ */
+function portal_flash_set(string $jenis, string $pesan): void
+{
+    $_SESSION['portal_flash'] = ['jenis' => $jenis, 'pesan' => $pesan];
+}
+
+function portal_flash_render(): void
+{
+    $flash = $_SESSION['portal_flash'] ?? null;
+    unset($_SESSION['portal_flash']);
+    if (!is_array($flash)) {
+        return;
+    }
+    $kelas = match ((string) $flash['jenis']) {
+        'sukses' => 'success',
+        'gagal' => 'danger',
+        default => 'info',
+    };
+    echo '<div class="alert alert-' . $kelas . '" role="alert">' . portal_e((string) $flash['pesan']) . '</div>';
+}
+
+/**
+ * Konteks request untuk riwayat status (tanpa credential).
+ *
+ * @return array{ip:?string, user_agent:?string}
+ */
+function portal_request_meta(): array
+{
+    return [
+        'ip' => isset($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : null,
+        'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? (string) $_SERVER['HTTP_USER_AGENT'] : null,
+    ];
+}
+
 function portal_capability_label(string $capability): string
 {
     return match ($capability) {
@@ -68,6 +116,10 @@ function portal_header(string $title, array $capabilities, string $activeMode, a
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/index.php')) ?>">Ringkasan</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/izin.php')) ?>">Daftar Perizinan</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/izin_antrean.php')) ?>">Antrean</a></li>
+                <?php if (array_intersect([Capabilities::PENGURUS, Capabilities::ADMIN], $capabilities) !== []): ?>
+                    <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/izin_buat.php')) ?>">Buat Pengajuan</a></li>
+                <?php endif; ?>
                 <?php if (in_array(Capabilities::ADMIN, $capabilities, true)): ?>
                     <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/admin/admin_dashboard.php')) ?>">Panel Admin</a></li>
                 <?php endif; ?>

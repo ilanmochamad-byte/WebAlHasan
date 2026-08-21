@@ -1,6 +1,44 @@
 <?php
 require_once __DIR__ . '/_guard.php';
 
+/**
+ * ARSIP MODUL PERIZINAN LAMA (V1).
+ *
+ * V2 Fase 2 memindahkan seluruh alur perizinan ke portal berbasis peran
+ * (`/portal/izin.php`) yang memiliki cakupan server, routing murobi, keputusan
+ * transaksional, idempotensi, riwayat, dan audit. Modul di bawah ini menulis
+ * langsung ke tabel `perizinan` V1 tanpa satu pun pengaman tersebut.
+ *
+ * Sesuai PRD (Fase 2 §14 dan keputusan §8.20), modul ini DIALIHKAN secara
+ * kompatibel, BUKAN dihapus:
+ *   - berkas dan seluruh kodenya tetap utuh di bawah blok ini;
+ *   - tabel `perizinan` beserta datanya tidak disentuh sama sekali;
+ *   - URL lama `admin/admin_izin.php` tetap hidup dan mengarahkan pengguna ke
+ *     alur baru, sehingga bookmark maupun tautan lama tidak mati (302).
+ *
+ * Membuka kembali modul lama (hanya untuk pemulihan darurat, dengan sadar):
+ *   1. setel `IZIN_LEGACY_ENABLED=true` pada `.env`, DAN
+ *   2. buka `admin/admin_izin.php?legacy=1`.
+ * Peringatan: penulisan lewat modul lama TIDAK masuk ke alur V2 dan akan membuat
+ * data perizinan bercabang. Nonaktifkan kembali segera setelah selesai.
+ */
+$legacyDiizinkan = App\Support\Env::bool('IZIN_LEGACY_ENABLED', false);
+$legacyDiminta = isset($_GET['legacy']) && $_GET['legacy'] === '1';
+
+if (!$legacyDiizinkan || !$legacyDiminta) {
+    $tujuan = app_url('/portal/izin.php');
+    if (isset($_GET['id']) && ctype_digit((string) $_GET['id'])) {
+        // Kompatibel: ID perizinan lama dipertahankan sebagai ID pengajuan V2.
+        $tujuan = app_url('/portal/izin_detail.php') . '?id=' . (int) $_GET['id'];
+    }
+    header('Location: ' . $tujuan, true, 302);
+    exit;
+}
+
+// ---------------------------------------------------------------------------
+// Di bawah ini adalah modul perizinan V1 yang diarsipkan, tidak diubah isinya.
+// ---------------------------------------------------------------------------
+
 // TAMBAH IZIN
 if(isset($_POST['tambah'])){
     $id_santri = $_POST['id_santri'];

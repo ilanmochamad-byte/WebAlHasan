@@ -19,8 +19,12 @@ use App\Auth\PortalGuard;
 use App\Auth\TokenHasher;
 use App\Database\Connection;
 use App\Http\Session;
+use App\Izin\IzinIdempotency;
 use App\Izin\IzinRepository;
+use App\Izin\IzinRouter;
 use App\Izin\IzinService;
+use App\Izin\IzinWorkflowService;
+use App\Izin\IzinWriteRepository;
 use App\Izin\PembimbingRepository;
 use App\Izin\PembimbingService;
 use App\MasterData\MasterDataRepository;
@@ -212,10 +216,38 @@ function portal_guard(): PortalGuard
     return $guard ??= new PortalGuard(authorization(), capabilities());
 }
 
+function izin_repository(): IzinRepository
+{
+    static $repository;
+    return $repository ??= new IzinRepository(app_db());
+}
+
 function izin_service(): IzinService
 {
     static $service;
-    return $service ??= new IzinService(new IzinRepository(app_db()), capabilities());
+    return $service ??= new IzinService(izin_repository(), capabilities());
+}
+
+// --- V2 Fase 2: pengajuan, routing, dan keputusan ---------------------------
+
+function izin_router(): IzinRouter
+{
+    static $router;
+    return $router ??= new IzinRouter(app_db());
+}
+
+function izin_workflow_service(): IzinWorkflowService
+{
+    static $service;
+    return $service ??= new IzinWorkflowService(
+        izin_repository(),
+        new IzinWriteRepository(app_db()),
+        izin_router(),
+        new IzinIdempotency(app_db()),
+        izin_service(),
+        capabilities(),
+        audit_logger()
+    );
 }
 
 function pembimbing_service(): PembimbingService
