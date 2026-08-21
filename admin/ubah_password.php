@@ -10,6 +10,13 @@ $user = authorization()->requireWebUser();
 $error = null;
 $success = false;
 
+$continue = match (true) {
+    in_array('admin', $user['roles'], true) => [app_url('/admin/admin_dashboard.php'), 'Lanjut ke dashboard'],
+    in_array('guru', $user['roles'], true) => [app_url('/admin/pertemuan_pengajian.php'), 'Lanjut ke tugas pengajian'],
+    in_array('pengurus', $user['roles'], true), in_array('orang_tua', $user['roles'], true) => [app_url('/portal/index.php'), 'Lanjut ke portal perizinan'],
+    default => [app_url('/admin/logout.php'), 'Keluar'],
+};
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     Csrf::requireValid($_POST['_csrf'] ?? null);
     $currentPassword = (string) ($_POST['password_saat_ini'] ?? '');
@@ -45,12 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1 class="h3">Ganti password</h1>
         <?php if ($success): ?>
             <div class="alert alert-success">Password berhasil diperbarui.</div>
-            <?php if (in_array('admin', $user['roles'], true)): ?>
-                <a class="btn btn-success" href="admin_dashboard.php">Lanjut ke dashboard</a>
-            <?php else: ?>
-                <p class="text-muted">Akun guru sudah siap digunakan ketika aplikasi guru tersedia.</p>
-                <a class="btn btn-outline-secondary" href="logout.php">Keluar</a>
-            <?php endif; ?>
+            <a class="btn btn-success" href="<?= htmlspecialchars($continue[0], ENT_QUOTES, 'UTF-8') ?>">
+                <?= htmlspecialchars($continue[1], ENT_QUOTES, 'UTF-8') ?>
+            </a>
         <?php else: ?>
             <?php if ($user['force_password_change']): ?><div class="alert alert-warning">Password sementara wajib diganti sebelum melanjutkan.</div><?php endif; ?>
             <?php if ($error): ?><div class="alert alert-danger"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></div><?php endif; ?>

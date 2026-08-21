@@ -258,6 +258,14 @@ $assert(
     && str_contains($login, "app_url('/portal/index.php')"),
     'Alur login lama admin/guru dipertahankan dan pengurus/orang tua diarahkan ke portal'
 );
+$passwordPage = $source('admin/ubah_password.php');
+$assert(
+    str_contains($passwordPage, "in_array('pengurus', \$user['roles'], true)")
+    && str_contains($passwordPage, "in_array('orang_tua', \$user['roles'], true)")
+    && str_contains($passwordPage, "app_url('/portal/index.php')")
+    && str_contains($passwordPage, 'Lanjut ke portal perizinan'),
+    'Akun pengurus/orang tua diarahkan ke portal setelah mengganti password awal'
+);
 $assert(
     str_contains($source('admin/admin_izin.php'), 'perizinan'),
     'Modul izin lama belum dihapus (baru dipensiunkan pada Fase 2 setelah persetujuan)'
