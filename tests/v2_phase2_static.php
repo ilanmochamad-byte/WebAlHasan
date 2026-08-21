@@ -320,10 +320,20 @@ $assert(
 );
 
 $apiRouter = $source('api/v1/index.php');
+// V2 Fase 3 menambahkan endpoint perizinan secara ADITIF. Router tidak boleh
+// memanggil IzinWorkflowService langsung: seluruh mutasi API harus melewati
+// IzinApiService agar penerjemahan error, cakupan, dan idempotensi seragam.
 $assert(
-    !str_contains($apiRouter, 'izin_workflow_service()') && !str_contains($apiRouter, '/izin'),
-    'Kontrak API V1 tidak berubah pada Fase 2 (endpoint perizinan menyusul pada Fase 3)'
+    !str_contains($apiRouter, 'izin_workflow_service()'),
+    'Router API tidak memanggil IzinWorkflowService langsung (selalu lewat IzinApiService)'
 );
+$assert(
+    str_contains($apiRouter, 'izin_api_service()') && str_contains($apiRouter, "'/izin/pengajuan'"),
+    'Endpoint perizinan Fase 3 tersedia melalui IzinApiService'
+);
+foreach (["'/schedules/today'", "'/meetings'", "'/reports'", "'/auth/login'"] as $ruteV1) {
+    $assert(str_contains($apiRouter, $ruteV1), 'Rute V1 ' . $ruteV1 . ' tetap ada setelah Fase 3');
+}
 $bootstrap = $source('app/bootstrap.php');
 foreach (['izin_workflow_service', 'izin_router', 'izin_repository'] as $helper) {
     $assert(str_contains($bootstrap, 'function ' . $helper), 'bootstrap menyediakan ' . $helper . '()');

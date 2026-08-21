@@ -16,11 +16,17 @@ final class ApiAuthRepository
     public function loginCandidate(string $username): ?array
     {
         $row = $this->one(
-            "SELECT u.id, u.name, u.username, u.password, u.guru_id, u.is_active, u.force_password_change,
+            "SELECT u.id, u.name, u.username, u.password, u.guru_id, u.pengurus_id, u.wali_id,
+                    u.is_active, u.force_password_change,
                     g.nip, g.nama_guru, g.is_active AS guru_is_active, g.archived_at AS guru_archived_at,
+                    pg.nama AS pengurus_nama, pg.jabatan AS pengurus_jabatan,
+                    pg.is_active AS pengurus_is_active, pg.archived_at AS pengurus_archived_at,
+                    w.nama AS wali_nama, w.is_active AS wali_is_active, w.archived_at AS wali_archived_at,
                     GROUP_CONCAT(DISTINCT r.slug ORDER BY r.slug SEPARATOR ',') AS roles
              FROM users u
              LEFT JOIN guru g ON g.id = u.guru_id
+             LEFT JOIN pengurus pg ON pg.id = u.pengurus_id
+             LEFT JOIN wali w ON w.id = u.wali_id
              LEFT JOIN user_roles ur ON ur.user_id = u.id
              LEFT JOIN roles r ON r.id = ur.role_id
              WHERE u.username = ?
@@ -75,9 +81,15 @@ final class ApiAuthRepository
     {
         $row['id'] = (int) $row['id'];
         $row['guru_id'] = $row['guru_id'] === null ? null : (int) $row['guru_id'];
+        // V2 Fase 3: relasi akun perizinan dibaca sekaligus agar kelayakan login
+        // pengurus/orang tua dapat dinilai tanpa query tambahan.
+        $row['pengurus_id'] = ($row['pengurus_id'] ?? null) === null ? null : (int) $row['pengurus_id'];
+        $row['wali_id'] = ($row['wali_id'] ?? null) === null ? null : (int) $row['wali_id'];
         $row['is_active'] = (bool) $row['is_active'];
         $row['force_password_change'] = (bool) $row['force_password_change'];
         $row['guru_is_active'] = $row['guru_is_active'] === null ? null : (bool) $row['guru_is_active'];
+        $row['pengurus_is_active'] = ($row['pengurus_is_active'] ?? null) === null ? null : (bool) $row['pengurus_is_active'];
+        $row['wali_is_active'] = ($row['wali_is_active'] ?? null) === null ? null : (bool) $row['wali_is_active'];
         $row['roles'] = empty($row['roles']) ? [] : explode(',', (string) $row['roles']);
         return $row;
     }

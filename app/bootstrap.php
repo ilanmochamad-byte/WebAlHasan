@@ -9,6 +9,7 @@ use App\Account\PerizinanAccountService;
 use App\Audit\AuditLogger;
 use App\Api\ApiAuthRepository;
 use App\Api\ApiAuthService;
+use App\Api\IzinApiService;
 use App\Api\TeacherRepository;
 use App\Api\TeacherService;
 use App\Auth\ApiTokenAuthenticator;
@@ -174,7 +175,8 @@ function api_auth_service(): ApiAuthService
         token_hasher(),
         audit_logger(),
         (int) app_config('api.token_ttl_days'),
-        (string) app_config('timezone')
+        (string) app_config('timezone'),
+        capabilities()
     );
 }
 
@@ -265,6 +267,20 @@ function pembimbing_service(): PembimbingService
 {
     static $service;
     return $service ??= new PembimbingService(new PembimbingRepository(app_db()), audit_logger());
+}
+
+// --- V2 Fase 3: REST API perizinan multi-peran ------------------------------
+
+function izin_api_service(): IzinApiService
+{
+    static $service;
+    return $service ??= new IzinApiService(
+        izin_service(),
+        izin_workflow_service(),
+        izin_repository(),
+        izin_router(),
+        capabilities()
+    );
 }
 
 function perizinan_account_service(): PerizinanAccountService

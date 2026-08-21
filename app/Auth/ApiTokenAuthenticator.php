@@ -24,6 +24,7 @@ final class ApiTokenAuthenticator
         $hash = $this->hasher->hash($plainToken);
         $statement = $this->db->prepare(
             "SELECT t.id AS token_id, t.expires_at, u.id, u.name, u.username, u.guru_id,
+                    u.pengurus_id, u.wali_id,
                     g.nip, g.nama_guru,
                     GROUP_CONCAT(DISTINCT r.slug ORDER BY r.slug SEPARATOR ',') roles
              FROM api_tokens t
@@ -50,6 +51,9 @@ final class ApiTokenAuthenticator
         $user['id'] = (int) $user['id'];
         $user['token_id'] = (int) $user['token_id'];
         $user['guru_id'] = $user['guru_id'] === null ? null : (int) $user['guru_id'];
+        // V2 Fase 3 (aditif): relasi akun perizinan tersedia bagi lapisan layanan.
+        $user['pengurus_id'] = ($user['pengurus_id'] ?? null) === null ? null : (int) $user['pengurus_id'];
+        $user['wali_id'] = ($user['wali_id'] ?? null) === null ? null : (int) $user['wali_id'];
         $user['roles'] = $roles;
 
         if (in_array('guru', $roles, true) && !in_array('admin', $roles, true) && $user['guru_id'] === null) {
@@ -77,10 +81,26 @@ final class ApiTokenAuthenticator
 
     public function requireScheduleAccess(): array
     {
-        $user = $this->authenticate();
+        return $this->assertScheduleAccess($this->authenticate());
+    }
+
+    /**
+     * Penjaga akses jadwal/laporan V1 untuk pengguna yang SUDAH diautentikasi.
+     *
+     * Dipisahkan pada V2 Fase 3 agar router dapat mengautentikasi satu kali lalu
+     * menerapkan penjaga per endpoint: endpoint jadwal/laporan V1 tetap terbatas
+     * pada admin dan guru (kontrak tidak berubah), sedangkan endpoint perizinan V2
+     * memakai penjaga berbasis capability.
+     *
+     * @param array<string, mixed> $user
+     * @return array<string, mixed>
+     */
+    public function assertScheduleAccess(array $user): array
+    {
         if (!in_array('admin', $user['roles'], true) && !in_array('guru', $user['roles'], true)) {
             throw new ApiException('FORBIDDEN', 'Akun tidak memiliki akses jadwal.', 403);
         }
+
         return $user;
     }
 }

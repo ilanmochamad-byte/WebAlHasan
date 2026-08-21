@@ -1,6 +1,6 @@
 # Kontrak REST API `/api/v1`
 
-Versi: Fase 5, 20 Agustus 2026. Semua waktu server menggunakan zona `APP_TIMEZONE` dan semua trafik produksi wajib HTTPS.
+Versi: V2 Fase 3, 21 Agustus 2026 (sebelumnya Fase 5 V1, 20 Agustus 2026). Semua waktu server menggunakan zona `APP_TIMEZONE` dan semua trafik produksi wajib HTTPS.
 
 ## Konvensi
 
@@ -141,6 +141,49 @@ HTML memuat seluruh hasil filter, identitas Pesantren Al Hasan, jenis laporan, f
 aktif, waktu pembuatan, pembuat, dan nomor halaman. Aplikasi mengubah HTML ini menjadi
 PDF lokal melalui `expo-print`, kemudian membuka dialog cetak atau berbagi. HTML tetap
 berada di dalam envelope JSON standar API.
+
+## Perizinan V2 (Fase 3)
+
+Seluruh endpoint perizinan bersifat **aditif** di bawah `/api/v1` dan tidak
+mengubah endpoint V1 mana pun. Inventaris lengkap beserta contoh request dan
+response ada pada `docs/phase-v2-3/endpoint-inventory.md`; matriks kewenangan
+per peran ada pada `docs/phase-v2-3/capability-matrix.md`.
+
+Ringkasan:
+
+| Metode & path | Kegunaan |
+| --- | --- |
+| `GET /me/capabilities` | Kemampuan aktual pengguna untuk membangun navigasi |
+| `GET /izin/santri` | Santri dalam cakupan pengurus (admin: seluruh santri aktif) |
+| `GET /izin/anak` | Daftar anak terhubung untuk akun orang tua |
+| `POST /izin/pengajuan` | Membuat pengajuan (idempoten) |
+| `GET /izin/pengajuan` | Daftar pengajuan dalam cakupan, berhalaman dan berfilter |
+| `GET /izin/antrean` | Antrean tindakan sesuai peran |
+| `GET /izin/admin/monitor` | Pemantauan seluruh pengajuan (admin) |
+| `GET /izin/pengajuan/{id}` | Detail pengajuan, keputusan, riwayat, koreksi, dan aksi |
+| `GET /izin/pengajuan/{id}/riwayat` | Riwayat perubahan dan koreksi |
+| `GET /izin/pengajuan/{id}/routing` | Kandidat routing dan murobi yang berhak (admin) |
+| `POST /izin/pengajuan/{id}/penetapan-murobi` | Menetapkan/mengganti murobi (admin, alasan wajib) |
+| `POST /izin/pengajuan/{id}/keputusan` | Keputusan murobi atau Admin Pengganti |
+| `POST /izin/pengajuan/{id}/pembatalan` | Pembatalan sebelum keputusan (alasan wajib) |
+| `POST /izin/pengajuan/{id}/koreksi` | Koreksi keputusan (admin, alasan wajib) |
+| `GET /izin/filters` | Pilihan filter yang aman ditampilkan |
+
+Aturan yang berlaku pada seluruh endpoint di atas:
+
+- Parameter `mode` (`admin`, `pengurus`, `murobi`, `orang_tua`) hanya dapat
+  **mempersempit** ke kemampuan yang benar-benar dimiliki pengguna. Nilai lain
+  diabaikan, sehingga manipulasi parameter tidak pernah menaikkan hak akses.
+- Setiap mutasi wajib menyertakan `idempotency_key` (8–100 karakter,
+  `[A-Za-z0-9._:-]`). Retry dengan kunci dan isi yang sama mengembalikan respons
+  tersimpan dengan status `200`; kunci sama dengan isi berbeda menghasilkan `409`.
+- Mutasi menerima `version` (optimistic version). Versi kedaluwarsa atau
+  keputusan kedua menghasilkan `409` tanpa menimpa keputusan pertama.
+- `GET /profile` dan respons login kini memuat objek `capabilities`. Field ini
+  aditif; klien V1 yang mengabaikannya tetap berfungsi tanpa perubahan.
+- Akun `pengurus` dan `orang_tua` kini dapat login ke API bila relasi masternya
+  aktif. Endpoint jadwal dan laporan V1 tetap terbatas pada role `admin`/`guru`
+  dan tetap menjawab `403` untuk akun lain.
 
 ## Contoh error
 
