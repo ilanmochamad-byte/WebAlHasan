@@ -1,6 +1,6 @@
 # V2 Fase 3 — Status Kriteria Penerimaan
 
-Tanggal pengujian sandbox: **21 Agustus 2026**
+Tanggal pengujian sandbox: **22 Agustus 2026** (audit ulang Codex)
 Branch: `prd-v2-fase-3` (WebAlHasan) dan `prd-v2-fase-3` (alhasanApps)
 Baseline: commit rilis Fase 2 `f2f674d`, tergabung pada produksi lewat merge `c30add9`
 
@@ -9,7 +9,7 @@ dapat diverifikasi di sandbox, memerlukan tindakan manusia.
 
 ## 1. Ringkasan hasil pengujian otomatis
 
-Lingkungan: PHP 8.4.21 (CLI), MariaDB 10.11.14, Node.js 22.22.2, npm 10.9.7,
+Lingkungan: PHP 8.4.14 (CLI), MariaDB 12.3.2, Node.js 26.7.0, npm 11.19.0,
 TypeScript 6.0.3, Expo SDK 57. Database `webalhasan_test` dibuat **dari kondisi
 bersih** (struktur tanpa satu baris data produksi), migrasi 001–007 dijalankan
 dari nol, lalu diisi fixture sintetis `SBX`. Prosedur lengkap:
@@ -26,7 +26,7 @@ dari nol, lalu diisi fixture sintetis `SBX`. Prosedur lengkap:
 | `tests/phase5_static.php` | statis V1 | LULUS | 36 |
 | `tests/v2_phase1_static.php` | statis V2 Fase 1 | LULUS | 126 |
 | `tests/v2_phase2_static.php` | statis V2 Fase 2 | LULUS | 169 |
-| `tests/v2_phase3_static.php` | statis V2 Fase 3 | LULUS | 142 |
+| `tests/v2_phase3_static.php` | statis V2 Fase 3 | LULUS | 144 |
 | `tests/phase2_integration.php` | integrasi V1 | LULUS | 12 |
 | `tests/phase3_integration.php` | integrasi V1 | LULUS | 10 |
 | `tests/phase4_integration.php` | integrasi V1 (API guru) | LULUS | 14 |
@@ -35,9 +35,9 @@ dari nol, lalu diisi fixture sintetis `SBX`. Prosedur lengkap:
 | `tests/v2_phase2_integration.php` | integrasi V2 Fase 2 | LULUS | 94 |
 | `tests/v2_phase2_navigasi_murobi.php` | navigasi murobi | LULUS | 32 |
 | `tests/v2_phase2_web_smoke.php` | smoke web per peran | LULUS | 35 |
-| `tests/v2_phase3_api_contract.php` | **kontrak REST API Fase 3 (HTTP)** | LULUS | 114 |
+| `tests/v2_phase3_api_contract.php` | **kontrak REST API Fase 3 (HTTP)** | LULUS | 116 |
 
-Total: **1.024 pemeriksaan, 0 gagal.** Perintah tunggal untuk mengulang:
+Total: **1.028 pemeriksaan, 0 gagal.** Perintah tunggal untuk mengulang seluruh tes PHP:
 `MOBILE_APP_ROOT=/path/ke/alhasanApps bash bin/v2_phase3_run_all_tests.sh`.
 
 `php -l` dijalankan pada seluruh berkas PHP baru/diubah (bagian 8 dari
@@ -80,10 +80,10 @@ Total: **1.024 pemeriksaan, 0 gagal.** Perintah tunggal untuk mengulang:
 | 6 | Alur murobi: antrean, detail, setujui/tolak dengan alasan, riwayat keputusan | LULUS (API + layar) / MENUNGGU perangkat |
 | 7 | Alur admin: pantau, perbaiki routing, keputusan pengganti | LULUS (API + layar) / MENUNGGU perangkat |
 | 8 | Orang tua: daftar anak, status, detail keputusan, riwayat, tanpa tombol mutasi | LULUS |
-| 9 | Tombol mutasi dinonaktifkan saat request; retry memakai kunci idempotensi sama | LULUS (statis + `useMutationGuard`) / MENUNGGU verifikasi ketuk-ganda pada perangkat |
+| 9 | Tombol mutasi dinonaktifkan saat request; retry memakai kunci idempotensi sama | LULUS (statis + `useMutationGuard`; fingerprint payload memastikan retry identik memakai kunci lama dan payload berubah memakai kunci baru) / MENUNGGU verifikasi ketuk-ganda pada perangkat |
 | 10 | Penanganan loading, empty, offline, `401`, `403`, `409`, `422` | LULUS (statis + kontrak API) / MENUNGGU verifikasi mode pesawat pada perangkat |
 | 11 | Website menyediakan fungsi setara per peran | LULUS — portal Fase 2 sudah lengkap; ditambah penonaktifan tombol saat submit |
-| 12 | Pengujian kontrak API, otorisasi lintas peran, idempotensi, concurrency, regresi aplikasi guru | LULUS — 114 pemeriksaan kontrak + regresi V1 |
+| 12 | Pengujian kontrak API, otorisasi lintas peran, idempotensi, concurrency, regresi aplikasi guru | LULUS — 116 pemeriksaan kontrak + regresi V1 |
 
 ## 4. Batasan yang dipatuhi
 
@@ -103,12 +103,13 @@ Total: **1.024 pemeriksaan, 0 gagal.** Perintah tunggal untuk mengulang:
 | # | Risiko / pekerjaan | Dampak | Mitigasi / tindak lanjut |
 | --- | --- | --- | --- |
 | R-1 | Smoke test Android & iOS pada perangkat nyata **belum dijalankan** | Kriteria 10 belum terpenuhi; Fase 3 belum boleh dinyatakan selesai | Jalankan `mobile-build-and-smoke-test.md` pada ≥1 Android dan ≥1 iOS, lalu perbarui dokumen ini |
-| R-2 | Sandbox memakai PHP 8.4; versi PHP cPanel mungkin berbeda | Perbedaan perilaku runtime | Jalankan ulang `php -l` dan `tests/v2_phase3_api_contract.php` pada staging cPanel sebelum rilis |
+| R-2 | Sandbox memakai PHP 8.4 dan MariaDB 12.3; versi cPanel mungkin berbeda | Perbedaan perilaku runtime/database | Jalankan ulang `php -l`, migrasi, dan `tests/v2_phase3_api_contract.php` pada staging cPanel dengan versi PHP/MariaDB produksi sebelum rilis |
 | R-3 | Uji dilakukan pada fixture sintetis kecil | Perilaku pada volume data nyata belum terukur | Uji ulang pada staging dengan salinan data yang disamarkan; baseline performa laporan sudah ada dari Fase 5 V1 |
 | R-4 | Akun `pengurus`/`orang_tua` kini dapat login ke API | Permukaan serangan bertambah | Login tetap menolak akun tanpa relasi master aktif; seluruh endpoint V2 memaksakan cakupan di server; endpoint V1 tetap menolak peran ini dengan `403` |
 | R-5 | `expo export -p web` menghasilkan `dist/`, `.expo/types` diregenerasi | Berkas build lokal | Keduanya sudah masuk `.gitignore` dan tidak ikut commit |
 | R-6 | Ketuk-ganda dan mode pesawat hanya diuji secara statis | Perilaku UI nyata belum dibuktikan | Baris A-06, A-07, dan A-08 pada checklist perangkat |
 | R-7 | Notifikasi (Fase 4) belum ada | Perubahan status hanya terlihat saat pengguna membuka aplikasi/portal | Sesuai ruang lingkup; dikerjakan pada Fase 4 |
+| R-8 | `npm ci` melaporkan 17 advisory dependency (12 moderat, 5 tinggi) pada dependency baseline; Fase 3 tidak mengubah dependency | Risiko supply-chain tetap ada meski lint/tsc/bundle lulus | Audit dependency terpisah sebelum rilis; jangan menjalankan `npm audit fix --force` pada branch fase ini karena dapat membawa breaking change |
 
 ## 6. Hasil pengujian manual
 

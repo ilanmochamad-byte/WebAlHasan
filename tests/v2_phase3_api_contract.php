@@ -238,6 +238,44 @@ $assert($capMurobi === ['murobi'], 'Guru dengan penugasan murobi aktif memperole
 $capOrtu = ($http('GET', '/profile', null, $token('ortu_a'))['json']['data']['capabilities'] ?? []);
 $assert(($capOrtu['aksi']['hanya_baca'] ?? false) === true, 'Akun orang tua ditandai hanya baca');
 
+/**
+ * Memastikan pelebaran login tidak menerbitkan token ketika relasi master
+ * dinonaktifkan. Fixture selalu dipulihkan melalui finally.
+ */
+$loginSaatMasterNonaktif = static function (string $table, string $linkColumn, string $username) use ($db, $http): int {
+    $escapedUsername = $db->real_escape_string($username);
+    $row = $db->query(
+        "SELECT master.id
+           FROM users u
+           JOIN {$table} master ON master.id = u.{$linkColumn}
+          WHERE u.username = '{$escapedUsername}'
+          LIMIT 1"
+    )?->fetch_assoc();
+    $masterId = (int) ($row['id'] ?? 0);
+    if ($masterId < 1) {
+        return 0;
+    }
+
+    $db->query("UPDATE {$table} SET is_active = 0 WHERE id = {$masterId}");
+    try {
+        return $http('POST', '/auth/login', [
+            'username' => $username,
+            'password' => 'Sandbox#123',
+            'device_name' => 'uji-master-nonaktif',
+        ])['status'];
+    } finally {
+        $db->query("UPDATE {$table} SET is_active = 1 WHERE id = {$masterId}");
+    }
+};
+$assert(
+    $loginSaatMasterNonaktif('pengurus', 'pengurus_id', 'sbx_pengurus_a') === 401,
+    'Login pengurus ditolak ketika relasi master pengurus tidak aktif'
+);
+$assert(
+    $loginSaatMasterNonaktif('wali', 'wali_id', 'sbx_ortu_a') === 401,
+    'Login orang tua ditolak ketika relasi master wali tidak aktif'
+);
+
 echo PHP_EOL . '=== 2. Alur pengurus ===' . PHP_EOL;
 
 $daftarSantri = $http('GET', '/izin/santri?per_page=50', null, $token('pengurus_a'));

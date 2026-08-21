@@ -18,14 +18,14 @@ dilaporkan pada `acceptance-status.md` dan dapat diulang oleh auditor.
 
 | Komponen | Versi sandbox | Catatan kesesuaian cPanel |
 | --- | --- | --- |
-| PHP | 8.4.21 (CLI, NTS) | Kode memakai fitur PHP 8.1+ (enum-free, `readonly` tidak dipakai, promosi properti, `match`). Jalankan ulang `php -l` dengan versi PHP cPanel sebelum rilis. |
-| MariaDB | 10.11.14 | Sepadan dengan MariaDB 10.x pada cPanel. Migrasi memakai `CHECK` constraint dan kolom `GENERATED` yang didukung MariaDB 10.2+. |
-| Node.js | 22.22.2 | Untuk lint dan `tsc` aplikasi. |
-| npm | 10.9.7 | `npm ci` memakai `package-lock.json` yang ada. |
+| PHP | 8.4.14 (CLI, NTS) | Kode memakai fitur PHP 8.1+ (enum-free, `readonly` tidak dipakai, promosi properti, `match`). Jalankan ulang `php -l` dengan versi PHP cPanel sebelum rilis. |
+| MariaDB | 12.3.2 | Audit memakai instans lokal terisolasi. Migrasi memakai `CHECK` constraint dan kolom `GENERATED` yang didukung MariaDB 10.2+, tetapi staging MariaDB 10.x tetap wajib diuji. |
+| Node.js | 26.7.0 | Untuk lint, `tsc`, dan export aplikasi; minimum SDK 57 adalah Node 22.13.x. |
+| npm | 11.19.0 | `npm ci` memakai `package-lock.json` yang ada. |
 | TypeScript | 6.0.3 (dari `devDependencies`) | Tidak diubah. |
 | Expo SDK | 57 (`expo ^57.0.13`) | **Tidak** di-upgrade. |
 
-> Perbedaan versi PHP antara sandbox dan cPanel adalah risiko yang tercatat.
+> Perbedaan versi PHP dan MariaDB antara sandbox dan cPanel adalah risiko yang tercatat.
 > Lihat `acceptance-status.md` bagian risiko.
 
 ## 3. Menyiapkan database uji dari kondisi bersih

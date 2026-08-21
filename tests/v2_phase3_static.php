@@ -264,6 +264,11 @@ if (!$adaMobile) {
         str_contains($guard, 'keyRef.current = createIdempotencyKey(prefix)'),
         'Kunci idempotensi dibuat sekali per operasi dan dipakai ulang saat retry'
     );
+    $assert(
+        str_contains($guard, 'payloadFingerprintRef.current !== fingerprint')
+        && substr_count($guard, 'payloadFingerprintRef.current = null') >= 3,
+        'Kunci lama dibuang bila payload berubah atau operasi telah selesai definitif'
+    );
 
     $tabs = $mobile('src/components/app-tabs.tsx');
     $assert(
@@ -316,6 +321,12 @@ if (!$adaMobile) {
     );
     $assert(str_contains($buat, 'api.izinSantri('), 'Daftar santri berasal dari endpoint bercakupan server');
     $assert(str_contains($buat, 'guard.run('), 'Pengiriman pengajuan memakai penjaga mutasi');
+    $assert(
+        str_contains($buat, 'JSON.stringify({ payload, mode })')
+        && substr_count($detail, 'JSON.stringify({ id, mode, payload })') >= 2
+        && str_contains($detail, 'JSON.stringify({ id, payload })'),
+        'Seluruh layar mutasi mengikat siklus kunci idempotensi ke fingerprint payload'
+    );
 }
 
 // ---------------------------------------------------------------------------
