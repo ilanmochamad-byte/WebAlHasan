@@ -111,7 +111,6 @@ Total: **1.028 pemeriksaan, 0 gagal.** Perintah tunggal untuk mengulang seluruh 
 | R-6 | Ketuk-ganda dan kondisi offline telah diuji pada Android simulator; retry pengiriman gagal dengan kunci sama belum diulang pada perangkat nyata | Perilaku perangkat nyata belum dibuktikan penuh | Ulangi A-06, A-07, dan khususnya A-08 pada Android/iOS nyata |
 | R-7 | Notifikasi (Fase 4) belum ada | Perubahan status hanya terlihat saat pengguna membuka aplikasi/portal | Sesuai ruang lingkup; dikerjakan pada Fase 4 |
 | R-8 | `npm ci` melaporkan 17 advisory dependency (12 moderat, 5 tinggi) pada dependency baseline; Fase 3 tidak mengubah dependency | Risiko supply-chain tetap ada meski lint/tsc/bundle lulus | Audit dependency terpisah sebelum rilis; jangan menjalankan `npm audit fix --force` pada branch fase ini karena dapat membawa breaking change |
-| R-9 | Dynamic Type maksimum standar iOS tidak memotong teks kartu, tetapi kategori aksesibilitas yang sangat besar membuat teks halaman berimpitan | Aksesibilitas pada ukuran ekstrem belum optimal | Koreksi layout responsif lalu ulangi I-04 pada iPhone nyata, termasuk kategori accessibility |
 | R-10 | Backup Fase 2 beserta manifest tersedia di cPanel, tetapi manifest pra-migrasi secara wajar berbeda dari data produksi saat ini (migrasi 007 dan data penugasan/akun sudah bertambah) | Perbandingan manifest ke produksi sekarang bukan bukti restore | Pulihkan backup ke database `_test` terisolasi dan jalankan `verify_restore.php` terhadap hasil restore sebelum rilis berikutnya; jangan menguji restore pada database produksi |
 
 ## 6. Hasil pengujian manual
@@ -121,7 +120,7 @@ Total: **1.028 pemeriksaan, 0 gagal.** Perintah tunggal untuk mengulang seluruh 
 | Portal web per peran (otomatis, headless) | LULUS | `tests/v2_phase2_web_smoke.php`, 35 pemeriksaan |
 | Web publik dan halaman login portal (manual) | LULUS | Halaman utama tampil normal; `/portal/` mengarahkan ke login pengguna tanpa fatal error. Alur portal terautentikasi per peran tetap dicakup tes otomatis. |
 | Android simulator | LULUS DENGAN CATATAN | Android 16: matriks menu per peran, pengajuan, routing admin, keputusan murobi/admin, pembatalan, orang tua baca-saja, offline, ketuk-ganda, dan logout diuji langsung. Ini bukan pengganti Android nyata. |
-| iOS simulator | LULUS DENGAN CATATAN | iPhone 17 Pro simulator / iOS 26.5: build 0 error, menu Murobi/Admin/Orang Tua, baca-saja orang tua, persistensi SecureStore, mode terang/gelap, dan Dynamic Type maksimum standar diuji. Kategori aksesibilitas sangat besar masih berimpitan. |
+| iOS simulator | LULUS DENGAN CATATAN | iPhone 17 Pro simulator / iOS 26.5: build 0 error, menu Murobi/Admin/Orang Tua, baca-saja orang tua, persistensi SecureStore, mode terang/gelap, serta Dynamic Type sampai `accessibility-extra-large` diuji. Setelah koreksi layout responsif, teks kartu tidak terpotong atau berimpitan. Ini bukan pengganti iPhone nyata. |
 | Android nyata | MENUNGGU | `mobile-build-and-smoke-test.md` §5 |
 | iOS nyata | MENUNGGU | `mobile-build-and-smoke-test.md` §6 |
 | Regresi aplikasi guru pada perangkat | MENUNGGU | `mobile-build-and-smoke-test.md` §7 |
@@ -134,4 +133,4 @@ Seluruh kriteria penerimaan Fase 3 yang dapat diverifikasi tanpa perangkat nyata
 **MENUNGGU** karena checklist PRD mensyaratkan sedikitnya satu Android dan satu
 iOS nyata. Karena itu **Fase 3 belum dapat dinyatakan selesai**, walaupun bukti
 simulator Android/iOS sudah tersedia. Jangan melanjutkan ke Fase 4 sebelum uji
-perangkat nyata selesai dan temuan Dynamic Type ditutup.
+perangkat nyata selesai.
