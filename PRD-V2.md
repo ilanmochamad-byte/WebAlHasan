@@ -267,6 +267,25 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 - [ ] Secret provider tidak muncul di respons API, log, audit, database, atau bundle mobile.
 - [ ] Status kirim dan error aman dapat dilihat admin; perubahan sakelar tercatat pada audit.
 
+> **Status implementasi Fase 4 — 23 Agustus 2026:** implementasi selesai dan
+> seluruh pengujian otomatis lulus (23 berkas, 1.580 pemeriksaan, 0 gagal).
+> **Delapan dari sepuluh** kriteria di atas terpenuhi dan terbukti.
+>
+> Dua kriteria **BELUM** dinyatakan lulus dan menunggu bukti manusia:
+>
+> - **Kriteria 3 (push tiba pada perangkat Android dan iOS).** Sandbox audit
+>   tidak memiliki perangkat fisik, development build, maupun credential
+>   FCM/APNs. Pengecualian simulator pada Fase 3 tidak berlaku di sini.
+>   Prosedur: `docs/phase-v2-4/mobile-build-and-smoke-test.md`.
+> - **Kriteria 6 (pengiriman WhatsApp nyata).** Penyedia nyata belum dipilih
+>   pemilik produk; sistem tidak memilih vendor, membuat akun, atau membeli
+>   layanan atas inisiatif sendiri. Kontrak, outbox, retry, dan deduplikasi
+>   sudah diverifikasi memakai adapter uji yang tidak mengirim pesan nyata.
+>   Prosedur: `docs/phase-v2-4/whatsapp-provider-checklist.md`.
+>
+> Rincian per kriteria: `docs/phase-v2-4/acceptance-status.md`.
+> Hasil pengujian: `docs/phase-v2-4/test-results.md`.
+
 ### Fase 5: Laporan, Migrasi Produksi, dan Kesiapan Rilis (memerlukan Fase 4)
 
 **Tujuan:** Menyediakan pertanggungjawaban perizinan yang dapat dicetak serta memastikan V2 aman dirilis tanpa kehilangan data V1.

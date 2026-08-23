@@ -76,6 +76,29 @@ function portal_capability_label(string $capability): string
     };
 }
 
+/**
+ * Jumlah notifikasi belum dibaca milik pengguna yang sedang masuk (Fase 4).
+ *
+ * Dihitung sekali per request. Kegagalan pembacaan tidak boleh merusak
+ * navigasi: bila terjadi galat, lencana tidak ditampilkan.
+ *
+ * @param array<string, mixed> $user
+ */
+function portal_unread_count(array $user): int
+{
+    static $cache = null;
+    if ($cache !== null) {
+        return $cache;
+    }
+    try {
+        return $cache = notification_center_service()->unreadCount($user)['jumlah'];
+    } catch (Throwable $exception) {
+        error_log('Jumlah notifikasi belum dibaca gagal dibaca: ' . $exception->getMessage());
+
+        return $cache = 0;
+    }
+}
+
 function portal_query(array $replace = []): string
 {
     $query = array_merge($_GET, $replace);
@@ -125,7 +148,20 @@ function portal_header(string $title, array $capabilities, string $activeMode, a
                           // Halaman tujuan tetap memeriksa haknya sendiri di server. ?>
                     <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/admin/pertemuan_pengajian.php')) ?>">Jadwal Mengajar</a></li>
                 <?php endif; ?>
+                <?php // V2 Fase 4: pusat notifikasi tersedia untuk seluruh peran
+                      // perizinan. Lencana menampilkan jumlah belum dibaca milik
+                      // akun ini saja. ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= portal_e(app_url('/portal/notifikasi.php')) ?>">
+                        Notifikasi
+                        <?php $belumDibaca = portal_unread_count($user); ?>
+                        <?php if ($belumDibaca > 0): ?>
+                            <span class="badge rounded-pill text-bg-danger ms-1"><?= $belumDibaca > 99 ? '99+' : $belumDibaca ?></span>
+                        <?php endif; ?>
+                    </a>
+                </li>
                 <?php if (in_array(Capabilities::ADMIN, $capabilities, true)): ?>
+                    <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/admin/admin_notifikasi.php')) ?>">Kanal Notifikasi</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/admin/admin_dashboard.php')) ?>">Panel Admin</a></li>
                 <?php endif; ?>
             </ul>
