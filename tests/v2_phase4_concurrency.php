@@ -120,7 +120,7 @@ try {
     // WhatsApp harus AKTIF agar worker berjalan; adapter uji yang dipakai anak
     // proses tidak menghubungi penyedia mana pun.
     $settings->recordWhatsappCheck('Lulus', 'Adapter uji untuk pengujian concurrency.', 'fake', $adminId);
-    $settings->setWhatsappEnabled(true, $adminId);
+    $settings->setWhatsappEnabled(true, $adminId, 'fake');
 
     for ($i = 1; $i <= $jumlahBaris; $i++) {
         $notifications->enqueue([
@@ -288,12 +288,14 @@ try {
 
     $assert($lockSatu->acquire($namaSewa, 60) === true, 'KC-3a Proses pertama memperoleh sewa');
     $assert($lockDua->acquire($namaSewa, 60) === false, 'KC-3b Proses kedua ditolak selama sewa masih berlaku');
+    $assert($lockSatu->renew(60) === true, 'KC-3c Pemilik dapat memperpanjang sewa proses');
+    $assert($lockDua->renew(60) === false, 'KC-3d Proses lain tidak dapat memperpanjang sewa milik worker pertama');
     $lockSatu->release();
-    $assert($lockDua->acquire($namaSewa, 60) === true, 'KC-3c Sewa dapat diambil kembali setelah dilepas');
+    $assert($lockDua->acquire($namaSewa, 60) === true, 'KC-3e Sewa dapat diambil kembali setelah dilepas');
     $lockDua->release();
     $assert(
         (int) ($db->query("SELECT COUNT(*) AS n FROM notifikasi_worker_lock WHERE nama = '" . $db->real_escape_string($namaSewa) . "' AND pemilik = ''")?->fetch_assoc()['n'] ?? 0) === 1,
-        'KC-3d Sewa kembali kosong setelah dilepas'
+        'KC-3f Sewa kembali kosong setelah dilepas'
     );
     $db->query("DELETE FROM notifikasi_worker_lock WHERE nama = '" . $db->real_escape_string($namaSewa) . "'");
 } catch (Throwable $exception) {
@@ -309,7 +311,7 @@ try {
             $adminId
         );
         if ($pengaturanAwal['whatsapp_enabled']) {
-            $settings->setWhatsappEnabled(true, $adminId);
+            $settings->setWhatsappEnabled(true, $adminId, (string) $pengaturanAwal['whatsapp_provider']);
         }
         $settings->setPushEnabled($pengaturanAwal['push_enabled'], $adminId);
     } catch (Throwable $exception) {

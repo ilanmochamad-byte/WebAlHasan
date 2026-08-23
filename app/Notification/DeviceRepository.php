@@ -304,11 +304,12 @@ final class DeviceRepository
         }
         $placeholders = implode(',', array_fill(0, count($userIds), '?'));
         $statement = $this->db->prepare(
-            'SELECT DISTINCT user_id
-               FROM perangkat_push
-              WHERE user_id IN (' . $placeholders . ')
-                AND dicabut_pada IS NULL
-                AND push_aktif = 1'
+            'SELECT DISTINCT p.user_id
+               FROM perangkat_push p
+               JOIN users u ON u.id = p.user_id AND u.is_active = 1
+              WHERE p.user_id IN (' . $placeholders . ')
+                AND p.dicabut_pada IS NULL
+                AND p.push_aktif = 1'
         );
         if ($statement === false) {
             return [];
@@ -337,10 +338,11 @@ final class DeviceRepository
     public function activeTokensFor(int $userId): array
     {
         $statement = $this->db->prepare(
-            'SELECT id, token_hash, token_terlindungi, platform, device_label
-               FROM perangkat_push
-              WHERE user_id = ? AND dicabut_pada IS NULL AND push_aktif = 1
-              ORDER BY id'
+            'SELECT p.id, p.token_hash, p.token_terlindungi, p.platform, p.device_label
+               FROM perangkat_push p
+               JOIN users u ON u.id = p.user_id AND u.is_active = 1
+              WHERE p.user_id = ? AND p.dicabut_pada IS NULL AND p.push_aktif = 1
+              ORDER BY p.id'
         );
         if ($statement === false) {
             return [];

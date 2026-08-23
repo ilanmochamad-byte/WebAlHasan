@@ -51,6 +51,7 @@ use App\Notification\NotificationException;
 use App\Notification\OutboxRepository;
 use App\Notification\Push\PushClient;
 use App\Notification\PushTokenProtector;
+use App\Notification\RecipientResolver;
 use App\Notification\WhatsApp\FakeProvider;
 use App\Notification\WhatsApp\HttpProvider;
 use App\Notification\WhatsApp\NullProvider;
@@ -159,7 +160,7 @@ $suffix = strtoupper(bin2hex(random_bytes(3)));
 $lower = strtolower($suffix);
 $created = [
     'users' => [], 'pengurus' => [], 'wali' => [], 'santri_wali' => [], 'santri' => [],
-    'guru' => [], 'kamar' => [], 'murobi' => [], 'pembimbing' => [], 'izin' => [],
+    'guru' => [], 'kamar' => [], 'kelas' => [], 'murobi' => [], 'pembimbing' => [], 'izin' => [],
 ];
 
 $exec = static function (string $sql, array $params = []) use ($db): int {
@@ -288,6 +289,14 @@ try {
                   VALUES (?, ?, 'Kamar', ?, NULL, DATE_SUB(CURDATE(), INTERVAL 30 DAY), 1)";
     $created['murobi'][] = $exec($murobiSql, [$guruMurobi, $yearId, $kamarA]);
     $created['murobi'][] = $exec($murobiSql, [$guruLain, $yearId, $kamarLain]);
+    $kelasNonaktif = $exec("INSERT INTO kelas (nama_kelas, jenjang, is_active) VALUES (?, 'Uji', 0)", ['Kelas Nonaktif F4 ' . $suffix]);
+    $created['kelas'][] = $kelasNonaktif;
+    $created['murobi'][] = $exec(
+        "INSERT INTO murobi_assignments
+             (guru_id, tahun_ajaran_id, target_type, kamar_id, kelas_id, tanggal_mulai, is_active)
+         VALUES (?, ?, 'Kelas', NULL, ?, DATE_SUB(CURDATE(), INTERVAL 30 DAY), 1)",
+        [$guruTanpaTugas, $yearId, $kelasNonaktif]
+    );
 
     $pengurusA = $exec("INSERT INTO pengurus (nama, nomor_identitas, jabatan, no_hp, is_active) VALUES (?, ?, 'Keamanan', ?, 1)", ['Pengurus F4 ' . $suffix, 'F4P' . $suffix, '081399900001']);
     $created['pengurus'] = [$pengurusA];
@@ -366,6 +375,10 @@ try {
     $assert($penerimaBuat === [$userMurobi], 'KN-1a Pengajuan dengan satu murobi memberi tahu tepat murobi tujuan');
     $assert(!in_array($userMurobiLain, $penerimaBuat, true), 'KN-1b Murobi lain tidak menerima notifikasi pengajuan');
     $assert(!in_array($userGuruTanpaTugas, $penerimaBuat, true), 'KN-1c Guru tanpa penugasan murobi tidak menerima notifikasi');
+    $assert(
+        (new RecipientResolver($db))->murobi($guruTanpaTugas) === [],
+        'KN-1c2 Penugasan ke kelas nonaktif tidak memberi capability atau notifikasi murobi'
+    );
     $assert(!in_array($userPengurus, $penerimaBuat, true), 'KN-1d Pengaju tidak diberi tahu tentang tindakannya sendiri');
     $assert(
         $scalar("SELECT COUNT(*) FROM notifikasi_outbox WHERE pengajuan_id = ? AND kanal = 'InApp'", [$pengajuanA]) === 1,
@@ -675,13 +688,19 @@ try {
         'KN-5b Sakelar WhatsApp tetap mati setelah penolakan'
     );
     $assert(
-        $settings->setWhatsappEnabled(true, $adminId) === false,
+        $settings->setWhatsappEnabled(true, $adminId, 'uji') === false,
         'KN-5c Repositori juga menolak menyalakan WhatsApp tanpa pemeriksaan Lulus'
     );
+    $settings->recordWhatsappCheck('Lulus', 'Pemeriksaan untuk penyedia sebelumnya.', 'penyedia-lama', $adminId);
+    $assert(
+        $settings->setWhatsappEnabled(true, $adminId, 'penyedia-baru') === false,
+        'KN-5d Pemeriksaan Lulus penyedia lama tidak dapat menyalakan penyedia baru'
+    );
+    $settings->recordWhatsappCheck('Gagal', 'Konfigurasi sengaja dibuat gagal untuk pengujian.', 'uji', $adminId);
 
     // In-app tidak dapat dimatikan.
     $expectStatus(422, static fn () => $adminService->ubahSakelar($adminUser, NotificationChannel::IN_APP, false, $meta),
-        'KN-5d Kanal in-app tidak dapat dimatikan');
+        'KN-5e Kanal in-app tidak dapat dimatikan');
 
     // Penyedia default (belum dipilih) tidak pernah menghubungi siapa pun.
     $nullProvider = new NullProvider();
@@ -747,7 +766,7 @@ try {
 
     // Nyalakan WhatsApp lewat jalur yang benar: pemeriksaan lulus dulu.
     $settings->recordWhatsappCheck('Lulus', 'Adapter uji siap.', 'fake', $adminId);
-    $assert($settings->setWhatsappEnabled(true, $adminId) === true, 'KN-7d WhatsApp menyala setelah pemeriksaan Lulus');
+    $assert($settings->setWhatsappEnabled(true, $adminId, 'fake') === true, 'KN-7d WhatsApp menyala setelah pemeriksaan Lulus');
 
     $pengajuanWa = (int) $workflow->create(
         $loadUser($userPengurus),
@@ -1077,6 +1096,22 @@ try {
         'platform' => 'palsu',
     ]), 'KN-11f Platform yang tidak dikenal ditolak 422');
 
+    // Menonaktifkan akun mencabut seluruh perangkatnya. Query worker juga
+    // menyaring status akun sebagai pengaman bila akun dinonaktifkan lewat SQL.
+    $tokenNonaktif = 'ExponentPushToken[' . str_repeat('c', 16) . $lower . ']';
+    $deviceService->register($loadUser($userGuruTanpaTugas), [
+        'token' => $tokenNonaktif,
+        'platform' => 'android',
+        'device_id' => 'uji-akun-nonaktif-' . $lower,
+    ]);
+    account_service()->setActive($userGuruTanpaTugas, false, $adminId);
+    $assert(
+        $scalar("SELECT COUNT(*) FROM perangkat_push WHERE user_id = ? AND alasan_pencabutan = 'akun_dinonaktifkan'", [$userGuruTanpaTugas]) === 1,
+        'KN-11g Penonaktifan akun mencabut seluruh registrasi perangkat'
+    );
+    $assert($devices->activeTokensFor($userGuruTanpaTugas) === [], 'KN-11h Worker tidak memperoleh token akun nonaktif');
+    account_service()->setActive($userGuruTanpaTugas, true, $adminId);
+
     // =====================================================================
     // KN-12. Kegagalan notifikasi tidak membatalkan transaksi perizinan
     // =====================================================================
@@ -1141,7 +1176,7 @@ try {
             $adminId
         );
         if ($pengaturanAwal['whatsapp_enabled']) {
-            $settings->setWhatsappEnabled(true, $adminId);
+            $settings->setWhatsappEnabled(true, $adminId, (string) $pengaturanAwal['whatsapp_provider']);
         }
         $settings->setPushEnabled($pengaturanAwal['push_enabled'], $adminId);
     } catch (Throwable $exception) {
@@ -1190,6 +1225,7 @@ try {
         'wali' => ['id', $created['wali']],
         'pengurus' => ['id', $created['pengurus']],
         'guru' => ['id', $created['guru']],
+        'kelas' => ['id', $created['kelas']],
         'santri' => ['id', $created['santri']],
         'kamar' => ['id', $created['kamar']],
     ];
@@ -1208,7 +1244,7 @@ try {
         AND action IN ('pembimbing_assignment_created','pembimbing_assignment_state_changed',
                        'notifikasi.kanal_diubah','notifikasi.pemeriksaan_konfigurasi','notifikasi.pesan_uji',
                        'notifikasi.percobaan_ulang','notifikasi.perangkat_didaftarkan','notifikasi.perangkat_dicabut',
-                       'notifikasi.perangkat_push_diubah')");
+                       'notifikasi.perangkat_push_diubah','account_status_changed')");
     $db->query('SET FOREIGN_KEY_CHECKS=1');
     echo '[bersih] Fixture uji Fase 4 dihapus dan pengaturan kanal dipulihkan.' . PHP_EOL;
 }

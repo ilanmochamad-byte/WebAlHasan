@@ -267,9 +267,10 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 - [ ] Secret provider tidak muncul di respons API, log, audit, database, atau bundle mobile.
 - [ ] Status kirim dan error aman dapat dilihat admin; perubahan sakelar tercatat pada audit.
 
-> **Status implementasi Fase 4 — 23 Agustus 2026:** implementasi selesai dan
-> seluruh pengujian otomatis lulus (23 berkas, 1.580 pemeriksaan, 0 gagal).
-> **Delapan dari sepuluh** kriteria di atas terpenuhi dan terbukti.
+> **Status audit Fase 4 — 23 Agustus 2026:** seluruh gerbang otomatis lulus
+> setelah koreksi auditor (23 berkas, 1.594 pemeriksaan, 0 gagal).
+> **Delapan dari sepuluh** kriteria di atas terpenuhi dan terbukti. Fase 4
+> **belum selesai/belum diterima** sampai dua kriteria manual berikut lulus.
 >
 > Dua kriteria **BELUM** dinyatakan lulus dan menunggu bukti manusia:
 >

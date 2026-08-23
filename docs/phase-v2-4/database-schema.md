@@ -82,7 +82,7 @@ menghasilkan baris ganda.
 | `push_aktif` | TINYINT(1) | **008** | sakelar per perangkat |
 | `terakhir_aktif_pada` | DATETIME | 006 | |
 | `dicabut_pada` | DATETIME | 006 | |
-| `alasan_pencabutan` | VARCHAR(40) | **008** | logout / dinonaktifkan_pengguna / token_invalid / perangkat_dihapus |
+| `alasan_pencabutan` | VARCHAR(40) | **008** | logout / dinonaktifkan_pengguna / akun_dinonaktifkan / token_invalid / perangkat_dihapus |
 | `gagal_berturut` | SMALLINT UNSIGNED | **008** | penghitung kegagalan berurutan |
 | `created_at`, `updated_at` | TIMESTAMP | 006 | |
 
@@ -97,6 +97,8 @@ Indeks:
 
 `device_id` boleh NULL dan NULL berulang diizinkan MySQL/MariaDB pada kunci
 unik, sehingga klien lama yang belum mengirim `device_id` tetap dapat mendaftar.
+Klien Fase 4 menyimpan identitas instalasi acak ini di `expo-secure-store` agar
+rotasi token memperbarui perangkat yang sama, bukan membuat baris per sesi.
 
 ## 4. `pengaturan_notifikasi`
 

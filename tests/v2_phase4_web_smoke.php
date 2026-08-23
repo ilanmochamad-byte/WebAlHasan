@@ -414,7 +414,7 @@ try {
             $adminId ?? 0
         );
         if ($pengaturanAwal['whatsapp_enabled']) {
-            $settings->setWhatsappEnabled(true, $adminId ?? 0);
+            $settings->setWhatsappEnabled(true, $adminId ?? 0, (string) $pengaturanAwal['whatsapp_provider']);
         }
         $settings->setPushEnabled($pengaturanAwal['push_enabled'], $adminId ?? 0);
     } catch (Throwable $exception) {

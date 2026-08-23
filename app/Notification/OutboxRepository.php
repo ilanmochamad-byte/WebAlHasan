@@ -99,6 +99,48 @@ final class OutboxRepository
     }
 
     /**
+     * Memperpanjang seluruh klaim milik worker yang masih memproses batch.
+     *
+     * Batch dapat memakan waktu lebih lama daripada sewa awal ketika penyedia
+     * lambat. Tanpa heartbeat ini, worker kedua dapat mengambil baris tersisa
+     * setelah menit kelima dan mengirim peristiwa yang sama dua kali.
+     */
+    public function renewClaims(string $owner, int $leaseSeconds = 300): bool
+    {
+        $owner = substr($owner, 0, 64);
+        $leaseSeconds = max(30, min(3600, $leaseSeconds));
+        $statement = $this->db->prepare(
+            'UPDATE notifikasi_outbox
+                SET locked_until = DATE_ADD(NOW(), INTERVAL ? SECOND)
+              WHERE locked_by = ?'
+        );
+        if ($statement === false) {
+            return false;
+        }
+        $statement->bind_param('is', $leaseSeconds, $owner);
+        $ok = $statement->execute();
+        $statement->close();
+        if (!$ok) {
+            return false;
+        }
+
+        $check = $this->db->prepare(
+            'SELECT 1 FROM notifikasi_outbox
+              WHERE locked_by = ? AND locked_until > NOW()
+              LIMIT 1'
+        );
+        if ($check === false) {
+            return false;
+        }
+        $check->bind_param('s', $owner);
+        $check->execute();
+        $owned = $check->get_result()?->fetch_row();
+        $check->close();
+
+        return is_array($owned);
+    }
+
+    /**
      * Menandai satu baris berhasil dikirim ke penyedia.
      */
     public function markSent(int $id, string $owner, int $durasiMs = 0): bool

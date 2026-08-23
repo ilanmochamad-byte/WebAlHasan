@@ -36,7 +36,11 @@ SET @sql := IF(
     (SELECT COUNT(*) FROM information_schema.TABLE_CONSTRAINTS
       WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'pengaturan_notifikasi'
         AND CONSTRAINT_NAME = 'pengaturan_notifikasi_inapp_check') > 0,
-    'ALTER TABLE pengaturan_notifikasi DROP CONSTRAINT pengaturan_notifikasi_inapp_check',
+    IF(
+        LOCATE('MariaDB', @@version) > 0,
+        'ALTER TABLE pengaturan_notifikasi DROP CONSTRAINT pengaturan_notifikasi_inapp_check',
+        'ALTER TABLE pengaturan_notifikasi DROP CHECK pengaturan_notifikasi_inapp_check'
+    ),
     'DO 0');
 PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 

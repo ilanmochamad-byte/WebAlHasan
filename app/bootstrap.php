@@ -228,7 +228,11 @@ function report_service(): ReportService
 function account_service(): AccountService
 {
     static $service;
-    return $service ??= new AccountService(new AccountRepository(app_db()), audit_logger());
+    return $service ??= new AccountService(
+        new AccountRepository(app_db()),
+        audit_logger(),
+        push_device_repository()
+    );
 }
 
 function capabilities(): Capabilities

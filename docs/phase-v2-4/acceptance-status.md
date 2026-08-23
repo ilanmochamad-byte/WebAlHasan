@@ -6,19 +6,20 @@ Tanggal: 23 Agustus 2026. Sumber bukti: `test-results.md`.
 
 | # | Kriteria | Status | Bukti |
 | --- | --- | --- | --- |
-| 1 | Setiap peristiwa yang ditentukan menghasilkan satu notifikasi in-app untuk penerima yang berhak | **TERPENUHI** | integrasi KN-1a…KN-1r (9 peristiwa diuji satu per satu) |
+| 1 | Setiap peristiwa yang ditentukan menghasilkan satu notifikasi in-app untuk penerima yang berhak | **TERPENUHI** | integrasi KN-1a…KN-1r, termasuk KN-1c2 untuk relasi kelas nonaktif (9 peristiwa diuji satu per satu) |
 | 2 | Pengguna tidak dapat membaca notifikasi pengguna lain melalui perubahan ID | **TERPENUHI** | KN-2a…KN-2e, KA-2a…KA-2e, WN-5a…WN-5d |
 | 3 | Push tiba pada perangkat uji Android dan iOS tanpa memuat alasan izin lengkap | **MENUNGGU SMOKE TEST PERANGKAT** | lihat §2 |
 | 4 | Menonaktifkan push menghentikan enqueue baru tanpa mengganggu in-app | **TERPENUHI** | KN-4e…KN-4i |
-| 5 | WhatsApp tidak dapat diaktifkan jika pemeriksaan konfigurasi gagal | **TERPENUHI** | KN-5a…KN-5c, KA-7a…KA-7d, WN-7g/WN-7h |
+| 5 | WhatsApp tidak dapat diaktifkan jika pemeriksaan konfigurasi gagal | **TERPENUHI** | KN-5a…KN-5e (termasuk pemeriksaan penyedia lama), KA-7a…KA-7d, WN-7g/WN-7h |
 | 6 | Saat WhatsApp aktif dan provider siap, pesan uji serta satu notifikasi keputusan berhasil dikirim | **KONDISIONAL — BELUM DIUJI DENGAN PENYEDIA NYATA** | lihat §3 |
 | 7 | Saat WhatsApp mati/tidak siap, pengajuan dan keputusan tetap berhasil tanpa request ke provider | **TERPENUHI** | KN-6a…KN-6j (penyedia mata-mata mencatat **0** panggilan) |
 | 8 | Retry event yang sama tidak menghasilkan pesan ganda pada kanal yang sama | **TERPENUHI** | KN-3a…KN-3d, KC-1b…KC-1d |
 | 9 | Secret provider tidak muncul di respons API, log, audit, database, atau bundle mobile | **TERPENUHI** | KN-8a…KN-8l, KA-9a…KA-9d, statis §5/§6/§10/§11 |
 | 10 | Status kirim dan error aman dapat dilihat admin; perubahan sakelar tercatat pada audit | **TERPENUHI** | KN-9a…KN-9h, KN-10a…KN-10d, KA-6c…KA-6m |
 
-**8 dari 10 kriteria terpenuhi.** Dua sisanya (nomor 3 dan 6) memerlukan
-perangkat nyata dan penyedia nyata; keduanya **tidak diklaim lulus**.
+**8 dari 10 kriteria terpenuhi. Fase 4 belum selesai/belum diterima.** Dua
+sisanya (nomor 3 dan 6) memerlukan perangkat nyata dan penyedia nyata;
+keduanya **tidak diklaim lulus**.
 
 ## 2. Kriteria 3 — push pada perangkat Android dan iOS
 
@@ -50,6 +51,8 @@ Yang **sudah** dibuktikan tanpa perangkat nyata:
 | Handler foreground memakai API SDK 57 (`shouldShowBanner`/`shouldShowList`) | statis §11 |
 | Foreground, ketukan, dan cold start ditangani | statis §11 |
 | Enqueue push hanya untuk penerima berperangkat aktif | KN-4e…KN-4h |
+| Akun nonaktif langsung kehilangan seluruh token dan tidak dibaca worker | KN-11g, KN-11h |
+| Identitas instalasi stabil di SecureStore; registrasi otomatis tidak memunculkan dialog | statis §11 |
 | Payload push hanya memuat penunjuk sumber daya | KN-7w, KN-7x |
 | **Isi push tidak memuat alasan izin** | KN-7y, KN-1m |
 | Tiket sukses → `Sent`; `DeviceNotRegistered` → token dicabut | KN-7u, KN-7z |
@@ -78,6 +81,7 @@ Yang **sudah** dibuktikan dengan adapter uji:
 | Percobaan ulang admin memakai baris yang sama (tanpa duplikat) | KN-7p…KN-7r |
 | Deduplikasi peristiwa/kanal/penerima | KN-3a…KN-3d |
 | Concurrency dua worker: 12 baris → 12 pesan, 0 ganda | KC-1b…KC-1d |
+| Sewa proses diperpanjang pemilik; worker lain tidak dapat memperpanjang | KC-3c, KC-3d |
 | Adapter uji menyatakan dirinya bukan pengiriman nyata, dan panel admin menuliskannya | statis §4 |
 | Adapter uji ditolak pada `APP_ENV=production` | KN-7c |
 
@@ -107,7 +111,7 @@ Prosedur pembuktian yang tersisa: `whatsapp-provider-checklist.md`.
 | Push belum diuji pada perangkat nyata | Kriteria 3 belum terpenuhi; kemungkinan masalah credential/build baru terlihat saat smoke test | Checklist rinci tersedia; in-app tidak terpengaruh apa pun hasilnya |
 | Penyedia WhatsApp belum dipilih | Kriteria 6 belum terpenuhi | Default mati; tiga lapis pengaman mencegah aktivasi tanpa pemeriksaan lulus |
 | PHP/MariaDB cPanel berbeda dari sandbox (PHP 8.4 / MariaDB 10.11) | `CHECK` constraint diabaikan MySQL 5.7 | Aturan yang sama juga ditegakkan lapisan aplikasi dan klausa WHERE; `php -l` wajib diulang pada versi cPanel |
-| Cron cPanel dapat tumpang tindih | Pesan ganda | Dua lapis pengaman terbukti pada uji concurrency |
+| Cron cPanel dapat tumpang tindih atau batch berjalan lama | Pesan ganda | Dua lapis sewa dengan heartbeat proses + klaim baris terbukti pada uji concurrency |
 | `PUSH_TOKEN_KEY` hilang atau diganti | Token lama tidak dapat dibuka | Worker mencabut token yang tidak dapat dibuka; aplikasi mendaftar ulang. Prosedur ada pada `cpanel-deployment.md` §3 |
 | Pengguna menolak izin notifikasi perangkat | Push tidak tiba pada perangkat itu | In-app tetap menjadi sumber status utama; layar perangkat menjelaskan keadaannya |
 

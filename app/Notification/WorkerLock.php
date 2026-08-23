@@ -101,7 +101,24 @@ final class WorkerLock
         $ok = $statement->execute();
         $statement->close();
 
-        return $ok;
+        if (!$ok) {
+            return false;
+        }
+
+        $check = $this->db->prepare(
+            'SELECT 1 FROM notifikasi_worker_lock
+              WHERE nama = ? AND pemilik = ? AND kedaluwarsa_pada > NOW()
+              LIMIT 1'
+        );
+        if ($check === false) {
+            return false;
+        }
+        $check->bind_param('ss', $this->name, $this->owner);
+        $check->execute();
+        $owned = $check->get_result()?->fetch_row();
+        $check->close();
+
+        return is_array($owned);
     }
 
     /**

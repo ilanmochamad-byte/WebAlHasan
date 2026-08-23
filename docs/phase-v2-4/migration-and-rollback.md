@@ -109,7 +109,9 @@ tetap dapat ditelusuri.
 - in-app dapat dimatikan lagi secara teknis (CHECK hilang) — jangan lakukan.
 
 Rollback aman dijalankan berulang (`DROP … IF EXISTS` dan pemeriksaan
-INFORMATION_SCHEMA).
+INFORMATION_SCHEMA). Pelepasan CHECK memilih sintaks MariaDB
+`DROP CONSTRAINT` atau MySQL `DROP CHECK` secara dinamis agar tetap kompatibel
+dengan versi server yang didokumentasikan.
 
 ## 6. Menjalankan ulang migrasi
 

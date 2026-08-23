@@ -22,10 +22,10 @@ seluruh pengujian Fase 4. Hasil yang dilaporkan pada `test-results.md` dan
 
 | Komponen | Versi sandbox | Catatan kesesuaian cPanel |
 | --- | --- | --- |
-| PHP | 8.4.21 (CLI, NTS) | Jalankan ulang `php -l` dengan versi PHP cPanel sebelum rilis. |
-| MariaDB | 10.11.14 | Migrasi 008 memakai `CHECK` (MariaDB 10.2+/MySQL 8.0.16+). Pada MySQL 5.7 CHECK diabaikan; aturan yang sama tetap ditegakkan lapisan aplikasi dan klausa WHERE. |
-| Node.js | 22.22.2 | Minimum SDK 57 adalah Node 22.13.x. |
-| npm | 10.9.7 | `npm ci` memakai `package-lock.json`. |
+| PHP | 8.4.14 (CLI, NTS) | Jalankan ulang `php -l` dengan versi PHP cPanel sebelum rilis. |
+| MariaDB | 12.3.2 | Migrasi 008 memakai `CHECK` (MariaDB 10.2+/MySQL 8.0.16+). Pada MySQL 5.7 CHECK diabaikan; aturan yang sama tetap ditegakkan lapisan aplikasi dan klausa WHERE. |
+| Node.js | 26.7.0 | Minimum SDK 57 adalah Node 22.13.x. |
+| npm | 11.19.0 | `npm ci` memakai `package-lock.json`. |
 | TypeScript | 6.0.3 (devDependencies) | Tidak diubah. |
 | Expo SDK | 57 (`expo ~57.0.15`) | **Tidak** di-upgrade. |
 | React Native | 0.86.2 | **Tidak** di-upgrade. |

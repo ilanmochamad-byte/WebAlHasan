@@ -9,7 +9,7 @@ use App\Http\Csrf;
 require_once __DIR__ . '/_guard.php';
 
 $repository = new AccountRepository($koneksi);
-$service = new AccountService($repository, audit_logger());
+$service = new AccountService($repository, audit_logger(), push_device_repository());
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     Csrf::requireValid($_POST['_csrf'] ?? null);

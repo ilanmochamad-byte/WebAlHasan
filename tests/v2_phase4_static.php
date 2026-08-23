@@ -244,8 +244,16 @@ $assert(
     'Repositori hanya menyalakan WhatsApp ketika pemeriksaan berstatus Lulus'
 );
 $assert(
+    str_contains($settings, 'AND whatsapp_provider = ?'),
+    'Repositori mengikat pemeriksaan Lulus pada penyedia WhatsApp yang sedang dipilih'
+);
+$assert(
     str_contains($admin, "\$sebelum['whatsapp_check_status'] !== 'Lulus'"),
     'Layanan admin menolak menyalakan WhatsApp sebelum pemeriksaan lulus'
+);
+$assert(
+    str_contains($admin, "\$sebelum['whatsapp_provider']") && str_contains($admin, "\$this->whatsapp->readiness()"),
+    'Layanan admin memeriksa ulang identitas penyedia dan kelengkapan konfigurasi saat menyalakan WhatsApp'
 );
 $assert(
     str_contains($source('database/migrations/006_v2_phase1_perizinan_foundation.sql'), 'pengaturan_notifikasi_whatsapp_check'),
@@ -432,6 +440,11 @@ $assert(
     'Sewa worker selalu dilepas walaupun terjadi galat'
 );
 $assert(
+    str_contains($dispatcher, '$this->lock->renew()')
+        && str_contains($dispatcher, '$this->outbox->renewClaims($owner)'),
+    'Worker memperpanjang sewa proses dan klaim baris sebelum setiap pengiriman'
+);
+$assert(
     str_contains($worker, "PHP_SAPI !== 'cli'"),
     'Worker hanya dapat dijalankan dari CLI'
 );
@@ -492,6 +505,21 @@ $assert(
 $assert(
     str_contains($resolver, "ma.is_active = 1") && str_contains($resolver, "ta.status = 'Aktif'"),
     'Guru tanpa penugasan murobi aktif tidak pernah menjadi penerima'
+);
+$assert(
+    str_contains($resolver, 'LEFT JOIN kelas kl')
+        && str_contains($resolver, "ma.target_type = 'Kamar'")
+        && str_contains($resolver, 'kl.id IS NOT NULL'),
+    'Penugasan murobi berbasis kelas hanya sah ketika kelas masih aktif'
+);
+$assert(
+    substr_count($devices, 'JOIN users u ON u.id = p.user_id AND u.is_active = 1') >= 2,
+    'Token perangkat hanya diambil untuk akun pengguna yang masih aktif'
+);
+$accountService = $source('app/Account/AccountService.php');
+$assert(
+    str_contains($accountService, 'revokeAllForUser') && str_contains($accountService, 'akun_dinonaktifkan'),
+    'Penonaktifan akun langsung mencabut seluruh token perangkat pengguna'
 );
 
 // ---------------------------------------------------------------------------
@@ -590,6 +618,16 @@ if (!$adaMobile) {
     $assert(
         str_contains($registrasi, 'getPermissionsAsync') && str_contains($registrasi, 'existing.canAskAgain'),
         'Izin tidak diminta berulang tanpa kebutuhan'
+    );
+    $assert(
+        str_contains($registrasi, "SecureStore.getItemAsync(INSTALLATION_ID_KEY)")
+            && str_contains($registrasi, "SecureStore.setItemAsync(INSTALLATION_ID_KEY"),
+        'Identitas instalasi perangkat disimpan stabil di SecureStore, bukan hanya selama sesi aplikasi'
+    );
+    $assert(
+        str_contains($registrasi, 'if (!minta)')
+            && strpos($registrasi, 'if (!minta)') < strpos($registrasi, 'requestPermissionsAsync'),
+        'Registrasi otomatis tidak memunculkan dialog izin tanpa tindakan pengguna'
     );
     $assert(
         str_contains($registrasi, 'getExpoPushTokenAsync({ projectId: id })'),

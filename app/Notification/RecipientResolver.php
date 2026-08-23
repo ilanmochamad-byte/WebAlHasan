@@ -156,13 +156,16 @@ final class RecipientResolver
                JOIN roles r ON r.id = ur.role_id AND r.slug = 'guru'
                JOIN murobi_assignments ma ON ma.guru_id = g.id
                JOIN tahun_ajaran ta ON ta.id = ma.tahun_ajaran_id
+               LEFT JOIN kelas kl ON kl.id = ma.kelas_id
+                    AND kl.is_active = 1 AND kl.archived_at IS NULL
               WHERE g.id = ?
                 AND u.is_active = 1
                 AND g.is_active = 1 AND g.archived_at IS NULL
                 AND ma.is_active = 1 AND ma.archived_at IS NULL
                 AND ma.tanggal_mulai <= CURDATE()
                 AND (ma.tanggal_selesai IS NULL OR ma.tanggal_selesai >= CURDATE())
-                AND ta.status = 'Aktif' AND ta.archived_at IS NULL",
+                AND ta.status = 'Aktif' AND ta.archived_at IS NULL
+                AND (ma.target_type = 'Kamar' OR (ma.target_type = 'Kelas' AND kl.id IS NOT NULL))",
             [$guruId]
         );
     }

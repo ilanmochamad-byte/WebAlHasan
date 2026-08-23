@@ -322,7 +322,18 @@ final class NotificationAdminService
                 'WhatsApp tidak dapat dinyalakan sebelum pemeriksaan konfigurasi berstatus Lulus. Jalankan pemeriksaan lebih dahulu.'
             );
         }
-        $berhasil = $this->settings->setWhatsappEnabled(true, $userId);
+        if ($sebelum['whatsapp_provider'] !== $this->whatsapp->name()) {
+            throw NotificationException::conflict(
+                'Penyedia WhatsApp berubah sejak pemeriksaan terakhir. Jalankan pemeriksaan konfigurasi kembali.'
+            );
+        }
+        $readiness = $this->whatsapp->readiness();
+        if ($readiness['siap'] !== true) {
+            throw NotificationException::conflict(
+                'WhatsApp tidak dapat dinyalakan: ' . SafeError::message($readiness['pesan'])
+            );
+        }
+        $berhasil = $this->settings->setWhatsappEnabled(true, $userId, $this->whatsapp->name());
         if (!$berhasil) {
             throw NotificationException::conflict(
                 'WhatsApp tidak dapat dinyalakan: basis data menolak karena pemeriksaan konfigurasi belum lulus.'

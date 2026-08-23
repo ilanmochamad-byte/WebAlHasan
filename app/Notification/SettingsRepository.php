@@ -75,7 +75,7 @@ final class SettingsRepository
      * migrasi 006. Dua lapis ini membuat sakelar tidak dapat dinyalakan lewat
      * jalur mana pun ketika konfigurasi gagal.
      */
-    public function setWhatsappEnabled(bool $enabled, int $actorUserId): bool
+    public function setWhatsappEnabled(bool $enabled, int $actorUserId, ?string $provider = null): bool
     {
         if (!$enabled) {
             return $this->exec(
@@ -85,16 +85,22 @@ final class SettingsRepository
             );
         }
 
+        $provider = trim((string) $provider);
+        if ($provider === '') {
+            return false;
+        }
+
         $statement = $this->db->prepare(
             "UPDATE pengaturan_notifikasi
                 SET whatsapp_enabled = 1, updated_by = ?
               WHERE singleton = 1
-                AND whatsapp_check_status = 'Lulus'"
+                AND whatsapp_check_status = 'Lulus'
+                AND whatsapp_provider = ?"
         );
         if ($statement === false) {
             return false;
         }
-        $statement->bind_param('i', $actorUserId);
+        $statement->bind_param('is', $actorUserId, $provider);
         $ok = $statement->execute();
         $affected = $statement->affected_rows;
         $statement->close();

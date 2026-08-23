@@ -1,7 +1,8 @@
 # V2 Fase 4 — Hasil Pengujian
 
-Dijalankan 23 Agustus 2026 pada sandbox terisolasi (PHP 8.4.21, MariaDB
-10.11.14, Node 22.22.2). Prosedur lengkap: `testing-sandbox.md`.
+Dijalankan ulang auditor 23 Agustus 2026 pada sandbox terisolasi (PHP 8.4.14,
+MariaDB 12.3.2, Node 26.7.0, npm 11.19.0). Prosedur lengkap:
+`testing-sandbox.md`.
 
 **Tidak ada satu pun permintaan jaringan keluar selama pengujian.** Push
 memakai klien tiruan (`PushClient`), WhatsApp memakai adapter uji.
@@ -18,7 +19,7 @@ tests/phase5_static.php                        LULUS   (36 pemeriksaan)
 tests/v2_phase1_static.php                     LULUS   (126 pemeriksaan)
 tests/v2_phase2_static.php                     LULUS   (169 pemeriksaan)
 tests/v2_phase3_static.php                     LULUS   (146 pemeriksaan)
-tests/v2_phase4_static.php                     LULUS   (275 pemeriksaan)
+tests/v2_phase4_static.php                     LULUS   (283 pemeriksaan)
 --- Integrasi regresi V1 ---
 tests/phase2_integration.php                   LULUS   (12 pemeriksaan)
 tests/phase3_integration.php                   LULUS   (10 pemeriksaan)
@@ -32,15 +33,15 @@ tests/v2_phase2_web_smoke.php                  LULUS   (35 pemeriksaan)
 --- Kontrak API Fase 3 ---
 tests/v2_phase3_api_contract.php               LULUS   (116 pemeriksaan)
 --- Fase 4: notifikasi, push, WhatsApp ---
-tests/v2_phase4_integration.php                LULUS   (118 pemeriksaan)
+tests/v2_phase4_integration.php                LULUS   (122 pemeriksaan)
 tests/v2_phase4_api_contract.php               LULUS   (92 pemeriksaan)
-tests/v2_phase4_concurrency.php                LULUS   (18 pemeriksaan)
+tests/v2_phase4_concurrency.php                LULUS   (20 pemeriksaan)
 tests/v2_phase4_web_smoke.php                  LULUS   (46 pemeriksaan)
 
 SELURUH PENGUJIAN OTOMATIS LULUS.
 ```
 
-**Total: 23 berkas, 1.580 pemeriksaan, 0 gagal.**
+**Total: 23 berkas, 1.594 pemeriksaan, 0 gagal.**
 
 Regresi Fase 1–3 dan V1: **tetap lulus tanpa perubahan hasil** (jumlah
 pemeriksaan naik pada `phase1_static` dan `v2_phase3_static` karena assertion
@@ -64,6 +65,7 @@ baru ditambahkan, bukan karena perilaku berubah).
 | `php bin/migrate.php rollback` | 008 dilepas |
 | Menjalankan ulang berkas rollback langsung | tanpa error (idempoten) |
 | `php bin/migrate.php up` lagi | 008 diterapkan kembali |
+| Perbandingan data bisnis sebelum/rollback/apply | jumlah dan SHA-256 daftar ID `perizinan`, `izin_pengajuan`, `izin_keputusan`, `izin_riwayat_status` identik |
 | `php bin/v2_phase4_preflight.php` | exit 0, 0 blokir, 2 peringatan (PUSH_TOKEN_KEY & WHATSAPP_PROVIDER kosong — kondisi default) |
 | `php bin/v2_phase4_verify.php` | **LULUS** (skema, invarian notifikasi, perlindungan token, keutuhan Fase 1–3) |
 
@@ -75,7 +77,7 @@ baru ditambahkan, bukan karena perilaku berubah).
 | 2 | Pengguna tidak dapat membaca notifikasi pengguna lain lewat manipulasi ID | integrasi KN-2a…KN-2e; kontrak KA-2a…KA-2e; web WN-5a…WN-5d | **LULUS** |
 | 3 | Retry event yang sama tidak membuat notifikasi/pesan ganda | integrasi KN-3a…KN-3d; concurrency KC-1c/KC-1d | **LULUS** |
 | 4 | Menonaktifkan push menghentikan enqueue push baru tanpa mengganggu in-app | integrasi KN-4e…KN-4i | **LULUS** |
-| 5 | WhatsApp tidak dapat diaktifkan jika konfigurasi gagal | integrasi KN-5a…KN-5c; kontrak KA-7a…KA-7d; web WN-7g/WN-7h | **LULUS** |
+| 5 | WhatsApp tidak dapat diaktifkan jika konfigurasi gagal atau hasil Lulus berasal dari penyedia lama | integrasi KN-5a…KN-5e; kontrak KA-7a…KA-7d; web WN-7g/WN-7h | **LULUS** |
 | 6 | Saat WhatsApp mati/tidak siap: nol request penyedia, transaksi tetap berhasil | integrasi KN-6a…KN-6j | **LULUS** |
 | 7 | Fake adapter memverifikasi enqueue, send, fail, retry, dedup | integrasi KN-7a…KN-7t | **LULUS** |
 | 8 | Secret tidak muncul di API, database, audit, log, source, bundle mobile | integrasi KN-8a…KN-8l; kontrak KA-9a…KA-9d; statis §5, §6, §10, §11 | **LULUS** |
@@ -83,7 +85,7 @@ baru ditambahkan, bukan karena perilaku berubah).
 | 10 | Perubahan sakelar tercatat pada audit | integrasi KN-10a…KN-10d; kontrak KA-6m | **LULUS** |
 | 11 | Concurrency worker tidak mengirim event yang sama dua kali | concurrency KC-1…KC-3 | **LULUS** |
 | 12 | Deep link menolak akses pengguna yang tidak berhak | kontrak KA-5a…KA-5c | **LULUS** |
-| 13 | Logout mencabut/menonaktifkan registrasi perangkat | integrasi KN-11a…KN-11f; kontrak KA-8a…KA-8e | **LULUS** |
+| 13 | Logout, penghapusan perangkat, token invalid, dan penonaktifan akun mencabut registrasi | integrasi KN-7z, KN-11a…KN-11h; kontrak KA-8a…KA-8e | **LULUS** |
 | 14 | Regresi Fase 1–3 dan V1 tetap lulus | 19 berkas uji lama | **LULUS** |
 | 15 | `php -l`, tes API, kontrak, integrasi DB, otorisasi, idempotensi, concurrency, `npm run lint`, `npx tsc --noEmit` | §1–§2 | **LULUS** |
 
@@ -106,6 +108,9 @@ baris antrean WhatsApp dan adapter uji yang menulis jurnal ber-lock.
 Lapisan kedua diuji terpisah: dua pemilik klaim berbeda memperoleh himpunan
 baris yang **saling lepas**, dan pemilik lain tidak dapat menyelesaikan baris
 yang bukan klaimnya (KC-2b, KC-2d).
+
+Heartbeat juga diuji: pemilik dapat memperpanjang sewa proses, sedangkan
+worker lain tidak dapat memperpanjang sewa yang bukan miliknya (KC-3c/KC-3d).
 
 ## 6. Bukti retry dan backoff (KN-7i…KN-7r)
 

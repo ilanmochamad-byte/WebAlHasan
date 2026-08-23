@@ -77,9 +77,10 @@ diberi tahu tentang tindakannya sendiri.
 Aturan penentuan penerima:
 
 - **Murobi**: akun `guru` yang terhubung ke `guru.id` tujuan **dan** memiliki
-  `murobi_assignments` aktif pada tahun ajaran aktif. Syaratnya sengaja identik
-  dengan `Capabilities::MUROBI`, sehingga penerima notifikasi tidak pernah lebih
-  luas daripada pemegang hak keputusan.
+  `murobi_assignments` aktif pada tahun ajaran aktif. Target kamar berlaku
+  langsung; target kelas hanya berlaku bila kelas masih aktif dan belum
+  diarsipkan. Syaratnya sengaja identik dengan `Capabilities::MUROBI`, sehingga
+  penerima tidak pernah lebih luas daripada pemegang hak keputusan.
 - **Pengurus**: akun ber-role `pengurus` yang terhubung ke baris `pengurus`
   aktif milik pengajuan.
 - **Admin**: akun aktif ber-role `admin`.
@@ -152,11 +153,17 @@ Aplikasi (development build, perangkat nyata)
           └─ token_terlindungi = AES-256-GCM, disimpan base64
 ```
 
+`device_id` adalah identitas instalasi acak yang disimpan stabil di
+`expo-secure-store`; ia bukan `Constants.sessionId` yang berubah setiap sesi.
+Registrasi otomatis hanya memakai izin yang sudah diberikan dan tidak pernah
+memunculkan dialog tanpa tindakan pengguna.
+
 Pencabutan tersedia untuk empat keadaan yang diwajibkan PRD:
 
 | Keadaan | Jalur | `alasan_pencabutan` |
 | --- | --- | --- |
 | Logout | `POST /auth/logout` dengan `push_token` | `logout` |
+| Akun dinonaktifkan admin | `AccountService::setActive(false)` | `akun_dinonaktifkan` |
 | Pengguna mematikan push | `POST /notifikasi/perangkat/pencabutan` | `dinonaktifkan_pengguna` |
 | Token ditolak penyedia | worker, tiket `DeviceNotRegistered` | `token_invalid` |
 | Perangkat dihapus | `POST /notifikasi/perangkat/pencabutan` | `perangkat_dihapus` |
@@ -167,6 +174,8 @@ mencabut registrasi dan **tanpa** mempengaruhi notifikasi in-app.
 
 Token mentah tidak pernah: dikembalikan API, ditulis ke audit (audit hanya
 menyimpan 12 karakter pertama HMAC sebagai sidik), atau dicetak worker.
+Query pengiriman juga selalu bergabung ke akun `users.is_active = 1`, sehingga
+antrean lama tidak dapat mengirim push setelah akun dinonaktifkan.
 
 ## 7. Pengaturan kanal
 
@@ -176,13 +185,14 @@ Baris tunggal `pengaturan_notifikasi`.
 | --- | --- | --- |
 | In-app | **selalu aktif** | — (tidak dapat dimatikan) |
 | Push | mati | `PUSH_TOKEN_KEY` terisi dan ekstensi `openssl` aktif |
-| WhatsApp | **mati** | pemeriksaan konfigurasi terakhir berstatus `Lulus` |
+| WhatsApp | **mati** | pemeriksaan konfigurasi terakhir berstatus `Lulus` untuk penyedia aktif dan konfigurasi saat ini tetap lengkap |
 
 Syarat WhatsApp ditegakkan tiga lapis:
 
 1. `NotificationAdminService::ubahSakelar()` menolak dengan `409`;
 2. `SettingsRepository::setWhatsappEnabled()` menambahkan
-   `AND whatsapp_check_status = 'Lulus'` pada klausa WHERE;
+   `AND whatsapp_check_status = 'Lulus' AND whatsapp_provider = ?` pada klausa
+   WHERE;
 3. `CHECK (whatsapp_enabled = 0 OR whatsapp_check_status = 'Lulus')` dari
    migrasi 006.
 
@@ -246,6 +256,10 @@ tanpa menimpa galat terakhir.
    menandai `locked_by`/`locked_until`. Penyelesaian baris memakai
    `WHERE id = ? AND locked_by = ?`, sehingga worker lain tidak dapat
    menyelesaikan baris yang bukan klaimnya.
+
+Sebelum setiap panggilan penyedia, dispatcher memperpanjang kedua sewa melalui
+`WorkerLock::renew()` dan `OutboxRepository::renewClaims()`. Batch yang lebih
+lama dari masa sewa awal tidak dapat direbut worker kedua di tengah putaran.
 
 `tests/v2_phase4_concurrency.php` membuktikan keduanya dengan dua proses PHP
 nyata: 12 baris antrean menghasilkan tepat 12 pesan pada jurnal adapter uji.

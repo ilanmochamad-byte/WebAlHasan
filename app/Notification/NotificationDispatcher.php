@@ -118,6 +118,14 @@ final class NotificationDispatcher
 
             $rows = $this->outbox->claim($kanal, $owner, $batch);
             foreach ($rows as $row) {
+                // Heartbeat sebelum setiap panggilan penyedia. Batch hingga 100
+                // baris dapat melampaui sewa awal lima menit; kedua sewa harus
+                // tetap dimiliki agar worker lain tidak mengambil baris yang
+                // sama di tengah putaran.
+                if (!$this->lock->renew() || !$this->outbox->renewClaims($owner)) {
+                    $hasil['catatan'][] = 'Sewa worker tidak dapat diperpanjang; putaran dihentikan sebelum pengiriman berikutnya.';
+                    break;
+                }
                 $hasil['diproses']++;
                 try {
                     $status = $kanal === NotificationChannel::PUSH
