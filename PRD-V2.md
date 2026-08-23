@@ -229,6 +229,12 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 - [ ] `npm run lint`, `npx tsc --noEmit`, pemeriksaan PHP, tes API, dan tes regresi V1 lulus.
 - [ ] Alur utama tiap peran lulus pada sedikitnya satu perangkat Android dan satu perangkat iOS.
 
+> **Keputusan penerimaan Fase 3 — 23 Agustus 2026:** pemilik produk menerima
+> iPhone fisik dan simulator Android 16 sebagai bukti pengganti untuk gerbang
+> Fase 3. Android fisik tidak diuji. Risiko perangkat-spesifik Android diterima
+> agar Fase 4 dapat dimulai. Pengecualian ini tidak menghapus kewajiban uji
+> Android/iOS yang secara khusus tercantum pada kriteria Fase 4.
+
 ### Fase 4: Notifikasi In-App, Push, dan WhatsApp Opsional (memerlukan Fase 3)
 
 **Tujuan:** Memberi tahu pihak terkait tentang perubahan izin melalui kanal yang aman, dapat dikendalikan, dan tidak mengganggu transaksi utama.
