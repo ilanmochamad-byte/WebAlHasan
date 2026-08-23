@@ -232,8 +232,12 @@ if (!$adaMobile) {
     $assert(false, 'MOBILE_APP_ROOT tidak ditemukan: ' . $mobileRoot);
 } else {
     $package = $mobile('package.json');
+    $packageData = json_decode($package, true);
+    $expoVersion = (string) ($packageData['dependencies']['expo'] ?? '');
+    $reactNativeVersion = (string) ($packageData['dependencies']['react-native'] ?? '');
     $assert(
-        str_contains($package, '"expo": "^57.') && str_contains($package, '"react-native": "0.86.'),
+        preg_match('/^[~^]?57\./', $expoVersion) === 1
+            && preg_match('/^[~^]?0\.86\./', $reactNativeVersion) === 1,
         'Expo SDK 57 dan React Native 0.86 tidak di-upgrade'
     );
     $assert(
