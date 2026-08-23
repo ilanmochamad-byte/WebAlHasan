@@ -164,6 +164,21 @@ npx expo export -p web # memastikan seluruh rute ter-bundle
 > isi `/// <reference types="expo/types" />` agar `tsc` mengenali tipe CSS
 > modul bawaan Expo.
 
+### Diagnosa penerima notifikasi
+
+Bila sebuah peran tidak menerima notifikasi dan Anda perlu tahu sebabnya:
+
+```bash
+php bin/v2_phase4_diagnose_notifikasi.php               # sebaran + kesiapan relasi
+php bin/v2_phase4_diagnose_notifikasi.php --pengajuan=123
+```
+
+Skrip ini **hanya membaca** dan aman dijalankan pada produksi. Ia melaporkan
+notifikasi per peran, akun mana yang secara relasi memang dapat menjadi
+penerima (penugasan murobi aktif, tautan pengurus, relasi wali–santri), dan —
+untuk satu pengajuan — penerima yang dihitung untuk setiap peristiwa berikut
+notifikasi yang benar-benar tercatat.
+
 ### Uji browser (opsional)
 
 Dua skrip Playwright yang benar-benar merender halaman, mengklik tombol, dan
