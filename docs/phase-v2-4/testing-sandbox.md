@@ -164,6 +164,27 @@ npx expo export -p web # memastikan seluruh rute ter-bundle
 > isi `/// <reference types="expo/types" />` agar `tsc` mengenali tipe CSS
 > modul bawaan Expo.
 
+### Uji browser (opsional)
+
+Dua skrip Playwright yang benar-benar merender halaman, mengklik tombol, dan
+mengambil tangkapan layar — pelengkap smoke test HTTP di atas. Bukan bagian
+rangkaian uji wajib karena memerlukan Node dan Playwright.
+
+```bash
+npx playwright install chromium
+php tests/browser/seed-skenario.php
+
+php -S 127.0.0.1:8900 -t . tests/v2_phase3_router.php &
+ID_NOTIF_MUROBI=<id> node tests/browser/uji-website.mjs   # 37 pemeriksaan
+
+# Aplikasi React Native lewat react-native-web, satu origin dengan API
+php -S 127.0.0.1:8950 -t /path/ke/alhasanApps/dist tests/phase5_web_router.php &
+ID_NOTIF_MUROBI=<id> node tests/browser/uji-aplikasi.mjs  # 25 pemeriksaan
+```
+
+Prosedur lengkap dan daftar variabel lingkungan: `tests/browser/README.md`.
+Hasil terakhir: `test-results.md` §9.
+
 ## 6. Menguji adapter WhatsApp tanpa vendor
 
 ```bash

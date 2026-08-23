@@ -115,6 +115,25 @@ Prosedur pembuktian yang tersisa: `whatsapp-provider-checklist.md`.
 | `PUSH_TOKEN_KEY` hilang atau diganti | Token lama tidak dapat dibuka | Worker mencabut token yang tidak dapat dibuka; aplikasi mendaftar ulang. Prosedur ada pada `cpanel-deployment.md` §3 |
 | Pengguna menolak izin notifikasi perangkat | Push tidak tiba pada perangkat itu | In-app tetap menjadi sumber status utama; layar perangkat menjelaskan keadaannya |
 
+## 5b. Uji browser sungguhan (tambahan, 23 Agustus 2026)
+
+Selain rangkaian uji otomatis, website dan aplikasi dijalankan di Chromium
+sungguhan (Playwright) — halaman benar-benar dirender dan tombol diklik.
+
+| Permukaan | Skrip | Hasil |
+| --- | --- | --- |
+| Website portal + panel admin | `tests/browser/uji-website.mjs` | **37 pemeriksaan, 0 gagal** |
+| Aplikasi React Native (bundel yang sama, lewat `react-native-web`) | `tests/browser/uji-aplikasi.mjs` | **25 pemeriksaan, 0 gagal** |
+
+Rinciannya pada `test-results.md` §9. Dua perbaikan khusus jalur web muncul
+dari uji ini (`notification-context.tsx`, `app-tabs.web.tsx`); keduanya tidak
+menyentuh logika notifikasi, registrasi push, maupun kontrak API.
+
+**Uji ini tidak mengubah status kriteria 3 dan 6.** Push nyata tidak dapat
+diuji di browser — `expo-notifications` memang melaporkan `tidak_didukung`
+pada web sesuai dokumentasi SDK 57 — dan tidak ada penyedia WhatsApp nyata
+yang disetujui. Keduanya tetap **MENUNGGU** sebagaimana §2 dan §3.
+
 ## 6. Batas ruang lingkup
 
 Fase 5 (laporan, ekspor CSV/PDF perizinan, migrasi produksi, kesiapan rilis)

@@ -5,3 +5,10 @@ storage/logs/
 *.log
 .DS_Store
 
+
+# Tangkapan layar hasil uji browser (bukti lokal, tidak perlu ikut repositori)
+tests/browser/tangkapan/
+tests/browser/tangkapan-aplikasi/
+
+# Dependensi lokal Playwright untuk uji browser opsional
+tests/browser/node_modules/

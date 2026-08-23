@@ -59,24 +59,68 @@ $assert = static function (bool $condition, string $message) use (&$failures): v
 // Server uji
 // ---------------------------------------------------------------------------
 $host = '127.0.0.1';
-$port = (int) (getenv('V2_PHASE4_PORT') ?: 8499);
+
+/**
+ * Port server uji.
+ *
+ * Bila `V2_PHASE4_PORT` tidak disetel, port bebas dipilih otomatis agar server
+ * uji dari putaran sebelumnya yang belum berhenti tidak diam-diam menjadi
+ * sasaran pengujian (yang akan menghasilkan kegagalan palsu terhadap kode lama).
+ * Port yang disetel manual tetapi sudah dipakai menghentikan pengujian dengan
+ * pesan yang jelas.
+ */
+$portDiminta = (int) (getenv('V2_PHASE4_PORT') ?: 0);
+if ($portDiminta > 0) {
+    $probe = @fsockopen($host, $portDiminta, $errno, $errstr, 0.5);
+    if (is_resource($probe)) {
+        fclose($probe);
+        fwrite(STDERR, "Port {$portDiminta} sudah dipakai proses lain. Hentikan server uji lama"
+            . " (ss -ltnp | grep {$portDiminta}) atau kosongkan V2_PHASE4_PORT.\n");
+        exit(2);
+    }
+    $port = $portDiminta;
+} else {
+    $socket = @stream_socket_server('tcp://127.0.0.1:0', $errno, $errstr);
+    if ($socket === false) {
+        $port = 8499;
+    } else {
+        $nama = (string) stream_socket_get_name($socket, false);
+        fclose($socket);
+        $port = (int) substr($nama, (int) strrpos($nama, ':') + 1);
+    }
+}
 $base = 'http://' . $host . ':' . $port . '/api/v1';
 $serverLog = sys_get_temp_dir() . '/v2_phase4_server_' . getmypid() . '.log';
 
-$command = sprintf(
-    'PUSH_TOKEN_KEY=%s %s -S %s:%d -t %s %s > %s 2>&1 & echo $!',
-    escapeshellarg($kunciUji),
-    escapeshellarg(PHP_BINARY),
-    $host,
-    $port,
-    escapeshellarg($root),
-    escapeshellarg($root . '/tests/v2_phase3_router.php'),
-    escapeshellarg($serverLog)
+// Server uji dijalankan TANPA shell (bentuk array `proc_open`). Dengan bentuk
+// string, `/bin/sh` menjadi anak proses dan `proc_terminate` hanya mematikan
+// shell-nya — server PHP tetap hidup dan memegang port, lalu menyesatkan
+// putaran pengujian berikutnya. Bentuk array juga memungkinkan environment
+// diwariskan langsung tanpa menuliskan kunci sandbox ke baris perintah.
+$serverEnv = getenv();
+$serverEnv['PUSH_TOKEN_KEY'] = $kunciUji;
+$serverPipes = [];
+$server = proc_open(
+    [PHP_BINARY, '-S', $host . ':' . $port, '-t', $root, $root . '/tests/v2_phase3_router.php'],
+    [1 => ['file', $serverLog, 'w'], 2 => ['file', $serverLog, 'a']],
+    $serverPipes,
+    $root,
+    $serverEnv
 );
-$serverPid = (int) trim((string) shell_exec($command));
-register_shutdown_function(static function () use ($serverPid, $serverLog): void {
-    if ($serverPid > 0) {
-        @exec('kill ' . $serverPid . ' 2>/dev/null');
+if (!is_resource($server)) {
+    fwrite(STDERR, "Server uji tidak dapat dijalankan.\n");
+    exit(2);
+}
+register_shutdown_function(static function () use ($server, $serverLog): void {
+    if (is_resource($server)) {
+        proc_terminate($server);
+        for ($i = 0; $i < 20 && (proc_get_status($server)['running'] ?? false) === true; $i++) {
+            usleep(100000);
+        }
+        if ((proc_get_status($server)['running'] ?? false) === true) {
+            proc_terminate($server, 9);
+        }
+        proc_close($server);
     }
     @unlink($serverLog);
 });

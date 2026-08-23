@@ -55,7 +55,39 @@ $assert = static function (bool $condition, string $message) use (&$failures): v
     }
 };
 
-$port = (int) (getenv('V2_PHASE4_WEB_PORT') ?: 8714);
+/**
+ * Port server uji.
+ *
+ * Bila `V2_PHASE4_WEB_PORT` tidak disetel, port bebas dipilih otomatis. Ini
+ * mencegah kelas kegagalan yang menyesatkan: server uji dari putaran sebelumnya
+ * yang belum berhenti akan tetap memegang port tetap, sehingga putaran baru
+ * diam-diam menguji PROSES LAMA (dengan kode dan environment lama) dan
+ * melaporkan kegagalan yang sebenarnya tidak ada pada kode saat ini.
+ *
+ * Bila port disetel manual dan ternyata sudah dipakai, pengujian berhenti
+ * dengan pesan yang jelas alih-alih menghasilkan hasil palsu.
+ */
+$portBebas = static function (): int {
+    $socket = @stream_socket_server('tcp://127.0.0.1:0', $errno, $errstr);
+    if ($socket === false) {
+        return 8714;
+    }
+    $nama = (string) stream_socket_get_name($socket, false);
+    fclose($socket);
+
+    return (int) substr($nama, (int) strrpos($nama, ':') + 1);
+};
+$portDiminta = (int) (getenv('V2_PHASE4_WEB_PORT') ?: 0);
+if ($portDiminta > 0) {
+    $probe = @fsockopen('127.0.0.1', $portDiminta, $errno, $errstr, 0.5);
+    if (is_resource($probe)) {
+        fclose($probe);
+        fwrite(STDERR, "Port {$portDiminta} sudah dipakai proses lain. Hentikan server uji lama"
+            . " (ss -ltnp | grep {$portDiminta}) atau kosongkan V2_PHASE4_WEB_PORT.\n");
+        exit(2);
+    }
+}
+$port = $portDiminta > 0 ? $portDiminta : $portBebas();
 $baseUrl = 'http://127.0.0.1:' . $port;
 $sandi = 'Sandbox#123';
 $suffix = strtolower(bin2hex(random_bytes(3)));
@@ -172,15 +204,22 @@ try {
     // --------------------------------------------------------- server lokal
     $descriptors = [1 => ['file', '/dev/null', 'w'], 2 => ['file', '/dev/null', 'w']];
     $pipes = [];
-    // Kunci sandbox diwariskan secara EKSPLISIT ke server uji: tanpa itu
-    // konfigurasi push pada proses server dianggap belum siap dan sakelar
-    // push ditolak — persis seperti di produksi bila environment belum diisi.
+    // Dijalankan TANPA shell (bentuk array `proc_open`). Dengan bentuk string,
+    // `/bin/sh` menjadi anak proses dan `proc_terminate` hanya mematikan
+    // shell-nya — server PHP tetap hidup memegang port dan menyesatkan putaran
+    // pengujian berikutnya.
+    //
+    // Kunci sandbox diwariskan lewat environment proses anak: tanpa itu
+    // konfigurasi push pada proses server dianggap belum siap dan sakelar push
+    // ditolak — persis seperti di produksi bila environment belum diisi.
+    $serverEnv = getenv();
+    $serverEnv['PUSH_TOKEN_KEY'] = (string) getenv('PUSH_TOKEN_KEY');
     $server = proc_open(
-        'PUSH_TOKEN_KEY=' . escapeshellarg((string) getenv('PUSH_TOKEN_KEY')) . ' '
-            . escapeshellarg(PHP_BINARY) . ' -S 127.0.0.1:' . $port . ' -t ' . escapeshellarg($root),
+        [PHP_BINARY, '-S', '127.0.0.1:' . $port, '-t', $root],
         $descriptors,
         $pipes,
-        $root
+        $root,
+        $serverEnv
     );
     if (!is_resource($server)) {
         throw new RuntimeException('Server uji tidak dapat dijalankan.');
@@ -401,7 +440,19 @@ try {
     echo '[gagal] ' . $exception->getMessage() . ' @ ' . $exception->getFile() . ':' . $exception->getLine() . PHP_EOL;
 } finally {
     if (is_resource($server)) {
+        // SIGTERM lebih dulu, lalu SIGKILL bila masih hidup: server yang
+        // tertinggal akan menyesatkan putaran pengujian berikutnya.
         proc_terminate($server);
+        for ($i = 0; $i < 20; $i++) {
+            $status = proc_get_status($server);
+            if (($status['running'] ?? false) !== true) {
+                break;
+            }
+            usleep(100000);
+        }
+        if ((proc_get_status($server)['running'] ?? false) === true) {
+            proc_terminate($server, 9);
+        }
         proc_close($server);
     }
 

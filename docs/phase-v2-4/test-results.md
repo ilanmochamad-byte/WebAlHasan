@@ -161,3 +161,69 @@ diantrekan hanya untuk penerima berperangkat aktif, payload push hanya memuat
 penunjuk sumber daya dan tidak memuat alasan izin, `channelId` yang dikirim
 server sama dengan kanal Android yang dibuat aplikasi, tiket sukses menandai
 baris `Sent`, dan tiket `DeviceNotRegistered` otomatis mencabut token.
+
+## 9. Uji browser sungguhan (Chromium/Playwright)
+
+Berbeda dari smoke test HTTP yang memeriksa kode status dan potongan HTML,
+dua skrip berikut benar-benar MERENDER halaman, MENGKLIK tombol, dan mengambil
+tangkapan layar. Keduanya berada di `tests/browser/` dan bersifat opsional —
+tidak menjadi bagian rangkaian uji wajib, karena memerlukan Playwright.
+
+Prosedur menjalankan: `testing-sandbox.md` §Uji browser.
+
+### 9.1 Website portal dan panel admin — `tests/browser/uji-website.mjs`
+
+**37 pemeriksaan, 0 gagal** (dijalankan tiga kali berturut-turut dengan hasil
+sama; skrip mengembalikan status baca akun `sbx_%` lebih dulu agar dapat
+diulang).
+
+| Kelompok | Pemeriksaan | Hasil |
+| --- | --- | --- |
+| Pusat notifikasi murobi | B-1…B-14: halaman terbuka, lencana jumlah, penanda "Baru", filter, panel detail, tandai dibaca, tandai semua | LULUS |
+| Kerahasiaan | B-5, B-9, B-17: alasan izin dan catatan pengurus tidak pernah tampil pada notifikasi | LULUS |
+| Isolasi antar akun | B-15…B-18: orang tua hanya melihat miliknya, ditolak pada notifikasi murobi, ditolak 403 pada panel admin | LULUS |
+| Panel kanal admin | B-19…B-33: tiga kanal tampil, in-app tidak dapat dimatikan, hanya NAMA environment yang tampil, pemeriksaan konfigurasi, push dapat dinyalakan/dimatikan, WhatsApp DITOLAK menyala, pesan uji, daftar kegagalan, audit | LULUS |
+| Regresi | B-34…B-36: daftar perizinan, antrean, dashboard admin V1 | LULUS |
+| Galat JavaScript | B-37 | LULUS (0 galat) |
+
+Catatan lingkungan: sandbox memblokir CDN eksternal, sehingga Bootstrap,
+FontAwesome, dan chart.js tidak termuat. Tangkapan layar karenanya tampil
+tanpa gaya, dan `Chart is not defined` pada dashboard V1 berasal dari CDN yang
+diblokir — bukan cacat kode dan bukan bagian Fase 4.
+
+### 9.2 Aplikasi React Native — `tests/browser/uji-aplikasi.mjs`
+
+**25 pemeriksaan, 0 gagal.**
+
+Kode yang dijalankan adalah bundel React Native yang sama dengan build
+perangkat, dirender lewat `react-native-web` (`npx expo export -p web`) dan
+disajikan satu origin dengan API melalui `tests/phase5_web_router.php`. Ini
+BUKAN produk web; ia hanya permukaan pengujian, sama seperti yang dipakai
+Fase 3.
+
+| Kelompok | Pemeriksaan | Hasil |
+| --- | --- | --- |
+| Sesi | A-1: login dan bundel berjalan | LULUS |
+| Pusat notifikasi | A-2…A-7: data dimuat dari API, ringkasan jumlah, filter | LULUS |
+| Kerahasiaan | A-4, A-9, A-10, A-22: alasan izin tidak pernah tampil; layar menyatakan alasan tidak dikirim lewat notifikasi | LULUS |
+| Detail dan deep link | A-8, A-11…A-13: detail terbuka, menandai dibaca, navigasi ke detail izin | LULUS |
+| Perangkat & push | A-14…A-18: layar terbuka, menyatakan perlu development build dan perangkat nyata, tidak menampilkan token | LULUS |
+| Tandai semua | A-19 | LULUS |
+| Isolasi antar akun | A-20…A-22: orang tua ditolak pada notifikasi murobi (403 dari server) | LULUS |
+| Regresi | A-23…A-24: layar perizinan Fase 2/3 dan jadwal V1 | LULUS |
+| Galat JavaScript | A-25 | LULUS (0 galat) |
+
+**Yang TIDAK diuji di sini:** kedatangan push. `expo-notifications`
+mengembalikan `tidak_didukung` pada web sesuai dokumentasi SDK 57, dan layar
+memang melaporkannya apa adanya (A-6). Kriteria 3 PRD tetap **MENUNGGU SMOKE
+TEST MANUSIA** pada perangkat Android dan iOS nyata.
+
+### 9.3 Dua perbaikan yang ditemukan uji browser ini
+
+| Temuan | Berkas | Sifat |
+| --- | --- | --- |
+| `Notifications.useLastNotificationResponse()` melempar pada web (`getLastNotificationResponse` tidak tersedia), menggagalkan render seluruh aplikasi pada permukaan uji web yang dipakai sejak Fase 3 | `src/notifications/notification-context.tsx` | Penjagaan khusus web; perilaku Android/iOS tidak berubah sama sekali |
+| Tab "Notifikasi" tidak ada pada `app-tabs.web.tsx` (varian web punya daftar tab tersendiri yang belum diperbarui Fase 4), sehingga pusat notifikasi tidak dapat dicapai pada build web | `src/components/app-tabs.web.tsx` | Penyetaraan permukaan uji web dengan versi native; `app-tabs.tsx` (Android/iOS) sudah benar sejak awal |
+
+Keduanya hanya menyentuh jalur web. Tidak ada perubahan pada logika
+notifikasi, registrasi push, maupun kontrak API.
