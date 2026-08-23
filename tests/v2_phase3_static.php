@@ -165,12 +165,21 @@ $assert(
 );
 
 // ---------------------------------------------------------------------------
-// 4. Tidak ada pekerjaan Fase 4
+// 4. Batas ruang lingkup modul Fase 3
+//
+// CATATAN PERUBAHAN (V2 Fase 4, 23 Agustus 2026):
+// Sebelumnya bagian ini menuntut TIDAK ADA jejak notifikasi di mana pun, karena
+// Fase 4 memang belum dikerjakan. Setelah Fase 4 diterapkan, tuntutan itu
+// diganti dengan tuntutan yang lebih tepat dan tetap ketat: Fase 4 harus
+// ADITIF — modul Fase 3 tidak boleh ditulis ulang untuk menampung notifikasi.
+// Modul-modul di bawah karena itu wajib tetap bersih dari logika notifikasi;
+// yang boleh berubah hanyalah router `api/v1/index.php`, yang memang tempat
+// pendaftaran rute baru, dan kontrak Fase 3 di dalamnya sudah diperiksa pada
+// bagian 1 di atas.
 // ---------------------------------------------------------------------------
-echo PHP_EOL . '=== 4. Batas ruang lingkup (tanpa Fase 4) ===' . PHP_EOL;
+echo PHP_EOL . '=== 4. Batas ruang lingkup modul Fase 3 ===' . PHP_EOL;
 
 $berkasFase3 = [
-    'api/v1/index.php',
     'app/Api/IzinApiService.php',
     'app/Api/ApiAuthService.php',
     'app/Api/ApiAuthRepository.php',
@@ -182,7 +191,7 @@ foreach ($berkasFase3 as $berkas) {
     $isi = $source($berkas);
     $assert(
         !preg_match('/expo-notifications|whatsapp|notifikasi_outbox|perangkat_push|pengaturan_notifikasi|outbox/i', $isi),
-        'Tanpa jejak notifikasi/push/WhatsApp/outbox Fase 4 pada ' . $berkas
+        'Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: ' . $berkas
     );
 }
 $assert(
@@ -190,8 +199,24 @@ $assert(
     'Fase 3 tidak menambah migrasi skema (seluruh tabel sudah ada sejak Fase 1–2)'
 );
 $assert(
-    count(glob($root . '/database/migrations/*.sql') ?: []) === 7,
-    'Jumlah migrasi tetap 7 berkas seperti setelah Fase 2'
+    count(glob($root . '/database/migrations/*.sql') ?: []) === 8,
+    'Jumlah migrasi menjadi 8 berkas: 7 dari Fase 1–2 ditambah 008 milik Fase 4'
+);
+$assert(
+    is_file($root . '/database/migrations/008_v2_phase4_notifikasi_push_whatsapp.sql')
+        && is_file($root . '/database/rollbacks/008_v2_phase4_notifikasi_push_whatsapp.sql'),
+    'Migrasi 008 Fase 4 memiliki pasangan rollback'
+);
+$assert(
+    count(glob($root . '/database/migrations/*.sql') ?: [])
+        === count(glob($root . '/database/rollbacks/*.sql') ?: []),
+    'Setiap migrasi tetap memiliki satu berkas rollback'
+);
+$assert(
+    // Fase 5 (laporan V2, ekspor CSV perizinan, migrasi produksi) belum boleh dimulai.
+    !is_file($root . '/database/migrations/009_v2_phase5.sql')
+        && glob($root . '/tests/v2_phase5_*.php') === [],
+    'Tidak ada pekerjaan Fase 5 yang dimulai'
 );
 
 // ---------------------------------------------------------------------------
@@ -232,13 +257,19 @@ if (!$adaMobile) {
     $assert(false, 'MOBILE_APP_ROOT tidak ditemukan: ' . $mobileRoot);
 } else {
     $package = $mobile('package.json');
+    $packageData = json_decode($package, true);
+    $expoVersion = (string) ($packageData['dependencies']['expo'] ?? '');
+    $reactNativeVersion = (string) ($packageData['dependencies']['react-native'] ?? '');
     $assert(
-        str_contains($package, '"expo": "^57.') && str_contains($package, '"react-native": "0.86.'),
+        preg_match('/^[~^]?57\./', $expoVersion) === 1
+            && preg_match('/^[~^]?0\.86\./', $reactNativeVersion) === 1,
         'Expo SDK 57 dan React Native 0.86 tidak di-upgrade'
     );
     $assert(
-        !str_contains($package, 'expo-notifications') && !str_contains($package, 'axios'),
-        'Tidak ada dependency Fase 4 atau penggantian arsitektur klien HTTP'
+        // `expo-notifications` menjadi sah sejak Fase 4; yang tetap dilarang
+        // adalah penggantian arsitektur klien HTTP milik Fase 3.
+        !str_contains($package, 'axios') && !str_contains($package, 'react-query'),
+        'Arsitektur klien HTTP Fase 3 tidak diganti'
     );
 
     $client = $mobile('src/api/client.ts');

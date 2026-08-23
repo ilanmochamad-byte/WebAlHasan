@@ -47,8 +47,18 @@ try {
         JsonResponse::success(api_auth_service()->profile($user));
     }
     if ($method === 'POST' && $path === '/auth/logout') {
+        // V2 Fase 4: logout mencabut registrasi perangkat push agar sesi lama
+        // tidak meninggalkan perangkat yang masih menerima push. Aplikasi
+        // mengirim `push_token` miliknya; bila tidak dikirim, seluruh perangkat
+        // akun ini dicabut. Pencabutan tidak pernah menggagalkan logout.
+        $logoutBody = Request::json();
+        $pushToken = isset($logoutBody['push_token']) ? (string) $logoutBody['push_token'] : null;
+        $perangkatDicabut = notification_api_service()->revokeOnLogout($user, $pushToken);
         api_auth_service()->logout($user);
-        JsonResponse::success(['message' => 'Logout berhasil.']);
+        JsonResponse::success([
+            'message' => 'Logout berhasil.',
+            'perangkat_push_dicabut' => $perangkatDicabut,
+        ]);
     }
     if ($method === 'GET' && $path === '/me/capabilities') {
         JsonResponse::success(izin_api_service()->capabilities($user));
@@ -103,6 +113,75 @@ try {
     if ($method === 'POST' && preg_match('#^/izin/pengajuan/(\d+)/koreksi$#', $path, $matches)) {
         $result = izin_api_service()->correct($user, (int) $matches[1], Request::json(), $requestMeta());
         JsonResponse::success($result['data'], $result['status']);
+    }
+
+    // ---------------------------------------------------------------------
+    // V2 Fase 4: notifikasi in-app, perangkat push, dan panel kanal admin.
+    //
+    // Aditif; tidak mengubah satu pun endpoint V1 atau Fase 3. Rute admin
+    // berada di bawah `/notifikasi/admin/...` dan penjaga aksesnya ada di
+    // `NotificationAdminService` (capability admin dihitung ulang di server),
+    // bukan pada urutan rute di berkas ini.
+    // ---------------------------------------------------------------------
+    if ($method === 'GET' && $path === '/notifikasi') {
+        JsonResponse::success(notification_api_service()->index($user, $_GET));
+    }
+    if ($method === 'GET' && $path === '/notifikasi/belum-dibaca') {
+        JsonResponse::success(notification_api_service()->unreadCount($user));
+    }
+    if ($method === 'POST' && $path === '/notifikasi/dibaca-semua') {
+        JsonResponse::success(notification_api_service()->markAllRead($user));
+    }
+
+    // Perangkat push (registrasi, daftar, pencabutan, sakelar per perangkat).
+    if ($method === 'GET' && $path === '/notifikasi/perangkat') {
+        JsonResponse::success(notification_api_service()->devices($user));
+    }
+    if ($method === 'POST' && $path === '/notifikasi/perangkat') {
+        JsonResponse::success(notification_api_service()->registerDevice($user, Request::json()), 201);
+    }
+    if ($method === 'POST' && $path === '/notifikasi/perangkat/pencabutan') {
+        JsonResponse::success(notification_api_service()->revokeDevice($user, Request::json()));
+    }
+    if ($method === 'POST' && preg_match('#^/notifikasi/perangkat/(\d+)/push$#', $path, $matches)) {
+        JsonResponse::success(notification_api_service()->setDevicePush($user, (int) $matches[1], Request::json()));
+    }
+
+    // Panel kanal admin.
+    if ($method === 'GET' && $path === '/notifikasi/admin/status') {
+        JsonResponse::success(notification_api_service()->adminStatus($user));
+    }
+    if ($method === 'GET' && $path === '/notifikasi/admin/kegagalan') {
+        JsonResponse::success(notification_api_service()->adminFailures($user, $_GET));
+    }
+    if ($method === 'GET' && $path === '/notifikasi/admin/audit') {
+        JsonResponse::success(notification_api_service()->adminAudit($user, $_GET));
+    }
+    if ($method === 'POST' && $path === '/notifikasi/admin/pemeriksaan') {
+        JsonResponse::success(notification_api_service()->adminCheck($user, Request::json(), $requestMeta()));
+    }
+    if ($method === 'POST' && $path === '/notifikasi/admin/sakelar') {
+        JsonResponse::success(notification_api_service()->adminToggle($user, Request::json(), $requestMeta()));
+    }
+    if ($method === 'POST' && $path === '/notifikasi/admin/pesan-uji') {
+        JsonResponse::success(notification_api_service()->adminTestMessage($user, Request::json(), $requestMeta()));
+    }
+    if ($method === 'POST' && $path === '/notifikasi/admin/worker') {
+        JsonResponse::success(notification_api_service()->adminRunWorker($user, Request::json()));
+    }
+    if ($method === 'POST' && preg_match('#^/notifikasi/admin/kegagalan/(\d+)/coba-ulang$#', $path, $matches)) {
+        JsonResponse::success(notification_api_service()->adminRetry($user, (int) $matches[1], $requestMeta()));
+    }
+
+    // Detail dan penandaan baca satu notifikasi. Diletakkan SETELAH rute
+    // literal di atas agar `/notifikasi/perangkat` tidak pernah tertangkap
+    // sebagai id. Cakupan tetap dijaga server: id yang bukan milik pengguna
+    // dijawab 403, bukan isi notifikasi orang lain.
+    if ($method === 'GET' && preg_match('#^/notifikasi/(\d+)$#', $path, $matches)) {
+        JsonResponse::success(notification_api_service()->show($user, (int) $matches[1]));
+    }
+    if ($method === 'POST' && preg_match('#^/notifikasi/(\d+)/dibaca$#', $path, $matches)) {
+        JsonResponse::success(notification_api_service()->markRead($user, (int) $matches[1]));
     }
 
     // ---------------------------------------------------------------------

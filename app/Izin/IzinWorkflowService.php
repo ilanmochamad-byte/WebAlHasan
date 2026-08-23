@@ -6,6 +6,8 @@ namespace App\Izin;
 
 use App\Audit\AuditLogger;
 use App\Auth\Capabilities;
+use App\Notification\NotificationEvent;
+use App\Notification\NotificationService;
 use RuntimeException;
 use Throwable;
 
@@ -23,6 +25,13 @@ use Throwable;
  *      dengan optimistic version. Kunci unik basis data menjadi pengaman terakhir.
  *   4. Setiap perubahan menulis riwayat status (tidak pernah ditimpa) dan audit.
  *   5. Tidak membaca variabel global; IP dan user agent dikirim pemanggil.
+ *
+ * V2 Fase 4 menambahkan satu langkah di akhir setiap mutasi: `notify()`.
+ * Langkah itu HANYA menulis baris outbox lokal — tidak ada panggilan jaringan —
+ * sehingga transaksi perizinan tidak pernah menunggu penyedia push/WhatsApp.
+ * `NotificationService::emit()` menangkap seluruh galatnya sendiri, jadi
+ * kegagalan notifikasi tidak dapat membatalkan pengajuan atau keputusan yang
+ * sudah sah (PRD Fase 4 §3 dan §7.8).
  */
 final class IzinWorkflowService
 {
@@ -36,7 +45,8 @@ final class IzinWorkflowService
         private IzinIdempotency $idempotency,
         private IzinService $izin,
         private Capabilities $capabilities,
-        private AuditLogger $audit
+        private AuditLogger $audit,
+        private NotificationService $notifications
     ) {
     }
 
@@ -193,6 +203,26 @@ final class IzinWorkflowService
                 $meta
             ));
 
+            // --- Notifikasi Fase 4 --------------------------------------
+            // Pengajuan dengan satu murobi valid memberi tahu murobi itu;
+            // kasus nol/lebih dari satu kandidat memberi tahu antrean admin.
+            $this->notify(
+                $routing['jumlah'] === 1
+                    ? NotificationEvent::PENGAJUAN_DIBUAT
+                    : NotificationEvent::ROUTING_PERLU_ADMIN,
+                [
+                    'id' => $pengajuanId,
+                    'santri_id' => $santriId,
+                    'santri_nama' => (string) ($santri['nama_santri'] ?? ''),
+                    'pengurus_id' => $scope['mode'] === Capabilities::PENGURUS ? (int) $scope['pengurus_id'] : null,
+                    'diajukan_oleh_user_id' => $userId,
+                    'murobi_guru_id' => $routing['murobi_guru_id'],
+                    'tgl_izin' => $tglIzin,
+                    'tgl_kembali' => $tglKembali,
+                ],
+                ['aktor_user_id' => $userId]
+            );
+
             $response = [
                 'id' => $pengajuanId,
                 'status' => (string) $routing['status'],
@@ -284,6 +314,25 @@ final class IzinWorkflowService
                 $alasan,
                 $meta
             ));
+
+            // --- Notifikasi Fase 4 --------------------------------------
+            // Versi BARU dipakai sebagai bagian kunci peristiwa sehingga setiap
+            // penetapan ulang adalah peristiwa berbeda, sementara retry pada
+            // versi yang sama tidak pernah menghasilkan notifikasi kedua.
+            $this->notify(
+                $murobiSebelum === null
+                    ? NotificationEvent::MUROBI_DITETAPKAN
+                    : NotificationEvent::MUROBI_DITETAPKAN_ULANG,
+                // `array_merge` (bukan operator `+`) karena kunci
+                // `murobi_guru_id` sudah ada pada baris terkunci dan nilainya
+                // HARUS diganti dengan murobi yang baru ditetapkan.
+                array_merge($row, ['murobi_guru_id' => $guruId]),
+                [
+                    'version' => $version + 1,
+                    'aktor_user_id' => $userId,
+                    'murobi_sebelumnya_guru_id' => $murobiSebelum,
+                ]
+            );
 
             $response = [
                 'id' => $pengajuanId,
@@ -406,6 +455,20 @@ final class IzinWorkflowService
                 $meta
             ));
 
+            // --- Notifikasi Fase 4 --------------------------------------
+            // Alasan keputusan dan alasan penggantian SENGAJA tidak ikut:
+            // notifikasi hanya membawa status akhir; penerima membuka detail
+            // untuk membaca alasannya (PRD 5.7).
+            $this->notify(
+                $kapasitas === self::KAPASITAS_ADMIN_PENGGANTI
+                    ? NotificationEvent::KEPUTUSAN_ADMIN_PENGGANTI
+                    : ($hasil === 'Disetujui'
+                        ? NotificationEvent::KEPUTUSAN_DISETUJUI
+                        : NotificationEvent::KEPUTUSAN_DITOLAK),
+                array_merge($row, ['hasil' => $hasil]),
+                ['version' => $version + 1, 'aktor_user_id' => $userId]
+            );
+
             $response = [
                 'id' => $pengajuanId,
                 'keputusan_id' => $keputusanId,
@@ -490,6 +553,13 @@ final class IzinWorkflowService
                 $alasan,
                 $meta
             ));
+
+            // --- Notifikasi Fase 4 --------------------------------------
+            $this->notify(
+                NotificationEvent::PEMBATALAN,
+                $row,
+                ['version' => $version + 1, 'aktor_user_id' => $userId]
+            );
 
             $response = ['id' => $pengajuanId, 'status' => 'Dibatalkan', 'version' => $version + 1];
             $this->idempotency->complete($userId, IzinIdempotency::OP_CANCEL, $key, 200, $response, $pengajuanId);
@@ -592,6 +662,13 @@ final class IzinWorkflowService
                 $alasanKoreksi,
                 $meta
             ));
+
+            // --- Notifikasi Fase 4 --------------------------------------
+            $this->notify(
+                NotificationEvent::KOREKSI,
+                array_merge($row, ['hasil' => $hasilBaru]),
+                ['version' => $version + 1, 'aktor_user_id' => $userId]
+            );
 
             $response = [
                 'id' => $pengajuanId,
@@ -748,6 +825,26 @@ final class IzinWorkflowService
             'ip_address' => $ip === null ? null : substr($ip, 0, 45),
             'user_agent' => $userAgent === null ? null : substr($userAgent, 0, 255),
         ];
+    }
+
+    /**
+     * Membuat notifikasi peristiwa perizinan.
+     *
+     * Dipanggil DI DALAM transaksi bisnis dengan sengaja: baris outbox lahir
+     * bersama perubahan yang memicunya (pola outbox), sehingga tidak ada
+     * peristiwa yang commit tanpa notifikasi dan tidak ada notifikasi tanpa
+     * peristiwa. Yang ditulis hanyalah baris lokal — pengiriman ke penyedia
+     * eksternal terjadi kemudian, di worker.
+     *
+     * `emit()` tidak pernah melempar; nilai baliknya diabaikan di sini karena
+     * keberhasilan notifikasi BUKAN syarat sahnya pengajuan atau keputusan.
+     *
+     * @param array<string, mixed> $pengajuan
+     * @param array<string, mixed> $opsi
+     */
+    private function notify(string $event, array $pengajuan, array $opsi): void
+    {
+        $this->notifications->emit($event, $pengajuan, $opsi);
     }
 
     /**

@@ -4,8 +4,11 @@ Tanggal pengujian sandbox: **22 Agustus 2026** (audit ulang Codex)
 Branch: `prd-v2-fase-3` (WebAlHasan) dan `prd-v2-fase-3` (alhasanApps)
 Baseline: commit rilis Fase 2 `f2f674d`, tergabung pada produksi lewat merge `c30add9`
 
-Legenda: **LULUS** = diverifikasi otomatis di sandbox · **MENUNGGU** = belum
-dapat diverifikasi di sandbox, memerlukan tindakan manusia.
+Legenda: **LULUS** = diverifikasi otomatis atau manual pada lingkungan yang
+dicatat · **SIMULATOR** = bukti pendukung, bukan pengganti perangkat nyata ·
+**MENUNGGU** = masih memerlukan tindakan manusia/perangkat nyata · **DITERIMA
+DENGAN PENGECUALIAN** = bukti yang diwajibkan tidak tersedia, tetapi pemilik
+produk secara eksplisit menerima risiko sisanya untuk gerbang fase.
 
 ## 1. Ringkasan hasil pengujian otomatis
 
@@ -57,16 +60,16 @@ Total: **1.028 pemeriksaan, 0 gagal.** Perintah tunggal untuk mengulang seluruh 
 
 | # | Kriteria | Status | Bukti |
 | --- | --- | --- | --- |
-| 1 | Pengurus menyelesaikan alur mobile dari login sampai pengajuan tersimpan dan terbaca kembali | **LULUS (API)** / **MENUNGGU (perangkat)** | Kontrak API: login pengurus, `GET /izin/santri`, `POST /izin/pengajuan` → 201, `GET /izin/pengajuan/{id}` mengembalikan nilai bisnis utuh. Layar aplikasi tersedia dan lolos lint/tsc/bundle, tetapi belum dijalankan pada perangkat nyata. |
+| 1 | Pengurus menyelesaikan alur mobile dari login sampai pengajuan tersimpan dan terbaca kembali | **LULUS** | Kontrak API dan Android 16 simulator lulus. Pada iPhone nyata, pengurus berhasil login, mencari santri sesuai cakupan, memvalidasi tanggal, mengirim pengajuan, membaca detail, menangani offline/retry, dan membatalkan dengan alasan. |
 | 2 | Murobi menerima pengajuan yang ditetapkan, memberi keputusan, hasilnya terlihat pengurus & orang tua | **LULUS** | Kontrak API: antrean murobi memuat pengajuan tujuan; keputusan `201`; hasil terbaca oleh pengurus dan orang tua terhubung. |
-| 3 | Admin dapat memberi keputusan pengganti dari website dan aplikasi dengan alasan wajib | **LULUS (web + API)** / **MENUNGGU (perangkat)** | Web: `tests/v2_phase2_web_smoke.php`. API: tanpa `alasan_penggantian` → `422`; dengan alasan → `201` kapasitas `Admin Pengganti`. Layar aplikasi tersedia; verifikasi perangkat menyusul. |
+| 3 | Admin dapat memberi keputusan pengganti dari website dan aplikasi dengan alasan wajib | **LULUS** | Web: `tests/v2_phase2_web_smoke.php`. API dan Android simulator: tanpa `alasan_penggantian` ditolak; dengan alasan berhasil sebagai `Admin Pengganti`. Alur yang sama berhasil diverifikasi pada iPhone nyata, termasuk penetapan murobi dan keputusan Admin Pengganti. |
 | 4 | Orang tua hanya melihat pengajuan santri terhubung, di website dan aplikasi | **LULUS** | `GET /izin/anak` hanya memuat santri berelasi aktif; orang tua lain menerima `403`; daftar izin orang tua hanya memuat santrinya; web smoke Fase 2 menegaskan hal sama. |
 | 5 | Manipulasi parameter lintas pengurus, murobi, dan orang tua selalu ditolak server | **LULUS** | 12 pemeriksaan otorisasi lintas peran, termasuk `mode=admin` yang dikirim akun pengurus tetap dilayani sebagai cakupan pengurus. |
 | 6 | Retry create dan decision tidak membuat data tambahan | **LULUS** | Retry create → `200`, `idempotent_replay: true`, jumlah baris tidak bertambah. Retry keputusan → `200`, jumlah `izin_keputusan` tetap 1. |
 | 7 | Konflik versi atau keputusan kedua menghasilkan `409` tanpa menimpa keputusan pertama | **LULUS** | Keputusan kedua → `409`; versi kedaluwarsa pada penetapan → `409`; dua proses PHP yang benar-benar bersamaan menghasilkan tepat `201` + `409` dengan satu baris keputusan. |
 | 8 | Logout mencabut token dan token lama tidak dapat digunakan lagi | **LULUS** | Setelah `POST /auth/logout`, token yang sama menerima `401` pada endpoint V2 maupun V1. |
-| 9 | `npm run lint`, `npx tsc --noEmit`, pemeriksaan PHP, tes API, dan tes regresi V1 lulus | **LULUS (sandbox)** | Lihat tabel bagian 1. Catatan risiko: `php -l` sandbox memakai PHP 8.4; wajib diulang pada versi PHP cPanel sebelum rilis. |
-| 10 | Alur utama tiap peran lulus pada ≥1 perangkat Android dan ≥1 perangkat iOS | **MENUNGGU** | Perangkat nyata tidak tersedia di sandbox. Checklist rinci: `mobile-build-and-smoke-test.md`. **Fase 3 tidak boleh dinyatakan selesai sebelum ini dijalankan.** |
+| 9 | `npm run lint`, `npx tsc --noEmit`, pemeriksaan PHP, tes API, dan tes regresi V1 lulus | **LULUS (sandbox + lint cPanel)** | Lihat tabel bagian 1. Tujuh berkas PHP Fase 3 diulang lint pada PHP cPanel 8.3.33 dan seluruhnya lulus. |
+| 10 | Alur utama tiap peran lulus pada ≥1 perangkat Android dan ≥1 perangkat iOS | **DITERIMA DENGAN PENGECUALIAN PEMILIK PRODUK** | Alur iOS nyata selesai pada iPhone 17 Pro / iOS 26.6.1 dan alur Android selesai pada simulator Android 16. Android fisik **tidak diuji**. Pada 23 Agustus 2026 pemilik produk menyatakan bukti tersebut cukup untuk gerbang Fase 3 dan menerima risiko perangkat-spesifik Android agar Fase 4 dapat dimulai. |
 
 ## 3. Status persyaratan Fase 3 (PRD §6)
 
@@ -102,29 +105,39 @@ Total: **1.028 pemeriksaan, 0 gagal.** Perintah tunggal untuk mengulang seluruh 
 
 | # | Risiko / pekerjaan | Dampak | Mitigasi / tindak lanjut |
 | --- | --- | --- | --- |
-| R-1 | Smoke test Android & iOS pada perangkat nyata **belum dijalankan** | Kriteria 10 belum terpenuhi; Fase 3 belum boleh dinyatakan selesai | Jalankan `mobile-build-and-smoke-test.md` pada ≥1 Android dan ≥1 iOS, lalu perbarui dokumen ini |
-| R-2 | Sandbox memakai PHP 8.4 dan MariaDB 12.3; versi cPanel mungkin berbeda | Perbedaan perilaku runtime/database | Jalankan ulang `php -l`, migrasi, dan `tests/v2_phase3_api_contract.php` pada staging cPanel dengan versi PHP/MariaDB produksi sebelum rilis |
+| R-1 | Smoke test iOS nyata lulus pada iPhone 17 Pro / iOS 26.6.1; Android nyata tidak dijalankan dan dibebaskan untuk gerbang Fase 3 oleh pemilik produk pada 23 Agustus 2026 | Cacat yang hanya muncul pada perangkat Android fisik masih mungkin lolos | Risiko diterima untuk memulai Fase 4; tetap jalankan `mobile-build-and-smoke-test.md` pada Android nyata sebelum rilis produksi bila perangkat tersedia |
+| R-2 | Sandbox memakai PHP 8.4 dan MariaDB 12.3; cPanel memakai PHP 8.3.33 dan MariaDB client 10.6.27 | Perbedaan runtime telah diuji sebagian | Lint tujuh berkas, status migrasi 001–007, `v2_phase2_verify.php`, konfigurasi, hash rilis, dan smoke API baca-saja lulus di cPanel. Kontrak API yang menulis data tetap hanya dijalankan pada database `_test`, bukan produksi. |
 | R-3 | Uji dilakukan pada fixture sintetis kecil | Perilaku pada volume data nyata belum terukur | Uji ulang pada staging dengan salinan data yang disamarkan; baseline performa laporan sudah ada dari Fase 5 V1 |
 | R-4 | Akun `pengurus`/`orang_tua` kini dapat login ke API | Permukaan serangan bertambah | Login tetap menolak akun tanpa relasi master aktif; seluruh endpoint V2 memaksakan cakupan di server; endpoint V1 tetap menolak peran ini dengan `403` |
 | R-5 | `expo export -p web` menghasilkan `dist/`, `.expo/types` diregenerasi | Berkas build lokal | Keduanya sudah masuk `.gitignore` dan tidak ikut commit |
-| R-6 | Ketuk-ganda dan mode pesawat hanya diuji secara statis | Perilaku UI nyata belum dibuktikan | Baris A-06, A-07, dan A-08 pada checklist perangkat |
+| R-6 | Kondisi offline dan retry pengiriman telah diuji pada Android simulator dan iPhone nyata; ketuk-ganda serta kunci idempotensi masih perlu dibuktikan lengkap pada Android nyata | Perilaku lintas platform nyata belum dibuktikan penuh | Ulangi A-06, A-07, dan A-08 pada Android nyata |
 | R-7 | Notifikasi (Fase 4) belum ada | Perubahan status hanya terlihat saat pengguna membuka aplikasi/portal | Sesuai ruang lingkup; dikerjakan pada Fase 4 |
 | R-8 | `npm ci` melaporkan 17 advisory dependency (12 moderat, 5 tinggi) pada dependency baseline; Fase 3 tidak mengubah dependency | Risiko supply-chain tetap ada meski lint/tsc/bundle lulus | Audit dependency terpisah sebelum rilis; jangan menjalankan `npm audit fix --force` pada branch fase ini karena dapat membawa breaking change |
+| R-9 | Pada iPhone nyata, `KeyboardAvoidingView` sudah menaikkan kotak isian saat keyboard terbuka, tetapi tombol aksi di bawah kotak belum selalu tampil penuh tanpa gulir manual | UX pengisian tetap dapat digunakan, tetapi belum memenuhi target tanpa gulir pengguna | Pertahankan sebagai temuan terbuka; kalibrasi offset/struktur formulir pada perbaikan berikutnya dan uji ulang pada iOS serta Android nyata |
+| R-10 | Backup Fase 2 beserta manifest tersedia di cPanel, tetapi manifest pra-migrasi secara wajar berbeda dari data produksi saat ini (migrasi 007 dan data penugasan/akun sudah bertambah) | Perbandingan manifest ke produksi sekarang bukan bukti restore | Pulihkan backup ke database `_test` terisolasi dan jalankan `verify_restore.php` terhadap hasil restore sebelum rilis berikutnya; jangan menguji restore pada database produksi |
 
 ## 6. Hasil pengujian manual
 
 | Jenis | Status | Catatan |
 | --- | --- | --- |
 | Portal web per peran (otomatis, headless) | LULUS | `tests/v2_phase2_web_smoke.php`, 35 pemeriksaan |
-| Portal web per peran (manual oleh manusia) | MENUNGGU | Belum dijalankan pada sesi ini |
-| Android nyata | MENUNGGU | `mobile-build-and-smoke-test.md` §5 |
-| iOS nyata | MENUNGGU | `mobile-build-and-smoke-test.md` §6 |
-| Regresi aplikasi guru pada perangkat | MENUNGGU | `mobile-build-and-smoke-test.md` §7 |
-| Smoke test staging/cPanel | MENUNGGU | `cpanel-deployment.md` §3 |
+| Web publik dan halaman login portal (manual) | LULUS | Halaman utama tampil normal; `/portal/` mengarahkan ke login pengguna tanpa fatal error. Alur portal terautentikasi per peran tetap dicakup tes otomatis. |
+| Android simulator | LULUS DENGAN CATATAN | Android 16: matriks menu per peran, pengajuan, routing admin, keputusan murobi/admin, pembatalan, orang tua baca-saja, offline, ketuk-ganda, dan logout diuji langsung. Ini bukan pengganti Android nyata. |
+| iOS simulator | LULUS DENGAN CATATAN | iPhone 17 Pro simulator / iOS 26.5: build 0 error, menu Murobi/Admin/Orang Tua, baca-saja orang tua, persistensi SecureStore, mode terang/gelap, serta Dynamic Type sampai `accessibility-extra-large` diuji. Setelah koreksi layout responsif, teks kartu tidak terpotong atau berimpitan. Ini bukan pengganti iPhone nyata. |
+| Android nyata | DIBEBASKAN UNTUK GERBANG FASE 3 — TIDAK DIUJI | Pemilik produk menerima Android 16 simulator + iPhone nyata sebagai bukti pengganti pada 23 Agustus 2026. Ini bukan pernyataan bahwa Android fisik telah diuji. |
+| iOS nyata | LULUS DENGAN CATATAN | iPhone 17 Pro / iOS 26.6.1, 23 Agustus 2026: alur Pengurus, Murobi, Admin, Orang Tua, guru non-murobi, routing otomatis/manual, validasi alasan, pembatalan, offline/retry, baca-saja orang tua, mode terang/gelap, persistensi sesi SecureStore, dan logout setelah aplikasi dibuka kembali telah diuji. Temuan keyboard tetap dicatat sebagai R-9. |
+| Regresi aplikasi guru pada perangkat | **DITERIMA DENGAN PENGECUALIAN** | Pada iPhone nyata, G-01 s.d. G-06 lulus: jadwal tampil, filter jadwal bekerja, pertemuan dapat dibuka, absensi tersimpan, koreksi mewajibkan alasan, PDF laporan berhasil dibuat dan dibagikan, serta logout menghapus sesi. Pencabutan token lama menjadi `401` lulus pada tes kontrak API. Regresi Android fisik tidak dijalankan dan risikonya diterima pemilik produk untuk gerbang Fase 3. |
+| Smoke test cPanel baca-saja | LULUS DENGAN CATATAN | PHP 8.3.33; MariaDB client 10.6.27; migrasi 001–007 diterapkan; verifikasi V2 Fase 2 lulus; 7/7 lint PHP lulus; hash 7 berkas identik dengan kode audit; `APP_DEBUG=false`; `IZIN_LEGACY_ENABLED=false`; secret 64 karakter; API root `200` dengan user-agent browser dan endpoint tanpa token `401`; log terbaru tidak memuat PHP fatal/warning. `curl` default diblokir WAF `403`, tetapi user-agent browser normal menerima `200`. |
 
 ## 7. Kesimpulan
 
-Seluruh kriteria penerimaan Fase 3 yang dapat diverifikasi tanpa perangkat nyata
-**LULUS**. Kriteria nomor 10 berstatus **MENUNGGU** dan karena itu **Fase 3
-belum dinyatakan selesai**. Pekerjaan diserahkan kepada Codex untuk audit, dan
-kepada Human Developer untuk smoke test perangkat serta staging.
+Seluruh alur iOS nyata **LULUS DENGAN CATATAN**, termasuk regresi G-01 s.d.
+G-06, persistensi sesi, logout, dan pemeriksaan baca-saja pada cPanel. Android
+16 simulator juga lulus. Android fisik tidak diuji; pemilik produk menerima
+risiko tersebut sebagai pengecualian pada 23 Agustus 2026. Temuan keyboard R-9
+tetap terbuka dan dibawa sebagai pekerjaan perbaikan berikutnya.
+
+Dengan keputusan pemilik produk tersebut, **Fase 3 DITERIMA DENGAN
+PENGECUALIAN dan Fase 4 boleh dimulai**. Status ini tidak menyatakan Android
+fisik pernah diuji dan tidak membebaskan persyaratan pengujian Android/iOS yang
+khusus diwajibkan oleh Fase 4.

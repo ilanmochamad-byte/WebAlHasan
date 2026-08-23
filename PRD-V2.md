@@ -229,6 +229,12 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 - [ ] `npm run lint`, `npx tsc --noEmit`, pemeriksaan PHP, tes API, dan tes regresi V1 lulus.
 - [ ] Alur utama tiap peran lulus pada sedikitnya satu perangkat Android dan satu perangkat iOS.
 
+> **Keputusan penerimaan Fase 3 — 23 Agustus 2026:** pemilik produk menerima
+> iPhone fisik dan simulator Android 16 sebagai bukti pengganti untuk gerbang
+> Fase 3. Android fisik tidak diuji. Risiko perangkat-spesifik Android diterima
+> agar Fase 4 dapat dimulai. Pengecualian ini tidak menghapus kewajiban uji
+> Android/iOS yang secara khusus tercantum pada kriteria Fase 4.
+
 ### Fase 4: Notifikasi In-App, Push, dan WhatsApp Opsional (memerlukan Fase 3)
 
 **Tujuan:** Memberi tahu pihak terkait tentang perubahan izin melalui kanal yang aman, dapat dikendalikan, dan tidak mengganggu transaksi utama.
@@ -260,6 +266,26 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 - [ ] Retry event yang sama tidak menghasilkan pesan ganda pada kanal yang sama.
 - [ ] Secret provider tidak muncul di respons API, log, audit, database, atau bundle mobile.
 - [ ] Status kirim dan error aman dapat dilihat admin; perubahan sakelar tercatat pada audit.
+
+> **Status audit Fase 4 — 23 Agustus 2026:** seluruh gerbang otomatis lulus
+> setelah koreksi auditor (23 berkas, 1.594 pemeriksaan, 0 gagal).
+> **Delapan dari sepuluh** kriteria di atas terpenuhi dan terbukti. Fase 4
+> **belum selesai/belum diterima** sampai dua kriteria manual berikut lulus.
+>
+> Dua kriteria **BELUM** dinyatakan lulus dan menunggu bukti manusia:
+>
+> - **Kriteria 3 (push tiba pada perangkat Android dan iOS).** Sandbox audit
+>   tidak memiliki perangkat fisik, development build, maupun credential
+>   FCM/APNs. Pengecualian simulator pada Fase 3 tidak berlaku di sini.
+>   Prosedur: `docs/phase-v2-4/mobile-build-and-smoke-test.md`.
+> - **Kriteria 6 (pengiriman WhatsApp nyata).** Penyedia nyata belum dipilih
+>   pemilik produk; sistem tidak memilih vendor, membuat akun, atau membeli
+>   layanan atas inisiatif sendiri. Kontrak, outbox, retry, dan deduplikasi
+>   sudah diverifikasi memakai adapter uji yang tidak mengirim pesan nyata.
+>   Prosedur: `docs/phase-v2-4/whatsapp-provider-checklist.md`.
+>
+> Rincian per kriteria: `docs/phase-v2-4/acceptance-status.md`.
+> Hasil pengujian: `docs/phase-v2-4/test-results.md`.
 
 ### Fase 5: Laporan, Migrasi Produksi, dan Kesiapan Rilis (memerlukan Fase 4)
 

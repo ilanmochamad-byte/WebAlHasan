@@ -185,6 +185,51 @@ Aturan yang berlaku pada seluruh endpoint di atas:
   aktif. Endpoint jadwal dan laporan V1 tetap terbatas pada role `admin`/`guru`
   dan tetap menjawab `403` untuk akun lain.
 
+## Notifikasi V2 (Fase 4)
+
+Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh
+respons ada pada `docs/phase-v2-4/endpoint-inventory.md`.
+
+Notifikasi selalu milik SATU akun: tidak ada parameter pemilik pada satu pun
+endpoint di bawah. Penerima ditentukan server dari bearer token, sehingga
+mengganti id pada URL hanya menghasilkan `403` — bukan notifikasi orang lain.
+
+| Metode | Path | Keterangan |
+| --- | --- | --- |
+| GET | `/notifikasi` | daftar in-app; `status`, `page`, `per_page` |
+| GET | `/notifikasi/belum-dibaca` | `{ "jumlah": n }` |
+| GET | `/notifikasi/{id}` | detail; `403` bila bukan milik pengguna |
+| POST | `/notifikasi/{id}/dibaca` | tandai satu dibaca (idempoten) |
+| POST | `/notifikasi/dibaca-semua` | tandai semua dibaca |
+| GET | `/notifikasi/perangkat` | daftar perangkat push milik pengguna |
+| POST | `/notifikasi/perangkat` | registrasi Expo push token (`201`) |
+| POST | `/notifikasi/perangkat/pencabutan` | cabut satu perangkat, satu token, atau semua |
+| POST | `/notifikasi/perangkat/{id}/push` | sakelar push per perangkat |
+| GET | `/notifikasi/admin/status` | status kanal (admin) |
+| POST | `/notifikasi/admin/pemeriksaan` | pemeriksaan konfigurasi kanal (admin) |
+| POST | `/notifikasi/admin/sakelar` | nyalakan/matikan kanal (admin) |
+| POST | `/notifikasi/admin/pesan-uji` | pesan uji kepada admin sendiri |
+| GET | `/notifikasi/admin/kegagalan` | daftar pengiriman gagal (admin) |
+| POST | `/notifikasi/admin/kegagalan/{id}/coba-ulang` | antrekan ulang baris yang SAMA (admin) |
+| POST | `/notifikasi/admin/worker` | satu putaran worker manual (admin) |
+| GET | `/notifikasi/admin/audit` | audit perubahan kanal (admin) |
+
+Catatan penting:
+
+- `POST /auth/logout` kini menerima body opsional `{ "push_token": "…" }` dan
+  menambahkan field `perangkat_push_dicabut` pada responsnya. Perubahan ini
+  aditif: klien lama yang mengirim body kosong tetap berfungsi, dan seluruh
+  perangkat akun dicabut bila token tidak disertakan.
+- Token perangkat TIDAK PERNAH dikembalikan endpoint mana pun.
+- Isi notifikasi untuk kanal push dan WhatsApp tidak memuat nama santri, alasan
+  izin, catatan pengurus, maupun alasan keputusan.
+- Payload deep link hanya memuat penunjuk sumber daya. Klien tetap wajib
+  memanggil `GET /izin/pengajuan/{id}`, yang memverifikasi cakupan di server.
+- `kanal=InApp, aktif=false` pada sakelar dijawab `422`: notifikasi in-app
+  adalah sumber status utama dan tidak dapat dimatikan.
+- `kanal=WhatsApp, aktif=true` sebelum pemeriksaan konfigurasi berstatus
+  `Lulus` dijawab `409`.
+
 ## Contoh error
 
 ```json

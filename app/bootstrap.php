@@ -10,6 +10,7 @@ use App\Audit\AuditLogger;
 use App\Api\ApiAuthRepository;
 use App\Api\ApiAuthService;
 use App\Api\IzinApiService;
+use App\Api\NotificationApiService;
 use App\Api\TeacherRepository;
 use App\Api\TeacherService;
 use App\Auth\ApiTokenAuthenticator;
@@ -31,6 +32,21 @@ use App\Izin\PembimbingRepository;
 use App\Izin\PembimbingService;
 use App\MasterData\MasterDataRepository;
 use App\MasterData\MasterDataService;
+use App\Notification\DeviceRepository;
+use App\Notification\DeviceService;
+use App\Notification\NotificationAdminService;
+use App\Notification\NotificationCenterService;
+use App\Notification\NotificationDispatcher;
+use App\Notification\NotificationRepository;
+use App\Notification\NotificationService;
+use App\Notification\OutboxRepository;
+use App\Notification\Push\ExpoPushClient;
+use App\Notification\PushTokenProtector;
+use App\Notification\RecipientResolver;
+use App\Notification\SettingsRepository as NotificationSettingsRepository;
+use App\Notification\WhatsApp\ProviderFactory as WhatsAppProviderFactory;
+use App\Notification\WhatsApp\WhatsAppProvider;
+use App\Notification\WorkerLock;
 use App\Report\ReportRepository;
 use App\Report\ReportService;
 use App\Schedule\ScheduleRepository;
@@ -75,6 +91,14 @@ $GLOBALS['app_config'] = [
     'api' => [
         'token_hash_secret' => Env::get('API_TOKEN_HASH_SECRET', ''),
         'token_ttl_days' => (int) Env::get('API_TOKEN_TTL_DAYS', '30'),
+    ],
+    // V2 Fase 4. Seluruh nilai di bawah berasal dari environment server dan
+    // TIDAK pernah disimpan ke basis data, audit, log, atau bundle mobile.
+    'notifikasi' => [
+        'push_token_key' => Env::get('PUSH_TOKEN_KEY', ''),
+        'expo_access_token' => Env::get('EXPO_ACCESS_TOKEN', ''),
+        'push_timeout_seconds' => (int) Env::get('PUSH_TIMEOUT_SECONDS', '10'),
+        'worker_batch' => (int) Env::get('NOTIFIKASI_WORKER_BATCH', '25'),
     ],
 ];
 
@@ -204,7 +228,11 @@ function report_service(): ReportService
 function account_service(): AccountService
 {
     static $service;
-    return $service ??= new AccountService(new AccountRepository(app_db()), audit_logger());
+    return $service ??= new AccountService(
+        new AccountRepository(app_db()),
+        audit_logger(),
+        push_device_repository()
+    );
 }
 
 function capabilities(): Capabilities
@@ -259,7 +287,10 @@ function izin_workflow_service(): IzinWorkflowService
         new IzinIdempotency(app_db()),
         izin_service(),
         capabilities(),
-        audit_logger()
+        audit_logger(),
+        // V2 Fase 4: produsen outbox. Hanya menulis baris lokal di dalam
+        // transaksi perizinan; tidak pernah memanggil penyedia eksternal.
+        notification_service()
     );
 }
 
@@ -289,6 +320,130 @@ function perizinan_account_service(): PerizinanAccountService
     return $service ??= new PerizinanAccountService(
         new PerizinanAccountRepository(app_db()),
         account_service(),
+        audit_logger()
+    );
+}
+
+// --- V2 Fase 4: notifikasi in-app, push, dan WhatsApp opsional --------------
+//
+// Seluruh objek di bawah bersifat aditif. Tidak ada satu pun layanan V1 atau
+// Fase 1-3 di atas yang berubah kontraknya.
+
+function notification_repository(): NotificationRepository
+{
+    static $repository;
+    return $repository ??= new NotificationRepository(app_db());
+}
+
+function notification_outbox_repository(): OutboxRepository
+{
+    static $repository;
+    return $repository ??= new OutboxRepository(app_db());
+}
+
+function notification_settings_repository(): NotificationSettingsRepository
+{
+    static $repository;
+    return $repository ??= new NotificationSettingsRepository(app_db());
+}
+
+function push_device_repository(): DeviceRepository
+{
+    static $repository;
+    return $repository ??= new DeviceRepository(app_db());
+}
+
+/**
+ * Kunci perlindungan token push. Berasal dari environment server; bila kosong,
+ * registrasi perangkat ditolak dengan pesan konfigurasi (bukan diam-diam
+ * menyimpan token tanpa perlindungan).
+ */
+function push_token_protector(): PushTokenProtector
+{
+    static $protector;
+    return $protector ??= new PushTokenProtector((string) app_config('notifikasi.push_token_key'));
+}
+
+function notification_service(): NotificationService
+{
+    static $service;
+    return $service ??= new NotificationService(
+        app_db(),
+        notification_repository(),
+        new RecipientResolver(app_db()),
+        notification_settings_repository(),
+        push_device_repository()
+    );
+}
+
+function notification_center_service(): NotificationCenterService
+{
+    static $service;
+    return $service ??= new NotificationCenterService(notification_repository());
+}
+
+function push_device_service(): DeviceService
+{
+    static $service;
+    return $service ??= new DeviceService(
+        push_device_repository(),
+        push_token_protector(),
+        audit_logger()
+    );
+}
+
+/**
+ * Penyedia WhatsApp aktif. Default `NullProvider`: tidak ada vendor, tidak ada
+ * koneksi keluar, dan WhatsApp tetap mati sampai admin menyalakannya setelah
+ * pemeriksaan konfigurasi lulus.
+ */
+function whatsapp_provider(): WhatsAppProvider
+{
+    static $provider;
+    return $provider ??= WhatsAppProviderFactory::make((string) app_config('env'));
+}
+
+function notification_dispatcher(): NotificationDispatcher
+{
+    static $dispatcher;
+    return $dispatcher ??= new NotificationDispatcher(
+        app_db(),
+        notification_outbox_repository(),
+        push_device_repository(),
+        push_token_protector(),
+        new ExpoPushClient(
+            (string) app_config('notifikasi.expo_access_token'),
+            (int) app_config('notifikasi.push_timeout_seconds')
+        ),
+        whatsapp_provider(),
+        notification_settings_repository(),
+        new WorkerLock(app_db())
+    );
+}
+
+function notification_api_service(): NotificationApiService
+{
+    static $service;
+    return $service ??= new NotificationApiService(
+        notification_center_service(),
+        push_device_service(),
+        notification_admin_service()
+    );
+}
+
+function notification_admin_service(): NotificationAdminService
+{
+    static $service;
+    return $service ??= new NotificationAdminService(
+        capabilities(),
+        notification_settings_repository(),
+        notification_repository(),
+        notification_outbox_repository(),
+        push_device_repository(),
+        push_token_protector(),
+        whatsapp_provider(),
+        notification_service(),
+        notification_dispatcher(),
         audit_logger()
     );
 }

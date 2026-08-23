@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace App\Account;
 
 use App\Audit\AuditLogger;
+use App\Notification\DeviceRepository;
 use InvalidArgumentException;
 use RuntimeException;
 
 final class AccountService
 {
+    private const ALASAN_AKUN_NONAKTIF = 'akun_dinonaktifkan';
+
     public function __construct(
         private AccountRepository $accounts,
-        private AuditLogger $audit
+        private AuditLogger $audit,
+        private DeviceRepository $devices
     ) {
     }
 
@@ -63,7 +67,17 @@ final class AccountService
         if (!$this->accounts->setActive($id, $active)) {
             throw new RuntimeException('Status akun tidak berubah.');
         }
-        $this->audit->log('account_status_changed', 'user', $id, ['is_active' => (bool) $before['is_active']], ['is_active' => $active], $actorId);
+        $perangkatDicabut = !$active
+            ? $this->devices->revokeAllForUser($id, self::ALASAN_AKUN_NONAKTIF)
+            : 0;
+        $this->audit->log(
+            'account_status_changed',
+            'user',
+            $id,
+            ['is_active' => (bool) $before['is_active']],
+            ['is_active' => $active, 'perangkat_push_dicabut' => $perangkatDicabut],
+            $actorId
+        );
     }
 
     public function setRole(int $id, string $role, int $actorId): void
