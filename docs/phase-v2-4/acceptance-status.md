@@ -1,6 +1,19 @@
 # V2 Fase 4 — Status Kriteria Penerimaan
 
-Tanggal: 23 Agustus 2026. Sumber bukti: `test-results.md`.
+Audit otomatis: 23 Agustus 2026. Uji perangkat fisik: 24 Agustus 2026.
+Keputusan produk: 26 Agustus 2026. Sumber bukti: `test-results.md`.
+
+## 0. Baseline implementasi yang dinilai
+
+| Repository | Branch dan status | Commit utama/koreksi |
+| --- | --- | --- |
+| WebAlHasan | `prd-v2-fase-4`; HEAD `53e0b89`; worktree bersih dan sama dengan `origin/prd-v2-fase-4` saat keputusan dicatat | Claude `279f9accb8939ae6d1696a3ef17216353ac04b8d`; auditor `443dc68`, `98dd057`, `53e0b89` |
+| alhasanApps | `prd-v2-fase-4`; HEAD lokal `da04c3a227372b722498aaf11f40e44464e6f9c0`; worktree bersih tetapi lokal ahead satu commit dari origin | Claude `876ec504f56325111747fc2f18e21a25430efa09`; koreksi native push lokal `da04c3a` |
+
+Commit mobile `da04c3a` mengonfigurasi credential native push, Firebase
+Android, EAS projectId, dan entitlement iOS. Statusnya tetap dicatat sebagai
+lokal/belum didorong; dokumen ini tidak mengklaim origin sudah memuat commit
+tersebut.
 
 ## 1. Kriteria penerimaan PRD Fase 4
 
@@ -8,29 +21,51 @@ Tanggal: 23 Agustus 2026. Sumber bukti: `test-results.md`.
 | --- | --- | --- | --- |
 | 1 | Setiap peristiwa yang ditentukan menghasilkan satu notifikasi in-app untuk penerima yang berhak | **TERPENUHI** | integrasi KN-1a…KN-1r, termasuk KN-1c2 untuk relasi kelas nonaktif (9 peristiwa diuji satu per satu) |
 | 2 | Pengguna tidak dapat membaca notifikasi pengguna lain melalui perubahan ID | **TERPENUHI** | KN-2a…KN-2e, KA-2a…KA-2e, WN-5a…WN-5d |
-| 3 | Push tiba pada perangkat uji Android dan iOS tanpa memuat alasan izin lengkap | **MENUNGGU SMOKE TEST PERANGKAT** | lihat §2 |
+| 3 | Push tiba pada perangkat uji Android dan iOS tanpa memuat alasan izin lengkap | **TERPENUHI BERDASARKAN UJI PERANGKAT FISIK** | Android Xiaomi 2409BRN2CY dan iPhone 17 Pro menerima push pada 24 Agustus 2026; lihat §2 |
 | 4 | Menonaktifkan push menghentikan enqueue baru tanpa mengganggu in-app | **TERPENUHI** | KN-4e…KN-4i |
 | 5 | WhatsApp tidak dapat diaktifkan jika pemeriksaan konfigurasi gagal | **TERPENUHI** | KN-5a…KN-5e (termasuk pemeriksaan penyedia lama), KA-7a…KA-7d, WN-7g/WN-7h |
-| 6 | Saat WhatsApp aktif dan provider siap, pesan uji serta satu notifikasi keputusan berhasil dikirim | **KONDISIONAL — BELUM DIUJI DENGAN PENYEDIA NYATA** | lihat §3 |
+| 6 | Jika WhatsApp diaktifkan pada masa depan, pesan uji serta satu notifikasi keputusan wajib berhasil dikirim melalui penyedia resmi | **DITANGGUHKAN/NON-BLOCKING — TIDAK DIUJI DAN TIDAK DINYATAKAN LULUS** | keputusan produk 26 Agustus 2026; lihat §3 |
 | 7 | Saat WhatsApp mati/tidak siap, pengajuan dan keputusan tetap berhasil tanpa request ke provider | **TERPENUHI** | KN-6a…KN-6j (penyedia mata-mata mencatat **0** panggilan) |
 | 8 | Retry event yang sama tidak menghasilkan pesan ganda pada kanal yang sama | **TERPENUHI** | KN-3a…KN-3d, KC-1b…KC-1d |
 | 9 | Secret provider tidak muncul di respons API, log, audit, database, atau bundle mobile | **TERPENUHI** | KN-8a…KN-8l, KA-9a…KA-9d, statis §5/§6/§10/§11 |
 | 10 | Status kirim dan error aman dapat dilihat admin; perubahan sakelar tercatat pada audit | **TERPENUHI** | KN-9a…KN-9h, KN-10a…KN-10d, KA-6c…KA-6m |
 
-**8 dari 10 kriteria terpenuhi. Fase 4 belum selesai/belum diterima.** Dua
-sisanya (nomor 3 dan 6) memerlukan perangkat nyata dan penyedia nyata;
-keduanya **tidak diklaim lulus**.
+**Sembilan kriteria wajib terpenuhi berdasarkan bukti otomatis dan uji fisik.**
+Satu kemampuan opsional, yaitu pengiriman WhatsApp nyata, ditangguhkan dan
+tidak dihitung sebagai kriteria wajib saat ini berdasarkan keputusan produk
+26 Agustus 2026. WhatsApp **tidak diklaim lulus**. Fase 4 diterima dengan
+temuan terbuka pada §5 yang wajib dibawa ke kesiapan rilis.
 
 ## 2. Kriteria 3 — push pada perangkat Android dan iOS
 
-**Status: MENUNGGU SMOKE TEST MANUSIA.**
+**Status: TERPENUHI BERDASARKAN UJI PERANGKAT FISIK 24 AGUSTUS 2026.**
 
 Keputusan penerimaan Fase 3 (23 Agustus 2026) menerima iPhone fisik dan
 simulator Android 16 sebagai bukti pengganti untuk gerbang Fase 3. Pengecualian
 itu **tidak berlaku** untuk kriteria ini: PRD Fase 4 secara khusus mensyaratkan
 push benar-benar **tiba** pada perangkat Android dan iOS.
 
-Yang tidak tersedia di sandbox audit:
+Sandbox audit semula tidak memiliki perangkat fisik, development build, atau
+credential FCM/APNs. Pembuktian berikut kemudian dilakukan manusia:
+
+| Platform | Perangkat dan akun | Bukti hasil |
+| --- | --- | --- |
+| Android | Xiaomi 2409BRN2CY, akun murobi, development build EAS | Firebase berhasil diinisialisasi; perangkat terdaftar dan Push aktif; push pengajuan `#2` tiba dengan isi “Ada pengajuan izin #2 menunggu keputusan Anda. Buka aplikasi untuk melihat detail.”; tidak memuat nama santri, alasan izin, nomor telepon, token, atau data sensitif. |
+| iOS | iPhone 17 Pro, akun orang tua, development build EAS dengan entitlement APNs | Perangkat terdaftar dan Push aktif; push keputusan pengajuan `#2` tiba setelah worker dijalankan; kedatangan dikonfirmasi manusia. Screenshot layar kunci belum dimasukkan ke repository. |
+| Admin | Panel kanal notifikasi | Push aktif; pemeriksaan konfigurasi `Lulus`; dua perangkat terdaftar dan aktif. |
+
+Keterbatasan bukti yang tetap dicatat:
+
+- Push iPhone sempat menunggu karena cron belum berjalan dan baru tiba setelah
+  tombol **Jalankan worker sekali** ditekan.
+- Screenshot isi layar kunci iPhone tidak tersedia di repository. Kerahasiaan
+  payload tetap dibuktikan oleh pengujian otomatis, tetapi bukti visual iPhone
+  tidak boleh diklaim tersedia.
+- Deep-link Android sempat gagal ketika `adb reverse` ke Metro terputus.
+  Aplikasi kembali normal setelah koneksi dipulihkan, tetapi cold-start dan
+  background lengkap belum dibuktikan secara fisik.
+
+Yang tidak tersedia pada sandbox audit awal:
 
 - perangkat Android maupun iOS fisik;
 - development build (EAS) — push jarak jauh tidak berfungsi di Expo Go sejak
@@ -58,15 +93,17 @@ Yang **sudah** dibuktikan tanpa perangkat nyata:
 | Tiket sukses → `Sent`; `DeviceNotRegistered` → token dicabut | KN-7u, KN-7z |
 | Token tidak pernah bocor ke API, audit, log, atau bundle | KN-8a…KN-8l |
 
-Prosedur pembuktian yang tersisa: `mobile-build-and-smoke-test.md`.
+Catatan pelaksanaan dan pengujian lanjutan: `mobile-build-and-smoke-test.md`.
 
 ## 3. Kriteria 6 — pengiriman WhatsApp nyata
 
-**Status: KONDISIONAL — BELUM DIUJI.**
+**Status: DITANGGUHKAN/NON-BLOCKING — TIDAK DIUJI DAN TIDAK DINYATAKAN LULUS.**
 
-Sistem tidak memilih vendor, tidak membuat akun, dan tidak membeli layanan.
-Sesuai instruksi, penyedia nyata baru boleh disiapkan setelah pemilik produk
-menyetujui vendor, template, dan credential.
+Pada 26 Agustus 2026 pemilik produk menunda WhatsApp sampai batas waktu yang
+tidak ditentukan karena penyedia resmi, WhatsApp Business Account, nomor
+bisnis, template utility, opt-in pengguna, dan credential produksi belum
+tersedia. Kanal tetap `OFF`, pemeriksaan konfigurasi belum lulus, dan tidak ada
+request kepada penyedia. Adapter uji bukan bukti pengiriman nyata.
 
 Yang **sudah** dibuktikan dengan adapter uji:
 
@@ -85,7 +122,20 @@ Yang **sudah** dibuktikan dengan adapter uji:
 | Adapter uji menyatakan dirinya bukan pengiriman nyata, dan panel admin menuliskannya | statis §4 |
 | Adapter uji ditolak pada `APP_ENV=production` | KN-7c |
 
-Prosedur pembuktian yang tersisa: `whatsapp-provider-checklist.md`.
+Sebelum kemampuan WhatsApp dapat diaktifkan pada masa depan, seluruh syarat
+berikut tetap wajib:
+
+1. penyedia resmi disetujui;
+2. opt-in dan opt-out pengguna tersedia;
+3. template utility disetujui;
+4. credential hanya berada di environment;
+5. ketiga lapisan pemeriksaan konfigurasi lulus;
+6. pesan uji dan satu notifikasi keputusan tiba melalui penyedia nyata; dan
+7. pengujian keamanan, privasi, deduplikasi, retry, serta nol-request-saat-mati
+   diulang.
+
+Prosedur aktivasi masa depan tetap disimpan pada
+`whatsapp-provider-checklist.md`; keberadaan prosedur ini bukan bukti kelulusan.
 
 ## 4. Persyaratan implementasi PRD Fase 4 (§6 poin 1–12)
 
@@ -94,7 +144,7 @@ Prosedur pembuktian yang tersisa: `whatsapp-provider-checklist.md`.
 | 1 | Notifikasi in-app pada pengajuan, routing admin, penetapan murobi, keputusan, pembatalan, koreksi | **SELESAI** — 9 peristiwa |
 | 2 | Pusat notifikasi web/mobile, jumlah belum dibaca, detail, tandai dibaca, pagination | **SELESAI** — `portal/notifikasi.php`, tab `(notifikasi)` di aplikasi |
 | 3 | Registrasi dan pencabutan token push per pengguna/perangkat dengan `expo-notifications` | **SELESAI** |
-| 4 | Push tanpa alasan lengkap; deep link membuka detail setelah otorisasi | **SELESAI** (kedatangan push: menunggu perangkat) |
+| 4 | Push tanpa alasan lengkap; deep link membuka detail setelah otorisasi | **SELESAI** untuk payload/otorisasi dan kedatangan push; uji fisik cold-start/background lengkap masih menjadi temuan terbuka |
 | 5 | Halaman admin untuk status kanal, pengujian konfigurasi, sakelar on/off | **SELESAI** — `admin/admin_notifikasi.php` |
 | 6 | Adapter provider WhatsApp dan konfigurasi environment tanpa secret pada database/log/audit | **SELESAI** |
 | 7 | Outbox dengan unique event/channel/recipient | **SELESAI** (kunci unik sejak migrasi 006, dipakai penuh pada Fase 4) |
@@ -108,8 +158,12 @@ Prosedur pembuktian yang tersisa: `whatsapp-provider-checklist.md`.
 
 | Risiko | Dampak | Mitigasi |
 | --- | --- | --- |
-| Push belum diuji pada perangkat nyata | Kriteria 3 belum terpenuhi; kemungkinan masalah credential/build baru terlihat saat smoke test | Checklist rinci tersedia; in-app tidak terpengaruh apa pun hasilnya |
-| Penyedia WhatsApp belum dipilih | Kriteria 6 belum terpenuhi | Default mati; tiga lapis pengaman mencegah aktivasi tanpa pemeriksaan lulus |
+| Screenshot layar kunci iPhone tidak tersedia | Bukti visual isi iOS tidak berada di repository | Kedatangan dikonfirmasi manusia dan payload aman dibuktikan otomatis; jangan mengklaim screenshot tersedia |
+| Cron worker push produksi belum dipasang/diverifikasi | Push menunggu sampai worker dijalankan manual | Pasang cron cPanel setiap menit, verifikasi log/status, dan simpan bukti operasional |
+| Server belum mengambil push receipt akhir FCM/APNs | Status `Sent` hanya membuktikan tiket awal Expo diterima, bukan delivery end-to-end final | Tambahkan pengambilan receipt dan rekonsiliasi status sebelum mengklaim akurasi delivery penuh |
+| Deep-link Android cold-start/background belum diuji lengkap | Ketukan notifikasi dapat gagal bila koneksi development ke Metro terputus | Ulangi pada development/release build dengan koneksi stabil; catat cold-start dan background terpisah |
+| Commit mobile `da04c3a` masih lokal | Konfigurasi native push belum tersedia pada origin bagi auditor/mesin lain | Push commit setelah peninjauan; jangan menyatakan origin sudah memuatnya sebelum benar-benar didorong |
+| Penyedia WhatsApp belum dipilih | Kemampuan opsional ditangguhkan dan tidak diuji nyata | Default mati; checklist dan tiga lapis pengaman tetap wajib sebelum aktivasi masa depan |
 | PHP/MariaDB cPanel berbeda dari sandbox (PHP 8.4 / MariaDB 10.11) | `CHECK` constraint diabaikan MySQL 5.7 | Aturan yang sama juga ditegakkan lapisan aplikasi dan klausa WHERE; `php -l` wajib diulang pada versi cPanel |
 | Cron cPanel dapat tumpang tindih atau batch berjalan lama | Pesan ganda | Dua lapis sewa dengan heartbeat proses + klaim baris terbukti pada uji concurrency |
 | `PUSH_TOKEN_KEY` hilang atau diganti | Token lama tidak dapat dibuka | Worker mencabut token yang tidak dapat dibuka; aplikasi mendaftar ulang. Prosedur ada pada `cpanel-deployment.md` §3 |
@@ -129,10 +183,11 @@ Rinciannya pada `test-results.md` §9. Dua perbaikan khusus jalur web muncul
 dari uji ini (`notification-context.tsx`, `app-tabs.web.tsx`); keduanya tidak
 menyentuh logika notifikasi, registrasi push, maupun kontrak API.
 
-**Uji ini tidak mengubah status kriteria 3 dan 6.** Push nyata tidak dapat
-diuji di browser — `expo-notifications` memang melaporkan `tidak_didukung`
-pada web sesuai dokumentasi SDK 57 — dan tidak ada penyedia WhatsApp nyata
-yang disetujui. Keduanya tetap **MENUNGGU** sebagaimana §2 dan §3.
+Uji browser ini sendiri tidak membuktikan kedatangan push karena
+`expo-notifications` melaporkan `tidak_didukung` pada web sesuai dokumentasi
+SDK 57. Kriteria 3 kemudian dipenuhi melalui uji perangkat fisik 24 Agustus
+2026 pada §2. Kriteria 6 tetap **DITANGGUHKAN/NON-BLOCKING** dan tidak
+dinyatakan lulus sebagaimana §3.
 
 ## 6. Batas ruang lingkup
 

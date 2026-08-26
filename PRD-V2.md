@@ -261,28 +261,33 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 - [ ] Push tiba pada perangkat uji Android dan iOS tanpa memuat alasan izin lengkap.
 - [ ] Menonaktifkan push menghentikan enqueue baru tanpa mengganggu in-app.
 - [ ] WhatsApp tidak dapat diaktifkan jika pemeriksaan konfigurasi gagal.
-- [ ] Saat WhatsApp aktif dan provider siap, pesan uji serta satu notifikasi keputusan berhasil dikirim.
+- [ ] **DITANGGUHKAN/NON-BLOCKING:** jika kemampuan WhatsApp diaktifkan pada masa depan, pesan uji serta satu notifikasi keputusan wajib berhasil dikirim melalui penyedia resmi sebelum kanal dirilis. Butir ini tidak dinyatakan terpenuhi pada V2 saat ini.
 - [ ] Saat WhatsApp mati/tidak siap, pengajuan dan keputusan tetap berhasil tanpa request ke provider.
 - [ ] Retry event yang sama tidak menghasilkan pesan ganda pada kanal yang sama.
 - [ ] Secret provider tidak muncul di respons API, log, audit, database, atau bundle mobile.
 - [ ] Status kirim dan error aman dapat dilihat admin; perubahan sakelar tercatat pada audit.
 
-> **Status audit Fase 4 — 23 Agustus 2026:** seluruh gerbang otomatis lulus
-> setelah koreksi auditor (23 berkas, 1.594 pemeriksaan, 0 gagal).
-> **Delapan dari sepuluh** kriteria di atas terpenuhi dan terbukti. Fase 4
-> **belum selesai/belum diterima** sampai dua kriteria manual berikut lulus.
+> **Keputusan produk dan status Fase 4 — 26 Agustus 2026:** seluruh gerbang
+> otomatis lulus setelah koreksi auditor (23 berkas, 1.594 pemeriksaan,
+> 0 gagal). Push kemudian terbukti tiba pada perangkat fisik Android Xiaomi
+> 2409BRN2CY dan iPhone 17 Pro pada 24 Agustus 2026. Isi Android yang diamati
+> tidak memuat nama santri, alasan izin, nomor telepon, token, atau data
+> sensitif; kedatangan push iPhone dikonfirmasi manusia, sedangkan tangkapan
+> layar kunci iPhone tidak disimpan dalam repositori.
 >
-> Dua kriteria **BELUM** dinyatakan lulus dan menunggu bukti manusia:
+> **Sembilan kriteria wajib Fase 4 terpenuhi** berdasarkan bukti otomatis dan
+> uji perangkat fisik. Kemampuan WhatsApp nyata **DITANGGUHKAN/NON-BLOCKING**
+> berdasarkan keputusan produk tanggal 26 Agustus 2026 karena penyedia resmi,
+> WhatsApp Business Account, nomor bisnis, template utility, opt-in pengguna,
+> dan credential produksi belum tersedia. WhatsApp tetap opsional, default
+> `OFF`, tidak mengirim request kepada penyedia, dan **tidak dinyatakan lulus**.
+> Checklist serta seluruh pengaman aktivasi masa depan tetap wajib.
 >
-> - **Kriteria 3 (push tiba pada perangkat Android dan iOS).** Sandbox audit
->   tidak memiliki perangkat fisik, development build, maupun credential
->   FCM/APNs. Pengecualian simulator pada Fase 3 tidak berlaku di sini.
->   Prosedur: `docs/phase-v2-4/mobile-build-and-smoke-test.md`.
-> - **Kriteria 6 (pengiriman WhatsApp nyata).** Penyedia nyata belum dipilih
->   pemilik produk; sistem tidak memilih vendor, membuat akun, atau membeli
->   layanan atas inisiatif sendiri. Kontrak, outbox, retry, dan deduplikasi
->   sudah diverifikasi memakai adapter uji yang tidak mengirim pesan nyata.
->   Prosedur: `docs/phase-v2-4/whatsapp-provider-checklist.md`.
+> Fase 4 diterima dengan temuan terbuka yang wajib tetap terlihat pada
+> kesiapan rilis: cron worker push produksi belum otomatis/terverifikasi;
+> server baru memeriksa tiket awal Expo dan belum mengambil push receipt akhir
+> FCM/APNs; pengujian deep-link Android cold-start/background belum lengkap;
+> dan commit mobile `da04c3a` masih lokal/belum didorong ke origin.
 >
 > Rincian per kriteria: `docs/phase-v2-4/acceptance-status.md`.
 > Hasil pengujian: `docs/phase-v2-4/test-results.md`.

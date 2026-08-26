@@ -66,10 +66,10 @@ Capability **selalu dihitung ulang di server** oleh `App\Auth\Capabilities` dari
 
 **Sudah selesai dan tidak dibuka kembali (V1):** semua kriteria penerimaan Fase 1–5 terverifikasi 20 Agustus 2026.
 
-**Belum dikerjakan pada branch ini:**
+**Status pengembangan V2:**
 
-- V2 Fase 4 — notifikasi in-app, push, WhatsApp opsional. 🔶 Tabelnya sudah ada (migrasi 006), kodenya belum.
-- V2 Fase 5 — laporan perizinan, migrasi produksi, kesiapan rilis. 🔶
+- V2 Fase 4 — notifikasi in-app dan push sudah diimplementasikan serta diterima berdasarkan audit otomatis dan uji perangkat fisik. WhatsApp tetap opsional, default `OFF`, dan **DITANGGUHKAN/NON-BLOCKING** berdasarkan keputusan produk 26 Agustus 2026; pengiriman nyata tidak diuji dan tidak dinyatakan lulus. Temuan terbuka cron, push receipt, deep-link fisik, dan commit mobile dicatat pada `docs/phase-v2-4/acceptance-status.md`.
+- V2 Fase 5 — laporan perizinan, migrasi produksi, kesiapan rilis. 🔶 Belum dikerjakan.
 
 **⛔ Tidak dikerjakan sama sekali (kedua versi):**
 
@@ -460,18 +460,21 @@ Satu-satunya perubahan struktural pada router Fase 3: autentikasi dilakukan seka
 | `POST` | `/izin/pengajuan/{id}/koreksi` | admin | Ya | `200` |
 | `GET` | `/izin/filters` | semua capability | — | `200` |
 
-**V2 Fase 4 — notifikasi 🔶 (usulan, belum ada)**
+**V2 Fase 4 — notifikasi ✅ (as-built; WhatsApp nyata ditangguhkan)**
 
 | Metode | Rute | Berhak | Fungsi |
 |---|---|---|---|
 | `GET` | `/notifikasi` | semua terautentikasi | Daftar notifikasi in-app milik sendiri + `belum_dibaca` |
 | `POST` | `/notifikasi/{id}/dibaca` | pemilik notifikasi | Tandai satu dibaca |
 | `POST` | `/notifikasi/dibaca-semua` | pemilik | Tandai semua dibaca |
-| `POST` | `/perangkat-push` | semua terautentikasi | Daftarkan token perangkat (dikirim mentah, disimpan hash) |
-| `DELETE` | `/perangkat-push` | pemilik | Cabut token perangkat; dipanggil juga saat logout |
-| `GET` | `/admin/notifikasi/pengaturan` | admin | Status kanal + hasil pemeriksaan |
-| `PUT` | `/admin/notifikasi/pengaturan` | admin | Sakelar in-app/push/WhatsApp |
-| `POST` | `/admin/notifikasi/uji-konfigurasi` | admin | Pemeriksaan provider WhatsApp; gagal → `whatsapp_enabled` tidak dapat dinyalakan |
+| `GET` / `POST` | `/notifikasi/perangkat` | semua terautentikasi | Daftar atau daftarkan perangkat push; token mentah disimpan terlindungi, bukan sebagai teks terbaca |
+| `POST` | `/notifikasi/perangkat/pencabutan` | pemilik | Cabut perangkat; pencabutan juga terhubung dengan logout |
+| `POST` | `/notifikasi/perangkat/{id}/push` | pemilik | Sakelar push per perangkat |
+| `GET` | `/notifikasi/admin/status` | admin | Status kanal + hasil pemeriksaan |
+| `POST` | `/notifikasi/admin/pemeriksaan` | admin | Pemeriksaan konfigurasi kanal |
+| `POST` | `/notifikasi/admin/sakelar` | admin | Sakelar in-app/push/WhatsApp; WhatsApp tetap `OFF` selama ditangguhkan |
+| `POST` | `/notifikasi/admin/pesan-uji` | admin | Antrekan pesan uji pada kanal yang siap |
+| `POST` | `/notifikasi/admin/worker` | admin | Jalankan satu putaran worker secara terkontrol |
 
 **V2 Fase 5 — laporan perizinan 🔶 (usulan)**
 

@@ -4,6 +4,11 @@ Dijalankan ulang auditor 23 Agustus 2026 pada sandbox terisolasi (PHP 8.4.14,
 MariaDB 12.3.2, Node 26.7.0, npm 11.19.0). Prosedur lengkap:
 `testing-sandbox.md`.
 
+Bukti perangkat fisik ditambahkan manusia pada 24 Agustus 2026. Keputusan
+produk mengenai penangguhan WhatsApp dicatat pada 26 Agustus 2026. Bukti
+manual tersebut tidak mengubah hasil sandbox dan dibedakan secara eksplisit
+dari pengujian otomatis.
+
 **Tidak ada satu pun permintaan jaringan keluar selama pengujian.** Push
 memakai klien tiruan (`PushClient`), WhatsApp memakai adapter uji.
 
@@ -144,23 +149,39 @@ worker lain tidak dapat memperpanjang sewa yang bukan miliknya (KC-3c/KC-3d).
 nilai `api_key` pada JSON, credential pada query string, dan nomor telepon
 semuanya disamarkan; pesan dipotong ke 255 karakter.
 
-## 8. Yang BELUM diuji dan tidak diklaim lulus
+## 8. Bukti manual pasca-sandbox dan kemampuan yang ditangguhkan
 
 | Kriteria | Status | Alasan |
 | --- | --- | --- |
-| Push benar-benar **tiba** pada perangkat Android nyata | **MENUNGGU SMOKE TEST MANUSIA** | Sandbox cloud tanpa perangkat, tanpa credential FCM, tanpa development build |
-| Push benar-benar **tiba** pada perangkat iOS nyata | **MENUNGGU SMOKE TEST MANUSIA** | Idem; iOS memerlukan macOS + Xcode + APNs |
-| Pesan uji WhatsApp **nyata** terkirim | **KONDISIONAL — BELUM DIUJI** | Belum ada penyedia yang disetujui pemilik produk |
-| Satu notifikasi keputusan **nyata** via WhatsApp | **KONDISIONAL — BELUM DIUJI** | Idem |
+| Push benar-benar **tiba** pada perangkat Android nyata | **TERPENUHI BERDASARKAN UJI FISIK** | Xiaomi 2409BRN2CY, akun murobi, development build EAS; push pengajuan `#2` tiba dan isi yang diamati tidak memuat data sensitif |
+| Push benar-benar **tiba** pada perangkat iOS nyata | **TERPENUHI BERDASARKAN UJI FISIK** | iPhone 17 Pro, akun orang tua, development build EAS dengan entitlement APNs; push keputusan `#2` tiba setelah worker manual; screenshot layar kunci tidak tersedia di repository |
+| Pesan uji WhatsApp **nyata** terkirim | **DITANGGUHKAN/NON-BLOCKING — TIDAK DIUJI DAN TIDAK LULUS** | Keputusan produk 26 Agustus 2026; penyedia resmi dan prasyarat bisnis belum tersedia |
+| Satu notifikasi keputusan **nyata** via WhatsApp | **DITANGGUHKAN/NON-BLOCKING — TIDAK DIUJI DAN TIDAK LULUS** | Idem; adapter uji bukan bukti pengiriman nyata |
 
-Checklist untuk keempatnya: `mobile-build-and-smoke-test.md` dan
-`whatsapp-provider-checklist.md`.
+Catatan uji fisik dan langkah yang masih terbuka ada pada
+`mobile-build-and-smoke-test.md`. Checklist WhatsApp tetap dipertahankan untuk
+aktivasi masa depan pada `whatsapp-provider-checklist.md`.
 
 Yang **sudah** dibuktikan untuk push tanpa perangkat nyata: baris outbox
 diantrekan hanya untuk penerima berperangkat aktif, payload push hanya memuat
 penunjuk sumber daya dan tidak memuat alasan izin, `channelId` yang dikirim
 server sama dengan kanal Android yang dibuat aplikasi, tiket sukses menandai
 baris `Sent`, dan tiket `DeviceNotRegistered` otomatis mencabut token.
+
+### 8.1 Temuan terbuka setelah uji perangkat
+
+1. Cron worker push produksi belum berjalan otomatis. Push iPhone baru tiba
+   setelah tombol **Jalankan worker sekali** ditekan; cron cPanel setiap menit
+   masih harus dipasang atau diverifikasi.
+2. Server baru memeriksa tiket awal Expo dan belum mengambil push receipt akhir
+   dari FCM/APNs. Status `Sent` belum boleh dipahami sebagai bukti delivery
+   end-to-end final yang sepenuhnya akurat.
+3. Deep-link Android sempat gagal ketika `adb reverse` ke Metro terputus.
+   Aplikasi kembali normal setelah koneksi dipulihkan, tetapi pengujian fisik
+   cold-start dan background lengkap belum tercatat.
+4. Commit mobile `da04c3a` yang mengonfigurasi credential native push, Firebase
+   Android, EAS projectId, dan entitlement iOS masih lokal dan belum didorong
+   ke `origin/prd-v2-fase-4` saat keputusan produk dicatat.
 
 ## 9. Uji browser sungguhan (Chromium/Playwright)
 
@@ -213,10 +234,11 @@ Fase 3.
 | Regresi | A-23…A-24: layar perizinan Fase 2/3 dan jadwal V1 | LULUS |
 | Galat JavaScript | A-25 | LULUS (0 galat) |
 
-**Yang TIDAK diuji di sini:** kedatangan push. `expo-notifications`
+**Yang TIDAK diuji di browser:** kedatangan push. `expo-notifications`
 mengembalikan `tidak_didukung` pada web sesuai dokumentasi SDK 57, dan layar
-memang melaporkannya apa adanya (A-6). Kriteria 3 PRD tetap **MENUNGGU SMOKE
-TEST MANUSIA** pada perangkat Android dan iOS nyata.
+memang melaporkannya apa adanya (A-6). Kriteria 3 PRD kemudian dipenuhi melalui
+uji perangkat fisik 24 Agustus 2026 sebagaimana §8; hasil browser tidak dipakai
+sebagai bukti penggantinya.
 
 ### 9.3 Dua perbaikan yang ditemukan uji browser ini
 

@@ -3,6 +3,12 @@
 > Fase 4 **tidak** dideploy otomatis. Dokumen ini adalah runbook manual yang
 > dijalankan manusia setelah audit Codex menyatakan Fase 4 lolos.
 
+> **Status operasional 26 Agustus 2026:** push telah tiba pada perangkat fisik
+> Android dan iOS, tetapi worker produksi belum berjalan otomatis. Cron cPanel
+> setiap menit masih harus dipasang atau diverifikasi. WhatsApp ditangguhkan,
+> default `OFF`, dan tidak boleh diaktifkan atau dijadwalkan sampai checklist
+> aktivasi masa depan selesai.
+
 ## 1. Prasyarat
 
 - [ ] Audit Fase 4 oleh Codex selesai dan disetujui.
@@ -138,24 +144,27 @@ penggantian pada jam sepi dan beri tahu pengguna bahwa push mungkin tertunda.
 9. **Nyalakan push** hanya setelah smoke test perangkat nyata (lihat
    `mobile-build-and-smoke-test.md`) berhasil.
 
-10. **WhatsApp tetap MATI** sampai pemilik produk menyetujui vendor dan
-    checklist `whatsapp-provider-checklist.md` selesai.
+10. **WhatsApp tetap MATI.** Keputusan produk 26 Agustus 2026 menangguhkan
+    kemampuan ini sampai batas waktu yang tidak ditentukan. Aktivasi masa
+    depan tetap memerlukan persetujuan penyedia, WABA/nomor bisnis, template
+    utility, opt-in/opt-out, credential environment, dan seluruh checklist
+    `whatsapp-provider-checklist.md`.
 
 ## 5. Konfigurasi cron cPanel
 
 **cPanel → Advanced → Cron Jobs.** Gunakan path PHP CLI absolut milik cPanel
 (sering `/usr/local/bin/php` atau `/opt/cpanel/ea-php82/root/usr/bin/php`).
 
-Satu baris cron sudah cukup untuk kedua kanal:
+Untuk push produksi, pasang satu putaran setiap menit:
 
 ```
-*/5 * * * * /usr/local/bin/php /home/AKUN/public_html/bin/notifikasi_worker.php >> /home/AKUN/logs/notifikasi.log 2>&1
+* * * * * /usr/local/bin/php /home/AKUN/public_html/bin/notifikasi_worker.php --kanal=push >> /home/AKUN/logs/notifikasi-push.log 2>&1
 ```
 
-Bila ingin memisahkan kanal (mis. WhatsApp lebih jarang):
+Bila WhatsApp kelak diaktifkan setelah seluruh gerbang masa depan lulus,
+kanalnya dapat dijadwalkan terpisah:
 
 ```
-*/5  * * * * /usr/local/bin/php /home/AKUN/public_html/bin/notifikasi_worker.php --kanal=push     >> /home/AKUN/logs/notifikasi-push.log 2>&1
 */15 * * * * /usr/local/bin/php /home/AKUN/public_html/bin/notifikasi_worker.php --kanal=whatsapp >> /home/AKUN/logs/notifikasi-wa.log 2>&1
 ```
 
@@ -169,6 +178,9 @@ Catatan penting:
 - **Exit code 0** dipakai juga saat ada pengiriman gagal, supaya cPanel tidak
   membanjiri email operator. Pantau kegagalan lewat halaman
   **Kanal Notifikasi → Pengiriman gagal**.
+- **Status `Sent` saat ini berasal dari tiket awal Expo.** Worker belum
+  mengambil push receipt akhir FCM/APNs, sehingga status itu tidak boleh
+  dianggap sebagai bukti delivery end-to-end yang sepenuhnya akurat.
 - **Rotasi log**: berkas log cron tumbuh terus. Tambahkan rotasi bulanan atau
   arahkan ke `/dev/null` setelah operasi stabil. Worker tidak pernah mencetak
   token, nomor tujuan, atau credential.
