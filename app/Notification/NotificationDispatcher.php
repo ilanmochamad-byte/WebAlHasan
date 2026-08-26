@@ -6,6 +6,7 @@ namespace App\Notification;
 
 use App\Notification\Push\ExpoPushClient;
 use App\Notification\Push\PushClient;
+use App\Notification\Push\PushReceiptClient;
 use App\Notification\WhatsApp\WhatsAppMessage;
 use App\Notification\WhatsApp\WhatsAppProvider;
 use mysqli;
@@ -237,12 +238,21 @@ final class NotificationDispatcher
         $permanenSemua = true;
         $kodeTerakhir = 'TIKET_GAGAL';
         $pesanTerakhir = 'Expo menolak seluruh pesan.';
+        // V2 Fase 5: id tiket pertama yang berhasil. Satu baris outbox dapat
+        // menyebar ke beberapa perangkat milik penerima yang sama, sehingga
+        // receipt akhir yang disimpan mewakili perangkat PERTAMA yang menerima
+        // tiket. Batasan ini disengaja dan dicatat pada dokumentasi Fase 5;
+        // in-app tetap menjadi sumber status utama bagi pengguna.
+        $tiketPertama = null;
 
         foreach ($response['tickets'] as $index => $ticket) {
             $status = is_array($ticket) ? (string) ($ticket['status'] ?? '') : '';
             if ($status === 'ok') {
                 $berhasil++;
                 $permanenSemua = false;
+                if ($tiketPertama === null && is_array($ticket) && isset($ticket['id']) && is_string($ticket['id'])) {
+                    $tiketPertama = $ticket['id'];
+                }
                 if (isset($petaToken[$index])) {
                     $this->devices->touch($petaToken[$index]['id']);
                 }
@@ -272,7 +282,7 @@ final class NotificationDispatcher
         }
 
         if ($berhasil > 0) {
-            $this->outbox->markSent($outboxId, $owner, $durasi);
+            $this->outbox->markSent($outboxId, $owner, $durasi, $tiketPertama);
 
             return 'terkirim';
         }
@@ -280,6 +290,164 @@ final class NotificationDispatcher
         $this->outbox->markFailed($outboxId, $owner, $kodeTerakhir, $pesanTerakhir, $permanenSemua, $durasi);
 
         return 'gagal';
+    }
+
+    /**
+     * Rekonsiliasi RECEIPT AKHIR push (V2 Fase 5).
+     *
+     * Menutup temuan terbuka Fase 4: status `Sent` sebelumnya hanya berarti
+     * "Expo menerima tiket". Metode ini menanyakan jawaban akhir FCM/APNs dan
+     * memutakhirkan `receipt_status` menjadi `Terkirim`, `Gagal`, atau
+     * `Tidak Tersedia`.
+     *
+     * Aturan yang dijaga:
+     *
+     *  - **Tidak pernah mengirim ulang.** Receipt `Gagal` TIDAK mengembalikan
+     *    baris ke antrean kirim; pesan sudah benar-benar dikirim dan mengirim
+     *    ulang berarti notifikasi ganda di perangkat penerima.
+     *  - **Tidak pernah menghubungi penyedia saat push mati.** Sakelar dibaca
+     *    ulang di awal, sama seperti `run()`.
+     *  - **`DeviceNotRegistered` mencabut token.** Kontrak Expo mewajibkan
+     *    berhenti memakai token tersebut, termasuk bila baru diketahui pada
+     *    tahap receipt.
+     *  - **Aman diulang.** Pembaruan bersifat idempoten dan hanya menyentuh
+     *    baris yang masih `Menunggu`.
+     *
+     * @return array{dijalankan:bool, alasan:?string, diperiksa:int, terkirim:int,
+     *               gagal:int, belum_tersedia:int, token_dicabut:int, catatan:array<int,string>}
+     */
+    public function reconcileReceipts(int $batch = 100, ?int $minimalUmurDetik = null): array
+    {
+        $hasil = [
+            'dijalankan' => false,
+            'alasan' => null,
+            'diperiksa' => 0,
+            'terkirim' => 0,
+            'gagal' => 0,
+            'belum_tersedia' => 0,
+            'token_dicabut' => 0,
+            'catatan' => [],
+        ];
+
+        if (!$this->expo instanceof PushReceiptClient) {
+            $hasil['alasan'] = 'Klien push yang dipakai tidak mendukung pengambilan receipt akhir.';
+
+            return $hasil;
+        }
+
+        $pengaturan = $this->settings->current();
+        if ($pengaturan['push_enabled'] !== true) {
+            // Berhenti SEBELUM permintaan apa pun ke penyedia.
+            $hasil['alasan'] = 'Kanal Push sedang nonaktif. Tidak ada permintaan ke penyedia.';
+
+            return $hasil;
+        }
+
+        $baris = $this->outbox->pendingReceipts(
+            $batch,
+            $minimalUmurDetik ?? OutboxRepository::RECEIPT_TUNGGU_DETIK
+        );
+        if ($baris === []) {
+            $hasil['dijalankan'] = true;
+            $hasil['alasan'] = 'Tidak ada tiket yang menunggu receipt akhir.';
+
+            return $hasil;
+        }
+
+        $hasil['dijalankan'] = true;
+        $petaTiket = [];
+        foreach ($baris as $row) {
+            $petaTiket[$row['tiket_id']][] = $row['id'];
+        }
+
+        $response = $this->expo->getReceipts(array_keys($petaTiket));
+        if ($response['ok'] !== true) {
+            // Kegagalan pengambilan BUKAN kegagalan pengiriman. Baris tetap
+            // `Menunggu` supaya putaran berikutnya mencoba lagi.
+            $hasil['alasan'] = 'Pengambilan receipt gagal: ' . SafeError::message($response['pesan'], 'Penyedia tidak dapat dihubungi.');
+
+            return $hasil;
+        }
+
+        foreach ($petaTiket as $tiketId => $outboxIds) {
+            $receipt = $response['receipts'][$tiketId] ?? null;
+            foreach ($outboxIds as $outboxId) {
+                $hasil['diperiksa']++;
+
+                if ($receipt === null) {
+                    // Penyedia belum menjawab tiket ini.
+                    $this->outbox->noteReceiptPending($outboxId);
+                    $hasil['belum_tersedia']++;
+                    continue;
+                }
+
+                $status = (string) ($receipt['status'] ?? '');
+                if ($status === 'ok') {
+                    $this->outbox->markReceipt($outboxId, 'Terkirim', 'OK', null);
+                    $hasil['terkirim']++;
+                    continue;
+                }
+
+                $detail = is_array($receipt['details'] ?? null) ? $receipt['details'] : [];
+                $kode = (string) ($detail['error'] ?? 'RECEIPT_GAGAL');
+                $pesan = (string) ($receipt['message'] ?? 'Penyedia melaporkan pengantaran gagal.');
+                $this->outbox->markReceipt($outboxId, 'Gagal', $kode, $pesan);
+                $hasil['gagal']++;
+
+                if ($kode === ExpoPushClient::ERROR_TOKEN_MATI) {
+                    $hasil['token_dicabut'] += $this->cabutTokenMatiDariReceipt($outboxId);
+                }
+            }
+        }
+
+        return $hasil;
+    }
+
+    /**
+     * Mencabut token yang dinyatakan mati oleh RECEIPT, hanya bila pemetaannya
+     * tidak ambigu.
+     *
+     * Satu baris outbox menyimpan SATU id tiket, sedangkan satu penerima dapat
+     * memiliki beberapa perangkat. Karena itu:
+     *
+     *  - bila penerima hanya punya SATU perangkat aktif, perangkat itulah yang
+     *    dimaksud receipt dan token-nya dicabut;
+     *  - bila penerima punya lebih dari satu perangkat aktif, TIDAK ADA yang
+     *    dicabut. Mencabut semuanya akan mematikan perangkat yang sehat.
+     *    Token mati tersebut tetap akan tercabut secara tepat pada pengiriman
+     *    berikutnya, karena tiket Expo mengembalikan `DeviceNotRegistered`
+     *    per pesan dan `kirimPush()` sudah menanganinya per perangkat.
+     */
+    private function cabutTokenMatiDariReceipt(int $outboxId): int
+    {
+        $userId = $this->outboxRecipient($outboxId);
+        if ($userId === null || $userId < 1) {
+            return 0;
+        }
+        $perangkat = $this->devices->activeTokensFor($userId);
+        if (count($perangkat) !== 1) {
+            return 0;
+        }
+
+        return $this->devices->revokeInvalidToken((string) $perangkat[0]['token_hash']) ? 1 : 0;
+    }
+
+    /**
+     * Penerima satu baris outbox — dibaca terpisah agar `pendingReceipts()`
+     * tetap ringan dan tidak membawa data penerima yang tidak selalu dipakai.
+     */
+    private function outboxRecipient(int $outboxId): ?int
+    {
+        $statement = $this->db->prepare('SELECT penerima_user_id FROM notifikasi_outbox WHERE id = ? LIMIT 1');
+        if ($statement === false) {
+            return null;
+        }
+        $statement->bind_param('i', $outboxId);
+        $statement->execute();
+        $row = $statement->get_result()?->fetch_assoc();
+        $statement->close();
+
+        return $row === null || $row === false ? null : (int) $row['penerima_user_id'];
     }
 
     /**

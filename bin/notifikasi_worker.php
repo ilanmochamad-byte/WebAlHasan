@@ -44,6 +44,9 @@ $opsi = [
     'batas' => (int) app_config('notifikasi.worker_batch'),
     'uji_coba' => false,
     'status' => false,
+    // V2 Fase 5: rekonsiliasi receipt akhir push.
+    'receipts' => false,
+    'receipt_umur' => null,
 ];
 
 foreach (array_slice($argv, 1) as $argumen) {
@@ -55,6 +58,14 @@ foreach (array_slice($argv, 1) as $argumen) {
         $opsi['status'] = true;
         continue;
     }
+    if ($argumen === '--receipts' || $argumen === '--receipt') {
+        $opsi['receipts'] = true;
+        continue;
+    }
+    if (str_starts_with($argumen, '--receipt-umur=')) {
+        $opsi['receipt_umur'] = max(0, (int) substr($argumen, 15));
+        continue;
+    }
     if (str_starts_with($argumen, '--kanal=')) {
         $opsi['kanal'] = strtolower(substr($argumen, 8));
         continue;
@@ -64,7 +75,7 @@ foreach (array_slice($argv, 1) as $argumen) {
         continue;
     }
     fwrite(STDERR, "Argumen tidak dikenal: {$argumen}\n");
-    fwrite(STDERR, "Pemakaian: php bin/notifikasi_worker.php [--kanal=push|whatsapp|semua] [--batas=N] [--uji-coba] [--status]\n");
+    fwrite(STDERR, "Pemakaian: php bin/notifikasi_worker.php [--kanal=push|whatsapp|semua] [--batas=N] [--uji-coba] [--status] [--receipts] [--receipt-umur=DETIK]\n");
     exit(2);
 }
 
@@ -105,6 +116,43 @@ if ($opsi['status']) {
             $ringkasan[$kanal]['Failed'] ?? 0,
             $ringkasan[$kanal]['gagal_permanen'] ?? 0
         );
+    }
+    // V2 Fase 5: sebaran receipt AKHIR push. `Sent` hanya berarti tiket awal
+    // diterima Expo; kolom di bawah menunjukkan berapa yang benar-benar
+    // dikonfirmasi FCM/APNs.
+    $receipt = notification_outbox_repository()->receiptSummary();
+    printf(
+        "  receipt : menunggu %d, terkirim %d, gagal %d, tidak tersedia %d, belum diperlukan %d\n",
+        $receipt['Menunggu'],
+        $receipt['Terkirim'],
+        $receipt['Gagal'],
+        $receipt['Tidak Tersedia'],
+        $receipt['Belum Diperlukan']
+    );
+    exit(0);
+}
+
+// --- Mode receipt: hanya menanyakan hasil akhir, tidak mengirim apa pun. -----
+if ($opsi['receipts']) {
+    $hasil = notification_dispatcher()->reconcileReceipts($opsi['batas'], $opsi['receipt_umur']);
+    if (!$hasil['dijalankan']) {
+        echo "[{$waktu}] receipt: dilewati — " . (string) $hasil['alasan'] . "\n";
+        exit(0);
+    }
+    printf(
+        "[%s] receipt: diperiksa %d, terkirim %d, gagal %d, belum tersedia %d, token dicabut %d\n",
+        $waktu,
+        $hasil['diperiksa'],
+        $hasil['terkirim'],
+        $hasil['gagal'],
+        $hasil['belum_tersedia'],
+        $hasil['token_dicabut']
+    );
+    if ($hasil['alasan'] !== null) {
+        echo '    - ' . (string) $hasil['alasan'] . "\n";
+    }
+    foreach ($hasil['catatan'] as $catatan) {
+        echo '    - ' . $catatan . "\n";
     }
     exit(0);
 }

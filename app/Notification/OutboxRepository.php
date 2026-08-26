@@ -143,8 +143,16 @@ final class OutboxRepository
     /**
      * Menandai satu baris berhasil dikirim ke penyedia.
      */
-    public function markSent(int $id, string $owner, int $durasiMs = 0): bool
+    /**
+     * @param ?string $tiketId Id tiket penyedia (V2 Fase 5). Bila diisi, baris
+     *                         masuk antrean pengambilan receipt AKHIR sehingga
+     *                         status `Sent` dapat direkonsiliasi menjadi
+     *                         terkirim/gagal berdasarkan jawaban FCM/APNs —
+     *                         bukan berhenti pada tiket awal seperti Fase 4.
+     */
+    public function markSent(int $id, string $owner, int $durasiMs = 0, ?string $tiketId = null): bool
     {
+        $tiketId = $tiketId === null || trim($tiketId) === '' ? null : substr(trim($tiketId), 0, 120);
         $statement = $this->db->prepare(
             "UPDATE notifikasi_outbox
                 SET status = 'Sent',
@@ -155,14 +163,20 @@ final class OutboxRepository
                     error_terakhir = NULL,
                     tersedia_pada = NULL,
                     locked_by = NULL,
-                    locked_until = NULL
+                    locked_until = NULL,
+                    tiket_id = ?,
+                    receipt_status = CASE WHEN ? IS NULL THEN 'Belum Diperlukan' ELSE 'Menunggu' END,
+                    receipt_kode = NULL,
+                    receipt_pesan = NULL,
+                    receipt_diperiksa_pada = NULL,
+                    receipt_percobaan = 0
               WHERE id = ? AND locked_by = ?"
         );
         if ($statement === false) {
             return false;
         }
         $ownerShort = substr($owner, 0, 64);
-        $statement->bind_param('is', $id, $ownerShort);
+        $statement->bind_param('ssis', $tiketId, $tiketId, $id, $ownerShort);
         $ok = $statement->execute();
         $affected = $statement->affected_rows;
         $statement->close();
@@ -300,6 +314,164 @@ final class OutboxRepository
         $statement->close();
 
         return (int) ($row['jumlah'] ?? 0);
+    }
+
+    // -----------------------------------------------------------------------
+    // V2 Fase 5 — receipt AKHIR push
+    //
+    // Fase 4 berhenti pada tiket awal Expo. Tiket hanya membuktikan Expo
+    // MENERIMA pesan. Bagian ini mengambil jawaban akhir FCM/APNs sehingga
+    // status pengiriman dapat direkonsiliasi dengan kenyataan.
+    // -----------------------------------------------------------------------
+
+    /** Umur minimum tiket sebelum receipt-nya layak diminta (kontrak Expo). */
+    public const RECEIPT_TUNGGU_DETIK = 900;
+
+    /** Batas percobaan pengambilan receipt sebelum ditandai tidak tersedia. */
+    public const RECEIPT_MAKS_PERCOBAAN = 6;
+
+    /**
+     * Baris push terkirim yang menunggu receipt akhir dan sudah cukup umur.
+     *
+     * Tidak memakai penguncian pemilik seperti `claim()`: pengambilan receipt
+     * bersifat IDEMPOTEN — dua worker yang membaca tiket yang sama hanya akan
+     * menuliskan hasil yang sama, dan tidak ada pesan yang terkirim ulang.
+     *
+     * @return array<int, array{id:int, tiket_id:string, penerima_user_id:int}>
+     */
+    public function pendingReceipts(int $limit = 100, int $minimalUmurDetik = self::RECEIPT_TUNGGU_DETIK): array
+    {
+        $statement = $this->db->prepare(
+            "SELECT id, tiket_id, penerima_user_id
+               FROM notifikasi_outbox
+              WHERE kanal = 'Push'
+                AND status = 'Sent'
+                AND receipt_status = 'Menunggu'
+                AND tiket_id IS NOT NULL
+                AND dikirim_pada IS NOT NULL
+                AND dikirim_pada <= DATE_SUB(NOW(), INTERVAL ? SECOND)
+                AND receipt_percobaan < ?
+              ORDER BY dikirim_pada ASC, id ASC
+              LIMIT ?"
+        );
+        if ($statement === false) {
+            return [];
+        }
+        $umur = max(0, $minimalUmurDetik);
+        $maks = self::RECEIPT_MAKS_PERCOBAAN;
+        $batas = max(1, min(1000, $limit));
+        $statement->bind_param('iii', $umur, $maks, $batas);
+        $statement->execute();
+        $result = $statement->get_result();
+        $rows = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+        $statement->close();
+
+        return array_map(static fn (array $row): array => [
+            'id' => (int) $row['id'],
+            'tiket_id' => (string) $row['tiket_id'],
+            'penerima_user_id' => (int) $row['penerima_user_id'],
+        ], $rows);
+    }
+
+    /**
+     * Menuliskan hasil receipt akhir.
+     *
+     * `$status` wajib salah satu dari `Terkirim`, `Gagal`, `Tidak Tersedia`.
+     * `$kode`/`$pesan` WAJIB sudah melewati `SafeError` di sisi pemanggil.
+     *
+     * Catatan penting: baris yang receipt-nya `Gagal` TIDAK dikembalikan ke
+     * antrean kirim. Pesan sudah benar-benar dikirim ke penyedia; mengirim
+     * ulang akan menghasilkan notifikasi ganda pada perangkat penerima dan
+     * melanggar jaminan deduplikasi Fase 4. Kegagalan receipt adalah INFORMASI
+     * operasional untuk admin, bukan pemicu retry.
+     */
+    public function markReceipt(int $id, string $status, ?string $kode = null, ?string $pesan = null): bool
+    {
+        if (!in_array($status, ['Terkirim', 'Gagal', 'Tidak Tersedia'], true)) {
+            return false;
+        }
+        $statement = $this->db->prepare(
+            "UPDATE notifikasi_outbox
+                SET receipt_status = ?,
+                    receipt_kode = ?,
+                    receipt_pesan = ?,
+                    receipt_diperiksa_pada = NOW(),
+                    receipt_percobaan = receipt_percobaan + 1
+              WHERE id = ? AND receipt_status = 'Menunggu'"
+        );
+        if ($statement === false) {
+            return false;
+        }
+        $kodeAman = $kode === null ? null : substr(SafeError::code($kode), 0, 60);
+        $pesanAman = $pesan === null ? null : substr(SafeError::message($pesan, ''), 0, 255);
+        $statement->bind_param('sssi', $status, $kodeAman, $pesanAman, $id);
+        $ok = $statement->execute();
+        $affected = $statement->affected_rows;
+        $statement->close();
+
+        return $ok && $affected > 0;
+    }
+
+    /**
+     * Menaikkan penghitung percobaan tanpa menetapkan hasil, untuk tiket yang
+     * penyedianya BELUM menjawab. Setelah `RECEIPT_MAKS_PERCOBAAN` kali, baris
+     * berhenti diminta dan ditandai `Tidak Tersedia` — bukan `Gagal`, karena
+     * tidak adanya jawaban bukan bukti kegagalan pengantaran.
+     */
+    public function noteReceiptPending(int $id): bool
+    {
+        $statement = $this->db->prepare(
+            "UPDATE notifikasi_outbox
+                SET receipt_percobaan = receipt_percobaan + 1,
+                    receipt_diperiksa_pada = NOW(),
+                    receipt_status = CASE
+                        WHEN receipt_percobaan + 1 >= ? THEN 'Tidak Tersedia'
+                        ELSE 'Menunggu' END,
+                    receipt_pesan = CASE
+                        WHEN receipt_percobaan + 1 >= ?
+                        THEN 'Penyedia tidak mengembalikan receipt akhir dalam batas percobaan.'
+                        ELSE receipt_pesan END
+              WHERE id = ? AND receipt_status = 'Menunggu'"
+        );
+        if ($statement === false) {
+            return false;
+        }
+        $maks = self::RECEIPT_MAKS_PERCOBAAN;
+        $statement->bind_param('iii', $maks, $maks, $id);
+        $ok = $statement->execute();
+        $statement->close();
+
+        return $ok;
+    }
+
+    /**
+     * Sebaran status receipt untuk panel admin dan `--status` worker.
+     *
+     * @return array<string, int>
+     */
+    public function receiptSummary(): array
+    {
+        $result = $this->db->query(
+            "SELECT receipt_status, COUNT(*) AS jumlah
+               FROM notifikasi_outbox
+              WHERE kanal = 'Push'
+              GROUP BY receipt_status"
+        );
+        $sebaran = [
+            'Belum Diperlukan' => 0,
+            'Menunggu' => 0,
+            'Terkirim' => 0,
+            'Gagal' => 0,
+            'Tidak Tersedia' => 0,
+        ];
+        if ($result === false) {
+            return $sebaran;
+        }
+        while ($row = $result->fetch_assoc()) {
+            $sebaran[(string) $row['receipt_status']] = (int) $row['jumlah'];
+        }
+
+        return $sebaran;
     }
 
     public function backoffSeconds(int $percobaan): int
