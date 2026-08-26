@@ -29,6 +29,17 @@ $requestMeta = static fn (): array => [
     'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? (string) $_SERVER['HTTP_USER_AGENT'] : null,
 ];
 
+/**
+ * Cakupan yang DIMINTA klien (V2 Fase 5).
+ *
+ * Ini hanya preferensi tampilan, bukan hak akses: `IzinService::scopeFor()`
+ * memilih di antara kemampuan yang benar-benar dimiliki akun dan mengabaikan
+ * nilai yang tidak dimiliki. Mengirim `mode=admin` tidak memberi hak admin.
+ */
+$modePreferensi = static fn (): ?string => isset($_GET['mode']) && trim((string) $_GET['mode']) !== ''
+    ? (string) $_GET['mode']
+    : null;
+
 try {
     if ($method === 'GET' && $path === '/') {
         JsonResponse::success(['name' => 'Al Hasan API', 'version' => 'v1']);
@@ -113,6 +124,36 @@ try {
     if ($method === 'POST' && preg_match('#^/izin/pengajuan/(\d+)/koreksi$#', $path, $matches)) {
         $result = izin_api_service()->correct($user, (int) $matches[1], Request::json(), $requestMeta());
         JsonResponse::success($result['data'], $result['status']);
+    }
+
+    // ---------------------------------------------------------------------
+    // V2 Fase 5: laporan perizinan, cetak/PDF, dan ekspor CSV.
+    //
+    // Aditif; tidak mengubah endpoint laporan absensi V1 (`/reports*`) yang
+    // dipakai aplikasi guru. Aplikasi mobile memakai endpoint DI BAWAH INI —
+    // aturan cakupannya tidak diduplikasi di sisi aplikasi. Cakupan dihitung
+    // ulang server pada setiap permintaan oleh `izin_report_service()`.
+    // ---------------------------------------------------------------------
+    if ($method === 'GET' && $path === '/izin/laporan') {
+        JsonResponse::success(izin_report_service()->report($user, $_GET, $modePreferensi()));
+    }
+    if ($method === 'GET' && $path === '/izin/laporan/filters') {
+        JsonResponse::success(izin_report_service()->options($user, $_GET, $modePreferensi()));
+    }
+    if ($method === 'GET' && $path === '/izin/laporan/cetak') {
+        // HTML ramah cetak; aplikasi mengubahnya menjadi PDF dengan `expo-print`
+        // sehingga dokumen web dan dokumen aplikasi identik.
+        JsonResponse::success(izin_report_service()->printHtml($user, $_GET, $modePreferensi()));
+    }
+    if ($method === 'GET' && $path === '/izin/laporan/csv') {
+        // Envelope JSON dipertahankan (konvensi API V1). Isi CSV dikirim sebagai
+        // string agar aplikasi dapat menyimpannya sendiri; jumlah baris disertakan
+        // supaya klien dapat memverifikasi bahwa ia menerima SELURUH hasil filter.
+        JsonResponse::success(izin_report_service()->csv($user, $_GET, $modePreferensi()));
+    }
+    if ($method === 'GET' && $path === '/izin/laporan/explain') {
+        // Hanya admin (dijaga di dalam layanan, bukan oleh urutan rute).
+        JsonResponse::success(izin_report_service()->explain($user, $_GET, $modePreferensi()));
     }
 
     // ---------------------------------------------------------------------
