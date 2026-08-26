@@ -323,6 +323,55 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 - [ ] Uji manual web serta Android/iOS untuk pengurus, murobi, admin, dan orang tua lulus.
 - [ ] WhatsApp off tidak menghasilkan request provider; WhatsApp on hanya dirilis setelah pemeriksaan konfigurasi dan uji admin lulus.
 
+> **Status Fase 5 — 26 Agustus 2026 (implementasi Claude, MENUNGGU AUDIT CODEX):**
+> seluruh gerbang otomatis lulus: **28 berkas uji, 2.230 pemeriksaan, 0 gagal**,
+> diulang dua kali dengan hasil identik. Fase 5 menyumbang 632 pemeriksaan baru
+> dan seluruh pengujian regresi V1 serta V2 Fase 1–4 tetap lulus tanpa
+> perubahan pada berkas ujinya.
+>
+> **Delapan dari sepuluh kriteria penerimaan terpenuhi berdasarkan bukti
+> otomatis:** laporan lintas seluruh filter dengan total ringkasan = detail =
+> cetak = CSV (dibuktikan sidik jari kriteria yang identik); isolasi cakupan
+> pengurus/murobi/orang tua ditegakkan di SQL dan diuji pada tiga lapisan
+> (layanan, HTTP, HTML terender); CSV memuat seluruh hasil filter dengan header
+> terdokumentasi dan formula injection dinetralkan (nol sel berbahaya pada
+> berkas hasil); halaman cetak/PDF memuat identitas pesantren, filter, pembuat,
+> waktu, keputusan, dan nomor halaman; dan **halaman pertama laporan selesai
+> dalam 24,0 ms pada fixture 1.028 pengajuan** dari ambang 2.000 ms.
+>
+> **Indeks laporan sengaja TIDAK ditambahkan.** Tiga indeks kandidat diuji pada
+> 20.004 pengajuan lalu dibuang karena selisihnya masih di dalam derau
+> pengukuran; `EXPLAIN` menunjukkan query laporan sudah memakai indeks dari
+> migrasi 006/007. Migrasi 009 hanya menambahkan jejak receipt push. Bukti
+> lengkap: `docs/phase-v2-5/bukti-performa.md`.
+>
+> **Dua kriteria BELUM dinyatakan lulus dan tetap MENUNGGU VERIFIKASI:**
+> uji manual pada perangkat Android/iOS nyata untuk keempat peran (kriteria 9),
+> dan pengaktifan WhatsApp (bagian "on" pada kriteria 10) yang tetap
+> **DITANGGUHKAN/NON-BLOCKING** berdasarkan keputusan produk 26 Agustus 2026.
+> WhatsApp tetap default `OFF`, terbukti **nol request** kepada penyedia saat
+> mati, dan **tidak diklaim lulus**. Kriteria 6 (ID perizinan lama tidak
+> berubah) terpenuhi pada salinan uji lewat latihan backup → restore → migrasi →
+> rollback (17/17 pemeriksaan); **migrasi produksi belum dijalankan**.
+>
+> **Temuan terbuka Fase 4:** pengambilan push receipt akhir Expo/FCM/APNs kini
+> **diimplementasikan** (migrasi 009 + `PushReceiptClient` + rekonsiliasi worker
+> `--receipts`), sehingga status tidak lagi bergantung pada tiket awal saja.
+> Pemeriksaan kesehatan cron ditambahkan (`bin/v2_phase5_cron_check.php`)
+> beserta baris cron cPanel siap salin, tetapi **cron tidak dipasang pada
+> produksi** karena memerlukan izin pengguna. Pengujian deep-link Android/iOS
+> foreground/background/cold-start **belum dilakukan** dan tetap menunggu
+> pengujian manusia. Commit mobile `da04c3a` dipertahankan sebagai baseline
+> Fase 5 dan masih berstatus lokal/belum didorong.
+>
+> Fase 5 **tidak dinyatakan selesai produksi**. Pernyataan itu baru sah setelah
+> audit Codex, pengujian MySQL/cPanel, pengujian perangkat nyata, dan smoke test
+> produksi benar-benar dilakukan serta didokumentasikan.
+>
+> Status per kriteria: `docs/phase-v2-5/acceptance-status.md`.
+> Hasil pengujian: `docs/phase-v2-5/test-results.md`.
+> Uji yang masih menunggu: `docs/phase-v2-5/uji-manual-tertunda.md`.
+
 ## 7. Metrik Keberhasilan
 
 - 100% pengajuan baru memiliki pengurus pengaju, santri, rentang tanggal, status, routing, serta audit yang valid.
