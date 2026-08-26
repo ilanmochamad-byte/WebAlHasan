@@ -230,6 +230,12 @@ app/Notification/WhatsApp/
 
 Status baris: `Queued` → `Sent` atau `Failed`.
 
+Untuk kanal Push, status `Sent` pada implementasi saat ini berarti tiket awal
+diterima Expo Push Service. Server belum mengambil push receipt akhir dari
+FCM/APNs, sehingga `Sent` **bukan** jaminan delivery end-to-end ke perangkat.
+Keterbatasan ini dicatat sebagai temuan terbuka 26 Agustus 2026 dan harus
+ditangani sebelum statistik delivery diklaim sepenuhnya akurat.
+
 | Kolom | Arti |
 | --- | --- |
 | `percobaan` | jumlah percobaan yang sudah dilakukan |

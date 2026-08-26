@@ -4,8 +4,11 @@ Dokumen ini adalah **prosedur yang harus dijalankan manusia** untuk membuktikan
 kriteria penerimaan Fase 4 nomor 3: *"Push tiba pada perangkat uji Android dan
 iOS tanpa memuat alasan izin lengkap."*
 
-Sampai checklist ini selesai dan hasilnya dicatat, kriteria tersebut berstatus
-**MENUNGGU SMOKE TEST PERANGKAT** dan **tidak boleh dinyatakan lulus**.
+Kedatangan push telah dibuktikan pada perangkat fisik Android dan iOS pada
+24 Agustus 2026. Kriteria kedatangan push berstatus **TERPENUHI BERDASARKAN
+UJI PERANGKAT FISIK**. Checklist lengkap tetap dipertahankan untuk pengujian
+operasional dan deep-link yang belum seluruhnya dibuktikan; status kriteria
+tidak boleh dipakai untuk menyembunyikan temuan terbuka pada §8.
 
 > Keputusan penerimaan Fase 3 menerima simulator Android sebagai bukti
 > pengganti. Pengecualian itu **tidak berlaku** di sini: PRD Fase 4 secara
@@ -162,10 +165,36 @@ SELECT COUNT(*) FROM notifikasi_outbox o JOIN izin_pengajuan p ON p.id = o.penga
  WHERE o.kanal <> 'InApp' AND o.isi LIKE CONCAT('%', LEFT(p.alasan, 20), '%');           -- harus 0
 ```
 
-## 8. Format pencatatan hasil
+## 8. Hasil smoke test perangkat — 24 Agustus 2026
 
-Setelah selesai, tambahkan blok berikut ke dokumen ini dan perbarui
-`acceptance-status.md` §2:
+| Aspek | Hasil yang dikonfirmasi |
+| --- | --- |
+| Android | Xiaomi 2409BRN2CY, akun murobi, development build EAS terpasang, Firebase berhasil diinisialisasi, perangkat terdaftar dan Push aktif. |
+| Push Android | Push pengajuan `#2` tiba dengan isi “Ada pengajuan izin #2 menunggu keputusan Anda. Buka aplikasi untuk melihat detail.” |
+| Privasi Android | Isi yang diamati tidak memuat nama santri, alasan izin, nomor telepon, token, atau data sensitif. |
+| iOS | iPhone 17 Pro, akun orang tua, development build EAS dengan entitlement APNs terpasang, perangkat terdaftar dan Push aktif. |
+| Push iOS | Push keputusan pengajuan `#2` tiba setelah worker dijalankan; kedatangan dikonfirmasi manusia. |
+| Bukti iOS | Screenshot isi layar kunci belum dimasukkan ke repository. Jangan mengklaim bukti visual tersebut tersedia. |
+| Panel admin | Push aktif, pemeriksaan konfigurasi `Lulus`, dua perangkat terdaftar dan aktif. |
+| Kesimpulan | Kriteria penerimaan Fase 4 nomor 3 **TERPENUHI BERDASARKAN UJI PERANGKAT FISIK**. |
+
+Temuan terbuka:
+
+1. Cron produksi belum berjalan otomatis. Push iPhone sempat menunggu dan baru
+   tiba setelah tombol **Jalankan worker sekali** ditekan. Cron cPanel setiap
+   menit masih harus dipasang atau diverifikasi.
+2. Backend baru memeriksa tiket awal Expo dan belum mengambil push receipt
+   akhir FCM/APNs. Status pengiriman belum boleh diklaim akurat end-to-end.
+3. Deep-link Android sempat gagal karena `adb reverse` ke Metro terputus.
+   Aplikasi normal kembali setelah koneksi dipulihkan, tetapi A10–A12 dan
+   skenario cold-start/background lengkap perlu diuji ulang dan dicatat.
+4. Commit mobile `da04c3a` masih lokal dan belum didorong ke origin saat hasil
+   ini dicatat.
+
+## 8.1 Format pencatatan pengujian lanjutan
+
+Untuk melengkapi butir checklist yang belum memiliki bukti, tambahkan blok
+berikut ke dokumen ini dan perbarui `acceptance-status.md` §2:
 
 ```
 ### Hasil smoke test perangkat — <tanggal>

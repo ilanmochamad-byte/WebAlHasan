@@ -217,11 +217,17 @@ Adapter uji **menolak berjalan** ketika `APP_ENV=production`.
 
 ## 7. Yang TIDAK dapat diuji di sandbox
 
+Tabel ini mencatat keterbatasan sandbox pada 23 Agustus 2026. Setelahnya,
+kedatangan push Android dan iOS dibuktikan pada perangkat fisik 24 Agustus
+2026 sebagaimana `mobile-build-and-smoke-test.md`. Pengiriman WhatsApp nyata
+tetap tidak diuji dan berstatus **DITANGGUHKAN/NON-BLOCKING**, bukan lulus,
+berdasarkan keputusan produk 26 Agustus 2026.
+
 | Tidak diuji | Alasan | Tindak lanjut |
 | --- | --- | --- |
-| Kedatangan push pada perangkat Android NYATA | Sandbox cloud tanpa perangkat | `mobile-build-and-smoke-test.md` |
-| Kedatangan push pada perangkat iOS NYATA | Idem, dan iOS memerlukan macOS + Xcode | `mobile-build-and-smoke-test.md` |
-| Pengiriman WhatsApp oleh penyedia NYATA | Belum ada vendor yang disetujui pemilik produk | `whatsapp-provider-checklist.md` |
+| Kedatangan push pada perangkat Android NYATA | Tidak dapat diuji di sandbox; kemudian terbukti pada Xiaomi 2409BRN2CY | `mobile-build-and-smoke-test.md` |
+| Kedatangan push pada perangkat iOS NYATA | Tidak dapat diuji di sandbox; kemudian terbukti pada iPhone 17 Pro | `mobile-build-and-smoke-test.md` |
+| Pengiriman WhatsApp oleh penyedia NYATA | Ditangguhkan; penyedia dan prasyarat bisnis belum tersedia | `whatsapp-provider-checklist.md` |
 | Perilaku Expo Push Service sesungguhnya | Diganti klien tiruan agar tidak ada trafik keluar | Smoke test perangkat |
 | PHP versi cPanel | Sandbox memakai PHP 8.4 | `php -l` + tes pada staging cPanel |
 | Data produksi & performa nyata | Dilarang | Staging dengan salinan tersamar |

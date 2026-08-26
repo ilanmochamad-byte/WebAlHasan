@@ -4,8 +4,10 @@ Dokumen ini adalah **prosedur yang harus dijalankan manusia** untuk membuktikan
 kriteria penerimaan Fase 4 nomor 6: *"Saat WhatsApp aktif dan provider siap,
 pesan uji serta satu notifikasi keputusan berhasil dikirim."*
 
-Sampai checklist ini selesai, kriteria tersebut berstatus **KONDISIONAL —
-BELUM DIUJI** dan **tidak boleh dinyatakan lulus**.
+Berdasarkan keputusan produk 26 Agustus 2026, kemampuan ini berstatus
+**DITANGGUHKAN/NON-BLOCKING — TIDAK DIUJI DAN TIDAK DINYATAKAN LULUS**.
+Checklist tetap dipertahankan sebagai gerbang wajib apabila WhatsApp akan
+diaktifkan pada masa depan.
 
 ## 1. Apa yang TIDAK dilakukan sistem
 
@@ -21,19 +23,29 @@ Sesuai instruksi implementasi:
 Keadaan default sistem: `WHATSAPP_PROVIDER` kosong → `NullProvider` → WhatsApp
 mati, dan tidak ada satu baris pun kode jaringan yang dapat dijalankan.
 
-## 2. Keputusan yang menunggu pemilik produk
+## 2. Keputusan produk — 26 Agustus 2026
+
+WhatsApp ditunda sampai batas waktu yang tidak ditentukan karena penyedia
+resmi, WhatsApp Business Account, nomor bisnis, template utility, opt-in
+pengguna, dan credential produksi belum tersedia. Kanal tetap `OFF`, hasil
+pemeriksaan konfigurasi belum `Lulus`, dan tidak ada request kepada penyedia.
+Adapter uji bukan bukti pengiriman nyata.
+
+Butir berikut bukan pekerjaan Fase 4 yang masih memblokir. Semuanya menjadi
+prasyarat aktivasi WhatsApp pada masa depan:
 
 | # | Keputusan | Status |
 | --- | --- | --- |
-| 1 | Vendor mana yang dipakai (Meta Cloud API, penyedia BSP lokal, gateway lain) | ☐ menunggu |
-| 2 | Nomor pengirim resmi pesantren | ☐ menunggu |
-| 3 | Template pesan yang didaftarkan ke vendor (WhatsApp mewajibkan template untuk pesan yang diinisiasi bisnis) | ☐ menunggu |
-| 4 | Siapa yang memegang credential dan di mana disimpan | ☐ menunggu |
-| 5 | Anggaran dan batas kirim per bulan | ☐ menunggu |
-| 6 | Kebijakan berhenti berlangganan bagi wali | ☐ menunggu |
+| 1 | Penyedia resmi yang disetujui (Meta Cloud API, penyedia BSP resmi, atau layanan lain yang disetujui) | ☐ ditangguhkan |
+| 2 | WhatsApp Business Account dan nomor pengirim resmi pesantren | ☐ ditangguhkan |
+| 3 | Template utility yang disetujui penyedia | ☐ ditangguhkan |
+| 4 | Pemegang credential dan penyimpanannya hanya pada environment | ☐ ditangguhkan |
+| 5 | Anggaran dan batas kirim per bulan | ☐ ditangguhkan |
+| 6 | Mekanisme opt-in dan opt-out pengguna/wali | ☐ ditangguhkan |
 
-Tanpa keputusan 1–4, kanal WhatsApp tetap mati dan sistem berjalan normal:
-notifikasi in-app tetap menjadi sumber status utama.
+Selama seluruh prasyarat belum dipenuhi, kanal WhatsApp tetap mati dan sistem
+berjalan normal: notifikasi in-app tetap menjadi sumber status utama dan push
+berjalan sesuai pengaturan.
 
 ## 3. Kontrak yang harus dipenuhi vendor
 
@@ -143,9 +155,23 @@ Bukti         : <tangkapan layar pesan yang diterima, disimpan DI LUAR repo>
 Kesimpulan    : Kriteria penerimaan Fase 4 nomor 6 <TERPENUHI / BELUM TERPENUHI>
 ```
 
-## 8. Jika WhatsApp diputuskan tidak dipakai
+## 8. Status penangguhan saat ini
 
 Tidak ada yang perlu dihapus. Biarkan `WHATSAPP_PROVIDER` kosong: kanal tetap
 mati, tidak ada koneksi keluar, dan seluruh alur perizinan berjalan penuh
-dengan notifikasi in-app dan push. Catat keputusan itu pada `PRD-V2.md` agar
-auditor berikutnya tidak menganggapnya sebagai pekerjaan yang tertinggal.
+dengan notifikasi in-app dan push. Keputusan penangguhan sudah dicatat pada
+`PRD-V2.md` dan tidak dihitung sebagai blocker Fase 4.
+
+Sebelum WhatsApp dapat diaktifkan pada masa depan, wajib dipastikan kembali:
+
+1. penyedia resmi disetujui;
+2. opt-in dan opt-out pengguna tersedia;
+3. template utility disetujui;
+4. credential hanya berada di environment;
+5. ketiga lapisan pemeriksaan konfigurasi lulus;
+6. pesan uji dan satu notifikasi keputusan tiba melalui penyedia nyata; dan
+7. pengujian keamanan, privasi, deduplikasi, retry, serta nol-request-saat-mati
+   diulang.
+
+Sampai seluruhnya selesai, WhatsApp tetap **DITANGGUHKAN/NON-BLOCKING** dan
+**tidak boleh dinyatakan lulus**.
