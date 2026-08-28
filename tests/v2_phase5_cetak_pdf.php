@@ -343,6 +343,22 @@ $assert(
         . ($jumlahBarisSafari === [] ? '' : ' (aktual ' . implode('/', $jumlahBarisSafari) . ')')
 );
 $assert(
+    str_contains($absensiSafari['html'], '-webkit-text-size-adjust:100%')
+        && str_contains($absensiSafari['html'], 'text-size-adjust:100%'),
+    'A24d HTML mengunci penyesuaian ukuran teks agar WKWebView iOS tidak memperbesar tinggi baris'
+);
+$assert(
+    str_contains($absensiSafari['html'], 'line-height:1.15'),
+    'A24e Tinggi baris tabel eksplisit dan sejalan dengan anggaran paginator lintas mesin'
+);
+$assert(
+    str_contains(
+        $absensiSafari['html'],
+        'maximum-scale=1, minimum-scale=1, user-scalable=no'
+    ),
+    'A24f Viewport laporan mengikuti kontrak HTML expo-print SDK 57'
+);
+$assert(
     substr_count($absensiBanyak['html'], '<tr><td>') === 400,
     'A25 Keempat ratus baris absensi dirender tepat sekali'
 );

@@ -106,7 +106,7 @@ final class PrintRenderer
         }
 
         return '<!doctype html><html lang="id"><head><meta charset="utf-8">'
-            . '<meta name="viewport" content="width=device-width, initial-scale=1">'
+            . '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">'
             . '<title>' . PrintLayout::e($reportType) . ' - ' . PrintLayout::e(self::IDENTITAS) . '</title>'
             . '<style>' . PrintLayout::cssDasar() . '</style></head><body>'
             . '<div class="report-nav"><button type="button" onclick="window.print()">Cetak / Simpan PDF</button></div>'

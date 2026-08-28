@@ -735,6 +735,10 @@ if (!$adaMobile) {
         str_contains($halamanCetak, 'Print.Orientation.landscape'),
         'Dialog cetak iOS diminta dalam orientasi lanskap'
     );
+    $assert(
+        str_contains($halamanCetak, 'textZoom: 100'),
+        'PDF Android mengunci textZoom 100 agar tinggi baris tidak dipengaruhi WebView/OEM'
+    );
     foreach (['izin-report-document.ts' => $dokumen, 'report-document.ts' => $dokumenAbsensi] as $berkas => $isi) {
         $assert(
             !preg_match('/print(?:To File)?Async\(\s*\{\s*html\s*\}/', str_replace('ToFile', 'To File', $isi)),
