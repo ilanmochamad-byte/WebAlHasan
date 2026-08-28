@@ -61,6 +61,43 @@ namespace App\Report;
  */
 final class PrintLayout
 {
+    /**
+     * Memecah teks panjang pada batas kata tanpa membuang isinya.
+     *
+     * Baris tabel tidak dapat melintasi halaman secara portabel. Bila satu sel
+     * memuat alasan izin mendekati batas 2.000 karakter, memaksa seluruh teks
+     * ke satu `<tr>` membuat mesin cetak menambah halaman fisik di luar lembar
+     * yang dihitung server. Renderer memakai pecahan ini sebagai baris
+     * lanjutan yang tetap membawa identitas pengajuan.
+     *
+     * @return array<int, string>
+     */
+    public static function pecahTeks(string $teks, int $maksKarakter): array
+    {
+        $maksKarakter = max(1, $maksKarakter);
+        $sisa = trim((string) (preg_replace('/\s+/u', ' ', $teks) ?? $teks));
+        if ($sisa === '') {
+            return [''];
+        }
+
+        $hasil = [];
+        while (mb_strlen($sisa) > $maksKarakter) {
+            $calon = mb_substr($sisa, 0, $maksKarakter);
+            $batas = mb_strrpos($calon, ' ');
+            // Token yang sangat panjang tetap harus membuat kemajuan.
+            if ($batas === false || $batas < (int) floor($maksKarakter / 2)) {
+                $batas = $maksKarakter;
+            }
+            $hasil[] = trim(mb_substr($sisa, 0, $batas));
+            $sisa = ltrim(mb_substr($sisa, $batas));
+        }
+        if ($sisa !== '') {
+            $hasil[] = $sisa;
+        }
+
+        return $hasil === [] ? [''] : $hasil;
+    }
+
     /** Tinggi area cetak yang aman untuk A4 lanskap (210 mm − margin − cadangan). */
     public const TINGGI_AREA_MM = 176.0;
 

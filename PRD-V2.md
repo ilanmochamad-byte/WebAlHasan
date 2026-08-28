@@ -352,6 +352,17 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 > perangkat Android/iOS nyata tetap **MENUNGGU VERIFIKASI** manusia.
 > Rincian: `docs/phase-v2-5/perbaikan-cetak-pdf.md`.
 >
+> **Audit Codex atas perbaikan cetak/PDF — 28 Agustus 2026: LOLOS DENGAN
+> KOREKSI TERARAH.** Commit Claude `92024a3` masih salah pada data batas:
+> satu pengajuan dengan alasan izin dan alasan keputusan mendekati 2.000
+> karakter dihitung sebagai satu lembar, tetapi Chromium menghasilkan empat
+> halaman fisik. Auditor menambahkan pemecahan teks tanpa kehilangan isi ke
+> baris lanjutan beridentitas, lalu membuktikan hasil akhir pada PDF sungguhan:
+> lima lembar fisik = lima lembar server, nomor `1..5`, pada A4 lanskap maupun
+> potret. Fixture juga diperkuat dengan seluruh filter produksi. Safari macOS
+> nyata dan `expo-print` pada perangkat Android/iOS tetap menunggu uji manusia.
+> Rincian: `docs/phase-v2-5/audit-codex-perbaikan-cetak-pdf.md`.
+>
 > **Baseline implementasi Claude — 26 Agustus 2026:**
 > seluruh gerbang otomatis lulus: **28 berkas uji, 2.230 pemeriksaan, 0 gagal**,
 > diulang dua kali dengan hasil identik. Fase 5 menyumbang 632 pemeriksaan baru

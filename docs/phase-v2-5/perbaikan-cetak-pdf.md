@@ -215,7 +215,7 @@ rusak; seluruhnya menjadi lebih ketat.
 
 ### 5.3 Hasil
 
-```
+```bash
 MOBILE_APP_ROOT=/path/ke/alhasanApps bash bin/v2_phase5_run_all_tests.sh
 ```
 
@@ -254,3 +254,34 @@ sama dengan jumlah lembar, dan tidak ada kata yang terpotong.
 | Tampilan cetak dari dialog cetak macOS | idem |
 
 Ketiganya perlu dicoba manusia sebelum kriteria orientasi dinyatakan penuh.
+
+---
+
+## 8. Koreksi audit Codex: data alasan maksimum
+
+Audit independen terhadap commit Claude `92024a3` menambahkan kasus yang
+diizinkan kontrak aplikasi tetapi belum ada pada fixture awal: alasan izin dan
+alasan keputusan mendekati batas 2.000 karakter.
+
+Sebelum koreksi, server menghasilkan satu `.lembar`, sedangkan Chromium
+menghasilkan empat halaman fisik. Footer hanya memuat `Halaman 1 dari 1`, jadi
+penomoran kembali salah walaupun kasus normal sudah benar.
+
+Koreksi tidak memotong atau membuang isi. `PrintLayout::pecahTeks()` memecah
+teks pada batas kata menjadi fragmen maksimum 180 karakter. Renderer mencetak
+fragmen berikutnya sebagai baris `Lanjutan` yang tetap membawa ID pengajuan.
+Dengan demikian setiap baris tabel muat di dalam anggaran halaman dan isi awal
+hingga akhir tetap tersedia.
+
+Hasil PDF nyata setelah koreksi:
+
+| Kasus | Lanskap | Potret |
+| --- | --- | --- |
+| 3 pengajuan normal | 1 lembar = 1 halaman, nomor benar | 1 lembar = 1 halaman, nomor benar |
+| 40 pengajuan | 6 lembar = 6 halaman, nomor `1..6` | 6 lembar = 6 halaman, nomor `1..6` |
+| 1 pengajuan, dua alasan maksimum | 5 lembar = 5 halaman, isi awal/akhir utuh | 5 lembar = 5 halaman, isi awal/akhir utuh |
+| 400 baris absensi | 41 lembar = 41 halaman, nomor `1..41` | 41 lembar = 41 halaman, nomor `1..41` |
+
+Fixture PDF kini juga membawa seluruh filter yang ada pada laporan produksi,
+bukan hanya tiga filter ringkas. Pemeriksaan visual tidak menemukan clipping,
+overlap, halaman hantu, atau `Halaman 0`.

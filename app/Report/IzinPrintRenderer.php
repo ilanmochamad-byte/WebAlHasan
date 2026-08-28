@@ -45,6 +45,14 @@ final class IzinPrintRenderer
     ];
 
     /**
+     * Batas satu fragmen alasan di tabel cetak.
+     *
+     * Nilai ini menjaga satu fragmen tetap muat pada anggaran halaman pertama
+     * A4 lanskap. Seluruh isi tetap dicetak melalui baris-baris lanjutan.
+     */
+    private const MAKS_KARAKTER_ALASAN_PER_BARIS = 180;
+
+    /**
      * @param array<string, mixed> $report hasil `IzinReportService::document()`
      */
     public static function render(array $report): string
@@ -56,7 +64,9 @@ final class IzinPrintRenderer
         //    pernah menghitung teks yang berbeda dari yang benar-benar dicetak.
         $barisSel = [];
         foreach ($items as $index => $row) {
-            $barisSel[] = self::selBaris($index, $row);
+            foreach (self::selBaris($index, $row) as $fragmen) {
+                $barisSel[] = $fragmen;
+            }
         }
 
         // 2. Pecah menjadi lembar. `PrintLayout` menganggarkan tinggi untuk A4
@@ -106,29 +116,60 @@ final class IzinPrintRenderer
      * menghitungnya sebagai pemisah baris yang pasti.
      *
      * @param array<string, mixed> $row
-     * @return array<int, string>
+     * Alasan izin dan alasan keputusan dapat mencapai 2.000 karakter. Keduanya
+     * dipecah menjadi baris lanjutan agar satu `<tr>` tidak meluber menjadi
+     * beberapa halaman fisik dan merusak penomoran halaman server.
+     *
+     * @return array<int, array<int, string>>
      */
     private static function selBaris(int $index, array $row): array
     {
-        return [
-            (string) ($index + 1),
-            '#' . PrintLayout::e($row['id'] ?? '') . '<br><span class="muted">'
-                . PrintLayout::e($row['sumber_label'] ?? '') . '</span>',
-            PrintLayout::e($row['nama_santri'] ?? '') . '<br><span class="muted">'
-                . PrintLayout::e($row['nis'] ?? '') . '</span>',
-            PrintLayout::e($row['kamar_kelas_label'] ?? ''),
-            '<span class="utuh">' . PrintLayout::e($row['tgl_izin'] ?? '') . '</span><br>&rarr; '
-                . '<span class="utuh">' . PrintLayout::e($row['tgl_kembali'] ?? '') . '</span>',
-            PrintLayout::e($row['alasan'] ?? ''),
-            PrintLayout::e($row['pengurus_label'] ?? '') . '<br><span class="muted">'
-                . PrintLayout::e($row['murobi_label'] ?? '') . '</span>',
-            PrintLayout::e($row['status'] ?? ''),
-            PrintLayout::e($row['keputusan_label'] ?? '')
-                . '<br><span class="muted">' . PrintLayout::e($row['keputusan_kapasitas'] ?? '-') . '</span>'
-                . '<br><span class="muted">' . PrintLayout::e($row['diputus_pada'] ?? '-') . '</span>',
-            PrintLayout::e($row['keputusan_alasan'] ?? '-'),
-            PrintLayout::e($row['durasi_label'] ?? ''),
-        ];
+        $alasan = PrintLayout::pecahTeks(
+            (string) ($row['alasan'] ?? ''),
+            self::MAKS_KARAKTER_ALASAN_PER_BARIS
+        );
+        $alasanKeputusan = PrintLayout::pecahTeks(
+            (string) ($row['keputusan_alasan'] ?? '-'),
+            self::MAKS_KARAKTER_ALASAN_PER_BARIS
+        );
+        $jumlahFragmen = max(count($alasan), count($alasanKeputusan));
+        $hasil = [];
+
+        for ($fragmen = 0; $fragmen < $jumlahFragmen; $fragmen++) {
+            $pertama = $fragmen === 0;
+            $penandaLanjutan = $pertama ? '' : '<br><span class="muted">Lanjutan</span>';
+            $hasil[] = [
+                $pertama ? (string) ($index + 1) : '',
+                '#' . PrintLayout::e($row['id'] ?? '')
+                    . ($pertama
+                        ? '<br><span class="muted">' . PrintLayout::e($row['sumber_label'] ?? '') . '</span>'
+                        : $penandaLanjutan),
+                $pertama
+                    ? PrintLayout::e($row['nama_santri'] ?? '') . '<br><span class="muted">'
+                        . PrintLayout::e($row['nis'] ?? '') . '</span>'
+                    : '',
+                $pertama ? PrintLayout::e($row['kamar_kelas_label'] ?? '') : '',
+                $pertama
+                    ? '<span class="utuh">' . PrintLayout::e($row['tgl_izin'] ?? '') . '</span><br>&rarr; '
+                        . '<span class="utuh">' . PrintLayout::e($row['tgl_kembali'] ?? '') . '</span>'
+                    : '',
+                PrintLayout::e($alasan[$fragmen] ?? ''),
+                $pertama
+                    ? PrintLayout::e($row['pengurus_label'] ?? '') . '<br><span class="muted">'
+                        . PrintLayout::e($row['murobi_label'] ?? '') . '</span>'
+                    : '',
+                $pertama ? PrintLayout::e($row['status'] ?? '') : '',
+                $pertama
+                    ? PrintLayout::e($row['keputusan_label'] ?? '')
+                        . '<br><span class="muted">' . PrintLayout::e($row['keputusan_kapasitas'] ?? '-') . '</span>'
+                        . '<br><span class="muted">' . PrintLayout::e($row['diputus_pada'] ?? '-') . '</span>'
+                    : '',
+                PrintLayout::e($alasanKeputusan[$fragmen] ?? ''),
+                $pertama ? PrintLayout::e($row['durasi_label'] ?? '') : '',
+            ];
+        }
+
+        return $hasil;
     }
 
     /**

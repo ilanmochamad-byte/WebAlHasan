@@ -65,7 +65,7 @@ $menunggu = static function (string $message) use (&$tertunda): void {
 // kata-kata panjang, karena justru itulah yang dipotong di tengah pada PDF
 // produksi.
 // ---------------------------------------------------------------------------
-$dokumenIzin = static function (int $jumlahBaris): array {
+$dokumenIzin = static function (int $jumlahBaris, bool $barisMaksimum = false): array {
     $items = [];
     for ($i = 1; $i <= $jumlahBaris; $i++) {
         $items[] = [
@@ -77,14 +77,21 @@ $dokumenIzin = static function (int $jumlahBaris): array {
             'kamar_kelas_label' => 'Kamar ABDURAHMAN BIN AUF / Kelas 3 IBTIDAIYAH PA',
             'tgl_izin' => '2026-08-24',
             'tgl_kembali' => '2026-08-25',
-            'alasan' => 'Menghadiri acara keluarga di kampung halaman bersama orang tua',
+            'alasan' => $barisMaksimum
+                ? 'AWALIZ ' . mb_substr(str_repeat('Alasan izin dengan panjang maksimum. ', 60), 0, 1970)
+                    . ' AKHIRIZ'
+                : 'Menghadiri acara keluarga di kampung halaman bersama orang tua',
             'pengurus_label' => 'Adi Hidayat',
             'murobi_label' => 'ILAN MOCHAMAD FAUZAN',
             'status' => 'Disetujui',
             'keputusan_label' => 'Disetujui',
             'keputusan_kapasitas' => 'Murobi',
             'diputus_pada' => '2026-08-24 15:50:07',
-            'keputusan_alasan' => 'Uji coba penerimaan',
+            'keputusan_alasan' => $barisMaksimum
+                ? 'AWALKEP '
+                    . mb_substr(str_repeat('Alasan keputusan dengan panjang maksimum. ', 55), 0, 1960)
+                    . ' AKHIRKEP'
+                : 'Uji coba penerimaan',
             'durasi_label' => '8 menit',
         ];
     }
@@ -110,6 +117,16 @@ $dokumenIzin = static function (int $jumlahBaris): array {
             'Cakupan' => 'Admin — seluruh pengajuan',
             'Rentang tanggal izin' => '2026-08-01 s.d. 2026-08-28',
             'Status' => 'Semua status',
+            'Sumber data' => 'Semua sumber',
+            'Santri' => 'Semua santri',
+            'Pengurus' => 'Semua pengurus',
+            'Murobi' => 'Semua murobi',
+            'Kamar' => 'Semua kamar',
+            'Kelas' => 'Semua kelas',
+            'Tahun ajaran' => 'Semua tahun ajaran',
+            'Durasi keputusan' => 'Semua durasi',
+            'Kanal notifikasi' => 'Semua kanal',
+            'Pencarian' => 'Tanpa kata kunci',
         ],
         'dibuat_oleh' => 'Administrator',
         'dibuat_pada' => '2026-08-28 11:01:03 WIB',
@@ -187,6 +204,13 @@ $assert(
     PrintLayout::barisTeks('satu<br>dua<br>tiga', 60.0) === 3,
     'A6 Penanda <br> dihitung sebagai pemisah baris yang pasti'
 );
+$teksPanjang = trim((string) preg_replace('/\s+/u', ' ', str_repeat('teks audit panjang ', 40)));
+$pecahanTeks = PrintLayout::pecahTeks($teksPanjang, 80);
+$assert(
+    implode(' ', $pecahanTeks) === $teksPanjang
+        && max(array_map('mb_strlen', $pecahanTeks)) <= 80,
+    'A6b Pemecahan teks panjang tidak membuang isi dan menghormati batas fragmen'
+);
 
 /**
  * Pemeriksaan penomoran bersama untuk kedua laporan.
@@ -225,10 +249,26 @@ echo PHP_EOL . '--- A7. Laporan perizinan V2 ---' . PHP_EOL;
 $izinSatu = $periksaHtml('A7 Perizinan 3 baris', static fn (int $n): string => IzinPrintRenderer::render($dokumenIzin($n)), 3);
 $izinKosong = $periksaHtml('A8 Perizinan kosong', static fn (int $n): string => IzinPrintRenderer::render($dokumenIzin($n)), 0);
 $izinBanyak = $periksaHtml('A9 Perizinan 40 baris', static fn (int $n): string => IzinPrintRenderer::render($dokumenIzin($n)), 40);
+$izinBarisMaksimum = $periksaHtml(
+    'A9b Perizinan dengan alasan panjang maksimum',
+    static fn (int $n): string => IzinPrintRenderer::render($dokumenIzin($n, true)),
+    1
+);
 
 $assert($izinSatu['lembar'] === 1, 'A10 Perizinan 3 baris muat dalam satu lembar');
 $assert($izinKosong['lembar'] === 1, 'A11 Perizinan kosong tetap satu lembar bernomor');
 $assert($izinBanyak['lembar'] > 1, 'A12 Perizinan 40 baris terpecah menjadi ' . $izinBanyak['lembar'] . ' lembar');
+$assert(
+    substr_count($izinBarisMaksimum['html'], 'Lanjutan') > 0,
+    'A12b Alasan panjang maksimum dipecah menjadi baris lanjutan'
+);
+$assert(
+    str_contains($izinBarisMaksimum['html'], 'AWALIZ')
+        && str_contains($izinBarisMaksimum['html'], 'AKHIRIZ')
+        && str_contains($izinBarisMaksimum['html'], 'AWALKEP')
+        && str_contains($izinBarisMaksimum['html'], 'AKHIRKEP'),
+    'A12c Awal dan akhir alasan izin/keputusan tetap dicetak tanpa kehilangan isi'
+);
 
 // Identitas, pembuat, waktu, dan judul tetap dibawa pada SETIAP lembar,
 // supaya satu halaman yang terlepas tetap dapat dipertanggungjawabkan.
@@ -380,6 +420,12 @@ if (!$siap) {
     $kasus = [
         'izin-1hal' => ['html' => $izinSatu['html'], 'lembar' => $izinSatu['lembar'], 'kata' => true],
         'izin-banyakhal' => ['html' => $izinBanyak['html'], 'lembar' => $izinBanyak['lembar'], 'kata' => true],
+        'izin-baris-maksimum' => [
+            'html' => $izinBarisMaksimum['html'],
+            'lembar' => $izinBarisMaksimum['lembar'],
+            'kata' => false,
+            'penanda' => ['AWALIZ', 'AKHIRIZ', 'AWALKEP', 'AKHIRKEP'],
+        ],
         'absensi-1hal' => ['html' => $absensiSatu['html'], 'lembar' => $absensiSatu['lembar'], 'kata' => false],
         'absensi-banyakhal' => ['html' => $absensiBanyak['html'], 'lembar' => $absensiBanyak['lembar'], 'kata' => false],
     ];
@@ -452,6 +498,25 @@ if (!$siap) {
                 $assert(
                     !preg_match('/\d{4}-\d{2}-\s*\n/', $hasil['teks']),
                     'B ' . $nama . '/' . $orientasi . ' tidak memecah tanggal pada tanda hubung'
+                );
+            }
+
+            if (isset($kasusIni['penanda'])) {
+                // Kolom potret dapat membungkus token tepat setelah tanda
+                // hubung. Abaikan whitespace tata letak, tetapi tetap tuntut
+                // seluruh karakter penanda hadir berurutan.
+                $teksRapat = preg_replace('/\s+/u', '', $hasil['teks']) ?? '';
+                $hilang = array_values(array_filter(
+                    $kasusIni['penanda'],
+                    static fn (string $penanda): bool => !str_contains(
+                        $teksRapat,
+                        preg_replace('/\s+/u', '', $penanda) ?? $penanda
+                    )
+                ));
+                $assert(
+                    $hilang === [],
+                    'B ' . $nama . '/' . $orientasi . ' mempertahankan awal dan akhir seluruh alasan panjang'
+                        . ($hilang === [] ? '' : ' (hilang: ' . implode(', ', $hilang) . ')')
                 );
             }
         }
