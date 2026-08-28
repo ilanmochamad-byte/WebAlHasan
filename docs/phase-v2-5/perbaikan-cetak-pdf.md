@@ -249,7 +249,7 @@ sama dengan jumlah lembar, dan tidak ada kata yang terpotong.
 
 | Hal | Alasan |
 | --- | --- |
-| Hasil PDF pada Safari macOS **nyata** | Perilaku Safari ditiru dengan menyuntikkan `@page{size:A4 portrait}` di akhir cascade pada Chromium. Itu membuktikan kasus "mesin mengabaikan `@page`", bukan Safari itu sendiri |
+| Hasil PDF pada Safari macOS **nyata** | **SUDAH DIUJI, MENEMUKAN CACAT ABSENSI.** Perizinan lanskap lulus; absensi 36 baris menghasilkan empat halaman fisik untuk tiga lembar server. Koreksi ada pada §9 dan tetap menunggu uji ulang setelah deployment |
 | Hasil PDF dari perangkat Android/iOS **nyata** lewat `expo-print` | Memerlukan perangkat fisik; belum tersedia |
 | Tampilan cetak dari dialog cetak macOS | idem |
 
@@ -285,3 +285,29 @@ Hasil PDF nyata setelah koreksi:
 Fixture PDF kini juga membawa seluruh filter yang ada pada laporan produksi,
 bukan hanya tiga filter ringkas. Pemeriksaan visual tidak menemukan clipping,
 overlap, halaman hantu, atau `Halaman 0`.
+
+---
+
+## 9. Koreksi halaman hantu absensi pada Safari nyata
+
+Uji manusia dengan Safari macOS terhadap kode yang sudah dipasang di cPanel
+menemukan kasus yang tidak direproduksi Chromium: laporan absensi 36 baris
+memiliki tiga `.lembar`, tetapi PDF Safari berisi empat halaman fisik. Halaman
+fisik ketiga hanya memuat footer `Halaman 2 dari 3` karena lembar lanjutan
+kedua berisi 14 baris dan sedikit melebihi tinggi cetak Safari.
+
+Koreksi menaikkan reservasi kepala lanjutan absensi dari 18 mm menjadi 26 mm.
+Ini bukan perubahan skala atau ukuran huruf; cadangan 8 mm hanya memindahkan
+satu baris dari lembar kedua ke lembar ketiga. Fixture berbentuk data produksi
+36 baris kini wajib terbagi `10/13/13`, bukan `10/14/12`.
+
+Regresi baru membuktikan pada PDF fisik Chromium A4 lanskap dan potret:
+
+- tiga lembar server = tiga halaman fisik;
+- footer berurutan `Halaman 1 dari 3` sampai `Halaman 3 dari 3`;
+- seluruh 36 baris hadir tepat sekali;
+- tidak ada halaman kosong, pengecilan skala, atau perubahan laporan
+  perizinan.
+
+Uji ulang PDF Safari nyata tetap dilakukan setelah commit koreksi dipasang di
+cPanel, karena justru mesin itu yang menghasilkan bukti kegagalan awal.

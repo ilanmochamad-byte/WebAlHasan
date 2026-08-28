@@ -363,6 +363,18 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 > nyata dan `expo-print` pada perangkat Android/iOS tetap menunggu uji manusia.
 > Rincian: `docs/phase-v2-5/audit-codex-perbaikan-cetak-pdf.md`.
 >
+> **Uji Safari macOS nyata dan koreksi absensi — 28 Agustus 2026.** Setelah
+> perbaikan di-merge melalui PR #9 dan dipasang di cPanel, PDF perizinan A4
+> lanskap lulus. PDF absensi 36 baris masih menghasilkan empat halaman fisik
+> untuk tiga lembar server: tabel lembar kedua berisi 14 baris dan footernya
+> terdorong sendirian ke halaman fisik ketiga. Branch
+> `fix/prd-v2-fase-5-absensi-safari-pagination` menambahkan cadangan tinggi
+> 8 mm khusus kepala lanjutan absensi, sehingga pembagian menjadi `10/13/13`
+> tanpa mengecilkan skala atau font. Fixture produksi 36 baris dan regresi PDF
+> fisik ditambahkan. Uji ulang Safari terhadap hasil cPanel setelah deployment
+> koreksi ini tetap menjadi gerbang penerimaan terakhir untuk cacat tersebut.
+> Rincian: `docs/phase-v2-5/koreksi-absensi-safari.md`.
+>
 > **Baseline implementasi Claude — 26 Agustus 2026:**
 > seluruh gerbang otomatis lulus: **28 berkas uji, 2.230 pemeriksaan, 0 gagal**,
 > diulang dua kali dengan hasil identik. Fase 5 menyumbang 632 pemeriksaan baru
