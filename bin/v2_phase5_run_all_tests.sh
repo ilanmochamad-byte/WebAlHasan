@@ -65,6 +65,10 @@ jalankan 'tests/v2_phase2_static.php'          php tests/v2_phase2_static.php
 jalankan 'tests/v2_phase3_static.php'          php tests/v2_phase3_static.php
 jalankan 'tests/v2_phase4_static.php'          php tests/v2_phase4_static.php
 jalankan 'tests/v2_phase5_static.php'          php tests/v2_phase5_static.php
+# Regresi cetak/PDF: membuktikan hasil PDF sungguhan (Chromium), bukan string
+# CSS. Bagian PDF-nya menandai diri MENUNGGU VERIFIKASI bila Node/Playwright/
+# poppler tidak tersedia — bagian penomoran halaman tetap dijalankan.
+jalankan 'tests/v2_phase5_cetak_pdf.php'       php tests/v2_phase5_cetak_pdf.php
 
 echo '--- Integrasi regresi V1 ---'
 jalankan 'tests/phase2_integration.php'        env PHASE2_RUN_INTEGRATION=1 php tests/phase2_integration.php

@@ -293,12 +293,22 @@ try {
         'Laporan Perizinan Santri' => 'judul laporan',
         'Dibuat oleh' => 'pembuat laporan',
         'Waktu pembuatan' => 'waktu pembuatan',
-        'counter(page)' => 'nomor halaman',
         'Rentang tanggal izin' => 'filter aktif',
         'Median durasi keputusan' => 'median durasi keputusan',
     ] as $penanda => $arti) {
         $assert(str_contains($cetakAdmin['body'], $penanda), 'WL-4b Halaman cetak memuat ' . $arti);
     }
+    // Nomor halaman diperiksa sebagai TEKS HASIL, bukan sebagai string CSS
+    // `counter(page)` yang justru menghasilkan "Halaman 0" pada Safari.
+    $lembarCetak = substr_count($cetakAdmin['body'], '<section class="lembar">');
+    preg_match_all('/Halaman (\d+) dari (\d+)/', $cetakAdmin['body'], $nomorCetak);
+    $assert(
+        $lembarCetak >= 1
+            && !str_contains($cetakAdmin['body'], 'Halaman 0')
+            && $nomorCetak[1] === array_map('strval', range(1, $lembarCetak))
+            && $nomorCetak[2] === array_fill(0, $lembarCetak, (string) $lembarCetak),
+        'WL-4b2 Halaman cetak memuat nomor halaman 1..' . $lembarCetak . ' tanpa "Halaman 0"'
+    );
     $assert(
         str_contains($cetakAdmin['headers'], 'no-store'),
         'WL-4c Halaman cetak dikirim dengan Cache-Control: no-store'

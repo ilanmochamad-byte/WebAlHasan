@@ -336,6 +336,33 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 > migrasi/restore/cron/smoke test produksi belum dijalankan, dan WhatsApp-on
 > tetap ditangguhkan. Rincian audit: `docs/phase-v2-5/audit-codex.md`.
 >
+> **Perbaikan cetak/PDF — 28 Agustus 2026, branch `fix/prd-v2-fase-5-print-pdf`
+> (MENUNGGU AUDIT CODEX, belum di-merge dan belum di-deploy).**
+> PDF produksi diperiksa langsung dan memperlihatkan tiga cacat: footer
+> `Halaman 0`, halaman hantu, dan kata terpotong di tengah pada orientasi
+> potret. Akarnya: `@page { @bottom-center }` tidak didukung mesin cetak
+> peramban, `counter(page)` di dalam elemen `position: fixed` dievaluasi
+> WebKit menjadi 0, `bottom: -11mm` menaruh footer di luar kotak halaman, dan
+> `overflow-wrap: anywhere` mengizinkan pemotongan kata di posisi mana pun.
+> Nomor halaman dipindahkan ke server (`app/Report/PrintLayout.php`) sebagai
+> teks biasa per lembar, dengan anggaran tinggi yang muat pada A4 lanskap
+> maupun potret. Diverifikasi terhadap **PDF sungguhan** pada tiga orientasi
+> oleh `tests/v2_phase5_cetak_pdf.php`; seluruh gerbang otomatis menjadi
+> **29 berkas uji, 2.376 pemeriksaan, 0 gagal**. Hasil pada Safari macOS dan
+> perangkat Android/iOS nyata tetap **MENUNGGU VERIFIKASI** manusia.
+> Rincian: `docs/phase-v2-5/perbaikan-cetak-pdf.md`.
+>
+> **Audit Codex atas perbaikan cetak/PDF — 28 Agustus 2026: LOLOS DENGAN
+> KOREKSI TERARAH.** Commit Claude `92024a3` masih salah pada data batas:
+> satu pengajuan dengan alasan izin dan alasan keputusan mendekati 2.000
+> karakter dihitung sebagai satu lembar, tetapi Chromium menghasilkan empat
+> halaman fisik. Auditor menambahkan pemecahan teks tanpa kehilangan isi ke
+> baris lanjutan beridentitas, lalu membuktikan hasil akhir pada PDF sungguhan:
+> lima lembar fisik = lima lembar server, nomor `1..5`, pada A4 lanskap maupun
+> potret. Fixture juga diperkuat dengan seluruh filter produksi. Safari macOS
+> nyata dan `expo-print` pada perangkat Android/iOS tetap menunggu uji manusia.
+> Rincian: `docs/phase-v2-5/audit-codex-perbaikan-cetak-pdf.md`.
+>
 > **Baseline implementasi Claude — 26 Agustus 2026:**
 > seluruh gerbang otomatis lulus: **28 berkas uji, 2.230 pemeriksaan, 0 gagal**,
 > diulang dua kali dengan hasil identik. Fase 5 menyumbang 632 pemeriksaan baru

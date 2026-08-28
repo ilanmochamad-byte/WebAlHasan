@@ -393,9 +393,20 @@ $assert(
 // Halaman cetak lewat API.
 $cetakAdmin = $http('GET', '/izin/laporan/cetak?' . $rentang, null, $token('admin'));
 $html = (string) ($cetakAdmin['json']['data']['html'] ?? '');
-foreach (['Pesantren Al Hasan', 'Laporan Perizinan Santri', 'counter(page)', 'Median durasi keputusan'] as $penanda) {
+foreach (['Pesantren Al Hasan', 'Laporan Perizinan Santri', 'Median durasi keputusan'] as $penanda) {
     $assert(str_contains($html, $penanda), 'KR-5i HTML cetak lewat API memuat "' . $penanda . '"');
 }
+// Jalur API adalah sumber PDF aplikasi mobile (expo-print). Nomor halamannya
+// wajib berupa teks hasil, bukan `counter(page)` yang tidak dievaluasi WebKit.
+$lembarApi = substr_count($html, '<section class="lembar">');
+preg_match_all('/Halaman (\d+) dari (\d+)/', $html, $nomorApi);
+$assert(
+    $lembarApi >= 1
+        && !str_contains($html, 'Halaman 0')
+        && $nomorApi[1] === array_map('strval', range(1, $lembarApi))
+        && $nomorApi[2] === array_fill(0, $lembarApi, (string) $lembarApi),
+    'KR-5j HTML cetak lewat API memuat nomor halaman 1..' . $lembarApi . ' tanpa "Halaman 0"'
+);
 
 // ---------------------------------------------------------------------------
 echo PHP_EOL . '=== KR-6. Validasi input ===' . PHP_EOL;

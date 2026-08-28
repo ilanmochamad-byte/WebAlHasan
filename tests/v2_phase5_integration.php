@@ -648,7 +648,15 @@ try {
     $assert(str_contains($html, 'Laporan Perizinan Santri'), 'KL-7b Cetak memuat judul laporan');
     $assert(str_contains($html, htmlspecialchars($dokAdmin['dibuat_oleh'], ENT_QUOTES)), 'KL-7c Cetak memuat nama pembuat laporan');
     $assert(str_contains($html, htmlspecialchars($dokAdmin['dibuat_pada'], ENT_QUOTES)), 'KL-7d Cetak memuat waktu pembuatan');
-    $assert(str_contains($html, 'counter(page)'), 'KL-7e Cetak memuat nomor halaman');
+    $lembarCetak = substr_count($html, '<section class="lembar">');
+    preg_match_all('/Halaman (\d+) dari (\d+)/', $html, $nomorCetak);
+    $assert(
+        $lembarCetak >= 1
+            && !str_contains($html, 'Halaman 0')
+            && $nomorCetak[1] === array_map('strval', range(1, $lembarCetak))
+            && $nomorCetak[2] === array_fill(0, $lembarCetak, (string) $lembarCetak),
+        'KL-7e Cetak memuat nomor halaman 1..' . $lembarCetak . ' tanpa "Halaman 0"'
+    );
     $assert(str_contains($html, $tgl(0) . ' s.d. ' . $tgl(10)), 'KL-7f Cetak memuat rentang filter aktif');
     $assert(str_contains($html, 'Median durasi keputusan'), 'KL-7g Cetak memuat median durasi keputusan');
     $assert(
