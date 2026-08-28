@@ -135,7 +135,7 @@ dulu — kegagalan palsu yang menyesatkan auditor.
 MOBILE_APP_ROOT=/path/ke/alhasanApps bash bin/v2_phase5_run_all_tests.sh
 ```
 
-Hasil yang diharapkan: **28 berkas, 2.230 pemeriksaan, 0 gagal.**
+Hasil yang diharapkan: **29 berkas, 2.376 pemeriksaan, 0 gagal.**
 
 Atau satu per satu:
 
@@ -151,6 +151,7 @@ php tests/v2_phase2_static.php
 MOBILE_APP_ROOT=/path/ke/alhasanApps php tests/v2_phase3_static.php
 MOBILE_APP_ROOT=/path/ke/alhasanApps php tests/v2_phase4_static.php
 MOBILE_APP_ROOT=/path/ke/alhasanApps php tests/v2_phase5_static.php
+php tests/v2_phase5_cetak_pdf.php
 
 # Regresi V1
 PHASE2_RUN_INTEGRATION=1 php tests/phase2_integration.php
@@ -174,6 +175,35 @@ V2_PHASE5_RUN_INTEGRATION=1 php tests/v2_phase5_integration.php
 V2_PHASE5_RUN_API=1         php tests/v2_phase5_api_contract.php
 V2_PHASE5_RUN_WEB=1         php tests/v2_phase5_web_smoke.php
 V2_PHASE5_RUN_PERF=1        php tests/v2_phase5_performance.php
+```
+
+### Pengujian cetak/PDF
+
+`tests/v2_phase5_cetak_pdf.php` bekerja pada dua tingkat. Bagian penomoran
+halaman berjalan dengan PHP saja. Bagian yang merender **PDF sungguhan**
+memerlukan tiga hal:
+
+```bash
+node --version                 # >= 18
+pdftotext -v                   # poppler-utils
+ls tests/browser/node_modules/playwright
+```
+
+Bila `playwright` belum ada (folder `tests/browser/node_modules/` memang tidak
+disimpan di repositori):
+
+```bash
+npm install --prefix tests/browser playwright
+npx --prefix tests/browser playwright install chromium
+```
+
+Bila salah satunya tidak tersedia, bagian PDF menandai dirinya
+**MENUNGGU VERIFIKASI** dan berkas uji tetap keluar 0 — ia tidak pernah
+melaporkan lulus tanpa bukti. PDF pembanding disimpan ke
+`V2_PHASE5_PDF_KELUARAN` (bawaan: folder sementara sistem):
+
+```bash
+V2_PHASE5_PDF_KELUARAN=/tmp/pdfbukti php tests/v2_phase5_cetak_pdf.php
 ```
 
 Berkas uji Fase 5 memilih **port bebas** secara otomatis, sehingga server uji

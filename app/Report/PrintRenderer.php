@@ -4,50 +4,218 @@ declare(strict_types=1);
 
 namespace App\Report;
 
+/**
+ * Halaman HTML ramah cetak untuk laporan absensi V1.
+ *
+ * Cacatnya sama persis dengan laporan perizinan V2 sebelum diperbaiki:
+ * `@page { @bottom-center { content: "Halaman " counter(page) } }` yang tidak
+ * didukung satu pun mesin cetak peramban, `.page-footer:after` dengan
+ * `counter(page)` di dalam elemen `position: fixed` — yang dievaluasi WebKit
+ * menjadi **0** sehingga tercetak "Halaman 0" — serta `bottom:-11mm` yang
+ * menaruh footer di luar kotak halaman dan melahirkan halaman hantu.
+ *
+ * Karena itu laporan ini kini memakai mekanisme yang sama dengan V2:
+ * `PrintLayout` memecah dokumen menjadi "lembar" di sisi SERVER dan setiap
+ * lembar membawa teks "Halaman i dari n" miliknya sendiri. Alasan lengkapnya
+ * ada pada dokumentasi kelas `PrintLayout`.
+ *
+ * Tanda tangan publik `report()` sengaja tidak berubah: pemanggilnya adalah
+ * `admin/laporan_absensi_cetak.php` dan `GET /reports/print` pada API v1.
+ */
 final class PrintRenderer
 {
+    public const IDENTITAS = 'Pesantren Al Hasan';
+
+    /**
+     * Lebar kolom dalam persen; jumlahnya 100.
+     *
+     * Dipilih agar setiap KATA pada judul kolom muat utuh pada orientasi
+     * tersempit (A4 potret). Kolom "Tanggal" dan "Jenis/ID" dilebarkan dari
+     * versi lama justru karena keduanya yang paling mudah terpotong.
+     *
+     * @var array<int, int>
+     */
+    private const LEBAR_KOLOM = [4, 8, 11, 9, 7, 9, 11, 7, 16, 18];
+
+    /** Judul kolom, sejajar dengan `LEBAR_KOLOM`. */
+    private const JUDUL_KOLOM = [
+        'No.', 'Tanggal', 'Jadwal', 'Guru', 'Kelas', 'Jenis/ID',
+        'Peserta', 'Status', 'Catatan', 'Pencatat/Perubahan',
+    ];
+
+    /**
+     * Tinggi blok kepala lengkap laporan absensi.
+     *
+     * Lebih ringkas daripada laporan perizinan (identitas + meta + ringkasan
+     * satu baris chip), sehingga anggarannya ditimpa lewat `pecahLembar()`.
+     */
+    private const TINGGI_KEPALA_PERTAMA_MM = 58.0;
+
+    /** Tinggi kepala ringkas pada lembar kedua dan seterusnya. */
+    private const TINGGI_KEPALA_LANJUTAN_MM = 18.0;
+
+    /**
+     * @param array<string, mixed> $report
+     */
     public static function report(array $report, string $reportType = 'Laporan Absensi Pengajian'): string
     {
-        $filters = '';
-        foreach ($report['active_filters'] as $label => $value) {
-            $filters .= '<div><strong>' . self::e($label) . ':</strong> ' . self::e($value) . '</div>';
+        $items = array_values($report['items'] ?? []);
+
+        // Sel dibangun sekali dan dipakai DUA kali: untuk memperkirakan tinggi
+        // baris dan untuk merender. Dengan begitu perkiraan tidak pernah
+        // menghitung teks yang berbeda dari yang benar-benar tercetak.
+        $barisSel = [];
+        foreach ($items as $index => $row) {
+            $barisSel[] = self::selBaris($index, $row);
         }
-        $rows = '';
-        foreach ($report['items'] as $index => $row) {
-            $rows .= '<tr><td>' . ($index + 1) . '</td><td>' . self::e($row['meeting_date']) . '</td>'
-                . '<td>#' . self::e($row['schedule_id']) . '<br>' . self::e($row['subject']) . '</td>'
-                . '<td>' . self::e($row['teacher_name']) . '</td><td>' . self::e($row['class_name']) . '</td>'
-                . '<td>' . self::e($row['subject_type']) . '<br><span class="muted">' . self::e($row['identity_number']) . '</span></td>'
-                . '<td>' . self::e($row['subject_name']) . '</td><td>' . self::e($row['attendance_status']) . '</td>'
-                . '<td>' . self::e($row['notes'] ?? '-') . '</td><td>' . self::e($row['recorder_name'] ?? '-')
-                . '<br><span class="muted">' . self::e($row['updated_at'] ?? '-') . '</span></td></tr>';
+
+        // Anggaran tinggi dihitung untuk A4 lanskap DAN potret sekaligus,
+        // sehingga jumlah lembar sama dengan jumlah halaman fisik PDF pada
+        // orientasi mana pun yang dipilih pengguna di dialog cetak.
+        $lembar = PrintLayout::pecahLembarKolom(
+            $barisSel,
+            self::LEBAR_KOLOM,
+            self::TINGGI_KEPALA_PERTAMA_MM,
+            self::TINGGI_KEPALA_LANJUTAN_MM
+        );
+        $totalHalaman = count($lembar);
+
+        $isi = '';
+        foreach ($lembar as $nomor => $indeksBaris) {
+            $halaman = $nomor + 1;
+            $isi .= '<section class="lembar">'
+                . ($halaman === 1
+                    ? self::kepalaLengkap($report, $reportType)
+                    : self::kepalaLanjutan($report, $reportType, $halaman, $totalHalaman))
+                . self::tabel($barisSel, $indeksBaris)
+                . PrintLayout::footerHalaman(
+                    $halaman,
+                    $totalHalaman,
+                    self::IDENTITAS . ' — ' . $reportType
+                )
+                . '</section>';
         }
-        if ($rows === '') {
-            $rows = '<tr><td colspan="10" class="empty">Tidak ada data sesuai filter.</td></tr>';
-        }
-        $status = $report['summary']['statuses'];
-        return '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">'
-            . '<title>' . self::e($reportType) . ' - Pesantren Al Hasan</title><style>'
-            . '@page{size:A4 landscape;margin:14mm 9mm 16mm;@bottom-center{content:"Halaman " counter(page) " dari " counter(pages);font-size:8pt;color:#555}}'
-            . '*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#17231c;font-size:9pt;margin:0}.report-nav{margin-bottom:12px}'
-            . 'h1{font-size:18pt;margin:0 0 3px}h2{font-size:12pt;margin:0 0 10px}.identity{border-bottom:2px solid #176b3a;padding-bottom:8px;margin-bottom:8px}'
-            . '.meta{display:grid;grid-template-columns:1fr 1fr;gap:3px 18px;margin-bottom:9px}.summary{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 10px}'
-            . '.summary span{border:1px solid #ccd8cf;border-radius:5px;padding:4px 7px}.muted{color:#59665e;font-size:8pt}'
-            . 'table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{border:1px solid #bac8bd;padding:4px;vertical-align:top;overflow-wrap:anywhere}'
-            . 'th{background:#e8f2ea;text-align:left}tr{break-inside:avoid}.empty{text-align:center;padding:20px}.page-footer{display:none}'
-            . '@media print{.report-nav{display:none!important}body{print-color-adjust:exact;-webkit-print-color-adjust:exact}.page-footer{display:block;position:fixed;bottom:-11mm;left:0;right:0;text-align:center;font-size:8pt;color:#555}.page-footer:after{content:"Halaman " counter(page)}}'
-            . '</style></head><body><div class="report-nav"><button type="button" onclick="window.print()">Cetak / Simpan PDF</button></div>'
-            . '<header class="identity"><h1>Pesantren Al Hasan</h1><h2>' . self::e($reportType) . '</h2></header>'
-            . '<section class="meta"><div><strong>Dibuat:</strong> ' . self::e($report['generated_at']) . '</div><div><strong>Pembuat:</strong> ' . self::e($report['created_by']) . '</div>' . $filters . '</section>'
-            . '<section class="summary"><span><strong>Pertemuan:</strong> ' . self::e($report['summary']['meeting_count']) . '</span><span><strong>Baris detail:</strong> ' . self::e($report['summary']['detail_count']) . '</span>'
-            . '<span>Hadir: ' . self::e($status['Hadir']) . '</span><span>Terlambat: ' . self::e($status['Terlambat']) . '</span><span>Izin: ' . self::e($status['Izin']) . '</span><span>Sakit: ' . self::e($status['Sakit']) . '</span><span>Alpa: ' . self::e($status['Alpa']) . '</span></section>'
-            . '<table><colgroup><col style="width:3%"><col style="width:7%"><col style="width:11%"><col style="width:11%"><col style="width:8%"><col style="width:8%"><col style="width:12%"><col style="width:7%"><col style="width:15%"><col style="width:18%"></colgroup>'
-            . '<thead><tr><th>No.</th><th>Tanggal</th><th>Jadwal</th><th>Guru</th><th>Kelas</th><th>Jenis/ID</th><th>Peserta</th><th>Status</th><th>Catatan</th><th>Pencatat/Perubahan</th></tr></thead><tbody>' . $rows . '</tbody></table>'
-            . '<div class="page-footer"></div></body></html>';
+
+        return '<!doctype html><html lang="id"><head><meta charset="utf-8">'
+            . '<meta name="viewport" content="width=device-width, initial-scale=1">'
+            . '<title>' . PrintLayout::e($reportType) . ' - ' . PrintLayout::e(self::IDENTITAS) . '</title>'
+            . '<style>' . PrintLayout::cssDasar() . '</style></head><body>'
+            . '<div class="report-nav"><button type="button" onclick="window.print()">Cetak / Simpan PDF</button></div>'
+            . PrintLayout::petunjukOrientasi()
+            . $isi
+            . '</body></html>';
     }
 
-    private static function e(mixed $value): string
+    /**
+     * @param array<string, mixed> $row
+     * @return array<int, string>
+     */
+    private static function selBaris(int $index, array $row): array
     {
-        return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        return [
+            (string) ($index + 1),
+            // Tanggal tidak boleh pecah pada tanda hubung menjadi "2026-08-" / "25".
+            '<span class="utuh">' . PrintLayout::e($row['meeting_date'] ?? '') . '</span>',
+            '#' . PrintLayout::e($row['schedule_id'] ?? '') . '<br>'
+                . PrintLayout::e($row['subject'] ?? ''),
+            PrintLayout::e($row['teacher_name'] ?? ''),
+            PrintLayout::e($row['class_name'] ?? ''),
+            PrintLayout::e($row['subject_type'] ?? '') . '<br><span class="muted">'
+                . PrintLayout::e($row['identity_number'] ?? '') . '</span>',
+            PrintLayout::e($row['subject_name'] ?? ''),
+            PrintLayout::e($row['attendance_status'] ?? ''),
+            PrintLayout::e($row['notes'] ?? '-'),
+            PrintLayout::e($row['recorder_name'] ?? '-') . '<br><span class="muted">'
+                . PrintLayout::e($row['updated_at'] ?? '-') . '</span>',
+        ];
+    }
+
+    /**
+     * @param array<int, array<int, string>> $barisSel
+     * @param array<int, int> $indeksBaris
+     */
+    private static function tabel(array $barisSel, array $indeksBaris): string
+    {
+        $colgroup = '';
+        foreach (self::LEBAR_KOLOM as $lebar) {
+            $colgroup .= '<col style="width:' . $lebar . '%">';
+        }
+
+        $judul = '';
+        foreach (self::JUDUL_KOLOM as $teks) {
+            $judul .= '<th>' . PrintLayout::e($teks) . '</th>';
+        }
+
+        $baris = '';
+        foreach ($indeksBaris as $indeks) {
+            $baris .= '<tr>';
+            foreach ($barisSel[$indeks] as $sel) {
+                $baris .= '<td>' . $sel . '</td>';
+            }
+            $baris .= '</tr>';
+        }
+        if ($baris === '') {
+            $baris = '<tr><td colspan="' . count(self::JUDUL_KOLOM) . '" class="empty">'
+                . 'Tidak ada data sesuai filter.</td></tr>';
+        }
+
+        return '<table><colgroup>' . $colgroup . '</colgroup>'
+            . '<thead><tr>' . $judul . '</tr></thead>'
+            . '<tbody>' . $baris . '</tbody></table>';
+    }
+
+    /**
+     * @param array<string, mixed> $report
+     */
+    private static function kepalaLengkap(array $report, string $reportType): string
+    {
+        $filters = '';
+        foreach (($report['active_filters'] ?? []) as $label => $value) {
+            $filters .= '<div><strong>' . PrintLayout::e($label) . ':</strong> '
+                . PrintLayout::e($value) . '</div>';
+        }
+
+        $status = $report['summary']['statuses'] ?? [];
+        $chips = '';
+        foreach (['Hadir', 'Terlambat', 'Izin', 'Sakit', 'Alpa'] as $nama) {
+            $chips .= '<span>' . PrintLayout::e($nama) . ': <strong>'
+                . PrintLayout::e($status[$nama] ?? 0) . '</strong></span>';
+        }
+
+        return '<header class="identity">'
+            . '<h1>' . PrintLayout::e(self::IDENTITAS) . '</h1>'
+            . '<h2>' . PrintLayout::e($reportType) . '</h2>'
+            . '</header>'
+            . '<section class="meta">'
+            . '<div><strong>Dibuat:</strong> ' . PrintLayout::e($report['generated_at'] ?? '') . '</div>'
+            . '<div><strong>Pembuat:</strong> ' . PrintLayout::e($report['created_by'] ?? '') . '</div>'
+            . $filters
+            . '</section>'
+            . '<section class="summary">'
+            . '<span><strong>Pertemuan:</strong> '
+            . PrintLayout::e($report['summary']['meeting_count'] ?? 0) . '</span>'
+            . '<span><strong>Baris detail:</strong> '
+            . PrintLayout::e($report['summary']['detail_count'] ?? 0) . '</span>'
+            . $chips
+            . '</section>';
+    }
+
+    /**
+     * Kepala ringkas untuk lembar kedua dan seterusnya, supaya satu halaman
+     * yang terlepas dari berkasnya tetap dapat dipertanggungjawabkan.
+     *
+     * @param array<string, mixed> $report
+     */
+    private static function kepalaLanjutan(
+        array $report,
+        string $reportType,
+        int $halaman,
+        int $total
+    ): string {
+        return '<div class="lanjutan">'
+            . '<strong>' . PrintLayout::e(self::IDENTITAS) . ' — ' . PrintLayout::e($reportType) . '</strong>'
+            . '<span class="muted">' . PrintLayout::e($report['generated_at'] ?? '')
+            . ' &middot; lanjutan halaman ' . $halaman . ' dari ' . $total . '</span>'
+            . '</div>';
     }
 }

@@ -26,12 +26,13 @@ berjalan pada MySQL 5.7 yang masih umum pada cPanel.
 | `tests/phase2_static.php` | LULUS | 46 |
 | `tests/phase3_static.php` | LULUS | 34 |
 | `tests/phase4_static.php` | LULUS | 38 |
-| `tests/phase5_static.php` | LULUS | 36 |
+| `tests/phase5_static.php` | LULUS | 44 |
 | `tests/v2_phase1_static.php` | LULUS | 126 |
 | `tests/v2_phase2_static.php` | LULUS | 169 |
 | `tests/v2_phase3_static.php` | LULUS | 147 |
 | `tests/v2_phase4_static.php` | LULUS | 286 |
-| `tests/v2_phase5_static.php` | LULUS | **248** |
+| `tests/v2_phase5_static.php` | LULUS | **262** |
+| `tests/v2_phase5_cetak_pdf.php` | LULUS | **124** |
 | `tests/phase2_integration.php` | LULUS | 12 |
 | `tests/phase3_integration.php` | LULUS | 10 |
 | `tests/phase4_integration.php` | LULUS | 14 |
@@ -49,12 +50,21 @@ berjalan pada MySQL 5.7 yang masih umum pada cPanel.
 | `tests/v2_phase5_api_contract.php` | LULUS | **150** |
 | `tests/v2_phase5_web_smoke.php` | LULUS | **79** |
 | `tests/v2_phase5_performance.php` | LULUS | **12** |
-| **Total** | **28 berkas, 0 gagal** | **2.230** |
+| **Total** | **29 berkas, 0 gagal** | **2.376** |
 
 Fase 5 menyumbang **632** pemeriksaan baru. Kenaikan pada
 `tests/v2_phase3_static.php` (146 → 147) dan `tests/v2_phase4_static.php`
 (283 → 286) berasal dari berkas PHP baru yang otomatis ikut di-`php -l` dan
 dari pembaruan pagar ruang lingkup, bukan dari pelonggaran pemeriksaan.
+
+> **Pembaruan 28 Agustus 2026 — branch `fix/prd-v2-fase-5-print-pdf`.**
+> Angka pada tabel di atas sudah mencakup perbaikan cetak/PDF: 2.230 → **2.376**
+> pemeriksaan pada **29** berkas uji, 0 gagal. Tambahannya berasal dari berkas
+> baru `tests/v2_phase5_cetak_pdf.php` (124), penguatan `phase5_static.php`
+> (36 → 44) dan `v2_phase5_static.php` (248 → 262). Enam pemeriksaan yang dulu
+> hanya mencari string `counter(page)` diganti pemeriksaan nomor halaman
+> sungguhan — diperketat, bukan dilonggarkan. Rincian:
+> `docs/phase-v2-5/perbaikan-cetak-pdf.md`.
 
 ## 3. Fase 5 — statis (248 pemeriksaan)
 

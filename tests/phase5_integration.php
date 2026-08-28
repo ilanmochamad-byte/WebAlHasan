@@ -134,7 +134,17 @@ try {
     $assert(count($export['items']) === $report['summary']['detail_count'], 'Ekspor mengambil seluruh hasil filter tanpa terpotong pagination');
     $csv = CsvExport::encode($export['items']);
     $assert(substr_count($csv, "\n") === count($export['items']) + 1, 'CSV memiliki satu header dan seluruh baris hasil filter');
-    $assert(str_contains($html, 'Pesantren Al Hasan') && str_contains($html, 'counter(page)') && !str_contains($html, 'sidebarMenu'), 'HTML cetak memuat identitas/nomor halaman tanpa navigasi admin');
+    $lembarCetak = substr_count($html, '<section class="lembar">');
+    preg_match_all('/Halaman (\d+) dari (\d+)/', $html, $nomorCetak);
+    $assert(
+        str_contains($html, 'Pesantren Al Hasan')
+            && !str_contains($html, 'sidebarMenu')
+            && !str_contains($html, 'Halaman 0')
+            && $lembarCetak >= 1
+            && $nomorCetak[1] === array_map('strval', range(1, $lembarCetak))
+            && $nomorCetak[2] === array_fill(0, $lembarCetak, (string) $lembarCetak),
+        'HTML cetak memuat identitas dan nomor halaman 1..' . $lembarCetak . ' tanpa navigasi admin'
+    );
     $assert($attendanceCountBefore === $attendanceCountAfter, 'Membaca, mengekspor, dan mencetak laporan tidak mengubah data absensi');
     $assert($elapsedMs < 2000, sprintf('Halaman pertama selesai %.2f ms (< 2.000 ms)', $elapsedMs));
 

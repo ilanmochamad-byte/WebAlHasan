@@ -134,6 +134,7 @@ $repo = $source('app/Report/IzinReportRepository.php');
 $service = $source('app/Report/IzinReportService.php');
 $csv = $source('app/Report/IzinCsvExport.php');
 $print = $source('app/Report/IzinPrintRenderer.php');
+$layout = $source('app/Report/PrintLayout.php');
 
 foreach ([
     'app/Report/IzinReportFilter.php' => $filter,
@@ -141,6 +142,7 @@ foreach ([
     'app/Report/IzinReportService.php' => $service,
     'app/Report/IzinCsvExport.php' => $csv,
     'app/Report/IzinPrintRenderer.php' => $print,
+    'app/Report/PrintLayout.php' => $layout,
 ] as $path => $isi) {
     $assert($isi !== '', 'Berkas ' . $path . ' tersedia');
 }
@@ -355,18 +357,48 @@ foreach ([
     'Pesantren Al Hasan' => 'identitas pesantren',
     'Dibuat oleh' => 'pembuat laporan',
     'Waktu pembuatan' => 'waktu pembuatan',
-    'counter(page)' => 'nomor halaman',
     'Keputusan' => 'keputusan',
     'filter_aktif' => 'filter aktif',
 ] as $penanda => $arti) {
     $assert(str_contains($print, $penanda), 'Halaman cetak memuat ' . $arti);
 }
+
+// Nomor halaman TIDAK BOLEH lagi mengandalkan CSS. `@page{@bottom-center{}}`
+// tidak didukung satu pun mesin cetak peramban, dan `counter(page)` di dalam
+// elemen `position:fixed` dievaluasi WebKit menjadi 0 — itulah asal
+// "Halaman 0" pada PDF produksi. Perilaku sebenarnya dibuktikan pada
+// tests/v2_phase5_cetak_pdf.php terhadap PDF sungguhan.
+// Diperiksa pada CSS YANG DIHASILKAN, bukan pada teks sumber: komentar kelas
+// memang menyebut `counter(page)` untuk menjelaskan mengapa ia ditinggalkan.
+$cssCetak = \App\Report\PrintLayout::cssDasar();
 $assert(
-    str_contains($print, '@bottom-center') && str_contains($print, 'counter(pages)'),
-    'Nomor halaman dirender untuk mesin cetak Paged Media dan peramban'
+    !str_contains($cssCetak, 'counter(page)')
+        && !str_contains($cssCetak, 'counter(pages)')
+        && !str_contains($cssCetak, '@bottom-center')
+        && !str_contains($cssCetak, 'position:fixed'),
+    'CSS cetak yang dihasilkan tidak memakai counter(page) maupun footer position:fixed'
 );
 $assert(
-    str_contains($print, 'htmlspecialchars') && str_contains($print, 'ENT_QUOTES'),
+    str_contains($layout, 'Halaman \' . $halaman . \' dari \' . $total')
+        && str_contains($print, 'PrintLayout::footerHalaman'),
+    'Nomor halaman dihitung server dan dicetak sebagai teks biasa pada setiap lembar'
+);
+$assert(
+    !str_contains($layout, 'overflow-wrap:anywhere')
+        && str_contains($layout, 'overflow-wrap:break-word')
+        && str_contains($layout, 'word-break:normal'),
+    'CSS cetak tidak memakai overflow-wrap:anywhere yang memotong kata di tengah'
+);
+$assert(
+    str_contains($layout, 'break-inside:avoid') && str_contains($layout, 'page-break-inside:avoid'),
+    'Baris data dijaga tidak terbelah antarhalaman'
+);
+$assert(
+    str_contains($layout, 'Lanskap (Landscape)'),
+    'Halaman cetak memberi petunjuk orientasi lanskap bagi peramban yang mengabaikan @page size'
+);
+$assert(
+    str_contains($layout, 'htmlspecialchars') && str_contains($layout, 'ENT_QUOTES'),
     'Seluruh nilai pada halaman cetak di-escape'
 );
 $assert(
@@ -688,6 +720,31 @@ if (!$adaMobile) {
         str_contains($dokumen, 'jumlah_baris') && str_contains($dokumen, 'terpotong'),
         'Aplikasi memverifikasi bahwa CSV memuat seluruh hasil filter'
     );
+
+    // Jalur Expo Print: `expo-print` memakai bawaan US Letter POTRET (612×792)
+    // dan tidak membaca `@page { size: A4 landscape }` dari HTML. Ukuran
+    // kertas karena itu wajib diminta lewat opsi `width`/`height`, yang
+    // tersedia lintas platform pada SDK 57.
+    $halamanCetak = $tanpaKomentarTs($mobile('src/report/print-page.ts'));
+    $dokumenAbsensi = $tanpaKomentarTs($mobile('src/report/report-document.ts'));
+    $assert(
+        str_contains($halamanCetak, 'width: 842') && str_contains($halamanCetak, 'height: 595'),
+        'Jalur Expo Print meminta ukuran A4 lanskap (842×595 pada 72 PPI)'
+    );
+    $assert(
+        str_contains($halamanCetak, 'Print.Orientation.landscape'),
+        'Dialog cetak iOS diminta dalam orientasi lanskap'
+    );
+    foreach (['izin-report-document.ts' => $dokumen, 'report-document.ts' => $dokumenAbsensi] as $berkas => $isi) {
+        $assert(
+            !preg_match('/print(?:To File)?Async\(\s*\{\s*html\s*\}/', str_replace('ToFile', 'To File', $isi)),
+            $berkas . ' tidak lagi mencetak dengan ukuran kertas bawaan US Letter'
+        );
+        $assert(
+            str_contains($isi, 'opsiCetakA4Lanskap') && str_contains($isi, 'opsiPdfA4Lanskap'),
+            $berkas . ' memakai opsi halaman A4 lanskap bersama'
+        );
+    }
     $assert(
         !preg_match('/ExponentPushToken\[|API_TOKEN_HASH_SECRET|DB_PASSWORD/', $dokumen . $layar),
         'Tidak ada secret pada berkas laporan aplikasi'

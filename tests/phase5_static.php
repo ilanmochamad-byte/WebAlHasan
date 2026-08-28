@@ -21,6 +21,7 @@ $service = $source('app/Report/ReportService.php');
 $router = $source('api/v1/index.php');
 $admin = $source('admin/admin_laporan_absensi.php');
 $print = $source('app/Report/PrintRenderer.php');
+$layout = $source('app/Report/PrintLayout.php');
 $migration = $source('database/migrations/005_phase5_reporting_indexes.sql');
 $rollback = $source('database/rollbacks/005_phase5_reporting_indexes.sql');
 
@@ -55,10 +56,55 @@ $html = PrintRenderer::report([
     'summary' => ['meeting_count' => 0, 'detail_count' => 0, 'statuses' => array_fill_keys(['Hadir','Terlambat','Izin','Sakit','Alpa'], 0)],
     'generated_at' => '2026-08-20 12:00:00 WIB', 'created_by' => 'Admin Uji',
 ]);
-foreach (['Pesantren Al Hasan', 'Laporan Absensi Pengajian', 'Rentang tanggal', 'Dibuat:', 'Pembuat:', 'counter(page)', '@media print', '.report-nav{display:none'] as $required) {
+foreach (['Pesantren Al Hasan', 'Laporan Absensi Pengajian', 'Rentang tanggal', 'Dibuat:', 'Pembuat:', '@media print', '.report-nav,.petunjuk-cetak{display:none'] as $required) {
     $assert(str_contains($html, $required), 'HTML cetak memuat ' . $required);
 }
-$assert(str_contains($print, 'A4 landscape') && str_contains($print, 'table-layout:fixed') && str_contains($print, 'break-inside:avoid'), 'CSS cetak menjaga kolom utama dan baris pada halaman landscape');
+
+// Nomor halaman: laporan kosong pun harus berupa SATU halaman bernomor 1.
+// Pemeriksaan lama hanya mencari string `counter(page)`; itu tidak pernah
+// membuktikan apa pun karena `counter(page)` di dalam elemen `position:fixed`
+// justru dievaluasi WebKit menjadi 0 dan mencetak "Halaman 0".
+$assert(str_contains($html, 'Halaman 1 dari 1'), 'HTML cetak memberi nomor halaman "Halaman 1 dari 1" pada laporan kosong');
+$assert(!str_contains($html, 'Halaman 0'), 'HTML cetak tidak pernah memuat "Halaman 0"');
+$assert(substr_count($html, '<section class="lembar">') === 1, 'Laporan kosong menghasilkan tepat satu lembar');
+$assert(
+    !str_contains($html, 'counter(page)') && !str_contains($html, 'position:fixed'),
+    'Nomor halaman dihitung server, bukan oleh counter(page) di elemen position:fixed'
+);
+
+// Nomor halaman harus benar pula pada dokumen banyak halaman.
+$banyak = [];
+for ($i = 0; $i < 400; $i++) {
+    $banyak[] = [
+        'meeting_date' => '2026-08-20', 'schedule_id' => 7, 'subject' => 'Fikih Muamalah Kontemporer',
+        'teacher_name' => 'USTADZ ABDURAHMAN', 'class_name' => 'IBTIDA PA', 'subject_type' => 'Santri',
+        'identity_number' => '2026' . str_pad((string) $i, 4, '0', STR_PAD_LEFT), 'subject_name' => 'MUHAMMAD FATHUROHMAN',
+        'attendance_status' => 'Hadir', 'notes' => 'Mengikuti seluruh rangkaian pengajian tanpa keterlambatan.',
+        'recorder_name' => 'Admin Uji', 'updated_at' => '2026-08-20 10:00:00',
+    ];
+}
+$htmlBanyak = PrintRenderer::report([
+    'active_filters' => ['Rentang tanggal' => '2026-08-01 s.d. 2026-08-20'],
+    'items' => $banyak,
+    'summary' => ['meeting_count' => 400, 'detail_count' => 400, 'statuses' => array_fill_keys(['Hadir','Terlambat','Izin','Sakit','Alpa'], 80)],
+    'generated_at' => '2026-08-20 12:00:00 WIB', 'created_by' => 'Admin Uji',
+]);
+$jumlahLembar = substr_count($htmlBanyak, '<section class="lembar">');
+$assert($jumlahLembar > 1, 'Dokumen 400 baris terpecah menjadi lebih dari satu lembar (' . $jumlahLembar . ')');
+$assert(!str_contains($htmlBanyak, 'Halaman 0'), 'Dokumen banyak halaman tidak memuat "Halaman 0"');
+preg_match_all('/Halaman (\d+) dari (\d+)/', $htmlBanyak, $nomor);
+$assert(
+    $nomor[1] === array_map('strval', range(1, $jumlahLembar))
+        && $nomor[2] === array_fill(0, $jumlahLembar, (string) $jumlahLembar),
+    'Nomor halaman berurutan 1..n dan total sama dengan jumlah lembar'
+);
+
+$assert(str_contains($layout, 'A4 landscape') && str_contains($layout, 'table-layout:fixed') && str_contains($layout, 'break-inside:avoid'), 'CSS cetak menjaga kolom utama dan baris pada halaman landscape');
+$assert(
+    !str_contains($layout, 'overflow-wrap:anywhere') && str_contains($layout, 'overflow-wrap:break-word'),
+    'CSS cetak tidak memakai overflow-wrap:anywhere yang memotong kata di tengah'
+);
+$assert(str_contains($html, 'Lanskap (Landscape)'), 'Halaman cetak memberi petunjuk orientasi lanskap');
 $assert(str_contains($migration, 'pertemuan_date_schedule_report_index') && str_contains($migration, 'absensi_guru_status_meeting_report_index') && str_contains($migration, 'absensi_santri_status_meeting_report_index'), 'Migrasi indeks Fase 5 mengikuti pola scan EXPLAIN');
 $assert(!preg_match('/\b(?:DELETE|TRUNCATE|DROP\s+TABLE)\b/i', $migration) && substr_count($rollback, 'DROP INDEX') === 3, 'Migrasi indeks aditif dan rollback hanya melepas indeks');
 
