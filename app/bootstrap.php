@@ -47,6 +47,8 @@ use App\Notification\SettingsRepository as NotificationSettingsRepository;
 use App\Notification\WhatsApp\ProviderFactory as WhatsAppProviderFactory;
 use App\Notification\WhatsApp\WhatsAppProvider;
 use App\Notification\WorkerLock;
+use App\Report\IzinReportRepository;
+use App\Report\IzinReportService;
 use App\Report\ReportRepository;
 use App\Report\ReportService;
 use App\Schedule\ScheduleRepository;
@@ -428,6 +430,31 @@ function notification_api_service(): NotificationApiService
         notification_center_service(),
         push_device_service(),
         notification_admin_service()
+    );
+}
+
+// --- V2 Fase 5: laporan, cetak, dan ekspor perizinan -----------------------
+//
+// Aditif. Layanan laporan absensi V1 (`report_service()`) TIDAK disentuh:
+// kontraknya tetap dipakai aplikasi guru dan halaman laporan absensi.
+
+function izin_report_repository(): IzinReportRepository
+{
+    static $repository;
+    return $repository ??= new IzinReportRepository(app_db());
+}
+
+/**
+ * Satu-satunya pintu masuk laporan perizinan untuk web, REST API, dan aplikasi.
+ * Cakupan dihitung ulang dari akun pada setiap pemanggilan (PRD 5.2).
+ */
+function izin_report_service(): IzinReportService
+{
+    static $service;
+    return $service ??= new IzinReportService(
+        izin_report_repository(),
+        izin_service(),
+        (string) app_config('timezone')
     );
 }
 

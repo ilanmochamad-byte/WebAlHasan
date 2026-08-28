@@ -140,6 +140,9 @@ function portal_header(string $title, array $capabilities, string $activeMode, a
                 <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/index.php')) ?>">Ringkasan</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/izin.php')) ?>">Daftar Perizinan</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/izin_antrean.php')) ?>">Antrean</a></li>
+                <?php // V2 Fase 5: laporan tersedia untuk SELURUH peran perizinan;
+                      // isinya dibatasi cakupan masing-masing di server. ?>
+                <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/laporan.php')) ?>">Laporan</a></li>
                 <?php if (array_intersect([Capabilities::PENGURUS, Capabilities::ADMIN], $capabilities) !== []): ?>
                     <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/izin_buat.php')) ?>">Buat Pengajuan</a></li>
                 <?php endif; ?>

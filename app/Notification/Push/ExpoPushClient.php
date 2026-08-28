@@ -20,10 +20,14 @@ use App\Notification\SafeError;
  * pesan galat, audit, atau respons API — seluruh pesan galat melewati
  * `SafeError`, yang juga menyamarkan pola `ExponentPushToken[...]`.
  */
-final class ExpoPushClient implements PushClient
+final class ExpoPushClient implements PushClient, PushReceiptClient
 {
     public const ENDPOINT = 'https://exp.host/--/api/v2/push/send';
+    public const RECEIPT_ENDPOINT = 'https://exp.host/--/api/v2/push/getReceipts';
     public const MAX_BATCH = 100;
+
+    /** Expo membatasi permintaan receipt pada 1.000 id tiket per panggilan. */
+    public const MAX_RECEIPT_BATCH = 1000;
 
     /** Galat tiket yang berarti token tidak boleh dipakai lagi. */
     public const ERROR_TOKEN_MATI = 'DeviceNotRegistered';
@@ -116,6 +120,92 @@ final class ExpoPushClient implements PushClient
         $tickets = is_array($decoded['data'] ?? null) ? $decoded['data'] : [];
 
         return ['ok' => true, 'tickets' => $tickets, 'kode' => 'OK', 'pesan' => 'Batch diterima Expo.', 'permanen' => false];
+    }
+
+    /**
+     * Mengambil receipt AKHIR untuk sekumpulan id tiket (V2 Fase 5).
+     *
+     * Kontrak Expo: `POST /--/api/v2/push/getReceipts` dengan body `{ids: [...]}`
+     * menjawab `{data: {"<ticket-id>": {status: ok|error, details?: {...}}}}`.
+     * Tiket yang belum dijawab FCM/APNs TIDAK muncul pada `data`; itu berarti
+     * receipt belum tersedia dan pemanggil WAJIB mencoba lagi nanti, bukan
+     * menganggapnya gagal.
+     *
+     * @param array<int, string> $ticketIds
+     * @return array{ok:bool, receipts:array<string, array<string, mixed>>, kode:string, pesan:string, permanen:bool}
+     */
+    public function getReceipts(array $ticketIds): array
+    {
+        $ids = array_values(array_filter(
+            array_unique(array_map('strval', $ticketIds)),
+            static fn (string $id): bool => trim($id) !== ''
+        ));
+        if ($ids === []) {
+            return ['ok' => true, 'receipts' => [], 'kode' => 'OK', 'pesan' => 'Tidak ada tiket.', 'permanen' => false];
+        }
+        if (count($ids) > self::MAX_RECEIPT_BATCH) {
+            $ids = array_slice($ids, 0, self::MAX_RECEIPT_BATCH);
+        }
+
+        $headers = [
+            'Accept: application/json',
+            'Accept-Encoding: gzip, deflate',
+            'Content-Type: application/json',
+        ];
+        if ($this->accessToken !== null && trim($this->accessToken) !== '') {
+            $headers[] = 'Authorization: Bearer ' . trim($this->accessToken);
+        }
+
+        $body = (string) json_encode(['ids' => $ids], JSON_UNESCAPED_SLASHES);
+        [$status, $response, $error] = $this->post(self::RECEIPT_ENDPOINT, $headers, $body);
+
+        if ($error !== null) {
+            return ['ok' => false, 'receipts' => [], 'kode' => 'JARINGAN', 'pesan' => $error, 'permanen' => false];
+        }
+        if ($status < 200 || $status >= 300) {
+            return [
+                'ok' => false,
+                'receipts' => [],
+                'kode' => 'EXPO_STATUS_' . $status,
+                'pesan' => 'Expo menjawab HTTP ' . $status . ' saat pengambilan receipt.',
+                // 4xx selain 429 menandakan masalah konfigurasi, bukan gangguan sesaat.
+                'permanen' => $status >= 400 && $status < 500 && $status !== 429,
+            ];
+        }
+
+        $decoded = json_decode($response, true);
+        if (!is_array($decoded)) {
+            return [
+                'ok' => false,
+                'receipts' => [],
+                'kode' => 'RESPONS_TIDAK_VALID',
+                'pesan' => 'Respons receipt Expo bukan JSON yang dapat dibaca.',
+                'permanen' => false,
+            ];
+        }
+        if (isset($decoded['errors']) && is_array($decoded['errors']) && $decoded['errors'] !== []) {
+            $first = $decoded['errors'][0];
+            $kode = is_array($first) ? (string) ($first['code'] ?? 'EXPO_ERROR') : 'EXPO_ERROR';
+            $pesan = is_array($first) ? (string) ($first['message'] ?? 'Expo mengembalikan galat.') : 'Expo mengembalikan galat.';
+
+            return [
+                'ok' => false,
+                'receipts' => [],
+                'kode' => SafeError::code($kode),
+                'pesan' => SafeError::message($pesan),
+                'permanen' => strtoupper($kode) !== 'TOO_MANY_REQUESTS',
+            ];
+        }
+
+        $data = is_array($decoded['data'] ?? null) ? $decoded['data'] : [];
+        $receipts = [];
+        foreach ($data as $ticketId => $receipt) {
+            if (is_string($ticketId) && is_array($receipt)) {
+                $receipts[$ticketId] = $receipt;
+            }
+        }
+
+        return ['ok' => true, 'receipts' => $receipts, 'kode' => 'OK', 'pesan' => 'Receipt diterima.', 'permanen' => false];
     }
 
     /**

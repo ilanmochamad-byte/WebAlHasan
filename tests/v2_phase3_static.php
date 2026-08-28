@@ -199,8 +199,10 @@ $assert(
     'Fase 3 tidak menambah migrasi skema (seluruh tabel sudah ada sejak Fase 1–2)'
 );
 $assert(
-    count(glob($root . '/database/migrations/*.sql') ?: []) === 8,
-    'Jumlah migrasi menjadi 8 berkas: 7 dari Fase 1–2 ditambah 008 milik Fase 4'
+    // Fase 3 sendiri tidak menambah migrasi. Angka di bawah naik hanya ketika
+    // fase LAIN menambahkannya: 008 milik Fase 4 dan 009 milik Fase 5.
+    count(glob($root . '/database/migrations/*.sql') ?: []) === 9,
+    'Jumlah migrasi menjadi 9 berkas: 7 dari Fase 1–2, 008 milik Fase 4, dan 009 milik Fase 5'
 );
 $assert(
     is_file($root . '/database/migrations/008_v2_phase4_notifikasi_push_whatsapp.sql')
@@ -213,10 +215,19 @@ $assert(
     'Setiap migrasi tetap memiliki satu berkas rollback'
 );
 $assert(
-    // Fase 5 (laporan V2, ekspor CSV perizinan, migrasi produksi) belum boleh dimulai.
-    !is_file($root . '/database/migrations/009_v2_phase5.sql')
-        && glob($root . '/tests/v2_phase5_*.php') === [],
-    'Tidak ada pekerjaan Fase 5 yang dimulai'
+    // Fase 5 sudah dimulai. Yang dijaga sekarang BUKAN lagi "belum dimulai",
+    // melainkan bahwa migrasi Fase 5 tetap berpasangan dengan rollback-nya —
+    // pagar yang sama yang berlaku untuk setiap migrasi lain.
+    is_file($root . '/database/migrations/009_v2_phase5_laporan_dan_push_receipt.sql')
+        && is_file($root . '/database/rollbacks/009_v2_phase5_laporan_dan_push_receipt.sql'),
+    'Migrasi 009 Fase 5 memiliki pasangan rollback'
+);
+$assert(
+    // Fase 5 TIDAK boleh mengubah kontrak endpoint Fase 3 yang sudah dipakai
+    // aplikasi. Rute laporan baru wajib berada di bawah `/izin/laporan`.
+    str_contains($source('api/v1/index.php'), "\$path === '/izin/pengajuan'")
+        && str_contains($source('api/v1/index.php'), "\$path === '/izin/laporan'"),
+    'Endpoint Fase 3 tetap utuh dan endpoint laporan Fase 5 bersifat aditif'
 );
 
 // ---------------------------------------------------------------------------
