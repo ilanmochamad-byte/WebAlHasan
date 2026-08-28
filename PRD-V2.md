@@ -375,6 +375,18 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 > koreksi ini tetap menjadi gerbang penerimaan terakhir untuk cacat tersebut.
 > Rincian: `docs/phase-v2-5/koreksi-absensi-safari.md`.
 >
+> **Koreksi PDF aplikasi perangkat — 29 Agustus 2026.** PDF yang dibagikan
+> langsung dari aplikasi iOS membuktikan tiga lembar server berubah menjadi
+> enam halaman fisik: halaman 2, 4, dan 6 hanya memuat lanjutan baris terakhir
+> beserta footer. Ukuran kertas A4 lanskap sudah benar; penyebabnya adalah
+> tinggi teks/baris yang masih bergantung pada penyesuaian WKWebView. HTML kini
+> mengunci `text-size-adjust:100%` dan `line-height:1.15`, sementara jalur
+> Android mengunci `textZoom:100`. Harness simulator iOS 26.2 yang memakai
+> `WKWebView`/`UIPrintPageRenderer` yang sama dengan `expo-print` menghasilkan
+> tepat tiga halaman, footer `1/3`–`3/3`, dan baris 1–36 lengkap. Uji perangkat
+> fisik iOS dan Android setelah deployment tetap menunggu verifikasi manusia.
+> Rincian: `docs/phase-v2-5/koreksi-expo-print-perangkat.md`.
+>
 > **Baseline implementasi Claude — 26 Agustus 2026:**
 > seluruh gerbang otomatis lulus: **28 berkas uji, 2.230 pemeriksaan, 0 gagal**,
 > diulang dua kali dengan hasil identik. Fase 5 menyumbang 632 pemeriksaan baru

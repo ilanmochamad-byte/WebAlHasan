@@ -430,6 +430,13 @@ final class PrintLayout
     public static function cssDasar(): string
     {
         return '@page{size:A4 landscape;margin:12mm 10mm}'
+            // WKWebView yang dipakai expo-print dapat menaikkan ukuran teks
+            // otomatis agar nyaman dibaca pada layar ponsel. Pada PDF iOS
+            // nyata, kenaikan itu membuat setiap lembar server meluber satu
+            // baris dan berubah menjadi dua halaman fisik. Kunci 100% hanya
+            // berlaku pada ukuran teks; ukuran A4 dan lebar kolom tidak
+            // dikecilkan.
+            . 'html{-webkit-text-size-adjust:100%;text-size-adjust:100%}'
             . '*{box-sizing:border-box}'
             . 'body{font-family:Arial,Helvetica,sans-serif;color:#17231c;font-size:8pt;margin:0;padding:10px;'
             . 'overflow-wrap:break-word;word-break:normal}'
@@ -449,7 +456,11 @@ final class PrintLayout
             . '.peringatan{border:1px solid #d0a34e;background:#fdf6e6;padding:6px 8px;border-radius:5px;margin:0 0 8px}'
             // Tabel: kolom tetap, tetapi pemotongan kata hanya sebagai upaya terakhir.
             . 'table{width:100%;border-collapse:collapse;table-layout:fixed}'
-            . 'th,td{border:1px solid #bac8bd;padding:3px 4px;vertical-align:top;'
+            // `normal` berbeda antara Chrome, Safari desktop, WKWebView iOS,
+            // dan WebView Android. Nilai eksplisit ini sejalan dengan
+            // TINGGI_BARIS_MM pada paginator dan mencegah tinggi baris
+            // perangkat melampaui anggaran server.
+            . 'th,td{border:1px solid #bac8bd;padding:3px 4px;vertical-align:top;line-height:1.15;'
             . 'overflow-wrap:break-word;word-break:normal;hyphens:none}'
             // Judul kolom TIDAK BOLEH dipotong di tengah kata dalam keadaan
             // apa pun: lebar kolom sudah dipilih agar setiap kata judul muat.
