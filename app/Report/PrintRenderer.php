@@ -51,8 +51,17 @@ final class PrintRenderer
      */
     private const TINGGI_KEPALA_PERTAMA_MM = 58.0;
 
-    /** Tinggi kepala ringkas pada lembar kedua dan seterusnya. */
-    private const TINGGI_KEPALA_LANJUTAN_MM = 18.0;
+    /**
+     * Tinggi kepala ringkas + cadangan fragmentasi Safari pada lembar lanjutan.
+     *
+     * PDF Safari nyata tanggal 28 Agustus 2026 membuktikan nilai 18 mm masih
+     * mengizinkan 14 baris absensi pada lembar kedua. Tabelnya masuk, tetapi
+     * footer `Halaman 2 dari 3` terdorong sendirian ke halaman fisik berikutnya.
+     * Tambahan cadangan 8 mm memindahkan satu baris ke lembar berikutnya tanpa
+     * mengecilkan font atau skala cetak, sehingga tabel dan footer tetap satu
+     * kesatuan pada A4 lanskap Safari.
+     */
+    private const TINGGI_KEPALA_LANJUTAN_MM = 26.0;
 
     /**
      * @param array<string, mixed> $report

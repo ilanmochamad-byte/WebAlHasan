@@ -133,34 +133,45 @@ $dokumenIzin = static function (int $jumlahBaris, bool $barisMaksimum = false): 
     ];
 };
 
-$dokumenAbsensi = static function (int $jumlahBaris): array {
+$dokumenAbsensi = static function (int $jumlahBaris, bool $bentukProduksiSafari = false): array {
     $items = [];
     for ($i = 1; $i <= $jumlahBaris; $i++) {
         $items[] = [
-            'meeting_date' => '2026-08-20',
-            'schedule_id' => 7,
-            'subject' => 'Fikih Muamalah Kontemporer',
-            'teacher_name' => 'USTADZ ABDURAHMAN',
-            'class_name' => 'IBTIDA PA',
-            'subject_type' => 'Santri',
+            'meeting_date' => $bentukProduksiSafari ? '2026-08-24' : '2026-08-20',
+            'schedule_id' => $bentukProduksiSafari ? 1 : 7,
+            'subject' => $bentukProduksiSafari ? 'Fiqih' : 'Fikih Muamalah Kontemporer',
+            'teacher_name' => $bentukProduksiSafari ? 'GURU CONTOH PANJANG' : 'USTADZ ABDURAHMAN',
+            'class_name' => $bentukProduksiSafari ? '1 TSANAWI' : 'IBTIDA PA',
+            'subject_type' => $i === 1 && $bentukProduksiSafari ? 'Guru' : 'Santri',
             'identity_number' => '24010' . str_pad((string) $i, 3, '0', STR_PAD_LEFT),
-            'subject_name' => 'MUHAMMAD FATHUROHMAN',
+            'subject_name' => $bentukProduksiSafari
+                ? ($i % 6 === 0 ? 'PESERTA NAMA PANJANG TIGA' : 'PESERTA UJI ' . $i)
+                : 'MUHAMMAD FATHUROHMAN',
             'attendance_status' => 'Hadir',
-            'notes' => 'Mengikuti seluruh rangkaian pengajian tanpa keterlambatan.',
-            'recorder_name' => 'Administrator',
-            'updated_at' => '2026-08-20 10:00:00',
+            'notes' => $bentukProduksiSafari ? '-' : 'Mengikuti seluruh rangkaian pengajian tanpa keterlambatan.',
+            'recorder_name' => $bentukProduksiSafari ? 'Operator Uji Laporan' : 'Administrator',
+            'updated_at' => $bentukProduksiSafari ? '2026-08-19 22:55:52' : '2026-08-20 10:00:00',
         ];
     }
 
     return [
-        'active_filters' => ['Rentang tanggal' => '2026-08-01 s.d. 2026-08-20'],
+        'active_filters' => $bentukProduksiSafari
+            ? [
+                'Rentang tanggal' => '2026-08-01 s.d. 2026-08-28',
+                'Status' => 'Semua status',
+                'Tahun ajaran' => 'Semua',
+                'Guru' => 'Semua',
+                'Kelas' => 'Semua',
+                'Jadwal' => 'Semua',
+            ]
+            : ['Rentang tanggal' => '2026-08-01 s.d. 2026-08-20'],
         'items' => $items,
         'summary' => [
             'meeting_count' => $jumlahBaris,
             'detail_count' => $jumlahBaris,
             'statuses' => ['Hadir' => $jumlahBaris, 'Terlambat' => 0, 'Izin' => 0, 'Sakit' => 0, 'Alpa' => 0],
         ],
-        'generated_at' => '2026-08-20 12:00:00 WIB',
+        'generated_at' => $bentukProduksiSafari ? '2026-08-28 16:32:07 WIB' : '2026-08-20 12:00:00 WIB',
         'created_by' => 'Administrator',
     ];
 };
@@ -307,10 +318,30 @@ echo PHP_EOL . '--- A19. Laporan absensi V1 ---' . PHP_EOL;
 $absensiSatu = $periksaHtml('A19 Absensi 3 baris', static fn (int $n): string => PrintRenderer::report($dokumenAbsensi($n)), 3);
 $absensiKosong = $periksaHtml('A20 Absensi kosong', static fn (int $n): string => PrintRenderer::report($dokumenAbsensi($n)), 0);
 $absensiBanyak = $periksaHtml('A21 Absensi 400 baris', static fn (int $n): string => PrintRenderer::report($dokumenAbsensi($n)), 400);
+$absensiSafari = $periksaHtml(
+    'A21b Absensi 36 baris berbentuk data produksi Safari',
+    static fn (int $n): string => PrintRenderer::report($dokumenAbsensi($n, true)),
+    36
+);
 
 $assert($absensiSatu['lembar'] === 1, 'A22 Absensi 3 baris muat dalam satu lembar');
 $assert($absensiKosong['lembar'] === 1, 'A23 Absensi kosong tetap satu lembar bernomor');
 $assert($absensiBanyak['lembar'] > 1, 'A24 Absensi 400 baris terpecah menjadi ' . $absensiBanyak['lembar'] . ' lembar');
+$assert(
+    $absensiSafari['lembar'] === 3,
+    'A24b Absensi produksi 36 baris tetap tiga lembar logis setelah cadangan Safari'
+);
+$bagianLembarSafari = explode('<section class="lembar">', $absensiSafari['html']);
+array_shift($bagianLembarSafari);
+$jumlahBarisSafari = array_map(
+    static fn (string $bagian): int => substr_count($bagian, '<tr><td>'),
+    $bagianLembarSafari
+);
+$assert(
+    $jumlahBarisSafari === [10, 13, 13],
+    'A24c Paginator Safari membagi 36 baris menjadi 10/13/13, bukan 10/14/12 yang mendorong footer'
+        . ($jumlahBarisSafari === [] ? '' : ' (aktual ' . implode('/', $jumlahBarisSafari) . ')')
+);
 $assert(
     substr_count($absensiBanyak['html'], '<tr><td>') === 400,
     'A25 Keempat ratus baris absensi dirender tepat sekali'
@@ -427,6 +458,11 @@ if (!$siap) {
             'penanda' => ['AWALIZ', 'AKHIRIZ', 'AWALKEP', 'AKHIRKEP'],
         ],
         'absensi-1hal' => ['html' => $absensiSatu['html'], 'lembar' => $absensiSatu['lembar'], 'kata' => false],
+        'absensi-safari-36baris' => [
+            'html' => $absensiSafari['html'],
+            'lembar' => $absensiSafari['lembar'],
+            'kata' => false,
+        ],
         'absensi-banyakhal' => ['html' => $absensiBanyak['html'], 'lembar' => $absensiBanyak['lembar'], 'kata' => false],
     ];
 
