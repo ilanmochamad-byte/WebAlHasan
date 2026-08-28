@@ -196,7 +196,7 @@ $assert(
 $serviceKode = $tanpaKomentarPhp($service);
 $assert(
     str_contains($serviceKode, 'function document(') && str_contains($serviceKode, 'allRows('),
-    'Dokumen cetak/CSV mengambil SELURUH baris (allRows), bukan satu halaman'
+    'Dokumen cetak/CSV memakai jalur ekspor allRows(), bukan satu halaman pagination'
 );
 $assert(
     preg_match('/function csv\(.*?\$this->document\(/s', $serviceKode) === 1,
@@ -338,8 +338,9 @@ $assert(
     'Unduhan CSV mengumumkan jumlah baris agar dapat dicocokkan dengan ringkasan'
 );
 $assert(
-    str_contains($csv, 'MAX_EXPORT_ROWS') || str_contains($service, 'MAX_EXPORT_ROWS'),
-    'Ekspor memiliki pagar memori dan menandai hasil yang terpotong'
+    str_contains($serviceKode, "'EXPORT_TOO_LARGE'")
+        && str_contains($serviceKode, 'IzinReportFilter::MAX_EXPORT_ROWS'),
+    'CSV yang melebihi pagar memori ditolak eksplisit, bukan dikirim parsial'
 );
 $assert(
     str_contains($serviceKode, "'terpotong'"),

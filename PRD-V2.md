@@ -323,7 +323,20 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 - [ ] Uji manual web serta Android/iOS untuk pengurus, murobi, admin, dan orang tua lulus.
 - [ ] WhatsApp off tidak menghasilkan request provider; WhatsApp on hanya dirilis setelah pemeriksaan konfigurasi dan uji admin lulus.
 
-> **Status Fase 5 — 26 Agustus 2026 (implementasi Claude, MENUNGGU AUDIT CODEX):**
+> **Status Fase 5 — audit Codex 28 Agustus 2026: BELUM LOLOS RILIS.**
+> Bukti implementasi Claude tanggal 26 Agustus tetap berlaku sebagai baseline,
+> tetapi audit independen menemukan bahwa filter dengan 20.004 hasil hanya
+> menghasilkan 20.000 baris CSV karena pagar `MAX_EXPORT_ROWS`. Auditor
+> mengoreksi perilaku berbahaya ini agar ekspor parsial ditolak eksplisit
+> (`422 EXPORT_TOO_LARGE`), namun ekspor penuh di atas 20.000 baris masih perlu
+> streaming/chunking sebelum kriteria CSV dapat dinyatakan terpenuhi.
+>
+> Selain itu, tampilan nomor halaman PDF belum diverifikasi secara visual pada
+> hasil PDF nyata, uji perangkat Android/iOS untuk empat peran belum dilakukan,
+> migrasi/restore/cron/smoke test produksi belum dijalankan, dan WhatsApp-on
+> tetap ditangguhkan. Rincian audit: `docs/phase-v2-5/audit-codex.md`.
+>
+> **Baseline implementasi Claude — 26 Agustus 2026:**
 > seluruh gerbang otomatis lulus: **28 berkas uji, 2.230 pemeriksaan, 0 gagal**,
 > diulang dua kali dengan hasil identik. Fase 5 menyumbang 632 pemeriksaan baru
 > dan seluruh pengujian regresi V1 serta V2 Fase 1–4 tetap lulus tanpa
@@ -362,11 +375,12 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 > produksi** karena memerlukan izin pengguna. Pengujian deep-link Android/iOS
 > foreground/background/cold-start **belum dilakukan** dan tetap menunggu
 > pengujian manusia. Commit mobile `da04c3a` dipertahankan sebagai baseline
-> Fase 5 dan masih berstatus lokal/belum didorong.
+> Fase 5; audit 28 Agustus 2026 membuktikan commit itu sudah tersedia pada
+> `origin/prd-v2-fase-4`, sedangkan commit mobile Fase 5 belum didorong.
 >
 > Fase 5 **tidak dinyatakan selesai produksi**. Pernyataan itu baru sah setelah
-> audit Codex, pengujian MySQL/cPanel, pengujian perangkat nyata, dan smoke test
-> produksi benar-benar dilakukan serta didokumentasikan.
+> temuan audit Codex ditutup, pengujian MySQL/cPanel dan perangkat nyata lulus,
+> serta smoke test produksi benar-benar dilakukan dan didokumentasikan.
 >
 > Status per kriteria: `docs/phase-v2-5/acceptance-status.md`.
 > Hasil pengujian: `docs/phase-v2-5/test-results.md`.

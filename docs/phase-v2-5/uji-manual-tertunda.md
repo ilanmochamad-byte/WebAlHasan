@@ -95,8 +95,8 @@ Dijalankan dari akar repositori `alhasanApps` pada mesin pengembang.
 | --- | --- | --- | --- |
 | 4.1 | `npx tsc --noEmit` | **BERSIH** (sudah dijalankan) | — |
 | 4.2 | `npx expo lint` | **BERSIH** (sudah dijalankan) | — |
-| 4.3 | `npx expo export -p web` | **MENUNGGU VERIFIKASI** | Gagal pada lingkungan Linux implementasi karena `node_modules` terpasang untuk macOS. **Terbukti pre-existing**: baseline tanpa perubahan Fase 5 gagal identik. Jalankan ulang di macOS. |
-| 4.4 | `npm ci` pada klon bersih | ☐ | Memastikan `expo-file-system@~57.0.5` terpasang dari lockfile |
+| 4.3 | `npx expo export -p web` | **LULUS — audit Codex 28 Agustus 2026** | Menghasilkan 31 rute statis termasuk `/izin/laporan`. |
+| 4.4 | `npm ci` pada instalasi bersih | **LULUS — audit Codex 28 Agustus 2026** | `expo-file-system@~57.0.5` terpasang dari lockfile; dilanjutkan `tsc`, lint, dan export web yang lulus. |
 | 4.5 | Build EAS development Android | ☐ | Diperlukan untuk §1 dan §2 |
 | 4.6 | Build EAS development iOS | ☐ | Diperlukan untuk §1 dan §2 |
 

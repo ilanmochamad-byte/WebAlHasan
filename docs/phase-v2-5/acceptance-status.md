@@ -3,10 +3,12 @@
 Implementasi Claude: 26 Agustus 2026. Sumber bukti: `test-results.md`,
 `bukti-performa.md`, dan `backup-restore-dan-manifest.md`.
 
-> **Status keseluruhan: MENUNGGU AUDIT CODEX.**
-> Dokumen ini TIDAK menyatakan Fase 5 selesai produksi. Gerbang otomatis lulus,
-> tetapi migrasi cPanel produksi, uji perangkat fisik, dan smoke test produksi
-> **belum dilakukan** dan tetap tercatat sebagai MENUNGGU VERIFIKASI pada §4.
+> **Status keseluruhan: AUDIT CODEX SELESAI 28 AGUSTUS 2026 — BELUM LOLOS RILIS.**
+> Audit menemukan ekspor 20.004 hasil terpotong menjadi 20.000 baris. Ekspor
+> parsial kini ditolak eksplisit, tetapi ekspor penuh di atas batas masih belum
+> tersedia. Verifikasi visual PDF, migrasi cPanel produksi, uji perangkat fisik,
+> cron, dan smoke test produksi juga masih menunggu. Rincian:
+> `audit-codex.md`.
 
 ## 0. Baseline implementasi yang dinilai
 
@@ -17,8 +19,8 @@ Implementasi Claude: 26 Agustus 2026. Sumber bukti: `test-results.md`,
 
 Commit mobile `da04c3a` **tetap menjadi bagian baseline Fase 5** dan tidak
 hilang: branch Fase 5 dibuat langsung dari commit lokal tersebut, bukan dari
-`origin` yang masih tertinggal. Statusnya tetap dicatat sebagai lokal/belum
-didorong.
+`origin` yang saat implementasi masih tertinggal. Audit 28 Agustus 2026
+membuktikan `origin/prd-v2-fase-4` kini sudah menunjuk ke commit tersebut.
 
 Lingkungan sandbox yang dipakai: PHP 8.4.21 (CLI, NTS), MariaDB 10.11.14,
 Node.js 22.23.2, database `webalhasan_test` dengan migrasi 001–009.
@@ -29,8 +31,8 @@ Node.js 22.23.2, database `webalhasan_test` dengan migrasi 001–009.
 | --- | --- | --- | --- |
 | 1 | Admin dapat menghasilkan laporan seluruh filter dan total ringkasan sama dengan detail | **TERPENUHI** | KL-1 (6 kombinasi filter × 6 pemeriksaan), KL-4a…KL-4u, KR-4a…KR-4d |
 | 2 | Pengurus, murobi, dan orang tua tidak dapat melihat laporan di luar cakupannya | **TERPENUHI** | KL-2a…KL-2l, KL-3a…KL-3g, KR-2a…KR-2i, KR-3a…KR-3e, WL-3a…WL-3e, WL-6a…WL-6f |
-| 3 | CSV memuat seluruh hasil filter, header terdokumentasi, formula injection dinetralkan | **TERPENUHI** | KL-6a…KL-6j, KR-5a…KR-5h, WL-5a…WL-5i, statis §4 (11 vektor injeksi) |
-| 4 | Halaman cetak/PDF memuat identitas pesantren, filter, pembuat, waktu, keputusan, dan nomor halaman | **TERPENUHI** | KL-7a…KL-7j, WL-4a…WL-4d, KR-5i |
+| 3 | CSV memuat seluruh hasil filter, header terdokumentasi, formula injection dinetralkan | **BELUM TERPENUHI** | Formula injection dan header lulus, tetapi audit pada 20.004 hasil membuktikan hanya 20.000 baris dihasilkan. Koreksi auditor menolak CSV parsial dengan `422`; streaming/chunking masih diperlukan. |
+| 4 | Halaman cetak/PDF memuat identitas pesantren, filter, pembuat, waktu, keputusan, dan nomor halaman | **MENUNGGU VERIFIKASI VISUAL PDF** | HTML memuat seluruh penanda, tetapi tes otomatis hanya mencari string CSS; hasil PDF nyata dan nomor halaman belum dirender serta diperiksa visual. |
 | 5 | Halaman pertama laporan selesai maksimal 2 detik pada fixture minimal 1.000 pengajuan | **TERPENUHI** | `bukti-performa.md`; 1.028 pengajuan, terburuk **24,0 ms** dari ambang 2.000 ms; 10 skenario lintas peran |
 | 6 | Jumlah dan ID perizinan lama sama sebelum/sesudah migrasi | **TERPENUHI PADA SALINAN UJI** | latihan backup/restore: 30 baris warisan sintetis, ID dan sidik jari SHA-256 identik sebelum/sesudah migrasi 009 **dan** sesudah rollback. Migrasi produksi **belum** dijalankan (§4). |
 | 7 | Backup dipulihkan pada database `_test` dan seluruh jumlah baris inti cocok dengan manifest | **TERPENUHI** | `bin/v2_phase5_backup_restore_drill.php`: 47 tabel cocok, 17/17 pemeriksaan lulus |
@@ -38,9 +40,11 @@ Node.js 22.23.2, database `webalhasan_test` dengan migrasi 001–009.
 | 9 | Uji manual web serta Android/iOS untuk pengurus, murobi, admin, dan orang tua lulus | **MENUNGGU VERIFIKASI — TIDAK DINYATAKAN LULUS** | web tercakup smoke test HTTP bersesi (WL-1…WL-8); perangkat fisik belum diuji pada Fase 5. Lihat `uji-manual-tertunda.md`. |
 | 10 | WhatsApp off tidak menghasilkan request provider; WhatsApp on hanya dirilis setelah pemeriksaan konfigurasi dan uji admin lulus | **TERPENUHI untuk bagian "off"; bagian "on" DITANGGUHKAN** | KL-10a…KL-10e (penyedia tiruan mencatat **0** panggilan saat kanal mati). Pengaktifan WhatsApp **tidak diuji dan tidak dinyatakan lulus** (§3). |
 
-**Delapan kriteria terpenuhi berdasarkan bukti otomatis.** Kriteria 9 menunggu
-uji perangkat manusia. Kriteria 6 terpenuhi pada salinan uji; klaim produksi
-baru sah setelah migrasi produksi benar-benar dijalankan dan diverifikasi.
+**Enam kriteria terpenuhi berdasarkan bukti otomatis/audit.** Kriteria 3 belum
+terpenuhi; kriteria 4 dan 9 menunggu verifikasi manusia. Kriteria 10 hanya
+terpenuhi untuk keadaan WhatsApp-off, sedangkan WhatsApp-on ditangguhkan.
+Kriteria 6 terpenuhi pada salinan uji; klaim produksi baru sah setelah migrasi
+produksi benar-benar dijalankan dan diverifikasi.
 
 ## 2. Persyaratan implementasi PRD Fase 5 (§6 poin 1–11)
 
@@ -84,7 +88,7 @@ Fase 5 hanyalah **memperkuat pengamannya**, bukan mengaktifkannya:
 | 1 | Cron worker push produksi belum berjalan otomatis | **DITANGANI SEBAGIAN.** Ditambahkan `bin/v2_phase5_cron_check.php` yang MEMBUKTIKAN dari data apakah cron berjalan (antrean tertahan, jejak sewa worker, receipt tertahan), plus baris cron cPanel siap salin pada `cpanel-deployment.md`. **Cron TIDAK dipasang pada produksi** — memerlukan izin pengguna. Tetap MENUNGGU VERIFIKASI. |
 | 2 | Server baru memeriksa tiket awal Expo | **DITANGANI.** Migrasi 009 menambah `tiket_id` dan kolom receipt; `PushReceiptClient` + `ExpoPushClient::getReceipts()` memanggil endpoint resmi `getReceipts`; `NotificationDispatcher::reconcileReceipts()` merekonsiliasi status. Dibuktikan KL-9a…KL-9p (sukses, gagal, belum tersedia, batas percobaan, idempotensi, tanpa kirim ulang). Verifikasi terhadap Expo NYATA tetap menunggu. |
 | 3 | Deep-link push Android/iOS foreground/background/cold-start belum lengkap | **BELUM DITANGANI — MENUNGGU PENGUJIAN MANUSIA.** Tidak ada perangkat fisik pada lingkungan kerja ini. Checklist langkah demi langkah disediakan pada `uji-manual-tertunda.md`. **Tidak dinyatakan lulus.** |
-| 4 | Commit mobile `da04c3a` masih lokal | **DIPERTAHANKAN.** Branch Fase 5 dibuat dari `da04c3a`, sehingga konfigurasi native push tetap ada. Commit masih lokal/belum didorong; tidak ada klaim bahwa `origin` sudah memuatnya. |
+| 4 | Commit mobile `da04c3a` masih lokal | **SELESAI.** Audit `git ls-remote` 28 Agustus 2026 membuktikan `origin/prd-v2-fase-4` sudah menunjuk tepat ke `da04c3a`. Commit Fase 5 mobile `0b7e730` masih lokal dan akan didorong sebagai branch baru `prd-v2-fase-5`. |
 
 ## 5. Yang TIDAK dikerjakan dan TIDAK diklaim
 
@@ -97,7 +101,6 @@ Daftar ini sengaja eksplisit agar auditor tidak perlu menebak.
 | Pemasangan cron pada cPanel produksi | Memerlukan izin pengguna |
 | Pengaktifan WhatsApp | DITANGGUHKAN oleh keputusan produk |
 | Uji push/deep-link pada perangkat Android/iOS fisik | Perangkat tidak tersedia pada lingkungan ini |
-| `npx expo export -p web` | Gagal pada lingkungan Linux ini karena binding native `node_modules` terpasang untuk macOS. **Terbukti pre-existing**: kegagalan yang sama terjadi pada baseline TANPA perubahan Fase 5 (diuji dengan `git stash`). Bukan regresi Fase 5. |
 | Merge ke `main`, push ke origin, deploy | Dilarang tanpa instruksi terpisah pengguna |
 | Fase berikutnya | Di luar ruang lingkup |
 

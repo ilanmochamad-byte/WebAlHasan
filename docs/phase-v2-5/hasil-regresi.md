@@ -170,4 +170,4 @@ cakupan lain tidak boleh muncul pada HTML daftar, HTML cetak, maupun berkas CSV.
 | Halaman publik (berita, galeri, PSB) | Tidak disentuh Fase 5; tidak ada pengujian otomatis sejak V1 | Smoke test manual `cpanel-deployment.md` §5 |
 | Impor/ekspor XLSX V1 | Tidak disentuh Fase 5 | Smoke test manual |
 | Perilaku pada PHP versi cPanel | Sandbox memakai PHP 8.4 | Ulangi `php -l` pada staging |
-| `npx expo export -p web` | Gagal karena lingkungan, **terbukti pre-existing** pada baseline | `test-results.md` §8 |
+| `npx expo export -p web` | **LULUS saat audit Codex 28 Agustus 2026** setelah `npm ci`; 31 rute statis dihasilkan | `audit-codex.md` |

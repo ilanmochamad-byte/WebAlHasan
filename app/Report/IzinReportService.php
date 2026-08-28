@@ -170,6 +170,23 @@ final class IzinReportService
     {
         $document = $this->document($user, $input, $preferred);
 
+        // Jangan pernah mengirim CSV parsial. PRD Fase 5 mensyaratkan CSV
+        // memuat seluruh hasil filter; berkas yang tampak sah tetapi kehilangan
+        // baris setelah pagar memori jauh lebih berbahaya daripada penolakan
+        // yang eksplisit. Ekspor besar tetap memerlukan implementasi streaming
+        // atau chunking sebelum kriteria ini dapat dinyatakan lulus penuh.
+        if ($document['terpotong'] === true) {
+            throw new ApiException(
+                'EXPORT_TOO_LARGE',
+                'Hasil laporan melebihi batas ekspor. Persempit filter agar seluruh baris dapat dimuat.',
+                422,
+                [
+                    'total' => (int) $document['ringkasan']['total'],
+                    'batas_baris' => IzinReportFilter::MAX_EXPORT_ROWS,
+                ]
+            );
+        }
+
         return [
             'konten' => IzinCsvExport::encode($document['baris_mentah']),
             'nama_berkas' => $document['nama_berkas_csv'],
