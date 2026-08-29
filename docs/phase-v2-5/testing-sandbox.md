@@ -135,7 +135,7 @@ dulu — kegagalan palsu yang menyesatkan auditor.
 MOBILE_APP_ROOT=/path/ke/alhasanApps bash bin/v2_phase5_run_all_tests.sh
 ```
 
-Hasil yang diharapkan: **29 berkas, 2.376 pemeriksaan, 0 gagal.**
+Hasil audit penutupan: **29 berkas, 2.337 pemeriksaan, 0 gagal.**
 
 Atau satu per satu:
 

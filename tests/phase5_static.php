@@ -113,7 +113,12 @@ $mobileReport = (string) file_get_contents($mobileRoot . '/src/app/(app)/(report
 $mobileDocument = (string) file_get_contents($mobileRoot . '/src/report/report-document.ts');
 $mobilePackage = (string) file_get_contents($mobileRoot . '/package.json');
 $assert(str_contains($mobileReport, 'api.report(') && str_contains($mobileReport, "pathname: '/report/[id]'"), 'Aplikasi guru menyediakan laporan dan detail pertemuan');
-$assert(str_contains($mobileDocument, 'Print.printAsync') && str_contains($mobileDocument, 'Print.printToFileAsync') && str_contains($mobileDocument, 'Sharing.shareAsync'), 'Aplikasi dapat membuka dialog cetak dan berbagi PDF');
+$assert(
+    (str_contains($mobileDocument, 'Print.printAsync') || str_contains($mobileDocument, 'openSystemPrintDialog'))
+        && str_contains($mobileDocument, 'Print.printToFileAsync')
+        && str_contains($mobileDocument, 'Sharing.shareAsync'),
+    'Aplikasi dapat membuka dialog cetak dan berbagi PDF'
+);
 $assert(str_contains($mobilePackage, '"expo-print": "~57.') && str_contains($mobilePackage, '"expo-sharing": "~57.'), 'Dependency cetak dan berbagi mengikuti Expo 57');
 
 foreach (['docs/api-v1.md', 'docs/phase-5/release-runbook.md', 'docs/phase-5/csv-format.md', 'docs/phase-5/acceptance-checklist.md'] as $path) {

@@ -59,10 +59,11 @@ ketidaknyamanan.
    - API: field `kriteria`.
    **Bila keempatnya sama tetapi totalnya berbeda, ada cacat pada repository.**
 2. Periksa penanda terpotong:
-   - CSV: header `X-Laporan-Terpotong: 1`;
+   - ekspor CSV: HTTP `422` dengan kode `EXPORT_TOO_LARGE`;
    - cetak: kotak peringatan kuning di atas tabel;
-   - API: field `terpotong`.
-   Bila ada, hasil melebihi 20.000 baris — persempit filter. Ini **bukan** cacat.
+   - API dokumen: field `terpotong`.
+   Bila ada, hasil melebihi batas produk 20.000 baris — persempit filter. Ini
+   **bukan** cacat selama tidak ada CSV parsial yang dikirim.
 3. Jalankan gerbang otomatis:
    ```bash
    V2_PHASE5_RUN_INTEGRATION=1 php tests/v2_phase5_integration.php
@@ -218,7 +219,7 @@ sama sekali, sehingga penyebabnya hampir pasti berasal dari luar migrasi ini.
 | --- | --- | --- |
 | Huruf beraksen rusak | BOM terbuang oleh perantara | Buka lewat Data → From Text/CSV, pilih UTF-8 |
 | Sel diawali kutip tunggal | **Disengaja** — netralisasi formula injection | Bukan cacat; jangan dihapus |
-| Berkas terpotong | Hasil > 20.000 baris | Header `X-Laporan-Terpotong: 1` muncul; persempit filter |
+| Ekspor ditolak `EXPORT_TOO_LARGE` | Hasil > 20.000 baris | Persempit filter tanggal/status/cakupan; jangan mencoba memakai berkas parsial |
 | Jumlah baris ≠ total ringkasan | Lihat §2 | — |
 | Berkas terbuka sebagai halaman web | `Content-Disposition` hilang | Periksa apakah ada perantara yang membuang header |
 

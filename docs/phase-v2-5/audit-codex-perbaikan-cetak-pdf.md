@@ -70,6 +70,8 @@ wajib:
 3. pastikan orientasi, nomor halaman, dan kata utuh pada berkas perangkat;
 4. audit commit koreksi dan push kedua branch tanpa menyentuh `main` langsung.
 
-Status ini tidak mengubah status keseluruhan Fase 5: uji perangkat empat
-peran, CSV di atas 20.000 baris, dan WhatsApp-on masih mengikuti gerbang rilis
-yang sudah terdokumentasi.
+Status ini tidak mengubah status keseluruhan Fase 5 saat audit dilakukan: uji
+perangkat empat peran, CSV di atas 20.000 baris, dan WhatsApp-on masih mengikuti
+gerbang rilis yang terdokumentasi. Keputusan produk 29 Agustus 2026 kemudian
+menetapkan 20.000 sebagai batas resmi ekspor, sehingga butir CSV ditutup dengan
+kontrak penolakan `422 EXPORT_TOO_LARGE` tanpa berkas parsial.

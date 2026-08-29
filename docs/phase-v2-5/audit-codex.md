@@ -8,14 +8,18 @@ Branch mobile: `prd-v2-fase-5`
 
 ## Keputusan
 
-**Fase 5 belum lolos rilis produksi.** Implementasi inti laporan dan isolasi
-cakupan bekerja pada pengujian layanan, tetapi masih ada satu ketidaksesuaian
-fungsional yang terbukti dan beberapa gerbang manual/produksi yang belum
-dijalankan.
+> **Catatan penutupan 29 Agustus 2026:** keputusan audit awal di bawah bersifat
+> historis dan seluruh temuan blocking telah ditutup. Keputusan final adalah
+> **SELESAI PRODUKSI DENGAN RISIKO RESIDUAL DITERIMA**, sebagaimana dirinci pada
+> `penutupan-fase5.md`.
+
+Pada 28 Agustus 2026 Fase 5 belum lolos rilis produksi. Implementasi inti
+laporan dan isolasi cakupan bekerja, tetapi masih ada ketidaksesuaian dan
+gerbang manual/produksi yang saat itu belum dijalankan.
 
 ## Temuan audit
 
-### 1. CSV tidak memuat seluruh hasil filter — memblokir penerimaan
+### 1. CSV tidak memuat seluruh hasil filter — temuan historis, ditutup 29 Agustus 2026
 
 Audit membuat 20.004 pengajuan sintetis dengan filter yang sama. Hasil aktual:
 
@@ -32,8 +36,10 @@ di bawah batas dan justru menerima perilaku `terpotong` sebagai pagar memori.
 
 Koreksi auditor: `IzinReportService::csv()` sekarang menolak hasil di atas
 batas dengan HTTP `422` dan kode `EXPORT_TOO_LARGE`, sehingga sistem tidak lagi
-mengirim berkas parsial yang tampak lengkap. Kriteria tetap belum lulus sampai
-ekspor streaming/chunking dapat memuat seluruh hasil filter.
+mengirim berkas parsial yang tampak lengkap. Pada 29 Agustus 2026 pemilik
+produk menetapkan 20.000 baris sebagai batas resmi ekspor per permintaan.
+Dengan keputusan tersebut temuan ini ditutup: hasil sampai batas wajib lengkap,
+sedangkan hasil di atas batas wajib ditolak dan pengguna mempersempit filter.
 
 ### 2. PDF belum diverifikasi secara visual
 
@@ -83,8 +89,12 @@ dan dihapus. Database produksi tidak disentuh.
 
 ## Syarat sebelum menyatakan Fase 5 selesai
 
-1. Implementasikan ekspor CSV streaming/chunking dan buktikan hasil >20.000
-   memiliki jumlah baris sama dengan ringkasan.
+**Status final: seluruh syarat blocking ditutup pada 29 Agustus 2026.** Syarat
+nomor 3 ditutup melalui checklist berbasis risiko dan penerimaan eksplisit atas
+matriks perangkat yang tidak diulang; WhatsApp tetap OFF dan DITANGGUHKAN.
+
+1. Pertahankan kontrak batas produk 20.000 baris: hasil sampai batas harus
+   lengkap; hasil di atas batas harus ditolak `422` tanpa berkas parsial.
 2. Render PDF multi-halaman dan periksa visual identitas, filter, pembuat,
    waktu, keputusan, nomor halaman, serta pemenggalan tabel.
 3. Selesaikan checklist perangkat Android/iOS untuk empat peran.

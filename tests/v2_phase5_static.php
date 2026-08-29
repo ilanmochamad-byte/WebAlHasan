@@ -33,6 +33,7 @@ $assert = static function (bool $condition, string $message) use (&$failures): v
     }
 };
 $source = static fn (string $path): string => (string) @file_get_contents($root . '/' . $path);
+$prd = $source('PRD-V2.md');
 
 $mobileRoot = getenv('MOBILE_APP_ROOT') ?: dirname($root, 4) . '/alhasanApps';
 $mobile = static fn (string $path): string => (string) @file_get_contents($mobileRoot . '/' . $path);
@@ -343,6 +344,12 @@ $assert(
     str_contains($serviceKode, "'EXPORT_TOO_LARGE'")
         && str_contains($serviceKode, 'IzinReportFilter::MAX_EXPORT_ROWS'),
     'CSV yang melebihi pagar memori ditolak eksplisit, bukan dikirim parsial'
+);
+$assert(
+    str_contains($prd, 'maksimum 20.000 baris')
+        && str_contains($prd, '422 EXPORT_TOO_LARGE')
+        && str_contains($prd, 'dilarang mengirim CSV parsial'),
+    'PRD menetapkan kontrak produk ekspor maksimum 20.000 baris tanpa CSV parsial'
 );
 $assert(
     str_contains($serviceKode, "'terpotong'"),
@@ -727,6 +734,9 @@ if (!$adaMobile) {
     // tersedia lintas platform pada SDK 57.
     $halamanCetak = $tanpaKomentarTs($mobile('src/report/print-page.ts'));
     $dokumenAbsensi = $tanpaKomentarTs($mobile('src/report/report-document.ts'));
+    $dialogCetak = $tanpaKomentarTs($mobile('src/report/print-dialog.ts'));
+    $galatCetak = $tanpaKomentarTs($mobile('src/report/print-errors.ts'));
+    $ujiDialogCetak = $tanpaKomentarTs($mobile('tests/print-dialog.test.ts'));
     $assert(
         str_contains($halamanCetak, 'width: 842') && str_contains($halamanCetak, 'height: 595'),
         'Jalur Expo Print meminta ukuran A4 lanskap (842×595 pada 72 PPI)'
@@ -758,7 +768,28 @@ if (!$adaMobile) {
             str_contains($isi, 'opsiCetakA4Lanskap') && str_contains($isi, 'opsiPdfA4Lanskap'),
             $berkas . ' memakai opsi halaman A4 lanskap bersama'
         );
+        $assert(
+            str_contains($isi, 'openSystemPrintDialog('),
+            $berkas . ' memakai penanganan pembatalan dialog cetak bersama'
+        );
     }
+    $assert(
+        str_contains($galatCetak, 'PrintIncompleteException')
+            && str_contains($galatCetak, 'Printing did not complete')
+            && str_contains($galatCetak, "return 'dibatalkan'")
+            && str_contains($galatCetak, 'throw caught'),
+        'Pembatalan cetak iOS dianggap normal tanpa menyembunyikan kegagalan printer nyata'
+    );
+    $assert(
+        str_contains($dialogCetak, 'settlePrintDialog(() => Print.printAsync(options))'),
+        'Seluruh dialog cetak melewati normalisasi hasil native Expo Print'
+    );
+    $assert(
+        substr_count($ujiDialogCetak, "'dibatalkan'") >= 1
+            && str_contains($ujiDialogCetak, 'assert.rejects')
+            && str_contains($ujiDialogCetak, "'dimulai'"),
+        'Tes mobile mencakup cetak dimulai, dibatalkan, dan kegagalan nyata'
+    );
     $assert(
         !preg_match('/ExponentPushToken\[|API_TOKEN_HASH_SECRET|DB_PASSWORD/', $dokumen . $layar),
         'Tidak ada secret pada berkas laporan aplikasi'

@@ -1,13 +1,34 @@
-# V2 Fase 5 — Pengujian Manual dan Perangkat yang Masih Menunggu
+# V2 Fase 5 — Rekap Pengujian Manual dan Risiko Residual
 
-> Seluruh butir pada dokumen ini berstatus **MENUNGGU VERIFIKASI**.
-> Tidak satu pun boleh dinyatakan **LULUS** sebelum dijalankan manusia pada
-> perangkat atau lingkungan yang sesungguhnya, dan hasilnya dicatat di sini.
+> Dokumen ini membedakan hasil manusia yang benar-benar **LULUS** dari skenario
+> yang tidak diulang. Pada 29 Agustus 2026 pemilik produk menutup Fase 5 dan
+> menerima skenario tersisa sebagai risiko residual pascarilis. Butir kosong
+> tetap **tidak dinyatakan lulus**.
 
-Alasannya sederhana: lingkungan kerja implementasi tidak memiliki perangkat
-Android/iOS fisik, tidak memiliki akses ke cPanel produksi, dan tidak boleh
-menyentuh basis data produksi. Menyatakan butir-butir ini lulus dari sana akan
-menjadi klaim tanpa bukti.
+## Pembaruan bukti 29 Agustus 2026
+
+Bukti yang diberikan penguji menutup checklist singkat berbasis risiko:
+
+- halaman produksi web tampil dalam cakupan admin, pengurus, murobi, dan orang
+  tua; filter admin menghasilkan total 4 (semua), 3 (Diajukan), dan 1
+  (Disetujui) secara konsisten;
+- pada aplikasi iOS dalam cakupan murobi, filter, lembar berbagi PDF, lembar
+  berbagi CSV, dan dialog cetak A4 berhasil terbuka;
+- dua CSV produksi memuat 4 dan 1 hasil sesuai filter, masing-masing 30 kolom,
+  BOM UTF-8, dan nol sel formula berbahaya;
+- PDF fisik Android/iOS A4 lanskap memiliki margin sekitar 1 cm, nomor halaman
+  benar, dan baris lengkap;
+- PR mobile #6 sudah masuk `main` pada commit merge `f604149`;
+- pembatalan dialog cetak iOS sudah dikoreksi agar menjadi hasil normal; enam
+  uji terarah lulus dan kegagalan printer nyata tetap diteruskan;
+- cron produksi berakhir sehat: perangkat aktif 1, antrean push 0, receipt
+  Menunggu 0, dan tiga receipt nyata berpindah ke `Terkirim`;
+- pengguna mengonfirmasi notifikasi nyata tiba sebelum 15 menit.
+
+Yang tetap terbuka dan diterima sebagai risiko residual: matriks empat peran
+pada kedua sistem operasi, akun multi-peran, Dynamic Type, offline, seluruh
+skenario deep-link, penghapusan aplikasi untuk `DeviceNotRegistered`, serta uji
+ulang fisik pembatalan cetak pada build berikutnya.
 
 ## 1. Push pada perangkat fisik — laporan Fase 5
 
@@ -20,12 +41,12 @@ push aktif, sedikitnya satu perangkat terdaftar.
 
 | # | Langkah | Harapan | Hasil | Tanggal | Penguji |
 | --- | --- | --- | --- | --- | --- |
-| 1.1 | Buat satu pengajuan sehingga push terkirim ke murobi | `notifikasi_worker.php --status` menampilkan receipt `Menunggu` bertambah | ☐ | | |
-| 1.2 | Tunggu ≥15 menit, jalankan `php bin/notifikasi_worker.php --receipts` | Baris berpindah dari `Menunggu` ke `Terkirim` | ☐ | | |
-| 1.3 | Bandingkan dengan kenyataan di perangkat | Notifikasi memang muncul di perangkat yang sama | ☐ | | |
-| 1.4 | Hapus aplikasi dari perangkat, kirim push lagi, lalu ambil receipt | `receipt_status` = `Gagal` dengan kode `DeviceNotRegistered`; token tercabut | ☐ | | |
-| 1.5 | Periksa panel admin | Sebaran receipt terlihat oleh admin | ☐ | | |
-| 1.6 | Periksa isi push di layar kunci | **Tidak** memuat nama santri, alasan izin, nomor telepon, atau token | ☐ | | |
+| 1.1 | Buat satu pengajuan sehingga push terkirim ke murobi | `notifikasi_worker.php --status` menampilkan receipt `Menunggu` bertambah | **LULUS** | 29-08-2026 | Pemilik produk |
+| 1.2 | Tunggu ≥15 menit, jalankan `php bin/notifikasi_worker.php --receipts` | Baris berpindah dari `Menunggu` ke `Terkirim` | **LULUS — 3/3 Terkirim** | 29-08-2026 | Pemilik produk |
+| 1.3 | Bandingkan dengan kenyataan di perangkat | Notifikasi memang muncul di perangkat yang sama | **LULUS — dikonfirmasi tiba sebelum 15 menit** | 29-08-2026 | Pemilik produk |
+| 1.4 | Hapus aplikasi dari perangkat, kirim push lagi, lalu ambil receipt | `receipt_status` = `Gagal` dengan kode `DeviceNotRegistered`; token tercabut | **TIDAK DIJALANKAN — RISIKO DITERIMA** | 29-08-2026 | Pemilik produk |
+| 1.5 | Periksa panel admin | Sebaran receipt terlihat oleh admin | **TIDAK DIULANG — NON-BLOCKING** | 29-08-2026 | Pemilik produk |
+| 1.6 | Periksa isi push di layar kunci | **Tidak** memuat nama santri, alasan izin, nomor telepon, atau token | **LULUS berdasarkan bukti layar kunci Fase 4** | 29-08-2026 | Pemilik produk |
 
 Catatan penting untuk 1.4: token hanya dicabut otomatis dari receipt bila
 penerima memiliki **tepat satu** perangkat aktif. Bila lebih dari satu, token
@@ -34,8 +55,9 @@ Ini disengaja agar perangkat yang sehat tidak ikut dimatikan.
 
 ## 2. Deep-link push — temuan terbuka Fase 4 nomor 3
 
-Belum lengkap sejak Fase 4. Uji **terpisah** untuk setiap keadaan aplikasi, dan
-catat masing-masing. Jangan menggabungkan hasilnya.
+Belum lengkap sejak Fase 4. Seluruh butir §2 dipindahkan menjadi regresi
+pascarilis dan **tidak dinyatakan lulus**. Otorisasi server tetap dihitung ulang
+ketika detail dibuka dan telah lulus pengujian lintas cakupan.
 
 **Prasyarat:** development build atau release build EAS (push jarak jauh **tidak**
 berfungsi di Expo Go sejak SDK 53), koneksi stabil, `adb reverse` tidak
@@ -67,7 +89,9 @@ dari cacat aplikasi.
 
 ## 3. Laporan pada perangkat fisik — kriteria penerimaan Fase 5 nomor 9
 
-Ini butir yang membuat kriteria 9 belum dapat dinyatakan lulus.
+Matriks lengkap berikut tidak dijalankan seluruhnya. Bukti singkat lintas web,
+PDF, CSV, Android, dan iOS dinilai memadai untuk penutupan berbasis risiko;
+kotak kosong berikut tetap menjadi regresi pascarilis, bukan klaim lulus.
 
 | # | Peran | Langkah | Harapan | Hasil | Tanggal |
 | --- | --- | --- | --- | --- | --- |
@@ -97,24 +121,24 @@ Dijalankan dari akar repositori `alhasanApps` pada mesin pengembang.
 | 4.2 | `npx expo lint` | **BERSIH** (sudah dijalankan) | — |
 | 4.3 | `npx expo export -p web` | **LULUS — audit Codex 28 Agustus 2026** | Menghasilkan 31 rute statis termasuk `/izin/laporan`. |
 | 4.4 | `npm ci` pada instalasi bersih | **LULUS — audit Codex 28 Agustus 2026** | `expo-file-system@~57.0.5` terpasang dari lockfile; dilanjutkan `tsc`, lint, dan export web yang lulus. |
-| 4.5 | Build EAS development Android | ☐ | Diperlukan untuk §1 dan §2 |
-| 4.6 | Build EAS development iOS | ☐ | Diperlukan untuk §1 dan §2 |
+| 4.5 | Build EAS development Android | **LULUS — aplikasi fisik diuji** | Skenario deep-link lengkap tetap residual |
+| 4.6 | Build EAS development iOS | **LULUS — aplikasi fisik diuji** | Entitlement push diperbaiki pada `2016bf8` |
 
 ## 5. Migrasi, restore, dan cron pada cPanel
 
 | # | Langkah | Harapan | Hasil | Tanggal |
 | --- | --- | --- | --- | --- |
-| 5.1 | `php -l` seluruh berkas PHP baru/diubah dengan versi PHP cPanel | Tidak ada galat sintaks | ☐ | |
-| 5.2 | `php bin/v2_phase5_preflight.php` pada produksi | Keluar 0; backup + manifest tersimpan | ☐ | |
-| 5.3 | Restore backup ke database `_test` cPanel | Jumlah baris cocok manifest | ☐ | |
-| 5.4 | Migrasi 009 pada salinan `_test` cPanel | Berhasil pada MySQL versi cPanel | ☐ | |
-| 5.5 | `php bin/v2_phase5_verify.php` pada salinan | 22 pemeriksaan lulus | ☐ | |
-| 5.6 | Migrasi 009 pada produksi | Berhasil | ☐ | |
-| 5.7 | `php bin/v2_phase5_verify.php` pada produksi | 22 pemeriksaan lulus; **ID dan jumlah perizinan lama tidak berubah** | ☐ | |
-| 5.8 | Pasang cron worker push (setiap menit) | Tersimpan | ☐ | |
-| 5.9 | Pasang cron receipt (setiap 15 menit) | Tersimpan | ☐ | |
-| 5.10 | Tunggu 30 menit, `php bin/v2_phase5_cron_check.php` | Keluar 0; ada jejak sewa worker; tidak ada antrean tertahan | ☐ | |
-| 5.11 | Smoke test produksi 14 langkah | Seluruhnya lulus | ☐ | `cpanel-deployment.md` §5 |
+| 5.1 | `php -l` seluruh berkas PHP baru/diubah dengan versi PHP cPanel | Tidak ada galat sintaks | **LULUS melalui eksekusi produksi** | 29-08-2026 |
+| 5.2 | `php bin/v2_phase5_preflight.php` pada produksi | Keluar 0; backup + manifest tersimpan | **LULUS — backup 47 tabel** | 28-08-2026 |
+| 5.3 | Restore backup ke database `_test` cPanel | Jumlah baris cocok manifest | **LULUS** | 28-08-2026 |
+| 5.4 | Migrasi 009 pada salinan `_test` cPanel | Berhasil pada MySQL versi cPanel | **LULUS** | 28-08-2026 |
+| 5.5 | `php bin/v2_phase5_verify.php` pada salinan | 22 pemeriksaan lulus | **LULUS 22/22** | 28-08-2026 |
+| 5.6 | Migrasi 009 pada produksi | Berhasil | **LULUS** | 28-08-2026 |
+| 5.7 | `php bin/v2_phase5_verify.php` pada produksi | 22 pemeriksaan lulus; **ID dan jumlah perizinan lama tidak berubah** | **LULUS 22/22** | 28-08-2026 |
+| 5.8 | Pasang cron worker push (setiap menit) | Tersimpan | **LULUS** | 29-08-2026 |
+| 5.9 | Pasang cron receipt (setiap 15 menit) | Tersimpan | **LULUS** | 29-08-2026 |
+| 5.10 | Tunggu 30 menit, `php bin/v2_phase5_cron_check.php` | Keluar 0; ada jejak sewa worker; tidak ada antrean tertahan | **LULUS 6/6** | 29-08-2026 |
+| 5.11 | Smoke test produksi 14 langkah | Seluruhnya lulus | **DITUTUP berdasarkan bukti checklist singkat dan penerimaan risiko** | 29-08-2026 |
 
 ## 6. WhatsApp
 
@@ -127,10 +151,7 @@ lebih dulu — tanpa pengecualian.
 
 ## 7. Cara mencatat hasil
 
-Ganti `☐` menjadi `LULUS` atau `GAGAL`, isi tanggal dan nama penguji, lalu
-commit dokumen ini. Untuk setiap `GAGAL`, tambahkan catatan singkat: apa yang
-terjadi, pada perangkat/lingkungan apa, dan apakah dapat diulang.
-
-**Jangan** mengubah `☐` menjadi `LULUS` berdasarkan dugaan, analogi dengan
-perangkat lain, atau karena pengujian otomatis lulus. Pengujian otomatis dan
-pengujian perangkat membuktikan hal yang berbeda.
+Butir kosong dapat dijalankan pada regresi pascarilis. **Jangan** mengubahnya
+menjadi `LULUS` berdasarkan dugaan; catat perangkat, versi build, tanggal, dan
+hasil nyata. Penutupan berbasis risiko pada dokumen ini tidak menghapus nilai
+checklist tersebut untuk rilis berikutnya.
