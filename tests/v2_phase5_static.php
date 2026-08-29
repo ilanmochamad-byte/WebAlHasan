@@ -739,6 +739,16 @@ if (!$adaMobile) {
         str_contains($halamanCetak, 'textZoom: 100'),
         'PDF Android mengunci textZoom 100 agar tinggi baris tidak dipengaruhi WebView/OEM'
     );
+    $assert(
+        str_contains($halamanCetak, 'left: 29')
+            && str_contains($halamanCetak, 'right: 29')
+            && substr_count($halamanCetak, 'margins: MARGIN_IOS_HORIZONTAL_1CM') === 2,
+        'Cetak dan PDF iOS memakai margin horizontal native sekurang-kurangnya 1 cm'
+    );
+    $assert(
+        str_contains($source('app/Report/PrintLayout.php'), 'margin:12mm 10mm'),
+        'HTML mempertahankan margin horizontal 10 mm untuk Android dan peramban'
+    );
     foreach (['izin-report-document.ts' => $dokumen, 'report-document.ts' => $dokumenAbsensi] as $berkas => $isi) {
         $assert(
             !preg_match('/print(?:To File)?Async\(\s*\{\s*html\s*\}/', str_replace('ToFile', 'To File', $isi)),

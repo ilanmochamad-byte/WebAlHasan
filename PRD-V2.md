@@ -387,6 +387,14 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 > fisik iOS dan Android setelah deployment tetap menunggu verifikasi manusia.
 > Rincian: `docs/phase-v2-5/koreksi-expo-print-perangkat.md`.
 >
+> **Margin PDF aplikasi — 29 Agustus 2026.** Uji fisik iOS berikutnya lulus
+> tiga halaman, tetapi konten masih menempel pada tepi kiri/kanan karena
+> `expo-print` iOS tidak memakai margin CSS `@page` sebagai printable rect.
+> Opsi native cetak dan berbagi PDF kini menetapkan margin kiri/kanan 29 pt
+> (sekitar 1,02 cm). Android/peramban tetap memakai margin horizontal 10 mm
+> dari CSS. Margin vertikal tidak ditambah agar pagination `10/13/13` tidak
+> berubah. Uji ulang PDF perangkat setelah build tetap menjadi gerbang manual.
+>
 > **Baseline implementasi Claude — 26 Agustus 2026:**
 > seluruh gerbang otomatis lulus: **28 berkas uji, 2.230 pemeriksaan, 0 gagal**,
 > diulang dua kali dengan hasil identik. Fase 5 menyumbang 632 pemeriksaan baru
