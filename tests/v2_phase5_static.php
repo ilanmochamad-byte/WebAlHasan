@@ -33,6 +33,7 @@ $assert = static function (bool $condition, string $message) use (&$failures): v
     }
 };
 $source = static fn (string $path): string => (string) @file_get_contents($root . '/' . $path);
+$prd = $source('PRD-V2.md');
 
 $mobileRoot = getenv('MOBILE_APP_ROOT') ?: dirname($root, 4) . '/alhasanApps';
 $mobile = static fn (string $path): string => (string) @file_get_contents($mobileRoot . '/' . $path);
@@ -343,6 +344,12 @@ $assert(
     str_contains($serviceKode, "'EXPORT_TOO_LARGE'")
         && str_contains($serviceKode, 'IzinReportFilter::MAX_EXPORT_ROWS'),
     'CSV yang melebihi pagar memori ditolak eksplisit, bukan dikirim parsial'
+);
+$assert(
+    str_contains($prd, 'maksimum 20.000 baris')
+        && str_contains($prd, '422 EXPORT_TOO_LARGE')
+        && str_contains($prd, 'dilarang mengirim CSV parsial'),
+    'PRD menetapkan kontrak produk ekspor maksimum 20.000 baris tanpa CSV parsial'
 );
 $assert(
     str_contains($serviceKode, "'terpotong'"),

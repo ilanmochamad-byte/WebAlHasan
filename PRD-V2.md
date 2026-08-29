@@ -301,7 +301,7 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 1. Admin dapat memfilter laporan berdasarkan tanggal, status, santri, pengurus, murobi, kamar/kelas, tahun ajaran, durasi keputusan, dan kanal notifikasi.
 2. Pengurus dan murobi melihat laporan sesuai cakupan; orang tua melihat riwayat santri terhubung.
 3. Sediakan ringkasan jumlah pengajuan, disetujui, ditolak, dibatalkan, perlu routing admin, dan median durasi keputusan.
-4. Sediakan detail riwayat, halaman HTML ramah cetak, PDF/bagikan dari aplikasi, dan ekspor CSV seluruh hasil filter.
+4. Sediakan detail riwayat, halaman HTML ramah cetak, PDF/bagikan dari aplikasi, dan ekspor CSV hasil filter sampai maksimum 20.000 baris. Jika hasil melebihi batas, ekspor harus ditolak eksplisit dan pengguna diminta mempersempit filter; sistem dilarang mengirim CSV parsial.
 5. Pastikan ringkasan, detail, cetak, dan CSV menggunakan filter/repository yang konsisten.
 6. Ukur query dengan fixture minimal 1.000 pengajuan; tambahkan indeks hanya setelah `EXPLAIN`.
 7. Jalankan preflight, backup, migrasi, verifikasi data lama, smoke test, serta backup/restore pada salinan MySQL.
@@ -314,7 +314,7 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 
 - [ ] Admin dapat menghasilkan laporan seluruh filter dan total ringkasan sama dengan detail.
 - [ ] Pengurus, murobi, dan orang tua tidak dapat melihat laporan di luar cakupannya.
-- [ ] CSV memuat seluruh hasil filter, header terdokumentasi, dan formula injection dinetralkan.
+- [ ] CSV memuat seluruh hasil filter sampai maksimum 20.000 baris, header terdokumentasi, dan formula injection dinetralkan. Hasil di atas 20.000 baris ditolak eksplisit tanpa menghasilkan berkas parsial.
 - [ ] Halaman cetak/PDF memuat identitas pesantren, filter, pembuat, waktu, keputusan, dan nomor halaman.
 - [ ] Halaman pertama laporan selesai maksimal 2 detik pada fixture minimal 1.000 pengajuan.
 - [ ] Jumlah dan ID perizinan lama sama sebelum/sesudah migrasi produksi.
@@ -328,13 +328,15 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 > tetapi audit independen menemukan bahwa filter dengan 20.004 hasil hanya
 > menghasilkan 20.000 baris CSV karena pagar `MAX_EXPORT_ROWS`. Auditor
 > mengoreksi perilaku berbahaya ini agar ekspor parsial ditolak eksplisit
-> (`422 EXPORT_TOO_LARGE`), namun ekspor penuh di atas 20.000 baris masih perlu
-> streaming/chunking sebelum kriteria CSV dapat dinyatakan terpenuhi.
+> (`422 EXPORT_TOO_LARGE`). Keputusan produk 29 Agustus 2026 kemudian
+> menetapkan 20.000 baris sebagai batas resmi ekspor; streaming/chunking di
+> atas batas tidak lagi menjadi persyaratan Fase 5.
 >
-> Selain itu, tampilan nomor halaman PDF belum diverifikasi secara visual pada
-> hasil PDF nyata, uji perangkat Android/iOS untuk empat peran belum dilakukan,
+> Pada saat audit 28 Agustus, tampilan nomor halaman PDF belum diverifikasi
+> secara visual, uji perangkat Android/iOS untuk empat peran belum dilakukan,
 > migrasi/restore/cron/smoke test produksi belum dijalankan, dan WhatsApp-on
-> tetap ditangguhkan. Rincian audit: `docs/phase-v2-5/audit-codex.md`.
+> tetap ditangguhkan. Perkembangan sesudah audit dicatat di bawah dan pada
+> `docs/phase-v2-5/acceptance-status.md`.
 >
 > **Perbaikan cetak/PDF — 28 Agustus 2026, branch `fix/prd-v2-fase-5-print-pdf`
 > (MENUNGGU AUDIT CODEX, belum di-merge dan belum di-deploy).**
@@ -395,6 +397,29 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 > dari CSS. Margin vertikal tidak ditambah agar pagination `10/13/13` tidak
 > berubah. Uji ulang PDF perangkat setelah build tetap menjadi gerbang manual.
 >
+> **Keputusan produk batas CSV — 29 Agustus 2026.** Ekspor CSV dibatasi
+> maksimum **20.000 baris per permintaan** untuk menjaga penggunaan memori
+> cPanel. Pada hasil `<= 20.000`, CSV wajib memuat seluruh hasil filter dan
+> mengabaikan pagination layar. Pada hasil `> 20.000`, API wajib merespons
+> `422 EXPORT_TOO_LARGE`, antarmuka wajib meminta pengguna mempersempit filter,
+> dan tidak boleh ada berkas parsial yang dapat disangka lengkap. Perilaku yang
+> sudah diterapkan memenuhi keputusan ini; ekspor streaming/chunking bukan
+> gerbang rilis Fase 5.
+>
+> **Bukti manual tambahan — 29 Agustus 2026.** Screenshot produksi membuktikan
+> laporan web dapat dibuka dalam cakupan admin, pengurus, murobi, dan orang tua;
+> filter admin mengubah ringkasan `4` menjadi `3` (Diajukan) dan `1`
+> (Disetujui). Dua CSV produksi masing-masing memuat 4 dan 1 hasil, memiliki
+> 30 kolom, BOM UTF-8, dan tidak mengandung sel formula berbahaya. PDF fisik
+> Android/iOS A4 lanskap sebelumnya lulus; PDF Safari terbaru disimpan sebagai
+> A4 potret dan tetap terbaca, tetapi orientasi lanskap masih menjadi pilihan
+> yang direkomendasikan untuk nama panjang. Dialog cetak iOS terbuka, namun
+> pembatalan/tidak menyelesaikan cetak masih menampilkan pesan teknis
+> `PrintIncompleteException`; koreksi UX ini tetap terbuka. Bukti ini belum
+> menutup uji perangkat empat peran, Dynamic Type, offline, dan deep-link.
+> Git remote aplikasi juga telah diverifikasi: PR #6 masuk `origin/main` pada
+> commit merge `f604149` dan memuat koreksi margin `9d81d2f`.
+>
 > **Baseline implementasi Claude — 26 Agustus 2026:**
 > seluruh gerbang otomatis lulus: **28 berkas uji, 2.230 pemeriksaan, 0 gagal**,
 > diulang dua kali dengan hasil identik. Fase 5 menyumbang 632 pemeriksaan baru
@@ -405,10 +430,11 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 > otomatis:** laporan lintas seluruh filter dengan total ringkasan = detail =
 > cetak = CSV (dibuktikan sidik jari kriteria yang identik); isolasi cakupan
 > pengurus/murobi/orang tua ditegakkan di SQL dan diuji pada tiga lapisan
-> (layanan, HTTP, HTML terender); CSV memuat seluruh hasil filter dengan header
-> terdokumentasi dan formula injection dinetralkan (nol sel berbahaya pada
-> berkas hasil); halaman cetak/PDF memuat identitas pesantren, filter, pembuat,
-> waktu, keputusan, dan nomor halaman; dan **halaman pertama laporan selesai
+> (layanan, HTTP, HTML terender); CSV memuat seluruh hasil filter sampai batas
+> produk 20.000 baris dengan header terdokumentasi dan formula injection
+> dinetralkan (nol sel berbahaya pada berkas hasil); halaman cetak/PDF memuat
+> identitas pesantren, filter, pembuat, waktu, keputusan, dan nomor halaman;
+> dan **halaman pertama laporan selesai
 > dalam 24,0 ms pada fixture 1.028 pengajuan** dari ambang 2.000 ms.
 >
 > **Indeks laporan sengaja TIDAK ditambahkan.** Tiga indeks kandidat diuji pada
@@ -423,19 +449,19 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 > **DITANGGUHKAN/NON-BLOCKING** berdasarkan keputusan produk 26 Agustus 2026.
 > WhatsApp tetap default `OFF`, terbukti **nol request** kepada penyedia saat
 > mati, dan **tidak diklaim lulus**. Kriteria 6 (ID perizinan lama tidak
-> berubah) terpenuhi pada salinan uji lewat latihan backup → restore → migrasi →
-> rollback (17/17 pemeriksaan); **migrasi produksi belum dijalankan**.
+> berubah) telah dibuktikan pada salinan uji serta produksi: preflight,
+> restore `_test`, migrasi 009, dan verifikasi pascamigrasi produksi lulus
+> 22/22; data warisan produksi berjumlah 0 sebelum dan sesudah migrasi.
 >
 > **Temuan terbuka Fase 4:** pengambilan push receipt akhir Expo/FCM/APNs kini
 > **diimplementasikan** (migrasi 009 + `PushReceiptClient` + rekonsiliasi worker
 > `--receipts`), sehingga status tidak lagi bergantung pada tiket awal saja.
-> Pemeriksaan kesehatan cron ditambahkan (`bin/v2_phase5_cron_check.php`)
-> beserta baris cron cPanel siap salin, tetapi **cron tidak dipasang pada
-> produksi** karena memerlukan izin pengguna. Pengujian deep-link Android/iOS
-> foreground/background/cold-start **belum dilakukan** dan tetap menunggu
-> pengujian manusia. Commit mobile `da04c3a` dipertahankan sebagai baseline
-> Fase 5; audit 28 Agustus 2026 membuktikan commit itu sudah tersedia pada
-> `origin/prd-v2-fase-4`, sedangkan commit mobile Fase 5 belum didorong.
+> Pemeriksaan kesehatan cron ditambahkan (`bin/v2_phase5_cron_check.php`) dan
+> cron cPanel sudah dipasang. Pemeriksaan 29 Agustus masih menemukan 0 perangkat
+> aktif serta 1 receipt Menunggu lebih dari 6 jam, sehingga jalur receipt nyata
+> belum lulus. Pengujian deep-link Android/iOS foreground/background/cold-start
+> juga tetap menunggu pengujian manusia. Commit mobile Fase 5 beserta koreksi
+> PDF sudah masuk `origin/main` melalui PR #6 (`f604149`).
 >
 > Fase 5 **tidak dinyatakan selesai produksi**. Pernyataan itu baru sah setelah
 > temuan audit Codex ditutup, pengujian MySQL/cPanel dan perangkat nyata lulus,

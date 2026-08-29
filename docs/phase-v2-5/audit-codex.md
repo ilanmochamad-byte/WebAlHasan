@@ -15,7 +15,7 @@ dijalankan.
 
 ## Temuan audit
 
-### 1. CSV tidak memuat seluruh hasil filter — memblokir penerimaan
+### 1. CSV tidak memuat seluruh hasil filter — temuan historis, ditutup 29 Agustus 2026
 
 Audit membuat 20.004 pengajuan sintetis dengan filter yang sama. Hasil aktual:
 
@@ -32,8 +32,10 @@ di bawah batas dan justru menerima perilaku `terpotong` sebagai pagar memori.
 
 Koreksi auditor: `IzinReportService::csv()` sekarang menolak hasil di atas
 batas dengan HTTP `422` dan kode `EXPORT_TOO_LARGE`, sehingga sistem tidak lagi
-mengirim berkas parsial yang tampak lengkap. Kriteria tetap belum lulus sampai
-ekspor streaming/chunking dapat memuat seluruh hasil filter.
+mengirim berkas parsial yang tampak lengkap. Pada 29 Agustus 2026 pemilik
+produk menetapkan 20.000 baris sebagai batas resmi ekspor per permintaan.
+Dengan keputusan tersebut temuan ini ditutup: hasil sampai batas wajib lengkap,
+sedangkan hasil di atas batas wajib ditolak dan pengguna mempersempit filter.
 
 ### 2. PDF belum diverifikasi secara visual
 
@@ -83,8 +85,8 @@ dan dihapus. Database produksi tidak disentuh.
 
 ## Syarat sebelum menyatakan Fase 5 selesai
 
-1. Implementasikan ekspor CSV streaming/chunking dan buktikan hasil >20.000
-   memiliki jumlah baris sama dengan ringkasan.
+1. Pertahankan kontrak batas produk 20.000 baris: hasil sampai batas harus
+   lengkap; hasil di atas batas harus ditolak `422` tanpa berkas parsial.
 2. Render PDF multi-halaman dan periksa visual identitas, filter, pembuat,
    waktu, keputusan, nomor halaman, serta pemenggalan tabel.
 3. Selesaikan checklist perangkat Android/iOS untuk empat peran.

@@ -69,10 +69,17 @@ tengah; untuk jumlah genap diambil rata-rata dua nilai tengah.
 | --- | --- |
 | Encoding | UTF-8 dengan BOM (`EF BB BF`) agar Excel Windows membaca huruf beraksen dengan benar |
 | Pemisah | koma |
-| Cakupan baris | **SELURUH hasil filter**, bukan halaman yang sedang terlihat |
-| Batas keamanan | `MAX_EXPORT_ROWS` = 20.000 baris. Bila terlampaui, hasil ditandai `terpotong` dan **ditampilkan kepada pengguna** — tidak pernah dipotong diam-diam |
+| Cakupan baris | **SELURUH hasil filter sampai maksimum 20.000 baris**, bukan halaman yang sedang terlihat |
+| Batas produk | `MAX_EXPORT_ROWS` = 20.000 baris per permintaan (keputusan pemilik produk 29 Agustus 2026) |
+| Hasil di atas batas | Ditolak dengan HTTP `422` dan kode `EXPORT_TOO_LARGE`; pengguna diminta mempersempit filter dan tidak menerima CSV parsial |
 | Header HTTP web | `text/csv`, `Content-Disposition: attachment`, `X-Content-Type-Options: nosniff`, `Cache-Control: private, no-store`, `X-Laporan-Jumlah-Baris`, `X-Laporan-Kriteria` |
 | Nama berkas | `laporan-perizinan-<cakupan>-<dari>-sd-<sampai>-<waktu>.csv` |
+
+Batas 20.000 adalah kontrak produk, bukan pagination tersembunyi. Sampai batas
+tersebut jumlah baris CSV wajib sama dengan ringkasan untuk filter yang sama.
+Di atas batas, layanan wajib gagal eksplisit sebelum membuat berkas. Ekspor
+streaming/chunking lebih dari 20.000 baris dapat dipertimbangkan pada fase
+mendatang, tetapi bukan kriteria penerimaan Fase 5.
 
 ### Perlindungan formula injection (CWE-1236)
 

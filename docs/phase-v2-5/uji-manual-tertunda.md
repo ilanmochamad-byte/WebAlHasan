@@ -9,6 +9,32 @@ Android/iOS fisik, tidak memiliki akses ke cPanel produksi, dan tidak boleh
 menyentuh basis data produksi. Menyatakan butir-butir ini lulus dari sana akan
 menjadi klaim tanpa bukti.
 
+## Pembaruan bukti 29 Agustus 2026
+
+Bukti yang diberikan penguji menutup sebagian gerbang, tetapi belum seluruh
+checklist:
+
+- halaman produksi web tampil dalam cakupan admin, pengurus, murobi, dan orang
+  tua; filter admin menghasilkan total 4 (semua), 3 (Diajukan), dan 1
+  (Disetujui) secara konsisten;
+- pada aplikasi iOS dalam cakupan murobi, filter, lembar berbagi PDF, lembar
+  berbagi CSV, dan dialog cetak A4 berhasil terbuka;
+- dua CSV produksi memuat 4 dan 1 hasil sesuai filter, masing-masing 30 kolom,
+  BOM UTF-8, dan nol sel formula berbahaya;
+- PDF fisik Android/iOS A4 lanskap memiliki margin sekitar 1 cm, nomor halaman
+  benar, dan baris lengkap;
+- PR mobile #6 sudah masuk `main` pada commit merge `f604149`;
+- pembatalan/tidak menyelesaikan dialog cetak iOS masih menampilkan pesan teknis
+  `PrintIncompleteException`; aplikasi harus memperlakukan pembatalan sebagai
+  tindakan normal atau menampilkan pesan ramah pengguna;
+- pemeriksaan cron produksi mencatat **0 perangkat aktif** dan **1 receipt
+  Menunggu lebih dari 6 jam**. Receipt nyata belum dinyatakan lulus sampai
+  perangkat didaftarkan ulang dan status baru berpindah ke `Terkirim`.
+
+Yang tetap terbuka: empat peran pada kedua sistem operasi, akun multi-peran,
+Dynamic Type, offline, seluruh skenario deep-link, receipt Expo nyata, dan smoke
+test produksi lengkap.
+
 ## 1. Push pada perangkat fisik — laporan Fase 5
 
 Fase 4 sudah membuktikan push **tiba** pada Xiaomi 2409BRN2CY dan iPhone 17 Pro
