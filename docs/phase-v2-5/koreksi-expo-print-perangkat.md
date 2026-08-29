@@ -36,6 +36,10 @@ pengguna dan turut mengecilkan lebar kolom serta seluruh tipografi.
    SDK 57 agar WebView tidak melakukan zoom tambahan.
 4. `printToFileAsync` mobile menetapkan `textZoom: 100` secara eksplisit untuk
    Android. Opsi ini khusus Android; iOS memakai perlindungan CSS di atas.
+5. Opsi cetak dan PDF iOS memakai margin horizontal native 29 pt (sekitar
+   1,02 cm) di kiri dan kanan. Android dan peramban tetap memakai margin
+   horizontal 10 mm dari aturan `@page`; margin vertikal native tidak ditambah
+   agar pembagian halaman tetap stabil.
 
 ## Verifikasi
 
