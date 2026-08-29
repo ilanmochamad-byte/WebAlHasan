@@ -1,8 +1,9 @@
 # V2 Fase 5 — Hasil Pengujian
 
-Dijalankan 26 Agustus 2026 pada sandbox `webalhasan_test`.
-Dua putaran berturut-turut memberi hasil identik (**2.230 pemeriksaan, 0 gagal**),
-sehingga hasil ini stabil dan tidak bergantung pada urutan berkas uji.
+Baseline dijalankan 26 Agustus 2026. Audit penutupan diulang 29 Agustus 2026
+pada database lokal khusus `_test`: **29 berkas, 2.337 pemeriksaan, 0 gagal**.
+Di repositori mobile, 6 uji pembatalan cetak iOS, TypeScript, dan lint juga
+lulus.
 
 ## 1. Lingkungan
 
@@ -31,8 +32,8 @@ berjalan pada MySQL 5.7 yang masih umum pada cPanel.
 | `tests/v2_phase2_static.php` | LULUS | 169 |
 | `tests/v2_phase3_static.php` | LULUS | 147 |
 | `tests/v2_phase4_static.php` | LULUS | 286 |
-| `tests/v2_phase5_static.php` | LULUS | **262** |
-| `tests/v2_phase5_cetak_pdf.php` | LULUS | **124** |
+| `tests/v2_phase5_static.php` | LULUS | **271** |
+| `tests/v2_phase5_cetak_pdf.php` | LULUS | **76** |
 | `tests/phase2_integration.php` | LULUS | 12 |
 | `tests/phase3_integration.php` | LULUS | 10 |
 | `tests/phase4_integration.php` | LULUS | 14 |
@@ -50,7 +51,7 @@ berjalan pada MySQL 5.7 yang masih umum pada cPanel.
 | `tests/v2_phase5_api_contract.php` | LULUS | **150** |
 | `tests/v2_phase5_web_smoke.php` | LULUS | **79** |
 | `tests/v2_phase5_performance.php` | LULUS | **12** |
-| **Total** | **29 berkas, 0 gagal** | **2.376** |
+| **Total** | **29 berkas, 0 gagal** | **2.337** |
 
 Fase 5 menyumbang **632** pemeriksaan baru. Kenaikan pada
 `tests/v2_phase3_static.php` (146 → 147) dan `tests/v2_phase4_static.php`
@@ -58,7 +59,7 @@ Fase 5 menyumbang **632** pemeriksaan baru. Kenaikan pada
 dari pembaruan pagar ruang lingkup, bukan dari pelonggaran pemeriksaan.
 
 > **Pembaruan 28 Agustus 2026 — branch `fix/prd-v2-fase-5-print-pdf`.**
-> Angka pada tabel di atas sudah mencakup perbaikan cetak/PDF: 2.230 → **2.376**
+> Angka audit penutupan pada tabel di atas: **2.337 pemeriksaan, 0 gagal**.
 > pemeriksaan pada **29** berkas uji, 0 gagal. Tambahannya berasal dari berkas
 > baru `tests/v2_phase5_cetak_pdf.php` (124), penguatan `phase5_static.php`
 > (36 → 44) dan `v2_phase5_static.php` (248 → 262). Enam pemeriksaan yang dulu
@@ -176,21 +177,19 @@ Dicatat apa adanya karena inilah nilai sesungguhnya dari pengujian ini.
 
 ## 8. Aplikasi mobile
 
-Dijalankan dari repositori `alhasanApps` pada branch `prd-v2-fase-5`:
+Audit penutupan dijalankan dari repositori `alhasanApps` pada branch
+`codex/close-fase5-ios-print`:
 
 | Perintah | Hasil |
 | --- | --- |
+| `npm run test:print-dialog` | **LULUS — 6 uji, 0 gagal** |
 | `npx tsc --noEmit` | **BERSIH** (0 galat) |
 | `npx expo lint` | **BERSIH** (0 galat, 0 peringatan) |
-| `npx expo export -p web` | **TIDAK DAPAT DIJALANKAN** pada lingkungan ini |
+| `npx expo export -p web` | **LULUS pada audit 28 Agustus — 31 rute statis** |
 
-`expo export -p web` gagal dengan `TypeError: _ws(...).WebSocketServer is not a
-constructor` saat Metro dimulai — sebelum satu baris kode aplikasi dibaca.
-Penyebabnya `node_modules` terpasang untuk macOS sedangkan lingkungan kerja ini
-Linux. **Dibuktikan pre-existing:** dengan seluruh perubahan Fase 5 di-`git
-stash`, baseline yang tidak diubah gagal dengan galat yang sama persis. Karena
-itu ini **bukan regresi Fase 5**, tetapi tetap ditandai MENUNGGU VERIFIKASI dan
-wajib dijalankan ulang pada mesin pengembang macOS.
+Uji terarah membuktikan tiga cabang: cetak dimulai menghasilkan `dimulai`,
+penutupan dialog iOS menghasilkan `dibatalkan`, dan galat printer nyata tetap
+dilempar. Kedua jalur laporan memakai pembungkus yang sama.
 
 Ketergantungan yang ditambahkan: `expo-file-system@~57.0.5` — versi yang **sudah
 ada** pada `package-lock.json` sebagai dependensi transitif Expo. Perbandingan
@@ -202,10 +201,6 @@ terpasang menjadi eksplisit.
 
 | Tidak diuji | Alasan | Tindak lanjut |
 | --- | --- | --- |
-| Push dan deep link pada perangkat Android/iOS NYATA | Perangkat fisik tidak tersedia | `uji-manual-tertunda.md` §1–§2 |
-| Receipt akhir terhadap Expo NYATA | Tidak ada trafik keluar pada pengujian | Aktifkan cron receipt lalu bandingkan sebaran status |
+| Deep link lengkap pada perangkat Android/iOS NYATA | Hanya push tiba dan receipt akhir yang dibuktikan; semua keadaan aplikasi tidak diulang | Risiko residual pascarilis pada `uji-manual-tertunda.md` §2 |
 | Pengiriman WhatsApp oleh penyedia NYATA | DITANGGUHKAN | `../phase-v2-4/whatsapp-provider-checklist.md` |
-| Migrasi/restore pada database PRODUKSI | Dilarang pada pekerjaan ini | `migration-and-rollback.md` |
-| Cron pada cPanel produksi | Memerlukan izin pengguna | `cpanel-deployment.md` §4 |
-| PHP versi cPanel | Sandbox memakai PHP 8.4 | Ulangi `php -l` pada staging cPanel |
-| Data produksi dan performa nyata | Dilarang | Staging dengan salinan tersamar |
+| Pembatalan cetak pada binary iOS pascakoreksi | Membutuhkan build baru dan tindakan manusia | Ulangi pada build berikutnya; risiko diterima untuk penutupan |

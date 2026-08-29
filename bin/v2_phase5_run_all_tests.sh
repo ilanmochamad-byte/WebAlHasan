@@ -102,7 +102,7 @@ echo "Total pemeriksaan lulus: ${lulus_total}"
 if [ "$gagal" -eq 0 ]; then
   echo 'SELURUH PENGUJIAN OTOMATIS LULUS.'
   echo
-  echo 'BELUM TERCAKUP (wajib tetap ditandai MENUNGGU VERIFIKASI):'
+  echo 'TIDAK DICAKUP OLEH SUITE OTOMATIS (lihat bukti/risiko di penutupan-fase5.md):'
   echo '  - push dan deep link pada perangkat Android/iOS NYATA;'
   echo '  - pengiriman WhatsApp oleh penyedia NYATA (DITANGGUHKAN);'
   echo '  - migrasi, restore, cron, dan smoke test pada cPanel produksi;'

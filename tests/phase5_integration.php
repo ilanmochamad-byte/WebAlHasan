@@ -186,7 +186,9 @@ try {
     }
     $backupPath = $backupDirectory . '/database.sql';
     $counts = (new BackupWriter($db))->write($backupPath);
-    $restoreDatabase = 'alhasan_restore_' . strtolower($suffix) . '_test';
+    // Prefix test_ mengikuti pagar hak database lokal/cPanel untuk akun uji,
+    // sementara suffix _test tetap diwajibkan oleh pengaman latihan restore.
+    $restoreDatabase = 'test_alhasan_restore_' . strtolower($suffix) . '_test';
     if (!preg_match('/^[a-z0-9_]+_test$/', $restoreDatabase)) {
         throw new RuntimeException('Nama database restore tidak aman.');
     }

@@ -312,164 +312,40 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 
 **Kriteria penerimaan:**
 
-- [ ] Admin dapat menghasilkan laporan seluruh filter dan total ringkasan sama dengan detail.
-- [ ] Pengurus, murobi, dan orang tua tidak dapat melihat laporan di luar cakupannya.
-- [ ] CSV memuat seluruh hasil filter sampai maksimum 20.000 baris, header terdokumentasi, dan formula injection dinetralkan. Hasil di atas 20.000 baris ditolak eksplisit tanpa menghasilkan berkas parsial.
-- [ ] Halaman cetak/PDF memuat identitas pesantren, filter, pembuat, waktu, keputusan, dan nomor halaman.
-- [ ] Halaman pertama laporan selesai maksimal 2 detik pada fixture minimal 1.000 pengajuan.
-- [ ] Jumlah dan ID perizinan lama sama sebelum/sesudah migrasi produksi.
-- [ ] Backup dipulihkan pada database `_test` dan seluruh jumlah baris inti cocok dengan manifest.
-- [ ] Semua tes statis, integrasi, concurrency, lint PHP/TypeScript, dan regresi V1 lulus.
-- [ ] Uji manual web serta Android/iOS untuk pengurus, murobi, admin, dan orang tua lulus.
-- [ ] WhatsApp off tidak menghasilkan request provider; WhatsApp on hanya dirilis setelah pemeriksaan konfigurasi dan uji admin lulus.
+- [x] Admin dapat menghasilkan laporan seluruh filter dan total ringkasan sama dengan detail.
+- [x] Pengurus, murobi, dan orang tua tidak dapat melihat laporan di luar cakupannya.
+- [x] CSV memuat seluruh hasil filter sampai maksimum 20.000 baris, header terdokumentasi, dan formula injection dinetralkan. Hasil di atas 20.000 baris ditolak eksplisit tanpa menghasilkan berkas parsial.
+- [x] Halaman cetak/PDF memuat identitas pesantren, filter, pembuat, waktu, keputusan, dan nomor halaman.
+- [x] Halaman pertama laporan selesai maksimal 2 detik pada fixture minimal 1.000 pengajuan.
+- [x] Jumlah dan ID perizinan lama sama sebelum/sesudah migrasi produksi.
+- [x] Backup dipulihkan pada database `_test` dan seluruh jumlah baris inti cocok dengan manifest.
+- [x] Semua tes statis, integrasi, concurrency, lint PHP/TypeScript, dan regresi V1 lulus.
+- [x] Uji manual berbasis risiko pada web, Safari, Android, dan iOS lulus; matriks empat peran × dua OS yang tidak diulang diterima pemilik produk sebagai risiko residual pascarilis.
+- [x] WhatsApp off tidak menghasilkan request provider; bagian WhatsApp-on tetap DITANGGUHKAN dan bukan bagian rilis Fase 5.
 
-> **Status Fase 5 — audit Codex 28 Agustus 2026: BELUM LOLOS RILIS.**
-> Bukti implementasi Claude tanggal 26 Agustus tetap berlaku sebagai baseline,
-> tetapi audit independen menemukan bahwa filter dengan 20.004 hasil hanya
-> menghasilkan 20.000 baris CSV karena pagar `MAX_EXPORT_ROWS`. Auditor
-> mengoreksi perilaku berbahaya ini agar ekspor parsial ditolak eksplisit
-> (`422 EXPORT_TOO_LARGE`). Keputusan produk 29 Agustus 2026 kemudian
-> menetapkan 20.000 baris sebagai batas resmi ekspor; streaming/chunking di
-> atas batas tidak lagi menjadi persyaratan Fase 5.
+> **Status final Fase 5 — 29 Agustus 2026: SELESAI PRODUKSI DENGAN RISIKO
+> RESIDUAL DITERIMA PEMILIK PRODUK.** Seluruh 29 berkas uji otomatis lulus
+> (**2.337 pemeriksaan, 0 gagal**), TypeScript/lint aplikasi bersih, dan enam uji
+> terarah memastikan pembatalan dialog cetak iOS menjadi hasil normal tanpa
+> menyembunyikan kegagalan printer yang sebenarnya.
 >
-> Pada saat audit 28 Agustus, tampilan nomor halaman PDF belum diverifikasi
-> secara visual, uji perangkat Android/iOS untuk empat peran belum dilakukan,
-> migrasi/restore/cron/smoke test produksi belum dijalankan, dan WhatsApp-on
-> tetap ditangguhkan. Perkembangan sesudah audit dicatat di bawah dan pada
-> `docs/phase-v2-5/acceptance-status.md`.
+> Bukti produksi mencakup preflight dan backup 47 tabel, restore ke `_test`,
+> migrasi 009, verifikasi 22/22 pada salinan serta produksi, laporan web empat
+> cakupan, CSV produksi, PDF Safari/Android/iOS, cron sehat, push perangkat
+> nyata, dan tiga receipt akhir berstatus `Terkirim`. WhatsApp tetap `OFF`,
+> menghasilkan nol request provider, serta **DITANGGUHKAN dan tidak dinyatakan
+> lulus** untuk mode `ON`.
 >
-> **Perbaikan cetak/PDF — 28 Agustus 2026, branch `fix/prd-v2-fase-5-print-pdf`
-> (MENUNGGU AUDIT CODEX, belum di-merge dan belum di-deploy).**
-> PDF produksi diperiksa langsung dan memperlihatkan tiga cacat: footer
-> `Halaman 0`, halaman hantu, dan kata terpotong di tengah pada orientasi
-> potret. Akarnya: `@page { @bottom-center }` tidak didukung mesin cetak
-> peramban, `counter(page)` di dalam elemen `position: fixed` dievaluasi
-> WebKit menjadi 0, `bottom: -11mm` menaruh footer di luar kotak halaman, dan
-> `overflow-wrap: anywhere` mengizinkan pemotongan kata di posisi mana pun.
-> Nomor halaman dipindahkan ke server (`app/Report/PrintLayout.php`) sebagai
-> teks biasa per lembar, dengan anggaran tinggi yang muat pada A4 lanskap
-> maupun potret. Diverifikasi terhadap **PDF sungguhan** pada tiga orientasi
-> oleh `tests/v2_phase5_cetak_pdf.php`; seluruh gerbang otomatis menjadi
-> **29 berkas uji, 2.376 pemeriksaan, 0 gagal**. Hasil pada Safari macOS dan
-> perangkat Android/iOS nyata tetap **MENUNGGU VERIFIKASI** manusia.
-> Rincian: `docs/phase-v2-5/perbaikan-cetak-pdf.md`.
+> Matriks manual lengkap empat peran × dua OS, seluruh keadaan deep-link,
+> Dynamic Type, offline, penghapusan aplikasi untuk `DeviceNotRegistered`, dan
+> uji ulang fisik pembatalan cetak setelah build berikutnya tidak diklaim lulus.
+> Atas instruksi penutupan 29 Agustus 2026, pemilik produk menerima butir-butir
+> tersebut sebagai risiko residual pascarilis. Keputusan dan bukti rinci:
+> `docs/phase-v2-5/penutupan-fase5.md`.
 >
-> **Audit Codex atas perbaikan cetak/PDF — 28 Agustus 2026: LOLOS DENGAN
-> KOREKSI TERARAH.** Commit Claude `92024a3` masih salah pada data batas:
-> satu pengajuan dengan alasan izin dan alasan keputusan mendekati 2.000
-> karakter dihitung sebagai satu lembar, tetapi Chromium menghasilkan empat
-> halaman fisik. Auditor menambahkan pemecahan teks tanpa kehilangan isi ke
-> baris lanjutan beridentitas, lalu membuktikan hasil akhir pada PDF sungguhan:
-> lima lembar fisik = lima lembar server, nomor `1..5`, pada A4 lanskap maupun
-> potret. Fixture juga diperkuat dengan seluruh filter produksi. Safari macOS
-> nyata dan `expo-print` pada perangkat Android/iOS tetap menunggu uji manusia.
-> Rincian: `docs/phase-v2-5/audit-codex-perbaikan-cetak-pdf.md`.
->
-> **Uji Safari macOS nyata dan koreksi absensi — 28 Agustus 2026.** Setelah
-> perbaikan di-merge melalui PR #9 dan dipasang di cPanel, PDF perizinan A4
-> lanskap lulus. PDF absensi 36 baris masih menghasilkan empat halaman fisik
-> untuk tiga lembar server: tabel lembar kedua berisi 14 baris dan footernya
-> terdorong sendirian ke halaman fisik ketiga. Branch
-> `fix/prd-v2-fase-5-absensi-safari-pagination` menambahkan cadangan tinggi
-> 8 mm khusus kepala lanjutan absensi, sehingga pembagian menjadi `10/13/13`
-> tanpa mengecilkan skala atau font. Fixture produksi 36 baris dan regresi PDF
-> fisik ditambahkan. Uji ulang Safari terhadap hasil cPanel setelah deployment
-> koreksi ini tetap menjadi gerbang penerimaan terakhir untuk cacat tersebut.
-> Rincian: `docs/phase-v2-5/koreksi-absensi-safari.md`.
->
-> **Koreksi PDF aplikasi perangkat — 29 Agustus 2026.** PDF yang dibagikan
-> langsung dari aplikasi iOS membuktikan tiga lembar server berubah menjadi
-> enam halaman fisik: halaman 2, 4, dan 6 hanya memuat lanjutan baris terakhir
-> beserta footer. Ukuran kertas A4 lanskap sudah benar; penyebabnya adalah
-> tinggi teks/baris yang masih bergantung pada penyesuaian WKWebView. HTML kini
-> mengunci `text-size-adjust:100%` dan `line-height:1.15`, sementara jalur
-> Android mengunci `textZoom:100`. Harness simulator iOS 26.2 yang memakai
-> `WKWebView`/`UIPrintPageRenderer` yang sama dengan `expo-print` menghasilkan
-> tepat tiga halaman, footer `1/3`–`3/3`, dan baris 1–36 lengkap. Uji perangkat
-> fisik iOS dan Android setelah deployment tetap menunggu verifikasi manusia.
-> Rincian: `docs/phase-v2-5/koreksi-expo-print-perangkat.md`.
->
-> **Margin PDF aplikasi — 29 Agustus 2026.** Uji fisik iOS berikutnya lulus
-> tiga halaman, tetapi konten masih menempel pada tepi kiri/kanan karena
-> `expo-print` iOS tidak memakai margin CSS `@page` sebagai printable rect.
-> Opsi native cetak dan berbagi PDF kini menetapkan margin kiri/kanan 29 pt
-> (sekitar 1,02 cm). Android/peramban tetap memakai margin horizontal 10 mm
-> dari CSS. Margin vertikal tidak ditambah agar pagination `10/13/13` tidak
-> berubah. Uji ulang PDF perangkat setelah build tetap menjadi gerbang manual.
->
-> **Keputusan produk batas CSV — 29 Agustus 2026.** Ekspor CSV dibatasi
-> maksimum **20.000 baris per permintaan** untuk menjaga penggunaan memori
-> cPanel. Pada hasil `<= 20.000`, CSV wajib memuat seluruh hasil filter dan
-> mengabaikan pagination layar. Pada hasil `> 20.000`, API wajib merespons
-> `422 EXPORT_TOO_LARGE`, antarmuka wajib meminta pengguna mempersempit filter,
-> dan tidak boleh ada berkas parsial yang dapat disangka lengkap. Perilaku yang
-> sudah diterapkan memenuhi keputusan ini; ekspor streaming/chunking bukan
-> gerbang rilis Fase 5.
->
-> **Bukti manual tambahan — 29 Agustus 2026.** Screenshot produksi membuktikan
-> laporan web dapat dibuka dalam cakupan admin, pengurus, murobi, dan orang tua;
-> filter admin mengubah ringkasan `4` menjadi `3` (Diajukan) dan `1`
-> (Disetujui). Dua CSV produksi masing-masing memuat 4 dan 1 hasil, memiliki
-> 30 kolom, BOM UTF-8, dan tidak mengandung sel formula berbahaya. PDF fisik
-> Android/iOS A4 lanskap sebelumnya lulus; PDF Safari terbaru disimpan sebagai
-> A4 potret dan tetap terbaca, tetapi orientasi lanskap masih menjadi pilihan
-> yang direkomendasikan untuk nama panjang. Dialog cetak iOS terbuka, namun
-> pembatalan/tidak menyelesaikan cetak masih menampilkan pesan teknis
-> `PrintIncompleteException`; koreksi UX ini tetap terbuka. Bukti ini belum
-> menutup uji perangkat empat peran, Dynamic Type, offline, dan deep-link.
-> Git remote aplikasi juga telah diverifikasi: PR #6 masuk `origin/main` pada
-> commit merge `f604149` dan memuat koreksi margin `9d81d2f`.
->
-> **Baseline implementasi Claude — 26 Agustus 2026:**
-> seluruh gerbang otomatis lulus: **28 berkas uji, 2.230 pemeriksaan, 0 gagal**,
-> diulang dua kali dengan hasil identik. Fase 5 menyumbang 632 pemeriksaan baru
-> dan seluruh pengujian regresi V1 serta V2 Fase 1–4 tetap lulus tanpa
-> perubahan pada berkas ujinya.
->
-> **Delapan dari sepuluh kriteria penerimaan terpenuhi berdasarkan bukti
-> otomatis:** laporan lintas seluruh filter dengan total ringkasan = detail =
-> cetak = CSV (dibuktikan sidik jari kriteria yang identik); isolasi cakupan
-> pengurus/murobi/orang tua ditegakkan di SQL dan diuji pada tiga lapisan
-> (layanan, HTTP, HTML terender); CSV memuat seluruh hasil filter sampai batas
-> produk 20.000 baris dengan header terdokumentasi dan formula injection
-> dinetralkan (nol sel berbahaya pada berkas hasil); halaman cetak/PDF memuat
-> identitas pesantren, filter, pembuat, waktu, keputusan, dan nomor halaman;
-> dan **halaman pertama laporan selesai
-> dalam 24,0 ms pada fixture 1.028 pengajuan** dari ambang 2.000 ms.
->
-> **Indeks laporan sengaja TIDAK ditambahkan.** Tiga indeks kandidat diuji pada
-> 20.004 pengajuan lalu dibuang karena selisihnya masih di dalam derau
-> pengukuran; `EXPLAIN` menunjukkan query laporan sudah memakai indeks dari
-> migrasi 006/007. Migrasi 009 hanya menambahkan jejak receipt push. Bukti
-> lengkap: `docs/phase-v2-5/bukti-performa.md`.
->
-> **Dua kriteria BELUM dinyatakan lulus dan tetap MENUNGGU VERIFIKASI:**
-> uji manual pada perangkat Android/iOS nyata untuk keempat peran (kriteria 9),
-> dan pengaktifan WhatsApp (bagian "on" pada kriteria 10) yang tetap
-> **DITANGGUHKAN/NON-BLOCKING** berdasarkan keputusan produk 26 Agustus 2026.
-> WhatsApp tetap default `OFF`, terbukti **nol request** kepada penyedia saat
-> mati, dan **tidak diklaim lulus**. Kriteria 6 (ID perizinan lama tidak
-> berubah) telah dibuktikan pada salinan uji serta produksi: preflight,
-> restore `_test`, migrasi 009, dan verifikasi pascamigrasi produksi lulus
-> 22/22; data warisan produksi berjumlah 0 sebelum dan sesudah migrasi.
->
-> **Temuan terbuka Fase 4:** pengambilan push receipt akhir Expo/FCM/APNs kini
-> **diimplementasikan** (migrasi 009 + `PushReceiptClient` + rekonsiliasi worker
-> `--receipts`), sehingga status tidak lagi bergantung pada tiket awal saja.
-> Pemeriksaan kesehatan cron ditambahkan (`bin/v2_phase5_cron_check.php`) dan
-> cron cPanel sudah dipasang. Pemeriksaan 29 Agustus masih menemukan 0 perangkat
-> aktif serta 1 receipt Menunggu lebih dari 6 jam, sehingga jalur receipt nyata
-> belum lulus. Pengujian deep-link Android/iOS foreground/background/cold-start
-> juga tetap menunggu pengujian manusia. Commit mobile Fase 5 beserta koreksi
-> PDF sudah masuk `origin/main` melalui PR #6 (`f604149`).
->
-> Fase 5 **tidak dinyatakan selesai produksi**. Pernyataan itu baru sah setelah
-> temuan audit Codex ditutup, pengujian MySQL/cPanel dan perangkat nyata lulus,
-> serta smoke test produksi benar-benar dilakukan dan didokumentasikan.
->
-> Status per kriteria: `docs/phase-v2-5/acceptance-status.md`.
-> Hasil pengujian: `docs/phase-v2-5/test-results.md`.
-> Uji yang masih menunggu: `docs/phase-v2-5/uji-manual-tertunda.md`.
+> Kontrak CSV final: maksimum 20.000 baris lengkap per permintaan; hasil di atas
+> batas ditolak `422 EXPORT_TOO_LARGE` tanpa berkas parsial. Tidak ada Fase 6
+> yang didefinisikan dalam PRD V2 ini.
 
 ## 7. Metrik Keberhasilan
 

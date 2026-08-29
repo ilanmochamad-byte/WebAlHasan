@@ -3,13 +3,12 @@
 Implementasi Claude: 26 Agustus 2026. Sumber bukti: `test-results.md`,
 `bukti-performa.md`, dan `backup-restore-dan-manifest.md`.
 
-> **Status keseluruhan: DIPERBARUI 29 AGUSTUS 2026 — BELUM LOLOS RILIS.**
-> Audit menemukan ekspor 20.004 hasil terpotong menjadi 20.000 baris. Ekspor
-> parsial kini ditolak eksplisit, dan pemilik produk menetapkan 20.000 baris
-> sebagai batas resmi per permintaan. PDF nyata serta migrasi/restore produksi
-> sudah diverifikasi. Uji perangkat empat peran, receipt/deep-link, koreksi UX
-> pembatalan cetak iOS, dan smoke test produksi lengkap masih menunggu. Rincian:
-> `audit-codex.md`.
+> **Status keseluruhan: 29 AGUSTUS 2026 — SELESAI PRODUKSI DENGAN RISIKO
+> RESIDUAL DITERIMA PEMILIK PRODUK.** Seluruh gerbang otomatis, migrasi,
+> restore, cron, receipt nyata, laporan web/CSV, dan PDF lintas perangkat sudah
+> memiliki bukti. Matriks manual lengkap dan beberapa skenario perangkat tidak
+> diklaim lulus; pemilik produk menerima keduanya sebagai risiko pascarilis.
+> Rincian keputusan: `penutupan-fase5.md`.
 
 ## 0. Baseline implementasi yang dinilai
 
@@ -37,14 +36,14 @@ Node.js 22.23.2, database `webalhasan_test` dengan migrasi 001–009.
 | 5 | Halaman pertama laporan selesai maksimal 2 detik pada fixture minimal 1.000 pengajuan | **TERPENUHI** | `bukti-performa.md`; 1.028 pengajuan, terburuk **24,0 ms** dari ambang 2.000 ms; 10 skenario lintas peran |
 | 6 | Jumlah dan ID perizinan lama sama sebelum/sesudah migrasi | **TERPENUHI PADA PRODUKSI** | Preflight produksi mencatat 0 baris warisan dengan sidik jari yang sama; verifikasi pascamigrasi 009 lulus 22/22 tanpa perubahan jumlah/ID. |
 | 7 | Backup dipulihkan pada database `_test` dan seluruh jumlah baris inti cocok dengan manifest | **TERPENUHI PADA CPANEL** | Backup 47 tabel dipulihkan ke database `_test`, migrasi 009 diterapkan, dan verifikasi lulus 22/22 terhadap manifest produksi. |
-| 8 | Semua tes statis, integrasi, concurrency, lint PHP/TypeScript, dan regresi V1 lulus | **TERPENUHI** | 28 berkas, **2.230 pemeriksaan, 0 gagal** (dua putaran berturut-turut); `npx tsc --noEmit` dan `npx expo lint` bersih |
-| 9 | Uji manual web serta Android/iOS untuk pengurus, murobi, admin, dan orang tua lulus | **MENUNGGU VERIFIKASI — TIDAK DINYATAKAN LULUS** | web tercakup smoke test HTTP bersesi (WL-1…WL-8); perangkat fisik belum diuji pada Fase 5. Lihat `uji-manual-tertunda.md`. |
+| 8 | Semua tes statis, integrasi, concurrency, lint PHP/TypeScript, dan regresi V1 lulus | **TERPENUHI** | **29 berkas, 2.337 pemeriksaan, 0 gagal**; 6 uji pembatalan cetak iOS; `npx tsc --noEmit` dan `npx expo lint` bersih |
+| 9 | Uji manual web serta Android/iOS untuk pengurus, murobi, admin, dan orang tua lulus | **DITUTUP DENGAN PENERIMAAN RISIKO** | Web empat cakupan, PDF Safari/Android/iOS, CSV, push, dan receipt nyata lulus. Matriks empat peran × dua OS, deep-link lengkap, Dynamic Type, offline, serta uji fisik pembatalan cetak tidak dinyatakan lulus; pemilik produk menerimanya sebagai risiko residual. |
 | 10 | WhatsApp off tidak menghasilkan request provider; WhatsApp on hanya dirilis setelah pemeriksaan konfigurasi dan uji admin lulus | **TERPENUHI untuk bagian "off"; bagian "on" DITANGGUHKAN** | KL-10a…KL-10e (penyedia tiruan mencatat **0** panggilan saat kanal mati). Pengaktifan WhatsApp **tidak diuji dan tidak dinyatakan lulus** (§3). |
 
-**Delapan kriteria terpenuhi berdasarkan bukti otomatis, produksi, dan audit.**
-Kriteria 9 masih menunggu verifikasi perangkat lengkap untuk empat peran.
-Kriteria 10 terpenuhi untuk keadaan WhatsApp-off, sedangkan WhatsApp-on tetap
-ditangguhkan dan non-blocking sesuai keputusan produk.
+**Sembilan kriteria ditutup berdasarkan bukti otomatis, produksi, audit, dan
+penerimaan risiko eksplisit untuk kriteria 9.** Kriteria 10 terpenuhi untuk
+keadaan WhatsApp-off; WhatsApp-on tetap ditangguhkan, tidak diuji, tidak
+dinyatakan lulus, dan non-blocking sesuai keputusan produk.
 
 ## 2. Persyaratan implementasi PRD Fase 5 (§6 poin 1–11)
 
@@ -56,9 +55,9 @@ ditangguhkan dan non-blocking sesuai keputusan produk.
 | 4 | Detail riwayat, halaman HTML ramah cetak, PDF/bagikan dari aplikasi, ekspor CSV sampai batas produk 20.000 baris | **SELESAI** — web, REST API, dan aplikasi; hasil di atas batas ditolak eksplisit tanpa CSV parsial |
 | 5 | Ringkasan, detail, cetak, dan CSV memakai filter/repository yang konsisten | **SELESAI** — satu `IzinReportFilter` + satu `conditions()`; dibuktikan sidik jari kriteria yang identik |
 | 6 | Ukur query dengan fixture minimal 1.000 pengajuan; indeks hanya setelah `EXPLAIN` | **SELESAI** — diukur pada 1.028 dan 20.004 pengajuan; **tidak ada indeks laporan ditambahkan** karena pengukuran tidak mendukungnya (lihat `bukti-performa.md`) |
-| 7 | Preflight, backup, migrasi, verifikasi data lama, smoke test, backup/restore pada salinan MySQL | **SEBAGIAN DI PRODUKSI** — preflight, backup 47 tabel, restore `_test`, migrasi 009, dan verifikasi 22/22 selesai; smoke test produksi lengkap masih menunggu |
+| 7 | Preflight, backup, migrasi, verifikasi data lama, smoke test, backup/restore pada salinan MySQL | **SELESAI** — preflight, backup 47 tabel, restore `_test`, migrasi 009, verifikasi 22/22, serta checklist produksi berbasis risiko selesai |
 | 8 | Regresi seluruh alur V1: login, master data, jadwal, absensi, laporan, cetak, API, aplikasi guru | **SELESAI** — lihat `hasil-regresi.md` |
-| 9 | Uji alur V2 pada web dan perangkat nyata untuk seluruh peran | **SEBAGIAN** — web selesai; perangkat nyata MENUNGGU VERIFIKASI |
+| 9 | Uji alur V2 pada web dan perangkat nyata untuk seluruh peran | **DITUTUP DENGAN RISIKO RESIDUAL DITERIMA** — bukti lintas kanal tersedia; matriks lengkap tetap menjadi regresi pascarilis |
 | 10 | Dokumentasikan deployment cPanel, environment, cron, feature flag WhatsApp, rollback, respons insiden | **SELESAI** — `cpanel-deployment.md`, `migration-and-rollback.md`, `incident-runbook.md` |
 | 11 | Jangan mengaktifkan WhatsApp produksi sebelum admin menyetujui provider, template, credential, dan hasil uji | **DIPATUHI** — WhatsApp tetap OFF; preflight dan verifikasi MEMBLOKIR rilis bila menyala |
 
@@ -85,10 +84,10 @@ Fase 5 hanyalah **memperkuat pengamannya**, bukan mengaktifkannya:
 
 | # | Temuan Fase 4 | Status Fase 5 |
 | --- | --- | --- |
-| 1 | Cron worker push produksi belum berjalan otomatis | **DIPASANG, BELUM SEHAT PENUH.** Cron cPanel sudah ada dan worker pernah mengambil sewa, tetapi pemeriksaan 29 Agustus mencatat 0 perangkat aktif serta 1 receipt Menunggu lebih dari 6 jam. Registrasi perangkat dan cron `--receipts` masih harus dibuktikan dengan receipt baru yang berpindah ke `Terkirim`. |
-| 2 | Server baru memeriksa tiket awal Expo | **DITANGANI.** Migrasi 009 menambah `tiket_id` dan kolom receipt; `PushReceiptClient` + `ExpoPushClient::getReceipts()` memanggil endpoint resmi `getReceipts`; `NotificationDispatcher::reconcileReceipts()` merekonsiliasi status. Dibuktikan KL-9a…KL-9p (sukses, gagal, belum tersedia, batas percobaan, idempotensi, tanpa kirim ulang). Verifikasi terhadap Expo NYATA tetap menunggu. |
-| 3 | Deep-link push Android/iOS foreground/background/cold-start belum lengkap | **BELUM DITANGANI — MENUNGGU PENGUJIAN MANUSIA.** Tidak ada perangkat fisik pada lingkungan kerja ini. Checklist langkah demi langkah disediakan pada `uji-manual-tertunda.md`. **Tidak dinyatakan lulus.** |
-| 4 | Commit mobile masih lokal | **SELESAI.** PR mobile #6 sudah di-merge ke `origin/main` pada `f604149`; commit koreksi margin `9d81d2f` termasuk di dalamnya. |
+| 1 | Cron worker push produksi belum berjalan otomatis | **SELESAI.** Cron push per menit dan receipt per 15 menit berjalan dengan PHP `/opt/alt/php83/usr/bin/php`; kesehatan 6/6, perangkat aktif 1, antrean push 0. |
+| 2 | Server baru memeriksa tiket awal Expo | **SELESAI.** Pada 22:15 WIB tiga receipt nyata diperiksa dan ketiganya menjadi `Terkirim`; pada 22:23 WIB `Menunggu: 0`, `Terkirim: 3`, `Gagal: 0`. |
+| 3 | Deep-link push Android/iOS foreground/background/cold-start belum lengkap | **RISIKO RESIDUAL DITERIMA.** Matriks lengkap tidak dinyatakan lulus dan dipindahkan ke regresi pascarilis; otorisasi server lintas cakupan tetap lulus otomatis. |
+| 4 | Commit mobile masih lokal | **SELESAI UNTUK BASELINE PRODUKSI.** Koreksi entitlement iOS `2016bf8` sudah masuk `main`; koreksi pembatalan cetak disiapkan pada branch penutupan terpisah. |
 
 ## 5. Yang TIDAK dikerjakan dan TIDAK diklaim
 
@@ -97,7 +96,7 @@ Daftar ini sengaja eksplisit agar auditor tidak perlu menebak.
 | Tidak dikerjakan | Alasan |
 | --- | --- |
 | Pengaktifan WhatsApp | DITANGGUHKAN oleh keputusan produk |
-| Uji receipt/deep-link lengkap pada perangkat Android/iOS fisik | Bukti push lama dan PDF tersedia, tetapi receipt baru serta seluruh keadaan deep-link belum lulus |
+| Uji deep-link lengkap pada perangkat Android/iOS fisik | Receipt dan push nyata lulus; seluruh keadaan deep-link diterima sebagai risiko residual pascarilis |
 | Merge ke `main`, push ke origin, deploy | Dilarang tanpa instruksi terpisah pengguna |
 | Fase berikutnya | Di luar ruang lingkup |
 
@@ -105,10 +104,8 @@ Daftar ini sengaja eksplisit agar auditor tidak perlu menebak.
 
 | Risiko | Dampak | Mitigasi |
 | --- | --- | --- |
-| Receipt cron belum terbukti sehat | Satu receipt tertahan lebih dari 6 jam dan tidak ada perangkat aktif | Daftarkan ulang perangkat, kirim push baru, jalankan `--receipts`, lalu buktikan status berpindah ke `Terkirim` |
-| Receipt akhir belum diverifikasi terhadap Expo nyata | Rekonsiliasi terbukti benar terhadap klien tiruan, belum terhadap penyedia sungguhan | Setelah cron aktif, bandingkan sebaran `receipt_status` dengan pengamatan perangkat |
-| Deep-link cold-start Android belum diuji | Ketukan notifikasi dapat gagal pada kondisi tertentu | Checklist `uji-manual-tertunda.md` §2 |
-| Pembatalan dialog cetak iOS menampilkan exception mentah | Pengguna melihat pesan teknis walau hanya membatalkan cetak | Tangani pembatalan `expo-print` sebagai aksi normal; pesan kesalahan lain harus diterjemahkan ke bahasa pengguna |
+| Deep-link dan cakupan lintas akun pada perangkat belum diuji lengkap | Ketukan notifikasi dapat gagal pada keadaan tertentu | Risiko diterima; jalankan checklist `uji-manual-tertunda.md` §2 sebagai regresi pascarilis |
+| Pembatalan cetak iOS belum diuji ulang pada build fisik | Koreksi otomatis lulus tetapi binary baru belum diuji manusia | Ulangi tutup dialog pada build berikutnya; classifier sempit dan galat printer nyata tetap diteruskan |
 | MySQL 5.7 cPanel vs MariaDB 10.11 sandbox | `CHECK` diabaikan MySQL 5.7 | Aturan yang sama ditegakkan lapisan aplikasi; median laporan sengaja memakai `LIMIT/OFFSET`, bukan window function, agar berjalan pada MySQL 5.7 |
 | Ekspor sangat besar | Memori server | Batas produk `MAX_EXPORT_ROWS` 20.000; hasil lebih besar ditolak `422 EXPORT_TOO_LARGE` dan pengguna diminta mempersempit filter — tidak pernah memotong diam-diam |
 | Satu baris outbox dapat menyebar ke beberapa perangkat | Receipt yang disimpan mewakili perangkat pertama | Dicatat pada kode dan dokumen; in-app tetap sumber status utama; pencabutan token dari receipt hanya dilakukan bila pemetaannya tidak ambigu |
@@ -138,4 +135,4 @@ V2_PHASE5_DRILL=1 php bin/v2_phase5_backup_restore_drill.php
 php bin/v2_phase5_cron_check.php
 ```
 
-Hasil yang diharapkan: **2.230 pemeriksaan lulus, 0 gagal**.
+Hasil audit penutupan: **2.337 pemeriksaan lulus, 0 gagal**.

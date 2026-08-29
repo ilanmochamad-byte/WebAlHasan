@@ -1,9 +1,9 @@
 # V2 Fase 5 — Deployment cPanel, Environment, dan Cron
 
-> **Belum dijalankan pada produksi.** Dokumen ini adalah prosedur, bukan laporan
-> hasil. Migrasi produksi, pemasangan cron, dan smoke test produksi memerlukan
-> izin pengguna dan tetap tercatat MENUNGGU VERIFIKASI pada
-> `acceptance-status.md` §4.
+> **Sudah dijalankan pada produksi 28–29 Agustus 2026.** Dokumen ini tetap
+> menjadi prosedur pengulangan. Hasil aktual—backup 47 tabel, restore `_test`,
+> verifikasi 22/22, cron 6/6, push nyata, dan receipt 3/3 Terkirim—dicatat pada
+> `penutupan-fase5.md`.
 
 ## 1. Urutan rilis
 
@@ -106,6 +106,11 @@ terisi otomatis.
 # Setiap jam — pemeriksaan kesehatan cron; keluarannya dikirim ke email admin.
 0 * * * * /usr/local/bin/php /home/AKUN/public_html/bin/v2_phase5_cron_check.php
 ```
+
+Pada akun produksi `k1807225`, jalur PHP yang terbukti benar adalah
+`/opt/alt/php83/usr/bin/php` dan root aplikasi adalah
+`/DATA/k1807225/public_html`. Bentuk `/opt/alt/php83/usr/local/bin/php` serta
+jalur tanpa garis miring awal terbukti salah dan tidak boleh dipakai.
 
 Mengapa receipt setiap 15 menit dan bukan setiap menit: Expo baru menyediakan
 receipt setelah penyedia menjawab. Worker sengaja hanya meminta receipt untuk

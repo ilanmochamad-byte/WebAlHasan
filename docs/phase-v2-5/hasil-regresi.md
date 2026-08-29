@@ -3,9 +3,9 @@
 Kriteria: *"Uji regresi seluruh alur V1: login, master data, jadwal, absensi,
 laporan, cetak, API, dan aplikasi guru"* serta seluruh alur V2 Fase 1–4.
 
-Seluruh angka berasal dari putaran yang sama dengan `test-results.md`:
-**28 berkas, 2.230 pemeriksaan, 0 gagal**, diulang dua kali dengan hasil
-identik.
+Audit penutupan berasal dari putaran yang sama dengan `test-results.md`:
+**29 berkas, 2.337 pemeriksaan, 0 gagal**. TypeScript, lint, dan 6 uji terarah
+pembatalan cetak iOS juga lulus.
 
 ## 1. Ringkasan
 
@@ -42,7 +42,7 @@ tanpa mengubah tanda tangan yang sudah ada. Seluruh 280 pemeriksaan Fase 4
 
 ## 3. Regresi V1 — rinci
 
-### 3.1 Statis (218 pemeriksaan)
+### 3.1 Statis V1 (226 pemeriksaan)
 
 | Berkas | Pemeriksaan | Cakupan |
 | --- | --- | --- |
@@ -50,7 +50,7 @@ tanpa mengubah tanda tangan yang sudah ada. Seluruh 280 pemeriksaan Fase 4
 | `tests/phase2_static.php` | 46 | Data master |
 | `tests/phase3_static.php` | 34 | Jadwal dan pertemuan |
 | `tests/phase4_static.php` | 38 | API dan absensi |
-| `tests/phase5_static.php` | 36 | Laporan absensi V1 dan indeks pelaporan |
+| `tests/phase5_static.php` | 44 | Laporan absensi V1, indeks pelaporan, dan jalur cetak bersama |
 
 ### 3.2 Integrasi (56 pemeriksaan)
 
@@ -166,7 +166,7 @@ cakupan lain tidak boleh muncul pada HTML daftar, HTML cetak, maupun berkas CSV.
 
 | Area | Status | Rujukan |
 | --- | --- | --- |
-| Aplikasi guru pada perangkat fisik | MENUNGGU VERIFIKASI | `uji-manual-tertunda.md` §3 |
+| Matriks aplikasi seluruh peran pada perangkat fisik | Risiko residual diterima; tidak dinyatakan lulus lengkap | `uji-manual-tertunda.md` §3 |
 | Halaman publik (berita, galeri, PSB) | Tidak disentuh Fase 5; tidak ada pengujian otomatis sejak V1 | Smoke test manual `cpanel-deployment.md` §5 |
 | Impor/ekspor XLSX V1 | Tidak disentuh Fase 5 | Smoke test manual |
 | Perilaku pada PHP versi cPanel | Sandbox memakai PHP 8.4 | Ulangi `php -l` pada staging |

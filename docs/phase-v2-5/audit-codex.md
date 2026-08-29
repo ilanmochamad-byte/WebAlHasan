@@ -8,10 +8,14 @@ Branch mobile: `prd-v2-fase-5`
 
 ## Keputusan
 
-**Fase 5 belum lolos rilis produksi.** Implementasi inti laporan dan isolasi
-cakupan bekerja pada pengujian layanan, tetapi masih ada satu ketidaksesuaian
-fungsional yang terbukti dan beberapa gerbang manual/produksi yang belum
-dijalankan.
+> **Catatan penutupan 29 Agustus 2026:** keputusan audit awal di bawah bersifat
+> historis dan seluruh temuan blocking telah ditutup. Keputusan final adalah
+> **SELESAI PRODUKSI DENGAN RISIKO RESIDUAL DITERIMA**, sebagaimana dirinci pada
+> `penutupan-fase5.md`.
+
+Pada 28 Agustus 2026 Fase 5 belum lolos rilis produksi. Implementasi inti
+laporan dan isolasi cakupan bekerja, tetapi masih ada ketidaksesuaian dan
+gerbang manual/produksi yang saat itu belum dijalankan.
 
 ## Temuan audit
 
@@ -84,6 +88,10 @@ Database audit hanya berisi data sintetis, dibuat sementara, lalu dihentikan
 dan dihapus. Database produksi tidak disentuh.
 
 ## Syarat sebelum menyatakan Fase 5 selesai
+
+**Status final: seluruh syarat blocking ditutup pada 29 Agustus 2026.** Syarat
+nomor 3 ditutup melalui checklist berbasis risiko dan penerimaan eksplisit atas
+matriks perangkat yang tidak diulang; WhatsApp tetap OFF dan DITANGGUHKAN.
 
 1. Pertahankan kontrak batas produk 20.000 baris: hasil sampai batas harus
    lengkap; hasil di atas batas harus ditolak `422` tanpa berkas parsial.
