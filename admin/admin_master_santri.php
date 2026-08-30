@@ -38,6 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         if ($action === 'save') {
+            if (array_intersect(['nama_ayah', 'no_hp_ayah', 'nama_ibu', 'no_hp_ibu'], array_keys($_POST)) !== []) {
+                throw new MasterDataException('Kolom lama hanya dapat diperbarui melalui pemilihan wali dan konfirmasi penggantian.');
+            }
             $existing = $id ? $service->santri($id) : null;
             $_POST['foto'] = (new PhotoStorage(APP_ROOT . '/gambar_galeri'))->store($_FILES['foto_upload'] ?? null, (string) ($existing['foto'] ?? 'default.jpg'));
             $savedId = $service->saveSantri($_POST, $id ?: null);

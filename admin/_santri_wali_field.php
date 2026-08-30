@@ -153,7 +153,7 @@ $konflikKolomLama = $hubungan !== 'Wali'
                 <label class="d-inline-flex align-items-start gap-2 mb-0">
                     <input type="checkbox" name="konfirmasi_timpa[<?= ah_e($hubungan) ?>]" value="1" class="mt-1">
                     <span>
-                        <strong>Ganti nilai kolom lama <?= ah_e($hubungan === 'Ayah' ? 'nama_ayah' : 'nama_ibu') ?>.</strong>
+                        <strong>Ganti nama dan nomor HP pada kolom lama <?= ah_e($hubungan) ?>.</strong>
                         Centang hanya bila identitas wali yang Anda pilih memang benar. Nilai sebelum dan sesudah dicatat pada audit.
                     </span>
                 </label>

@@ -343,29 +343,38 @@ final class MasterDataService
         }
         $kolomNama = $hubungan === 'Ayah' ? 'nama_ayah' : 'nama_ibu';
         $kolomHp = $hubungan === 'Ayah' ? 'no_hp_ayah' : 'no_hp_ibu';
-        $lamaNama = trim((string) ($santri[$kolomNama] ?? ''));
+        $lamaNama = (string) ($santri[$kolomNama] ?? '');
+        $lamaHp = (string) ($santri[$kolomHp] ?? '');
         $baruNama = trim((string) $wali['nama']);
+        $baruHp = (string) ($wali['no_hp'] ?? '');
 
-        if ($lamaNama === $baruNama) {
-            $this->repository->santriMirrorParent($santriId, $hubungan, $baruNama, $wali['no_hp'] ?: null);
+        if ($lamaNama === $baruNama && $lamaHp === $baruHp) {
             return;
         }
 
+        // A-02: nomor lama juga data yang harus dilindungi, termasuk ketika
+        // nama sama atau kosong dan nomor wali baru kosong. Simpan nilai asli
+        // (termasuk spasi) pada audit agar penimpaan dapat ditelusuri.
+        $konflik = ($lamaNama !== '' && $lamaNama !== $baruNama)
+            || ($lamaHp !== '' && $lamaHp !== $baruHp);
         $konfirmasi = $input['konfirmasi_timpa'][$hubungan] ?? null;
-        if ($lamaNama !== '' && (string) $konfirmasi !== '1') {
+        if ($konflik && (string) $konfirmasi !== '1') {
             throw new MasterDataException(
-                'Kolom lama ' . $kolomNama . ' berisi "' . $lamaNama . '", berbeda dengan identitas wali yang dipilih ("'
-                . $baruNama . '"). Centang konfirmasi penggantian nilai lama bila memang ingin menimpanya. '
+                'Nama atau nomor HP pada kolom lama ' . $hubungan . ' berbeda dengan identitas wali yang dipilih. '
+                . 'Centang konfirmasi penggantian nilai lama bila memang ingin menimpanya. '
                 . 'Nilai sebelum dan sesudah akan tercatat pada audit.'
             );
         }
 
         $this->repository->santriMirrorParent($santriId, $hubungan, $baruNama, $wali['no_hp'] ?: null);
-        $this->audit->log('master.legacy.mirror', 'santri', $santriId, [
+        $tercatat = $this->audit->log('master.legacy.mirror', 'santri', $santriId, [
             $kolomNama => $lamaNama, $kolomHp => $santri[$kolomHp] ?? null,
         ], [
-            $kolomNama => $baruNama, $kolomHp => $wali['no_hp'], 'wali_id' => $waliId, 'dikonfirmasi_admin' => $lamaNama !== '',
+            $kolomNama => $baruNama, $kolomHp => $wali['no_hp'], 'wali_id' => $waliId, 'dikonfirmasi_admin' => $konflik,
         ], $actorId);
+        if (!$tercatat) {
+            throw new MasterDataException('Penggantian kolom lama dibatalkan karena audit tidak dapat disimpan.');
+        }
     }
 
     public function setSantriState(int $id, string $action): void
