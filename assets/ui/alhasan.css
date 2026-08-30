@@ -156,7 +156,18 @@ body.ah {
     line-height: 1;
 }
 
-.ah-topbar__spacer { flex: 1 1 auto; }
+.ah-topbar__spacer { flex: 1 1 auto; min-width: 0; }
+
+/* Nama pesantren boleh terpotong; tombol tidak boleh terdorong keluar layar. */
+.ah-brand { min-width: 0; overflow: hidden; }
+.ah-brand__text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ah-topbar__btn { flex: 0 0 auto; }
+
+@media (max-width: 575.98px) {
+    .ah-topbar { gap: .4rem; padding: .5rem .5rem; }
+    .ah-brand__text small { display: none; }
+    .ah-topbar__btn { padding: .35rem .5rem; }
+}
 
 .ah-topbar__btn {
     min-width: var(--ah-touch);
