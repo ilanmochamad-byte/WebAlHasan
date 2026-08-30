@@ -48,3 +48,25 @@ melewati batas; scope santri kosong tetap diterima meski scope guru berisi 20.00
 Uji awal setelah perubahan sempat gagal karena router khusus API mengembalikan
 404 untuk `/portal/` sehingga login uji tidak mendapat CSRF. Router lokal audit
 diperbaiki tanpa mengubah expected result; empat pengujian batas kemudian lulus.
+
+## A-07: laporan web guru dan menu
+
+Empat pintu laporan (`admin_laporan_absensi`, `laporan_absensi_detail`,
+`export_laporan_absensi`, `laporan_absensi_cetak`) memakai guard khusus laporan:
+sesi wajib, admin atau guru berelasi, GET/HEAD saja. POST ditolak 405 tanpa mutasi.
+`_guard.php` dan `_master_ui.php` tetap admin-only; halaman laporan memakai helper
+Layout bersama tanpa melewati guard master. `ReportFilter::forUser` memaksa ID
+guru sendiri; detail pertemuan juga memeriksa guru pemilik.
+
+Notifikasi web tetap berdasarkan kemampuan perizinan; menu guru non-murobi tidak
+lagi menawarkan halaman 403. Notifikasi dalam aplikasi mobile tidak diubah.
+
+Assertion umum Fase 1 untuk empat laporan diganti secara eksplisit dengan
+pemeriksaan guard laporan admin/guru baca-saja, bukan menghapus pemeriksaan.
+Uji HTTP pengganti memeriksa lima peran, 30/1/31 pada layar/CSV/cetak, teacher_id
+asing 403, schedule_id asing tidak membocorkan peserta, detail guru lain 403,
+POST 405, dan master data tetap 403. Seluruh 38 pemeriksaan lulus.
+
+Perbandingan jumlah cetak pada uji baru awalnya membaca markup sebagai teks
+mentah; pengujian diperbaiki membaca elemen ringkasan DOM tepat. Angka expected
+30/1/31 dan kode aplikasi cetak tidak diubah untuk meluluskan uji tersebut.

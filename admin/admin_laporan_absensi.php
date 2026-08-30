@@ -22,8 +22,7 @@ use App\Report\ReportFilter;
  * `santri` sebagai tampilan awal.
  */
 
-require_once __DIR__ . '/_guard.php';
-require_once __DIR__ . '/_master_ui.php';
+require_once __DIR__ . '/_laporan_guard.php';
 
 $error = null;
 try {
@@ -63,7 +62,7 @@ foreach ([
     ];
 }
 
-master_header('Laporan Kehadiran Pengajian', [
+ah_page_open(['title' => 'Laporan Kehadiran Pengajian', 'user' => $currentUser,
     'description' => 'Ringkasan, detail, CSV, dan cetak selalu memakai filter yang sama — termasuk pilihan penyajian.',
     'active' => 'kehadiran',
     'tabs' => $tabs,
@@ -73,8 +72,8 @@ master_header('Laporan Kehadiran Pengajian', [
         ['label' => 'Laporan Kehadiran'],
     ],
     'actions' => $report === null ? '' :
-        '<a class="btn btn-outline-primary" href="export_laporan_absensi.php?' . master_e(http_build_query($query)) . '">Ekspor CSV</a>'
-        . '<a class="btn btn-primary" target="_blank" rel="noopener" href="laporan_absensi_cetak.php?' . master_e(http_build_query($query)) . '">Cetak / PDF</a>',
+        '<a class="btn btn-outline-primary" href="export_laporan_absensi.php?' . ah_e(http_build_query($query)) . '">Ekspor CSV</a>'
+        . '<a class="btn btn-primary" target="_blank" rel="noopener" href="laporan_absensi_cetak.php?' . ah_e(http_build_query($query)) . '">Cetak / PDF</a>',
 ]);
 
 if ($error !== null) {
@@ -96,41 +95,41 @@ if ($error !== null) {
                 <div class="col-md-3"><label class="form-label" for="subject_scope">Penyajian</label>
                     <select class="form-select" id="subject_scope" name="subject_scope">
                         <?php foreach ($options['subject_scopes'] as $opsi): ?>
-                            <option value="<?= master_e($opsi['value']) ?>"<?= $selected($scope, $opsi['value']) ?>><?= master_e($opsi['label']) ?></option>
+                            <option value="<?= ah_e($opsi['value']) ?>"<?= $selected($scope, $opsi['value']) ?>><?= ah_e($opsi['label']) ?></option>
                         <?php endforeach; ?>
                     </select></div>
                 <div class="col-md-3"><label class="form-label" for="date_from">Tanggal mulai</label>
-                    <input class="form-control" id="date_from" name="date_from" type="date" required value="<?= master_e($filter['date_from']) ?>"></div>
+                    <input class="form-control" id="date_from" name="date_from" type="date" required value="<?= ah_e($filter['date_from']) ?>"></div>
                 <div class="col-md-3"><label class="form-label" for="date_to">Tanggal akhir</label>
-                    <input class="form-control" id="date_to" name="date_to" type="date" required value="<?= master_e($filter['date_to']) ?>"></div>
+                    <input class="form-control" id="date_to" name="date_to" type="date" required value="<?= ah_e($filter['date_to']) ?>"></div>
                 <div class="col-md-3"><label class="form-label" for="academic_year_id">Tahun ajaran</label>
                     <select class="form-select" id="academic_year_id" name="academic_year_id"><option value="">Semua tahun ajaran</option>
                         <?php foreach ($options['academic_years'] as $row): ?>
-                            <option value="<?= $row['id'] ?>"<?= $selected($filter['academic_year_id'], $row['id']) ?>><?= master_e($row['year'] . ' - ' . $row['semester']) ?></option>
+                            <option value="<?= $row['id'] ?>"<?= $selected($filter['academic_year_id'], $row['id']) ?>><?= ah_e($row['year'] . ' - ' . $row['semester']) ?></option>
                         <?php endforeach; ?>
                     </select></div>
                 <div class="col-md-3"><label class="form-label" for="teacher_id">Guru</label>
                     <select class="form-select" id="teacher_id" name="teacher_id"><option value="">Semua guru</option>
                         <?php foreach ($options['teachers'] as $row): ?>
-                            <option value="<?= $row['id'] ?>"<?= $selected($filter['teacher_id'], $row['id']) ?>><?= master_e($row['name']) ?></option>
+                            <option value="<?= $row['id'] ?>"<?= $selected($filter['teacher_id'], $row['id']) ?>><?= ah_e($row['name']) ?></option>
                         <?php endforeach; ?>
                     </select></div>
                 <div class="col-md-3"><label class="form-label" for="class_id">Kelas</label>
                     <select class="form-select" id="class_id" name="class_id"><option value="">Semua kelas</option>
                         <?php foreach ($options['classes'] as $row): ?>
-                            <option value="<?= $row['id'] ?>"<?= $selected($filter['class_id'], $row['id']) ?>><?= master_e($row['name']) ?></option>
+                            <option value="<?= $row['id'] ?>"<?= $selected($filter['class_id'], $row['id']) ?>><?= ah_e($row['name']) ?></option>
                         <?php endforeach; ?>
                     </select></div>
                 <div class="col-md-4"><label class="form-label" for="schedule_id">Jadwal</label>
                     <select class="form-select" id="schedule_id" name="schedule_id"><option value="">Semua jadwal</option>
                         <?php foreach ($options['schedules'] as $row): ?>
-                            <option value="<?= $row['id'] ?>"<?= $selected($filter['schedule_id'], $row['id']) ?>><?= master_e($row['label']) ?></option>
+                            <option value="<?= $row['id'] ?>"<?= $selected($filter['schedule_id'], $row['id']) ?>><?= ah_e($row['label']) ?></option>
                         <?php endforeach; ?>
                     </select></div>
                 <div class="col-md-2"><label class="form-label" for="status">Status</label>
                     <select class="form-select" id="status" name="status"><option value="">Semua status</option>
                         <?php foreach ($options['statuses'] as $status): ?>
-                            <option value="<?= master_e($status) ?>"<?= $selected($filter['status'], $status) ?>><?= master_e($status) ?></option>
+                            <option value="<?= ah_e($status) ?>"<?= $selected($filter['status'], $status) ?>><?= ah_e($status) ?></option>
                         <?php endforeach; ?>
                     </select></div>
                 <div class="col-12 d-flex flex-wrap gap-2">
@@ -146,7 +145,7 @@ if ($error !== null) {
 <div class="ah-stats">
     <div class="ah-stat"><p class="ah-stat__label">Pertemuan</p><p class="ah-stat__value"><?= $summary['meeting_count'] ?></p></div>
     <div class="ah-stat"><p class="ah-stat__label">Baris detail</p><p class="ah-stat__value"><?= $summary['detail_count'] ?></p>
-        <p class="ah-stat__hint"><?= master_e($report['active_filters']['Penyajian'] ?? '') ?></p></div>
+        <p class="ah-stat__hint"><?= ah_e($report['active_filters']['Penyajian'] ?? '') ?></p></div>
     <?php if ($scope !== ReportFilter::SCOPE_GURU): ?>
         <div class="ah-stat"><p class="ah-stat__label">Catatan santri</p><p class="ah-stat__value"><?= $summary['student_attendance_count'] ?></p></div>
     <?php endif; ?>
@@ -154,7 +153,7 @@ if ($error !== null) {
         <div class="ah-stat"><p class="ah-stat__label">Catatan guru</p><p class="ah-stat__value"><?= $summary['teacher_attendance_count'] ?></p></div>
     <?php endif; ?>
     <?php foreach ($summary['statuses'] as $status => $count): ?>
-        <div class="ah-stat"><p class="ah-stat__label"><?= master_e($status) ?></p><p class="ah-stat__value"><?= $count ?></p></div>
+        <div class="ah-stat"><p class="ah-stat__label"><?= ah_e($status) ?></p><p class="ah-stat__value"><?= $count ?></p></div>
     <?php endforeach; ?>
 </div>
 
@@ -175,9 +174,9 @@ if ($error !== null) {
             <tbody>
             <?php foreach ($report['schedules'] as $row): ?>
                 <tr>
-                    <td>#<?= $row['schedule_id'] ?> · <?= master_e($row['subject']) ?><span class="ah-cell-sub"><?= master_e($row['book']) ?></span></td>
-                    <td><?= master_e($row['teacher']['name']) ?></td>
-                    <td><?= master_e($row['class']['name']) ?></td>
+                    <td>#<?= $row['schedule_id'] ?> · <?= ah_e($row['subject']) ?><span class="ah-cell-sub"><?= ah_e($row['book']) ?></span></td>
+                    <td><?= ah_e($row['teacher']['name']) ?></td>
+                    <td><?= ah_e($row['class']['name']) ?></td>
                     <td><?= $row['meeting_count'] ?></td>
                     <td><?= $row['detail_count'] ?></td>
                     <td><?= $row['statuses']['Hadir'] ?></td><td><?= $row['statuses']['Terlambat'] ?></td>
@@ -202,15 +201,15 @@ if ($error !== null) {
             <tbody>
             <?php foreach ($report['items'] as $row): ?>
                 <tr>
-                    <td><?= master_e($row['meeting_date']) ?></td>
-                    <td>#<?= $row['schedule_id'] ?> · <?= master_e($row['subject']) ?></td>
-                    <td><?= master_e($row['teacher_name']) ?><span class="ah-cell-sub"><?= master_e($row['class_name']) ?></span></td>
+                    <td><?= ah_e($row['meeting_date']) ?></td>
+                    <td>#<?= $row['schedule_id'] ?> · <?= ah_e($row['subject']) ?></td>
+                    <td><?= ah_e($row['teacher_name']) ?><span class="ah-cell-sub"><?= ah_e($row['class_name']) ?></span></td>
                     <td><?= ah_badge($row['subject_type'], $row['subject_type'] === 'Guru' ? 'info' : 'muted') ?></td>
-                    <td><?= master_e($row['subject_name']) ?><span class="ah-cell-sub"><?= master_e($row['identity_number']) ?></span></td>
+                    <td><?= ah_e($row['subject_name']) ?><span class="ah-cell-sub"><?= ah_e($row['identity_number']) ?></span></td>
                     <td><?= ah_badge($row['attendance_status'], match ($row['attendance_status']) {
                             'Hadir' => 'ok', 'Alpa' => 'danger', 'Terlambat' => 'warn', default => 'info',
-                        }) ?><span class="ah-cell-sub"><?= master_e($row['notes'] ?? '') ?></span></td>
-                    <td><?= master_e($row['recorder_name'] ?? '-') ?><span class="ah-cell-sub"><?= master_e($row['updated_at'] ?? '-') ?></span></td>
+                        }) ?><span class="ah-cell-sub"><?= ah_e($row['notes'] ?? '') ?></span></td>
+                    <td><?= ah_e($row['recorder_name'] ?? '-') ?><span class="ah-cell-sub"><?= ah_e($row['updated_at'] ?? '-') ?></span></td>
                     <td><a class="btn btn-sm btn-outline-primary" href="laporan_absensi_detail.php?id=<?= $row['meeting_id'] ?>">Pertemuan</a></td>
                 </tr>
             <?php endforeach; ?>
@@ -218,5 +217,5 @@ if ($error !== null) {
         </table></div>
     <?php endif; ?>
 </section>
-<?php master_pagination($report['pagination']['total'], $report['pagination']['current_page'], $report['pagination']['per_page']); endif; ?>
-<?php master_footer(); ?>
+<?php ah_pagination($report['pagination']['total'], $report['pagination']['current_page'], $report['pagination']['per_page']); endif; ?>
+<?php ah_page_close(); ?>

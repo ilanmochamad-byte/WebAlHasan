@@ -129,14 +129,16 @@ final class Navigation
         }
 
         $sistem = [];
-        $sistem[] = self::item(
-            'notifikasi',
-            'Notifikasi Saya',
-            '/portal/notifikasi.php',
-            'fa-bell',
-            $unreadCount !== null && $unreadCount > 0 ? ($unreadCount > 99 ? '99+' : (string) $unreadCount) : null,
-            $unreadCount !== null && $unreadCount > 0 ? $unreadCount . ' notifikasi belum dibaca' : null
-        );
+        if ($hasPerizinan) {
+            $sistem[] = self::item(
+                'notifikasi',
+                'Notifikasi Saya',
+                '/portal/notifikasi.php',
+                'fa-bell',
+                $unreadCount !== null && $unreadCount > 0 ? ($unreadCount > 99 ? '99+' : (string) $unreadCount) : null,
+                $unreadCount !== null && $unreadCount > 0 ? $unreadCount . ' notifikasi belum dibaca' : null
+            );
+        }
         if ($isAdmin) {
             $sistem[] = self::item('sistem.akun', 'Akun & Hak Akses', '/admin/admin_akun.php', 'fa-user-lock');
             $sistem[] = self::item('sistem.notifikasi', 'Kanal Notifikasi', '/admin/admin_notifikasi.php', 'fa-tower-broadcast');

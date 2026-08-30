@@ -44,6 +44,9 @@ $protectedExceptions = [
     'SimpleXLSX.php', 'SimpleXLSXGen.php', 'admin_login.php', 'cek_login.php', 'logout.php',
     'ubah_password.php', 'pertemuan_pengajian.php', 'admin_pengajian.php', 'admin_jadwal_ngaji.php',
     '_pengajian_jadwal.php', '_pengajian_pertemuan.php', '_santri_wali_field.php',
+    // A-07: keputusan pengguna membuka empat laporan baca-saja untuk guru.
+    '_laporan_guard.php', 'admin_laporan_absensi.php', 'laporan_absensi_detail.php',
+    'export_laporan_absensi.php', 'laporan_absensi_cetak.php',
 ];
 foreach (glob($root . '/admin/*.php') ?: [] as $file) {
     if (in_array(basename($file), $protectedExceptions, true)) {
@@ -51,6 +54,13 @@ foreach (glob($root . '/admin/*.php') ?: [] as $file) {
     }
     $source = (string) file_get_contents($file);
     $assert(str_contains($source, '_guard.php') || basename($file) === '_guard.php', basename($file) . ' memakai guard role admin');
+}
+$laporanGuard = (string) file_get_contents($root . '/admin/_laporan_guard.php');
+$assert(str_contains($laporanGuard, 'requireWebUser()') && str_contains($laporanGuard, "in_array('admin'")
+    && str_contains($laporanGuard, "in_array('guru'") && str_contains($laporanGuard, 'http_response_code(405)'),
+    'Guard laporan web hanya admin/guru dengan sesi dan menolak mutasi');
+foreach (['admin_laporan_absensi.php', 'laporan_absensi_detail.php', 'export_laporan_absensi.php', 'laporan_absensi_cetak.php'] as $page) {
+    $assert(str_contains((string) file_get_contents($root . '/admin/' . $page), "require_once __DIR__ . '/_laporan_guard.php'"), $page . ' memakai guard laporan baca-saja');
 }
 // Guard modul Pengajian. Sejak koreksi ke-4, jadwal dan pertemuan berada dalam
 // SATU modul `admin/admin_pengajian.php`; dua alamat lama hanya meneruskan ke

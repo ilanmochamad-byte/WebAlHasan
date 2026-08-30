@@ -10,7 +10,7 @@ declare(strict_types=1);
  * penyajian (`subject_scope`) yang ikut dicetak pada daftar filter aktif.
  */
 
-require_once __DIR__ . '/_guard.php';
+require_once __DIR__ . '/_laporan_guard.php';
 
 use App\Api\ApiException;
 use App\Report\ReportFilter;

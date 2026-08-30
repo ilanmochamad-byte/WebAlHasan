@@ -116,3 +116,16 @@ IP dalam 15 menit) dengan menghitung `login_failed` pada `audit_logs` yang sudah
 dicatat sejak V1 — tanpa tabel atau migrasi baru. Bila penghitungan gagal, ia
 **membuka jalan** (fail-open) agar kesalahan infrastruktur tidak mengunci semua
 orang; pengaman utama tetap hash password, CSRF, dan regenerasi sesi.
+
+## 8. Pembaruan setelah audit A-07 — keputusan pengguna 30 Agustus 2026
+
+Ketentuan terbaru ini menggantikan catatan bahwa hanya beranda yang dilonggarkan:
+empat halaman laporan absensi web sekarang diizinkan **baca-saja** untuk guru.
+Admin tetap seluruh cakupan; guru/murobi hanya jadwal sendiri; pengurus/orang tua
+403. Guard: `admin/_laporan_guard.php`, diteruskan ke `ReportFilter::forUser()`
+atau pemeriksaan pemilik `ReportService::meeting()`. POST seluruh pintu laporan
+405; guard master data tetap tidak berubah.
+
+Menu Notifikasi Saya hanya tampil bila punya kemampuan perizinan, sesuai guard
+web yang telah ada. Fitur notifikasi mobile tetap tersedia menurut kontrak API.
+Bukti: `tests/perapihan_audit_laporan_web.php` dan `perapihan_audit_http.php`.
