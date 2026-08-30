@@ -34,6 +34,7 @@ final class Layout
      * @param array{
      *     title:string,
      *     heading?:string,
+     *     show_heading?:bool,
      *     description?:string,
      *     user:array<string, mixed>,
      *     capabilities?:array<int, string>,
@@ -137,6 +138,7 @@ final class Layout
                 </nav>
             <?php endif; ?>
 
+            <?php if ($options['show_heading'] ?? true): ?>
             <div class="ah-page-head">
                 <div>
                     <h1><?= $e($heading) ?></h1>
@@ -148,6 +150,7 @@ final class Layout
                     <div class="ah-page-head__actions"><?= $options['actions'] ?></div>
                 <?php endif; ?>
             </div>
+            <?php endif; ?>
 
             <?php if (!empty($options['tabs'])): ?>
                 <ul class="ah-tabs">

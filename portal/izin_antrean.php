@@ -42,7 +42,7 @@ $judulAntrean = match ($scope['mode']) {
     default => 'Tidak ada antrean tindakan untuk peran ini',
 };
 
-portal_header('Antrean Perizinan', $userCapabilities, $scope['mode'], $currentUser);
+portal_header('Antrean Perizinan', $userCapabilities, $scope['mode'], $currentUser, ['show_heading' => false]);
 ?>
 <div class="border-bottom pb-3 mb-4">
     <h1 class="h3 mb-1">Antrean Perizinan</h1>

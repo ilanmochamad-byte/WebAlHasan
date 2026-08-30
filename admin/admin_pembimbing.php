@@ -32,7 +32,7 @@ $years = $master->years();
 $classes = $master->classes();
 $rooms = $master->kamarOptions();
 
-master_header('Penugasan Pembimbing');
+master_header('Penugasan Pembimbing', ['show_heading' => false]);
 ?>
 <div class="border-bottom pb-3 mb-4">
     <h1 class="h3">Penugasan Pembimbing</h1>

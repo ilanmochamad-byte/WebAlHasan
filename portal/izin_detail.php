@@ -34,7 +34,7 @@ $aksi = izin_workflow_service()->actionsFor($izin, $scope);
 $kandidatMurobi = ($aksi['tetapkan_murobi'] ?? false) ? izin_workflow_service()->eligibleMurobi() : [];
 $versi = (int) $izin['version'];
 
-portal_header('Detail Izin #' . (int) $izin['id'], $userCapabilities, $scope['mode'], $currentUser);
+portal_header('Detail Izin #' . (int) $izin['id'], $userCapabilities, $scope['mode'], $currentUser, ['show_heading' => false]);
 portal_flash_render();
 ?>
 <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4">

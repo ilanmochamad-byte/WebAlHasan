@@ -34,7 +34,7 @@ $scope = $pilihan['scope'];
 $today = date('Y-m-d');
 $santriTerpilih = (int) ($_GET['santri_id'] ?? 0);
 
-portal_header('Buat Pengajuan Izin', $userCapabilities, $scope['mode'], $currentUser);
+portal_header('Buat Pengajuan Izin', $userCapabilities, $scope['mode'], $currentUser, ['show_heading' => false]);
 ?>
 <div class="border-bottom pb-3 mb-4">
     <h1 class="h3 mb-1">Buat Pengajuan Izin</h1>
