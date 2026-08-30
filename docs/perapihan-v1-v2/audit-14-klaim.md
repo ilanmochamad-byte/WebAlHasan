@@ -294,5 +294,7 @@ terpisah dan penyelesaian butir penerimaan yang masih terbuka.
 Penutupan lingkungan: fixture tambahan UI pada manifest audit telah dibersihkan
 (`cleanup.log`); server PHP localhost milik auditor dihentikan. Fixture sandbox
 historis tetap dipertahankan. Lint 32 berkas PHP yang berubah/ditambah lulus;
-`git diff --check` bersih. Tidak ada diff pada layanan perizinan, notifikasi,
+Pemeriksaan whitespace kode/dokumen bersih. Log browser mentah mempertahankan
+sepuluh peringatan trailing whitespace dari teks tab HTML; bukti tidak diedit
+untuk menghilangkan peringatan tersebut. Tidak ada diff pada layanan perizinan, notifikasi,
 API, migrasi, dependency PHP, atau assertion B-1 selama lanjutan ini.
