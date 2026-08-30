@@ -1,6 +1,6 @@
 # Panduan mengirim hasil audit ke GitHub dan menyiapkan rilis cPanel
 
-> **Pembaruan verifikasi 14 klaim:** 12 klaim tambahan telah diverifikasi; K6-14 dan K6-16 masih menunggu perangkat/cetak, dan temuan cetak pra-ada A-17 menunggu keputusan. Lihat [audit-14-klaim.md](audit-14-klaim.md) dan matriks penerimaan terkini. Ini bukan izin rilis.
+> **Pembaruan A-17:** koreksi kolom PDF telah disetujui pengguna dan selesai; sembilan PDF kini 45 lulus, 0 gagal. Rekap penerimaan tetap 75 terverifikasi dan 2 menunggu pembaca layar/cetak Safari nyata. Lihat [audit-koreksi-pdf-a17.md](audit-koreksi-pdf-a17.md). Ini bukan izin rilis; angka pada isi laporan historis di bawah tetap merupakan hasil saat itu.
 
 Tanggal: 30 Agustus 2026. Panduan ini disiapkan setelah koreksi B-1, A-06,
 A-07, A-09, serta penyelesaian kamar/pagination A-08/A-10. **Auditor tidak melakukan push, merge, deploy, atau migrasi
@@ -32,23 +32,26 @@ menggabungkannya ke main.
 Buka [perbandingan di GitHub](https://github.com/ilanmochamad-byte/WebAlHasan/compare/main...codex/perapihan-v1-v2-ui),
 lalu buat pull request dengan **base: main** dan **compare:
 codex/perapihan-v1-v2-ui**. Cantumkan laporan audit awal, laporan lanjutan,
-matriks 77 klaim, hasil 2.768 pemeriksaan resmi + 171 audit tambahan, serta
+matriks 77 klaim, laporan koreksi PDF A-17 (3.318 pemeriksaan ulang lulus,
+0 gagal; rincian dan batas cakupan di laporan), serta
 butir yang belum terverifikasi. Jangan menyatakan semua kriteria sudah lulus.
 
 ## 2. Syarat sebelum merge dan produksi
 
 Sesuai AGENTS.md, main tidak boleh menerima paket yang belum memenuhi
 penerimaan. Kamar dan pagination telah dituntaskan sebelum push sesuai
-instruksi pengguna: **63 klaim terverifikasi, 0 tidak terverifikasi, dan
-14 menunggu verifikasi**. Jumlah tes yang lulus tidak menghapus sisa bukti itu. Lihat
+instruksi pengguna. Sesudah verifikasi lanjutan dan koreksi PDF A-17:
+**75 klaim terverifikasi, 0 tidak terverifikasi, dan 2 menunggu verifikasi**.
+Jumlah tes yang lulus tidak menghapus sisa bukti perangkat itu. Lihat
 [matriks penerimaan](penilaian-penerimaan-codex.md) dan
 [langkah lanjut audit](hasil-audit-lanjutan-codex.md).
 
 - Kamar dan pagination sudah selesai dalam kode, tanpa mengurangi ruang lingkup
   untuk meluluskan klaim. Lihat [buktinya](audit-kamar-pagination.md).
-- Lengkapi pemeriksaan form, audit mutasi, aksesibilitas, filter/cetak, halaman
-  legacy, dan perangkat yang relevan. Catat risiko yang belum terselesaikan;
-  jangan mengganti bukti fisik dengan emulasi Chromium.
+- Lengkapi K6-14 (VoiceOver/TalkBack) dan K6-16 (PDF Safari nyata) dengan
+  langkah pada [audit koreksi PDF](audit-koreksi-pdf-a17.md). Form, audit mutasi,
+  filter, dan halaman legacy telah diperiksa dalam cakupan sandbox pada audit
+  sebelumnya; jangan mengganti bukti fisik dengan emulasi Chromium.
 - Lakukan rehearsal versi yang sama pada lingkungan uji setara cPanel dengan
   database berakhiran `_test`; semua notifikasi keluar dinonaktifkan dan data
   sensitif dilindungi/disamarkan. Uji migrasi 010 dan restore backup di sana.

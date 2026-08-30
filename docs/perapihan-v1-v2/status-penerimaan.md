@@ -8,8 +8,9 @@ Paket "Koreksi dan Modernisasi UI/UX V1–V2" — keputusan pengguna 30 Agustus 
 > dengan bukti awal di [hasil-audit-codex.md](hasil-audit-codex.md) dan
 > hasil keputusan lanjutan di [hasil-audit-lanjutan-codex.md](hasil-audit-lanjutan-codex.md),
 > serta penyelesaian kamar/pagination di [audit-kamar-pagination.md](audit-kamar-pagination.md)
-> dan verifikasi 14 klaim di [audit-14-klaim.md](audit-14-klaim.md).
-> Beberapa klaim tidak terverifikasi atau masih menunggu keputusan/verifikasi.
+> dan verifikasi 14 klaim di [audit-14-klaim.md](audit-14-klaim.md),
+> dilanjutkan koreksi PDF pada [audit-koreksi-pdf-a17.md](audit-koreksi-pdf-a17.md).
+> Rekap terkini: 75 terverifikasi, 0 tidak terverifikasi, 2 menunggu pembaca layar/cetak Safari nyata.
 > **Paket belum dinyatakan lulus atau siap produksi.**
 
 Legenda:

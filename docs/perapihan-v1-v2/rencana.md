@@ -2,7 +2,7 @@
 
 **Tanggal keputusan pengguna:** 30 Agustus 2026
 **Peran agen:** Claude = implementer utama. Codex = audit, pengujian ulang, koreksi terarah.
-**Status:** implementasi dan koreksi audit lanjutan (termasuk kamar/pagination) selesai secara lokal; 14 klaim masih menunggu bukti lengkap. Belum dinyatakan lulus seluruh paket, belum di-merge, belum di-push, belum dirilis.
+**Status:** implementasi dan koreksi audit lanjutan (termasuk kamar/pagination) selesai secara lokal; koreksi kolom PDF A-17 telah disetujui dan diverifikasi. Rekap terkini 75 klaim terverifikasi, 0 tidak terverifikasi, 2 menunggu pembaca layar/cetak Safari nyata. Lihat [audit-koreksi-pdf-a17.md](audit-koreksi-pdf-a17.md). Belum dinyatakan lulus seluruh paket, belum di-merge, belum di-push, belum dirilis.
 
 > **Catatan kejujuran penulisan.** Dokumen ini merekam keputusan dan rancangan yang
 > memandu implementasi. Ia dirapikan menjadi bentuk akhirnya bersamaan dengan

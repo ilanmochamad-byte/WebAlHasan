@@ -1,0 +1,56 @@
+[
+  {
+    "pdf": "gabungan-css.pdf",
+    "pages": 3,
+    "width_pt": 841.91998,
+    "height_pt": 594.95996
+  },
+  {
+    "pdf": "gabungan-lanskap.pdf",
+    "pages": 3,
+    "width_pt": 841.91998,
+    "height_pt": 594.95996
+  },
+  {
+    "pdf": "gabungan-potret.pdf",
+    "pages": 3,
+    "width_pt": 594.95996,
+    "height_pt": 841.91998
+  },
+  {
+    "pdf": "guru-css.pdf",
+    "pages": 1,
+    "width_pt": 841.91998,
+    "height_pt": 594.95996
+  },
+  {
+    "pdf": "guru-lanskap.pdf",
+    "pages": 1,
+    "width_pt": 841.91998,
+    "height_pt": 594.95996
+  },
+  {
+    "pdf": "guru-potret.pdf",
+    "pages": 1,
+    "width_pt": 594.95996,
+    "height_pt": 841.91998
+  },
+  {
+    "pdf": "santri-css.pdf",
+    "pages": 3,
+    "width_pt": 841.91998,
+    "height_pt": 594.95996
+  },
+  {
+    "pdf": "santri-lanskap.pdf",
+    "pages": 3,
+    "width_pt": 841.91998,
+    "height_pt": 594.95996
+  },
+  {
+    "pdf": "santri-potret.pdf",
+    "pages": 3,
+    "width_pt": 594.95996,
+    "height_pt": 841.91998
+  }
+]

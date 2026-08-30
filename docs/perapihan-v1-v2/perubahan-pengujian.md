@@ -231,3 +231,17 @@ jejak audit boleh dihilangkan. Pengganti dinamis: 36 pemeriksaan baru
 kegagalan audit, memeriksa rollback data/perangkat dan isi before/after/pelaku.
 Jumlah assertion lama tidak dikurangi. Tidak ada perubahan assertion B-1 di
 lanjutan ini; keputusan B-1 sebelumnya tetap berlaku.
+
+
+## 10. Koreksi PDF A-17 sesudah izin pengguna
+
+Pengguna mengizinkan koreksi kolom PDF pada 30 Agustus 2026. Hanya lebar kolom
+renderer absensi diubah: Status 7% menjadi 8%, Catatan 16% menjadi 15%.
+Tidak ada berkas uji, assertion, fixture, atau pembanding API yang diubah.
+`perapihan_audit_report_pdf.py` yang sebelumnya mencatat 42 lulus/3 gagal kini
+mencatat **45 lulus/0 gagal**, dengan tuntutan kata status tetap utuh.
+`v2_phase5_cetak_pdf.php` tetap **175 lulus**, termasuk catatan panjang dan
+pagination. Matriks 432 kombinasi diregenerasi melalui HTTP dari renderer
+baru; bukan menambal HTML bukti lama. Hasil lengkap dan bukti tersimpan pada
+[audit-koreksi-pdf-a17.md](audit-koreksi-pdf-a17.md). Hasil historis tiga
+kegagalan tetap dipertahankan pada bukti audit terdahulu.

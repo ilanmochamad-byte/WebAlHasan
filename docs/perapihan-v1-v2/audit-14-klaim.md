@@ -1,5 +1,7 @@
 # Verifikasi lanjutan 14 klaim — Codex
 
+> **Pembaruan A-17:** koreksi kolom PDF telah disetujui pengguna dan selesai; sembilan PDF kini 45 lulus, 0 gagal. Rekap penerimaan tetap 75 terverifikasi dan 2 menunggu pembaca layar/cetak Safari nyata. Lihat [audit-koreksi-pdf-a17.md](audit-koreksi-pdf-a17.md). Ini bukan izin rilis; angka pada isi laporan historis di bawah tetap merupakan hasil saat itu.
+
 **Hasil:** 12 dari 14 klaim tambahan terverifikasi pada sandbox; dua masih
 menunggu pembaca layar/cetak Safari. Total pengujian tanpa duplikasi:
 **3.892 lulus, 3 gagal**. Kegagalan adalah cacat PDF potret pra-ada A-17 yang

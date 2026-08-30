@@ -1,6 +1,6 @@
 # Risiko dan pengujian yang masih menunggu verifikasi
 
-> **Pembaruan verifikasi 14 klaim:** 12 klaim tambahan telah diverifikasi; K6-14 dan K6-16 masih menunggu perangkat/cetak, dan temuan cetak pra-ada A-17 menunggu keputusan. Lihat [audit-14-klaim.md](audit-14-klaim.md) dan matriks penerimaan terkini. Ini bukan izin rilis.
+> **Pembaruan A-17:** koreksi kolom PDF telah disetujui pengguna dan selesai; sembilan PDF kini 45 lulus, 0 gagal. Rekap penerimaan tetap 75 terverifikasi dan 2 menunggu pembaca layar/cetak Safari nyata. Lihat [audit-koreksi-pdf-a17.md](audit-koreksi-pdf-a17.md). Ini bukan izin rilis; angka pada isi laporan historis di bawah tetap merupakan hasil saat itu.
 
 Paket "Koreksi dan Modernisasi UI/UX V1–V2" — keputusan pengguna 30 Agustus 2026.
 
