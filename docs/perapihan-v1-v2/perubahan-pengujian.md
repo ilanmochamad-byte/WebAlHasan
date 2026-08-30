@@ -218,3 +218,16 @@ Angka resmi tetap 2.768. Uji tambahan audit menjadi 235 karena 171 sebelumnya
 dijalankan ulang dan ditambah 64 pemeriksaan tersebut. Bukti serta 14 butir
 yang masih menunggu verifikasi ada di
 [audit-kamar-pagination.md](audit-kamar-pagination.md).
+
+## 9. Lanjutan verifikasi 14 klaim: A-12
+
+`v2_phase1_static.php` tetap memiliki satu assertion pembuatan/penghubungan akun
+tercatat pada audit. Bentuk pencarian diubah dari pemanggilan logger langsung
+menjadi kedua pemanggilan `auditRequired`, pemeriksaan hasil logger, dan exception
+ketika audit gagal. Rangkaian awal lanjutan menemukan assertion lama gagal
+karena pemanggilan telah dibungkus oleh pengaman transaksi A-12; bukan karena
+jejak audit boleh dihilangkan. Pengganti dinamis: 36 pemeriksaan baru
+`perapihan_audit_account_log.php` menjalankan semua mutasi normal dan simulasi
+kegagalan audit, memeriksa rollback data/perangkat dan isi before/after/pelaku.
+Jumlah assertion lama tidak dikurangi. Tidak ada perubahan assertion B-1 di
+lanjutan ini; keputusan B-1 sebelumnya tetap berlaku.

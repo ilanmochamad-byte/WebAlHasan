@@ -184,8 +184,10 @@ $assert(
 $accountService = $source('app/Account/PerizinanAccountService.php');
 $accountRepository = $source('app/Account/PerizinanAccountRepository.php');
 $assert(
-    str_contains($accountService, "audit->log('perizinan_account_created'")
-    && str_contains($accountService, "audit->log('perizinan_account_linked'"),
+    str_contains($accountService, "auditRequired('perizinan_account_created'")
+    && str_contains($accountService, "auditRequired('perizinan_account_linked'")
+    && str_contains($accountService, 'if (!$this->audit->log(')
+    && str_contains($accountService, "throw new RuntimeException('Perubahan akun dibatalkan karena audit tidak dapat disimpan."),
     'Pembuatan dan penghubungan akun tercatat pada audit'
 );
 $assert(
