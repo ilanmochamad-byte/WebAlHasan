@@ -347,6 +347,58 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 > batas ditolak `422 EXPORT_TOO_LARGE` tanpa berkas parsial. Tidak ada Fase 6
 > yang didefinisikan dalam PRD V2 ini.
 
+## 6b. Addendum — Paket "Koreksi dan Modernisasi UI/UX V1–V2" (30 Agustus 2026)
+
+Setelah Fase 5 ditutup, pemilik produk memutuskan satu paket **koreksi dan
+modernisasi V1–V2** yang berdiri di luar penomoran fase PRD ini. Paket itu
+**bukan** Fase 6 dan **bukan** implementasi PRD V3.
+
+Tujuh koreksi yang disetujui:
+
+1. **Pengelolaan akun terpusat.** Akun guru/admin dan akun pengurus/orang tua
+   dikelola di satu halaman. Perubahan role lama yang menghapus seluruh
+   `user_roles` diganti penambahan/pencabutan role yang eksplisit, dengan
+   validasi relasi master, konfirmasi khusus untuk hak admin, dan perlindungan
+   admin terakhir yang tahan permintaan bersamaan.
+2. **Data santri dan wali.** Formulir santri memilih atau membuat identitas wali
+   secara eksplisit; tidak ada penggabungan identitas otomatis; tersedia laporan
+   dan penggabungan rekonsiliasi satu pasang dengan konfirmasi admin. Kolom lama
+   `nama_ayah`/`nama_ibu` dipertahankan sebagai cermin satu arah.
+3. **Data guru.** Pilihan tugas lama "Guru/Pembimbing/Keduanya" dihapus dari alur
+   operasional tanpa dropdown pengganti; kolom `guru.status` tidak dihapus dan
+   tidak ditimpa. Penugasan mengajar berasal dari jadwal, penugasan murobi dari
+   `admin_murobi.php`, pembimbing tetap penugasan pengurus.
+4. **Modul Pengajian terpadu.** Jadwal dan pertemuan menjadi satu menu bertab;
+   penyimpanannya tetap terpisah dan alamat lama tetap berfungsi.
+5. **Pemisahan penyajian laporan kehadiran** menjadi Santri / Guru / Gabungan.
+   Halaman web memakai Santri sebagai tampilan awal; **default REST API tetap
+   `gabungan`** sehingga kontrak §5.6 tidak berubah.
+6. **Desain ulang UI/UX dan navigasi** halaman admin dan portal internal, dengan
+   satu lapisan desain bersama di atas Bootstrap yang sudah dipakai V1.
+7. **Satu pintu masuk `/portal/`.** Seluruh peran masuk dan mendarat lewat satu
+   alamat. Beranda umum **tidak** lagi memakai pemeriksaan kemampuan perizinan,
+   sehingga guru tanpa penugasan murobi tidak lagi ditolak 403 di beranda;
+   pengamanan halaman perizinan **tidak** dilonggarkan. Label "Portal Perizinan"
+   tidak lagi menjadi identitas seluruh sistem — namanya **Sistem Al Hasan**, dan
+   perizinan adalah salah satu modulnya.
+
+Keputusan §5.1 yang **tidak** diubah paket ini: PHP native + MySQL + Bootstrap,
+Expo 57/React Native 0.86, murobi sebagai guru berpenugasan, pembimbing sebagai
+tugas pengurus, akun orang tua terhubung ke wali, WhatsApp opsional dan tetap
+`OFF`/DITANGGUHKAN, serta larangan merusak fungsi V1, data lama, API, website
+publik, dan aplikasi guru.
+
+Satu-satunya perubahan skema adalah migrasi aditif
+`010_perapihan_rekonsiliasi_wali.sql` (kolom penanda penggabungan wali dan dua
+indeks), berpasangan dengan rollback.
+
+Rincian, kriteria penerimaan, bukti pengujian, risiko, dan hal yang masih
+menunggu verifikasi: **`docs/perapihan-v1-v2/`**.
+
+> **Status paket:** implementasi selesai pada branch `codex/perapihan-v1-v2-ui`,
+> **menunggu audit Codex**. Belum di-merge, belum di-push, belum dirilis, dan
+> tidak dinyatakan siap produksi.
+
 ## 7. Metrik Keberhasilan
 
 - 100% pengajuan baru memiliki pengurus pengaju, santri, rentang tanggal, status, routing, serta audit yang valid.

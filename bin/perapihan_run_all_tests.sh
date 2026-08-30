@@ -26,6 +26,9 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT" || exit 2
 MOBILE_APP_ROOT="${MOBILE_APP_ROOT:-$(cd "$ROOT/../../../alhasanApps" 2>/dev/null && pwd)}"
 export MOBILE_APP_ROOT
+# Bila revisi Chromium bawaan Playwright tidak dapat diunduh (sandbox tanpa
+# jaringan keluar), arahkan CHROMIUM_PATH ke Chromium yang sudah ada.
+export CHROMIUM_PATH="${CHROMIUM_PATH:-}"
 
 gagal=0
 lulus_total=0

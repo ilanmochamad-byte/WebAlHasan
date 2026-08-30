@@ -55,8 +55,10 @@ function catat(nama, lulus, keterangan = '') {
 
 async function bidik(page, label) {
   nomor += 1;
-  const nama = `${String(nomor).padStart(2, '0')}-${label}.png`;
-  await page.screenshot({ path: `${OUT}/${nama}`, fullPage: true });
+  // JPEG kualitas sedang: cukup untuk bukti visual, jauh lebih ringan daripada
+  // PNG penuh sehingga wajar disimpan di repositori sebagai lampiran audit.
+  const nama = `${String(nomor).padStart(2, '0')}-${label}.jpg`;
+  await page.screenshot({ path: `${OUT}/${nama}`, fullPage: true, type: 'jpeg', quality: 72 });
   return nama;
 }
 
