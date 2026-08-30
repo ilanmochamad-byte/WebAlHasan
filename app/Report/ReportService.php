@@ -14,9 +14,14 @@ final class ReportService
     {
     }
 
-    public function report(array $input, array $user): array
+    /**
+     * @param string $defaultScope Penyajian awal bila pemanggil tidak mengirim
+     *        `subject_scope`. Halaman web mengirim `santri`; REST API memakai
+     *        default lama `gabungan` agar kontraknya tidak berubah.
+     */
+    public function report(array $input, array $user, string $defaultScope = ReportFilter::DEFAULT_SCOPE_API): array
     {
-        $filter = ReportFilter::fromInput($input, $this->timezone)->forUser($user);
+        $filter = ReportFilter::fromInput($input, $this->timezone, $defaultScope)->forUser($user);
         $summary = $this->normalizeSummary($this->repository->summary($filter));
         $rows = array_map([$this, 'normalizeRow'], $this->repository->page($filter));
         return [
@@ -29,18 +34,18 @@ final class ReportService
         ];
     }
 
-    public function dashboardSummary(array $input, array $user): array
+    public function dashboardSummary(array $input, array $user, string $defaultScope = ReportFilter::DEFAULT_SCOPE_API): array
     {
-        $filter = ReportFilter::fromInput($input, $this->timezone)->forUser($user);
+        $filter = ReportFilter::fromInput($input, $this->timezone, $defaultScope)->forUser($user);
         return [
             'summary' => $this->normalizeSummary($this->repository->summary($filter)),
             'filters' => $filter->toArray(),
         ];
     }
 
-    public function exportRows(array $input, array $user): array
+    public function exportRows(array $input, array $user, string $defaultScope = ReportFilter::DEFAULT_SCOPE_API): array
     {
-        $filter = ReportFilter::fromInput($input, $this->timezone)->forUser($user);
+        $filter = ReportFilter::fromInput($input, $this->timezone, $defaultScope)->forUser($user);
         return [
             'summary' => $this->normalizeSummary($this->repository->summary($filter)),
             'items' => array_map([$this, 'normalizeRow'], $this->repository->allRows($filter)),
@@ -84,6 +89,12 @@ final class ReportService
                 ),
             ], $options['schedules']),
             'statuses' => ReportFilter::STATUSES,
+            // Aditif: pilihan penyajian laporan (koreksi ke-5).
+            'subject_scopes' => [
+                ['value' => ReportFilter::SCOPE_SANTRI, 'label' => 'Santri'],
+                ['value' => ReportFilter::SCOPE_GURU, 'label' => 'Guru'],
+                ['value' => ReportFilter::SCOPE_GABUNGAN, 'label' => 'Gabungan (santri dan guru)'],
+            ],
         ];
     }
 
@@ -156,9 +167,9 @@ final class ReportService
         ];
     }
 
-    public function explain(array $input, array $user): array
+    public function explain(array $input, array $user, string $defaultScope = ReportFilter::DEFAULT_SCOPE_API): array
     {
-        $filter = ReportFilter::fromInput($input, $this->timezone)->forUser($user);
+        $filter = ReportFilter::fromInput($input, $this->timezone, $defaultScope)->forUser($user);
         return $this->repository->explainPage($filter);
     }
 
@@ -166,6 +177,7 @@ final class ReportService
     {
         $descriptions = [
             'Rentang tanggal' => $filter->dateFrom . ' s.d. ' . $filter->dateTo,
+            'Penyajian' => $filter->scopeLabel(),
             'Status' => $filter->status ?? 'Semua status',
         ];
         $options = $this->options($user);

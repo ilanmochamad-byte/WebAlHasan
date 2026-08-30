@@ -217,6 +217,17 @@ final class ReportRepository
                     LEFT JOIN users actor ON actor.id = attendance.dicatat_oleh
                     {$studentWhere}";
 
+        // Koreksi ke-5: penyajian dipisahkan di sini, satu tempat, sehingga
+        // ringkasan, detail, CSV, dan cetak SELALU memakai definisi yang sama.
+        // Absensi guru tidak pernah dihapus; mode Santri hanya tidak
+        // menyertakan cabangnya pada UNION.
+        if (!$filter->includesGuru()) {
+            return [$student, $studentParams];
+        }
+        if (!$filter->includesSantri()) {
+            return [$teacher, $params];
+        }
+
         return [$teacher . ' UNION ALL ' . $student, [...$params, ...$studentParams]];
     }
 

@@ -2,13 +2,24 @@
 
 declare(strict_types=1);
 
+/**
+ * Ekspor CSV laporan kehadiran.
+ *
+ * Memakai `ReportFilter` dan repository yang SAMA dengan halaman laporan,
+ * termasuk pilihan penyajian (`subject_scope`). Default halaman web adalah
+ * `santri`, sama seperti tampilan awal layar, sehingga jumlah baris CSV tidak
+ * mungkin berbeda dari yang dilihat pengguna. Default REST API tetap
+ * `gabungan` dan tidak berubah.
+ */
+
 require_once __DIR__ . '/_guard.php';
 
 use App\Api\ApiException;
+use App\Report\ReportFilter;
 use App\Report\CsvExport;
 
 try {
-    $report = report_service()->exportRows($_GET, $currentUser);
+    $report = report_service()->exportRows($_GET, $currentUser, ReportFilter::SCOPE_SANTRI);
 } catch (ApiException $exception) {
     http_response_code($exception->status());
     exit($exception->getMessage());
