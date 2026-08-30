@@ -1,0 +1,321 @@
+
+=== 1. Migrasi 008 dan rollback ===
+[lulus] Migrasi 008 Fase 4 tersedia
+[lulus] Rollback 008 Fase 4 tersedia
+[lulus] Migrasi 008 tidak memakai DROP TABLE
+[lulus] Migrasi 008 tidak memakai TRUNCATE
+[lulus] Migrasi 008 tidak memakai DELETE FROM
+[lulus] Migrasi 008 tidak memakai DROP DATABASE
+[lulus] Migrasi 008 tidak melepas kolom mana pun
+[lulus] Migrasi 008 tidak memperbarui satu pun baris data bisnis
+[lulus] Rollback 008 tidak menyentuh tabel perizinan maupun audit Fase 1-3
+[lulus] Setiap ALTER pada migrasi 008 dibungkus pemeriksaan INFORMATION_SCHEMA (21 ALTER, 21 penjaga)
+[lulus] Seluruh CREATE TABLE pada migrasi 008 memakai IF NOT EXISTS
+[lulus] Seluruh DROP TABLE pada rollback memakai IF EXISTS
+[lulus] Migrasi 008 menambahkan notifikasi_percobaan
+[lulus] Migrasi 008 menambahkan notifikasi_pengaturan_audit
+[lulus] Migrasi 008 menambahkan notifikasi_worker_lock
+[lulus] Migrasi 008 menambahkan gagal_permanen
+[lulus] Migrasi 008 menambahkan tersedia_pada
+[lulus] Migrasi 008 menambahkan locked_by
+[lulus] Migrasi 008 menambahkan locked_until
+[lulus] Migrasi 008 menambahkan push_aktif
+[lulus] Migrasi 008 menambahkan device_id
+[lulus] Migrasi 008 menambahkan alasan_pencabutan
+[lulus] Migrasi 008 menambahkan pengaturan_notifikasi_inapp_check
+[lulus] Basis data menegakkan notifikasi in-app tidak dapat dimatikan
+[lulus] Skema Fase 4 tidak menyediakan tempat penyimpanan credential penyedia
+
+=== 2. Endpoint notifikasi ===
+[lulus] Rute Fase 4 terpasang: '/notifikasi'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/belum-dibaca'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/dibaca-semua'
+[lulus] Rute Fase 4 terpasang: #^/notifikasi/(\d+)$#
+[lulus] Rute Fase 4 terpasang: #^/notifikasi/(\d+)/dibaca$#
+[lulus] Rute Fase 4 terpasang: '/notifikasi/perangkat'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/perangkat/pencabutan'
+[lulus] Rute Fase 4 terpasang: #^/notifikasi/perangkat/(\d+)/push$#
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/status'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/pemeriksaan'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/sakelar'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/pesan-uji'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/kegagalan'
+[lulus] Rute Fase 4 terpasang: #^/notifikasi/admin/kegagalan/(\d+)/coba-ulang$#
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/worker'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/audit'
+[lulus] Router tidak memotong jalur: seluruh notifikasi melewati notification_api_service()
+[lulus] Rute perangkat didaftarkan sebelum pola id numerik
+[lulus] Logout mencabut registrasi perangkat push
+
+=== 3. Notifikasi in-app sebagai sumber status utama ===
+[lulus] In-app dibuat tanpa memeriksa sakelar kanal mana pun
+[lulus] Push dan WhatsApp diantrekan hanya ketika kanalnya menyala
+[lulus] Baris in-app langsung berstatus Sent tanpa menunggu penyedia eksternal
+[lulus] Layanan admin menolak permintaan mematikan kanal in-app
+[lulus] Pembacaan pengaturan selalu melaporkan in-app aktif
+
+=== 4. WhatsApp opsional ===
+[lulus] Repositori hanya menyalakan WhatsApp ketika pemeriksaan berstatus Lulus
+[lulus] Repositori mengikat pemeriksaan Lulus pada penyedia WhatsApp yang sedang dipilih
+[lulus] Layanan admin menolak menyalakan WhatsApp sebelum pemeriksaan lulus
+[lulus] Layanan admin memeriksa ulang identitas penyedia dan kelengkapan konfigurasi saat menyalakan WhatsApp
+[lulus] Basis data juga menegakkan syarat pemeriksaan lulus (CHECK dari migrasi 006)
+[lulus] Penyedia default adalah NullProvider (WhatsApp mati, tanpa vendor)
+[lulus] NullProvider tidak pernah membuka koneksi jaringan
+[lulus] Adapter uji tidak pernah membuka koneksi jaringan
+[lulus] Adapter uji menyatakan dirinya BUKAN pengiriman nyata
+[lulus] Adapter uji menolak dipakai ketika APP_ENV=production
+[lulus] Panel admin menandai hasil adapter uji sebagai bukan bukti pengiriman nyata
+[lulus] Terdapat antarmuka penyedia WhatsApp yang netral vendor
+[lulus] Worker berhenti sebelum menghubungi penyedia ketika kanal mati
+
+=== 5. Payload aman ===
+[lulus] Isi notifikasi tidak pernah membaca konteks alasan
+[lulus] Isi notifikasi tidak pernah membaca konteks catatan_pengurus
+[lulus] Isi notifikasi tidak pernah membaca konteks alasan_keputusan
+[lulus] Isi notifikasi tidak pernah membaca konteks alasan_penggantian
+[lulus] Isi notifikasi tidak pernah membaca konteks alasan_koreksi
+[lulus] Pembuat notifikasi tidak pernah membaca alasan atau catatan pengurus
+[lulus] Kanal eksternal memakai varian isi ringkas terpisah
+[lulus] Payload deep link hanya memuat penunjuk sumber daya
+[lulus] Worker push membatasi payload data ke daftar kunci yang diizinkan
+[lulus] Pusat notifikasi pengguna tidak pernah mengembalikan token atau nomor telepon
+
+=== 6. Pembersihan galat (SafeError) ===
+[lulus] SafeError menyamarkan token push Expo
+[lulus] SafeError menyamarkan bearer token
+[lulus] SafeError menyamarkan nomor telepon
+[lulus] SafeError menyamarkan nilai api_key pada JSON
+[lulus] SafeError menyamarkan credential pada query string
+[lulus] SafeError membatasi panjang pesan agar muat pada kolom error aman
+[lulus] SafeError menormalkan kode galat menjadi bentuk aman
+[lulus] SafeError::scrub menghapus nilai pada kunci sensitif dan mempertahankan sisanya
+
+=== 7. Deduplikasi ===
+[lulus] Enqueue memakai ON DUPLICATE KEY sehingga peristiwa yang sama tidak menghasilkan baris kedua
+[lulus] Enqueue membedakan baris baru dari duplikat yang diabaikan
+[lulus] Kunci peristiwa deterministik memakai id pengajuan dan versi baris
+[lulus] Percobaan ulang mengembalikan baris yang SAMA ke antrean, bukan membuat baris baru
+[lulus] Alur perizinan memicu NotificationEvent::PENGAJUAN_DIBUAT
+[lulus] Alur perizinan memicu NotificationEvent::ROUTING_PERLU_ADMIN
+[lulus] Alur perizinan memicu NotificationEvent::MUROBI_DITETAPKAN
+[lulus] Alur perizinan memicu NotificationEvent::MUROBI_DITETAPKAN_ULANG
+[lulus] Alur perizinan memicu NotificationEvent::KEPUTUSAN_DISETUJUI
+[lulus] Alur perizinan memicu NotificationEvent::KEPUTUSAN_DITOLAK
+[lulus] Alur perizinan memicu NotificationEvent::KEPUTUSAN_ADMIN_PENGGANTI
+[lulus] Alur perizinan memicu NotificationEvent::PEMBATALAN
+[lulus] Alur perizinan memicu NotificationEvent::KOREKSI
+[lulus] Notifikasi dipicu pada kelima mutasi perizinan (create, assign, decide, cancel, correct)
+[lulus] Kegagalan notifikasi tidak pernah menggagalkan transaksi perizinan
+
+=== 8. Worker outbox ===
+[lulus] Retry dibatasi jumlahnya
+[lulus] Retry memakai backoff dengan batas atas
+[lulus] Klaim baris memakai satu UPDATE atomik dengan pemilik dan masa berlaku
+[lulus] Penyelesaian baris hanya berlaku bagi worker pemiliknya
+[lulus] Sewa worker hanya dapat diambil satu proses pada satu waktu
+[lulus] Sewa worker selalu dilepas walaupun terjadi galat
+[lulus] Worker memperpanjang sewa proses dan klaim baris sebelum setiap pengiriman
+[lulus] Worker hanya dapat dijalankan dari CLI
+[lulus] Worker menyediakan mode manual yang aman (uji coba dan status)
+[lulus] Worker tidak pernah mencetak token atau membuang isi variabel
+[lulus] Setiap percobaan pengiriman dicatat pada tabel riwayat percobaan
+[lulus] Antrean kanal yang dimatikan ditandai jelas dan tidak diambil worker
+
+=== 9. Otorisasi ===
+[lulus] Query listForUser() wajib menyertakan penerima_user_id
+[lulus] Query unreadCount() wajib menyertakan penerima_user_id
+[lulus] Query findForUser() wajib menyertakan penerima_user_id
+[lulus] Query markRead() wajib menyertakan penerima_user_id
+[lulus] Query markAllRead() wajib menyertakan penerima_user_id
+[lulus] Setiap query pusat notifikasi menyaring berdasarkan penerima
+[lulus] Notifikasi milik pengguna lain dijawab 403, bukan isinya
+[lulus] Pencabutan perangkat selalu dibatasi pemiliknya
+[lulus] Seluruh operasi panel kanal memeriksa capability admin di server
+[lulus] Penerima ditentukan dari relasi nyata (penugasan murobi, relasi wali, relasi pengurus)
+[lulus] Guru tanpa penugasan murobi aktif tidak pernah menjadi penerima
+[lulus] Penugasan murobi berbasis kelas hanya sah ketika kelas masih aktif
+[lulus] Token perangkat hanya diambil untuk akun pengguna yang masih aktif
+[lulus] Penonaktifan akun langsung mencabut seluruh token perangkat pengguna
+
+=== 10. Tidak ada secret atau data produksi ===
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/DeviceRepository.php
+[lulus] Tidak ada credential tertanam pada app/Notification/DeviceRepository.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/DeviceService.php
+[lulus] Tidak ada credential tertanam pada app/Notification/DeviceService.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationAdminService.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationAdminService.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationCenterService.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationCenterService.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationChannel.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationChannel.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationDispatcher.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationDispatcher.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationEvent.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationEvent.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationException.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationException.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationRepository.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationRepository.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationService.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationService.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/OutboxRepository.php
+[lulus] Tidak ada credential tertanam pada app/Notification/OutboxRepository.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/PushTokenProtector.php
+[lulus] Tidak ada credential tertanam pada app/Notification/PushTokenProtector.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/RecipientResolver.php
+[lulus] Tidak ada credential tertanam pada app/Notification/RecipientResolver.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/SafeError.php
+[lulus] Tidak ada credential tertanam pada app/Notification/SafeError.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/SettingsRepository.php
+[lulus] Tidak ada credential tertanam pada app/Notification/SettingsRepository.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WorkerLock.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WorkerLock.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/Push/ExpoPushClient.php
+[lulus] Tidak ada credential tertanam pada app/Notification/Push/ExpoPushClient.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/Push/PushClient.php
+[lulus] Tidak ada credential tertanam pada app/Notification/Push/PushClient.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/Push/PushReceiptClient.php
+[lulus] Tidak ada credential tertanam pada app/Notification/Push/PushReceiptClient.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/FakeProvider.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/FakeProvider.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/HttpProvider.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/HttpProvider.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/NullProvider.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/NullProvider.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/ProviderFactory.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/ProviderFactory.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/ProviderResult.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/ProviderResult.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/WhatsAppMessage.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/WhatsAppMessage.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/WhatsAppProvider.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/WhatsAppProvider.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Api/NotificationApiService.php
+[lulus] Tidak ada credential tertanam pada app/Api/NotificationApiService.php
+[lulus] Tidak ada token push sungguhan tertanam pada bin/notifikasi_worker.php
+[lulus] Tidak ada credential tertanam pada bin/notifikasi_worker.php
+[lulus] Tidak ada token push sungguhan tertanam pada bin/v2_phase4_preflight.php
+[lulus] Tidak ada credential tertanam pada bin/v2_phase4_preflight.php
+[lulus] Tidak ada token push sungguhan tertanam pada bin/v2_phase4_verify.php
+[lulus] Tidak ada credential tertanam pada bin/v2_phase4_verify.php
+[lulus] Tidak ada token push sungguhan tertanam pada portal/notifikasi.php
+[lulus] Tidak ada credential tertanam pada portal/notifikasi.php
+[lulus] Tidak ada token push sungguhan tertanam pada admin/admin_notifikasi.php
+[lulus] Tidak ada credential tertanam pada admin/admin_notifikasi.php
+[lulus] .env.example mendokumentasikan PUSH_TOKEN_KEY
+[lulus] .env.example tidak memuat NILAI untuk PUSH_TOKEN_KEY
+[lulus] .env.example mendokumentasikan WHATSAPP_PROVIDER
+[lulus] .env.example tidak memuat NILAI untuk WHATSAPP_PROVIDER
+[lulus] .env.example mendokumentasikan WHATSAPP_API_URL
+[lulus] .env.example tidak memuat NILAI untuk WHATSAPP_API_URL
+[lulus] .env.example mendokumentasikan WHATSAPP_API_TOKEN
+[lulus] .env.example tidak memuat NILAI untuk WHATSAPP_API_TOKEN
+[lulus] Hasil preflight (backup dan manifest) tidak masuk repositori
+[lulus] Tidak ada berkas Fase 4 yang menyentuh dump produksi
+
+=== 11. Aplikasi Expo SDK 57 ===
+[lulus] Expo SDK 57 dan React Native 0.86 TIDAK di-upgrade
+[lulus] expo-notifications memakai versi selaras SDK 57 (~57.0.13)
+[lulus] Plugin expo-notifications terdaftar pada app.json
+[lulus] Kanal Android bawaan diselaraskan dengan pengirim server
+[lulus] Aplikasi membuat kanal Android bernama sama dengan channelId server
+[lulus] Kanal Android dibuat sebelum permintaan izin (urutan SDK 57)
+[lulus] Izin tidak diminta berulang tanpa kebutuhan
+[lulus] Identitas instalasi perangkat disimpan stabil di SecureStore, bukan hanya selama sesi aplikasi
+[lulus] Registrasi otomatis tidak memunculkan dialog izin tanpa tindakan pengguna
+[lulus] Token diambil dengan projectId sesuai dokumentasi SDK 57
+[lulus] Registrasi menolak simulator/emulator dan menjelaskan alasannya
+[lulus] Kebutuhan development build didokumentasikan pada kode registrasi
+[lulus] Handler foreground memakai API SDK 57 (shouldShowBanner/shouldShowList)
+[lulus] Aplikasi menangani foreground, ketukan, dan cold start dari notifikasi
+[lulus] Deep link membuka layar detail izin
+[lulus] Deep link sebelum login ditunda sampai autentikasi berhasil
+[lulus] Token push perangkat disimpan pada SecureStore
+[lulus] Berkas mobile Fase 4 tersedia: src/notifications/push-registration.ts
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/notifications/push-registration.ts
+[lulus] Berkas mobile Fase 4 tersedia: src/notifications/notification-context.tsx
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/notifications/notification-context.tsx
+[lulus] Berkas mobile Fase 4 tersedia: src/notifications/push-token-storage.ts
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/notifications/push-token-storage.ts
+[lulus] Berkas mobile Fase 4 tersedia: src/app/notifikasi/[id].tsx
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/app/notifikasi/[id].tsx
+[lulus] Berkas mobile Fase 4 tersedia: src/app/notifikasi/perangkat.tsx
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/app/notifikasi/perangkat.tsx
+[gagal] Berkas mobile Fase 4 tersedia: src/app/(app)/(notifikasi)/notifikasi.tsx
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/app/(app)/(notifikasi)/notifikasi.tsx
+[lulus] Tidak ada token perangkat sungguhan tertanam pada bundle
+[lulus] Secret server tidak pernah masuk konfigurasi bundle mobile
+[gagal] Layar notifikasi menyediakan LoadingState
+[gagal] Layar notifikasi menyediakan EmptyState
+[gagal] Layar notifikasi menyediakan ErrorState
+[gagal] Layar notifikasi menyediakan Tandai semua dibaca
+[gagal] Layar notifikasi menyediakan Halaman
+[gagal] Tab notifikasi menampilkan lencana jumlah belum dibaca
+[lulus] Logout mencabut registrasi perangkat dan membersihkan token lokal
+
+=== 12. Halaman web ===
+[lulus] Pusat notifikasi web menyediakan jumlah_belum_dibaca
+[lulus] Pusat notifikasi web menyediakan tandai_dibaca
+[lulus] Pusat notifikasi web menyediakan tandai_semua
+[lulus] Pusat notifikasi web menyediakan portal_pagination
+[lulus] Pusat notifikasi web menyediakan Belum ada notifikasi
+[lulus] Seluruh mutasi pusat notifikasi web dilindungi CSRF
+[lulus] Panel admin menyediakan Periksa konfigurasi
+[lulus] Panel admin menyediakan Kirim pesan uji
+[lulus] Panel admin menyediakan Pengiriman gagal
+[lulus] Panel admin menyediakan Coba ulang
+[lulus] Panel admin menyediakan Audit perubahan kanal
+[lulus] Panel admin menyediakan Jalankan worker sekali
+[lulus] Panel admin menyediakan Uji coba (tanpa kirim)
+[lulus] Panel admin hanya menampilkan NAMA environment, bukan nilainya
+[lulus] Navigasi portal menampilkan lencana notifikasi belum dibaca
+
+=== 13. php -l berkas Fase 4 ===
+[lulus] php -l lulus: app/Notification/DeviceRepository.php
+[lulus] php -l lulus: app/Notification/DeviceService.php
+[lulus] php -l lulus: app/Notification/NotificationAdminService.php
+[lulus] php -l lulus: app/Notification/NotificationCenterService.php
+[lulus] php -l lulus: app/Notification/NotificationChannel.php
+[lulus] php -l lulus: app/Notification/NotificationDispatcher.php
+[lulus] php -l lulus: app/Notification/NotificationEvent.php
+[lulus] php -l lulus: app/Notification/NotificationException.php
+[lulus] php -l lulus: app/Notification/NotificationRepository.php
+[lulus] php -l lulus: app/Notification/NotificationService.php
+[lulus] php -l lulus: app/Notification/OutboxRepository.php
+[lulus] php -l lulus: app/Notification/PushTokenProtector.php
+[lulus] php -l lulus: app/Notification/RecipientResolver.php
+[lulus] php -l lulus: app/Notification/SafeError.php
+[lulus] php -l lulus: app/Notification/SettingsRepository.php
+[lulus] php -l lulus: app/Notification/WorkerLock.php
+[lulus] php -l lulus: app/Notification/Push/ExpoPushClient.php
+[lulus] php -l lulus: app/Notification/Push/PushClient.php
+[lulus] php -l lulus: app/Notification/Push/PushReceiptClient.php
+[lulus] php -l lulus: app/Notification/WhatsApp/FakeProvider.php
+[lulus] php -l lulus: app/Notification/WhatsApp/HttpProvider.php
+[lulus] php -l lulus: app/Notification/WhatsApp/NullProvider.php
+[lulus] php -l lulus: app/Notification/WhatsApp/ProviderFactory.php
+[lulus] php -l lulus: app/Notification/WhatsApp/ProviderResult.php
+[lulus] php -l lulus: app/Notification/WhatsApp/WhatsAppMessage.php
+[lulus] php -l lulus: app/Notification/WhatsApp/WhatsAppProvider.php
+[lulus] php -l lulus: app/Api/NotificationApiService.php
+[lulus] php -l lulus: bin/notifikasi_worker.php
+[lulus] php -l lulus: bin/v2_phase4_preflight.php
+[lulus] php -l lulus: bin/v2_phase4_verify.php
+[lulus] php -l lulus: portal/notifikasi.php
+[lulus] php -l lulus: admin/admin_notifikasi.php
+[lulus] php -l lulus: app/bootstrap.php
+[lulus] php -l lulus: app/Izin/IzinWorkflowService.php
+[lulus] php -l lulus: api/v1/index.php
+[lulus] php -l lulus: portal/_ui.php
+[lulus] php -l lulus: admin/sidebar.php
+[lulus] php -l lulus: tests/v2_phase4_static.php
+
+PEMERIKSAAN STATIS FASE 4 GAGAL (7):
+- Berkas mobile Fase 4 tersedia: src/app/(app)/(notifikasi)/notifikasi.tsx
+- Layar notifikasi menyediakan LoadingState
+- Layar notifikasi menyediakan EmptyState
+- Layar notifikasi menyediakan ErrorState
+- Layar notifikasi menyediakan Tandai semua dibaca
+- Layar notifikasi menyediakan Halaman
+- Tab notifikasi menampilkan lencana jumlah belum dibaca

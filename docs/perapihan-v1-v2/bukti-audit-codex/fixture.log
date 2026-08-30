@@ -1,0 +1,9 @@
+[lulus] LAPORAN santri ringkasan/detail/ekspor=30
+[lulus] LAPORAN guru ringkasan/detail/ekspor=1
+[lulus] LAPORAN gabungan ringkasan/detail/ekspor=31
+[lulus] LAPORAN teacher_id orang lain + subject_scope=guru ditolak 403
+[lulus] WALI relasi sama diarsipkan; relasi berbeda dipindah
+[lulus] WALI relationRepoint mempertahankan ID dan generated active_guard aktif
+[lulus] WALI hasil merge tidak menjadi kandidat lagi
+[lulus] WALI kunci tak dikenal tidak membuat relasi atau wali
+Manifest fixture sintetis: /tmp/webalhasan-ui-audit/fixture.json
