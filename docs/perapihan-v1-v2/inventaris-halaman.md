@@ -41,9 +41,16 @@ mendelegasikan ke `App\Ui\Layout`. Isi dan logikanya tidak diubah.
 
 | Halaman | Sumber kerangka |
 | --- | --- |
-| `admin/admin_pengurus.php`, `admin_kelas.php`, `admin_tahun.php`, `admin_kamar.php`, `admin_pembimbing.php` | `_master_ui.php` |
+| `admin/admin_pengurus.php`, `admin_kelas.php`, `admin_tahun.php`, `admin_pembimbing.php` | `_master_ui.php` |
 | `admin/laporan_absensi_detail.php` | `_master_ui.php` |
 | `portal/izin.php`, `izin_detail.php`, `izin_buat.php`, `izin_antrean.php`, `laporan.php`, `notifikasi.php` | `portal/_ui.php` |
+
+**Koreksi audit A-08 (30 Agustus 2026):** `admin/admin_kamar.php` sebelumnya
+keliru dicantumkan sebagai pemakai `_master_ui.php`. Halaman itu masih memakai
+markup lama dan `admin/sidebar.php`; ia belum memperoleh adaptor `Layout`.
+Pemeriksaan 390 px tidak menemukan pelebaran halaman, tetapi kesetaraan navigasi
+ponselnya belum terbukti. Ini pengecualian inventaris, bukan bukti modernisasi
+halaman kamar telah selesai. Rincian: `hasil-audit-codex.md`.
 
 > **Untuk auditor:** halaman kelompok B adalah tempat paling mungkin munculnya
 > cacat tampilan sisa (mis. markup lama yang mengandalkan lebar kolom Bootstrap
