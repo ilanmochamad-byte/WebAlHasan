@@ -168,3 +168,39 @@ memindahkan layar notifikasi dari `src/app/(app)/(notifikasi)/notifikasi.tsx` ke
 uji fase lain atas keputusan yang bukan bagian paket ini. Diperlukan keputusan
 pengguna: apakah assertion path diperbarui mengikuti keputusan redesign mobile,
 atau ada hal lain yang memang perlu dikembalikan pada aplikasi.
+
+
+## 7. Keputusan lanjutan pengguna dan pengujian pengganti (Codex)
+
+Bagian 4 dan 6 di atas menggambarkan paket sebelum keputusan lanjutan pengguna
+30 Agustus 2026. Setelah audit awal, pengguna memberi izin eksplisit untuk
+B-1 dan akses laporan guru A-07. Perubahan berikut bukan pengubahan bukti lulus
+historis Fase 1–5 menjadi hasil paket ini.
+
+- **B-1, `3253917`:** fungsi notifikasi diaudit dahulu melalui kode layar,
+  provider, header, dan client mobile asli yang berkomunikasi dengan sandbox.
+  Dua referensi path diperbarui; pemeriksaan loading/empty/error/mark-all/
+  pagination dipertahankan. Badge kini diperiksa lewat header → bell → angka
+  unread → renderer badge → route. Tiga assertion baru memeriksa route,
+  pemisahan pemilik sesi, dan operasi API. Total statis 286 → 289; tujuh
+  kegagalan lama diperbaiki tanpa menghilangkan kewajiban fungsinya.
+- **A-07, `afed1bb`:** empat halaman laporan bukan lagi admin-only berdasarkan
+  keputusan pengguna. Assertion Fase 1 mengecualikan tepat empat halaman itu
+  dan helper guard khususnya dari aturan umum admin; menggantinya dengan lima
+  pemeriksaan guard laporan (sesi, admin/guru berelasi, GET/HEAD saja, dan
+  pembatasan di layanan). Total bersih 71 → 72. Pengganti perilaku:
+  `perapihan_audit_laporan_web.php`, 38 pemeriksaan HTTP untuk lima peran,
+  tiga scope, detail asing, teacher_id asing, dan larangan POST/master data.
+- **A-06:** uji batas kini memeriksa 20.000 diterima dan 20.001 ditolak 422,
+  termasuk bypass pagination dan filter scope. Bukan menerima hasil baseline
+  yang melampaui batas.
+- **A-09:** tes kontrak API lama tidak dilonggarkan. Ditambah tes 13 pemeriksaan
+  terhadap skema baseline, termasuk seluruh respons /reports tanpa parameter,
+  serta tiga operasi laporan pada client mobile asli. Total client dari
+  15 pengujian notifikasi menjadi 18.
+
+Percobaan persiapan yang gagal dan alasan koreksi pada uji baru dicatat dalam
+[keputusan lanjutan](keputusan-lanjutan-audit.md) dan
+[laporan lanjutan](hasil-audit-lanjutan-codex.md). Tidak ada perubahan sumber
+mobile, pengabaian berkas uji yang gagal, atau pengujian lama yang dihapus
+untuk menyamakan angka dengan acuan implementer.

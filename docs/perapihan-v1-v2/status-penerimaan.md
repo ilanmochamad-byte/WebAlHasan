@@ -5,7 +5,8 @@ Paket "Koreksi dan Modernisasi UI/UX V1–V2" — keputusan pengguna 30 Agustus 
 > **Catatan audit Codex, 30 Agustus 2026:** tabel di bawah dipertahankan sebagai
 > klaim implementer, bukan putusan audit. Penilaian satu per satu atas seluruh
 > 77 klaim tersedia di [penilaian-penerimaan-codex.md](penilaian-penerimaan-codex.md),
-> dengan bukti dan temuan di [hasil-audit-codex.md](hasil-audit-codex.md).
+> dengan bukti awal di [hasil-audit-codex.md](hasil-audit-codex.md) dan
+> hasil keputusan lanjutan di [hasil-audit-lanjutan-codex.md](hasil-audit-lanjutan-codex.md).
 > Beberapa klaim tidak terverifikasi atau masih menunggu keputusan/verifikasi.
 > **Paket belum dinyatakan lulus atau siap produksi.**
 

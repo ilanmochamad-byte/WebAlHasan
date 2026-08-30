@@ -77,6 +77,15 @@ sebelum dan sesudah; `SELECT COUNT(*) FROM wali WHERE merged_into_wali_id IS NOT
 
 ### B-1. Kegagalan baseline `tests/v2_phase4_static.php`
 
+> **Status lanjutan, 30 Agustus 2026: DIKOREKSI.** Pengguna memutuskan audit
+> fungsi dahulu, lalu pembaruan assertion. Audit client/server dan kode tidak
+> menemukan fungsi notifikasi yang hilang pada cakupan yang diuji. Assertion
+> kini mengikuti layar dan header baru; 289 statis dan 18 operasi client lulus.
+> Sumber mobile tidak diubah; perangkat fisik tetap menunggu.
+> Lihat [hasil audit lanjutan](hasil-audit-lanjutan-codex.md). Uraian berikut
+> dipertahankan sebagai riwayat masalah sebelum keputusan, bukan permintaan
+> keputusan yang masih terbuka.
+
 **Bukan disebabkan paket ini.** Sudah gagal pada baseline `c65390d`.
 
 Redesign UI aplikasi mobile (`alhasanApps` PR #8, sudah masuk `main`) memindahkan

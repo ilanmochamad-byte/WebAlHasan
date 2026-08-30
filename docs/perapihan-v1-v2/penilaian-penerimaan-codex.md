@@ -1,12 +1,12 @@
 # Penilaian seluruh klaim penerimaan oleh Codex
 
-Tanggal: 30 Agustus 2026. Penilaian atas hasil koreksi audit, bukan pengesahan klaim implementer awal.
+Tanggal: 30 Agustus 2026. Diperbarui sesudah keputusan lanjutan B-1/A-06/A-07/API. Penilaian atas hasil koreksi audit, bukan pengesahan klaim implementer awal.
 
 **TERVERIFIKASI** berarti bukti memadai pada cakupan sandbox yang disebut; bukan jaminan semua perangkat/data produksi. **TIDAK TERVERIFIKASI** berarti ada bukti yang menyangkal klaim/alasan bukti. **MENUNGGU VERIFIKASI** berarti bukti baru sebagian atau perlu keputusan/perangkat.
 
 ID Kx-yy mengikuti nomor koreksi dan urutan baris pada `status-penerimaan.md`. Semua 77 baris dipertahankan. Sumber log dan temuan A-01..A-08: [hasil-audit-codex.md](hasil-audit-codex.md). Nama KA/KW/KG/KP/KL merujuk `perapihan_integration`; PM merujuk `perapihan_web_smoke`; NAV merujuk `v2_phase2_navigasi_murobi`; B merujuk uji browser. Semua suite tersebut dijalankan sendiri oleh auditor.
 
-Rekap: **57 TERVERIFIKASI**, **4 TIDAK TERVERIFIKASI**, **16 MENUNGGU VERIFIKASI**. Belum lulus paket.
+Rekap terkini: **60 TERVERIFIKASI**, **3 TIDAK TERVERIFIKASI**, **14 MENUNGGU VERIFIKASI**. Belum lulus paket. Audit awal memiliki 57/4/16; hasil dan perubahan putusan dijelaskan di [hasil-audit-lanjutan-codex.md](hasil-audit-lanjutan-codex.md).
 
 ## Koreksi 1
 
@@ -75,10 +75,10 @@ Rekap: **57 TERVERIFIKASI**, **4 TIDAK TERVERIFIKASI**, **16 MENUNGGU VERIFIKASI
 | K5-04 | Ringkasan, detail, dan ekspor menghasilkan jumlah sesuai filter yang sama | **TERVERIFIKASI** | Fixture audit memeriksa summary/items/export untuk ketiga scope pada filter identik; KL-4 juga dijalankan. |
 | K5-05 | Mode gabungan menampilkan penanda jenis dan jumlah masing-masing | **TERVERIFIKASI** | KL-5/6 dan keluaran laporan gabungan memperlihatkan jenis serta hitungan guru/santri. |
 | K5-06 | Guru tetap tampil sebagai pengampu pada laporan santri, tidak dihitung sebagai santri | **TERVERIFIKASI** | KL-7: guru pengampu ada pada baris santri tetapi tidak menambah jumlah santri. |
-| K5-07 | Filter yang sama berlaku pada ringkasan, detail, CSV, dan cetak/PDF | **MENUNGGU VERIFIKASI** | Service dan PM-11c lulus; cetak Safari fixture gabungan dibuka. Belum membandingkan setiap kombinasi filter/status/scope di layar-detail-CSV-PDF secara menyeluruh, terutama akses web guru A-07. |
+| K5-07 | Filter yang sama berlaku pada ringkasan, detail, CSV, dan cetak/PDF | **MENUNGGU VERIFIKASI** | Lanjutan A-07 membuktikan 30/1/31 pada layar/CSV/cetak dengan filter identik, detail sendiri 200 dan detail asing 403. Belum membandingkan setiap kombinasi tanggal/status/scope di semua keluaran, terutama PDF Safari tersimpan. |
 | K5-08 | Absensi guru tidak dihapus | **TERVERIFIKASI** | KL-11 dan fixture: absensi guru tetap tersimpan; scope hanya menyaring penyajian. |
-| K5-09 | Default dan kontrak API lama tidak berubah diam-diam | **MENUNGGU VERIFIKASI** | Default API terverifikasi gabungan 31 dan empat bagian data identik dengan main. Namun ada field subject_scope/Penyajian aditif. Kesamaan skema literal tidak terpenuhi; batas kontrak perlu ditegaskan pengguna (laporan §4). |
-| K5-10 | Batas ekspor, formula injection, isolasi akses, pengaman cetak tetap berlaku | **TIDAK TERVERIFIKASI** | A-06: 20.001 baris CSV absensi diterima 200. Suite batas Fase 5 melindungi perizinan, tidak membuktikan batas absensi. Isolasi/formula/cetak yang lulus tidak menutup kegagalan ini. |
+| K5-09 | Default dan kontrak API lama tidak berubah diam-diam | **TERVERIFIKASI** | A-09: seluruh JSON API /reports tanpa parameter identik dengan snapshot main c65390d pada fixture sama, gabungan 31. API mengabaikan subject_scope seperti baseline; filter/options/cetak tidak membawa metadata web. 13 uji API dan client mobile asli lulus. |
+| K5-10 | Batas ekspor, formula injection, isolasi akses, pengaman cetak tetap berlaku | **TERVERIFIKASI** | A-06 sesuai keputusan lanjutan: 20.001 ditolak 422 EXPORT_TOO_LARGE, tepat 20.000 lengkap, per_page tidak melewati batas, scope diterapkan sebelum batas. Empat uji nyata lulus; regresi formula/cetak dan 38 uji isolasi laporan juga lulus. Batas perangkat tetap di K6-16. |
 
 ## Koreksi 6
 
@@ -86,10 +86,10 @@ Rekap: **57 TERVERIFIKASI**, **4 TIDAK TERVERIFIKASI**, **16 MENUNGGU VERIFIKASI
 | --- | --- | --- | --- |
 | K6-01 | Standar bersama untuk warna, spasi, judul, tombol, formulir, tabel, badge, dialog, pesan | **MENUNGGU VERIFIKASI** | Token dan komponen bersama tersedia, browser sampel berjalan. A-05 dikoreksi, tetapi keseragaman seluruh dialog/form/halaman belum dibuktikan; kamar masih legacy. |
 | K6-02 | Bootstrap dipertahankan, komponen bersama, tanpa aset eksternal baru | **TERVERIFIKASI** | Diff mempertahankan Bootstrap/PHP native dan komponen bersama, tidak menambah host aset baru. Uji browser memakai aset lokal; bukan bukti ketersediaan CDN produksi. |
-| K6-03 | Sidebar/topbar konsisten; menu mengikuti role dan kemampuan aktual | **TIDAK TERVERIFIKASI** | A-07: menu laporan guru/murobi dan notifikasi guru non-murobi terlihat tetapi tujuan 403; kamar juga belum memakai adaptor Layout. |
+| K6-03 | Sidebar/topbar konsisten; menu mengikuti role dan kemampuan aktual | **TIDAK TERVERIFIKASI** | A-07 telah dikoreksi: menu laporan guru/murobi membuka laporan sendiri, notifikasi guru non-murobi tidak ditawarkan; HTTP 29 dan laporan 38 lulus. Bagian klaim konsistensi sidebar/topbar seluruh halaman belum terpenuhi karena kamar tetap legacy (A-08). |
 | K6-04 | Komponen navigasi terpisah dari guard khusus admin | **TERVERIFIKASI** | Pencarian Navigation hanya pada Layout/sidebar, tanpa guard dan tanpa dipakai layanan otorisasi. Guard tetap di tujuan. |
 | K6-05 | Menu ponsel dapat dibuka/ditutup, tombol mudah disentuh | **TERVERIFIKASI** | B-3a/b/c dan B-1c dijalankan pada 768/390 untuk kerangka baru. Menu halaman legacy tidak termasuk kesimpulan ini. |
-| K6-06 | Menu aktif, breadcrumb, judul, tindakan utama jelas | **MENUNGGU VERIFIKASI** | A-05 memperbaiki H1 ganda dan diuji ulang. Menu aktif/breadcrumb sampel lulus, tetapi A-07/kamar menghalangi klaim seluruh alur jelas. |
+| K6-06 | Menu aktif, breadcrumb, judul, tindakan utama jelas | **MENUNGGU VERIFIKASI** | A-05 memperbaiki H1 ganda; A-07 memperbaiki menu operasional. Browser guru 390 memverifikasi satu H1 dan jalur laporan. Menu aktif/breadcrumb sampel lulus, tetapi kamar dan seluruh alur belum diverifikasi. |
 | K6-07 | Formulir dikelompokkan, label jelas, validasi dekat kolom | **MENUNGGU VERIFIKASI** | Pengelompokan dan label terlihat pada form baru; static bukan bukti validasi dekat setiap kolom. Perlu uji pesan invalid pada seluruh form A/B. |
 | K6-08 | Isian dipertahankan saat validasi gagal | **MENUNGGU VERIFIKASI** | A-04 dan HTTP memverifikasi form santri/wali; form legacy lain belum diuji satu per satu. ah_old_keep saja tidak membuktikan klaim menyeluruh. |
 | K6-09 | Keadaan kosong / berhasil / gagal / akses ditolak yang mudah dipahami | **MENUNGGU VERIFIKASI** | B-10b membuktikan 403 yang menjelaskan jalan keluar; contoh kosong/berhasil tersedia. Semua mode error/empty tiap halaman belum diuji. |
@@ -111,14 +111,14 @@ Rekap: **57 TERVERIFIKASI**, **4 TIDAK TERVERIFIKASI**, **16 MENUNGGU VERIFIKASI
 | K7-02 | Login berhasil untuk admin, guru non-murobi, murobi, pengurus, orang tua | **TERVERIFIKASI** | PM-2 dan audit HTTP login lima fixture peran berhasil. |
 | K7-03 | Guru non-murobi masuk beranda umum tetapi ditolak dari fungsi keputusan perizinan | **TERVERIFIKASI** | PM-3/NAV-16 dijalankan ulang: beranda umum 200; fungsi perizinan/keputusan guru non-murobi 403. |
 | K7-04 | Pengguna yang sudah login tidak diminta login ulang | **TERVERIFIKASI** | PM-4/PM-6b memeriksa sesi aktif tidak dipaksa login ulang. |
-| K7-05 | Akun multi-peran dapat memakai seluruh menu yang diizinkan | **TERVERIFIKASI** | PM-5 membuktikan akun multi-peran fixture mendapatkan jalur gabungan yang diizinkan. Tidak membenarkan menu guru saja pada A-07. |
+| K7-05 | Akun multi-peran dapat memakai seluruh menu yang diizinkan | **TERVERIFIKASI** | PM-5 kembali lulus untuk akun multi-peran. A-07 kini menyelaraskan menu laporan guru dengan guard; hak admin pada akun gabungan tetap dipertahankan. |
 | K7-06 | Alamat login lama tetap berfungsi | **TERVERIFIKASI** | PM-6a dan pemeriksaan alias login dijalankan ulang. |
 | K7-07 | Password sementara, password salah, akun nonaktif, sesi kedaluwarsa, logout ditangani benar | **TERVERIFIKASI** | PM-7a..g dijalankan ulang untuk password sementara/salah, akun nonaktif, sesi, logout. Tidak memakai credential produksi. |
 | K7-08 | Tidak ada redirect loop atau pengalihan eksternal | **TERVERIFIKASI** | A-01 36 pemeriksaan dan PM-8: tujuan jahat ditolak; alias yang diuji tidak berputar. Tidak mengklaim pengujian tak terbatas semua URL. |
 | K7-09 | Tautan detail tetap diperiksa haknya setelah login, termasuk setelah berganti akun | **TERVERIFIKASI** | PM-9a/b/c dan detail jadwal asing pada audit HTTP: tujuan tetap mengecek hak sesudah login/pergantian akun. |
 | K7-10 | Tampilan login dan navigasi berfungsi pada desktop serta ponsel | **TERVERIFIKASI** | B-1/B-2/B-3 pada 1440/768/390; Safari macOS sampel login/home. Perangkat iOS/Android nyata masih menunggu, bukan bagian bukti viewport Chromium. |
-| K7-11 | API dan login aplikasi mobile tetap kompatibel | **MENUNGGU VERIFIKASI** | Kontrak API, tsc, lint dan enam test print mobile lulus; B-1 tetap gagal dan aplikasi pada perangkat belum diuji. Ada metadata API aditif; kompatibilitas menyeluruh belum dinyatakan. |
-| K7-12 | Menyembunyikan menu bukan pengganti otorisasi | **TERVERIFIKASI** | Guard server ditegakkan terpisah; request langsung non-admin/partial/detail asing ditolak. Pernyataan bukti implementer bahwa seluruh matriks cocok tidak benar karena A-07, tetapi menu bukan otoritas tetap terverifikasi. |
+| K7-11 | API dan login aplikasi mobile tetap kompatibel | **TERVERIFIKASI** | B-1: audit fungsi sebelum memperbarui assertion (289 statis lulus); client TypeScript mobile asli menjalankan 18 operasi login/notifikasi/laporan/print pada API sandbox. A-09 mempertahankan skema baseline; tsc/lint dan enam test print mobile lulus. Kesimpulan kompatibilitas pada cakupan client/server ini, bukan bukti UI/push/perangkat fisik. |
+| K7-12 | Menyembunyikan menu bukan pengganti otorisasi | **TERVERIFIKASI** | Guard server tetap terpisah dari Navigation. Permintaan langsung ke JSON/master/partial/detail asing ditolak; A-07 memakai guard laporan baca-saja dan memaksa cakupan guru. Menu bukan sumber otorisasi. |
 
 ## Lima butir tertunda pada dokumen asal
 
@@ -128,4 +128,4 @@ Rekap: **57 TERVERIFIKASI**, **4 TIDAK TERVERIFIKASI**, **16 MENUNGGU VERIFIKASI
 | Perangkat Android/iOS untuk web | **MENUNGGU VERIFIKASI** | Tidak diuji pada perangkat fisik; viewport 390 bukan pengganti. |
 | Kontras dan pembaca layar | **MENUNGGU VERIFIKASI** | Belum axe/VoiceOver/TalkBack menyeluruh. |
 | Migrasi 010 produksi | **MENUNGGU VERIFIKASI** | Sandbox sudah diterapkan/idempoten; produksi sengaja tidak disentuh. |
-| Audit Codex seluruh paket | **MENUNGGU VERIFIKASI** | Laporan dan koreksi lokal tersedia, tetapi A-06/A-07/B-1 serta bukti parsial mencegah penutupan penerimaan. |
+| Audit Codex seluruh paket | **MENUNGGU VERIFIKASI** | B-1/A-06/A-07/A-09 selesai pada lingkup audit lanjutan; tiga klaim tidak terverifikasi dan 14 klaim parsial tetap mencegah penutupan penerimaan seluruh paket. |

@@ -87,7 +87,7 @@ Tidak ada `DROP`, `DELETE`, `TRUNCATE`, atau `UPDATE` data pada migrasi.
 
 | Endpoint | Perubahan |
 | --- | --- |
-| `/api/v1/*` | **tidak ada perubahan kontrak.** Filter `subject_scope` bersifat aditif dan default API tetap `gabungan`. |
+| `/api/v1/*` | **kontrak baseline dipertahankan.** Setelah keputusan lanjutan A-09, `subject_scope` hanya berlaku di web; API mengabaikannya dan tidak menambah metadata/options scope. Default API tetap `gabungan`. |
 | `admin/get_wali_json.php` | **baru**, hanya untuk formulir santri, dijaga guard admin, hanya melayani GET. |
 
 ---

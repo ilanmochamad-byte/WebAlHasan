@@ -2,6 +2,11 @@
 
 Tanggal: 30 Agustus 2026, WIB. Implementer: Claude. Auditor: Codex.
 
+> **Arsip hasil audit awal.** Keputusan pengguna dan koreksi berikutnya untuk
+> B-1/A-06/A-07/API tercatat di [hasil-audit-lanjutan-codex.md](hasil-audit-lanjutan-codex.md).
+> Angka dan status di bawah adalah keadaan sebelum keputusan lanjutan, bukan
+> status terkini empat butir tersebut. Tidak mengubah hasil pengujian historis.
+
 **Belum dinyatakan lulus atau siap produksi.** Lima cacat telah dikoreksi, satu
 inventaris diperbaiki, dan beberapa temuan/keputusan serta verifikasi perangkat
 masih terbuka. Hasil ini bukan pengganti penerimaan pengguna atau izin rilis.

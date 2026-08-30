@@ -1,0 +1,16 @@
+{
+  "h1": 1,
+  "menu": [
+    "Beranda",
+    "Jadwal & Pertemuan",
+    "Laporan Kehadiran",
+    "Ganti Password"
+  ],
+  "scrollWidth": 390,
+  "teacherOptions": [
+    "Semua guru",
+    "SBX Guru Tanpa Murobi"
+  ],
+  "url": "http://127.0.0.1:8940/admin/admin_laporan_absensi.php",
+  "width": 390
+}
