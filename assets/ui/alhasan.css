@@ -24,7 +24,7 @@
 
     --ah-ink: #1c2320;
     --ah-ink-soft: #4a544e;
-    --ah-ink-muted: #6b756f;
+    --ah-ink-muted: #59665e;
     --ah-surface: #ffffff;
     --ah-canvas: #f4f6f4;
     --ah-line: #dfe4e0;
@@ -518,3 +518,23 @@ body.ah {
 
 /* A-10: angka halaman panjang tidak mendorong lebar dokumen pada ponsel. */
 body.ah .pagination { flex-wrap: wrap; row-gap: .5rem; }
+
+/* A-14: adaptor Bootstrap mengikuti token yang sama, termasuk kontras AA. */
+body.ah .text-muted { color: var(--ah-ink-muted) !important; }
+body.ah .ah-topbar .text-white-50 { color: var(--ah-green-100) !important; }
+body.ah .card { --bs-card-bg: var(--ah-surface); border-radius: var(--ah-radius); }
+body.ah .card-header { background: var(--ah-green-050) !important; }
+body.ah .table { --bs-table-bg: var(--ah-surface); --bs-table-color: var(--ah-ink); }
+body.ah .table th { color: var(--ah-ink-soft); background: var(--ah-green-050); }
+body.ah .btn-outline-secondary { --bs-btn-color: var(--ah-ink-soft); --bs-btn-border-color: var(--ah-ink-muted); --bs-btn-hover-bg: var(--ah-ink-soft); }
+body.ah .btn-outline-warning { --bs-btn-color: var(--ah-warn); --bs-btn-border-color: var(--ah-warn); --bs-btn-hover-color: var(--ah-surface); --bs-btn-hover-bg: var(--ah-warn); }
+body.ah .btn-outline-danger { --bs-btn-color: var(--ah-danger); --bs-btn-border-color: var(--ah-danger); --bs-btn-hover-bg: var(--ah-danger); }
+body.ah .btn-success { --bs-btn-bg: var(--ah-green-700); --bs-btn-border-color: var(--ah-green-700); }
+body.ah .btn-sm { min-height: var(--ah-touch); }
+body.ah .modal-content { border-radius: var(--ah-radius); background: var(--ah-surface); }
+body.ah .modal-header { background: var(--ah-green-050); }
+body.ah .table .d-flex.gap-1 { flex-wrap: wrap; }
+body.ah input::placeholder, body.ah textarea::placeholder { color: var(--ah-ink-muted); opacity: 1; }
+body.ah :focus-visible { scroll-margin-top: 5rem; }
+body.ah .ah-topbar :focus-visible { outline-color: var(--ah-surface); }
+body.ah code { color: var(--ah-danger); }

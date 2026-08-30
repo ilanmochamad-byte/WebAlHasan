@@ -56,6 +56,10 @@ final class Layout
         $groups = Navigation::forUser($user, $capabilities, $options['unread'] ?? null);
         $title = (string) $options['title'];
         $heading = (string) ($options['heading'] ?? $title);
+        $options['breadcrumbs'] ??= [
+            ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
+            ['label' => $title],
+        ];
         $e = static fn (mixed $value): string => self::escape($value);
         ?>
 <!DOCTYPE html>
@@ -125,12 +129,12 @@ final class Layout
             <?php if (!empty($options['breadcrumbs'])): ?>
                 <nav aria-label="Jalur halaman">
                     <ol class="ah-crumbs">
-                        <?php foreach ($options['breadcrumbs'] as $crumb): ?>
+                        <?php foreach ($options['breadcrumbs'] as $crumbIndex => $crumb): ?>
                             <li>
                                 <?php if (!empty($crumb['url'])): ?>
                                     <a href="<?= $e($crumb['url']) ?>"><?= $e($crumb['label']) ?></a>
                                 <?php else: ?>
-                                    <span aria-current="page"><?= $e($crumb['label']) ?></span>
+                                    <span<?= $crumbIndex === array_key_last($options['breadcrumbs']) ? ' aria-current="page"' : '' ?>><?= $e($crumb['label']) ?></span>
                                 <?php endif; ?>
                             </li>
                         <?php endforeach; ?>
@@ -194,20 +198,53 @@ window.ALHASAN_CSRF = <?= json_encode(Csrf::token(), JSON_HEX_TAG | JSON_HEX_AMP
     var shell = document.getElementById('ah-shell');
     var toggle = document.getElementById('ah-nav-toggle');
     var scrim = document.getElementById('ah-scrim');
+    var sidebar = document.getElementById('ah-sidebar');
+    var main = document.getElementById('ah-konten');
+    var smallScreen = window.matchMedia('(max-width: 991.98px)');
     function setOpen(open) {
         shell.classList.toggle('is-nav-open', open);
         toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
         if (scrim) { scrim.hidden = !open; }
+        sidebar.inert = smallScreen.matches && !open;
+        main.inert = smallScreen.matches && open;
+        if (smallScreen.matches && open) {
+            var first = sidebar.querySelector('a');
+            if (first) { first.focus(); }
+        }
     }
+    sidebar.inert = smallScreen.matches;
+    smallScreen.addEventListener('change', function () { setOpen(false); });
     if (toggle) {
         toggle.addEventListener('click', function () { setOpen(!shell.classList.contains('is-nav-open')); });
     }
-    if (scrim) { scrim.addEventListener('click', function () { setOpen(false); }); }
+    if (scrim) { scrim.addEventListener('click', function () { setOpen(false); toggle.focus(); }); }
     document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape' && shell.classList.contains('is-nav-open')) { setOpen(false); }
+        if (event.key === 'Escape' && shell.classList.contains('is-nav-open')) { setOpen(false); toggle.focus(); }
+        if (event.key === 'Tab' && smallScreen.matches && shell.classList.contains('is-nav-open')) {
+            var links = sidebar.querySelectorAll('a[href]');
+            var first = links[0], last = links[links.length - 1];
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+        }
     });
 
+    // Wadah tabel dapat digulir dengan keyboard, termasuk saat tidak ada tautan.
+    document.querySelectorAll('.ah-table-wrap, .table-responsive').forEach(function (wrap) {
+        wrap.tabIndex = 0;
+        wrap.setAttribute('role', 'region');
+        var caption = wrap.querySelector('caption');
+        wrap.setAttribute('aria-label', caption ? caption.textContent : 'Tabel data; geser untuk melihat kolom lainnya');
+    });
     // Token CSRF disisipkan otomatis ke setiap formulir POST yang belum punya.
+    document.querySelectorAll('[data-error-for]').forEach(function (message) {
+        var form = message.closest('form');
+        var field = form && form.elements.namedItem(message.dataset.errorFor);
+        if (field && field.setAttribute) {
+            field.setAttribute('aria-invalid', 'true');
+            field.setAttribute('aria-describedby', ((field.getAttribute('aria-describedby') || '') + ' ' + message.id).trim());
+            field.classList.add('ah-input-invalid');
+        }
+    });
     document.querySelectorAll('form[method="post"], form[method="POST"]').forEach(function (form) {
         if (!form.querySelector('input[name="_csrf"]')) {
             var input = document.createElement('input');
@@ -221,6 +258,10 @@ window.ALHASAN_CSRF = <?= json_encode(Csrf::token(), JSON_HEX_TAG | JSON_HEX_AMP
         form.addEventListener('submit', function (event) {
             // Konfirmasi yang dibatalkan tidak boleh mengunci formulir.
             if (event.defaultPrevented) { return; }
+            if (form.dataset.confirm && !window.confirm(form.dataset.confirm)) {
+                event.preventDefault();
+                return;
+            }
             // Tombol disabled tidak termasuk successful controls. Pertahankan
             // hanya submitter yang benar-benar dipilih sebelum menonaktifkannya.
             var submitter = event.submitter;

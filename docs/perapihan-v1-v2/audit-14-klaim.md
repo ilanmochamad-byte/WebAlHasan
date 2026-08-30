@@ -49,3 +49,25 @@ dipertahankan. Tidak mengubah batas agregasi permanen, collation B-2, data lama,
 atau keputusan identitas B-3/B-4. `perapihan_audit_wali_long_list.php`: 45 lulus,
 0 gagal sesudah koreksi. Fixture terdiri dari 45 relasi sendiri dan dibersihkan
 melalui manifest, bukan penghapusan data lama.
+
+## A-14 — P2: kontras dan fokus kerangka bersama belum memadai
+
+Pemeriksaan awal menemukan teks muted/topbar dan tombol kuning Bootstrap
+berkontras rendah (contoh 4,39:1; 3,6:1; 1,5:1), tabel bergulir tidak dapat
+menerima fokus, serta halaman B tanpa breadcrumb. Laci ponsel juga membiarkan
+fokus masuk ke navigasi tersembunyi/latar halaman.
+
+Koreksi pada Layout dan CSS: token kontras lebih kuat, adaptor kartu/tabel/
+tombol/modal Bootstrap, tombol kecil 44 px, breadcrumb bawaan, hanya crumb
+terakhir bertanda halaman aktif, wilayah tabel dapat digulir dengan keyboard,
+fokus masuk/berputar/keluar laci melalui Tab/Shift+Tab/Escape, serta latar inert
+selama laci terbuka. Adapter pesan kolom dan konfirmasi digunakan formulir A-15.
+Semua tambahan tampilan Bootstrap dibatasi pada body.ah; halaman D tidak
+didesain ulang. Makna badge/pesan tetap berupa teks, bukan warna saja.
+
+Bukti akhir gabungan dengan A-15: inventaris 159 observasi A/B/D pada tiga lebar;
+120 observasi A/B bebas pelanggaran axe pada aturan WCAG 2 A/AA dan 2.1 AA
+yang dapat diautomasi. Ini tidak membuktikan seluruh WCAG atau pembaca layar.
+Tes interaksi 60 lulus mencakup keyboard, modal terbuka, daftar wali panjang,
+konfirmasi batal, dan prefers-reduced-motion. Pemeriksaan modal menunggu
+animasi selesai sebelum membaca kontras/fokus agar hasil bukan warna transisi.
