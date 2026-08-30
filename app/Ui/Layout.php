@@ -218,7 +218,19 @@ window.ALHASAN_CSRF = <?= json_encode(Csrf::token(), JSON_HEX_TAG | JSON_HEX_AMP
         }
         // Klik ganda tidak mengirim dua permintaan. Pengaman sebenarnya tetap
         // kunci idempotensi dan transaksi di server; ini hanya bantuan tampilan.
-        form.addEventListener('submit', function () {
+        form.addEventListener('submit', function (event) {
+            // Konfirmasi yang dibatalkan tidak boleh mengunci formulir.
+            if (event.defaultPrevented) { return; }
+            // Tombol disabled tidak termasuk successful controls. Pertahankan
+            // hanya submitter yang benar-benar dipilih sebelum menonaktifkannya.
+            var submitter = event.submitter;
+            if (submitter && submitter.name) {
+                var action = document.createElement('input');
+                action.type = 'hidden';
+                action.name = submitter.name;
+                action.value = submitter.value;
+                form.appendChild(action);
+            }
             form.querySelectorAll('button[type="submit"], button:not([type])').forEach(function (button) {
                 button.disabled = true;
                 button.setAttribute('aria-busy', 'true');

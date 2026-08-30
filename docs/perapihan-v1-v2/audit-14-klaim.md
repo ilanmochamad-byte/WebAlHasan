@@ -22,3 +22,15 @@ tidak tersedia (koneksi terpisah ditutup) serta penulis normal. Memeriksa rollba
 akun/role/relasi/perangkat, pelaku, entitas, before/after, dan ketiadaan credential
 pada semua jalur. Tidak memodifikasi tabel audit, data lama, atau skema untuk
 simulasi kegagalan. Fixture sendiri dibersihkan setelah tes.
+
+## A-13 — P1: pengaman klik ganda membuang tindakan tombol
+
+K6-09/K6-12: handler submit bersama menonaktifkan tombol sebelum browser
+membentuk body POST. Tombol bernama `action` tidak ikut terkirim; konfirmasi
+yang dibatalkan juga meninggalkan tombol disabled. Reproduksi browser sebelum
+koreksi: 2 lulus, 3 gagal (draft/open hilang, cancel mengunci tombol).
+
+Koreksi: salin nama/nilai submitter yang dipilih ke input tersembunyi sebelum
+disable; bila event sudah dibatalkan, jangan mengunci form. Guard, CSRF,
+konfirmasi, dan validasi server tetap berjalan. Tes browser menangkap request
+sebelum mencapai server (tidak memutasi data); sesudah koreksi 5 lulus, 0 gagal.
