@@ -10,5 +10,6 @@ try{
  $groups=master_data_service()->reconciliationPage('duplikat',$m['tag'],1)['rows'];
  $member=null;foreach($groups as$g)foreach($g['anggota']as$a)if((int)$a['id']===$m['wali'][0])$member=$a;
  foreach(range(1,45)as$i){$name=$m['tag'].' Santri '.sprintf('%02d',$i).' Nama panjang untuk pemeriksaan dampak';$ok=$member!==null&&str_contains($member['santri'],$name);$ok?$pass++:$fail++;echo($ok?'[lulus] ':'[gagal] ').'nama terdampak '.$i.' lengkap pada group_concat_max_len=1024'.PHP_EOL;}
+ $db->query('SET SESSION group_concat_max_len=4');$g=master_data_service()->reconciliationPage('duplikat',$m['tag'],1)['rows'];$ok=count($g)===1&&count($g[0]['anggota'])===2;$ok?$pass++:$fail++;echo($ok?'[lulus] ':'[gagal] ').'ID anggota kelompok tetap lengkap pada batas agregasi empat byte'.PHP_EOL;
 }finally{$db->query('SET SESSION group_concat_max_len='.$before);}
 echo"Total wali daftar panjang: $pass lulus, $fail gagal\n";exit($fail?1:0);
