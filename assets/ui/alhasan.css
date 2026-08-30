@@ -1,0 +1,506 @@
+/*!
+ * Sistem Al Hasan — lapisan desain bersama (paket perapihan V1–V2, 30 Agustus 2026).
+ *
+ * Satu berkas untuk SELURUH halaman internal (admin + portal). Dibangun di atas
+ * Bootstrap 5.3 yang sudah dipakai V1: berkas ini hanya menyetel token dan
+ * beberapa komponen, TIDAK mengganti Bootstrap dan TIDAK menambah dependency.
+ *
+ * Aturan yang dipegang berkas ini:
+ *   - warna hanya boleh berasal dari token di :root (jangan menulis hex di halaman);
+ *   - makna tidak pernah disampaikan oleh warna/ikon saja — selalu ada teks;
+ *   - fokus keyboard selalu terlihat;
+ *   - `prefers-reduced-motion` dihormati;
+ *   - halaman cetak membuang seluruh kerangka navigasi (lihat blok @media print).
+ */
+
+:root {
+    /* Identitas: hijau Al Hasan yang tenang di atas latar netral hangat. */
+    --ah-green-900: #0b3f27;
+    --ah-green-800: #0f5132;
+    --ah-green-700: #146c43;
+    --ah-green-600: #198754;
+    --ah-green-100: #e3f1e9;
+    --ah-green-050: #f1f8f4;
+
+    --ah-ink: #1c2320;
+    --ah-ink-soft: #4a544e;
+    --ah-ink-muted: #6b756f;
+    --ah-surface: #ffffff;
+    --ah-canvas: #f4f6f4;
+    --ah-line: #dfe4e0;
+    --ah-line-strong: #c6cfc9;
+
+    --ah-info: #0b6a8f;
+    --ah-info-bg: #e6f2f8;
+    --ah-warn: #8a5a00;
+    --ah-warn-bg: #fdf3e2;
+    --ah-danger: #a52218;
+    --ah-danger-bg: #fbeae9;
+    --ah-ok: #16653c;
+    --ah-ok-bg: #e6f4ec;
+
+    --ah-radius: 12px;
+    --ah-radius-sm: 8px;
+    --ah-shadow: 0 1px 2px rgba(16, 32, 24, .06), 0 8px 24px rgba(16, 32, 24, .06);
+    --ah-space: 1rem;
+    --ah-sidebar-w: 264px;
+    --ah-touch: 44px;
+
+    --bs-body-bg: var(--ah-canvas);
+    --bs-body-color: var(--ah-ink);
+    --bs-link-color: var(--ah-green-700);
+    --bs-link-hover-color: var(--ah-green-900);
+    --bs-border-color: var(--ah-line);
+}
+
+body.ah {
+    background: var(--ah-canvas);
+    color: var(--ah-ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* --- Fokus & aksesibilitas ------------------------------------------------ */
+
+.ah :focus-visible,
+.ah-shell :focus-visible {
+    outline: 3px solid var(--ah-green-600);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.ah-skip {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 1080;
+    background: var(--ah-green-800);
+    color: #fff;
+    padding: .6rem 1rem;
+    border-radius: 0 0 var(--ah-radius-sm) 0;
+}
+
+.ah-skip:focus {
+    left: 0;
+}
+
+.ah-visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ah *,
+    .ah *::before,
+    .ah *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* --- Kerangka: topbar + sidebar + konten ---------------------------------- */
+
+.ah-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.ah-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1035;
+    background: var(--ah-green-800);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .5rem .75rem;
+    min-height: 56px;
+}
+
+.ah-topbar a { color: #fff; }
+
+.ah-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: .01em;
+}
+
+.ah-brand__mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: #fff;
+    color: var(--ah-green-800);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.ah-brand__text small {
+    display: block;
+    font-weight: 400;
+    font-size: .72rem;
+    opacity: .8;
+    line-height: 1;
+}
+
+.ah-topbar__spacer { flex: 1 1 auto; }
+
+.ah-topbar__btn {
+    min-width: var(--ah-touch);
+    min-height: var(--ah-touch);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    border: 1px solid rgba(255, 255, 255, .35);
+    background: transparent;
+    color: #fff;
+    border-radius: var(--ah-radius-sm);
+    padding: .35rem .7rem;
+    text-decoration: none;
+    font-size: .875rem;
+}
+
+.ah-topbar__btn:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+
+.ah-body {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: stretch;
+}
+
+.ah-sidebar {
+    width: var(--ah-sidebar-w);
+    flex: 0 0 var(--ah-sidebar-w);
+    background: var(--ah-surface);
+    border-right: 1px solid var(--ah-line);
+    padding: 1rem .75rem 2rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 56px);
+    position: sticky;
+    top: 56px;
+}
+
+.ah-nav-group {
+    margin: 1.1rem 0 .35rem;
+    padding: 0 .6rem;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ah-ink-muted);
+}
+
+.ah-nav-group:first-child { margin-top: 0; }
+
+.ah-nav a {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    padding: .55rem .6rem;
+    min-height: var(--ah-touch);
+    border-radius: var(--ah-radius-sm);
+    color: var(--ah-ink-soft);
+    text-decoration: none;
+    font-size: .9rem;
+}
+
+.ah-nav a:hover { background: var(--ah-green-050); color: var(--ah-green-900); }
+
+.ah-nav a[aria-current="page"] {
+    background: var(--ah-green-100);
+    color: var(--ah-green-900);
+    font-weight: 600;
+    box-shadow: inset 3px 0 0 var(--ah-green-700);
+}
+
+.ah-nav a i { width: 1.15rem; text-align: center; flex: 0 0 auto; opacity: .85; }
+
+.ah-nav__badge { margin-left: auto; }
+
+.ah-main {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 1.25rem clamp(.85rem, 2vw, 1.75rem) 3rem;
+}
+
+/* Ponsel & tablet: sidebar menjadi laci yang dapat dibuka/ditutup. */
+@media (max-width: 991.98px) {
+    .ah-sidebar {
+        position: fixed;
+        inset: 56px auto 0 0;
+        z-index: 1040;
+        max-height: none;
+        height: calc(100dvh - 56px);
+        transform: translateX(-100%);
+        transition: transform .18s ease-out;
+        box-shadow: var(--ah-shadow);
+    }
+
+    .ah-shell.is-nav-open .ah-sidebar { transform: translateX(0); }
+
+    .ah-shell.is-nav-open .ah-scrim {
+        position: fixed;
+        inset: 56px 0 0 0;
+        background: rgba(16, 32, 24, .38);
+        z-index: 1039;
+    }
+}
+
+@media (min-width: 992px) {
+    .ah-topbar__toggle { display: none; }
+    .ah-scrim { display: none; }
+}
+
+/* --- Kepala halaman, breadcrumb, tindakan utama --------------------------- */
+
+.ah-page-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem 1rem;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-bottom: .9rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--ah-line);
+}
+
+.ah-page-head h1 {
+    font-size: clamp(1.3rem, 1.05rem + .9vw, 1.7rem);
+    font-weight: 700;
+    margin: 0 0 .2rem;
+}
+
+.ah-page-head p { color: var(--ah-ink-muted); margin: 0; max-width: 68ch; font-size: .925rem; }
+
+.ah-page-head__actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+.ah-crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    align-items: center;
+    padding: 0;
+    margin: 0 0 .5rem;
+    list-style: none;
+    font-size: .82rem;
+    color: var(--ah-ink-muted);
+}
+
+.ah-crumbs li + li::before { content: "/"; margin-right: .35rem; opacity: .6; }
+
+.ah-crumbs a { color: var(--ah-ink-muted); text-decoration: none; }
+.ah-crumbs a:hover { color: var(--ah-green-800); text-decoration: underline; }
+
+/* --- Kartu, panel, tabel -------------------------------------------------- */
+
+.ah-card {
+    background: var(--ah-surface);
+    border: 1px solid var(--ah-line);
+    border-radius: var(--ah-radius);
+    box-shadow: var(--ah-shadow);
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+}
+
+.ah-card__head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: .85rem 1.1rem;
+    border-bottom: 1px solid var(--ah-line);
+    background: var(--ah-green-050);
+    font-weight: 600;
+}
+
+.ah-card__body { padding: 1.1rem; }
+.ah-card__foot {
+    padding: .7rem 1.1rem;
+    border-top: 1px solid var(--ah-line);
+    color: var(--ah-ink-muted);
+    font-size: .85rem;
+}
+
+.ah-stats { display: grid; gap: .85rem; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: 1.25rem; }
+
+.ah-stat {
+    background: var(--ah-surface);
+    border: 1px solid var(--ah-line);
+    border-radius: var(--ah-radius);
+    padding: .9rem 1rem;
+}
+
+.ah-stat__label { color: var(--ah-ink-muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .05em; margin-bottom: .2rem; }
+.ah-stat__value { font-size: 1.6rem; font-weight: 700; line-height: 1.1; }
+.ah-stat__hint { color: var(--ah-ink-muted); font-size: .8rem; }
+
+/* Tabel lebar menggulir di dalam wadahnya sendiri, bukan melebarkan halaman. */
+.ah-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.ah-table-wrap > table { margin-bottom: 0; }
+
+.ah-table { width: 100%; border-collapse: collapse; }
+.ah-table th, .ah-table td { padding: .65rem .8rem; border-bottom: 1px solid var(--ah-line); vertical-align: top; }
+.ah-table thead th { background: var(--ah-green-050); color: var(--ah-ink-soft); font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+.ah-table tbody tr:hover { background: var(--ah-green-050); }
+.ah-table td .ah-cell-sub { display: block; color: var(--ah-ink-muted); font-size: .8rem; }
+
+.ah-actions { display: flex; flex-wrap: wrap; gap: .35rem; }
+.ah-actions form { display: inline; margin: 0; }
+
+/* --- Badge & status (selalu ada teks, tidak hanya warna) ------------------ */
+
+.ah-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .18rem .55rem;
+    border-radius: 999px;
+    font-size: .76rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.ah-badge--ok { background: var(--ah-ok-bg); color: var(--ah-ok); border-color: #b9dfc9; }
+.ah-badge--warn { background: var(--ah-warn-bg); color: var(--ah-warn); border-color: #f0dcb4; }
+.ah-badge--danger { background: var(--ah-danger-bg); color: var(--ah-danger); border-color: #f2c4c0; }
+.ah-badge--info { background: var(--ah-info-bg); color: var(--ah-info); border-color: #bcdcea; }
+.ah-badge--muted { background: #eef0ee; color: var(--ah-ink-soft); border-color: var(--ah-line-strong); }
+
+/* --- Formulir ------------------------------------------------------------- */
+
+.ah-fieldset {
+    border: 1px solid var(--ah-line);
+    border-radius: var(--ah-radius);
+    padding: 1rem 1.1rem 1.2rem;
+    margin: 0 0 1.1rem;
+}
+
+.ah-fieldset > legend {
+    float: none;
+    width: auto;
+    padding: 0 .45rem;
+    margin: 0 0 .35rem -.45rem;
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--ah-green-900);
+}
+
+.ah-fieldset__hint { color: var(--ah-ink-muted); font-size: .85rem; margin: -.15rem 0 .9rem; }
+
+.ah-field-error { color: var(--ah-danger); font-size: .82rem; margin-top: .25rem; display: block; }
+.ah-input-invalid { border-color: var(--ah-danger) !important; }
+
+.ah .form-label { font-weight: 600; font-size: .875rem; margin-bottom: .25rem; }
+.ah .form-control, .ah .form-select { min-height: var(--ah-touch); border-color: var(--ah-line-strong); border-radius: var(--ah-radius-sm); }
+.ah .form-control:focus, .ah .form-select:focus { border-color: var(--ah-green-600); box-shadow: 0 0 0 .2rem rgba(25, 135, 84, .18); }
+.ah .btn { min-height: var(--ah-touch); border-radius: var(--ah-radius-sm); font-weight: 600; }
+.ah .btn-sm { min-height: 36px; font-weight: 500; }
+.ah .btn-primary { --bs-btn-bg: var(--ah-green-700); --bs-btn-border-color: var(--ah-green-700); --bs-btn-hover-bg: var(--ah-green-800); --bs-btn-hover-border-color: var(--ah-green-800); --bs-btn-active-bg: var(--ah-green-900); }
+.ah .btn-outline-primary { --bs-btn-color: var(--ah-green-800); --bs-btn-border-color: var(--ah-green-700); --bs-btn-hover-bg: var(--ah-green-700); --bs-btn-hover-border-color: var(--ah-green-700); }
+
+/* --- Pesan & keadaan ------------------------------------------------------ */
+
+.ah-note {
+    display: flex;
+    gap: .7rem;
+    padding: .8rem 1rem;
+    border-radius: var(--ah-radius-sm);
+    border: 1px solid var(--ah-line);
+    background: var(--ah-surface);
+    margin-bottom: 1rem;
+}
+
+.ah-note__title { font-weight: 700; display: block; margin-bottom: .1rem; }
+.ah-note--ok { background: var(--ah-ok-bg); border-color: #b9dfc9; color: #12482c; }
+.ah-note--warn { background: var(--ah-warn-bg); border-color: #f0dcb4; color: #6f4700; }
+.ah-note--danger { background: var(--ah-danger-bg); border-color: #f2c4c0; color: #7d1a13; }
+.ah-note--info { background: var(--ah-info-bg); border-color: #bcdcea; color: #084f6b; }
+
+.ah-empty {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--ah-ink-muted);
+}
+
+.ah-empty__icon { font-size: 1.8rem; opacity: .45; margin-bottom: .5rem; }
+.ah-empty__title { font-weight: 700; color: var(--ah-ink-soft); margin-bottom: .25rem; }
+
+.ah-danger-zone {
+    border: 1px solid #f2c4c0;
+    background: var(--ah-danger-bg);
+    border-radius: var(--ah-radius-sm);
+    padding: .85rem 1rem;
+}
+
+/* --- Tab modul (Pengajian, Akun, Laporan) --------------------------------- */
+
+.ah-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    border-bottom: 1px solid var(--ah-line);
+    margin-bottom: 1.25rem;
+    padding: 0;
+    list-style: none;
+}
+
+.ah-tabs a {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    min-height: var(--ah-touch);
+    padding: .5rem .95rem;
+    border-radius: var(--ah-radius-sm) var(--ah-radius-sm) 0 0;
+    text-decoration: none;
+    color: var(--ah-ink-soft);
+    font-weight: 600;
+    font-size: .92rem;
+    border: 1px solid transparent;
+    border-bottom: none;
+    margin-bottom: -1px;
+}
+
+.ah-tabs a:hover { background: var(--ah-green-050); color: var(--ah-green-900); }
+
+.ah-tabs a[aria-current="page"] {
+    background: var(--ah-surface);
+    border-color: var(--ah-line);
+    color: var(--ah-green-900);
+    box-shadow: inset 0 3px 0 var(--ah-green-700);
+}
+
+/* --- Cetak: kerangka navigasi dibuang seluruhnya -------------------------- */
+
+@media print {
+    .ah-topbar,
+    .ah-sidebar,
+    .ah-scrim,
+    .ah-skip,
+    .ah-tabs,
+    .ah-page-head__actions,
+    .ah-actions,
+    .ah-no-print {
+        display: none !important;
+    }
+
+    .ah-shell, .ah-body { display: block; }
+    .ah-main { padding: 0; }
+    body.ah { background: #fff; }
+    .ah-card { box-shadow: none; border-color: #999; }
+}

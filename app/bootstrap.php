@@ -18,6 +18,7 @@ use App\Auth\AuthRepository;
 use App\Auth\Authorization;
 use App\Auth\Capabilities;
 use App\Auth\LandingRouter;
+use App\Auth\LoginThrottle;
 use App\Auth\PortalGuard;
 use App\Auth\TokenHasher;
 use App\Database\Connection;
@@ -122,6 +123,10 @@ set_exception_handler(static function (Throwable $exception): void {
 });
 
 Session::start($GLOBALS['app_config']['session']);
+
+// Lapisan tampilan bersama (paket perapihan V1-V2). Hanya presentasi:
+// tidak memuat guard dan tidak mengubah otorisasi mana pun.
+require_once APP_ROOT . '/app/Ui/functions.php';
 
 function app_config(?string $key = null): mixed
 {
@@ -257,6 +262,46 @@ function landing_router(): LandingRouter
 {
     static $router;
     return $router ??= new LandingRouter(capabilities());
+}
+
+/**
+ * Pembatasan percobaan masuk (paket perapihan V1-V2, koreksi ke-7).
+ */
+function login_throttle(): LoginThrottle
+{
+    static $throttle;
+    return $throttle ??= new LoginThrottle(app_db());
+}
+
+/**
+ * Konteks tampilan bersama: kemampuan nyata akun dan jumlah notifikasi belum
+ * dibaca, dipakai kerangka `App\Ui\Layout` untuk menyusun menu.
+ *
+ * Ini murni presentasi. Kemampuan tetap dihitung ulang dari basis data pada
+ * setiap request dan setiap halaman tetap menjaga dirinya sendiri di server.
+ *
+ * @param array<string, mixed> $user
+ * @return array{capabilities: array<int, string>, unread: int|null}
+ */
+function ui_context(array $user): array
+{
+    static $cache = [];
+    $id = (int) ($user['id'] ?? 0);
+    if (isset($cache[$id])) {
+        return $cache[$id];
+    }
+    $unread = null;
+    try {
+        $unread = (int) notification_center_service()->unreadCount($user)['jumlah'];
+    } catch (Throwable $exception) {
+        // Kegagalan lencana tidak boleh merusak navigasi.
+        error_log('Jumlah notifikasi belum dibaca gagal dibaca: ' . $exception->getMessage());
+    }
+
+    return $cache[$id] = [
+        'capabilities' => capabilities()->forUser($user),
+        'unread' => $unread,
+    ];
 }
 
 function izin_repository(): IzinRepository

@@ -1,84 +1,69 @@
-<?php require_once __DIR__ . '/_guard.php'; ?>
-<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse" style="min-height: 100vh;">
-    <div class="position-sticky pt-3">
-        <div class="text-center mb-4 text-white">
-            <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 60px; height: 60px;">
-                <i class="fas fa-mosque fa-2x text-success"></i>
-            </div>
-            <h6 class="fw-bold mb-0">ADMIN AL HASAN</h6>
-            <small class="text-white-50">Sistem Terpadu</small>
-        </div>
+<?php
 
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_dashboard.php') ? 'active bg-success' : ''; ?>" href="admin_dashboard.php">
-                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
-                </a>
-            </li>
+declare(strict_types=1);
 
-            <li class="nav-item mt-3 text-white-50 small fw-bold px-3">PSB ONLINE</li>
-            <li class="nav-item">
-                <a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_data.php') ? 'active bg-success' : ''; ?>" href="admin_data.php">
-                    <i class="fas fa-users me-2"></i> Data Pendaftar
-                </a>
-            </li>
+use App\Ui\Navigation;
 
-            <li class="nav-item mt-3 text-white-50 small fw-bold px-3">MASTER DATA & AKADEMIK</li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_master_santri.php') ? 'active bg-success' : ''; ?>" href="admin_master_santri.php"><i class="fa fa-address-book me-2"></i> Master Data Santri</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_wali.php') ? 'active bg-success' : ''; ?>" href="admin_wali.php"><i class="fas fa-people-roof me-2"></i> Orang Tua / Wali</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="admin_santri.php"><i class="fa fa-address-card"></i> Data Santri</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="admin_rekap_santri.php"><i class ="fa fa-list-alt"></i> Rekapitulasi Santri</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_tahun.php') ? 'active bg-success' : ''; ?>" href="admin_tahun.php"><i class="fas fa-calendar-alt me-2"></i> Tahun Ajaran</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_guru.php') ? 'active bg-success' : ''; ?>" href="admin_guru.php"><i class="fas fa-chalkboard-teacher me-2"></i> Guru & Pembimbing</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_pengurus.php') ? 'active bg-success' : ''; ?>" href="admin_pengurus.php"><i class="fas fa-user-tie me-2"></i> Pengurus</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_murobi.php') ? 'active bg-success' : ''; ?>" href="admin_murobi.php"><i class="fas fa-user-group me-2"></i> Penugasan Murobi</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_pembimbing.php') ? 'active bg-success' : ''; ?>" href="admin_pembimbing.php"><i class="fas fa-user-shield me-2"></i> Penugasan Pembimbing</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_akun.php') ? 'active bg-success' : ''; ?>" href="admin_akun.php"><i class="fas fa-user-shield me-2"></i> Akun & Hak Akses</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_akun_perizinan.php') ? 'active bg-success' : ''; ?>" href="admin_akun_perizinan.php"><i class="fas fa-id-card-clip me-2"></i> Akun Pengurus & Orang Tua</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'ubah_password.php') ? 'active bg-success' : ''; ?>" href="ubah_password.php"><i class="fas fa-key me-2"></i> Ganti Password</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_kelas.php') ? 'active bg-success' : ''; ?>" href="admin_kelas.php"><i class="fas fa-school me-2"></i> Data Kelas</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_jadwal_ngaji.php') ? 'active bg-success' : ''; ?>" href="admin_jadwal_ngaji.php"><i class="fas fa-book-open me-2"></i> Jadwal Pengajian</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'pertemuan_pengajian.php') ? 'active bg-success' : ''; ?>" href="pertemuan_pengajian.php"><i class="fas fa-calendar-check me-2"></i> Pertemuan Pengajian</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo in_array(basename($_SERVER['PHP_SELF']), ['admin_laporan_absensi.php', 'laporan_absensi_detail.php'], true) ? 'active bg-success' : ''; ?>" href="admin_laporan_absensi.php"><i class="fas fa-chart-column me-2"></i> Laporan Absensi</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="admin_kamar.php"><i class="fas fa-bed me-2"></i> Data Kamar</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="<?php echo htmlspecialchars(app_url('/portal/izin.php'), ENT_QUOTES, 'UTF-8'); ?>"><i class="fas fa-file-shield me-2"></i> Perizinan V2 (Portal)</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="<?php echo htmlspecialchars(app_url('/portal/izin_antrean.php'), ENT_QUOTES, 'UTF-8'); ?>"><i class="fas fa-inbox me-2"></i> Antrean Penetapan Admin</a></li>
-            <li class="nav-item"><a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_notifikasi.php') ? 'active bg-success' : ''; ?>" href="admin_notifikasi.php"><i class="fas fa-bell me-2"></i> Kanal Notifikasi</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="<?php echo htmlspecialchars(app_url('/portal/notifikasi.php'), ENT_QUOTES, 'UTF-8'); ?>"><i class="fas fa-envelope-open-text me-2"></i> Pusat Notifikasi Saya</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="admin_pelanggaran.php"><i class="fas fa-exclamation-triangle me-2"></i> Pelanggaran</a></li>
+/**
+ * Komponen navigasi kompatibilitas untuk halaman admin lama.
+ *
+ * Sebelum paket perapihan V1–V2 berkas ini memuat `admin/_guard.php` — guard
+ * khusus role admin — sehingga komponen navigasi tidak dapat dipakai peran lain
+ * dan setiap halaman menyusun menunya sendiri. Guard itu kini DILEPAS dari
+ * komponen navigasi (keputusan 30 Agustus 2026): halaman pemanggil tetap
+ * menjaga dirinya sendiri, dan menu hanyalah tampilan.
+ *
+ * Halaman yang sudah didesain ulang memakai `App\Ui\Layout` dan tidak lagi
+ * memuat berkas ini. Berkas ini dipertahankan agar halaman lama di luar
+ * cakupan desain ulang (PSB, keuangan, alumni, konten website) tetap
+ * mendapatkan menu yang sama isinya, di dalam struktur kolom Bootstrap yang
+ * sudah mereka pakai.
+ *
+ * Menyembunyikan menu BUKAN kontrol akses.
+ */
 
-            <li class="nav-item mt-3 text-white-50 small fw-bold px-3">KEUANGAN</li>
-            <li class="nav-item"><a class="nav-link text-white" href="admin_pembayaran_psb.php"><i class="fa-solid fa-rupiah-sign"></i> Pembayaran PSB</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="admin_rekap_keuangan.php"><i class="fa-solid fa-area-chart"></i> Rekap Keuangan PSB</a></li>
-            
-            <li class="nav-item mt-3 text-white-50 small fw-bold px-3">DATA ALUMNI</li>
-            <li class="nav-item"><a class="nav-link text-white" href="admin_alumni.php"><i class="fa fa-paper-plane"></i> Data Alumni</a></li>
-            
-            <li class="nav-item mt-3 text-white-50 small fw-bold px-3">KONTEN WEBSITE</li>
-            <li class="nav-item">
-                <a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_berita.php') ? 'active bg-success' : ''; ?>" href="admin_berita.php">
-                    <i class="fas fa-newspaper me-2"></i> Berita / Artikel
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_galeri.php') ? 'active bg-success' : ''; ?>" href="admin_galeri.php">
-                    <i class="fas fa-images me-2"></i> Galeri Foto
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_download.php') ? 'active bg-success' : ''; ?>" href="admin_download.php">
-                    <i class="fas fa-download me-2"></i> File Download
-                </a>
-            </li>
+require_once dirname(__DIR__) . '/app/bootstrap.php';
 
-            <li class="nav-item mt-5 border-top pt-3">
-                <a class="nav-link text-danger fw-bold" href="logout.php">
-                    <i class="fas fa-sign-out-alt me-2"></i> Logout
-                </a>
-            </li>
+$sidebarUser = authorization()->currentUser();
+if ($sidebarUser === null) {
+    return;
+}
+$sidebarContext = ui_context($sidebarUser);
+$sidebarGroups = Navigation::forUser($sidebarUser, $sidebarContext['capabilities'], $sidebarContext['unread']);
+$sidebarActive = Navigation::activeKey();
+?>
+<link rel="stylesheet" href="<?= ah_e(app_url('/assets/ui/alhasan.css')) ?>">
+<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block collapse ah-sidebar ah-legacy-sidebar" aria-label="Menu utama">
+    <a class="ah-brand text-decoration-none d-flex mb-3 pt-2 px-2" style="color:var(--ah-green-800)" href="<?= ah_e(app_url('/portal/index.php')) ?>">
+        <span class="ah-brand__mark" style="background:var(--ah-green-800);color:#fff" aria-hidden="true"><i class="fas fa-mosque"></i></span>
+        <span class="ah-brand__text">Sistem Al Hasan<small>Pesantren Al Hasan Ciamis</small></span>
+    </a>
+    <?php foreach ($sidebarGroups as $sidebarGroup): ?>
+        <p class="ah-nav-group"><?= ah_e($sidebarGroup['label']) ?></p>
+        <ul class="ah-nav list-unstyled mb-0">
+            <?php foreach ($sidebarGroup['items'] as $sidebarItem): ?>
+                <li>
+                    <a href="<?= ah_e($sidebarItem['url']) ?>"<?= $sidebarItem['key'] === $sidebarActive ? ' aria-current="page"' : '' ?>>
+                        <i class="fas <?= ah_e($sidebarItem['icon']) ?>" aria-hidden="true"></i>
+                        <span><?= ah_e($sidebarItem['label']) ?></span>
+                        <?php if (!empty($sidebarItem['badge'])): ?>
+                            <span class="ah-badge ah-badge--danger ah-nav__badge"><?= ah_e($sidebarItem['badge']) ?></span>
+                        <?php endif; ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
         </ul>
-    </div>
+    <?php endforeach; ?>
+    <p class="ah-nav-group">Sesi</p>
+    <ul class="ah-nav list-unstyled mb-0">
+        <li><a href="<?= ah_e(app_url('/admin/logout.php')) ?>"><i class="fas fa-arrow-right-from-bracket" aria-hidden="true"></i><span>Keluar</span></a></li>
+    </ul>
 </nav>
+<style>
+/* Halaman lama memakai grid Bootstrap, bukan flex shell baru. */
+.ah-legacy-sidebar { position: static; max-height: none; }
+@media (max-width: 991.98px) { .ah-legacy-sidebar { transform: none; box-shadow: none; position: static; height: auto; inset: auto; } }
+</style>
 <script>
     window.ALHASAN_CSRF = <?= json_encode(\App\Http\Csrf::token(), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
     document.addEventListener('DOMContentLoaded', function () {
