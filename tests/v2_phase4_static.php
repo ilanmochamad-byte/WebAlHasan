@@ -675,7 +675,7 @@ if (!$adaMobile) {
         'src/notifications/push-token-storage.ts',
         'src/app/notifikasi/[id].tsx',
         'src/app/notifikasi/perangkat.tsx',
-        'src/app/(app)/(notifikasi)/notifikasi.tsx',
+        'src/app/notifikasi/index.tsx',
     ] as $berkas) {
         $isi = $mobile($berkas);
         $assert($isi !== '', 'Berkas mobile Fase 4 tersedia: ' . $berkas);
@@ -693,14 +693,23 @@ if (!$adaMobile) {
         'Secret server tidak pernah masuk konfigurasi bundle mobile'
     );
 
-    $layar = $mobile('src/app/(app)/(notifikasi)/notifikasi.tsx');
+    // B-1, keputusan pengguna 30 Agustus 2026: sesudah audit fungsi client
+    // mobile, ikuti layar redesign dan lonceng header tanpa menghapus coverage.
+    $layar = $mobile('src/app/notifikasi/index.tsx');
     foreach (['LoadingState', 'EmptyState', 'ErrorState', 'Tandai semua dibaca', 'Halaman'] as $bagian) {
         $assert(str_contains($layar, $bagian), 'Layar notifikasi menyediakan ' . $bagian);
     }
     $assert(
-        str_contains($mobile('src/components/app-tabs.tsx'), 'NativeTabs.Trigger.Badge'),
-        'Tab notifikasi menampilkan lencana jumlah belum dibaca'
+        str_contains($mobile('src/components/screen-header.tsx'), '<NotificationBell')
+        && str_contains($mobile('src/components/notification-bell.tsx'), 'badge={jumlahBelumDibaca}')
+        && str_contains($mobile('src/components/notification-bell.tsx'), "router.push('/notifikasi')")
+        && str_contains($mobile('src/components/ui/icon-button.tsx'), "badge > 99 ? '99+' : badge"),
+        'Lonceng header merender lencana jumlah belum dibaca dan membuka pusat notifikasi'
     );
+    $assert(str_contains($mobile('src/app/_layout.tsx'), 'name="notifikasi/index"'), 'Rute layar notifikasi baru terdaftar');
+    $assert(str_contains($layar, 'profile?.id') && str_contains($context, 'cacheJumlah.userId === userId'), 'Daftar dan lencana notifikasi terikat identitas sesi');
+    $assert(str_contains($layar, 'api.notifikasiList') && str_contains($layar, 'api.notifikasiTandaiSemua')
+        && str_contains($mobile('src/app/notifikasi/[id].tsx'), 'api.notifikasiTandaiDibaca'), 'Layar daftar/detail tetap memakai operasi client notifikasi');
     $assert(
         str_contains($mobile('src/api/client.ts'), 'perangkatCabut') && str_contains($mobile('src/auth/auth-context.tsx'), 'pushTokenStorage.clear()'),
         'Logout mencabut registrasi perangkat dan membersihkan token lokal'
