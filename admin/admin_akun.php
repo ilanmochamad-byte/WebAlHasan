@@ -253,7 +253,7 @@ master_header('Akun & Hak Akses', [
                                         Beri Admin…
                                     </button>
                                 <?php elseif ($penghalang === null): ?>
-                                    <form method="post">
+                                    <form method="post" data-confirm="Tambahkan hak <?= master_e($service->label($role)) ?>? Akun memperoleh fungsi sesuai relasi master yang sah; hak lain tetap dipertahankan dan perubahan dicatat pada audit.">
                                         <?= master_csrf() ?>
                                         <input type="hidden" name="action" value="grant_role">
                                         <input type="hidden" name="user_id" value="<?= $id ?>">
@@ -392,7 +392,7 @@ master_header('Akun & Hak Akses', [
     <div class="ah-card__head"><span id="ah-hubungkan">Hubungkan akun yang sudah ada ke data master</span></div>
     <div class="ah-card__body">
         <p class="text-muted">Menghubungkan akun juga memberikan role terkait. Satu akun hanya boleh terhubung ke satu master pengurus atau satu master wali.</p>
-        <form method="post" class="row g-3">
+        <form method="post" class="row g-3" data-confirm="Hubungkan akun ke identitas master yang dipilih? Hak pengurus atau orang tua ditambahkan; akun dapat mengakses santri sesuai hubungan master tersebut. Pastikan identitasnya benar.">
             <?= master_csrf() ?><input type="hidden" name="action" value="link">
             <div class="col-md-4"><label class="form-label" for="link_user">Akun</label>
                 <select class="form-select" id="link_user" name="user_id" required>
