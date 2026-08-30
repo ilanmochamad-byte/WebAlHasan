@@ -31,14 +31,34 @@ $assert(str_contains($service, "['Draf'") || str_contains($migration, "ENUM('Dra
 $assert(str_contains($service, 'requireOwnership') && str_contains($service, "in_array('guru'"), 'Guru dibatasi ke jadwal miliknya');
 $assert(str_contains($repository, 'j.is_active = 1 AND j.archived_at IS NULL') && str_contains($repository, "ta.status = 'Aktif'"), 'Tugas guru hanya mengambil jadwal aktif pada semester aktif');
 
-$schedulePage = $source('admin/admin_jadwal_ngaji.php');
-foreach (['Pencarian', 'Detail', 'Tambah Jadwal', 'Ubah', 'Nonaktifkan', 'Arsipkan'] as $feature) {
+// PERUBAHAN LOKASI — paket perapihan V1-V2, keputusan pengguna 30 Agustus 2026
+// (koreksi ke-4: jadwal dan pertemuan disatukan dalam satu menu bertab).
+// Pemeriksaannya SETARA dengan sebelumnya; yang berpindah hanyalah berkas
+// tempat UI-nya berada: `admin/_pengajian_jadwal.php` dan
+// `admin/_pengajian_pertemuan.php`, dirender oleh `admin/admin_pengajian.php`.
+$schedulePage = $source('admin/_pengajian_jadwal.php');
+foreach (['Pencarian', 'Detail', 'Tambah jadwal', 'Ubah', 'Nonaktifkan', 'Arsipkan'] as $feature) {
     $assert(str_contains($schedulePage, $feature), 'UI jadwal menyediakan ' . $feature);
 }
 $assert(!preg_match('/DELETE\s+FROM\s+jadwal_ngaji/i', $schedulePage), 'UI jadwal tidak menghapus jadwal permanen');
-$meetingPage = $source('admin/pertemuan_pengajian.php');
-$assert(str_contains($meetingPage, 'Simpan Draf') && str_contains($meetingPage, 'Buka & Bekukan Peserta') && str_contains($meetingPage, 'Selesaikan Pertemuan'), 'UI pertemuan mendukung seluruh perubahan status');
-$assert(str_contains($meetingPage, 'Csrf::requireValid') && str_contains($schedulePage, 'master_csrf()'), 'Form jadwal dan pertemuan dilindungi CSRF');
+$meetingPage = $source('admin/_pengajian_pertemuan.php');
+$assert(
+    str_contains($meetingPage, 'Simpan draf')
+    && str_contains($meetingPage, 'Buka &amp; bekukan peserta')
+    && str_contains($meetingPage, 'Selesaikan pertemuan'),
+    'UI pertemuan mendukung seluruh perubahan status'
+);
+$assert(
+    str_contains($source('admin/admin_pengajian.php'), 'Csrf::requireValid')
+    && str_contains($meetingPage, 'ah_csrf()')
+    && str_contains($schedulePage, 'ah_csrf()'),
+    'Form jadwal dan pertemuan dilindungi CSRF'
+);
+// Navigasi jadwal <-> pertemuan tidak boleh memutus konteks.
+$assert(
+    str_contains($schedulePage, "'tab' => 'pertemuan'") && str_contains($meetingPage, "'tab' => 'jadwal'"),
+    'Jadwal dan pertemuan saling tertaut dengan konteks terbawa'
+);
 
 require_once $root . '/app/Schedule/LegacyTimeParser.php';
 use App\Schedule\LegacyTimeParser;

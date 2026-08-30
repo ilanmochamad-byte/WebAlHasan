@@ -36,6 +36,9 @@ use App\Ui\Denial;
 
 require_once dirname(__DIR__) . '/app/bootstrap.php';
 
+// Menandai bahwa potongan tampilan di bawah dimuat dari halaman ber-guard.
+define('AH_PARTIAL', true);
+
 $currentUser = authorization()->requireWebUser();
 if (!in_array('admin', $currentUser['roles'], true) && !in_array('guru', $currentUser['roles'], true)) {
     Denial::render(

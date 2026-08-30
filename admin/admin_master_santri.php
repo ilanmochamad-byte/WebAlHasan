@@ -19,6 +19,9 @@ use App\MasterData\PhotoStorage;
 require_once __DIR__ . '/_guard.php';
 require_once __DIR__ . '/_master_ui.php';
 
+// Menandai bahwa potongan tampilan di bawah dimuat dari halaman ber-guard.
+define('AH_PARTIAL', true);
+
 $service = master_data_service();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -403,7 +406,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <?php master_pagination((int) $result['total'], $page, 20); ?>
 
 <section class="ah-card" aria-labelledby="ah-impor">
-    <div class="ah-card__head"><span id="ah-impor">Impor format santri lama</span></div>
+    <div class="ah-card__head"><span id="ah-impor">Impor Format Santri Lama</span></div>
     <div class="ah-card__body">
         <p class="text-muted">Urutan kolom: NIS, nama, L/P, tempat lahir, tanggal lahir (YYYY-MM-DD), alamat, desa, kecamatan, kabupaten/kota, provinsi, ayah, HP ayah, ibu, HP ibu, sekolah asal, sekolah saat ini.</p>
         <?php ah_note('info', 'Impor menyimpan nama ayah/ibu pada kolom lama dan TIDAK membuat identitas wali secara otomatis.',

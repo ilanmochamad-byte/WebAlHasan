@@ -126,7 +126,7 @@ final class KlienWebFase5
     public function login(string $username, string $password): array
     {
         return $this->request('/admin/cek_login.php', [
-            '_csrf' => $this->csrf('/admin/admin_login.php'),
+            '_csrf' => $this->csrf('/portal/index.php'),
             'username' => $username,
             'password' => $password,
         ]);
@@ -190,7 +190,7 @@ try {
     foreach (['/portal/laporan.php', '/portal/laporan_cetak.php', '/portal/laporan_csv.php'] as $halaman) {
         $r = $anon->request($halaman . '?' . $rentang);
         $assert(
-            $r['status'] === 302 && str_contains((string) $r['location'], 'admin_login.php'),
+            $r['status'] === 302 && str_contains((string) $r['location'], '/portal/index.php'),
             'WL-1a Anonim diarahkan ke halaman masuk dari ' . $halaman . ' [' . $r['status'] . ']'
         );
         $assert(

@@ -455,7 +455,9 @@ $assert(
     'Layanan laporan V2 ditambahkan tanpa mengganti layanan laporan absensi V1'
 );
 $assert(
-    str_contains($source('portal/_ui.php'), '/portal/laporan.php'),
+    // Sejak koreksi ke-6 (paket perapihan V1-V2) menu berasal dari satu peta
+    // navigasi bersama, bukan dari markup tiap halaman. Isinya setara.
+    str_contains($source('app/Ui/Navigation.php'), '/portal/laporan.php'),
     'Navigasi portal memuat tautan laporan untuk seluruh peran perizinan'
 );
 

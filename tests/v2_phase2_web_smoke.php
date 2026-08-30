@@ -144,7 +144,13 @@ final class Klien
 
     public function login(string $username, string $password): array
     {
-        $token = $this->csrf('/admin/admin_login.php');
+        // PERUBAHAN ALAMAT - paket perapihan V1-V2, koreksi ke-7 (satu pintu masuk),
+        // keputusan pengguna 30 Agustus 2026. Halaman masuk kini berada di
+        // `/portal/index.php`; `/admin/admin_login.php` tetap berfungsi sebagai
+        // alamat lama yang mengarahkan ke sana. Penangan POST tidak berubah:
+        // tetap `/admin/cek_login.php`, sehingga alur pengiriman formulir lama
+        // tetap kompatibel.
+        $token = $this->csrf('/portal/index.php');
 
         return $this->request('/admin/cek_login.php', [
             '_csrf' => $token,
@@ -266,7 +272,7 @@ try {
     // --------------------------------------------------------------- anonim
     $anon = new Klien($baseUrl, 'anon');
     $anonPortal = $anon->request('/portal/izin.php');
-    $assert($anonPortal['status'] === 302 && str_contains((string) $anonPortal['location'], 'admin_login.php'), 'WEB-1 Anonim diarahkan ke halaman masuk (302)');
+    $assert($anonPortal['status'] === 302 && str_contains((string) $anonPortal['location'], '/portal/index.php'), 'WEB-1 Anonim diarahkan ke halaman masuk (302)');
     $anonBuat = $anon->request('/portal/izin_buat.php');
     $assert($anonBuat['status'] === 302, 'WEB-2 Halaman buat pengajuan tertutup bagi anonim');
 
@@ -372,7 +378,17 @@ try {
     // ----------------------------------------------------------------- admin
     $klienAdmin = new Klien($baseUrl, 'admin');
     $masukAdmin = $klienAdmin->login($adminUsername, $sandi);
-    $assert($masukAdmin['status'] === 302 && str_contains((string) $masukAdmin['location'], 'admin_dashboard.php'), 'WEB-18 Alur login admin V1 tidak berubah');
+    // Sejak koreksi ke-7 seluruh peran mendarat di beranda tunggal; panel
+    // administrasi tetap satu klik dari sana dan tetap dijaga guard admin.
+    $assert(
+        $masukAdmin['status'] === 302 && str_contains((string) $masukAdmin['location'], '/portal/index.php'),
+        'WEB-18a Admin mendarat di beranda tunggal'
+    );
+    $assert(
+        str_contains($klienAdmin->request('/portal/index.php')['body'], '/admin/admin_dashboard.php')
+        && $klienAdmin->request('/admin/admin_dashboard.php')['status'] === 200,
+        'WEB-18b Panel administrasi tetap dapat dibuka admin dari beranda'
+    );
     foreach (['/portal/izin.php', '/portal/izin_antrean.php', '/portal/izin_buat.php', '/admin/admin_dashboard.php'] as $halaman) {
         $assert($klienAdmin->request($halaman)['status'] === 200, 'WEB-19 Admin dapat membuka ' . $halaman);
     }

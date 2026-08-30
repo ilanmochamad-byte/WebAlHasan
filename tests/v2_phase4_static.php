@@ -732,7 +732,13 @@ $assert(
     'Panel admin hanya menampilkan NAMA environment, bukan nilainya'
 );
 $assert(
-    str_contains($source('portal/_ui.php'), 'portal_unread_count($user)'),
+    // Sejak koreksi ke-6 (paket perapihan V1-V2) lencana dihitung sekali pada
+    // konteks tampilan bersama (ui_context) lalu dirender oleh peta navigasi
+    // yang sama untuk admin dan portal. Fungsinya setara.
+    str_contains($source('portal/_ui.php'), 'ui_context($user)')
+    && str_contains($source('app/bootstrap.php'), 'notification_center_service()->unreadCount($user)')
+    && str_contains($source('app/Ui/Navigation.php'), '$unreadCount')
+    && str_contains($source('app/Ui/Layout.php'), "ah-nav__badge"),
     'Navigasi portal menampilkan lencana notifikasi belum dibaca'
 );
 

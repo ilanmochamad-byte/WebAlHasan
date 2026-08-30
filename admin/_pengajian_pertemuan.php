@@ -3,6 +3,19 @@
 declare(strict_types=1);
 
 /**
+ * Berkas ini adalah POTONGAN TAMPILAN, bukan halaman.
+ *
+ * Ia hanya boleh dimuat dari halaman yang sudah menjalankan guard servernya
+ * sendiri. Permintaan langsung ke alamat berkas ini ditolak, sehingga tidak ada
+ * jalur masuk yang melewati pemeriksaan otorisasi.
+ */
+if (!defined('AH_PARTIAL')) {
+    http_response_code(404);
+    exit;
+}
+
+
+/**
  * Tab "Pertemuan" pada modul Pengajian terpadu.
  *
  * Dimuat hanya oleh `admin/admin_pengajian.php`, yang sudah lebih dulu
