@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $oldFields[] = $flat;
             }
         }
-        ah_old_keep($oldInput, $oldFields, '_santri_old');
+        ah_validation_keep($oldInput, $oldFields, $exception, '_santri_old');
         master_flash('danger', $exception->getMessage());
         master_redirect('admin_master_santri.php?action=' . ($id ? 'edit&id=' . $id : 'create'));
     }
@@ -122,18 +122,18 @@ master_header('Data Santri', [
             <legend>Identitas santri</legend>
             <div class="row g-3">
                 <div class="col-md-3"><label class="form-label" for="nis">NIS</label>
-                    <input class="form-control" id="nis" name="nis" maxlength="20" required value="<?= master_e(ah_old('nis', $record, '_santri_old')) ?>"></div>
+                    <input class="form-control" id="nis" name="nis" maxlength="20" required value="<?= master_e(ah_old('nis', $record, '_santri_old')) ?>"><?= ah_field_error('nis','_santri_old') ?></div>
                 <div class="col-md-6"><label class="form-label" for="nama_santri">Nama santri</label>
-                    <input class="form-control" id="nama_santri" name="nama_santri" maxlength="100" required value="<?= master_e(ah_old('nama_santri', $record, '_santri_old')) ?>"></div>
+                    <input class="form-control" id="nama_santri" name="nama_santri" maxlength="100" required value="<?= master_e(ah_old('nama_santri', $record, '_santri_old')) ?>"><?= ah_field_error('nama_santri','_santri_old') ?></div>
                 <div class="col-md-3"><label class="form-label" for="jenis_kelamin">Jenis kelamin</label>
                     <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
                         <option value="L" <?= ah_old('jenis_kelamin', $record, '_santri_old') === 'L' ? 'selected' : '' ?>>Laki-laki</option>
                         <option value="P" <?= ah_old('jenis_kelamin', $record, '_santri_old') === 'P' ? 'selected' : '' ?>>Perempuan</option>
-                    </select></div>
+                    </select><?= ah_field_error('jenis_kelamin','_santri_old') ?></div>
                 <div class="col-md-4"><label class="form-label" for="tempat_lahir">Tempat lahir</label>
-                    <input class="form-control" id="tempat_lahir" name="tempat_lahir" maxlength="50" value="<?= master_e(ah_old('tempat_lahir', $record, '_santri_old')) ?>"></div>
+                    <input class="form-control" id="tempat_lahir" name="tempat_lahir" maxlength="50" value="<?= master_e(ah_old('tempat_lahir', $record, '_santri_old')) ?>"><?= ah_field_error('tempat_lahir','_santri_old') ?></div>
                 <div class="col-md-3"><label class="form-label" for="tgl_lahir">Tanggal lahir</label>
-                    <input class="form-control" id="tgl_lahir" type="date" name="tgl_lahir" required value="<?= master_e(ah_old('tgl_lahir', $record, '_santri_old')) ?>"></div>
+                    <input class="form-control" id="tgl_lahir" type="date" name="tgl_lahir" required value="<?= master_e(ah_old('tgl_lahir', $record, '_santri_old')) ?>"><?= ah_field_error('tgl_lahir','_santri_old') ?></div>
                 <div class="col-md-5"><label class="form-label" for="foto_upload">Foto baru <span class="text-muted fw-normal">(opsional, maks. 2 MB)</span></label>
                     <input class="form-control" id="foto_upload" type="file" name="foto_upload" accept="image/jpeg,image/png,image/webp"
                            aria-describedby="bantuan_foto">
@@ -145,10 +145,10 @@ master_header('Data Santri', [
             <legend>Alamat</legend>
             <div class="row g-3">
                 <div class="col-12"><label class="form-label" for="alamat">Alamat</label>
-                    <textarea class="form-control" id="alamat" name="alamat" rows="2"><?= master_e(ah_old('alamat', $record, '_santri_old')) ?></textarea></div>
+                    <textarea class="form-control" id="alamat" name="alamat" rows="2"><?= master_e(ah_old('alamat', $record, '_santri_old')) ?></textarea><?= ah_field_error('alamat','_santri_old') ?></div>
                 <?php foreach (['desa' => 'Desa/Kelurahan', 'kecamatan' => 'Kecamatan', 'kab_kota' => 'Kabupaten/Kota', 'provinsi' => 'Provinsi'] as $name => $label): ?>
                     <div class="col-md-3"><label class="form-label" for="<?= $name ?>"><?= $label ?></label>
-                        <input class="form-control" id="<?= $name ?>" name="<?= $name ?>" maxlength="50" value="<?= master_e(ah_old($name, $record, '_santri_old')) ?>"></div>
+                        <input class="form-control" id="<?= $name ?>" name="<?= $name ?>" maxlength="50" value="<?= master_e(ah_old($name, $record, '_santri_old')) ?>"><?= ah_field_error('<?= $name ?>','_santri_old') ?></div>
                 <?php endforeach; ?>
             </div>
         </fieldset>
@@ -157,9 +157,9 @@ master_header('Data Santri', [
             <legend>Sekolah</legend>
             <div class="row g-3">
                 <div class="col-md-6"><label class="form-label" for="asal_sekolah">Sekolah asal</label>
-                    <input class="form-control" id="asal_sekolah" name="asal_sekolah" maxlength="100" value="<?= master_e(ah_old('asal_sekolah', $record, '_santri_old')) ?>"></div>
+                    <input class="form-control" id="asal_sekolah" name="asal_sekolah" maxlength="100" value="<?= master_e(ah_old('asal_sekolah', $record, '_santri_old')) ?>"><?= ah_field_error('asal_sekolah','_santri_old') ?></div>
                 <div class="col-md-6"><label class="form-label" for="sekolah_saat_ini">Sekolah saat ini</label>
-                    <input class="form-control" id="sekolah_saat_ini" name="sekolah_saat_ini" maxlength="50" value="<?= master_e(ah_old('sekolah_saat_ini', $record, '_santri_old')) ?>"></div>
+                    <input class="form-control" id="sekolah_saat_ini" name="sekolah_saat_ini" maxlength="50" value="<?= master_e(ah_old('sekolah_saat_ini', $record, '_santri_old')) ?>"><?= ah_field_error('sekolah_saat_ini','_santri_old') ?></div>
             </div>
         </fieldset>
 
@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td><div class="ah-actions">
                         <a class="btn btn-sm btn-outline-primary" href="?action=detail&amp;id=<?= (int) $row['id'] ?>">Detail</a>
                         <a class="btn btn-sm btn-outline-secondary" href="?action=edit&amp;id=<?= (int) $row['id'] ?>">Ubah</a>
-                        <form method="post"><?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                        <form data-confirm="Ubah status santri ini? Kelayakan pilihan santri pada layanan mengikuti status aktif; relasi wali, absensi, dan perizinan lama tidak dihapus." method="post"><?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
                             <button class="btn btn-sm btn-outline-secondary" name="action" value="<?= (int) $row['is_active'] === 1 ? 'deactivate' : 'activate' ?>"><?= (int) $row['is_active'] === 1 ? 'Nonaktifkan' : 'Aktifkan' ?></button></form>
                         <form method="post" onsubmit="return confirm('Arsipkan santri ini? Santri berhenti muncul pada daftar aktif, tetapi relasi wali, riwayat kelas, absensi, dan perizinan lama TIDAK dihapus.')">
                             <?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">

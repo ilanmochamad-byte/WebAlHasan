@@ -62,13 +62,13 @@ $tautanJadwal = static fn (int $jadwalId): string => app_url('/admin/admin_penga
                                 <?= ah_e($schedule['hari'] . ' ' . substr($schedule['waktu_mulai'], 0, 5) . '–' . substr($schedule['waktu_selesai'], 0, 5) . ' — ' . $schedule['nama_kelas'] . ' — ' . $schedule['fan_ilmu'] . ' — ' . $schedule['nama_guru']) ?>
                             </option>
                         <?php endforeach; ?>
-                    </select>
+                    </select><?= ah_field_error('schedule_id','_meeting_old') ?>
                     <div class="form-text" id="bantuan_tanggal">Tanggal wajib jatuh pada hari sesuai pola jadwal.</div>
                 </div>
                 <div class="col-lg-3"><label class="form-label" for="tanggal_pertemuan">Tanggal pertemuan</label>
-                    <input class="form-control" id="tanggal_pertemuan" type="date" name="tanggal_pertemuan" value="<?= date('Y-m-d') ?>" required></div>
+                    <input class="form-control" id="tanggal_pertemuan" type="date" name="tanggal_pertemuan" value="<?= ah_e(ah_old('tanggal_pertemuan',['tanggal_pertemuan'=>date('Y-m-d')],'_meeting_old')) ?>" required><?= ah_field_error('tanggal_pertemuan','_meeting_old') ?></div>
                 <div class="col-lg-3"><label class="form-label" for="catatan">Catatan</label>
-                    <input class="form-control" id="catatan" name="catatan" maxlength="2000" placeholder="Opsional"></div>
+                    <input class="form-control" id="catatan" name="catatan" value="<?= ah_e(ah_old('catatan',null,'_meeting_old')) ?>" maxlength="2000" placeholder="Opsional"><?= ah_field_error('catatan','_meeting_old') ?></div>
                 <div class="col-12 d-flex flex-wrap gap-2">
                     <button class="btn btn-outline-secondary" name="action" value="draft">Simpan draf</button>
                     <button class="btn btn-primary" name="action" value="open">Buka &amp; bekukan peserta</button>
@@ -178,3 +178,5 @@ $tautanJadwal = static fn (int $jadwalId): string => app_url('/admin/admin_penga
 </section>
 
 <?php ah_pagination((int) $meetingResult['total'], (int) $meetingResult['page'], 20); ?>
+
+<?php ah_old_clear('_meeting_old'); ?>

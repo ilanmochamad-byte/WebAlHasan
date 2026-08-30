@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             master_flash('success', 'Status penugasan pembimbing diperbarui.');
         }
     } catch (IzinException $exception) {
+        if (($action ?? '') === 'save') { ah_validation_keep($_POST, ['pengurus_id', 'tahun_ajaran_id', 'target_type', 'kamar_id', 'kelas_id', 'tanggal_mulai', 'tanggal_selesai'], $exception, '_pembimbing_old'); }
         master_flash('danger', $exception->getMessage());
     }
     master_redirect('admin_pembimbing.php');
@@ -53,60 +54,60 @@ master_header('Penugasan Pembimbing', ['show_heading' => false]);
         <?php if ($pengurusOptions === []): ?>
             <p class="text-muted mb-0">Belum ada pengurus aktif. Tambahkan data pengurus terlebih dahulu pada menu Pengurus.</p>
         <?php else: ?>
-        <form method="post" class="row g-3">
+        <form data-confirm="Ubah penugasan pembimbing ini? Cakupan santri yang dapat dikelola pengurus berubah pada pemeriksaan berikutnya; riwayat izin lama tetap tersimpan." method="post" class="row g-3">
             <?= master_csrf() ?>
             <input type="hidden" name="action" value="save">
             <div class="col-md-4">
                 <label class="form-label" for="pengurus_id">Pengurus</label>
                 <select class="form-select" id="pengurus_id" name="pengurus_id" required>
-                    <option value="">Pilih pengurus aktif</option>
+                    <option value="" <?php if (isset($_SESSION['_pembimbing_old']['pengurus_id'])): ?><?= ah_old('pengurus_id',null,'_pembimbing_old') === (string)('') ? 'selected' : '' ?><?php else: ?><?php endif; ?>>Pilih pengurus aktif</option>
                     <?php foreach ($pengurusOptions as $option): ?>
-                        <option value="<?= (int) $option['id'] ?>"><?= master_e($option['nama'] . ' — ' . $option['jabatan']) ?></option>
+                        <option value="<?= (int) $option['id'] ?>" <?php if (isset($_SESSION['_pembimbing_old']['pengurus_id'])): ?><?= ah_old('pengurus_id',null,'_pembimbing_old') === (string)((int) $option['id']) ? 'selected' : '' ?><?php else: ?><?php endif; ?>><?= master_e($option['nama'] . ' — ' . $option['jabatan']) ?></option>
                     <?php endforeach; ?>
-                </select>
+                </select><?= ah_field_error('pengurus_id','_pembimbing_old') ?>
             </div>
             <div class="col-md-3">
                 <label class="form-label" for="tahun_ajaran_id">Tahun ajaran</label>
                 <select class="form-select" id="tahun_ajaran_id" name="tahun_ajaran_id" required>
                     <?php foreach ($years as $year): if ($year['archived_at']) { continue; } ?>
-                        <option value="<?= (int) $year['id'] ?>" <?= $year['status'] === 'Aktif' ? 'selected' : '' ?>>
+                        <option value="<?= (int) $year['id'] ?>"  <?php if (isset($_SESSION['_pembimbing_old']['tahun_ajaran_id'])): ?><?= ah_old('tahun_ajaran_id',null,'_pembimbing_old') === (string)((int) $year['id']) ? 'selected' : '' ?><?php else: ?><?= $year['status'] === 'Aktif' ? 'selected' : '' ?><?php endif; ?>>
                             <?= master_e($year['tahun'] . ' ' . $year['semester'] . ($year['status'] === 'Aktif' ? ' — Aktif' : '')) ?>
                         </option>
                     <?php endforeach; ?>
-                </select>
+                </select><?= ah_field_error('tahun_ajaran_id','_pembimbing_old') ?>
             </div>
             <div class="col-md-2">
                 <label class="form-label" for="target_type">Jenis target</label>
                 <select class="form-select" id="target_type" name="target_type">
-                    <option>Kamar</option>
-                    <option>Kelas</option>
-                </select>
+                    <option <?php if (isset($_SESSION['_pembimbing_old']['target_type'])): ?><?= ah_old('target_type',null,'_pembimbing_old') === (string)('Kamar') ? 'selected' : '' ?><?php else: ?><?php endif; ?>>Kamar</option>
+                    <option <?php if (isset($_SESSION['_pembimbing_old']['target_type'])): ?><?= ah_old('target_type',null,'_pembimbing_old') === (string)('Kelas') ? 'selected' : '' ?><?php else: ?><?php endif; ?>>Kelas</option>
+                </select><?= ah_field_error('target_type','_pembimbing_old') ?>
             </div>
             <div class="col-md-3 target-kamar">
                 <label class="form-label" for="kamar_id">Kamar</label>
                 <select class="form-select" id="kamar_id" name="kamar_id">
-                    <option value="">Pilih kamar</option>
+                    <option value="" <?php if (isset($_SESSION['_pembimbing_old']['kamar_id'])): ?><?= ah_old('kamar_id',null,'_pembimbing_old') === (string)('') ? 'selected' : '' ?><?php else: ?><?php endif; ?>>Pilih kamar</option>
                     <?php foreach ($rooms as $room): ?>
-                        <option value="<?= (int) $room['id'] ?>"><?= master_e($room['nama_kamar']) ?></option>
+                        <option value="<?= (int) $room['id'] ?>" <?php if (isset($_SESSION['_pembimbing_old']['kamar_id'])): ?><?= ah_old('kamar_id',null,'_pembimbing_old') === (string)((int) $room['id']) ? 'selected' : '' ?><?php else: ?><?php endif; ?>><?= master_e($room['nama_kamar']) ?></option>
                     <?php endforeach; ?>
-                </select>
+                </select><?= ah_field_error('kamar_id','_pembimbing_old') ?>
             </div>
             <div class="col-md-3 target-kelas d-none">
                 <label class="form-label" for="kelas_id">Kelas</label>
                 <select class="form-select" id="kelas_id" name="kelas_id">
-                    <option value="">Pilih kelas</option>
+                    <option value="" <?php if (isset($_SESSION['_pembimbing_old']['kelas_id'])): ?><?= ah_old('kelas_id',null,'_pembimbing_old') === (string)('') ? 'selected' : '' ?><?php else: ?><?php endif; ?>>Pilih kelas</option>
                     <?php foreach ($classes as $class): if ($class['archived_at'] || (int) $class['is_active'] !== 1) { continue; } ?>
-                        <option value="<?= (int) $class['id'] ?>"><?= master_e($class['nama_kelas']) ?></option>
+                        <option value="<?= (int) $class['id'] ?>" <?php if (isset($_SESSION['_pembimbing_old']['kelas_id'])): ?><?= ah_old('kelas_id',null,'_pembimbing_old') === (string)((int) $class['id']) ? 'selected' : '' ?><?php else: ?><?php endif; ?>><?= master_e($class['nama_kelas']) ?></option>
                     <?php endforeach; ?>
-                </select>
+                </select><?= ah_field_error('kelas_id','_pembimbing_old') ?>
             </div>
             <div class="col-md-3">
                 <label class="form-label" for="tanggal_mulai">Tanggal mulai</label>
-                <input class="form-control" type="date" id="tanggal_mulai" name="tanggal_mulai" value="<?= date('Y-m-d') ?>" required>
+                <input class="form-control" type="date" id="tanggal_mulai" name="tanggal_mulai" value="<?= ah_e(ah_old('tanggal_mulai', ['tanggal_mulai'=>date('Y-m-d')], '_pembimbing_old')) ?>" required><?= ah_field_error('tanggal_mulai','_pembimbing_old') ?>
             </div>
             <div class="col-md-3">
                 <label class="form-label" for="tanggal_selesai">Tanggal selesai (opsional)</label>
-                <input class="form-control" type="date" id="tanggal_selesai" name="tanggal_selesai">
+                <input class="form-control" type="date" id="tanggal_selesai" name="tanggal_selesai" value="<?= ah_e(ah_old('tanggal_selesai', null, '_pembimbing_old')) ?>"><?= ah_field_error('tanggal_selesai','_pembimbing_old') ?>
             </div>
             <div class="col-md-3 d-flex align-items-end">
                 <button class="btn btn-success">Simpan Penugasan</button>
@@ -131,13 +132,13 @@ master_header('Penugasan Pembimbing', ['show_heading' => false]);
                     <td><?= $row['archived_at'] ? 'Arsip' : ((int) $row['is_active'] === 1 ? 'Aktif' : 'Nonaktif') ?></td>
                     <td>
                         <div class="d-flex gap-1">
-                            <form method="post"><?= master_csrf() ?>
+                            <form data-confirm="Ubah penugasan pembimbing ini? Cakupan santri yang dapat dikelola pengurus berubah pada pemeriksaan berikutnya; riwayat izin lama tetap tersimpan." method="post"><?= master_csrf() ?>
                                 <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
                                 <button class="btn btn-sm btn-outline-secondary" name="action" value="<?= (int) $row['is_active'] === 1 ? 'deactivate' : 'activate' ?>">
                                     <?= (int) $row['is_active'] === 1 ? 'Nonaktifkan' : 'Aktifkan' ?>
                                 </button>
                             </form>
-                            <form method="post"><?= master_csrf() ?>
+                            <form data-confirm="Ubah penugasan pembimbing ini? Cakupan santri yang dapat dikelola pengurus berubah pada pemeriksaan berikutnya; riwayat izin lama tetap tersimpan." method="post"><?= master_csrf() ?>
                                 <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
                                 <button class="btn btn-sm btn-outline-danger" name="action" value="<?= $row['archived_at'] ? 'restore' : 'archive' ?>">
                                     <?= $row['archived_at'] ? 'Pulihkan' : 'Arsipkan' ?>
@@ -166,4 +167,4 @@ document.addEventListener('DOMContentLoaded', function () {
     sync();
 });
 </script>
-<?php master_pagination((int) $result['total'], $page, 20); master_footer(); ?>
+<?php master_pagination((int) $result['total'], $page, 20); ah_old_clear('_pembimbing_old'); master_footer(); ?>

@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             master_flash('success', 'Status guru diperbarui. Jadwal, absensi, penugasan, dan riwayat lama tidak dihapus.');
         }
     } catch (MasterDataException $exception) {
-        ah_old_keep($_POST, ['nip', 'nama_guru', 'no_hp']);
+        ah_validation_keep($_POST, ['nip', 'nama_guru', 'no_hp'], $exception, '_ah_old');
         master_flash('danger', $exception->getMessage());
         master_redirect('admin_guru.php?action=' . (!empty($_POST['id']) ? 'edit&id=' . (int) $_POST['id'] : 'create'));
     }
@@ -86,12 +86,12 @@ master_header('Data Guru', [
                     </p>
                     <div class="row g-3">
                         <div class="col-md-3"><label class="form-label" for="nip">NIP <span class="text-muted fw-normal">(boleh kosong)</span></label>
-                            <input class="form-control" id="nip" name="nip" maxlength="30" value="<?= master_e(ah_old('nip', $record)) ?>"></div>
+                            <input class="form-control" id="nip" name="nip" maxlength="30" value="<?= master_e(ah_old('nip', $record)) ?>"><?= ah_field_error('nip','_ah_old') ?></div>
                         <div class="col-md-5"><label class="form-label" for="nama_guru">Nama guru</label>
-                            <input class="form-control" id="nama_guru" name="nama_guru" maxlength="100" required value="<?= master_e(ah_old('nama_guru', $record)) ?>"></div>
+                            <input class="form-control" id="nama_guru" name="nama_guru" maxlength="100" required value="<?= master_e(ah_old('nama_guru', $record)) ?>"><?= ah_field_error('nama_guru','_ah_old') ?></div>
                         <div class="col-md-4"><label class="form-label" for="no_hp">Nomor HP</label>
                             <input class="form-control" id="no_hp" name="no_hp" maxlength="20" inputmode="tel"
-                                   aria-describedby="bantuan_hp" value="<?= master_e(ah_old('no_hp', $record)) ?>">
+                                   aria-describedby="bantuan_hp" value="<?= master_e(ah_old('no_hp', $record)) ?>"><?= ah_field_error('no_hp','_ah_old') ?>
                             <div class="form-text" id="bantuan_hp">Diawali 0, 9–16 digit. Boleh dikosongkan.</div></div>
                     </div>
                 </fieldset>
@@ -193,7 +193,7 @@ master_header('Data Guru', [
                     <td><div class="ah-actions">
                         <a class="btn btn-sm btn-outline-primary" href="?action=detail&amp;id=<?= (int) $row['id'] ?>">Detail</a>
                         <a class="btn btn-sm btn-outline-secondary" href="?action=edit&amp;id=<?= (int) $row['id'] ?>">Ubah</a>
-                        <form method="post"><?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                        <form data-confirm="Ubah status data guru ini? Status aktif menentukan kelayakan jadwal dan penugasan; data serta riwayat lama tetap tersimpan." method="post"><?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
                             <button class="btn btn-sm btn-outline-secondary" name="action" value="<?= (int) $row['is_active'] === 1 ? 'deactivate' : 'activate' ?>"><?= (int) $row['is_active'] === 1 ? 'Nonaktifkan' : 'Aktifkan' ?></button></form>
                         <form method="post" onsubmit="return confirm('Arsipkan data guru ini? Guru berhenti muncul pada daftar aktif dan pilihan penugasan baru, tetapi akun, jadwal, absensi, penugasan, dan riwayat lama TIDAK dihapus.')">
                             <?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">

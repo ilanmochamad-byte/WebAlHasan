@@ -105,7 +105,7 @@ portal_flash_render();
                             disimpan bersama keputusan serta audit.
                         </p>
                     <?php endif; ?>
-                    <form method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
+                    <form data-confirm="Simpan keputusan izin ini? Keputusan berlaku bagi pengajuan dan dicatat beserta pelaku serta alasan." method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
                         <?= portal_csrf() ?>
                         <input type="hidden" name="aksi" value="putuskan">
                         <input type="hidden" name="mode" value="<?= portal_e($scope['mode']) ?>">
@@ -115,19 +115,19 @@ portal_flash_render();
                         <div class="mb-3">
                             <label class="form-label" for="hasil">Hasil</label>
                             <select class="form-select" id="hasil" name="hasil" required>
-                                <option value="Disetujui">Disetujui</option>
-                                <option value="Ditolak">Ditolak</option>
-                            </select>
+                                <option value="Disetujui" <?= ah_old('hasil',['hasil'=>'Disetujui'],'_portal_' . (int)$izin['id'] . '_putuskan') === 'Disetujui' ? 'selected' : '' ?>>Disetujui</option>
+                                <option value="Ditolak" <?= ah_old('hasil',['hasil'=>'Disetujui'],'_portal_' . (int)$izin['id'] . '_putuskan') === 'Ditolak' ? 'selected' : '' ?>>Ditolak</option>
+                            </select><?= ah_field_error('hasil','_portal_' . (int)$izin['id'] . '_putuskan') ?>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="alasan_keputusan">Alasan keputusan</label>
-                            <textarea class="form-control" id="alasan_keputusan" name="alasan" rows="2" required minlength="3" maxlength="2000"></textarea>
+                            <textarea class="form-control" id="alasan_keputusan" name="alasan" rows="2" required minlength="3" maxlength="2000"><?= portal_e(ah_old('alasan',null,'_portal_' . (int)$izin['id'] . '_putuskan')) ?></textarea><?= ah_field_error('alasan','_portal_' . (int)$izin['id'] . '_putuskan') ?>
                         </div>
                         <?php if (!$aksi['putuskan_murobi']): ?>
                             <div class="mb-3">
                                 <label class="form-label" for="alasan_penggantian">Alasan penggantian murobi <span class="text-danger">*</span></label>
                                 <textarea class="form-control" id="alasan_penggantian" name="alasan_penggantian" rows="2" required minlength="3" maxlength="1000"
-                                          placeholder="Contoh: murobi berhalangan dan izin dibutuhkan hari ini"></textarea>
+                                          placeholder="Contoh: murobi berhalangan dan izin dibutuhkan hari ini"><?= portal_e(ah_old('alasan_penggantian',null,'_portal_' . (int)$izin['id'] . '_putuskan')) ?></textarea><?= ah_field_error('alasan_penggantian','_portal_' . (int)$izin['id'] . '_putuskan') ?>
                             </div>
                         <?php endif; ?>
                         <button class="btn btn-success">Simpan keputusan</button>
@@ -146,7 +146,7 @@ portal_flash_render();
                             Buat penugasan murobi lebih dulu pada menu master data.
                         </p>
                     <?php else: ?>
-                        <form method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
+                        <form data-confirm="Ganti murobi tujuan? Antrean keputusan berpindah ke murobi yang dipilih; riwayat penetapan tetap tersimpan." method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
                             <?= portal_csrf() ?>
                             <input type="hidden" name="aksi" value="tetapkan">
                             <input type="hidden" name="mode" value="<?= portal_e($scope['mode']) ?>">
@@ -158,16 +158,16 @@ portal_flash_render();
                                 <select class="form-select" id="murobi_guru_id" name="murobi_guru_id" required>
                                     <option value="">— Pilih murobi —</option>
                                     <?php foreach ($kandidatMurobi as $kandidat): ?>
-                                        <option value="<?= (int) $kandidat['guru_id'] ?>" <?= (int) ($izin['murobi_guru_id'] ?? 0) === (int) $kandidat['guru_id'] ? 'selected' : '' ?>>
+                                        <option value="<?= (int) $kandidat['guru_id'] ?>" <?= (int) ah_old('murobi_guru_id', $izin, '_portal_' . (int)$izin['id'] . '_tetapkan') === (int) $kandidat['guru_id'] ? 'selected' : '' ?>>
                                             <?= portal_e($kandidat['nama_guru']) ?>
                                         </option>
                                     <?php endforeach; ?>
-                                </select>
+                                </select><?= ah_field_error('murobi_guru_id','_portal_' . (int)$izin['id'] . '_tetapkan') ?>
                                 <div class="form-text">Hanya guru dengan penugasan murobi aktif yang dapat ditetapkan.</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="alasan_penetapan">Alasan penetapan <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="alasan_penetapan" name="alasan" rows="2" required minlength="3" maxlength="1000"></textarea>
+                                <textarea class="form-control" id="alasan_penetapan" name="alasan" rows="2" required minlength="3" maxlength="1000"><?= portal_e(ah_old('alasan',null,'_portal_' . (int)$izin['id'] . '_tetapkan')) ?></textarea><?= ah_field_error('alasan','_portal_' . (int)$izin['id'] . '_tetapkan') ?>
                             </div>
                             <button class="btn btn-primary">Tetapkan murobi</button>
                         </form>
@@ -181,7 +181,7 @@ portal_flash_render();
                 <div class="card-header bg-white"><strong>Batalkan pengajuan</strong></div>
                 <div class="card-body">
                     <p class="text-muted small">Pembatalan hanya mungkin sebelum ada keputusan dan tidak menghapus riwayat.</p>
-                    <form method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
+                    <form data-confirm="Batalkan pengajuan ini? Pengajuan berhenti diproses; riwayat pengajuan tetap tersimpan." method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
                         <?= portal_csrf() ?>
                         <input type="hidden" name="aksi" value="batalkan">
                         <input type="hidden" name="mode" value="<?= portal_e($scope['mode']) ?>">
@@ -190,7 +190,7 @@ portal_flash_render();
                         <input type="hidden" name="idempotency_key" value="<?= portal_e(portal_idempotency_key()) ?>">
                         <div class="mb-3">
                             <label class="form-label" for="alasan_pembatalan">Alasan pembatalan <span class="text-danger">*</span></label>
-                            <textarea class="form-control" id="alasan_pembatalan" name="alasan" rows="2" required minlength="3" maxlength="1000"></textarea>
+                            <textarea class="form-control" id="alasan_pembatalan" name="alasan" rows="2" required minlength="3" maxlength="1000"><?= portal_e(ah_old('alasan',null,'_portal_' . (int)$izin['id'] . '_batalkan')) ?></textarea><?= ah_field_error('alasan','_portal_' . (int)$izin['id'] . '_batalkan') ?>
                         </div>
                         <button class="btn btn-outline-danger">Batalkan pengajuan</button>
                     </form>
@@ -206,7 +206,7 @@ portal_flash_render();
                         Koreksi menyimpan nilai sebelum dan sesudah beserta alasannya sebagai peristiwa baru.
                         Keputusan dan riwayat sebelumnya tidak dihapus.
                     </p>
-                    <form method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
+                    <form data-confirm="Simpan koreksi keputusan? Status terkini berubah dan peristiwa koreksi dicatat; keputusan serta riwayat sebelumnya tidak dihapus." method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
                         <?= portal_csrf() ?>
                         <input type="hidden" name="aksi" value="koreksi">
                         <input type="hidden" name="mode" value="<?= portal_e($scope['mode']) ?>">
@@ -216,17 +216,17 @@ portal_flash_render();
                         <div class="mb-3">
                             <label class="form-label" for="hasil_koreksi">Hasil setelah koreksi</label>
                             <select class="form-select" id="hasil_koreksi" name="hasil" required>
-                                <option value="Disetujui" <?= (string) $izin['status'] === 'Disetujui' ? 'selected' : '' ?>>Disetujui</option>
-                                <option value="Ditolak" <?= (string) $izin['status'] === 'Ditolak' ? 'selected' : '' ?>>Ditolak</option>
-                            </select>
+                                <option value="Disetujui" <?= ah_old('hasil',['hasil'=>$izin['status']],'_portal_' . (int)$izin['id'] . '_koreksi') === 'Disetujui' ? 'selected' : '' ?>>Disetujui</option>
+                                <option value="Ditolak" <?= ah_old('hasil',['hasil'=>$izin['status']],'_portal_' . (int)$izin['id'] . '_koreksi') === 'Ditolak' ? 'selected' : '' ?>>Ditolak</option>
+                            </select><?= ah_field_error('hasil','_portal_' . (int)$izin['id'] . '_koreksi') ?>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="alasan_hasil_koreksi">Alasan keputusan setelah koreksi</label>
-                            <textarea class="form-control" id="alasan_hasil_koreksi" name="alasan" rows="2" required minlength="3" maxlength="2000"></textarea>
+                            <textarea class="form-control" id="alasan_hasil_koreksi" name="alasan" rows="2" required minlength="3" maxlength="2000"><?= portal_e(ah_old('alasan',null,'_portal_' . (int)$izin['id'] . '_koreksi')) ?></textarea><?= ah_field_error('alasan','_portal_' . (int)$izin['id'] . '_koreksi') ?>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="alasan_koreksi">Alasan koreksi <span class="text-danger">*</span></label>
-                            <textarea class="form-control" id="alasan_koreksi" name="alasan_koreksi" rows="2" required minlength="3" maxlength="1000"></textarea>
+                            <textarea class="form-control" id="alasan_koreksi" name="alasan_koreksi" rows="2" required minlength="3" maxlength="1000"><?= portal_e(ah_old('alasan_koreksi',null,'_portal_' . (int)$izin['id'] . '_koreksi')) ?></textarea><?= ah_field_error('alasan_koreksi','_portal_' . (int)$izin['id'] . '_koreksi') ?>
                         </div>
                         <button class="btn btn-warning">Simpan koreksi</button>
                     </form>
@@ -320,4 +320,4 @@ portal_flash_render();
         </div>
     </div>
 </div>
-<?php portal_footer(); ?>
+<?php foreach (['putuskan','tetapkan','batalkan','koreksi'] as $formAction) { ah_old_clear('_portal_' . (int)$izin['id'] . '_' . $formAction); } portal_footer(); ?>

@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             master_flash('success', 'Status penugasan murobi diperbarui tanpa menghapus riwayat.');
         }
     } catch (MasterDataException $exception) {
+        if (($action ?? '') === 'save') { ah_validation_keep($_POST, ['guru_id', 'tahun_ajaran_id', 'target_type', 'kamar_id', 'kelas_id', 'tanggal_mulai', 'tanggal_selesai'], $exception, '_murobi_old'); }
         master_flash('danger', $exception->getMessage());
     }
     master_redirect('admin_murobi.php');
@@ -79,38 +80,38 @@ ah_note(
 <section class="ah-card" aria-labelledby="ah-form-murobi">
     <div class="ah-card__head"><span id="ah-form-murobi">Tambah penugasan</span></div>
     <div class="ah-card__body">
-        <form method="post" class="row g-3">
+        <form method="post" class="row g-3" data-confirm="Simpan penugasan murobi? Guru memperoleh kemampuan keputusan izin sesuai kelompok dan masa aktif penugasan.">
             <?= master_csrf() ?>
             <input type="hidden" name="action" value="save">
             <div class="col-md-4"><label class="form-label" for="guru_id">Guru</label>
                 <select class="form-select" id="guru_id" name="guru_id" required>
-                    <option value="">Pilih guru</option>
-                    <?php foreach ($gurus as $g): ?><option value="<?= (int) $g['id'] ?>"><?= master_e($g['nama_guru']) ?></option><?php endforeach; ?>
-                </select></div>
+                    <option value="" <?php if (isset($_SESSION['_murobi_old']['guru_id'])): ?><?= ah_old('guru_id',null,'_murobi_old') === (string)('') ? 'selected' : '' ?><?php else: ?><?php endif; ?>>Pilih guru</option>
+                    <?php foreach ($gurus as $g): ?><option value="<?= (int) $g['id'] ?>" <?php if (isset($_SESSION['_murobi_old']['guru_id'])): ?><?= ah_old('guru_id',null,'_murobi_old') === (string)((int) $g['id']) ? 'selected' : '' ?><?php else: ?><?php endif; ?>><?= master_e($g['nama_guru']) ?></option><?php endforeach; ?>
+                </select><?= ah_field_error('guru_id','_murobi_old') ?></div>
             <div class="col-md-3"><label class="form-label" for="tahun_ajaran_id">Tahun ajaran</label>
                 <select class="form-select" id="tahun_ajaran_id" name="tahun_ajaran_id" required>
                     <?php foreach ($years as $year): if ($year['archived_at']) { continue; } ?>
-                        <option value="<?= (int) $year['id'] ?>"><?= master_e($year['tahun'] . ' ' . $year['semester'] . ($year['status'] === 'Aktif' ? ' — Aktif' : '')) ?></option>
+                        <option value="<?= (int) $year['id'] ?>" <?php if (isset($_SESSION['_murobi_old']['tahun_ajaran_id'])): ?><?= ah_old('tahun_ajaran_id',null,'_murobi_old') === (string)((int) $year['id']) ? 'selected' : '' ?><?php else: ?><?php endif; ?>><?= master_e($year['tahun'] . ' ' . $year['semester'] . ($year['status'] === 'Aktif' ? ' — Aktif' : '')) ?></option>
                     <?php endforeach; ?>
-                </select></div>
+                </select><?= ah_field_error('tahun_ajaran_id','_murobi_old') ?></div>
             <div class="col-md-2"><label class="form-label" for="target_type">Jenis kelompok</label>
-                <select class="form-select" id="target_type" name="target_type"><option>Kamar</option><option>Kelas</option></select></div>
+                <select class="form-select" id="target_type" name="target_type"><option <?php if (isset($_SESSION['_murobi_old']['target_type'])): ?><?= ah_old('target_type',null,'_murobi_old') === (string)('Kamar') ? 'selected' : '' ?><?php else: ?><?php endif; ?>>Kamar</option><option <?php if (isset($_SESSION['_murobi_old']['target_type'])): ?><?= ah_old('target_type',null,'_murobi_old') === (string)('Kelas') ? 'selected' : '' ?><?php else: ?><?php endif; ?>>Kelas</option></select><?= ah_field_error('target_type','_murobi_old') ?></div>
             <div class="col-md-3 target-kamar"><label class="form-label" for="kamar_id">Kamar binaan</label>
                 <select class="form-select" id="kamar_id" name="kamar_id">
-                    <option value="">Pilih kamar</option>
-                    <?php foreach ($rooms as $room): ?><option value="<?= (int) $room['id'] ?>"><?= master_e($room['nama_kamar']) ?></option><?php endforeach; ?>
-                </select></div>
+                    <option value="" <?php if (isset($_SESSION['_murobi_old']['kamar_id'])): ?><?= ah_old('kamar_id',null,'_murobi_old') === (string)('') ? 'selected' : '' ?><?php else: ?><?php endif; ?>>Pilih kamar</option>
+                    <?php foreach ($rooms as $room): ?><option value="<?= (int) $room['id'] ?>" <?php if (isset($_SESSION['_murobi_old']['kamar_id'])): ?><?= ah_old('kamar_id',null,'_murobi_old') === (string)((int) $room['id']) ? 'selected' : '' ?><?php else: ?><?php endif; ?>><?= master_e($room['nama_kamar']) ?></option><?php endforeach; ?>
+                </select><?= ah_field_error('kamar_id','_murobi_old') ?></div>
             <div class="col-md-3 target-kelas d-none"><label class="form-label" for="kelas_id">Kelas binaan</label>
                 <select class="form-select" id="kelas_id" name="kelas_id">
-                    <option value="">Pilih kelas</option>
+                    <option value="" <?php if (isset($_SESSION['_murobi_old']['kelas_id'])): ?><?= ah_old('kelas_id',null,'_murobi_old') === (string)('') ? 'selected' : '' ?><?php else: ?><?php endif; ?>>Pilih kelas</option>
                     <?php foreach ($classes as $class): if ($class['archived_at']) { continue; } ?>
-                        <option value="<?= (int) $class['id'] ?>"><?= master_e($class['nama_kelas']) ?></option>
+                        <option value="<?= (int) $class['id'] ?>" <?php if (isset($_SESSION['_murobi_old']['kelas_id'])): ?><?= ah_old('kelas_id',null,'_murobi_old') === (string)((int) $class['id']) ? 'selected' : '' ?><?php else: ?><?php endif; ?>><?= master_e($class['nama_kelas']) ?></option>
                     <?php endforeach; ?>
-                </select></div>
+                </select><?= ah_field_error('kelas_id','_murobi_old') ?></div>
             <div class="col-md-3"><label class="form-label" for="tanggal_mulai">Tanggal mulai</label>
-                <input class="form-control" type="date" id="tanggal_mulai" name="tanggal_mulai" value="<?= date('Y-m-d') ?>" required></div>
+                <input class="form-control" type="date" id="tanggal_mulai" name="tanggal_mulai" value="<?= ah_e(ah_old('tanggal_mulai', ['tanggal_mulai'=>date('Y-m-d')], '_murobi_old')) ?>" required><?= ah_field_error('tanggal_mulai','_murobi_old') ?></div>
             <div class="col-md-3"><label class="form-label" for="tanggal_selesai">Tanggal selesai <span class="text-muted fw-normal">(opsional)</span></label>
-                <input class="form-control" type="date" id="tanggal_selesai" name="tanggal_selesai"></div>
+                <input class="form-control" type="date" id="tanggal_selesai" name="tanggal_selesai" value="<?= ah_e(ah_old('tanggal_selesai', null, '_murobi_old')) ?>"><?= ah_field_error('tanggal_selesai','_murobi_old') ?></div>
             <div class="col-12"><button class="btn btn-primary">Simpan penugasan</button></div>
         </form>
     </div>
@@ -136,7 +137,7 @@ ah_note(
                         <form method="post" onsubmit="return confirm('Ubah status penugasan ini? Bila dinonaktifkan, kemampuan approval izin guru tersebut dicabut pada pemeriksaan server berikutnya.')">
                             <?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $r['id'] ?>">
                             <button class="btn btn-sm btn-outline-secondary" name="action" value="<?= (int) $r['is_active'] === 1 ? 'deactivate' : 'activate' ?>"><?= (int) $r['is_active'] === 1 ? 'Nonaktifkan' : 'Aktifkan' ?></button></form>
-                        <form method="post" onsubmit="return confirm('Arsipkan penugasan ini? Riwayat pengajuan dan keputusan lama TIDAK dihapus.')">
+                        <form method="post" onsubmit="return confirm('Ubah status arsip penugasan ini? Kemampuan murobi mengikuti penugasan aktif; riwayat pengajuan dan keputusan lama TIDAK dihapus.')">
                             <?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $r['id'] ?>">
                             <button class="btn btn-sm btn-outline-danger" name="action" value="<?= $r['archived_at'] ? 'restore' : 'archive' ?>"><?= $r['archived_at'] ? 'Pulihkan' : 'Arsipkan' ?></button></form>
                     </div></td>
@@ -157,4 +158,4 @@ document.addEventListener('DOMContentLoaded', function () {
     sync();
 });
 </script>
-<?php master_pagination((int) $result['total'], $page, 20); master_footer(); ?>
+<?php master_pagination((int) $result['total'], $page, 20); ah_old_clear('_murobi_old'); master_footer(); ?>

@@ -49,7 +49,7 @@ $tautanPertemuan = static fn (int $jadwalId): string => app_url('/admin/admin_pe
     . ah_query(['tab' => 'pertemuan', 'schedule_id' => $jadwalId, 'action' => null, 'id' => null, 'page' => null]);
 ?>
 
-<?php if ($bolehKelolaJadwal && ($mode === 'create' || ($mode === 'edit' && $selected))): $record = $selected ?? ['id_tahun' => $activeYear['id'] ?? '']; ?>
+<?php if ($bolehKelolaJadwal && ($mode === 'create' || ($mode === 'edit' && $selected))): $record = array_replace($selected ?? ['id_tahun' => $activeYear['id'] ?? ''], $_SESSION['_ah_old'] ?? []); ?>
 <section class="ah-card" aria-labelledby="ah-form-jadwal">
     <div class="ah-card__head"><span id="ah-form-jadwal"><?= $selected ? 'Ubah jadwal #' . (int) $selected['id'] : 'Tambah jadwal' ?></span></div>
     <div class="ah-card__body">
@@ -70,20 +70,20 @@ $tautanPertemuan = static fn (int $jadwalId): string => app_url('/admin/admin_pe
                                 <?php foreach ($years as $year): ?>
                                     <option value="<?= (int) $year['id'] ?>" <?= (int) ($record['id_tahun'] ?? 0) === (int) $year['id'] ? 'selected' : '' ?>><?= ah_e($year['tahun'] . ' ' . $year['semester'] . ($year['status'] === 'Aktif' ? ' — Aktif' : '')) ?></option>
                                 <?php endforeach; ?>
-                            </select></div>
+                            </select><?= ah_field_error('id_tahun','_ah_old') ?></div>
                         <div class="col-md-2"><label class="form-label" for="hari">Hari</label>
                             <select class="form-select" id="hari" name="hari" required>
                                 <option value="">Pilih hari</option>
                                 <?php foreach ($service->days() as $day): ?><option <?= ($record['hari'] ?? '') === $day ? 'selected' : '' ?>><?= ah_e($day) ?></option><?php endforeach; ?>
-                            </select></div>
+                            </select><?= ah_field_error('hari','_ah_old') ?></div>
                         <div class="col-md-3"><label class="form-label" for="waktu_sholat">Waktu</label>
                             <select class="form-select" id="waktu_sholat" name="waktu_sholat" required>
                                 <?php foreach ($service->prayerTimes() as $prayerTime): ?><option <?= ($record['waktu_sholat'] ?? "Ba'da Shubuh") === $prayerTime ? 'selected' : '' ?>><?= ah_e($prayerTime) ?></option><?php endforeach; ?>
-                            </select></div>
+                            </select><?= ah_field_error('waktu_sholat','_ah_old') ?></div>
                         <div class="col-md-3 col-6"><label class="form-label" for="waktu_mulai">Mulai</label>
-                            <input class="form-control" id="waktu_mulai" type="time" name="waktu_mulai" required value="<?= ah_e(isset($record['waktu_mulai']) ? substr((string) $record['waktu_mulai'], 0, 5) : '') ?>"></div>
+                            <input class="form-control" id="waktu_mulai" type="time" name="waktu_mulai" required value="<?= ah_e(isset($record['waktu_mulai']) ? substr((string) $record['waktu_mulai'], 0, 5) : '') ?>"><?= ah_field_error('waktu_mulai','_ah_old') ?></div>
                         <div class="col-md-3 col-6"><label class="form-label" for="waktu_selesai">Selesai</label>
-                            <input class="form-control" id="waktu_selesai" type="time" name="waktu_selesai" required value="<?= ah_e(isset($record['waktu_selesai']) ? substr((string) $record['waktu_selesai'], 0, 5) : '') ?>"></div>
+                            <input class="form-control" id="waktu_selesai" type="time" name="waktu_selesai" required value="<?= ah_e(isset($record['waktu_selesai']) ? substr((string) $record['waktu_selesai'], 0, 5) : '') ?>"><?= ah_field_error('waktu_selesai','_ah_old') ?></div>
                     </div>
                     <?php if ($selected): ?>
                         <p class="ah-fieldset__hint mt-3 mb-0">
@@ -103,18 +103,18 @@ $tautanPertemuan = static fn (int $jadwalId): string => app_url('/admin/admin_pe
                             <select class="form-select" id="id_kelas" name="id_kelas" required>
                                 <option value="">Pilih kelas</option>
                                 <?php foreach ($classes as $class): ?><option value="<?= (int) $class['id'] ?>" <?= (int) ($record['id_kelas'] ?? 0) === (int) $class['id'] ? 'selected' : '' ?>><?= ah_e($class['nama_kelas'] . ' (' . $class['jenjang'] . ')') ?></option><?php endforeach; ?>
-                            </select></div>
+                            </select><?= ah_field_error('id_kelas','_ah_old') ?></div>
                         <div class="col-md-4"><label class="form-label" for="id_guru">Guru pengampu</label>
                             <select class="form-select" id="id_guru" name="id_guru" required>
                                 <option value="">Pilih guru</option>
                                 <?php foreach ($teachers as $teacher): ?><option value="<?= (int) $teacher['id'] ?>" <?= (int) ($record['id_guru'] ?? 0) === (int) $teacher['id'] ? 'selected' : '' ?>><?= ah_e($teacher['nama_guru']) ?></option><?php endforeach; ?>
-                            </select></div>
+                            </select><?= ah_field_error('id_guru','_ah_old') ?></div>
                         <div class="col-md-4"><label class="form-label" for="tempat">Tempat</label>
-                            <input class="form-control" id="tempat" name="tempat" maxlength="100" required value="<?= ah_e($record['tempat'] ?? '') ?>"></div>
+                            <input class="form-control" id="tempat" name="tempat" maxlength="100" required value="<?= ah_e($record['tempat'] ?? '') ?>"><?= ah_field_error('tempat','_ah_old') ?></div>
                         <div class="col-md-4"><label class="form-label" for="fan_ilmu">Fan ilmu</label>
-                            <input class="form-control" id="fan_ilmu" name="fan_ilmu" maxlength="100" required value="<?= ah_e($record['fan_ilmu'] ?? '') ?>"></div>
+                            <input class="form-control" id="fan_ilmu" name="fan_ilmu" maxlength="100" required value="<?= ah_e($record['fan_ilmu'] ?? '') ?>"><?= ah_field_error('fan_ilmu','_ah_old') ?></div>
                         <div class="col-md-5"><label class="form-label" for="nama_kitab">Nama kitab</label>
-                            <input class="form-control" id="nama_kitab" name="nama_kitab" maxlength="100" required value="<?= ah_e($record['nama_kitab'] ?? '') ?>"></div>
+                            <input class="form-control" id="nama_kitab" name="nama_kitab" maxlength="100" required value="<?= ah_e($record['nama_kitab'] ?? '') ?>"><?= ah_field_error('nama_kitab','_ah_old') ?></div>
                     </div>
                 </fieldset>
             </div>
@@ -229,9 +229,9 @@ $tautanPertemuan = static fn (int $jadwalId): string => app_url('/admin/admin_pe
                         <?php endif; ?>
                         <?php if ($bolehKelolaJadwal): ?>
                             <a class="btn btn-sm btn-outline-secondary" href="?<?= ah_e(ah_query(['tab' => 'jadwal', 'action' => 'edit', 'id' => (int) $row['id']])) ?>">Ubah</a>
-                            <form method="post"><?= ah_csrf() ?><input type="hidden" name="tab" value="jadwal"><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                            <form data-confirm="Ubah status jadwal ini? Jadwal nonaktif tidak dapat membuka pertemuan baru. Pertemuan, peserta, dan absensi lama tetap tersimpan." method="post"><?= ah_csrf() ?><input type="hidden" name="tab" value="jadwal"><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
                                 <button class="btn btn-sm btn-outline-secondary" name="action" value="<?= (int) $row['is_active'] === 1 ? 'deactivate' : 'activate' ?>"><?= (int) $row['is_active'] === 1 ? 'Nonaktifkan' : 'Aktifkan' ?></button></form>
-                            <form method="post" onsubmit="return confirm('Arsipkan jadwal ini? Jadwal berhenti muncul pada daftar aktif, tetapi seluruh pertemuan, peserta, dan absensi lama TIDAK dihapus dan tetap dapat dibaca pada laporan.')">
+                            <form method="post" onsubmit="return confirm('Ubah status arsip jadwal ini? Arsip mengeluarkan jadwal dari daftar aktif; Pulihkan mengembalikannya. Seluruh pertemuan, peserta, dan absensi lama TIDAK dihapus dan tetap dapat dibaca pada laporan.')">
                                 <?= ah_csrf() ?><input type="hidden" name="tab" value="jadwal"><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
                                 <button class="btn btn-sm btn-outline-danger" name="action" value="<?= $row['archived_at'] ? 'restore' : 'archive' ?>"><?= $row['archived_at'] ? 'Pulihkan' : 'Arsipkan' ?></button></form>
                         <?php endif; ?>
@@ -243,3 +243,5 @@ $tautanPertemuan = static fn (int $jadwalId): string => app_url('/admin/admin_pe
     <?php endif; ?>
 </section>
 <?php ah_pagination((int) $result['total'], (int) $filters['page'], 20); ?>
+
+<?php ah_old_clear(); ?>

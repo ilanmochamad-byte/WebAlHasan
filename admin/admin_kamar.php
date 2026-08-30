@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch (MasterDataException $exception) {
         http_response_code(422);
         $error = $exception->getMessage();
+        ah_validation_keep($_POST, ['nama_kamar','kapasitas'], $exception, '_room_error');
         $form = [
             'nama_kamar' => is_scalar($_POST['nama_kamar'] ?? null) ? (string) $_POST['nama_kamar'] : '',
             'kapasitas' => is_scalar($_POST['kapasitas'] ?? null) ? (string) $_POST['kapasitas'] : '',
@@ -71,9 +72,9 @@ ah_note('info', 'Semester aktif: ' . ($year ? $year['tahun'] . ' ' . $year['seme
             <?= master_csrf() ?><input type="hidden" name="action" value="save">
             <?php if ($id): ?><input type="hidden" name="id" value="<?= (int) $id ?>"><?php endif; ?>
             <div class="col-md-8"><label class="form-label" for="nama_kamar">Nama Kamar / Kobong</label>
-                <input class="form-control" id="nama_kamar" name="nama_kamar" maxlength="50" required value="<?= master_e($form['nama_kamar']) ?>"></div>
+                <input class="form-control" id="nama_kamar" name="nama_kamar" maxlength="50" required value="<?= master_e($form['nama_kamar']) ?>"><?= ah_field_error('nama_kamar','_room_error') ?></div>
             <div class="col-md-4"><label class="form-label" for="kapasitas">Kapasitas (orang)</label>
-                <input class="form-control" id="kapasitas" name="kapasitas" type="number" min="1" max="2147483647" required value="<?= master_e($form['kapasitas']) ?>"></div>
+                <input class="form-control" id="kapasitas" name="kapasitas" type="number" min="1" max="2147483647" required value="<?= master_e($form['kapasitas']) ?>"><?= ah_field_error('kapasitas','_room_error') ?></div>
             <p class="small text-muted mb-0">Mengubah kapasitas tidak memindahkan atau mengeluarkan penghuni. Perubahan dicatat dalam audit.</p>
             <div class="ah-actions"><button class="btn btn-success" type="submit">Simpan Kamar</button><a class="btn btn-outline-secondary" href="admin_kamar.php">Batal</a></div>
         </form>
@@ -110,4 +111,4 @@ ah_note('info', 'Semester aktif: ' . ($year ? $year['tahun'] . ' ' . $year['seme
     </tbody>
 </table></div>
 <?php endif; ?>
-<?php master_pagination((int) $result['total'], $page, 20); master_footer(); ?>
+<?php master_pagination((int) $result['total'], $page, 20); ah_old_clear('_room_error'); master_footer(); ?>

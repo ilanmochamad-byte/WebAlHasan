@@ -41,6 +41,13 @@ $filter = $report['filters'] ?? [
     'class_id' => null, 'schedule_id' => null, 'status' => null,
     'subject_scope' => ReportFilter::SCOPE_SANTRI,
 ];
+// Preserve safe filter input for correction; this never feeds a successful report.
+if ($report === null) {
+    foreach (array_keys($filter) as $field) {
+        if (isset($_GET[$field]) && is_scalar($_GET[$field])) { $filter[$field] = (string) $_GET[$field]; }
+    }
+    $_SESSION['_report_filter_errors'] = $exception->details();
+}
 $scope = (string) ($filter['subject_scope'] ?? ReportFilter::SCOPE_SANTRI);
 $selected = static fn (mixed $actual, mixed $expected): string => (string) $actual === (string) $expected ? ' selected' : '';
 $query = $_GET;
@@ -97,41 +104,41 @@ if ($error !== null) {
                         <?php foreach ($options['subject_scopes'] as $opsi): ?>
                             <option value="<?= ah_e($opsi['value']) ?>"<?= $selected($scope, $opsi['value']) ?>><?= ah_e($opsi['label']) ?></option>
                         <?php endforeach; ?>
-                    </select></div>
+                    </select><?= ah_field_error('subject_scope','_report_filter') ?></div>
                 <div class="col-md-3"><label class="form-label" for="date_from">Tanggal mulai</label>
-                    <input class="form-control" id="date_from" name="date_from" type="date" required value="<?= ah_e($filter['date_from']) ?>"></div>
+                    <input class="form-control" id="date_from" name="date_from" type="date" required value="<?= ah_e($filter['date_from']) ?>"><?= ah_field_error('date_from','_report_filter') ?></div>
                 <div class="col-md-3"><label class="form-label" for="date_to">Tanggal akhir</label>
-                    <input class="form-control" id="date_to" name="date_to" type="date" required value="<?= ah_e($filter['date_to']) ?>"></div>
+                    <input class="form-control" id="date_to" name="date_to" type="date" required value="<?= ah_e($filter['date_to']) ?>"><?= ah_field_error('date_to','_report_filter') ?></div>
                 <div class="col-md-3"><label class="form-label" for="academic_year_id">Tahun ajaran</label>
                     <select class="form-select" id="academic_year_id" name="academic_year_id"><option value="">Semua tahun ajaran</option>
                         <?php foreach ($options['academic_years'] as $row): ?>
                             <option value="<?= $row['id'] ?>"<?= $selected($filter['academic_year_id'], $row['id']) ?>><?= ah_e($row['year'] . ' - ' . $row['semester']) ?></option>
                         <?php endforeach; ?>
-                    </select></div>
+                    </select><?= ah_field_error('academic_year_id','_report_filter') ?></div>
                 <div class="col-md-3"><label class="form-label" for="teacher_id">Guru</label>
                     <select class="form-select" id="teacher_id" name="teacher_id"><option value="">Semua guru</option>
                         <?php foreach ($options['teachers'] as $row): ?>
                             <option value="<?= $row['id'] ?>"<?= $selected($filter['teacher_id'], $row['id']) ?>><?= ah_e($row['name']) ?></option>
                         <?php endforeach; ?>
-                    </select></div>
+                    </select><?= ah_field_error('teacher_id','_report_filter') ?></div>
                 <div class="col-md-3"><label class="form-label" for="class_id">Kelas</label>
                     <select class="form-select" id="class_id" name="class_id"><option value="">Semua kelas</option>
                         <?php foreach ($options['classes'] as $row): ?>
                             <option value="<?= $row['id'] ?>"<?= $selected($filter['class_id'], $row['id']) ?>><?= ah_e($row['name']) ?></option>
                         <?php endforeach; ?>
-                    </select></div>
+                    </select><?= ah_field_error('class_id','_report_filter') ?></div>
                 <div class="col-md-4"><label class="form-label" for="schedule_id">Jadwal</label>
                     <select class="form-select" id="schedule_id" name="schedule_id"><option value="">Semua jadwal</option>
                         <?php foreach ($options['schedules'] as $row): ?>
                             <option value="<?= $row['id'] ?>"<?= $selected($filter['schedule_id'], $row['id']) ?>><?= ah_e($row['label']) ?></option>
                         <?php endforeach; ?>
-                    </select></div>
+                    </select><?= ah_field_error('schedule_id','_report_filter') ?></div>
                 <div class="col-md-2"><label class="form-label" for="status">Status</label>
                     <select class="form-select" id="status" name="status"><option value="">Semua status</option>
                         <?php foreach ($options['statuses'] as $status): ?>
                             <option value="<?= ah_e($status) ?>"<?= $selected($filter['status'], $status) ?>><?= ah_e($status) ?></option>
                         <?php endforeach; ?>
-                    </select></div>
+                    </select><?= ah_field_error('status','_report_filter') ?></div>
                 <div class="col-12 d-flex flex-wrap gap-2">
                     <button class="btn btn-primary" type="submit">Terapkan filter</button>
                     <a class="btn btn-outline-secondary" href="admin_laporan_absensi.php">Bersihkan filter</a>
@@ -218,4 +225,4 @@ if ($error !== null) {
     <?php endif; ?>
 </section>
 <?php ah_pagination($report['pagination']['total'], $report['pagination']['current_page'], $report['pagination']['per_page']); endif; ?>
-<?php ah_page_close(); ?>
+<?php ah_old_clear('_report_filter'); ah_page_close(); ?>

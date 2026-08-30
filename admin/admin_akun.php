@@ -93,6 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 . '<p class="small mb-0 mt-2">Sampaikan secara aman. Pengguna wajib menggantinya saat login pertama.</p>'
         );
     } catch (Throwable $exception) {
+        $formKind = $action === 'create_guru' ? 'guru' : (($action === 'create' && in_array($_POST['kind'] ?? '', ['pengurus','orang_tua'], true)) ? $_POST['kind'] : ($action === 'link' ? 'link' : null));
+        if ($formKind !== null) { ah_validation_keep($_POST, ['guru_id','pengurus_id','wali_id','name','username','phone','email','user_id','kind','master_id'], $exception, '_account_' . $formKind); }
         master_flash('danger', $exception->getMessage());
     }
 
@@ -308,19 +310,19 @@ master_header('Akun & Hak Akses', [
                     <select class="form-select" id="guru_id" name="guru_id" required>
                         <option value="">Pilih guru</option>
                         <?php foreach ($guruTersedia as $guru): ?>
-                            <option value="<?= (int) $guru['id'] ?>"><?= master_e($guru['nama_guru'] . ($guru['nip'] ? ' — ' . $guru['nip'] : '')) ?></option>
+                            <option value="<?= (int) $guru['id'] ?>" <?= ah_old('guru_id',null,'_account_guru') === (string)$guru['id'] ? 'selected' : '' ?>><?= master_e($guru['nama_guru'] . ($guru['nip'] ? ' — ' . $guru['nip'] : '')) ?></option>
                         <?php endforeach; ?>
-                    </select></div>
+                    </select><?= ah_field_error('guru_id','_account_guru') ?></div>
                 <div class="col-md-3"><label class="form-label" for="guru_name">Nama akun</label>
-                    <input class="form-control" id="guru_name" name="name" maxlength="100" required></div>
+                    <input class="form-control" id="guru_name" name="name" value="<?= ah_e(ah_old('name',null,'_account_guru')) ?>" maxlength="100" required><?= ah_field_error('name','_account_guru') ?></div>
                 <div class="col-md-3"><label class="form-label" for="guru_username">Username</label>
-                    <input class="form-control" id="guru_username" name="username" minlength="4" maxlength="50" pattern="[a-z0-9._-]+" required
-                           aria-describedby="bantuan_username_guru">
+                    <input class="form-control" id="guru_username" name="username" value="<?= ah_e(ah_old('username',null,'_account_guru')) ?>" minlength="4" maxlength="50" pattern="[a-z0-9._-]+" required
+                           aria-describedby="bantuan_username_guru"><?= ah_field_error('username','_account_guru') ?>
                     <div class="form-text" id="bantuan_username_guru">Huruf kecil, angka, titik, garis bawah, atau tanda hubung.</div></div>
                 <div class="col-md-2"><label class="form-label" for="guru_phone">Nomor HP</label>
-                    <input class="form-control" id="guru_phone" name="phone" maxlength="20"></div>
+                    <input class="form-control" id="guru_phone" name="phone" value="<?= ah_e(ah_old('phone',null,'_account_guru')) ?>" maxlength="20"><?= ah_field_error('phone','_account_guru') ?></div>
                 <div class="col-md-4"><label class="form-label" for="guru_email">Email <span class="text-muted fw-normal">(opsional)</span></label>
-                    <input class="form-control" type="email" id="guru_email" name="email" maxlength="191"></div>
+                    <input class="form-control" type="email" id="guru_email" name="email" value="<?= ah_e(ah_old('email',null,'_account_guru')) ?>" maxlength="191"><?= ah_field_error('email','_account_guru') ?></div>
                 <div class="col-12"><button class="btn btn-primary">Buat akun guru</button></div>
             </form>
         <?php endif; ?>
@@ -339,17 +341,17 @@ master_header('Akun & Hak Akses', [
                     <select class="form-select" id="pengurus_master" name="pengurus_id" required>
                         <option value="">Pilih pengurus</option>
                         <?php foreach ($pengurusTersedia as $opsi): ?>
-                            <option value="<?= (int) $opsi['id'] ?>"><?= master_e($opsi['nama'] . ' — ' . $opsi['jabatan']) ?></option>
+                            <option value="<?= (int) $opsi['id'] ?>" <?= ah_old('pengurus_id',null,'_account_pengurus') === (string)$opsi['id'] ? 'selected' : '' ?>><?= master_e($opsi['nama'] . ' — ' . $opsi['jabatan']) ?></option>
                         <?php endforeach; ?>
-                    </select></div>
+                    </select><?= ah_field_error('pengurus_id','_account_pengurus') ?></div>
                 <div class="col-md-3"><label class="form-label" for="pengurus_name">Nama akun</label>
-                    <input class="form-control" id="pengurus_name" name="name" maxlength="100" required></div>
+                    <input class="form-control" id="pengurus_name" name="name" value="<?= ah_e(ah_old('name',null,'_account_pengurus')) ?>" maxlength="100" required><?= ah_field_error('name','_account_pengurus') ?></div>
                 <div class="col-md-3"><label class="form-label" for="pengurus_username">Username</label>
-                    <input class="form-control" id="pengurus_username" name="username" minlength="4" maxlength="50" pattern="[a-z0-9._-]+" required></div>
+                    <input class="form-control" id="pengurus_username" name="username" value="<?= ah_e(ah_old('username',null,'_account_pengurus')) ?>" minlength="4" maxlength="50" pattern="[a-z0-9._-]+" required><?= ah_field_error('username','_account_pengurus') ?></div>
                 <div class="col-md-2"><label class="form-label" for="pengurus_phone">Nomor HP</label>
-                    <input class="form-control" id="pengurus_phone" name="phone" maxlength="20"></div>
+                    <input class="form-control" id="pengurus_phone" name="phone" value="<?= ah_e(ah_old('phone',null,'_account_pengurus')) ?>" maxlength="20"><?= ah_field_error('phone','_account_pengurus') ?></div>
                 <div class="col-md-4"><label class="form-label" for="pengurus_email">Email <span class="text-muted fw-normal">(opsional)</span></label>
-                    <input class="form-control" type="email" id="pengurus_email" name="email" maxlength="191"></div>
+                    <input class="form-control" type="email" id="pengurus_email" name="email" value="<?= ah_e(ah_old('email',null,'_account_pengurus')) ?>" maxlength="191"><?= ah_field_error('email','_account_pengurus') ?></div>
                 <div class="col-12"><button class="btn btn-primary">Buat akun pengurus</button></div>
             </form>
         <?php endif; ?>
@@ -368,17 +370,17 @@ master_header('Akun & Hak Akses', [
                     <select class="form-select" id="wali_master" name="wali_id" required>
                         <option value="">Pilih wali</option>
                         <?php foreach ($waliTersedia as $opsi): ?>
-                            <option value="<?= (int) $opsi['id'] ?>"><?= master_e($opsi['nama'] . ' — ' . (int) $opsi['jumlah_santri'] . ' santri') ?></option>
+                            <option value="<?= (int) $opsi['id'] ?>" <?= ah_old('wali_id',null,'_account_orang_tua') === (string)$opsi['id'] ? 'selected' : '' ?>><?= master_e($opsi['nama'] . ' — ' . (int) $opsi['jumlah_santri'] . ' santri') ?></option>
                         <?php endforeach; ?>
-                    </select></div>
+                    </select><?= ah_field_error('wali_id','_account_orang_tua') ?></div>
                 <div class="col-md-3"><label class="form-label" for="ortu_name">Nama akun</label>
-                    <input class="form-control" id="ortu_name" name="name" maxlength="100" required></div>
+                    <input class="form-control" id="ortu_name" name="name" value="<?= ah_e(ah_old('name',null,'_account_orang_tua')) ?>" maxlength="100" required><?= ah_field_error('name','_account_orang_tua') ?></div>
                 <div class="col-md-3"><label class="form-label" for="ortu_username">Username</label>
-                    <input class="form-control" id="ortu_username" name="username" minlength="4" maxlength="50" pattern="[a-z0-9._-]+" required></div>
+                    <input class="form-control" id="ortu_username" name="username" value="<?= ah_e(ah_old('username',null,'_account_orang_tua')) ?>" minlength="4" maxlength="50" pattern="[a-z0-9._-]+" required><?= ah_field_error('username','_account_orang_tua') ?></div>
                 <div class="col-md-2"><label class="form-label" for="ortu_phone">Nomor HP</label>
-                    <input class="form-control" id="ortu_phone" name="phone" maxlength="20"></div>
+                    <input class="form-control" id="ortu_phone" name="phone" value="<?= ah_e(ah_old('phone',null,'_account_orang_tua')) ?>" maxlength="20"><?= ah_field_error('phone','_account_orang_tua') ?></div>
                 <div class="col-md-4"><label class="form-label" for="ortu_email">Email <span class="text-muted fw-normal">(opsional)</span></label>
-                    <input class="form-control" type="email" id="ortu_email" name="email" maxlength="191"></div>
+                    <input class="form-control" type="email" id="ortu_email" name="email" value="<?= ah_e(ah_old('email',null,'_account_orang_tua')) ?>" maxlength="191"><?= ah_field_error('email','_account_orang_tua') ?></div>
                 <div class="col-12"><button class="btn btn-primary">Buat akun orang tua</button></div>
             </form>
         <?php endif; ?>
@@ -396,27 +398,27 @@ master_header('Akun & Hak Akses', [
                 <select class="form-select" id="link_user" name="user_id" required>
                     <option value="">Pilih akun</option>
                     <?php foreach ($akunBelumTerhubung as $akun): ?>
-                        <option value="<?= (int) $akun['id'] ?>"><?= master_e($akun['name'] . ' (@' . $akun['username'] . ')') ?></option>
+                        <option value="<?= (int) $akun['id'] ?>" <?= ah_old('user_id',null,'_account_link') === (string)$akun['id'] ? 'selected' : '' ?>><?= master_e($akun['name'] . ' (@' . $akun['username'] . ')') ?></option>
                     <?php endforeach; ?>
-                </select></div>
+                </select><?= ah_field_error('user_id','_account_link') ?></div>
             <div class="col-md-3"><label class="form-label" for="link_kind">Hubungkan sebagai</label>
                 <select class="form-select" id="link_kind" name="kind" required>
-                    <option value="pengurus">Pengurus</option>
-                    <option value="orang_tua">Orang tua / wali</option>
-                </select></div>
+                    <option value="pengurus" <?= ah_old('kind',null,'_account_link') === 'pengurus' ? 'selected' : '' ?>>Pengurus</option>
+                    <option value="orang_tua" <?= ah_old('kind',null,'_account_link') === 'orang_tua' ? 'selected' : '' ?>>Orang tua / wali</option>
+                </select><?= ah_field_error('kind','_account_link') ?></div>
             <div class="col-md-4"><label class="form-label" for="link_master">Data master</label>
                 <select class="form-select" id="link_master" name="master_id" required>
                     <optgroup label="Pengurus">
                         <?php foreach ($pengurusTersedia as $opsi): ?>
-                            <option value="<?= (int) $opsi['id'] ?>"><?= master_e($opsi['nama'] . ' — ' . $opsi['jabatan']) ?></option>
+                            <option value="<?= (int) $opsi['id'] ?>" <?= ah_old('kind',null,'_account_link') === 'pengurus' && ah_old('master_id',null,'_account_link') === (string)$opsi['id'] ? 'selected' : '' ?>><?= master_e($opsi['nama'] . ' — ' . $opsi['jabatan']) ?></option>
                         <?php endforeach; ?>
                     </optgroup>
                     <optgroup label="Wali">
                         <?php foreach ($waliTersedia as $opsi): ?>
-                            <option value="<?= (int) $opsi['id'] ?>"><?= master_e($opsi['nama'] . ' — ' . (int) $opsi['jumlah_santri'] . ' santri') ?></option>
+                            <option value="<?= (int) $opsi['id'] ?>" <?= ah_old('kind',null,'_account_link') === 'orang_tua' && ah_old('master_id',null,'_account_link') === (string)$opsi['id'] ? 'selected' : '' ?>><?= master_e($opsi['nama'] . ' — ' . (int) $opsi['jumlah_santri'] . ' santri') ?></option>
                         <?php endforeach; ?>
                     </optgroup>
-                </select>
+                </select><?= ah_field_error('master_id','_account_link') ?>
                 <div class="form-text">Pilih data master yang sesuai dengan jenis hubungan di sebelah kiri.</div></div>
             <div class="col-12"><button class="btn btn-primary">Hubungkan</button></div>
         </form>
@@ -446,7 +448,7 @@ master_header('Akun & Hak Akses', [
                     </ul>
                 </div>
                 <label class="form-label" for="konfirmasi_admin">Ketik <code><?= master_e(AccountService::KONFIRMASI_ADMIN) ?></code> untuk melanjutkan</label>
-                <input class="form-control" id="konfirmasi_admin" name="konfirmasi_admin" autocomplete="off" required>
+                <input class="form-control" id="konfirmasi_admin" name="konfirmasi_admin" autocomplete="off" required><?= ah_field_error('konfirmasi_admin','_account_guru') ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
@@ -469,4 +471,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-<?php master_footer(); ?>
+<?php foreach (['guru','pengurus','orang_tua','link'] as $kind) { ah_old_clear('_account_' . $kind); } master_footer(); ?>

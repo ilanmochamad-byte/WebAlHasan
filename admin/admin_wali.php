@@ -44,10 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             master_flash('success', 'Status wali berhasil diperbarui tanpa menghapus relasi atau riwayat.');
         }
     } catch (MasterDataException $exception) {
-        ah_old_keep($_POST, ['nama', 'no_hp', 'alamat'], '_wali_old');
+        if (($action ?? '') === 'save') { ah_validation_keep($_POST, ['nama', 'no_hp', 'alamat'], $exception, '_wali_old'); }
+        if (($action ?? '') === 'attach') { ah_validation_keep($_POST, ['santri_id', 'hubungan', 'is_primary'], $exception, '_wali_attach'); }
         master_flash('danger', $exception->getMessage());
-        if ((string) ($_POST['action'] ?? '') === 'save' && $id > 0) {
-            master_redirect('admin_wali.php?action=edit&id=' . $id);
+        if ((string) ($_POST['action'] ?? '') === 'save') {
+            master_redirect('admin_wali.php?action=' . ($id > 0 ? 'edit&id=' . $id : 'create'));
         }
     }
     master_redirect('admin_wali.php' . ($id > 0 ? '?action=detail&id=' . $id : ''));
@@ -93,13 +94,13 @@ master_header('Orang Tua / Wali', [
             <input type="hidden" name="form_token" value="<?= master_e(ah_form_token('wali')) ?>">
             <?php if ($selected): ?><input type="hidden" name="id" value="<?= (int) $selected['id'] ?>"><?php endif; ?>
             <div class="col-md-4"><label class="form-label" for="nama">Nama</label>
-                <input class="form-control" id="nama" name="nama" maxlength="100" required value="<?= master_e(ah_old('nama', $record, '_wali_old')) ?>"></div>
+                <input class="form-control" id="nama" name="nama" maxlength="100" required value="<?= master_e(ah_old('nama', $record, '_wali_old')) ?>"><?= ah_field_error('nama','_wali_old') ?></div>
             <div class="col-md-3"><label class="form-label" for="no_hp">Nomor HP</label>
                 <input class="form-control" id="no_hp" name="no_hp" inputmode="tel" maxlength="20"
-                       aria-describedby="bantuan_hp_wali" value="<?= master_e(ah_old('no_hp', $record, '_wali_old')) ?>">
+                       aria-describedby="bantuan_hp_wali" value="<?= master_e(ah_old('no_hp', $record, '_wali_old')) ?>"><?= ah_field_error('no_hp','_wali_old') ?>
                 <div class="form-text" id="bantuan_hp_wali">Boleh sama dengan wali lain; nomor HP bukan identitas unik.</div></div>
             <div class="col-md-5"><label class="form-label" for="alamat">Alamat</label>
-                <input class="form-control" id="alamat" name="alamat" maxlength="200" value="<?= master_e(ah_old('alamat', $record, '_wali_old')) ?>"></div>
+                <input class="form-control" id="alamat" name="alamat" maxlength="200" value="<?= master_e(ah_old('alamat', $record, '_wali_old')) ?>"><?= ah_field_error('alamat','_wali_old') ?></div>
             <?php if ($selected && count($terdampak) > 1): ?>
                 <div class="col-12">
                     <div class="ah-danger-zone">
@@ -172,13 +173,13 @@ master_header('Orang Tua / Wali', [
                 <select class="form-select" id="santri_id" name="santri_id" required>
                     <option value="">Pilih santri</option>
                     <?php foreach ($service->santriOptions() as $santri): ?>
-                        <option value="<?= (int) $santri['id'] ?>"><?= master_e($santri['nis'] . ' — ' . $santri['nama_santri']) ?></option>
+                        <option value="<?= (int) $santri['id'] ?>" <?= ah_old('santri_id',null,'_wali_attach') === (string)$santri['id'] ? 'selected' : '' ?>><?= master_e($santri['nis'] . ' — ' . $santri['nama_santri']) ?></option>
                     <?php endforeach; ?>
-                </select></div>
+                </select><?= ah_field_error('santri_id','_wali_attach') ?></div>
             <div class="col-md-3"><label class="form-label" for="hubungan">Hubungan</label>
-                <input class="form-control" id="hubungan" name="hubungan" maxlength="30" placeholder="Ayah / Ibu / Wali" required></div>
+                <input class="form-control" id="hubungan" name="hubungan" value="<?= ah_e(ah_old('hubungan',null,'_wali_attach')) ?>" maxlength="30" placeholder="Ayah / Ibu / Wali" required><?= ah_field_error('hubungan','_wali_attach') ?></div>
             <div class="col-md-2 d-flex align-items-end">
-                <label class="d-inline-flex align-items-center gap-2"><input type="checkbox" name="is_primary" value="1"> Kontak utama</label></div>
+                <label class="d-inline-flex align-items-center gap-2"><input type="checkbox" name="is_primary" value="1" <?= ah_old('is_primary',null,'_wali_attach') === '1' ? 'checked' : '' ?>> Kontak utama</label></div>
             <div class="col-md-2 d-flex align-items-end"><button class="btn btn-primary" name="action" value="attach">Hubungkan</button></div>
         </form>
     </div>
@@ -227,9 +228,9 @@ master_header('Orang Tua / Wali', [
                     <td><div class="ah-actions">
                         <a class="btn btn-sm btn-outline-primary" href="?action=detail&amp;id=<?= (int) $row['id'] ?>">Detail</a>
                         <a class="btn btn-sm btn-outline-secondary" href="?action=edit&amp;id=<?= (int) $row['id'] ?>">Ubah</a>
-                        <form method="post"><?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                        <form data-confirm="Ubah status wali ini? Status aktif memengaruhi kelayakan hubungan akun orang tua. Data santri, relasi, dan riwayat lama tetap tersimpan." method="post"><?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
                             <button class="btn btn-sm btn-outline-secondary" name="action" value="<?= (int) $row['is_active'] === 1 ? 'deactivate' : 'activate' ?>"><?= (int) $row['is_active'] === 1 ? 'Nonaktifkan' : 'Aktifkan' ?></button></form>
-                        <form method="post" onsubmit="return confirm('Arsipkan identitas wali ini? Relasi santri dan riwayat perizinan lama TIDAK dihapus.')">
+                        <form method="post" onsubmit="return confirm('Ubah status arsip identitas wali ini? Arsip menyembunyikan wali dari daftar aktif; Pulihkan mengembalikannya. Relasi santri dan riwayat perizinan lama TIDAK dihapus.')">
                             <?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
                             <button class="btn btn-sm btn-outline-danger" name="action" value="<?= $row['archived_at'] ? 'restore' : 'archive' ?>"><?= $row['archived_at'] ? 'Pulihkan' : 'Arsipkan' ?></button></form>
                     </div></td>
@@ -239,4 +240,4 @@ master_header('Orang Tua / Wali', [
         </table></div>
     <?php endif; ?>
 </section>
-<?php master_pagination((int) $result['total'], $page, 20); master_footer(); ?>
+<?php master_pagination((int) $result['total'], $page, 20); ah_old_clear('_wali_attach'); master_footer(); ?>

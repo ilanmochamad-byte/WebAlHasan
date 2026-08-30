@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } catch (ScheduleException $exception) {
             // Isian pengguna dipertahankan agar tidak perlu mengetik ulang.
-            ah_old_keep($_POST, ['id_tahun', 'hari', 'waktu_sholat', 'waktu_mulai', 'waktu_selesai', 'id_kelas', 'id_guru', 'tempat', 'fan_ilmu', 'nama_kitab']);
+            ah_validation_keep($_POST, ['id_tahun', 'hari', 'waktu_sholat', 'waktu_mulai', 'waktu_selesai', 'id_kelas', 'id_guru', 'tempat', 'fan_ilmu', 'nama_kitab'], $exception, '_ah_old');
             ah_flash_set('danger', $exception->getMessage());
             $kembali(['action' => $id > 0 ? 'edit' : 'create', 'id' => $id > 0 ? $id : null]);
         }
@@ -131,6 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         throw new ScheduleException('Aksi pertemuan tidak valid.');
     } catch (ScheduleException $exception) {
+        if (in_array($action, ['draft','open'], true)) { ah_validation_keep($_POST, ['schedule_id','tanggal_pertemuan','catatan'], $exception, '_meeting_old'); }
         ah_flash_set('danger', $exception->getMessage());
         $kembali([
             'id' => !empty($_POST['meeting_id']) ? (int) $_POST['meeting_id'] : null,

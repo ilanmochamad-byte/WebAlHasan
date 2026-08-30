@@ -71,3 +71,35 @@ yang dapat diautomasi. Ini tidak membuktikan seluruh WCAG atau pembaca layar.
 Tes interaksi 60 lulus mencakup keyboard, modal terbuka, daftar wali panjang,
 konfirmasi batal, dan prefers-reduced-motion. Pemeriksaan modal menunggu
 animasi selesai sebelum membaca kontras/fokus agar hasil bukan warna transisi.
+
+## A-15 — P2: validasi menghilangkan isian dan sebagian label tidak terhubung
+
+Form lama kelas/pengurus/tahun belum menghubungkan label ke kolom. Pengurus,
+kelas, tahun, penugasan dan akun menghilangkan isian setelah penolakan. Jadwal
+menyimpan old-input tetapi tidak membacanya kembali. Pesan banyak formulir
+hanya berupa alert di atas halaman, tidak di dekat kolom yang salah.
+
+Koreksi presentasi: whitelist isian aman per formulir, label for/id, pesan
+kolom dari kesalahan server, serta asosiasi aria-invalid/aria-describedby.
+Password, token dan persetujuan berbahaya tidak dipulihkan. Filter laporan
+dengan rentang terbalik mempertahankan tanggal/mode dan tidak menawarkan
+CSV/cetak sampai valid. Pesan konflik lintas data tetap berada pada alert umum.
+
+Portal hanya mendapat pemulihan isian dan tautan koreksi dengan konteks
+pencarian/halaman; status HTTP gagal 403/409/422, CSRF, scope, validasi workflow,
+idempotensi dan redirect sukses tidak diubah. Pengujian empat jenis aksi
+perizinan menggunakan input sengaja invalid dan memastikan 422 sebelum mutasi.
+Tidak mengubah layanan/alur perizinan V2 yang di luar paket.
+
+Konfirmasi tindakan status/penugasan pada form A/B kini menjelaskan dampak
+pada cakupan, kelayakan, dan pelestarian riwayat. Dialog admin, merge dan timpa
+masih memerlukan persetujuan eksplisit server. Cancel tidak mengunci tombol
+atau mengirim POST (A-13); tidak ada redirect yang melewati CSRF.
+
+`perapihan_audit_form_feedback.php`: 108 lulus, 0 gagal. Cakupan: santri, wali,
+relasi wali, guru, pengurus, kelas/keanggotaan, tahun, kamar, murobi, pembimbing,
+jadwal, pertemuan, tiga jenis pembuatan akun, link akun, tiga kegagalan password,
+filter laporan, pengajuan izin dan empat aksi detail izin. Kasus positif,
+keadaan kosong, dan penolakan hak juga diperiksa ulang melalui regresi paket,
+audit HTTP/kamar/pagination/laporan dan browser; tidak mengartikan lint sebagai
+bukti keberhasilan transaksi.

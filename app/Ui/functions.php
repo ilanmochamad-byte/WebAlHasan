@@ -227,7 +227,7 @@ if (!function_exists('ah_old_keep')) {
 if (!function_exists('ah_old_clear')) {
     function ah_old_clear(string $bucket = '_ah_old'): void
     {
-        unset($_SESSION[$bucket]);
+        unset($_SESSION[$bucket], $_SESSION[$bucket . '_errors']);
     }
 }
 
@@ -273,4 +273,43 @@ if (!function_exists('ah_form_token_consume')) {
 
         return true;
     }
+}
+
+/** A-15: retain only explicitly permitted fields; confirmations/secrets never return. */
+function ah_validation_keep(array $input, array $fields, Throwable $error, string $bucket): void
+{
+    ah_old_keep($input, $fields, $bucket);
+    $messages = method_exists($error, 'errors') ? $error->errors() : [];
+    if ($messages === []) { $messages = [$error->getMessage()]; }
+    $aliases = [
+        'nama' => ['nama', 'identitas'], 'nama_guru' => ['nama guru'], 'nama_santri' => ['nama santri'],
+        'nama_kamar' => ['nama kamar'], 'nama_kelas' => ['nama kelas'], 'name' => ['nama akun', 'nama'],
+        'no_hp' => ['hp', 'telepon'], 'phone' => ['hp'], 'email' => ['email'], 'username' => ['username'],
+        'tahun' => ['tahun'], 'tahun_ajaran_id' => ['tahun', 'semester'], 'id_tahun' => ['tahun', 'semester'],
+        'guru_id' => ['guru'], 'id_guru' => ['guru'], 'pengurus_id' => ['pengurus'], 'wali_id' => ['wali'],
+        'user_id' => ['akun'], 'santri_id' => ['santri'], 'kelas_id' => ['kelas'], 'id_kelas' => ['kelas'], 'kamar_id' => ['kamar'],
+        'target_type' => ['jenis', 'target', 'kelompok'], 'tanggal_mulai' => ['tanggal mulai'],
+        'tanggal_selesai' => ['tanggal selesai'], 'tanggal_pertemuan' => ['tanggal', 'hari'],
+        'waktu_mulai' => ['waktu mulai'], 'waktu_selesai' => ['waktu selesai'], 'waktu_sholat' => ['waktu pelaksanaan'],
+        'tgl_izin' => ['tanggal izin'], 'tgl_kembali' => ['tanggal kembali'], 'tgl_lahir' => ['lahir'], 'jenis_kelamin' => ['kelamin'], 'kapasitas' => ['kapasitas'],
+    ];
+    $errors = [];
+    foreach ($fields as $field) {
+        foreach ($messages as $message) {
+            if (!is_string($message)) { continue; }
+            foreach ($aliases[$field] ?? [str_replace('_', ' ', $field)] as $alias) {
+                if (mb_stripos($message, $alias) !== false) { $errors[$field][] = $message; break; }
+            }
+        }
+    }
+    $_SESSION[$bucket . '_errors'] = array_map(static fn (array $v): string => implode(' ', array_unique($v)), $errors);
+}
+
+/** Visible server-rendered error; Layout associates it with the matching control. */
+function ah_field_error(string $field, string $bucket): string
+{
+    $message = $_SESSION[$bucket . '_errors'][$field] ?? '';
+    if (!is_string($message) || $message === '') { return ''; }
+    static $number = 0;
+    return '<span class="ah-field-error" id="ah-error-' . ++$number . '" data-error-for="' . ah_e($field) . '">' . ah_e($message) . '</span>';
 }
