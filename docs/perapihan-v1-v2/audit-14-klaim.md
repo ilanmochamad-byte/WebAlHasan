@@ -103,3 +103,14 @@ filter laporan, pengajuan izin dan empat aksi detail izin. Kasus positif,
 keadaan kosong, dan penolakan hak juga diperiksa ulang melalui regresi paket,
 audit HTTP/kamar/pagination/laporan dan browser; tidak mengartikan lint sebagai
 bukti keberhasilan transaksi.
+
+### Pengulangan concurrency A-12
+
+Run lanjutan sempat menghasilkan dua kegagalan alasan penolakan pencabutan diri
+sendiri: bila orang lain lebih dahulu mencabut role, layanan menjawab "tidak
+memiliki role" alih-alih larangan diri sendiri. Minimum admin tetap 1 pada
+semua putaran; tidak terjadi nol admin. Pemeriksaan larangan diri dipindahkan
+sebelum transaksi, seperti larangan menonaktifkan diri, tanpa melemahkan
+assertion. Tiga pengulangan berikutnya masing-masing 13/13 lulus: total 36
+putaran, lima proses mutasi (ditambah permintaan diri pada variasi terakhir),
+minimum teramati 1. Tes audit atomik 36/36 diulang sesudahnya.

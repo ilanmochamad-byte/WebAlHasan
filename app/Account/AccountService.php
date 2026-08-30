@@ -174,15 +174,16 @@ final class AccountService
     public function revokeRole(int $id, string $role, int $actorId): void
     {
         $role = $this->role($role);
+        // Larangan diri sendiri tetap eksplisit meski admin lain mencabut role lebih dulu.
+        if ($role === 'admin' && $id === $actorId) {
+            throw new InvalidArgumentException('Anda tidak dapat melepas hak admin dari akun sendiri. Minta admin lain melakukannya.');
+        }
         $this->accounts->transaction(function () use ($id, $role, $actorId): void {
             $this->accounts->countActiveAdmins(true);
             $before = $this->required($id);
             $rolesSebelum = $this->roles($before);
             if (!in_array($role, $rolesSebelum, true)) {
                 throw new InvalidArgumentException('Akun ini tidak memiliki role ' . $this->label($role) . '.');
-            }
-            if ($role === 'admin' && $id === $actorId) {
-                throw new InvalidArgumentException('Anda tidak dapat melepas hak admin dari akun sendiri. Minta admin lain melakukannya.');
             }
             $this->accounts->revokeRole($id, $role);
             if ($role === 'admin' && $this->accounts->countActiveAdmins() < 1) {
