@@ -568,6 +568,12 @@ final class MasterDataRepository
      * @param array<int, int> $ids
      * @return array<int, array<string, mixed>>
      */
+    public function waliDuplicateIds(string $kind, string $key): array
+    {
+        $column = $kind === 'nama' ? 'LOWER(TRIM(nama))' : 'no_hp';
+        return array_column($this->all("SELECT id FROM wali WHERE archived_at IS NULL AND merged_into_wali_id IS NULL AND {$column} = ? ORDER BY id", [$key]), 'id');
+    }
+
     public function waliByIds(array $ids): array
     {
         $ids = array_values(array_unique(array_map('intval', $ids)));
@@ -576,16 +582,23 @@ final class MasterDataRepository
         }
         $placeholders = implode(',', array_fill(0, count($ids), '?'));
 
-        return $this->all(
+        $rows = $this->all(
             "SELECT w.id, w.nama, w.no_hp, w.alamat, w.is_active, w.archived_at, w.merged_into_wali_id,
                     (SELECT COUNT(*) FROM santri_wali sw WHERE sw.wali_id = w.id AND sw.archived_at IS NULL) AS jumlah_santri,
-                    (SELECT GROUP_CONCAT(CONCAT(s.nis, ' — ', s.nama_santri, ' (', sw.hubungan, ')') ORDER BY s.nama_santri SEPARATOR ' | ')
-                       FROM santri_wali sw JOIN santri s ON s.id = sw.santri_id
-                      WHERE sw.wali_id = w.id AND sw.archived_at IS NULL) AS santri,
                     (SELECT COUNT(*) FROM users u WHERE u.wali_id = w.id) AS jumlah_akun
                FROM wali w WHERE w.id IN ({$placeholders}) ORDER BY w.nama, w.id",
             $ids
         );
+        // Confirmation must show every affected student, regardless of the SQL
+        // group_concat_max_len setting. Keep the existing string return contract.
+        $relations = $this->all("SELECT sw.wali_id, s.nis, s.nama_santri, sw.hubungan FROM santri_wali sw JOIN santri s ON s.id = sw.santri_id WHERE sw.wali_id IN ({$placeholders}) AND sw.archived_at IS NULL ORDER BY s.nama_santri, s.id, sw.id", $ids);
+        $names = [];
+        foreach ($relations as $relation) {
+            $names[(int)$relation['wali_id']][] = $relation['nis'] . ' — ' . $relation['nama_santri'] . ' (' . $relation['hubungan'] . ')';
+        }
+        foreach ($rows as &$row) { $row['santri'] = implode(' | ', $names[(int)$row['id']] ?? []); }
+        unset($row);
+        return $rows;
     }
 
     /**

@@ -477,7 +477,7 @@ final class MasterDataService
     {
         $duplikat = [];
         foreach ($groups as $grup) {
-            $ids = array_map('intval', explode(',', (string) $grup['wali_ids']));
+            $ids = $this->repository->waliDuplicateIds((string)$grup['jenis'], (string)$grup['kunci']);
             $anggota = $this->repository->waliByIds($ids);
             $akun = 0;
             foreach ($anggota as $baris) {

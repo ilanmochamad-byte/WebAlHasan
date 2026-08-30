@@ -34,3 +34,18 @@ Koreksi: salin nama/nilai submitter yang dipilih ke input tersembunyi sebelum
 disable; bila event sudah dibatalkan, jangan mengunci form. Guard, CSRF,
 konfirmasi, dan validasi server tetap berjalan. Tes browser menangkap request
 sebelum mencapai server (tidak memutasi data); sesudah koreksi 5 lulus, 0 gagal.
+
+## A-16 — P1: daftar dampak rekonsiliasi dapat terpotong
+
+K2-08: nama santri pada calon penggabungan dirangkai dengan GROUP_CONCAT.
+Pada sesi sandbox `group_concat_max_len=1024`, hanya 11 dari 45 nama fixture
+terbaca lengkap; 34 gagal. Konfirmasi dapat diberikan dengan daftar yang tidak
+lengkap. Batas diubah hanya dalam sesi tes dan dipulihkan sesudahnya.
+
+Koreksi: ambil relasi sebagai baris biasa, urutkan stabil, lalu bentuk teks
+lengkap di PHP. ID anggota kelompok juga dibaca berdasarkan kunci kelompok,
+bukan mengandalkan string agregasi yang dapat terpotong. Kontrak tampilan lama
+dipertahankan. Tidak mengubah batas agregasi permanen, collation B-2, data lama,
+atau keputusan identitas B-3/B-4. `perapihan_audit_wali_long_list.php`: 45 lulus,
+0 gagal sesudah koreksi. Fixture terdiri dari 45 relasi sendiri dan dibersihkan
+melalui manifest, bukan penghapusan data lama.
