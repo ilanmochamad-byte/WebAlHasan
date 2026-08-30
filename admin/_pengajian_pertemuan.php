@@ -151,7 +151,7 @@ $tautanJadwal = static fn (int $jadwalId): string => app_url('/admin/admin_penga
     <div class="ah-card__head"><span id="ah-riwayat-pertemuan">Riwayat pertemuan</span>
         <a class="btn btn-sm btn-outline-primary" href="<?= ah_e(app_url('/admin/admin_laporan_absensi.php')) ?>">Laporan kehadiran</a></div>
     <?php if ($meetings === []): ?>
-        <div class="ah-card__body"><?= ah_empty('Belum ada pertemuan', 'Pertemuan yang Anda buat akan muncul di sini beserta status dan jumlah pesertanya.') ?></div>
+        <div class="ah-card__body"><?= $meetingQuery !== '' ? ah_empty('Tidak ada hasil sesuai pencarian', 'Coba kata lain atau bersihkan pencarian untuk melihat daftar lengkap.') : ah_empty('Belum ada pertemuan', 'Pertemuan yang Anda buat akan muncul di sini beserta status dan jumlah pesertanya.') ?></div>
     <?php else: ?>
         <div class="ah-table-wrap"><table class="ah-table">
             <caption class="ah-visually-hidden">Riwayat pertemuan dalam cakupan Anda</caption>

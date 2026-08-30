@@ -65,3 +65,8 @@ duplikasi ke-101 dan wali tanpa relasi ke-201 dapat dicapai, pertemuan guru
 105 baris tetap terisolasi dari satu pertemuan guru lain, pencarian palsu tidak
 menjadi SQL, guard lima halaman tetap admin-only, dan konteks HTTP bertahan.
 Metode daftar lama tetap tersedia untuk konsumen lama dan opsi formulir.
+
+Uji berikutnya menambah tujuh kasus hasil pencarian kosong: pesan tidak boleh
+menyimpulkan seluruh data wali sudah bersih hanya karena kata pencarian tidak
+cocok. Hasil akhir tes pagination menjadi **45 lulus**. Teks keadaan kosong
+dibedakan dari keadaan seluruh daftar kosong; tidak mengubah aturan data.

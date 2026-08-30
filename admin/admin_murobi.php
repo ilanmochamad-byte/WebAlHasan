@@ -119,7 +119,7 @@ ah_note(
 <section class="ah-card" aria-labelledby="ah-daftar-murobi">
     <div class="ah-card__head"><span id="ah-daftar-murobi">Daftar penugasan</span></div>
     <?php if ($rows === []): ?>
-        <div class="ah-card__body"><?= ah_empty('Belum ada penugasan murobi', 'Tambahkan penugasan pada formulir di atas untuk menetapkan guru sebagai murobi kelompok binaan.') ?></div>
+        <div class="ah-card__body"><?= $q !== '' ? ah_empty('Tidak ada hasil sesuai pencarian', 'Coba kata lain atau bersihkan pencarian untuk melihat daftar lengkap.') : ah_empty('Belum ada penugasan murobi', 'Tambahkan penugasan pada formulir di atas untuk menetapkan guru sebagai murobi kelompok binaan.') ?></div>
     <?php else: ?>
         <div class="ah-table-wrap"><table class="ah-table">
             <caption class="ah-visually-hidden">Daftar penugasan murobi</caption>

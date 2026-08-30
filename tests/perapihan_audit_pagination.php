@@ -95,6 +95,10 @@ try {
  }
  $r=$request('/admin/admin_pengajian.php?tab=pertemuan&q=1800-&page=6',$jars['sbx_guru_biasa']);
  $check($r['status']===200 && str_contains($r['body'],'Halaman 6 dari 6') && !str_contains($r['body'],'id='.$foreign.'"'),'HTTP riwayat pertemuan guru terpaginasikan dan terisolasi');
+ foreach(['/admin/admin_murobi.php?','/admin/admin_pembimbing.php?','/admin/admin_pengajian.php?tab=pertemuan&','/admin/admin_wali_rekonsiliasi.php?bagian=duplikat&','/admin/admin_wali_rekonsiliasi.php?bagian=tanpa_relasi&','/admin/admin_wali_rekonsiliasi.php?bagian=relasi_belum_lengkap&','/admin/admin_wali_rekonsiliasi.php?bagian=konflik_kolom_lama&'] as $url){
+  $r=$request($url.'q=NORESULT'.$tag,$jars['sbx_admin']);
+  $check($r['status']===200 && str_contains($r['body'],'Tidak ada hasil sesuai pencarian'),'Pencarian kosong tidak menyatakan seluruh data bersih: '.$url);
+ }
  $keep=getenv('AUDIT_PAGE_KEEP')==='1' && $fail===0;
  if($keep)file_put_contents($manifest,json_encode(['test'=>'perapihan_audit_pagination','database'=>app_config('database.database'),'tag'=>$tag,'ids'=>$ids],JSON_PRETTY_PRINT));
 } finally {

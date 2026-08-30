@@ -103,7 +103,7 @@ ah_note(
     <div class="ah-card__head"><span id="ah-duplikat">Kandidat duplikasi identitas</span></div>
     <div class="ah-card__body">
         <?php if ($laporan['duplikat'] === []): ?>
-            <?= ah_empty('Tidak ada kandidat duplikasi', 'Tidak ditemukan identitas wali aktif dengan nama atau nomor HP yang sama.') ?>
+            <?= $q !== '' ? ah_empty('Tidak ada hasil sesuai pencarian', 'Coba kata lain atau bersihkan pencarian untuk melihat daftar lengkap.') : ah_empty('Tidak ada kandidat duplikasi', 'Tidak ditemukan identitas wali aktif dengan nama atau nomor HP yang sama.') ?>
         <?php else: ?>
             <?php foreach ($laporan['duplikat'] as $indeks => $grup): ?>
                 <div class="ah-fieldset">
@@ -178,7 +178,7 @@ ah_note(
     <div class="ah-card__body">
         <p class="text-muted small">Biasanya berasal dari impor lama atau alur PSB, yang menulis nama orang tua pada kolom lama tanpa membuat identitas wali.</p>
         <?php if ($laporan['relasi_belum_lengkap'] === []): ?>
-            <?= ah_empty('Semua santri sudah memiliki relasi wali', 'Tidak ada santri aktif yang bergantung pada kolom lama tanpa relasi wali.') ?>
+            <?= $q !== '' ? ah_empty('Tidak ada hasil sesuai pencarian', 'Coba kata lain atau bersihkan pencarian untuk melihat daftar lengkap.') : ah_empty('Semua santri sudah memiliki relasi wali', 'Tidak ada santri aktif yang bergantung pada kolom lama tanpa relasi wali.') ?>
         <?php else: ?>
             <div class="ah-table-wrap"><table class="ah-table">
                 <caption class="ah-visually-hidden">Santri yang relasi walinya belum lengkap</caption>
@@ -207,7 +207,7 @@ ah_note(
     <div class="ah-card__body">
         <p class="text-muted small">Nilai lama tidak pernah ditimpa otomatis. Selesaikan satu per satu dari halaman santri, dengan konfirmasi; nilai sebelum dan sesudah tercatat pada audit.</p>
         <?php if ($laporan['konflik_kolom_lama'] === []): ?>
-            <?= ah_empty('Tidak ada konflik', 'Kolom lama sejalan dengan identitas wali yang terverifikasi.') ?>
+            <?= $q !== '' ? ah_empty('Tidak ada hasil sesuai pencarian', 'Coba kata lain atau bersihkan pencarian untuk melihat daftar lengkap.') : ah_empty('Tidak ada konflik', 'Kolom lama sejalan dengan identitas wali yang terverifikasi.') ?>
         <?php else: ?>
             <div class="ah-table-wrap"><table class="ah-table">
                 <caption class="ah-visually-hidden">Santri yang kolom lamanya bertentangan dengan relasi wali</caption>
@@ -234,7 +234,7 @@ ah_note(
     <div class="ah-card__head"><span id="ah-tanpa-relasi">Identitas wali tanpa relasi santri aktif</span></div>
     <div class="ah-card__body">
         <?php if ($laporan['tanpa_relasi'] === []): ?>
-            <?= ah_empty('Tidak ada wali menganggur', 'Semua identitas wali aktif terhubung ke sedikitnya satu santri.') ?>
+            <?= $q !== '' ? ah_empty('Tidak ada hasil sesuai pencarian', 'Coba kata lain atau bersihkan pencarian untuk melihat daftar lengkap.') : ah_empty('Tidak ada wali menganggur', 'Semua identitas wali aktif terhubung ke sedikitnya satu santri.') ?>
         <?php else: ?>
             <div class="ah-table-wrap"><table class="ah-table">
                 <caption class="ah-visually-hidden">Identitas wali yang belum terhubung ke santri mana pun</caption>

@@ -148,7 +148,7 @@ master_header('Penugasan Pembimbing', ['show_heading' => false]);
                 </tr>
             <?php endforeach; ?>
             <?php if ($rows === []): ?>
-                <tr><td colspan="6" class="text-muted text-center py-4">Belum ada penugasan pembimbing.</td></tr>
+                <tr><td colspan="6" class="text-muted text-center py-4"><?= $q !== '' ? 'Tidak ada hasil sesuai pencarian. Coba kata lain atau bersihkan pencarian.' : 'Belum ada penugasan pembimbing.' ?></td></tr>
             <?php endif; ?>
             </tbody>
         </table>
