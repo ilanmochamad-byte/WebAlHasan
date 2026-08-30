@@ -38,6 +38,16 @@ try {
  $audit=$db->query("SELECT action FROM audit_logs WHERE entity_type='kamar' AND entity_id='$roomId' ORDER BY id")->fetch_all(MYSQLI_ASSOC);
  $check(array_column($audit,'action')===['master.create','master.update'],'Tambah dan ubah kamar memiliki audit');
  $check((int)$db->query('SELECT COUNT(*) n FROM kamar')->fetch_assoc()['n']===$count+1,'Kamar lama tidak dihapus atau ditambah oleh serangan');
+ $name=$tag.' <script>audit</script>';
+ $r=$request('/admin/admin_kamar.php?action=edit&id='.$roomId,$admin,['_csrf'=>$token,'action'=>'save','id'=>$roomId,'nama_kamar'=>$name,'kapasitas'=>'30']);
+ $page=$request('/admin/admin_kamar.php?q='.$tag,$admin);
+ $check($r['status']===302 && !str_contains($page['body'],'<script>audit</script>') && str_contains($page['body'],'&lt;script&gt;audit&lt;/script&gt;'),'Nama kamar di-escape, bukan HTML aktif');
+ $r=$request('/admin/admin_kamar.php?action=edit&id='.$roomId,$admin,['_csrf'=>$token,'action'=>'save','id'=>$roomId,'nama_kamar'=>$name,'kapasitas'=>'0']);
+ $doc=new DOMDocument();@$doc->loadHTML($r['body']);$xp=new DOMXPath($doc);
+ $check($r['status']===422 && $xp->evaluate('string(//input[@name="nama_kamar"]/@value)')===$name && $xp->evaluate('string(//input[@name="kapasitas"]/@value)')==='0','Validasi gagal mempertahankan isian nama/kapasitas dan form terlihat');
+ $check($xp->query('//body[contains(@class,"ah")]')->length===1 && $xp->query('//h1')->length===1 && $xp->query('//button[@id="ah-nav-toggle"]')->length===1,'Kamar memakai satu kerangka bersama, H1 tunggal, dan menu ponsel');
+ $check($request('/admin/admin_kamar.php?action=detail&id=2147483647',$admin)['status']===404,'Detail kamar tidak ada menghasilkan 404');
+
 }finally{
  if($roomId){$db->query("DELETE FROM audit_logs WHERE entity_type='kamar' AND entity_id='$roomId'");$db->query("DELETE FROM kamar WHERE id=$roomId");}
  foreach($jars as $jar)unlink($jar);

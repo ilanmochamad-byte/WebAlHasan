@@ -18,6 +18,18 @@ final class MasterDataRepository
         return $this->db;
     }
 
+    public function roomsPage(string $q, int $page, int $yearId): array
+    {
+        $sql = 'SELECT km.*, (SELECT COUNT(*) FROM plotting_kamar pk WHERE pk.id_kamar = km.id AND pk.id_tahun = ?) terisi FROM kamar km';
+        return \App\Database\PageQuery::fetch($this->db, $sql, [$yearId], 'nama_kamar, id', $page, $q, ['nama_kamar']);
+    }
+
+    public function roomOccupantsPage(int $roomId, int $yearId, string $q, int $page): array
+    {
+        $sql = 'SELECT pk.id, s.nis, s.nama_santri, s.jenis_kelamin, s.sekolah_saat_ini FROM plotting_kamar pk JOIN santri s ON s.id = pk.id_santri WHERE pk.id_kamar = ? AND pk.id_tahun = ?';
+        return \App\Database\PageQuery::fetch($this->db, $sql, [$roomId, $yearId], 'nama_santri, id', $page, $q, ['nis', 'nama_santri', 'sekolah_saat_ini']);
+    }
+
     public function guruList(array $filters, int $page, int $perPage): array
     {
         [$where, $params] = $this->masterWhere($filters, ['nama_guru', 'nip', 'no_hp']);

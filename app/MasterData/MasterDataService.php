@@ -13,6 +13,9 @@ final class MasterDataService
     {
     }
 
+    public function roomsPage(string $q, int $page, int $yearId): array { return $this->repository->roomsPage($q, $page, $yearId); }
+    public function roomOccupantsPage(int $roomId, int $yearId, string $q, int $page): array { return $this->repository->roomOccupantsPage($roomId, $yearId, $q, $page); }
+
     public function guruList(array $filters, int $page, int $perPage = 20): array
     {
         return $this->repository->guruList($this->filters($filters), $this->page($page), $this->perPage($perPage));

@@ -23,3 +23,23 @@ CSRF, input invalid, tambah/edit sah, GET hapus 405, audit, dan jumlah data.
 Percobaan pertama menghasilkan satu kegagalan tes baru karena membandingkan
 string numerik hasil mysqli dengan integer secara strict; diperbaiki dengan
 cast saat membaca hasil, tanpa mengubah ekspektasi 422/tidak ada mutasi.
+
+## A-08 — P2: kamar tertinggal dari kerangka bersama
+
+Halaman kamar sekarang memakai `_master_ui.php` → `App\Ui\Layout` dengan satu
+H1, breadcrumb, penanda menu aktif, tombol menu ponsel, label formulir, pesan,
+dan tabel yang menggulir dalam wadah. Form tambah/ubah serta daftar penghuni
+tetap tersedia; dialog lama diganti halaman/form berlabel. Nama/data di-escape,
+nilai form dikembalikan saat gagal validasi, CSRF dirender server. Tombol Hapus
+tidak ditampilkan karena penghapusan dilarang oleh batas audit. Tidak ada
+perubahan penempatan santri atau skema kamar.
+
+Daftar kamar dan penghuni dibaca 20 per halaman melalui `PageQuery`, dengan
+pencarian server dan urutan stabil; jumlah penghuni tetap berdasarkan semester
+aktif. Pilihan kapasitas tidak otomatis memindahkan/mengeluarkan santri.
+
+Tes kamar diperluas menjadi **19 lulus** termasuk escaping HTML, isian kembali
+saat validasi gagal, kerangka/H1/menu, dan 404 detail tidak ada. Browser nyata
+pada 390 px berhasil mencari, berpindah halaman, membuka menu, dan menyimpan
+kapasitas kamar fixture 60 → 61; 45 penghuni tetap ada. Pengujian ini hanya
+menyentuh fixture buatan auditor, bukan kamar lama/produksi.

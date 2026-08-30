@@ -142,6 +142,21 @@ if (!function_exists('ah_pagination')) {
     }
 }
 
+if (!function_exists('ah_list_search')) {
+    /** Form GET mereset halaman; konteks tetap hanya yang dipilih pemanggil. */
+    function ah_list_search(string $q, string $label, array $context = []): void
+    {
+        echo '<form method="get" class="ah-card ah-card__body ah-no-print"><div class="row g-2 align-items-end">';
+        foreach ($context as $name => $value) {
+            echo '<input type="hidden" name="' . ah_e($name) . '" value="' . ah_e($value) . '">';
+        }
+        echo '<div class="col-sm-8"><label class="form-label" for="list-q">' . ah_e($label) . '</label>'
+            . '<input class="form-control" type="search" id="list-q" name="q" maxlength="100" value="' . ah_e($q) . '"></div>'
+            . '<div class="col-sm-4 d-flex gap-2"><button class="btn btn-primary" type="submit">Cari</button>'
+            . '<a class="btn btn-outline-secondary" href="?' . ah_e(http_build_query($context)) . '">Bersihkan</a></div></div></form>';
+    }
+}
+
 if (!function_exists('ah_badge')) {
     /**
      * Lencana status. Teks selalu ikut, sehingga makna tidak bergantung warna.

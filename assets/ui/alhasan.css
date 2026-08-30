@@ -515,3 +515,6 @@ body.ah {
     body.ah { background: #fff; }
     .ah-card { box-shadow: none; border-color: #999; }
 }
+
+/* A-10: angka halaman panjang tidak mendorong lebar dokumen pada ponsel. */
+body.ah .pagination { flex-wrap: wrap; row-gap: .5rem; }
