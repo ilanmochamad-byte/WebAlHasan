@@ -65,14 +65,14 @@ final class ReportRepository
         );
     }
 
-    public function allRows(ReportFilter $filter): array
+    public function allRows(ReportFilter $filter, ?int $limit = null): array
     {
         [$sql, $params] = $this->attendanceRowsSql($filter);
         return $this->all(
             "SELECT * FROM ({$sql}) report
              ORDER BY report.meeting_date, report.meeting_id,
-                      FIELD(report.subject_type, 'Guru', 'Santri'), report.subject_name",
-            $params
+                      FIELD(report.subject_type, 'Guru', 'Santri'), report.subject_name" . ($limit === null ? '' : ' LIMIT ?'),
+            $limit === null ? $params : [...$params, $limit]
         );
     }
 

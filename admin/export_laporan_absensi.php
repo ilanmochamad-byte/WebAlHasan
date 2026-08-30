@@ -17,12 +17,12 @@ require_once __DIR__ . '/_guard.php';
 use App\Api\ApiException;
 use App\Report\ReportFilter;
 use App\Report\CsvExport;
+use App\Http\JsonResponse;
 
 try {
-    $report = report_service()->exportRows($_GET, $currentUser, ReportFilter::SCOPE_SANTRI);
+    $report = report_service()->exportCsvRows($_GET, $currentUser, ReportFilter::SCOPE_SANTRI);
 } catch (ApiException $exception) {
-    http_response_code($exception->status());
-    exit($exception->getMessage());
+    JsonResponse::error($exception->errorCode(), $exception->getMessage(), $exception->status(), $exception->details());
 }
 
 $filename = sprintf('laporan-absensi-%s-%s.csv', $report['filters']['date_from'], $report['filters']['date_to']);

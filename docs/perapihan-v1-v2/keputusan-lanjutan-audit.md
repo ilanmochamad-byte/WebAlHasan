@@ -34,3 +34,17 @@ path diganti. Assertion badge kini memeriksa rangkaian header → lonceng → an
 unread → renderer badge → rute. Ditambah pemeriksaan route, pemisahan pemilik
 sesi, dan operasi API layar. Tidak meniadakan tujuh pemeriksaan yang sebelumnya
 gagal. Pengujian UI/perangkat fisik tetap memerlukan verifikasi tersendiri.
+
+## A-06: batas CSV absensi
+
+`ReportService::exportCsvRows` memberlakukan maksimal 20.000 sesudah filter dan
+cakupan hak. Repository membaca paling banyak batas+1; ada pemeriksaan ulang
+jumlah aktual untuk mencegah lolos ketika data bertambah setelah query summary.
+Controller CSV mengembalikan JSON error 422 `EXPORT_TOO_LARGE`, bukan CSV parsial.
+Jalur cetak/API lama tidak dikenai batas baru secara diam-diam.
+
+Uji batas nyata: 20.000 diterima lengkap; 20.001 ditolak; `per_page=1` tidak dapat
+melewati batas; scope santri kosong tetap diterima meski scope guru berisi 20.001.
+Uji awal setelah perubahan sempat gagal karena router khusus API mengembalikan
+404 untuk `/portal/` sehingga login uji tidak mendapat CSRF. Router lokal audit
+diperbaiki tanpa mengubah expected result; empat pengujian batas kemudian lulus.
