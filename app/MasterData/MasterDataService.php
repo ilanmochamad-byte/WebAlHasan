@@ -23,13 +23,29 @@ final class MasterDataService
         return $this->repository->guruFind($id);
     }
 
+    /**
+     * Menyimpan identitas guru.
+     *
+     * **Koreksi ke-3 (30 Agustus 2026).** Pilihan tugas lama
+     * 'Guru'/'Pembimbing'/'Keduanya' DIHAPUS dari alur operasional:
+     *
+     *   - penugasan mengajar ditentukan oleh jadwal pengajian;
+     *   - penugasan murobi ditentukan oleh `admin_murobi.php`;
+     *   - pembimbing tetap penugasan pengurus, bukan identitas guru.
+     *
+     * Kolom `guru.status` lama TIDAK dihapus dan TIDAK ditimpa. Guru baru
+     * dibuat dengan nilai default 'Guru' agar kolom NOT NULL tetap valid;
+     * penyimpanan guru lama sama sekali tidak menyentuh kolom itu, sehingga
+     * nilai 'Pembimbing'/'Keduanya' pada data historis tetap utuh sampai
+     * strategi kompatibilitasnya diverifikasi. Nilai `status` yang dikirim
+     * pemanggil lama diabaikan dengan sengaja, bukan divalidasi.
+     */
     public function saveGuru(array $input, ?int $id = null): int
     {
         $data = [
             'nip' => Normalizer::identifier($input['nip'] ?? ''),
             'nama_guru' => Normalizer::text($input['nama_guru'] ?? ''),
             'no_hp' => Normalizer::phone($input['no_hp'] ?? ''),
-            'status' => Normalizer::text($input['status'] ?? 'Guru'),
         ];
         $errors = [];
         $this->required($data['nama_guru'], 'Nama guru wajib diisi.', $errors);
@@ -38,12 +54,10 @@ final class MasterDataService
         $this->maxLength($data['nama_guru'], 100, 'Nama guru', $errors);
         $this->phone($data['no_hp'], $errors);
         $this->maxLength($data['no_hp'], 15, 'Nomor HP guru', $errors);
-        if (!in_array($data['status'], ['Guru', 'Pembimbing', 'Keduanya'], true)) {
-            $errors[] = 'Status guru tidak valid.';
-        }
         $this->reject($errors);
 
         if ($id === null) {
+            $data['status'] = 'Guru';
             $id = $this->repository->guruCreate($data);
             $this->audit->log('master.create', 'guru', $id, null, $data);
             return $id;
@@ -52,6 +66,18 @@ final class MasterDataService
         $this->repository->guruUpdate($id, $data);
         $this->audit->log('master.update', 'guru', $id, $before, $this->repository->guruFind($id));
         return $id;
+    }
+
+    /**
+     * Penugasan NYATA seorang guru (jadwal mengajar aktif dan penugasan murobi
+     * aktif). Dipakai halaman Data Guru untuk menampilkan kemampuan berdasarkan
+     * penugasan, bukan berdasarkan kolom tugas lama.
+     *
+     * @return array{jadwal_aktif:int, murobi_aktif:int}
+     */
+    public function guruAssignments(int $id): array
+    {
+        return $this->repository->guruAssignmentSummary($id);
     }
 
     public function setGuruState(int $id, string $action): void

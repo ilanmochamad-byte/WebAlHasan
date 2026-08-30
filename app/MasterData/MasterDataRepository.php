@@ -33,20 +33,65 @@ final class MasterDataRepository
         return $this->one('SELECT * FROM guru WHERE id = ?', [$id]);
     }
 
+    /**
+     * Kolom `status` lama ('Guru'|'Pembimbing'|'Keduanya') TIDAK dihapus dari
+     * skema. Sejak koreksi ke-3 (30 Agustus 2026) ia bukan lagi pilihan
+     * operasional: guru baru selalu dibuat dengan nilai default 'Guru' agar
+     * kolom NOT NULL tetap valid.
+     */
     public function guruCreate(array $data): int
     {
         return $this->insert(
             'INSERT INTO guru (nip, nama_guru, no_hp, status, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, 1, NOW(), NOW())',
-            [$data['nip'] ?: null, $data['nama_guru'], $data['no_hp'] ?: null, $data['status']]
+            [$data['nip'] ?: null, $data['nama_guru'], $data['no_hp'] ?: null, $data['status'] ?? 'Guru']
         );
     }
 
+    /**
+     * Pembaruan identitas guru SENGAJA tidak menyentuh kolom `status`.
+     *
+     * Menyimpan formulir guru tidak boleh diam-diam mengubah nilai tugas lama
+     * ('Pembimbing'/'Keduanya') menjadi 'Guru'. Data historis dipertahankan
+     * sampai strategi kompatibilitasnya diverifikasi.
+     */
     public function guruUpdate(int $id, array $data): void
     {
         $this->execute(
-            'UPDATE guru SET nip = ?, nama_guru = ?, no_hp = ?, status = ?, updated_at = NOW() WHERE id = ?',
-            [$data['nip'] ?: null, $data['nama_guru'], $data['no_hp'] ?: null, $data['status'], $id]
+            'UPDATE guru SET nip = ?, nama_guru = ?, no_hp = ?, updated_at = NOW() WHERE id = ?',
+            [$data['nip'] ?: null, $data['nama_guru'], $data['no_hp'] ?: null, $id]
         );
+    }
+
+    /**
+     * Ringkasan penugasan nyata seorang guru.
+     *
+     * Sumbernya bukan kolom `status` lama, melainkan data operasional:
+     *   - mengajar : jumlah jadwal aktif pada semester aktif (jadwal_ngaji);
+     *   - murobi   : jumlah penugasan murobi aktif (murobi_assignments).
+     *
+     * @return array{jadwal_aktif:int, murobi_aktif:int}
+     */
+    public function guruAssignmentSummary(int $guruId): array
+    {
+        $row = $this->one(
+            "SELECT
+                (SELECT COUNT(*) FROM jadwal_ngaji j
+                   JOIN tahun_ajaran ta ON ta.id = j.id_tahun
+                  WHERE j.id_guru = ? AND j.is_active = 1 AND j.archived_at IS NULL
+                    AND ta.status = 'Aktif' AND ta.archived_at IS NULL) AS jadwal_aktif,
+                (SELECT COUNT(*) FROM murobi_assignments ma
+                   JOIN tahun_ajaran ta2 ON ta2.id = ma.tahun_ajaran_id
+                  WHERE ma.guru_id = ? AND ma.is_active = 1 AND ma.archived_at IS NULL
+                    AND ma.tanggal_mulai <= CURDATE()
+                    AND (ma.tanggal_selesai IS NULL OR ma.tanggal_selesai >= CURDATE())
+                    AND ta2.status = 'Aktif' AND ta2.archived_at IS NULL) AS murobi_aktif",
+            [$guruId, $guruId]
+        );
+
+        return [
+            'jadwal_aktif' => (int) ($row['jadwal_aktif'] ?? 0),
+            'murobi_aktif' => (int) ($row['murobi_aktif'] ?? 0),
+        ];
     }
 
     public function guruSetState(int $id, bool $active, bool $archive): void
