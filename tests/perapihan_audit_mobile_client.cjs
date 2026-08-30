@@ -35,6 +35,14 @@ const { api, ApiError, setUnauthorizedHandler } = exportsClient;
       check(Boolean(login.token) && login.profile.username === user, `login ${user}`);
     }
     token = sessions[0];
+    const report = await api.report({});
+    check(Array.isArray(report.items) && typeof report.summary.detail_count === 'number'
+      && !('subject_scope' in report.filters), 'A-09 api.report membaca skema baseline');
+    const reportOptions = await api.reportOptions();
+    check(Array.isArray(reportOptions.schedules) && !('subject_scopes' in reportOptions), 'A-09 api.reportOptions tetap kompatibel');
+    const reportPrint = await api.reportPrintHtml({});
+    check(typeof reportPrint.html === 'string' && reportPrint.html.includes('Laporan Absensi')
+      && !reportPrint.html.includes('Penyajian'), 'A-09 api.reportPrintHtml tetap kompatibel');
     const all = await api.notifikasiList({ page: 1, per_page: 20 });
     check(all.items.length === 20 && all.pagination.total_pages >= 2, 'daftar dan pagination 20 baris');
     const second = await api.notifikasiList({ page: 2, per_page: 20 });

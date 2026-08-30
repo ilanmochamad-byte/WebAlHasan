@@ -238,14 +238,14 @@ try {
         JsonResponse::success(teacher_api_service()->meetings(api_authenticator()->assertScheduleAccess($user), $_GET));
     }
     if ($method === 'GET' && $path === '/reports') {
-        JsonResponse::success(report_service()->report($_GET, api_authenticator()->assertScheduleAccess($user)));
+        JsonResponse::success(report_service()->apiReport($_GET, api_authenticator()->assertScheduleAccess($user)));
     }
     if ($method === 'GET' && $path === '/reports/filters') {
-        JsonResponse::success(report_service()->options(api_authenticator()->assertScheduleAccess($user)));
+        JsonResponse::success(report_service()->apiOptions(api_authenticator()->assertScheduleAccess($user)));
     }
     if ($method === 'GET' && $path === '/reports/print') {
         JsonResponse::success([
-            'html' => PrintRenderer::report(report_service()->exportRows($_GET, api_authenticator()->assertScheduleAccess($user))),
+            'html' => PrintRenderer::report(report_service()->apiPrintRows($_GET, api_authenticator()->assertScheduleAccess($user))),
         ]);
     }
     if ($method === 'GET' && preg_match('#^/reports/meetings/(\d+)$#', $path, $matches)) {

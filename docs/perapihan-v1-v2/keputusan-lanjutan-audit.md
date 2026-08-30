@@ -70,3 +70,20 @@ POST 405, dan master data tetap 403. Seluruh 38 pemeriksaan lulus.
 Perbandingan jumlah cetak pada uji baru awalnya membaca markup sebagai teks
 mentah; pengujian diperbaiki membaca elemen ringkasan DOM tepat. Angka expected
 30/1/31 dan kode aplikasi cetak tidak diubah untuk meluluskan uji tersebut.
+
+## A-09: API tetap pada skema baseline
+
+`subject_scope` adalah pilihan penyajian baru web. Aplikasi mobile `ab3f842`
+tidak mengirim atau membaca field ini. Supaya rilis web tidak menuntut rilis
+mobile bersamaan, jalur API laporan kini memakai adaptor eksplisit:
+`apiReport`, `apiOptions`, `apiPrintRows`. Parameter web diabaikan di API seperti
+pada baseline; respons tidak menambah `filters.subject_scope`,
+`active_filters.Penyajian`, atau `subject_scopes`. Default dan cetak API tetap
+gabungan; filter tanggal/status/guru serta pengamanan cakupan tetap berjalan.
+
+13 pengujian HTTP membuktikan kontrak, termasuk kesamaan **seluruh envelope dan
+payload** tanpa parameter terhadap snapshot baseline `main c65390d` pada data
+identik. Client TypeScript mobile asli juga menjalankan report/options/print
+(3 pemeriksaan tambahan pada 15 pemeriksaan notifikasi). Tidak ada perubahan
+sumber mobile, format token, URL API, ataupun kebutuhan build mobile karena
+koreksi ini. Pengujian perangkat fisik bukan bagian bukti client Node tersebut.

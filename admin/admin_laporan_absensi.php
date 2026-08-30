@@ -17,7 +17,7 @@ use App\Report\ReportFilter;
  * dan cetak/PDF, karena keempatnya melewati `ReportFilter`/`ReportRepository`
  * yang sama.
  *
- * Kontrak API lama TIDAK berubah: `subject_scope` bersifat aditif dan default
+ * Kontrak API lama dipertahankan: `subject_scope` hanya untuk web dan
  * REST API tetap `gabungan`. Halaman web ini yang secara eksplisit meminta
  * `santri` sebagai tampilan awal.
  */

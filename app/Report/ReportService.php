@@ -16,6 +16,32 @@ final class ReportService
     {
     }
 
+    /** A-09: fitur penyajian web tidak mengubah kontrak API aplikasi V1. */
+    public function apiReport(array $input, array $user): array
+    {
+        unset($input['subject_scope']);
+        return $this->legacyApiShape($this->report($input, $user, ReportFilter::SCOPE_GABUNGAN));
+    }
+
+    public function apiPrintRows(array $input, array $user): array
+    {
+        unset($input['subject_scope']);
+        return $this->legacyApiShape($this->exportRows($input, $user, ReportFilter::SCOPE_GABUNGAN));
+    }
+
+    public function apiOptions(array $user): array
+    {
+        $options = $this->options($user);
+        unset($options['subject_scopes']);
+        return $options;
+    }
+
+    private function legacyApiShape(array $report): array
+    {
+        unset($report['filters']['subject_scope'], $report['active_filters']['Penyajian']);
+        return $report;
+    }
+
     /**
      * @param string $defaultScope Penyajian awal bila pemanggil tidak mengirim
      *        `subject_scope`. Halaman web mengirim `santri`; REST API memakai
