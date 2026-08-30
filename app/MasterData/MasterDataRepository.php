@@ -18,6 +18,22 @@ final class MasterDataRepository
         return $this->db;
     }
 
+    public function classesPage(string $q, int $page): array
+    {
+        return \App\Database\PageQuery::fetch($this->db, 'SELECT * FROM kelas', [], 'jenjang, nama_kelas, id', $page, $q, ['nama_kelas', 'jenjang']);
+    }
+
+    public function yearsPage(string $q, int $page): array
+    {
+        return \App\Database\PageQuery::fetch($this->db, 'SELECT * FROM tahun_ajaran', [], 'tahun DESC, semester DESC, id DESC', $page, $q, ['tahun', 'semester', 'status']);
+    }
+
+    public function murobiPage(string $q, int $page): array
+    {
+        $sql = "SELECT ma.*, g.nama_guru, ta.tahun, ta.semester, COALESCE(km.nama_kamar, k.nama_kelas) target_name FROM murobi_assignments ma JOIN guru g ON g.id = ma.guru_id JOIN tahun_ajaran ta ON ta.id = ma.tahun_ajaran_id LEFT JOIN kamar km ON km.id = ma.kamar_id LEFT JOIN kelas k ON k.id = ma.kelas_id";
+        return \App\Database\PageQuery::fetch($this->db, $sql, [], 'archived_at IS NOT NULL, tahun DESC, nama_guru, id', $page, $q, ['nama_guru', 'tahun', 'semester', 'target_name']);
+    }
+
     public function roomsPage(string $q, int $page, int $yearId): array
     {
         $sql = 'SELECT km.*, (SELECT COUNT(*) FROM plotting_kamar pk WHERE pk.id_kamar = km.id AND pk.id_tahun = ?) terisi FROM kamar km';
@@ -527,8 +543,12 @@ final class MasterDataRepository
      */
     public function waliDuplicateCandidates(int $limit = 100): array
     {
-        return $this->all(
-            "SELECT k.kunci, k.jenis, COUNT(*) AS jumlah,
+        return $this->all($this->waliDuplicateCandidatesSql() . ' ORDER BY jumlah DESC, jenis, kunci LIMIT ?', [max(1, min(500, $limit))]);
+    }
+
+    private function waliDuplicateCandidatesSql(): string
+    {
+        return "SELECT k.kunci, k.jenis, COUNT(*) AS jumlah,
                     GROUP_CONCAT(k.id ORDER BY k.id) AS wali_ids
                FROM (
                     SELECT w.id, LOWER(TRIM(w.nama)) AS kunci, 'nama' AS jenis
@@ -541,11 +561,7 @@ final class MasterDataRepository
                        AND w.no_hp IS NOT NULL AND TRIM(w.no_hp) <> ''
                ) k
               GROUP BY k.kunci, k.jenis
-             HAVING jumlah > 1
-              ORDER BY jumlah DESC, k.jenis, k.kunci
-              LIMIT ?",
-            [max(1, min(500, $limit))]
-        );
+             HAVING jumlah > 1";
     }
 
     /**
@@ -579,15 +595,16 @@ final class MasterDataRepository
      */
     public function waliWithoutRelations(int $limit = 100): array
     {
-        return $this->all(
-            'SELECT w.id, w.nama, w.no_hp, w.created_at,
+        return $this->all($this->waliWithoutRelationsSql() . ' ORDER BY nama, id LIMIT ?', [max(1, min(500, $limit))]);
+    }
+
+    private function waliWithoutRelationsSql(): string
+    {
+        return 'SELECT w.id, w.nama, w.no_hp, w.created_at,
                     (SELECT COUNT(*) FROM users u WHERE u.wali_id = w.id) AS jumlah_akun
                FROM wali w
               WHERE w.archived_at IS NULL AND w.merged_into_wali_id IS NULL
-                AND NOT EXISTS (SELECT 1 FROM santri_wali sw WHERE sw.wali_id = w.id AND sw.archived_at IS NULL)
-              ORDER BY w.nama, w.id LIMIT ?',
-            [max(1, min(500, $limit))]
-        );
+                AND NOT EXISTS (SELECT 1 FROM santri_wali sw WHERE sw.wali_id = w.id AND sw.archived_at IS NULL)';
     }
 
     /**
@@ -598,8 +615,12 @@ final class MasterDataRepository
      */
     public function santriWithIncompleteWali(int $limit = 100): array
     {
-        return $this->all(
-            "SELECT s.id, s.nis, s.nama_santri, s.nama_ayah, s.no_hp_ayah, s.nama_ibu, s.no_hp_ibu,
+        return $this->all($this->santriWithIncompleteWaliSql() . ' ORDER BY nama_santri, id LIMIT ?', [max(1, min(500, $limit))]);
+    }
+
+    private function santriWithIncompleteWaliSql(): string
+    {
+        return "SELECT s.id, s.nis, s.nama_santri, s.nama_ayah, s.no_hp_ayah, s.nama_ibu, s.no_hp_ibu,
                     (SELECT COUNT(*) FROM santri_wali sw WHERE sw.santri_id = s.id AND sw.archived_at IS NULL) AS jumlah_relasi,
                     (SELECT COUNT(*) FROM santri_wali sw WHERE sw.santri_id = s.id AND sw.archived_at IS NULL AND sw.hubungan = 'Ayah') AS relasi_ayah,
                     (SELECT COUNT(*) FROM santri_wali sw WHERE sw.santri_id = s.id AND sw.archived_at IS NULL AND sw.hubungan = 'Ibu') AS relasi_ibu
@@ -609,10 +630,7 @@ final class MasterDataRepository
                      (TRIM(COALESCE(s.nama_ayah, '')) <> '' AND NOT EXISTS (SELECT 1 FROM santri_wali sw WHERE sw.santri_id = s.id AND sw.archived_at IS NULL AND sw.hubungan = 'Ayah'))
                   OR (TRIM(COALESCE(s.nama_ibu, '')) <> '' AND NOT EXISTS (SELECT 1 FROM santri_wali sw WHERE sw.santri_id = s.id AND sw.archived_at IS NULL AND sw.hubungan = 'Ibu'))
                   OR NOT EXISTS (SELECT 1 FROM santri_wali sw WHERE sw.santri_id = s.id AND sw.archived_at IS NULL)
-                )
-              ORDER BY s.nama_santri, s.id LIMIT ?",
-            [max(1, min(500, $limit))]
-        );
+                )";
     }
 
     /**
@@ -622,8 +640,12 @@ final class MasterDataRepository
      */
     public function santriLegacyConflicts(int $limit = 100): array
     {
-        return $this->all(
-            "SELECT s.id, s.nis, s.nama_santri, s.nama_ayah, s.nama_ibu,
+        return $this->all($this->santriLegacyConflictsSql() . ' ORDER BY nama_santri, id LIMIT ?', [max(1, min(500, $limit))]);
+    }
+
+    private function santriLegacyConflictsSql(): string
+    {
+        return "SELECT s.id, s.nis, s.nama_santri, s.nama_ayah, s.nama_ibu,
                     ayah.nama AS wali_ayah, ibu.nama AS wali_ibu
                FROM santri s
                LEFT JOIN (SELECT sw.santri_id, MIN(sw.id) AS rid FROM santri_wali sw WHERE sw.archived_at IS NULL AND sw.hubungan = 'Ayah' GROUP BY sw.santri_id) ra ON ra.santri_id = s.id
@@ -642,10 +664,19 @@ final class MasterDataRepository
                         AND LOWER(TRIM(s.nama_ayah)) COLLATE utf8mb4_unicode_ci <> LOWER(TRIM(ayah.nama)) COLLATE utf8mb4_unicode_ci)
                   OR (ibu.id IS NOT NULL AND TRIM(COALESCE(s.nama_ibu, '')) <> ''
                         AND LOWER(TRIM(s.nama_ibu)) COLLATE utf8mb4_unicode_ci <> LOWER(TRIM(ibu.nama)) COLLATE utf8mb4_unicode_ci)
-                )
-              ORDER BY s.nama_santri, s.id LIMIT ?",
-            [max(1, min(500, $limit))]
-        );
+                )";
+    }
+
+    public function reconciliationPage(string $section, string $q, int $page): array
+    {
+        [$sql, $order, $columns] = match ($section) {
+            'duplikat' => [$this->waliDuplicateCandidatesSql(), 'jumlah DESC, jenis, kunci', ['kunci']],
+            'tanpa_relasi' => [$this->waliWithoutRelationsSql(), 'nama, id', ['nama', 'no_hp']],
+            'relasi_belum_lengkap' => [$this->santriWithIncompleteWaliSql(), 'nama_santri, id', ['nis', 'nama_santri', 'nama_ayah', 'nama_ibu']],
+            'konflik_kolom_lama' => [$this->santriLegacyConflictsSql(), 'nama_santri, id', ['nis', 'nama_santri', 'nama_ayah', 'nama_ibu']],
+            default => throw new MasterDataException('Bagian rekonsiliasi tidak dikenal.'),
+        };
+        return \App\Database\PageQuery::fetch($this->db, $sql, [], $order, $page, $q, $columns);
     }
 
     private function masterWhere(array $filters, array $searchColumns, string $alias = ''): array

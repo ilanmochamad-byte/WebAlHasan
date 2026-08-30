@@ -43,3 +43,25 @@ saat validasi gagal, kerangka/H1/menu, dan 404 detail tidak ada. Browser nyata
 pada 390 px berhasil mencari, berpindah halaman, membuka menu, dan menyimpan
 kapasitas kamar fixture 60 → 61; 45 penghuni tetap ada. Pengujian ini hanya
 menyentuh fixture buatan auditor, bukan kamar lama/produksi.
+
+## A-10 — P2: daftar besar belum seluruhnya dapat ditelusuri
+
+Pagination server dan pencarian ditambahkan pada kelas, tahun ajaran, penugasan
+murobi/pembimbing, serta riwayat pertemuan. Rekonsiliasi kini mempunyai empat tab
+dengan pagination masing-masing: duplikasi, relasi belum lengkap, konflik
+kolom lama, dan wali tanpa relasi. Hasil di atas batas lama 100 tidak lagi
+tersembunyi. Hanya penyajian daftar web yang berubah; operasi merge, penugasan,
+snapshot, cakupan guru, serta API lama dipertahankan.
+
+`PageQuery` mengikat parameter pencarian, menghitung total, memakai urutan
+stabil, dan membatasi nomor halaman ke rentang valid. Navigasi mempertahankan
+query/tab/konteks; pencarian baru kembali ke halaman pertama. Kontrol halaman
+dapat membungkus pada layar kecil. Daftar pilihan formulir tetap memakai sumber
+lengkapnya: pagination kelas tidak memotong pilihan penempatan santri.
+
+`tests/perapihan_audit_pagination.php` menghasilkan **38 lulus**: delapan daftar
+45 data memberi 20/20/5 tanpa duplikat/hilang, page negatif/terlalu besar aman,
+duplikasi ke-101 dan wali tanpa relasi ke-201 dapat dicapai, pertemuan guru
+105 baris tetap terisolasi dari satu pertemuan guru lain, pencarian palsu tidak
+menjadi SQL, guard lima halaman tetap admin-only, dan konteks HTTP bertahan.
+Metode daftar lama tetap tersedia untuk konsumen lama dan opsi formulir.

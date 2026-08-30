@@ -35,6 +35,12 @@ final class PembimbingRepository
         );
     }
 
+    public function page(string $q, int $page): array
+    {
+        $sql = "SELECT pa.*, pg.nama AS pengurus_nama, pg.jabatan, ta.tahun, ta.semester, ta.status AS tahun_status, COALESCE(km.nama_kamar, kl.nama_kelas) AS target_name FROM pembimbing_assignments pa JOIN pengurus pg ON pg.id = pa.pengurus_id JOIN tahun_ajaran ta ON ta.id = pa.tahun_ajaran_id LEFT JOIN kamar km ON km.id = pa.kamar_id LEFT JOIN kelas kl ON kl.id = pa.kelas_id";
+        return \App\Database\PageQuery::fetch($this->db, $sql, [], 'tahun DESC, pengurus_nama, id', $page, $q, ['pengurus_nama', 'jabatan', 'tahun', 'semester', 'target_name']);
+    }
+
     public function find(int $id): ?array
     {
         return $this->select('SELECT * FROM pembimbing_assignments WHERE id = ? LIMIT 1', [$id])[0] ?? null;

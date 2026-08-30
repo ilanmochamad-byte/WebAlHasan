@@ -59,11 +59,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     master_redirect('admin_wali_rekonsiliasi.php');
 }
 
-$laporan = $service->reconciliationReport(100);
+$sections = ['duplikat' => 'Kandidat duplikasi', 'relasi_belum_lengkap' => 'Relasi belum lengkap', 'konflik_kolom_lama' => 'Konflik kolom lama', 'tanpa_relasi' => 'Wali tanpa relasi'];
+$section = is_string($_GET['bagian'] ?? null) && isset($sections[$_GET['bagian']]) ? $_GET['bagian'] : 'duplikat';
+$q = App\Database\PageQuery::term($_GET['q'] ?? '');
+$result = $service->reconciliationPage($section, $q, max(1, (int) ($_GET['page'] ?? 1)));
+$laporan = array_fill_keys(array_keys($sections), []);
+$laporan[$section] = $result['rows'];
 
 master_header('Rekonsiliasi Wali', [
     'description' => 'Laporan kandidat duplikasi, konflik, dan hubungan wali yang belum lengkap. Tidak ada perubahan data tanpa konfirmasi Anda.',
     'active' => 'master.rekonsiliasi',
+    'tabs' => array_map(static fn (string $key): array => ['label' => $sections[$key], 'url' => '?' . ah_query(['bagian' => $key, 'page' => null, 'q' => null]), 'active' => $key === $section], array_keys($sections)),
     'breadcrumbs' => [
         ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
         ['label' => 'Master Data'],
@@ -91,6 +97,8 @@ ah_note(
     <div class="ah-stat"><p class="ah-stat__label">Konflik kolom lama</p><p class="ah-stat__value"><?= count($laporan['konflik_kolom_lama']) ?></p><p class="ah-stat__hint">santri</p></div>
 </div>
 
+<?php ah_list_search($q, $section === 'duplikat' ? 'Cari nama atau nomor HP kelompok duplikasi' : 'Cari NIS, nama, atau nomor HP', ['bagian' => $section]); ?>
+<?php if ($section === 'duplikat'): ?>
 <section class="ah-card" aria-labelledby="ah-duplikat">
     <div class="ah-card__head"><span id="ah-duplikat">Kandidat duplikasi identitas</span></div>
     <div class="ah-card__body">
@@ -162,7 +170,9 @@ ah_note(
         <?php endif; ?>
     </div>
 </section>
+<?php endif; ?>
 
+<?php if ($section === 'relasi_belum_lengkap'): ?>
 <section class="ah-card" aria-labelledby="ah-belum-lengkap">
     <div class="ah-card__head"><span id="ah-belum-lengkap">Santri dengan hubungan wali belum lengkap</span></div>
     <div class="ah-card__body">
@@ -189,7 +199,9 @@ ah_note(
         <?php endif; ?>
     </div>
 </section>
+<?php endif; ?>
 
+<?php if ($section === 'konflik_kolom_lama'): ?>
 <section class="ah-card" aria-labelledby="ah-konflik">
     <div class="ah-card__head"><span id="ah-konflik">Konflik antara kolom lama dan relasi wali</span></div>
     <div class="ah-card__body">
@@ -215,7 +227,9 @@ ah_note(
         <?php endif; ?>
     </div>
 </section>
+<?php endif; ?>
 
+<?php if ($section === 'tanpa_relasi'): ?>
 <section class="ah-card" aria-labelledby="ah-tanpa-relasi">
     <div class="ah-card__head"><span id="ah-tanpa-relasi">Identitas wali tanpa relasi santri aktif</span></div>
     <div class="ah-card__body">
@@ -241,4 +255,5 @@ ah_note(
         <?php endif; ?>
     </div>
 </section>
-<?php master_footer(); ?>
+<?php endif; ?>
+<?php master_pagination((int) $result['total'], (int) $result['page'], 20); master_footer(); ?>

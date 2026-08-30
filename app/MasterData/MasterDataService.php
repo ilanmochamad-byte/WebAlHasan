@@ -13,6 +13,9 @@ final class MasterDataService
     {
     }
 
+    public function classesPage(string $q, int $page): array { return $this->repository->classesPage($q, $page); }
+    public function yearsPage(string $q, int $page): array { return $this->repository->yearsPage($q, $page); }
+    public function murobiPage(string $q, int $page): array { return $this->repository->murobiPage($q, $page); }
     public function roomsPage(string $q, int $page, int $yearId): array { return $this->repository->roomsPage($q, $page, $yearId); }
     public function roomOccupantsPage(int $roomId, int $yearId, string $q, int $page): array { return $this->repository->roomOccupantsPage($roomId, $yearId, $q, $page); }
 
@@ -461,12 +464,19 @@ final class MasterDataService
      * admin mengonfirmasi identitas dan santri yang tepat, satu per satu.
      * Penggabungan massal tidak disediakan.
      *
-     * @return array{duplikat:array<int,array<string,mixed>>, tanpa_relasi:array<int,array<string,mixed>>, relasi_belum_lengkap:array<int,array<string,mixed>>, konflik_kolom_lama:array<int,array<string,mixed>>}
+     * @return array{rows:array, total:int, page:int, perPage:int}
      */
-    public function reconciliationReport(int $limit = 100): array
+    public function reconciliationPage(string $section, string $q, int $page): array
+    {
+        $result = $this->repository->reconciliationPage($section, $q, $page);
+        if ($section === 'duplikat') { $result['rows'] = $this->describeDuplicateGroups($result['rows']); }
+        return $result;
+    }
+
+    private function describeDuplicateGroups(array $groups): array
     {
         $duplikat = [];
-        foreach ($this->repository->waliDuplicateCandidates($limit) as $grup) {
+        foreach ($groups as $grup) {
             $ids = array_map('intval', explode(',', (string) $grup['wali_ids']));
             $anggota = $this->repository->waliByIds($ids);
             $akun = 0;
@@ -484,6 +494,14 @@ final class MasterDataService
                 'diblokir' => $akun > 1,
             ];
         }
+
+        return $duplikat;
+    }
+
+    /** Kontrak laporan lama dipertahankan untuk konsumen dan regresi yang ada. */
+    public function reconciliationReport(int $limit = 100): array
+    {
+        $duplikat = $this->describeDuplicateGroups($this->repository->waliDuplicateCandidates($limit));
 
         return [
             'duplikat' => $duplikat,

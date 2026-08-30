@@ -26,7 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     master_redirect('admin_pembimbing.php');
 }
 
-$rows = $service->all();
+$q = App\Database\PageQuery::term($_GET['q'] ?? '');
+$page = max(1, (int) ($_GET['page'] ?? 1));
+$result = $service->page($q, $page);
+$rows = $result['rows'];
+$page = $result['page'];
+
 $pengurusOptions = $service->activePengurus();
 $years = $master->years();
 $classes = $master->classes();
@@ -111,6 +116,7 @@ master_header('Penugasan Pembimbing', ['show_heading' => false]);
     </div>
 </div>
 
+<?php ah_list_search($q, 'Cari nama, tahun, atau kelompok'); ?>
 <div class="card border-0 shadow-sm">
     <div class="table-responsive">
         <table class="table table-hover mb-0 align-middle">
@@ -160,4 +166,4 @@ document.addEventListener('DOMContentLoaded', function () {
     sync();
 });
 </script>
-<?php master_footer(); ?>
+<?php master_pagination((int) $result['total'], $page, 20); master_footer(); ?>

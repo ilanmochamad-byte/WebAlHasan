@@ -41,7 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     master_redirect('admin_murobi.php');
 }
 
-$rows = $service->murobi();
+$q = App\Database\PageQuery::term($_GET['q'] ?? '');
+$page = max(1, (int) ($_GET['page'] ?? 1));
+$result = $service->murobiPage($q, $page);
+$rows = $result['rows'];
+$page = $result['page'];
+
 $gurus = $service->guruOptions();
 $years = $service->years();
 $classes = $service->classes();
@@ -70,6 +75,7 @@ ah_note(
 );
 ?>
 
+<?php ah_list_search($q, 'Cari nama, tahun, atau kelompok'); ?>
 <section class="ah-card" aria-labelledby="ah-form-murobi">
     <div class="ah-card__head"><span id="ah-form-murobi">Tambah penugasan</span></div>
     <div class="ah-card__body">
@@ -151,4 +157,4 @@ document.addEventListener('DOMContentLoaded', function () {
     sync();
 });
 </script>
-<?php master_footer(); ?>
+<?php master_pagination((int) $result['total'], $page, 20); master_footer(); ?>

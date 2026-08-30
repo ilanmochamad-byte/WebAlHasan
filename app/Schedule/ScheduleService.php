@@ -112,6 +112,12 @@ final class ScheduleService
         return $this->repository->activeScheduleOptionsForUser($user);
     }
 
+    public function meetingPage(array $user, string $q, int $page): array
+    {
+        $this->requireScheduleUser($user);
+        return $this->repository->meetingPage($user, $q, $page);
+    }
+
     public function meetings(array $user): array
     {
         $this->requireScheduleUser($user);

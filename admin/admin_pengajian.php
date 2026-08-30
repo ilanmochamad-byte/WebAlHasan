@@ -198,7 +198,9 @@ if ($tab === 'jadwal') {
     }
 } else {
     $scheduleOptions = $service->activeScheduleOptions($currentUser);
-    $meetings = $service->meetings($currentUser);
+    $meetingQuery = App\Database\PageQuery::term($_GET['q'] ?? '');
+    $meetingResult = $service->meetingPage($currentUser, $meetingQuery, $filters['page']);
+    $meetings = $meetingResult['rows'];
     try {
         $selectedMeeting = isset($_GET['id']) ? $service->meeting((int) $_GET['id'], $currentUser) : null;
     } catch (ScheduleException $exception) {

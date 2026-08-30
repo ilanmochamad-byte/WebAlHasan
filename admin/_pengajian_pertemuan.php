@@ -146,6 +146,7 @@ $tautanJadwal = static fn (int $jadwalId): string => app_url('/admin/admin_penga
 </section>
 <?php endif; ?>
 
+<?php ah_list_search($meetingQuery, 'Cari tanggal, guru, kelas, pelajaran, atau status', ['tab' => 'pertemuan']); ?>
 <section class="ah-card" aria-labelledby="ah-riwayat-pertemuan">
     <div class="ah-card__head"><span id="ah-riwayat-pertemuan">Riwayat pertemuan</span>
         <a class="btn btn-sm btn-outline-primary" href="<?= ah_e(app_url('/admin/admin_laporan_absensi.php')) ?>">Laporan kehadiran</a></div>
@@ -175,3 +176,5 @@ $tautanJadwal = static fn (int $jadwalId): string => app_url('/admin/admin_penga
         </table></div>
     <?php endif; ?>
 </section>
+
+<?php ah_pagination((int) $meetingResult['total'], (int) $meetingResult['page'], 20); ?>
