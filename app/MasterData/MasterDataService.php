@@ -515,35 +515,36 @@ final class MasterDataService
             throw new MasterDataException('Penggabungan dibatalkan: konfirmasi daftar santri terdampak belum dicentang.');
         }
 
-        $sumber = $this->mustFind($this->repository->waliFind($sourceId), 'Wali sumber');
-        $tujuan = $this->mustFind($this->repository->waliFind($targetId), 'Wali tujuan');
-        if (!empty($tujuan['archived_at']) || !empty($tujuan['merged_into_wali_id'])) {
-            throw new MasterDataException('Wali tujuan sudah diarsipkan atau sudah digabungkan ke identitas lain.');
-        }
-        if (!empty($sumber['merged_into_wali_id'])) {
-            throw new MasterDataException('Wali sumber sudah pernah digabungkan. Periksa jejaknya pada audit.');
-        }
-
-        $akunSumber = $this->repository->waliAccount($sourceId);
-        $akunTujuan = $this->repository->waliAccount($targetId);
-        if ($akunSumber !== null && $akunTujuan !== null) {
-            throw new MasterDataException(
-                'Penggabungan diblokir: kedua identitas memiliki akun login (@' . $akunSumber['username']
-                . ' dan @' . $akunTujuan['username'] . '). Selesaikan salah satu akun terlebih dahulu pada halaman Akun & Hak Akses.'
-            );
-        }
-        if ($akunSumber !== null) {
-            throw new MasterDataException(
-                'Penggabungan diblokir: identitas sumber memiliki akun login (@' . $akunSumber['username']
-                . '). Menggabungkannya akan mengubah santri yang dapat dilihat akun tersebut. '
-                . 'Pindahkan atau nonaktifkan akun itu lebih dahulu pada halaman Akun & Hak Akses.'
-            );
-        }
-
         $db = $this->repository->db();
         $db->begin_transaction();
         try {
             $this->repository->waliLockPair($sourceId, $targetId);
+            // A-03: baca dan validasi ulang SETELAH lock. Dua permintaan
+            // berlawanan tidak boleh sama-sama memakai keadaan sebelum merge.
+            $sumber = $this->mustFind($this->repository->waliFind($sourceId), 'Wali sumber');
+            $tujuan = $this->mustFind($this->repository->waliFind($targetId), 'Wali tujuan');
+            if (!empty($tujuan['archived_at']) || !empty($tujuan['merged_into_wali_id'])) {
+                throw new MasterDataException('Wali tujuan sudah diarsipkan atau sudah digabungkan ke identitas lain.');
+            }
+            if (!empty($sumber['merged_into_wali_id'])) {
+                throw new MasterDataException('Wali sumber sudah pernah digabungkan. Periksa jejaknya pada audit.');
+            }
+
+            $akunSumber = $this->repository->waliAccount($sourceId);
+            $akunTujuan = $this->repository->waliAccount($targetId);
+            if ($akunSumber !== null && $akunTujuan !== null) {
+                throw new MasterDataException(
+                    'Penggabungan diblokir: kedua identitas memiliki akun login (@' . $akunSumber['username']
+                    . ' dan @' . $akunTujuan['username'] . '). Selesaikan salah satu akun terlebih dahulu pada halaman Akun & Hak Akses.'
+                );
+            }
+            if ($akunSumber !== null) {
+                throw new MasterDataException(
+                    'Penggabungan diblokir: identitas sumber memiliki akun login (@' . $akunSumber['username']
+                    . '). Menggabungkannya akan mengubah santri yang dapat dilihat akun tersebut. '
+                    . 'Pindahkan atau nonaktifkan akun itu lebih dahulu pada halaman Akun & Hak Akses.'
+                );
+            }
 
             $relasiSumber = $this->repository->waliRelations($sourceId);
             $relasiTujuan = $this->repository->waliRelations($targetId);
