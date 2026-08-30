@@ -51,7 +51,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $service->setSantriState((int) $id, $action);
         master_flash('success', 'Status santri diperbarui tanpa menghapus riwayat, relasi wali, atau absensi lama.');
     } catch (MasterDataException $exception) {
-        ah_old_keep($_POST, ['nis', 'nama_santri', 'jenis_kelamin', 'tempat_lahir', 'tgl_lahir', 'alamat', 'desa', 'kecamatan', 'kab_kota', 'provinsi', 'asal_sekolah', 'sekolah_saat_ini'], '_santri_old');
+        $oldInput = $_POST;
+        $oldFields = ['nis', 'nama_santri', 'jenis_kelamin', 'tempat_lahir', 'tgl_lahir', 'alamat', 'desa', 'kecamatan', 'kab_kota', 'provinsi', 'asal_sekolah', 'sekolah_saat_ini'];
+        // A-04: simpan hanya isian wali yang dikenal; konfirmasi penimpaan
+        // tidak dipulihkan otomatis karena admin perlu memeriksanya kembali.
+        foreach (['Ayah', 'Ibu', 'Wali'] as $relation) {
+            foreach (['mode', 'wali_id', 'nama', 'no_hp', 'alamat'] as $key) {
+                $flat = 'wali_' . $relation . '_' . $key;
+                $oldInput[$flat] = $_POST['wali'][$relation][$key] ?? '';
+                $oldFields[] = $flat;
+            }
+        }
+        ah_old_keep($oldInput, $oldFields, '_santri_old');
         master_flash('danger', $exception->getMessage());
         master_redirect('admin_master_santri.php?action=' . ($id ? 'edit&id=' . $id : 'create'));
     }
@@ -163,6 +174,7 @@ master_header('Data Santri', [
             ['Wali', 'Wali lain', 'Wali selain ayah/ibu, misalnya kakek, paman, atau kakak yang menjadi penanggung jawab.', null],
         ] as [$hubungan, $judul, $keterangan, $nilaiLama]):
             $relasi = $selected ? $relasiAktif($relasiWali, $hubungan) : null;
+            $nilaiLamaHp = $record[$hubungan === 'Ayah' ? 'no_hp_ayah' : 'no_hp_ibu'] ?? '';
             require __DIR__ . '/_santri_wali_field.php';
         endforeach; ?>
 
@@ -191,6 +203,8 @@ document.addEventListener('DOMContentLoaded', function () {
             var nilai = mode ? mode.value : 'abaikan';
             panelPilih.hidden = nilai !== 'pilih';
             panelBaru.hidden = nilai !== 'baru';
+            var panelTimpa = blok.querySelector('[data-wali-panel="timpa"]');
+            if (panelTimpa) panelTimpa.hidden = nilai !== 'pilih' && nilai !== 'baru';
         }
         blok.querySelectorAll('[data-wali-mode="' + slug + '"]').forEach(function (radio) {
             radio.addEventListener('change', sync);

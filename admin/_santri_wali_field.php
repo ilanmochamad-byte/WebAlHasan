@@ -38,7 +38,18 @@ if (!defined('AH_PARTIAL')) {
  */
 
 $slug = strtolower($hubungan);
-$terpilihId = $relasi === null ? 0 : (int) $relasi['wali_id'];
+$modeLama = ah_old('wali_' . $hubungan . '_mode', null, '_santri_old') ?: 'abaikan';
+if (!in_array($modeLama, ['abaikan', 'pilih', 'baru', 'lepas'], true)) $modeLama = 'abaikan';
+$terpilihId = (int) (ah_old('wali_' . $hubungan . '_wali_id', null, '_santri_old') ?: ($relasi['wali_id'] ?? 0));
+$opsiWali = $daftarWali;
+// Pilihan lama mungkin berada di luar 200 kandidat pertama.
+if ($terpilihId > 0 && !in_array($terpilihId, array_map('intval', array_column($opsiWali, 'id')), true)) {
+    $pilihanLama = $service->wali($terpilihId);
+    if ($pilihanLama !== null) {
+        $pilihanLama['jumlah_santri'] = count(array_filter($pilihanLama['relations'], static fn ($r) => $r['archived_at'] === null));
+        $opsiWali[] = $pilihanLama;
+    }
+}
 $konflikKolomLama = $hubungan !== 'Wali'
     && $nilaiLama !== null
     && trim((string) $nilaiLama) !== ''
@@ -58,6 +69,10 @@ $konflikKolomLama = $hubungan !== 'Wali'
         <p class="mb-3 text-muted">Belum ada wali terhubung untuk peran ini.</p>
     <?php endif; ?>
 
+    <?php if ($hubungan !== 'Wali' && (string) $nilaiLamaHp !== ''): ?>
+        <p class="small">Nomor HP pada kolom lama: <strong><?= ah_e($nilaiLamaHp) ?></strong>.</p>
+    <?php endif; ?>
+
     <?php if ($hubungan !== 'Wali' && $nilaiLama !== null && trim((string) $nilaiLama) !== ''): ?>
         <p class="mb-3 small">
             Kolom lama <code><?= $hubungan === 'Ayah' ? 'nama_ayah' : 'nama_ibu' ?></code> berisi
@@ -70,28 +85,28 @@ $konflikKolomLama = $hubungan !== 'Wali'
         <span class="form-label d-block" id="label_mode_<?= ah_e($slug) ?>">Tindakan</span>
         <div role="radiogroup" aria-labelledby="label_mode_<?= ah_e($slug) ?>" class="d-flex flex-wrap gap-3">
             <label class="d-inline-flex align-items-center gap-1">
-                <input type="radio" name="wali[<?= ah_e($hubungan) ?>][mode]" value="abaikan" checked
+                <input type="radio" name="wali[<?= ah_e($hubungan) ?>][mode]" value="abaikan" <?= $modeLama === 'abaikan' ? 'checked' : '' ?>
                        data-wali-mode="<?= ah_e($slug) ?>">
                 <span><?= $relasi === null ? 'Kosongkan' : 'Biarkan seperti sekarang' ?></span>
             </label>
             <label class="d-inline-flex align-items-center gap-1">
-                <input type="radio" name="wali[<?= ah_e($hubungan) ?>][mode]" value="pilih" data-wali-mode="<?= ah_e($slug) ?>">
+                <input type="radio" name="wali[<?= ah_e($hubungan) ?>][mode]" value="pilih" <?= $modeLama === 'pilih' ? 'checked' : '' ?> data-wali-mode="<?= ah_e($slug) ?>">
                 <span>Pilih wali terdaftar</span>
             </label>
             <label class="d-inline-flex align-items-center gap-1">
-                <input type="radio" name="wali[<?= ah_e($hubungan) ?>][mode]" value="baru" data-wali-mode="<?= ah_e($slug) ?>">
+                <input type="radio" name="wali[<?= ah_e($hubungan) ?>][mode]" value="baru" <?= $modeLama === 'baru' ? 'checked' : '' ?> data-wali-mode="<?= ah_e($slug) ?>">
                 <span>Buat wali baru</span>
             </label>
             <?php if ($relasi !== null): ?>
                 <label class="d-inline-flex align-items-center gap-1">
-                    <input type="radio" name="wali[<?= ah_e($hubungan) ?>][mode]" value="lepas" data-wali-mode="<?= ah_e($slug) ?>">
+                    <input type="radio" name="wali[<?= ah_e($hubungan) ?>][mode]" value="lepas" <?= $modeLama === 'lepas' ? 'checked' : '' ?> data-wali-mode="<?= ah_e($slug) ?>">
                     <span>Lepaskan relasi</span>
                 </label>
             <?php endif; ?>
         </div>
     </div>
 
-    <div class="row g-3 mt-1" data-wali-panel="pilih" hidden>
+    <div class="row g-3 mt-1" data-wali-panel="pilih" <?= $modeLama === 'pilih' ? '' : 'hidden' ?>>
         <div class="col-md-6">
             <label class="form-label" for="cari_<?= ah_e($slug) ?>">Cari wali terdaftar</label>
             <input class="form-control" id="cari_<?= ah_e($slug) ?>" type="search" autocomplete="off"
@@ -107,7 +122,7 @@ $konflikKolomLama = $hubungan !== 'Wali'
             <select class="form-select" id="wali_<?= ah_e($slug) ?>" name="wali[<?= ah_e($hubungan) ?>][wali_id]"
                     data-wali-select="<?= ah_e($slug) ?>">
                 <option value="">— belum dipilih —</option>
-                <?php foreach ($daftarWali as $kandidat): ?>
+                <?php foreach ($opsiWali as $kandidat): ?>
                     <option value="<?= (int) $kandidat['id'] ?>" <?= $terpilihId === (int) $kandidat['id'] ? 'selected' : '' ?>>
                         <?= ah_e($kandidat['nama'] . ($kandidat['no_hp'] ? ' · ' . $kandidat['no_hp'] : '')
                             . ' · ' . (int) $kandidat['jumlah_santri'] . ' santri · ID ' . (int) $kandidat['id']) ?>
@@ -125,22 +140,22 @@ $konflikKolomLama = $hubungan !== 'Wali'
         </div>
     </div>
 
-    <div class="row g-3 mt-1" data-wali-panel="baru" hidden>
+    <div class="row g-3 mt-1" data-wali-panel="baru" <?= $modeLama === 'baru' ? '' : 'hidden' ?>>
         <div class="col-md-5">
             <label class="form-label" for="wali_baru_nama_<?= ah_e($slug) ?>">Nama wali baru</label>
             <input class="form-control" id="wali_baru_nama_<?= ah_e($slug) ?>" maxlength="100"
-                   name="wali[<?= ah_e($hubungan) ?>][nama]">
+                   name="wali[<?= ah_e($hubungan) ?>][nama]" value="<?= ah_e(ah_old('wali_' . $hubungan . '_nama', null, '_santri_old')) ?>">
         </div>
         <div class="col-md-3">
             <label class="form-label" for="wali_baru_hp_<?= ah_e($slug) ?>">Nomor HP</label>
             <input class="form-control" id="wali_baru_hp_<?= ah_e($slug) ?>" inputmode="tel" maxlength="20"
-                   name="wali[<?= ah_e($hubungan) ?>][no_hp]" aria-describedby="bantuan_hp_<?= ah_e($slug) ?>">
+                   name="wali[<?= ah_e($hubungan) ?>][no_hp]" value="<?= ah_e(ah_old('wali_' . $hubungan . '_no_hp', null, '_santri_old')) ?>" aria-describedby="bantuan_hp_<?= ah_e($slug) ?>">
             <div class="form-text" id="bantuan_hp_<?= ah_e($slug) ?>">Boleh sama dengan wali lain.</div>
         </div>
         <div class="col-md-4">
             <label class="form-label" for="wali_baru_alamat_<?= ah_e($slug) ?>">Alamat</label>
             <input class="form-control" id="wali_baru_alamat_<?= ah_e($slug) ?>" maxlength="200"
-                   name="wali[<?= ah_e($hubungan) ?>][alamat]">
+                   name="wali[<?= ah_e($hubungan) ?>][alamat]" value="<?= ah_e(ah_old('wali_' . $hubungan . '_alamat', null, '_santri_old')) ?>">
         </div>
         <div class="col-12">
             <p class="small text-muted mb-0">Membuat wali di sini <strong>tidak</strong> membuat akun login. Akun dibuat terpisah pada halaman Akun &amp; Hak Akses.</p>
@@ -148,7 +163,7 @@ $konflikKolomLama = $hubungan !== 'Wali'
     </div>
 
     <?php if ($hubungan !== 'Wali'): ?>
-        <div class="mt-3" data-wali-panel="timpa" <?= $konflikKolomLama ? '' : 'hidden' ?>>
+        <div class="mt-3" data-wali-panel="timpa" <?= $konflikKolomLama || in_array($modeLama, ['pilih', 'baru'], true) ? '' : 'hidden' ?>>
             <div class="ah-danger-zone">
                 <label class="d-inline-flex align-items-start gap-2 mb-0">
                     <input type="checkbox" name="konfirmasi_timpa[<?= ah_e($hubungan) ?>]" value="1" class="mt-1">
