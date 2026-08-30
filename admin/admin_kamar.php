@@ -1,34 +1,30 @@
 <?php
 require_once __DIR__ . '/_guard.php';
 
-// Ambil Tahun Ajaran Aktif
+// A-11: hapus lewat GET tidak aman dan bertentangan dengan preservasi data.
+if (isset($_GET['hapus'])) {
+    http_response_code(405);
+    exit('Penghapusan kamar tidak tersedia. Data dan riwayat kamar tetap dipertahankan.');
+}
+$service = master_data_service();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        if (!isset($_POST['tambah']) && !isset($_POST['edit'])) {
+            throw new App\MasterData\MasterDataException('Aksi kamar tidak dikenal.');
+        }
+        $id = isset($_POST['edit']) ? filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) : null;
+        if ($id === false) { throw new App\MasterData\MasterDataException('ID kamar tidak valid.'); }
+        $service->saveRoom($_POST, $id);
+        header('Location: admin_kamar.php');
+        exit;
+    } catch (App\MasterData\MasterDataException $exception) {
+        http_response_code(422);
+        exit(htmlspecialchars($exception->getMessage(), ENT_QUOTES, 'UTF-8'));
+    }
+}
 $q_tahun = mysqli_query($koneksi, "SELECT id FROM tahun_ajaran WHERE status='Aktif' LIMIT 1");
 $d_tahun = mysqli_fetch_assoc($q_tahun);
-$id_tahun = $d_tahun ? $d_tahun['id'] : 0;
-
-// PROSES TAMBAH
-if(isset($_POST['tambah'])){
-    $nama = mysqli_real_escape_string($koneksi, $_POST['nama_kamar']);
-    $kapasitas = (int)$_POST['kapasitas'];
-    mysqli_query($koneksi, "INSERT INTO kamar (nama_kamar, kapasitas) VALUES ('$nama','$kapasitas')");
-    header("Location: admin_kamar.php");
-}
-
-// PROSES EDIT
-if(isset($_POST['edit'])){
-    $id = $_POST['id'];
-    $nama = mysqli_real_escape_string($koneksi, $_POST['nama_kamar']);
-    $kapasitas = (int)$_POST['kapasitas'];
-    mysqli_query($koneksi, "UPDATE kamar SET nama_kamar='$nama', kapasitas='$kapasitas' WHERE id='$id'");
-    header("Location: admin_kamar.php");
-}
-
-// PROSES HAPUS
-if(isset($_GET['hapus'])){
-    $id = $_GET['hapus'];
-    mysqli_query($koneksi, "DELETE FROM kamar WHERE id='$id'");
-    header("Location: admin_kamar.php");
-}
+$id_tahun = $d_tahun ? (int) $d_tahun['id'] : 0;
 ?>
 
 <!DOCTYPE html>

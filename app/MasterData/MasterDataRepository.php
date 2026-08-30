@@ -329,9 +329,18 @@ final class MasterDataRepository
         return $this->all('SELECT * FROM kamar ORDER BY nama_kamar, id');
     }
 
-    public function kamarFind(int $id): ?array
+    public function kamarFind(int $id, bool $forUpdate = false): ?array
     {
-        return $this->one('SELECT * FROM kamar WHERE id = ?', [$id]);
+        return $this->one('SELECT * FROM kamar WHERE id = ?' . ($forUpdate ? ' FOR UPDATE' : ''), [$id]);
+    }
+
+    public function kamarSave(array $data, ?int $id): int
+    {
+        if ($id === null) {
+            return $this->insert('INSERT INTO kamar (nama_kamar, kapasitas) VALUES (?, ?)', [$data['nama_kamar'], $data['kapasitas']]);
+        }
+        $this->execute('UPDATE kamar SET nama_kamar = ?, kapasitas = ? WHERE id = ?', [$data['nama_kamar'], $data['kapasitas'], $id]);
+        return $id;
     }
 
     public function guruOptions(): array

@@ -874,6 +874,34 @@ final class MasterDataService
     public function guruOptions(): array { return $this->repository->guruOptions(); }
     public function santriOptions(): array { return $this->repository->santriOptions(); }
     public function kamarOptions(): array { return $this->repository->kamarList(); }
+
+    public function room(int $id): ?array { return $this->repository->kamarFind($id); }
+
+    /** A-11: perubahan kamar tervalidasi dan tercatat; tidak menyediakan penghapusan. */
+    public function saveRoom(array $input, ?int $id = null): int
+    {
+        $name = is_scalar($input['nama_kamar'] ?? null) ? Normalizer::text($input['nama_kamar']) : '';
+        $capacity = filter_var($input['kapasitas'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 2147483647]]);
+        $errors = [];
+        $this->required($name, 'Nama kamar wajib diisi.', $errors);
+        $this->maxLength($name, 50, 'Nama kamar', $errors);
+        if ($capacity === false) { $errors[] = 'Kapasitas harus bilangan bulat positif.'; }
+        $this->reject($errors);
+        $db = $this->repository->db();
+        $db->begin_transaction();
+        try {
+            $before = $id === null ? null : $this->mustFind($this->repository->kamarFind($id, true), 'Kamar');
+            $id = $this->repository->kamarSave(['nama_kamar' => $name, 'kapasitas' => $capacity], $id);
+            if (!$this->audit->log($before === null ? 'master.create' : 'master.update', 'kamar', $id, $before, $this->repository->kamarFind($id))) {
+                throw new MasterDataException('Perubahan kamar dibatalkan karena audit tidak dapat disimpan.');
+            }
+            $db->commit();
+            return $id;
+        } catch (Throwable $exception) {
+            $db->rollback();
+            throw $exception;
+        }
+    }
     public function exportGuru(array $filters): array { return $this->repository->exportGuru($this->filters($filters)); }
     public function exportSantri(array $filters): array { return $this->repository->exportSantri($this->filters($filters)); }
 
