@@ -1,0 +1,16 @@
+No syntax errors detected in admin/_laporan_guard.php
+No syntax errors detected in admin/admin_laporan_absensi.php
+No syntax errors detected in admin/export_laporan_absensi.php
+No syntax errors detected in admin/laporan_absensi_cetak.php
+No syntax errors detected in admin/laporan_absensi_detail.php
+No syntax errors detected in api/v1/index.php
+No syntax errors detected in app/Report/ReportRepository.php
+No syntax errors detected in app/Report/ReportService.php
+No syntax errors detected in app/Ui/Navigation.php
+No syntax errors detected in tests/perapihan_audit_api_compat.php
+No syntax errors detected in tests/perapihan_audit_csv_limit.php
+No syntax errors detected in tests/perapihan_audit_laporan_web.php
+No syntax errors detected in tests/perapihan_audit_notifikasi.php
+No syntax errors detected in tests/phase1_static.php
+No syntax errors detected in tests/v2_phase4_static.php
+Total PHP: 15; gagal: 0

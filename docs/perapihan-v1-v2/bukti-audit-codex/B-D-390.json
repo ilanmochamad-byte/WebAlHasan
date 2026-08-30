@@ -1,0 +1,115 @@
+[
+  {
+    "path": "/admin/admin_kelas.php",
+    "error": "Lompat ke konten utama\nBuka menu navigasi\nSistem Al Hasan\nKeluar\n\nKEMAMPUAN AKTIF\n\nAdmin\n\nUTAMA\n\nBer",
+    "headings": [
+      "Kelas dan Keanggotaan",
+      "Kelas dan Keanggotaan"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_kamar.php",
+    "error": "Data Kamar Santri\n Tambah Kamar\nShow \n10\n25\n50\n100\n entries\nPencarian Cepat:\nNo\tNama Kamar / Kobong\t",
+    "headings": [
+      "Data Kamar Santri"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_tahun.php",
+    "error": "Lompat ke konten utama\nBuka menu navigasi\nSistem Al Hasan\nKeluar\n\nKEMAMPUAN AKTIF\n\nAdmin\n\nUTAMA\n\nBer",
+    "headings": [
+      "Tahun Ajaran",
+      "Tahun Ajaran"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_pembimbing.php",
+    "error": "Lompat ke konten utama\nBuka menu navigasi\nSistem Al Hasan\nKeluar\n\nKEMAMPUAN AKTIF\n\nAdmin\n\nUTAMA\n\nBer",
+    "headings": [
+      "Penugasan Pembimbing",
+      "Penugasan Pembimbing"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/portal/izin.php",
+    "error": "Lompat ke konten utama\nBuka menu navigasi\nSistem Al Hasan\nKeluar\n\nKEMAMPUAN AKTIF\n\nAdmin\n\nUTAMA\n\nBer",
+    "headings": [
+      "Daftar Perizinan",
+      "Daftar Perizinan"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/portal/izin_buat.php",
+    "error": "Lompat ke konten utama\nBuka menu navigasi\nSistem Al Hasan\nKeluar\n\nKEMAMPUAN AKTIF\n\nAdmin\n\nUTAMA\n\nBer",
+    "headings": [
+      "Buat Pengajuan Izin",
+      "Buat Pengajuan Izin"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/portal/izin_antrean.php",
+    "error": "Lompat ke konten utama\nBuka menu navigasi\nSistem Al Hasan\nKeluar\n\nKEMAMPUAN AKTIF\n\nAdmin\n\nUTAMA\n\nBer",
+    "headings": [
+      "Antrean Perizinan",
+      "Antrean Perizinan"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/portal/laporan.php",
+    "error": "Lompat ke konten utama\nBuka menu navigasi\nSistem Al Hasan\nKeluar\n\nKEMAMPUAN AKTIF\n\nAdmin\n\nUTAMA\n\nBer",
+    "headings": [
+      "Laporan Perizinan",
+      "Laporan Perizinan"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/portal/notifikasi.php",
+    "error": "Lompat ke konten utama\nBuka menu navigasi\nSistem Al Hasan\nKeluar\n\nKEMAMPUAN AKTIF\n\nAdmin\n\nUTAMA\n\nBer",
+    "headings": [
+      "Notifikasi",
+      "Notifikasi"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_dashboard.php",
+    "error": "PANEL ADMIN\n Keluar\nDashboard Analitik\n Validasi PSB\n Lihat Web Utama\nRingkasan Pertemuan & Absensi\n",
+    "headings": [
+      "Dashboard Analitik",
+      "44%"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_data.php",
+    "error": "Menu Admin\nValidasi & Tindak Lanjut PSB\nPendaftar Baru (Belum Diproses)\n0\nDiterima\n0\nDitolak / Cadan",
+    "headings": [],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_rekap_keuangan.php",
+    "error": "Menu Bendahara\nRekapitulasi Arus Kas PSB\n Download Excel\nFilter Status Dana:\nHanya Dana Masuk (LUNAS",
+    "headings": [],
+    "scrollWidth": 390,
+    "width": 390
+  }
+]

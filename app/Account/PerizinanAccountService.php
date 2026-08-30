@@ -6,6 +6,7 @@ namespace App\Account;
 
 use App\Audit\AuditLogger;
 use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * Pembuatan dan penghubungan akun pengurus serta orang tua (V2 Fase 1).
@@ -68,16 +69,14 @@ final class PerizinanAccountService
         }
 
         $temporaryPassword = $this->temporaryPassword();
-        $id = $this->repository->createLinked($data, $kind, password_hash($temporaryPassword, PASSWORD_DEFAULT), $actorId);
-
-        $this->audit->log('perizinan_account_created', 'user', $id, null, [
-            'name' => $data['name'],
-            'username' => $data['username'],
-            'role' => $kind,
-            'pengurus_id' => $data['pengurus_id'],
-            'wali_id' => $data['wali_id'],
-            'force_password_change' => true,
-        ], $actorId);
+        $id = $this->repository->createLinked($data, $kind, password_hash($temporaryPassword, PASSWORD_DEFAULT), $actorId,
+            function (int $id) use ($data, $kind, $actorId): void {
+                $this->auditRequired('perizinan_account_created', $id, null, [
+                    'name' => $data['name'], 'username' => $data['username'], 'role' => $kind,
+                    'pengurus_id' => $data['pengurus_id'], 'wali_id' => $data['wali_id'],
+                    'force_password_change' => true,
+                ], $actorId);
+            });
 
         return ['id' => $id, 'temporary_password' => $temporaryPassword];
     }
@@ -107,16 +106,12 @@ final class PerizinanAccountService
             $waliId = $this->requireAvailableWali($masterId);
         }
 
-        $this->repository->linkExisting($userId, $kind, $pengurusId, $waliId, $actorId);
-        $this->audit->log('perizinan_account_linked', 'user', $userId, [
-            'pengurus_id' => $user['pengurus_id'],
-            'wali_id' => $user['wali_id'],
-            'roles' => $user['roles'],
-        ], [
-            'pengurus_id' => $pengurusId,
-            'wali_id' => $waliId,
-            'role' => $kind,
-        ], $actorId);
+        $this->repository->linkExisting($userId, $kind, $pengurusId, $waliId, $actorId,
+            function () use ($user, $userId, $kind, $pengurusId, $waliId, $actorId): void {
+                $this->auditRequired('perizinan_account_linked', $userId, [
+                    'pengurus_id' => $user['pengurus_id'], 'wali_id' => $user['wali_id'], 'roles' => $user['roles'],
+                ], ['pengurus_id' => $pengurusId, 'wali_id' => $waliId, 'role' => $kind], $actorId);
+            });
     }
 
     public function setActive(int $userId, bool $active, int $actorId): void
@@ -195,6 +190,13 @@ final class PerizinanAccountService
             'email' => $email === '' ? null : $email,
             'phone' => $phone === '' ? null : $phone,
         ];
+    }
+
+    private function auditRequired(string $action, int $id, ?array $before, array $after, int $actorId): void
+    {
+        if (!$this->audit->log($action, 'user', $id, $before, $after, $actorId)) {
+            throw new RuntimeException('Perubahan akun dibatalkan karena audit tidak dapat disimpan. Silakan coba lagi.');
+        }
     }
 
     private function temporaryPassword(): string

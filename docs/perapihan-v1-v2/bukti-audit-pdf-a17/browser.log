@@ -1,0 +1,65 @@
+[lulus] B-1a [desktop] Halaman masuk menampilkan judul yang benar — Masuk Sistem Al Hasan
+[lulus] B-1b [desktop] Halaman masuk tidak melebar
+[lulus] B-1c [desktop] Tombol masuk mudah disentuh (tinggi >= 44 px) — 44 px
+[lulus] B-2a [desktop] Beranda menyapa pengguna yang masuk — Selamat datang, SBX Administrator
+[lulus] B-2b [desktop] Beranda tidak melebar
+[lulus] B-3 [desktop] Sidebar tampil permanen pada layar besar
+[lulus] B-4a [desktop] Tab Jadwal ditandai aktif — 
+                                Jadwal
+                                                            
+[lulus] B-4b [desktop] Berpindah ke tab Pertemuan tanpa keluar dari modul — http://127.0.0.1:8940/admin/admin_pengajian.php?tab=pertemuan
+[lulus] B-4c [desktop] Modul Pengajian tidak melebar
+[lulus] B-5a [desktop] Penyajian awal laporan adalah Santri — santri
+[lulus] B-5b [desktop] Tab Gabungan mengubah penyajian — gabungan
+[lulus] B-5c [desktop] Laporan tidak melebar
+[lulus] B-6a [desktop] Halaman akun tidak melebar meski tabelnya lebar
+[lulus] B-6b [desktop] Tabel lebar menggulir di dalam wadahnya sendiri
+[lulus] B-7a [desktop] Fokus pertama adalah tautan lompat ke konten — Lompat ke konten utama
+[lulus] B-7b [desktop] Tautan lompat membawa fokus ke konten utama
+[lulus] B-1a [tablet] Halaman masuk menampilkan judul yang benar — Masuk Sistem Al Hasan
+[lulus] B-1b [tablet] Halaman masuk tidak melebar
+[lulus] B-1c [tablet] Tombol masuk mudah disentuh (tinggi >= 44 px) — 44 px
+[lulus] B-2a [tablet] Beranda menyapa pengguna yang masuk — Selamat datang, SBX Administrator
+[lulus] B-2b [tablet] Beranda tidak melebar
+[lulus] B-3a [tablet] Tombol menu tersedia pada layar kecil
+[lulus] B-3b [tablet] Laci navigasi terbuka setelah tombol diklik
+[lulus] B-3c [tablet] Laci navigasi tertutup dengan tombol Escape
+[lulus] B-4a [tablet] Tab Jadwal ditandai aktif — 
+                                Jadwal
+                                                            
+[lulus] B-4b [tablet] Berpindah ke tab Pertemuan tanpa keluar dari modul — http://127.0.0.1:8940/admin/admin_pengajian.php?tab=pertemuan
+[lulus] B-4c [tablet] Modul Pengajian tidak melebar
+[lulus] B-5a [tablet] Penyajian awal laporan adalah Santri — santri
+[lulus] B-5b [tablet] Tab Gabungan mengubah penyajian — gabungan
+[lulus] B-5c [tablet] Laporan tidak melebar
+[lulus] B-6a [tablet] Halaman akun tidak melebar meski tabelnya lebar
+[lulus] B-6b [tablet] Tabel lebar menggulir di dalam wadahnya sendiri
+[lulus] B-7a [tablet] Fokus pertama adalah tautan lompat ke konten — Lompat ke konten utama
+[lulus] B-7b [tablet] Tautan lompat membawa fokus ke konten utama
+[lulus] B-1a [ponsel] Halaman masuk menampilkan judul yang benar — Masuk Sistem Al Hasan
+[lulus] B-1b [ponsel] Halaman masuk tidak melebar
+[lulus] B-1c [ponsel] Tombol masuk mudah disentuh (tinggi >= 44 px) — 44 px
+[lulus] B-2a [ponsel] Beranda menyapa pengguna yang masuk — Selamat datang, SBX Administrator
+[lulus] B-2b [ponsel] Beranda tidak melebar
+[lulus] B-3a [ponsel] Tombol menu tersedia pada layar kecil
+[lulus] B-3b [ponsel] Laci navigasi terbuka setelah tombol diklik
+[lulus] B-3c [ponsel] Laci navigasi tertutup dengan tombol Escape
+[lulus] B-4a [ponsel] Tab Jadwal ditandai aktif — 
+                                Jadwal
+                                                            
+[lulus] B-4b [ponsel] Berpindah ke tab Pertemuan tanpa keluar dari modul — http://127.0.0.1:8940/admin/admin_pengajian.php?tab=pertemuan
+[lulus] B-4c [ponsel] Modul Pengajian tidak melebar
+[lulus] B-5a [ponsel] Penyajian awal laporan adalah Santri — santri
+[lulus] B-5b [ponsel] Tab Gabungan mengubah penyajian — gabungan
+[lulus] B-5c [ponsel] Laporan tidak melebar
+[lulus] B-6a [ponsel] Halaman akun tidak melebar meski tabelnya lebar
+[lulus] B-6b [ponsel] Tabel lebar menggulir di dalam wadahnya sendiri
+[lulus] B-7a [ponsel] Fokus pertama adalah tautan lompat ke konten — Lompat ke konten utama
+[lulus] B-7b [ponsel] Tautan lompat membawa fokus ke konten utama
+[lulus] B-9a Halaman cetak tidak memuat kerangka bersidebar
+[lulus] B-10a Guru non-murobi mendarat di beranda — Selamat datang, SBX Guru Tanpa Murobi
+[lulus] B-10b Guru non-murobi ditolak dari perizinan dengan penjelasan dan jalan keluar — Akun ini tidak memiliki kemampuan perizinan yang diperlukan.
+[lulus] B-8 Tidak ada galat JavaScript halaman pada konsol (galat pemuatan CDN diabaikan: lingkungan uji tanpa jaringan keluar)
+
+Total pemeriksaan: 56, gagal: 0
+Tangkapan layar: /tmp/webalhasan-audit-pdf-a17/browser

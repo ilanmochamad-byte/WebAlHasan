@@ -1,0 +1,12 @@
+{
+  "searchState": {
+    "rows": 1,
+    "text": "\n        1PGFBCE8576 00045 / 60\n        Tersedia\n        PenghuniUbah\n            ",
+    "url": "http://127.0.0.1:8940/admin/admin_kamar.php?q=PGFBCE8576+000"
+  },
+  "menuOpen": "true",
+  "saveState": {
+    "mainText": "Beranda\n Master Data\n Kamar\nData Kamar Santri\n\nKelola nama dan kapasitas kamar. Data penghuni mengikuti penempatan pada semester aktif.\n\nTambah Kamar\nBerhasil\nKamar berhasil disimpan. Penempatan santri dan riwayatnya tidak berubah.\nInformasi\nSemester aktif: 2026/2027 Ganjil. Penghapusan kamar tidak tersedia agar data dan riwayat tetap utuh.\nPenghuni: PGFBCE8576 000\nUbah kamar\nDaftar kamar\n\nKapasitas maksimal 61 orang. Daftar berikut mengikuti semester aktif dan pencarian.\n\nCari NIS, nama santri, atau sekolah\nCari\nBersihkan\nPenghuni kamar pada semester aktif sesuai pencarian\nNO\tNIS\tNAMA SANTRI\tL/P\tSEKOLAH\n1\tPGFBCE85760\tPGFBCE8576 Santri 000\tL\tAudit\n2\tPGFBCE85761\tPGFBCE8576 Santri 001\tL\tAudit\n3\tPGFBCE85762\tPGFBCE8576 Santri 002\tL\tAudit\n4\tPGFBCE85763\tPGFBCE8576 Santri 003\tL\tAudit\n5\tPGFBCE85764\tPGFBCE8576 Santri 004\tL\tAudit\n6\tPGFBCE85765\tPGFBCE8576 Santri 005\tL\tAudit\n7\tPGFBCE85766\tPGFBCE8576 Santri 006\tL\tAudit\n8\tPGFBCE85767\tPGFBCE8576 Santri 007\tL\tAudit\n9\tPGFBCE85768\tPGFBCE8576 Santri 008\tL\tAudit\n10\tPGFBCE85769\tPGFBCE8576 Santri 009\tL\tAudit\n11\tPGFBCE857610\tPGFBCE8576 Santri 010\tL\tAudit\n12\tPGFBCE857611\tPGFBCE8576 Santri 011\tL\tAudit\n13\tPGFBCE857612\tPGFBCE8576 Santri 012\tL\tAudit\n14\tPGFBCE857613\tPGFBCE8576 Santri 013\tL\tAudit\n15\tPGFBCE857614\tPGFBCE8576 Santri 014\tL\tAudit\n16\tPGFBCE857615\tPGFBCE8576 Santri 015\tL\tAudit\n17\tPGFBCE857616\tPGFBCE8576 Santri 016\tL\tAudit\n18\tPGFBCE857617\tPGFBCE8576 Santri 017\tL\tAudit\n19\tPGFBCE857618\tPGFBCE8576 Santri 018\tL\tAudit\n20\tPGFBCE857619\tPGFBCE8576 Santri 019\tL\tAudit\nSebelumnya\n1\n2\n3\nBerikutnya\n\nHalaman 1 dari 3 — total 45 data.",
+    "url": "http://127.0.0.1:8940/admin/admin_kamar.php?action=detail&id=123"
+  }
+}

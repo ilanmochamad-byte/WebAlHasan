@@ -1,0 +1,58 @@
+{
+  "code_head": "47e93706f2d2ea6bfd5c7a77a4a5f237c2f27a3b",
+  "regression": {
+    "files": 28,
+    "pass": 2464,
+    "fail": 0
+  },
+  "package": {
+    "files": 4,
+    "pass": 248,
+    "fail": 0
+  },
+  "browser": {
+    "pass": 56,
+    "fail": 0,
+    "note": "initial concurrent run interrupted; isolated rerun passed; CDN loading errors ignored by existing suite"
+  },
+  "audit_additional": {
+    "php_files": 9,
+    "pass": 171,
+    "fail": 0
+  },
+  "mobile_print": {
+    "pass": 6,
+    "fail": 0
+  },
+  "mobile_tsc_exit": 0,
+  "mobile_lint_exit": 0,
+  "php_lint_files": 15,
+  "acceptance": {
+    "verified": 60,
+    "not_verified": 3,
+    "waiting": 14
+  },
+  "sha256": {
+    "16-ponsel-laporan-gabungan.jpg": "62681e51ca5f5e8240d8ebb6d1bd21bae12015370909ae2dd84e8e092fc901d4",
+    "19-guru-beranda.jpg": "13d03b9494af44316502f6f69e5b581c88b790442ed4b5e7533f3b2549021bcb",
+    "A-06-final.log": "0d7bfe8f7f72e8ae0c1fe597c4dc4f28b54a9f46f93217c523d861edbaa8566f",
+    "A-07-http-final.log": "c1e5fc6664ccbda80a6ad70bb8e16d41b41cb4a00a2d1741c20010fc36ae31d9",
+    "A-07-scope-final.log": "bd7a1c81505ff1d751b00c897a590ad4fce49a118964e40a7e4d75e3a2b58a39",
+    "A-09-final.log": "5d4a86f0c7b140af6362620d98660f24684493a655ec2788af434d289c4ffffc",
+    "B-1-client-final.log": "e782be5e8f29f6def9ad2b01cfdd77aee1b954cbc8dc1bcd231077ee074a60b5",
+    "B-1-static-final.log": "9b64892be8f6f3569145c210837d741ce92dd79113aa1a45c1e32e49cd92634d",
+    "admin-final.log": "6591ed324a719aa3c93ed3eb4a08ca4a573dc17b7d47b1db903d828a1cc5af1a",
+    "browser-final.log": "cac2d0dc39e832c39f2df134f93003798ae8a25d8b7c7d77a716acf0303cd95b",
+    "browser-interferensi.log": "a934da4085a3f39635db065e6e9a830d3336e1d4ec320e31813aa3fe1859e9e7",
+    "full-final.log": "945e84f0a7abfdb2b0b583a588a3b71376f11a37fd09f134a0057fd24dd0dcfe",
+    "guru-browser-390.json": "c5d15c9817db031b31d37b98c62f40bb7dabeca37db11e33cea1b54ed77c4476",
+    "guru-report-390.png": "2c694e8cbfe7a4c41091dd430723069b4a06484834d899c52f438ef50b9f8e2e",
+    "merge-final.log": "f5076f1a958783b6e23fedb10ca41da1e32835974610f7929c8d5f29cdf53e59",
+    "mobile-lint-final.log": "ca2e26cbda9e6299ad2cdd2f7d4cb5bd0f16e106d73b9d41a16ccf95f7acd562",
+    "mobile-print.log": "42f2d28023fad4ec942c4ab96b17b7ef0766b940c982703e0ddf0b770499d3e9",
+    "mobile-tsc-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "php-lint.log": "af1f04a5a18bc9b04576434d6bc2bd95326642b0d30b7450d188e8fcd1af2746",
+    "redirect-final.log": "c9100b3f8e1ad770023d587dfdcf4d58211d9d02cd34a81fab06010f2b3e6ec9",
+    "wali-final.log": "0ce38f0d5bbfa8e3609025f9f1af5902f7be3645893eee8c57b1a30ad6210189"
+  }
+}

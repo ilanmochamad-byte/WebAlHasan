@@ -128,11 +128,15 @@ try {
             throw IzinException::invalid('Aksi perizinan tidak dikenal.');
     }
 } catch (IzinException $exception) {
+    if (in_array($exception->status(), [409, 422], true) && in_array($aksi, ['buat','putuskan','tetapkan','batalkan','koreksi'], true)) {
+        ah_validation_keep($_POST, ['santri_id','tgl_izin','tgl_kembali','alasan','catatan_pengurus','hasil','alasan_penggantian','murobi_guru_id','alasan_koreksi'], $exception, '_portal_' . $pengajuanId . '_' . $aksi);
+    }
     http_response_code($exception->status());
     portal_header('Aksi ditolak', $userCapabilities, $mode ?? ($userCapabilities[0] ?? ''), $currentUser);
     echo '<div class="alert alert-danger"><strong>' . (int) $exception->status() . '</strong> — '
         . portal_e($exception->getMessage()) . '</div>';
     echo '<div class="d-flex gap-2">';
+    if ($aksi === 'buat' && in_array($exception->status(), [409,422], true)) { echo '<a class="btn btn-primary" href="' . portal_e(app_url('/portal/izin_buat.php') . '?mode=' . rawurlencode($mode ?? 'admin') . '&santri_id=' . (int)($_POST['santri_id']??0) . '&page=' . max(1,(int)($_POST['return_page']??1)) . '&q=' . rawurlencode(is_string($_POST['return_q']??null) ? mb_substr($_POST['return_q'],0,200) : '')) . '">Perbaiki isian pengajuan</a>'; }
     if ($pengajuanId > 0) {
         echo '<a class="btn btn-outline-primary" href="' . portal_e(app_url('/portal/izin_detail.php') . '?id=' . $pengajuanId) . '">Buka detail pengajuan</a>';
     }

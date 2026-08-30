@@ -4,12 +4,26 @@ declare(strict_types=1);
 
 use App\Auth\Capabilities;
 use App\Http\Csrf;
+use App\Ui\Layout;
 
 require_once __DIR__ . '/_guard.php';
 
+/**
+ * Adaptor tampilan halaman portal perizinan.
+ *
+ * Sejak paket perapihan V1–V2 (30 Agustus 2026) berkas ini tidak lagi
+ * menggambar navbar sendiri. Kerangka halaman berasal dari `App\Ui\Layout`
+ * yang sama dengan halaman admin, sehingga seluruh sistem terasa sebagai satu
+ * aplikasi dan label "Portal Perizinan" tidak lagi menjadi identitas seluruh
+ * sistem — perizinan hanyalah salah satu modul di dalam Sistem Al Hasan.
+ *
+ * Guard kemampuan perizinan tetap berada di `portal/_guard.php` dan tetap
+ * dimuat di sini: halaman yang memakai berkas ini memang halaman perizinan.
+ */
+
 function portal_e(mixed $value): string
 {
-    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+    return ah_e($value);
 }
 
 function portal_csrf(): string
@@ -44,12 +58,11 @@ function portal_flash_render(): void
     if (!is_array($flash)) {
         return;
     }
-    $kelas = match ((string) $flash['jenis']) {
+    Layout::note(match ((string) $flash['jenis']) {
         'sukses' => 'success',
         'gagal' => 'danger',
         default => 'info',
-    };
-    echo '<div class="alert alert-' . $kelas . '" role="alert">' . portal_e((string) $flash['pesan']) . '</div>';
+    }, (string) $flash['pesan']);
 }
 
 /**
@@ -67,144 +80,54 @@ function portal_request_meta(): array
 
 function portal_capability_label(string $capability): string
 {
-    return match ($capability) {
-        Capabilities::ADMIN => 'Admin',
-        Capabilities::PENGURUS => 'Pengurus',
-        Capabilities::MUROBI => 'Murobi',
-        Capabilities::ORANG_TUA => 'Orang Tua',
-        default => $capability,
-    };
+    return Layout::capabilityLabel($capability);
 }
 
 /**
  * Jumlah notifikasi belum dibaca milik pengguna yang sedang masuk (Fase 4).
  *
- * Dihitung sekali per request. Kegagalan pembacaan tidak boleh merusak
- * navigasi: bila terjadi galat, lencana tidak ditampilkan.
- *
  * @param array<string, mixed> $user
  */
 function portal_unread_count(array $user): int
 {
-    static $cache = null;
-    if ($cache !== null) {
-        return $cache;
-    }
-    try {
-        return $cache = notification_center_service()->unreadCount($user)['jumlah'];
-    } catch (Throwable $exception) {
-        error_log('Jumlah notifikasi belum dibaca gagal dibaca: ' . $exception->getMessage());
-
-        return $cache = 0;
-    }
-}
-
-function portal_query(array $replace = []): string
-{
-    $query = array_merge($_GET, $replace);
-    foreach ($query as $key => $value) {
-        if ($value === null || $value === '') {
-            unset($query[$key]);
-        }
-    }
-
-    return http_build_query($query);
+    return (int) (ui_context($user)['unread'] ?? 0);
 }
 
 /**
- * @param array<int, string> $capabilities
+ * @param array<string, mixed> $replace
  */
-function portal_header(string $title, array $capabilities, string $activeMode, array $user): void
+function portal_query(array $replace = []): string
 {
-    ?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= portal_e($title) ?> - Portal Perizinan Al Hasan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body class="bg-light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="<?= portal_e(app_url('/portal/index.php')) ?>">
-            <i class="fas fa-mosque me-2"></i>Portal Perizinan
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#portalNav" aria-controls="portalNav" aria-expanded="false" aria-label="Buka navigasi">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="portalNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/index.php')) ?>">Ringkasan</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/izin.php')) ?>">Daftar Perizinan</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/izin_antrean.php')) ?>">Antrean</a></li>
-                <?php // V2 Fase 5: laporan tersedia untuk SELURUH peran perizinan;
-                      // isinya dibatasi cakupan masing-masing di server. ?>
-                <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/laporan.php')) ?>">Laporan</a></li>
-                <?php if (array_intersect([Capabilities::PENGURUS, Capabilities::ADMIN], $capabilities) !== []): ?>
-                    <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/portal/izin_buat.php')) ?>">Buat Pengajuan</a></li>
-                <?php endif; ?>
-                <?php if (in_array('guru', $user['roles'] ?? [], true)): ?>
-                    <?php // Jalan kembali bagi guru/murobi: satu sesi, tanpa login ulang (PRD 5.6).
-                          // Halaman tujuan tetap memeriksa haknya sendiri di server. ?>
-                    <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/admin/pertemuan_pengajian.php')) ?>">Jadwal Mengajar</a></li>
-                <?php endif; ?>
-                <?php // V2 Fase 4: pusat notifikasi tersedia untuk seluruh peran
-                      // perizinan. Lencana menampilkan jumlah belum dibaca milik
-                      // akun ini saja. ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= portal_e(app_url('/portal/notifikasi.php')) ?>">
-                        Notifikasi
-                        <?php $belumDibaca = portal_unread_count($user); ?>
-                        <?php if ($belumDibaca > 0): ?>
-                            <span class="badge rounded-pill text-bg-danger ms-1"><?= $belumDibaca > 99 ? '99+' : $belumDibaca ?></span>
-                        <?php endif; ?>
-                    </a>
-                </li>
-                <?php if (in_array(Capabilities::ADMIN, $capabilities, true)): ?>
-                    <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/admin/admin_notifikasi.php')) ?>">Kanal Notifikasi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?= portal_e(app_url('/admin/admin_dashboard.php')) ?>">Panel Admin</a></li>
-                <?php endif; ?>
-            </ul>
-            <span class="navbar-text text-white-50 me-3 small">
-                <?= portal_e($user['name']) ?> —
-                <?php foreach ($capabilities as $capability): ?>
-                    <span class="badge text-bg-<?= $capability === $activeMode ? 'success' : 'secondary' ?>"><?= portal_e(portal_capability_label($capability)) ?></span>
-                <?php endforeach; ?>
-            </span>
-            <a class="btn btn-sm btn-outline-light" href="<?= portal_e(app_url('/admin/logout.php')) ?>">Keluar</a>
-        </div>
-    </div>
-</nav>
-<main class="container-fluid px-md-4 py-4">
-    <?php
+    return ah_query($replace);
+}
+
+/**
+ * Kerangka halaman portal.
+ *
+ * Tanda tangan lama dipertahankan agar seluruh halaman portal Fase 1–5 tetap
+ * berjalan tanpa ditulis ulang.
+ *
+ * @param array<int, string> $capabilities
+ * @param array<string, mixed> $user
+ * @param array<string, mixed> $options Opsi kerangka tambahan.
+ */
+function portal_header(string $title, array $capabilities, string $activeMode, array $user, array $options = []): void
+{
+    $options['title'] = $title;
+    $options['user'] = $user;
+    $options['capabilities'] = $capabilities;
+    $options['breadcrumbs'] ??= [
+        ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
+        ['label' => 'Perizinan', 'url' => app_url('/portal/izin_ringkasan.php')],
+        ['label' => $title],
+    ];
+    $options['heading'] ??= $title;
+    ah_page_open($options);
 }
 
 function portal_footer(): void
 {
-    ?>
-</main>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-// V2 Fase 3 — paritas web dengan aplikasi: tombol mutasi dinonaktifkan selama
-// request berjalan sehingga klik ganda tidak mengirim dua permintaan.
-// Ini hanya peningkatan tampilan. Pengaman sebenarnya tetap kunci idempotensi
-// per formulir dan optimistic version di server, sehingga tanpa JavaScript pun
-// perilaku sistem tidak berubah.
-document.querySelectorAll('form[method="post"]').forEach(function (form) {
-    form.addEventListener('submit', function () {
-        form.querySelectorAll('button[type="submit"], button:not([type])').forEach(function (button) {
-            button.disabled = true;
-            button.setAttribute('aria-busy', 'true');
-        });
-    });
-});
-</script>
-</body>
-</html>
-    <?php
+    ah_page_close();
 }
 
 /**
@@ -219,45 +142,70 @@ function portal_mode_switcher(array $capabilities, string $activeMode, string $p
         return;
     }
     ?>
-    <div class="btn-group mb-3" role="group" aria-label="Pilih cakupan">
-        <?php foreach ($capabilities as $capability): ?>
-            <a class="btn btn-sm btn-<?= $capability === $activeMode ? 'success' : 'outline-success' ?>"
-               href="<?= portal_e($page . '?' . portal_query(['mode' => $capability, 'page' => null])) ?>">
-                <?= portal_e(portal_capability_label($capability)) ?>
-            </a>
-        <?php endforeach; ?>
-    </div>
+    <div class="ah-card ah-no-print"><div class="ah-card__body py-2">
+        <p class="mb-2 small text-muted" id="ah-mode-label">Anda memegang lebih dari satu peran. Pilih cakupan data yang ingin dilihat:</p>
+        <div class="btn-group flex-wrap" role="group" aria-labelledby="ah-mode-label">
+            <?php foreach ($capabilities as $capability): ?>
+                <a class="btn btn-sm btn-<?= $capability === $activeMode ? 'primary' : 'outline-primary' ?>"
+                   <?= $capability === $activeMode ? 'aria-current="true"' : '' ?>
+                   href="<?= portal_e($page . '?' . ah_query(['mode' => $capability, 'page' => null])) ?>">
+                    <?= portal_e(portal_capability_label($capability)) ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div></div>
     <?php
 }
 
 function portal_pagination(int $total, int $page, int $perPage): void
 {
-    $pages = max(1, (int) ceil($total / $perPage));
-    if ($pages <= 1) {
-        return;
-    }
-    $start = max(1, $page - 2);
-    $end = min($pages, $page + 2);
-    ?>
-    <nav aria-label="Navigasi halaman"><ul class="pagination justify-content-center mt-4">
-        <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>"><a class="page-link" href="?<?= portal_e(portal_query(['page' => max(1, $page - 1)])) ?>">Sebelumnya</a></li>
-        <?php for ($i = $start; $i <= $end; $i++): ?>
-            <li class="page-item <?= $i === $page ? 'active' : '' ?>"><a class="page-link" href="?<?= portal_e(portal_query(['page' => $i])) ?>"><?= $i ?></a></li>
-        <?php endfor; ?>
-        <li class="page-item <?= $page >= $pages ? 'disabled' : '' ?>"><a class="page-link" href="?<?= portal_e(portal_query(['page' => min($pages, $page + 1)])) ?>">Berikutnya</a></li>
-    </ul></nav>
-    <?php
+    ah_pagination($total, $page, $perPage);
 }
 
 function portal_status_badge(string $status): string
 {
-    $class = match ($status) {
-        'Disetujui' => 'success',
+    return ah_badge($status, match ($status) {
+        'Disetujui' => 'ok',
         'Ditolak' => 'danger',
-        'Dibatalkan' => 'secondary',
-        'Perlu Penetapan Admin' => 'warning',
-        default => 'primary',
-    };
+        'Dibatalkan' => 'muted',
+        'Perlu Penetapan Admin' => 'warn',
+        default => 'info',
+    });
+}
 
-    return '<span class="badge text-bg-' . $class . '">' . portal_e($status) . '</span>';
+/**
+ * Tautan modul pengajian bagi akun ber-role guru.
+ *
+ * Dipisahkan sebagai fungsi agar hanya ada satu tempat yang menentukan alamat
+ * jalan kembali guru/murobi: modul Pengajian terpadu
+ * (`/admin/admin_pengajian.php`) yang menggantikan dua menu terpisah
+ * "Jadwal Pengajian" dan "Pertemuan Pengajian".
+ *
+ * @param array<string, mixed> $user
+ */
+function portal_pengajian_url(array $user): ?string
+{
+    if (!in_array('guru', $user['roles'] ?? [], true) && !in_array('admin', $user['roles'] ?? [], true)) {
+        return null;
+    }
+
+    return app_url('/admin/admin_pengajian.php');
+}
+
+/**
+ * Menjaga kompatibilitas alamat lama `admin/pertemuan_pengajian.php`.
+ */
+function portal_pertemuan_url(): string
+{
+    return app_url('/admin/pertemuan_pengajian.php');
+}
+
+/**
+ * Kemampuan perizinan yang dimiliki akun, untuk dipakai halaman portal.
+ *
+ * @param array<int, string> $capabilities
+ */
+function portal_has_capability(array $capabilities, string $capability): bool
+{
+    return in_array($capability, $capabilities, true) && in_array($capability, Capabilities::ALL, true);
 }

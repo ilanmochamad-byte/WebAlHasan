@@ -38,7 +38,12 @@ if (!['css', 'potret', 'lanskap'].includes(orientasi)) {
 const input = resolve(inputArg);
 const output = resolve(outputArg);
 
-const browser = await chromium.launch();
+// CHROMIUM_PATH memungkinkan pemakaian Chromium yang sudah tersedia di mesin
+// atau lingkungan CI, ketika revisi bawaan Playwright tidak dapat diunduh
+// (misalnya sandbox tanpa jaringan keluar). Perilaku render tidak berubah.
+const browser = await chromium.launch(
+  process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}
+);
 try {
   const page = await browser.newPage();
   await page.goto(pathToFileURL(input).href, { waitUntil: 'load' });

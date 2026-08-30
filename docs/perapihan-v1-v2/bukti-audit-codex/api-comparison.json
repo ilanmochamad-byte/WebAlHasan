@@ -1,0 +1,14 @@
+{
+  "summary": true,
+  "items": true,
+  "pagination": true,
+  "schedules": true,
+  "baseline_detail_count": 31,
+  "branch_detail_count": 31,
+  "extra_filter_fields": [
+    "subject_scope"
+  ],
+  "extra_active_filter_fields": [
+    "Penyajian"
+  ]
+}

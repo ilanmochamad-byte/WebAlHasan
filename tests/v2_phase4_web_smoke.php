@@ -147,7 +147,13 @@ final class KlienWeb
 
     public function login(string $username, string $password): array
     {
-        $token = $this->csrf('/admin/admin_login.php');
+        // PERUBAHAN ALAMAT - paket perapihan V1-V2, koreksi ke-7 (satu pintu masuk),
+        // keputusan pengguna 30 Agustus 2026. Halaman masuk kini berada di
+        // `/portal/index.php`; `/admin/admin_login.php` tetap berfungsi sebagai
+        // alamat lama yang mengarahkan ke sana. Penangan POST tidak berubah:
+        // tetap `/admin/cek_login.php`, sehingga alur pengiriman formulir lama
+        // tetap kompatibel.
+        $token = $this->csrf('/portal/index.php');
 
         return $this->request('/admin/cek_login.php', [
             '_csrf' => $token,
@@ -243,12 +249,12 @@ try {
     $anon = new KlienWeb($baseUrl, 'anon');
     $anonPusat = $anon->request('/portal/notifikasi.php');
     $assert(
-        $anonPusat['status'] === 302 && str_contains((string) $anonPusat['location'], 'admin_login.php'),
+        $anonPusat['status'] === 302 && str_contains((string) $anonPusat['location'], '/portal/index.php'),
         'WN-1a Anonim diarahkan ke halaman masuk dari pusat notifikasi'
     );
     $anonAdmin = $anon->request('/admin/admin_notifikasi.php');
     $assert(
-        $anonAdmin['status'] === 302 && str_contains((string) $anonAdmin['location'], 'admin_login.php'),
+        $anonAdmin['status'] === 302 && str_contains((string) $anonAdmin['location'], '/portal/index.php'),
         'WN-1b Anonim diarahkan ke halaman masuk dari panel kanal'
     );
 

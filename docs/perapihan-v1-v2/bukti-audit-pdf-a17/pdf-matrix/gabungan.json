@@ -1,0 +1,221 @@
+{
+    "expected": [
+        [
+            "2026-06-01",
+            "Guru",
+            "SBX Guru Tanpa Murobi",
+            "Hadir"
+        ],
+        [
+            "2026-06-01",
+            "Guru",
+            "SBX Murobi A",
+            "Terlambat"
+        ],
+        [
+            "2026-06-01",
+            "Santri",
+            "R149c6f62dd Santri 0",
+            "Hadir"
+        ],
+        [
+            "2026-06-01",
+            "Santri",
+            "R149c6f62dd Santri 0",
+            "Hadir"
+        ],
+        [
+            "2026-06-01",
+            "Santri",
+            "R149c6f62dd Santri 1",
+            "Terlambat"
+        ],
+        [
+            "2026-06-01",
+            "Santri",
+            "R149c6f62dd Santri 1",
+            "Terlambat"
+        ],
+        [
+            "2026-06-01",
+            "Santri",
+            "R149c6f62dd Santri 2",
+            "Izin"
+        ],
+        [
+            "2026-06-01",
+            "Santri",
+            "R149c6f62dd Santri 2",
+            "Izin"
+        ],
+        [
+            "2026-06-01",
+            "Santri",
+            "R149c6f62dd Santri 3",
+            "Sakit"
+        ],
+        [
+            "2026-06-01",
+            "Santri",
+            "R149c6f62dd Santri 3",
+            "Sakit"
+        ],
+        [
+            "2026-06-01",
+            "Santri",
+            "R149c6f62dd Santri 4",
+            "Alpa"
+        ],
+        [
+            "2026-06-01",
+            "Santri",
+            "R149c6f62dd Santri 4",
+            "Alpa"
+        ],
+        [
+            "2026-06-08",
+            "Guru",
+            "SBX Guru Tanpa Murobi",
+            "Terlambat"
+        ],
+        [
+            "2026-06-08",
+            "Guru",
+            "SBX Murobi A",
+            "Izin"
+        ],
+        [
+            "2026-06-08",
+            "Santri",
+            "R149c6f62dd Santri 0",
+            "Terlambat"
+        ],
+        [
+            "2026-06-08",
+            "Santri",
+            "R149c6f62dd Santri 0",
+            "Terlambat"
+        ],
+        [
+            "2026-06-08",
+            "Santri",
+            "R149c6f62dd Santri 1",
+            "Izin"
+        ],
+        [
+            "2026-06-08",
+            "Santri",
+            "R149c6f62dd Santri 1",
+            "Izin"
+        ],
+        [
+            "2026-06-08",
+            "Santri",
+            "R149c6f62dd Santri 2",
+            "Sakit"
+        ],
+        [
+            "2026-06-08",
+            "Santri",
+            "R149c6f62dd Santri 2",
+            "Sakit"
+        ],
+        [
+            "2026-06-08",
+            "Santri",
+            "R149c6f62dd Santri 3",
+            "Alpa"
+        ],
+        [
+            "2026-06-08",
+            "Santri",
+            "R149c6f62dd Santri 3",
+            "Alpa"
+        ],
+        [
+            "2026-06-08",
+            "Santri",
+            "R149c6f62dd Santri 4",
+            "Hadir"
+        ],
+        [
+            "2026-06-08",
+            "Santri",
+            "R149c6f62dd Santri 4",
+            "Hadir"
+        ],
+        [
+            "2026-06-15",
+            "Guru",
+            "SBX Guru Tanpa Murobi",
+            "Izin"
+        ],
+        [
+            "2026-06-15",
+            "Guru",
+            "SBX Murobi A",
+            "Sakit"
+        ],
+        [
+            "2026-06-15",
+            "Santri",
+            "R149c6f62dd Santri 0",
+            "Izin"
+        ],
+        [
+            "2026-06-15",
+            "Santri",
+            "R149c6f62dd Santri 0",
+            "Izin"
+        ],
+        [
+            "2026-06-15",
+            "Santri",
+            "R149c6f62dd Santri 1",
+            "Sakit"
+        ],
+        [
+            "2026-06-15",
+            "Santri",
+            "R149c6f62dd Santri 1",
+            "Sakit"
+        ],
+        [
+            "2026-06-15",
+            "Santri",
+            "R149c6f62dd Santri 2",
+            "Alpa"
+        ],
+        [
+            "2026-06-15",
+            "Santri",
+            "R149c6f62dd Santri 2",
+            "Alpa"
+        ],
+        [
+            "2026-06-15",
+            "Santri",
+            "R149c6f62dd Santri 3",
+            "Hadir"
+        ],
+        [
+            "2026-06-15",
+            "Santri",
+            "R149c6f62dd Santri 3",
+            "Hadir"
+        ],
+        [
+            "2026-06-15",
+            "Santri",
+            "R149c6f62dd Santri 4",
+            "Terlambat"
+        ],
+        [
+            "2026-06-15",
+            "Santri",
+            "R149c6f62dd Santri 4",
+            "Terlambat"
+        ]
+    ],
+    "count": 36
+}

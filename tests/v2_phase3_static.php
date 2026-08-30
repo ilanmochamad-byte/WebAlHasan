@@ -200,9 +200,11 @@ $assert(
 );
 $assert(
     // Fase 3 sendiri tidak menambah migrasi. Angka di bawah naik hanya ketika
-    // fase LAIN menambahkannya: 008 milik Fase 4 dan 009 milik Fase 5.
-    count(glob($root . '/database/migrations/*.sql') ?: []) === 9,
-    'Jumlah migrasi menjadi 9 berkas: 7 dari Fase 1–2, 008 milik Fase 4, dan 009 milik Fase 5'
+    // pekerjaan LAIN menambahkannya: 008 milik Fase 4, 009 milik Fase 5, dan
+    // 010 milik paket perapihan V1-V2 (koreksi ke-2, rekonsiliasi wali) sesuai
+    // keputusan pengguna 30 Agustus 2026.
+    count(glob($root . '/database/migrations/*.sql') ?: []) === 10,
+    'Jumlah migrasi menjadi 10 berkas: 7 dari Fase 1–2, 008 Fase 4, 009 Fase 5, 010 perapihan V1-V2'
 );
 $assert(
     is_file($root . '/database/migrations/008_v2_phase4_notifikasi_push_whatsapp.sql')

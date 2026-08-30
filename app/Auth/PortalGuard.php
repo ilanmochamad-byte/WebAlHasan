@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Auth;
 
+use App\Ui\Denial;
+
 /**
  * Guard portal web berbasis kemampuan.
  *
@@ -48,18 +50,10 @@ final class PortalGuard
 
     private function deny(): never
     {
-        http_response_code(403);
-        header('Content-Type: text/html; charset=utf-8');
-        echo '<!doctype html><html lang="id"><head><meta charset="utf-8">'
-            . '<meta name="viewport" content="width=device-width, initial-scale=1">'
-            . '<title>Akses ditolak</title>'
-            . '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">'
-            . '</head><body class="bg-light"><main class="container py-5" style="max-width:520px">'
-            . '<div class="card border-0 shadow-sm"><div class="card-body p-4">'
-            . '<h1 class="h4">403 — Akses ditolak</h1>'
-            . '<p class="text-muted mb-3">Akun ini tidak memiliki kemampuan perizinan yang diperlukan untuk membuka halaman tersebut.</p>'
-            . '<a class="btn btn-outline-secondary" href="' . htmlspecialchars(app_url('/admin/admin_login.php'), ENT_QUOTES, 'UTF-8') . '">Kembali ke halaman masuk</a>'
-            . '</div></div></main></body></html>';
-        exit;
+        Denial::render(
+            'Akun ini tidak memiliki kemampuan perizinan yang diperlukan.',
+            'Modul perizinan hanya terbuka bagi admin, pengurus, murobi (guru dengan penugasan murobi aktif), '
+                . 'dan orang tua dengan relasi wali aktif. Beranda serta menu lain yang menjadi hak Anda tetap dapat dibuka.'
+        );
     }
 }

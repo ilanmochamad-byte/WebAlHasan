@@ -129,8 +129,12 @@ $assert(
     && str_contains($capabilities, "in_array('orang_tua', \$roles, true) && \$this->linkedWaliId"),
     'Kemampuan pengurus dan orang tua menuntut role sekaligus relasi master aktif'
 );
+// PERUBAHAN LOKASI — paket perapihan V1-V2 (koreksi ke-6): tampilan penolakan
+// dipusatkan pada App\Ui\Denial agar seragam lintas halaman. Kode statusnya
+// tetap 403 dan tetap ditegakkan di server.
 $assert(
-    str_contains($guard, 'http_response_code(403)') && str_contains($guard, 'requireWebUser'),
+    str_contains($guard, 'Denial::render') && str_contains($guard, 'requireWebUser')
+    && str_contains($source('app/Ui/Denial.php'), 'http_response_code($status)'),
     'Guard portal menolak kemampuan yang tidak berwenang dengan 403 di server'
 );
 $assert(
@@ -180,8 +184,10 @@ $assert(
 $accountService = $source('app/Account/PerizinanAccountService.php');
 $accountRepository = $source('app/Account/PerizinanAccountRepository.php');
 $assert(
-    str_contains($accountService, "audit->log('perizinan_account_created'")
-    && str_contains($accountService, "audit->log('perizinan_account_linked'"),
+    str_contains($accountService, "auditRequired('perizinan_account_created'")
+    && str_contains($accountService, "auditRequired('perizinan_account_linked'")
+    && str_contains($accountService, 'if (!$this->audit->log(')
+    && str_contains($accountService, "throw new RuntimeException('Perubahan akun dibatalkan karena audit tidak dapat disimpan."),
     'Pembuatan dan penghubungan akun tercatat pada audit'
 );
 $assert(
@@ -278,21 +284,37 @@ $login = $source('admin/cek_login.php');
 // admin_login.php, serta ubah_password.php. Perilakunya tidak berubah untuk
 // admin, guru biasa, pengurus, dan orang tua.
 $landingRouter = $source('app/Auth/LandingRouter.php');
+// PERUBAHAN PERILAKU — paket perapihan V1-V2, koreksi ke-7 (satu pintu masuk),
+// keputusan pengguna 30 Agustus 2026. Alasannya: memilih SATU halaman tujuan
+// berdasarkan urutan role membuat akun multi-peran kehilangan jalur peran
+// lainnya saat mendarat, dan tiap peran mendapat kerangka berbeda.
+//
+// Sekarang seluruh akun yang sah mendarat pada satu beranda /portal/index.php
+// yang menyusun panel dari kemampuan NYATA akun. Pemeriksaan pengganti yang
+// setara: satu sumber kebenaran tetap LandingRouter, dipakai bersama oleh
+// cek_login.php dan ubah_password.php, dan pintasan modul tetap dihitung dari
+// capability (bukan nama role) sehingga guru tanpa penugasan murobi tidak
+// pernah ditawari antrean keputusan.
 $assert(
     str_contains($login, 'landing_router()->url($user)')
     && str_contains($landingRouter, "in_array('admin', \$roles, true)")
     && str_contains($landingRouter, "in_array('guru', \$roles, true)")
-    && str_contains($landingRouter, "app_url('/admin/pertemuan_pengajian.php')")
     && str_contains($landingRouter, "app_url('/portal/index.php')"),
-    'Alur login lama admin/guru dipertahankan dan pengurus/orang tua diarahkan ke portal'
+    'Alur login memakai satu sumber kebenaran dan seluruh peran mendarat di beranda tunggal'
+);
+$assert(
+    str_contains($landingRouter, 'Capabilities::MUROBI')
+    && str_contains($landingRouter, '$this->capabilities->forUser($user)'),
+    'Pintasan beranda dihitung dari capability nyata, bukan dari nama role'
 );
 $passwordPage = $source('admin/ubah_password.php');
 $assert(
     str_contains($passwordPage, 'landing_router()->destination($user)')
-    && str_contains($landingRouter, "in_array('pengurus', \$roles, true) || in_array('orang_tua', \$roles, true)")
-    && str_contains($landingRouter, "app_url('/portal/index.php')")
-    && str_contains($landingRouter, 'Lanjut ke portal perizinan'),
-    'Akun pengurus/orang tua diarahkan ke portal setelah mengganti password awal'
+    && str_contains($landingRouter, 'ROLE_BERANDA')
+    && str_contains($landingRouter, "'pengurus'")
+    && str_contains($landingRouter, "'orang_tua'")
+    && str_contains($landingRouter, "app_url('/portal/index.php')"),
+    'Akun pengurus/orang tua diarahkan ke beranda setelah mengganti password awal'
 );
 $assert(
     str_contains($source('admin/admin_izin.php'), 'perizinan'),

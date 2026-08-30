@@ -1,0 +1,127 @@
+[lulus] Migrasi 006 memuat INSERT INTO roles (slug, name) VALUES ('pengurus'
+[lulus] Migrasi 006 memuat INSERT INTO roles (slug, name) VALUES ('orang_tua'
+[lulus] Migrasi 006 memuat ADD COLUMN pengurus_id
+[lulus] Migrasi 006 memuat ADD COLUMN wali_id
+[lulus] Migrasi 006 memuat users_pengurus_unique
+[lulus] Migrasi 006 memuat users_wali_unique
+[lulus] Migrasi 006 memuat CREATE TABLE pembimbing_assignments
+[lulus] Migrasi 006 memuat CREATE TABLE izin_pengajuan
+[lulus] Migrasi 006 memuat CREATE TABLE izin_keputusan
+[lulus] Migrasi 006 memuat CREATE TABLE izin_riwayat_status
+[lulus] Migrasi 006 memuat CREATE TABLE izin_idempotency_keys
+[lulus] Migrasi 006 memuat CREATE TABLE notifikasi_outbox
+[lulus] Migrasi 006 memuat CREATE TABLE perangkat_push
+[lulus] Migrasi 006 memuat CREATE TABLE pengaturan_notifikasi
+[lulus] Migrasi naik sepenuhnya aditif: tanpa DROP, DELETE, atau TRUNCATE
+[lulus] Migrasi tidak pernah mengubah tabel `perizinan` lama
+[lulus] Pemetaan status lama sesuai PRD 5.5
+[lulus] Backfill mempertahankan ID pengajuan lama secara eksplisit
+[lulus] Backfill idempoten dan tidak pernah menduplikasi baris warisan
+[lulus] Blok backfill diberi penanda agar dipakai ulang oleh bin/v2_phase1_backfill.php
+[lulus] AUTO_INCREMENT diselaraskan agar ID warisan tidak dipakai ulang
+[lulus] Keputusan admin pengganti wajib memiliki alasan penggantian di tingkat basis data
+[lulus] Outbox notifikasi memiliki kunci unik peristiwa/kanal/penerima
+[lulus] WhatsApp hanya dapat aktif setelah pemeriksaan konfigurasi lulus
+[lulus] Skema notifikasi tidak menyediakan tempat penyimpanan credential provider
+[lulus] Rollback melepas tabel V2 tanpa menyentuh tabel `perizinan` lama
+[lulus] Rollback memperingatkan agar tidak dijalankan sembarangan di produksi
+[lulus] Hak murobi berasal dari penugasan aktif, bukan dari role terpisah
+[lulus] Penugasan murobi dinilai pada tanggal berjalan dan tahun ajaran aktif
+[lulus] Kemampuan pengurus dan orang tua menuntut role sekaligus relasi master aktif
+[lulus] Guard portal menolak kemampuan yang tidak berwenang dengan 403 di server
+[lulus] Cakupan yang tidak dikenal tidak pernah mengembalikan baris
+[lulus] Repository dan service perizinan tidak membaca input global secara langsung
+[lulus] Fase 1 baca-saja: repository perizinan tidak menulis atau menghapus data
+[lulus] Orang tua hanya dapat membaca santri dengan relasi wali aktif
+[lulus] Detail di luar cakupan menghasilkan 403, bukan kebocoran keberadaan data
+[lulus] Mode cakupan yang diminta harus berada dalam kemampuan yang benar-benar dimiliki
+[lulus] Penugasan pembimbing menolak pengurus tidak aktif
+[lulus] Target kamar/kelas divalidasi terhadap master data
+[lulus] Perubahan penugasan pembimbing tercatat pada audit
+[lulus] Pembuatan dan penghubungan akun tercatat pada audit
+[lulus] Akun hanya dapat dihubungkan ke master aktif yang belum terpakai
+[lulus] Satu akun tidak dapat terhubung ke lebih dari satu master
+[lulus] Akun baru mewajibkan penggantian password awal
+[lulus] Pembuatan akun beserta relasi dan role memakai transaksi
+[lulus] Repository akun perizinan tidak membaca input global secara langsung
+[lulus] Halaman tersedia: admin/admin_pembimbing.php
+[lulus] Halaman tersedia: admin/admin_akun_perizinan.php
+[lulus] Halaman tersedia: portal/_guard.php
+[lulus] Halaman tersedia: portal/_ui.php
+[lulus] Halaman tersedia: portal/index.php
+[lulus] Halaman tersedia: portal/izin.php
+[lulus] Halaman tersedia: portal/izin_detail.php
+[lulus] admin_pembimbing.php memakai guard role admin
+[lulus] admin_akun_perizinan.php memakai guard role admin
+[lulus] index.php memuat guard portal sebelum output
+[lulus] izin.php memuat guard portal sebelum output
+[lulus] izin_detail.php memuat guard portal sebelum output
+[lulus] Guard portal memeriksa kemampuan dan melindungi seluruh POST dengan CSRF
+[lulus] Daftar perizinan menyediakan empty state
+[lulus] Data lama tanpa pelaku ditampilkan sebagai Data warisan
+[lulus] bootstrap menyediakan capabilities()
+[lulus] bootstrap menyediakan portal_guard()
+[lulus] bootstrap menyediakan izin_service()
+[lulus] bootstrap menyediakan pembimbing_service()
+[lulus] bootstrap menyediakan perizinan_account_service()
+[lulus] Helper V1 teacher_api_service() dipertahankan
+[lulus] Helper V1 report_service() dipertahankan
+[lulus] Helper V1 schedule_service() dipertahankan
+[lulus] Helper V1 master_data_service() dipertahankan
+[lulus] Helper V1 api_auth_service() dipertahankan
+[lulus] Rute API V1 dipertahankan: '/auth/login'
+[lulus] Rute API V1 dipertahankan: '/profile'
+[lulus] Rute API V1 dipertahankan: '/auth/logout'
+[lulus] Rute API V1 dipertahankan: '/schedules/today'
+[lulus] Rute API V1 dipertahankan: '/schedules'
+[lulus] Rute API V1 dipertahankan: '/meetings'
+[lulus] Rute API V1 dipertahankan: '/reports'
+[lulus] Rute API V1 dipertahankan: '/reports/filters'
+[lulus] Rute API V1 dipertahankan: '/reports/print'
+[lulus] Rute API V1 dipertahankan: #^/schedules/(\d+)$#
+[lulus] Rute API V1 dipertahankan: #^/schedules/(\d+)/meetings$#
+[lulus] Rute API V1 dipertahankan: #^/meetings/(\d+)(?:/attendance)?$#
+[lulus] Rute API V1 dipertahankan: #^/meetings/(\d+)/attendance$#
+[lulus] Rute API V1 dipertahankan: #^/reports/meetings/(\d+)$#
+[lulus] Endpoint jadwal/laporan V1 tetap dijaga penjaga role admin/guru yang sama
+[lulus] Alur login memakai satu sumber kebenaran dan seluruh peran mendarat di beranda tunggal
+[lulus] Pintasan beranda dihitung dari capability nyata, bukan dari nama role
+[lulus] Akun pengurus/orang tua diarahkan ke beranda setelah mengganti password awal
+[lulus] Modul izin lama belum dihapus (baru dipensiunkan pada Fase 2 setelah persetujuan)
+[lulus] Skrip tersedia: bin/v2_phase1_preflight.php
+[lulus] v2_phase1_preflight.php hanya dapat dijalankan dari CLI
+[lulus] Skrip tersedia: bin/v2_phase1_backfill.php
+[lulus] v2_phase1_backfill.php hanya dapat dijalankan dari CLI
+[lulus] Skrip tersedia: bin/v2_phase1_verify.php
+[lulus] v2_phase1_verify.php hanya dapat dijalankan dari CLI
+[lulus] Preflight memblokir migrasi bila ada relasi izin yatim
+[lulus] Preflight menghasilkan backup, manifest jumlah baris, dan inventaris skema
+[lulus] Verifikasi membandingkan ID pengajuan lama sebelum dan sesudah migrasi
+[lulus] Dokumentasi tersedia: docs/phase-v2-1/inventory.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-1/migration-and-rollback.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-1/acceptance-status.md
+[lulus] Runbook memuat preflight, migrasi naik, verifikasi, dan petunjuk rollback
+[lulus] php -l lulus untuk app/Auth/Capabilities.php
+[lulus] php -l lulus untuk app/Auth/PortalGuard.php
+[lulus] php -l lulus untuk app/bootstrap.php
+[lulus] php -l lulus untuk app/Izin/IzinException.php
+[lulus] php -l lulus untuk app/Izin/IzinRepository.php
+[lulus] php -l lulus untuk app/Izin/IzinService.php
+[lulus] php -l lulus untuk app/Izin/PembimbingRepository.php
+[lulus] php -l lulus untuk app/Izin/PembimbingService.php
+[lulus] php -l lulus untuk app/Account/PerizinanAccountRepository.php
+[lulus] php -l lulus untuk app/Account/PerizinanAccountService.php
+[lulus] php -l lulus untuk admin/admin_pembimbing.php
+[lulus] php -l lulus untuk admin/admin_akun_perizinan.php
+[lulus] php -l lulus untuk admin/cek_login.php
+[lulus] php -l lulus untuk admin/admin_login.php
+[lulus] php -l lulus untuk admin/logout.php
+[lulus] php -l lulus untuk admin/sidebar.php
+[lulus] php -l lulus untuk portal/_guard.php
+[lulus] php -l lulus untuk portal/_ui.php
+[lulus] php -l lulus untuk portal/index.php
+[lulus] php -l lulus untuk portal/izin.php
+[lulus] php -l lulus untuk portal/izin_detail.php
+[lulus] php -l lulus untuk bin/v2_phase1_preflight.php
+[lulus] php -l lulus untuk bin/v2_phase1_backfill.php
+[lulus] php -l lulus untuk bin/v2_phase1_verify.php

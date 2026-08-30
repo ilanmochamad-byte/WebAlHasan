@@ -10,13 +10,46 @@ use DateTimeZone;
 
 final class ReportService
 {
+    public const CSV_MAX_ROWS = 20000;
+
     public function __construct(private ReportRepository $repository, private string $timezone)
     {
     }
 
-    public function report(array $input, array $user): array
+    /** A-09: fitur penyajian web tidak mengubah kontrak API aplikasi V1. */
+    public function apiReport(array $input, array $user): array
     {
-        $filter = ReportFilter::fromInput($input, $this->timezone)->forUser($user);
+        unset($input['subject_scope']);
+        return $this->legacyApiShape($this->report($input, $user, ReportFilter::SCOPE_GABUNGAN));
+    }
+
+    public function apiPrintRows(array $input, array $user): array
+    {
+        unset($input['subject_scope']);
+        return $this->legacyApiShape($this->exportRows($input, $user, ReportFilter::SCOPE_GABUNGAN));
+    }
+
+    public function apiOptions(array $user): array
+    {
+        $options = $this->options($user);
+        unset($options['subject_scopes']);
+        return $options;
+    }
+
+    private function legacyApiShape(array $report): array
+    {
+        unset($report['filters']['subject_scope'], $report['active_filters']['Penyajian']);
+        return $report;
+    }
+
+    /**
+     * @param string $defaultScope Penyajian awal bila pemanggil tidak mengirim
+     *        `subject_scope`. Halaman web mengirim `santri`; REST API memakai
+     *        default lama `gabungan` agar kontraknya tidak berubah.
+     */
+    public function report(array $input, array $user, string $defaultScope = ReportFilter::DEFAULT_SCOPE_API): array
+    {
+        $filter = ReportFilter::fromInput($input, $this->timezone, $defaultScope)->forUser($user);
         $summary = $this->normalizeSummary($this->repository->summary($filter));
         $rows = array_map([$this, 'normalizeRow'], $this->repository->page($filter));
         return [
@@ -29,21 +62,36 @@ final class ReportService
         ];
     }
 
-    public function dashboardSummary(array $input, array $user): array
+    public function dashboardSummary(array $input, array $user, string $defaultScope = ReportFilter::DEFAULT_SCOPE_API): array
     {
-        $filter = ReportFilter::fromInput($input, $this->timezone)->forUser($user);
+        $filter = ReportFilter::fromInput($input, $this->timezone, $defaultScope)->forUser($user);
         return [
             'summary' => $this->normalizeSummary($this->repository->summary($filter)),
             'filters' => $filter->toArray(),
         ];
     }
 
-    public function exportRows(array $input, array $user): array
+    public function exportCsvRows(array $input, array $user, string $defaultScope = ReportFilter::SCOPE_SANTRI): array
     {
-        $filter = ReportFilter::fromInput($input, $this->timezone)->forUser($user);
+        return $this->exportRows($input, $user, $defaultScope, self::CSV_MAX_ROWS);
+    }
+
+    public function exportRows(array $input, array $user, string $defaultScope = ReportFilter::DEFAULT_SCOPE_API, ?int $maxRows = null): array
+    {
+        $filter = ReportFilter::fromInput($input, $this->timezone, $defaultScope)->forUser($user);
+        $summary = $this->normalizeSummary($this->repository->summary($filter));
+        if ($maxRows !== null && $summary['detail_count'] > $maxRows) {
+            throw new ApiException('EXPORT_TOO_LARGE', 'Ekspor CSV maksimal 20.000 baris. Persempit filter laporan.', 422);
+        }
+        // Baca paling banyak batas+1 untuk CSV. Pemeriksaan kedua menjaga
+        // batas bila absensi baru masuk sesudah query ringkasan.
+        $rows = $this->repository->allRows($filter, $maxRows === null ? null : $maxRows + 1);
+        if ($maxRows !== null && count($rows) > $maxRows) {
+            throw new ApiException('EXPORT_TOO_LARGE', 'Ekspor CSV maksimal 20.000 baris. Persempit filter laporan.', 422);
+        }
         return [
-            'summary' => $this->normalizeSummary($this->repository->summary($filter)),
-            'items' => array_map([$this, 'normalizeRow'], $this->repository->allRows($filter)),
+            'summary' => $summary,
+            'items' => array_map([$this, 'normalizeRow'], $rows),
             'filters' => $filter->toArray(),
             'active_filters' => $this->describeFilters($filter, $user),
             'generated_at' => (new DateTimeImmutable('now', new DateTimeZone($this->timezone)))->format('Y-m-d H:i:s T'),
@@ -84,6 +132,12 @@ final class ReportService
                 ),
             ], $options['schedules']),
             'statuses' => ReportFilter::STATUSES,
+            // Aditif: pilihan penyajian laporan (koreksi ke-5).
+            'subject_scopes' => [
+                ['value' => ReportFilter::SCOPE_SANTRI, 'label' => 'Santri'],
+                ['value' => ReportFilter::SCOPE_GURU, 'label' => 'Guru'],
+                ['value' => ReportFilter::SCOPE_GABUNGAN, 'label' => 'Gabungan (santri dan guru)'],
+            ],
         ];
     }
 
@@ -156,9 +210,9 @@ final class ReportService
         ];
     }
 
-    public function explain(array $input, array $user): array
+    public function explain(array $input, array $user, string $defaultScope = ReportFilter::DEFAULT_SCOPE_API): array
     {
-        $filter = ReportFilter::fromInput($input, $this->timezone)->forUser($user);
+        $filter = ReportFilter::fromInput($input, $this->timezone, $defaultScope)->forUser($user);
         return $this->repository->explainPage($filter);
     }
 
@@ -166,6 +220,7 @@ final class ReportService
     {
         $descriptions = [
             'Rentang tanggal' => $filter->dateFrom . ' s.d. ' . $filter->dateTo,
+            'Penyajian' => $filter->scopeLabel(),
             'Status' => $filter->status ?? 'Semua status',
         ];
         $options = $this->options($user);

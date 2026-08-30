@@ -1,0 +1,63 @@
+=== A. Regresi V1 dan V2 yang sudah ada ===
+--- Statis ---
+tests/phase1_static.php                        LULUS   (71 pemeriksaan)
+tests/phase2_static.php                        LULUS   (46 pemeriksaan)
+tests/phase3_static.php                        LULUS   (35 pemeriksaan)
+tests/phase4_static.php                        LULUS   (38 pemeriksaan)
+tests/phase5_static.php                        LULUS   (44 pemeriksaan)
+tests/v2_phase1_static.php                     LULUS   (127 pemeriksaan)
+tests/v2_phase2_static.php                     LULUS   (174 pemeriksaan)
+tests/v2_phase3_static.php                     LULUS   (147 pemeriksaan)
+tests/v2_phase4_static.php                     GAGAL
+[gagal] Berkas mobile Fase 4 tersedia: src/app/(app)/(notifikasi)/notifikasi.tsx
+[gagal] Layar notifikasi menyediakan LoadingState
+[gagal] Layar notifikasi menyediakan EmptyState
+[gagal] Layar notifikasi menyediakan ErrorState
+[gagal] Layar notifikasi menyediakan Tandai semua dibaca
+[gagal] Layar notifikasi menyediakan Halaman
+[gagal] Tab notifikasi menampilkan lencana jumlah belum dibaca
+- Layar notifikasi menyediakan Tandai semua dibaca
+- Layar notifikasi menyediakan Halaman
+- Tab notifikasi menampilkan lencana jumlah belum dibaca
+tests/v2_phase5_static.php                     LULUS   (272 pemeriksaan)
+tests/v2_phase5_cetak_pdf.php                  LULUS   (76 pemeriksaan)
+--- Integrasi regresi V1 ---
+tests/phase2_integration.php                   LULUS   (12 pemeriksaan)
+tests/phase3_integration.php                   LULUS   (10 pemeriksaan)
+tests/phase4_integration.php                   LULUS   (14 pemeriksaan)
+tests/phase5_integration.php                   LULUS   (20 pemeriksaan)
+--- Integrasi regresi V2 Fase 1-2 ---
+tests/v2_phase1_integration.php                LULUS   (39 pemeriksaan)
+tests/v2_phase2_integration.php                LULUS   (94 pemeriksaan)
+tests/v2_phase2_navigasi_murobi.php            LULUS   (40 pemeriksaan)
+tests/v2_phase2_web_smoke.php                  LULUS   (36 pemeriksaan)
+--- Kontrak API Fase 3 ---
+tests/v2_phase3_api_contract.php               LULUS   (116 pemeriksaan)
+--- Fase 4: notifikasi, push, WhatsApp ---
+tests/v2_phase4_integration.php                LULUS   (122 pemeriksaan)
+tests/v2_phase4_api_contract.php               LULUS   (92 pemeriksaan)
+tests/v2_phase4_concurrency.php                LULUS   (20 pemeriksaan)
+tests/v2_phase4_web_smoke.php                  LULUS   (46 pemeriksaan)
+--- Fase 5: laporan, cetak, ekspor, receipt ---
+tests/v2_phase5_integration.php                LULUS   (143 pemeriksaan)
+tests/v2_phase5_api_contract.php               LULUS   (150 pemeriksaan)
+tests/v2_phase5_web_smoke.php                  LULUS   (79 pemeriksaan)
+tests/v2_phase5_performance.php                LULUS   (12 pemeriksaan)
+
+Total pemeriksaan lulus: 2075
+TERDAPAT 1 BERKAS PENGUJIAN YANG GAGAL.
+
+=== B. Pengujian paket perapihan V1-V2 ===
+tests/perapihan_static.php                       LULUS   (132 pemeriksaan)
+tests/perapihan_integration.php                  LULUS   (53 pemeriksaan)
+tests/perapihan_akun_concurrency.php             LULUS   (7 pemeriksaan)
+tests/perapihan_web_smoke.php                    LULUS   (56 pemeriksaan)
+
+Pemeriksaan paket perapihan yang lulus: 248
+PERHATIAN: rangkaian regresi V1/V2 melaporkan kegagalan — periksa keluaran bagian A.
+
+BELUM DICAKUP OLEH SKRIP INI:
+  - uji browser 1440/768/390 px  : node tests/browser/uji-perapihan.mjs
+  - Safari fisik (macOS/iOS)     : belum diuji, lihat uji-tertunda.md
+  - push dan WhatsApp perangkat  : di luar cakupan paket ini
+  - migrasi dan cron produksi    : dijalankan manusia, bukan di sini

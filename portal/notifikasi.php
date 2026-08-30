@@ -73,7 +73,7 @@ try {
 $filterAktif = (string) ($data['filters']['status'] ?? 'semua');
 $belumDibaca = (int) ($data['jumlah_belum_dibaca'] ?? 0);
 $modeAktif = $userCapabilities[0] ?? '';
-portal_header('Notifikasi', $userCapabilities, $modeAktif, $currentUser);
+portal_header('Notifikasi', $userCapabilities, $modeAktif, $currentUser, ['show_heading' => false]);
 ?>
 <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4">
     <div>

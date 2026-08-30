@@ -1,0 +1,199 @@
+=== BAGIAN A. Penomoran halaman deterministik (tanpa peramban) ===
+[lulus] A1 Dokumen tanpa baris tetap menghasilkan satu lembar
+[lulus] A2 Satu baris melebihi anggaran tetap dimuat pada satu lembar
+[lulus] A3 Lembar lanjutan memiliki anggaran lebih besar daripada lembar pertama
+[lulus] A4 Kolom lebih sempit membutuhkan baris teks lebih banyak atau sama
+[lulus] A5 Sel kosong tetap dihitung satu baris
+[lulus] A6 Penanda <br> dihitung sebagai pemisah baris yang pasti
+[lulus] A6b Pemecahan teks panjang tidak membuang isi dan menghormati batas fragmen
+
+--- A7. Laporan perizinan V2 ---
+[lulus] A7 Perizinan 3 baris menghasilkan sekurang-kurangnya satu lembar (1)
+[lulus] A7 Perizinan 3 baris tidak memuat "Halaman 0"
+[lulus] A7 Perizinan 3 baris memuat tepat satu nomor halaman per lembar (1/1)
+[lulus] A7 Perizinan 3 baris bernomor berurutan 1..1 dengan total yang konsisten
+[lulus] A7 Perizinan 3 baris tidak memakai counter(page) maupun footer position:fixed
+[lulus] A7 Perizinan 3 baris memuat identitas pesantren
+[lulus] A8 Perizinan kosong menghasilkan sekurang-kurangnya satu lembar (1)
+[lulus] A8 Perizinan kosong tidak memuat "Halaman 0"
+[lulus] A8 Perizinan kosong memuat tepat satu nomor halaman per lembar (1/1)
+[lulus] A8 Perizinan kosong bernomor berurutan 1..1 dengan total yang konsisten
+[lulus] A8 Perizinan kosong tidak memakai counter(page) maupun footer position:fixed
+[lulus] A8 Perizinan kosong memuat identitas pesantren
+[lulus] A9 Perizinan 40 baris menghasilkan sekurang-kurangnya satu lembar (6)
+[lulus] A9 Perizinan 40 baris tidak memuat "Halaman 0"
+[lulus] A9 Perizinan 40 baris memuat tepat satu nomor halaman per lembar (6/6)
+[lulus] A9 Perizinan 40 baris bernomor berurutan 1..6 dengan total yang konsisten
+[lulus] A9 Perizinan 40 baris tidak memakai counter(page) maupun footer position:fixed
+[lulus] A9 Perizinan 40 baris memuat identitas pesantren
+[lulus] A9b Perizinan dengan alasan panjang maksimum menghasilkan sekurang-kurangnya satu lembar (5)
+[lulus] A9b Perizinan dengan alasan panjang maksimum tidak memuat "Halaman 0"
+[lulus] A9b Perizinan dengan alasan panjang maksimum memuat tepat satu nomor halaman per lembar (5/5)
+[lulus] A9b Perizinan dengan alasan panjang maksimum bernomor berurutan 1..5 dengan total yang konsisten
+[lulus] A9b Perizinan dengan alasan panjang maksimum tidak memakai counter(page) maupun footer position:fixed
+[lulus] A9b Perizinan dengan alasan panjang maksimum memuat identitas pesantren
+[lulus] A10 Perizinan 3 baris muat dalam satu lembar
+[lulus] A11 Perizinan kosong tetap satu lembar bernomor
+[lulus] A12 Perizinan 40 baris terpecah menjadi 6 lembar
+[lulus] A12b Alasan panjang maksimum dipecah menjadi baris lanjutan
+[lulus] A12c Awal dan akhir alasan izin/keputusan tetap dicetak tanpa kehilangan isi
+[lulus] A13 Identitas pesantren hadir pada setiap lembar
+[lulus] A14 Waktu pembuatan hadir pada setiap lembar
+[lulus] A15 Pembuat, filter aktif, ringkasan, dan keputusan tetap tersedia
+[lulus] A16 Judul kolom diulang pada setiap lembar
+[lulus] A17 Kesebelas kolom dirender pada setiap lembar
+[lulus] A18 Keempat puluh baris data dirender tepat sekali
+
+--- A19. Laporan absensi V1 ---
+[lulus] A19 Absensi 3 baris menghasilkan sekurang-kurangnya satu lembar (1)
+[lulus] A19 Absensi 3 baris tidak memuat "Halaman 0"
+[lulus] A19 Absensi 3 baris memuat tepat satu nomor halaman per lembar (1/1)
+[lulus] A19 Absensi 3 baris bernomor berurutan 1..1 dengan total yang konsisten
+[lulus] A19 Absensi 3 baris tidak memakai counter(page) maupun footer position:fixed
+[lulus] A19 Absensi 3 baris memuat identitas pesantren
+[lulus] A20 Absensi kosong menghasilkan sekurang-kurangnya satu lembar (1)
+[lulus] A20 Absensi kosong tidak memuat "Halaman 0"
+[lulus] A20 Absensi kosong memuat tepat satu nomor halaman per lembar (1/1)
+[lulus] A20 Absensi kosong bernomor berurutan 1..1 dengan total yang konsisten
+[lulus] A20 Absensi kosong tidak memakai counter(page) maupun footer position:fixed
+[lulus] A20 Absensi kosong memuat identitas pesantren
+[lulus] A21 Absensi 400 baris menghasilkan sekurang-kurangnya satu lembar (41)
+[lulus] A21 Absensi 400 baris tidak memuat "Halaman 0"
+[lulus] A21 Absensi 400 baris memuat tepat satu nomor halaman per lembar (41/41)
+[lulus] A21 Absensi 400 baris bernomor berurutan 1..41 dengan total yang konsisten
+[lulus] A21 Absensi 400 baris tidak memakai counter(page) maupun footer position:fixed
+[lulus] A21 Absensi 400 baris memuat identitas pesantren
+[lulus] A21b Absensi 36 baris berbentuk data produksi Safari menghasilkan sekurang-kurangnya satu lembar (3)
+[lulus] A21b Absensi 36 baris berbentuk data produksi Safari tidak memuat "Halaman 0"
+[lulus] A21b Absensi 36 baris berbentuk data produksi Safari memuat tepat satu nomor halaman per lembar (3/3)
+[lulus] A21b Absensi 36 baris berbentuk data produksi Safari bernomor berurutan 1..3 dengan total yang konsisten
+[lulus] A21b Absensi 36 baris berbentuk data produksi Safari tidak memakai counter(page) maupun footer position:fixed
+[lulus] A21b Absensi 36 baris berbentuk data produksi Safari memuat identitas pesantren
+[lulus] A22 Absensi 3 baris muat dalam satu lembar
+[lulus] A23 Absensi kosong tetap satu lembar bernomor
+[lulus] A24 Absensi 400 baris terpecah menjadi 41 lembar
+[lulus] A24b Absensi produksi 36 baris tetap tiga lembar logis setelah cadangan Safari
+[lulus] A24c Paginator Safari membagi 36 baris menjadi 10/13/13, bukan 10/14/12 yang mendorong footer (aktual 10/13/13)
+[lulus] A24d HTML mengunci penyesuaian ukuran teks agar WKWebView iOS tidak memperbesar tinggi baris
+[lulus] A24e Tinggi baris tabel eksplisit dan sejalan dengan anggaran paginator lintas mesin
+[lulus] A24f Viewport laporan mengikuti kontrak HTML expo-print SDK 57
+[lulus] A25 Keempat ratus baris absensi dirender tepat sekali
+[lulus] A26 Laporan absensi tetap memuat judul, pembuat, dan waktu pembuatan
+
+=== BAGIAN B. PDF sungguhan (Chromium) ===
+
+--- B. izin-1hal ---
+[lulus] B izin-1hal/css berhasil dirender menjadi PDF
+[lulus] B izin-1hal/css tidak memuat "Halaman 0"
+[lulus] B izin-1hal/css menghasilkan 1 halaman fisik = 1 lembar
+[lulus] B izin-1hal/css bernomor 1..1 berurutan, satu per halaman
+[lulus] B izin-1hal pada mesin yang menghormati @page menghasilkan A4 lanskap (841.9×595 pt)
+[lulus] B izin-1hal/css menjaga kata tetap utuh
+[lulus] B izin-1hal/css tidak memecah tanggal pada tanda hubung
+[lulus] B izin-1hal/lanskap berhasil dirender menjadi PDF
+[lulus] B izin-1hal/lanskap tidak memuat "Halaman 0"
+[lulus] B izin-1hal/lanskap menghasilkan 1 halaman fisik = 1 lembar
+[lulus] B izin-1hal/lanskap bernomor 1..1 berurutan, satu per halaman
+[lulus] B izin-1hal/lanskap menjaga kata tetap utuh
+[lulus] B izin-1hal/lanskap tidak memecah tanggal pada tanda hubung
+[lulus] B izin-1hal/potret berhasil dirender menjadi PDF
+[lulus] B izin-1hal/potret tidak memuat "Halaman 0"
+[lulus] B izin-1hal/potret menghasilkan 1 halaman fisik = 1 lembar
+[lulus] B izin-1hal/potret bernomor 1..1 berurutan, satu per halaman
+[lulus] B izin-1hal pada mesin yang mengabaikan @page benar-benar diuji sebagai potret
+[lulus] B izin-1hal/potret menjaga kata tetap utuh
+[lulus] B izin-1hal/potret tidak memecah tanggal pada tanda hubung
+
+--- B. izin-banyakhal ---
+[lulus] B izin-banyakhal/css berhasil dirender menjadi PDF
+[lulus] B izin-banyakhal/css tidak memuat "Halaman 0"
+[lulus] B izin-banyakhal/css menghasilkan 6 halaman fisik = 6 lembar
+[lulus] B izin-banyakhal/css bernomor 1..6 berurutan, satu per halaman
+[lulus] B izin-banyakhal pada mesin yang menghormati @page menghasilkan A4 lanskap (841.9×595 pt)
+[lulus] B izin-banyakhal/css menjaga kata tetap utuh
+[lulus] B izin-banyakhal/css tidak memecah tanggal pada tanda hubung
+[lulus] B izin-banyakhal/lanskap berhasil dirender menjadi PDF
+[lulus] B izin-banyakhal/lanskap tidak memuat "Halaman 0"
+[lulus] B izin-banyakhal/lanskap menghasilkan 6 halaman fisik = 6 lembar
+[lulus] B izin-banyakhal/lanskap bernomor 1..6 berurutan, satu per halaman
+[lulus] B izin-banyakhal/lanskap menjaga kata tetap utuh
+[lulus] B izin-banyakhal/lanskap tidak memecah tanggal pada tanda hubung
+[lulus] B izin-banyakhal/potret berhasil dirender menjadi PDF
+[lulus] B izin-banyakhal/potret tidak memuat "Halaman 0"
+[lulus] B izin-banyakhal/potret menghasilkan 6 halaman fisik = 6 lembar
+[lulus] B izin-banyakhal/potret bernomor 1..6 berurutan, satu per halaman
+[lulus] B izin-banyakhal pada mesin yang mengabaikan @page benar-benar diuji sebagai potret
+[lulus] B izin-banyakhal/potret menjaga kata tetap utuh
+[lulus] B izin-banyakhal/potret tidak memecah tanggal pada tanda hubung
+
+--- B. izin-baris-maksimum ---
+[lulus] B izin-baris-maksimum/css berhasil dirender menjadi PDF
+[lulus] B izin-baris-maksimum/css tidak memuat "Halaman 0"
+[lulus] B izin-baris-maksimum/css menghasilkan 5 halaman fisik = 5 lembar
+[lulus] B izin-baris-maksimum/css bernomor 1..5 berurutan, satu per halaman
+[lulus] B izin-baris-maksimum pada mesin yang menghormati @page menghasilkan A4 lanskap (841.9×595 pt)
+[lulus] B izin-baris-maksimum/css mempertahankan awal dan akhir seluruh alasan panjang
+[lulus] B izin-baris-maksimum/lanskap berhasil dirender menjadi PDF
+[lulus] B izin-baris-maksimum/lanskap tidak memuat "Halaman 0"
+[lulus] B izin-baris-maksimum/lanskap menghasilkan 5 halaman fisik = 5 lembar
+[lulus] B izin-baris-maksimum/lanskap bernomor 1..5 berurutan, satu per halaman
+[lulus] B izin-baris-maksimum/lanskap mempertahankan awal dan akhir seluruh alasan panjang
+[lulus] B izin-baris-maksimum/potret berhasil dirender menjadi PDF
+[lulus] B izin-baris-maksimum/potret tidak memuat "Halaman 0"
+[lulus] B izin-baris-maksimum/potret menghasilkan 5 halaman fisik = 5 lembar
+[lulus] B izin-baris-maksimum/potret bernomor 1..5 berurutan, satu per halaman
+[lulus] B izin-baris-maksimum pada mesin yang mengabaikan @page benar-benar diuji sebagai potret
+[lulus] B izin-baris-maksimum/potret mempertahankan awal dan akhir seluruh alasan panjang
+
+--- B. absensi-1hal ---
+[lulus] B absensi-1hal/css berhasil dirender menjadi PDF
+[lulus] B absensi-1hal/css tidak memuat "Halaman 0"
+[lulus] B absensi-1hal/css menghasilkan 1 halaman fisik = 1 lembar
+[lulus] B absensi-1hal/css bernomor 1..1 berurutan, satu per halaman
+[lulus] B absensi-1hal pada mesin yang menghormati @page menghasilkan A4 lanskap (841.9×595 pt)
+[lulus] B absensi-1hal/lanskap berhasil dirender menjadi PDF
+[lulus] B absensi-1hal/lanskap tidak memuat "Halaman 0"
+[lulus] B absensi-1hal/lanskap menghasilkan 1 halaman fisik = 1 lembar
+[lulus] B absensi-1hal/lanskap bernomor 1..1 berurutan, satu per halaman
+[lulus] B absensi-1hal/potret berhasil dirender menjadi PDF
+[lulus] B absensi-1hal/potret tidak memuat "Halaman 0"
+[lulus] B absensi-1hal/potret menghasilkan 1 halaman fisik = 1 lembar
+[lulus] B absensi-1hal/potret bernomor 1..1 berurutan, satu per halaman
+[lulus] B absensi-1hal pada mesin yang mengabaikan @page benar-benar diuji sebagai potret
+
+--- B. absensi-safari-36baris ---
+[lulus] B absensi-safari-36baris/css berhasil dirender menjadi PDF
+[lulus] B absensi-safari-36baris/css tidak memuat "Halaman 0"
+[lulus] B absensi-safari-36baris/css menghasilkan 3 halaman fisik = 3 lembar
+[lulus] B absensi-safari-36baris/css bernomor 1..3 berurutan, satu per halaman
+[lulus] B absensi-safari-36baris pada mesin yang menghormati @page menghasilkan A4 lanskap (841.9×595 pt)
+[lulus] B absensi-safari-36baris/lanskap berhasil dirender menjadi PDF
+[lulus] B absensi-safari-36baris/lanskap tidak memuat "Halaman 0"
+[lulus] B absensi-safari-36baris/lanskap menghasilkan 3 halaman fisik = 3 lembar
+[lulus] B absensi-safari-36baris/lanskap bernomor 1..3 berurutan, satu per halaman
+[lulus] B absensi-safari-36baris/potret berhasil dirender menjadi PDF
+[lulus] B absensi-safari-36baris/potret tidak memuat "Halaman 0"
+[lulus] B absensi-safari-36baris/potret menghasilkan 3 halaman fisik = 3 lembar
+[lulus] B absensi-safari-36baris/potret bernomor 1..3 berurutan, satu per halaman
+[lulus] B absensi-safari-36baris pada mesin yang mengabaikan @page benar-benar diuji sebagai potret
+
+--- B. absensi-banyakhal ---
+[lulus] B absensi-banyakhal/css berhasil dirender menjadi PDF
+[lulus] B absensi-banyakhal/css tidak memuat "Halaman 0"
+[lulus] B absensi-banyakhal/css menghasilkan 41 halaman fisik = 41 lembar
+[lulus] B absensi-banyakhal/css bernomor 1..41 berurutan, satu per halaman
+[lulus] B absensi-banyakhal pada mesin yang menghormati @page menghasilkan A4 lanskap (841.9×595 pt)
+[lulus] B absensi-banyakhal/lanskap berhasil dirender menjadi PDF
+[lulus] B absensi-banyakhal/lanskap tidak memuat "Halaman 0"
+[lulus] B absensi-banyakhal/lanskap menghasilkan 41 halaman fisik = 41 lembar
+[lulus] B absensi-banyakhal/lanskap bernomor 1..41 berurutan, satu per halaman
+[lulus] B absensi-banyakhal/potret berhasil dirender menjadi PDF
+[lulus] B absensi-banyakhal/potret tidak memuat "Halaman 0"
+[lulus] B absensi-banyakhal/potret menghasilkan 41 halaman fisik = 41 lembar
+[lulus] B absensi-banyakhal/potret bernomor 1..41 berurutan, satu per halaman
+[lulus] B absensi-banyakhal pada mesin yang mengabaikan @page benar-benar diuji sebagai potret
+
+PDF pembanding tersimpan di: /tmp/webalhasan-ui-audit/pdf
+
+=== Ringkasan ===
+Seluruh pemeriksaan cetak/PDF yang dapat dijalankan LULUS.

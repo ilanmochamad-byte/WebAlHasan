@@ -1,0 +1,20 @@
+[lulus] HTTP login sbx_admin
+[lulus] HTTP login sbx_guru_biasa
+[lulus] HTTP JSON wali ditolak sbx_guru_biasa
+[lulus] HTTP login sbx_murobi_a
+[lulus] HTTP JSON wali ditolak sbx_murobi_a
+[lulus] HTTP login sbx_pengurus_a
+[lulus] HTTP JSON wali ditolak sbx_pengurus_a
+[lulus] HTTP login sbx_ortu_a
+[lulus] HTTP JSON wali ditolak sbx_ortu_a
+[lulus] HTTP partial _pengajian_jadwal.php 404 anonim/admin
+[lulus] HTTP partial _pengajian_pertemuan.php 404 anonim/admin
+[lulus] HTTP partial _santri_wali_field.php 404 anonim/admin
+[lulus] HTTP POST lama admin_jadwal_ngaji.php ditolak CSRF tanpa redirect (419 sesuai kontrak Csrf)
+[lulus] HTTP POST lama pertemuan_pengajian.php ditolak CSRF tanpa redirect (419 sesuai kontrak Csrf)
+[lulus] HTTP POST lama admin_akun_perizinan.php ditolak CSRF tanpa redirect (419 sesuai kontrak Csrf)
+[lulus] HTTP guru tidak dapat POST jadwal /admin/admin_pengajian.php?tab=jadwal
+[lulus] HTTP guru tidak dapat POST jadwal /admin/admin_jadwal_ngaji.php
+[lulus] A-04 identitas santri dipertahankan saat validasi gagal
+[lulus] A-04 nama/HP/alamat wali dipertahankan saat validasi gagal
+[lulus] A-04 mode wali dipertahankan saat validasi gagal

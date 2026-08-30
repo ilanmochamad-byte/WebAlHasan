@@ -18,6 +18,34 @@ final class MasterDataRepository
         return $this->db;
     }
 
+    public function classesPage(string $q, int $page): array
+    {
+        return \App\Database\PageQuery::fetch($this->db, 'SELECT * FROM kelas', [], 'jenjang, nama_kelas, id', $page, $q, ['nama_kelas', 'jenjang']);
+    }
+
+    public function yearsPage(string $q, int $page): array
+    {
+        return \App\Database\PageQuery::fetch($this->db, 'SELECT * FROM tahun_ajaran', [], 'tahun DESC, semester DESC, id DESC', $page, $q, ['tahun', 'semester', 'status']);
+    }
+
+    public function murobiPage(string $q, int $page): array
+    {
+        $sql = "SELECT ma.*, g.nama_guru, ta.tahun, ta.semester, COALESCE(km.nama_kamar, k.nama_kelas) target_name FROM murobi_assignments ma JOIN guru g ON g.id = ma.guru_id JOIN tahun_ajaran ta ON ta.id = ma.tahun_ajaran_id LEFT JOIN kamar km ON km.id = ma.kamar_id LEFT JOIN kelas k ON k.id = ma.kelas_id";
+        return \App\Database\PageQuery::fetch($this->db, $sql, [], 'archived_at IS NOT NULL, tahun DESC, nama_guru, id', $page, $q, ['nama_guru', 'tahun', 'semester', 'target_name']);
+    }
+
+    public function roomsPage(string $q, int $page, int $yearId): array
+    {
+        $sql = 'SELECT km.*, (SELECT COUNT(*) FROM plotting_kamar pk WHERE pk.id_kamar = km.id AND pk.id_tahun = ?) terisi FROM kamar km';
+        return \App\Database\PageQuery::fetch($this->db, $sql, [$yearId], 'nama_kamar, id', $page, $q, ['nama_kamar']);
+    }
+
+    public function roomOccupantsPage(int $roomId, int $yearId, string $q, int $page): array
+    {
+        $sql = 'SELECT pk.id, s.nis, s.nama_santri, s.jenis_kelamin, s.sekolah_saat_ini FROM plotting_kamar pk JOIN santri s ON s.id = pk.id_santri WHERE pk.id_kamar = ? AND pk.id_tahun = ?';
+        return \App\Database\PageQuery::fetch($this->db, $sql, [$roomId, $yearId], 'nama_santri, id', $page, $q, ['nis', 'nama_santri', 'sekolah_saat_ini']);
+    }
+
     public function guruList(array $filters, int $page, int $perPage): array
     {
         [$where, $params] = $this->masterWhere($filters, ['nama_guru', 'nip', 'no_hp']);
@@ -33,20 +61,65 @@ final class MasterDataRepository
         return $this->one('SELECT * FROM guru WHERE id = ?', [$id]);
     }
 
+    /**
+     * Kolom `status` lama ('Guru'|'Pembimbing'|'Keduanya') TIDAK dihapus dari
+     * skema. Sejak koreksi ke-3 (30 Agustus 2026) ia bukan lagi pilihan
+     * operasional: guru baru selalu dibuat dengan nilai default 'Guru' agar
+     * kolom NOT NULL tetap valid.
+     */
     public function guruCreate(array $data): int
     {
         return $this->insert(
             'INSERT INTO guru (nip, nama_guru, no_hp, status, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, 1, NOW(), NOW())',
-            [$data['nip'] ?: null, $data['nama_guru'], $data['no_hp'] ?: null, $data['status']]
+            [$data['nip'] ?: null, $data['nama_guru'], $data['no_hp'] ?: null, $data['status'] ?? 'Guru']
         );
     }
 
+    /**
+     * Pembaruan identitas guru SENGAJA tidak menyentuh kolom `status`.
+     *
+     * Menyimpan formulir guru tidak boleh diam-diam mengubah nilai tugas lama
+     * ('Pembimbing'/'Keduanya') menjadi 'Guru'. Data historis dipertahankan
+     * sampai strategi kompatibilitasnya diverifikasi.
+     */
     public function guruUpdate(int $id, array $data): void
     {
         $this->execute(
-            'UPDATE guru SET nip = ?, nama_guru = ?, no_hp = ?, status = ?, updated_at = NOW() WHERE id = ?',
-            [$data['nip'] ?: null, $data['nama_guru'], $data['no_hp'] ?: null, $data['status'], $id]
+            'UPDATE guru SET nip = ?, nama_guru = ?, no_hp = ?, updated_at = NOW() WHERE id = ?',
+            [$data['nip'] ?: null, $data['nama_guru'], $data['no_hp'] ?: null, $id]
         );
+    }
+
+    /**
+     * Ringkasan penugasan nyata seorang guru.
+     *
+     * Sumbernya bukan kolom `status` lama, melainkan data operasional:
+     *   - mengajar : jumlah jadwal aktif pada semester aktif (jadwal_ngaji);
+     *   - murobi   : jumlah penugasan murobi aktif (murobi_assignments).
+     *
+     * @return array{jadwal_aktif:int, murobi_aktif:int}
+     */
+    public function guruAssignmentSummary(int $guruId): array
+    {
+        $row = $this->one(
+            "SELECT
+                (SELECT COUNT(*) FROM jadwal_ngaji j
+                   JOIN tahun_ajaran ta ON ta.id = j.id_tahun
+                  WHERE j.id_guru = ? AND j.is_active = 1 AND j.archived_at IS NULL
+                    AND ta.status = 'Aktif' AND ta.archived_at IS NULL) AS jadwal_aktif,
+                (SELECT COUNT(*) FROM murobi_assignments ma
+                   JOIN tahun_ajaran ta2 ON ta2.id = ma.tahun_ajaran_id
+                  WHERE ma.guru_id = ? AND ma.is_active = 1 AND ma.archived_at IS NULL
+                    AND ma.tanggal_mulai <= CURDATE()
+                    AND (ma.tanggal_selesai IS NULL OR ma.tanggal_selesai >= CURDATE())
+                    AND ta2.status = 'Aktif' AND ta2.archived_at IS NULL) AS murobi_aktif",
+            [$guruId, $guruId]
+        );
+
+        return [
+            'jadwal_aktif' => (int) ($row['jadwal_aktif'] ?? 0),
+            'murobi_aktif' => (int) ($row['murobi_aktif'] ?? 0),
+        ];
     }
 
     public function guruSetState(int $id, bool $active, bool $archive): void
@@ -284,9 +357,18 @@ final class MasterDataRepository
         return $this->all('SELECT * FROM kamar ORDER BY nama_kamar, id');
     }
 
-    public function kamarFind(int $id): ?array
+    public function kamarFind(int $id, bool $forUpdate = false): ?array
     {
-        return $this->one('SELECT * FROM kamar WHERE id = ?', [$id]);
+        return $this->one('SELECT * FROM kamar WHERE id = ?' . ($forUpdate ? ' FOR UPDATE' : ''), [$id]);
+    }
+
+    public function kamarSave(array $data, ?int $id): int
+    {
+        if ($id === null) {
+            return $this->insert('INSERT INTO kamar (nama_kamar, kapasitas) VALUES (?, ?)', [$data['nama_kamar'], $data['kapasitas']]);
+        }
+        $this->execute('UPDATE kamar SET nama_kamar = ?, kapasitas = ? WHERE id = ?', [$data['nama_kamar'], $data['kapasitas'], $id]);
+        return $id;
     }
 
     public function guruOptions(): array
@@ -317,6 +399,297 @@ final class MasterDataRepository
             $params[] = (int) $filters['kelas_id'];
         }
         return $this->all("SELECT DISTINCT s.id, s.nis, s.nama_santri, s.jenis_kelamin, s.tempat_lahir, s.tgl_lahir, s.alamat, s.desa, s.kecamatan, s.kab_kota, s.provinsi, s.asal_sekolah, s.sekolah_saat_ini, s.is_active, s.archived_at, k.nama_kelas FROM santri s LEFT JOIN plotting_kelas pk ON pk.id_santri = s.id AND pk.status = 'Aktif' AND pk.id_tahun = (SELECT id FROM tahun_ajaran WHERE status = 'Aktif' AND archived_at IS NULL LIMIT 1) LEFT JOIN kelas k ON k.id = pk.id_kelas " . $where . ' ORDER BY s.nama_santri, s.id', $params);
+    }
+
+    // -----------------------------------------------------------------------
+    // Koreksi ke-2 (30 Agustus 2026): identitas wali sebagai sumber utama.
+    //
+    // Seluruh metode di bawah bekerja pada relasi `santri_wali` yang sudah ada.
+    // Tidak ada satu pun yang menebak identitas dari nama atau nomor HP:
+    // pencarian hanya menghasilkan KANDIDAT untuk dipilih admin.
+    // -----------------------------------------------------------------------
+
+    /**
+     * Kandidat wali untuk dipilih pada formulir santri.
+     *
+     * Nama dan nomor HP hanyalah petunjuk pencarian. Nomor HP SENGAJA tidak
+     * unik: satu nomor boleh dipakai beberapa wali.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function waliSearch(string $q, int $limit = 20): array
+    {
+        $q = trim($q);
+        $params = [];
+        $where = 'w.is_active = 1 AND w.archived_at IS NULL AND w.merged_into_wali_id IS NULL';
+        if ($q !== '') {
+            $where .= ' AND (w.nama LIKE ? OR w.no_hp LIKE ?)';
+            $like = '%' . $q . '%';
+            $params[] = $like;
+            $params[] = $like;
+        }
+        $params[] = max(1, min(200, $limit));
+
+        return $this->all(
+            "SELECT w.id, w.nama, w.no_hp, w.alamat,
+                    (SELECT COUNT(*) FROM santri_wali sw WHERE sw.wali_id = w.id AND sw.archived_at IS NULL) AS jumlah_santri,
+                    (SELECT GROUP_CONCAT(CONCAT(s.nama_santri, ' (', sw.hubungan, ')') ORDER BY s.nama_santri SEPARATOR ', ')
+                       FROM santri_wali sw JOIN santri s ON s.id = sw.santri_id
+                      WHERE sw.wali_id = w.id AND sw.archived_at IS NULL) AS santri
+               FROM wali w
+              WHERE " . $where . ' ORDER BY w.nama, w.id LIMIT ?',
+            $params
+        );
+    }
+
+    public function waliActiveFind(int $id): ?array
+    {
+        return $this->one(
+            'SELECT * FROM wali WHERE id = ? AND is_active = 1 AND archived_at IS NULL AND merged_into_wali_id IS NULL',
+            [$id]
+        );
+    }
+
+    /**
+     * Relasi wali aktif milik satu santri (sumber utama identitas orang tua).
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function santriWaliRelations(int $santriId, bool $activeOnly = true): array
+    {
+        return $this->all(
+            'SELECT sw.id, sw.wali_id, sw.hubungan, sw.is_primary, sw.archived_at, sw.created_at,
+                    w.nama, w.no_hp, w.alamat, w.is_active AS wali_aktif, w.merged_into_wali_id,
+                    (SELECT COUNT(*) FROM santri_wali sw2 WHERE sw2.wali_id = w.id AND sw2.archived_at IS NULL) AS jumlah_santri
+               FROM santri_wali sw
+               JOIN wali w ON w.id = sw.wali_id
+              WHERE sw.santri_id = ?' . ($activeOnly ? ' AND sw.archived_at IS NULL' : '')
+            . ' ORDER BY sw.archived_at IS NOT NULL, FIELD(sw.hubungan, ' . "'Ayah','Ibu'" . '), sw.id',
+            [$santriId]
+        );
+    }
+
+    public function santriRelationByHubungan(int $santriId, string $hubungan): ?array
+    {
+        return $this->one(
+            'SELECT sw.id, sw.wali_id, sw.hubungan, sw.is_primary, w.nama, w.no_hp
+               FROM santri_wali sw JOIN wali w ON w.id = sw.wali_id
+              WHERE sw.santri_id = ? AND sw.hubungan = ? AND sw.archived_at IS NULL
+              ORDER BY sw.id LIMIT 1',
+            [$santriId, $hubungan]
+        );
+    }
+
+    /**
+     * Menulis kembali cermin kolom lama ayah/ibu dari identitas wali yang
+     * dikonfirmasi admin.
+     *
+     * Kolom lama TIDAK dihapus dan tidak punya sumber pengeditan kedua: ia
+     * hanya ditulis dari sini, mengikuti relasi wali yang sudah disetujui.
+     */
+    public function santriMirrorParent(int $santriId, string $role, ?string $nama, ?string $noHp): void
+    {
+        $kolomNama = $role === 'Ayah' ? 'nama_ayah' : 'nama_ibu';
+        $kolomHp = $role === 'Ayah' ? 'no_hp_ayah' : 'no_hp_ibu';
+        $this->execute(
+            'UPDATE santri SET ' . $kolomNama . ' = ?, ' . $kolomHp . ' = ?, updated_at = NOW() WHERE id = ?',
+            [$nama, $noHp, $santriId]
+        );
+    }
+
+    public function relationRepoint(int $relationId, int $targetWaliId): void
+    {
+        $this->execute(
+            'UPDATE santri_wali SET wali_id = ? WHERE id = ? AND archived_at IS NULL',
+            [$targetWaliId, $relationId]
+        );
+    }
+
+    public function relationArchiveById(int $relationId): void
+    {
+        $this->execute('UPDATE santri_wali SET archived_at = NOW() WHERE id = ? AND archived_at IS NULL', [$relationId]);
+    }
+
+    public function waliMarkMerged(int $sourceId, int $targetId): void
+    {
+        $this->execute(
+            'UPDATE wali SET merged_into_wali_id = ?, is_active = 0, archived_at = COALESCE(archived_at, NOW()), updated_at = NOW() WHERE id = ?',
+            [$targetId, $sourceId]
+        );
+    }
+
+    public function waliLockPair(int $a, int $b): void
+    {
+        $this->all('SELECT id FROM wali WHERE id IN (?, ?) FOR UPDATE', [$a, $b]);
+    }
+
+    /**
+     * Akun login yang terhubung ke satu wali, bila ada.
+     */
+    public function waliAccount(int $waliId): ?array
+    {
+        return $this->one('SELECT id, name, username, is_active FROM users WHERE wali_id = ? LIMIT 1', [$waliId]);
+    }
+
+    /**
+     * Kandidat duplikasi identitas wali.
+     *
+     * Pengelompokan hanyalah PETUNJUK: nama yang dinormalisasi sama, atau nomor
+     * HP yang sama dan tidak kosong. Sistem TIDAK menggabungkan apa pun secara
+     * otomatis — dua orang bernama sama tetap sah sebagai dua identitas
+     * berbeda, dan satu nomor HP boleh dipakai bersama.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function waliDuplicateCandidates(int $limit = 100): array
+    {
+        return $this->all($this->waliDuplicateCandidatesSql() . ' ORDER BY jumlah DESC, jenis, kunci LIMIT ?', [max(1, min(500, $limit))]);
+    }
+
+    private function waliDuplicateCandidatesSql(): string
+    {
+        return "SELECT k.kunci, k.jenis, COUNT(*) AS jumlah,
+                    GROUP_CONCAT(k.id ORDER BY k.id) AS wali_ids
+               FROM (
+                    SELECT w.id, LOWER(TRIM(w.nama)) AS kunci, 'nama' AS jenis
+                      FROM wali w
+                     WHERE w.archived_at IS NULL AND w.merged_into_wali_id IS NULL AND TRIM(w.nama) <> ''
+                    UNION ALL
+                    SELECT w.id, w.no_hp AS kunci, 'no_hp' AS jenis
+                      FROM wali w
+                     WHERE w.archived_at IS NULL AND w.merged_into_wali_id IS NULL
+                       AND w.no_hp IS NOT NULL AND TRIM(w.no_hp) <> ''
+               ) k
+              GROUP BY k.kunci, k.jenis
+             HAVING jumlah > 1";
+    }
+
+    /**
+     * @param array<int, int> $ids
+     * @return array<int, array<string, mixed>>
+     */
+    public function waliDuplicateIds(string $kind, string $key): array
+    {
+        $column = $kind === 'nama' ? 'LOWER(TRIM(nama))' : 'no_hp';
+        return array_column($this->all("SELECT id FROM wali WHERE archived_at IS NULL AND merged_into_wali_id IS NULL AND {$column} = ? ORDER BY id", [$key]), 'id');
+    }
+
+    public function waliByIds(array $ids): array
+    {
+        $ids = array_values(array_unique(array_map('intval', $ids)));
+        if ($ids === []) {
+            return [];
+        }
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+        $rows = $this->all(
+            "SELECT w.id, w.nama, w.no_hp, w.alamat, w.is_active, w.archived_at, w.merged_into_wali_id,
+                    (SELECT COUNT(*) FROM santri_wali sw WHERE sw.wali_id = w.id AND sw.archived_at IS NULL) AS jumlah_santri,
+                    (SELECT COUNT(*) FROM users u WHERE u.wali_id = w.id) AS jumlah_akun
+               FROM wali w WHERE w.id IN ({$placeholders}) ORDER BY w.nama, w.id",
+            $ids
+        );
+        // Confirmation must show every affected student, regardless of the SQL
+        // group_concat_max_len setting. Keep the existing string return contract.
+        $relations = $this->all("SELECT sw.wali_id, s.nis, s.nama_santri, sw.hubungan FROM santri_wali sw JOIN santri s ON s.id = sw.santri_id WHERE sw.wali_id IN ({$placeholders}) AND sw.archived_at IS NULL ORDER BY s.nama_santri, s.id, sw.id", $ids);
+        $names = [];
+        foreach ($relations as $relation) {
+            $names[(int)$relation['wali_id']][] = $relation['nis'] . ' — ' . $relation['nama_santri'] . ' (' . $relation['hubungan'] . ')';
+        }
+        foreach ($rows as &$row) { $row['santri'] = implode(' | ', $names[(int)$row['id']] ?? []); }
+        unset($row);
+        return $rows;
+    }
+
+    /**
+     * Wali tanpa satu pun relasi santri aktif.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function waliWithoutRelations(int $limit = 100): array
+    {
+        return $this->all($this->waliWithoutRelationsSql() . ' ORDER BY nama, id LIMIT ?', [max(1, min(500, $limit))]);
+    }
+
+    private function waliWithoutRelationsSql(): string
+    {
+        return 'SELECT w.id, w.nama, w.no_hp, w.created_at,
+                    (SELECT COUNT(*) FROM users u WHERE u.wali_id = w.id) AS jumlah_akun
+               FROM wali w
+              WHERE w.archived_at IS NULL AND w.merged_into_wali_id IS NULL
+                AND NOT EXISTS (SELECT 1 FROM santri_wali sw WHERE sw.wali_id = w.id AND sw.archived_at IS NULL)';
+    }
+
+    /**
+     * Santri yang masih menyimpan nama ayah/ibu pada kolom lama tetapi belum
+     * memiliki relasi wali yang terverifikasi.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function santriWithIncompleteWali(int $limit = 100): array
+    {
+        return $this->all($this->santriWithIncompleteWaliSql() . ' ORDER BY nama_santri, id LIMIT ?', [max(1, min(500, $limit))]);
+    }
+
+    private function santriWithIncompleteWaliSql(): string
+    {
+        return "SELECT s.id, s.nis, s.nama_santri, s.nama_ayah, s.no_hp_ayah, s.nama_ibu, s.no_hp_ibu,
+                    (SELECT COUNT(*) FROM santri_wali sw WHERE sw.santri_id = s.id AND sw.archived_at IS NULL) AS jumlah_relasi,
+                    (SELECT COUNT(*) FROM santri_wali sw WHERE sw.santri_id = s.id AND sw.archived_at IS NULL AND sw.hubungan = 'Ayah') AS relasi_ayah,
+                    (SELECT COUNT(*) FROM santri_wali sw WHERE sw.santri_id = s.id AND sw.archived_at IS NULL AND sw.hubungan = 'Ibu') AS relasi_ibu
+               FROM santri s
+              WHERE s.archived_at IS NULL
+                AND (
+                     (TRIM(COALESCE(s.nama_ayah, '')) <> '' AND NOT EXISTS (SELECT 1 FROM santri_wali sw WHERE sw.santri_id = s.id AND sw.archived_at IS NULL AND sw.hubungan = 'Ayah'))
+                  OR (TRIM(COALESCE(s.nama_ibu, '')) <> '' AND NOT EXISTS (SELECT 1 FROM santri_wali sw WHERE sw.santri_id = s.id AND sw.archived_at IS NULL AND sw.hubungan = 'Ibu'))
+                  OR NOT EXISTS (SELECT 1 FROM santri_wali sw WHERE sw.santri_id = s.id AND sw.archived_at IS NULL)
+                )";
+    }
+
+    /**
+     * Santri yang kolom lamanya bertentangan dengan identitas wali terverifikasi.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function santriLegacyConflicts(int $limit = 100): array
+    {
+        return $this->all($this->santriLegacyConflictsSql() . ' ORDER BY nama_santri, id LIMIT ?', [max(1, min(500, $limit))]);
+    }
+
+    private function santriLegacyConflictsSql(): string
+    {
+        return "SELECT s.id, s.nis, s.nama_santri, s.nama_ayah, s.nama_ibu,
+                    ayah.nama AS wali_ayah, ibu.nama AS wali_ibu
+               FROM santri s
+               LEFT JOIN (SELECT sw.santri_id, MIN(sw.id) AS rid FROM santri_wali sw WHERE sw.archived_at IS NULL AND sw.hubungan = 'Ayah' GROUP BY sw.santri_id) ra ON ra.santri_id = s.id
+               LEFT JOIN santri_wali swa ON swa.id = ra.rid
+               LEFT JOIN wali ayah ON ayah.id = swa.wali_id
+               LEFT JOIN (SELECT sw.santri_id, MIN(sw.id) AS rid FROM santri_wali sw WHERE sw.archived_at IS NULL AND sw.hubungan = 'Ibu' GROUP BY sw.santri_id) ri ON ri.santri_id = s.id
+               LEFT JOIN santri_wali swi ON swi.id = ri.rid
+               LEFT JOIN wali ibu ON ibu.id = swi.wali_id
+              WHERE s.archived_at IS NULL
+                -- COLLATE eksplisit disengaja: tabel `santri` warisan V1 memakai
+                -- utf8mb4_general_ci sedangkan `wali` dibuat migrasi 002 dengan
+                -- utf8mb4_unicode_ci. Tanpa ini MySQL menolak perbandingannya
+                -- dengan galat Illegal mix of collations. Tidak ada kolom yang diubah.
+                AND (
+                     (ayah.id IS NOT NULL AND TRIM(COALESCE(s.nama_ayah, '')) <> ''
+                        AND LOWER(TRIM(s.nama_ayah)) COLLATE utf8mb4_unicode_ci <> LOWER(TRIM(ayah.nama)) COLLATE utf8mb4_unicode_ci)
+                  OR (ibu.id IS NOT NULL AND TRIM(COALESCE(s.nama_ibu, '')) <> ''
+                        AND LOWER(TRIM(s.nama_ibu)) COLLATE utf8mb4_unicode_ci <> LOWER(TRIM(ibu.nama)) COLLATE utf8mb4_unicode_ci)
+                )";
+    }
+
+    public function reconciliationPage(string $section, string $q, int $page): array
+    {
+        [$sql, $order, $columns] = match ($section) {
+            'duplikat' => [$this->waliDuplicateCandidatesSql(), 'jumlah DESC, jenis, kunci', ['kunci']],
+            'tanpa_relasi' => [$this->waliWithoutRelationsSql(), 'nama, id', ['nama', 'no_hp']],
+            'relasi_belum_lengkap' => [$this->santriWithIncompleteWaliSql(), 'nama_santri, id', ['nis', 'nama_santri', 'nama_ayah', 'nama_ibu']],
+            'konflik_kolom_lama' => [$this->santriLegacyConflictsSql(), 'nama_santri, id', ['nis', 'nama_santri', 'nama_ayah', 'nama_ibu']],
+            default => throw new MasterDataException('Bagian rekonsiliasi tidak dikenal.'),
+        };
+        return \App\Database\PageQuery::fetch($this->db, $sql, [], $order, $page, $q, $columns);
     }
 
     private function masterWhere(array $filters, array $searchColumns, string $alias = ''): array

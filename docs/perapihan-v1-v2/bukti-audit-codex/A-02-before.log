@@ -1,0 +1,16 @@
+[gagal] A-02 kasus 0 konflik nama/HP ditolak dan data lama utuh
+[gagal] A-02 kasus 0 relasi ikut rollback
+[lulus] A-02 kasus 0 konfirmasi menyalin nama dan HP
+[gagal] A-02 kasus 0 audit memuat nilai asli dan konfirmasi
+[gagal] A-02 kasus 1 konflik nama/HP ditolak dan data lama utuh
+[gagal] A-02 kasus 1 relasi ikut rollback
+[lulus] A-02 kasus 1 konfirmasi menyalin nama dan HP
+[gagal] A-02 kasus 1 audit memuat nilai asli dan konfirmasi
+[lulus] A-02 kasus 2 konflik nama/HP ditolak dan data lama utuh
+[lulus] A-02 kasus 2 relasi ikut rollback
+[lulus] A-02 kasus 2 konfirmasi menyalin nama dan HP
+[lulus] A-02 kasus 2 audit memuat nilai asli dan konfirmasi
+[gagal] A-02 kasus 3 konflik nama/HP ditolak dan data lama utuh
+[gagal] A-02 kasus 3 relasi ikut rollback
+[lulus] A-02 kasus 3 konfirmasi menyalin nama dan HP
+[gagal] A-02 kasus 3 audit memuat nilai asli dan konfirmasi

@@ -176,6 +176,24 @@ final class ScheduleRepository
         return $this->all($sql . ' ORDER BY p.tanggal_pertemuan DESC, p.id DESC LIMIT ?', [...$params, $limit]);
     }
 
+    public function meetingPage(array $user, string $q, int $page): array
+    {
+        $sql = "SELECT p.*, j.hari, j.waktu_mulai, j.waktu_selesai, j.fan_ilmu, j.nama_kitab, j.tempat,
+                       g.nama_guru, k.nama_kelas, ta.tahun, ta.semester,
+                       (SELECT COUNT(*) FROM pertemuan_peserta pp WHERE pp.pertemuan_id = p.id) AS participant_count
+                FROM pertemuan_pengajian p
+                JOIN jadwal_ngaji j ON j.id = p.jadwal_id
+                JOIN guru g ON g.id = j.id_guru
+                JOIN kelas k ON k.id = j.id_kelas
+                JOIN tahun_ajaran ta ON ta.id = j.id_tahun";
+        $params = [];
+        if (!in_array('admin', $user['roles'], true)) {
+            $sql .= ' WHERE j.id_guru = ?';
+            $params[] = (int) ($user['guru_id'] ?? 0);
+        }
+        return \App\Database\PageQuery::fetch($this->db, $sql, $params, 'tanggal_pertemuan DESC, id DESC', $page, $q, ['tanggal_pertemuan', 'nama_guru', 'nama_kelas', 'fan_ilmu', 'status']);
+    }
+
     public function activeScheduleOptionsForUser(array $user): array
     {
         $sql = "SELECT j.id, j.hari, j.waktu_mulai, j.waktu_selesai, j.fan_ilmu, j.nama_kitab, j.tempat,

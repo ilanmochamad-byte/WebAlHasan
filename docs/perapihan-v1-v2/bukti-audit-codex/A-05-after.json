@@ -1,0 +1,74 @@
+[
+  {
+    "path": "/admin/admin_pengurus.php",
+    "headings": [
+      "Master Data Pengurus"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_kelas.php",
+    "headings": [
+      "Kelas dan Keanggotaan"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_tahun.php",
+    "headings": [
+      "Tahun Ajaran"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_pembimbing.php",
+    "headings": [
+      "Penugasan Pembimbing"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/portal/izin.php",
+    "headings": [
+      "Daftar Perizinan"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/portal/izin_buat.php",
+    "headings": [
+      "Buat Pengajuan Izin"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/portal/izin_antrean.php",
+    "headings": [
+      "Antrean Perizinan"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/portal/laporan.php",
+    "headings": [
+      "Laporan Perizinan"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/portal/notifikasi.php",
+    "headings": [
+      "Notifikasi"
+    ],
+    "scrollWidth": 390,
+    "width": 390
+  }
+]

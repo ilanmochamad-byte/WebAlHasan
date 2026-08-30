@@ -125,7 +125,9 @@ final class KlienNav
 
     public function login(string $username, string $password): array
     {
-        $halaman = $this->request('/admin/admin_login.php');
+        // Alamat halaman masuk berpindah ke /portal/ (koreksi ke-7). Alamat
+        // lama tetap berfungsi sebagai pengalihan; penangan POST tidak berubah.
+        $halaman = $this->request('/portal/index.php');
         if (preg_match('/name="_csrf" value="([^"]+)"/', $halaman['body'], $matches) !== 1) {
             throw new RuntimeException('Token CSRF tidak ditemukan pada halaman masuk (status ' . $halaman['status'] . ').');
         }
@@ -273,96 +275,126 @@ try {
     // ================================================================
     // 1. Pengarahan setelah login
     // ================================================================
+    //
+    // PERUBAHAN PERILAKU — paket perapihan V1-V2, koreksi ke-7 (satu pintu
+    // masuk), keputusan pengguna 30 Agustus 2026.
+    //
+    // Sebelumnya tiap peran mendarat di halaman berbeda. Sekarang SELURUH akun
+    // yang sah mendarat pada satu beranda `/portal/index.php`, yang menyusun
+    // panel dan pintasan dari kemampuan NYATA akun. Inti hotfix murobi tetap
+    // dijaga di sini: pintasan antrean keputusan hanya muncul bagi akun yang
+    // benar-benar memiliki capability murobi, dan tidak pernah bagi guru
+    // tanpa penugasan.
+    $mendaratDiBeranda = static fn (array $respons): bool =>
+        $respons['status'] === 302 && str_contains((string) $respons['location'], '/portal/index.php');
+
     $klienMurobi = new KlienNav($baseUrl, 'murobi');
     $masukMurobi = $klienMurobi->login('nav.m1.' . $lower, $sandi);
+    $assert($mendaratDiBeranda($masukMurobi), 'NAV-1a Murobi mendarat di beranda tunggal [' . (string) $masukMurobi['location'] . ']');
+    $berandaMurobi = $klienMurobi->request('/portal/index.php');
     $assert(
-        $masukMurobi['status'] === 302 && str_contains((string) $masukMurobi['location'], '/portal/izin_antrean.php?mode=murobi'),
-        'NAV-1 Murobi aktif diarahkan ke antrean keputusan setelah login [' . (string) $masukMurobi['location'] . ']'
+        $berandaMurobi['status'] === 200 && str_contains($berandaMurobi['body'], '/portal/izin_antrean.php?mode=murobi'),
+        'NAV-1b Beranda murobi menawarkan pintasan antrean keputusan'
     );
 
     $klienGuru = new KlienNav($baseUrl, 'guru');
     $masukGuru = $klienGuru->login('nav.gb.' . $lower, $sandi);
+    $assert($mendaratDiBeranda($masukGuru), 'NAV-2a Guru non-murobi mendarat di beranda tunggal [' . (string) $masukGuru['location'] . ']');
+    $berandaGuru = $klienGuru->request('/portal/index.php');
     $assert(
-        $masukGuru['status'] === 302 && str_contains((string) $masukGuru['location'], '/admin/pertemuan_pengajian.php'),
-        'NAV-2 Guru tanpa capability murobi tetap diarahkan ke jadwal mengajar [' . (string) $masukGuru['location'] . ']'
+        $berandaGuru['status'] === 200 && !str_contains($berandaGuru['body'], '/portal/izin_antrean.php'),
+        'NAV-2b Beranda guru non-murobi TIDAK menawarkan pintasan antrean keputusan'
+    );
+    $assert(
+        str_contains($berandaGuru['body'], '/admin/admin_pengajian.php'),
+        'NAV-2c Beranda guru non-murobi tetap menawarkan modul pengajian'
     );
 
     $klienAdmin = new KlienNav($baseUrl, 'admin');
     $masukAdmin = $klienAdmin->login('nav.ad.' . $lower, $sandi);
+    $assert($mendaratDiBeranda($masukAdmin), 'NAV-3a Admin mendarat di beranda tunggal');
     $assert(
-        $masukAdmin['status'] === 302 && str_contains((string) $masukAdmin['location'], '/admin/admin_dashboard.php'),
-        'NAV-3 Admin tetap diarahkan ke dashboard admin (tanpa regresi)'
+        str_contains($klienAdmin->request('/portal/index.php')['body'], '/admin/admin_dashboard.php'),
+        'NAV-3b Beranda admin menawarkan pintasan ringkasan administrasi'
     );
 
     $klienPengurus = new KlienNav($baseUrl, 'pengurus');
     $masukPengurus = $klienPengurus->login('nav.pa.' . $lower, $sandi);
-    $assert(
-        $masukPengurus['status'] === 302 && str_contains((string) $masukPengurus['location'], '/portal/index.php'),
-        'NAV-4 Pengurus tetap diarahkan ke portal perizinan (tanpa regresi)'
-    );
+    $assert($mendaratDiBeranda($masukPengurus), 'NAV-4 Pengurus mendarat di beranda tunggal');
 
     $klienOrtu = new KlienNav($baseUrl, 'ortu');
     $masukOrtu = $klienOrtu->login('nav.o1.' . $lower, $sandi);
-    $assert(
-        $masukOrtu['status'] === 302 && str_contains((string) $masukOrtu['location'], '/portal/index.php'),
-        'NAV-5 Orang tua tetap diarahkan ke portal perizinan (tanpa regresi)'
-    );
+    $assert($mendaratDiBeranda($masukOrtu), 'NAV-5 Orang tua mendarat di beranda tunggal');
 
-    // Membuka kembali halaman masuk saat sesi masih hidup tidak boleh
-    // mengembalikan murobi ke halaman jadwal.
+    // Membuka alamat masuk lama saat sesi masih hidup tidak boleh meminta login
+    // ulang; ia mengarah ke pintu masuk baru yang menampilkan beranda.
     $kunjungUlang = $klienMurobi->request('/admin/admin_login.php');
     $assert(
-        $kunjungUlang['status'] === 302 && str_contains((string) $kunjungUlang['location'], '/portal/izin_antrean.php?mode=murobi'),
-        'NAV-6 Membuka halaman masuk saat sesi murobi aktif mengarahkan ke antrean [' . (string) $kunjungUlang['location'] . ']'
+        $kunjungUlang['status'] === 302 && str_contains((string) $kunjungUlang['location'], '/portal/index.php'),
+        'NAV-6 Alamat masuk lama tetap berfungsi dan mengarah ke pintu masuk baru [' . (string) $kunjungUlang['location'] . ']'
     );
 
     // ================================================================
-    // 2. Navigasi dua arah
+    // 2. Navigasi dua arah (tanpa login ulang)
     // ================================================================
-    $jadwalMurobi = $klienMurobi->request('/admin/pertemuan_pengajian.php');
-    $assert($jadwalMurobi['status'] === 200, 'NAV-7 Murobi tetap dapat membuka jadwal mengajar tanpa login ulang');
+    // Modul pengajian kini satu alamat bertab (koreksi ke-4); alamat lama tetap
+    // berfungsi sebagai pengalihan.
+    $alamatLama = $klienMurobi->request('/admin/pertemuan_pengajian.php');
+    $assert(
+        $alamatLama['status'] === 302 && str_contains((string) $alamatLama['location'], 'admin_pengajian.php'),
+        'NAV-7a Alamat lama pertemuan tetap berfungsi dan mengarah ke modul terpadu'
+    );
+    $jadwalMurobi = $klienMurobi->request('/admin/admin_pengajian.php?tab=pertemuan');
+    $assert($jadwalMurobi['status'] === 200, 'NAV-7b Murobi tetap dapat membuka modul pengajian tanpa login ulang');
     $assert(
         str_contains($jadwalMurobi['body'], '/portal/izin_antrean.php?mode=murobi'),
-        'NAV-8 Halaman jadwal menampilkan tautan Antrean Perizinan kepada murobi aktif'
+        'NAV-8 Modul pengajian menampilkan tautan Antrean Perizinan kepada murobi aktif'
     );
 
-    $jadwalGuru = $klienGuru->request('/admin/pertemuan_pengajian.php');
-    $assert($jadwalGuru['status'] === 200, 'NAV-9 Guru non-murobi tetap dapat membuka jadwal mengajar');
+    $jadwalGuru = $klienGuru->request('/admin/admin_pengajian.php?tab=pertemuan');
+    $assert($jadwalGuru['status'] === 200, 'NAV-9 Guru non-murobi tetap dapat membuka modul pengajian');
     $assert(
         !str_contains($jadwalGuru['body'], '/portal/izin_antrean.php')
         && !str_contains($jadwalGuru['body'], '/portal/izin.php'),
-        'NAV-10 Halaman jadwal TIDAK menampilkan tautan perizinan kepada guru non-murobi'
+        'NAV-10 Modul pengajian TIDAK menampilkan tautan perizinan kepada guru non-murobi'
     );
 
     $antreanMurobi = $klienMurobi->request('/portal/izin_antrean.php?mode=murobi');
     $assert($antreanMurobi['status'] === 200, 'NAV-11 Murobi dapat membuka antrean keputusan');
     $assert(
-        str_contains($antreanMurobi['body'], '/admin/pertemuan_pengajian.php'),
-        'NAV-12 Portal menyediakan jalan kembali ke jadwal mengajar bagi akun ber-role guru'
+        str_contains($antreanMurobi['body'], '/admin/admin_pengajian.php'),
+        'NAV-12 Portal menyediakan jalan kembali ke modul pengajian bagi akun ber-role guru'
     );
 
-    $kembaliKeJadwal = $klienMurobi->request('/admin/pertemuan_pengajian.php');
-    $assert($kembaliKeJadwal['status'] === 200, 'NAV-13 Murobi bolak-balik jadwal ⇄ antrean tanpa login ulang');
+    $kembaliKeJadwal = $klienMurobi->request('/admin/admin_pengajian.php?tab=jadwal');
+    $assert($kembaliKeJadwal['status'] === 200, 'NAV-13 Murobi bolak-balik pengajian ⇄ antrean tanpa login ulang');
 
-    $portalPengurus = $klienPengurus->request('/portal/index.php');
-    $assert($portalPengurus['status'] === 200, 'NAV-14 Portal pengurus tetap dapat dibuka');
+    $portalPengurus = $klienPengurus->request('/portal/izin_ringkasan.php');
+    $assert($portalPengurus['status'] === 200, 'NAV-14 Ringkasan perizinan pengurus tetap dapat dibuka');
     $assert(
-        !str_contains($portalPengurus['body'], '/admin/pertemuan_pengajian.php'),
-        'NAV-15 Portal TIDAK menampilkan tautan jadwal mengajar bagi akun tanpa role guru'
+        !str_contains($portalPengurus['body'], '/admin/admin_pengajian.php'),
+        'NAV-15 Menu TIDAK menampilkan modul pengajian bagi akun tanpa role guru'
     );
 
     // ================================================================
     // 3. Otorisasi server tetap utuh
     // ================================================================
+    // Inti koreksi ke-7: beranda umum terbuka bagi guru non-murobi (dulu 403),
+    // TETAPI seluruh fungsi perizinan tetap ditolak 403 di server.
+    $assert(
+        $klienGuru->request('/portal/index.php')['status'] === 200,
+        'NAV-16a Guru tanpa penugasan murobi dapat membuka beranda umum'
+    );
     foreach ([
-        '/portal/index.php',
+        '/portal/izin_ringkasan.php',
         '/portal/izin.php',
         '/portal/izin_antrean.php',
         '/portal/izin_antrean.php?mode=murobi',
         '/portal/izin_buat.php',
+        '/portal/laporan.php',
     ] as $halaman) {
         $status = $klienGuru->request($halaman)['status'];
-        $assert($status === 403, 'NAV-16 Guru tanpa penugasan murobi menerima 403 pada ' . $halaman . ' [' . $status . ']');
+        $assert($status === 403, 'NAV-16b Guru tanpa penugasan murobi tetap menerima 403 pada ' . $halaman . ' [' . $status . ']');
     }
     $assert(
         $klienMurobi->request('/portal/izin_buat.php')['status'] === 403,
@@ -423,9 +455,19 @@ try {
         'password_baru' => $sandiBaru,
         'konfirmasi_password' => $sandiBaru,
     ]);
+    // Sejak koreksi ke-7, tujuan lanjut setelah ganti password adalah beranda
+    // tunggal yang menyusun pintasan dari kemampuan nyata akun. Pemeriksaan
+    // pengganti yang setara: pengguna dibawa ke beranda, dan beranda itu
+    // menawarkan pintasan antrean keputusan bagi murobi.
     $assert(
-        $hasilUbah['status'] === 200 && str_contains($hasilUbah['body'], '/portal/izin_antrean.php?mode=murobi'),
-        'NAV-25 Setelah ganti password awal, murobi ditawari lanjut langsung ke antrean (bukan jadwal)'
+        $hasilUbah['status'] === 200 && str_contains($hasilUbah['body'], '/portal/index.php'),
+        'NAV-25a Setelah ganti password awal, murobi ditawari lanjut ke beranda tunggal'
+    );
+    $berandaSetelahUbah = $klienPaksa->request('/portal/index.php');
+    $assert(
+        $berandaSetelahUbah['status'] === 200
+        && str_contains($berandaSetelahUbah['body'], '/portal/izin_antrean.php?mode=murobi'),
+        'NAV-25b Beranda setelah ganti password langsung menawarkan antrean keputusan murobi'
     );
     $assert(
         !str_contains($hasilUbah['body'], 'Lanjut ke tugas pengajian'),

@@ -394,38 +394,50 @@ $assert(
     'Uji dua keputusan bersamaan memakai dua proses PHP yang benar-benar terpisah'
 );
 
-// --- 9b. Hotfix navigasi murobi --------------------------------------------
-// Masalah: seluruh role `guru` diarahkan ke jadwal mengajar tanpa memeriksa
-// capability murobi, sehingga murobi tidak pernah sampai ke antrean keputusan.
+// --- 9b. Navigasi peran: hotfix murobi + satu pintu masuk -------------------
+//
+// Masalah asli (hotfix murobi): seluruh role `guru` diarahkan ke jadwal
+// mengajar tanpa memeriksa capability murobi, sehingga murobi tidak pernah
+// sampai ke antrean keputusan.
+//
+// PERUBAHAN PERILAKU — paket perapihan V1-V2, koreksi ke-7, keputusan pengguna
+// 30 Agustus 2026 (satu pintu masuk `/portal/`). Router tujuan tidak lagi
+// memilih SATU halaman per role: seluruh akun sah mendarat pada satu beranda
+// yang menyusun panel dari kemampuan nyata akun. Alasannya, memilih satu
+// halaman berdasarkan urutan role membuat akun multi-peran kehilangan jalur
+// peran lainnya, dan membuat guru non-murobi ditolak 403 di beranda umum.
+//
+// Pemeriksaan di bawah adalah PENGGANTI YANG SETARA: inti hotfix murobi tetap
+// dijaga — kemampuan dihitung dari `Capabilities`, bukan dari nama role.
 $landing = $source('app/Auth/LandingRouter.php');
 $cekLogin = $source('admin/cek_login.php');
 $halamanLogin = $source('admin/admin_login.php');
 $halamanSandi = $source('admin/ubah_password.php');
-$halamanJadwal = $source('admin/pertemuan_pengajian.php');
-$portalUi = $source('portal/_ui.php');
+$halamanJadwal = $source('admin/admin_pengajian.php');
+$pintuMasuk = $source('portal/index.php');
+$navigasi = $source('app/Ui/Navigation.php');
 
 $assert(is_file($root . '/app/Auth/LandingRouter.php'), 'Tujuan pasca-login punya satu sumber kebenaran: app/Auth/LandingRouter.php');
 $assert(
-    str_contains($landing, '$this->capabilities->has($user, Capabilities::MUROBI)')
+    str_contains($landing, '$this->capabilities->forUser($user)')
+    && str_contains($landing, 'Capabilities::MUROBI')
     && !preg_match("/in_array\('murobi', \\\$roles/", $landing),
-    'Cabang murobi memakai Capabilities, bukan role mentah'
-);
-$assert(
-    strpos($landing, "in_array('admin', \$roles, true)") < strpos($landing, 'Capabilities::MUROBI')
-    && strpos($landing, 'Capabilities::MUROBI') < strpos($landing, "in_array('guru', \$roles, true)"),
-    'Urutan tujuan: admin, lalu murobi (capability), baru guru biasa'
+    'Pintasan murobi memakai Capabilities, bukan role mentah'
 );
 $assert(
     str_contains($landing, "app_url('/portal/izin_antrean.php?mode=' . Capabilities::MUROBI)"),
-    'Murobi diarahkan ke /portal/izin_antrean.php?mode=murobi'
+    'Murobi tetap mendapat pintasan ke /portal/izin_antrean.php?mode=murobi'
 );
 $assert(
     str_contains($landing, 'bukan kontrol akses'),
     'LandingRouter menegaskan dirinya bukan pengganti pemeriksaan otorisasi'
 );
+$assert(
+    str_contains($navigasi, 'bukan kontrol akses') || str_contains($navigasi, 'BUKAN kontrol akses'),
+    'Peta navigasi menegaskan dirinya bukan pengganti pemeriksaan otorisasi'
+);
 foreach ([
     'admin/cek_login.php' => $cekLogin,
-    'admin/admin_login.php' => $halamanLogin,
     'admin/ubah_password.php' => $halamanSandi,
 ] as $path => $code) {
     $assert(str_contains($code, 'landing_router()'), basename($path) . ' memakai LandingRouter yang sama');
@@ -436,36 +448,54 @@ foreach ([
     );
 }
 $assert(
+    str_contains($halamanLogin, "app_url('/portal/index.php')") && str_contains($halamanLogin, 'SafeRedirect::sanitize'),
+    'admin_login.php menjadi alamat lama yang mengarahkan ke pintu masuk baru dengan tujuan tervalidasi'
+);
+$assert(
     str_contains($source('app/bootstrap.php'), 'function landing_router'),
     'bootstrap menyediakan landing_router()'
 );
 $assert(
     str_contains($halamanJadwal, 'capabilities()->has($currentUser, Capabilities::MUROBI)')
     && str_contains($halamanJadwal, '$bolehAntreanIzin'),
-    'Halaman jadwal menghitung hak antrean dari capability murobi'
+    'Modul pengajian menghitung hak antrean dari capability murobi'
 );
 $assert(
-    str_contains($halamanJadwal, 'if ($bolehAntreanIzin):')
+    str_contains($halamanJadwal, 'if ($bolehAntreanIzin)')
     && str_contains($halamanJadwal, "app_url('/portal/izin_antrean.php?mode=' . Capabilities::MUROBI)"),
-    'Tautan Antrean Perizinan pada halaman jadwal hanya dirender untuk murobi aktif'
+    'Tautan Antrean Perizinan pada modul pengajian hanya dirender untuk murobi aktif'
 );
 $assert(
     str_contains($halamanJadwal, 'BUKAN kontrol akses'),
-    'Halaman jadwal menegaskan tautan bukan pengganti pemeriksaan server'
+    'Modul pengajian menegaskan tautan bukan pengganti pemeriksaan server'
 );
 $assert(
     str_contains($halamanJadwal, "!in_array('admin', \$currentUser['roles'], true) && !in_array('guru', \$currentUser['roles'], true)")
-    && str_contains($halamanJadwal, 'http_response_code(403)'),
-    'Guard server halaman jadwal tidak dilonggarkan oleh hotfix'
+    && str_contains($halamanJadwal, 'Denial::render'),
+    'Guard server modul pengajian tidak dilonggarkan'
+);
+// Inti koreksi ke-7: beranda umum TIDAK memakai guard kemampuan perizinan,
+// sehingga guru non-murobi tidak lagi ditolak 403 di beranda; sementara
+// halaman perizinan tetap dijaga guard yang sama seperti sebelumnya.
+$assert(
+    !str_contains($pintuMasuk, "require_once __DIR__ . '/_guard.php'")
+    && str_contains($pintuMasuk, 'authorization()->currentUser()'),
+    'Beranda umum hanya menuntut sesi yang sah, bukan kemampuan perizinan'
 );
 $assert(
-    str_contains($portalUi, "in_array('guru', \$user['roles'] ?? [], true)")
-    && str_contains($portalUi, "app_url('/admin/pertemuan_pengajian.php')"),
-    'Portal menyediakan jalan kembali ke jadwal mengajar bagi akun ber-role guru'
+    str_contains($pintuMasuk, "app_url('/admin/cek_login.php')"),
+    'Pintu masuk memakai penangan login yang sudah ada, bukan sistem login kedua'
 );
+foreach (['portal/izin.php', 'portal/izin_ringkasan.php', 'portal/izin_antrean.php', 'portal/izin_buat.php', 'portal/laporan.php'] as $halamanIzin) {
+    $assert(
+        str_contains($source($halamanIzin), '_ui.php') || str_contains($source($halamanIzin), '_guard.php'),
+        basename($halamanIzin) . ' tetap dijaga guard kemampuan perizinan'
+    );
+}
 $assert(
     str_contains($source('portal/_guard.php'), 'requireAnyPerizinan')
-    && str_contains($source('app/Auth/PortalGuard.php'), 'http_response_code(403)'),
+    && str_contains($source('app/Auth/PortalGuard.php'), 'Denial::render')
+    && str_contains($source('app/Ui/Denial.php'), 'http_response_code($status)'),
     'Guard portal tetap menolak akun tanpa kemampuan perizinan dengan 403'
 );
 $assert(

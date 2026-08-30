@@ -65,14 +65,14 @@ final class ReportRepository
         );
     }
 
-    public function allRows(ReportFilter $filter): array
+    public function allRows(ReportFilter $filter, ?int $limit = null): array
     {
         [$sql, $params] = $this->attendanceRowsSql($filter);
         return $this->all(
             "SELECT * FROM ({$sql}) report
              ORDER BY report.meeting_date, report.meeting_id,
-                      FIELD(report.subject_type, 'Guru', 'Santri'), report.subject_name",
-            $params
+                      FIELD(report.subject_type, 'Guru', 'Santri'), report.subject_name" . ($limit === null ? '' : ' LIMIT ?'),
+            $limit === null ? $params : [...$params, $limit]
         );
     }
 
@@ -216,6 +216,17 @@ final class ReportRepository
                       ON pp.pertemuan_id = attendance.pertemuan_id AND pp.santri_id = attendance.santri_id
                     LEFT JOIN users actor ON actor.id = attendance.dicatat_oleh
                     {$studentWhere}";
+
+        // Koreksi ke-5: penyajian dipisahkan di sini, satu tempat, sehingga
+        // ringkasan, detail, CSV, dan cetak SELALU memakai definisi yang sama.
+        // Absensi guru tidak pernah dihapus; mode Santri hanya tidak
+        // menyertakan cabangnya pada UNION.
+        if (!$filter->includesGuru()) {
+            return [$student, $studentParams];
+        }
+        if (!$filter->includesSantri()) {
+            return [$teacher, $params];
+        }
 
         return [$teacher . ' UNION ALL ' . $student, [...$params, ...$studentParams]];
     }

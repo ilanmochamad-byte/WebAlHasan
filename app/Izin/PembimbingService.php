@@ -20,6 +20,8 @@ final class PembimbingService
     ) {
     }
 
+    public function page(string $q, int $page): array { return $this->repository->page($q, $page); }
+
     public function all(): array
     {
         return $this->repository->all();

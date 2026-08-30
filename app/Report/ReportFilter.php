@@ -12,6 +12,29 @@ final class ReportFilter
 {
     public const STATUSES = ['Hadir', 'Terlambat', 'Izin', 'Sakit', 'Alpa'];
 
+    /**
+     * Pemisahan penyajian laporan kehadiran (koreksi ke-5, 30 Agustus 2026).
+     *
+     *   - `santri`   : hanya kehadiran santri;
+     *   - `guru`     : hanya kehadiran guru pengampu;
+     *   - `gabungan` : keduanya, dengan penanda jenis pada setiap baris.
+     *
+     * Guru tetap tampil sebagai pengampu pada laporan santri (kolom
+     * `teacher_name`), tetapi TIDAK dihitung sebagai santri. Absensi guru tidak
+     * dihapus: mode Santri hanya menyembunyikannya dari penyajian.
+     */
+    public const SCOPE_SANTRI = 'santri';
+    public const SCOPE_GURU = 'guru';
+    public const SCOPE_GABUNGAN = 'gabungan';
+    public const SCOPES = [self::SCOPE_SANTRI, self::SCOPE_GURU, self::SCOPE_GABUNGAN];
+
+    /**
+     * Default kontrak lama (REST API dan aplikasi guru): keduanya ditampilkan.
+     * Halaman web meneruskan `SCOPE_SANTRI` secara eksplisit sebagai tampilan
+     * awal, sehingga default API TIDAK berubah diam-diam.
+     */
+    public const DEFAULT_SCOPE_API = self::SCOPE_GABUNGAN;
+
     public function __construct(
         public readonly string $dateFrom,
         public readonly string $dateTo,
@@ -21,11 +44,18 @@ final class ReportFilter
         public readonly ?int $scheduleId,
         public readonly ?string $status,
         public readonly int $page,
-        public readonly int $perPage
+        public readonly int $perPage,
+        public readonly string $subjectScope = self::SCOPE_GABUNGAN
     ) {
     }
 
-    public static function fromInput(array $input, string $timezone): self
+    /**
+     * @param string $defaultScope Nilai yang dipakai bila pemanggil tidak
+     *        mengirim `subject_scope`. Halaman web mengirim `santri`; REST API
+     *        dan aplikasi guru tetap memakai `gabungan` seperti sebelum
+     *        koreksi ke-5, sehingga kontrak lama tidak berubah.
+     */
+    public static function fromInput(array $input, string $timezone, string $defaultScope = self::DEFAULT_SCOPE_API): self
     {
         $zone = new DateTimeZone($timezone);
         $today = new DateTimeImmutable('today', $zone);
@@ -45,6 +75,15 @@ final class ReportFilter
             ]);
         }
 
+        $scope = trim((string) ($input['subject_scope'] ?? ''));
+        if ($scope === '') {
+            $scope = in_array($defaultScope, self::SCOPES, true) ? $defaultScope : self::DEFAULT_SCOPE_API;
+        } elseif (!in_array($scope, self::SCOPES, true)) {
+            throw new ApiException('VALIDATION_FAILED', 'Penyajian laporan tidak valid.', 422, [
+                'subject_scope' => 'Pilih santri, guru, atau gabungan.',
+            ]);
+        }
+
         return new self(
             $from->format('Y-m-d'),
             $to->format('Y-m-d'),
@@ -54,8 +93,28 @@ final class ReportFilter
             self::positiveId($input['schedule_id'] ?? null, 'schedule_id'),
             $status === '' ? null : $status,
             max(1, (int) ($input['page'] ?? 1)),
-            max(1, min(100, (int) ($input['per_page'] ?? 25)))
+            max(1, min(100, (int) ($input['per_page'] ?? 25))),
+            $scope
         );
+    }
+
+    public function includesSantri(): bool
+    {
+        return $this->subjectScope !== self::SCOPE_GURU;
+    }
+
+    public function includesGuru(): bool
+    {
+        return $this->subjectScope !== self::SCOPE_SANTRI;
+    }
+
+    public function scopeLabel(): string
+    {
+        return match ($this->subjectScope) {
+            self::SCOPE_SANTRI => 'Santri',
+            self::SCOPE_GURU => 'Guru',
+            default => 'Gabungan (santri dan guru)',
+        };
     }
 
     public function forUser(array $user): self
@@ -80,7 +139,8 @@ final class ReportFilter
             $this->scheduleId,
             $this->status,
             $this->page,
-            $this->perPage
+            $this->perPage,
+            $this->subjectScope
         );
     }
 
@@ -95,7 +155,8 @@ final class ReportFilter
             $this->scheduleId,
             $this->status,
             max(1, $page),
-            max(1, min(100, $perPage))
+            max(1, min(100, $perPage)),
+            $this->subjectScope
         );
     }
 
@@ -109,6 +170,8 @@ final class ReportFilter
             'class_id' => $this->classId,
             'schedule_id' => $this->scheduleId,
             'status' => $this->status,
+            // Aditif: kunci baru tidak menghapus atau mengubah kunci lama.
+            'subject_scope' => $this->subjectScope,
         ];
     }
 

@@ -26,7 +26,7 @@ try {
     portal_header('Akses ditolak', $userCapabilities, $userCapabilities[0] ?? '', $currentUser);
     echo '<div class="alert alert-danger"><strong>' . (int) $exception->status() . '</strong> — ' . portal_e($exception->getMessage()) . '</div>';
     echo '<a class="btn btn-outline-secondary" href="' . portal_e(app_url('/portal/izin.php')) . '">Kembali ke daftar</a>';
-    portal_footer();
+    ah_old_clear('_portal_0_buat'); portal_footer();
     exit;
 }
 
@@ -34,7 +34,7 @@ $scope = $pilihan['scope'];
 $today = date('Y-m-d');
 $santriTerpilih = (int) ($_GET['santri_id'] ?? 0);
 
-portal_header('Buat Pengajuan Izin', $userCapabilities, $scope['mode'], $currentUser);
+portal_header('Buat Pengajuan Izin', $userCapabilities, $scope['mode'], $currentUser, ['show_heading' => false]);
 ?>
 <div class="border-bottom pb-3 mb-4">
     <h1 class="h3 mb-1">Buat Pengajuan Izin</h1>
@@ -94,6 +94,8 @@ portal_header('Buat Pengajuan Izin', $userCapabilities, $scope['mode'], $current
                 <form method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
                     <?= portal_csrf() ?>
                     <input type="hidden" name="aksi" value="buat">
+                    <input type="hidden" name="return_page" value="<?= (int)$page ?>">
+                    <input type="hidden" name="return_q" value="<?= portal_e($query) ?>">
                     <input type="hidden" name="mode" value="<?= portal_e($scope['mode']) ?>">
                     <input type="hidden" name="idempotency_key" value="<?= portal_e(portal_idempotency_key()) ?>">
 
@@ -106,30 +108,30 @@ portal_header('Buat Pengajuan Izin', $userCapabilities, $scope['mode'], $current
                                     <?= portal_e($row['nis'] . ' — ' . $row['nama_santri']) ?>
                                 </option>
                             <?php endforeach; ?>
-                        </select>
+                        </select><?= ah_field_error('santri_id','_portal_0_buat') ?>
                         <div class="form-text">Hanya santri dalam cakupan Anda yang dapat diajukan; server memeriksa ulang setiap pengiriman.</div>
                     </div>
 
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label" for="tgl_izin">Tanggal izin</label>
-                            <input class="form-control" type="date" id="tgl_izin" name="tgl_izin" value="<?= portal_e($today) ?>" required>
+                            <input class="form-control" type="date" id="tgl_izin" name="tgl_izin" value="<?= portal_e(ah_old('tgl_izin',['tgl_izin'=>$today],'_portal_0_buat')) ?>" required><?= ah_field_error('tgl_izin','_portal_0_buat') ?>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="tgl_kembali">Tanggal kembali</label>
-                            <input class="form-control" type="date" id="tgl_kembali" name="tgl_kembali" value="<?= portal_e($today) ?>" required>
+                            <input class="form-control" type="date" id="tgl_kembali" name="tgl_kembali" value="<?= portal_e(ah_old('tgl_kembali',['tgl_kembali'=>$today],'_portal_0_buat')) ?>" required><?= ah_field_error('tgl_kembali','_portal_0_buat') ?>
                             <div class="form-text">Tidak boleh mendahului tanggal izin.</div>
                         </div>
                     </div>
 
                     <div class="mt-3">
                         <label class="form-label" for="alasan">Alasan izin</label>
-                        <textarea class="form-control" id="alasan" name="alasan" rows="3" required minlength="3" maxlength="2000" placeholder="Contoh: menghadiri acara keluarga"></textarea>
+                        <textarea class="form-control" id="alasan" name="alasan" rows="3" required minlength="3" maxlength="2000" placeholder="Contoh: menghadiri acara keluarga"><?= portal_e(ah_old('alasan',null,'_portal_0_buat')) ?></textarea><?= ah_field_error('alasan','_portal_0_buat') ?>
                     </div>
 
                     <div class="mt-3">
                         <label class="form-label" for="catatan_pengurus">Catatan pengurus <span class="text-muted">(opsional)</span></label>
-                        <textarea class="form-control" id="catatan_pengurus" name="catatan_pengurus" rows="2" maxlength="1000"></textarea>
+                        <textarea class="form-control" id="catatan_pengurus" name="catatan_pengurus" rows="2" maxlength="1000"><?= portal_e(ah_old('catatan_pengurus',null,'_portal_0_buat')) ?></textarea><?= ah_field_error('catatan_pengurus','_portal_0_buat') ?>
                     </div>
 
                     <div class="d-flex gap-2 mt-4">
@@ -146,4 +148,4 @@ portal_header('Buat Pengajuan Izin', $userCapabilities, $scope['mode'], $current
     </div>
 </div>
 <?php portal_pagination((int) $pilihan['total'], (int) $pilihan['page'], (int) $pilihan['per_page']); ?>
-<?php portal_footer(); ?>
+<?php ah_old_clear('_portal_0_buat'); portal_footer(); ?>

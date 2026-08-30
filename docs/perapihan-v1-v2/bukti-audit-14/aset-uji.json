@@ -1,0 +1,57 @@
+{
+  "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css": {
+    "file": "d0b418ae4b7d91889127767575c9ce57aa715c6215ef293fa030cb55b3b408c1.css",
+    "sha256": "7f1d37f0d90b6385354c2ac10e2bb91563c46bd7a266ed351222ebcac8496c2a"
+  },
+  "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js": {
+    "file": "432dcb740086c0389579a29ebdd4a6d5ec55238ed53df70710119b8ad03887fe.js",
+    "sha256": "aa53d582f97eb594c2a5cc5824574707f9ba9837bce3046bfa5f3556860f4e04"
+  },
+  "https://cdn.jsdelivr.net/npm/chart.js": {
+    "file": "459cd6d7de2fb24bcea67c9531d82544620ea231c2b0adfe1187934aeec106a5.js",
+    "sha256": "48444a82d4edcb5bec0f1965faacdde18d9c17db3063d042abada2f705c9f54a"
+  },
+  "https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css": {
+    "file": "3304ac8d12e041c86b6e467098975ef0788f4d8ac4f0694dae9641dab0dc9701.css",
+    "sha256": "a00e83ff2222d08f19c00c29e8799d8cdecea08389ffa93ed522129dcac40500"
+  },
+  "https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js": {
+    "file": "b60bbc1a00d63ff4efb63c924dc2428db7853ed33585712c0abe672dbbabf0c4.js",
+    "sha256": "e4de051e54bb6d6c9bd8bc88ccef9343778736f6ffbdf1048dc7400dd22f5536"
+  },
+  "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js": {
+    "file": "7738d2c15a2eb80ee1b0a3a2dde395db9d11fbbe195a84dbe330928c5fd64a32.js",
+    "sha256": "c9506197caf809a075b6dee1da0d36fb19da7158ffe8a88e7b0c96c5d8623c99"
+  },
+  "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css": {
+    "file": "9693203622602734cbf1b98e749de26901278747ca0049755bb2175a8f8288c1.css",
+    "sha256": "8d321d88cb97fdedc3189506c25de9292c6e73a60ebaab496243346c6404480e"
+  },
+  "https://code.jquery.com/jquery-3.5.1.js": {
+    "file": "228ade9ebc4014d41365b66f099ef9c7ffa27f8fd4d5ef6208b09cdda3475ea9.js",
+    "sha256": "416a3b2c3bf16d64f6b5b6d0f7b079df2267614dd6847fc2f3271b4409233c37"
+  },
+  "https://code.jquery.com/jquery-3.5.1.min.js": {
+    "file": "f699576a3208312ac1ec0d646ea8e1d72d5484c25942c38c94fbbc14b3011be2.js",
+    "sha256": "f7f6a5894f1d19ddad6fa392b2ece2c5e578cbf7da4ea805b6885eb6985b6e3d"
+  },
+  "https://code.jquery.com/jquery-3.6.0.min.js": {
+    "file": "a3133eb07bfae987565acd8dcfdda6a4f506c9d17640b188d61d5db2bebd600b.js",
+    "sha256": "ff1523fb7389539c84c65aba19260648793bb4f5e29329d2ee8804bc37a3fe6e"
+  },
+  "https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css": {
+    "file": "dt-dataTables.bootstrap5.min.css",
+    "sha256": "76ccc69750097c798111f643cfdce0f90ded52efbf0fbac06694cbab437f0675",
+    "source": "npm exact 1.13.4 datatables.net-bs5/css/dataTables.bootstrap5.min.css"
+  },
+  "https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js": {
+    "file": "dt-dataTables.bootstrap5.min.js",
+    "sha256": "079a1739cd9385bd77f12f4c7e42c70ece95eec295425e15f84bba1bbcc70d41",
+    "source": "npm exact 1.13.4 datatables.net-bs5/js/dataTables.bootstrap5.min.js"
+  },
+  "https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js": {
+    "file": "dt-jquery.dataTables.min.js",
+    "sha256": "b1b66fb81a3075726e6021bda3fbd860f80294bcf9a8f7630cce6a5bdfba64f0",
+    "source": "npm exact 1.13.4 datatables.net/js/jquery.dataTables.min.js"
+  }
+}

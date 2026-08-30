@@ -1,252 +1,114 @@
 <?php
+
+declare(strict_types=1);
+
+use App\Database\PageQuery;
+use App\MasterData\MasterDataException;
+
 require_once __DIR__ . '/_guard.php';
+require_once __DIR__ . '/_master_ui.php';
 
-// Ambil Tahun Ajaran Aktif
-$q_tahun = mysqli_query($koneksi, "SELECT id FROM tahun_ajaran WHERE status='Aktif' LIMIT 1");
-$d_tahun = mysqli_fetch_assoc($q_tahun);
-$id_tahun = $d_tahun ? $d_tahun['id'] : 0;
-
-// PROSES TAMBAH
-if(isset($_POST['tambah'])){
-    $nama = mysqli_real_escape_string($koneksi, $_POST['nama_kamar']);
-    $kapasitas = (int)$_POST['kapasitas'];
-    mysqli_query($koneksi, "INSERT INTO kamar (nama_kamar, kapasitas) VALUES ('$nama','$kapasitas')");
-    header("Location: admin_kamar.php");
+// A-11: data/riwayat kamar tidak dihapus, termasuk melalui URL lama.
+if (isset($_GET['hapus'])) {
+    http_response_code(405);
+    exit('Penghapusan kamar tidak tersedia. Data dan riwayat kamar tetap dipertahankan.');
 }
-
-// PROSES EDIT
-if(isset($_POST['edit'])){
-    $id = $_POST['id'];
-    $nama = mysqli_real_escape_string($koneksi, $_POST['nama_kamar']);
-    $kapasitas = (int)$_POST['kapasitas'];
-    mysqli_query($koneksi, "UPDATE kamar SET nama_kamar='$nama', kapasitas='$kapasitas' WHERE id='$id'");
-    header("Location: admin_kamar.php");
+$service = master_data_service();
+$mode = is_string($_GET['action'] ?? null) ? $_GET['action'] : '';
+$id = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) ?: null;
+$selected = $id === null ? null : $service->room($id);
+$error = null;
+$form = $selected ?? ['nama_kamar' => '', 'kapasitas' => ''];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        if (($_POST['action'] ?? '') !== 'save' && !isset($_POST['tambah']) && !isset($_POST['edit'])) {
+            throw new MasterDataException('Aksi kamar tidak dikenal.');
+        }
+        $id = (isset($_POST['id']) || isset($_POST['edit']))
+            ? filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) : null;
+        if ($id === false) { throw new MasterDataException('ID kamar tidak valid.'); }
+        $saved = $service->saveRoom($_POST, $id);
+        master_flash('success', 'Kamar berhasil disimpan. Penempatan santri dan riwayatnya tidak berubah.');
+        master_redirect('admin_kamar.php?action=detail&id=' . $saved);
+    } catch (MasterDataException $exception) {
+        http_response_code(422);
+        $error = $exception->getMessage();
+        ah_validation_keep($_POST, ['nama_kamar','kapasitas'], $exception, '_room_error');
+        $form = [
+            'nama_kamar' => is_scalar($_POST['nama_kamar'] ?? null) ? (string) $_POST['nama_kamar'] : '',
+            'kapasitas' => is_scalar($_POST['kapasitas'] ?? null) ? (string) $_POST['kapasitas'] : '',
+        ];
+        $mode = $id ? 'edit' : 'create';
+    }
 }
-
-// PROSES HAPUS
-if(isset($_GET['hapus'])){
-    $id = $_GET['hapus'];
-    mysqli_query($koneksi, "DELETE FROM kamar WHERE id='$id'");
-    header("Location: admin_kamar.php");
+$year = $koneksi->query("SELECT id, tahun, semester FROM tahun_ajaran WHERE status='Aktif' AND archived_at IS NULL LIMIT 1")->fetch_assoc();
+$yearId = $year ? (int) $year['id'] : 0;
+$q = PageQuery::term($_GET['q'] ?? '');
+$page = max(1, (int) ($_GET['page'] ?? 1));
+$isDetail = $mode === 'detail' && $selected !== null;
+if (in_array($mode, ['edit', 'detail'], true) && $selected === null && $error === null) {
+    http_response_code(404);
+    $error = 'Kamar tidak ditemukan. Kembali ke daftar untuk memilih kamar yang tersedia.';
 }
+$result = $isDetail ? $service->roomOccupantsPage((int) $selected['id'], $yearId, $q, $page) : $service->roomsPage($q, $page, $yearId);
+$page = (int) $result['page'];
+master_header('Data Kamar Santri', [
+    'description' => 'Kelola nama dan kapasitas kamar. Data penghuni mengikuti penempatan pada semester aktif.',
+    'active' => 'master.kamar',
+    'breadcrumbs' => [
+        ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
+        ['label' => 'Master Data'], ['label' => 'Kamar'],
+    ],
+    'actions' => '<a class="btn btn-success" href="admin_kamar.php?action=create">Tambah Kamar</a>',
+]);
+if ($error !== null) { ah_note('danger', $error); }
+ah_note('info', 'Semester aktif: ' . ($year ? $year['tahun'] . ' ' . $year['semester'] : 'belum diatur') . '. Penghapusan kamar tidak tersedia agar data dan riwayat tetap utuh.');
 ?>
-
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <title>Data Kamar - Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-</head>
-<body class="bg-light">
-<div class="container-fluid">
-    <div class="row">
-        <?php include 'sidebar.php'; ?>
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
-                <h1 class="h2 fw-bold text-success">Data Kamar Santri</h1>
-                <button type="button" class="btn btn-success fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambah">
-                    <i class="fas fa-plus me-1"></i> Tambah Kamar
-                </button>
-            </div>
-            
-            <div class="card shadow border-0 rounded-4">
-                <div class="card-body p-4">
-                    <div class="table-responsive">
-                        <table id="tabelData" class="table table-striped table-hover align-middle">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th width="5%">No</th>
-                                    <th>Nama Kamar / Kobong</th>
-                                    <th class="text-center">Kapasitas (Terisi / Maks)</th>
-                                    <th class="text-center" width="20%">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $no = 1;
-                                $data_kamar = [];
-                                // Ambil data kamar beserta jumlah yang terisi saat ini
-                                $data = mysqli_query($koneksi, "
-                                    SELECT km.*, 
-                                           (SELECT COUNT(id) FROM plotting_kamar pk WHERE pk.id_kamar = km.id AND pk.id_tahun = '$id_tahun') as terisi
-                                    FROM kamar km 
-                                    ORDER BY km.nama_kamar ASC
-                                ");
-                                while($d = mysqli_fetch_array($data)){
-                                    $data_kamar[] = $d;
-                                    
-                                    // Tentukan warna badge berdasarkan kapasitas
-                                    $is_full = ($d['terisi'] >= $d['kapasitas']);
-                                    $badge_color = $is_full ? 'bg-danger' : 'bg-info text-dark';
-                                ?>
-                                <tr>
-                                    <td class="fw-bold"><?php echo $no++; ?></td>
-                                    <td class="fw-bold text-primary fs-6"><?php echo $d['nama_kamar']; ?></td>
-                                    <td class="text-center">
-                                        <span class="badge <?php echo $badge_color; ?> px-3 py-2 fs-6 rounded-pill">
-                                            <?php echo $d['terisi']; ?> / <?php echo $d['kapasitas']; ?>
-                                        </span>
-                                    </td>
-                                    <td class="text-center">
-                                        <button class="btn btn-primary btn-sm fw-bold shadow-sm text-white" data-bs-toggle="modal" data-bs-target="#modalPenghuni<?php echo $d['id']; ?>" title="Lihat Daftar Penghuni">
-                                            <i class="fas fa-users"></i>
-                                        </button>
-                                        <button class="btn btn-warning btn-sm fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#modalEdit<?php echo $d['id']; ?>" title="Edit Kamar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <a href="admin_kamar.php?hapus=<?php echo $d['id']; ?>" class="btn btn-danger btn-sm fw-bold shadow-sm" onclick="return confirm('Yakin ingin menghapus kamar ini?')" title="Hapus Kamar">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </main>
+<?php if ($mode === 'create' || ($mode === 'edit' && $selected !== null)): ?>
+<section class="ah-card" aria-labelledby="room-form-title">
+    <div class="ah-card__head"><h2 class="h6 mb-0" id="room-form-title"><?= $id ? 'Ubah Kamar' : 'Tambah Kamar' ?></h2></div>
+    <div class="ah-card__body">
+        <form method="post" class="row g-3" action="admin_kamar.php<?= $id ? '?action=edit&amp;id=' . (int) $id : '?action=create' ?>">
+            <?= master_csrf() ?><input type="hidden" name="action" value="save">
+            <?php if ($id): ?><input type="hidden" name="id" value="<?= (int) $id ?>"><?php endif; ?>
+            <div class="col-md-8"><label class="form-label" for="nama_kamar">Nama Kamar / Kobong</label>
+                <input class="form-control" id="nama_kamar" name="nama_kamar" maxlength="50" required value="<?= master_e($form['nama_kamar']) ?>"><?= ah_field_error('nama_kamar','_room_error') ?></div>
+            <div class="col-md-4"><label class="form-label" for="kapasitas">Kapasitas (orang)</label>
+                <input class="form-control" id="kapasitas" name="kapasitas" type="number" min="1" max="2147483647" required value="<?= master_e($form['kapasitas']) ?>"><?= ah_field_error('kapasitas','_room_error') ?></div>
+            <p class="small text-muted mb-0">Mengubah kapasitas tidak memindahkan atau mengeluarkan penghuni. Perubahan dicatat dalam audit.</p>
+            <div class="ah-actions"><button class="btn btn-success" type="submit">Simpan Kamar</button><a class="btn btn-outline-secondary" href="admin_kamar.php">Batal</a></div>
+        </form>
     </div>
-</div>
-
-<div class="modal fade" id="modalTambah" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title fw-bold"><i class="fas fa-plus-circle me-2"></i>Tambah Kamar Asrama</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <form method="POST">
-                <div class="modal-body p-4">
-                    <div class="mb-3">
-                        <label class="fw-bold mb-1">Nama Kamar / Kobong</label>
-                        <input type="text" name="nama_kamar" class="form-control form-control-lg" placeholder="Contoh: Al-Ghazali 01" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="fw-bold mb-1">Kapasitas (Orang)</label>
-                        <input type="number" name="kapasitas" class="form-control form-control-lg" placeholder="Masukkan batas maksimal..." required>
-                    </div>
-                </div>
-                <div class="modal-footer bg-light border-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" name="tambah" class="btn btn-success fw-bold px-4">Simpan Data</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<?php foreach($data_kamar as $d): ?>
-<div class="modal fade" id="modalEdit<?php echo $d['id']; ?>" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-warning">
-                <h5 class="modal-title fw-bold"><i class="fas fa-edit me-2"></i>Edit Data Kamar</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form method="POST">
-                <div class="modal-body p-4">
-                    <input type="hidden" name="id" value="<?php echo $d['id']; ?>">
-                    <div class="mb-3">
-                        <label class="fw-bold mb-1">Nama Kamar / Kobong</label>
-                        <input type="text" name="nama_kamar" class="form-control form-control-lg" value="<?php echo $d['nama_kamar']; ?>" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="fw-bold mb-1">Kapasitas (Orang)</label>
-                        <input type="number" name="kapasitas" class="form-control form-control-lg" value="<?php echo $d['kapasitas']; ?>" required>
-                    </div>
-                </div>
-                <div class="modal-footer bg-light border-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" name="edit" class="btn btn-warning fw-bold px-4 text-dark">Simpan Perubahan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalPenghuni<?php echo $d['id']; ?>" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title fw-bold"><i class="fas fa-users me-2"></i>Daftar Penghuni Kamar: <?php echo $d['nama_kamar']; ?></h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body p-4">
-                <div class="alert alert-info border-info d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <strong>Kapasitas Ruangan:</strong><br>
-                        <?php echo $d['terisi']; ?> Terisi / <?php echo $d['kapasitas']; ?> Maksimal
-                    </div>
-                    <?php if($d['terisi'] >= $d['kapasitas']): ?>
-                        <span class="badge bg-danger fs-6 px-3 py-2 rounded-pill"><i class="fas fa-ban me-1"></i> KAMAR PENUH</span>
-                    <?php else: ?>
-                        <span class="badge bg-success fs-6 px-3 py-2 rounded-pill"><i class="fas fa-check me-1"></i> TERSEDIA</span>
-                    <?php endif; ?>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover align-middle">
-                        <thead class="table-light text-center">
-                            <tr>
-                                <th width="5%">No</th>
-                                <th width="15%">NIS</th>
-                                <th>Nama Santri</th>
-                                <th width="10%">L/P</th>
-                                <th>Unit Sekolah</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $id_kmr = $d['id'];
-                            // Ambil data santri yang menempati kamar ini di tahun ajaran aktif
-                            $q_penghuni = mysqli_query($koneksi, "
-                                SELECT s.nis, s.nama_santri, s.jenis_kelamin, s.sekolah_saat_ini
-                                FROM plotting_kamar pk
-                                JOIN santri s ON pk.id_santri = s.id
-                                WHERE pk.id_kamar = '$id_kmr' AND pk.id_tahun = '$id_tahun'
-                                ORDER BY s.nama_santri ASC
-                            ");
-                            
-                            if(mysqli_num_rows($q_penghuni) > 0){
-                                $no_p = 1;
-                                while($p = mysqli_fetch_assoc($q_penghuni)){
-                                    echo "<tr>";
-                                    echo "<td class='text-center'>".$no_p++."</td>";
-                                    echo "<td class='text-center'>".$p['nis']."</td>";
-                                    echo "<td class='fw-bold text-dark'>".$p['nama_santri']."</td>";
-                                    echo "<td class='text-center'>".$p['jenis_kelamin']."</td>";
-                                    echo "<td class='text-center'><span class='badge bg-secondary'>".$p['sekolah_saat_ini']."</span></td>";
-                                    echo "</tr>";
-                                }
-                            } else {
-                                echo "<tr><td colspan='5' class='text-muted fst-italic text-center py-4'><i class='fas fa-bed fa-2x mb-2 d-block text-secondary opacity-50'></i>Kamar ini masih kosong. Belum ada santri yang ditempatkan.</td></tr>";
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer bg-light border-0">
-                <button type="button" class="btn btn-secondary fw-bold px-4" data-bs-dismiss="modal">Tutup</button>
-            </div>
-        </div>
-    </div>
-</div>
-<?php endforeach; ?>
-
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-<script>
-    $(document).ready(function () { 
-        $('#tabelData').DataTable({
-            "language": { "search": "Pencarian Cepat:" }
-        }); 
-    });
-</script>
-</body>
-</html>
+</section>
+<?php endif; ?>
+<?php if ($isDetail): ?>
+<section class="ah-card" aria-labelledby="room-detail-title">
+    <div class="ah-card__head flex-wrap gap-2"><h2 class="h6 mb-0" id="room-detail-title">Penghuni: <?= master_e($selected['nama_kamar']) ?></h2>
+        <div class="ah-actions"><a class="btn btn-sm btn-outline-primary" href="?action=edit&amp;id=<?= (int) $selected['id'] ?>">Ubah kamar</a><a class="btn btn-sm btn-outline-secondary" href="admin_kamar.php">Daftar kamar</a></div></div>
+    <div class="ah-card__body"><p>Kapasitas maksimal <?= (int) $selected['kapasitas'] ?> orang. Daftar berikut mengikuti semester aktif dan pencarian.</p></div>
+</section>
+<?php ah_list_search($q, 'Cari NIS, nama santri, atau sekolah', ['action' => 'detail', 'id' => (int) $selected['id']]); ?>
+<div class="ah-card ah-table-wrap"><table class="ah-table" id="room-occupants">
+    <caption class="ah-visually-hidden">Penghuni kamar pada semester aktif sesuai pencarian</caption>
+    <thead><tr><th scope="col">No</th><th scope="col">NIS</th><th scope="col">Nama santri</th><th scope="col">L/P</th><th scope="col">Sekolah</th></tr></thead>
+    <tbody><?php foreach ($result['rows'] as $index => $row): ?><tr>
+        <td><?= ($page - 1) * 20 + $index + 1 ?></td><td><?= master_e($row['nis']) ?></td><td><?= master_e($row['nama_santri']) ?></td><td><?= master_e($row['jenis_kelamin']) ?></td><td><?= master_e($row['sekolah_saat_ini']) ?></td>
+    </tr><?php endforeach; ?>
+    <?php if ($result['rows'] === []): ?><tr><td colspan="5"><?= ah_empty('Tidak ada penghuni sesuai pencarian', $year ? 'Kamar kosong atau tidak ada penghuni yang cocok. Coba bersihkan pencarian.' : 'Atur semester aktif untuk melihat penempatan santri.') ?></td></tr><?php endif; ?>
+    </tbody>
+</table></div>
+<?php else: ?>
+<?php ah_list_search($q, 'Cari nama kamar'); ?>
+<div class="ah-card ah-table-wrap"><table class="ah-table" id="room-list">
+    <caption class="ah-visually-hidden">Daftar kamar dan kapasitas pada semester aktif</caption>
+    <thead><tr><th scope="col">No</th><th scope="col">Nama Kamar / Kobong</th><th scope="col">Terisi / kapasitas</th><th scope="col">Status kapasitas</th><th scope="col">Aksi</th></tr></thead>
+    <tbody><?php foreach ($result['rows'] as $index => $row): ?><tr>
+        <td><?= ($page - 1) * 20 + $index + 1 ?></td><td><?= master_e($row['nama_kamar']) ?></td><td><?= (int) $row['terisi'] ?> / <?= (int) $row['kapasitas'] ?></td>
+        <td><?= ah_badge((int) $row['terisi'] >= (int) $row['kapasitas'] ? 'Penuh' : 'Tersedia', (int) $row['terisi'] >= (int) $row['kapasitas'] ? 'warn' : 'ok') ?></td>
+        <td><div class="ah-actions"><a class="btn btn-sm btn-outline-primary" href="?action=detail&amp;id=<?= (int) $row['id'] ?>">Penghuni</a><a class="btn btn-sm btn-outline-secondary" href="?action=edit&amp;id=<?= (int) $row['id'] ?>">Ubah</a></div></td>
+    </tr><?php endforeach; ?>
+    <?php if ($result['rows'] === []): ?><tr><td colspan="5"><?= ah_empty('Tidak ada kamar sesuai pencarian', 'Bersihkan pencarian atau tambahkan kamar melalui tombol Tambah Kamar.') ?></td></tr><?php endif; ?>
+    </tbody>
+</table></div>
+<?php endif; ?>
+<?php master_pagination((int) $result['total'], $page, 20); ah_old_clear('_room_error'); master_footer(); ?>

@@ -32,10 +32,12 @@ final class PrintRenderer
      * Dipilih agar setiap KATA pada judul kolom muat utuh pada orientasi
      * tersempit (A4 potret). Kolom "Tanggal" dan "Jenis/ID" dilebarkan dari
      * versi lama justru karena keduanya yang paling mudah terpotong.
+     * Status memakai 8% agar "Terlambat" utuh pada A4 potret; Catatan
+     * tetap membungkus teks panjang dalam sisa lebar, tanpa mengecilkan font.
      *
      * @var array<int, int>
      */
-    private const LEBAR_KOLOM = [4, 8, 11, 9, 7, 9, 11, 7, 16, 18];
+    private const LEBAR_KOLOM = [4, 8, 11, 9, 7, 9, 11, 8, 15, 18];
 
     /** Judul kolom, sejajar dengan `LEBAR_KOLOM`. */
     private const JUDUL_KOLOM = [

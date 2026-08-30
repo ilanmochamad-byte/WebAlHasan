@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Auth;
 
 use App\Http\JsonResponse;
+use App\Http\SafeRedirect;
 use App\Http\Session;
+use App\Ui\Denial;
 
 final class Authorization
 {
@@ -31,11 +33,22 @@ final class Authorization
         return $user;
     }
 
+    /**
+     * Pengguna anonim diarahkan ke satu pintu masuk `/portal/`.
+     *
+     * Tujuan semula ikut dibawa sebagai `next` agar tautan detail yang dibuka
+     * sebelum masuk dapat dipulihkan setelah login. `SafeRedirect` hanya
+     * menerima alamat internal yang diizinkan; hak akses tetap diperiksa ulang
+     * oleh guard halaman tujuan setelah pengalihan, termasuk bila pengguna
+     * masuk dengan akun lain.
+     */
     public function requireWebUser(): array
     {
         $user = $this->currentUser();
         if ($user === null) {
-            header('Location: ' . app_url('/admin/admin_login.php?pesan=sesi'));
+            $next = SafeRedirect::currentRequest();
+            header('Location: ' . app_url('/portal/index.php') . '?pesan=sesi'
+                . ($next === null ? '' : '&next=' . rawurlencode($next)));
             exit;
         }
 
@@ -52,8 +65,11 @@ final class Authorization
     {
         $user = $this->requireWebUser();
         if (!in_array($role, $user['roles'], true)) {
-            http_response_code(403);
-            exit('Akses ditolak. Akun ini tidak memiliki hak untuk membuka fungsi admin.');
+            Denial::render(
+                'Akun ini tidak memiliki hak untuk membuka fungsi tersebut.',
+                'Halaman yang Anda buka hanya untuk pemegang role ' . $role . '. '
+                    . 'Beranda dan menu lain yang menjadi hak Anda tetap dapat dibuka.'
+            );
         }
 
         return $user;

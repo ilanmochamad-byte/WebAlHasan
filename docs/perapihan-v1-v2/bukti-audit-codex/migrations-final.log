@@ -1,0 +1,11 @@
+[diterapkan] 001_phase1_security.sql @ 2026-08-30 11:48:20
+[diterapkan] 002_phase2_master_data.sql @ 2026-08-30 11:48:20
+[diterapkan] 003_phase3_schedules_meetings.sql @ 2026-08-30 11:48:20
+[diterapkan] 004_phase4_api_attendance.sql @ 2026-08-30 11:48:20
+[diterapkan] 005_phase5_reporting_indexes.sql @ 2026-08-30 11:48:21
+[diterapkan] 006_v2_phase1_perizinan_foundation.sql @ 2026-08-30 11:48:21
+[diterapkan] 007_v2_phase2_pengajuan_routing_keputusan.sql @ 2026-08-30 11:48:21
+[diterapkan] 008_v2_phase4_notifikasi_push_whatsapp.sql @ 2026-08-30 11:48:22
+[diterapkan] 009_v2_phase5_laporan_dan_push_receipt.sql @ 2026-08-30 11:48:23
+[diterapkan] 010_perapihan_rekonsiliasi_wali.sql @ 2026-08-30 11:48:23
+Tidak ada migrasi baru.

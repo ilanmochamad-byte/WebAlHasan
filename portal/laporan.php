@@ -47,7 +47,7 @@ $nilai = static fn (string $key): string => $filter[$key] === null ? '' : (strin
 $tautanEkspor = static fn (string $file): string => app_url('/portal/' . $file)
     . '?' . $laporan['query'] . '&mode=' . rawurlencode((string) $scope['mode']);
 
-portal_header('Laporan Perizinan', $userCapabilities, (string) $scope['mode'], $currentUser);
+portal_header('Laporan Perizinan', $userCapabilities, (string) $scope['mode'], $currentUser, ['show_heading' => false]);
 ?>
 <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4">
     <div>

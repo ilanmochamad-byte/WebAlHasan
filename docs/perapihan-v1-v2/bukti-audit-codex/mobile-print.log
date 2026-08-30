@@ -1,0 +1,22 @@
+
+> alhasanapps@1.0.0 test:print-dialog
+> node --experimental-strip-types --test tests/print-dialog.test.ts
+
+(node:29149) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/ilanmochamad/alhasanApps/tests/print-dialog.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/ilanmochamad/alhasanApps/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ mengenali exception pembatalan cetak iOS dari nama dan pesan (0.440917ms)
+✔ mengenali bentuk CodedError dari bridge native (0.0815ms)
+✔ tidak menyembunyikan kegagalan cetak yang sebenarnya (0.056916ms)
+✔ mengembalikan hasil normal ketika pencetakan dimulai (0.064459ms)
+✔ mengubah penutupan dialog menjadi hasil dibatalkan (0.07675ms)
+✔ meneruskan kegagalan printer tanpa perubahan (0.330708ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88.007291
