@@ -215,3 +215,47 @@ if (!function_exists('ah_old_clear')) {
         unset($_SESSION[$bucket]);
     }
 }
+
+if (!function_exists('ah_form_token')) {
+    /**
+     * Token sekali pakai untuk melindungi formulir dari pengiriman ulang.
+     *
+     * Dibuat saat formulir dirender dan dikirim sebagai field tersembunyi.
+     * Klik ganda, refresh POST, atau tombol "kembali lalu kirim lagi" memakai
+     * token yang SAMA, dan token itu hanya berlaku sekali — sehingga tidak ada
+     * santri, wali, atau relasi ganda yang tercipta.
+     *
+     * Ini melengkapi pola POST-redirect-GET, bukan menggantikan validasi
+     * keunikan di basis data.
+     */
+    function ah_form_token(string $bucket): string
+    {
+        $token = bin2hex(random_bytes(16));
+        $daftar = $_SESSION['_ah_form_tokens'][$bucket] ?? [];
+        $daftar[] = $token;
+        // Simpan paling banyak 20 token terakhir per formulir agar sesi tidak membengkak.
+        $_SESSION['_ah_form_tokens'][$bucket] = array_slice($daftar, -20);
+
+        return $token;
+    }
+}
+
+if (!function_exists('ah_form_token_consume')) {
+    /**
+     * Memakai token sekali pakai. Mengembalikan false bila token tidak dikenal
+     * atau sudah pernah dipakai (artinya: pengiriman ulang).
+     */
+    function ah_form_token_consume(string $bucket, mixed $token): bool
+    {
+        $token = is_string($token) ? $token : '';
+        $daftar = $_SESSION['_ah_form_tokens'][$bucket] ?? [];
+        $posisi = array_search($token, $daftar, true);
+        if ($token === '' || $posisi === false) {
+            return false;
+        }
+        unset($daftar[$posisi]);
+        $_SESSION['_ah_form_tokens'][$bucket] = array_values($daftar);
+
+        return true;
+    }
+}
