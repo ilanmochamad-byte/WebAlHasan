@@ -69,6 +69,14 @@ final class SafeRedirect
         $base = $base === '/' ? '' : rtrim($base, '/');
         $relative = $base !== '' && str_starts_with($path, $base . '/') ? substr($path, strlen($base)) : $path;
 
+        // A-01: browser/server dapat menormalisasi titik, backslash, dan
+        // percent-encoding secara berbeda. Semua halaman tujuan aplikasi ada
+        // langsung di admin/portal; terima hanya nama skrip kanonik. Query
+        // tetap boleh memuat nilai terenkode, dan guard tujuan tetap wajib.
+        if (preg_match('#^/(?:admin|portal)/[A-Za-z0-9_]+\\.php$#D', $relative) !== 1) {
+            return null;
+        }
+
         $allowed = false;
         foreach (self::ALLOWED_PREFIXES as $prefix) {
             if (str_starts_with($relative, $prefix)) {
