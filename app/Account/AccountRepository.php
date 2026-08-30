@@ -125,7 +125,7 @@ final class AccountRepository
         );
     }
 
-    public function createTeacher(array $data, string $passwordHash, int $actorId): int
+    public function createTeacher(array $data, string $passwordHash, int $actorId, ?callable $beforeCommit = null): int
     {
         $this->db->begin_transaction();
         try {
@@ -146,6 +146,7 @@ final class AccountRepository
                 throw new RuntimeException('Role guru gagal ditetapkan.');
             }
             $statement->close();
+            if ($beforeCommit !== null) { $beforeCommit($id); }
             $this->db->commit();
             return $id;
         } catch (Throwable $exception) {

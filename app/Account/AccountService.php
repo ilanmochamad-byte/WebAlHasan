@@ -92,10 +92,12 @@ final class AccountService
         $data['phone'] = $data['phone'] === '' ? null : $data['phone'];
 
         $temporaryPassword = $this->temporaryPassword();
-        $id = $this->accounts->createTeacher($data, password_hash($temporaryPassword, PASSWORD_DEFAULT), $actorId);
-        $this->audit->log('account_created', 'user', $id, null, [
-            'name' => $data['name'], 'username' => $data['username'], 'guru_id' => $data['guru_id'], 'roles' => ['guru'],
-        ], $actorId);
+        $id = $this->accounts->createTeacher($data, password_hash($temporaryPassword, PASSWORD_DEFAULT), $actorId,
+            function (int $id) use ($data, $actorId): void {
+                $this->auditRequired('account_created', $id, null, [
+                    'name' => $data['name'], 'username' => $data['username'], 'guru_id' => $data['guru_id'], 'roles' => ['guru'],
+                ], $actorId);
+            });
 
         return ['id' => $id, 'temporary_password' => $temporaryPassword];
     }
@@ -105,29 +107,21 @@ final class AccountService
         if ($id === $actorId && !$active) {
             throw new InvalidArgumentException('Anda tidak dapat menonaktifkan akun sendiri. Minta admin lain melakukannya.');
         }
-        $before = $this->required($id);
-
-        $this->accounts->transaction(function () use ($id, $active, $before): void {
-            // Mengunci himpunan admin aktif lebih dulu: dua permintaan bersamaan
-            // tidak dapat sama-sama lolos dan menyisakan nol admin.
+        $this->accounts->transaction(function () use ($id, $active, $actorId): void {
+            // Kunci admin sebelum membaca nilai sebelum/sesudah dan menulis audit.
             $this->accounts->countActiveAdmins(true);
+            $before = $this->required($id);
             if (!$this->accounts->setActive($id, $active)) {
                 throw new RuntimeException('Status akun tidak berubah.');
             }
             if (!$active && $this->beraturAdmin($before) && $this->accounts->countActiveAdmins() < 1) {
                 throw new InvalidArgumentException('Penonaktifan dibatalkan: ini akun admin aktif terakhir. Tetapkan admin lain terlebih dahulu.');
             }
+            $perangkatDicabut = !$active ? $this->devices->revokeAllForUser($id, self::ALASAN_AKUN_NONAKTIF) : 0;
+            $this->auditRequired('account_status_changed', $id,
+                ['is_active' => (bool) $before['is_active']],
+                ['is_active' => $active, 'perangkat_push_dicabut' => $perangkatDicabut], $actorId);
         });
-
-        $perangkatDicabut = !$active ? $this->devices->revokeAllForUser($id, self::ALASAN_AKUN_NONAKTIF) : 0;
-        $this->audit->log(
-            'account_status_changed',
-            'user',
-            $id,
-            ['is_active' => (bool) $before['is_active']],
-            ['is_active' => $active, 'perangkat_push_dicabut' => $perangkatDicabut],
-            $actorId
-        );
     }
 
     /**
@@ -138,38 +132,40 @@ final class AccountService
     public function grantRole(int $id, string $role, int $actorId, array $input = []): void
     {
         $role = $this->role($role);
-        $before = $this->required($id);
-        $rolesSebelum = $this->roles($before);
+        $this->accounts->transaction(function () use ($id, $role, $actorId, $input): void {
+            $this->accounts->countActiveAdmins(true);
+            $before = $this->required($id);
+            $rolesSebelum = $this->roles($before);
 
-        if (in_array($role, $rolesSebelum, true)) {
-            throw new InvalidArgumentException('Akun ini sudah memiliki role ' . $this->label($role) . '.');
-        }
-        if (!$before['is_active']) {
-            throw new InvalidArgumentException('Aktifkan akun terlebih dahulu sebelum menambahkan hak akses.');
-        }
+            if (in_array($role, $rolesSebelum, true)) {
+                throw new InvalidArgumentException('Akun ini sudah memiliki role ' . $this->label($role) . '.');
+            }
+            if (!$before['is_active']) {
+                throw new InvalidArgumentException('Aktifkan akun terlebih dahulu sebelum menambahkan hak akses.');
+            }
 
-        // Role yang menuntut relasi master yang valid dan aktif. Menetapkan role
-        // tanpa hubungan data yang sah SELALU ditolak di server, bukan hanya
-        // disembunyikan dari formulir.
-        $this->requireMasterRelation($role, $before);
+            // Role yang menuntut relasi master yang valid dan aktif. Menetapkan role
+            // tanpa hubungan data yang sah SELALU ditolak di server, bukan hanya
+            // disembunyikan dari formulir.
+            $this->requireMasterRelation($role, $before);
 
-        if ($role === 'admin' && trim((string) ($input['konfirmasi_admin'] ?? '')) !== self::KONFIRMASI_ADMIN) {
-            throw new InvalidArgumentException(
-                'Pemberian hak admin adalah tindakan khusus. Ketik ulang kalimat "' . self::KONFIRMASI_ADMIN
-                . '" pada kolom konfirmasi untuk melanjutkan.'
+            if ($role === 'admin' && trim((string) ($input['konfirmasi_admin'] ?? '')) !== self::KONFIRMASI_ADMIN) {
+                throw new InvalidArgumentException(
+                    'Pemberian hak admin adalah tindakan khusus. Ketik ulang kalimat "' . self::KONFIRMASI_ADMIN
+                    . '" pada kolom konfirmasi untuk melanjutkan.'
+                );
+            }
+
+            $this->accounts->grantRole($id, $role, $actorId);
+            $after = $this->required($id);
+            $this->auditRequired(
+                'account_role_granted',
+                $id,
+                ['roles' => $rolesSebelum],
+                ['roles' => $this->roles($after), 'role_ditambahkan' => $role],
+                $actorId
             );
-        }
-
-        $this->accounts->grantRole($id, $role, $actorId);
-        $after = $this->required($id);
-        $this->audit->log(
-            'account_role_granted',
-            'user',
-            $id,
-            ['roles' => $rolesSebelum],
-            ['roles' => $this->roles($after), 'role_ditambahkan' => $role],
-            $actorId
-        );
+        });
     }
 
     /**
@@ -178,35 +174,25 @@ final class AccountService
     public function revokeRole(int $id, string $role, int $actorId): void
     {
         $role = $this->role($role);
-        $before = $this->required($id);
-        $rolesSebelum = $this->roles($before);
-
-        if (!in_array($role, $rolesSebelum, true)) {
-            throw new InvalidArgumentException('Akun ini tidak memiliki role ' . $this->label($role) . '.');
-        }
-        if ($role === 'admin' && $id === $actorId) {
-            throw new InvalidArgumentException('Anda tidak dapat melepas hak admin dari akun sendiri. Minta admin lain melakukannya.');
-        }
-
-        $this->accounts->transaction(function () use ($id, $role): void {
-            // Kunci himpunan admin aktif sebelum mencabut, sehingga dua
-            // pencabutan bersamaan tidak bisa sama-sama lolos.
+        $this->accounts->transaction(function () use ($id, $role, $actorId): void {
             $this->accounts->countActiveAdmins(true);
+            $before = $this->required($id);
+            $rolesSebelum = $this->roles($before);
+            if (!in_array($role, $rolesSebelum, true)) {
+                throw new InvalidArgumentException('Akun ini tidak memiliki role ' . $this->label($role) . '.');
+            }
+            if ($role === 'admin' && $id === $actorId) {
+                throw new InvalidArgumentException('Anda tidak dapat melepas hak admin dari akun sendiri. Minta admin lain melakukannya.');
+            }
             $this->accounts->revokeRole($id, $role);
             if ($role === 'admin' && $this->accounts->countActiveAdmins() < 1) {
                 throw new InvalidArgumentException('Pencabutan dibatalkan: ini admin aktif terakhir. Tetapkan admin lain terlebih dahulu.');
             }
+            $after = $this->required($id);
+            $this->auditRequired('account_role_revoked', $id,
+                ['roles' => $rolesSebelum],
+                ['roles' => $this->roles($after), 'role_dicabut' => $role], $actorId);
         });
-
-        $after = $this->required($id);
-        $this->audit->log(
-            'account_role_revoked',
-            'user',
-            $id,
-            ['roles' => $rolesSebelum],
-            ['roles' => $this->roles($after), 'role_dicabut' => $role],
-            $actorId
-        );
     }
 
     public function resetPassword(int $id, int $actorId): string
@@ -214,12 +200,14 @@ final class AccountService
         if ($id === $actorId) {
             throw new InvalidArgumentException('Gunakan halaman Ganti Password untuk akun Anda sendiri.');
         }
-        $this->required($id);
         $temporaryPassword = $this->temporaryPassword();
-        if (!$this->accounts->resetPassword($id, password_hash($temporaryPassword, PASSWORD_DEFAULT))) {
-            throw new RuntimeException('Password sementara gagal dibuat.');
-        }
-        $this->audit->log('account_password_reset', 'user', $id, null, ['force_password_change' => true], $actorId);
+        $this->accounts->transaction(function () use ($id, $actorId, $temporaryPassword): void {
+            $this->required($id);
+            if (!$this->accounts->resetPassword($id, password_hash($temporaryPassword, PASSWORD_DEFAULT))) {
+                throw new RuntimeException('Password sementara gagal dibuat.');
+            }
+            $this->auditRequired('account_password_reset', $id, null, ['force_password_change' => true], $actorId);
+        });
         return $temporaryPassword;
     }
 
@@ -320,6 +308,14 @@ final class AccountService
             throw new InvalidArgumentException('Akun tidak ditemukan.');
         }
         return $account;
+    }
+
+    /** Audit merupakan bagian transaksi mutasi akun; kegagalannya wajib membatalkan mutasi. */
+    private function auditRequired(string $action, int $id, ?array $before, array $after, int $actorId): void
+    {
+        if (!$this->audit->log($action, 'user', $id, $before, $after, $actorId)) {
+            throw new RuntimeException('Perubahan akun dibatalkan karena audit tidak dapat disimpan. Silakan coba lagi.');
+        }
     }
 
     private function temporaryPassword(): string

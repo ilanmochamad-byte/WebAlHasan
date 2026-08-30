@@ -132,7 +132,7 @@ final class PerizinanAccountRepository
      *
      * @param array<string, mixed> $data
      */
-    public function createLinked(array $data, string $role, string $passwordHash, int $actorId): int
+    public function createLinked(array $data, string $role, string $passwordHash, int $actorId, ?callable $beforeCommit = null): int
     {
         $this->db->begin_transaction();
         try {
@@ -151,6 +151,7 @@ final class PerizinanAccountRepository
             );
             $id = (int) $this->db->insert_id;
             $this->attachRole($id, $role, $actorId);
+            if ($beforeCommit !== null) { $beforeCommit($id); }
             $this->db->commit();
 
             return $id;
@@ -163,7 +164,7 @@ final class PerizinanAccountRepository
     /**
      * Menghubungkan akun yang sudah ada ke master pengurus/wali dan menambahkan role.
      */
-    public function linkExisting(int $userId, string $role, ?int $pengurusId, ?int $waliId, int $actorId): void
+    public function linkExisting(int $userId, string $role, ?int $pengurusId, ?int $waliId, int $actorId, ?callable $beforeCommit = null): void
     {
         $this->db->begin_transaction();
         try {
@@ -172,6 +173,7 @@ final class PerizinanAccountRepository
                 [$pengurusId, $waliId, $userId]
             );
             $this->attachRole($userId, $role, $actorId);
+            if ($beforeCommit !== null) { $beforeCommit(); }
             $this->db->commit();
         } catch (Throwable $exception) {
             $this->db->rollback();
