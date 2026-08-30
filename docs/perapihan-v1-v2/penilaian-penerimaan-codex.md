@@ -1,12 +1,12 @@
 # Penilaian seluruh klaim penerimaan oleh Codex
 
-Tanggal: 30 Agustus 2026. Diperbarui sesudah keputusan lanjutan B-1/A-06/A-07/API. Penilaian atas hasil koreksi audit, bukan pengesahan klaim implementer awal.
+Tanggal: 30 Agustus 2026. Diperbarui sesudah keputusan lanjutan B-1/A-06/A-07/API dan penyelesaian kamar/pagination A-08/A-10. Penilaian atas hasil koreksi audit, bukan pengesahan klaim implementer awal.
 
 **TERVERIFIKASI** berarti bukti memadai pada cakupan sandbox yang disebut; bukan jaminan semua perangkat/data produksi. **TIDAK TERVERIFIKASI** berarti ada bukti yang menyangkal klaim/alasan bukti. **MENUNGGU VERIFIKASI** berarti bukti baru sebagian atau perlu keputusan/perangkat.
 
 ID Kx-yy mengikuti nomor koreksi dan urutan baris pada `status-penerimaan.md`. Semua 77 baris dipertahankan. Sumber log dan temuan A-01..A-08: [hasil-audit-codex.md](hasil-audit-codex.md). Nama KA/KW/KG/KP/KL merujuk `perapihan_integration`; PM merujuk `perapihan_web_smoke`; NAV merujuk `v2_phase2_navigasi_murobi`; B merujuk uji browser. Semua suite tersebut dijalankan sendiri oleh auditor.
 
-Rekap terkini: **60 TERVERIFIKASI**, **3 TIDAK TERVERIFIKASI**, **14 MENUNGGU VERIFIKASI**. Belum lulus paket. Audit awal memiliki 57/4/16; hasil dan perubahan putusan dijelaskan di [hasil-audit-lanjutan-codex.md](hasil-audit-lanjutan-codex.md).
+Rekap terkini: **63 TERVERIFIKASI**, **0 TIDAK TERVERIFIKASI**, **14 MENUNGGU VERIFIKASI**. Belum lulus paket. Riwayat: audit awal 57/4/16; sesudah B-1/A-06/A-07/API menjadi 60/3/14; sesudah kamar/pagination menjadi 63/0/14. Bukti terakhir: [audit-kamar-pagination.md](audit-kamar-pagination.md).
 
 ## Koreksi 1
 
@@ -84,23 +84,23 @@ Rekap terkini: **60 TERVERIFIKASI**, **3 TIDAK TERVERIFIKASI**, **14 MENUNGGU VE
 
 | ID | Klaim implementer | Putusan audit | Alasan / bukti / batas |
 | --- | --- | --- | --- |
-| K6-01 | Standar bersama untuk warna, spasi, judul, tombol, formulir, tabel, badge, dialog, pesan | **MENUNGGU VERIFIKASI** | Token dan komponen bersama tersedia, browser sampel berjalan. A-05 dikoreksi, tetapi keseragaman seluruh dialog/form/halaman belum dibuktikan; kamar masih legacy. |
+| K6-01 | Standar bersama untuk warna, spasi, judul, tombol, formulir, tabel, badge, dialog, pesan | **MENUNGGU VERIFIKASI** | Kamar sudah memakai kerangka bersama (A-08). Sampel 8 tampilan pada tiga lebar lulus, tetapi keseragaman seluruh dialog/form/halaman belum dibuktikan. Tidak menutup seluruh klaim hanya dari sampel. |
 | K6-02 | Bootstrap dipertahankan, komponen bersama, tanpa aset eksternal baru | **TERVERIFIKASI** | Diff mempertahankan Bootstrap/PHP native dan komponen bersama, tidak menambah host aset baru. Uji browser memakai aset lokal; bukan bukti ketersediaan CDN produksi. |
-| K6-03 | Sidebar/topbar konsisten; menu mengikuti role dan kemampuan aktual | **TIDAK TERVERIFIKASI** | A-07 telah dikoreksi: menu laporan guru/murobi membuka laporan sendiri, notifikasi guru non-murobi tidak ditawarkan; HTTP 29 dan laporan 38 lulus. Bagian klaim konsistensi sidebar/topbar seluruh halaman belum terpenuhi karena kamar tetap legacy (A-08). |
+| K6-03 | Sidebar/topbar konsisten; menu mengikuti role dan kemampuan aktual | **TERVERIFIKASI** | A-07 menyelaraskan menu dengan guard; A-08 menuntaskan kamar. Inventaris A/B memakai kerangka bersama; browser kamar menunjukkan menu aktif, topbar, dan laci ponsel berfungsi. Kelompok D sengaja tetap di luar desain ulang. |
 | K6-04 | Komponen navigasi terpisah dari guard khusus admin | **TERVERIFIKASI** | Pencarian Navigation hanya pada Layout/sidebar, tanpa guard dan tanpa dipakai layanan otorisasi. Guard tetap di tujuan. |
 | K6-05 | Menu ponsel dapat dibuka/ditutup, tombol mudah disentuh | **TERVERIFIKASI** | B-3a/b/c dan B-1c dijalankan pada 768/390 untuk kerangka baru. Menu halaman legacy tidak termasuk kesimpulan ini. |
-| K6-06 | Menu aktif, breadcrumb, judul, tindakan utama jelas | **MENUNGGU VERIFIKASI** | A-05 memperbaiki H1 ganda; A-07 memperbaiki menu operasional. Browser guru 390 memverifikasi satu H1 dan jalur laporan. Menu aktif/breadcrumb sampel lulus, tetapi kamar dan seluruh alur belum diverifikasi. |
+| K6-06 | Menu aktif, breadcrumb, judul, tindakan utama jelas | **MENUNGGU VERIFIKASI** | A-05/A-07/A-08 sudah diperbaiki. Delapan tampilan pada 390/768/1440 memiliki H1 tunggal; menu kamar aktif. Kejelasan breadcrumb dan semua tindakan utama pada seluruh alur belum diuji satu per satu. |
 | K6-07 | Formulir dikelompokkan, label jelas, validasi dekat kolom | **MENUNGGU VERIFIKASI** | Pengelompokan dan label terlihat pada form baru; static bukan bukti validasi dekat setiap kolom. Perlu uji pesan invalid pada seluruh form A/B. |
-| K6-08 | Isian dipertahankan saat validasi gagal | **MENUNGGU VERIFIKASI** | A-04 dan HTTP memverifikasi form santri/wali; form legacy lain belum diuji satu per satu. ah_old_keep saja tidak membuktikan klaim menyeluruh. |
-| K6-09 | Keadaan kosong / berhasil / gagal / akses ditolak yang mudah dipahami | **MENUNGGU VERIFIKASI** | B-10b membuktikan 403 yang menjelaskan jalan keluar; contoh kosong/berhasil tersedia. Semua mode error/empty tiap halaman belum diuji. |
-| K6-10 | Pencarian/pagination untuk daftar besar | **TIDAK TERVERIFIKASI** | Alasan bukti menyebut seluruh daftar, tetapi kelas/tahun masih mengambil daftar penuh tanpa pagination. Uji daftar besar seluruh modul belum tersedia; klaim menyeluruh tidak dapat dipertahankan. |
+| K6-08 | Isian dipertahankan saat validasi gagal | **MENUNGGU VERIFIKASI** | Form santri/wali A-04 dan kamar A-08 terbukti mempertahankan isian saat validasi gagal. Semua form lama yang lain belum diuji satu per satu. |
+| K6-09 | Keadaan kosong / berhasil / gagal / akses ditolak yang mudah dipahami | **MENUNGGU VERIFIKASI** | Penolakan akses dan keadaan kamar diuji; A-10 menambah tujuh uji pesan pencarian kosong agar tidak menyatakan seluruh data bersih. Keadaan berhasil/gagal/kosong setiap modul masih belum diuji seluruhnya. |
+| K6-10 | Pencarian/pagination untuk daftar besar | **TERVERIFIKASI** | A-10: 45 pengujian pagination mencakup daftar baru, 20/20/5 baris, urutan stabil, pencarian/konteks, page ekstrem, dan akses melewati batas lama 100 pada rekonsiliasi/pertemuan. Daftar lama tetap pada regresi. Pemetaan seluruh daftar utama A/B ada di inventaris §F; dropdown/cetak bukan tabel daftar terpaginasikan. |
 | K6-11 | Tabel nyaman pada layar kecil tanpa melebarkan halaman | **TERVERIFIKASI** | Tidak ada overflow halaman pada sampel browser resmi 390 dan pemeriksaan tambahan B/D. Tabel memakai area gulir. Hasil dibatasi halaman/data yang diuji, bukan seluruh perangkat. |
 | K6-12 | Tindakan berisiko menjelaskan dampak sebelum konfirmasi | **MENUNGGU VERIFIKASI** | Konfirmasi admin/merge/timpa ada, termasuk koreksi A-04. Belum memeriksa setiap dialog legacy serta teks dampaknya secara manual. |
 | K6-13 | Makna tidak bergantung warna/ikon saja | **MENUNGGU VERIFIKASI** | Badge sampel memiliki teks; static tidak membuktikan seluruh pesan/aksi bebas ketergantungan warna/ikon. Perlu pemeriksaan aksesibilitas menyeluruh. |
 | K6-14 | Navigasi keyboard, fokus terlihat, label pembaca layar, kontras memadai | **MENUNGGU VERIFIKASI** | B-7 dan fokus CSS lulus, tetapi kontras, nama aksesibel semua kontrol dan pembaca layar belum diaudit. Tidak boleh menganggap sebagian bukti sebagai kelulusan seluruh klaim. |
 | K6-15 | Preferensi pengurangan animasi dihormati | **MENUNGGU VERIFIKASI** | prefers-reduced-motion ada dalam CSS dan static lulus; belum menguji perilaku animasi saat preferensi perangkat benar-benar aktif. |
 | K6-16 | Halaman cetak/PDF tetap tanpa sidebar, margin dan pagination tidak berubah | **MENUNGGU VERIFIKASI** | PDF Chromium 175 lulus dan sampel visual tanpa sidebar; Safari hanya pratinjau 4 halaman, Save PDF belum berhasil. Kesetaraan cetak lintas browser menunggu. |
-| K6-17 | Inventaris halaman agar tidak ada yang tertinggal | **TIDAK TERVERIFIKASI** | A-08: inventaris awal keliru memasukkan kamar sebagai adaptor. Dokumen sudah dikoreksi; modernisasi semua halaman belum dibuktikan. |
+| K6-17 | Inventaris halaman agar tidak ada yang tertinggal | **TERVERIFIKASI** | A-08: kamar benar-benar dipindah ke Layout dan telah diuji, bukan hanya dikoreksi di dokumen. Inventaris diperbarui sesuai sumber kerangka termasuk detail laporan A-07 dan pagination A-10. Pengecualian D/E tetap eksplisit. |
 | K6-18 | Dampak CSS bersama pada halaman lama diperiksa | **MENUNGGU VERIFIKASI** | Sampel D dashboard/PSB/rekap keuangan 390 tidak melebar; belum seluruh 13 halaman D dan semua breakpoint/mode operasi. |
 
 ## Koreksi 7
@@ -128,4 +128,4 @@ Rekap terkini: **60 TERVERIFIKASI**, **3 TIDAK TERVERIFIKASI**, **14 MENUNGGU VE
 | Perangkat Android/iOS untuk web | **MENUNGGU VERIFIKASI** | Tidak diuji pada perangkat fisik; viewport 390 bukan pengganti. |
 | Kontras dan pembaca layar | **MENUNGGU VERIFIKASI** | Belum axe/VoiceOver/TalkBack menyeluruh. |
 | Migrasi 010 produksi | **MENUNGGU VERIFIKASI** | Sandbox sudah diterapkan/idempoten; produksi sengaja tidak disentuh. |
-| Audit Codex seluruh paket | **MENUNGGU VERIFIKASI** | B-1/A-06/A-07/A-09 selesai pada lingkup audit lanjutan; tiga klaim tidak terverifikasi dan 14 klaim parsial tetap mencegah penutupan penerimaan seluruh paket. |
+| Audit Codex seluruh paket | **MENUNGGU VERIFIKASI** | B-1/A-06/A-07/A-09 dan kamar/pagination A-08/A-10 selesai; tidak ada lagi klaim tidak terverifikasi, tetapi 14 klaim parsial tetap mencegah penutupan penerimaan seluruh paket. |

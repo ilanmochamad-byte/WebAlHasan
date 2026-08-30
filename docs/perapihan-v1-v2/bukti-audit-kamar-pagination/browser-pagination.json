@@ -1,0 +1,194 @@
+[
+  {
+    "path": "/admin/admin_kamar.php?q=PGFBCE8576&page=2",
+    "activeMenu": "Data Kamar",
+    "documentWidth": 390,
+    "h1": 1,
+    "heading": "Data Kamar Santri",
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "rows": 20,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_kamar.php?action=detail&id=123&q=PGFBCE8576&page=2",
+    "activeMenu": "Data Kamar",
+    "documentWidth": 390,
+    "h1": 1,
+    "heading": "Data Kamar Santri",
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "rows": 20,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_kelas.php?q=PGFBCE8576&page=2",
+    "activeMenu": "Data Kelas",
+    "documentWidth": 390,
+    "h1": 1,
+    "heading": "Kelas dan Keanggotaan",
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "rows": 20,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_tahun.php?q=18&page=2",
+    "activeMenu": "Tahun Ajaran",
+    "documentWidth": 390,
+    "h1": 1,
+    "heading": "Tahun Ajaran",
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "rows": 20,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_murobi.php?q=PGFBCE8576&page=2",
+    "activeMenu": "Penugasan Murobi",
+    "documentWidth": 390,
+    "h1": 1,
+    "heading": "Penugasan Murobi",
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "rows": 20,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_pembimbing.php?q=PGFBCE8576&page=2",
+    "activeMenu": "Penugasan Pembimbing",
+    "documentWidth": 390,
+    "h1": 1,
+    "heading": "Penugasan Pembimbing",
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "rows": 20,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_wali_rekonsiliasi.php?bagian=duplikat&q=PGFBCE8576&page=2",
+    "activeMenu": "Rekonsiliasi Wali",
+    "documentWidth": 390,
+    "h1": 1,
+    "heading": "Rekonsiliasi Wali",
+    "page": "Halaman 2 dari 6 — total 101 data.",
+    "rows": 40,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_pengajian.php?tab=pertemuan&q=1800-&page=2",
+    "activeMenu": "Jadwal & Pertemuan",
+    "documentWidth": 390,
+    "h1": 1,
+    "heading": "Pengajian",
+    "page": "Halaman 2 dari 6 — total 106 data.",
+    "rows": 20,
+    "width": 390
+  },
+  {
+    "path": "/admin/admin_kamar.php?q=PGFBCE8576&page=2",
+    "documentWidth": 768,
+    "h1": 1,
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "width": 768
+  },
+  {
+    "path": "/admin/admin_kamar.php?action=detail&id=123&q=PGFBCE8576&page=2",
+    "documentWidth": 768,
+    "h1": 1,
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "width": 768
+  },
+  {
+    "path": "/admin/admin_kelas.php?q=PGFBCE8576&page=2",
+    "documentWidth": 768,
+    "h1": 1,
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "width": 768
+  },
+  {
+    "path": "/admin/admin_tahun.php?q=18&page=2",
+    "documentWidth": 768,
+    "h1": 1,
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "width": 768
+  },
+  {
+    "path": "/admin/admin_murobi.php?q=PGFBCE8576&page=2",
+    "documentWidth": 768,
+    "h1": 1,
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "width": 768
+  },
+  {
+    "path": "/admin/admin_pembimbing.php?q=PGFBCE8576&page=2",
+    "documentWidth": 768,
+    "h1": 1,
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "width": 768
+  },
+  {
+    "path": "/admin/admin_wali_rekonsiliasi.php?bagian=duplikat&q=PGFBCE8576&page=2",
+    "documentWidth": 768,
+    "h1": 1,
+    "page": "Halaman 2 dari 6 — total 101 data.",
+    "width": 768
+  },
+  {
+    "path": "/admin/admin_pengajian.php?tab=pertemuan&q=1800-&page=2",
+    "documentWidth": 768,
+    "h1": 1,
+    "page": "Halaman 2 dari 6 — total 106 data.",
+    "width": 768
+  },
+  {
+    "path": "/admin/admin_kamar.php?q=PGFBCE8576&page=2",
+    "documentWidth": 1440,
+    "h1": 1,
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "width": 1440
+  },
+  {
+    "path": "/admin/admin_kamar.php?action=detail&id=123&q=PGFBCE8576&page=2",
+    "documentWidth": 1440,
+    "h1": 1,
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "width": 1440
+  },
+  {
+    "path": "/admin/admin_kelas.php?q=PGFBCE8576&page=2",
+    "documentWidth": 1440,
+    "h1": 1,
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "width": 1440
+  },
+  {
+    "path": "/admin/admin_tahun.php?q=18&page=2",
+    "documentWidth": 1440,
+    "h1": 1,
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "width": 1440
+  },
+  {
+    "path": "/admin/admin_murobi.php?q=PGFBCE8576&page=2",
+    "documentWidth": 1440,
+    "h1": 1,
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "width": 1440
+  },
+  {
+    "path": "/admin/admin_pembimbing.php?q=PGFBCE8576&page=2",
+    "documentWidth": 1440,
+    "h1": 1,
+    "page": "Halaman 2 dari 3 — total 45 data.",
+    "width": 1440
+  },
+  {
+    "path": "/admin/admin_wali_rekonsiliasi.php?bagian=duplikat&q=PGFBCE8576&page=2",
+    "documentWidth": 1440,
+    "h1": 1,
+    "page": "Halaman 2 dari 6 — total 101 data.",
+    "width": 1440
+  },
+  {
+    "path": "/admin/admin_pengajian.php?tab=pertemuan&q=1800-&page=2",
+    "documentWidth": 1440,
+    "h1": 1,
+    "page": "Halaman 2 dari 6 — total 106 data.",
+    "width": 1440
+  }
+]

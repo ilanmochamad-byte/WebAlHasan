@@ -1,0 +1,57 @@
+{
+  "code_head": "4c2f987",
+  "official": {
+    "regression": 2464,
+    "package": 248,
+    "browser": 56,
+    "total": 2768,
+    "fail": 0
+  },
+  "additional": {
+    "pass": 235,
+    "fail": 0,
+    "by_log": {
+      "redirect-final.log": 36,
+      "wali-final.log": 16,
+      "merge-final.log": 4,
+      "admin-final.log": 13,
+      "http-final.log": 29,
+      "report-final.log": 38,
+      "csv-final.log": 4,
+      "api-final.log": 13,
+      "mobile-client-final.log": 18,
+      "kamar-final.log": 19,
+      "pagination-final.log": 45
+    }
+  },
+  "viewport_observations": 24,
+  "php_lint_files": 18,
+  "acceptance": {
+    "verified": 63,
+    "not_verified": 0,
+    "waiting": 14
+  },
+  "safari_new_verification": false,
+  "sha256": {
+    "A-11.log": "4321307220b3e654f0d782a28f01852c6dd9bb580a7f3134692a21af1b517c13",
+    "admin-final.log": "6591ed324a719aa3c93ed3eb4a08ca4a573dc17b7d47b1db903d828a1cc5af1a",
+    "api-final.log": "5d4a86f0c7b140af6362620d98660f24684493a655ec2788af434d289c4ffffc",
+    "browser-final.log": "4f89088afdd5f6d16001536bfe00ef8a62c60a6731068bcddba399d761b13cc2",
+    "browser-kamar-interaksi.json": "69db3a77eb463c6734bbb9f626430fe92337de0964a00fdd158f29c15d784266",
+    "browser-pagination.json": "588f0cca180af453d6170a8358e12c5aa716e9f926de5f13f98f0c49c36305fb",
+    "cleanup.log": "50adb9b5a3ba454b842e1103c1d9814163eac21621715955038c484dc5d3924b",
+    "csv-final.log": "0d7bfe8f7f72e8ae0c1fe597c4dc4f28b54a9f46f93217c523d861edbaa8566f",
+    "fixture-clean.log": "51ce2062794a9c5f05b67d11f83fdbc1a73261b471896f89b59b3342ed0f9ad9",
+    "full-final.log": "945e84f0a7abfdb2b0b583a588a3b71376f11a37fd09f134a0057fd24dd0dcfe",
+    "http-final.log": "c1e5fc6664ccbda80a6ad70bb8e16d41b41cb4a00a2d1741c20010fc36ae31d9",
+    "kamar-390.png": "f8e002ea0d08faacd19020c1bde825fb495ec0b215da9a4195fc26877f4bfae5",
+    "kamar-final.log": "156074961b06efa92fc1963600345d20fd5a592143bd54604f56445daf8026e0",
+    "merge-final.log": "f5076f1a958783b6e23fedb10ca41da1e32835974610f7929c8d5f29cdf53e59",
+    "mobile-client-final.log": "e782be5e8f29f6def9ad2b01cfdd77aee1b954cbc8dc1bcd231077ee074a60b5",
+    "pagination-final.log": "a5a45062eba9b903d65766f8523d9d27ee8e934788e404199332fe5d55e1f62d",
+    "php-lint.log": "091137ff04684776157120853d6bdf7c495aecd0de9700f5b00331adc687709d",
+    "redirect-final.log": "c9100b3f8e1ad770023d587dfdcf4d58211d9d02cd34a81fab06010f2b3e6ec9",
+    "report-final.log": "bd7a1c81505ff1d751b00c897a590ad4fce49a118964e40a7e4d75e3a2b58a39",
+    "wali-final.log": "0ce38f0d5bbfa8e3609025f9f1af5902f7be3645893eee8c57b1a30ad6210189"
+  }
+}

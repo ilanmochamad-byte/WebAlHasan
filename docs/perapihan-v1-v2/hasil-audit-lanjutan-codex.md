@@ -1,5 +1,10 @@
 # Hasil audit lanjutan Codex — keputusan 30 Agustus 2026
 
+> **Riwayat sebelum penyelesaian kamar/pagination.** Tiga klaim tersisa pada
+> dokumen ini kemudian dituntaskan sesuai keputusan pengguna; hasil terkini
+> ada di [audit-kamar-pagination.md](audit-kamar-pagination.md). Angka dan status
+> awal di bawah dipertahankan sebagai rekam audit.
+
 Lanjutan dari [audit awal](hasil-audit-codex.md), setelah keputusan pengguna atas
 B-1, A-06, A-07, dan pertanyaan kompatibilitas API. Audit awal beserta hasil yang
 gagal tetap disimpan sebagai riwayat. Dokumen ini menggantikan status terbuka

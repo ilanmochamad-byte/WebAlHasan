@@ -1,0 +1,14 @@
+[lulus] A-09 login mobile guru tetap kompatibel
+[lulus] A-09 tanpa parameter tetap gabungan 31
+[lulus] A-09 keys filters persis kontrak baseline
+[lulus] A-09 active_filters tidak memuat penyajian web
+[lulus] A-09 seluruh envelope/payload tanpa parameter identik snapshot main pada fixture sama
+[lulus] A-09 parameter web santri tidak mengubah API baseline
+[lulus] A-09 parameter web guru tidak mengubah API baseline
+[lulus] A-09 parameter web gabungan tidak mengubah API baseline
+[lulus] A-09 parameter web invalid tidak mengubah API baseline
+[lulus] A-09 options API tidak memuat subject_scopes
+[lulus] A-09 cetak API tetap gabungan tanpa metadata web
+[lulus] A-09 teacher_id asing tetap 403
+[lulus] A-09 detail API tetap 30 peserta snapshot + kehadiran guru
+Total API kompatibilitas: 13, gagal: 0

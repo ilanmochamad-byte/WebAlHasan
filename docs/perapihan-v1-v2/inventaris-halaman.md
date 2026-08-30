@@ -25,6 +25,7 @@ menyebut dampak sebelum tindakan berisiko.
 | `admin/admin_wali_rekonsiliasi.php` | 2, 6 | **Baru.** Laporan rekonsiliasi + penggabungan satu pasang. |
 | `admin/admin_guru.php` | 3, 6 | Tanpa pilihan tugas lama; penugasan nyata. Ditulis ulang. |
 | `admin/admin_murobi.php` | 3, 6 | Keterangan approval V2. Ditulis ulang. |
+| `admin/admin_kamar.php` | 6 | Dituntaskan pada audit A-08 sesuai instruksi pengguna: kerangka bersama, form aman, penghuni dan daftar terpaginasikan. |
 | `admin/admin_pengajian.php` | 4, 6 | **Baru.** Modul terpadu bertab. |
 | `admin/_pengajian_jadwal.php` | 4, 6 | **Baru.** Potongan tampilan tab Jadwal. |
 | `admin/_pengajian_pertemuan.php` | 4, 6 | **Baru.** Potongan tampilan tab Pertemuan. |
@@ -35,22 +36,22 @@ menyebut dampak sebelum tindakan berisiko.
 
 ## B. Halaman yang ikut berubah tampilan karena adaptor kerangka
 
-Halaman-halaman berikut **tidak ditulis ulang**, tetapi otomatis memperoleh
-kerangka baru karena `admin/_master_ui.php` dan `portal/_ui.php` kini
-mendelegasikan ke `App\Ui\Layout`. Isi dan logikanya tidak diubah.
+Halaman-halaman berikut memakai adaptor kerangka bersama. Pada audit A-10,
+kelas, tahun ajaran, dan pembimbing memperoleh pencarian/pagination daftar;
+aturan mutasi dan sumber opsi penugasan tidak diubah. Portal tetap melalui
+`portal/_ui.php`; pengecualian guard laporan sesuai keputusan A-07 dicatat di bawah.
 
 | Halaman | Sumber kerangka |
 | --- | --- |
 | `admin/admin_pengurus.php`, `admin_kelas.php`, `admin_tahun.php`, `admin_pembimbing.php` | `_master_ui.php` |
-| `admin/laporan_absensi_detail.php` | `_master_ui.php` |
+| `admin/laporan_absensi_detail.php` | `ah_page_open` → `Layout`, guard `_laporan_guard.php` admin/guru sesuai A-07 |
 | `portal/izin.php`, `izin_detail.php`, `izin_buat.php`, `izin_antrean.php`, `laporan.php`, `notifikasi.php` | `portal/_ui.php` |
 
-**Koreksi audit A-08 (30 Agustus 2026):** `admin/admin_kamar.php` sebelumnya
-keliru dicantumkan sebagai pemakai `_master_ui.php`. Halaman itu masih memakai
-markup lama dan `admin/sidebar.php`; ia belum memperoleh adaptor `Layout`.
-Pemeriksaan 390 px tidak menemukan pelebaran halaman, tetapi kesetaraan navigasi
-ponselnya belum terbukti. Ini pengecualian inventaris, bukan bukti modernisasi
-halaman kamar telah selesai. Rincian: `hasil-audit-codex.md`.
+**Riwayat A-08:** kamar semula keliru dicantumkan sebagai pemakai adaptor.
+Setelah keputusan pengguna untuk menuntaskannya sebelum push, kamar benar-benar
+dipindahkan ke kerangka bersama dan dicantumkan pada kelompok A. Bukti:
+[audit-kamar-pagination.md](audit-kamar-pagination.md). Ini penyelesaian kode,
+bukan sekadar mengganti klaim inventaris.
 
 > **Untuk auditor:** halaman kelompok B adalah tempat paling mungkin munculnya
 > cacat tampilan sisa (mis. markup lama yang mengandalkan lebar kolom Bootstrap
@@ -110,3 +111,22 @@ Yang perlu diketahui auditor:
 | `admin/laporan_absensi_cetak.php` | Cetak/PDF tanpa sidebar (keputusan pengguna) |
 | `portal/laporan_cetak.php` | Idem |
 | `App\Ui\Denial` (403) | Halaman penolakan; menawarkan jalan keluar, bukan menu |
+
+
+## F. Cakupan pencarian dan pagination daftar utama (audit A-10)
+
+| Daftar dalam paket | Penyajian |
+| --- | --- |
+| Akun; santri; wali; guru; pengurus | Pencarian/filter dan pagination server yang sudah ada dipertahankan |
+| Kelas; tahun ajaran; murobi; pembimbing | Pencarian server + 20 baris per halaman; opsi formulir tetap lengkap |
+| Kamar dan penghuni per semester aktif | Pencarian server + 20 baris per halaman, tidak memuat modal semua kamar/penghuni sekaligus |
+| Jadwal pengajian | Filter/pagination lama dipertahankan |
+| Riwayat pertemuan | Pencarian + 20 baris; baris setelah 100 dapat dicapai, cakupan guru tetap server |
+| Rekonsiliasi wali | Empat tab laporan; masing-masing pencarian + 20 baris/kelompok per halaman, tanpa batas tampilan 100 lama |
+| Kehadiran (detail baris laporan) | Filter/pagination lama dipertahankan; CSV/cetak memakai aturan ekspor sendiri |
+| Portal: pengajuan, antrean, pemilihan santri, laporan, notifikasi | Pagination yang sudah ada dipertahankan; guard/cakupan tidak dilonggarkan |
+
+Yang bukan daftar utama: kartu ringkasan/dashboard, snapshot peserta satu
+pertemuan, pilihan dropdown formulir, dan halaman cetak/CSV. Pilihan formulir
+sengaja tidak dipotong mengikuti halaman tabel. Halaman kelompok D tetap di
+luar desain ulang paket; klaim pengujian seluruh dampak CSS-nya masih menunggu.

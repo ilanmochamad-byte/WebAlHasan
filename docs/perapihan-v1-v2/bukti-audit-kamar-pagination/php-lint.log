@@ -1,0 +1,19 @@
+No syntax errors detected in admin/_pengajian_pertemuan.php
+No syntax errors detected in admin/admin_kamar.php
+No syntax errors detected in admin/admin_kelas.php
+No syntax errors detected in admin/admin_murobi.php
+No syntax errors detected in admin/admin_pembimbing.php
+No syntax errors detected in admin/admin_pengajian.php
+No syntax errors detected in admin/admin_tahun.php
+No syntax errors detected in admin/admin_wali_rekonsiliasi.php
+No syntax errors detected in app/Database/PageQuery.php
+No syntax errors detected in app/Izin/PembimbingRepository.php
+No syntax errors detected in app/Izin/PembimbingService.php
+No syntax errors detected in app/MasterData/MasterDataRepository.php
+No syntax errors detected in app/MasterData/MasterDataService.php
+No syntax errors detected in app/Schedule/ScheduleRepository.php
+No syntax errors detected in app/Schedule/ScheduleService.php
+No syntax errors detected in app/Ui/functions.php
+No syntax errors detected in tests/perapihan_audit_kamar.php
+No syntax errors detected in tests/perapihan_audit_pagination.php
+Total PHP: 18; gagal: 0

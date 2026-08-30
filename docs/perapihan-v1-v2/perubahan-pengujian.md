@@ -204,3 +204,17 @@ Percobaan persiapan yang gagal dan alasan koreksi pada uji baru dicatat dalam
 [laporan lanjutan](hasil-audit-lanjutan-codex.md). Tidak ada perubahan sumber
 mobile, pengabaian berkas uji yang gagal, atau pengujian lama yang dihapus
 untuk menyamakan angka dengan acuan implementer.
+
+## 8. Penyelesaian kamar dan pagination sebelum push
+
+Sesuai instruksi pengguna berikutnya, A-08/A-10 dituntaskan dalam implementasi,
+bukan dengan mengurangi klaim penerimaan. Tidak ada assertion lama yang diubah
+pada tahap ini. Ditambahkan `perapihan_audit_kamar.php` (19 pemeriksaan) dan
+`perapihan_audit_pagination.php` (45 pemeriksaan). Yang diuji meliputi guard,
+CSRF, mutasi kamar aman, escaping, isian kembali, 20/20/5 baris, data setelah
+batas lama 100, konsistensi halaman/pencarian, dan isolasi guru.
+
+Angka resmi tetap 2.768. Uji tambahan audit menjadi 235 karena 171 sebelumnya
+dijalankan ulang dan ditambah 64 pemeriksaan tersebut. Bukti serta 14 butir
+yang masih menunggu verifikasi ada di
+[audit-kamar-pagination.md](audit-kamar-pagination.md).

@@ -1,7 +1,7 @@
 # Panduan mengirim hasil audit ke GitHub dan menyiapkan rilis cPanel
 
 Tanggal: 30 Agustus 2026. Panduan ini disiapkan setelah koreksi B-1, A-06,
-A-07, dan A-09. **Auditor tidak melakukan push, merge, deploy, atau migrasi
+A-07, A-09, serta penyelesaian kamar/pagination A-08/A-10. **Auditor tidak melakukan push, merge, deploy, atau migrasi
 produksi.** Seluruh perubahan masih commit lokal pada
 `codex/perapihan-v1-v2-ui`; main dan sumber mobile tetap utuh.
 
@@ -36,14 +36,14 @@ butir yang belum terverifikasi. Jangan menyatakan semua kriteria sudah lulus.
 ## 2. Syarat sebelum merge dan produksi
 
 Sesuai AGENTS.md, main tidak boleh menerima paket yang belum memenuhi
-penerimaan. Saat panduan ditulis masih ada **3 klaim tidak terverifikasi dan
-14 menunggu verifikasi**; jumlah tes yang lulus tidak menghapusnya. Lihat
+penerimaan. Kamar dan pagination telah dituntaskan sebelum push sesuai
+instruksi pengguna: **63 klaim terverifikasi, 0 tidak terverifikasi, dan
+14 menunggu verifikasi**. Jumlah tes yang lulus tidak menghapus sisa bukti itu. Lihat
 [matriks penerimaan](penilaian-penerimaan-codex.md) dan
 [langkah lanjut audit](hasil-audit-lanjutan-codex.md).
 
-- Selesaikan atau putuskan ulang secara tertulis cakupan kamar/kerangka UI dan
-  pagination seluruh daftar. Perubahan ruang lingkup bukan kelulusan atas
-  klaim awal; matriks harus menyebut keputusan tersebut.
+- Kamar dan pagination sudah selesai dalam kode, tanpa mengurangi ruang lingkup
+  untuk meluluskan klaim. Lihat [buktinya](audit-kamar-pagination.md).
 - Lengkapi pemeriksaan form, audit mutasi, aksesibilitas, filter/cetak, halaman
   legacy, dan perangkat yang relevan. Catat risiko yang belum terselesaikan;
   jangan mengganti bukti fisik dengan emulasi Chromium.
