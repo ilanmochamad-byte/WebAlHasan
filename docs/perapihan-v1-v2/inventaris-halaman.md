@@ -129,4 +129,4 @@ Yang perlu diketahui auditor:
 Yang bukan daftar utama: kartu ringkasan/dashboard, snapshot peserta satu
 pertemuan, pilihan dropdown formulir, dan halaman cetak/CSV. Pilihan formulir
 sengaja tidak dipotong mengikuti halaman tabel. Halaman kelompok D tetap di
-luar desain ulang paket; klaim pengujian seluruh dampak CSS-nya masih menunggu.
+luar desain ulang paket; dampak CSS pada 13 rute × tiga lebar telah diperiksa pada audit-14-klaim.md; cacat legacy dan batas perangkat tetap dicatat.

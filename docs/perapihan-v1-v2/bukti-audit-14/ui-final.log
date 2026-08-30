@@ -1,0 +1,320 @@
+A 1440 /portal/index.php HTTP200 overflow=false axe=
+A 1440 /portal/izin_ringkasan.php HTTP200 overflow=false axe=
+A 1440 /admin/admin_akun.php HTTP200 overflow=false axe=
+A 1440 /admin/admin_master_santri.php HTTP200 overflow=false axe=
+A 1440 /admin/admin_master_santri.php?action=create HTTP200 overflow=false axe=
+A 1440 /admin/admin_wali.php HTTP200 overflow=false axe=
+A 1440 /admin/admin_wali.php?action=create HTTP200 overflow=false axe=
+A 1440 /admin/admin_wali_rekonsiliasi.php HTTP200 overflow=false axe=
+A 1440 /admin/admin_guru.php HTTP200 overflow=false axe=
+A 1440 /admin/admin_guru.php?action=create HTTP200 overflow=false axe=
+A 1440 /admin/admin_murobi.php HTTP200 overflow=false axe=
+A 1440 /admin/admin_kamar.php HTTP200 overflow=false axe=
+A 1440 /admin/admin_kamar.php?action=create HTTP200 overflow=false axe=
+A 1440 /admin/admin_pengajian.php?tab=jadwal HTTP200 overflow=false axe=
+A 1440 /admin/admin_pengajian.php?tab=jadwal&action=create HTTP200 overflow=false axe=
+A 1440 /admin/admin_pengajian.php?tab=pertemuan HTTP200 overflow=false axe=
+A 1440 /admin/admin_laporan_absensi.php HTTP200 overflow=false axe=
+A 1440 /admin/ubah_password.php HTTP200 overflow=false axe=
+A 1440 /admin/logout.php HTTP200 overflow=false axe=
+A 1440 /admin/admin_wali.php?action=edit&id=763 HTTP200 overflow=false axe=
+A 1440 /admin/admin_wali.php?action=detail&id=763 HTTP200 overflow=false axe=
+A 1440 /admin/admin_wali_rekonsiliasi.php?q=UI14d736be84 HTTP200 overflow=false axe=
+B 1440 /admin/admin_pengurus.php HTTP200 overflow=false axe=
+B 1440 /admin/admin_pengurus.php?action=create HTTP200 overflow=false axe=
+B 1440 /admin/admin_kelas.php HTTP200 overflow=false axe=
+B 1440 /admin/admin_kelas.php?action=create HTTP200 overflow=false axe=
+B 1440 /admin/admin_tahun.php HTTP200 overflow=false axe=
+B 1440 /admin/admin_tahun.php?action=create HTTP200 overflow=false axe=
+B 1440 /admin/admin_pembimbing.php HTTP200 overflow=false axe=
+B 1440 /admin/laporan_absensi_detail.php?id=58 HTTP200 overflow=false axe=
+B 1440 /portal/izin.php HTTP200 overflow=false axe=
+B 1440 /portal/izin_buat.php HTTP200 overflow=false axe=
+B 1440 /portal/izin_antrean.php HTTP200 overflow=false axe=
+B 1440 /portal/laporan.php HTTP200 overflow=false axe=
+B 1440 /portal/notifikasi.php HTTP200 overflow=false axe=
+B 1440 /portal/izin_detail.php?id=56 HTTP200 overflow=false axe=
+B 1440 /portal/izin_detail.php?id=81 HTTP200 overflow=false axe=
+B 1440 /portal/izin_detail.php?id=1 HTTP200 overflow=false axe=
+B 1440 /portal/izin_detail.php?id=36 HTTP200 overflow=false axe=
+B 1440 /portal/izin_detail.php?id=93 HTTP200 overflow=false axe=
+D 1440 /admin/admin_dashboard.php HTTP200 overflow=false axe=aria-progressbar-name,color-contrast
+D 1440 /admin/admin_data.php HTTP200 overflow=false axe=aria-valid-attr,link-name,select-name
+D 1440 /admin/admin_santri.php HTTP200 overflow=false axe=aria-valid-attr,label,link-name,select-name
+D 1440 /admin/admin_rekap_santri.php HTTP200 overflow=false axe=color-contrast
+D 1440 /admin/admin_alumni.php HTTP200 overflow=false axe=aria-valid-attr,link-name,select-name
+D 1440 /admin/admin_pembayaran_psb.php HTTP200 overflow=false axe=aria-valid-attr,color-contrast,select-name
+D 1440 /admin/admin_rekap_keuangan.php HTTP200 overflow=false axe=select-name
+D 1440 /admin/admin_berita.php HTTP200 overflow=false axe=
+D 1440 /admin/admin_galeri.php HTTP200 overflow=false axe=html-has-lang,label
+D 1440 /admin/admin_download.php HTTP200 overflow=false axe=html-has-lang,label
+D 1440 /admin/admin_pelanggaran.php HTTP200 overflow=false axe=aria-valid-attr
+D 1440 /admin/admin_notifikasi.php HTTP200 overflow=false axe=color-contrast,select-name
+D 1440 /admin/admin_izin.php HTTP200 overflow=false axe=
+A 768 /portal/index.php HTTP200 overflow=false axe=
+A 768 /portal/izin_ringkasan.php HTTP200 overflow=false axe=
+A 768 /admin/admin_akun.php HTTP200 overflow=false axe=
+A 768 /admin/admin_master_santri.php HTTP200 overflow=false axe=
+A 768 /admin/admin_master_santri.php?action=create HTTP200 overflow=false axe=
+A 768 /admin/admin_wali.php HTTP200 overflow=false axe=
+A 768 /admin/admin_wali.php?action=create HTTP200 overflow=false axe=
+A 768 /admin/admin_wali_rekonsiliasi.php HTTP200 overflow=false axe=
+A 768 /admin/admin_guru.php HTTP200 overflow=false axe=
+A 768 /admin/admin_guru.php?action=create HTTP200 overflow=false axe=
+A 768 /admin/admin_murobi.php HTTP200 overflow=false axe=
+A 768 /admin/admin_kamar.php HTTP200 overflow=false axe=
+A 768 /admin/admin_kamar.php?action=create HTTP200 overflow=false axe=
+A 768 /admin/admin_pengajian.php?tab=jadwal HTTP200 overflow=false axe=
+A 768 /admin/admin_pengajian.php?tab=jadwal&action=create HTTP200 overflow=false axe=
+A 768 /admin/admin_pengajian.php?tab=pertemuan HTTP200 overflow=false axe=
+A 768 /admin/admin_laporan_absensi.php HTTP200 overflow=false axe=
+A 768 /admin/ubah_password.php HTTP200 overflow=false axe=
+A 768 /admin/logout.php HTTP200 overflow=false axe=
+A 768 /admin/admin_wali.php?action=edit&id=763 HTTP200 overflow=false axe=
+A 768 /admin/admin_wali.php?action=detail&id=763 HTTP200 overflow=false axe=
+A 768 /admin/admin_wali_rekonsiliasi.php?q=UI14d736be84 HTTP200 overflow=false axe=
+B 768 /admin/admin_pengurus.php HTTP200 overflow=false axe=
+B 768 /admin/admin_pengurus.php?action=create HTTP200 overflow=false axe=
+B 768 /admin/admin_kelas.php HTTP200 overflow=false axe=
+B 768 /admin/admin_kelas.php?action=create HTTP200 overflow=false axe=
+B 768 /admin/admin_tahun.php HTTP200 overflow=false axe=
+B 768 /admin/admin_tahun.php?action=create HTTP200 overflow=false axe=
+B 768 /admin/admin_pembimbing.php HTTP200 overflow=false axe=
+B 768 /admin/laporan_absensi_detail.php?id=58 HTTP200 overflow=false axe=
+B 768 /portal/izin.php HTTP200 overflow=false axe=
+B 768 /portal/izin_buat.php HTTP200 overflow=false axe=
+B 768 /portal/izin_antrean.php HTTP200 overflow=false axe=
+B 768 /portal/laporan.php HTTP200 overflow=false axe=
+B 768 /portal/notifikasi.php HTTP200 overflow=false axe=
+B 768 /portal/izin_detail.php?id=56 HTTP200 overflow=false axe=
+B 768 /portal/izin_detail.php?id=81 HTTP200 overflow=false axe=
+B 768 /portal/izin_detail.php?id=1 HTTP200 overflow=false axe=
+B 768 /portal/izin_detail.php?id=36 HTTP200 overflow=false axe=
+B 768 /portal/izin_detail.php?id=93 HTTP200 overflow=false axe=
+D 768 /admin/admin_dashboard.php HTTP200 overflow=false axe=aria-progressbar-name,color-contrast
+D 768 /admin/admin_data.php HTTP200 overflow=false axe=aria-valid-attr,link-name,select-name
+D 768 /admin/admin_santri.php HTTP200 overflow=false axe=aria-valid-attr,label,link-name,select-name
+D 768 /admin/admin_rekap_santri.php HTTP200 overflow=false axe=color-contrast
+D 768 /admin/admin_alumni.php HTTP200 overflow=false axe=aria-valid-attr,link-name,select-name
+D 768 /admin/admin_pembayaran_psb.php HTTP200 overflow=false axe=aria-valid-attr,color-contrast,select-name
+D 768 /admin/admin_rekap_keuangan.php HTTP200 overflow=false axe=scrollable-region-focusable,select-name
+D 768 /admin/admin_berita.php HTTP200 overflow=false axe=
+D 768 /admin/admin_galeri.php HTTP200 overflow=false axe=html-has-lang,label
+D 768 /admin/admin_download.php HTTP200 overflow=false axe=html-has-lang,label
+D 768 /admin/admin_pelanggaran.php HTTP200 overflow=false axe=aria-valid-attr
+D 768 /admin/admin_notifikasi.php HTTP200 overflow=false axe=color-contrast,select-name
+D 768 /admin/admin_izin.php HTTP200 overflow=false axe=
+A 390 /portal/index.php HTTP200 overflow=false axe=
+A 390 /portal/izin_ringkasan.php HTTP200 overflow=false axe=
+A 390 /admin/admin_akun.php HTTP200 overflow=false axe=
+A 390 /admin/admin_master_santri.php HTTP200 overflow=false axe=
+A 390 /admin/admin_master_santri.php?action=create HTTP200 overflow=false axe=
+A 390 /admin/admin_wali.php HTTP200 overflow=false axe=
+A 390 /admin/admin_wali.php?action=create HTTP200 overflow=false axe=
+A 390 /admin/admin_wali_rekonsiliasi.php HTTP200 overflow=false axe=
+A 390 /admin/admin_guru.php HTTP200 overflow=false axe=
+A 390 /admin/admin_guru.php?action=create HTTP200 overflow=false axe=
+A 390 /admin/admin_murobi.php HTTP200 overflow=false axe=
+A 390 /admin/admin_kamar.php HTTP200 overflow=false axe=
+A 390 /admin/admin_kamar.php?action=create HTTP200 overflow=false axe=
+A 390 /admin/admin_pengajian.php?tab=jadwal HTTP200 overflow=false axe=
+A 390 /admin/admin_pengajian.php?tab=jadwal&action=create HTTP200 overflow=false axe=
+A 390 /admin/admin_pengajian.php?tab=pertemuan HTTP200 overflow=false axe=
+A 390 /admin/admin_laporan_absensi.php HTTP200 overflow=false axe=
+A 390 /admin/ubah_password.php HTTP200 overflow=false axe=
+A 390 /admin/logout.php HTTP200 overflow=false axe=
+A 390 /admin/admin_wali.php?action=edit&id=763 HTTP200 overflow=false axe=
+A 390 /admin/admin_wali.php?action=detail&id=763 HTTP200 overflow=false axe=
+A 390 /admin/admin_wali_rekonsiliasi.php?q=UI14d736be84 HTTP200 overflow=false axe=
+B 390 /admin/admin_pengurus.php HTTP200 overflow=false axe=
+B 390 /admin/admin_pengurus.php?action=create HTTP200 overflow=false axe=
+B 390 /admin/admin_kelas.php HTTP200 overflow=false axe=
+B 390 /admin/admin_kelas.php?action=create HTTP200 overflow=false axe=
+B 390 /admin/admin_tahun.php HTTP200 overflow=false axe=
+B 390 /admin/admin_tahun.php?action=create HTTP200 overflow=false axe=
+B 390 /admin/admin_pembimbing.php HTTP200 overflow=false axe=
+B 390 /admin/laporan_absensi_detail.php?id=58 HTTP200 overflow=false axe=
+B 390 /portal/izin.php HTTP200 overflow=false axe=
+B 390 /portal/izin_buat.php HTTP200 overflow=false axe=
+B 390 /portal/izin_antrean.php HTTP200 overflow=false axe=
+B 390 /portal/laporan.php HTTP200 overflow=false axe=
+B 390 /portal/notifikasi.php HTTP200 overflow=false axe=
+B 390 /portal/izin_detail.php?id=56 HTTP200 overflow=false axe=
+B 390 /portal/izin_detail.php?id=81 HTTP200 overflow=false axe=
+B 390 /portal/izin_detail.php?id=1 HTTP200 overflow=false axe=
+B 390 /portal/izin_detail.php?id=36 HTTP200 overflow=false axe=
+B 390 /portal/izin_detail.php?id=93 HTTP200 overflow=false axe=
+D 390 /admin/admin_dashboard.php HTTP200 overflow=false axe=aria-progressbar-name,button-name,color-contrast
+D 390 /admin/admin_data.php HTTP200 overflow=false axe=aria-valid-attr,button-name,link-name,select-name
+D 390 /admin/admin_santri.php HTTP200 overflow=false axe=aria-valid-attr,button-name,label,link-name,select-name
+D 390 /admin/admin_rekap_santri.php HTTP200 overflow=false axe=button-name,color-contrast,scrollable-region-focusable
+D 390 /admin/admin_alumni.php HTTP200 overflow=false axe=aria-valid-attr,link-name,select-name
+D 390 /admin/admin_pembayaran_psb.php HTTP200 overflow=false axe=aria-valid-attr,button-name,color-contrast,select-name
+D 390 /admin/admin_rekap_keuangan.php HTTP200 overflow=false axe=button-name,scrollable-region-focusable,select-name
+D 390 /admin/admin_berita.php HTTP200 overflow=false axe=button-name
+D 390 /admin/admin_galeri.php HTTP200 overflow=false axe=button-name,html-has-lang,label
+D 390 /admin/admin_download.php HTTP200 overflow=false axe=button-name,html-has-lang,label
+D 390 /admin/admin_pelanggaran.php HTTP200 overflow=true axe=aria-valid-attr
+D 390 /admin/admin_notifikasi.php HTTP200 overflow=false axe=color-contrast,scrollable-region-focusable,select-name
+D 390 /admin/admin_izin.php HTTP200 overflow=false axe=
+[lulus] navigasi/label/overflow/axe 1440 /portal/index.php
+[lulus] navigasi/label/overflow/axe 1440 /portal/izin_ringkasan.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_akun.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_master_santri.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_master_santri.php?action=create
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_wali.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_wali.php?action=create
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_wali_rekonsiliasi.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_guru.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_guru.php?action=create
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_murobi.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_kamar.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_kamar.php?action=create
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_pengajian.php?tab=jadwal
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_pengajian.php?tab=jadwal&action=create
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_pengajian.php?tab=pertemuan
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_laporan_absensi.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/ubah_password.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/logout.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_wali.php?action=edit&id=763
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_wali.php?action=detail&id=763
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_wali_rekonsiliasi.php?q=UI14d736be84
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_pengurus.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_pengurus.php?action=create
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_kelas.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_kelas.php?action=create
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_tahun.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_tahun.php?action=create
+[lulus] navigasi/label/overflow/axe 1440 /admin/admin_pembimbing.php
+[lulus] navigasi/label/overflow/axe 1440 /admin/laporan_absensi_detail.php?id=58
+[lulus] navigasi/label/overflow/axe 1440 /portal/izin.php
+[lulus] navigasi/label/overflow/axe 1440 /portal/izin_buat.php
+[lulus] navigasi/label/overflow/axe 1440 /portal/izin_antrean.php
+[lulus] navigasi/label/overflow/axe 1440 /portal/laporan.php
+[lulus] navigasi/label/overflow/axe 1440 /portal/notifikasi.php
+[lulus] navigasi/label/overflow/axe 1440 /portal/izin_detail.php?id=56
+[lulus] navigasi/label/overflow/axe 1440 /portal/izin_detail.php?id=81
+[lulus] navigasi/label/overflow/axe 1440 /portal/izin_detail.php?id=1
+[lulus] navigasi/label/overflow/axe 1440 /portal/izin_detail.php?id=36
+[lulus] navigasi/label/overflow/axe 1440 /portal/izin_detail.php?id=93
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_dashboard.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_data.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_santri.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_rekap_santri.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_alumni.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_pembayaran_psb.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_rekap_keuangan.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_berita.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_galeri.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_download.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_pelanggaran.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_notifikasi.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 1440 /admin/admin_izin.php
+[lulus] navigasi/label/overflow/axe 768 /portal/index.php
+[lulus] navigasi/label/overflow/axe 768 /portal/izin_ringkasan.php
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_akun.php
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_master_santri.php
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_master_santri.php?action=create
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_wali.php
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_wali.php?action=create
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_wali_rekonsiliasi.php
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_guru.php
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_guru.php?action=create
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_murobi.php
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_kamar.php
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_kamar.php?action=create
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_pengajian.php?tab=jadwal
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_pengajian.php?tab=jadwal&action=create
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_pengajian.php?tab=pertemuan
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_laporan_absensi.php
+[lulus] navigasi/label/overflow/axe 768 /admin/ubah_password.php
+[lulus] navigasi/label/overflow/axe 768 /admin/logout.php
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_wali.php?action=edit&id=763
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_wali.php?action=detail&id=763
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_wali_rekonsiliasi.php?q=UI14d736be84
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_pengurus.php
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_pengurus.php?action=create
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_kelas.php
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_kelas.php?action=create
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_tahun.php
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_tahun.php?action=create
+[lulus] navigasi/label/overflow/axe 768 /admin/admin_pembimbing.php
+[lulus] navigasi/label/overflow/axe 768 /admin/laporan_absensi_detail.php?id=58
+[lulus] navigasi/label/overflow/axe 768 /portal/izin.php
+[lulus] navigasi/label/overflow/axe 768 /portal/izin_buat.php
+[lulus] navigasi/label/overflow/axe 768 /portal/izin_antrean.php
+[lulus] navigasi/label/overflow/axe 768 /portal/laporan.php
+[lulus] navigasi/label/overflow/axe 768 /portal/notifikasi.php
+[lulus] navigasi/label/overflow/axe 768 /portal/izin_detail.php?id=56
+[lulus] navigasi/label/overflow/axe 768 /portal/izin_detail.php?id=81
+[lulus] navigasi/label/overflow/axe 768 /portal/izin_detail.php?id=1
+[lulus] navigasi/label/overflow/axe 768 /portal/izin_detail.php?id=36
+[lulus] navigasi/label/overflow/axe 768 /portal/izin_detail.php?id=93
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_dashboard.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_data.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_santri.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_rekap_santri.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_alumni.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_pembayaran_psb.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_rekap_keuangan.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_berita.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_galeri.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_download.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_pelanggaran.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_notifikasi.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 768 /admin/admin_izin.php
+[lulus] navigasi/label/overflow/axe 390 /portal/index.php
+[lulus] navigasi/label/overflow/axe 390 /portal/izin_ringkasan.php
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_akun.php
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_master_santri.php
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_master_santri.php?action=create
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_wali.php
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_wali.php?action=create
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_wali_rekonsiliasi.php
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_guru.php
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_guru.php?action=create
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_murobi.php
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_kamar.php
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_kamar.php?action=create
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_pengajian.php?tab=jadwal
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_pengajian.php?tab=jadwal&action=create
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_pengajian.php?tab=pertemuan
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_laporan_absensi.php
+[lulus] navigasi/label/overflow/axe 390 /admin/ubah_password.php
+[lulus] navigasi/label/overflow/axe 390 /admin/logout.php
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_wali.php?action=edit&id=763
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_wali.php?action=detail&id=763
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_wali_rekonsiliasi.php?q=UI14d736be84
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_pengurus.php
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_pengurus.php?action=create
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_kelas.php
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_kelas.php?action=create
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_tahun.php
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_tahun.php?action=create
+[lulus] navigasi/label/overflow/axe 390 /admin/admin_pembimbing.php
+[lulus] navigasi/label/overflow/axe 390 /admin/laporan_absensi_detail.php?id=58
+[lulus] navigasi/label/overflow/axe 390 /portal/izin.php
+[lulus] navigasi/label/overflow/axe 390 /portal/izin_buat.php
+[lulus] navigasi/label/overflow/axe 390 /portal/izin_antrean.php
+[lulus] navigasi/label/overflow/axe 390 /portal/laporan.php
+[lulus] navigasi/label/overflow/axe 390 /portal/notifikasi.php
+[lulus] navigasi/label/overflow/axe 390 /portal/izin_detail.php?id=56
+[lulus] navigasi/label/overflow/axe 390 /portal/izin_detail.php?id=81
+[lulus] navigasi/label/overflow/axe 390 /portal/izin_detail.php?id=1
+[lulus] navigasi/label/overflow/axe 390 /portal/izin_detail.php?id=36
+[lulus] navigasi/label/overflow/axe 390 /portal/izin_detail.php?id=93
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_dashboard.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_data.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_santri.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_rekap_santri.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_alumni.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_pembayaran_psb.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_rekap_keuangan.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_berita.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_galeri.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_download.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_pelanggaran.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_notifikasi.php
+[lulus] dampak CSS (bukan kelulusan aksesibilitas legacy) 390 /admin/admin_izin.php
+[lulus] tidak ada kesalahan JavaScript pada seluruh rute
+Total inventaris UI: 160 lulus, 0 gagal; 159 observasi

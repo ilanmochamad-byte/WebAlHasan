@@ -1,5 +1,7 @@
 # Panduan mengirim hasil audit ke GitHub dan menyiapkan rilis cPanel
 
+> **Pembaruan verifikasi 14 klaim:** 12 klaim tambahan telah diverifikasi; K6-14 dan K6-16 masih menunggu perangkat/cetak, dan temuan cetak pra-ada A-17 menunggu keputusan. Lihat [audit-14-klaim.md](audit-14-klaim.md) dan matriks penerimaan terkini. Ini bukan izin rilis.
+
 Tanggal: 30 Agustus 2026. Panduan ini disiapkan setelah koreksi B-1, A-06,
 A-07, A-09, serta penyelesaian kamar/pagination A-08/A-10. **Auditor tidak melakukan push, merge, deploy, atau migrasi
 produksi.** Seluruh perubahan masih commit lokal pada

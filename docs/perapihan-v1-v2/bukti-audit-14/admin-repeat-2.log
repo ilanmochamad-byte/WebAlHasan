@@ -1,0 +1,13 @@
+[lulus] ADMIN 1/revoke: minimum=1 akhir=1 sukses=4; invariant dan penolakan diri sendiri
+[lulus] ADMIN 1/nonaktif: minimum=1 akhir=1 sukses=4; invariant dan penolakan diri sendiri
+[lulus] ADMIN 1/mixed: minimum=1 akhir=1 sukses=4; invariant dan penolakan diri sendiri
+[lulus] ADMIN 1/self-and-other: minimum=1 akhir=1 sukses=4; invariant dan penolakan diri sendiri
+[lulus] ADMIN 2/revoke: minimum=1 akhir=1 sukses=4; invariant dan penolakan diri sendiri
+[lulus] ADMIN 2/nonaktif: minimum=1 akhir=1 sukses=4; invariant dan penolakan diri sendiri
+[lulus] ADMIN 2/mixed: minimum=1 akhir=1 sukses=4; invariant dan penolakan diri sendiri
+[lulus] ADMIN 2/self-and-other: minimum=1 akhir=1 sukses=4; invariant dan penolakan diri sendiri
+[lulus] ADMIN 3/revoke: minimum=1 akhir=1 sukses=4; invariant dan penolakan diri sendiri
+[lulus] ADMIN 3/nonaktif: minimum=1 akhir=1 sukses=4; invariant dan penolakan diri sendiri
+[lulus] ADMIN 3/mixed: minimum=1 akhir=1 sukses=4; invariant dan penolakan diri sendiri
+[lulus] ADMIN 3/self-and-other: minimum=1 akhir=1 sukses=4; invariant dan penolakan diri sendiri
+[lulus] ADMIN fixture awal dipulihkan

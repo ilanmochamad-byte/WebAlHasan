@@ -1,5 +1,7 @@
 # Risiko dan pengujian yang masih menunggu verifikasi
 
+> **Pembaruan verifikasi 14 klaim:** 12 klaim tambahan telah diverifikasi; K6-14 dan K6-16 masih menunggu perangkat/cetak, dan temuan cetak pra-ada A-17 menunggu keputusan. Lihat [audit-14-klaim.md](audit-14-klaim.md) dan matriks penerimaan terkini. Ini bukan izin rilis.
+
 Paket "Koreksi dan Modernisasi UI/UX V1–V2" — keputusan pengguna 30 Agustus 2026.
 
 > Dokumen ini sengaja memuat hal-hal yang **belum** dapat dibuktikan. Tidak ada

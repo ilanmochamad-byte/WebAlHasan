@@ -1,0 +1,47 @@
+Audit log gagal: mysqli object is already closed
+[lulus] grant failed audit rolls back account/roles/devices
+[lulus] grant failed operation produces no success audit
+[lulus] account_role_granted actor, entity, before/after correct
+[lulus] account_role_granted no credential values
+Audit log gagal: mysqli object is already closed
+[lulus] revoke failed audit rolls back account/roles/devices
+[lulus] revoke failed operation produces no success audit
+[lulus] account_role_revoked actor, entity, before/after correct
+[lulus] account_role_revoked no credential values
+Audit log gagal: mysqli object is already closed
+[lulus] deactivate failed audit rolls back account/roles/devices
+[lulus] deactivate failed operation produces no success audit
+[lulus] account_status_changed actor, entity, before/after correct
+[lulus] account_status_changed no credential values
+Audit log gagal: mysqli object is already closed
+[lulus] activate failed audit rolls back account/roles/devices
+[lulus] activate failed operation produces no success audit
+[lulus] account_status_changed actor, entity, before/after correct
+[lulus] account_status_changed no credential values
+Audit log gagal: mysqli object is already closed
+[lulus] reset failed audit rolls back account/roles/devices
+[lulus] reset failed operation produces no success audit
+[lulus] account_password_reset actor, entity, before/after correct
+[lulus] account_password_reset no credential values
+[lulus] temporary password matches saved hash
+Audit log gagal: mysqli object is already closed
+[lulus] create teacher failed audit rolls back user and role
+[lulus] account_created actor, entity, before/after correct
+[lulus] account_created no credential values
+Audit log gagal: mysqli object is already closed
+[lulus] create pengurus failed audit rolls back user/master/roles
+[lulus] perizinan_account_created actor, entity, before/after correct
+[lulus] perizinan_account_created no credential values
+Audit log gagal: mysqli object is already closed
+[lulus] link pengurus failed audit rolls back user/master/roles
+[lulus] perizinan_account_linked actor, entity, before/after correct
+[lulus] perizinan_account_linked no credential values
+Audit log gagal: mysqli object is already closed
+[lulus] create orang_tua failed audit rolls back user/master/roles
+[lulus] perizinan_account_created actor, entity, before/after correct
+[lulus] perizinan_account_created no credential values
+Audit log gagal: mysqli object is already closed
+[lulus] link orang_tua failed audit rolls back user/master/roles
+[lulus] perizinan_account_linked actor, entity, before/after correct
+[lulus] perizinan_account_linked no credential values
+Total audit akun: 36 lulus, 0 gagal

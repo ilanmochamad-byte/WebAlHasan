@@ -1,5 +1,10 @@
 # Verifikasi lanjutan 14 klaim — Codex
 
+**Hasil:** 12 dari 14 klaim tambahan terverifikasi pada sandbox; dua masih
+menunggu pembaca layar/cetak Safari. Total pengujian tanpa duplikasi:
+**3.892 lulus, 3 gagal**. Kegagalan adalah cacat PDF potret pra-ada A-17 yang
+menunggu keputusan pengguna. **Paket belum dinyatakan lulus atau siap produksi.**
+
 Instruksi pengguna: verifikasi seluruh 14 klaim yang masih menunggu, sesudah
 `3413895`, pada branch `codex/perapihan-v1-v2-ui`. Tidak ada izin push, merge,
 deploy, perubahan mobile, atau perubahan produksi. Dokumen ini dilengkapi
@@ -114,3 +119,180 @@ sebelum transaksi, seperti larangan menonaktifkan diri, tanpa melemahkan
 assertion. Tiga pengulangan berikutnya masing-masing 13/13 lulus: total 36
 putaran, lima proses mutasi (ditambah permintaan diri pada variasi terakhir),
 minimum teramati 1. Tes audit atomik 36/36 diulang sesudahnya.
+
+## A-17 — P2, PRA-ADA, MENUNGGU KEPUTUSAN: kata status PDF potret terpecah
+
+Sembilan PDF nyata (Santri/Guru/Gabungan × CSS/lanskap/potret) dibaca kembali
+per sel, bukan hanya dihitung barisnya. Isi data seluruh PDF sama dengan oracle
+matriks. Akan tetapi ketiga mode potret memecah **Terlambat** menjadi
+**Terlamba / t**. Kolom status terlalu sempit. Tidak ada data yang hilang,
+sidebar tercetak, margin keluar, atau nomor halaman nol pada fixture ini.
+
+`git diff c65390d -- app/Report/PrintRenderer.php` kosong: renderer ini identik
+baseline, bukan regresi paket perapihan. Tidak diubah diam-diam. Pengguna telah
+dimintai keputusan apakah mengizinkan koreksi tampilan kolom absensi. Dampaknya
+pada layout cetak web dan HTML cetak yang ditampilkan client mobile; skema/data
+API tidak perlu berubah, dan source mobile tidak perlu diedit. Jika disetujui,
+perbaiki hanya renderer absensi, uji 45 pemeriksaan PDF tambahan dan 175 regresi
+lama tanpa pengurangan assertion. Jika ditunda, cetak potret tetap memiliki
+cacat tersebut dan paket belum dapat ditutup.
+
+Bukti: `bukti-audit-14/pdf-matrix-final.log` (**42 lulus, 3 gagal**),
+`gabungan-potret.pdf`/`potret-first.png`. Teks data dibandingkan setelah hanya
+menghapus pemisah baris pada sel status; assertion TERPISAH tetap mewajibkan
+kata status tidak terpotong. Pemisahan ini memastikan cacat tampilan tidak
+hilang dari hasil meskipun nilai datanya sama. PDF lanskap pembanding:
+`gabungan-lanskap.pdf`/`lanskap-last.png`.
+
+## Lingkungan dan batas akses
+
+- macOS 26.6.2 (25G83), PHP 8.4.14, MariaDB 12.3.2, Node 26.7.0,
+  Playwright dari lockfile proyek, Chromium 151.0.7922.34.
+- Database **webalhasan_ui_codex_20260830_test**, akun database sandbox;
+  server localhost `127.0.0.1:8940`. Variabel lingkungan hanya pada proses.
+  Tidak menggunakan akun/config produksi atau menjalankan migrasi produksi.
+- `npm ci` browser memakai lockfile yang sudah ada; tidak upgrade dependency.
+  axe-core 4.13.0 hanya di folder sementara auditor. PDF dibaca dengan
+  pdfplumber dan Poppler runtime lokal; dependensi proyek/mobile tidak diubah.
+- Aset publik Bootstrap 5.3.0 dan aset lama lain dicache lokal. Tiga URL
+  DataTables mengembalikan 403 di lingkungan ini; aset ekuivalen dari paket npm
+  **1.13.4** dipakai lokal. URL, sumber dan SHA-256 ada di `aset-uji.json`.
+  Font lokal fallback mengikuti paket terkunci browser. Hasil ini tidak
+  membuktikan ketersediaan CDN produksi.
+- Mac terkunci saat akses Computer Use. Percobaan pemeriksaan Safari berikutnya
+  **ditolak auto-review** karena berisiko membaca tab pribadi/produksi. Tidak
+  dicari jalan memintasnya. Hanya browser sandbox terisolasi yang dilanjutkan.
+  Safari/VoiceOver baru dapat dilanjutkan pada jendela audit localhost khusus
+  yang dibuka pengguna, sesudah izin pemeriksaan terarah. Chromium/viewport
+  bukan Safari atau perangkat iOS/Android fisik.
+- Main tetap `c65390d`, mobile tetap `ab3f842` dan bersih. Pekerjaan hanya pada
+  branch `codex/perapihan-v1-v2-ui`; tidak membuat worktree/salinan proyek,
+  push, merge, deploy, WA, atau fitur V3.
+
+## Hasil yang diperoleh ulang oleh auditor
+
+Bukti mentah tersimpan di `bukti-audit-14/`; checksum seluruh bukti pada
+`SHA256SUMS`. Angka berikut hasil run lanjutan ini, bukan salinan kelulusan lama.
+
+| Rangkaian | Lulus | Gagal | Bukti |
+| --- | ---: | ---: | --- |
+| Regresi V1/V2, 28 berkas | 2.464 | 0 | `full-final.log` |
+| Paket perapihan, 4 berkas | 248 | 0 | `full-final.log` |
+| Browser resmi 1440/768/390 | 56 | 0 | `browser-final.log` |
+| **Subtotal resmi** | **2.768** | **0** | Tidak berarti siap produksi |
+| Audit sebelumnya: 9 berkas keamanan/data/HTTP/API/client | 171 | 0 | `final-redirect/wali/merge/admin/http/laporan_web/csv_limit/api_compat/notifikasi.log` |
+| Kamar | 19 | 0 | `final-kamar.log` |
+| Pagination | 45 | 0 | `final-pagination.log` |
+| Audit transaksi akun A-12 | 36 | 0 | `final-account_log.log` |
+| Form dan feedback A-15 | 108 | 0 | `forms-final.log` |
+| Wali daftar panjang A-16 | 46 | 0 | `final-wali_long_list.log` |
+| Matriks filter laporan, oracle independen | 432 | 0 | `report-matrix.log` |
+| Inventaris UI: 159 observasi + nol pageerror | 160 | 0 | `ui-final.log`, `ui-final.json` |
+| Interaksi keyboard/dialog/konfirmasi/motion | 60 | 0 | `interaksi.log` |
+| Submitter dan cancel A-13 | 5 | 0 | `submit-final.log` |
+| PDF matriks tambahan, 9 dokumen | 42 | **3** | `pdf-matrix-final.log`, A-17 |
+| **Subtotal audit tambahan** | **1.124** | **3** | 235 lama + 889 tambahan baru |
+| **Total tanpa menghitung ulang suite duplikat** | **3.892** | **3** | **Ada kegagalan terbuka; bukan lulus paket** |
+
+175 pemeriksaan PDF lama sudah termasuk regresi 2.464, tidak dihitung lagi.
+Tiga pengulangan audit admin masing-masing 13 lulus (36 putaran concurrency)
+dihitung sekali pada subtotal 171, bukan ditambahkan tiga kali. Log yang sama
+tersedia dalam beberapa nama arsip untuk penelusuran; tidak menggandakan angka.
+Enam test print-dialog/tsc/lint mobile dari audit sebelumnya bukan hasil baru
+pada tahap ini. Client mobile asli 18 operasi benar-benar dijalankan ulang,
+dan source mobile tetap tidak berubah.
+
+Selisih resmi terhadap angka implementer 2.478 tetap **+290**: 289 pemeriksaan
+B-1 kini dihitung runner setelah keputusan terdahulu, ditambah satu assertion
+guard laporan (71 menjadi 72). Runner sebenarnya memiliki 28 berkas regresi,
+bukan 29. Tidak menyesuaikan test untuk memaksakan angka awal.
+
+### Percobaan yang tidak dijadikan kelulusan
+
+- Sebelum A-13: 2 lulus/3 gagal pada pengiriman tombol/cancel; sesudahnya 5/0.
+- Sebelum A-16: 11/45 nama lengkap, 34 gagal pada batas 1 KiB.
+- Rangkaian pertama menemukan satu assertion struktural audit akun gagal;
+  pembungkus wajib A-12 diuji setara, alasan ada pada perubahan-pengujian §9.
+- Form jadwal memang kehilangan isian; diperbaiki. Dua request tes awal kurang
+  tepat (nilai waktu pelaksanaan dan idempotency key) dilengkapi, bukan
+  mengubah validasi aplikasi agar menerima input yang tidak sah.
+- Pembacaan matriks awal memakai fixture snapshot kurang lengkap dan parser
+  HTML yang memasukkan catatan ke status. Fixture dilengkapi, SQL strict
+  diaktifkan, parser memilih sel yang benar; oracle/filter tidak dilonggarkan.
+- Pemeriksaan modal terlalu dini menangkap warna transisi/fokus sebelum event
+  selesai; menunggu animasi dan pengembalian fokus menyelesaikan false failure.
+- Browser resmi sempat dijalankan bersamaan dengan tes admin yang sementara
+  mencabut role fixture sandbox, lalu timeout pada tab pengajian. Run itu tidak
+  dihitung lulus; setelah concurrency selesai dan role pulih, browser dijalankan
+  sendiri, 56/56. Tes yang berbagi fixture mutasi harus **berurutan**.
+- Run audit HTTP awal 25 pemeriksaan belum mengaktifkan opt-in empat cek menu
+  A-07. Diulang dengan `AUDIT_CHECK_OPEN_FINDINGS=1`: 29 lulus, tidak dihilangkan.
+- Pemeriksaan A-17 tetap 3 gagal; tidak ditutupi oleh 175 regresi PDF lama.
+
+## Penutupan 14 klaim dan yang masih harus diverifikasi
+
+**12 dari 14 klaim kini TERVERIFIKASI pada cakupan bukti sandbox.** Seluruh
+77 klaim dinilai satu per satu pada `penilaian-penerimaan-codex.md`: **75
+TERVERIFIKASI, 0 TIDAK TERVERIFIKASI, 2 MENUNGGU VERIFIKASI**. Cacat A-17
+memerlukan keputusan dan dicatat pada klaim cetak yang belum ditutup; angka
+nol pada kolom "tidak terverifikasi" bukan berarti tidak ada cacat terbuka.
+
+| Belum ditutup | Langkah lanjutan | Hasil yang wajib dibuktikan |
+| --- | --- | --- |
+| K6-14, pembaca layar/perangkat | Buka kunci Mac, buka jendela Safari khusus localhost dan izinkan pemeriksaan terarah; aktifkan VoiceOver. Coba login, laci, form invalid, modal admin, tabel gulir, dan peralihan tab. Android/iOS fisik dicatat terpisah bila tersedia. | Nama/role/status/error terbaca, urutan fokus masuk akal, tidak ada fokus terjebak/tersembunyi; tidak membaca tab pribadi/produksi. |
+| K6-16, cetak lintas browser | Putuskan A-17; setelah koreksi disetujui, ulangi matriks PDF dan regresi 175. Simpan PDF Safari nyata untuk Santri/Guru/Gabungan pada A4 potret/lanskap dengan data panjang/multipage. | Status terbaca utuh; semua baris sesuai filter, margin aman, tanpa sidebar, jumlah fisik sama dengan nomor halaman, tidak ada halaman nol/hantu. |
+
+Di luar dua klaim itu, migrasi/cron/smoke produksi sengaja tidak dilakukan;
+B-2 collation, B-3 penyelesaian identitas data lama, dan B-4 akun wali ganda
+masih merupakan keputusan manusia. Tidak ada data lama atau source mobile
+"diperbaiki" untuk menutup audit ini.
+
+### Hasil seluruh halaman D
+
+13 rute × tiga lebar = 39 pemeriksaan dampak CSS. Tidak ada pageerror setelah
+aset tersedia dan tidak ada overflow baru akibat CSS bersama. `admin_izin.php`
+merupakan alias yang sampai ke portal; dinilai sesuai halaman tujuan aktual.
+`admin_pelanggaran.php` pada 390 memiliki lebar 526 px dengan DAN tanpa CSS
+bersama; sumber halamannya identik baseline. Temuan legacy label/lang/kontras
+tersimpan dalam JSON. Itu bukan kelulusan aksesibilitas D dan bukan izin
+mendesain ulang PSB/keuangan/konten. Hanya dampak CSS paket yang ditutup.
+
+### Reproduksi aman
+
+1. Ikuti sandbox pada `panduan-audit-codex.md` §1; database wajib `_test`.
+   Siapkan fixture audit utama dengan `tests/perapihan_audit_fixture.php`,
+   simpan lokasi sebagai `AUDIT_FIXTURE_MANIFEST`. Gunakan akun sandbox saja.
+2. Tetapkan `PERAPIHAN_AUDIT_DB=1`, `BASE_URL=http://127.0.0.1:8940`,
+   `AUDIT_UI_MANIFEST=/tmp/audit-14-ui.json`, kemudian jalankan
+   `php tests/perapihan_audit_ui_fixture.php`. Dibuat 45 santri/relasi sendiri,
+   dua wali kandidat, guru/pengurus tanpa akun, dan semester nonaktif.
+3. Jalankan rangkaian resmi; lalu audit PHP tambahan satu per satu. Untuk HTTP
+   gunakan `AUDIT_CHECK_OPEN_FINDINGS=1`; API kompatibilitas menerima snapshot
+   baseline melalui `AUDIT_BASELINE_API_SNAPSHOT`. Concurrency dijalankan
+   tersendiri, jangan bersamaan dengan browser atau tes lain pada database sama.
+4. Matriks laporan: `AUDIT_REPORT_PDFS=/tmp/audit-14-pdf php tests/perapihan_audit_report_matrix.php`.
+   Dengan Python yang memiliki pdfplumber dan Chromium/Playwright tersedia,
+   jalankan `tests/perapihan_audit_report_pdf.py` menggunakan folder yang sama.
+   Sampai A-17 diputuskan/dikoreksi, expected saat ini 42 lulus/3 gagal;
+   expected penerimaan tetap 45 lulus/0 gagal.
+5. Browser tambahan: `uji-audit-ui.mjs`, `uji-audit-interaksi.mjs`,
+   `uji-audit-submit.mjs`. Atur `AXE_PATH` ke axe-core 4.13.0 yang disiapkan
+   terpisah dan `AUDIT_CDN_CACHE` ke folder aset yang manifest/hash-nya mengikuti
+   `aset-uji.json`; sumber DataTables tiga file berasal npm 1.13.4. Bootstrap,
+   Font Awesome dan Playwright mengikuti lockfile browser, tanpa upgrade.
+   Simpan log serta `OUT_DIR` di luar source. Jangan menganggap CDN yang gagal
+   dimuat sebagai bukti fungsi JavaScript telah diuji.
+6. Sesudah selesai, jalankan `php tests/perapihan_audit_ui_fixture.php cleanup`
+   dengan manifest yang sama. Matriks/account/long-list memakai rollback atau
+   cleanup miliknya sendiri. Fixture sandbox lama dari rangkaian historis tidak
+   dihapus massal. Hentikan server audit sendiri; jangan hentikan proses pengguna.
+
+Dokumen ini tidak mengesahkan produksi. Commit lokal menjadi titik berhenti;
+**jangan push, merge, deploy, atau melanjutkan V3** dari hasil ini tanpa instruksi
+terpisah dan penyelesaian butir penerimaan yang masih terbuka.
+
+Penutupan lingkungan: fixture tambahan UI pada manifest audit telah dibersihkan
+(`cleanup.log`); server PHP localhost milik auditor dihentikan. Fixture sandbox
+historis tetap dipertahankan. Lint 32 berkas PHP yang berubah/ditambah lulus;
+`git diff --check` bersih. Tidak ada diff pada layanan perizinan, notifikasi,
+API, migrasi, dependency PHP, atau assertion B-1 selama lanjutan ini.

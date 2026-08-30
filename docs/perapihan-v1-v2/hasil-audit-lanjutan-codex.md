@@ -1,5 +1,7 @@
 # Hasil audit lanjutan Codex — keputusan 30 Agustus 2026
 
+> **Pembaruan verifikasi 14 klaim:** 12 klaim tambahan telah diverifikasi; K6-14 dan K6-16 masih menunggu perangkat/cetak, dan temuan cetak pra-ada A-17 menunggu keputusan. Lihat [audit-14-klaim.md](audit-14-klaim.md) dan matriks penerimaan terkini. Ini bukan izin rilis.
+
 > **Riwayat sebelum penyelesaian kamar/pagination.** Tiga klaim tersisa pada
 > dokumen ini kemudian dituntaskan sesuai keputusan pengguna; hasil terkini
 > ada di [audit-kamar-pagination.md](audit-kamar-pagination.md). Angka dan status

@@ -1,0 +1,61 @@
+[lulus] edit wali: 45 nama sebelum konfirmasi 1440
+[lulus] edit wali: semua nama lengkap/tidak tersembunyi 1440
+[lulus] konfirmasi wali tidak otomatis tercentang 1440
+[lulus] merge wali: 45 nama lengkap sebelum form 1440
+[lulus] konfirmasi merge belum dicentang 1440
+[lulus] tautan lompat menerima fokus pertama 1440
+[lulus] lompat langsung ke konten 1440
+[lulus] fokus keyboard terlihat 1440
+[lulus] fokus keyboard dalam dialog admin 1440
+[lulus] dialog menjelaskan hak admin 1440
+[lulus] aksesibilitas modal 1440 []
+[lulus] dialog mengembalikan fokus ke pemicu 1440
+[lulus] edit wali: 45 nama sebelum konfirmasi 768
+[lulus] edit wali: semua nama lengkap/tidak tersembunyi 768
+[lulus] konfirmasi wali tidak otomatis tercentang 768
+[lulus] merge wali: 45 nama lengkap sebelum form 768
+[lulus] konfirmasi merge belum dicentang 768
+[lulus] tautan lompat menerima fokus pertama 768
+[lulus] lompat langsung ke konten 768
+[lulus] laci tertutup tidak masuk urutan Tab 768
+[lulus] fokus pindah ke laci dan latar inert 768
+[lulus] Shift+Tab tetap di laci 768
+[lulus] Tab berputar ke awal laci 768
+[lulus] Escape menutup dan mengembalikan fokus 768
+[lulus] fokus keyboard terlihat 768
+[lulus] fokus keyboard dalam dialog admin 768
+[lulus] dialog menjelaskan hak admin 768
+[lulus] aksesibilitas modal 768 []
+[lulus] dialog mengembalikan fokus ke pemicu 768
+[lulus] edit wali: 45 nama sebelum konfirmasi 390
+[lulus] edit wali: semua nama lengkap/tidak tersembunyi 390
+[lulus] konfirmasi wali tidak otomatis tercentang 390
+[lulus] merge wali: 45 nama lengkap sebelum form 390
+[lulus] konfirmasi merge belum dicentang 390
+[lulus] tautan lompat menerima fokus pertama 390
+[lulus] lompat langsung ke konten 390
+[lulus] laci tertutup tidak masuk urutan Tab 390
+[lulus] fokus pindah ke laci dan latar inert 390
+[lulus] Shift+Tab tetap di laci 390
+[lulus] Tab berputar ke awal laci 390
+[lulus] Escape menutup dan mengembalikan fokus 390
+[lulus] fokus keyboard terlihat 390
+[lulus] fokus keyboard dalam dialog admin 390
+[lulus] dialog menjelaskan hak admin 390
+[lulus] aksesibilitas modal 390 []
+[lulus] dialog mengembalikan fokus ke pemicu 390
+[lulus] laci menghormati preferensi gerak no-preference
+[lulus] laci tetap berfungsi no-preference
+[lulus] laci menghormati preferensi gerak reduce
+[lulus] laci tetap berfungsi reduce
+[lulus] batal konfirmasi: dampak jelas, tanpa mutasi admin_pengurus.php
+[lulus] batal konfirmasi: dampak jelas, tanpa mutasi admin_kelas.php
+[lulus] batal konfirmasi: dampak jelas, tanpa mutasi admin_tahun.php
+[lulus] batal konfirmasi: dampak jelas, tanpa mutasi admin_pembimbing.php
+[lulus] batal konfirmasi: dampak jelas, tanpa mutasi admin_guru.php
+[lulus] batal konfirmasi: dampak jelas, tanpa mutasi admin_wali.php
+[lulus] batal konfirmasi: dampak jelas, tanpa mutasi admin_master_santri.php
+[lulus] batal konfirmasi: dampak jelas, tanpa mutasi admin_pengajian.php?tab=jadwal
+[lulus] error server mempertahankan nilai dan atribut invalid
+[lulus] pesan kolom terhubung untuk pembaca layar
+Total interaksi: 60 lulus, 0 gagal

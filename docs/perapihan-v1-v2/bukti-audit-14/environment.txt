@@ -1,0 +1,12 @@
+Tanggal audit: 30 Agustus 2026 WIB
+macOS 26.6.2 (25G83)
+PHP 8.4.14
+MariaDB 12.3.2
+Database webalhasan_ui_codex_20260830_test
+Node 26.7.0
+Chromium 151.0.7922.34
+axe-core 4.13.0 (folder sementara)
+Web branch codex/perapihan-v1-v2-ui
+Web baseline c65390dd03c4da1ddaacf9d3da9adf4293848c40
+Mobile HEAD ab3f842, sumber tidak berubah
+Server hanya 127.0.0.1:8940
