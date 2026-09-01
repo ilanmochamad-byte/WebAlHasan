@@ -4,6 +4,10 @@ RewriteEngine On
 # Folder internal aplikasi tidak boleh dilayani langsung oleh web server.
 RewriteRule ^(?:app|bin|database|docs|storage|tests)(?:/|$) - [F,L,NC]
 
+# Kebijakan privasi dilayani pada URL bersih /privacy (dipakai sebagai URL
+# kebijakan privasi di Google Play Console dan App Store Connect).
+RewriteRule ^privacy/?$ privacy.php [L]
+
 # Rahasia, dump, log, dan dokumen implementasi tidak boleh diunduh.
 <FilesMatch "^(?:\.env(?:\..*)?|error_log|PRD\.md|PRD-V2\.md|AGENTS\.md|.*\.sql)$">
     Require all denied
