@@ -1,0 +1,61 @@
+[lulus] BK-1 [desktop] Panel kredensial muncul setelah akun guru dibuat
+[lulus] BK-2 [desktop] Panel memuat nama pengguna
+[lulus] BK-2 [desktop] Panel memuat alamat email tujuan
+[lulus] BK-2 [desktop] Panel memuat username
+[lulus] BK-2 [desktop] Panel memuat alamat masuk portal
+[lulus] BK-2 [desktop] Panel memuat instruksi ganti password
+[lulus] BK-2 [desktop] Panel memuat peringatan keamanan
+[lulus] BK-2 [desktop] Panel memuat peringatan papan klip
+[lulus] BK-2 [desktop] Panel memuat password sementara
+[lulus] BK-3a [desktop] Isi papan klip sama persis dengan teks yang terlihat
+[lulus] BK-3b [desktop] Isi papan klip berupa teks biasa tanpa tag HTML
+[lulus] BK-3c [desktop] Isi papan klip memuat username dan password sementara
+[lulus] BK-3d [desktop] Isi papan klip memuat salam dan alamat masuk baku
+[lulus] BK-4a [desktop] Status penyalinan berbunyi "Pesan berhasil disalin"
+[lulus] BK-4b [desktop] Status berada pada area aria-live yang dapat dibaca teknologi bantu
+[lulus] BK-5a [desktop] Penolakan papan klip menghasilkan petunjuk salin manual — Penyalinan otomatis tidak tersedia. Teks pesan sudah disorot — tekan Ctrl+C, atau Cmd+C pada Mac, untuk menyalin.
+[lulus] BK-5b [desktop] Teks pesan disorot supaya dapat disalin manual
+[lulus] BK-5c [desktop] Kegagalan menyalin tidak membuat password atau akun baru
+[lulus] BK-8a [desktop] Halaman berisi panel tidak melebar
+[lulus] BK-8b [desktop] Tombol salin mudah disentuh (tinggi >= 44 px) — 44 px
+[lulus] BK-8c [desktop] Panel muat di dalam lebar layar — 1120 px
+[lulus] BK-6a [desktop] Memuat ulang halaman menghilangkan panel kredensial
+[lulus] BK-6b [desktop] Password tidak muncul lagi setelah muat ulang
+[lulus] BK-7a [desktop] Tombol kembali tidak menyajikan panel dari cache
+[lulus] BK-7b [desktop] Tombol kembali tidak menyajikan password dari cache
+[lulus] BK-10 [desktop] Panel yang sama tampil untuk akun pengurus
+[lulus] BK-10b [desktop] Pesan akun pengurus memakai teks baku yang sama
+[lulus] BK-10 [desktop] Panel yang sama tampil untuk akun orang tua
+[lulus] BK-10b [desktop] Pesan akun orang tua memakai teks baku yang sama
+[lulus] BK-1 [ponsel] Panel kredensial muncul setelah akun guru dibuat
+[lulus] BK-2 [ponsel] Panel memuat nama pengguna
+[lulus] BK-2 [ponsel] Panel memuat alamat email tujuan
+[lulus] BK-2 [ponsel] Panel memuat username
+[lulus] BK-2 [ponsel] Panel memuat alamat masuk portal
+[lulus] BK-2 [ponsel] Panel memuat instruksi ganti password
+[lulus] BK-2 [ponsel] Panel memuat peringatan keamanan
+[lulus] BK-2 [ponsel] Panel memuat peringatan papan klip
+[lulus] BK-2 [ponsel] Panel memuat password sementara
+[lulus] BK-3a [ponsel] Isi papan klip sama persis dengan teks yang terlihat
+[lulus] BK-3b [ponsel] Isi papan klip berupa teks biasa tanpa tag HTML
+[lulus] BK-3c [ponsel] Isi papan klip memuat username dan password sementara
+[lulus] BK-3d [ponsel] Isi papan klip memuat salam dan alamat masuk baku
+[lulus] BK-4a [ponsel] Status penyalinan berbunyi "Pesan berhasil disalin"
+[lulus] BK-4b [ponsel] Status berada pada area aria-live yang dapat dibaca teknologi bantu
+[lulus] BK-5a [ponsel] Penolakan papan klip menghasilkan petunjuk salin manual — Penyalinan otomatis tidak tersedia. Teks pesan sudah disorot — tekan Ctrl+C, atau Cmd+C pada Mac, untuk menyalin.
+[lulus] BK-5b [ponsel] Teks pesan disorot supaya dapat disalin manual
+[lulus] BK-5c [ponsel] Kegagalan menyalin tidak membuat password atau akun baru
+[lulus] BK-8a [ponsel] Halaman berisi panel tidak melebar
+[lulus] BK-8b [ponsel] Tombol salin mudah disentuh (tinggi >= 44 px) — 44 px
+[lulus] BK-8c [ponsel] Panel muat di dalam lebar layar — 363 px
+[lulus] BK-6a [ponsel] Memuat ulang halaman menghilangkan panel kredensial
+[lulus] BK-6b [ponsel] Password tidak muncul lagi setelah muat ulang
+[lulus] BK-7a [ponsel] Tombol kembali tidak menyajikan panel dari cache
+[lulus] BK-7b [ponsel] Tombol kembali tidak menyajikan password dari cache
+[lulus] BK-9 Tidak ada galat JavaScript baru pada konsol
+
+TEMUAN BASELINE (sudah ada sebelum paket ini, TIDAK diperbaiki di sini):
+ - atribut pattern="[a-z0-9._-]+" pada kolom username admin_akun.php ditolak mesin regexp mode `v` peramban baru; sudah ada sejak baseline main dan menonaktifkan validasi sisi klien (validasi server tetap berjalan)
+
+Pemeriksaan browser: 55 lulus, 0 gagal.
+Tangkapan layar: <akar-repo>/tests/browser/tangkapan-kredensial

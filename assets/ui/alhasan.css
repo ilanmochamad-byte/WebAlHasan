@@ -538,3 +538,46 @@ body.ah input::placeholder, body.ah textarea::placeholder { color: var(--ah-ink-
 body.ah :focus-visible { scroll-margin-top: 5rem; }
 body.ah .ah-topbar :focus-visible { outline-color: var(--ah-surface); }
 body.ah code { color: var(--ah-danger); }
+
+/* --- Pesan kredensial akun siap salin (6 September 2026) ------------------ */
+/* Panel tampil satu kali setelah akun baru berhasil dibuat. Ia sengaja tidak
+   ikut tercetak: isinya rahasia dan tidak boleh berakhir di tumpukan kertas. */
+
+body.ah .ah-kredensial { border-color: var(--ah-green-700); }
+body.ah .ah-kredensial .ah-card__head { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; justify-content: space-between; }
+
+body.ah .ah-kredensial__data { display: grid; gap: .5rem 1.25rem; margin: 0 0 1rem; }
+body.ah .ah-kredensial__data > div { display: grid; gap: .1rem; }
+body.ah .ah-kredensial__data dt { font-size: .82rem; color: var(--ah-ink-muted); font-weight: 600; }
+body.ah .ah-kredensial__data dd { margin: 0; word-break: break-word; }
+body.ah .ah-kredensial__data code { font-size: 1rem; }
+body.ah .ah-kredensial__sandi { font-size: 1.15rem; letter-spacing: .02em; }
+
+body.ah .ah-kredensial__label { font-weight: 700; margin-bottom: .35rem; }
+
+body.ah .ah-kredensial__teks {
+    background: var(--ah-green-050);
+    border: 1px solid var(--ah-line);
+    border-radius: var(--ah-radius-sm);
+    padding: .9rem 1rem;
+    margin-bottom: .85rem;
+    max-height: 22rem;
+    overflow: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: .95rem;
+    line-height: 1.55;
+    color: var(--ah-ink);
+}
+
+body.ah .ah-kredensial__status:empty { display: none; }
+body.ah .ah-kredensial__status {
+    margin: .6rem 0 .35rem;
+    font-weight: 600;
+    color: var(--ah-green-900);
+}
+
+/* Layar lebar boleh dua kolom; ponsel tetap satu kolom penuh. */
+@media (min-width: 48em) {
+    body.ah .ah-kredensial__data { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

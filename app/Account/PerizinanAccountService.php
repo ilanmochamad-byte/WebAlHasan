@@ -13,6 +13,10 @@ use RuntimeException;
  *
  * Kontrak akun guru/admin V1 tidak diubah: kelas ini hanya menambah jalur baru dan
  * memakai AccountService lama untuk menonaktifkan akun serta mereset password.
+ *
+ * **Pesan kredensial (6 September 2026).** `create()` mengembalikan pula baris
+ * akun hasil pembacaan ulang dari server pada kunci `account`. Password
+ * sementara tetap hanya tersimpan sebagai hash dan tidak masuk audit atau log.
  */
 final class PerizinanAccountService
 {
@@ -53,7 +57,7 @@ final class PerizinanAccountService
 
     /**
      * @param array<string, mixed> $input
-     * @return array{id:int, temporary_password:string}
+     * @return array{id:int, temporary_password:string, account:array<string, mixed>}
      */
     public function create(string $kind, array $input, int $actorId): array
     {
@@ -78,7 +82,14 @@ final class PerizinanAccountService
                 ], $actorId);
             });
 
-        return ['id' => $id, 'temporary_password' => $temporaryPassword];
+        // Sama seperti jalur guru: nilai untuk pesan kredensial dibaca ULANG dari
+        // server setelah penyimpanan berhasil, bukan diambil dari formulir.
+        $account = $this->accounts->find($id);
+        if ($account === null) {
+            throw new RuntimeException('Akun tersimpan tetapi tidak dapat dibaca kembali. Muat ulang daftar akun.');
+        }
+
+        return ['id' => $id, 'temporary_password' => $temporaryPassword, 'account' => $account];
     }
 
     /**

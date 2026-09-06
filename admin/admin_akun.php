@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use App\Account\AccountRepository;
 use App\Account\AccountService;
+use App\Account\CredentialFlash;
+use App\Account\CredentialMessage;
+use App\Ui\CredentialPanel;
 
 /**
  * Pusat "Akun & Hak Akses" (koreksi ke-1, keputusan pengguna 30 Agustus 2026).
@@ -19,6 +22,16 @@ use App\Account\AccountService;
  * Sekarang setiap role ditambahkan dan dicabut secara eksplisit satu per satu,
  * dengan validasi relasi master di server, konfirmasi khusus untuk hak admin,
  * dan perlindungan admin terakhir yang tahan permintaan bersamaan.
+ *
+ * **Pesan kredensial siap salin (keputusan pengguna 6 September 2026).** Setelah
+ * akun guru, pengurus, atau orang tua berhasil dibuat, halaman ini menampilkan
+ * SATU KALI panel berisi pesan informasi login siap salin. Sistem tidak
+ * mengirim email; admin menyalin pesan lalu menempelkannya sendiri.
+ *
+ * Muatannya disimpan sebagai data terstruktur pada `CredentialFlash` dan
+ * dihapus dari sesi begitu dibaca, sehingga muat ulang halaman maupun tombol
+ * kembali peramban tidak dapat memunculkannya lagi; respons yang memuatnya
+ * diberi `Cache-Control: private, no-store`. Alur reset password TIDAK diubah.
  */
 
 require_once __DIR__ . '/_guard.php';
@@ -34,21 +47,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $action = (string) ($_POST['action'] ?? '');
         $userId = (int) ($_POST['user_id'] ?? 0);
         $temporaryPassword = null;
+        $kredensial = null;
         $message = null;
+
+        // Sisa pesan kredensial dari permintaan sebelumnya tidak boleh terbawa
+        // ke hasil permintaan ini, apa pun hasilnya.
+        CredentialFlash::forget();
 
         switch ($action) {
             case 'create_guru':
                 $result = $service->createTeacher($_POST, $aktorId);
-                $temporaryPassword = $result['temporary_password'];
-                $message = 'Akun guru berhasil dibuat dan diberi role Guru.';
+                $kredensial = CredentialMessage::forSavedAccount(
+                    $result['account'],
+                    $result['temporary_password'],
+                    'guru'
+                );
+                $message = 'Akun guru berhasil dibuat dan diberi role Guru. Salin pesan informasi login di bawah — pesan ini hanya tampil sekali.';
                 break;
 
             case 'create':
                 // Nama aksi dipertahankan agar formulir lama pada
                 // admin_akun_perizinan.php tetap diproses penuh (bukan dialihkan).
-                $result = $perizinan->create((string) ($_POST['kind'] ?? ''), $_POST, $aktorId);
-                $temporaryPassword = $result['temporary_password'];
-                $message = 'Akun berhasil dibuat dan dihubungkan ke master data.';
+                $jenisAkun = (string) ($_POST['kind'] ?? '');
+                $result = $perizinan->create($jenisAkun, $_POST, $aktorId);
+                $kredensial = CredentialMessage::forSavedAccount(
+                    $result['account'],
+                    $result['temporary_password'],
+                    $jenisAkun
+                );
+                $message = 'Akun berhasil dibuat dan dihubungkan ke master data. Salin pesan informasi login di bawah — pesan ini hanya tampil sekali.';
                 break;
 
             case 'link':
@@ -85,14 +112,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new InvalidArgumentException('Aksi tidak dikenal.');
         }
 
+        if ($kredensial !== null) {
+            CredentialFlash::set($kredensial);
+        }
+
         master_flash(
             'success',
             $message,
+            // Jalur reset password TIDAK diubah oleh paket pesan kredensial.
             $temporaryPassword === null ? null : '<hr><p class="mb-1"><strong>Password sementara (ditampilkan sekali):</strong></p>'
                 . '<code class="user-select-all fs-5">' . master_e($temporaryPassword) . '</code>'
                 . '<p class="small mb-0 mt-2">Sampaikan secara aman. Pengguna wajib menggantinya saat login pertama.</p>'
         );
     } catch (Throwable $exception) {
+        // Pembuatan akun yang gagal tidak boleh meninggalkan pesan kredensial.
+        CredentialFlash::forget();
         $formKind = $action === 'create_guru' ? 'guru' : (($action === 'create' && in_array($_POST['kind'] ?? '', ['pengurus','orang_tua'], true)) ? $_POST['kind'] : ($action === 'link' ? 'link' : null));
         if ($formKind !== null) { ah_validation_keep($_POST, ['guru_id','pengurus_id','wali_id','name','username','phone','email','user_id','kind','master_id'], $exception, '_account_' . $formKind); }
         master_flash('danger', $exception->getMessage());
@@ -100,6 +134,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     header('Location: ' . app_url('/admin/' . $kembali));
     exit;
+}
+
+// Dibaca SEKALI dan langsung dihapus dari sesi. Header no-store dikirim
+// sebelum keluaran apa pun agar respons berisi password tidak tersimpan pada
+// cache peramban maupun riwayat tombol kembali.
+$kredensialBaru = CredentialFlash::take();
+if ($kredensialBaru !== null) {
+    CredentialPanel::noStore();
 }
 
 $filters = [
@@ -144,6 +186,8 @@ master_header('Akun & Hak Akses', [
     'actions' => '<a class="btn btn-primary" href="#ah-buat-akun">Buat akun baru</a>',
 ]);
 ?>
+
+<?php if ($kredensialBaru !== null) { echo CredentialPanel::render($kredensialBaru); } ?>
 
 <?php ah_note(
     'info',
