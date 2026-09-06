@@ -250,7 +250,16 @@ Tinjauan yang sama **tidak** menemukan lubang keamanan: tidak ada SQL injection,
 XSS, celah CSRF, IDOR, mutasi lewat GET, transaksi bersarang, atau kebocoran
 detail internal pada pesan galat.
 
-### 7.4 Kegagalan bawaan lingkungan (bukan cacat aplikasi)
+### 7.4 Jumlah pemeriksaan regresi yang bergantung lingkungan (bukan cacat)
+
+`tests/perapihan_integration.php` KA-7/KA-8 hanya berjalan bila lingkungan
+memiliki **tepat satu** admin aktif; bila lebih, ia mencetak satu baris
+"Dilewati". Fixture uji browser paket ini membuat akun `bp_admin`, sehingga
+membiarkannya tertinggal membuat rangkaian perapihan melaporkan 247, bukan 248 —
+tanpa satu pun kegagalan. Uji browser kini membersihkan fixture-nya sendiri pada
+blok `finally`, dan prasyarat runner menyebutkan hal ini.
+
+### 7.5 Kegagalan bawaan lingkungan (bukan cacat aplikasi)
 
 `tests/v2_phase5_cetak_pdf.php` melaporkan gagal bila paket `playwright`
 terpasang tetapi Chromium bawaannya tidak dapat diunduh. Menjalankan rangkaian

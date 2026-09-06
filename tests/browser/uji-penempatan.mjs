@@ -117,9 +117,9 @@ async function pilihOpsi(select, potongan) {
  * sehingga hasil putaran berikutnya bergantung pada urutan — bukan pada
  * perilaku halaman.
  */
-function seedUlang() {
+function seedUlang(bersihkan = false) {
   const skrip = new URL('./seed-penempatan.php', import.meta.url).pathname;
-  execFileSync(process.env.PHP_BINARY ?? 'php', [skrip], {
+  execFileSync(process.env.PHP_BINARY ?? 'php', bersihkan ? [skrip, '--bersihkan'] : [skrip], {
     env: { ...process.env, PENEMPATAN_SEED: '1' },
     stdio: ['ignore', 'ignore', 'inherit'],
   });
@@ -371,6 +371,14 @@ try {
   catat('BP-14b Tidak ada permintaan yang gagal (5xx)', permintaanGagal.length === 0, permintaanGagal.join(' | '));
 } finally {
   await browser.close();
+  // Fixture dibersihkan kembali: akun `bp_admin` yang tertinggal menambah
+  // jumlah admin aktif, dan itu mengubah cabang yang diambil pemeriksaan
+  // KA-7/KA-8 pada regresi `tests/perapihan_integration.php`.
+  try {
+    seedUlang(true);
+  } catch (galat) {
+    console.log(`[gagal] Fixture uji browser tidak dapat dibersihkan — ${galat.message}`);
+  }
 }
 
 const gagal = hasil.filter((item) => !item.lulus);

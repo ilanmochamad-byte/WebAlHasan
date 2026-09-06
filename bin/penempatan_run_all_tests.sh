@@ -11,7 +11,12 @@
 #     paket ini TIDAK menambah migrasi;
 #   - fixture peran   : V2_PHASE3_SEED=1 php bin/v2_phase3_sandbox_seed.php
 #   - fixture performa: V2_PHASE5_FIXTURE=1 php bin/v2_phase5_fixture.php --jumlah=1000
-#   - MOBILE_APP_ROOT menunjuk ke folder alhasanApps.
+#   - MOBILE_APP_ROOT menunjuk ke folder alhasanApps;
+#   - fixture uji browser TIDAK sedang tertinggal di basis data. Akun `bp_admin`
+#     miliknya menambah jumlah admin aktif, dan itu mengubah cabang yang diambil
+#     pemeriksaan KA-7/KA-8 pada tests/perapihan_integration.php (2 pemeriksaan
+#     menjadi 1 "Dilewati"). Bersihkan lebih dahulu bila perlu:
+#       PENEMPATAN_SEED=1 php tests/browser/seed-penempatan.php --bersihkan
 #
 # Pemakaian:
 #   MOBILE_APP_ROOT=/path/ke/alhasanApps bash bin/penempatan_run_all_tests.sh
