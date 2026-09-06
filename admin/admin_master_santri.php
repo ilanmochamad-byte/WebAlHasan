@@ -102,7 +102,8 @@ master_header('Data Santri', [
         ['label' => 'Master Data'],
         ['label' => 'Data Santri'],
     ],
-    'actions' => '<a class="btn btn-outline-primary" href="admin_wali_rekonsiliasi.php">Rekonsiliasi wali</a>'
+    'actions' => '<a class="btn btn-outline-primary" href="admin_penempatan_santri.php">Penempatan kelas &amp; kamar</a>'
+        . '<a class="btn btn-outline-primary" href="admin_wali_rekonsiliasi.php">Rekonsiliasi wali</a>'
         . '<a class="btn btn-outline-primary" href="export_master.php?entity=santri&amp;' . master_e(http_build_query($filters)) . '">Ekspor CSV</a>'
         . '<a class="btn btn-primary" href="admin_master_santri.php?action=create">Tambah Santri</a>',
 ]);
@@ -408,6 +409,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td><div class="ah-actions">
                         <a class="btn btn-sm btn-outline-primary" href="?action=detail&amp;id=<?= (int) $row['id'] ?>">Detail</a>
                         <a class="btn btn-sm btn-outline-secondary" href="?action=edit&amp;id=<?= (int) $row['id'] ?>">Ubah</a>
+                        <a class="btn btn-sm btn-outline-secondary" href="admin_penempatan_santri.php?q=<?= master_e(rawurlencode((string) $row['nis'])) ?>">Penempatan</a>
                         <form data-confirm="Ubah status santri ini? Kelayakan pilihan santri pada layanan mengikuti status aktif; relasi wali, absensi, dan perizinan lama tidak dihapus." method="post"><?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
                             <button class="btn btn-sm btn-outline-secondary" name="action" value="<?= (int) $row['is_active'] === 1 ? 'deactivate' : 'activate' ?>"><?= (int) $row['is_active'] === 1 ? 'Nonaktifkan' : 'Aktifkan' ?></button></form>
                         <form method="post" onsubmit="return confirm('Arsipkan santri ini? Santri berhenti muncul pada daftar aktif, tetapi relasi wali, riwayat kelas, absensi, dan perizinan lama TIDAK dihapus.')">

@@ -66,7 +66,9 @@ final class Navigation
         'admin_galeri.php' => 'konten.galeri',
         'admin_download.php' => 'konten.download',
         'admin_pelanggaran.php' => 'pelanggaran',
-        'admin_santri.php' => 'master.santri_lama',
+        'admin_penempatan_santri.php' => 'master.penempatan',
+        // Alamat lama penempatan; kini hanya mengalihkan ke halaman di atas.
+        'admin_santri.php' => 'master.penempatan',
         'admin_rekap_santri.php' => 'master.rekap_santri',
     ];
 
@@ -114,6 +116,7 @@ final class Navigation
         if ($isAdmin) {
             $groups[] = ['label' => 'Master Data', 'items' => [
                 self::item('master.santri', 'Data Santri', '/admin/admin_master_santri.php', 'fa-address-book'),
+                self::item('master.penempatan', 'Penempatan Kelas & Kamar', '/admin/admin_penempatan_santri.php', 'fa-people-arrows'),
                 self::item('master.wali', 'Orang Tua / Wali', '/admin/admin_wali.php', 'fa-people-roof'),
                 self::item('master.rekonsiliasi', 'Rekonsiliasi Wali', '/admin/admin_wali_rekonsiliasi.php', 'fa-code-compare'),
                 self::item('master.guru', 'Data Guru', '/admin/admin_guru.php', 'fa-chalkboard-user'),
