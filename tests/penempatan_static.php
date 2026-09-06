@@ -308,7 +308,21 @@ $assert(str_contains($source('admin/admin_dashboard.php'), 'admin_penempatan_san
 // ============================================================== PS-15
 $migrasi = glob($root . '/database/migrations/*.sql') ?: [];
 $rollback = glob($root . '/database/rollbacks/*.sql') ?: [];
-$assert(count($migrasi) === 10, 'PS-15 tidak ada berkas migrasi baru: tetap 10 migrasi [' . count($migrasi) . ']');
+// Disesuaikan pada paket "Koreksi Pengelolaan Alumni" (6 September 2026).
+//
+// Sebelumnya baris ini mematok JUMLAH berkas migrasi seluruh repositori pada
+// angka 10. Patokan itu keliru sasaran: yang hendak dijamin PS-15 adalah
+// "paket PENEMPATAN tidak menambah migrasi", bukan "repositori ini tidak boleh
+// pernah bertambah migrasi lagi". Paket alumni menambah `011_koreksi_alumni.sql`
+// secara sah, dan patokan lama akan melaporkannya sebagai kegagalan penempatan.
+//
+// Yang diperiksa sekarang adalah maksud aslinya: tidak ada satu pun berkas
+// migrasi milik paket penempatan.
+$migrasiPenempatan = array_filter(
+    $migrasi,
+    static fn (string $berkas): bool => str_contains(strtolower(basename($berkas)), 'penempatan')
+);
+$assert($migrasiPenempatan === [], 'PS-15 paket penempatan tidak menambah berkas migrasi apa pun');
 $assert(count($migrasi) === count($rollback), 'PS-15 setiap migrasi tetap berpasangan dengan rollback');
 $assert(is_file($root . '/docs/penempatan-santri/migration-and-rollback.md'), 'PS-15 dokumen migrasi/rollback tersedia dan menyatakan keputusan tanpa migrasi');
 $dokumenMigrasi = $source('docs/penempatan-santri/migration-and-rollback.md');

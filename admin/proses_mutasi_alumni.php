@@ -1,107 +1,65 @@
 <?php
-require_once __DIR__ . '/_guard.php';
 
-// Ambil Tahun Ajaran Aktif
-$q_tahun = mysqli_query($koneksi, "SELECT id FROM tahun_ajaran WHERE status='Aktif' LIMIT 1");
-$t_aktif = mysqli_fetch_array($q_tahun);
-$id_tahun = $t_aktif ? $t_aktif['id'] : 0;
+declare(strict_types=1);
 
-// ==========================================
-// 1. PROSES MUTASI MASSAL (PER KELAS)
-// ==========================================
-if(isset($_POST['bulk_mutasi'])){
-    $id_kelas      = (int)$_POST['id_kelas'];
-    $tahun         = mysqli_real_escape_string($koneksi, $_POST['tahun_angkatan']);
-    $tingkat       = mysqli_real_escape_string($koneksi, $_POST['tingkat']);
-    $status_keluar = mysqli_real_escape_string($koneksi, $_POST['status_keluar']);
-    $tgl_keluar    = $_POST['tgl_keluar'];
+/**
+ * Alamat lama pemroses kelulusan/mutasi alumni.
+ *
+ * Sejak paket "Koreksi Pengelolaan Alumni" (keputusan pengguna 6 September
+ * 2026) seluruh pemrosesan pindah ke `admin/admin_kelulusan_santri.php` yang
+ * memakai `App\MasterData\AlumniService`. Fitur dan datanya TIDAK dihapus —
+ * hanya berpindah alamat dan menjadi transaksional.
+ *
+ * Perilaku berkas ini:
+ *
+ *   - GET  : dialihkan permanen ke halaman baru, sehingga bookmark dan tautan
+ *            lama tetap membuka alur yang benar.
+ *   - POST dan metode lain : DIHENTIKAN dengan 410 Gone dan TIDAK PERNAH
+ *            dialihkan. Endpoint lama memproses massal dengan `INSERT IGNORE`
+ *            di dalam perulangan TANPA transaksi: kegagalan penyimpanan alumni
+ *            ditelan diam-diam sementara santrinya tetap diarsipkan dan
+ *            kelasnya tetap ditutup, kamarnya tidak pernah dilepas, dan tidak
+ *            ada satu pun jejak audit. Mengalihkan POST secara buta berarti
+ *            menjalankan kembali mutasi yang sudah dinyatakan tidak aman.
+ *
+ * Guard admin tetap berlaku lebih dahulu: alamat ini tidak pernah dapat dibuka
+ * tanpa sesi admin yang sah.
+ */
 
-    if($id_tahun == 0 || $id_kelas == 0){
-        echo "<script>alert('Gagal: Kelas atau Tahun Ajaran Aktif tidak valid!'); window.location='admin_master_santri.php';</script>";
-        exit;
-    }
+// Guard admin dipanggil langsung, BUKAN lewat `_guard.php` — persis alasan yang
+// sama seperti `admin/admin_santri.php`: `_guard.php` menjawab 419 untuk POST
+// tanpa CSRF sebelum berkas ini sempat menjelaskan apa pun, padahal klien lama
+// yang menjadi sasaran pesan 410 di bawah justru klien yang tidak mengirim
+// token. Melewatkan pemeriksaan CSRF aman di sini karena berkas ini tidak
+// pernah mengubah data: ia hanya mengalihkan GET atau menolak.
+require_once dirname(__DIR__) . '/app/bootstrap.php';
 
-    // Ambil semua santri yang berada di kelas tersebut pada tahun ajaran aktif
-    $q_santri = mysqli_query($koneksi, "SELECT s.* FROM plotting_kelas pk JOIN santri s ON pk.id_santri = s.id WHERE pk.id_kelas='$id_kelas' AND pk.id_tahun='$id_tahun' AND pk.status='Aktif' AND s.archived_at IS NULL");
-    
-    if(mysqli_num_rows($q_santri) == 0) {
-        echo "<script>alert('Gagal: Tidak ditemukan santri aktif di kelas tersebut pada tahun ajaran ini.'); window.location='admin_master_santri.php';</script>";
-        exit;
-    }
+$currentUser = authorization()->requireWebRole('admin');
 
-    $berhasil = 0;
-    // Gunakan Prepared Statement agar eksekusi looping massal super cepat dan aman
-    $query_insert = "INSERT IGNORE INTO alumni (
-        nis, nama_santri, jenis_kelamin, tempat_lahir, tgl_lahir, 
-        alamat, desa, kecamatan, kab_kota, provinsi, 
-        nama_ayah, no_hp_ayah, nama_ibu, no_hp_ibu, 
-        asal_sekolah, unit_terakhir, tahun_angkatan, tingkat, status_keluar, tgl_keluar, foto
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
-    $stmt = mysqli_prepare($koneksi, $query_insert);
-
-    while($d = mysqli_fetch_array($q_santri)){
-        $id_santri = $d['id'];
-        
-        mysqli_stmt_bind_param($stmt, "sssssssssssssssssssss", 
-            $d['nis'], $d['nama_santri'], $d['jenis_kelamin'], $d['tempat_lahir'], $d['tgl_lahir'], 
-            $d['alamat'], $d['desa'], $d['kecamatan'], $d['kab_kota'], $d['provinsi'], 
-            $d['nama_ayah'], $d['no_hp_ayah'], $d['nama_ibu'], $d['no_hp_ibu'], 
-            $d['asal_sekolah'], $d['sekolah_saat_ini'], $tahun, $tingkat, $status_keluar, $tgl_keluar, $d['foto']
-        );
-
-        if(mysqli_stmt_execute($stmt)){
-            // Data sumber tidak dihapus: santri diarsipkan dan riwayat penempatan dipertahankan.
-            master_data_service()->endActiveClass((int)$id_santri);
-            master_data_service()->setSantriState((int)$id_santri, 'archive');
-            $berhasil++;
-        }
-    }
-    mysqli_stmt_close($stmt);
-    
-    echo "<script>alert('SUKSES MUTASI MASSAL!\\nSebanyak $berhasil santri berhasil dipindahkan ke Database Alumni.'); window.location='admin_master_santri.php';</script>";
-    exit;
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    http_response_code(410);
+    header('Allow: GET');
+    header('Content-Type: text/plain; charset=utf-8');
+    exit(
+        "Endpoint mutasi alumni lama sudah dihentikan dan TIDAK dialihkan.\n"
+        . "Tidak ada data yang diubah oleh permintaan ini.\n"
+        . 'Gunakan halaman Kelulusan & Mutasi Keluar (admin/admin_kelulusan_santri.php) '
+        . 'yang memproses seluruh santri dalam satu transaksi beserta audit.'
+    );
 }
 
-// ==========================================
-// 2. PROSES MUTASI SATU PER SATU (INDIVIDU)
-// ==========================================
-if(isset($_POST['mutasi'])){
-    $id_santri     = (int)$_POST['id_santri'];
-    $tahun         = mysqli_real_escape_string($koneksi, $_POST['tahun_angkatan']);
-    $tingkat       = mysqli_real_escape_string($koneksi, $_POST['tingkat']);
-    $status_keluar = mysqli_real_escape_string($koneksi, $_POST['status_keluar']);
-    $tgl_keluar    = $_POST['tgl_keluar'];
-
-    $q = mysqli_query($koneksi, "SELECT * FROM santri WHERE id='$id_santri'");
-    $d = mysqli_fetch_array($q);
-
-    if($d){
-        $query_insert = "INSERT INTO alumni (
-            nis, nama_santri, jenis_kelamin, tempat_lahir, tgl_lahir, 
-            alamat, desa, kecamatan, kab_kota, provinsi, 
-            nama_ayah, no_hp_ayah, nama_ibu, no_hp_ibu, 
-            asal_sekolah, unit_terakhir, tahun_angkatan, tingkat, status_keluar, tgl_keluar, foto
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
-        $stmt = mysqli_prepare($koneksi, $query_insert);
-        mysqli_stmt_bind_param($stmt, "sssssssssssssssssssss", 
-            $d['nis'], $d['nama_santri'], $d['jenis_kelamin'], $d['tempat_lahir'], $d['tgl_lahir'], 
-            $d['alamat'], $d['desa'], $d['kecamatan'], $d['kab_kota'], $d['provinsi'], 
-            $d['nama_ayah'], $d['no_hp_ayah'], $d['nama_ibu'], $d['no_hp_ibu'], 
-            $d['asal_sekolah'], $d['sekolah_saat_ini'], $tahun, $tingkat, $status_keluar, $tgl_keluar, $d['foto']
-        );
-
-        if(mysqli_stmt_execute($stmt)){
-            master_data_service()->endActiveClass((int)$id_santri);
-            master_data_service()->setSantriState((int)$id_santri, 'archive');
-            echo "<script>alert('Berhasil: Santri telah dipindahkan ke Data Alumni!'); window.location='admin_master_santri.php';</script>";
-        } else {
-            echo "<script>alert('Gagal memindahkan data!'); window.location='admin_master_santri.php';</script>";
-        }
-        mysqli_stmt_close($stmt);
-    }
-} else {
-    header("Location: admin_master_santri.php");
+/** Pemetaan parameter lama ke halaman baru: satu-satunya yang bermakna adalah kelas. */
+$tujuan = [];
+$idKelas = filter_var($_GET['id_kelas'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+if ($idKelas !== false && $idKelas !== null) {
+    $tujuan['kelas_id'] = $idKelas;
 }
-?>
+$idSantri = filter_var($_GET['id_santri'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+if ($idSantri !== false && $idSantri !== null) {
+    $tujuan['santri_id'] = $idSantri;
+}
+
+$query = http_build_query($tujuan);
+http_response_code(301);
+header('Location: ' . app_url('/admin/admin_kelulusan_santri.php') . ($query === '' ? '' : '?' . $query));
+exit;

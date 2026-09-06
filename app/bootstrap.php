@@ -31,6 +31,8 @@ use App\Izin\IzinWorkflowService;
 use App\Izin\IzinWriteRepository;
 use App\Izin\PembimbingRepository;
 use App\Izin\PembimbingService;
+use App\MasterData\AlumniRepository;
+use App\MasterData\AlumniService;
 use App\MasterData\MasterDataRepository;
 use App\MasterData\MasterDataService;
 use App\MasterData\PenempatanRepository;
@@ -196,6 +198,18 @@ function penempatan_service(): PenempatanService
         new MasterDataRepository(app_db()),
         audit_logger()
     );
+}
+
+/**
+ * Kelulusan/mutasi santri dan arsip alumni (keputusan pengguna 6 September 2026).
+ *
+ * Satu-satunya pintu masuk perubahan data alumni. Halaman admin tidak lagi
+ * menulis query `alumni` sendiri dan tidak lagi menghapus catatan permanen.
+ */
+function alumni_service(): AlumniService
+{
+    static $service;
+    return $service ??= new AlumniService(new AlumniRepository(app_db()), audit_logger());
 }
 
 function schedule_service(): ScheduleService
