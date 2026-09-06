@@ -62,6 +62,9 @@ final class Navigation
         'admin_pembayaran_psb.php' => 'psb.pembayaran',
         'admin_rekap_keuangan.php' => 'psb.rekap',
         'admin_alumni.php' => 'alumni',
+        'admin_kelulusan_santri.php' => 'alumni.kelulusan',
+        // Alamat lama pemroses mutasi; kini hanya mengalihkan ke halaman di atas.
+        'proses_mutasi_alumni.php' => 'alumni.kelulusan',
         'admin_berita.php' => 'konten.berita',
         'admin_galeri.php' => 'konten.galeri',
         'admin_download.php' => 'konten.download',
@@ -158,6 +161,7 @@ final class Navigation
             $groups[] = ['label' => 'Lain-lain', 'items' => [
                 self::item('pelanggaran', 'Pelanggaran', '/admin/admin_pelanggaran.php', 'fa-triangle-exclamation'),
                 self::item('alumni', 'Data Alumni', '/admin/admin_alumni.php', 'fa-paper-plane'),
+                self::item('alumni.kelulusan', 'Kelulusan & Mutasi Keluar', '/admin/admin_kelulusan_santri.php', 'fa-user-graduate'),
                 self::item('konten.berita', 'Berita / Artikel', '/admin/admin_berita.php', 'fa-newspaper'),
                 self::item('konten.galeri', 'Galeri Foto', '/admin/admin_galeri.php', 'fa-images'),
                 self::item('konten.download', 'File Download', '/admin/admin_download.php', 'fa-download'),
