@@ -33,6 +33,8 @@ use App\Izin\PembimbingRepository;
 use App\Izin\PembimbingService;
 use App\MasterData\MasterDataRepository;
 use App\MasterData\MasterDataService;
+use App\MasterData\PenempatanRepository;
+use App\MasterData\PenempatanService;
 use App\Notification\DeviceRepository;
 use App\Notification\DeviceService;
 use App\Notification\NotificationAdminService;
@@ -178,6 +180,22 @@ function master_data_service(): MasterDataService
 {
     static $service;
     return $service ??= new MasterDataService(new MasterDataRepository(app_db()), audit_logger());
+}
+
+/**
+ * Penempatan kelas dan kamar santri (keputusan pengguna 6 September 2026).
+ *
+ * Satu-satunya pintu masuk perubahan penempatan. Halaman admin tidak lagi
+ * menulis query `plotting_kamar` sendiri.
+ */
+function penempatan_service(): PenempatanService
+{
+    static $service;
+    return $service ??= new PenempatanService(
+        new PenempatanRepository(app_db()),
+        new MasterDataRepository(app_db()),
+        audit_logger()
+    );
 }
 
 function schedule_service(): ScheduleService
