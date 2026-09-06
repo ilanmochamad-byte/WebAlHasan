@@ -59,7 +59,8 @@ master_header('Data Kamar Santri', [
         ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
         ['label' => 'Master Data'], ['label' => 'Kamar'],
     ],
-    'actions' => '<a class="btn btn-success" href="admin_kamar.php?action=create">Tambah Kamar</a>',
+    'actions' => '<a class="btn btn-outline-primary" href="admin_penempatan_santri.php">Penempatan kelas &amp; kamar</a>'
+        . '<a class="btn btn-success" href="admin_kamar.php?action=create">Tambah Kamar</a>',
 ]);
 if ($error !== null) { ah_note('danger', $error); }
 ah_note('info', 'Semester aktif: ' . ($year ? $year['tahun'] . ' ' . $year['semester'] : 'belum diatur') . '. Penghapusan kamar tidak tersedia agar data dan riwayat tetap utuh.');
@@ -84,7 +85,7 @@ ah_note('info', 'Semester aktif: ' . ($year ? $year['tahun'] . ' ' . $year['seme
 <?php if ($isDetail): ?>
 <section class="ah-card" aria-labelledby="room-detail-title">
     <div class="ah-card__head flex-wrap gap-2"><h2 class="h6 mb-0" id="room-detail-title">Penghuni: <?= master_e($selected['nama_kamar']) ?></h2>
-        <div class="ah-actions"><a class="btn btn-sm btn-outline-primary" href="?action=edit&amp;id=<?= (int) $selected['id'] ?>">Ubah kamar</a><a class="btn btn-sm btn-outline-secondary" href="admin_kamar.php">Daftar kamar</a></div></div>
+        <div class="ah-actions"><a class="btn btn-sm btn-primary" href="admin_penempatan_santri.php?kamar_id=<?= (int) $selected['id'] ?>">Kelola penempatan kamar ini</a><a class="btn btn-sm btn-outline-primary" href="admin_penempatan_santri.php?status=tanpa_kamar">Santri belum berkamar</a><a class="btn btn-sm btn-outline-secondary" href="?action=edit&amp;id=<?= (int) $selected['id'] ?>">Ubah kamar</a><a class="btn btn-sm btn-outline-secondary" href="admin_kamar.php">Daftar kamar</a></div></div>
     <div class="ah-card__body"><p>Kapasitas maksimal <?= (int) $selected['kapasitas'] ?> orang. Daftar berikut mengikuti semester aktif dan pencarian.</p></div>
 </section>
 <?php ah_list_search($q, 'Cari NIS, nama santri, atau sekolah', ['action' => 'detail', 'id' => (int) $selected['id']]); ?>
@@ -105,7 +106,7 @@ ah_note('info', 'Semester aktif: ' . ($year ? $year['tahun'] . ' ' . $year['seme
     <tbody><?php foreach ($result['rows'] as $index => $row): ?><tr>
         <td><?= ($page - 1) * 20 + $index + 1 ?></td><td><?= master_e($row['nama_kamar']) ?></td><td><?= (int) $row['terisi'] ?> / <?= (int) $row['kapasitas'] ?></td>
         <td><?= ah_badge((int) $row['terisi'] >= (int) $row['kapasitas'] ? 'Penuh' : 'Tersedia', (int) $row['terisi'] >= (int) $row['kapasitas'] ? 'warn' : 'ok') ?></td>
-        <td><div class="ah-actions"><a class="btn btn-sm btn-outline-primary" href="?action=detail&amp;id=<?= (int) $row['id'] ?>">Penghuni</a><a class="btn btn-sm btn-outline-secondary" href="?action=edit&amp;id=<?= (int) $row['id'] ?>">Ubah</a></div></td>
+        <td><div class="ah-actions"><a class="btn btn-sm btn-outline-primary" href="?action=detail&amp;id=<?= (int) $row['id'] ?>">Penghuni</a><a class="btn btn-sm btn-outline-primary" href="admin_penempatan_santri.php?kamar_id=<?= (int) $row['id'] ?>">Penempatan</a><a class="btn btn-sm btn-outline-secondary" href="?action=edit&amp;id=<?= (int) $row['id'] ?>">Ubah</a></div></td>
     </tr><?php endforeach; ?>
     <?php if ($result['rows'] === []): ?><tr><td colspan="5"><?= ah_empty('Tidak ada kamar sesuai pencarian', 'Bersihkan pencarian atau tambahkan kamar melalui tombol Tambah Kamar.') ?></td></tr><?php endif; ?>
     </tbody>

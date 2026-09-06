@@ -11,6 +11,7 @@ tests/browser/tangkapan/
 tests/browser/tangkapan-aplikasi/
 tests/browser/tangkapan-perapihan/
 tests/browser/tangkapan-kredensial/
+tests/browser/tangkapan-penempatan/
 
 # Dependensi lokal Playwright untuk uji browser opsional
 tests/browser/node_modules/

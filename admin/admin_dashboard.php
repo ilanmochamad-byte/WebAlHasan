@@ -240,7 +240,7 @@ try {
                         </div>
                         <div class="list-group list-group-flush border-top-0 px-3 pb-3">
                             <a href="tambah_berita.php" class="list-group-item list-group-item-action border-0 rounded my-1 bg-light"><i class="fas fa-pen-alt me-2 text-primary"></i> Publikasi Berita Baru</a>
-                            <a href="admin_santri.php" class="list-group-item list-group-item-action border-0 rounded my-1 bg-light"><i class="fas fa-bed me-2 text-success"></i> Kelola Plotting Asrama</a>
+                            <a href="admin_penempatan_santri.php" class="list-group-item list-group-item-action border-0 rounded my-1 bg-light"><i class="fas fa-bed me-2 text-success"></i> Penempatan Kelas &amp; Kamar</a>
                             <a href="admin_pelanggaran.php" class="list-group-item list-group-item-action border-0 rounded my-1 bg-light"><i class="fas fa-clipboard-list me-2 text-danger"></i> Catat Pelanggaran Santri</a>
                             <a href="admin_master_santri.php" class="list-group-item list-group-item-action border-0 rounded my-1 bg-light"><i class="fas fa-database me-2 text-warning"></i> Master Data Santri</a>
                         </div>
