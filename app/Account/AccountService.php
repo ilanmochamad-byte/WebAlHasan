@@ -24,6 +24,12 @@ use RuntimeException;
  *   - admin tidak dapat melepas hak adminnya sendiri atau menonaktifkan
  *     akunnya sendiri.
  *
+ * **Pesan kredensial (6 September 2026).** `createTeacher()` kini juga
+ * mengembalikan baris akun hasil pembacaan ULANG dari server pada kunci
+ * `account`, supaya pesan informasi login yang disalin admin memuat nama,
+ * username, dan email yang benar-benar tersimpan. Password sementara tetap
+ * hanya disimpan sebagai hash; nilai aslinya tidak pernah masuk audit atau log.
+ *
  * Perubahan hak akses berlaku pada pemeriksaan server berikutnya: role dibaca
  * ulang dari basis data setiap request (`Authorization::currentUser()`) dan
  * kemampuan dihitung ulang (`Capabilities`), sehingga sesi lama tidak dapat
@@ -99,7 +105,15 @@ final class AccountService
                 ], $actorId);
             });
 
-        return ['id' => $id, 'temporary_password' => $temporaryPassword];
+        // Nilai yang ditampilkan pada pesan kredensial harus berasal dari baris
+        // akun yang benar-benar tersimpan dan dibaca ULANG dari server, bukan
+        // dari nilai mentah formulir.
+        $account = $this->accounts->find($id);
+        if ($account === null) {
+            throw new RuntimeException('Akun guru tersimpan tetapi tidak dapat dibaca kembali. Muat ulang daftar akun.');
+        }
+
+        return ['id' => $id, 'temporary_password' => $temporaryPassword, 'account' => $account];
     }
 
     public function setActive(int $id, bool $active, int $actorId): void
