@@ -1,0 +1,87 @@
+
+=== KR-1. Akun guru ===
+[lulus] KR-1a createTeacher mengembalikan baris akun hasil pembacaan ulang server
+[lulus] KR-1b nilai pada hasil sama persis dengan yang tersimpan di basis data
+[lulus] KR-1c username yang dipakai pesan adalah hasil normalisasi server, bukan nilai mentah formulir
+[lulus] KR-1d email yang dipakai pesan adalah hasil normalisasi server
+[lulus] KR-1e pesan memuat nama, username, password sementara, dan alamat masuk
+[lulus] KR-1f akun baru wajib mengganti password pada login pertama
+[lulus] KR-1g basis data hanya menyimpan hash, bukan password asli
+[lulus] KR-1h panel sukses menampilkan pesan lengkap beserta tombol salin
+
+=== KR-2. Akun pengurus ===
+[lulus] KR-2a create() pengurus mengembalikan akun hasil pembacaan ulang yang ternormalisasi
+[lulus] KR-2b pesan pengurus memakai format baku yang sama
+[lulus] KR-2c akun pengurus: hanya hash tersimpan dan wajib ganti password
+
+=== KR-3. Akun orang tua ===
+[lulus] KR-3a fixture wali dengan relasi santri aktif tersedia
+[lulus] KR-3b akun tanpa email tetap sah: email tidak dijadikan wajib
+[lulus] KR-3c panel menjelaskan akun tanpa email, bukan menampilkan kolom kosong
+[lulus] KR-3d pesan orang tua memakai format baku yang sama
+[lulus] KR-3e akun orang tua: hanya hash tersimpan dan wajib ganti password
+
+=== KR-4. Pesan hanya satu kali ===
+[lulus] KR-4a pesan tersedia tepat setelah pembuatan akun berhasil
+[lulus] KR-4b tampilan pertama memuat pesan lengkap
+[lulus] KR-4c muat ulang halaman atau tombol kembali tidak memunculkan pesan kedua kali
+[lulus] KR-4d muatan benar-benar hilang dari sesi setelah dibaca
+
+=== KR-5. Basis data tidak memuat password asli ===
+[lulus] KR-5a pemindaian mencakup seluruh kolom teks basis data (175 kolom)
+[lulus] KR-5b tidak ada satu pun kolom yang memuat password sementara dalam bentuk asli
+
+=== KR-6. Audit ===
+[lulus] KR-6a audit pembuatan akun tidak memuat password sementara
+[lulus] KR-6b audit tetap mencatat pembuatan akun untuk ketiga jalur
+[lulus] KR-6c audit tetap menyimpan username dan role akun
+
+=== KR-7. Log aplikasi ===
+[lulus] KR-7a log aplikasi tidak memuat password sementara
+
+=== KR-8. Kegagalan transaksi ===
+[lulus] KR-8a pembuatan akun dengan username bentrok ditolak
+[lulus] KR-8b kegagalan tidak menyisakan baris akun setengah jadi
+[lulus] KR-8c kegagalan tidak meninggalkan pesan kredensial palsu
+
+=== KR-9. Retry formulir ===
+[lulus] KR-9a pengiriman ulang formulir yang sama ditolak (master sudah punya akun) [Pengurus tidak ditemukan, sudah tidak aktif, atau sudah memiliki akun.]
+[lulus] KR-9b hanya ada satu akun untuk satu data pengurus
+[lulus] KR-9c retry tidak menghasilkan pesan kredensial kedua
+
+=== KR-10 dan KR-11. Login pertama dan ganti password ===
+[lulus] KR-10a login pertama dengan password sementara berhasil
+[lulus] KR-10b sesi menandai pengguna wajib mengganti password
+[lulus] KR-10c password yang keliru tetap ditolak
+[lulus] KR-11a pengguna dapat menetapkan password baru
+[lulus] KR-11b password sementara DITOLAK setelah password baru dibuat
+[lulus] KR-11c password baru diterima
+[lulus] KR-11d kewajiban ganti password hilang setelah password diganti
+
+=== KR-12. Alur reset password tidak berubah ===
+[lulus] KR-12a resetPassword tetap mengembalikan password sementara sebagai string, bukan muatan pesan
+[lulus] KR-12b reset password menetapkan hash baru dan mewajibkan penggantian
+[lulus] KR-12c password lama tidak berlaku setelah reset
+[lulus] KR-12d password hasil reset dapat dipakai masuk
+[lulus] KR-12e reset password TIDAK membuat pesan kredensial siap salin
+
+=== KR-13. Nama dan username berkarakter khusus ===
+[lulus] KR-13a nama berkarakter khusus tampil apa adanya pada teks yang disalin
+[lulus] KR-13b panel meng-escape nama, tidak membangun HTML mentah darinya
+[lulus] KR-13c isi kotak pesan tetap utuh dan sama dengan teks yang akan disalin
+
+=== KR-14. Regresi pengelolaan akun ===
+[lulus] KR-14a akun guru baru tetap memperoleh tepat satu role guru
+[lulus] KR-14b akun pengurus memperoleh role pengurus
+[lulus] KR-14c akun orang tua memperoleh role orang tua
+[lulus] KR-14d role yang menuntut relasi master tetap ditolak tanpa relasi [Role Orang Tua hanya dapat diberikan kepada akun yang terhubung dengan satu data wali.]
+[lulus] KR-14e pemberian hak admin tetap menuntut konfirmasi yang diketik ulang [Pemberian hak admin adalah tindakan khusus. Ketik ulang kalimat "BERI AKSES ADMIN" pada kolom konfirmasi untuk melanjutkan.]
+[lulus] KR-14f akun multi-peran mempertahankan role lain
+[lulus] KR-14g pencabutan role tidak menyentuh role lain
+[lulus] KR-14h admin tetap tidak dapat menonaktifkan akunnya sendiri [Anda tidak dapat menonaktifkan akun sendiri. Minta admin lain melakukannya.]
+[lulus] KR-14i penonaktifan akun tetap berfungsi
+[lulus] KR-14j akun nonaktif tidak dapat masuk meski password sementara benar
+[lulus] KR-14k pengaktifan kembali tetap berfungsi
+[lulus] KR-14l setelah seluruh alur, basis data tetap tidak memuat password sementara mana pun
+
+SELURUH PENGUJIAN INTEGRASI PESAN KREDENSIAL LULUS.

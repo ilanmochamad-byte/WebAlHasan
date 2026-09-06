@@ -23,6 +23,13 @@ Belum di-merge, belum di-push, belum dirilis, tidak dinyatakan siap produksi.
 | [`risiko-dan-uji-tertunda.md`](risiko-dan-uji-tertunda.md) | Yang belum terbukti, konflik yang butuh keputusan manusia |
 | [`panduan-audit-codex.md`](panduan-audit-codex.md) | Cara menyiapkan lingkungan dan apa yang paling perlu diaudit |
 
+## Pekerjaan lanjutan pada folder yang sama
+
+| Berkas | Isi |
+| --- | --- |
+| [`pesan-kredensial-akun.md`](pesan-kredensial-akun.md) | Fitur "Pesan Kredensial Akun Siap Salin" (6 September 2026): keputusan produk, teks baku, perilaku satu kali tampil, model ancaman password, hasil pengujian, uji tertunda, dan rollback. Branch `feat/pesan-kredensial-akun`, baseline `main` `1382d6a`, menunggu audit Codex |
+| [`bukti-pesan-kredensial/`](bukti-pesan-kredensial/) | Log mentah dan tangkapan layar pengujian fitur tersebut |
+
 ## Tujuh koreksi
 
 1. Pusat Akun & Hak Akses dengan role eksplisit
