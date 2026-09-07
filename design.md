@@ -60,6 +60,8 @@ Capability **selalu dihitung ulang di server** oleh `App\Auth\Capabilities` dari
 
 **Pembimbing bukan peran login.** Pembimbing adalah **penugasan pengurus** (`pembimbing_assignments`) terhadap kamar atau kelas pada satu tahun ajaran; ia menentukan cakupan santri yang boleh diajukan pengurus. Pembimbing bukan guru dan bukan murobi.
 
+**Fondasi penugasan V3–V6 (7 September 2026).** Prinsip yang sama diperluas ke penugasan fungsional untuk PRD mendatang — guru mata pelajaran, Bagian Pendidikan, bendahara pembiayaan bulanan, panitia PSB, bendahara PSB — yang menghasilkan *feature capability* (`nilai.*`, `rapor.*`, `pembiayaan_bulanan.*`, `psb.*`, `psb_keuangan.*`, `murobi.binaan`, `pembimbing.binaan`) lewat metode `Capabilities::feature*()`. Tidak ada role baru; daftar `forUser()` di atas tidak berubah. Rincian: §10 dan `docs/fondasi-penugasan-v3-v6/`.
+
 **Akun multi-kemampuan.** Satu akun dapat memiliki lebih dari satu capability (mis. guru-murobi yang juga admin). Akun seperti itu memakai **satu sesi** dan berpindah cakupan lewat parameter `mode` — di web melalui `portal_mode_switcher()`, di aplikasi melalui `components/mode-switcher.tsx`. `mode` hanya dapat **mempersempit** ke kemampuan yang benar-benar dimiliki; nilai di luar kemampuan diabaikan dan server memakai default. Manipulasi parameter tidak pernah menaikkan hak akses.
 
 ### 1.3 Di luar ruang lingkup
@@ -1148,6 +1150,35 @@ flowchart TD
 | 22 Agu 2026 | Dokumen desain ini dibuat; Fase 4–5 ditulis sebagai rencana | Memberi Auditor dan agen berikutnya satu peta arsitektur | Dokumen ini |
 
 ---
+
+## 10. Fondasi Penugasan dan Hak Akses Lintas PRD V3–V6 (7 September 2026)
+
+Paket fondasi — **bukan** implementasi V3–V6 — pada branch
+`feat/fondasi-penugasan-v3-v6`, menunggu audit Codex. Dokumen lengkap:
+`docs/fondasi-penugasan-v3-v6/`.
+
+### 10.1 Yang ditambahkan
+
+| Lapisan | Perubahan |
+|---|---|
+| Skema (migrasi 012, aditif + idempoten) | `mata_pelajaran`, `guru_mapel_assignments`, `pendidikan_assignments`, `bendahara_bulanan_assignments`, `panitia_psb_assignments`, `bendahara_psb_assignments`; kolom jejak `catatan`, `updated_by`, `diakhiri_pada`, `diakhiri_oleh`, `alasan_pengakhiran` pada `murobi_assignments` dan `pembimbing_assignments`. Tidak ada role baru, tidak ada pengisian data. |
+| Domain | `App\Penugasan\{PenugasanJenis, PenugasanRepository, PenugasanService, PenugasanException}` — satu pintu mutasi (transaksi + audit wajib + pemeriksaan admin + tumpang tindih di bawah `FOR UPDATE`). |
+| Resolver | `App\Auth\Capabilities::featureCapabilities()` dan metode `featureAppliesTo*()`; role dibaca ulang dari basis data. `forUser()` (perizinan V2) tidak berubah. |
+| API | field aditif `profile.feature_capabilities` pada `GET /profile` dan login; `capabilities`, `default_mode`, `menus`, `/me/capabilities` identik. |
+| Web | `admin/admin_penugasan.php` (Pusat Penugasan, 7 tab + master mata pelajaran); ringkasan penugasan pada `admin_akun.php`; halaman `admin_murobi.php`/`admin_pembimbing.php` lama tetap berfungsi dan menaut ke pusat. |
+| Audit | `penugasan.buat/ubah/akhiri/nonaktifkan/aktifkan/capability_berubah/tolak_tumpang_tindih/tolak_hak`, `mata_pelajaran.*`. |
+
+### 10.2 Aturan inti
+
+- Capability = akun aktif ∧ role dasar (dari basis data) ∧ master aktif ∧ penugasan aktif ∧ masa berlaku (tanggal berjalan) ∧ tahun ajaran (Aktif; PSB cukup belum diarsipkan) ∧ cakupan sah.
+- Status turunan: Aktif / Akan Datang / Berakhir / Dinonaktifkan. Tidak ada hard delete.
+- Duplikat/tumpang tindih (orang + tahun ajaran + cakupan sama atau cakupan "seluruh" + periode beririsan) ditolak 409 dan diaudit.
+- Admin memperoleh seluruh feature capability sebagai pengawasan (`sumber = admin`); modul mendatang wajib membedakannya dari pelaku operasional.
+- Panitia PSB ≠ bendahara PSB; keduanya boleh dipegang satu pengurus lewat dua penugasan.
+
+### 10.3 Yang sengaja belum ada
+
+Tabel dan halaman nilai, rapor, tagihan, pembayaran, kuitansi, jurnal, konseling, pelanggaran baru, seleksi PSB, menu mobile, dan push baru. Aplikasi perangkat tidak perlu diperbarui.
 
 ## Checklist Sebelum Implementasi Fase Berikutnya
 

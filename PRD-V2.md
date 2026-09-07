@@ -399,6 +399,26 @@ menunggu verifikasi: **`docs/perapihan-v1-v2/`**.
 > **menunggu audit Codex**. Belum di-merge, belum di-push, belum dirilis, dan
 > tidak dinyatakan siap produksi.
 
+## 6c. Addendum — Paket "Fondasi Penugasan dan Hak Akses Lintas PRD V3–V6" (7 September 2026)
+
+Paket fondasi di luar penomoran fase PRD ini — **bukan** Fase 6 dan **bukan**
+implementasi PRD V3–V6. Ia hanya menyiapkan **siapa yang berhak** ketika PRD V3
+(konseling/pelanggaran), V4 (penilaian/rapor), V5 (pembiayaan bulanan), dan V6
+(PSB) dikerjakan: penugasan guru mata pelajaran, Bagian Pendidikan, bendahara
+pembiayaan bulanan, panitia PSB, dan bendahara PSB sebagai **penugasan yang
+menghasilkan capability** — bukan role login — di samping murobi dan pembimbing
+yang sudah ada. Role dasar tetap `admin`, `guru`, `pengurus`, `orang_tua`;
+keputusan §5.1 tidak berubah; kontrak API dan aplikasi perangkat tetap
+kompatibel (field aditif `feature_capabilities`).
+
+Satu migrasi aditif `012_fondasi_penugasan_v3_v6.sql` berpasangan dengan
+rollback. Fitur bisnis V3–V6 **belum diimplementasikan**. Rincian, kriteria
+penerimaan, hasil pengujian, dan risiko: **`docs/fondasi-penugasan-v3-v6/`**.
+
+> **Status paket:** implementasi selesai pada branch
+> `feat/fondasi-penugasan-v3-v6`, **menunggu audit Codex**. Belum di-merge,
+> belum dirilis, dan tidak dinyatakan siap produksi.
+
 ## 7. Metrik Keberhasilan
 
 - 100% pengajuan baru memiliki pengurus pengaju, santri, rentang tanggal, status, routing, serta audit yang valid.

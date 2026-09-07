@@ -52,6 +52,8 @@ use App\Notification\SettingsRepository as NotificationSettingsRepository;
 use App\Notification\WhatsApp\ProviderFactory as WhatsAppProviderFactory;
 use App\Notification\WhatsApp\WhatsAppProvider;
 use App\Notification\WorkerLock;
+use App\Penugasan\PenugasanRepository;
+use App\Penugasan\PenugasanService;
 use App\Report\IzinReportRepository;
 use App\Report\IzinReportService;
 use App\Report\ReportRepository;
@@ -210,6 +212,24 @@ function alumni_service(): AlumniService
 {
     static $service;
     return $service ??= new AlumniService(new AlumniRepository(app_db()), audit_logger());
+}
+
+/**
+ * Fondasi penugasan V3–V6 (keputusan pengguna 7 September 2026).
+ *
+ * Satu-satunya pintu masuk pembuatan, perubahan, pengaktifan, penonaktifan,
+ * dan pengakhiran penugasan fungsional: murobi, pembimbing, guru mata
+ * pelajaran, Bagian Pendidikan, bendahara pembiayaan bulanan, panitia PSB,
+ * dan bendahara PSB. Capability dihitung ulang oleh `capabilities()`.
+ */
+function penugasan_service(): PenugasanService
+{
+    static $service;
+    return $service ??= new PenugasanService(
+        new PenugasanRepository(app_db()),
+        audit_logger(),
+        capabilities()
+    );
 }
 
 function schedule_service(): ScheduleService

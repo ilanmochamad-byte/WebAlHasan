@@ -46,6 +46,10 @@ master_header('Penugasan Pembimbing', ['show_heading' => false]);
         Pembimbing adalah tugas inti atau tambahan <strong>pengurus</strong> — bukan guru dan bukan murobi.
         Cakupan penugasan ini menentukan santri yang boleh diajukan izinnya oleh pengurus tersebut.
     </p>
+    <p class="text-muted small mb-0 mt-2">
+        Sejak fondasi penugasan V3–V6, penugasan pembimbing juga dapat dikelola (ubah, akhiri, capability efektif) dari
+        <a href="<?= master_e(app_url('/admin/admin_penugasan.php?jenis=pembimbing')) ?>">Pusat Penugasan</a>. Halaman ini tetap berfungsi seperti sebelumnya.
+    </p>
 </div>
 
 <div class="card border-0 shadow-sm mb-4">

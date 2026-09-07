@@ -185,6 +185,18 @@ Aturan yang berlaku pada seluruh endpoint di atas:
   aktif. Endpoint jadwal dan laporan V1 tetap terbatas pada role `admin`/`guru`
   dan tetap menjawab `403` untuk akun lain.
 
+## Fondasi penugasan V3–V6 (7 September 2026)
+
+Aditif; tidak mengubah satu pun kontrak di atas. `GET /profile` dan `profile`
+pada respons login memuat satu field baru, `feature_capabilities`
+(`{list, sumber, cakupan}`), berisi capability dari penugasan fungsional
+(guru mata pelajaran, Bagian Pendidikan, bendahara pembiayaan bulanan, panitia
+PSB, bendahara PSB, cakupan binaan murobi/pembimbing). Field `capabilities`
+(`list/default_mode/konteks/menus/aksi`), `default_mode`, `menus`, dan
+`GET /me/capabilities` **tidak berubah**; tidak ada mode atau menu baru. Klien
+yang tidak mengenal field ini mengabaikannya. Rincian:
+`docs/fondasi-penugasan-v3-v6/kontrak-api.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh
