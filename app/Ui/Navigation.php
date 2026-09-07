@@ -52,6 +52,7 @@ final class Navigation
         'admin_kelas.php' => 'master.kelas',
         'admin_kamar.php' => 'master.kamar',
         'admin_tahun.php' => 'master.tahun',
+        'admin_penugasan.php' => 'master.penugasan',
         'admin_murobi.php' => 'master.murobi',
         'admin_pembimbing.php' => 'master.pembimbing',
         'admin_akun.php' => 'sistem.akun',
@@ -128,7 +129,10 @@ final class Navigation
                 self::item('master.kamar', 'Data Kamar', '/admin/admin_kamar.php', 'fa-bed'),
                 self::item('master.tahun', 'Tahun Ajaran', '/admin/admin_tahun.php', 'fa-calendar-days'),
             ]];
+            // Fondasi V3–V6: satu pusat untuk seluruh penugasan fungsional. Halaman
+            // murobi/pembimbing lama tetap tersedia dan mengarah ke pusat yang sama.
             $groups[] = ['label' => 'Penugasan', 'items' => [
+                self::item('master.penugasan', 'Pusat Penugasan', '/admin/admin_penugasan.php', 'fa-id-badge'),
                 self::item('master.murobi', 'Penugasan Murobi', '/admin/admin_murobi.php', 'fa-user-group'),
                 self::item('master.pembimbing', 'Penugasan Pembimbing', '/admin/admin_pembimbing.php', 'fa-user-shield'),
             ]];

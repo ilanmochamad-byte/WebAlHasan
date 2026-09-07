@@ -72,6 +72,8 @@ ah_note(
         . '<em>dan</em> penugasan ini aktif pada tahun ajaran aktif. Tanpa salah satunya, permintaan keputusan tetap ditolak server.</li>'
         . '<li>Guru <strong>tanpa jadwal mengajar</strong> tetap dapat ditugaskan sebagai murobi.</li>'
         . '<li>Menonaktifkan atau mengarsipkan penugasan langsung mencabut kemampuan keputusan pada pemeriksaan server berikutnya.</li>'
+        . '<li>Sejak fondasi penugasan V3–V6, penugasan murobi juga dapat dikelola (ubah, akhiri, capability efektif) dari '
+        . '<a href="' . ah_e(app_url('/admin/admin_penugasan.php?jenis=murobi')) . '">Pusat Penugasan</a>. Halaman ini tetap berfungsi seperti sebelumnya.</li>'
         . '</ul>'
 );
 ?>

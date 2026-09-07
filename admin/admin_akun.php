@@ -37,6 +37,38 @@ use App\Ui\CredentialPanel;
 require_once __DIR__ . '/_guard.php';
 require_once __DIR__ . '/_master_ui.php';
 
+/**
+ * Ringkasan penugasan efektif satu akun (fondasi V3–V6): label jenis penugasan
+ * yang saat ini benar-benar menghasilkan capability. Null bila akun tidak
+ * terhubung ke guru/pengurus dan bukan admin.
+ *
+ * @param array<string, mixed> $akun
+ * @param array<int, string> $roles
+ * @return array{admin:bool, jenis:array<int, string>}|null
+ */
+function akun_ringkasan_penugasan(array $akun, array $roles): ?array
+{
+    $isAdmin = in_array('admin', $roles, true);
+    if (!$isAdmin && empty($akun['guru_id']) && empty($akun['pengurus_id'])) {
+        return null;
+    }
+    $probe = ['id' => (int) $akun['id'], 'roles' => $roles, 'guru_id' => empty($akun['guru_id']) ? null : (int) $akun['guru_id']];
+    try {
+        $peta = capabilities()->featureCapabilities($probe);
+    } catch (Throwable $exception) {
+        error_log('Ringkasan penugasan gagal dihitung: ' . $exception->getMessage());
+        return null;
+    }
+    $jenis = [];
+    foreach ($peta as $entri) {
+        foreach ($entri['cakupan'] as $cakupan) {
+            $jenis[$cakupan['jenis']] = \App\Penugasan\PenugasanJenis::definisi($cakupan['jenis'])['label'];
+        }
+    }
+
+    return ['admin' => $isAdmin, 'jenis' => array_values($jenis)];
+}
+
 $service = account_service();
 $perizinan = perizinan_account_service();
 $aktorId = (int) $currentUser['id'];
@@ -195,6 +227,10 @@ master_header('Akun & Hak Akses', [
     '<ul class="small mb-0 mt-2">'
         . '<li>Role <strong>Guru</strong>, <strong>Pengurus</strong>, dan <strong>Orang Tua</strong> menuntut hubungan ke data master yang valid dan aktif. Tanpa itu, penetapan ditolak server.</li>'
         . '<li><strong>Murobi bukan role.</strong> Ia adalah kemampuan yang muncul dari penugasan murobi aktif pada akun ber-role Guru.</li>'
+        . '<li><strong>Role dasar dan penugasan adalah dua hal berbeda.</strong> Role dasar (Admin, Guru, Pengurus, Orang Tua) dikelola di sini. '
+        . 'Penugasan fungsional — murobi, pembimbing, guru mata pelajaran, Bagian Pendidikan, bendahara pembiayaan bulanan, panitia PSB, bendahara PSB — '
+        . 'dikelola pada <a href="' . ah_e(app_url('/admin/admin_penugasan.php')) . '">Pusat Penugasan</a> dan hanya menghasilkan capability bila role dasar dan relasi master akun valid. '
+        . 'Mencabut role dasar tidak menghapus riwayat penugasan; capability-nya hanya berhenti efektif.</li>'
         . '<li>Pencabutan hak berlaku pada pemeriksaan server berikutnya; sesi lama tidak mempertahankan hak yang sudah dicabut.</li>'
         . '</ul>'
 ); ?>
@@ -274,6 +310,24 @@ master_header('Akun & Hak Akses', [
                                 <?= ah_badge('Murobi (kemampuan, ' . (int) $akun['murobi_aktif'] . ' penugasan)', 'info') ?>
                             <?php endif; ?>
                         </div>
+                        <?php
+                        // Ringkasan capability/penugasan efektif (fondasi V3–V6). Dihitung ulang
+                        // server dari penugasan aktif; hanya tampilan, bukan kontrol akses.
+                        $ringkasanFitur = akun_ringkasan_penugasan($akun, $roles);
+                        ?>
+                        <?php if ($ringkasanFitur !== null): ?>
+                            <div class="small text-muted mb-2">
+                                <span class="d-block">Penugasan efektif:</span>
+                                <?php if ($ringkasanFitur['admin']): ?>
+                                    <?= ah_badge('Pengawasan admin: seluruh capability fondasi V3–V6', 'info') ?>
+                                <?php elseif ($ringkasanFitur['jenis'] === []): ?>
+                                    <span>tidak ada penugasan aktif yang menghasilkan capability.</span>
+                                <?php else: ?>
+                                    <span class="d-flex flex-wrap gap-1"><?php foreach ($ringkasanFitur['jenis'] as $labelJenis): ?><?= ah_badge($labelJenis, 'ok') ?><?php endforeach; ?></span>
+                                <?php endif; ?>
+                                <a class="d-block mt-1" href="<?= master_e(app_url('/admin/admin_penugasan.php')) ?>">Kelola di Pusat Penugasan</a>
+                            </div>
+                        <?php endif; ?>
                         <div class="ah-actions">
                             <?php foreach (AccountRepository::ROLES as $role):
                                 $punya = in_array($role, $roles, true);
