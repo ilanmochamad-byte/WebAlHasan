@@ -198,13 +198,18 @@ $assert(
     !is_file($root . '/database/migrations/008_v2_phase3.sql'),
     'Fase 3 tidak menambah migrasi skema (seluruh tabel sudah ada sejak Fase 1–2)'
 );
+// Disesuaikan pada paket "Fondasi Penugasan V3–V6" (7 September 2026), mengikuti
+// preseden PS-15 paket penempatan: patokan lama mematok JUMLAH berkas migrasi
+// seluruh repositori (10), padahal yang hendak dijamin adalah "Fase 3 sendiri
+// tidak menambah migrasi". Paket alumni (011) dan fondasi penugasan (012)
+// menambah migrasi secara sah, dan patokan lama akan salah melaporkannya.
+$migrasiFase3 = array_filter(
+    glob($root . '/database/migrations/*.sql') ?: [],
+    static fn (string $berkas): bool => str_contains(strtolower(basename($berkas)), 'phase3') && !str_starts_with(basename($berkas), '003_')
+);
 $assert(
-    // Fase 3 sendiri tidak menambah migrasi. Angka di bawah naik hanya ketika
-    // pekerjaan LAIN menambahkannya: 008 milik Fase 4, 009 milik Fase 5, dan
-    // 010 milik paket perapihan V1-V2 (koreksi ke-2, rekonsiliasi wali) sesuai
-    // keputusan pengguna 30 Agustus 2026.
-    count(glob($root . '/database/migrations/*.sql') ?: []) === 10,
-    'Jumlah migrasi menjadi 10 berkas: 7 dari Fase 1–2, 008 Fase 4, 009 Fase 5, 010 perapihan V1-V2'
+    $migrasiFase3 === [] && count(glob($root . '/database/migrations/*.sql') ?: []) >= 10,
+    'Fase 3 sendiri tidak menambah migrasi; migrasi lain (008 Fase 4, 009 Fase 5, 010 perapihan, 011 alumni, 012 fondasi penugasan) sah'
 );
 $assert(
     is_file($root . '/database/migrations/008_v2_phase4_notifikasi_push_whatsapp.sql')
