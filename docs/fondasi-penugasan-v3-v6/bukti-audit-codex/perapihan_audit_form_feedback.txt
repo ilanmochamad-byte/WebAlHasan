@@ -1,0 +1,109 @@
+[lulus] pengurus validation error shown
+[lulus] pengurus retained jabatan
+[lulus] pengurus error next to nama
+[lulus] pengurus no secret or confirmation echoed
+[lulus] kelas validation error shown
+[lulus] kelas retained nama_kelas
+[lulus] kelas error next to jenjang
+[lulus] kelas no secret or confirmation echoed
+[lulus] tahun validation error shown
+[lulus] tahun retained tahun
+[lulus] tahun retained semester
+[lulus] tahun error next to tahun
+[lulus] tahun no secret or confirmation echoed
+[lulus] guru validation error shown
+[lulus] guru retained nama_guru
+[lulus] guru retained nip
+[lulus] guru retained no_hp
+[lulus] guru error next to no_hp
+[lulus] guru no secret or confirmation echoed
+[lulus] wali validation error shown
+[lulus] wali retained nama
+[lulus] wali retained alamat
+[lulus] wali error next to no_hp
+[lulus] wali no secret or confirmation echoed
+[lulus] kamar validation error shown
+[lulus] kamar retained nama_kamar
+[lulus] kamar retained kapasitas
+[lulus] kamar error next to kapasitas
+[lulus] kamar no secret or confirmation echoed
+[lulus] murobi validation error shown
+[lulus] murobi retained target_type
+[lulus] murobi retained kelas_id
+[lulus] murobi retained tanggal_mulai
+[lulus] murobi error next to guru_id
+[lulus] murobi no secret or confirmation echoed
+[lulus] pembimbing validation error shown
+[lulus] pembimbing retained target_type
+[lulus] pembimbing retained kelas_id
+[lulus] pembimbing retained tanggal_mulai
+[lulus] pembimbing error next to pengurus_id
+[lulus] pembimbing no secret or confirmation echoed
+[lulus] pertemuan validation error shown
+[lulus] pertemuan retained tanggal_pertemuan
+[lulus] pertemuan retained catatan
+[lulus] pertemuan error next to tanggal_pertemuan
+[lulus] pertemuan no secret or confirmation echoed
+[lulus] akun-guru validation error shown
+[lulus] akun-guru retained name
+[lulus] akun-guru retained username
+[lulus] akun-guru error next to name
+[lulus] akun-guru no secret or confirmation echoed
+[lulus] santri validation error shown
+[lulus] santri retained nama_santri
+[lulus] santri retained tgl_lahir
+[lulus] santri error next to nis
+[lulus] santri no secret or confirmation echoed
+[lulus] akun-link validation error shown
+[lulus] akun-link retained kind
+[lulus] akun-link retained master_id
+[lulus] akun-link error next to user_id
+[lulus] akun-link no secret or confirmation echoed
+[lulus] akun-pengurus validation error shown
+[lulus] akun-pengurus retained name
+[lulus] akun-pengurus retained pengurus_id
+[lulus] akun-pengurus retained username
+[lulus] akun-pengurus error next to username
+[lulus] akun-pengurus no secret or confirmation echoed
+[lulus] akun-ortu validation error shown
+[lulus] akun-ortu retained name
+[lulus] akun-ortu retained wali_id
+[lulus] akun-ortu retained username
+[lulus] akun-ortu error next to username
+[lulus] akun-ortu no secret or confirmation echoed
+[lulus] jadwal validation error shown
+[lulus] jadwal retained tempat
+[lulus] jadwal retained fan_ilmu
+[lulus] jadwal retained hari
+[lulus] jadwal error next to id_guru
+[lulus] jadwal no secret or confirmation echoed
+[lulus] wali-attach validation error shown
+[lulus] wali-attach retained santri_id
+[lulus] wali-attach error next to hubungan
+[lulus] wali-attach no secret or confirmation echoed
+[lulus] kelas-assign validation error shown
+[lulus] kelas-assign retained kelas_id
+[lulus] kelas-assign retained tanggal_mulai
+[lulus] kelas-assign error next to santri_id
+[lulus] kelas-assign no secret or confirmation echoed
+[lulus] portal putuskan validation still 422
+[lulus] portal putuskan reason and field error restored
+[lulus] portal tetapkan validation still 422
+[lulus] portal tetapkan reason and field error restored
+[lulus] portal batalkan validation still 422
+[lulus] portal batalkan reason and field error restored
+[lulus] portal koreksi validation still 422
+[lulus] portal koreksi reason and field error restored
+[lulus] report invalid date range remains editable
+[lulus] report scope retained and date error associated
+[lulus] invalid filter has no export action
+[lulus] password inline error password_saat_ini
+[lulus] password fields never retained
+[lulus] password inline error password_baru
+[lulus] password fields never retained
+[lulus] password inline error konfirmasi_password
+[lulus] password fields never retained
+[lulus] portal invalid POST keeps 422 and safe correction link
+[lulus] portal page-3 student and reason retained
+[lulus] portal return-date error near field
+Total feedback formulir: 108 lulus, 0 gagal

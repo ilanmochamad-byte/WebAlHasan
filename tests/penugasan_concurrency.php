@@ -210,6 +210,7 @@ try {
         count(array_filter($hasil, static fn (array $h): bool => $h['berhasil'] === true)) === 4,
         'KP-5 empat permintaan cakupan/jenis berbeda yang dikirim bersamaan seluruhnya berhasil'
     );
+    require __DIR__ . '/penugasan_audit_cases.php';
 } finally {
     $_SESSION = [];
     foreach ($dibuat['users'] as $id) {
@@ -217,9 +218,10 @@ try {
     }
     foreach ($dibuat['guru'] as $id) {
         $db->query('DELETE FROM guru_mapel_assignments WHERE guru_id = ' . (int) $id);
+        $db->query('DELETE FROM murobi_assignments WHERE guru_id = ' . (int) $id);
     }
     foreach ($dibuat['pengurus'] as $id) {
-        foreach (['pendidikan_assignments', 'bendahara_bulanan_assignments', 'panitia_psb_assignments', 'bendahara_psb_assignments'] as $t) {
+        foreach (['pembimbing_assignments', 'pendidikan_assignments', 'bendahara_bulanan_assignments', 'panitia_psb_assignments', 'bendahara_psb_assignments'] as $t) {
             $db->query('DELETE FROM ' . $t . ' WHERE pengurus_id = ' . (int) $id);
         }
     }

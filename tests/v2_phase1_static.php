@@ -165,20 +165,10 @@ $assert(
 
 // --- 3. Validasi penugasan pembimbing --------------------------------------
 $pembimbingService = $source('app/Izin/PembimbingService.php');
-$assert(
-    str_contains($pembimbingService, 'pengurusIsActive') && str_contains($pembimbingService, 'hanya dapat memakai pengurus yang aktif'),
-    'Penugasan pembimbing menolak pengurus tidak aktif'
-);
-$assert(
-    str_contains($pembimbingService, 'kamarExists') && str_contains($pembimbingService, 'kelasIsUsable'),
-    'Target kamar/kelas divalidasi terhadap master data'
-);
-$assert(
-    str_contains($pembimbingService, "'pembimbing_assignment_created'")
-    && str_contains($pembimbingService, "'pembimbing_assignment_state_changed'")
-    && substr_count($pembimbingService, '$this->audit->log(') === 2,
-    'Perubahan penugasan pembimbing tercatat pada audit'
-);
+$penugasanService = $source('app/Penugasan/PenugasanService.php');
+$assert(str_contains($pembimbingService, "->buat('pembimbing'") && str_contains($penugasanService, 'pengurusAktif'), 'Penugasan pembimbing memakai validasi pengurus aktif di layanan pusat');
+$assert(str_contains($penugasanService, 'kamarAda') && str_contains($penugasanService, 'kelasAktif'), 'Target kamar/kelas divalidasi layanan pusat');
+$assert(str_contains($pembimbingService, "->statusLama('pembimbing'") && str_contains($penugasanService, 'auditRequired(') && str_contains($penugasanService, '->transaction('), 'Mutasi pembimbing dan audit memakai transaksi pusat');
 
 // --- 4. Akun pengurus dan orang tua ----------------------------------------
 $accountService = $source('app/Account/PerizinanAccountService.php');

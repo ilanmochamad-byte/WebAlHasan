@@ -1,0 +1,78 @@
+[lulus] 1440 murobi: HTTP 200
+[lulus] 1440 murobi: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 1440 murobi: label kontrol
+[lulus] 1440 pembimbing: HTTP 200
+[lulus] 1440 pembimbing: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 1440 pembimbing: label kontrol
+[lulus] 1440 guru_mapel: HTTP 200
+[lulus] 1440 guru_mapel: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 1440 guru_mapel: label kontrol
+[lulus] 1440 pendidikan: HTTP 200
+[lulus] 1440 pendidikan: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 1440 pendidikan: label kontrol
+[lulus] 1440 bendahara_bulanan: HTTP 200
+[lulus] 1440 bendahara_bulanan: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 1440 bendahara_bulanan: label kontrol
+[lulus] 1440 panitia_psb: HTTP 200
+[lulus] 1440 panitia_psb: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 1440 panitia_psb: label kontrol
+[lulus] 1440 bendahara_psb: HTTP 200
+[lulus] 1440 bendahara_psb: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 1440 bendahara_psb: label kontrol
+[lulus] 1440 mata_pelajaran: HTTP 200
+[lulus] 1440 mata_pelajaran: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 1440 mata_pelajaran: label kontrol
+[lulus] 768 murobi: HTTP 200
+[lulus] 768 murobi: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 768 murobi: label kontrol
+[lulus] 768 pembimbing: HTTP 200
+[lulus] 768 pembimbing: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 768 pembimbing: label kontrol
+[lulus] 768 guru_mapel: HTTP 200
+[lulus] 768 guru_mapel: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 768 guru_mapel: label kontrol
+[lulus] 768 pendidikan: HTTP 200
+[lulus] 768 pendidikan: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 768 pendidikan: label kontrol
+[lulus] 768 bendahara_bulanan: HTTP 200
+[lulus] 768 bendahara_bulanan: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 768 bendahara_bulanan: label kontrol
+[lulus] 768 panitia_psb: HTTP 200
+[lulus] 768 panitia_psb: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 768 panitia_psb: label kontrol
+[lulus] 768 bendahara_psb: HTTP 200
+[lulus] 768 bendahara_psb: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 768 bendahara_psb: label kontrol
+[lulus] 768 mata_pelajaran: HTTP 200
+[lulus] 768 mata_pelajaran: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 768 mata_pelajaran: label kontrol
+[lulus] 390 murobi: HTTP 200
+[lulus] 390 murobi: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 390 murobi: label kontrol
+[lulus] 390 pembimbing: HTTP 200
+[lulus] 390 pembimbing: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 390 pembimbing: label kontrol
+[lulus] 390 guru_mapel: HTTP 200
+[lulus] 390 guru_mapel: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 390 guru_mapel: label kontrol
+[lulus] 390 pendidikan: HTTP 200
+[lulus] 390 pendidikan: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 390 pendidikan: label kontrol
+[lulus] 390 bendahara_bulanan: HTTP 200
+[lulus] 390 bendahara_bulanan: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 390 bendahara_bulanan: label kontrol
+[lulus] 390 panitia_psb: HTTP 200
+[lulus] 390 panitia_psb: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 390 panitia_psb: label kontrol
+[lulus] 390 bendahara_psb: HTTP 200
+[lulus] 390 bendahara_psb: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 390 bendahara_psb: label kontrol
+[lulus] 390 mata_pelajaran: HTTP 200
+[lulus] 390 mata_pelajaran: body/form tanpa overflow {"body":true,"form":true,"labels":[]}
+[lulus] 390 mata_pelajaran: label kontrol
+[lulus] Keyboard: Tab guru ke tahun ajaran
+[lulus] Kesalahan rentang tanggal terbaca
+[lulus] Isian setelah gagal tetap tersedia
+[lulus] Mode ubah: label orang/tahun terhubung
+[lulus] Keyboard: Enter membuka tindakan
+[lulus] Tidak ada galat JavaScript []

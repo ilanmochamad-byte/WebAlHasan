@@ -1,0 +1,46 @@
+[lulus] kelas 45 data: 20/20/5 dan page besar dibatasi
+[lulus] kelas urutan stabil, tanpa duplikat/hilang, page negatif kembali 1
+[lulus] tahun 45 data: 20/20/5 dan page besar dibatasi
+[lulus] tahun urutan stabil, tanpa duplikat/hilang, page negatif kembali 1
+[lulus] murobi 45 data: 20/20/5 dan page besar dibatasi
+[lulus] murobi urutan stabil, tanpa duplikat/hilang, page negatif kembali 1
+[lulus] pembimbing 45 data: 20/20/5 dan page besar dibatasi
+[lulus] pembimbing urutan stabil, tanpa duplikat/hilang, page negatif kembali 1
+[lulus] kamar 45 data: 20/20/5 dan page besar dibatasi
+[lulus] kamar urutan stabil, tanpa duplikat/hilang, page negatif kembali 1
+[lulus] penghuni 45 data: 20/20/5 dan page besar dibatasi
+[lulus] penghuni urutan stabil, tanpa duplikat/hilang, page negatif kembali 1
+[lulus] relasi_belum_lengkap 45 data: 20/20/5 dan page besar dibatasi
+[lulus] relasi_belum_lengkap urutan stabil, tanpa duplikat/hilang, page negatif kembali 1
+[lulus] konflik_kolom_lama 45 data: 20/20/5 dan page besar dibatasi
+[lulus] konflik_kolom_lama urutan stabil, tanpa duplikat/hilang, page negatif kembali 1
+[lulus] Duplikasi ke-101 tetap dapat dicapai lengkap, melampaui batas lama 100
+[lulus] Wali tanpa relasi ke-201 tetap dapat dicapai
+[lulus] Pertemuan guru melewati 100 tanpa membocorkan guru lain
+[lulus] Pencarian SQL palsu diperlakukan sebagai teks
+[lulus] Login pagination sbx_admin
+[lulus] Login pagination sbx_guru_biasa
+[lulus] HTTP admin_kelas.php pencarian dan halaman terpelihara
+[lulus] HTTP admin_kelas.php tetap admin-only
+[lulus] HTTP admin_tahun.php pencarian dan halaman terpelihara
+[lulus] HTTP admin_tahun.php tetap admin-only
+[lulus] HTTP admin_murobi.php pencarian dan halaman terpelihara
+[lulus] HTTP admin_murobi.php tetap admin-only
+[lulus] HTTP admin_pembimbing.php pencarian dan halaman terpelihara
+[lulus] HTTP admin_pembimbing.php tetap admin-only
+[lulus] HTTP admin_kamar.php pencarian dan halaman terpelihara
+[lulus] HTTP admin_kamar.php tetap admin-only
+[lulus] Pilihan penempatan kelas tetap mencakup kelas di halaman 3
+[lulus] HTTP rekonsiliasi duplikat mencapai akhir dan konteks terjaga
+[lulus] HTTP rekonsiliasi tanpa_relasi mencapai akhir dan konteks terjaga
+[lulus] HTTP rekonsiliasi relasi_belum_lengkap mencapai akhir dan konteks terjaga
+[lulus] HTTP rekonsiliasi konflik_kolom_lama mencapai akhir dan konteks terjaga
+[lulus] HTTP riwayat pertemuan guru terpaginasikan dan terisolasi
+[lulus] Pencarian kosong tidak menyatakan seluruh data bersih: /admin/admin_murobi.php?
+[lulus] Pencarian kosong tidak menyatakan seluruh data bersih: /admin/admin_pembimbing.php?
+[lulus] Pencarian kosong tidak menyatakan seluruh data bersih: /admin/admin_pengajian.php?tab=pertemuan&
+[lulus] Pencarian kosong tidak menyatakan seluruh data bersih: /admin/admin_wali_rekonsiliasi.php?bagian=duplikat&
+[lulus] Pencarian kosong tidak menyatakan seluruh data bersih: /admin/admin_wali_rekonsiliasi.php?bagian=tanpa_relasi&
+[lulus] Pencarian kosong tidak menyatakan seluruh data bersih: /admin/admin_wali_rekonsiliasi.php?bagian=relasi_belum_lengkap&
+[lulus] Pencarian kosong tidak menyatakan seluruh data bersih: /admin/admin_wali_rekonsiliasi.php?bagian=konflik_kolom_lama&
+Total pagination: 45, gagal: 0

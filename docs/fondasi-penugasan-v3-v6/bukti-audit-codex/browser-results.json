@@ -1,0 +1,392 @@
+[
+  {
+    "ok": true,
+    "name": "1440 murobi: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 murobi: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "1440 murobi: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 pembimbing: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 pembimbing: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "1440 pembimbing: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 guru_mapel: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 guru_mapel: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "1440 guru_mapel: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 pendidikan: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 pendidikan: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "1440 pendidikan: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 bendahara_bulanan: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 bendahara_bulanan: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "1440 bendahara_bulanan: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 panitia_psb: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 panitia_psb: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "1440 panitia_psb: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 bendahara_psb: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 bendahara_psb: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "1440 bendahara_psb: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 mata_pelajaran: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "1440 mata_pelajaran: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "1440 mata_pelajaran: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 murobi: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 murobi: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "768 murobi: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 pembimbing: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 pembimbing: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "768 pembimbing: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 guru_mapel: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 guru_mapel: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "768 guru_mapel: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 pendidikan: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 pendidikan: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "768 pendidikan: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 bendahara_bulanan: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 bendahara_bulanan: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "768 bendahara_bulanan: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 panitia_psb: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 panitia_psb: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "768 panitia_psb: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 bendahara_psb: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 bendahara_psb: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "768 bendahara_psb: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 mata_pelajaran: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "768 mata_pelajaran: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "768 mata_pelajaran: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 murobi: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 murobi: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "390 murobi: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 pembimbing: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 pembimbing: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "390 pembimbing: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 guru_mapel: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 guru_mapel: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "390 guru_mapel: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 pendidikan: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 pendidikan: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "390 pendidikan: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 bendahara_bulanan: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 bendahara_bulanan: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "390 bendahara_bulanan: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 panitia_psb: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 panitia_psb: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "390 panitia_psb: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 bendahara_psb: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 bendahara_psb: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "390 bendahara_psb: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 mata_pelajaran: HTTP 200",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "390 mata_pelajaran: body/form tanpa overflow",
+    "details": "{\"body\":true,\"form\":true,\"labels\":[]}"
+  },
+  {
+    "ok": true,
+    "name": "390 mata_pelajaran: label kontrol",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "Keyboard: Tab guru ke tahun ajaran",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "Kesalahan rentang tanggal terbaca",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "Isian setelah gagal tetap tersedia",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "Mode ubah: label orang/tahun terhubung",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "Keyboard: Enter membuka tindakan",
+    "details": ""
+  },
+  {
+    "ok": true,
+    "name": "Tidak ada galat JavaScript",
+    "details": "[]"
+  }
+]

@@ -33,9 +33,8 @@ use Throwable;
  *   - perubahan yang mengubah capability akun terkait dicatat tersendiri.
  *
  * Halaman admin hanya memanggil layanan ini; tidak ada query mutasi di halaman.
- * Halaman `admin_murobi.php` dan `admin_pembimbing.php` lama tetap memakai
- * layanan lamanya (kompatibilitas), sedangkan pusat penugasan memakai kelas
- * ini untuk seluruh jenis termasuk murobi dan pembimbing.
+ * Layanan lama murobi/pembimbing meneruskan mutasi ke kelas ini, pada
+ * koneksi yang sama, termasuk arsip/pulihkan yang tetap kompatibel.
  */
 final class PenugasanService
 {
@@ -193,6 +192,9 @@ final class PenugasanService
 
                 $id = $this->repository->insert($jenis, $data, $actorId);
                 $this->auditRequired('penugasan.buat', $definisi['entitas'], $id, null, $this->ringkasAudit($jenis, $data + ['id' => $id]), $actorId);
+                if ($definisi['lama']) {
+                    $this->auditRequired($jenis === 'murobi' ? 'master.relation.create' : 'pembimbing_assignment_created', $definisi['entitas'], $id, null, $this->ringkasAudit($jenis, $data), $actorId);
+                }
                 $this->auditCapability($akun, $sebelum, $actorId, $definisi['entitas'], $id);
 
                 return $id;
@@ -280,6 +282,14 @@ final class PenugasanService
                 $akun = $this->repository->userForSubject($jenis, (int) $lama[$definisi['subjek_kolom']]);
                 $sebelum = $this->potretCapability($akun);
 
+                if (!empty($lama['archived_at'])) {
+                    throw PenugasanException::invalid('Penugasan yang diarsipkan tidak dapat diakhiri.');
+                }
+                if ((int) $lama['is_active'] === 1) {
+                    $data = $this->dataDariBaris($jenis, $lama);
+                    $data['tanggal_selesai'] = $tanggal;
+                    $this->tolakTumpangTindih($jenis, $data, $this->repository->lockForSubject($jenis, $data['subjek_id'], $data['tahun_ajaran_id']), $id);
+                }
                 $this->repository->end($jenis, $id, $tanggal, $alasan, $actorId);
                 $baru = $this->repository->find($jenis, $id);
                 $this->auditRequired(
@@ -306,6 +316,47 @@ final class PenugasanService
     public function aktifkan(string $jenis, int $id, string $alasan, int $actorId): void
     {
         $this->ubahStatusAktif($jenis, $id, true, $alasan, $actorId);
+    }
+
+    /** Compatibility for existing URLs; archive never deletes history. */
+    public function statusLama(string $jenis, int $id, string $action, int $actorId, string $alasan = ''): void
+    {
+        $definisi = $this->jenis($jenis);
+        if (!$definisi['lama']) {
+            throw PenugasanException::invalid('Aksi kompatibilitas hanya untuk murobi/pembimbing.');
+        }
+        if ($action === 'activate' || $action === 'deactivate') {
+            $this->ubahStatusAktif($jenis, $id, $action === 'activate', $alasan, $actorId);
+            return;
+        }
+        try {
+            $this->requireAdmin($actorId);
+            if (!in_array($action, ['archive', 'restore'], true)) {
+                throw PenugasanException::invalid('Aksi penugasan tidak dikenal.');
+            }
+            $alasan = $this->alasan($alasan, 'perubahan arsip');
+            $this->repository->transaction(function () use ($jenis, $id, $action, $actorId, $definisi, $alasan): void {
+                $lama = $this->kunciBaris($jenis, $id);
+                $arsip = $action === 'archive';
+                if ((!empty($lama['archived_at'])) === $arsip) {
+                    throw PenugasanException::conflict('Status arsip penugasan sudah berubah. Muat ulang halaman.');
+                }
+                $subjekId = (int) $lama[$definisi['subjek_kolom']];
+                $akun = $this->repository->userForSubject($jenis, $subjekId);
+                $sebelum = $this->potretCapability($akun);
+                if (!$arsip) {
+                    $data = $this->normalisasi($jenis, $lama, $lama);
+                    $this->tolakTumpangTindih($jenis, $data, $this->repository->lockForSubject($jenis, $subjekId, (int) $lama['tahun_ajaran_id']), $id);
+                }
+                $this->repository->setArchived($jenis, $id, $arsip, $actorId);
+                $baru = $this->repository->find($jenis, $id);
+                $this->auditRequired($arsip ? 'penugasan.arsipkan' : 'penugasan.pulihkan', $definisi['entitas'], $id, $this->ringkasAudit($jenis, $lama) + ['archived_at' => $lama['archived_at']], $this->ringkasAudit($jenis, $baru) + ['archived_at' => $baru['archived_at'], 'alasan' => $alasan], $actorId);
+                $this->auditCapability($akun, $sebelum, $actorId, $definisi['entitas'], $id);
+            });
+        } catch (PenugasanException $e) {
+            $this->catatPenolakan($jenis, $e, ['id' => $id, 'action' => $action], $actorId);
+            throw $e;
+        }
     }
 
     // =======================================================================
@@ -425,7 +476,7 @@ final class PenugasanService
                 if ($aktif) {
                     // Mengaktifkan kembali harus melewati pemeriksaan tumpang tindih
                     // yang sama dengan pembuatan baru.
-                    $data = $this->dataDariBaris($jenis, $lama);
+                    $data = $this->normalisasi($jenis, $lama, $lama);
                     $terkunci = $this->repository->lockForSubject($jenis, $subjekId, (int) $lama['tahun_ajaran_id']);
                     $this->tolakTumpangTindih($jenis, $data, $terkunci, $id);
                 }

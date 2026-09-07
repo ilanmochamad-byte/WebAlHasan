@@ -26,16 +26,23 @@ final class PenugasanRepository
 
     public function transaction(callable $work): mixed
     {
-        $this->db->begin_transaction();
+        if (!$this->db->begin_transaction()) { throw new RuntimeException('Transaksi penugasan tidak dapat dimulai.'); }
         try {
             $result = $work();
-            $this->db->commit();
+            if (!$this->db->commit()) { throw new RuntimeException('Transaksi penugasan tidak dapat disimpan.'); }
 
             return $result;
         } catch (Throwable $exception) {
             $this->db->rollback();
             throw $exception;
         }
+    }
+
+    public function setArchived(string $jenis, int $id, bool $archive, int $actorId): void
+    {
+        $definisi = PenugasanJenis::definisi($jenis);
+        if (!$definisi['lama']) { throw new RuntimeException('Jenis penugasan tidak mendukung arsip.'); }
+        $this->execute('UPDATE ' . $definisi['tabel'] . ' SET archived_at = ' . ($archive ? 'NOW()' : 'NULL') . ', is_active = ?, updated_by = ?, updated_at = NOW() WHERE id = ?', [$archive ? 0 : 1, $actorId, $id]);
     }
 
     public function actorIsAdmin(int $userId): bool
@@ -588,7 +595,7 @@ final class PenugasanRepository
             if ($errno !== 0) {
                 throw $this->lockingError($errno) ?? new RuntimeException('Data penugasan tidak dapat dibaca.');
             }
-            return [];
+            throw new RuntimeException('Data penugasan tidak dapat dibaca.');
         }
         $rows = $result->fetch_all(MYSQLI_ASSOC);
         $statement->close();
