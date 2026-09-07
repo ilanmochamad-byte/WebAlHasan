@@ -70,6 +70,8 @@ final class ApiAuthService
         // V2 Fase 3: capability aktual ikut pada respons login agar aplikasi dapat
         // membangun navigasi tanpa menebak dari nama role (PRD 8 poin 11).
         $profile['capabilities'] = $this->capabilityPayload($user);
+        // Fondasi V3–V6 (aditif): feature capability dari penugasan fungsional.
+        $profile['feature_capabilities'] = $this->featureCapabilityPayload($user);
 
         return [
             'token' => $plainToken,
@@ -93,7 +95,47 @@ final class ApiAuthService
             'roles' => array_values($user['roles']),
             // Aditif terhadap kontrak V1: field lama tidak berubah bentuk maupun makna.
             'capabilities' => $this->capabilityPayload($user),
+            // Aditif (fondasi V3–V6): feature capability dari penugasan fungsional.
+            // Struktur `capabilities` (list/default_mode/konteks/menus/aksi) TIDAK
+            // berubah; aplikasi lama yang tidak mengenal field ini mengabaikannya.
+            'feature_capabilities' => $this->featureCapabilityPayload($user),
         ];
+    }
+
+    /**
+     * Feature capability dari penugasan fungsional V3–V6, selalu dihitung ulang
+     * di server. Tidak menambah mode utama, tidak mengubah `default_mode`, dan
+     * tidak membuat menu: hanya menyatakan kesiapan hak untuk modul mendatang.
+     *
+     * @param array<string, mixed> $user
+     * @return array{list:array<int,string>, sumber:array<string,string>, cakupan:array<string, array<int, array<string,mixed>>>}
+     */
+    public function featureCapabilityPayload(array $user): array
+    {
+        $kosong = ['list' => [], 'sumber' => [], 'cakupan' => []];
+        if ($this->capabilities === null) {
+            return $kosong;
+        }
+        $probe = [
+            'id' => (int) $user['id'],
+            'roles' => array_values((array) ($user['roles'] ?? [])),
+            'guru_id' => ($user['guru_id'] ?? null) === null ? null : (int) $user['guru_id'],
+        ];
+        try {
+            $peta = $this->capabilities->featureCapabilities($probe);
+        } catch (\Throwable $exception) {
+            // Skema fondasi belum terpasang: profil lama tetap terlayani.
+            error_log('Feature capability gagal dihitung: ' . $exception->getMessage());
+            return $kosong;
+        }
+        $sumber = [];
+        $cakupan = [];
+        foreach ($peta as $capability => $entri) {
+            $sumber[$capability] = $entri['sumber'];
+            $cakupan[$capability] = $entri['cakupan'];
+        }
+
+        return ['list' => array_keys($peta), 'sumber' => $sumber, 'cakupan' => $cakupan];
     }
 
     /**
