@@ -32,15 +32,16 @@ produksi yang disentuh dan tidak ada permintaan jaringan keluar.
 
 | Rangkaian | Status | Pemeriksaan |
 | --- | --- | --- |
-| `tests/penugasan_static.php` | **LULUS** | 274 |
+| `tests/penugasan_static.php` | **LULUS** | 281 |
 | `tests/penugasan_integration.php` | **LULUS** | 161 |
+| `tests/penugasan_concurrency.php` (ditambahkan saat audit, §8) | **LULUS** | 12 |
 | `tests/penugasan_web_smoke.php` | **LULUS** | 73 |
 | `bin/penugasan_preflight.php` | **LULUS** (exit 0, tidak ada penghalang) | 6 bagian |
 | `bin/penugasan_verify.php --murobi=3 --pembimbing=3` | **LULUS** (exit 0) | 154 |
 | Migrasi 012: naik → rollback → naik → naik lagi (idempoten) | **LULUS** | lihat §6 |
-| `bash bin/penugasan_run_all_tests.sh` | **LULUS** untuk bagian B–D | 508 pemeriksaan paket |
+| `bash bin/penugasan_run_all_tests.sh` (run kedua, setelah audit) | **LULUS** untuk bagian B–D | 527 pemeriksaan paket |
 
-**Total pemeriksaan paket ini yang lulus: 662** (274 + 161 + 73 + 154).
+**Total pemeriksaan paket ini yang lulus: 681** (281 + 161 + 12 + 73 + 154).
 
 ## 3. Pemetaan ke 24 pengujian wajib
 
@@ -59,8 +60,8 @@ produksi yang disentuh dan tidak ada permintaan jaringan keluar.
 | 11 | Bendahara PSB tidak otomatis panitia PSB | **LULUS** | FI-11 |
 | 12 | Guru hanya memperoleh capability mapel pada kelas/semester/tahun yang ditugaskan | **LULUS** | FI-12 (11) |
 | 13 | Penugasan duplikat ditolak | **LULUS** | FI-13 (5, termasuk audit), FW-6b |
-| 14 | Penugasan bertumpang tindih tidak sah ditolak | **LULUS** | FI-14 (10: 6 ditolak, 3 diterima, ubah+aktifkan), FW-6a |
-| 15 | Perubahan penugasan dan audit transaksional | **LULUS** | FI-15 (5: tabel audit di-rename → mutasi batal penuh; audit sukses; delta capability) |
+| 14 | Penugasan bertumpang tindih tidak sah ditolak | **LULUS** | FI-14 (10: 6 ditolak, 3 diterima, ubah+aktifkan), FW-6a, KP-1/KP-3 (permintaan bersamaan nyata) |
+| 15 | Perubahan penugasan dan audit transaksional | **LULUS** | FI-15 (5: tabel audit di-rename → mutasi batal penuh; audit sukses; delta capability), KP-4 (transaksi yang kalah tidak meninggalkan audit pembuatan) |
 | 16 | IDOR dan manipulasi parameter ditolak | **LULUS** | FI-16 (14), FW-13 (2) |
 | 17 | CSRF hilang/tidak valid ditolak | **LULUS** | FW-3 (2: 419 tanpa perubahan) |
 | 18 | Halaman lama murobi/pembimbing tetap berfungsi | **LULUS** | FW-8 (5: GET 200 + tautan, POST lama menyimpan, tampil di pusat); regresi `perapihan_audit_form_feedback`/`pagination` |
@@ -132,3 +133,29 @@ pemeriksaan maksud aslinya ("Fase 3 sendiri tidak menambah migrasi"), mengikuti
 preseden PS-15 pada paket penempatan (6 September 2026). Tanpa penyesuaian,
 setiap paket yang sah menambah migrasi (011 alumni, 012 ini) dilaporkan sebagai
 kegagalan Fase 3. Tidak ada pengujian lama lain yang diubah.
+
+## 8. Audit mandiri (7 September 2026, setelah push pertama)
+
+Dilakukan atas permintaan pemilik produk dengan kacamata auditor: membaca ulang
+seluruh perubahan, mencari celah keamanan/kebenaran, dan membuktikan klaim yang
+belum berbukti. Temuan dan tindak lanjutnya:
+
+| # | Temuan | Tingkat | Perbaikan | Bukti |
+| --- | --- | --- | --- | --- |
+| A-1 | Klaim "permintaan bersamaan diserialkan" belum dibuktikan. Uji proses nyata menunjukkan: lima pembuatan bertumpang tindih bersamaan memang hanya menyimpan **satu** baris, tetapi empat lainnya gagal dengan galat basis data mentah (deadlock kunci celah) — bukan 409 — dan penolakannya tidak teraudit. Lebih serius: dua **pengaktifan** bertumpang tindih bersamaan **keduanya berhasil**. | **Tinggi** | Akar masalah: dengan mysqlnd, galat kunci InnoDB (1205/1213) pada prepared `SELECT … FOR UPDATE` baru muncul di `get_result()`, dan repository memperlakukan hasil `false` itu sebagai nol baris sehingga pemeriksaan tumpang tindih berjalan dengan daftar kosong. `PenugasanRepository::all()` kini melempar konflik 409 yang dapat dimengerti pada errno 1205/1213; layanan mengunci **baris master guru/pengurus** lebih dahulu (`lockSubjectMaster()`) sebagai gerbang serialisasi per orang dengan urutan kunci tetap (`kunciBaris()`), sehingga permintaan kedua menunggu lalu ditolak 409 dan teraudit. | `tests/penugasan_concurrency.php` KP-1…KP-5 (12 pemeriksaan): 5 pembuatan bertumpang tindih → 1 berhasil + 4×409 teraudit; 5 identik → 1; 2 pengaktifan bertumpang tindih → 1; 4 cakupan berbeda bersamaan → 4 berhasil |
+| A-2 | `bin/penugasan_verify.php` melewatkan tabel `mata_pelajaran` pada laporan jumlah baris (`+` pada array berindeks numerik). | Rendah | `array_merge`. | keluaran verify memuat `mata_pelajaran` |
+| A-3 | Duplikat nama/kode mata pelajaran dijawab pesan "Penugasan identik…" (pemetaan 1062 generik). | Rendah | Pemeriksaan duplikat eksplisit sebelum simpan dengan pesan yang menyebut mata pelajaran yang bentrok. | FS-9 |
+| A-4 | Nonaktifkan/aktifkan penugasan murobi/pembimbing dari pusat menimpa `catatan` admin dengan alasan. | Rendah | Alasan hanya disimpan pada audit; `catatan` tidak disentuh. | — |
+| A-5 | FW-13a pada smoke web bergantung pada kebetulan ID antar-tabel; klaim IDOR-nya tidak tajam. | Rendah (uji) | Diganti: ID yang tidak ada pada tabel jenis itu dijawab "tidak ditemukan" tanpa mengubah baris mana pun (potret seluruh tabel sebelum/sesudah identik). | FW-13a |
+| A-6 | Pola `get_result()` yang sama ada pada repository paket lama (akun, penempatan, alumni, pembimbing). | Di luar cakupan | Tidak diubah di sini; dicatat pada `acceptance-status.md` sebagai pekerjaan lanjutan terpisah. | — |
+
+Yang diperiksa dan **tidak** menemukan masalah: guard admin + `requireAdmin()`
+di layanan; seluruh mutasi POST+CSRF; tidak ada aksi lewat GET; escape
+keluaran; anti-IDOR subjek/tahun ajaran terkunci pada `ubah`; resolver
+mengabaikan role dari sesi/klien; `forUser()` dan kontrak API lama utuh;
+migrasi aditif tanpa role/data; rollback berpasangan; tidak ada fitur bisnis
+V3–V6; `alhasanApps` tidak disentuh.
+
+Setelah perbaikan, seluruh rangkaian dijalankan ulang (§2 dan §4; regresi
+V1–V2 memberi hasil yang sama persis dengan run pertama).
+

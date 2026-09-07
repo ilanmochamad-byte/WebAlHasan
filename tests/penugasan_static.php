@@ -82,6 +82,8 @@ $berkasBaru = [
     'tests/penugasan_static.php',
     'tests/penugasan_integration.php',
     'tests/penugasan_web_smoke.php',
+    'tests/penugasan_concurrency.php',
+    'tests/penugasan_concurrency_worker.php',
 ];
 $berkasDiubah = [
     'app/Auth/Capabilities.php',
@@ -242,6 +244,18 @@ foreach (['public function buat(', 'public function ubah(', 'public function akh
 }
 $assert(str_contains($service, 'lockForSubject(') && str_contains($service, 'tolakTumpangTindih('), 'FS-8 pemeriksaan tumpang tindih dijalankan di bawah kunci baris');
 $assert(str_contains($service, 'FOR UPDATE') || str_contains($repo, 'FOR UPDATE'), 'FS-8 penguncian baris SELECT ... FOR UPDATE dipakai');
+// Temuan audit 7 September 2026: gerbang serialisasi per subjek dan penanganan
+// galat kunci mysqlnd yang baru muncul pada get_result().
+$assert(substr_count($service, '$this->repository->lockSubjectMaster(') >= 2, 'FS-8 mutasi mengunci baris master subjek sebagai gerbang serialisasi (buat + kunciBaris)');
+$assert(
+    preg_match('/private function kunciBaris\(.*?lockSubjectMaster\(.*?find\(\$jenis, \$id, true\)/s', $service) === 1,
+    'FS-8 kunci master subjek selalu diambil SEBELUM kunci baris penugasan (urutan tetap, anti-deadlock)'
+);
+$assert(
+    preg_match('/\$result = \$statement->get_result\(\);\s*if \(\$result === false\) \{.*?\$errno = \$statement->errno \?: \$this->db->errno;/s', $repo) === 1,
+    'FS-8 hasil get_result() false dengan errno tidak diperlakukan sebagai nol baris'
+);
+$assert(str_contains($repo, '$errno === 1205 || $errno === 1213'), 'FS-8 galat kunci 1205/1213 diterjemahkan menjadi konflik yang dapat dimengerti');
 $assert(str_contains($service, "'penugasan.capability_berubah'"), 'FS-8 perubahan capability akun dicatat tersendiri');
 $assert(str_contains($service, "'penugasan.tolak_tumpang_tindih'"), 'FS-8 percobaan duplikat/tumpang tindih dicatat pada audit');
 foreach (["'penugasan.buat'", "'penugasan.ubah'", "'penugasan.akhiri'", "'penugasan.nonaktifkan'", "'penugasan.aktifkan'"] as $aksi) {
@@ -265,6 +279,7 @@ $assert(
     'FS-9 repository tidak membaca input HTTP'
 );
 $assert(str_contains($repo, "PenugasanJenis::definisi(\$jenis)") && !str_contains($repo, "\$filters['tabel']"), 'FS-9 nama tabel berasal dari katalog, bukan dari input');
+$assert(str_contains($service, 'mataPelajaranDuplikat(') && str_contains($service, 'Nama atau kode mata pelajaran sudah dipakai'), 'FS-9 duplikat nama/kode mata pelajaran dijawab pesan yang tepat, bukan pesan penugasan');
 
 // ============================================================== FS-10
 $kodeCap = $tanpaKomentar($capabilities);

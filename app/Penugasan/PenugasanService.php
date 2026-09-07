@@ -182,6 +182,9 @@ final class PenugasanService
             $data = $this->normalisasi($jenis, $input, null);
 
             return $this->repository->transaction(function () use ($jenis, $definisi, $data, $actorId): int {
+                // Gerbang serialisasi per orang: mutasi bersamaan untuk subjek
+                // yang sama menunggu di sini, lalu membaca keadaan terbaru.
+                $this->repository->lockSubjectMaster($jenis, $data['subjek_id']);
                 $akun = $this->repository->userForSubject($jenis, $data['subjek_id']);
                 $sebelum = $this->potretCapability($akun);
 
@@ -213,10 +216,7 @@ final class PenugasanService
             $this->requireAdmin($actorId);
             $alasan = $this->alasan($input['alasan'] ?? '', 'perubahan');
             $this->repository->transaction(function () use ($jenis, $definisi, $id, $input, $alasan, $actorId): void {
-                $lama = $this->repository->find($jenis, $id, true);
-                if ($lama === null) {
-                    throw PenugasanException::notFound();
-                }
+                $lama = $this->kunciBaris($jenis, $id);
                 if (!empty($lama['archived_at'])) {
                     throw PenugasanException::invalid('Penugasan yang sudah diarsipkan tidak dapat diubah. Buat penugasan baru bila diperlukan.');
                 }
@@ -269,10 +269,7 @@ final class PenugasanService
                 throw PenugasanException::invalid('Tanggal selesai wajib diisi dengan tanggal yang valid.', ['tanggal_selesai' => 'Tanggal selesai tidak valid.']);
             }
             $this->repository->transaction(function () use ($jenis, $definisi, $id, $tanggal, $alasan, $actorId): void {
-                $lama = $this->repository->find($jenis, $id, true);
-                if ($lama === null) {
-                    throw PenugasanException::notFound();
-                }
+                $lama = $this->kunciBaris($jenis, $id);
                 if ($tanggal < (string) $lama['tanggal_mulai']) {
                     throw PenugasanException::invalid('Tanggal selesai tidak boleh mendahului tanggal mulai (' . $lama['tanggal_mulai'] . ').', ['tanggal_selesai' => 'Tanggal selesai mendahului tanggal mulai.']);
                 }
@@ -353,6 +350,10 @@ final class PenugasanService
         $data = ['kode' => $kode === '' ? null : $kode, 'nama' => $nama, 'kategori' => $kategori === '' ? null : $kategori];
 
         return $this->repository->transaction(function () use ($data, $id, $actorId): int {
+            $kembar = $this->repository->mataPelajaranDuplikat($data['nama'], $data['kode'], $id);
+            if ($kembar !== null) {
+                throw PenugasanException::conflict('Nama atau kode mata pelajaran sudah dipakai oleh "' . $kembar['nama'] . '" (#' . (int) $kembar['id'] . ').');
+            }
             if ($id === null) {
                 $baru = $this->repository->mataPelajaranInsert($data, $actorId);
                 $this->auditRequired('mata_pelajaran.buat', 'mata_pelajaran', $baru, null, $data, $actorId);
@@ -409,10 +410,7 @@ final class PenugasanService
             $this->requireAdmin($actorId);
             $alasan = $this->alasan($alasan, $aktif ? 'pengaktifan' : 'penonaktifan');
             $this->repository->transaction(function () use ($jenis, $definisi, $id, $aktif, $alasan, $actorId): void {
-                $lama = $this->repository->find($jenis, $id, true);
-                if ($lama === null) {
-                    throw PenugasanException::notFound();
-                }
+                $lama = $this->kunciBaris($jenis, $id);
                 if (!empty($lama['archived_at'])) {
                     throw PenugasanException::invalid('Penugasan yang diarsipkan hanya dapat dipulihkan dari halaman lamanya.');
                 }
@@ -448,6 +446,29 @@ final class PenugasanService
             $this->catatPenolakan($jenis, $exception, ['id' => $id, 'aktif' => $aktif], $actorId);
             throw $exception;
         }
+    }
+
+    /**
+     * Mengunci baris penugasan beserta gerbang subjeknya, dalam urutan yang
+     * SELALU sama (master subjek dahulu, baru baris penugasan) agar dua
+     * transaksi tidak pernah saling menunggu secara silang (deadlock).
+     *
+     * @return array<string, mixed>
+     */
+    private function kunciBaris(string $jenis, int $id): array
+    {
+        $definisi = PenugasanJenis::definisi($jenis);
+        $awal = $this->repository->find($jenis, $id);
+        if ($awal === null) {
+            throw PenugasanException::notFound();
+        }
+        $this->repository->lockSubjectMaster($jenis, (int) $awal[$definisi['subjek_kolom']]);
+        $lama = $this->repository->find($jenis, $id, true);
+        if ($lama === null) {
+            throw PenugasanException::notFound();
+        }
+
+        return $lama;
     }
 
     /**

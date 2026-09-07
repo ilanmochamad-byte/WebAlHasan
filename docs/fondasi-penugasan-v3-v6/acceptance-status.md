@@ -1,8 +1,9 @@
 # Status penerimaan, risiko, dan pekerjaan lanjutan
 
 Keputusan pengguna 7 September 2026. Branch `feat/fondasi-penugasan-v3-v6`.
-Status paket: **implementasi selesai, menunggu audit Codex**. Belum di-merge,
-belum di-deploy, migrasi produksi belum dijalankan.
+Status paket: **implementasi selesai dan telah diaudit mandiri (7 September
+2026, lihat `test-results.md` §8)**; siap ditinjau Codex/pemilik produk. Belum
+di-merge, belum di-deploy, migrasi produksi belum dijalankan.
 
 ## 1. Kriteria penerimaan
 
@@ -35,11 +36,13 @@ belum di-deploy, migrasi produksi belum dijalankan.
 | **Tanggal berjalan.** Resolver memakai `CURDATE()` MySQL (konsisten dengan murobi V2); label status halaman memakai tanggal PHP (`Asia/Jakarta`). | Bila zona waktu server MySQL berbeda, sekitar tengah malam status dan capability dapat berbeda beberapa jam. | Samakan zona waktu MySQL dan PHP di hosting (sudah menjadi asumsi V2). |
 | **Beban halaman akun.** Ringkasan penugasan efektif menjalankan resolver per baris akun (≤ 7 query per baris, 20 baris). | Halaman akun sedikit lebih lambat. | Terukur kecil pada data uji; bila perlu, tambahkan query ringkasan tunggal. |
 | **`mapel` warisan dan `mengajar` warisan** tidak disentuh. | Tidak ada; keduanya kosong dan tidak dipakai kode. | Bila V4 memutuskan memakainya, migrasi terpisah. |
+| **Pola `get_result()` pada repository lama** (`AccountRepository`, `PenempatanRepository`, `AlumniRepository`, `PembimbingRepository`) memperlakukan hasil `false` sebagai nol baris — celah yang sama dengan temuan audit paket ini pada galat kunci mysqlnd. Tidak diubah di sini (di luar cakupan; rangkaian bersamaannya sendiri lulus). | Pada lock wait timeout/deadlock, pembacaan berkunci dapat salah dibaca kosong. | Pekerjaan lanjutan terpisah: terapkan penanganan errno pada `get_result()` seperti `PenugasanRepository::all()`. |
 | **Uji peramban visual, Safari fisik, pembaca layar** belum dijalankan. | Tampilan pada 390 px dan `<details>` di Safari belum dibuktikan. | Smoke test manusia (`cpanel-deployment.md` §9). |
 | **Migrasi pada data produksi** belum dijalankan (hanya pada database uji lokal). | — | Panduan `cpanel-deployment.md`. |
 
 ## 3. Pekerjaan lanjutan (bukan bagian paket ini)
 
+0. Terapkan penanganan errno `get_result()` pada repository lama (lihat risiko di atas).
 1. Konsolidasi jalur lama murobi/pembimbing ke `PenugasanService` setelah audit.
 2. PRD V3: modul konseling/pelanggaran memakai `murobi.binaan` / `pembimbing.binaan` + `featureAppliesToKamar/Kelas`.
 3. PRD V4: tabel nilai/rapor memakai `nilai.*` (guru mapel, cakupan kelas+mapel+tahun) dan `rapor.*` (Bagian Pendidikan, cakupan jenjang); aksi admin pengganti membaca `featureSource()`.

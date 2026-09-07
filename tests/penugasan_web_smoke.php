@@ -376,14 +376,15 @@ try {
     $assert($angka("SELECT COUNT(*) n FROM audit_logs WHERE actor_user_id = " . $adminId . " AND action IN ('penugasan.buat','penugasan.ubah','penugasan.akhiri','penugasan.nonaktifkan','penugasan.aktifkan') AND ip_address = '127.0.0.1' AND user_agent IS NOT NULL") >= 10, 'FW-7g audit web menyimpan IP dan user agent pelaku');
 
     // ------------------------------------------------------------- FW-13
-    $sebelumBpsb = $satu('SELECT tanggal_selesai FROM bendahara_psb_assignments WHERE pengurus_id = ' . $pengurus);
-    $r = $admin->request('/admin/admin_penugasan.php', ['_csrf' => $csrf, 'jenis' => 'bendahara_psb', 'action' => 'akhiri', 'id' => (string) $psbId, 'tanggal_selesai' => $hari(0), 'alasan' => 'IDOR lintas jenis']);
-    $sesudahBpsb = $satu('SELECT tanggal_selesai FROM bendahara_psb_assignments WHERE pengurus_id = ' . $pengurus);
+    // ID selalu ditafsirkan pada tabel jenis yang diminta; ID yang tidak ada di
+    // tabel itu dijawab "tidak ditemukan" dan tidak menyentuh baris mana pun.
+    $potretSebelum = $satu('SELECT GROUP_CONCAT(CONCAT(id, \':\', COALESCE(tanggal_selesai, \'-\'), \':\', is_active) ORDER BY id) AS p FROM bendahara_psb_assignments');
+    $r = $admin->request('/admin/admin_penugasan.php', ['_csrf' => $csrf, 'jenis' => 'bendahara_psb', 'action' => 'akhiri', 'id' => '999999999', 'tanggal_selesai' => $hari(0), 'alasan' => 'IDOR ID tidak ada']);
+    $potretSesudah = $satu('SELECT GROUP_CONCAT(CONCAT(id, \':\', COALESCE(tanggal_selesai, \'-\'), \':\', is_active) ORDER BY id) AS p FROM bendahara_psb_assignments');
     $idorMuat = $admin->request('/admin/admin_penugasan.php?jenis=bendahara_psb');
     $assert(
-        $r['status'] === 302 && $sesudahBpsb === $sebelumBpsb
-        && (str_contains($idorMuat['body'], 'tidak ditemukan') || str_contains($idorMuat['body'], 'ah-note--danger') || $psbId === (int) ($satu('SELECT id FROM bendahara_psb_assignments WHERE pengurus_id = ' . $pengurus)['id'] ?? 0)),
-        'FW-13a ID dari jenis lain tidak mengubah baris jenis ini'
+        $r['status'] === 302 && $potretSesudah === $potretSebelum && str_contains($idorMuat['body'], 'tidak ditemukan'),
+        'FW-13a ID yang tidak ada pada tabel jenis itu dijawab tidak ditemukan tanpa mengubah baris mana pun'
     );
     $r = $admin->request('/admin/admin_penugasan.php', ['_csrf' => $csrf, 'jenis' => 'guru_mapel', 'action' => 'ubah', 'id' => (string) $gmId, 'guru_id' => (string) $guru2, 'mata_pelajaran_id' => (string) $mapelId, 'kelas_id' => (string) $kelas, 'tanggal_mulai' => $hari(0), 'alasan' => 'Coba ganti orang lewat web']);
     $assert($r['status'] === 302 && (int) $satu('SELECT guru_id FROM guru_mapel_assignments WHERE id = ' . $gmId)['guru_id'] === $guru, 'FW-13b guru_id yang disuntikkan pada ubah diabaikan');

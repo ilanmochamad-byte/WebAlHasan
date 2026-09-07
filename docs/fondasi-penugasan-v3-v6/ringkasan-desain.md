@@ -124,9 +124,22 @@ pernah bertentangan:
 
 ## 6. Aturan duplikasi dan tumpang tindih
 
-Diperiksa di dalam transaksi setelah `SELECT … FOR UPDATE` seluruh baris milik
-subjek yang sama pada tahun ajaran yang sama, sehingga dua permintaan
-bersamaan diserialkan.
+Diperiksa di dalam transaksi dengan urutan kunci yang selalu sama:
+
+1. **kunci baris master subjek** (`guru`/`pengurus`, `SELECT id … FOR UPDATE`)
+   sebagai gerbang serialisasi per orang — baris ini selalu ada, sehingga
+   permintaan kedua untuk orang yang sama menunggu, lalu membaca keadaan
+   terbaru dan ditolak 409 (bukan deadlock);
+2. **kunci seluruh baris penugasan** subjek itu pada tahun ajaran yang sama
+   (`SELECT … FOR UPDATE`), lalu pemeriksaan tumpang tindih di PHP;
+3. kunci unik basis data sebagai lapisan kedua untuk penugasan identik.
+
+Temuan audit 7 September 2026: dengan mysqlnd, galat kunci InnoDB
+(1205 lock wait, 1213 deadlock) pada `SELECT … FOR UPDATE` tidak muncul di
+`execute()` melainkan di `get_result()`. Repository memperlakukan hasil itu
+sebagai galat (bukan "nol baris") dan menerjemahkannya menjadi konflik 409
+yang dapat dimengerti admin. Dibuktikan `tests/penugasan_concurrency.php`
+(lima proses PHP nyata bersamaan).
 
 Dua penugasan dianggap **bentrok** bila seluruhnya terpenuhi:
 

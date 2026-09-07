@@ -112,6 +112,29 @@ final class PenugasanRepository
     }
 
     /**
+     * Mengunci baris MASTER subjek (guru/pengurus) sebagai gerbang serialisasi
+     * seluruh mutasi penugasan orang itu di dalam transaksi.
+     *
+     * Mengapa bukan cukup `lockForSubject()`: pada penyisipan bersamaan untuk
+     * subjek yang belum punya baris, dua transaksi sama-sama hanya memegang
+     * kunci celah (gap lock) yang saling kompatibel, lalu sama-sama menyisipkan
+     * dan berakhir deadlock — aman dari duplikat, tetapi admin menerima galat
+     * basis data dan penolakannya tidak teraudit. Baris master selalu ada,
+     * sehingga kunci eksklusif padanya membuat transaksi kedua menunggu lalu
+     * membaca keadaan terbaru dan ditolak sebagai tumpang tindih (409).
+     *
+     * (Audit fondasi penugasan, 7 September 2026.)
+     */
+    public function lockSubjectMaster(string $jenis, int $subjekId): void
+    {
+        $definisi = PenugasanJenis::definisi($jenis);
+        $tabel = $definisi['subjek'] === 'guru' ? 'guru' : 'pengurus';
+        if ($this->all('SELECT id FROM ' . $tabel . ' WHERE id = ? FOR UPDATE', [$subjekId]) === []) {
+            throw PenugasanException::invalid(ucfirst($definisi['label_subjek']) . ' tidak ditemukan.');
+        }
+    }
+
+    /**
      * Seluruh baris (aktif maupun tidak) milik satu subjek pada satu tahun
      * ajaran, DIKUNCI untuk pemeriksaan tumpang tindih di dalam transaksi.
      *
@@ -228,11 +251,12 @@ final class PenugasanRepository
     {
         $definisi = PenugasanJenis::definisi($jenis);
         if ($definisi['lama']) {
-            // Tabel lama tidak punya kolom alasan perubahan: alasan disimpan
-            // pada `catatan` agar tetap terbaca, dan selalu ada di audit.
+            // Tabel lama tidak punya kolom alasan perubahan. Alasan hanya
+            // disimpan pada audit; `catatan` admin TIDAK ditimpa (temuan audit
+            // 7 September 2026).
             $this->execute(
-                'UPDATE ' . $definisi['tabel'] . ' SET is_active = ?, catatan = ?, updated_by = ?, updated_at = NOW() WHERE id = ?',
-                [$active ? 1 : 0, $alasan, $actorId, $id]
+                'UPDATE ' . $definisi['tabel'] . ' SET is_active = ?, updated_by = ?, updated_at = NOW() WHERE id = ?',
+                [$active ? 1 : 0, $actorId, $id]
             );
 
             return;
@@ -348,6 +372,18 @@ final class PenugasanRepository
     public function mataPelajaranFind(int $id): ?array
     {
         return $this->one('SELECT * FROM mata_pelajaran WHERE id = ? LIMIT 1', [$id]);
+    }
+
+    /**
+     * Mata pelajaran lain yang memakai nama atau kode yang sama (kunci unik
+     * tidak peka huruf besar-kecil, sama seperti kolasi tabelnya).
+     */
+    public function mataPelajaranDuplikat(string $nama, ?string $kode, ?int $kecualiId): ?array
+    {
+        return $this->one(
+            'SELECT id, nama, kode FROM mata_pelajaran WHERE (nama = ? OR (? IS NOT NULL AND kode_unique_key = ?)) AND id <> ? LIMIT 1',
+            [$nama, $kode, $kode, $kecualiId ?? 0]
+        );
     }
 
     /** @param array{kode:?string, nama:string, kategori:?string} $data */
@@ -539,13 +575,38 @@ final class PenugasanRepository
     {
         $statement = $this->db->prepare($sql);
         if ($statement === false || !$this->run($statement, $params)) {
-            throw new RuntimeException('Data penugasan tidak dapat dibaca.');
+            $errno = $statement === false ? $this->db->errno : $statement->errno;
+            throw $this->lockingError($errno) ?? new RuntimeException('Data penugasan tidak dapat dibaca.');
         }
+        // Dengan mysqlnd, galat kunci pada SELECT ... FOR UPDATE (1205 lock wait,
+        // 1213 deadlock) baru muncul di get_result(), BUKAN di execute(). Hasil
+        // false di sini tidak boleh diperlakukan sebagai "tidak ada baris".
         $result = $statement->get_result();
-        $rows = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+        if ($result === false) {
+            $errno = $statement->errno ?: $this->db->errno;
+            $statement->close();
+            if ($errno !== 0) {
+                throw $this->lockingError($errno) ?? new RuntimeException('Data penugasan tidak dapat dibaca.');
+            }
+            return [];
+        }
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
         $statement->close();
 
         return $rows;
+    }
+
+    /**
+     * Galat penguncian InnoDB diterjemahkan menjadi konflik yang dapat
+     * dimengerti admin dan diaudit, bukan galat basis data mentah.
+     */
+    private function lockingError(int $errno): ?PenugasanException
+    {
+        if ($errno === 1205 || $errno === 1213) {
+            return PenugasanException::conflict('Permintaan lain sedang mengubah penugasan orang ini pada saat yang sama. Muat ulang halaman lalu coba lagi.');
+        }
+
+        return null;
     }
 
     private function one(string $sql, array $params = []): ?array
@@ -569,6 +630,9 @@ final class PenugasanRepository
             $statement->close();
             if ($errno === 1062) {
                 throw PenugasanException::conflict('Penugasan identik (orang, tahun ajaran, cakupan, dan tanggal mulai yang sama) sudah ada.');
+            }
+            if (($konflik = $this->lockingError($errno)) !== null) {
+                throw $konflik;
             }
             if ($errno === 4025 || $errno === 3819) {
                 throw PenugasanException::invalid('Penugasan ditolak oleh aturan basis data. Periksa cakupan dan rentang tanggal.');

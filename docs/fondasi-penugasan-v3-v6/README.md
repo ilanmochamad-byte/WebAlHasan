@@ -67,6 +67,8 @@ bin/penugasan_run_all_tests.sh                        penjalan seluruh pengujian
 tests/penugasan_static.php                            pemeriksaan statis
 tests/penugasan_integration.php                       pengujian integrasi basis data
 tests/penugasan_web_smoke.php                         smoke test HTTP + kontrak API
+tests/penugasan_concurrency.php                       permintaan bersamaan (proses PHP nyata)
+tests/penugasan_concurrency_worker.php                proses anak untuk uji bersamaan
 docs/fondasi-penugasan-v3-v6/                         dokumentasi ini
 ```
 

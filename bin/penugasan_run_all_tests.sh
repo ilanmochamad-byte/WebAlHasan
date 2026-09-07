@@ -93,6 +93,7 @@ echo
 echo '=== D. Pengujian paket fondasi penugasan V3–V6 ==='
 jalankan 'tests/penugasan_static.php'       php tests/penugasan_static.php
 jalankan 'tests/penugasan_integration.php'  env PENUGASAN_RUN_INTEGRATION=1 php tests/penugasan_integration.php
+jalankan 'tests/penugasan_concurrency.php'  env PENUGASAN_RUN_CONCURRENCY=1 php tests/penugasan_concurrency.php
 jalankan 'tests/penugasan_web_smoke.php'    env PENUGASAN_RUN_WEB=1 php tests/penugasan_web_smoke.php
 
 echo

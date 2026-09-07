@@ -156,7 +156,7 @@ if ($sebelum['murobi'] === null && $sebelum['pembimbing'] === null) {
 }
 
 // ------------------------------------------------------------------- 4
-foreach (array_keys($spesifik) + ['mata_pelajaran'] as $tabel) {
+foreach (array_merge(array_keys($spesifik), ['mata_pelajaran']) as $tabel) {
     $n = $skalar('SELECT COUNT(*) FROM ' . $tabel);
     echo '  ' . str_pad($tabel, 32) . $n . ' baris' . ($n === 0 ? ' (kosong: migrasi tidak mengisi apa pun)' : '') . PHP_EOL;
 }
