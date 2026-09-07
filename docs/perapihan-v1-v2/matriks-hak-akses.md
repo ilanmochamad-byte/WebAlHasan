@@ -129,3 +129,33 @@ atau pemeriksaan pemilik `ReportService::meeting()`. POST seluruh pintu laporan
 Menu Notifikasi Saya hanya tampil bila punya kemampuan perizinan, sesuai guard
 web yang telah ada. Fitur notifikasi mobile tetap tersedia menurut kontrak API.
 Bukti: `tests/perapihan_audit_laporan_web.php` dan `perapihan_audit_http.php`.
+
+## 9. Pembaruan fondasi penugasan V3–V6 — keputusan pengguna 7 September 2026
+
+Tabel §1 dan §3 di atas **tidak berubah**. Yang ditambahkan:
+
+| Halaman | Admin | Guru | Murobi | Pengurus | Orang tua | Ditegakkan di |
+| --- | --- | --- | --- | --- | --- | --- |
+| `/admin/admin_penugasan.php` (Pusat Penugasan, semua tab) | ✅ | ❌ 403 | ❌ 403 | ❌ 403 | ❌ 403 | `admin/_guard.php` + `PenugasanService::requireAdmin()` (role admin dibaca dari basis data) |
+
+Penugasan fungsional (murobi, pembimbing, guru mata pelajaran, Bagian
+Pendidikan, bendahara pembiayaan bulanan, panitia PSB, bendahara PSB) **bukan
+role**. Ia menghasilkan *feature capability* yang dihitung
+`Capabilities::featureCapabilities()` dari akun aktif, role dasar (dibaca ulang
+dari basis data), relasi master aktif, penugasan aktif, masa berlaku, tahun
+ajaran, dan cakupan. Daftar capability perizinan §1 (`admin`, `pengurus`,
+`murobi`, `orang_tua`) tetap menjadi dasar guard perizinan dan aplikasi.
+
+Aturan pengelolaan yang ditambahkan pada §4:
+
+| Tindakan | Aturan |
+| --- | --- |
+| Membuat/mengubah/mengakhiri/menonaktifkan penugasan | Hanya admin; POST + CSRF; transaksi; audit wajib (`penugasan.*`); alasan wajib untuk ubah/akhiri/nonaktif/aktif. |
+| Penugasan duplikat atau bertumpang tindih | **Ditolak** (409) dan dicatat `penugasan.tolak_tumpang_tindih`. |
+| Menghapus penugasan | **Tidak tersedia.** Akhiri (tanggal selesai) atau nonaktifkan. |
+| Mencabut role dasar | Riwayat penugasan **tidak** dihapus; capability-nya berhenti efektif. |
+| Menonaktifkan penugasan | Akun dan role dasar **tidak** berubah. |
+
+Matriks lengkap: `docs/fondasi-penugasan-v3-v6/matriks-capability.md`.
+Bukti: `tests/penugasan_integration.php`, `tests/penugasan_web_smoke.php`.
+
