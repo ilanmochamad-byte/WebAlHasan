@@ -402,6 +402,21 @@ try {
     $r = $admin->request('/admin/admin_pembimbing.php', ['_csrf' => $csrfLama, 'action' => 'save', 'pengurus_id' => (string) $pengurus, 'tahun_ajaran_id' => (string) $tahunAktif, 'target_type' => 'Kamar', 'kamar_id' => (string) $kamar, 'tanggal_mulai' => $hari(0), 'tanggal_selesai' => '']);
     $assert($r['status'] === 302 && $angka('SELECT COUNT(*) n FROM pembimbing_assignments WHERE pengurus_id = ' . $pengurus . ' AND kamar_id = ' . $kamar) === 1, 'FW-8d formulir lama admin_pembimbing.php masih menyimpan penugasan');
 
+    foreach (['murobi' => ['guru_id', $guru2], 'pembimbing' => ['pengurus_id', $pengurus]] as $jenisLama => [$kolom, $subjek]) {
+        $table = $jenisLama . '_assignments';
+        $legacyId = (int) $satu("SELECT id FROM $table WHERE $kolom = $subjek AND kamar_id = $kamar")['id'];
+        foreach (['deactivate', 'archive'] as $action) {
+            $admin->request('/admin/admin_' . $jenisLama . '.php', ['_csrf' => $csrfLama, 'action' => $action, 'id' => (string) $legacyId]);
+            $row = $satu("SELECT is_active, archived_at FROM $table WHERE id = $legacyId");
+            $assert((int) $row['is_active'] === 1 && $row['archived_at'] === null, "FW-8e $jenisLama $action tanpa alasan tidak mengubah data");
+        }
+        foreach (['deactivate' => 0, 'activate' => 1, 'archive' => 0, 'restore' => 1] as $action => $expected) {
+            $r = $admin->request('/admin/admin_' . $jenisLama . '.php', ['_csrf' => $csrfLama, 'action' => $action, 'id' => (string) $legacyId, 'alasan' => 'Alasan audit HTTP halaman lama']);
+            $row = $satu("SELECT is_active, archived_at FROM $table WHERE id = $legacyId");
+            $assert($r['status'] === 302 && (int) $row['is_active'] === $expected && ($row['archived_at'] !== null) === ($action === 'archive'), "FW-8f $jenisLama $action dengan alasan melalui pusat");
+        }
+    }
+
     // ------------------------------------------------------------- FW-9
     $akunHalaman = $admin->request('/admin/admin_akun.php?q=' . rawurlencode('fw.pengurus.' . $kecil));
     $assert($akunHalaman['status'] === 200 && str_contains($akunHalaman['body'], 'Role dasar dan penugasan adalah dua hal berbeda'), 'FW-9a halaman akun menjelaskan role dasar vs penugasan');

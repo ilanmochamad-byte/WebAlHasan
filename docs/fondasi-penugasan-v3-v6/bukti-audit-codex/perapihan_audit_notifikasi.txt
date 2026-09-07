@@ -1,0 +1,19 @@
+[lulus] B-1 client mobile: login sbx_murobi_a
+[lulus] B-1 client mobile: login sbx_murobi_b
+[lulus] B-1 client mobile: A-09 api.report membaca skema baseline
+[lulus] B-1 client mobile: A-09 api.reportOptions tetap kompatibel
+[lulus] B-1 client mobile: A-09 api.reportPrintHtml tetap kompatibel
+[lulus] B-1 client mobile: daftar dan pagination 20 baris
+[lulus] B-1 client mobile: halaman kedua berbeda dari pertama
+[lulus] B-1 client mobile: jumlah belum dibaca untuk lencana tersedia
+[lulus] B-1 client mobile: detail milik sendiri
+[lulus] B-1 client mobile: tandai satu dan jumlah turun tepat satu
+[lulus] B-1 client mobile: tandai satu idempoten
+[lulus] B-1 client mobile: filter sudah dibaca
+[lulus] B-1 client mobile: tandai semua dan keadaan kosong
+[lulus] B-1 client mobile: notifikasiDetail milik akun lain 403
+[lulus] B-1 client mobile: notifikasiTandaiDibaca milik akun lain 403
+[lulus] B-1 client mobile: ganti akun: notifikasi akun lain tidak ikut ditandai
+[lulus] B-1 client mobile: filter tak dikenal mengikuti fallback semua pada kontrak server
+[lulus] B-1 client mobile: 401 membersihkan token dan memanggil penangan sesi
+Total client mobile: 18, gagal: 0

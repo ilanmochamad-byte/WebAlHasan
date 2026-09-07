@@ -1,0 +1,20 @@
+[lulus] Kamar login sbx_admin
+[lulus] Kamar login sbx_guru_biasa
+[lulus] Kamar login sbx_pengurus_a
+[lulus] Kamar login sbx_ortu_a
+[lulus] Kamar 403 sbx_guru_biasa
+[lulus] Kamar 403 sbx_pengurus_a
+[lulus] Kamar 403 sbx_ortu_a
+[lulus] POST tanpa CSRF ditolak tanpa data baru
+[lulus] Kapasitas nol ditolak
+[lulus] Tambah kamar sah tersimpan
+[lulus] GET hapus ditolak dan ID kamar tetap ada
+[lulus] ID edit tidak valid ditolak tanpa mutasi
+[lulus] Edit sah memperbarui kapasitas
+[lulus] Tambah dan ubah kamar memiliki audit
+[lulus] Kamar lama tidak dihapus atau ditambah oleh serangan
+[lulus] Nama kamar di-escape, bukan HTML aktif
+[lulus] Validasi gagal mempertahankan isian nama/kapasitas dan form terlihat
+[lulus] Kamar memakai satu kerangka bersama, H1 tunggal, dan menu ponsel
+[lulus] Detail kamar tidak ada menghasilkan 404
+Total kamar: 19, gagal: 0

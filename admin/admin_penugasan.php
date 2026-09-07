@@ -186,11 +186,11 @@ if ($tabMapel) {
                 <?php if ($edit): ?><input type="hidden" name="id" value="<?= (int) $edit['id'] ?>"><?php endif; ?>
                 <div class="col-md-3"><label class="form-label" for="kode">Kode <span class="text-muted fw-normal">(opsional)</span></label>
                     <input class="form-control" id="kode" name="kode" maxlength="20" value="<?= ah_e($adaOld ? $old('kode') : (string) ($edit['kode'] ?? '')) ?>"><?= $err('kode') ?></div>
-                <div class="col-md-5"><label class="form-label" for="nama">Nama mata pelajaran</label>
+                <div class="col-md-4"><label class="form-label" for="nama">Nama mata pelajaran</label>
                     <input class="form-control" id="nama" name="nama" maxlength="100" required value="<?= ah_e($adaOld ? $old('nama') : (string) ($edit['nama'] ?? '')) ?>"><?= $err('nama') ?></div>
                 <div class="col-md-3"><label class="form-label" for="kategori">Kategori <span class="text-muted fw-normal">(opsional)</span></label>
                     <input class="form-control" id="kategori" name="kategori" maxlength="30" value="<?= ah_e($adaOld ? $old('kategori') : (string) ($edit['kategori'] ?? '')) ?>"><?= $err('kategori') ?></div>
-                <div class="col-md-1 d-flex align-items-end"><button class="btn btn-primary w-100">Simpan</button></div>
+                <div class="col-md-2 d-flex align-items-end"><button class="btn btn-primary w-100">Simpan</button></div>
                 <?php if ($edit): ?><div class="col-12"><a class="btn btn-sm btn-outline-secondary" href="admin_penugasan.php?jenis=mata_pelajaran">Batal ubah</a></div><?php endif; ?>
             </form>
         </div>
@@ -367,7 +367,7 @@ $subjekKolom = $definisi['subjek_kolom'];
 
             <div class="col-md-4"><label class="form-label" for="<?= ah_e($subjekKolom) ?>"><?= ah_e($definisi['label_subjek']) ?></label>
                 <?php if ($modeUbah): ?>
-                    <input class="form-control" value="<?= ah_e($edit['subjek_nama'] . ($edit['subjek_keterangan'] ? ' — ' . $edit['subjek_keterangan'] : '')) ?>" disabled>
+                    <input class="form-control" id="<?= ah_e($subjekKolom) ?>" value="<?= ah_e($edit['subjek_nama'] . ($edit['subjek_keterangan'] ? ' — ' . $edit['subjek_keterangan'] : '')) ?>" disabled>
                     <div class="form-text">Ganti orang berarti penugasan baru; akhiri penugasan ini lalu buat yang baru.</div>
                 <?php else: ?>
                     <select class="form-select" id="<?= ah_e($subjekKolom) ?>" name="<?= ah_e($subjekKolom) ?>" required>
@@ -381,7 +381,7 @@ $subjekKolom = $definisi['subjek_kolom'];
 
             <div class="col-md-3"><label class="form-label" for="tahun_ajaran_id">Tahun ajaran<?= $definisi['cakupan'] === PenugasanJenis::CAKUPAN_GELOMBANG ? ' penerimaan' : '' ?></label>
                 <?php if ($modeUbah): ?>
-                    <input class="form-control" value="<?= ah_e($edit['tahun'] . ' ' . $edit['semester']) ?>" disabled>
+                    <input class="form-control" id="tahun_ajaran_id" value="<?= ah_e($edit['tahun'] . ' ' . $edit['semester']) ?>" disabled>
                 <?php else: ?>
                     <select class="form-select" id="tahun_ajaran_id" name="tahun_ajaran_id" required>
                         <?php foreach ($opsi['tahun'] as $t): ?>
@@ -462,7 +462,7 @@ $efektif = static function (int $subjekId) use (&$efektifCache, $service, $jenis
             <caption class="ah-visually-hidden">Daftar penugasan <?= ah_e($definisi['label']) ?> beserta masa berlaku, cakupan, status, dan capability efektif</caption>
             <thead><tr>
                 <th scope="col"><?= ah_e($definisi['label_subjek']) ?></th><th scope="col">Tahun ajaran</th><th scope="col">Cakupan</th>
-                <th scope="col">Masa berlaku</th><th scope="col">Status</th><th scope="col">Capability efektif</th><th scope="col">Tindakan</th>
+                <th scope="col">Masa berlaku</th><th scope="col">Status</th><th scope="col">Capability efektif akun</th><th scope="col">Tindakan</th>
             </tr></thead>
             <tbody>
             <?php foreach ($daftar['rows'] as $r):

@@ -771,7 +771,13 @@ final class AlumniRepository
             $this->fail($errno, $error);
         }
         $result = $statement->get_result();
-        $rows = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+        if ($result === false) {
+            $errno = $statement->errno ?: $this->db->errno;
+            $error = $statement->error;
+            $statement->close();
+            $this->fail($errno, $error);
+        }
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
         $statement->close();
 
         return $rows;

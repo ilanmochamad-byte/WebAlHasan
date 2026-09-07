@@ -249,6 +249,13 @@ final class AccountRepository
     {
         $statement = $this->statement($sql, $params);
         $result = $statement->get_result();
+        if ($result === false) {
+            $errno = $statement->errno ?: $this->db->errno;
+            $statement->close();
+            throw new RuntimeException(in_array($errno, [1205, 1213], true)
+                ? 'Permintaan lain sedang mengubah akun. Muat ulang halaman lalu coba lagi.'
+                : 'Data akun tidak dapat dibaca.');
+        }
         $rows = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
         $statement->close();
 
@@ -259,6 +266,13 @@ final class AccountRepository
     {
         $statement = $this->statement($sql, $params);
         $result = $statement->get_result();
+        if ($result === false) {
+            $errno = $statement->errno ?: $this->db->errno;
+            $statement->close();
+            throw new RuntimeException(in_array($errno, [1205, 1213], true)
+                ? 'Permintaan lain sedang mengubah akun. Muat ulang halaman lalu coba lagi.'
+                : 'Data akun tidak dapat dibaca.');
+        }
         $row = $result ? ($result->fetch_assoc() ?: null) : null;
         $statement->close();
 
@@ -289,6 +303,9 @@ final class AccountRepository
         if (!$statement->execute()) {
             $errno = $statement->errno;
             $statement->close();
+            if (in_array($errno, [1205, 1213], true)) {
+                throw new RuntimeException('Permintaan lain sedang mengubah akun. Muat ulang halaman lalu coba lagi.');
+            }
             throw new RuntimeException($errno === 1062 ? 'Data tersebut sudah dipakai akun lain.' : 'Perubahan akun gagal disimpan.');
         }
 

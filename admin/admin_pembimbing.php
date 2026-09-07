@@ -17,12 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $service->create($_POST, (int) $currentUser['id']);
             master_flash('success', 'Penugasan pembimbing berhasil disimpan.');
         } else {
-            $service->setState((int) ($_POST['id'] ?? 0), $action, (int) $currentUser['id']);
+            $service->setState((int) ($_POST['id'] ?? 0), $action, (int) $currentUser['id'], (string) ($_POST['alasan'] ?? ''));
             master_flash('success', 'Status penugasan pembimbing diperbarui.');
         }
     } catch (IzinException $exception) {
         if (($action ?? '') === 'save') { ah_validation_keep($_POST, ['pengurus_id', 'tahun_ajaran_id', 'target_type', 'kamar_id', 'kelas_id', 'tanggal_mulai', 'tanggal_selesai'], $exception, '_pembimbing_old'); }
         master_flash('danger', $exception->getMessage());
+    } catch (RuntimeException $exception) {
+        master_flash('danger', 'Penugasan tidak dapat disimpan. Muat ulang halaman lalu coba lagi.');
     }
     master_redirect('admin_pembimbing.php');
 }
@@ -48,7 +50,7 @@ master_header('Penugasan Pembimbing', ['show_heading' => false]);
     </p>
     <p class="text-muted small mb-0 mt-2">
         Sejak fondasi penugasan V3–V6, penugasan pembimbing juga dapat dikelola (ubah, akhiri, capability efektif) dari
-        <a href="<?= master_e(app_url('/admin/admin_penugasan.php?jenis=pembimbing')) ?>">Pusat Penugasan</a>. Halaman ini tetap berfungsi seperti sebelumnya.
+        <a href="<?= master_e(app_url('/admin/admin_penugasan.php?jenis=pembimbing')) ?>">Pusat Penugasan</a>. Halaman ini memakai pengamanan Pusat Penugasan yang sama.
     </p>
 </div>
 
@@ -138,13 +140,17 @@ master_header('Penugasan Pembimbing', ['show_heading' => false]);
                         <div class="d-flex gap-1">
                             <form data-confirm="Ubah penugasan pembimbing ini? Cakupan santri yang dapat dikelola pengurus berubah pada pemeriksaan berikutnya; riwayat izin lama tetap tersimpan." method="post"><?= master_csrf() ?>
                                 <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
-                                <button class="btn btn-sm btn-outline-secondary" name="action" value="<?= (int) $row['is_active'] === 1 ? 'deactivate' : 'activate' ?>">
+                                <label class="small" for="status-pembimbing-<?= (int) $row['id'] ?>">Alasan status</label>
+                            <input class="form-control form-control-sm mb-1" id="status-pembimbing-<?= (int) $row['id'] ?>" name="alasan" required minlength="5" maxlength="500">
+                            <button class="btn btn-sm btn-outline-secondary" name="action" value="<?= (int) $row['is_active'] === 1 ? 'deactivate' : 'activate' ?>">
                                     <?= (int) $row['is_active'] === 1 ? 'Nonaktifkan' : 'Aktifkan' ?>
                                 </button>
                             </form>
                             <form data-confirm="Ubah penugasan pembimbing ini? Cakupan santri yang dapat dikelola pengurus berubah pada pemeriksaan berikutnya; riwayat izin lama tetap tersimpan." method="post"><?= master_csrf() ?>
                                 <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
-                                <button class="btn btn-sm btn-outline-danger" name="action" value="<?= $row['archived_at'] ? 'restore' : 'archive' ?>">
+                                <label class="small" for="arsip-pembimbing-<?= (int) $row['id'] ?>">Alasan arsip</label>
+                            <input class="form-control form-control-sm mb-1" id="arsip-pembimbing-<?= (int) $row['id'] ?>" name="alasan" required minlength="5" maxlength="500">
+                            <button class="btn btn-sm btn-outline-danger" name="action" value="<?= $row['archived_at'] ? 'restore' : 'archive' ?>">
                                     <?= $row['archived_at'] ? 'Pulihkan' : 'Arsipkan' ?>
                                 </button>
                             </form>

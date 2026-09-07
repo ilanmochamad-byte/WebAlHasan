@@ -1,0 +1,39 @@
+[lulus] A-07 login sbx_admin
+[lulus] A-07 login sbx_guru_biasa
+[lulus] A-07 login sbx_murobi_a
+[lulus] A-07 login sbx_pengurus_a
+[lulus] A-07 login sbx_ortu_a
+[lulus] A-07 layar guru scope santri = 30
+[lulus] A-07 CSV guru scope santri = 30
+[lulus] A-07 cetak guru scope santri = 30
+[lulus] A-07 layar guru scope guru = 1
+[lulus] A-07 CSV guru scope guru = 1
+[lulus] A-07 cetak guru scope guru = 1
+[lulus] A-07 layar guru scope gabungan = 31
+[lulus] A-07 CSV guru scope gabungan = 31
+[lulus] A-07 cetak guru scope gabungan = 31
+[lulus] A-07 detail pertemuan milik guru terbuka
+[lulus] A-07 detail guru lain ditolak 403 untuk murobi
+[lulus] A-07 admin_laporan_absensi.php teacher_id asing + scope guru ditolak
+[lulus] A-07 admin_laporan_absensi.php schedule_id asing tidak membocorkan peserta
+[lulus] A-07 export_laporan_absensi.php teacher_id asing + scope guru ditolak
+[lulus] A-07 export_laporan_absensi.php schedule_id asing tidak membocorkan peserta
+[lulus] A-07 laporan_absensi_cetak.php teacher_id asing + scope guru ditolak
+[lulus] A-07 laporan_absensi_cetak.php schedule_id asing tidak membocorkan peserta
+[lulus] A-07 admin_laporan_absensi.php tetap 403 untuk sbx_pengurus_a
+[lulus] A-07 admin_laporan_absensi.php tetap 403 untuk sbx_ortu_a
+[lulus] A-07 admin_laporan_absensi.php POST guru ditolak 405 tanpa mutasi
+[lulus] A-07 laporan_absensi_detail.php tetap 403 untuk sbx_pengurus_a
+[lulus] A-07 laporan_absensi_detail.php tetap 403 untuk sbx_ortu_a
+[lulus] A-07 laporan_absensi_detail.php POST guru ditolak 405 tanpa mutasi
+[lulus] A-07 export_laporan_absensi.php tetap 403 untuk sbx_pengurus_a
+[lulus] A-07 export_laporan_absensi.php tetap 403 untuk sbx_ortu_a
+[lulus] A-07 export_laporan_absensi.php POST guru ditolak 405 tanpa mutasi
+[lulus] A-07 laporan_absensi_cetak.php tetap 403 untuk sbx_pengurus_a
+[lulus] A-07 laporan_absensi_cetak.php tetap 403 untuk sbx_ortu_a
+[lulus] A-07 laporan_absensi_cetak.php POST guru ditolak 405 tanpa mutasi
+[lulus] A-07 admin_akun.php tetap khusus admin
+[lulus] A-07 admin_master_santri.php tetap khusus admin
+[lulus] A-07 get_wali_json.php tetap khusus admin
+[lulus] A-07 guard helper langsung 404
+Total laporan web: 38, gagal: 0

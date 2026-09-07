@@ -1,0 +1,168 @@
+Verifikasi migrasi 012 (fondasi penugasan V3–V6)
+Basis data : codex_penugasan_20260907_test
+Waktu      : 2026-09-07 20:24:48
+------------------------------------------------------------------------
+[lulus] Migrasi 012 tercatat pada schema_migrations
+[lulus] Kolom mata_pelajaran.kode tersedia
+[lulus] Kolom mata_pelajaran.nama tersedia
+[lulus] Kolom mata_pelajaran.kategori tersedia
+[lulus] Kolom mata_pelajaran.is_active tersedia
+[lulus] Kolom mata_pelajaran.archived_at tersedia
+[lulus] Kolom mata_pelajaran.created_by tersedia
+[lulus] Kolom mata_pelajaran.updated_by tersedia
+[lulus] Kolom mata_pelajaran.kode_unique_key tersedia
+[lulus] Kunci unik nama mata pelajaran terpasang
+[lulus] Kunci unik kode mata pelajaran terpasang
+[lulus] Kolom guru_mapel_assignments.guru_id tersedia
+[lulus] Kolom guru_mapel_assignments.mata_pelajaran_id tersedia
+[lulus] Kolom guru_mapel_assignments.kelas_id tersedia
+[lulus] Kolom guru_mapel_assignments.tahun_ajaran_id tersedia
+[lulus] Kolom guru_mapel_assignments.tanggal_mulai tersedia
+[lulus] Kolom guru_mapel_assignments.tanggal_selesai tersedia
+[lulus] Kolom guru_mapel_assignments.is_active tersedia
+[lulus] Kolom guru_mapel_assignments.catatan tersedia
+[lulus] Kolom guru_mapel_assignments.alasan_perubahan tersedia
+[lulus] Kolom guru_mapel_assignments.diakhiri_pada tersedia
+[lulus] Kolom guru_mapel_assignments.diakhiri_oleh tersedia
+[lulus] Kolom guru_mapel_assignments.alasan_pengakhiran tersedia
+[lulus] Kolom guru_mapel_assignments.created_by tersedia
+[lulus] Kolom guru_mapel_assignments.updated_by tersedia
+[lulus] Kolom guru_mapel_assignments.created_at tersedia
+[lulus] Kolom guru_mapel_assignments.updated_at tersedia
+[lulus] Kunci unik guru_mapel_assignment_unique terpasang
+[lulus] CHECK rentang tanggal guru_mapel_range_check terpasang
+[lulus] Kunci asing guru_mapel_tahun_fk terpasang
+[lulus] Kunci asing pelaku guru_mapel terpasang
+[lulus] Kunci asing subjek guru_mapel terpasang
+[lulus] Kolom pendidikan_assignments.pengurus_id tersedia
+[lulus] Kolom pendidikan_assignments.tahun_ajaran_id tersedia
+[lulus] Kolom pendidikan_assignments.jenjang tersedia
+[lulus] Kolom pendidikan_assignments.jenjang_key tersedia
+[lulus] Kolom pendidikan_assignments.tanggal_mulai tersedia
+[lulus] Kolom pendidikan_assignments.tanggal_selesai tersedia
+[lulus] Kolom pendidikan_assignments.is_active tersedia
+[lulus] Kolom pendidikan_assignments.catatan tersedia
+[lulus] Kolom pendidikan_assignments.alasan_perubahan tersedia
+[lulus] Kolom pendidikan_assignments.diakhiri_pada tersedia
+[lulus] Kolom pendidikan_assignments.diakhiri_oleh tersedia
+[lulus] Kolom pendidikan_assignments.alasan_pengakhiran tersedia
+[lulus] Kolom pendidikan_assignments.created_by tersedia
+[lulus] Kolom pendidikan_assignments.updated_by tersedia
+[lulus] Kolom pendidikan_assignments.created_at tersedia
+[lulus] Kolom pendidikan_assignments.updated_at tersedia
+[lulus] Kunci unik pendidikan_assignment_unique terpasang
+[lulus] CHECK rentang tanggal pendidikan_range_check terpasang
+[lulus] Kunci asing pendidikan_tahun_fk terpasang
+[lulus] Kunci asing pelaku pendidikan terpasang
+[lulus] Kunci asing subjek pendidikan terpasang
+[lulus] Kolom bendahara_bulanan_assignments.pengurus_id tersedia
+[lulus] Kolom bendahara_bulanan_assignments.tahun_ajaran_id tersedia
+[lulus] Kolom bendahara_bulanan_assignments.jenjang tersedia
+[lulus] Kolom bendahara_bulanan_assignments.jenjang_key tersedia
+[lulus] Kolom bendahara_bulanan_assignments.tanggal_mulai tersedia
+[lulus] Kolom bendahara_bulanan_assignments.tanggal_selesai tersedia
+[lulus] Kolom bendahara_bulanan_assignments.is_active tersedia
+[lulus] Kolom bendahara_bulanan_assignments.catatan tersedia
+[lulus] Kolom bendahara_bulanan_assignments.alasan_perubahan tersedia
+[lulus] Kolom bendahara_bulanan_assignments.diakhiri_pada tersedia
+[lulus] Kolom bendahara_bulanan_assignments.diakhiri_oleh tersedia
+[lulus] Kolom bendahara_bulanan_assignments.alasan_pengakhiran tersedia
+[lulus] Kolom bendahara_bulanan_assignments.created_by tersedia
+[lulus] Kolom bendahara_bulanan_assignments.updated_by tersedia
+[lulus] Kolom bendahara_bulanan_assignments.created_at tersedia
+[lulus] Kolom bendahara_bulanan_assignments.updated_at tersedia
+[lulus] Kunci unik bendahara_bulanan_assignment_unique terpasang
+[lulus] CHECK rentang tanggal bendahara_bulanan_range_check terpasang
+[lulus] Kunci asing bendahara_bulanan_tahun_fk terpasang
+[lulus] Kunci asing pelaku bendahara_bulanan terpasang
+[lulus] Kunci asing subjek bendahara_bulanan terpasang
+[lulus] Kolom panitia_psb_assignments.pengurus_id tersedia
+[lulus] Kolom panitia_psb_assignments.tahun_ajaran_id tersedia
+[lulus] Kolom panitia_psb_assignments.gelombang tersedia
+[lulus] Kolom panitia_psb_assignments.gelombang_key tersedia
+[lulus] Kolom panitia_psb_assignments.tanggal_mulai tersedia
+[lulus] Kolom panitia_psb_assignments.tanggal_selesai tersedia
+[lulus] Kolom panitia_psb_assignments.is_active tersedia
+[lulus] Kolom panitia_psb_assignments.catatan tersedia
+[lulus] Kolom panitia_psb_assignments.alasan_perubahan tersedia
+[lulus] Kolom panitia_psb_assignments.diakhiri_pada tersedia
+[lulus] Kolom panitia_psb_assignments.diakhiri_oleh tersedia
+[lulus] Kolom panitia_psb_assignments.alasan_pengakhiran tersedia
+[lulus] Kolom panitia_psb_assignments.created_by tersedia
+[lulus] Kolom panitia_psb_assignments.updated_by tersedia
+[lulus] Kolom panitia_psb_assignments.created_at tersedia
+[lulus] Kolom panitia_psb_assignments.updated_at tersedia
+[lulus] Kunci unik panitia_psb_assignment_unique terpasang
+[lulus] CHECK rentang tanggal panitia_psb_range_check terpasang
+[lulus] Kunci asing panitia_psb_tahun_fk terpasang
+[lulus] Kunci asing pelaku panitia_psb terpasang
+[lulus] Kunci asing subjek panitia_psb terpasang
+[lulus] Kolom bendahara_psb_assignments.pengurus_id tersedia
+[lulus] Kolom bendahara_psb_assignments.tahun_ajaran_id tersedia
+[lulus] Kolom bendahara_psb_assignments.gelombang tersedia
+[lulus] Kolom bendahara_psb_assignments.gelombang_key tersedia
+[lulus] Kolom bendahara_psb_assignments.tanggal_mulai tersedia
+[lulus] Kolom bendahara_psb_assignments.tanggal_selesai tersedia
+[lulus] Kolom bendahara_psb_assignments.is_active tersedia
+[lulus] Kolom bendahara_psb_assignments.catatan tersedia
+[lulus] Kolom bendahara_psb_assignments.alasan_perubahan tersedia
+[lulus] Kolom bendahara_psb_assignments.diakhiri_pada tersedia
+[lulus] Kolom bendahara_psb_assignments.diakhiri_oleh tersedia
+[lulus] Kolom bendahara_psb_assignments.alasan_pengakhiran tersedia
+[lulus] Kolom bendahara_psb_assignments.created_by tersedia
+[lulus] Kolom bendahara_psb_assignments.updated_by tersedia
+[lulus] Kolom bendahara_psb_assignments.created_at tersedia
+[lulus] Kolom bendahara_psb_assignments.updated_at tersedia
+[lulus] Kunci unik bendahara_psb_assignment_unique terpasang
+[lulus] CHECK rentang tanggal bendahara_psb_range_check terpasang
+[lulus] Kunci asing bendahara_psb_tahun_fk terpasang
+[lulus] Kunci asing pelaku bendahara_psb terpasang
+[lulus] Kunci asing subjek bendahara_psb terpasang
+[lulus] Kunci asing mata pelajaran dan kelas pada guru_mapel terpasang
+[lulus] Kolom murobi_assignments.catatan tersedia
+[lulus] Kolom murobi_assignments.updated_by tersedia
+[lulus] Kolom murobi_assignments.diakhiri_pada tersedia
+[lulus] Kolom murobi_assignments.diakhiri_oleh tersedia
+[lulus] Kolom murobi_assignments.alasan_pengakhiran tersedia
+[lulus] Kunci asing jejak murobi terpasang
+[lulus] Kolom lama murobi_assignments.target_type tetap ada
+[lulus] Kolom lama murobi_assignments.kamar_id tetap ada
+[lulus] Kolom lama murobi_assignments.kelas_id tetap ada
+[lulus] Kolom lama murobi_assignments.tanggal_mulai tetap ada
+[lulus] Kolom lama murobi_assignments.tanggal_selesai tetap ada
+[lulus] Kolom lama murobi_assignments.is_active tetap ada
+[lulus] Kolom lama murobi_assignments.archived_at tetap ada
+[lulus] Kolom lama murobi_assignments.created_by tetap ada
+[lulus] Kolom lama murobi_assignments.target_key tetap ada
+[lulus] Kunci unik lama murobi_assignment_unique tetap ada
+[lulus] Kolom pembimbing_assignments.catatan tersedia
+[lulus] Kolom pembimbing_assignments.updated_by tersedia
+[lulus] Kolom pembimbing_assignments.diakhiri_pada tersedia
+[lulus] Kolom pembimbing_assignments.diakhiri_oleh tersedia
+[lulus] Kolom pembimbing_assignments.alasan_pengakhiran tersedia
+[lulus] Kunci asing jejak pembimbing terpasang
+[lulus] Kolom lama pembimbing_assignments.target_type tetap ada
+[lulus] Kolom lama pembimbing_assignments.kamar_id tetap ada
+[lulus] Kolom lama pembimbing_assignments.kelas_id tetap ada
+[lulus] Kolom lama pembimbing_assignments.tanggal_mulai tetap ada
+[lulus] Kolom lama pembimbing_assignments.tanggal_selesai tetap ada
+[lulus] Kolom lama pembimbing_assignments.is_active tetap ada
+[lulus] Kolom lama pembimbing_assignments.archived_at tetap ada
+[lulus] Kolom lama pembimbing_assignments.created_by tetap ada
+[lulus] Kolom lama pembimbing_assignments.target_key tetap ada
+[lulus] Kunci unik lama pembimbing_assignment_unique tetap ada
+Jumlah baris murobi_assignments     : 3
+Jumlah baris pembimbing_assignments : 3
+[lulus] Baris murobi tidak berkurang (sebelum 3, sesudah 3)
+[lulus] Baris pembimbing tidak berkurang (sebelum 3, sesudah 3)
+  guru_mapel_assignments          0 baris (kosong: migrasi tidak mengisi apa pun)
+  pendidikan_assignments          0 baris (kosong: migrasi tidak mengisi apa pun)
+  bendahara_bulanan_assignments   0 baris (kosong: migrasi tidak mengisi apa pun)
+  panitia_psb_assignments         0 baris (kosong: migrasi tidak mengisi apa pun)
+  bendahara_psb_assignments       0 baris (kosong: migrasi tidak mengisi apa pun)
+  mata_pelajaran                  2 baris
+[lulus] Audit penugasan dapat dibaca
+[lulus] Tabel roles tetap hanya berisi empat role dasar
+[lulus] Resolver capability berjalan: admin memperoleh seluruh 21 capability pengawasan
+------------------------------------------------------------------------
+SELURUH PEMERIKSAAN LULUS.

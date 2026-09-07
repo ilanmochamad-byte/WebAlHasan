@@ -32,12 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $service->saveMurobi($_POST, (int) $currentUser['id']);
             master_flash('success', 'Penugasan murobi berhasil disimpan. Penugasan ini tidak membuat akun login.');
         } else {
-            $service->setMurobiState((int) ($_POST['id'] ?? 0), $action);
+            $service->setMurobiState((int) ($_POST['id'] ?? 0), $action, (int) $currentUser['id'], (string) ($_POST['alasan'] ?? ''));
             master_flash('success', 'Status penugasan murobi diperbarui tanpa menghapus riwayat.');
         }
     } catch (MasterDataException $exception) {
         if (($action ?? '') === 'save') { ah_validation_keep($_POST, ['guru_id', 'tahun_ajaran_id', 'target_type', 'kamar_id', 'kelas_id', 'tanggal_mulai', 'tanggal_selesai'], $exception, '_murobi_old'); }
         master_flash('danger', $exception->getMessage());
+    } catch (RuntimeException $exception) {
+        master_flash('danger', 'Penugasan tidak dapat disimpan. Muat ulang halaman lalu coba lagi.');
     }
     master_redirect('admin_murobi.php');
 }
@@ -73,7 +75,7 @@ ah_note(
         . '<li>Guru <strong>tanpa jadwal mengajar</strong> tetap dapat ditugaskan sebagai murobi.</li>'
         . '<li>Menonaktifkan atau mengarsipkan penugasan langsung mencabut kemampuan keputusan pada pemeriksaan server berikutnya.</li>'
         . '<li>Sejak fondasi penugasan V3–V6, penugasan murobi juga dapat dikelola (ubah, akhiri, capability efektif) dari '
-        . '<a href="' . ah_e(app_url('/admin/admin_penugasan.php?jenis=murobi')) . '">Pusat Penugasan</a>. Halaman ini tetap berfungsi seperti sebelumnya.</li>'
+        . '<a href="' . ah_e(app_url('/admin/admin_penugasan.php?jenis=murobi')) . '">Pusat Penugasan</a>. Halaman ini memakai pengamanan Pusat Penugasan yang sama.</li>'
         . '</ul>'
 );
 ?>
@@ -138,9 +140,13 @@ ah_note(
                     <td><div class="ah-actions">
                         <form method="post" onsubmit="return confirm('Ubah status penugasan ini? Bila dinonaktifkan, kemampuan approval izin guru tersebut dicabut pada pemeriksaan server berikutnya.')">
                             <?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $r['id'] ?>">
+                            <label class="small" for="status-murobi-<?= (int) $r['id'] ?>">Alasan status</label>
+                            <input class="form-control form-control-sm mb-1" id="status-murobi-<?= (int) $r['id'] ?>" name="alasan" required minlength="5" maxlength="500">
                             <button class="btn btn-sm btn-outline-secondary" name="action" value="<?= (int) $r['is_active'] === 1 ? 'deactivate' : 'activate' ?>"><?= (int) $r['is_active'] === 1 ? 'Nonaktifkan' : 'Aktifkan' ?></button></form>
                         <form method="post" onsubmit="return confirm('Ubah status arsip penugasan ini? Kemampuan murobi mengikuti penugasan aktif; riwayat pengajuan dan keputusan lama TIDAK dihapus.')">
                             <?= master_csrf() ?><input type="hidden" name="id" value="<?= (int) $r['id'] ?>">
+                            <label class="small" for="arsip-murobi-<?= (int) $r['id'] ?>">Alasan arsip</label>
+                            <input class="form-control form-control-sm mb-1" id="arsip-murobi-<?= (int) $r['id'] ?>" name="alasan" required minlength="5" maxlength="500">
                             <button class="btn btn-sm btn-outline-danger" name="action" value="<?= $r['archived_at'] ? 'restore' : 'archive' ?>"><?= $r['archived_at'] ? 'Pulihkan' : 'Arsipkan' ?></button></form>
                     </div></td>
                 </tr>

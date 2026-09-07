@@ -55,8 +55,12 @@ Aturan:
   seluruh field lama sebelum dan sesudah penugasan);
 - field ini **bukan** menu dan **bukan** mode; aplikasi tidak boleh membangun
   menu dari `list` sampai modul V3–V6 benar-benar tersedia;
-- bila skema 012 belum terpasang pada server, field tetap ada dengan
-  `list = []` dan profil lama terlayani normal.
+- kegagalan pembacaan penugasan tidak memberikan hak dari hasil kueri yang
+  gagal. Katalog pengawasan admin dan penugasan lama yang masih dapat dibaca
+  dapat tetap menghasilkan capability; jangan mengasumsikan seluruh `list`
+  kosong jika skema 012 belum terpasang. Deploy fondasi tetap memerlukan 012.
+  Lima tes kegagalan resolver memakai driver sintetis; bukan uji server produksi
+  dengan migrasi hilang.
 
 ## 3. Yang harus dilakukan modul V3–V6 kelak (bukan sekarang)
 

@@ -850,46 +850,26 @@ final class MasterDataService
 
     public function saveMurobi(array $input, int $actorId): int
     {
-        $type = Normalizer::text($input['target_type'] ?? '');
-        $targetId = $type === 'Kamar' ? (int) ($input['kamar_id'] ?? 0) : (int) ($input['kelas_id'] ?? 0);
-        $data = [
-            'guru_id' => (int) ($input['guru_id'] ?? 0),
-            'tahun_ajaran_id' => (int) ($input['tahun_ajaran_id'] ?? 0),
-            'target_type' => $type,
-            'kamar_id' => $type === 'Kamar' ? $targetId : null,
-            'kelas_id' => $type === 'Kelas' ? $targetId : null,
-            'tanggal_mulai' => Normalizer::date($input['tanggal_mulai'] ?? '', true),
-            'tanggal_selesai' => Normalizer::date($input['tanggal_selesai'] ?? ''),
-        ];
-        $errors = [];
-        if ($this->repository->guruFind($data['guru_id']) === null) {
-            $errors[] = 'Guru tidak ditemukan.';
+        try {
+            return $this->penugasan()->buat('murobi', $input, $actorId);
+        } catch (\App\Penugasan\PenugasanException $e) {
+            throw new MasterDataException($e->getMessage(), $e->errors());
         }
-        if ($this->repository->tahunFind($data['tahun_ajaran_id']) === null) {
-            $errors[] = 'Tahun ajaran tidak ditemukan.';
-        }
-        if (!in_array($type, ['Kamar', 'Kelas'], true) || $targetId < 1) {
-            $errors[] = 'Kelompok binaan harus berupa kamar atau kelas yang valid.';
-        } elseif ($type === 'Kamar' && $this->repository->kamarFind($targetId) === null) {
-            $errors[] = 'Kamar kelompok binaan tidak ditemukan.';
-        } elseif ($type === 'Kelas' && $this->repository->kelasFind($targetId) === null) {
-            $errors[] = 'Kelas kelompok binaan tidak ditemukan.';
-        }
-        if ($data['tanggal_mulai'] === '') {
-            $errors[] = 'Tanggal mulai tidak valid.';
-        }
-        if ($data['tanggal_selesai'] === '' || ($data['tanggal_selesai'] !== null && $data['tanggal_selesai'] < $data['tanggal_mulai'])) {
-            $errors[] = 'Tanggal selesai tidak valid atau lebih awal dari tanggal mulai.';
-        }
-        $this->reject($errors);
-        $id = $this->repository->murobiCreate($data, $actorId);
-        $this->audit->log('master.relation.create', 'murobi_assignment', $id, null, $data);
-        return $id;
     }
 
-    public function setMurobiState(int $id, string $action): void
+    public function setMurobiState(int $id, string $action, ?int $actorId = null, string $alasan = ''): void
     {
-        $this->setState('murobi_assignment', $id, $action, fn () => $this->repository->murobiFind($id), fn (bool $active, bool $archive) => $this->repository->murobiSetState($id, $active, $archive));
+        try {
+            $this->penugasan()->statusLama('murobi', $id, $action, $actorId ?? (int) ($_SESSION['user_id'] ?? 0), $alasan);
+        } catch (\App\Penugasan\PenugasanException $e) {
+            throw new MasterDataException($e->getMessage(), $e->errors());
+        }
+    }
+
+    private function penugasan(): \App\Penugasan\PenugasanService
+    {
+        $db = $this->repository->db();
+        return new \App\Penugasan\PenugasanService(new \App\Penugasan\PenugasanRepository($db), $this->audit, new \App\Auth\Capabilities($db));
     }
 
     public function guruOptions(): array { return $this->repository->guruOptions(); }

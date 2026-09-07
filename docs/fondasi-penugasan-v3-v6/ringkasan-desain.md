@@ -185,8 +185,9 @@ menulis audit **membatalkan** mutasi (`auditRequired`).
 
 Isi audit: pelaku (`actor_user_id`), waktu, jenis, subjek, nilai sebelum/sesudah
 (kolom bisnis saja), alasan, IP, dan user agent — tanpa password, token, atau
-credential. Aksi audit halaman lama (`master.relation.create`,
-`pembimbing_assignment_created`, `…_state_changed`) tetap seperti sebelumnya.
+credential. Pembuatan murobi/pembimbing mempertahankan audit `master.relation.create` /
+`pembimbing_assignment_created` di transaksi pusat. Status memakai audit
+`penugasan.*`, termasuk `penugasan.arsipkan` / `penugasan.pulihkan`.
 
 ## 8. Keamanan
 
@@ -210,7 +211,14 @@ credential. Aksi audit halaman lama (`master.relation.create`,
 | --- | --- | --- |
 | Tabel per domain | satu tabel `penugasan` generik | kunci asing nyata dan kunci unik per bentuk cakupan |
 | Perluas `Capabilities` dengan metode `feature*` | kelas resolver kedua | satu sistem otorisasi; `forUser()` tetap dipakai guard V2 |
-| Halaman murobi/pembimbing lama tetap hidup dengan layanan lamanya | mengalihkan ke pusat | fungsi lama tetap dipakai pengujian dan admin; tidak ada perubahan mendadak |
+| URL/form lama tetap hidup, layanan lama meneruskan seluruh mutasi ke PenugasanService | membiarkan dua aturan mutasi | audit independen membuktikan jalur lama dapat melewati overlap; satu gerbang wajib, termasuk arsip/pulihkan |
 | Kolom jejak ditambahkan ke tabel lama | tabel jejak terpisah | ubah/akhiri dari pusat memerlukan pelaku dan alasan pada baris yang sama |
 | Role admin dibaca ulang di resolver | mempercayai `$user['roles']` | menutup celah manipulasi sesi/respons klien |
 | Gelombang sebagai label opsional | tabel master gelombang | master belum ada; V6 yang menentukan bentuknya |
+
+## Koreksi audit independen
+
+`akhiri` juga memeriksa benturan saat tanggal selesai diperpanjang. Aktivasi
+serta pemulihan arsip menilai ulang master/cakupan/tanggal. Semua mutasi URL
+lama memakai penguncian subjek, transaksi, audit, dan pemeriksaan benturan
+pusat; bukan lagi dua implementasi aturan. Lihat acceptance-status A1–A7.

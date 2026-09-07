@@ -1,161 +1,253 @@
-# Hasil pengujian: Fondasi Penugasan V3–V6
+# Hasil pengujian audit independen fondasi V3–V6
 
-Keputusan pengguna 7 September 2026. Branch `feat/fondasi-penugasan-v3-v6`.
+Audit Codex, 7 September 2026. Branch `codex/audit-fondasi-penugasan-v3-v6`
+dari merge `7edb6461621763ae1b4ffc3dbb54f68615fa3521`; implementasi yang
+diaudit `c6ed53bc15c2f26cb8cf6a570e9e665cabf60d17`, setelah
+`1653ac4392913258aedd44259fcc0d85036a5b44`.
 
-Dokumen ini melaporkan **apa yang benar-benar dijalankan**, bukan apa yang
-seharusnya lulus. Empat label dipakai secara ketat:
+**BELUM LULUS penerimaan penuh.** Pengujian otomatis lokal lulus. Migrasi pada
+salinan produksi MySQL cPanel dan smoke Safari/perangkat terpasang belum
+terbukti. Lihat [status penerimaan dan temuan](acceptance-status.md).
+Dokumen ini menggantikan laporan implementator dengan hasil yang benar-benar
+dijalankan auditor; laporan lama masih tersedia dalam riwayat Git.
 
-| Label | Arti |
+## Lingkungan dan batas bukti
+
+- PHP 8.4.14 CLI, MariaDB 12.3.2 lokal, database baru
+  `codex_penugasan_20260907_test`. Semua pengujian DB menggunakan nama `_test`.
+- Skema dasar berasal dari 60 pernyataan CREATE/ALTER SQL warisan repository.
+  Tidak mengimpor INSERT atau data produksi. Seluruh migrasi 001–012 diterapkan,
+  kemudian fixture sandbox fiktif serta 1.000 data performa disiapkan.
+- Migrasi 001 memerlukan tabel dasar; rangkaian 001–012 bukan bootstrap pada
+  database tanpa tabel. Yang lulus adalah migrasi di atas **skema dasar kosong**.
+- Mobile tersedia di `/Users/ilanmochamad/alhasanApps`, HEAD
+  `bad6b352c5c032846fbf971d820194fdd8c6bc49`; tidak diubah.
+- Server HTTP hanya localhost, Chromium headless dengan aset lokal; permintaan
+  eksternal browser diblokir. Tidak ada operasi pada produksi, merge, atau deploy.
+- Tes integrasi menghapus fixture mereka; fixture sandbox/perapihan tetap ada
+  dalam DB uji. Browser mengarsipkan mapel sintetis yang dibuat. Jangan mengklaim
+  seluruh DB kembali kosong setelah semua tes.
+
+## Paket wajib dan pengujian koreksi
+
+| Perintah | Hasil sebenarnya |
 | --- | --- |
-| **LULUS** | benar-benar dijalankan di lingkungan pengembangan, hasilnya hijau |
-| **BELUM DIJALANKAN** | tidak dijalankan sama sekali; tidak ada bukti |
-| **MEMERLUKAN UJI MYSQL** | hanya dapat dibuktikan pada MySQL/MariaDB produksi atau salinannya |
-| **MEMERLUKAN SMOKE TEST** | hanya dapat dibuktikan manusia pada peramban/perangkat sungguhan |
+| `php tests/penugasan_static.php` | LULUS, 281 |
+| `php tests/penugasan_integration.php` | LULUS, 161 |
+| `php tests/penugasan_concurrency.php` | LULUS, 52; proses PHP dan koneksi InnoDB terpisah |
+| `php tests/penugasan_web_smoke.php` | LULUS, 85; HTTP, CSRF, role, IDOR, XSS, profil dan halaman lama |
+| `php bin/penugasan_preflight.php` | LULUS, exit 0, tidak ada penghalang lokal |
+| `php bin/penugasan_verify.php --murobi=3 --pembimbing=3` | LULUS, 154 termasuk dua perbandingan jumlah eksplisit |
+| `php tests/penugasan_resolver_failure.php` | LULUS, 5; driver sintetis `get_result=false`, bukan koneksi nyata |
+| `bash tests/penugasan_runner.sh` | LULUS, 3; perintah stub, membuktikan tes dilewati tidak dianggap lulus penuh |
+| `bash bin/penugasan_run_all_tests.sh` dengan `MOBILE_APP_ROOT` | LULUS, exit 0; 43 suite regresi (3.421 pemeriksaan) dan 6 suite paket (587 pemeriksaan); tanpa skip |
+| `PENUGASAN_RUN_MIGRATION=1 php tests/penugasan_migration.php` | LULUS, 58; drill terpisah, tabel baru fondasi harus kosong |
 
-## 1. Lingkungan pengujian
+**741 pemeriksaan paket** = 281 + 161 + 52 + 85 + 5 + 3 + 154.
+Preflight, 58 drill migrasi, browser, regresi V1/V2, dan mobile tidak dimasukkan
+ke angka 741. Penjumlahan ini menunjukkan jumlah assertion, bukan persentase
+penerimaan produk.
 
-| Hal | Nilai |
-| --- | --- |
-| PHP | 8.4.14 (CLI, Homebrew, macOS) |
-| Basis data | MariaDB 12.3.2 lokal, `binlog_format = MIXED` |
-| Database uji | `webalhasan_phase4_codex_20260823_test`, migrasi 001–012 diterapkan; fixture sandbox `sbx_*` |
-| Aplikasi mobile | **tidak tersedia** di mesin ini (`alhasanApps` tidak ter-checkout) |
-| Composer | tersedia; proyek tidak memakai dependensi Composer |
+Klaim 681 implementator diverifikasi: empat suite awal lulus 527
+(281 + 161 + 12 + 73), ditambah 154 verifikasi eksplisit. Runner awal memakai
+verify tanpa argumen jumlah, sehingga hanya 152 assertion verify di log runner;
+lihat log verify eksplisit terpisah untuk dua pemeriksaan tambahan. Kelulusan
+pengujian awal tidak mendeteksi celah yang ditemukan audit ini.
 
-Seluruh fixture pengujian memakai data fiktif berakhiran acak dan dihapus
-kembali pada blok `finally` (dibuktikan: jumlah baris `users`, `guru`,
-`pengurus`, `kelas`, `kamar`, `tahun_ajaran`, `mata_pelajaran`, dan tabel
-penugasan kembali ke nilai semula setelah tiap rangkaian). Tidak ada data
-produksi yang disentuh dan tidak ada permintaan jaringan keluar.
+Bukti: [baseline](bukti-audit-codex/baseline.txt),
+[runner akhir](bukti-audit-codex/final-suite.txt),
+[verify eksplisit](bukti-audit-codex/verify-final.txt).
+Runner hanya mencetak ringkasan suite yang lulus; hitungan tidak dikarang dari
+inspeksi kode. Tidak ada kegagalan/skip tersisa pada run akhir.
 
-## 2. Ringkasan paket ini
+## Konkurensi dan koreksi yang dibuktikan
 
-| Rangkaian | Status | Pemeriksaan |
+KP-1…5 menguji pembuatan identik/overlap, dua pengaktifan bentrok, audit
+transaksi yang kalah, serta beberapa cakupan sah. Tambahan KA-1…12 membuktikan:
+
+- Muatan lama murobi/pembimbing melawan pusat: tepat satu penugasan untuk
+  periode bentrok; tanggal terbalik ditolak. Aktif/nonaktif/arsip/pulihkan tanpa
+  alasan ditolak tanpa mutasi; formulir HTTP dengan alasan juga diuji.
+- Pulihkan arsip yang bertabrakan ditolak dan arsip tetap utuh; aktivasi lama
+  melawan pusat hanya menghasilkan satu penugasan aktif.
+- Dua baris berubah ke cakupan yang sama, atau tanggal yang menjadi beririsan:
+  tepat satu operasi berhasil. `akhiri` tidak dapat memperpanjang ke periode lain.
+- Dua pembuatan berbeda saat trigger audit sengaja gagal: kedua transaksi batal,
+  tanpa baris/audit bisnis parsial; trigger dibuang pada cleanup.
+- Lock timeout 1205 dan deadlock 1213 nyata dipaksa pada repository pusat,
+  murobi, pembimbing, akun, penempatan, alumni: gagal baca tidak menjadi data
+  kosong; konflik memakai pesan muat ulang, bukan pesan MySQL mentah.
+- Cakupan kamar tidak memberikan hak jenjang; aktivasi setelah master nonaktif
+  ditolak. Kegagalan resolver sintetis tidak memberikan hak/fatal boolean.
+
+Tes layanan lama V2 disesuaikan dari pencarian implementasi lama menjadi
+pemeriksaan delegasi, validasi master/target, dan audit di pusat. Kriteria
+bisnis tidak dihapus. Seluruh penolakan benturan domain tetap diaudit setelah
+rollback; kegagalan infrastruktur tidak disamarkan sebagai penolakan bisnis.
+
+## Regresi V1/V2 dan paket sebelumnya
+
+Dijalankan oleh rantai runner lengkap, termasuk seluruh suite resmi V1/V2,
+perapihan, kredensial, penempatan, dan alumni:
+
+| Suite | Status | Pemeriksaan |
 | --- | --- | --- |
-| `tests/penugasan_static.php` | **LULUS** | 281 |
-| `tests/penugasan_integration.php` | **LULUS** | 161 |
-| `tests/penugasan_concurrency.php` (ditambahkan saat audit, §8) | **LULUS** | 12 |
-| `tests/penugasan_web_smoke.php` | **LULUS** | 73 |
-| `bin/penugasan_preflight.php` | **LULUS** (exit 0, tidak ada penghalang) | 6 bagian |
-| `bin/penugasan_verify.php --murobi=3 --pembimbing=3` | **LULUS** (exit 0) | 154 |
-| Migrasi 012: naik → rollback → naik → naik lagi (idempoten) | **LULUS** | lihat §6 |
-| `bash bin/penugasan_run_all_tests.sh` (run kedua, setelah audit) | **LULUS** untuk bagian B–D | 527 pemeriksaan paket |
+| `tests/phase1_static.php` | LULUS | 75 |
+| `tests/phase2_static.php` | LULUS | 46 |
+| `tests/phase3_static.php` | LULUS | 35 |
+| `tests/phase4_static.php` | LULUS | 38 |
+| `tests/phase5_static.php` | LULUS | 44 |
+| `tests/v2_phase1_static.php` | LULUS | 127 |
+| `tests/v2_phase2_static.php` | LULUS | 174 |
+| `tests/v2_phase3_static.php` | LULUS | 147 |
+| `tests/v2_phase4_static.php` | LULUS | 289 |
+| `tests/v2_phase5_static.php` | LULUS | 272 |
+| `tests/v2_phase5_cetak_pdf.php` | LULUS | 76 |
+| `tests/phase2_integration.php` | LULUS | 12 |
+| `tests/phase3_integration.php` | LULUS | 10 |
+| `tests/phase4_integration.php` | LULUS | 14 |
+| `tests/phase5_integration.php` | LULUS | 20 |
+| `tests/v2_phase1_integration.php` | LULUS | 39 |
+| `tests/v2_phase2_integration.php` | LULUS | 94 |
+| `tests/v2_phase2_navigasi_murobi.php` | LULUS | 40 |
+| `tests/v2_phase2_web_smoke.php` | LULUS | 36 |
+| `tests/v2_phase3_api_contract.php` | LULUS | 116 |
+| `tests/v2_phase4_integration.php` | LULUS | 122 |
+| `tests/v2_phase4_api_contract.php` | LULUS | 92 |
+| `tests/v2_phase4_concurrency.php` | LULUS | 20 |
+| `tests/v2_phase4_web_smoke.php` | LULUS | 46 |
+| `tests/v2_phase5_integration.php` | LULUS | 143 |
+| `tests/v2_phase5_api_contract.php` | LULUS | 149 |
+| `tests/v2_phase5_web_smoke.php` | LULUS | 79 |
+| `tests/v2_phase5_performance.php` | LULUS | 12 |
+| `tests/perapihan_static.php` | LULUS | 132 |
+| `tests/perapihan_integration.php` | LULUS | 53 |
+| `tests/perapihan_akun_concurrency.php` | LULUS | 7 |
+| `tests/perapihan_web_smoke.php` | LULUS | 56 |
+| `tests/kredensial_static.php` | LULUS | 105 |
+| `tests/kredensial_integration.php` | LULUS | 59 |
+| `tests/kredensial_web_smoke.php` | LULUS | 51 |
+| `tests/penempatan_static.php` | LULUS | 138 |
+| `tests/penempatan_integration.php` | LULUS | 62 |
+| `tests/penempatan_concurrency.php` | LULUS | 10 |
+| `tests/penempatan_web_smoke.php` | LULUS | 47 |
+| `tests/alumni_static.php` | LULUS | 180 |
+| `tests/alumni_integration.php` | LULUS | 80 |
+| `tests/alumni_concurrency.php` | LULUS | 13 |
+| `tests/alumni_web_smoke.php` | LULUS | 61 |
 
-**Total pemeriksaan paket ini yang lulus: 681** (281 + 161 + 12 + 73 + 154).
+Tidak ada lagi kegagalan akibat repository mobile tidak tersedia. Jumlah
+beberapa suite berbeda dari laporan implementator karena audit berangkat dari
+merge terbaru dan repository mobile yang benar-benar tersedia; tabel di atas
+mengikuti output run akhir, bukan angka lama.
 
-## 3. Pemetaan ke 24 pengujian wajib
+Tambahan audit perapihan yang juga dijalankan (852 pemeriksaan, di luar runner):
 
-| # | Pengujian wajib | Status | Bukti |
-| --- | --- | --- | --- |
-| 1 | Role dasar lama tetap berfungsi | **LULUS** | FI-1 (8), FS-2/FS-3, verify (`roles` = 4) |
-| 2 | Murobi tetap capability dari penugasan guru | **LULUS** | FI-2 (4), FI-8 (nonaktif/aktif murobi dari pusat) |
-| 3 | Pembimbing tetap capability dari penugasan pengurus | **LULUS** | FI-3 (4), `PembimbingService::activeForPengurus` membaca penugasan dari pusat |
-| 4 | Admin dapat membuat setiap jenis penugasan baru | **LULUS** | FI-4 (12), FW-5 (tujuh jenis + master mata pelajaran lewat formulir) |
-| 5 | Non-admin tidak dapat mengelola penugasan | **LULUS** | FI-5 (10: guru, pengurus, orang tua, anonim; buat/ubah/akhiri/nonaktif/mapel), FW-2 (403 halaman + POST tanpa perubahan) |
-| 6 | Penugasan belum mulai tidak menghasilkan capability | **LULUS** | FI-6 (2) |
-| 7 | Penugasan aktif menghasilkan capability yang benar | **LULUS** | FI-7 (19), FW-5c |
-| 8 | Penugasan berakhir tidak lagi menghasilkan capability | **LULUS** | FI-8 (11: lampau, akhiri, nonaktif, aktifkan kembali) |
-| 9 | Pengurus dapat memiliki beberapa penugasan sekaligus | **LULUS** | FI-7/9 (13 capability dari 4 penugasan), FW-10i |
-| 10 | Panitia PSB tidak otomatis bendahara PSB | **LULUS** | FI-10, FW-5l |
-| 11 | Bendahara PSB tidak otomatis panitia PSB | **LULUS** | FI-11 |
-| 12 | Guru hanya memperoleh capability mapel pada kelas/semester/tahun yang ditugaskan | **LULUS** | FI-12 (11) |
-| 13 | Penugasan duplikat ditolak | **LULUS** | FI-13 (5, termasuk audit), FW-6b |
-| 14 | Penugasan bertumpang tindih tidak sah ditolak | **LULUS** | FI-14 (10: 6 ditolak, 3 diterima, ubah+aktifkan), FW-6a, KP-1/KP-3 (permintaan bersamaan nyata) |
-| 15 | Perubahan penugasan dan audit transaksional | **LULUS** | FI-15 (5: tabel audit di-rename → mutasi batal penuh; audit sukses; delta capability), KP-4 (transaksi yang kalah tidak meninggalkan audit pembuatan) |
-| 16 | IDOR dan manipulasi parameter ditolak | **LULUS** | FI-16 (14), FW-13 (2) |
-| 17 | CSRF hilang/tidak valid ditolak | **LULUS** | FW-3 (2: 419 tanpa perubahan) |
-| 18 | Halaman lama murobi/pembimbing tetap berfungsi | **LULUS** | FW-8 (5: GET 200 + tautan, POST lama menyimpan, tampil di pusat); regresi `perapihan_audit_form_feedback`/`pagination` |
-| 19 | Endpoint profil lama tetap kompatibel | **LULUS** | FI-19 (5), FW-10 (13) |
-| 20 | Mode dan menu aplikasi lama tidak berubah | **LULUS** | FI-20 (3), FW-10g/10i/10j/10k |
-| 21 | Login guru, pengurus, admin, orang tua tetap berfungsi | **LULUS** | FI-21 (4, `AuthService::attempt`), FW-11 (4, HTTP), FW-10a (API) |
-| 22 | Jadwal, absensi, laporan, perizinan V1–V2 tidak regresi | **LULUS** (otomatis) | rangkaian regresi §4; FW-10l/10m |
-| 23 | Tidak ada capability dari manipulasi sesi/respons klien | **LULUS** | FI-23 (5), FS-10 |
-| 24 | Audit menyimpan perubahan tanpa data sensitif | **LULUS** | FI-24 (10), FW-7g (IP + user agent) |
-
-Tambahan di luar daftar: FI-25 (capability tidak efektif bila akun/role dasar/
-master/mata pelajaran tidak valid, 8 pemeriksaan), FI-26 (tahun ajaran: PSB
-boleh belum aktif, arsip ditolak, non-PSB menunggu Aktif), FW-12 (escape XSS),
-FS-15/16 (tidak ada fitur bisnis dan tidak ada menu mobile baru).
-
-## 4. Regresi paket sebelumnya
-
-Dijalankan `bash bin/alumni_run_all_tests.sh` (mencakup seluruh rantai V1, V2,
-perapihan, kredensial, penempatan, alumni) pada database uji yang sama setelah
-migrasi 012 terpasang dan seluruh kode paket ini ada:
-
-| Rangkaian | Status | Lulus |
+| Suite | Status | Pemeriksaan |
 | --- | --- | --- |
-| `phase1_static` … `phase4_static` | **LULUS** | 75 / 46 / 35 / 38 |
-| `phase5_static` | **GAGAL — sebab lingkungan** (3 pemeriksaan berkas aplikasi mobile; `alhasanApps` tidak ada di mesin ini; sama seperti laporan paket alumni) | — |
-| `v2_phase1_static`, `v2_phase2_static` | **LULUS** | 127 / 174 |
-| `v2_phase3_static` | **GAGAL** pada run pertama: (a) `MOBILE_APP_ROOT` tidak ada — lingkungan; (b) patokan lama "jumlah migrasi = 10" — **diselaraskan** paket ini mengikuti preseden PS-15 paket penempatan (lihat §7); setelah penyelarasan hanya (a) yang tersisa | — |
-| `v2_phase4_static` | **GAGAL — sebab lingkungan** (`MOBILE_APP_ROOT`) | — |
-| `v2_phase5_static`, `v2_phase5_cetak_pdf` | **LULUS** | 240 / 76 |
-| `phase2` … `phase5_integration` | **LULUS** | 12 / 10 / 14 / 20 |
-| `v2_phase1_integration`, `v2_phase2_integration`, `v2_phase2_navigasi_murobi`, `v2_phase2_web_smoke` | **LULUS** | 39 / 94 / 40 / 36 |
-| `v2_phase3_api_contract` | **LULUS** | 116 |
-| `v2_phase4_integration`, `api_contract`, `concurrency`, `web_smoke` | **LULUS** | 122 / 92 / 20 / 46 |
-| `v2_phase5_integration`, `api_contract`, `web_smoke`, `performance` | **LULUS** | 143 / 150 / 79 / 12 |
-| `perapihan_static`, `integration`, `akun_concurrency`, `web_smoke` | **LULUS** | 132 / 53 / 7 / 56 |
-| `kredensial_static`, `integration`, `web_smoke` | **LULUS** | 105 / 59 / 51 |
-| `penempatan_static`, `integration`, `concurrency`, `web_smoke` | **LULUS** | 138 / 62 / 10 / 47 |
-| `alumni_static`, `integration`, `concurrency`, `web_smoke` | **LULUS** | 180 / 80 / 13 / 61 |
+| `perapihan_audit_account_log.php` | LULUS | 36 |
+| `perapihan_audit_admin.php` | LULUS | 13 |
+| `perapihan_audit_api_compat.php` | LULUS | 12 |
+| `perapihan_audit_csv_limit.php` | LULUS | 4 |
+| `perapihan_audit_form_feedback.php` | LULUS | 108 |
+| `perapihan_audit_http.php` | LULUS | 25 |
+| `perapihan_audit_kamar.php` | LULUS | 19 |
+| `perapihan_audit_laporan_web.php` | LULUS | 38 |
+| `perapihan_audit_merge.php` | LULUS | 4 |
+| `perapihan_audit_notifikasi.php` | LULUS | 18 |
+| `perapihan_audit_pagination.php` | LULUS | 45 |
+| `perapihan_audit_redirect.php` | LULUS | 36 |
+| `perapihan_audit_report_matrix.php` | LULUS | 432 |
+| `perapihan_audit_wali.php` | LULUS | 16 |
+| `perapihan_audit_wali_long_list.php` | LULUS | 46 |
 
-Seluruh rangkaian **integrasi, API, concurrency, dan smoke web** V1–V2 lulus.
-Tiga kegagalan statis seluruhnya berasal dari ketiadaan folder `alhasanApps`
-pada mesin ini — paket ini memang **tidak mengubah** repositori itu — sehingga
-tidak dapat dinilai di sini dan masuk **BELUM DIJALANKAN** untuk pemeriksaan
-berkas aplikasi mobile.
+Log individual ada di [direktori bukti](bukti-audit-codex/README.md).
+Percobaan awal beberapa smoke HTTP tambahan gagal karena router server uji
+mengembalikan 404 untuk URL direktori `/portal/` dan URL dasar tidak konsisten.
+Server uji diperbaiki, lalu seluruh suite gagal dijalankan ulang dan lulus;
+bukan kegagalan aplikasi yang disembunyikan. Regresi feedback formulir juga
+dijalankan ulang setelah alasan wajib ditambahkan pada halaman lama.
 
-## 5. Yang tidak dapat dibuktikan di lingkungan ini
+## Migrasi dan rollback
 
-| Hal | Status | Cara membuktikan |
-| --- | --- | --- |
-| Migrasi 012 pada MySQL produksi/salinan produksi (versi MySQL hosting, ukuran tabel sebenarnya) | **MEMERLUKAN UJI MYSQL** | `cpanel-deployment.md` §4–§8 pada salinan `_test` dari backup produksi |
-| Aplikasi perangkat yang sudah terpasang tetap login/profil/mode/jadwal/absensi/laporan/perizinan | **MEMERLUKAN SMOKE TEST** (kontrak API-nya **LULUS** FW-10) | `cpanel-deployment.md` §9.1 |
-| Tampilan Pusat Penugasan pada 1440/768/390 px, Safari fisik, `<details>` di iOS | **MEMERLUKAN SMOKE TEST** | `cpanel-deployment.md` §9.2 |
-| Pembaca layar | **BELUM DIJALANKAN** | — |
-| `npm run lint` / `npx tsc --noEmit` aplikasi mobile | **BELUM DIJALANKAN** (tidak relevan: `alhasanApps` tidak diubah) | — |
-| Pemeriksaan berkas aplikasi mobile pada `phase5_static`, `v2_phase3_static`, `v2_phase4_static` | **BELUM DIJALANKAN** (lingkungan) | jalankan dengan `MOBILE_APP_ROOT` |
+1. CREATE/ALTER skema dasar tanpa data → migrasi 001–012: LULUS.
+2. Migrasi 012 pada salinan produksi terkini: **MEMERLUKAN UJI MYSQL CPANEL**.
+3. Runner migrasi ulang dan SQL guarded 012 dijalankan langsung ulang: LULUS.
+4. Rollback 012: enam tabel fondasi dilepas; seluruh ID/nilai/jumlah kolom lama
+   murobi/pembimbing identik dengan snapshot sebelum drill.
+5. Migrasi ulang setelah rollback: LULUS, nilai lama tetap, tanpa backfill.
+6. Verify memeriksa FK, indeks, CHECK, empat role, lima kolom jejak tambahan dan
+   kolom lama. Drill memeriksa 29 relasi FK tanpa yatim dan membuktikan CHECK
+   tanggal serta FK subjek benar-benar menolak INSERT invalid pada lima tabel.
+7. Transaksi/konkurensi nyata MariaDB: LULUS sebagaimana bagian sebelumnya.
 
-## 6. Migrasi dan rollback
+Bukti: [migrasi awal](bukti-audit-codex/migration-initial.txt),
+[drill 58 pemeriksaan](bukti-audit-codex/migration-drill.txt), verify di atas.
+Skema/data SQL warisan repository tidak dianggap salinan produksi representatif.
+Versi/config MySQL cPanel, volume aktual, konflik historis, timezone,
+backup/restore produksi tetap belum diuji. SQL migrasi/rollback tidak diubah.
+Lihat [panduan migrasi](migrasi-dan-rollback.md).
 
-Pada database uji: `php bin/migrate.php up` (012 diterapkan) → `rollback`
-(enam tabel dan lima kolom jejak dilepas, baris murobi/pembimbing tetap 3/3) →
-`up` (diterapkan ulang) → `up` (tidak ada migrasi baru) → seluruh pernyataan
-guarded tidak mengeluh saat dijalankan ulang. `SHOW CREATE TABLE` memastikan
-kunci unik, CHECK, dan kunci asing terpasang sesuai berkas migrasi.
+## Browser, aksesibilitas, dan mobile
 
-## 7. Perubahan pada pengujian lama
+`tests/browser/uji-penugasan.mjs`: **78 pemeriksaan lulus** di Chromium headless,
+8 tab × 3 lebar (1440/768/390), HTTP 200, label, overflow halaman/form, keyboard
+Tab/Enter, pesan tanggal invalid dan retensi isian, serta tidak ada galat JS.
+Data tabel panjang memiliki wadah scroll tersendiri; formulir utama tidak
+scroll horizontal. Smoke HTTP FW-12 membuktikan escape data berbahaya.
 
-`tests/v2_phase3_static.php`: patokan "jumlah berkas migrasi === 10" diganti
-pemeriksaan maksud aslinya ("Fase 3 sendiri tidak menambah migrasi"), mengikuti
-preseden PS-15 pada paket penempatan (6 September 2026). Tanpa penyesuaian,
-setiap paket yang sah menambah migrasi (011 alumni, 012 ini) dilaporkan sebagai
-kegagalan Fase 3. Tidak ada pengujian lama lain yang diubah.
+Tombol Simpan mapel terpotong ditemukan pada 768 px dengan data terisi,
+diperbaiki, lalu seluruh 78 pemeriksaan browser diulang dan lulus. Label
+kontrol orang/tahun pada mode ubah juga diperbaiki. Screenshot akhir yang
+diperiksa visual: [desktop](bukti-audit-codex/1440-guru_mapel.png),
+[tablet](bukti-audit-codex/768-mata_pelajaran.png),
+[390 px](bukti-audit-codex/390-murobi.png).
+[Bukti JSON](bukti-audit-codex/browser-results.json) dan
+[output browser](bukti-audit-codex/browser.txt) disimpan.
 
-## 8. Audit mandiri (7 September 2026, setelah push pertama)
+Safari terpasang, tetapi WebDriver menolak sesi karena **Allow remote automation**
+belum aktif. Pengaturan pengguna tidak diubah. **Safari/iOS dan pembaca layar:
+BELUM DIJALANKAN**, memerlukan smoke manusia. Emulasi ukuran Chromium bukan
+pengujian perangkat fisik.
 
-Dilakukan atas permintaan pemilik produk dengan kacamata auditor: membaca ulang
-seluruh perubahan, mencari celah keamanan/kebenaran, dan membuktikan klaim yang
-belum berbukti. Temuan dan tindak lanjutnya:
+Mobile: `npm run lint`, `./node_modules/.bin/tsc --noEmit`, dan
+`npm run test:print-dialog` semuanya exit 0; 6 tes cetak lulus. Node memberi
+peringatan tipe modul pada file tes, tanpa kegagalan. Client asli juga diuji
+18 pemeriksaan via `perapihan_audit_notifikasi.php`.
+[Bukti mobile](bukti-audit-codex/mobile-checks.txt).
 
-| # | Temuan | Tingkat | Perbaikan | Bukti |
-| --- | --- | --- | --- | --- |
-| A-1 | Klaim "permintaan bersamaan diserialkan" belum dibuktikan. Uji proses nyata menunjukkan: lima pembuatan bertumpang tindih bersamaan memang hanya menyimpan **satu** baris, tetapi empat lainnya gagal dengan galat basis data mentah (deadlock kunci celah) — bukan 409 — dan penolakannya tidak teraudit. Lebih serius: dua **pengaktifan** bertumpang tindih bersamaan **keduanya berhasil**. | **Tinggi** | Akar masalah: dengan mysqlnd, galat kunci InnoDB (1205/1213) pada prepared `SELECT … FOR UPDATE` baru muncul di `get_result()`, dan repository memperlakukan hasil `false` itu sebagai nol baris sehingga pemeriksaan tumpang tindih berjalan dengan daftar kosong. `PenugasanRepository::all()` kini melempar konflik 409 yang dapat dimengerti pada errno 1205/1213; layanan mengunci **baris master guru/pengurus** lebih dahulu (`lockSubjectMaster()`) sebagai gerbang serialisasi per orang dengan urutan kunci tetap (`kunciBaris()`), sehingga permintaan kedua menunggu lalu ditolak 409 dan teraudit. | `tests/penugasan_concurrency.php` KP-1…KP-5 (12 pemeriksaan): 5 pembuatan bertumpang tindih → 1 berhasil + 4×409 teraudit; 5 identik → 1; 2 pengaktifan bertumpang tindih → 1; 4 cakupan berbeda bersamaan → 4 berhasil |
-| A-2 | `bin/penugasan_verify.php` melewatkan tabel `mata_pelajaran` pada laporan jumlah baris (`+` pada array berindeks numerik). | Rendah | `array_merge`. | keluaran verify memuat `mata_pelajaran` |
-| A-3 | Duplikat nama/kode mata pelajaran dijawab pesan "Penugasan identik…" (pemetaan 1062 generik). | Rendah | Pemeriksaan duplikat eksplisit sebelum simpan dengan pesan yang menyebut mata pelajaran yang bentrok. | FS-9 |
-| A-4 | Nonaktifkan/aktifkan penugasan murobi/pembimbing dari pusat menimpa `catatan` admin dengan alasan. | Rendah | Alasan hanya disimpan pada audit; `catatan` tidak disentuh. | — |
-| A-5 | FW-13a pada smoke web bergantung pada kebetulan ID antar-tabel; klaim IDOR-nya tidak tajam. | Rendah (uji) | Diganti: ID yang tidak ada pada tabel jenis itu dijawab "tidak ditemukan" tanpa mengubah baris mana pun (potret seluruh tabel sebelum/sesudah identik). | FW-13a |
-| A-6 | Pola `get_result()` yang sama ada pada repository paket lama (akun, penempatan, alumni, pembimbing). | Di luar cakupan | Tidak diubah di sini; dicatat pada `acceptance-status.md` sebagai pekerjaan lanjutan terpisah. | — |
+FI-19/20, FW-10, dan seluruh kontrak API V1/V2 membuktikan field lama, role,
+mode, `default_mode`, jadwal, absensi, laporan, serta perizinan tetap tersedia;
+capability baru tambahan dan bukan menu V3–V6. Tidak ditemukan kebutuhan
+perubahan kode mobile. **Smoke aplikasi Android/iOS terpasang BELUM DIJALANKAN**;
+bukti lint/typecheck/client tidak menggantikan perangkat.
 
-Yang diperiksa dan **tidak** menemukan masalah: guard admin + `requireAdmin()`
-di layanan; seluruh mutasi POST+CSRF; tidak ada aksi lewat GET; escape
-keluaran; anti-IDOR subjek/tahun ajaran terkunci pada `ubah`; resolver
-mengabaikan role dari sesi/klien; `forUser()` dan kontrak API lama utuh;
-migrasi aditif tanpa role/data; rollback berpasangan; tidak ada fitur bisnis
-V3–V6; `alhasanApps` tidak disentuh.
+## Reproduksi lokal
 
-Setelah perbaikan, seluruh rangkaian dijalankan ulang (§2 dan §4; regresi
-V1–V2 memberi hasil yang sama persis dengan run pertama).
+Set `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` ke database uji terpisah,
+`APP_ENV=testing`, `APP_URL` ke localhost, dan
+`MOBILE_APP_ROOT=/Users/ilanmochamad/alhasanApps`. Jangan memakai konfigurasi
+produksi. Siapkan skema dasar tanpa data, jalankan migrasi dan fixture:
 
+```sh
+php bin/migrate.php up
+V2_PHASE3_SEED=1 php bin/v2_phase3_sandbox_seed.php
+V2_PHASE5_FIXTURE=1 php bin/v2_phase5_fixture.php --jumlah=1000
+PENUGASAN_RUN_MIGRATION=1 php tests/penugasan_migration.php
+bash bin/penugasan_run_all_tests.sh
+php bin/penugasan_verify.php --murobi=3 --pembimbing=3
+```
+
+Drill dilakukan sebelum browser menambah mapel. Untuk browser, jalankan server
+PHP localhost dengan konfigurasi DB yang sama; `BASE_URL` harus cocok dengan
+`APP_URL`. Jalankan dari folder repository:
+
+```sh
+PERAPIHAN_AUDIT_DB=1 BASE_URL=http://127.0.0.1:8879 node tests/browser/uji-penugasan.mjs
+```
+
+Dependensi browser berada di `tests/browser/package.json`; Chromium harus sudah
+tersedia. Tes ini hanya memakai akun fixture sandbox. Regresi audit perapihan
+tambahan memerlukan manifest fixture perapihan/UI dan router localhost yang
+melayani `/portal/` serta `/api/v1` sebagaimana konfigurasi web sebenarnya.
+Audit berhenti pada fondasi; tidak mengimplementasikan PRD V3.

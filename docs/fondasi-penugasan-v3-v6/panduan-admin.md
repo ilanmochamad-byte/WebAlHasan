@@ -86,7 +86,9 @@ lama, lalu buat yang baru.
 
 Penugasan murobi/pembimbing yang **diarsipkan** dari halaman lama hanya dapat
 dipulihkan dari halaman lamanya (`admin_murobi.php`, `admin_pembimbing.php`).
-Kedua halaman lama tetap berfungsi seperti sebelumnya dan menaut ke pusat.
+Kedua halaman lama memakai layanan pusat yang sama. Pemulihan/aktivasi
+ditolak bila bertabrakan, tanggal tidak sah, atau master/cakupan sudah tidak
+aktif. Arsip tidak menghapus data.
 
 ## 7. Halaman Akun & Hak Akses
 
@@ -102,3 +104,11 @@ beserta pelaku, waktu, nilai sebelum/sesudah, alasan, IP, dan user agent.
 Perubahan yang menambah/mengurangi capability akun dicatat terpisah sebagai
 `penugasan.capability_berubah`. Percobaan duplikat/tumpang tindih dan percobaan
 oleh bukan admin juga dicatat.
+
+Kolom **Capability efektif akun** merangkum kemampuan akun pada jenis tugas
+itu. Status/masa berlaku setiap penugasan tetap dibaca dari kolom barisnya;
+kemampuan akun dapat berasal dari penugasan lain yang masih aktif.
+
+Pada halaman lama, isi alasan (5–500 karakter) sebelum aktif/nonaktif atau
+arsip/pulihkan. Server menolak perubahan tanpa alasan seperti di pusat;
+alasan yang ditulis admin tersimpan dalam audit.

@@ -34,8 +34,8 @@ SELECT @@binlog_format;
 ```
 
 Migrasi memakai kolom generated STORED dan CHECK — pola yang sudah terpasang
-sejak migrasi 002/006 di produksi, sehingga versi yang sama pasti mendukungnya.
-Preflight memverifikasinya.
+sejak migrasi 002/006 di produksi, tetapi dukungan dan penegakan CHECK tetap wajib dibuktikan pada versi
+MySQL hosting yang sebenarnya. Preflight tidak menggantikan uji constraint.
 
 ## 4. Pre-check tabel dan constraint
 
@@ -139,7 +139,8 @@ SELECT COUNT(*) FROM users; SELECT COUNT(*) FROM user_roles;  -- tidak berubah
 ### 9.4 Halaman lama dan akun
 
 - [ ] `admin/admin_murobi.php` dan `admin/admin_pembimbing.php` terbuka, memuat
-      tautan ke Pusat Penugasan, dan formulir lamanya masih menyimpan.
+      tautan ke Pusat Penugasan, dan formulir lamanya menyimpan melalui PenugasanService. Uji juga
+      duplikasi/overlap dari URL lama, aktivasi dan pemulihan arsip yang bentrok.
 - [ ] Akun & Hak Akses: baris akun menampilkan **Penugasan efektif** dan tautan
       "Kelola di Pusat Penugasan"; tombol role dasar tidak memuat penugasan.
 
@@ -173,3 +174,11 @@ Migrasi 012 idempoten (aman bila terpaksa diulang setelah gagal di tengah),
 tetapi **jangan** menjalankannya ulang tanpa alasan, dan **jangan pernah**
 menjalankan rollback lalu migrasi ulang pada produksi yang sudah berisi
 penugasan V3–V6: rollback menghapus isinya.
+
+## Status audit independen 7 September 2026
+
+Migrasi/rollback lokal dan rangkaian otomatis lulus, tetapi status penuh
+**BELUM LULUS — MEMERLUKAN UJI MYSQL CPANEL**. Smoke Chromium tersedia pada
+1440/768/390 px; Safari, pembaca layar, dan aplikasi lama terpasang belum
+terbukti pada audit ini. Audit tidak melakukan merge, deployment, maupun
+migrasi produksi. Ikuti bukti terbaru pada `test-results.md`.

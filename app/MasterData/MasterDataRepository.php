@@ -758,10 +758,19 @@ final class MasterDataRepository
     {
         $statement = $this->db->prepare($sql);
         if ($statement === false || !$this->run($statement, $params)) {
+            $errno = $statement === false ? $this->db->errno : $statement->errno;
+            if ($statement !== false) { $statement->close(); }
+            if (in_array($errno, [1205, 1213], true)) { throw new MasterDataException('Permintaan lain sedang mengubah data. Muat ulang lalu coba lagi.'); }
             throw new RuntimeException('Data master tidak dapat dibaca.');
         }
         $result = $statement->get_result();
-        $rows = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+        if ($result === false) {
+            $errno = $statement->errno ?: $this->db->errno;
+            $statement->close();
+            if (in_array($errno, [1205, 1213], true)) { throw new MasterDataException('Permintaan lain sedang mengubah data. Muat ulang lalu coba lagi.'); }
+            throw new RuntimeException('Data master tidak dapat dibaca.');
+        }
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
         $statement->close();
         return $rows;
     }

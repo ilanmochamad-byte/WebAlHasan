@@ -1,0 +1,59 @@
+[lulus] Migrasi tercatat dijalankan ulang: tidak ada penerapan baru
+[lulus] SQL 012 langsung diulang: seluruh nilai/ID penugasan lama tetap
+[lulus] Rollback yang dijalankan tepat 012
+[lulus] Rollback menjaga nilai/ID/jumlah penugasan lama
+[lulus] Rollback melepas mata_pelajaran
+[lulus] Rollback melepas guru_mapel_assignments
+[lulus] Rollback melepas pendidikan_assignments
+[lulus] Rollback melepas bendahara_bulanan_assignments
+[lulus] Rollback melepas panitia_psb_assignments
+[lulus] Rollback melepas bendahara_psb_assignments
+[lulus] Migrasi kembali setelah rollback tepat 012
+[lulus] Migrasi ulang menjaga seluruh nilai penugasan lama
+[lulus] Role dasar tetap empat setelah drill
+[lulus] mata_pelajaran tetap kosong, tanpa backfill tebakan
+[lulus] guru_mapel_assignments tetap kosong, tanpa backfill tebakan
+[lulus] pendidikan_assignments tetap kosong, tanpa backfill tebakan
+[lulus] bendahara_bulanan_assignments tetap kosong, tanpa backfill tebakan
+[lulus] panitia_psb_assignments tetap kosong, tanpa backfill tebakan
+[lulus] bendahara_psb_assignments tetap kosong, tanpa backfill tebakan
+[lulus] Tidak ada yatim bendahara_psb_assignments.created_by
+[lulus] Tidak ada yatim bendahara_psb_assignments.diakhiri_oleh
+[lulus] Tidak ada yatim bendahara_psb_assignments.pengurus_id
+[lulus] Tidak ada yatim bendahara_psb_assignments.tahun_ajaran_id
+[lulus] Tidak ada yatim bendahara_psb_assignments.updated_by
+[lulus] Tidak ada yatim panitia_psb_assignments.created_by
+[lulus] Tidak ada yatim panitia_psb_assignments.diakhiri_oleh
+[lulus] Tidak ada yatim panitia_psb_assignments.pengurus_id
+[lulus] Tidak ada yatim panitia_psb_assignments.tahun_ajaran_id
+[lulus] Tidak ada yatim panitia_psb_assignments.updated_by
+[lulus] Tidak ada yatim pendidikan_assignments.created_by
+[lulus] Tidak ada yatim pendidikan_assignments.diakhiri_oleh
+[lulus] Tidak ada yatim pendidikan_assignments.pengurus_id
+[lulus] Tidak ada yatim pendidikan_assignments.tahun_ajaran_id
+[lulus] Tidak ada yatim pendidikan_assignments.updated_by
+[lulus] Tidak ada yatim bendahara_bulanan_assignments.created_by
+[lulus] Tidak ada yatim bendahara_bulanan_assignments.diakhiri_oleh
+[lulus] Tidak ada yatim bendahara_bulanan_assignments.pengurus_id
+[lulus] Tidak ada yatim bendahara_bulanan_assignments.tahun_ajaran_id
+[lulus] Tidak ada yatim bendahara_bulanan_assignments.updated_by
+[lulus] Tidak ada yatim guru_mapel_assignments.created_by
+[lulus] Tidak ada yatim guru_mapel_assignments.diakhiri_oleh
+[lulus] Tidak ada yatim guru_mapel_assignments.guru_id
+[lulus] Tidak ada yatim guru_mapel_assignments.kelas_id
+[lulus] Tidak ada yatim guru_mapel_assignments.mata_pelajaran_id
+[lulus] Tidak ada yatim guru_mapel_assignments.tahun_ajaran_id
+[lulus] Tidak ada yatim guru_mapel_assignments.updated_by
+[lulus] Tidak ada yatim mata_pelajaran.created_by
+[lulus] Tidak ada yatim mata_pelajaran.updated_by
+[lulus] CHECK guru_mapel_assignments benar-benar menolak tanggal terbalik
+[lulus] FK guru_mapel_assignments benar-benar menolak subjek yatim
+[lulus] CHECK pendidikan_assignments benar-benar menolak tanggal terbalik
+[lulus] FK pendidikan_assignments benar-benar menolak subjek yatim
+[lulus] CHECK bendahara_bulanan_assignments benar-benar menolak tanggal terbalik
+[lulus] FK bendahara_bulanan_assignments benar-benar menolak subjek yatim
+[lulus] CHECK panitia_psb_assignments benar-benar menolak tanggal terbalik
+[lulus] FK panitia_psb_assignments benar-benar menolak subjek yatim
+[lulus] CHECK bendahara_psb_assignments benar-benar menolak tanggal terbalik
+[lulus] FK bendahara_psb_assignments benar-benar menolak subjek yatim
+Total gagal: 0

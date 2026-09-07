@@ -414,6 +414,8 @@ final class Capabilities
                 if (!$this->sameLabel((string) $cakupan['jenjang'], $diminta)) {
                     return false;
                 }
+            } elseif ($cakupan['kamar_id'] !== null) {
+                return false; // kamar tidak membuktikan cakupan jenjang
             } elseif ($cakupan['kelas_id'] !== null) {
                 $jenjang = $this->kelasJenjang((int) $cakupan['kelas_id']);
                 if ($jenjang === null || !$this->sameLabel($jenjang, $diminta)) {
@@ -501,7 +503,7 @@ final class Capabilities
             $statement->close();
             return [];
         }
-        $rows = $statement->get_result()?->fetch_all(MYSQLI_ASSOC) ?? [];
+        $rows = ($statement->get_result() ?: null)?->fetch_all(MYSQLI_ASSOC) ?? [];
         $statement->close();
 
         return array_map(static fn (array $row): array => [
@@ -542,7 +544,7 @@ final class Capabilities
             $statement->close();
             return null;
         }
-        $row = $statement->get_result()?->fetch_assoc();
+        $row = ($statement->get_result() ?: null)?->fetch_assoc();
         $statement->close();
         if (!$row) {
             return null;
@@ -561,7 +563,7 @@ final class Capabilities
         if ($statement !== false) {
             $statement->bind_param('i', $kelasId);
             if ($statement->execute()) {
-                $row = $statement->get_result()?->fetch_assoc();
+                $row = ($statement->get_result() ?: null)?->fetch_assoc();
                 $jenjang = $row ? (string) $row['jenjang'] : null;
             }
             $statement->close();
@@ -581,7 +583,7 @@ final class Capabilities
         $statement->bind_param('ss', $tahun, $semester);
         $id = null;
         if ($statement->execute()) {
-            $row = $statement->get_result()?->fetch_assoc();
+            $row = ($statement->get_result() ?: null)?->fetch_assoc();
             $id = $row ? (int) $row['id'] : null;
         }
         $statement->close();
@@ -600,7 +602,7 @@ final class Capabilities
             $statement->close();
             return null;
         }
-        $row = $statement->get_result()?->fetch_assoc();
+        $row = ($statement->get_result() ?: null)?->fetch_assoc();
         $statement->close();
 
         return $row === null || $row === false ? null : (int) $row['nilai'];

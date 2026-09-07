@@ -36,6 +36,7 @@ MOBILE_APP_ROOT="${MOBILE_APP_ROOT:-$(cd "$ROOT/../../../alhasanApps" 2>/dev/nul
 export MOBILE_APP_ROOT
 
 gagal=0
+dilewati=0
 lulus_total=0
 
 jalankan() {
@@ -50,6 +51,7 @@ jalankan() {
   else
     local kode=$?
     if [ "$kode" -eq 77 ]; then
+      dilewati=$((dilewati + 1))
       printf '%-48s DILEWATI\n' "$nama"
       head -2 "$log"
     else
@@ -91,6 +93,8 @@ fi
 
 echo
 echo '=== D. Pengujian paket fondasi penugasan V3–V6 ==='
+jalankan 'tests/penugasan_resolver_failure.php' php tests/penugasan_resolver_failure.php
+jalankan 'tests/penugasan_runner.sh' bash tests/penugasan_runner.sh
 jalankan 'tests/penugasan_static.php'       php tests/penugasan_static.php
 jalankan 'tests/penugasan_integration.php'  env PENUGASAN_RUN_INTEGRATION=1 php tests/penugasan_integration.php
 jalankan 'tests/penugasan_concurrency.php'  env PENUGASAN_RUN_CONCURRENCY=1 php tests/penugasan_concurrency.php
@@ -98,7 +102,7 @@ jalankan 'tests/penugasan_web_smoke.php'    env PENUGASAN_RUN_WEB=1 php tests/pe
 
 echo
 echo "Pemeriksaan paket penugasan yang lulus: ${lulus_total}"
-if [ "$gagal" -eq 0 ] && [ "$regresi" -eq 0 ]; then
+if [ "$gagal" -eq 0 ] && [ "$regresi" -eq 0 ] && [ "$dilewati" -eq 0 ] && [ "${PENUGASAN_SKIP_REGRESI:-0}" != "1" ]; then
   echo 'SELURUH PENGUJIAN OTOMATIS LULUS (regresi + paket penugasan).'
 else
   [ "$regresi" -ne 0 ] && echo 'PERHATIAN: rangkaian regresi melaporkan kegagalan — periksa keluaran bagian A.'
@@ -113,5 +117,7 @@ echo '  - pembaca layar nyata           : belum diuji'
 echo '  - aplikasi perangkat terpasang  : hanya kontrak API yang diuji'
 echo '  - migrasi dan smoke test cPanel : dijalankan manusia, bukan di sini'
 
-[ "$gagal" -eq 0 ] && [ "$regresi" -eq 0 ] && exit 0
+[ "$dilewati" -ne 0 ] && echo "BELUM LENGKAP: ${dilewati} pengujian paket dilewati."
+[ "${PENUGASAN_SKIP_REGRESI:-0}" = "1" ] && echo "BELUM LENGKAP: regresi tidak dijalankan."
+[ "$gagal" -eq 0 ] && [ "$regresi" -eq 0 ] && [ "$dilewati" -eq 0 ] && [ "${PENUGASAN_SKIP_REGRESI:-0}" != "1" ] && exit 0
 exit 1

@@ -54,8 +54,8 @@ Tipe kolom kunci asing mengikuti tabel rujukan aktual: `guru.id INT`,
 | `diakhiri_oleh` | `BIGINT UNSIGNED NULL` (FK `users`, SET NULL) | admin yang mengakhiri |
 | `alasan_pengakhiran` | `VARCHAR(500) NULL` | alasan pengakhiran |
 
-Tidak ada kolom lama yang diubah tipenya. Halaman/layanan lama tetap menulis
-kolom yang sama seperti sebelumnya.
+Tidak ada kolom lama yang diubah tipenya. Setelah koreksi audit, layanan lama meneruskan mutasi ke layanan pusat
+dan ikut menulis jejak tambahan dalam transaksi yang sama.
 
 ## 3. Pemeriksaan SEBELUM migrasi
 
@@ -171,3 +171,24 @@ dibiarkan** saat hanya kode yang dikembalikan.
   `izin_*`, `jadwal_ngaji`, `absensi_*`;
 - tidak membuat tabel nilai, rapor, tagihan, pembayaran, kuitansi, jurnal,
   konseling, pelanggaran baru, seleksi PSB, atau tabel bisnis V3–V6 lainnya.
+
+## 8. Bukti audit independen dan batas pengujian
+
+Audit memakai database baru `codex_penugasan_20260907_test` pada MariaDB
+12.3.2. Hanya pernyataan CREATE/ALTER skema dasar dari SQL warisan repository
+yang dipakai; **tidak ada INSERT/data produksi yang diimpor**. Migrasi 001
+memerlukan tabel dasar (misalnya `users`), sehingga 001–012 bukan bootstrap
+mandiri pada database tanpa tabel. Seluruh 001–012 berhasil di atas skema
+tersebut yang kosong, kemudian diisi fixture fiktif resmi.
+
+`PENUGASAN_RUN_MIGRATION=1 php tests/penugasan_migration.php` menjalankan
+ulang runner, ulang SQL 012 langsung, rollback 012, migrasi ulang, perbandingan
+seluruh ID/nilai kolom lama murobi/pembimbing, pemeriksaan yatim dan uji
+penolakan CHECK/FK nyata. Jalankan hanya pada database uji terpisah; tabel baru
+fondasi harus kosong. Drill bersifat destruktif terhadap skema 012 dan tidak
+termasuk runner regresi rutin.
+
+**MEMERLUKAN UJI MYSQL CPANEL:** dump produksi terkini pada tahap migrasi 011,
+versi MySQL/config cPanel, volume data sebenarnya, backup/restore produksi
+serta konflik historis belum diuji. SQL warisan repository bukan bukti salinan
+produksi terkini. Tidak ada perubahan pada SQL migrasi/rollback 012 selama audit.

@@ -1,6 +1,6 @@
 # Fondasi Penugasan dan Hak Akses Lintas PRD V3–V6
 
-Keputusan pengguna 7 September 2026. Branch `feat/fondasi-penugasan-v3-v6`.
+Keputusan pengguna 7 September 2026. Implementasi sudah di-merge melalui `7edb646`; koreksi audit berada di `codex/audit-fondasi-penugasan-v3-v6`. Status penerimaan penuh: **BELUM LULUS**, lihat `acceptance-status.md`.
 
 Paket ini **hanya membangun fondasi**: model penugasan, resolver capability,
 administrasi penugasan, audit, dan kontrak akses yang akan dipakai oleh:
@@ -80,8 +80,8 @@ app/Api/ApiAuthService.php     + field aditif feature_capabilities pada profil d
 app/bootstrap.php              + penugasan_service()
 app/Ui/Navigation.php          + menu Pusat Penugasan; menu murobi/pembimbing lama tetap
 admin/admin_akun.php           + ringkasan penugasan efektif, penjelasan role vs penugasan, tautan
-admin/admin_murobi.php         + tautan ke Pusat Penugasan (fungsi lama utuh)
-admin/admin_pembimbing.php     + tautan ke Pusat Penugasan (fungsi lama utuh)
+admin/admin_murobi.php         + tautan ke Pusat Penugasan (mutasi lama meneruskan ke PenugasanService)
+admin/admin_pembimbing.php     + tautan ke Pusat Penugasan (mutasi lama meneruskan ke PenugasanService)
 design.md                      + bagian fondasi penugasan V3–V6
 docs/perapihan-v1-v2/matriks-hak-akses.md   + bagian 9 (Pusat Penugasan)
 docs/api-v1.md                 + catatan field aditif feature_capabilities

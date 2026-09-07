@@ -1,0 +1,471 @@
+=== A. Regresi V1, V2, perapihan, kredensial, penempatan, dan alumni ===
+=== A. Regresi V1, V2, perapihan, kredensial, dan penempatan ===
+=== A. Regresi V1, V2, perapihan, dan pesan kredensial ===
+=== A. Regresi V1, V2, dan paket perapihan ===
+=== A. Regresi V1 dan V2 yang sudah ada ===
+--- Statis ---
+tests/phase1_static.php                        LULUS   (75 pemeriksaan)
+tests/phase2_static.php                        LULUS   (46 pemeriksaan)
+tests/phase3_static.php                        LULUS   (35 pemeriksaan)
+tests/phase4_static.php                        LULUS   (38 pemeriksaan)
+tests/phase5_static.php                        LULUS   (44 pemeriksaan)
+tests/v2_phase1_static.php                     LULUS   (127 pemeriksaan)
+tests/v2_phase2_static.php                     LULUS   (174 pemeriksaan)
+tests/v2_phase3_static.php                     LULUS   (147 pemeriksaan)
+tests/v2_phase4_static.php                     LULUS   (289 pemeriksaan)
+tests/v2_phase5_static.php                     LULUS   (272 pemeriksaan)
+tests/v2_phase5_cetak_pdf.php                  LULUS   (76 pemeriksaan)
+--- Integrasi regresi V1 ---
+tests/phase2_integration.php                   LULUS   (12 pemeriksaan)
+tests/phase3_integration.php                   LULUS   (10 pemeriksaan)
+tests/phase4_integration.php                   LULUS   (14 pemeriksaan)
+tests/phase5_integration.php                   LULUS   (20 pemeriksaan)
+--- Integrasi regresi V2 Fase 1-2 ---
+tests/v2_phase1_integration.php                LULUS   (39 pemeriksaan)
+tests/v2_phase2_integration.php                LULUS   (94 pemeriksaan)
+tests/v2_phase2_navigasi_murobi.php            LULUS   (40 pemeriksaan)
+tests/v2_phase2_web_smoke.php                  LULUS   (36 pemeriksaan)
+--- Kontrak API Fase 3 ---
+tests/v2_phase3_api_contract.php               LULUS   (116 pemeriksaan)
+--- Fase 4: notifikasi, push, WhatsApp ---
+tests/v2_phase4_integration.php                LULUS   (122 pemeriksaan)
+tests/v2_phase4_api_contract.php               LULUS   (92 pemeriksaan)
+tests/v2_phase4_concurrency.php                LULUS   (20 pemeriksaan)
+tests/v2_phase4_web_smoke.php                  LULUS   (46 pemeriksaan)
+--- Fase 5: laporan, cetak, ekspor, receipt ---
+tests/v2_phase5_integration.php                LULUS   (143 pemeriksaan)
+tests/v2_phase5_api_contract.php               LULUS   (149 pemeriksaan)
+tests/v2_phase5_web_smoke.php                  LULUS   (79 pemeriksaan)
+tests/v2_phase5_performance.php                LULUS   (12 pemeriksaan)
+
+Total pemeriksaan lulus: 2367
+SELURUH PENGUJIAN OTOMATIS LULUS.
+
+TIDAK DICAKUP OLEH SUITE OTOMATIS (lihat bukti/risiko di penutupan-fase5.md):
+  - push dan deep link pada perangkat Android/iOS NYATA;
+  - pengiriman WhatsApp oleh penyedia NYATA (DITANGGUHKAN);
+  - migrasi, restore, cron, dan smoke test pada cPanel produksi;
+  - tsc/lint/export aplikasi (dijalankan dari repositori alhasanApps).
+
+=== B. Pengujian paket perapihan V1-V2 ===
+tests/perapihan_static.php                       LULUS   (132 pemeriksaan)
+tests/perapihan_integration.php                  LULUS   (53 pemeriksaan)
+tests/perapihan_akun_concurrency.php             LULUS   (7 pemeriksaan)
+tests/perapihan_web_smoke.php                    LULUS   (56 pemeriksaan)
+
+Pemeriksaan paket perapihan yang lulus: 248
+SELURUH PENGUJIAN OTOMATIS LULUS (regresi + paket perapihan).
+
+BELUM DICAKUP OLEH SKRIP INI:
+  - uji browser 1440/768/390 px  : node tests/browser/uji-perapihan.mjs
+  - Safari fisik (macOS/iOS)     : belum diuji, lihat uji-tertunda.md
+  - push dan WhatsApp perangkat  : di luar cakupan paket ini
+  - migrasi dan cron produksi    : dijalankan manusia, bukan di sini
+
+=== B. Pengujian fitur pesan kredensial ===
+tests/kredensial_static.php                      LULUS   (105 pemeriksaan)
+tests/kredensial_integration.php                 LULUS   (59 pemeriksaan)
+tests/kredensial_web_smoke.php                   LULUS   (51 pemeriksaan)
+
+Pemeriksaan fitur pesan kredensial yang lulus: 215
+SELURUH PENGUJIAN OTOMATIS LULUS (regresi + paket perapihan + pesan kredensial).
+
+BELUM DICAKUP OLEH SKRIP INI:
+  - uji browser desktop/ponsel   : lihat docs/perapihan-v1-v2/pesan-kredensial-akun.md
+  - Safari fisik (macOS/iOS)     : belum diuji
+  - pembaca layar nyata          : belum diuji
+  - penempelan pesan ke email    : dilakukan admin secara manual
+
+=== B. Preflight data penempatan (hanya membaca) ===
+Preflight penempatan kelas & kamar
+Basis data : codex_penugasan_20260907_test
+Waktu      : 2026-09-07 19:57:15
+------------------------------------------------------------------------
+
+## 0. Konfigurasi server yang dibutuhkan
+  binlog_format = MIXED (mendukung transaksi READ COMMITTED).
+
+## 1. Santri dengan lebih dari satu kamar pada tahun ajaran yang sama
+  Tidak ada temuan.
+
+## 2a. Relasi yatim pada penempatan kamar
+  Tidak ada temuan.
+
+## 2b. Relasi yatim pada penempatan kelas
+  Tidak ada temuan.
+
+## 3. Kamar melebihi kapasitas
+  Tidak ada temuan.
+
+## 4. Tahun ajaran aktif
+  Tahun ajaran aktif: 2026/2027 Ganjil (#1)
+  Santri aktif        : 204
+  Belum punya kelas   : 203 (bukan konflik; hanya pekerjaan yang belum selesai)
+  Belum punya kamar   : 0 (bukan konflik; hanya pekerjaan yang belum selesai)
+  Nonaktif/arsip tetapi masih menempati kamar: 0 (bukan konflik data; tempat tidurnya masih terpakai — bebaskan lewat filter
+                                              "Nonaktif/arsip tetapi masih berkamar" pada halaman penempatan)
+
+## 5. Santri dengan lebih dari satu kelas Aktif pada tahun yang sama
+  Tidak ada temuan.
+
+------------------------------------------------------------------------
+HASIL: tidak ada konflik data penempatan.
+Preflight penempatan: tidak ada konflik data.
+
+=== C. Pengujian paket penempatan kelas & kamar ===
+tests/penempatan_static.php                      LULUS   (138 pemeriksaan)
+tests/penempatan_integration.php                 LULUS   (62 pemeriksaan)
+tests/penempatan_concurrency.php                 LULUS   (10 pemeriksaan)
+tests/penempatan_web_smoke.php                   LULUS   (47 pemeriksaan)
+
+Pemeriksaan paket penempatan yang lulus: 257
+SELURUH PENGUJIAN OTOMATIS LULUS (regresi + paket penempatan).
+
+BELUM DICAKUP OLEH SKRIP INI:
+  - uji browser 1440/768/390 px  : node tests/browser/uji-penempatan.mjs
+  - Safari fisik (macOS/iOS)     : belum diuji
+  - pembaca layar nyata          : belum diuji
+  - deployment dan smoke test cPanel : dijalankan manusia, bukan di sini
+
+=== B. Preflight data alumni (hanya membaca) ===
+Preflight arsip alumni
+Basis data : codex_penugasan_20260907_test
+Waktu      : 2026-09-07 19:57:21
+------------------------------------------------------------------------
+
+## 0. Skema migrasi 011
+  Terpasang: kolom santri_id, archived_at, dan kolom penjaga keunikan tersedia.
+
+## 1. NIS ganda pada tabel alumni
+  Tidak ada temuan.
+
+## 2. Catatan alumni aktif tanpa referensi santri (data warisan)
+  Tidak ada temuan.
+
+## 3. Santri dengan lebih dari satu catatan alumni aktif
+  Tidak ada temuan.
+
+## 4. Alumni aktif yang santri sumbernya masih berstatus aktif
+  Tidak ada temuan.
+
+(Semester aktif: 2026/2027 Ganjil)
+
+## 5. Alumni aktif yang masih memegang kelas aktif
+  Tidak ada temuan.
+
+## 6. Alumni aktif yang masih menempati kamar
+  Tidak ada temuan.
+
+## 7. Konfigurasi server
+  binlog_format = MIXED (aman).
+
+------------------------------------------------------------------------
+Tidak ada penghalang. Migrasi 011 dan proses alumni aman dijalankan.
+Preflight alumni: tidak ada penghalang.
+
+=== C. Verifikasi skema setelah migrasi 011 ===
+Verifikasi migrasi 011 (arsip alumni)
+Basis data : codex_penugasan_20260907_test
+Waktu      : 2026-09-07 19:57:21
+------------------------------------------------------------------------
+[lulus] Kolom alumni.santri_id tersedia
+[lulus] Kolom alumni.kelas_terakhir tersedia
+[lulus] Kolom alumni.kamar_terakhir tersedia
+[lulus] Kolom alumni.catatan tersedia
+[lulus] Kolom alumni.archived_at tersedia
+[lulus] Kolom alumni.jenis_arsip tersedia
+[lulus] Kolom alumni.alasan_arsip tersedia
+[lulus] Kolom alumni.created_by tersedia
+[lulus] Kolom alumni.updated_by tersedia
+[lulus] Kolom alumni.created_at tersedia
+[lulus] Kolom alumni.updated_at tersedia
+[lulus] Kolom alumni.santri_aktif_guard tersedia
+[lulus] Kolom alumni.nis_aktif_guard tersedia
+[lulus] Kunci unik alumni aktif per santri terpasang
+[lulus] Kunci unik alumni aktif per NIS terpasang
+[lulus] Indeks pencarian NIS tetap ada
+[lulus] Kunci unik `nis` lama sudah digantikan penjaga NIS aktif
+[lulus] Indeks filter status/tahun/tingkat terpasang
+[lulus] Kunci asing alumni_santri_fk terpasang
+[lulus] Kunci asing alumni_creator_fk terpasang
+[lulus] Kunci asing alumni_updater_fk terpasang
+Jumlah baris alumni saat ini: 0
+[info]  Jumlah baris sebelum migrasi tidak diberikan; jalankan ulang dengan --sebelum=N untuk membandingkannya.
+[lulus] Tidak ada santri dengan lebih dari satu catatan alumni aktif
+[lulus] Tidak ada NIS dengan lebih dari satu catatan alumni aktif
+[lulus] Seluruh baris alumni masih memiliki NIS dan nama
+[lulus] Kolom foto seluruh baris alumni tetap terisi
+------------------------------------------------------------------------
+SELURUH PEMERIKSAAN LULUS.
+Verifikasi migrasi 011: lulus.
+
+=== D. Pengujian paket koreksi alumni ===
+tests/alumni_static.php                          LULUS   (180 pemeriksaan)
+tests/alumni_integration.php                     LULUS   (80 pemeriksaan)
+tests/alumni_concurrency.php                     LULUS   (13 pemeriksaan)
+tests/alumni_web_smoke.php                       LULUS   (61 pemeriksaan)
+
+Pemeriksaan paket alumni yang lulus: 334
+SELURUH PENGUJIAN OTOMATIS LULUS (regresi + paket alumni).
+
+BELUM DICAKUP OLEH SKRIP INI:
+  - uji peramban 1440/768/390 px  : belum diuji pada paket ini
+  - Safari fisik (macOS/iOS)      : belum diuji
+  - pembaca layar nyata           : belum diuji
+  - migrasi dan smoke test cPanel : dijalankan manusia, bukan di sini
+
+=== B. Preflight migrasi 012 (hanya membaca) ===
+Preflight migrasi 012 (fondasi penugasan V3–V6)
+Basis data : codex_penugasan_20260907_test
+Waktu      : 2026-09-07 19:57:27
+------------------------------------------------------------------------
+
+## 0. Status migrasi
+[ok]      Migrasi 011 sudah diterapkan (prasyarat urutan migrasi)
+[info]    Migrasi 012 SUDAH tercatat diterapkan. Migrasi ini idempoten, tetapi jangan dijalankan ulang tanpa alasan.
+
+## 1. Versi server
+  Versi: 12.3.2-MariaDB
+[ok]      Kolom generated STORED migrasi 002 terpasang (server mendukung pola yang dipakai 012)
+[ok]      CHECK constraint migrasi 006 dikenali server (bila 0: CHECK diabaikan; validasi server tetap berlaku)
+
+## 2. Tabel rujukan kunci asing
+[ok]      guru.id bertipe int (aktual: int(11))
+[ok]      pengurus.id bertipe bigint unsigned (aktual: bigint(20) unsigned)
+[ok]      kelas.id bertipe int (aktual: int(11))
+[ok]      kamar.id bertipe int (aktual: int(11))
+[ok]      tahun_ajaran.id bertipe int (aktual: int(11))
+[ok]      users.id bertipe bigint unsigned (aktual: bigint(20) unsigned)
+[ok]      Tabel murobi_assignments tersedia
+[ok]      Tabel pembimbing_assignments tersedia
+[ok]      Tabel user_roles tersedia
+[ok]      Tabel roles tersedia
+[ok]      Tabel audit_logs tersedia
+
+## 3. Nama baru belum dipakai untuk hal lain
+[ok]      Tabel mata_pelajaran sudah ada dan berbentuk sesuai migrasi 012 (bukan tabel lain bernama sama)
+[ok]      Tabel guru_mapel_assignments sudah ada dan berbentuk sesuai migrasi 012 (bukan tabel lain bernama sama)
+[ok]      Tabel pendidikan_assignments sudah ada dan berbentuk sesuai migrasi 012 (bukan tabel lain bernama sama)
+[ok]      Tabel bendahara_bulanan_assignments sudah ada dan berbentuk sesuai migrasi 012 (bukan tabel lain bernama sama)
+[ok]      Tabel panitia_psb_assignments sudah ada dan berbentuk sesuai migrasi 012 (bukan tabel lain bernama sama)
+[ok]      Tabel bendahara_psb_assignments sudah ada dan berbentuk sesuai migrasi 012 (bukan tabel lain bernama sama)
+[ok]      murobi_assignments.catatan sudah ada dengan tipe yang cocok (varchar(500))
+[ok]      murobi_assignments.updated_by sudah ada dengan tipe yang cocok (bigint(20) unsigned)
+[ok]      murobi_assignments.diakhiri_pada sudah ada dengan tipe yang cocok (datetime)
+[ok]      murobi_assignments.diakhiri_oleh sudah ada dengan tipe yang cocok (bigint(20) unsigned)
+[ok]      murobi_assignments.alasan_pengakhiran sudah ada dengan tipe yang cocok (varchar(500))
+[ok]      pembimbing_assignments.catatan sudah ada dengan tipe yang cocok (varchar(500))
+[ok]      pembimbing_assignments.updated_by sudah ada dengan tipe yang cocok (bigint(20) unsigned)
+[ok]      pembimbing_assignments.diakhiri_pada sudah ada dengan tipe yang cocok (datetime)
+[ok]      pembimbing_assignments.diakhiri_oleh sudah ada dengan tipe yang cocok (bigint(20) unsigned)
+[ok]      pembimbing_assignments.alasan_pengakhiran sudah ada dengan tipe yang cocok (varchar(500))
+
+## 4. Manifest jumlah baris sebelum migrasi (simpan nilai ini)
+  murobi_assignments        3
+  pembimbing_assignments    3
+  guru                      12
+  pengurus                  10
+  kelas                     1
+  tahun_ajaran              1
+  users                     9
+  user_roles                9
+  roles                     4
+  mapel                     0
+[ok]      Tabel roles hanya berisi empat role dasar (migrasi 012 tidak menambah role)
+
+## 5. Data penugasan lama yang perlu diperhatikan (tidak menghalangi)
+[ok]      murobi_assignments: tidak ada baris dengan tanggal selesai mendahului tanggal mulai (ditemukan 0)
+[ok]      pembimbing_assignments: tidak ada baris dengan tanggal selesai mendahului tanggal mulai (ditemukan 0)
+
+## 6. Konfigurasi server
+[ok]      binlog_format = MIXED (ROW/MIXED diperlukan bila replikasi aktif)
+
+------------------------------------------------------------------------
+TIDAK ADA PENGHALANG.
+Preflight penugasan: tidak ada penghalang.
+
+=== C. Verifikasi skema setelah migrasi 012 ===
+Verifikasi migrasi 012 (fondasi penugasan V3–V6)
+Basis data : codex_penugasan_20260907_test
+Waktu      : 2026-09-07 19:57:27
+------------------------------------------------------------------------
+[lulus] Migrasi 012 tercatat pada schema_migrations
+[lulus] Kolom mata_pelajaran.kode tersedia
+[lulus] Kolom mata_pelajaran.nama tersedia
+[lulus] Kolom mata_pelajaran.kategori tersedia
+[lulus] Kolom mata_pelajaran.is_active tersedia
+[lulus] Kolom mata_pelajaran.archived_at tersedia
+[lulus] Kolom mata_pelajaran.created_by tersedia
+[lulus] Kolom mata_pelajaran.updated_by tersedia
+[lulus] Kolom mata_pelajaran.kode_unique_key tersedia
+[lulus] Kunci unik nama mata pelajaran terpasang
+[lulus] Kunci unik kode mata pelajaran terpasang
+[lulus] Kolom guru_mapel_assignments.guru_id tersedia
+[lulus] Kolom guru_mapel_assignments.mata_pelajaran_id tersedia
+[lulus] Kolom guru_mapel_assignments.kelas_id tersedia
+[lulus] Kolom guru_mapel_assignments.tahun_ajaran_id tersedia
+[lulus] Kolom guru_mapel_assignments.tanggal_mulai tersedia
+[lulus] Kolom guru_mapel_assignments.tanggal_selesai tersedia
+[lulus] Kolom guru_mapel_assignments.is_active tersedia
+[lulus] Kolom guru_mapel_assignments.catatan tersedia
+[lulus] Kolom guru_mapel_assignments.alasan_perubahan tersedia
+[lulus] Kolom guru_mapel_assignments.diakhiri_pada tersedia
+[lulus] Kolom guru_mapel_assignments.diakhiri_oleh tersedia
+[lulus] Kolom guru_mapel_assignments.alasan_pengakhiran tersedia
+[lulus] Kolom guru_mapel_assignments.created_by tersedia
+[lulus] Kolom guru_mapel_assignments.updated_by tersedia
+[lulus] Kolom guru_mapel_assignments.created_at tersedia
+[lulus] Kolom guru_mapel_assignments.updated_at tersedia
+[lulus] Kunci unik guru_mapel_assignment_unique terpasang
+[lulus] CHECK rentang tanggal guru_mapel_range_check terpasang
+[lulus] Kunci asing guru_mapel_tahun_fk terpasang
+[lulus] Kunci asing pelaku guru_mapel terpasang
+[lulus] Kunci asing subjek guru_mapel terpasang
+[lulus] Kolom pendidikan_assignments.pengurus_id tersedia
+[lulus] Kolom pendidikan_assignments.tahun_ajaran_id tersedia
+[lulus] Kolom pendidikan_assignments.jenjang tersedia
+[lulus] Kolom pendidikan_assignments.jenjang_key tersedia
+[lulus] Kolom pendidikan_assignments.tanggal_mulai tersedia
+[lulus] Kolom pendidikan_assignments.tanggal_selesai tersedia
+[lulus] Kolom pendidikan_assignments.is_active tersedia
+[lulus] Kolom pendidikan_assignments.catatan tersedia
+[lulus] Kolom pendidikan_assignments.alasan_perubahan tersedia
+[lulus] Kolom pendidikan_assignments.diakhiri_pada tersedia
+[lulus] Kolom pendidikan_assignments.diakhiri_oleh tersedia
+[lulus] Kolom pendidikan_assignments.alasan_pengakhiran tersedia
+[lulus] Kolom pendidikan_assignments.created_by tersedia
+[lulus] Kolom pendidikan_assignments.updated_by tersedia
+[lulus] Kolom pendidikan_assignments.created_at tersedia
+[lulus] Kolom pendidikan_assignments.updated_at tersedia
+[lulus] Kunci unik pendidikan_assignment_unique terpasang
+[lulus] CHECK rentang tanggal pendidikan_range_check terpasang
+[lulus] Kunci asing pendidikan_tahun_fk terpasang
+[lulus] Kunci asing pelaku pendidikan terpasang
+[lulus] Kunci asing subjek pendidikan terpasang
+[lulus] Kolom bendahara_bulanan_assignments.pengurus_id tersedia
+[lulus] Kolom bendahara_bulanan_assignments.tahun_ajaran_id tersedia
+[lulus] Kolom bendahara_bulanan_assignments.jenjang tersedia
+[lulus] Kolom bendahara_bulanan_assignments.jenjang_key tersedia
+[lulus] Kolom bendahara_bulanan_assignments.tanggal_mulai tersedia
+[lulus] Kolom bendahara_bulanan_assignments.tanggal_selesai tersedia
+[lulus] Kolom bendahara_bulanan_assignments.is_active tersedia
+[lulus] Kolom bendahara_bulanan_assignments.catatan tersedia
+[lulus] Kolom bendahara_bulanan_assignments.alasan_perubahan tersedia
+[lulus] Kolom bendahara_bulanan_assignments.diakhiri_pada tersedia
+[lulus] Kolom bendahara_bulanan_assignments.diakhiri_oleh tersedia
+[lulus] Kolom bendahara_bulanan_assignments.alasan_pengakhiran tersedia
+[lulus] Kolom bendahara_bulanan_assignments.created_by tersedia
+[lulus] Kolom bendahara_bulanan_assignments.updated_by tersedia
+[lulus] Kolom bendahara_bulanan_assignments.created_at tersedia
+[lulus] Kolom bendahara_bulanan_assignments.updated_at tersedia
+[lulus] Kunci unik bendahara_bulanan_assignment_unique terpasang
+[lulus] CHECK rentang tanggal bendahara_bulanan_range_check terpasang
+[lulus] Kunci asing bendahara_bulanan_tahun_fk terpasang
+[lulus] Kunci asing pelaku bendahara_bulanan terpasang
+[lulus] Kunci asing subjek bendahara_bulanan terpasang
+[lulus] Kolom panitia_psb_assignments.pengurus_id tersedia
+[lulus] Kolom panitia_psb_assignments.tahun_ajaran_id tersedia
+[lulus] Kolom panitia_psb_assignments.gelombang tersedia
+[lulus] Kolom panitia_psb_assignments.gelombang_key tersedia
+[lulus] Kolom panitia_psb_assignments.tanggal_mulai tersedia
+[lulus] Kolom panitia_psb_assignments.tanggal_selesai tersedia
+[lulus] Kolom panitia_psb_assignments.is_active tersedia
+[lulus] Kolom panitia_psb_assignments.catatan tersedia
+[lulus] Kolom panitia_psb_assignments.alasan_perubahan tersedia
+[lulus] Kolom panitia_psb_assignments.diakhiri_pada tersedia
+[lulus] Kolom panitia_psb_assignments.diakhiri_oleh tersedia
+[lulus] Kolom panitia_psb_assignments.alasan_pengakhiran tersedia
+[lulus] Kolom panitia_psb_assignments.created_by tersedia
+[lulus] Kolom panitia_psb_assignments.updated_by tersedia
+[lulus] Kolom panitia_psb_assignments.created_at tersedia
+[lulus] Kolom panitia_psb_assignments.updated_at tersedia
+[lulus] Kunci unik panitia_psb_assignment_unique terpasang
+[lulus] CHECK rentang tanggal panitia_psb_range_check terpasang
+[lulus] Kunci asing panitia_psb_tahun_fk terpasang
+[lulus] Kunci asing pelaku panitia_psb terpasang
+[lulus] Kunci asing subjek panitia_psb terpasang
+[lulus] Kolom bendahara_psb_assignments.pengurus_id tersedia
+[lulus] Kolom bendahara_psb_assignments.tahun_ajaran_id tersedia
+[lulus] Kolom bendahara_psb_assignments.gelombang tersedia
+[lulus] Kolom bendahara_psb_assignments.gelombang_key tersedia
+[lulus] Kolom bendahara_psb_assignments.tanggal_mulai tersedia
+[lulus] Kolom bendahara_psb_assignments.tanggal_selesai tersedia
+[lulus] Kolom bendahara_psb_assignments.is_active tersedia
+[lulus] Kolom bendahara_psb_assignments.catatan tersedia
+[lulus] Kolom bendahara_psb_assignments.alasan_perubahan tersedia
+[lulus] Kolom bendahara_psb_assignments.diakhiri_pada tersedia
+[lulus] Kolom bendahara_psb_assignments.diakhiri_oleh tersedia
+[lulus] Kolom bendahara_psb_assignments.alasan_pengakhiran tersedia
+[lulus] Kolom bendahara_psb_assignments.created_by tersedia
+[lulus] Kolom bendahara_psb_assignments.updated_by tersedia
+[lulus] Kolom bendahara_psb_assignments.created_at tersedia
+[lulus] Kolom bendahara_psb_assignments.updated_at tersedia
+[lulus] Kunci unik bendahara_psb_assignment_unique terpasang
+[lulus] CHECK rentang tanggal bendahara_psb_range_check terpasang
+[lulus] Kunci asing bendahara_psb_tahun_fk terpasang
+[lulus] Kunci asing pelaku bendahara_psb terpasang
+[lulus] Kunci asing subjek bendahara_psb terpasang
+[lulus] Kunci asing mata pelajaran dan kelas pada guru_mapel terpasang
+[lulus] Kolom murobi_assignments.catatan tersedia
+[lulus] Kolom murobi_assignments.updated_by tersedia
+[lulus] Kolom murobi_assignments.diakhiri_pada tersedia
+[lulus] Kolom murobi_assignments.diakhiri_oleh tersedia
+[lulus] Kolom murobi_assignments.alasan_pengakhiran tersedia
+[lulus] Kunci asing jejak murobi terpasang
+[lulus] Kolom lama murobi_assignments.target_type tetap ada
+[lulus] Kolom lama murobi_assignments.kamar_id tetap ada
+[lulus] Kolom lama murobi_assignments.kelas_id tetap ada
+[lulus] Kolom lama murobi_assignments.tanggal_mulai tetap ada
+[lulus] Kolom lama murobi_assignments.tanggal_selesai tetap ada
+[lulus] Kolom lama murobi_assignments.is_active tetap ada
+[lulus] Kolom lama murobi_assignments.archived_at tetap ada
+[lulus] Kolom lama murobi_assignments.created_by tetap ada
+[lulus] Kolom lama murobi_assignments.target_key tetap ada
+[lulus] Kunci unik lama murobi_assignment_unique tetap ada
+[lulus] Kolom pembimbing_assignments.catatan tersedia
+[lulus] Kolom pembimbing_assignments.updated_by tersedia
+[lulus] Kolom pembimbing_assignments.diakhiri_pada tersedia
+[lulus] Kolom pembimbing_assignments.diakhiri_oleh tersedia
+[lulus] Kolom pembimbing_assignments.alasan_pengakhiran tersedia
+[lulus] Kunci asing jejak pembimbing terpasang
+[lulus] Kolom lama pembimbing_assignments.target_type tetap ada
+[lulus] Kolom lama pembimbing_assignments.kamar_id tetap ada
+[lulus] Kolom lama pembimbing_assignments.kelas_id tetap ada
+[lulus] Kolom lama pembimbing_assignments.tanggal_mulai tetap ada
+[lulus] Kolom lama pembimbing_assignments.tanggal_selesai tetap ada
+[lulus] Kolom lama pembimbing_assignments.is_active tetap ada
+[lulus] Kolom lama pembimbing_assignments.archived_at tetap ada
+[lulus] Kolom lama pembimbing_assignments.created_by tetap ada
+[lulus] Kolom lama pembimbing_assignments.target_key tetap ada
+[lulus] Kunci unik lama pembimbing_assignment_unique tetap ada
+Jumlah baris murobi_assignments     : 3
+Jumlah baris pembimbing_assignments : 3
+[info]  Jumlah sebelum migrasi tidak diberikan; jalankan ulang dengan --murobi=N --pembimbing=N untuk membandingkannya.
+  guru_mapel_assignments          0 baris (kosong: migrasi tidak mengisi apa pun)
+  pendidikan_assignments          0 baris (kosong: migrasi tidak mengisi apa pun)
+  bendahara_bulanan_assignments   0 baris (kosong: migrasi tidak mengisi apa pun)
+  panitia_psb_assignments         0 baris (kosong: migrasi tidak mengisi apa pun)
+  bendahara_psb_assignments       0 baris (kosong: migrasi tidak mengisi apa pun)
+  mata_pelajaran                  0 baris (kosong: migrasi tidak mengisi apa pun)
+[lulus] Audit penugasan dapat dibaca
+[lulus] Tabel roles tetap hanya berisi empat role dasar
+[lulus] Resolver capability berjalan: admin memperoleh seluruh 21 capability pengawasan
+------------------------------------------------------------------------
+SELURUH PEMERIKSAAN LULUS.
+Verifikasi migrasi 012: lulus.
+
+=== D. Pengujian paket fondasi penugasan V3–V6 ===
+tests/penugasan_static.php                       LULUS   (281 pemeriksaan)
+tests/penugasan_integration.php                  LULUS   (161 pemeriksaan)
+tests/penugasan_concurrency.php                  LULUS   (12 pemeriksaan)
+tests/penugasan_web_smoke.php                    LULUS   (73 pemeriksaan)
+
+Pemeriksaan paket penugasan yang lulus: 527
+SELURUH PENGUJIAN OTOMATIS LULUS (regresi + paket penugasan).
+
+BELUM DICAKUP OLEH SKRIP INI:
+  - uji peramban 1440/768/390 px  : belum diuji pada paket ini
+  - Safari fisik (macOS/iOS)      : belum diuji
+  - pembaca layar nyata           : belum diuji
+  - aplikasi perangkat terpasang  : hanya kontrak API yang diuji
+  - migrasi dan smoke test cPanel : dijalankan manusia, bukan di sini

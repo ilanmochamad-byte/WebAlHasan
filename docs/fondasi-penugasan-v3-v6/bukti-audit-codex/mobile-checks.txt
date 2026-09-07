@@ -1,0 +1,10 @@
+Bukti diringkas dari output terminal audit Codex, 7 September 2026.
+Repository: /Users/ilanmochamad/alhasanApps
+HEAD: bad6b352c5c032846fbf971d820194fdd8c6bc49
+Perintah: npm run lint && ./node_modules/.bin/tsc --noEmit && npm run test:print-dialog
+Hasil proses: exit 0 (dijalankan dua kali selama audit; run akhir sesi 45853).
+Lint: tidak ada error; typecheck: tidak ada output/error.
+Tes cetak: 6 tests, 6 pass, 0 fail, 0 skipped.
+Node memberi peringatan MODULE_TYPELESS_PACKAGE_JSON pada file tes .ts; tidak gagal.
+Client API asli: lihat perapihan_audit_notifikasi.txt (18 lulus).
+Tidak ada perubahan kode mobile. Ini bukan bukti smoke aplikasi Android/iOS terpasang.
