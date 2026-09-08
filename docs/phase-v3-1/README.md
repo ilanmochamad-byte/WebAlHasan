@@ -14,5 +14,6 @@ Paket menyediakan administrasi kategori, katalog pelanggaran, ambang rekomendasi
 - [Panduan admin dan smoke cPanel](panduan-admin.md)
 - [Hasil pengujian](test-results.md)
 - [Status penerimaan dan handoff](acceptance-status.md)
+- [Hasil audit Claude Code](hasil-audit-claude-code.md)
 
 Keputusan tambahan pengguna: URL/menu pelanggaran lama dipertahankan, tetapi pencatatan/penghapusan lama ditutup dan halaman menjadi baca-saja berlabel **Data warisan**. Dicatat dalam PRD V3 §5.2a. Checkbox penerimaan PRD tidak diubah oleh implementator.
