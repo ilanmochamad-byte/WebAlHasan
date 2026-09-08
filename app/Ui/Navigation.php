@@ -70,6 +70,7 @@ final class Navigation
         'admin_galeri.php' => 'konten.galeri',
         'admin_download.php' => 'konten.download',
         'admin_pelanggaran.php' => 'pelanggaran',
+        'admin_v3_katalog.php' => 'v3.katalog',
         'admin_penempatan_santri.php' => 'master.penempatan',
         // Alamat lama penempatan; kini hanya mengalihkan ke halaman di atas.
         'admin_santri.php' => 'master.penempatan',
@@ -127,6 +128,7 @@ final class Navigation
                 self::item('master.pengurus', 'Data Pengurus', '/admin/admin_pengurus.php', 'fa-user-tie'),
                 self::item('master.kelas', 'Data Kelas', '/admin/admin_kelas.php', 'fa-school'),
                 self::item('master.kamar', 'Data Kamar', '/admin/admin_kamar.php', 'fa-bed'),
+                self::item('v3.katalog', 'Katalog & Ambang V3', '/admin/admin_v3_katalog.php', 'fa-list-check'),
                 self::item('master.tahun', 'Tahun Ajaran', '/admin/admin_tahun.php', 'fa-calendar-days'),
             ]];
             // Fondasi V3–V6: satu pusat untuk seluruh penugasan fungsional. Halaman

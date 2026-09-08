@@ -67,6 +67,10 @@ Tujuannya adalah menyediakan penanganan yang terukur tetapi tetap manusiawi: sis
 - Catatan bisnis tidak dihapus permanen. Pembatalan/koreksi menyimpan alasan, pelaku, waktu, nilai sebelum/sesudah, IP, dan user agent sesuai kemampuan audit yang ada.
 - Data sensitif tidak boleh ditulis ke URL, log aplikasi, push payload, analytics, screenshot pengujian publik, atau pesan kesalahan.
 
+### 5.2a Data pelanggaran warisan — keputusan 8 September 2026
+
+URL dan menu pelanggaran lama tetap tersedia. Halamannya menjadi baca-saja dengan label **Data warisan**; pencatatan dan penghapusan lama ditutup. Tabel serta seluruh data lama dipertahankan. Keputusan Human Developer ini berlaku pada Fase 1.
+
 ### 5.3 Model akses dan cakupan
 
 Perilaku saat cakupan berubah dan pencatatan akses sensitif berikut merupakan rancangan awal.
