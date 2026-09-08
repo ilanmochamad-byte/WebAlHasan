@@ -571,3 +571,8 @@ function notification_admin_service(): NotificationAdminService
         audit_logger()
     );
 }
+
+function v3_katalog_service(): \App\V3\KatalogService
+{
+    return new \App\V3\KatalogService(new \App\V3\KatalogRepository(app_db()), new \App\Auth\Capabilities(app_db()), new \App\Audit\AuditLogger(app_db()));
+}

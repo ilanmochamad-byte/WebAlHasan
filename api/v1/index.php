@@ -54,6 +54,18 @@ try {
     // seperti sebelumnya, sehingga kontrak aplikasi guru tidak berubah.
     $user = api_authenticator()->authenticate();
 
+    // V3 Phase 1: read only; legacy capability/mode payloads remain unchanged.
+    if ($method === 'GET' && in_array($path, ['/v3/capabilities', '/v3/katalog', '/v3/ambang'], true)) {
+        try {
+            if ($path === '/v3/capabilities') {
+                JsonResponse::success(['capabilities' => (new \App\Auth\Capabilities(app_db()))->v3Capabilities($user), 'operasional_tersedia' => false]);
+            }
+            JsonResponse::success(v3_katalog_service()->active($path === '/v3/katalog' ? 'katalog' : 'ambang', $_GET, $user));
+        } catch (\App\V3\V3Exception $e) {
+            throw new ApiException($e->status === 403 ? 'FORBIDDEN' : ($e->status === 409 ? 'CONFLICT' : ($e->status === 503 ? 'SERVICE_UNAVAILABLE' : 'VALIDATION_FAILED')), $e->getMessage(), $e->status);
+        }
+    }
+
     if ($method === 'GET' && $path === '/profile') {
         JsonResponse::success(api_auth_service()->profile($user));
     }

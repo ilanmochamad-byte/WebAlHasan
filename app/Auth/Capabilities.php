@@ -162,6 +162,74 @@ final class Capabilities
         ) !== null;
     }
 
+    /** V3 is additive: never used to build legacy modes or menus. */
+    public function v3Capabilities(array $user): array
+    {
+        $roles = $this->rolesFromDatabase((int) $user['id']) ?? [];
+        $result = [];
+        if (in_array('admin', $roles, true)) {
+            foreach (['v3.katalog.kelola', 'v3.ambang.kelola', 'v3.pengawasan', 'v3.koreksi'] as $key) {
+                $result[$key] = ['sumber' => self::SUMBER_ADMIN, 'cakupan' => []];
+            }
+        }
+        $this->forget((int) $user['id']);
+        $features = $this->featureCapabilities($user);
+        foreach ([
+            'pembimbing.binaan' => ['v3.pelanggaran.kelola', 'v3.konseling.kelola'],
+            'murobi.binaan' => ['v3.binaan.baca', 'v3.murobi.mengetahui'],
+        ] as $source => $keys) {
+            $entry = $features[$source] ?? null;
+            // Admin supervision does not impersonate an assigned operator.
+            if ($entry === null || $entry['cakupan'] === []) { continue; }
+            foreach ($keys as $key) {
+                $result[$key] = ['sumber' => self::SUMBER_PENUGASAN, 'cakupan' => $entry['cakupan']];
+            }
+        }
+        if (in_array('orang_tua', $roles, true) && $this->scalar(
+            "SELECT 1 AS nilai FROM users u JOIN wali w ON w.id=u.wali_id
+             JOIN santri_wali sw ON sw.wali_id=w.id
+             JOIN santri s ON s.id=sw.santri_id
+             WHERE u.id=? AND u.is_active=1 AND w.is_active=1 AND w.archived_at IS NULL
+             AND sw.archived_at IS NULL AND s.is_active=1 AND s.archived_at IS NULL LIMIT 1",
+            (int) $user['id']
+        ) !== null) {
+            // No unbounded scope: publication queries must JOIN the current wali relation.
+            $result['v3.publikasi.baca'] = ['sumber' => 'relasi_wali', 'cakupan' => []];
+        }
+        return $result;
+    }
+
+    /** Current access only. Historical assignment snapshots never grant current access. */
+    public function v3AppliesToSantri(array $user, string $capability, int $santriId, int $tahunAjaranId): bool
+    {
+        $entry = $this->v3Capabilities($user)[$capability] ?? null;
+        if ($entry === null || $santriId < 1 || $tahunAjaranId < 1) { return false; }
+        if (in_array($capability, ['v3.pengawasan', 'v3.koreksi'], true)) { return true; }
+        if ($capability === 'v3.publikasi.baca') {
+            $stmt = $this->db->prepare('SELECT s.id FROM users u JOIN wali w ON w.id=u.wali_id AND w.is_active=1 AND w.archived_at IS NULL JOIN santri_wali sw ON sw.wali_id=w.id AND sw.archived_at IS NULL JOIN santri s ON s.id=sw.santri_id AND s.is_active=1 AND s.archived_at IS NULL WHERE u.id=? AND u.is_active=1 AND s.id=? LIMIT 1');
+            if ($stmt === false) { return false; }
+            $uid=(int)$user['id']; $stmt->bind_param('ii',$uid,$santriId);
+            try { return $stmt->execute() && is_array(($stmt->get_result() ?: null)?->fetch_assoc()); }
+            finally { $stmt->close(); }
+        }
+        if (!in_array($capability, ['v3.pelanggaran.kelola','v3.konseling.kelola','v3.binaan.baca','v3.murobi.mengetahui'], true)) { return false; }
+        // Reuse foundation scope matching over the student's actual placements.
+        $stmt=$this->db->prepare("SELECT pk.id_kelas AS kelas_id,NULL AS kamar_id FROM plotting_kelas pk JOIN santri s ON s.id=pk.id_santri AND s.is_active=1 AND s.archived_at IS NULL JOIN tahun_ajaran ta ON ta.id=pk.id_tahun AND ta.status='Aktif' AND ta.archived_at IS NULL WHERE pk.id_santri=? AND pk.id_tahun=? AND pk.status='Aktif' UNION ALL SELECT NULL,pm.id_kamar FROM plotting_kamar pm JOIN santri s ON s.id=pm.id_santri AND s.is_active=1 AND s.archived_at IS NULL JOIN tahun_ajaran ta ON ta.id=pm.id_tahun AND ta.status='Aktif' AND ta.archived_at IS NULL WHERE pm.id_santri=? AND pm.id_tahun=?");
+        if ($stmt===false) { return false; }
+        $stmt->bind_param('iiii',$santriId,$tahunAjaranId,$santriId,$tahunAjaranId);
+        try {
+            if (!$stmt->execute()) { return false; }
+            $result=$stmt->get_result(); if ($result===false) { return false; }
+            foreach ($result->fetch_all(MYSQLI_ASSOC) as $placement) {
+                $context=['tahun_ajaran_id'=>$tahunAjaranId];
+                if ($placement['kelas_id']!==null) { $context['kelas_id']=(int)$placement['kelas_id']; }
+                if ($placement['kamar_id']!==null) { $context['kamar_id']=(int)$placement['kamar_id']; }
+                foreach ($entry['cakupan'] as $scope) { if ($this->scopeMatches($scope,$context)) { return true; } }
+            }
+            return false;
+        } finally { $stmt->close(); }
+    }
+
     public function forget(int $userId): void
     {
         unset($this->cache[$userId], $this->featureCache[$userId]);
