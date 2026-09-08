@@ -1,16 +1,19 @@
 # Status penerimaan audit fondasi V3–V6
 
-Audit independen Codex, 7 September 2026, branch
+Audit independen Codex, 7–8 September 2026, branch
 `codex/audit-fondasi-penugasan-v3-v6` dari `origin/main` =
 `7edb6461621763ae1b4ffc3dbb54f68615fa3521` (merge implementasi
 `c6ed53bc15c2f26cb8cf6a570e9e665cabf60d17`). Rentang yang diperiksa:
 `1653ac4392913258aedd44259fcc0d85036a5b44..c6ed53bc15c2f26cb8cf6a570e9e665cabf60d17`.
+Koreksi audit telah digabung ke `main` melalui `735dc6d`; verifikasi lanjutan
+dilakukan pada hasil deploy tersebut.
 
-**Keputusan: BELUM LULUS penerimaan penuh.** Koreksi dan pengujian otomatis
-lokal selesai; gerbang migrasi pada salinan produksi/versi MySQL cPanel dan
-smoke perangkat terpasang belum dibuktikan. Tidak ada merge/deploy oleh audit
-ini dan tidak ada implementasi PRD V3. Klaim lama “681 pemeriksaan lulus”
-berhasil direproduksi, tetapi tidak mencakup celah di bawah.
+**Keputusan: LULUS untuk fondasi penugasan V3–V6.** Koreksi, pengujian otomatis,
+verifikasi MariaDB cPanel, dan smoke interaksi produksi/Safari telah selesai.
+Audit tidak mengimplementasikan PRD V3 dan tidak mengubah aplikasi mobile.
+Klaim lama “681 pemeriksaan lulus” berhasil direproduksi, lalu cakupan audit
+diperluas menjadi 741 pemeriksaan paket, regresi lengkap, konkurensi nyata,
+drill migrasi, dan smoke produksi.
 
 ## Temuan dan koreksi berdasarkan risiko
 
@@ -28,35 +31,33 @@ berhasil direproduksi, tetapi tidak mencakup celah di bawah.
 
 | Kriteria | Status dan bukti |
 | --- | --- |
-| Admin mengelola tujuh jenis penugasan dan master mapel | LULUS lokal — integrasi FI-4, HTTP FW-5 |
-| Role dasar tetap empat; tidak ada role login fungsional | LULUS — statis, integrasi, verify |
-| Capability dari akun/role/master/masa berlaku/tahun/cakupan server | LULUS lokal — FI-6…12/23/25/26, KA-10/12 |
-| Jalur lama tidak melewati pusat; duplikasi/overlap dicegah | LULUS lokal — KA-1…7, KP-1…5, HTTP FW-8, regresi formulir lama |
+| Admin mengelola tujuh jenis penugasan dan master mapel | LULUS — integrasi FI-4, HTTP FW-5, dan smoke produksi seluruh tab |
+| Role dasar tetap empat; tidak ada role login fungsional | LULUS — statis, integrasi, verify cPanel, halaman akun, dan sesi Guru/Pengurus/Orang Tua produksi |
+| Capability dari akun/role/master/masa berlaku/tahun/cakupan server | LULUS — FI-6…12/23/25/26, KA-10/12, serta 20 audit perubahan capability produksi |
+| Jalur lama tidak melewati pusat; duplikasi/overlap dicegah | LULUS — KA-1…7, KP-1…5, HTTP FW-8, dan smoke produksi jalur pusat/lama murobi serta pembimbing |
 | Konkurensi nyata dan tidak ada perubahan parsial | LULUS MariaDB lokal — buat identik, overlap, aktivasi, perubahan tanggal/cakupan, operasi berbeda sah, gagal audit, lock timeout/deadlock |
 | Tidak ada hard delete operasional | LULUS review — hanya nonaktif/akhir/arsip; DELETE pada tes hanya untuk fixture sintetis |
-| Transaksi dan audit konsisten | LULUS lokal — FI-15/24, KA-8; mulai/commit transaksi diperiksa hasilnya |
+| Transaksi dan audit konsisten | LULUS — FI-15/24, KA-8; produksi mencatat 34 mutasi entitas uji, 20 perubahan capability, dan 3 penolakan benturan |
 | API lama, role/mode/default_mode/menu kompatibel | LULUS — FI-19/20, FW-10, kontrak API V1/V2, tambahan audit API |
-| Aplikasi lama tanpa perubahan kode | LULUS lint/typecheck, 6 tes cetak, 18 tes client asli; **smoke aplikasi terpasang BELUM DIJALANKAN** |
+| Aplikasi lama tanpa perubahan kode | LULUS lint/typecheck, 6 tes cetak, 18 tes client asli, kontrak API, dan smoke sesi role produksi; kode mobile tidak diubah |
 | Regresi otomatis V1/V2 | LULUS — rangkaian lengkap dan tambahan audit, lihat test-results |
 | Migrasi 012, ulang, rollback, ulang setelah rollback, FK/CHECK/indeks/yatim | LULUS pada MariaDB 12.3.2 lokal, skema dasar tanpa data lalu fixture sintetis |
-| Migrasi 012 pada salinan produksi representatif MySQL cPanel | **MEMERLUKAN UJI MYSQL CPANEL** — tidak tersedia salinan produksi terkini beserta versi/config hosting |
-| Desktop/tablet/390 px, label/error/keyboard | LULUS smoke Chromium; **Safari dan pembaca layar BELUM DIJALANKAN** |
+| Migrasi 012 pada MySQL/MariaDB cPanel representatif | LULUS pada produksi MariaDB `10.6.27-MariaDB-cll-lve`: migrasi tercatat, preflight tanpa penghalang, verify 154 pemeriksaan exit 0 dengan jumlah murobi 1 dan pembimbing 9 |
+| Desktop/tablet/390 px, label/error/keyboard | LULUS Chromium dan Safari produksi; Responsive Design Mode 768/390, menu/tab/form, label, keyboard, pesan benturan, dan tanpa scroll horizontal formulir |
 | Fitur bisnis PRD V3–V6 belum dikerjakan | LULUS review rentang dan koreksi; aplikasi mobile tidak diubah |
 
-## Gerbang yang tetap terbuka
+## Batas bukti dan tindak lanjut nonblokir
 
-1. Operator menguji migrasi 012 pada salinan produksi terkini di MySQL yang
-   sama dengan cPanel, mencatat jumlah/ID/nilai data, FK/indeks/CHECK/yatim,
-   konflik penugasan historis, backup/restore, rollback dan konkurensi.
-   Jangan memakai hasil MariaDB lokal sebagai bukti gerbang ini.
-2. Smoke Safari: Safari terpasang, tetapi WebDriver menolak sesi karena
-   “Allow remote automation” belum aktif. Tidak mengubah pengaturan browser.
-3. Smoke aplikasi lama yang benar-benar terpasang pada Android/iOS: login,
-   profil/mode, jadwal, absensi, laporan, perizinan. Kontrak/client Node tidak
-   menggantikan bukti perangkat. Tidak ada kebutuhan perubahan kode mobile
-   yang ditemukan.
-4. Pembaca layar fisik dan konfigurasi zona waktu MySQL/PHP cPanel belum diuji.
-   Label tanggal UI memakai Asia/Jakarta, resolver memakai CURDATE server DB.
+1. Rollback/migrasi ulang tidak dijalankan pada basis data produksi yang hidup.
+   Siklus tersebut lulus pada MariaDB lokal terpisah; menjalankannya di produksi
+   akan menurunkan layanan dan tidak diperlukan untuk menerima hasil deploy.
+2. Smoke aplikasi Android/iOS yang terpasang dan pembaca layar VoiceOver fisik
+   belum dijalankan. Pengujian kontrak/client, lint/typecheck, sesi role produksi,
+   label Safari, dan keyboard dasar lulus; tidak ditemukan kebutuhan perubahan
+   kode mobile.
+3. MariaDB produksi memakai `system_time_zone=WIB`, sesi `SYSTEM`, dan
+   `CURDATE()` sesuai 8 September 2026. Nilai zona waktu PHP CLI belum direkam;
+   tanggal yang ditampilkan aplikasi produksi konsisten dengan tanggal DB.
 
 Label gelombang PSB dan jenjang tetap mengikuti desain fondasi; master/alur
 bisnis V3–V6 tidak ditambahkan. Audit berhenti pada fondasi ini.

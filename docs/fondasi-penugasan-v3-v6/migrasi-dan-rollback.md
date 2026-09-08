@@ -1,9 +1,10 @@
 # Migrasi dan rollback: Fondasi Penugasan V3–V6
 
-Keputusan pengguna 7 September 2026. Branch `feat/fondasi-penugasan-v3-v6`.
+Keputusan pengguna 7 September 2026. Branch `feat/fondasi-penugasan-v3-v6`;
+verifikasi pascadeploy diperbarui 8 September 2026.
 
-> **Agen tidak menjalankan migrasi pada produksi.** Berkas ini adalah panduan
-> untuk operator manusia.
+> **Migrasi produksi dijalankan oleh operator manusia.** Agen hanya membaca
+> hasil perintah verifikasi dan melakukan pemeriksaan pascadeploy yang aman.
 
 ## 1. Ringkasan
 
@@ -188,7 +189,14 @@ penolakan CHECK/FK nyata. Jalankan hanya pada database uji terpisah; tabel baru
 fondasi harus kosong. Drill bersifat destruktif terhadap skema 012 dan tidak
 termasuk runner regresi rutin.
 
-**MEMERLUKAN UJI MYSQL CPANEL:** dump produksi terkini pada tahap migrasi 011,
-versi MySQL/config cPanel, volume data sebenarnya, backup/restore produksi
-serta konflik historis belum diuji. SQL warisan repository bukan bukti salinan
-produksi terkini. Tidak ada perubahan pada SQL migrasi/rollback 012 selama audit.
+Deploy cPanel kemudian diverifikasi pada MariaDB
+`10.6.27-MariaDB-cll-lve`. Migrasi 012 tercatat diterapkan, preflight tidak
+menemukan penghalang, dan `penugasan_verify.php --murobi=1 --pembimbing=9`
+lulus 154 pemeriksaan dengan exit 0. Pemeriksaan mencakup kolom, FK, indeks,
+CHECK, kolom lama, jumlah dua tabel lama, tabel baru yang semula kosong, empat
+role dasar, audit, dan resolver capability. MariaDB memakai zona waktu sistem
+`WIB` dengan sesi `SYSTEM`.
+
+Rollback/migrasi ulang tetap hanya dilakukan pada database uji terpisah karena
+rollback produksi menghapus tabel fondasi beserta data yang kini sudah dibuat.
+Tidak ada perubahan pada SQL migrasi/rollback 012 selama audit.

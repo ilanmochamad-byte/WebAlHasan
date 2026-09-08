@@ -1,6 +1,8 @@
 # Fondasi Penugasan dan Hak Akses Lintas PRD V3–V6
 
-Keputusan pengguna 7 September 2026. Implementasi sudah di-merge melalui `7edb646`; koreksi audit berada di `codex/audit-fondasi-penugasan-v3-v6`. Status penerimaan penuh: **BELUM LULUS**, lihat `acceptance-status.md`.
+Keputusan pengguna 7 September 2026. Implementasi di-merge melalui `7edb646`;
+koreksi audit di-merge melalui `735dc6d` dan diverifikasi pada produksi.
+Status fondasi: **LULUS**, lihat `acceptance-status.md`.
 
 Paket ini **hanya membangun fondasi**: model penugasan, resolver capability,
 administrasi penugasan, audit, dan kontrak akses yang akan dipakai oleh:
@@ -47,7 +49,7 @@ administrasi penugasan, audit, dan kontrak akses yang akan dipakai oleh:
 | [`migrasi-dan-rollback.md`](migrasi-dan-rollback.md) | migrasi 012, pre-check, post-check, rollback |
 | [`kontrak-api.md`](kontrak-api.md) | kontrak kompatibilitas API dan aplikasi perangkat |
 | [`panduan-admin.md`](panduan-admin.md) | cara memakai Pusat Penugasan dan halaman Akun |
-| [`test-results.md`](test-results.md) | hasil pengujian secara jujur: LULUS / BELUM DIJALANKAN / MEMERLUKAN UJI MYSQL / MEMERLUKAN SMOKE TEST |
+| [`test-results.md`](test-results.md) | hasil pengujian lokal, MariaDB cPanel, produksi, browser, dan batas bukti |
 | [`cpanel-deployment.md`](cpanel-deployment.md) | panduan migrasi cPanel dan ceklis smoke test |
 | [`acceptance-status.md`](acceptance-status.md) | status kriteria penerimaan, risiko terbuka, pekerjaan lanjutan |
 

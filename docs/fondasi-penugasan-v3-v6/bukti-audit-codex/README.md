@@ -1,4 +1,4 @@
-# Bukti audit Codex — 7 September 2026
+# Bukti audit Codex — 7–8 September 2026
 
 Log berasal dari database uji `codex_penugasan_20260907_test` dengan fixture
 fiktif. `baseline.txt` adalah run sebelum koreksi; `final-suite.txt` run setelah
@@ -11,6 +11,10 @@ adalah output mentah masing-masing regresi tambahan yang lulus.
 mewakili ukuran desktop/tablet/390 px (seluruh 24 tangkapan tersedia di folder
 sementara saat audit). Tidak menyimpan database, password privat, dump
 produksi, token sesi, atau manifest fixture pengguna dalam bukti ini.
+
+`production-smoke-20260908.md` mencatat hasil cPanel, interaksi produksi,
+hak akses, audit basis data, serta Safari 768/390 secara ringkas dan tanpa
+kredensial atau token sesi.
 
 Hasil lengkap, cara menjalankan, batas bukti, dan pengujian belum dijalankan:
 [laporan pengujian](../test-results.md).

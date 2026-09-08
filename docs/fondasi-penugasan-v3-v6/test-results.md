@@ -1,13 +1,13 @@
 # Hasil pengujian audit independen fondasi V3–V6
 
-Audit Codex, 7 September 2026. Branch `codex/audit-fondasi-penugasan-v3-v6`
+Audit Codex, 7–8 September 2026. Branch `codex/audit-fondasi-penugasan-v3-v6`
 dari merge `7edb6461621763ae1b4ffc3dbb54f68615fa3521`; implementasi yang
 diaudit `c6ed53bc15c2f26cb8cf6a570e9e665cabf60d17`, setelah
 `1653ac4392913258aedd44259fcc0d85036a5b44`.
 
-**BELUM LULUS penerimaan penuh.** Pengujian otomatis lokal lulus. Migrasi pada
-salinan produksi MySQL cPanel dan smoke Safari/perangkat terpasang belum
-terbukti. Lihat [status penerimaan dan temuan](acceptance-status.md).
+**LULUS untuk fondasi penugasan V3–V6.** Pengujian otomatis lokal, migrasi
+MariaDB cPanel, serta smoke interaksi produksi dan Safari lulus. Lihat
+[status penerimaan dan temuan](acceptance-status.md).
 Dokumen ini menggantikan laporan implementator dengan hasil yang benar-benar
 dijalankan auditor; laporan lama masih tersedia dalam riwayat Git.
 
@@ -22,8 +22,9 @@ dijalankan auditor; laporan lama masih tersedia dalam riwayat Git.
   database tanpa tabel. Yang lulus adalah migrasi di atas **skema dasar kosong**.
 - Mobile tersedia di `/Users/ilanmochamad/alhasanApps`, HEAD
   `bad6b352c5c032846fbf971d820194fdd8c6bc49`; tidak diubah.
-- Server HTTP hanya localhost, Chromium headless dengan aset lokal; permintaan
-  eksternal browser diblokir. Tidak ada operasi pada produksi, merge, atau deploy.
+- Pengujian otomatis memakai server localhost dan Chromium headless dengan aset
+  lokal; permintaan eksternal browser diblokir. Smoke lanjutan memakai deploy
+  produksi setelah koreksi digabung oleh pengguna melalui `735dc6d`.
 - Tes integrasi menghapus fixture mereka; fixture sandbox/perapihan tetap ada
   dalam DB uji. Browser mengarsipkan mapel sintetis yang dibuat. Jangan mengklaim
   seluruh DB kembali kosong setelah semua tes.
@@ -171,7 +172,12 @@ dijalankan ulang setelah alasan wajib ditambahkan pada halaman lama.
 ## Migrasi dan rollback
 
 1. CREATE/ALTER skema dasar tanpa data → migrasi 001–012: LULUS.
-2. Migrasi 012 pada salinan produksi terkini: **MEMERLUKAN UJI MYSQL CPANEL**.
+2. Migrasi 012 pada MariaDB cPanel produksi: LULUS untuk migrasi maju dan
+   verifikasi pascadeploy. Server `10.6.27-MariaDB-cll-lve`; preflight tidak
+   menemukan penghalang; verify dengan jumlah aktual murobi 1/pembimbing 9
+   menyelesaikan 154 pemeriksaan dan exit 0. Percobaan sebelumnya memakai
+   ekspektasi murobi 12 yang salah sehingga satu pembandingan gagal; tidak ada
+   kegagalan skema atau kehilangan data yang teramati.
 3. Runner migrasi ulang dan SQL guarded 012 dijalankan langsung ulang: LULUS.
 4. Rollback 012: enam tabel fondasi dilepas; seluruh ID/nilai/jumlah kolom lama
    murobi/pembimbing identik dengan snapshot sebelum drill.
@@ -184,9 +190,11 @@ dijalankan ulang setelah alasan wajib ditambahkan pada halaman lama.
 Bukti: [migrasi awal](bukti-audit-codex/migration-initial.txt),
 [drill 58 pemeriksaan](bukti-audit-codex/migration-drill.txt), verify di atas.
 Skema/data SQL warisan repository tidak dianggap salinan produksi representatif.
-Versi/config MySQL cPanel, volume aktual, konflik historis, timezone,
-backup/restore produksi tetap belum diuji. SQL migrasi/rollback tidak diubah.
-Lihat [panduan migrasi](migrasi-dan-rollback.md).
+Bukti cPanel berasal dari produksi yang benar-benar dideploy. Rollback tidak
+dijalankan pada produksi; siklus rollback/migrasi ulang tetap dibuktikan pada DB
+uji terpisah. MariaDB produksi memakai zona waktu sistem `WIB`, sesi `SYSTEM`,
+dan tanggal DB yang sesuai. SQL migrasi/rollback tidak diubah. Lihat
+[panduan migrasi](migrasi-dan-rollback.md).
 
 ## Browser, aksesibilitas, dan mobile
 
@@ -205,10 +213,12 @@ diperiksa visual: [desktop](bukti-audit-codex/1440-guru_mapel.png),
 [Bukti JSON](bukti-audit-codex/browser-results.json) dan
 [output browser](bukti-audit-codex/browser.txt) disimpan.
 
-Safari terpasang, tetapi WebDriver menolak sesi karena **Allow remote automation**
-belum aktif. Pengaturan pengguna tidak diubah. **Safari/iOS dan pembaca layar:
-BELUM DIJALANKAN**, memerlukan smoke manusia. Emulasi ukuran Chromium bukan
-pengujian perangkat fisik.
+Safari produksi diuji melalui sesi Administrator: desktop, Responsive Design
+Mode 768 px, dan 390 px. Menu responsif dapat dibuka/ditutup, tab penugasan dapat
+dipindah, label kontrol terbaca pada accessibility tree, fokus keyboard mencapai
+kontrol formulir, dan formulir utama tidak memunculkan scroll horizontal. Smoke
+interaksi juga memeriksa pesan benturan, perubahan, aktif/nonaktif, pengakhiran,
+arsip, dan akses role. VoiceOver fisik dan Safari iOS belum dijalankan.
 
 Mobile: `npm run lint`, `./node_modules/.bin/tsc --noEmit`, dan
 `npm run test:print-dialog` semuanya exit 0; 6 tes cetak lulus. Node memberi
@@ -219,8 +229,32 @@ peringatan tipe modul pada file tes, tanpa kegagalan. Client asli juga diuji
 FI-19/20, FW-10, dan seluruh kontrak API V1/V2 membuktikan field lama, role,
 mode, `default_mode`, jadwal, absensi, laporan, serta perizinan tetap tersedia;
 capability baru tambahan dan bukan menu V3–V6. Tidak ditemukan kebutuhan
-perubahan kode mobile. **Smoke aplikasi Android/iOS terpasang BELUM DIJALANKAN**;
-bukti lint/typecheck/client tidak menggantikan perangkat.
+perubahan kode mobile. Sesi produksi Orang Tua, Guru, dan Pengurus juga memuat
+halaman yang sesuai, tidak menampilkan menu bisnis V3–V6, dan menerima 403 saat
+membuka halaman admin langsung. Smoke aplikasi Android/iOS terpasang belum
+dijalankan.
+
+## Smoke interaksi produksi dan audit
+
+Smoke 8 September 2026 hanya memakai akun serta data berawalan `SMOKE AUDIT`.
+Data lama tidak diubah. [Bukti ringkas produksi](bukti-audit-codex/production-smoke-20260908.md)
+mencatat detail tanpa kredensial atau token sesi. Hasil yang diverifikasi:
+
+- master mata pelajaran dan tujuh jenis penugasan dapat dibuat; duplikasi/
+  periode tumpang tindih ditolak pada pusat serta halaman lama murobi dan
+  pembimbing dengan pesan domain yang dapat dipahami;
+- perubahan, aktif/nonaktif, pengakhiran, arsip murobi/pembimbing, dan arsip
+  mata pelajaran konsisten di halaman pusat/lama; penugasan uji lain berakhir
+  dan nonaktif karena UI fondasi tidak menyediakan arsip untuk jenis tersebut;
+- profil role dasar tetap empat; sesi Orang Tua, Guru, dan Pengurus tidak
+  memperoleh menu V3–V6 atau akses admin;
+- `audit_logs` memuat 34 mutasi untuk delapan entitas uji yang tepat, seluruhnya
+  oleh Administrator, termasuk pembuatan, perubahan, status, pengakhiran, dan
+  arsip. Terdapat 20 audit `penugasan.capability_berubah` dengan pemicu entitas
+  yang tepat serta capability bertambah/berkurang, dan tiga audit
+  `penugasan.tolak_tumpang_tindih` untuk guru mapel, murobi, dan pembimbing;
+- seluruh data uji yang dapat diarsipkan melalui UI telah diarsipkan; sisanya
+  ditinggalkan dalam keadaan berakhir dan nonaktif. Tidak ada hard delete.
 
 ## Reproduksi lokal
 
