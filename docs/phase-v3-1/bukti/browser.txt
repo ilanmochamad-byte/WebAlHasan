@@ -1,0 +1,74 @@
+[lulus] API tanpa token ditolak
+[lulus] 1440 kategori HTTP 200
+[lulus] 1440 kategori tanpa scroll horizontal formulir
+[lulus] 1440 kategori label kontrol
+[lulus] 1440 katalog HTTP 200
+[lulus] 1440 katalog tanpa scroll horizontal formulir
+[lulus] 1440 katalog label kontrol
+[lulus] 1440 ambang HTTP 200
+[lulus] 1440 ambang tanpa scroll horizontal formulir
+[lulus] 1440 ambang label kontrol
+[lulus] 768 kategori HTTP 200
+[lulus] 768 kategori tanpa scroll horizontal formulir
+[lulus] 768 kategori label kontrol
+[lulus] 768 katalog HTTP 200
+[lulus] 768 katalog tanpa scroll horizontal formulir
+[lulus] 768 katalog label kontrol
+[lulus] 768 ambang HTTP 200
+[lulus] 768 ambang tanpa scroll horizontal formulir
+[lulus] 768 ambang label kontrol
+[lulus] 375 kategori HTTP 200
+[lulus] 375 kategori tanpa scroll horizontal formulir
+[lulus] 375 kategori label kontrol
+[lulus] 375 katalog HTTP 200
+[lulus] 375 katalog tanpa scroll horizontal formulir
+[lulus] 375 katalog label kontrol
+[lulus] 375 ambang HTTP 200
+[lulus] 375 ambang tanpa scroll horizontal formulir
+[lulus] 375 ambang label kontrol
+[lulus] Kategori web tersimpan; XSS menjadi teks
+[lulus] CSRF hilang/palsu ditolak
+[lulus] CSRF hilang/palsu ditolak
+[lulus] Nonaktif web
+[lulus] Jenis pelanggaran dibuat melalui web
+[lulus] Pengakhiran katalog tersimpan melalui web
+[lulus] Alasan pengakhiran tampil di riwayat audit
+[lulus] Ambang dibuat melalui web
+[lulus] Input aman dipertahankan setelah duplikasi
+[lulus] Pesan kode duplikat aman
+[lulus] Hapus GET warisan ditolak
+[lulus] Pencatatan warisan ditutup
+[lulus] sbx_admin login API lama
+[lulus] sbx_admin API capability tanpa fitur operasional
+[lulus] sbx_admin otorisasi katalog API
+[lulus] sbx_admin otorisasi ambang API
+[lulus] sbx_admin endpoint fase 2 tidak ada
+[lulus] sbx_admin field profil lama tersedia
+[lulus] sbx_pengurus_a login API lama
+[lulus] sbx_pengurus_a API capability tanpa fitur operasional
+[lulus] sbx_pengurus_a otorisasi katalog API
+[lulus] sbx_pengurus_a otorisasi ambang API
+[lulus] sbx_pengurus_a endpoint fase 2 tidak ada
+[lulus] sbx_pengurus_a field profil lama tersedia
+[lulus] sbx_murobi_a login API lama
+[lulus] sbx_murobi_a API capability tanpa fitur operasional
+[lulus] sbx_murobi_a otorisasi katalog API
+[lulus] sbx_murobi_a otorisasi ambang API
+[lulus] sbx_murobi_a endpoint fase 2 tidak ada
+[lulus] sbx_murobi_a field profil lama tersedia
+[lulus] sbx_guru_biasa login API lama
+[lulus] sbx_guru_biasa API capability tanpa fitur operasional
+[lulus] sbx_guru_biasa otorisasi katalog API
+[lulus] sbx_guru_biasa otorisasi ambang API
+[lulus] sbx_guru_biasa endpoint fase 2 tidak ada
+[lulus] sbx_guru_biasa field profil lama tersedia
+[lulus] sbx_ortu_a login API lama
+[lulus] sbx_ortu_a API capability tanpa fitur operasional
+[lulus] sbx_ortu_a otorisasi katalog API
+[lulus] sbx_ortu_a otorisasi ambang API
+[lulus] sbx_ortu_a endpoint fase 2 tidak ada
+[lulus] sbx_ortu_a field profil lama tersedia
+[lulus] sbx_pengurus_a halaman admin ditolak
+[lulus] sbx_murobi_a halaman admin ditolak
+[lulus] sbx_ortu_a halaman admin ditolak
+[lulus] Tidak ada eksekusi XSS

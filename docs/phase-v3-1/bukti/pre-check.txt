@@ -1,0 +1,25 @@
+[lulus] Fondasi 012 tercatat
+[lulus] Prasyarat users
+[lulus] Prasyarat roles
+[lulus] Prasyarat user_roles
+[lulus] Prasyarat guru
+[lulus] Prasyarat pengurus
+[lulus] Prasyarat wali
+[lulus] Prasyarat santri
+[lulus] Prasyarat tahun_ajaran
+[lulus] Prasyarat kelas
+[lulus] Prasyarat kamar
+[lulus] Prasyarat santri_wali
+[lulus] Prasyarat pembimbing_assignments
+[lulus] Prasyarat murobi_assignments
+[lulus] Prasyarat audit_logs
+[lulus] Prasyarat notifikasi_outbox
+[lulus] Prasyarat perangkat_push
+[lulus] Prasyarat pelanggaran
+[lulus] Role dasar tepat empat, tanpa role fungsional
+[lulus] Tahun ajaran aktif tersedia
+[lulus] Admin aktif tersedia
+[lulus] Relasi wali aktif tersedia
+[lulus] Capability pembimbing dapat dihitung
+[lulus] Capability murobi dapat dihitung
+LULUS: tidak ada blocker.

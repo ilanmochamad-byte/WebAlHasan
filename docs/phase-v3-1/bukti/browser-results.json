@@ -1,0 +1,298 @@
+[
+  {
+    "ok": true,
+    "name": "API tanpa token ditolak"
+  },
+  {
+    "ok": true,
+    "name": "1440 kategori HTTP 200"
+  },
+  {
+    "ok": true,
+    "name": "1440 kategori tanpa scroll horizontal formulir"
+  },
+  {
+    "ok": true,
+    "name": "1440 kategori label kontrol"
+  },
+  {
+    "ok": true,
+    "name": "1440 katalog HTTP 200"
+  },
+  {
+    "ok": true,
+    "name": "1440 katalog tanpa scroll horizontal formulir"
+  },
+  {
+    "ok": true,
+    "name": "1440 katalog label kontrol"
+  },
+  {
+    "ok": true,
+    "name": "1440 ambang HTTP 200"
+  },
+  {
+    "ok": true,
+    "name": "1440 ambang tanpa scroll horizontal formulir"
+  },
+  {
+    "ok": true,
+    "name": "1440 ambang label kontrol"
+  },
+  {
+    "ok": true,
+    "name": "768 kategori HTTP 200"
+  },
+  {
+    "ok": true,
+    "name": "768 kategori tanpa scroll horizontal formulir"
+  },
+  {
+    "ok": true,
+    "name": "768 kategori label kontrol"
+  },
+  {
+    "ok": true,
+    "name": "768 katalog HTTP 200"
+  },
+  {
+    "ok": true,
+    "name": "768 katalog tanpa scroll horizontal formulir"
+  },
+  {
+    "ok": true,
+    "name": "768 katalog label kontrol"
+  },
+  {
+    "ok": true,
+    "name": "768 ambang HTTP 200"
+  },
+  {
+    "ok": true,
+    "name": "768 ambang tanpa scroll horizontal formulir"
+  },
+  {
+    "ok": true,
+    "name": "768 ambang label kontrol"
+  },
+  {
+    "ok": true,
+    "name": "375 kategori HTTP 200"
+  },
+  {
+    "ok": true,
+    "name": "375 kategori tanpa scroll horizontal formulir"
+  },
+  {
+    "ok": true,
+    "name": "375 kategori label kontrol"
+  },
+  {
+    "ok": true,
+    "name": "375 katalog HTTP 200"
+  },
+  {
+    "ok": true,
+    "name": "375 katalog tanpa scroll horizontal formulir"
+  },
+  {
+    "ok": true,
+    "name": "375 katalog label kontrol"
+  },
+  {
+    "ok": true,
+    "name": "375 ambang HTTP 200"
+  },
+  {
+    "ok": true,
+    "name": "375 ambang tanpa scroll horizontal formulir"
+  },
+  {
+    "ok": true,
+    "name": "375 ambang label kontrol"
+  },
+  {
+    "ok": true,
+    "name": "Kategori web tersimpan; XSS menjadi teks"
+  },
+  {
+    "ok": true,
+    "name": "CSRF hilang/palsu ditolak"
+  },
+  {
+    "ok": true,
+    "name": "CSRF hilang/palsu ditolak"
+  },
+  {
+    "ok": true,
+    "name": "Nonaktif web"
+  },
+  {
+    "ok": true,
+    "name": "Jenis pelanggaran dibuat melalui web"
+  },
+  {
+    "ok": true,
+    "name": "Pengakhiran katalog tersimpan melalui web"
+  },
+  {
+    "ok": true,
+    "name": "Alasan pengakhiran tampil di riwayat audit"
+  },
+  {
+    "ok": true,
+    "name": "Ambang dibuat melalui web"
+  },
+  {
+    "ok": true,
+    "name": "Input aman dipertahankan setelah duplikasi"
+  },
+  {
+    "ok": true,
+    "name": "Pesan kode duplikat aman"
+  },
+  {
+    "ok": true,
+    "name": "Hapus GET warisan ditolak"
+  },
+  {
+    "ok": true,
+    "name": "Pencatatan warisan ditutup"
+  },
+  {
+    "ok": true,
+    "name": "sbx_admin login API lama"
+  },
+  {
+    "ok": true,
+    "name": "sbx_admin API capability tanpa fitur operasional"
+  },
+  {
+    "ok": true,
+    "name": "sbx_admin otorisasi katalog API"
+  },
+  {
+    "ok": true,
+    "name": "sbx_admin otorisasi ambang API"
+  },
+  {
+    "ok": true,
+    "name": "sbx_admin endpoint fase 2 tidak ada"
+  },
+  {
+    "ok": true,
+    "name": "sbx_admin field profil lama tersedia"
+  },
+  {
+    "ok": true,
+    "name": "sbx_pengurus_a login API lama"
+  },
+  {
+    "ok": true,
+    "name": "sbx_pengurus_a API capability tanpa fitur operasional"
+  },
+  {
+    "ok": true,
+    "name": "sbx_pengurus_a otorisasi katalog API"
+  },
+  {
+    "ok": true,
+    "name": "sbx_pengurus_a otorisasi ambang API"
+  },
+  {
+    "ok": true,
+    "name": "sbx_pengurus_a endpoint fase 2 tidak ada"
+  },
+  {
+    "ok": true,
+    "name": "sbx_pengurus_a field profil lama tersedia"
+  },
+  {
+    "ok": true,
+    "name": "sbx_murobi_a login API lama"
+  },
+  {
+    "ok": true,
+    "name": "sbx_murobi_a API capability tanpa fitur operasional"
+  },
+  {
+    "ok": true,
+    "name": "sbx_murobi_a otorisasi katalog API"
+  },
+  {
+    "ok": true,
+    "name": "sbx_murobi_a otorisasi ambang API"
+  },
+  {
+    "ok": true,
+    "name": "sbx_murobi_a endpoint fase 2 tidak ada"
+  },
+  {
+    "ok": true,
+    "name": "sbx_murobi_a field profil lama tersedia"
+  },
+  {
+    "ok": true,
+    "name": "sbx_guru_biasa login API lama"
+  },
+  {
+    "ok": true,
+    "name": "sbx_guru_biasa API capability tanpa fitur operasional"
+  },
+  {
+    "ok": true,
+    "name": "sbx_guru_biasa otorisasi katalog API"
+  },
+  {
+    "ok": true,
+    "name": "sbx_guru_biasa otorisasi ambang API"
+  },
+  {
+    "ok": true,
+    "name": "sbx_guru_biasa endpoint fase 2 tidak ada"
+  },
+  {
+    "ok": true,
+    "name": "sbx_guru_biasa field profil lama tersedia"
+  },
+  {
+    "ok": true,
+    "name": "sbx_ortu_a login API lama"
+  },
+  {
+    "ok": true,
+    "name": "sbx_ortu_a API capability tanpa fitur operasional"
+  },
+  {
+    "ok": true,
+    "name": "sbx_ortu_a otorisasi katalog API"
+  },
+  {
+    "ok": true,
+    "name": "sbx_ortu_a otorisasi ambang API"
+  },
+  {
+    "ok": true,
+    "name": "sbx_ortu_a endpoint fase 2 tidak ada"
+  },
+  {
+    "ok": true,
+    "name": "sbx_ortu_a field profil lama tersedia"
+  },
+  {
+    "ok": true,
+    "name": "sbx_pengurus_a halaman admin ditolak"
+  },
+  {
+    "ok": true,
+    "name": "sbx_murobi_a halaman admin ditolak"
+  },
+  {
+    "ok": true,
+    "name": "sbx_ortu_a halaman admin ditolak"
+  },
+  {
+    "ok": true,
+    "name": "Tidak ada eksekusi XSS"
+  }
+]
