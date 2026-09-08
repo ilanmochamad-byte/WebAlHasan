@@ -1,0 +1,7 @@
+[lulus] Runner ulang tidak menggandakan migrasi
+[lulus] Rollback 013 berhasil
+[lulus] Seluruh tabel V3 dilepas pada rollback
+[lulus] Isi seluruh tabel lama identik setelah rollback
+[lulus] Migrasi setelah rollback berhasil
+[lulus] Runner setelah pemasangan ulang idempoten
+[lulus] Isi seluruh tabel lama identik setelah migrasi ulang

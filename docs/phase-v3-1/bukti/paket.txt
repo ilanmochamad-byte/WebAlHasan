@@ -1,0 +1,66 @@
+[lulus] PHP lint admin/admin_v3_katalog.php
+[lulus] PHP lint admin/admin_pelanggaran.php
+[lulus] PHP lint app/V3/KatalogService.php
+[lulus] PHP lint app/V3/KatalogRepository.php
+[lulus] PHP lint app/V3/V3Exception.php
+[lulus] PHP lint app/Auth/Capabilities.php
+[lulus] PHP lint api/v1/index.php
+[lulus] PHP lint bin/v3_verify.php
+[lulus] Migrasi hanya menambah struktur tanpa mengganti/backfill lama
+[lulus] Tidak ada hard delete KatalogRepository.php
+[lulus] Tidak ada hard delete KatalogService.php
+[lulus] Tidak ada hard delete V3Exception.php
+[lulus] Guard dan CSRF web
+[lulus] Warisan hanya baca
+[lulus] Tidak ada mutasi V3 API
+[lulus] Kategori dibuat dan dibaca kembali
+[lulus] Katalog dibuat dan dibaca kembali
+[lulus] Ambang dibuat dan dibaca kembali
+[lulus] Kode duplikat ditolak
+[lulus] Duplikat tidak menambah baris
+[lulus] Batas bersentuhan bertumpang tindih ditolak
+[lulus] Input katalog tidak valid
+[lulus] Input katalog tidak valid
+[lulus] Input katalog tidak valid
+[lulus] Input katalog tidak valid
+[lulus] Input katalog tidak valid
+[lulus] Input katalog tidak valid
+[lulus] Pengurus tidak dapat mengelola katalog
+[lulus] Role klien tidak dipercaya
+[lulus] IDOR baca admin ditolak
+[lulus] Ambang negatif ditolak
+[lulus] Maksimum negatif ditolak
+[lulus] Rentang terbalik ditolak
+[lulus] Manipulasi filter array ditolak
+[lulus] Optimistic version menolak tab lama
+[lulus] Satu audit per mutasi
+[lulus] Escape XSS pada keluaran
+[lulus] Gagal audit membatalkan transaksi
+[lulus] Tidak ada baris setelah gagal audit
+[lulus] Capability aktif v3.pelanggaran.kelola
+[lulus] Capability dicabut saat relasi/penugasan berakhir v3.pelanggaran.kelola
+[lulus] Capability aktif v3.murobi.mengetahui
+[lulus] Capability dicabut saat relasi/penugasan berakhir v3.murobi.mengetahui
+[lulus] Capability aktif v3.publikasi.baca
+[lulus] Capability dicabut saat relasi/penugasan berakhir v3.publikasi.baca
+[lulus] Cakupan anak sendiri v3.pelanggaran.kelola
+[lulus] Cakupan anak lain ditolak v3.pelanggaran.kelola
+[lulus] Cakupan anak sendiri v3.murobi.mengetahui
+[lulus] Cakupan anak lain ditolak v3.murobi.mengetahui
+[lulus] Cakupan anak sendiri v3.publikasi.baca
+[lulus] Cakupan anak lain ditolak v3.publikasi.baca
+[lulus] Empat role dasar tetap
+[lulus] API baca katalog untuk pembimbing aktif
+[lulus] Orang tua tidak membaca katalog internal
+[lulus] Tabel lama tetap ada
+[lulus] Constraint database menolak data rusak
+[lulus] Constraint database menolak data rusak
+[lulus] Constraint database menolak data rusak
+[lulus] Pagination katalog 25 + 2 baris
+[lulus] Pagination tidak mengulang baris antarhalaman
+[lulus] Dua proses bersamaan: satu tersimpan, satu konflik, tanpa duplikasi.
+[lulus] Lock timeout menghasilkan konflik aman tanpa baris baru.
+[lulus] Deadlock nyata dipetakan ke konflik aman.
+[lulus] Sehat exit 0
+[lulus] Overlap fixture exit nonzero
+[lulus] Setelah perbaikan exit 0

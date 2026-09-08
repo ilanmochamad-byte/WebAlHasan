@@ -1,0 +1,274 @@
+[lulus] Fondasi 012 tercatat
+[lulus] Prasyarat users
+[lulus] Prasyarat roles
+[lulus] Prasyarat user_roles
+[lulus] Prasyarat guru
+[lulus] Prasyarat pengurus
+[lulus] Prasyarat wali
+[lulus] Prasyarat santri
+[lulus] Prasyarat tahun_ajaran
+[lulus] Prasyarat kelas
+[lulus] Prasyarat kamar
+[lulus] Prasyarat santri_wali
+[lulus] Prasyarat pembimbing_assignments
+[lulus] Prasyarat murobi_assignments
+[lulus] Prasyarat audit_logs
+[lulus] Prasyarat notifikasi_outbox
+[lulus] Prasyarat perangkat_push
+[lulus] Prasyarat pelanggaran
+[lulus] Role dasar tepat empat, tanpa role fungsional
+[lulus] Tahun ajaran aktif tersedia
+[lulus] Admin aktif tersedia
+[lulus] Relasi wali aktif tersedia
+[lulus] Capability pembimbing dapat dihitung
+[lulus] Capability murobi dapat dihitung
+[lulus] Migrasi V3 tercatat
+[lulus] Tabel v3_kategori
+[lulus] Kolom v3_kategori
+[lulus] FOREIGN KEY v3_kategori
+[lulus] CHECK v3_kategori
+[lulus] UNIQUE v3_kategori
+[lulus] Primary index v3_kategori
+[lulus] Tabel v3_katalog
+[lulus] Kolom v3_katalog
+[lulus] FOREIGN KEY v3_katalog
+[lulus] CHECK v3_katalog
+[lulus] UNIQUE v3_katalog
+[lulus] Primary index v3_katalog
+[lulus] Index katalog_filter
+[lulus] Tabel v3_ambang
+[lulus] Kolom v3_ambang
+[lulus] FOREIGN KEY v3_ambang
+[lulus] CHECK v3_ambang
+[lulus] UNIQUE v3_ambang
+[lulus] Primary index v3_ambang
+[lulus] Index ambang_rentang
+[lulus] Tabel v3_pelanggaran
+[lulus] Kolom v3_pelanggaran
+[lulus] FOREIGN KEY v3_pelanggaran
+[lulus] CHECK v3_pelanggaran
+[lulus] UNIQUE v3_pelanggaran
+[lulus] Primary index v3_pelanggaran
+[lulus] Index pelanggaran_warisan
+[lulus] Index pelanggaran_retry
+[lulus] Index pelanggaran_fingerprint
+[lulus] Index pelanggaran_riwayat
+[lulus] Tabel v3_poin_ledger
+[lulus] Kolom v3_poin_ledger
+[lulus] FOREIGN KEY v3_poin_ledger
+[lulus] CHECK v3_poin_ledger
+[lulus] UNIQUE v3_poin_ledger
+[lulus] Primary index v3_poin_ledger
+[lulus] Index ledger_rekonsiliasi
+[lulus] Tabel v3_konseling_kasus
+[lulus] Kolom v3_konseling_kasus
+[lulus] FOREIGN KEY v3_konseling_kasus
+[lulus] CHECK v3_konseling_kasus
+[lulus] UNIQUE v3_konseling_kasus
+[lulus] Primary index v3_konseling_kasus
+[lulus] Index kasus_retry
+[lulus] Index kasus_warisan
+[lulus] Index kasus_riwayat
+[lulus] Tabel v3_konseling_sesi
+[lulus] Kolom v3_konseling_sesi
+[lulus] FOREIGN KEY v3_konseling_sesi
+[lulus] CHECK v3_konseling_sesi
+[lulus] UNIQUE v3_konseling_sesi
+[lulus] Primary index v3_konseling_sesi
+[lulus] Index sesi_retry
+[lulus] Index sesi_jadwal
+[lulus] Tabel v3_konseling_tautan
+[lulus] Kolom v3_konseling_tautan
+[lulus] FOREIGN KEY v3_konseling_tautan
+[lulus] CHECK v3_konseling_tautan
+[lulus] UNIQUE v3_konseling_tautan
+[lulus] Primary index v3_konseling_tautan
+[lulus] Index tautan_unik
+[lulus] Tabel v3_murobi_catatan
+[lulus] Kolom v3_murobi_catatan
+[lulus] FOREIGN KEY v3_murobi_catatan
+[lulus] CHECK v3_murobi_catatan
+[lulus] UNIQUE v3_murobi_catatan
+[lulus] Primary index v3_murobi_catatan
+[lulus] Tabel v3_publikasi
+[lulus] Kolom v3_publikasi
+[lulus] FOREIGN KEY v3_publikasi
+[lulus] CHECK v3_publikasi
+[lulus] UNIQUE v3_publikasi
+[lulus] Primary index v3_publikasi
+[lulus] Index publikasi_penerima
+[lulus] Tabel v3_lampiran
+[lulus] Kolom v3_lampiran
+[lulus] FOREIGN KEY v3_lampiran
+[lulus] CHECK v3_lampiran
+[lulus] UNIQUE v3_lampiran
+[lulus] Primary index v3_lampiran
+[lulus] Tabel v3_idempotency
+[lulus] Kolom v3_idempotency
+[lulus] FOREIGN KEY v3_idempotency
+[lulus] CHECK v3_idempotency
+[lulus] UNIQUE v3_idempotency
+[lulus] Primary index v3_idempotency
+[lulus] Index v3_request_unik
+[lulus] Tidak yatim v3_murobi_catatan.pelanggaran_id
+[lulus] Tidak yatim v3_murobi_catatan.kasus_id
+[lulus] Tidak yatim v3_murobi_catatan.sesi_id
+[lulus] Tidak yatim v3_murobi_catatan.guru_id
+[lulus] Tidak yatim v3_murobi_catatan.murobi_assignment_id
+[lulus] Tidak yatim v3_murobi_catatan.created_by
+[lulus] Tidak yatim v3_murobi_catatan.updated_by
+[lulus] Tidak yatim v3_konseling_kasus.santri_id
+[lulus] Tidak yatim v3_konseling_kasus.tahun_ajaran_id
+[lulus] Tidak yatim v3_konseling_kasus.pembimbing_id
+[lulus] Tidak yatim v3_konseling_kasus.pembimbing_assignment_id
+[lulus] Tidak yatim v3_konseling_kasus.created_by
+[lulus] Tidak yatim v3_konseling_kasus.updated_by
+[lulus] Tidak yatim notifikasi_outbox.penerima_user_id
+[lulus] Tidak yatim notifikasi_outbox.pengajuan_id
+[lulus] Tidak yatim jadwal_jam_migration_report.jadwal_id
+[lulus] Tidak yatim v3_lampiran.pelanggaran_id
+[lulus] Tidak yatim v3_lampiran.kasus_id
+[lulus] Tidak yatim v3_lampiran.sesi_id
+[lulus] Tidak yatim v3_lampiran.created_by
+[lulus] Tidak yatim v3_lampiran.updated_by
+[lulus] Tidak yatim v3_konseling_tautan.pelanggaran_id
+[lulus] Tidak yatim v3_konseling_tautan.kasus_id
+[lulus] Tidak yatim v3_konseling_tautan.sesi_id
+[lulus] Tidak yatim v3_konseling_tautan.created_by
+[lulus] Tidak yatim v3_konseling_tautan.updated_by
+[lulus] Tidak yatim v3_poin_ledger.pelanggaran_id
+[lulus] Tidak yatim v3_poin_ledger.santri_id
+[lulus] Tidak yatim v3_poin_ledger.tahun_ajaran_id
+[lulus] Tidak yatim v3_poin_ledger.pembalik_dari_id
+[lulus] Tidak yatim v3_poin_ledger.created_by
+[lulus] Tidak yatim v3_poin_ledger.updated_by
+[lulus] Tidak yatim audit_logs.actor_user_id
+[lulus] Tidak yatim v3_publikasi.pelanggaran_id
+[lulus] Tidak yatim v3_publikasi.kasus_id
+[lulus] Tidak yatim v3_publikasi.sesi_id
+[lulus] Tidak yatim v3_publikasi.santri_id
+[lulus] Tidak yatim v3_publikasi.wali_id
+[lulus] Tidak yatim v3_publikasi.created_by
+[lulus] Tidak yatim v3_publikasi.updated_by
+[lulus] Tidak yatim bendahara_psb_assignments.created_by
+[lulus] Tidak yatim bendahara_psb_assignments.diakhiri_oleh
+[lulus] Tidak yatim bendahara_psb_assignments.pengurus_id
+[lulus] Tidak yatim bendahara_psb_assignments.tahun_ajaran_id
+[lulus] Tidak yatim bendahara_psb_assignments.updated_by
+[lulus] Tidak yatim pengaturan_notifikasi.updated_by
+[lulus] Tidak yatim pengaturan_notifikasi.whatsapp_check_oleh_user_id
+[lulus] Tidak yatim izin_riwayat_status.pelaku_user_id
+[lulus] Tidak yatim izin_riwayat_status.pengajuan_id
+[lulus] Tidak yatim panitia_psb_assignments.created_by
+[lulus] Tidak yatim panitia_psb_assignments.diakhiri_oleh
+[lulus] Tidak yatim panitia_psb_assignments.pengurus_id
+[lulus] Tidak yatim panitia_psb_assignments.tahun_ajaran_id
+[lulus] Tidak yatim panitia_psb_assignments.updated_by
+[lulus] Tidak yatim v3_ambang.tahun_ajaran_id
+[lulus] Tidak yatim v3_ambang.created_by
+[lulus] Tidak yatim v3_ambang.updated_by
+[lulus] Tidak yatim pertemuan_peserta.kelas_id_snapshot
+[lulus] Tidak yatim pertemuan_peserta.pertemuan_id
+[lulus] Tidak yatim pertemuan_peserta.plotting_kelas_id
+[lulus] Tidak yatim pertemuan_peserta.santri_id
+[lulus] Tidak yatim pertemuan_peserta.tahun_ajaran_id_snapshot
+[lulus] Tidak yatim absensi_santri.dicatat_oleh
+[lulus] Tidak yatim absensi_santri.pertemuan_id
+[lulus] Tidak yatim absensi_santri.santri_id
+[lulus] Tidak yatim v3_kategori.created_by
+[lulus] Tidak yatim v3_kategori.updated_by
+[lulus] Tidak yatim jadwal_ngaji.created_by
+[lulus] Tidak yatim jadwal_ngaji.updated_by
+[lulus] Tidak yatim user_roles.assigned_by
+[lulus] Tidak yatim user_roles.role_id
+[lulus] Tidak yatim user_roles.user_id
+[lulus] Tidak yatim v3_pelanggaran.santri_id
+[lulus] Tidak yatim v3_pelanggaran.tahun_ajaran_id
+[lulus] Tidak yatim v3_pelanggaran.pembimbing_id
+[lulus] Tidak yatim v3_pelanggaran.pembimbing_assignment_id
+[lulus] Tidak yatim v3_pelanggaran.katalog_id
+[lulus] Tidak yatim v3_pelanggaran.revisi_dari_id
+[lulus] Tidak yatim v3_pelanggaran.created_by
+[lulus] Tidak yatim v3_pelanggaran.updated_by
+[lulus] Tidak yatim v3_katalog.kategori_id
+[lulus] Tidak yatim v3_katalog.created_by
+[lulus] Tidak yatim v3_katalog.updated_by
+[lulus] Tidak yatim users.pengurus_id
+[lulus] Tidak yatim users.wali_id
+[lulus] Tidak yatim v3_konseling_sesi.kasus_id
+[lulus] Tidak yatim v3_konseling_sesi.pembimbing_id
+[lulus] Tidak yatim v3_konseling_sesi.revisi_dari_id
+[lulus] Tidak yatim v3_konseling_sesi.created_by
+[lulus] Tidak yatim v3_konseling_sesi.updated_by
+[lulus] Tidak yatim izin_idempotency_keys.pengajuan_id
+[lulus] Tidak yatim izin_idempotency_keys.user_id
+[lulus] Tidak yatim absensi_guru.dicatat_oleh
+[lulus] Tidak yatim absensi_guru.pertemuan_id
+[lulus] Tidak yatim absensi_guru.guru_id
+[lulus] Tidak yatim pertemuan_pengajian.completed_by
+[lulus] Tidak yatim pertemuan_pengajian.created_by
+[lulus] Tidak yatim pertemuan_pengajian.opened_by
+[lulus] Tidak yatim pertemuan_pengajian.jadwal_id
+[lulus] Tidak yatim izin_keputusan_koreksi.dikoreksi_oleh_user_id
+[lulus] Tidak yatim izin_keputusan_koreksi.keputusan_id
+[lulus] Tidak yatim izin_keputusan_koreksi.pengajuan_id
+[lulus] Tidak yatim pendidikan_assignments.created_by
+[lulus] Tidak yatim pendidikan_assignments.diakhiri_oleh
+[lulus] Tidak yatim pendidikan_assignments.pengurus_id
+[lulus] Tidak yatim pendidikan_assignments.tahun_ajaran_id
+[lulus] Tidak yatim pendidikan_assignments.updated_by
+[lulus] Tidak yatim notifikasi_pengaturan_audit.aktor_user_id
+[lulus] Tidak yatim v3_idempotency.user_id
+[lulus] Tidak yatim v3_idempotency.created_by
+[lulus] Tidak yatim v3_idempotency.updated_by
+[lulus] Tidak yatim plotting_kelas.created_by
+[lulus] Tidak yatim bendahara_bulanan_assignments.created_by
+[lulus] Tidak yatim bendahara_bulanan_assignments.diakhiri_oleh
+[lulus] Tidak yatim bendahara_bulanan_assignments.pengurus_id
+[lulus] Tidak yatim bendahara_bulanan_assignments.tahun_ajaran_id
+[lulus] Tidak yatim bendahara_bulanan_assignments.updated_by
+[lulus] Tidak yatim perangkat_push.user_id
+[lulus] Tidak yatim guru_mapel_assignments.created_by
+[lulus] Tidak yatim guru_mapel_assignments.diakhiri_oleh
+[lulus] Tidak yatim guru_mapel_assignments.guru_id
+[lulus] Tidak yatim guru_mapel_assignments.kelas_id
+[lulus] Tidak yatim guru_mapel_assignments.mata_pelajaran_id
+[lulus] Tidak yatim guru_mapel_assignments.tahun_ajaran_id
+[lulus] Tidak yatim guru_mapel_assignments.updated_by
+[lulus] Tidak yatim alumni.created_by
+[lulus] Tidak yatim alumni.santri_id
+[lulus] Tidak yatim alumni.updated_by
+[lulus] Tidak yatim api_tokens.user_id
+[lulus] Tidak yatim mata_pelajaran.created_by
+[lulus] Tidak yatim mata_pelajaran.updated_by
+[lulus] Tidak yatim murobi_assignments.created_by
+[lulus] Tidak yatim murobi_assignments.diakhiri_oleh
+[lulus] Tidak yatim murobi_assignments.guru_id
+[lulus] Tidak yatim murobi_assignments.kamar_id
+[lulus] Tidak yatim murobi_assignments.kelas_id
+[lulus] Tidak yatim murobi_assignments.tahun_ajaran_id
+[lulus] Tidak yatim murobi_assignments.updated_by
+[lulus] Tidak yatim pembimbing_assignments.created_by
+[lulus] Tidak yatim pembimbing_assignments.diakhiri_oleh
+[lulus] Tidak yatim pembimbing_assignments.kamar_id
+[lulus] Tidak yatim pembimbing_assignments.kelas_id
+[lulus] Tidak yatim pembimbing_assignments.pengurus_id
+[lulus] Tidak yatim pembimbing_assignments.tahun_ajaran_id
+[lulus] Tidak yatim pembimbing_assignments.updated_by
+[lulus] Tidak yatim api_idempotency_keys.user_id
+[lulus] Tidak yatim notifikasi_percobaan.outbox_id
+[lulus] Tidak yatim izin_pengajuan.diajukan_oleh_user_id
+[lulus] Tidak yatim izin_pengajuan.murobi_guru_id
+[lulus] Tidak yatim izin_pengajuan.dibatalkan_oleh_user_id
+[lulus] Tidak yatim izin_pengajuan.pembimbing_assignment_id
+[lulus] Tidak yatim izin_pengajuan.murobi_ditetapkan_oleh_user_id
+[lulus] Tidak yatim izin_pengajuan.pengurus_id
+[lulus] Tidak yatim izin_pengajuan.santri_id
+[lulus] Tidak yatim izin_pengajuan.tahun_ajaran_id
+[lulus] Tidak yatim santri_wali.created_by
+[lulus] Tidak yatim santri_wali.santri_id
+[lulus] Tidak yatim santri_wali.wali_id
+[lulus] Tidak yatim izin_keputusan.diputus_oleh_user_id
+[lulus] Tidak yatim izin_keputusan.pengajuan_id
+[lulus] Tidak ada ambang bertumpang tindih
+LULUS: tidak ada blocker.
