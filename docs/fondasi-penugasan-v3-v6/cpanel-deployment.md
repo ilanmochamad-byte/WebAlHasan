@@ -175,10 +175,12 @@ tetapi **jangan** menjalankannya ulang tanpa alasan, dan **jangan pernah**
 menjalankan rollback lalu migrasi ulang pada produksi yang sudah berisi
 penugasan V3–V6: rollback menghapus isinya.
 
-## Status audit independen 7 September 2026
+## Status audit independen 8 September 2026
 
-Migrasi/rollback lokal dan rangkaian otomatis lulus, tetapi status penuh
-**BELUM LULUS — MEMERLUKAN UJI MYSQL CPANEL**. Smoke Chromium tersedia pada
-1440/768/390 px; Safari, pembaca layar, dan aplikasi lama terpasang belum
-terbukti pada audit ini. Audit tidak melakukan merge, deployment, maupun
-migrasi produksi. Ikuti bukti terbaru pada `test-results.md`.
+Migrasi 012 telah dijalankan operator pada produksi MariaDB cPanel
+`10.6.27-MariaDB-cll-lve`. Preflight tidak menemukan penghalang dan verify
+dengan manifest aktual murobi 1/pembimbing 9 lulus 154 pemeriksaan, exit 0.
+Smoke produksi serta Safari desktop/768/390 juga lulus. Rollback tidak
+dijalankan pada produksi; siklus tersebut hanya dijalankan pada database uji
+terpisah. Ikuti bukti terbaru pada `test-results.md` dan
+`bukti-audit-codex/production-smoke-20260908.md`.
