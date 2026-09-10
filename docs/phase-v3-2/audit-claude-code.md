@@ -252,13 +252,27 @@ nomor telepon.
 Diagnosis dibaca dari kode lalu direproduksi pada database uji sebelum
 diperbaiki; lihat bagian 3.
 
-`php bin/v3_phase2_verify.php` pada hosting: 30 pemeriksaan lulus, tanpa blocker.
-Angka itu berasal dari kode sebelum perbaikan T6, sehingga belum memuat penjaga
-statis urutan fingerprint yang ditambahkan sesudahnya.
+**T6 terbukti tertutup di produksi (deploy kedua).** Sesudah perbaikan dideploy,
+koreksi yang hanya mengisi `Alasan koreksi` tanpa menyentuh waktu, tempat,
+uraian, maupun saksi berhasil: halaman menampilkan "Perubahan tersimpan dengan
+audit dan riwayat", catatan sumber naik ke versi 2, dan revisi baru terbentuk
+dengan alasan "ujicoba koreksi hanya mengisi alasan koreksi tanpa mengubah
+uraian". Riwayat revisi menampilkan keduanya sebagai rantai, dan poin tetap
+`Agregat 2 · ledger 2 · selisih 0` — koreksi tanpa perubahan isi tidak merusak
+rekonsiliasi.
 
-**Belum diuji di produksi:** perilaku sesudah perbaikan T6 (perlu deploy ulang),
-tanda mengetahui murobi, lampiran privat, akses lintas cakupan, dan aplikasi
-perangkat.
+`php bin/v3_phase2_verify.php` pada hosting: 30 pemeriksaan lulus, tanpa blocker.
+Angka itu diambil sebelum perbaikan T6 dideploy; penjaga statis urutan
+fingerprint hidup di suite `tests/`, bukan di verifier, sehingga jumlah
+pemeriksaan verifier tidak berubah karenanya.
+
+Seluruh alur produksi di atas dijalankan pada Safari macOS. Itu membuktikan
+halaman Fase 2 dapat dipakai di Safari untuk alur tersebut, tetapi bukan
+pengganti suite peramban otomatis yang tetap belum dijalankan.
+
+**Belum diuji di produksi:** tanda mengetahui murobi, lampiran privat, akses
+lintas cakupan pembimbing/murobi/orang tua, aplikasi perangkat, suite peramban
+otomatis, pembaca layar nyata, push fisik, dan performa volume besar.
 
 ## 8. Kebersihan database uji
 

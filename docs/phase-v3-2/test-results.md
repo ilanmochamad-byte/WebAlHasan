@@ -68,5 +68,9 @@ smoke test operasional menghasilkan ledger tujuh entri berpasangan dengan
 data nyata. T2, T3 dua arah, dan payload notifikasi generik terbukti di sana.
 T6 ditemukan pada sesi yang sama, direproduksi pada database uji, lalu diperbaiki.
 
-Belum diuji di produksi: perilaku sesudah perbaikan T6, tanda mengetahui murobi,
-lampiran privat, akses lintas cakupan, dan aplikasi perangkat.
+Perbaikan T6 dideploy sesudahnya dan diverifikasi pada alur web produksi:
+koreksi yang hanya mengisi alasan berhasil membentuk revisi, catatan sumber naik
+versi, dan poin tetap `Agregat 2 · ledger 2 · selisih 0`.
+
+Belum diuji di produksi: tanda mengetahui murobi, lampiran privat, akses lintas
+cakupan, aplikasi perangkat, dan suite peramban otomatis.

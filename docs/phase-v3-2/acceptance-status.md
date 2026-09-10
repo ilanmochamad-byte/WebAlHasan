@@ -20,7 +20,8 @@ Branch `prd-v3-fase-2`, baseline `af6285ffe31f9ca22407446b32c9785530beabaa` dari
 | Regresi Fase 1 dan V1/V2/fondasi | LULUS — 71 serta 50 suite/4.014 pemeriksaan |
 | Audit Claude Code | **SELESAI** — lihat [bukti audit](audit-claude-code.md); 6 temuan (T1–T6) diperbaiki beserta regresinya |
 | Migrasi dan smoke test hosting cPanel | **LULUS** — 014 dan 015 terpasang, `v3_verify` nol yatim, rekonsiliasi terbukti atas data nyata |
-| Kesiapan/deploy produksi | **Sebagian** — Fase 2 sudah dipakai di hosting; perbaikan T6 belum dideploy |
+| Koreksi T1–T6 terbukti di hosting | **LULUS** — T2, T3 dua arah, dan T6 diverifikasi langsung pada alur web produksi |
+| Kesiapan/deploy produksi | **Terpasang dan berjalan** — seluruh koreksi audit sudah dideploy; cakupan uji produksi masih terbatas pada alur pencatatan/koreksi/pembatalan |
 
 ## Hasil audit Claude Code
 
@@ -45,9 +46,13 @@ Migrasi dan smoke test pada hosting cPanel sudah dijalankan Human Developer dan
 menutup batas bukti yang sebelumnya terbuka; T2, T3 dua arah, rekonsiliasi ledger,
 dan kriteria payload notifikasi terbukti atas data nyata di sana.
 
-Belum dijalankan dan tidak diklaim: perilaku sesudah perbaikan T6 di produksi
-(perlu deploy ulang), suite peramban, Safari, pembaca layar nyata, aplikasi
-terpasang, push fisik, dan performa volume besar.
+Perbaikan T6 kemudian dideploy dan diverifikasi langsung di hosting: koreksi
+yang hanya mengisi alasan berhasil membentuk revisi, dan rekonsiliasi poin tetap
+berselisih nol.
+
+Belum dijalankan dan tidak diklaim: tanda mengetahui murobi, lampiran privat,
+dan akses lintas cakupan pada produksi; suite peramban otomatis; pembaca layar
+nyata; aplikasi terpasang; push fisik; dan performa volume besar.
 
 ## Fokus audit yang diminta implementator
 
