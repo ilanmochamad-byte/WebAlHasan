@@ -9,7 +9,10 @@ require_once __DIR__ . '/_ui.php';
 /**
  * Pusat notifikasi website (V2 Fase 4).
  *
- * Terbuka bagi SELURUH peran perizinan: admin, pengurus, murobi, dan orang tua.
+ * Terbuka bagi seluruh penerima notifikasi: admin, pengurus, murobi, dan orang
+ * tua. Sejak V3 halaman ini juga memuat peristiwa pembinaan (pelanggaran, poin,
+ * dan rekomendasi), sehingga label maupun breadcrumb-nya tidak lagi menyebut
+ * satu modul saja.
  * Halaman ini tidak memiliki pemilih peran karena notifikasi selalu milik satu
  * akun — bukan milik satu cakupan. Penerima diambil dari sesi; parameter URL
  * tidak pernah dipakai untuk menentukan pemilik (PRD Fase 4 kriteria 2).
@@ -73,13 +76,22 @@ try {
 $filterAktif = (string) ($data['filters']['status'] ?? 'semua');
 $belumDibaca = (int) ($data['jumlah_belum_dibaca'] ?? 0);
 $modeAktif = $userCapabilities[0] ?? '';
-portal_header('Notifikasi', $userCapabilities, $modeAktif, $currentUser, ['show_heading' => false]);
+// Breadcrumb default `portal_header()` menyisipkan "Perizinan" karena seluruh
+// halaman lain yang memakainya memang milik modul itu. Notifikasi bersifat
+// lintas modul, jadi breadcrumb-nya ditentukan sendiri di sini.
+portal_header('Notifikasi', $userCapabilities, $modeAktif, $currentUser, [
+    'show_heading' => false,
+    'breadcrumbs' => [
+        ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
+        ['label' => 'Notifikasi'],
+    ],
+]);
 ?>
 <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4">
     <div>
         <h1 class="h3 mb-1">Notifikasi</h1>
         <p class="text-muted mb-0">
-            Pemberitahuan perizinan untuk akun Anda.
+            Pemberitahuan untuk akun Anda.
             <?php if ($belumDibaca > 0): ?>
                 <span class="badge text-bg-danger ms-1"><?= $belumDibaca ?> belum dibaca</span>
             <?php else: ?>
