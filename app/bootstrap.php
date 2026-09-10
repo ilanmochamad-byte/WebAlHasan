@@ -333,7 +333,7 @@ function login_throttle(): LoginThrottle
  * setiap request dan setiap halaman tetap menjaga dirinya sendiri di server.
  *
  * @param array<string, mixed> $user
- * @return array{capabilities: array<int, string>, unread: int|null}
+ * @return array{capabilities: array<int, string>, v3_capabilities: array<string,array<string,mixed>>, unread: int|null}
  */
 function ui_context(array $user): array
 {
@@ -352,6 +352,7 @@ function ui_context(array $user): array
 
     return $cache[$id] = [
         'capabilities' => capabilities()->forUser($user),
+        'v3_capabilities' => capabilities()->v3Capabilities($user),
         'unread' => $unread,
     ];
 }
@@ -575,4 +576,15 @@ function notification_admin_service(): NotificationAdminService
 function v3_katalog_service(): \App\V3\KatalogService
 {
     return new \App\V3\KatalogService(new \App\V3\KatalogRepository(app_db()), new \App\Auth\Capabilities(app_db()), new \App\Audit\AuditLogger(app_db()));
+}
+
+/** Satu-satunya pintu mutasi pelanggaran V3 untuk web dan REST API. */
+function v3_pelanggaran_service(): \App\V3\PelanggaranService
+{
+    return new \App\V3\PelanggaranService(
+        new \App\V3\PelanggaranRepository(app_db()),
+        new \App\Auth\Capabilities(app_db()),
+        new \App\Audit\AuditLogger(app_db()),
+        new \App\V3\AttachmentStorage(APP_ROOT . '/storage/private/v3')
+    );
 }

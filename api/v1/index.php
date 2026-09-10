@@ -54,16 +54,58 @@ try {
     // seperti sebelumnya, sehingga kontrak aplikasi guru tidak berubah.
     $user = api_authenticator()->authenticate();
 
-    // V3 Phase 1: read only; legacy capability/mode payloads remain unchanged.
-    if ($method === 'GET' && in_array($path, ['/v3/capabilities', '/v3/katalog', '/v3/ambang'], true)) {
-        try {
-            if ($path === '/v3/capabilities') {
-                JsonResponse::success(['capabilities' => (new \App\Auth\Capabilities(app_db()))->v3Capabilities($user), 'operasional_tersedia' => false]);
-            }
-            JsonResponse::success(v3_katalog_service()->active($path === '/v3/katalog' ? 'katalog' : 'ambang', $_GET, $user));
-        } catch (\App\V3\V3Exception $e) {
-            throw new ApiException($e->status === 403 ? 'FORBIDDEN' : ($e->status === 409 ? 'CONFLICT' : ($e->status === 503 ? 'SERVICE_UNAVAILABLE' : 'VALIDATION_FAILED')), $e->getMessage(), $e->status);
-        }
+    // V3 aditif; kontrak capability/mode/menu mobile lama tidak disentuh.
+    if ($method === 'GET' && $path === '/v3/capabilities') {
+        $v3 = (new \App\Auth\Capabilities(app_db()))->v3Capabilities($user);
+        $operational = array_intersect(
+            ['v3.pelanggaran.kelola','v3.binaan.baca','v3.murobi.mengetahui','v3.pengawasan','v3.koreksi'],
+            array_keys($v3)
+        ) !== [];
+        JsonResponse::success(['capabilities'=>$v3,'operasional_tersedia'=>$operational]);
+    }
+    if ($method === 'GET' && in_array($path, ['/v3/katalog', '/v3/ambang'], true)) {
+        JsonResponse::success(v3_katalog_service()->active($path === '/v3/katalog' ? 'katalog' : 'ambang', $_GET, $user));
+    }
+    if ($method === 'GET' && $path === '/v3/pelanggaran/options') {
+        JsonResponse::success(v3_pelanggaran_service()->options($user));
+    }
+    if ($method === 'GET' && $path === '/v3/pelanggaran') {
+        JsonResponse::success(v3_pelanggaran_service()->page($user,$_GET));
+    }
+    if ($method === 'POST' && $path === '/v3/pelanggaran') {
+        $body=Request::json();
+        $body['idempotency_key'] ??= $_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? null;
+        $attachment=(new \App\V3\AttachmentStorage(APP_ROOT.'/storage/private/v3'))->stageBase64(isset($body['lampiran'])&&is_array($body['lampiran'])?$body['lampiran']:null);
+        $result=v3_pelanggaran_service()->create($user,$body,$attachment);
+        JsonResponse::success($result['data'],$result['replayed']?200:$result['status']);
+    }
+    if ($method === 'GET' && preg_match('#^/v3/pelanggaran/(\d+)/riwayat$#',$path,$matches)) {
+        JsonResponse::success(v3_pelanggaran_service()->history($user,(int)$matches[1]));
+    }
+    if ($method === 'GET' && preg_match('#^/v3/pelanggaran/(\d+)$#',$path,$matches)) {
+        JsonResponse::success(v3_pelanggaran_service()->show($user,(int)$matches[1]));
+    }
+    if ($method === 'PATCH' && preg_match('#^/v3/pelanggaran/(\d+)$#',$path,$matches)) {
+        $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;
+        $attachment=(new \App\V3\AttachmentStorage(APP_ROOT.'/storage/private/v3'))->stageBase64(isset($body['lampiran'])&&is_array($body['lampiran'])?$body['lampiran']:null);
+        $result=v3_pelanggaran_service()->correct($user,(int)$matches[1],$body,$attachment);
+        JsonResponse::success($result['data'],$result['status']);
+    }
+    if ($method === 'POST' && preg_match('#^/v3/pelanggaran/(\d+)/pembatalan$#',$path,$matches)) {
+        $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;
+        $result=v3_pelanggaran_service()->cancel($user,(int)$matches[1],$body);
+        JsonResponse::success($result['data'],$result['status']);
+    }
+    if ($method === 'POST' && preg_match('#^/v3/pelanggaran/(\d+)/diketahui$#',$path,$matches)) {
+        $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;
+        $result=v3_pelanggaran_service()->acknowledge($user,(int)$matches[1],$body);
+        JsonResponse::success($result['data'],$result['replayed']?200:$result['status']);
+    }
+    if ($method === 'GET' && preg_match('#^/v3/lampiran/(\d+)$#',$path,$matches)) {
+        $file=v3_pelanggaran_service()->attachment($user,(int)$matches[1]);
+        header('Content-Type: '.$file['mime']);header('Content-Length: '.(string)$file['size']);
+        header("Content-Disposition: attachment; filename*=UTF-8''".rawurlencode($file['name']));
+        header('Cache-Control: private, no-store, max-age=0');readfile($file['path']);exit;
     }
 
     if ($method === 'GET' && $path === '/profile') {
@@ -279,6 +321,9 @@ try {
     }
 
     throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
+} catch (\App\V3\V3Exception $exception) {
+    $code=match($exception->status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'};
+    JsonResponse::error($code,$exception->getMessage(),$exception->status);
 } catch (ApiException $exception) {
     JsonResponse::error($exception->errorCode(), $exception->getMessage(), $exception->status(), $exception->details());
 } catch (Throwable $exception) {

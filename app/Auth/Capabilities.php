@@ -182,7 +182,11 @@ final class Capabilities
             // Admin supervision does not impersonate an assigned operator.
             if ($entry === null || $entry['cakupan'] === []) { continue; }
             foreach ($keys as $key) {
-                $result[$key] = ['sumber' => self::SUMBER_PENUGASAN, 'cakupan' => $entry['cakupan']];
+                // Pertahankan provenance resolver fondasi. Admin yang juga
+                // memegang penugasan nyata harus tetap dibedakan sebagai
+                // `keduanya`; service operasional V3 memakainya untuk
+                // mewajibkan jalur koreksi admin beralasan.
+                $result[$key] = ['sumber' => $entry['sumber'], 'cakupan' => $entry['cakupan']];
             }
         }
         if (in_array('orang_tua', $roles, true) && $this->scalar(

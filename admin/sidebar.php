@@ -29,7 +29,7 @@ if ($sidebarUser === null) {
     return;
 }
 $sidebarContext = ui_context($sidebarUser);
-$sidebarGroups = Navigation::forUser($sidebarUser, $sidebarContext['capabilities'], $sidebarContext['unread']);
+$sidebarGroups = Navigation::forUser($sidebarUser, $sidebarContext['capabilities'], $sidebarContext['unread'], $sidebarContext['v3_capabilities']);
 $sidebarActive = Navigation::activeKey();
 ?>
 <link rel="stylesheet" href="<?= ah_e(app_url('/assets/ui/alhasan.css')) ?>">

@@ -38,6 +38,7 @@ final class Layout
      *     description?:string,
      *     user:array<string, mixed>,
      *     capabilities?:array<int, string>,
+     *     v3_capabilities?:array<string,array<string,mixed>>,
      *     unread?:int|null,
      *     breadcrumbs?:array<int, array{label:string, url?:string}>,
      *     actions?:string,
@@ -53,7 +54,7 @@ final class Layout
         $user = $options['user'];
         $capabilities = $options['capabilities'] ?? [];
         $active = $options['active'] ?? Navigation::activeKey();
-        $groups = Navigation::forUser($user, $capabilities, $options['unread'] ?? null);
+        $groups = Navigation::forUser($user, $capabilities, $options['unread'] ?? null, $options['v3_capabilities'] ?? []);
         $title = (string) $options['title'];
         $heading = (string) ($options['heading'] ?? $title);
         $options['breadcrumbs'] ??= [

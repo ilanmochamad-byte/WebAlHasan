@@ -88,9 +88,10 @@ if (!function_exists('ah_page_open')) {
         if (!array_key_exists('flash', $options)) {
             $options['flash'] = ah_flash_take();
         }
-        if (!isset($options['capabilities']) || !isset($options['unread'])) {
+        if (!isset($options['capabilities']) || !isset($options['v3_capabilities']) || !isset($options['unread'])) {
             $context = ui_context($options['user']);
             $options['capabilities'] ??= $context['capabilities'];
+            $options['v3_capabilities'] ??= $context['v3_capabilities'];
             $options['unread'] ??= $context['unread'];
         }
         Layout::open($options);
