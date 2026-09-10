@@ -20,7 +20,8 @@ Branch: `prd-v3-fase-1`. Baseline `14548541000e0df523343d82b28650061364bb65`. Pe
 | Data warisan hanya baca | LULUS — keputusan pengguna PRD §5.2a; GET hapus/POST pencatatan 405 |
 | Tidak membuka fitur Fase 2–5 atau mengubah mobile | LULUS pemeriksaan perubahan; endpoint mutasi V3 tidak ada |
 | Versi database cPanel | **LULUS 10 September 2026** — migrasi 013 diterapkan pada MariaDB hosting pukul 10:20:23; `bin/v3_verify.php` 273 pemeriksaan LULUS, nol blocker, nol referensi yatim. Dijalankan langsung pada basis data produksi, bukan pada salinan uji. Lihat [uji-salinan-hosting.md](uji-salinan-hosting.md) |
-| Smoke Safari/perangkat fisik/cPanel | **MEMERLUKAN SMOKE TEST** |
+| Smoke fungsional situs live | **LULUS 10 September 2026** — Human Developer: buat/baca kategori+jenis+ambang, overlap ditolak, nonaktif beralasan tercatat audit, non-admin 403, Data warisan baca-saja, 375 px, aplikasi lama normal tanpa fitur operasional V3 |
+| Smoke Safari/perangkat fisik | LULUS sebagian — Safari desktop/iOS dan Android fisik diuji Human Developer. Konkurensi dua admin, CSRF, dan kanal WhatsApp OFF belum diuji di produksi (sudah diuji lokal) |
 | Regresi V1/V2 **sesudah** migrasi 013 | LULUS — dibuktikan auditor; 49 suite/4.011 pemeriksaan identik sebelum dan sesudah 013 |
 | Audit akhir Claude Code | **SELESAI 9 September 2026** — seluruh suite direproduksi independen; 1 koreksi terarah (T-1). Lihat [hasil-audit-claude-code.md](hasil-audit-claude-code.md) |
 

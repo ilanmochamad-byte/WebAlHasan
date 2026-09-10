@@ -49,9 +49,19 @@ foreach($fields as $name=>[$label,$type,$max]): ?>
 <?php endforeach;
 $selects=['is_active'=>['Status',[1=>'Aktif',0=>'Nonaktif']]];
 if($kind==='katalog') { $selects['kategori_id']=['Kategori',array_column($options['kategori'],'nama','id')];$selects['tingkat']=['Tingkat',array_combine(['Ringan','Sedang','Berat'],['Ringan','Sedang','Berat'])]; }
-if($kind==='ambang') { $years=[];foreach($options['tahun'] as $year) { $years[$year['id']]=$year['tahun'].' / '.$year['semester']; } $selects['tahun_ajaran_id']=['Tahun ajaran',$years]; }
+$defaults=['is_active'=>1];
+if($kind==='ambang') {
+    $years=[];$activeYear=null;
+    foreach($options['tahun'] as $year) {
+        $aktif=($year['status']??'')==='Aktif';
+        $years[$year['id']]=$year['tahun'].' / '.$year['semester'].($aktif?'':' — non-aktif');
+        if($aktif && $activeYear===null) { $activeYear=$year['id']; }
+    }
+    $selects['tahun_ajaran_id']=['Tahun ajaran',$years];
+    if($activeYear!==null) { $defaults['tahun_ajaran_id']=$activeYear; }
+}
 foreach($selects as $name=>[$label,$choices]): ?>
-<div><label class="form-label" for="v3-<?= ah_e($name) ?>"><?= ah_e($label) ?></label><select class="form-select" id="v3-<?= ah_e($name) ?>" name="<?= ah_e($name) ?>" required><?php foreach($choices as $key=>$label): ?><option value="<?= ah_e($key) ?>" <?= (string)($input[$name]??($name==='is_active'?1:''))===(string)$key?'selected':'' ?>><?= ah_e($label) ?></option><?php endforeach ?></select></div>
+<div><label class="form-label" for="v3-<?= ah_e($name) ?>"><?= ah_e($label) ?></label><select class="form-select" id="v3-<?= ah_e($name) ?>" name="<?= ah_e($name) ?>" required><?php foreach($choices as $key=>$label): ?><option value="<?= ah_e($key) ?>" <?= (string)($input[$name]??($defaults[$name]??''))===(string)$key?'selected':'' ?>><?= ah_e($label) ?></option><?php endforeach ?></select><?php if($name==='tahun_ajaran_id'): ?><small class="form-text text-muted">Ambang untuk tahun non-aktif tersimpan, tetapi belum terbaca pembimbing.</small><?php endif ?></div>
 <?php endforeach ?>
 </div>
 <?php $name=$kind==='ambang'?'rekomendasi':'uraian'; ?><label class="form-label mt-3" for="v3-description"><?= $kind==='ambang'?'Rekomendasi tindak lanjut':'Uraian (opsional)' ?></label><textarea class="form-control" id="v3-description" name="<?= $name ?>" maxlength="5000" <?= $kind==='ambang'?'required':'' ?>><?= $value($name) ?></textarea>

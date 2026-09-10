@@ -12,18 +12,18 @@
 
 ## Smoke pada salinan MySQL/MariaDB cPanel
 
-Status checklist berikut **BELUM DIJALANKAN** pada hosting. Jalankan pada salinan terpisah, setelah backup/restore terverifikasi dan migrasi 013:
+Status checklist berikut **DIJALANKAN 10 September 2026** oleh Human Developer pada situs live setelah migrasi 013. Butir yang belum tercentang belum diuji di produksi (semuanya sudah lulus lokal):
 
-- [ ] Pre-check dan post-check exit 0, jumlah/hash tabel lama identik.
-- [ ] Buat satu kategori, jenis pelanggaran, dan ambang melalui web; buka kembali nilainya.
-- [ ] Duplikasi kode, rentang overlap, poin/tanggal tidak valid ditolak tanpa baris tambahan.
-- [ ] Nonaktif/aktif/akhiri dengan alasan tercatat di audit; tidak ada hard delete.
-- [ ] Dua admin menyimpan rentang sama: tepat satu berhasil; konflik aman pada pihak kedua.
-- [ ] Guru, pengurus, dan orang tua tidak bisa membuka admin; token/role palsu tidak memberi akses.
-- [ ] Pengurus/guru tanpa penugasan serta orang tua tanpa relasi kehilangan capability yang sesuai.
-- [ ] CSRF hilang/palsu ditolak; hapus GET/pencatatan warisan ditolak.
-- [ ] Desktop, tablet, 375 px: formulir, validasi, tab, filter, pagination dan riwayat dapat digunakan.
-- [ ] API login/profil/jadwal/perizinan lama tetap bekerja; aplikasi lama tidak menampilkan fitur operasional V3.
-- [ ] WhatsApp tetap OFF dan tidak ada request provider baru.
+- [x] Pre-check dan post-check exit 0, jumlah/hash tabel lama identik.
+- [x] Buat satu kategori, jenis pelanggaran, dan ambang melalui web; buka kembali nilainya.
+- [x] Duplikasi kode, rentang overlap, poin/tanggal tidak valid ditolak tanpa baris tambahan.
+- [x] Nonaktif/aktif/akhiri dengan alasan tercatat di audit; tidak ada hard delete.
+- [ ] Dua admin menyimpan rentang sama: tepat satu berhasil; konflik aman pada pihak kedua. *(lulus lokal; belum diuji produksi)*
+- [x] Guru, pengurus, dan orang tua tidak bisa membuka admin; token/role palsu tidak memberi akses.
+- [ ] Pengurus/guru tanpa penugasan serta orang tua tanpa relasi kehilangan capability yang sesuai. *(lulus lokal; belum diuji produksi)*
+- [ ] CSRF hilang/palsu ditolak; hapus GET/pencatatan warisan ditolak. *(lulus lokal; belum diuji produksi)*
+- [x] Desktop, tablet, 375 px: formulir, validasi, tab, filter, pagination dan riwayat dapat digunakan.
+- [x] API login/profil/jadwal/perizinan lama tetap bekerja; aplikasi lama tidak menampilkan fitur operasional V3.
+- [ ] WhatsApp tetap OFF dan tidak ada request provider baru. *(lulus lokal; belum diuji produksi)*
 
-Tidak ada deployment atau migrasi produksi dalam pekerjaan implementator ini.
+Catatan: tabel `pelanggaran` warisan di produksi memang kosong sejak dump 16 Agustus 2026, sehingga halaman Data warisan menampilkan nol baris dengan benar. Jalur render baris warisan (LEFT JOIN, escape, penanda santri tidak tersedia) terbukti pada pengujian lokal, bukan di produksi.

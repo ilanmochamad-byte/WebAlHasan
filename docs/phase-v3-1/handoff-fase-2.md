@@ -2,7 +2,7 @@
 
 Disiapkan auditor Claude Code, 10 September 2026, setelah Fase 1 diaudit dan di-merge (PR #22, `e685b57`).
 
-**Jangan kirim prompt ini sebelum gerbang deploy Fase 1 selesai** — lihat [uji-salinan-hosting.md](uji-salinan-hosting.md). Fase 2 boleh mulai secara paralel hanya jika Anda menerima risiko bahwa fondasinya belum terbukti pada versi database hosting.
+**Gerbang deploy Fase 1 sudah selesai (10 September 2026).** Migrasi 013 terpasang pada MariaDB hosting dengan post-check 273 pemeriksaan LULUS, dan smoke fungsional pada situs live sudah dijalankan Human Developer. Temuan T-4 (default tahun ajaran) dikoreksi pada branch `perbaikan-default-tahun-ajaran-v3`; pastikan koreksi itu sudah masuk `main` sebelum Fase 2 dimulai.
 
 ---
 
@@ -16,8 +16,9 @@ Disiapkan auditor Claude Code, 10 September 2026, setelah Fase 1 diaudit dan di-
 >
 > 1. **T-2 harus ditangani sebelum menulis mutasi operasional apa pun.** `Capabilities::v3Capabilities()` menuliskan `sumber => SUMBER_PENUGASAN` secara harfiah untuk setiap capability operasional. Resolver fondasi membedakan `penugasan`, `admin`, dan `keduanya`, dan docblock fondasi mewajibkan modul baru membedakan pelaku admin dari pelaku operasional lewat `featureSource()`. Akibatnya admin yang merangkap penugasan pembimbing tercatat sebagai murni `penugasan`. Fase 2 mewajibkan koreksi admin beralasan dan dibedakan dari tindakan pembimbing (PRD §5.3), sehingga pembedaan itu harus dipulihkan lebih dahulu, beserta pengujiannya.
 > 2. **Serialisasi konfigurasi V3 saat ini memakai kunci satu baris `schema_migrations`.** Itu memadai untuk katalog bervolume rendah, tetapi **tidak boleh** dipakai untuk alur operasional pelanggaran. Rancang penguncian pada tingkat baris santri/tahun ajaran, bukan satu gerbang global. Jangan menambah penulisan konfigurasi yang melewati service.
-> 3. **Santri tanpa penempatan aktif tidak pernah masuk cakupan** (`v3AppliesToSantri` mensyaratkan sedikitnya satu `plotting_kelas`/`plotting_kamar` aktif). Ini perilaku aman yang disengaja, bukan bug. Bila Fase 2 perlu menangani santri tanpa penempatan, minta keputusan pengguna lebih dahulu; jangan melonggarkan sendiri.
-> 4. **Jangan melonggarkan `bin/v3_verify.php`.** Yatim pada tabel `v3_*` adalah blocker; yatim tabel warisan dilaporkan terpisah bertanda `[warisan]`. Keduanya tetap exit nonzero.
+> 3. **Ambang tahun non-aktif tetap boleh dibuat, tetapi tidak boleh menjadi default** (temuan T-4, sudah dikoreksi). `save()` sengaja tidak mewajibkan tahun aktif agar konfigurasi tahun depan tetap mungkin, sedangkan `active()` menolak tahun non-aktif dengan `403`. Ketika Fase 2 memakai ambang untuk memicu rekomendasi, pastikan ambang yang tidak pernah terbaca tidak gagal secara diam-diam — beri sinyal yang terlihat operator.
+> 4. **Santri tanpa penempatan aktif tidak pernah masuk cakupan** (`v3AppliesToSantri` mensyaratkan sedikitnya satu `plotting_kelas`/`plotting_kamar` aktif). Ini perilaku aman yang disengaja, bukan bug. Bila Fase 2 perlu menangani santri tanpa penempatan, minta keputusan pengguna lebih dahulu; jangan melonggarkan sendiri.
+> 5. **Jangan melonggarkan `bin/v3_verify.php`.** Yatim pada tabel `v3_*` adalah blocker; yatim tabel warisan dilaporkan terpisah bertanda `[warisan]`. Keduanya tetap exit nonzero.
 >
 > ### Ruang lingkup Fase 2 (PRD §6, Fase 2)
 >
@@ -52,7 +53,7 @@ Disiapkan auditor Claude Code, 10 September 2026, setelah Fase 1 diaudit dan di-
 > bash bin/penugasan_run_all_tests.sh
 > ```
 >
-> Acuan yang harus tetap terpenuhi: paket Fase 1 **66 pemeriksaan, 0 gagal**; regresi **49 suite, ±4.011 pemeriksaan, 0 gagal, 0 dilewati**. Tambahkan suite Fase 2 sendiri, termasuk uji konkurensi nyata (dua proses), uji privasi payload outbox, dan uji akses silang pembimbing/murobi/orang tua.
+> Acuan yang harus tetap terpenuhi: paket Fase 1 **71 pemeriksaan, 0 gagal**; regresi **49 suite, ±4.011 pemeriksaan, 0 gagal, 0 dilewati**. Tambahkan suite Fase 2 sendiri, termasuk uji konkurensi nyata (dua proses), uji privasi payload outbox, dan uji akses silang pembimbing/murobi/orang tua.
 >
 > Jalankan drill migrasi **sebelum** suite dan browser bila Anda menambah migrasi, karena drill menghapus data V3.
 >
