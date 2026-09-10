@@ -48,6 +48,9 @@ $assert(str_contains($source('database/rollbacks/015_v3_fase2_koreksi_dan_rekome
 $assert(str_contains($repo,'fingerprint=NULL'),'Catatan yang tidak berlaku melepas slot fingerprint');
 $assert(str_contains($repo,'alasan_pembatalan=?')&&!preg_match('/SET status=\x27Dibatalkan\x27,alasan_revisi=/',$repo),'Pembatalan tidak lagi menulis ke alasan revisi');
 $assert(str_contains($repo,'function refreshRecommendationValidity'),'Repository menyelaraskan masa berlaku rekomendasi');
+// T6: pelepasan fingerprint sumber harus mendahului penulisan revisi.
+$correctBody=substr($service,(int)strpos($service,'function correct('),4000);
+$assert(strpos($correctBody,'updateViolationVersion(')<strpos($correctBody,'insertViolation('),'Catatan sumber melepas fingerprint sebelum revisi ditulis');
 foreach(['create','correct','cancel'] as $mutation){$assert(substr_count($service,'refreshRecommendationValidity(')>=3,'Mutasi '.$mutation.' menyegarkan masa berlaku rekomendasi');}
 $htaccess=$source('.htaccess');
 $assert(str_contains($htaccess,'PRD-V3\.md'),'Dokumen PRD V3 tidak dapat diunduh dari web');

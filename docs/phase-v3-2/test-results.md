@@ -33,3 +33,40 @@ Regresi warisan sengaja menghapus akun fixture miliknya dan meninggalkan 24 outb
 Screenshot browser disimpan sementara di `/tmp/v3-phase2-browser` dan ditinjau selama sesi; tidak menjadi bukti produksi. Belum diuji: MariaDB hosting/cPanel, migrasi atau smoke produksi, Safari, pembaca layar nyata, aplikasi Android/iOS terpasang, push fisik, dan performa 1.000 pelanggaran. Tidak ada klaim untuk area tersebut.
 
 Patch cleanup lampiran validasi ditambahkan setelah regresi besar; suite Fase 2 lengkap diulang sesudah patch. Regresi V1/V2 tidak diulang lagi karena patch hanya menyentuh service dan tes V3 baru; hasil regresi 4.014 tetap dicatat dengan batas ini secara eksplisit.
+
+## Reproduksi dan koreksi auditor — Claude Code, 10 September 2026
+
+Bagian ini menyalip daftar "Belum diuji" di atas untuk dua hal: MariaDB
+hosting/cPanel dan migrasi/smoke produksi kini sudah dijalankan. Catatan
+implementator sengaja dibiarkan apa adanya sebagai rekaman jujur atas batas
+buktinya sendiri pada saat itu.
+
+Pengujian dijalankan ulang secara independen pada `webalhasan_v3_phase1_test`.
+Angka implementator terverifikasi: regresi 4.014 pemeriksaan pada 49 paket
+direproduksi persis, begitu pula residu fixture 24 outbox dan 6 audit yatim.
+
+| Pemeriksaan | Sebelum koreksi | Sesudah koreksi T1–T6 |
+| --- | --- | --- |
+| Paket Fase 2 (`bin/v3_phase2_run_tests.sh`) | 131, exit 0 | **172**, exit 0 |
+| Paket Fase 1 | 71, exit 0 | 71, exit 0 |
+| Drill migrasi | 9, exit 0 | **18**, exit 0 |
+| Regresi V1/V2 + fondasi | 4.014 / 49 paket, exit 0 | 4.014 / 49 paket, exit 0 |
+| `bin/v3_verify.php` | exit 0 | exit 0 |
+| `bin/v3_phase2_verify.php` | exit 0 | exit 0 |
+
+Satu kali jalan, `tests/v2_phase3_api_contract.php` gagal di dalam runner penuh
+tepat sesudah suite V3 Fase 2 dijalankan, lalu lulus pada run bersih dan lulus
+terisolasi pada `af6285f` maupun `247db8a` (116 pemeriksaan). Bergantung
+urutan/fixture, bukan regresi Fase 2.
+
+### Bukti produksi hosting cPanel
+
+Dijalankan Human Developer sesudah koreksi T1–T5 dideploy. Migrasi 014 dan 015
+terpasang tanpa galat; `bin/v3_verify.php` lulus penuh tanpa referensi yatim;
+smoke test operasional menghasilkan ledger tujuh entri berpasangan dengan
+`Agregat 2 · ledger 2 · selisih 0`, sehingga pemeriksaan rekonsiliasi lulus atas
+data nyata. T2, T3 dua arah, dan payload notifikasi generik terbukti di sana.
+T6 ditemukan pada sesi yang sama, direproduksi pada database uji, lalu diperbaiki.
+
+Belum diuji di produksi: perilaku sesudah perbaikan T6, tanda mengetahui murobi,
+lampiran privat, akses lintas cakupan, dan aplikasi perangkat.

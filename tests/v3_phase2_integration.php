@@ -154,4 +154,23 @@ $assert((int)$repo->one('SELECT COUNT(*) n FROM v3_rekomendasi WHERE santri_id=?
 $assert(($bandRows($service->show($pembimbingA,$reviveId)['rekomendasi'])[0]['berlaku']??false),'Rekomendasi yang dipulihkan berlaku kembali');
 $assert((int)$repo->one('SELECT COUNT(*) n FROM v3_pelanggaran WHERE id IN (?,?,?)',[$auditId,$revertId,$reReportId])['n']===3,'Seluruh catatan koreksi audit tetap tersimpan');
 
+// T6: koreksi yang tidak mengubah satu pun field fingerprint. Catatan sumber
+// wajib melepas fingerprint sebelum revisi ditulis, kalau tidak revisi
+// bertabrakan dengan catatan yang justru sedang dikoreksi.
+$noopBase=array_replace($auditBase,['uraian'=>'SBX uraian noop '.$auditTag,'waktu_kejadian'=>date('Y-m-d\TH:i',time()-14400),'idempotency_key'=>$auditKey('aud-noop')]);
+$noopId=(int)$service->create($pembimbingA,$noopBase)['data']['pelanggaran']['id'];
+$noopFix=$service->correct($pembimbingA,$noopId,['version'=>1,'idempotency_key'=>$auditKey('aud-noop-fix'),'alasan'=>'Menambahkan alasan tanpa mengubah isi']);
+$noopRevision=(int)$noopFix['data']['pelanggaran']['id'];
+$assert($noopRevision!==$noopId,'Koreksi tanpa perubahan isi tetap membentuk revisi beralasan');
+$assert((string)$repo->violation($noopRevision)['uraian']===(string)$repo->violation($noopId)['uraian'],'Revisi tanpa perubahan isi mempertahankan uraian sumber');
+$assert($repo->violation($noopId)['fingerprint']===null&&$repo->violation($noopRevision)['fingerprint']!==null,'Fingerprint berpindah dari catatan sumber ke revisinya');
+
+// Kasus nyata yang sama: bukti dilampirkan belakangan tanpa mengubah isi.
+$latePdf=tempnam(sys_get_temp_dir(),'sbx-v3-');file_put_contents($latePdf,"%PDF-1.4\n1 0 obj<</Type/Catalog>>endobj\n%%EOF\n");
+$lateFile=$storage->stageTestFile($latePdf,'sbx-bukti-susulan.pdf');@unlink($latePdf);
+$lateFix=$service->correct($pembimbingA,$noopRevision,['version'=>1,'idempotency_key'=>$auditKey('aud-late'),'alasan'=>'Melampirkan bukti susulan'],$lateFile);
+$lateId=(int)$lateFix['data']['pelanggaran']['id'];
+$assert(count($repo->attachments($lateId))===1,'Bukti dapat dilampirkan lewat koreksi tanpa mengubah isi');
+$assert((int)$repo->aggregate($childA,$year)['total_poin']===(int)$service->show($pembimbingA,$lateId)['total_poin'],'Koreksi tanpa perubahan isi tetap terrekonsiliasi');
+
 exit($fails?1:0);
