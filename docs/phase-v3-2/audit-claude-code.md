@@ -212,6 +212,39 @@ Dicatat supaya keputusannya sadar, bukan terlewat:
   peristiwa V3 seperti `v3_rekomendasi_baru`. Kosmetik dan tidak memengaruhi
   akses, tetapi membingungkan pembimbing; terlihat pada bukti produksi.
 
+## 6a. Keputusan operasional: akun smoke test produksi
+
+**Keputusan Human Developer, 10 September 2026: akun dan santri smoke test
+dipertahankan aktif di produksi, tidak dinonaktifkan sesudah Fase 2.**
+
+Alasannya: Fase 3–5 akan memerlukan smoke test produksi juga, dan membangun
+ulang rantai akun → penugasan pembimbing → penempatan kelas/kamar setiap fase
+jauh lebih mahal daripada memelihara satu set yang sudah terbukti berjalan.
+Penonaktifan dilakukan hanya ketika set ini benar-benar sudah tidak dibutuhkan.
+
+Keputusan ini menggantikan saran auditor sebelumnya yang menganjurkan
+penonaktifan sesudah Fase 2. Sesi berikutnya jangan memakai saran lama itu.
+
+Entitas terkait: akun `PENGURUS SMOKE AUDIT` (pengurus dengan penugasan
+pembimbing aktif) dan santri `SANTRI SMOKE AUDIT`.
+
+Syarat yang menyertai keputusan ini:
+
+- **Poin uji dikembalikan sesudah dipakai.** Catatan uji dibatalkan dengan
+  alasan sehingga pembalik poin mengembalikan total tanpa menghapus riwayat.
+  Penting menjelang Fase 5 yang membangun laporan teragregasi.
+- **Kredensial akun smoke tidak dibagikan.** Akun ini memegang penugasan
+  pembimbing aktif, jadi kewenangannya nyata di produksi.
+- **Penamaan `SMOKE AUDIT` dipertahankan** agar barisnya selalu dapat dikenali
+  pada laporan dan pemeriksaan.
+
+Catatan untuk Fase 4: per 10 September 2026 `SANTRI SMOKE AUDIT` **tidak
+mempunyai relasi `santri_wali`** — cakupan pembimbing berasal dari penempatan
+kelas/kamar, bukan dari relasi wali. Karena itu tidak ada risiko publikasi uji
+coba terkirim kepada orang tua sungguhan. Konsekuensinya, publikasi orang tua
+Fase 4 belum dapat di-smoke-test dengan set ini; perlu ditambahkan wali fiktif
+beserta akunnya dan ditautkan ke santri tersebut sebelum Fase 4 dikerjakan.
+
 ## 7. Bukti produksi (hosting cPanel, 10 September 2026)
 
 Dijalankan Human Developer pada host produksi sesudah koreksi T1–T5 dideploy.
