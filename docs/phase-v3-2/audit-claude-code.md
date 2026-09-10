@@ -250,19 +250,19 @@ ulang pukul 21.55 menunjukkan `total_relasi_wali` bernilai 1, dengan satu
 penempatan kelas aktif dan satu kamar. Set smoke kini memenuhi prasyarat data
 untuk menguji publikasi orang tua.
 
-Yang belum diverifikasi: apakah wali tersebut sudah mempunyai akun login
-(`users.wali_id`). Relasi wali saja belum cukup untuk Fase 4 — publikasi hanya
-sampai kepada wali yang punya akun. Periksa sebelum Fase 4 dikerjakan:
+Akun login walinya juga sudah ada dan diverifikasi pada 10 September 2026:
+`ortu_smoke.audit`, role `orang_tua`, status aktif, dengan satu santri terhubung.
+Ini penting karena relasi wali saja belum cukup — publikasi Fase 4 hanya sampai
+kepada wali yang mempunyai akun (`users.wali_id`).
 
-```
-SELECT w.id, w.nama_wali, u.id AS user_id, u.username, u.is_active
-  FROM wali w LEFT JOIN users u ON u.wali_id = w.id
- WHERE w.nama_wali LIKE '%SMOKE%';
-```
+Dengan demikian rantai prasyarat data untuk menguji publikasi orang tua sudah
+lengkap: santri berpenempatan aktif → relasi `santri_wali` aktif → wali →
+akun login dengan role `orang_tua`. Tidak ada lagi prasyarat data yang tertunda
+untuk smoke test Fase 4.
 
 Seluruh wali smoke wajib fiktif. Menautkan santri uji ke wali sungguhan akan
 membuat publikasi uji coba terkirim kepada orang tua betulan begitu Fase 4
-aktif.
+aktif; itu satu-satunya jalur nyata data uji ini dapat bocor keluar sistem.
 
 ## 7. Bukti produksi (hosting cPanel, 10 September 2026)
 
