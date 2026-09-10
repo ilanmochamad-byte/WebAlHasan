@@ -3,7 +3,7 @@
 declare(strict_types=1);
 require_once dirname(__DIR__).'/app/bootstrap.php';
 if(PHP_SAPI!=='cli') { http_response_code(404);exit; }
-$pre=in_array('--pre',$argv,true);$fail=0;
+$pre=in_array('--pre',$argv,true);$fail=0;$warisan=0;
 $check=static function(bool $ok,string $label)use(&$fail):void{echo ($ok?'[lulus] ':'[gagal] ').$label.PHP_EOL;if(!$ok)$fail++;};
 try {
     $r=new \App\V3\KatalogRepository(app_db());
@@ -45,9 +45,22 @@ try {
         foreach($r->rows('SELECT TABLE_NAME,COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA=DATABASE() AND REFERENCED_TABLE_NAME IS NOT NULL') as $fk) {
             foreach($fk as $identifier) {if(!preg_match('/^[a-zA-Z0-9_]+$/D',$identifier))throw new RuntimeException('Identifier tidak valid.');}
             $q='SELECT COUNT(*) FROM `'.$fk['TABLE_NAME'].'` c LEFT JOIN `'.$fk['REFERENCED_TABLE_NAME'].'` p ON p.`'.$fk['REFERENCED_COLUMN_NAME'].'`=c.`'.$fk['COLUMN_NAME'].'` WHERE c.`'.$fk['COLUMN_NAME'].'` IS NOT NULL AND p.`'.$fk['REFERENCED_COLUMN_NAME'].'` IS NULL';
-            $check($count($q)===0,'Tidak yatim '.$fk['TABLE_NAME'].'.'.$fk['COLUMN_NAME']);
+            $yatim=$count($q);$label='Tidak yatim '.$fk['TABLE_NAME'].'.'.$fk['COLUMN_NAME'];
+            // Referensi yatim pada tabel warisan sudah dapat ada sebelum V3 dan
+            // TIDAK dibuat migrasi 013. Tetap dilaporkan dan tetap membuat exit
+            // nonzero (tidak dilonggarkan), tetapi dipisahkan agar operator tidak
+            // menyimpulkan migrasi V3 yang merusaknya lalu menghapus catatan lama.
+            if ($yatim!==0 && !str_starts_with($fk['TABLE_NAME'],'v3_')) {
+                $warisan++;echo '[warisan] '.$label.': '.$yatim.' baris yatim, sudah ada sebelum migrasi 013.'.PHP_EOL;
+                continue;
+            }
+            $check($yatim===0,$label);
         }
         $check($count("SELECT COUNT(*) FROM v3_ambang a JOIN v3_ambang b ON a.id<b.id AND a.tahun_ajaran_id=b.tahun_ajaran_id WHERE a.is_active=1 AND b.is_active=1 AND a.archived_at IS NULL AND b.archived_at IS NULL AND a.nilai_minimum<=COALESCE(b.nilai_maksimum,2147483647) AND b.nilai_minimum<=COALESCE(a.nilai_maksimum,2147483647) AND a.tanggal_mulai<=COALESCE(b.tanggal_selesai,'9999-12-31') AND b.tanggal_mulai<=COALESCE(a.tanggal_selesai,'9999-12-31')")===0,'Tidak ada ambang bertumpang tindih');
     }
 } catch(Throwable $e) { $check(false,'Diagnostik tidak dapat diselesaikan; periksa koneksi/skema pada lingkungan yang tepat.'); }
-echo $fail===0?"LULUS: tidak ada blocker.\n":"BLOCKER: {$fail} pemeriksaan gagal.\n";exit($fail===0?0:1);
+if($warisan>0){echo "PERHATIAN: {$warisan} referensi yatim pada tabel warisan. Bukan dibuat migrasi 013; tangani terpisah dan JANGAN menghapus catatan bisnis lama.\n";}
+if($fail>0){echo "BLOCKER: {$fail} pemeriksaan gagal.\n";}
+elseif($warisan>0){echo "Struktur V3 lulus; masih ada temuan warisan di atas.\n";}
+else{echo "LULUS: tidak ada blocker.\n";}
+exit($fail===0&&$warisan===0?0:1);

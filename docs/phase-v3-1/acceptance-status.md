@@ -19,9 +19,10 @@ Branch: `prd-v3-fase-1`. Baseline `14548541000e0df523343d82b28650061364bb65`. Pe
 | Formulir desktop/tablet/375 px | LULUS Chromium — bukti browser dan tinjauan screenshot |
 | Data warisan hanya baca | LULUS — keputusan pengguna PRD §5.2a; GET hapus/POST pencatatan 405 |
 | Tidak membuka fitur Fase 2–5 atau mengubah mobile | LULUS pemeriksaan perubahan; endpoint mutasi V3 tidak ada |
-| Salinan produksi representatif/versi database cPanel | **MEMERLUKAN UJI MYSQL** |
+| Salinan produksi representatif/versi database cPanel | **MEMERLUKAN UJI MYSQL** — dipersempit oleh probe `sql_mode` ketat auditor, tidak digantikan |
 | Smoke Safari/perangkat fisik/cPanel | **MEMERLUKAN SMOKE TEST** |
-| Audit akhir Claude Code | **BELUM DIJALANKAN** |
+| Regresi V1/V2 **sesudah** migrasi 013 | LULUS — dibuktikan auditor; 49 suite/4.011 pemeriksaan identik sebelum dan sesudah 013 |
+| Audit akhir Claude Code | **SELESAI 9 September 2026** — seluruh suite direproduksi independen; 1 koreksi terarah (T-1). Lihat [hasil-audit-claude-code.md](hasil-audit-claude-code.md) |
 
 ## Risiko dan pekerjaan terbuka
 
@@ -29,7 +30,7 @@ Branch: `prd-v3-fase-1`. Baseline `14548541000e0df523343d82b28650061364bb65`. Pe
 2. Penguncian satu baris migrasi menyerialkan administrasi V3. Cocok untuk volume konfigurasi rendah; evaluasi ulang ketika alur operasional Fase 2 ditulis. Jangan menambahkan penulisan konfigurasi yang melewati service.
 3. Rollback skema menghapus data V3 dan mempertahankan audit lama; backup harus mencakup keduanya. Kode lama dapat berjalan dengan tabel tambahan dibiarkan.
 4. Tabel operasional baru belum boleh dipakai langsung oleh klien. Validasi lintas sumber/santri, transisi, ledger pembalik, publikasi, lampiran, dan audit/outbox operasional merupakan pekerjaan fase terkait.
-5. Fixture regresi lama dapat meninggalkan audit/outbox yatim setelah cleanup. Diagnostik tidak menyembunyikannya; hasil sehat diuji pada fixture yang sudah dibersihkan secara terarah, bukan dengan mematikan pemeriksaan FK.
+5. Fixture regresi lama dapat meninggalkan audit/outbox yatim setelah cleanup. Diagnostik tidak menyembunyikannya; hasil sehat diuji pada fixture yang sudah dibersihkan secara terarah, bukan dengan mematikan pemeriksaan FK. **Koreksi audit T-1:** yatim pada tabel warisan kini dilaporkan terpisah dengan penanda `[warisan]` agar tidak disalahartikan sebagai kerusakan migrasi 013; exit code tetap nonzero (tidak dilonggarkan).
 
 ## Instruksi audit Claude Code
 

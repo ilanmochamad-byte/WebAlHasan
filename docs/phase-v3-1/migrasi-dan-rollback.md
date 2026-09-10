@@ -54,6 +54,6 @@ bash bin/v3_phase1_run_tests.sh
 bash bin/penugasan_run_all_tests.sh
 ```
 
-Drill menghapus fixture V3; jalankan sebelum tes paket/browser. Regresi lama dapat meninggalkan audit/outbox yatim setelah menghapus akun fixture miliknya. Diagnostik menyatakan keadaan itu gagal dengan benar. Gunakan DB uji bersih untuk pemeriksaan penerimaan, atau bersihkan hanya sisa fixture yang asalnya dapat dibuktikan; jangan menonaktifkan pemeriksaan FK untuk meluluskan diagnostik.
+Drill menghapus fixture V3; jalankan sebelum tes paket/browser. Regresi lama dapat meninggalkan audit/outbox yatim setelah menghapus akun fixture miliknya. Diagnostik menyatakan keadaan itu gagal dengan benar; sejak koreksi audit T-1 yatim pada tabel warisan dicetak dengan penanda `[warisan]` beserta jumlah barisnya dan dipisahkan dari blocker tabel `v3_*`, sedangkan exit code tetap nonzero. Gunakan DB uji bersih untuk pemeriksaan penerimaan, atau bersihkan hanya sisa fixture yang asalnya dapat dibuktikan; jangan menonaktifkan pemeriksaan FK untuk meluluskan diagnostik, dan jangan menghapus catatan bisnis lama hanya agar post-check hijau.
 
 Belum dijalankan pada salinan produksi representatif MariaDB cPanel 10.6.27 atau MySQL 8. Bukti lokal bukan pengganti pemeriksaan kompatibilitas versi hosting tersebut.
