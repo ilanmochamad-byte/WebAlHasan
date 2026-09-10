@@ -1,5 +1,35 @@
 # Uji salinan hosting — menutup status `MEMERLUKAN UJI MYSQL`
 
+> ## HASIL: DITUTUP 10 September 2026
+>
+> Migrasi 013 dijalankan **langsung pada basis data produksi** dari `public_html`
+> (akun cPanel `k1807225`, host `sc133`) pukul 10:20:23, bukan pada salinan uji
+> seperti Jalur A di bawah.
+>
+> Hasil `php bin/v3_verify.php` pada produksi: **273 pemeriksaan LULUS, nol
+> blocker, nol referensi yatim**. Seluruh 12 tabel V3, kolom, FOREIGN KEY, CHECK,
+> UNIQUE, dan indeks bernama terpasang benar pada MariaDB hosting. Kompatibilitas
+> versi hosting dengan demikian terbukti pada mesin yang sebenarnya.
+>
+> Dua asumsi dokumen ini terkoreksi oleh hasil tersebut:
+>
+> 1. Kekhawatiran Langkah 0 **tidak terbukti** — produksi ternyata sudah
+>    menjalankan migrasi 001–012 (012 diterapkan 7 September 2026 pukul 11:01:28).
+>    Dump `k1807225_webalhasan.sql` memang sudah usang. Rantai 001–012 tidak perlu
+>    dijalankan.
+> 2. Temuan T-1 **terkonfirmasi**: `notifikasi_outbox.penerima_user_id` dan
+>    `audit_logs.actor_user_id` bersih di produksi. Baris yatim yang ditemukan
+>    auditor memang murni residu fixture suite regresi lokal, bukan cacat data.
+>
+> **Konsekuensi yang harus disadari:** migrasi berjalan pada produksi tanpa gladi
+> pada salinan lebih dahulu. Migrasi 013 bersifat menambah saja (tidak ada
+> `DROP`/`DELETE`/`ALTER` pada tabel lama), sehingga radius dampaknya kecil dan
+> hasilnya bersih. Namun rollback 013 **menghapus seluruh tabel dan isi V3**, jadi
+> pastikan backup sebelum 10 September 2026 pukul 10:20 masih tersedia.
+>
+> Prosedur Jalur A di bawah tetap berlaku untuk migrasi berikutnya (Fase 2+), yang
+> tidak akan sepenuhnya aditif.
+
 Dokumen ini menutup satu-satunya risiko teknis Fase 1 yang belum terbukti: apakah migrasi 013 berjalan benar pada versi database hosting, bukan hanya pada MariaDB lokal auditor.
 
 **Gerbang deploy.** `main` sudah memuat Fase 1 (PR #22, `e685b57`), tetapi migrasi belum pernah dijalankan pada versi database hosting. Jangan deploy sampai Jalur A di bawah hijau.
