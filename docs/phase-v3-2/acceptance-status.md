@@ -50,9 +50,13 @@ Perbaikan T6 kemudian dideploy dan diverifikasi langsung di hosting: koreksi
 yang hanya mengisi alasan berhasil membentuk revisi, dan rekonsiliasi poin tetap
 berselisih nol.
 
-Belum dijalankan dan tidak diklaim: tanda mengetahui murobi, lampiran privat,
-dan akses lintas cakupan pada produksi; suite peramban otomatis; pembaca layar
-nyata; aplikasi terpasang; push fisik; dan performa volume besar.
+Tanda mengetahui murobi kemudian diverifikasi di hosting: akun murobi membaca
+daftar binaannya, menyimpan tanda mengetahui beserta catatan, dan tidak
+memperoleh formulir koreksi maupun pembatalan. Verifier tetap lulus sesudahnya.
+
+Belum dijalankan dan tidak diklaim: penolakan akses lintas cakupan dan lampiran
+privat pada produksi; suite peramban otomatis; pembaca layar nyata; aplikasi
+terpasang; push fisik; dan performa volume besar.
 
 ## Fokus audit yang diminta implementator
 
