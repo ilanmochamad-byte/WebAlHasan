@@ -6,6 +6,7 @@ Paket ini mengimplementasikan tepat Fase 2: pencatatan pelanggaran sesuai cakupa
 
 ## Dokumen
 
+- [Panduan pengisian Katalog & Ambang](panduan-katalog-ambang.md) — untuk admin pesantren
 - [Desain dan aturan](desain-dan-aturan.md)
 - [Kontrak API](kontrak-api.md)
 - [Migrasi dan rollback](migrasi-dan-rollback.md)
