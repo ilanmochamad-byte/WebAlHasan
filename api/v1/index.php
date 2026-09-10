@@ -108,6 +108,48 @@ try {
         header('Cache-Control: private, no-store, max-age=0');readfile($file['path']);exit;
     }
 
+    // V3 Fase 3: kasus, sesi, tautan, timeline, dan tanda mengetahui murobi.
+    if ($method === 'GET' && $path === '/v3/konseling/options') {
+        $santri=isset($_GET['santri_id'])?(int)$_GET['santri_id']:null;$tahun=isset($_GET['tahun_ajaran_id'])?(int)$_GET['tahun_ajaran_id']:null;
+        JsonResponse::success(v3_konseling_service()->options($user,$santri,$tahun));
+    }
+    if ($method === 'GET' && $path === '/v3/konseling/kasus') {
+        JsonResponse::success(v3_konseling_service()->page($user,$_GET));
+    }
+    if ($method === 'POST' && $path === '/v3/konseling/kasus') {
+        $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;$result=v3_konseling_service()->createCase($user,$body);JsonResponse::success($result['data'],$result['replayed']?200:$result['status']);
+    }
+    if ($method === 'GET' && preg_match('#^/v3/konseling/kasus/(\d+)/timeline$#',$path,$matches)) {
+        JsonResponse::success(v3_konseling_service()->timeline($user,(int)$matches[1]));
+    }
+    if ($method === 'GET' && preg_match('#^/v3/konseling/kasus/(\d+)$#',$path,$matches)) {
+        JsonResponse::success(v3_konseling_service()->show($user,(int)$matches[1]));
+    }
+    if ($method === 'PATCH' && preg_match('#^/v3/konseling/kasus/(\d+)$#',$path,$matches)) {
+        $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;$result=v3_konseling_service()->correctCase($user,(int)$matches[1],$body);JsonResponse::success($result['data'],$result['status']);
+    }
+    if ($method === 'POST' && preg_match('#^/v3/konseling/kasus/(\d+)/status$#',$path,$matches)) {
+        $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;$result=v3_konseling_service()->transitionCase($user,(int)$matches[1],$body);JsonResponse::success($result['data'],$result['status']);
+    }
+    if ($method === 'POST' && preg_match('#^/v3/konseling/kasus/(\d+)/tautan$#',$path,$matches)) {
+        $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;$result=v3_konseling_service()->addLinks($user,(int)$matches[1],$body);JsonResponse::success($result['data'],$result['replayed']?200:$result['status']);
+    }
+    if ($method === 'POST' && preg_match('#^/v3/konseling/kasus/(\d+)/sesi$#',$path,$matches)) {
+        $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;$result=v3_konseling_service()->createSession($user,(int)$matches[1],$body);JsonResponse::success($result['data'],$result['replayed']?200:$result['status']);
+    }
+    if ($method === 'POST' && preg_match('#^/v3/konseling/kasus/(\d+)/diketahui$#',$path,$matches)) {
+        $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;$result=v3_konseling_service()->acknowledge($user,'kasus',(int)$matches[1],$body);JsonResponse::success($result['data'],$result['replayed']?200:$result['status']);
+    }
+    if ($method === 'POST' && preg_match('#^/v3/konseling/sesi/(\d+)/status$#',$path,$matches)) {
+        $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;$result=v3_konseling_service()->transitionSession($user,(int)$matches[1],$body);JsonResponse::success($result['data'],$result['status']);
+    }
+    if ($method === 'POST' && preg_match('#^/v3/konseling/sesi/(\d+)/diketahui$#',$path,$matches)) {
+        $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;$result=v3_konseling_service()->acknowledge($user,'sesi',(int)$matches[1],$body);JsonResponse::success($result['data'],$result['replayed']?200:$result['status']);
+    }
+    if ($method === 'PATCH' && preg_match('#^/v3/konseling/sesi/(\d+)$#',$path,$matches)) {
+        $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;$result=v3_konseling_service()->correctSession($user,(int)$matches[1],$body);JsonResponse::success($result['data'],$result['status']);
+    }
+
     if ($method === 'GET' && $path === '/profile') {
         JsonResponse::success(api_auth_service()->profile($user));
     }

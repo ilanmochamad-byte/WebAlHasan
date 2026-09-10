@@ -598,6 +598,22 @@ final class PelanggaranRepository
         return $this->all('SELECT id FROM v3_pelanggaran WHERE revisi_dari_id=? ORDER BY id',[$parentId]);
     }
 
+    /** Seluruh sesi aktif dari kasus yang menindaklanjuti satu pelanggaran. */
+    public function counselingForViolation(int $violationId): array
+    {
+        return $this->all(
+            'SELECT k.id AS kasus_id,k.status AS kasus_status,s.id AS sesi_id,s.status AS sesi_status,
+                    s.jadwal,s.realisasi,s.jadwal_berikut
+               FROM v3_konseling_kasus k
+               LEFT JOIN v3_konseling_sesi s ON s.kasus_id=k.id AND s.archived_at IS NULL
+                AND NOT EXISTS (SELECT 1 FROM v3_konseling_sesi nx WHERE nx.revisi_dari_id=s.id)
+              WHERE k.archived_at IS NULL AND EXISTS (
+                    SELECT 1 FROM v3_konseling_tautan t
+                     WHERE t.kasus_id=k.id AND t.pelanggaran_id=? AND t.is_active=1 AND t.archived_at IS NULL
+              ) ORDER BY k.id,s.jadwal,s.id',[$violationId]
+        );
+    }
+
     private function scopeSql(string $mode, int $userId, string $alias): array
     {
         if ($mode === 'admin') { return ['1=1', []]; }

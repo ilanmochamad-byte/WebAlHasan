@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+require_once dirname(__DIR__).'/app/bootstrap.php';
+if(getenv('V3_RUN_TESTS')!=='1'||app_config('database.database')!=='webalhasan_v3_phase1_test')exit(77);
+$fail=0;$assert=static function(bool $ok,string $label)use(&$fail){echo ($ok?'[lulus] ':'[gagal] ').$label.PHP_EOL;if(!$ok)$fail++;};$source=static fn(string $path):string=>(string)file_get_contents(APP_ROOT.'/'.$path);
+foreach(['app/V3/KonselingRepository.php','app/V3/KonselingService.php','portal/v3_konseling.php','portal/v3_konseling_detail.php','portal/v3_konseling_cetak.php','database/migrations/016_v3_fase3_konseling.sql','database/rollbacks/016_v3_fase3_konseling.sql','bin/v3_phase3_preflight.php','bin/v3_phase3_verify.php','bin/v3_phase3_run_tests.sh'] as $file)$assert(is_file(APP_ROOT.'/'.$file),'Berkas Fase 3 tersedia: '.$file);
+$service=$source('app/V3/KonselingService.php');$repo=$source('app/V3/KonselingRepository.php');
+foreach(['createCase(','correctCase(','transitionCase(','addLinks(','createSession(','correctSession(','transitionSession(','acknowledge(','page(','show(','timeline(','parentSerializer('] as $method)$assert(str_contains($service,'function '.$method),'Service menyediakan '.$method);
+$assert(str_contains($repo,'FOR UPDATE')&&str_contains($repo,'v3_poin_agregat'),'Mutasi konseling memakai kunci subjek santri/tahun');
+$assert(!str_contains(substr($repo,(int)strpos($repo,'function lockSubject'),700),'schema_migrations'),'Kunci operasional tidak memakai gerbang migrasi global');
+$assert(str_contains($service,'auditRequired(')&&str_contains($service,"throw new V3Exception('Audit wajib tidak dapat disimpan.',503)"),'Kegagalan audit menggulung transaksi bisnis');
+$assert(str_contains($service,'tidak_berlaku_pada IS NULL')||str_contains($repo,'tidak_berlaku_pada IS NULL'),'Antrean rekomendasi menyaring rekomendasi tidak berlaku');
+$assert(str_contains($repo,'ditindaklanjuti_kasus_id IS NULL'),'Rekomendasi yang sudah ditindaklanjuti tidak kembali ke antrean');
+$assert(str_contains($repo,'sesi_satu_revisi')||str_contains($source('database/migrations/016_v3_fase3_konseling.sql'),'sesi_satu_revisi'),'Satu sumber sesi hanya memiliki satu revisi langsung');
+$assert(str_contains($service,"'v3.konseling.sesi.dikoreksi.'.\$capacity"),'Audit membedakan koreksi sesi admin dan pembimbing');
+$assert(str_contains($service,"['Internal','Rahasia']")&&str_contains($service,'Transisi status kasus tidak sah.')&&str_contains($service,'Transisi status sesi tidak sah.'),'Enum dan transisi status divalidasi server');
+$assert(str_contains($service,'serializeCase')&&str_contains($service,'serializeSession')&&str_contains($service,'parentSerializer'),'Serializer memakai allowlist terpisah');
+$parentStart=(int)strpos($service,'function parentSerializer');$parentEnd=(int)strpos($service,'private function normaliseCaseCreate',$parentStart);$parentBody=substr($service,$parentStart,$parentEnd-$parentStart);
+foreach(['tujuan','ringkasan_internal','hasil','catatan_murobi','alasan_revisi','pembimbing_id'] as $forbidden)$assert(!str_contains($parentBody,"'{$forbidden}'"),'DTO orang tua tidak memuat '.$forbidden);
+$showBody=substr($service,(int)strpos($service,'function show('),2400);$assert(str_contains($showBody,"\$internal=\$mode!=='murobi'")&&str_contains($showBody,"'rekomendasi'=>\$internal?"),'Respons murobi memisahkan isi internal dan rekomendasi');
+$api=$source('api/v1/index.php');foreach(['/v3/konseling/options','/v3/konseling/kasus','/timeline','/tautan','/sesi','/diketahui'] as $route)$assert(str_contains($api,$route),'Rute API Fase 3 tersedia: '.$route);
+$assert(!preg_match("/\$method === 'GET'.*\/(?:status|tautan|sesi|diketahui)/",$api),'Tidak ada mutasi konseling melalui GET');
+$web=$source('portal/v3_konseling.php').$source('portal/v3_konseling_detail.php');$assert(substr_count($web,'Csrf::requireValid')===2,'Kedua controller mutasi web mewajibkan CSRF');$assert(str_contains($web,'method="post"'),'Form konseling memakai POST');$assert(str_contains($source('portal/v3_konseling_cetak.php'),'Cache-Control: private, no-store'),'Tampilan cetak internal tidak boleh dicache publik');
+$navigation=$source('app/Ui/Navigation.php');$assert(str_contains($navigation,"'/portal/v3_konseling.php'")&&str_contains($navigation,"'v3.konseling'"),'Navigasi konseling mengikuti capability V3');
+$violationService=$source('app/V3/PelanggaranService.php');$assert(str_contains($violationService,"'konseling'=>")&&str_contains($source('app/V3/PelanggaranRepository.php'),'function counselingForViolation'),'Detail pelanggaran memuat seluruh tindak lanjut konseling tanpa menggandakan induk');
+$migration=$source('database/migrations/016_v3_fase3_konseling.sql');foreach(['alasan_revisi_terakhir','alasan_pembatalan','alasan_penjadwalan_ulang','sesi_satu_revisi','sesi_unik_guard','tautan_unik_efektif','ditindaklanjuti_kasus_id','rekomendasi_kasus_fk'] as $needle)$assert(str_contains($migration,$needle),'Migrasi 016 memuat '.$needle);
+$assert(!str_contains($migration,'DROP TABLE')&&!str_contains($migration,'DELETE FROM'),'Migrasi 016 tidak menghapus catatan bisnis');
+foreach(range(1,16) as $number){$prefix=str_pad((string)$number,3,'0',STR_PAD_LEFT).'_';$assert(count(glob(APP_ROOT.'/database/migrations/'.$prefix.'*.sql')?:[])===1,'Migrasi tetap tunggal '.$prefix);}
+$auth=$source('app/Api/ApiAuthService.php');$assert(!str_contains($auth,'v3_konseling'),'Menu aplikasi belum diubah sebelum Fase 5');
+exit($fail?1:0);

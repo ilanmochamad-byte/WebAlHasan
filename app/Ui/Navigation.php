@@ -73,6 +73,9 @@ final class Navigation
         'admin_v3_katalog.php' => 'v3.katalog',
         'v3_pelanggaran.php' => 'v3.pelanggaran',
         'v3_pelanggaran_detail.php' => 'v3.pelanggaran',
+        'v3_konseling.php' => 'v3.konseling',
+        'v3_konseling_detail.php' => 'v3.konseling',
+        'v3_konseling_cetak.php' => 'v3.konseling',
         'admin_penempatan_santri.php' => 'master.penempatan',
         // Alamat lama penempatan; kini hanya mengalihkan ke halaman di atas.
         'admin_santri.php' => 'master.penempatan',
@@ -103,6 +106,7 @@ final class Navigation
         if (array_intersect(['v3.pelanggaran.kelola','v3.binaan.baca','v3.pengawasan','v3.koreksi'],array_keys($v3Capabilities)) !== []) {
             $groups[] = ['label' => 'Pembinaan V3', 'items' => [
                 self::item('v3.pelanggaran', 'Pelanggaran & poin', '/portal/v3_pelanggaran.php', 'fa-triangle-exclamation'),
+                self::item('v3.konseling', 'Konseling & tindak lanjut', '/portal/v3_konseling.php', 'fa-people-arrows'),
             ]];
         }
 
