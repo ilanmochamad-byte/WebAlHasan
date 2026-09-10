@@ -18,10 +18,28 @@ Branch `prd-v3-fase-2`, baseline `af6285ffe31f9ca22407446b32c9785530beabaa` dari
 | Nol kebocoran lintas pembimbing/murobi/orang tua | LULUS pada fixture dan serializer yang diuji |
 | Dua belas persyaratan implementasi | TERIMPLEMENTASI dan lulus bukti lokal; menunggu audit independen |
 | Regresi Fase 1 dan V1/V2/fondasi | LULUS — 71 serta 50 suite/4.014 pemeriksaan |
-| Audit Claude Code | **BELUM** |
+| Audit Claude Code | **SELESAI** — lihat [bukti audit](audit-claude-code.md); 5 temuan (T1–T5) diperbaiki beserta regresinya |
 | Kesiapan/deploy produksi | **BELUM dan di luar izin tugas** |
 
-## Fokus audit Claude Code
+## Hasil audit Claude Code
+
+Seluruh 10 kriteria penerimaan Fase 2 terpenuhi dan kedua belas persyaratan
+implementasi terimplementasi. Bukti implementator terverifikasi: regresi 4.014
+pemeriksaan pada 49 paket direproduksi persis, begitu pula residu fixture 24
+outbox dan 6 audit yatim yang sudah dicatat terbuka.
+
+Lima temuan diperbaiki pada audit ini, tidak satu pun menggagalkan kriteria
+penerimaan: fingerprint yang memblokir koreksi balik dan pencatatan ulang (T1),
+pembatalan yang menimpa alasan koreksi (T2), rekomendasi yang menjadi basi
+setelah pembatalan (T3), agregat yang tidak pulih sesudah rollback dan pasang
+ulang (T4), dan `PRD-V3.md` yang dapat diunduh dari web (T5). Migrasi 015
+menyertai koreksi tersebut. Rinciannya di [bukti audit](audit-claude-code.md).
+
+Belum dijalankan dan tidak diklaim: suite peramban, MariaDB hosting/cPanel,
+migrasi atau smoke produksi, Safari, pembaca layar nyata, aplikasi terpasang,
+push fisik, dan performa volume besar.
+
+## Fokus audit yang diminta implementator
 
 1. Audit rentang perubahan dari baseline `af6285f`, terutama provenance T-2 dan pembedaan koreksi admin/pembimbing.
 2. Reproduksi drill 014 sebelum suite/browser. Pastikan rollback menjaga foreign key revisi dan migrasi 001–013 identik.

@@ -22,6 +22,18 @@ try{
         $check($count('SELECT COUNT(*) FROM v3_poin_agregat a LEFT JOIN (SELECT santri_id,tahun_ajaran_id,COALESCE(SUM(perubahan_poin),0) total FROM v3_poin_ledger WHERE archived_at IS NULL GROUP BY santri_id,tahun_ajaran_id) l ON l.santri_id=a.santri_id AND l.tahun_ajaran_id=a.tahun_ajaran_id WHERE a.total_poin<>COALESCE(l.total,0)')===0,'Tidak ada selisih agregat terhadap ledger');
         $check($count('SELECT COUNT(*) FROM (SELECT santri_id,tahun_ajaran_id,ambang_id FROM v3_rekomendasi GROUP BY santri_id,tahun_ajaran_id,ambang_id HAVING COUNT(*)>1) x')===0,'Rekomendasi tepat satu per ambang/subjek');
         $check($count("SELECT COUNT(*) FROM v3_rekomendasi WHERE status NOT IN ('Baru','Ditinjau','Selesai') OR total_poin_snapshot<0")===0,'Status dan snapshot rekomendasi valid');
+        $check($count("SELECT COUNT(*) FROM schema_migrations WHERE migration='015_v3_fase2_koreksi_dan_rekomendasi.sql'")===1,'Migrasi 015 tercatat');
+        // Fingerprint hanya boleh menahan slot duplikasi untuk catatan yang
+        // masih berlaku; kalau tidak, koreksi balik dan pencatatan ulang
+        // sesudah pembatalan akan ditolak sebagai duplikat.
+        $check($count("SELECT COUNT(*) FROM v3_pelanggaran p WHERE p.fingerprint IS NOT NULL AND (p.status='Dibatalkan' OR EXISTS (SELECT 1 FROM (SELECT revisi_dari_id FROM v3_pelanggaran WHERE revisi_dari_id IS NOT NULL) x WHERE x.revisi_dari_id=p.id))")===0,'Fingerprint hanya menahan catatan yang masih berlaku');
+        $check($count("SELECT COUNT(*) FROM v3_pelanggaran WHERE status='Dibatalkan' AND (alasan_pembatalan IS NULL OR alasan_pembatalan='')")===0,'Setiap pembatalan menyimpan alasannya sendiri');
+        // Regresi lama: pembatalan menulis alasannya ke `alasan_revisi` sehingga
+        // alasan koreksi tertimpa. Catatan batal yang bukan revisi karena itu
+        // tidak boleh punya alasan revisi sama sekali.
+        $check($count("SELECT COUNT(*) FROM v3_pelanggaran WHERE status='Dibatalkan' AND revisi_dari_id IS NULL AND alasan_revisi IS NOT NULL")===0,'Pembatalan tidak menulis ke alasan revisi');
+        $check($count('SELECT COUNT(*) FROM v3_rekomendasi r JOIN v3_ambang a ON a.id=r.ambang_id LEFT JOIN v3_poin_agregat g ON g.santri_id=r.santri_id AND g.tahun_ajaran_id=r.tahun_ajaran_id WHERE r.archived_at IS NULL AND r.tidak_berlaku_pada IS NULL AND NOT (a.nilai_minimum<=COALESCE(g.total_poin,0) AND (a.nilai_maksimum IS NULL OR a.nilai_maksimum>=COALESCE(g.total_poin,0)))')===0,'Rekomendasi basi ditandai tidak berlaku');
+        $check($count('SELECT COUNT(*) FROM v3_rekomendasi WHERE (tidak_berlaku_pada IS NULL) <> (tidak_berlaku_alasan IS NULL)')===0,'Penanda dan alasan tidak berlaku selalu berpasangan');
         $check($count("SELECT COUNT(*) FROM v3_idempotency WHERE response_json IS NOT NULL AND JSON_VALID(response_json)=0")===0,'Respons idempotensi berupa JSON valid');
         $privacy=true;foreach($repo->all("SELECT judul,isi,data_json FROM notifikasi_outbox WHERE event_type LIKE 'v3_%'") as $row){$payload=mb_strtolower(implode(' ',array_map('strval',$row)));$json=json_decode((string)$row['data_json'],true);if(preg_match('/nama_santri|kategori|uraian|poin|no_hp|nomor|catatan|saksi|tempat/',$payload)||!is_array($json)||array_diff(array_keys($json),['type'])!==[])$privacy=false;}
         $check($privacy,'Payload outbox V3 tidak memuat field sensitif');

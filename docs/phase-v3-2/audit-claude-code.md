@@ -1,0 +1,186 @@
+# Bukti audit Fase 2 — Claude Code
+
+Auditor: Claude Code (peran ditetapkan `AGENTS.md` untuk workstream PRD V3 Fase 1–5).
+Implementator: Codex. Branch `prd-v3-fase-2`, commit yang diaudit `247db8a`,
+baseline `af6285f`. Tanggal audit: 10 September 2026.
+
+Audit ini memeriksa commit implementator terhadap PRD V3 Fase 2, menjalankan
+pengujian secara independen, dan menerapkan koreksi terarah beserta regresinya.
+Tidak ada merge dan tidak ada deploy produksi.
+
+## 1. Kesimpulan
+
+Seluruh **10 kriteria penerimaan Fase 2 terpenuhi** dan kedua belas persyaratan
+implementasi terimplementasi. Tidak ada kode Fase 3 yang masuk. Halaman
+pelanggaran warisan tetap baca-saja dan `App\Api\ApiAuthService::menus()` tidak
+disentuh, sehingga kontrak menu aplikasi tidak berubah.
+
+Bukti pengujian implementator terbukti akurat: angka regresi 4.014 pemeriksaan
+pada 49 paket direproduksi persis, termasuk residu fixture 24 outbox dan 6 audit
+yatim yang memang sudah dicatat terbuka di `test-results.md`.
+
+Lima temuan diperbaiki pada audit ini (T1–T5). Tidak satu pun menggagalkan
+kriteria penerimaan, tetapi T1–T3 menyentuh perilaku koreksi/pembatalan yang
+akan dipakai Fase 3 sehingga diperbaiki sekarang, bukan diwariskan.
+
+## 2. Reproduksi pengujian implementator
+
+Lingkungan: PHP 8.4.14, MariaDB 12.3.2 lokal, database `webalhasan_v3_phase1_test`,
+fixture `sbx_*`. Tidak ada akses, migrasi, atau penghapusan data produksi.
+
+| Paket | Hasil sebelum koreksi | Hasil sesudah koreksi |
+| --- | --- | --- |
+| `bin/v3_phase2_run_tests.sh` | 131 pemeriksaan, exit 0 | **166** pemeriksaan, exit 0 |
+| `bin/v3_phase1_run_tests.sh` | 71 pemeriksaan, exit 0 | 71 pemeriksaan, exit 0 |
+| `tests/v3_phase2_migration.php` | 9 pemeriksaan, exit 0 | **18** pemeriksaan, exit 0 |
+| `bin/v3_verify.php` | exit 0 | exit 0 |
+| `bin/v3_phase2_verify.php` | exit 0 | exit 0 |
+| `bin/penugasan_run_all_tests.sh` | 49 paket / 4.014 pemeriksaan, exit 0 | 49 paket / 4.014 pemeriksaan, exit 0 |
+
+Catatan kejujuran bukti: pada satu kali jalan, `tests/v2_phase3_api_contract.php`
+gagal di dalam runner penuh tepat sesudah suite V3 Fase 2 dijalankan, lalu lulus
+pada run bersih dan lulus terisolasi pada `af6285f` **maupun** `247db8a`
+(116 pemeriksaan, exit 0).
+Kegagalan itu bergantung urutan/fixture, bukan regresi Fase 2. Perilaku ini
+dicatat di sini supaya sesi berikutnya tidak menyimpulkan sebaliknya.
+
+**Belum diuji, tidak diklaim:** suite peramban `tests/browser/uji-v3-fase2.mjs`
+(butuh server hidup dan Chromium), MariaDB hosting/cPanel, migrasi atau smoke
+produksi, Safari, pembaca layar nyata, aplikasi Android/iOS terpasang, push
+fisik, dan performa pada volume besar.
+
+## 3. Temuan dan koreksi
+
+### T1 — Fingerprint memblokir koreksi balik dan pencatatan ulang (sedang)
+
+Indeks unik `pelanggaran_fingerprint (santri_id, tahun_ajaran_id, fingerprint)`
+mencakup baris yang sudah digantikan revisi **dan** yang dibatalkan. Terbukti
+pada DB uji sebelum koreksi:
+
+- koreksi tempat `Aula` → `Masjid`, lalu koreksi balik ke `Aula` → `409`
+- catat → batalkan → catat ulang kejadian yang sama → `409`
+
+Keduanya muncul sebagai `Permintaan menduplikasi catatan yang sudah ada`.
+Persyaratan 7 Fase 2 menuntut koreksi dan pembatalan beralasan selalu tersedia.
+
+**Koreksi.** Catatan yang tidak lagi berlaku melepas fingerprint-nya
+(`fingerprint=NULL`) saat digantikan revisi atau dibatalkan, sehingga slot unik
+hanya ditahan catatan yang masih berlaku. Indeks tidak diubah dan penolakan
+duplikat untuk catatan hidup tetap berlaku. Nilai fingerprint adalah turunan
+murni dari kolom bisnis yang tetap tersimpan (`katalog_id`, `waktu_kejadian`,
+`tempat`, `uraian`, `saksi`, dan ketiga snapshot), jadi selalu dapat dihitung
+ulang dan tidak ada riwayat yang hilang.
+
+### T2 — Pembatalan menimpa alasan koreksi (sedang)
+
+`PelanggaranRepository::cancelViolation()` menulis alasan pembatalan ke
+`alasan_revisi`, sehingga alasan koreksi sebelumnya hilang dari baris dan dari
+daftar "Riwayat revisi". Terbukti: `'Salah tempat'` berubah menjadi
+`'Dibatalkan karena salah santri'`. Melanggar PRD 5.4 ("tidak diedit dengan
+menimpa nilai historis") dan persyaratan 7.
+
+**Koreksi.** Kolom `alasan_pembatalan` terpisah. Pembatalan tidak pernah lagi
+menulis ke `alasan_revisi`. Halaman detail menampilkan keduanya secara eksplisit,
+dan serializer detail mengembalikan keduanya.
+
+### T3 — Rekomendasi menjadi basi setelah pembatalan (sedang)
+
+Membatalkan pelanggaran tidak menyentuh rekomendasi yang dipicunya:
+`dipicu_oleh_pelanggaran_id` tetap menunjuk baris `Dibatalkan` dan
+`total_poin_snapshot` sudah tidak berlaku. Karena `rekomendasi_ambang_subjek_unik`,
+ambang itu juga tidak pernah memicu lagi ketika poin kembali naik.
+
+**Koreksi.** `refreshRecommendationValidity()` dijalankan di dalam transaksi
+yang sama sesudah setiap rekonsiliasi pada `create`, `correct`, dan `cancel`.
+Ketika total keluar dari rentang ambang, barisnya ditandai `tidak_berlaku_pada`
+beserta alasannya; ketika total kembali masuk rentang, penanda itu dilepas.
+Rekomendasi tidak pernah dihapus dan tetap tepat satu per santri/tahun/ambang,
+sehingga kriteria "ambang tercapai menghasilkan satu rekomendasi" tetap utuh.
+Perubahan masuk payload dan audit sebagai `rekomendasi_disesuaikan`.
+
+### T4 — Agregat tidak dipulihkan sesudah rollback dan pasang ulang (rendah)
+
+Rollback Fase 2 membuang `v3_poin_agregat` sementara `v3_poin_ledger` tetap utuh,
+dan pemasangan ulang 014 membuat tabelnya kosong tanpa membangun kembali total.
+Direproduksi dengan menjalankan drill setelah data ada: `bin/v3_phase2_verify.php`
+langsung melaporkan blocker "Agregat dapat direkonsiliasi dari seluruh ledger".
+Total yang ditampilkan tetap benar karena `show()` menjumlahkan ledger, tetapi
+verifier merah sampai tiap subjek tersentuh mutasi baru.
+
+Sifat destruktif rollback sendiri sudah didokumentasikan jujur oleh implementator
+di `migrasi-dan-rollback.md`; yang kurang adalah pemulihannya.
+
+**Koreksi.** Migrasi 015 mem-backfill agregat dari ledger sehingga pemasangan
+ulang swa-pulih, dan `bin/v3_rekonsiliasi_agregat.php` menyediakan pemulihan
+manual dengan `--dry-run` serta post-check. Drill migrasi kini membuktikan
+rangkaian rollback 015 → rollback 014 → pasang ulang keduanya berakhir dengan
+selisih agregat nol tanpa satu pun mutasi baru.
+
+### T5 — Dokumen internal dapat diunduh dari web (rendah)
+
+`PRD-V3.md` tidak masuk daftar tolak `.htaccess` yang sudah memuat `PRD.md` dan
+`PRD-V2.md`. Warisan Fase 1. `design.md` sekelas dan ikut ditutup.
+
+**Koreksi.** Kedua berkas ditambahkan ke `FilesMatch` di `.htaccess` root.
+
+## 4. Migrasi 015
+
+`database/migrations/015_v3_fase2_koreksi_dan_rekomendasi.sql` bersifat aditif
+dan idempoten. Migrasi 001–014 tidak diubah. Isinya: kolom `alasan_pembatalan`,
+kolom `tidak_berlaku_pada`/`tidak_berlaku_alasan` beserta indeks antreannya,
+pemindahan alasan pembatalan lama, pelepasan fingerprint catatan yang tidak
+berlaku, backfill agregat dari ledger, dan penandaan rekomendasi yang totalnya
+sudah di luar rentang.
+
+Tidak ada `DROP TABLE` maupun `DELETE FROM`; tidak ada catatan bisnis yang
+dihapus. Rollback `015` hanya melepas struktur miliknya sendiri.
+
+Batas yang harus diketahui operator: rollback 015 membuang kolom
+`alasan_pembatalan` beserta isinya. Ketika 015 dipasang lagi, catatan batal yang
+alasannya sudah tidak ada di baris **tidak dikarang ulang** — diberi penanda
+jujur bahwa nilainya tidak tersedia, sedangkan alasan aslinya tetap tersimpan di
+`audit_logs` peristiwa pembatalan. Utamakan rollback kode, bukan rollback skema.
+
+## 5. Invariant baru yang kini dijaga otomatis
+
+`bin/v3_phase2_verify.php` bertambah enam pemeriksaan:
+
+- migrasi 015 tercatat
+- fingerprint hanya menahan catatan yang masih berlaku
+- setiap pembatalan menyimpan alasannya sendiri
+- pembatalan tidak menulis ke alasan revisi
+- rekomendasi basi ditandai tidak berlaku
+- penanda dan alasan tidak berlaku selalu berpasangan
+
+`tests/v3_phase2_integration.php` bertambah 14 pemeriksaan regresi untuk T1–T3
+(34 → 48 assertion), `tests/v3_phase2_static.php` menjaga bentuk migrasi 015 dan
+`.htaccess`, dan `tests/v3_phase2_migration.php` menjadi drill dua migrasi dengan
+bukti agregat swa-pulih (9 → 18 pemeriksaan).
+
+Rincian pemeriksaan Fase 2 sesudah koreksi: statis 68, integrasi 62, konkurensi 6,
+verifier 30 — total 166.
+
+## 6. Catatan kecil yang tidak diperbaiki
+
+Dicatat supaya keputusannya sadar, bukan terlewat:
+
+- `cakupan_snapshot.sumber_capability` menyimpan provenance capability saat
+  `create` tetapi kapasitas (`admin`/`pembimbing`) saat `correct` — dua arti
+  pada satu field. Kosmetik, tidak memengaruhi otorisasi.
+- PRD 5.4 mengizinkan pembimbing menyesuaikan poin "jika diberi izin khusus";
+  implementasi membatasinya hanya ke pemegang `v3.koreksi`. Pembacaan ini masuk
+  akal dan lebih ketat, tetapi belum tercatat di `desain-dan-aturan.md`.
+- Formulir koreksi/pembatalan pada halaman detail tampil berdasarkan capability
+  saja, bukan cakupan per catatan; server tetap menolak `403`. UX, bukan akses.
+- Berkas staging `.v3-stage-*` yang tertinggal karena proses mati mendadak belum
+  masuk pemeriksaan "tidak ada lampiran pending" yang kini hanya melihat akhiran
+  `.pending`.
+
+## 7. Kebersihan database uji
+
+Audit ini hanya memakai `webalhasan_v3_phase1_test` dan fixture `sbx_*`.
+Regresi warisan kembali meninggalkan tepat 24 outbox dan 6 audit yatim seperti
+yang sudah dicatat implementator. Asal-usulnya dibuktikan lebih dulu — seluruhnya
+bertipe `izin.*` dan `login_succeeded` milik akun fixture yang dihapus suite-nya
+sendiri, nol baris `v3_*` — baru kemudian dibersihkan. Verifier tidak dilonggarkan
+dan diulang sampai exit 0.

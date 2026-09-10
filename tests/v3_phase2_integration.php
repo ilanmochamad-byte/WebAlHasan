@@ -103,4 +103,55 @@ $businessBefore=(int)$repo->one('SELECT COUNT(*) n FROM v3_pelanggaran')['n'];$r
 try{$reject(fn()=>$service->create($pembimbingA,array_replace($createInput,['waktu_kejadian'=>date('Y-m-d\TH:i',time()-600),'uraian'=>'SBX transaksi gagal '.$tag,'idempotency_key'=>'fail-'.bin2hex(random_bytes(8))])),'Kegagalan audit menggulung seluruh transaksi',503);}finally{$repo->execute('DROP TRIGGER v3_f2_audit_failure');}
 $assert((int)$repo->one('SELECT COUNT(*) n FROM v3_pelanggaran')['n']===$businessBefore,'Tidak ada catatan parsial setelah audit gagal');
 $assert((int)$repo->one('SELECT COUNT(*) n FROM v3_pelanggaran WHERE id=?',[$adminRevisionId])['n']===1,'Tidak ada hard delete catatan bisnis');
+
+// ---------------------------------------------------------------------------
+// Regresi koreksi audit Claude Code (T1-T3). Fingerprint hanya boleh menahan
+// catatan yang masih berlaku, alasan pembatalan berdiri sendiri, dan
+// rekomendasi mengikuti total poin terkini tanpa pernah digandakan.
+// ---------------------------------------------------------------------------
+$auditTag='SBX-AUD-'.bin2hex(random_bytes(5));
+$auditCategory=$catalogService->save('kategori',$period+['kode'=>$auditTag,'nama'=>'SBX Kategori Audit '.$auditTag,'uraian'=>'Fixture fiktif'],$admin);
+$auditCatalog=$catalogService->save('katalog',$period+['kode'=>$auditTag,'nama'=>'SBX Jenis Audit '.$auditTag,'kategori_id'=>$auditCategory,'tingkat'=>'Ringan','poin_default'=>4,'uraian'=>'Katalog fixture'],$admin);
+$auditKey=static fn(string $prefix):string=>$prefix.'-'.bin2hex(random_bytes(10));
+$auditBase=['santri_id'=>$childA,'tahun_ajaran_id'=>$year,'katalog_id'=>$auditCatalog,'waktu_kejadian'=>date('Y-m-d\TH:i',time()-3600),'tempat'=>'SBX aula '.$auditTag,'uraian'=>'SBX uraian audit '.$auditTag,'idempotency_key'=>$auditKey('aud-create')];
+
+$auditId=(int)$service->create($pembimbingA,$auditBase)['data']['pelanggaran']['id'];
+$auditRevision=(int)$service->correct($pembimbingA,$auditId,['version'=>1,'idempotency_key'=>$auditKey('aud-fix'),'tempat'=>'SBX masjid '.$auditTag,'alasan'=>'Koreksi tempat fixture'])['data']['pelanggaran']['id'];
+$assert($repo->violation($auditId)['fingerprint']===null,'Catatan yang digantikan revisi melepas fingerprint');
+$revert=$service->correct($pembimbingA,$auditRevision,['version'=>1,'idempotency_key'=>$auditKey('aud-back'),'tempat'=>'SBX aula '.$auditTag,'alasan'=>'Kembali ke tempat semula']);
+$revertId=(int)$revert['data']['pelanggaran']['id'];
+$assert($revertId!==$auditRevision,'Koreksi boleh mengembalikan isi ke nilai catatan yang sudah digantikan');
+
+$revertRow=$repo->violation($revertId);
+$cancelAudit=$service->cancel($pembimbingA,$revertId,['version'=>(int)$revertRow['version'],'idempotency_key'=>$auditKey('aud-stop'),'alasan'=>'Pembatalan fixture beralasan']);
+$cancelled=$repo->violation($revertId);
+$assert((string)$cancelled['alasan_revisi']==='Kembali ke tempat semula','Pembatalan tidak menimpa alasan koreksi');
+$assert((string)$cancelled['alasan_pembatalan']==='Pembatalan fixture beralasan','Alasan pembatalan tersimpan pada kolomnya sendiri');
+$assert($cancelled['fingerprint']===null,'Catatan yang dibatalkan melepas fingerprint');
+$cancelDetail=$service->show($pembimbingA,$revertId)['pelanggaran'];
+$assert($cancelAudit['data']['pelanggaran']['status']==='Dibatalkan'&&$cancelDetail['alasan_pembatalan']==='Pembatalan fixture beralasan'&&$cancelDetail['alasan_revisi']==='Kembali ke tempat semula','Serializer detail memisahkan alasan koreksi dan pembatalan');
+$reReport=$service->create($pembimbingA,array_replace($auditBase,['tempat'=>'SBX aula '.$auditTag,'idempotency_key'=>$auditKey('aud-again')]));
+$assert((int)$reReport['data']['pelanggaran']['id']!==$revertId,'Kejadian identik boleh dicatat ulang setelah pembatalan');
+$reReportId=(int)$reReport['data']['pelanggaran']['id'];
+
+// Ambang aktif milik blok sebelumnya tidak berbatas atas; nonaktifkan dahulu
+// supaya rentang sempit di bawah ini tidak dianggap bertumpang tindih.
+foreach($kRepo->rows('SELECT * FROM v3_ambang WHERE is_active=1 AND archived_at IS NULL') as $old){$catalogService->save('ambang',array_replace($old,['is_active'=>0,'alasan'=>'Isolasi blok regresi audit']),$admin,(int)$old['id']);}
+$totalNow=(int)$repo->aggregate($childA,$year)['total_poin'];
+$auditThreshold=$catalogService->save('ambang',$period+['tahun_ajaran_id'=>$year,'nilai_minimum'=>$totalNow+4,'nilai_maksimum'=>$totalNow+4,'label'=>'SBX ambang audit '.$auditTag,'rekomendasi'=>'Tinjau pembinaan secara manual'],$admin);
+$trigger=$service->create($pembimbingA,array_replace($auditBase,['uraian'=>'SBX pemicu ambang '.$auditTag,'waktu_kejadian'=>date('Y-m-d\TH:i',time()-7200),'idempotency_key'=>$auditKey('aud-trigger')]));
+$triggerId=(int)$trigger['data']['pelanggaran']['id'];
+$bandRows=static fn(array $rows):array=>array_values(array_filter($rows,static fn(array $row):bool=>(int)$row['ambang_id']===$auditThreshold));
+$assert(count($trigger['data']['rekomendasi_baru'])===1&&($bandRows($service->show($pembimbingA,$triggerId)['rekomendasi'])[0]['berlaku']??false),'Ambang tercapai memberi satu rekomendasi yang berlaku');
+$triggerRow=$repo->violation($triggerId);
+$stale=$service->cancel($pembimbingA,$triggerId,['version'=>(int)$triggerRow['version'],'idempotency_key'=>$auditKey('aud-stale'),'alasan'=>'Pembatalan menguji rekomendasi basi']);
+$assert($stale['data']['rekomendasi_disesuaikan']['dinonaktifkan']!==[],'Pembatalan menandai rekomendasi yang totalnya sudah tidak berlaku');
+$assert(($bandRows($service->show($pembimbingA,$triggerId)['rekomendasi'])[0]['berlaku']??true)===false,'Rekomendasi basi terbaca sebagai tidak berlaku');
+$revive=$service->create($pembimbingA,array_replace($auditBase,['uraian'=>'SBX pemulih ambang '.$auditTag,'waktu_kejadian'=>date('Y-m-d\TH:i',time()-10800),'idempotency_key'=>$auditKey('aud-revive')]));
+$reviveId=(int)$revive['data']['pelanggaran']['id'];
+$assert($revive['data']['rekomendasi_disesuaikan']['dipulihkan']!==[]&&$revive['data']['rekomendasi_baru']===[],'Total kembali ke rentang memulihkan rekomendasi tanpa membuat baris kedua');
+$assert((int)$repo->one('SELECT COUNT(*) n FROM v3_rekomendasi WHERE santri_id=? AND tahun_ajaran_id=? AND ambang_id=?',[$childA,$year,$auditThreshold])['n']===1,'Rekomendasi tetap tepat satu per ambang setelah batal dan pulih');
+$assert(($bandRows($service->show($pembimbingA,$reviveId)['rekomendasi'])[0]['berlaku']??false),'Rekomendasi yang dipulihkan berlaku kembali');
+$assert((int)$repo->one('SELECT COUNT(*) n FROM v3_pelanggaran WHERE id IN (?,?,?)',[$auditId,$revertId,$reReportId])['n']===3,'Seluruh catatan koreksi audit tetap tersimpan');
+
 exit($fails?1:0);

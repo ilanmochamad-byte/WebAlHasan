@@ -61,6 +61,7 @@ final class PelanggaranService
                     $this->repo->insertAttachment($id,1,$attachment,$actorId);
                 }
                 $total = $this->repo->reconcile($data['santri_id'],$data['tahun_ajaran_id'],$actorId);
+                $validity = $this->repo->refreshRecommendationValidity($data['santri_id'],$data['tahun_ajaran_id'],$total,$actorId);
                 $recommendationIds = $this->createRecommendations($data['santri_id'],$data['tahun_ajaran_id'],$id,$total,$actorId);
                 $this->notifyMurobi($data['santri_id'],$data['tahun_ajaran_id'],$id,'v3_pelanggaran_dicatat');
                 $saved = $this->repo->violation($id) ?? throw new V3Exception('Catatan tidak ditemukan.',503);
@@ -68,11 +69,13 @@ final class PelanggaranService
                     'pelanggaran'=>$this->serializeViolation($saved),
                     'total_poin'=>$total,
                     'rekomendasi_baru'=>$recommendationIds,
+                    'rekomendasi_disesuaikan'=>$validity,
                     'peringatan_konfigurasi'=>$this->repo->configurationWarnings(),
                 ];
                 $this->auditRequired('v3.pelanggaran.dicatat','v3_pelanggaran',$id,null,[
                     'pelanggaran'=>$this->serializeViolation($saved),'ledger_id'=>$ledgerId,
-                    'total_poin'=>$total,'rekomendasi_ids'=>$recommendationIds,'sumber_capability'=>$capsSource,
+                    'total_poin'=>$total,'rekomendasi_ids'=>$recommendationIds,
+                    'rekomendasi_disesuaikan'=>$validity,'sumber_capability'=>$capsSource,
                 ],$actorId);
                 $this->repo->completeIdempotency((int)$idem['id'],$payload,201);
                 return ['data'=>$payload,'status'=>201,'replayed'=>false];
@@ -126,12 +129,13 @@ final class PelanggaranService
                 $ledgerId=$this->repo->insertLedger($newId,(int)$current['santri_id'],(int)$current['tahun_ajaran_id'],(int)$row['poin_snapshot'],'Poin hasil koreksi','v3:pelanggaran:'.$newId.':koreksi',null,$actorId);
                 if($attachment!==null){$this->storage->finalize($attachment);$this->repo->insertAttachment($newId,1,$attachment,$actorId);}
                 $total=$this->repo->reconcile((int)$current['santri_id'],(int)$current['tahun_ajaran_id'],$actorId);
+                $validity=$this->repo->refreshRecommendationValidity((int)$current['santri_id'],(int)$current['tahun_ajaran_id'],$total,$actorId);
                 $recommendationIds=$this->createRecommendations((int)$current['santri_id'],(int)$current['tahun_ajaran_id'],$newId,$total,$actorId);
                 $this->notifyMurobi((int)$current['santri_id'],(int)$current['tahun_ajaran_id'],$newId,'v3_pelanggaran_dikoreksi');
                 $saved=$this->repo->violation($newId)??throw new V3Exception('Hasil koreksi tidak ditemukan.',503);
-                $payload=['pelanggaran'=>$this->serializeViolation($saved),'total_poin'=>$total,'rekomendasi_baru'=>$recommendationIds,'peringatan_konfigurasi'=>$this->repo->configurationWarnings()];
+                $payload=['pelanggaran'=>$this->serializeViolation($saved),'total_poin'=>$total,'rekomendasi_baru'=>$recommendationIds,'rekomendasi_disesuaikan'=>$validity,'peringatan_konfigurasi'=>$this->repo->configurationWarnings()];
                 $this->auditRequired('v3.pelanggaran.dikoreksi.'.$capacity,'v3_pelanggaran',$newId,$this->auditViolation($current),[
-                    'pelanggaran'=>$this->auditViolation($saved),'alasan'=>$reason,'pembalik_ledger_id'=>$reverseId,'ledger_id'=>$ledgerId,'total_poin'=>$total,'kapasitas'=>$capacity
+                    'pelanggaran'=>$this->auditViolation($saved),'alasan'=>$reason,'pembalik_ledger_id'=>$reverseId,'ledger_id'=>$ledgerId,'total_poin'=>$total,'rekomendasi_disesuaikan'=>$validity,'kapasitas'=>$capacity
                 ],$actorId);
                 $this->repo->completeIdempotency((int)$idem['id'],$payload,200);
                 return ['data'=>$payload,'status'=>200,'replayed'=>false];
@@ -159,12 +163,13 @@ final class PelanggaranService
             $positive=$this->repo->positiveLedger($id)??throw new V3Exception('Ledger sumber tidak ditemukan.',503);
             $reverseId=$this->repo->insertLedger($id,(int)$current['santri_id'],(int)$current['tahun_ajaran_id'],-(int)$positive['perubahan_poin'],'Pembalik karena pembatalan','v3:pelanggaran:'.$id.':dibatalkan',(int)$positive['id'],$actorId);
             $total=$this->repo->reconcile((int)$current['santri_id'],(int)$current['tahun_ajaran_id'],$actorId);
+            $validity=$this->repo->refreshRecommendationValidity((int)$current['santri_id'],(int)$current['tahun_ajaran_id'],$total,$actorId);
             $this->notifyMurobi((int)$current['santri_id'],(int)$current['tahun_ajaran_id'],$id,'v3_pelanggaran_dibatalkan');
             if($capacity==='admin'){$this->notifyPembimbing((int)$current['santri_id'],(int)$current['tahun_ajaran_id'],$id,'v3_pelanggaran_dibatalkan_admin');}
             $saved=$this->repo->violation($id)??throw new V3Exception('Pelanggaran tidak ditemukan.',503);
-            $payload=['pelanggaran'=>$this->serializeViolation($saved),'total_poin'=>$total];
+            $payload=['pelanggaran'=>$this->serializeViolation($saved),'total_poin'=>$total,'rekomendasi_disesuaikan'=>$validity];
             $this->auditRequired('v3.pelanggaran.dibatalkan.'.$capacity,'v3_pelanggaran',$id,$this->auditViolation($current),[
-                'pelanggaran'=>$this->auditViolation($saved),'alasan'=>$reason,'pembalik_ledger_id'=>$reverseId,'total_poin'=>$total,'kapasitas'=>$capacity
+                'pelanggaran'=>$this->auditViolation($saved),'alasan'=>$reason,'pembalik_ledger_id'=>$reverseId,'total_poin'=>$total,'rekomendasi_disesuaikan'=>$validity,'kapasitas'=>$capacity
             ],$actorId);
             $this->repo->completeIdempotency((int)$idem['id'],$payload,200);
             return ['data'=>$payload,'status'=>200,'replayed'=>false];
@@ -375,15 +380,15 @@ final class PelanggaranService
             'kategori'=>(string)$row['kategori_snapshot'],'tingkat'=>(string)$row['tingkat_snapshot'],'poin'=>(int)$row['poin_snapshot'],
             'status'=>(string)$row['status'],'version'=>(int)$row['version'],'created_at'=>(string)($row['created_at']??''),
         ];
-        if($detail){$result+=['uraian'=>(string)$row['uraian'],'saksi'=>$row['saksi']===null?null:(string)$row['saksi'],'katalog_id'=>$row['katalog_id']===null?null:(int)$row['katalog_id'],'katalog_kode'=>$row['katalog_kode']??null,'revisi_dari_id'=>$row['revisi_dari_id']===null?null:(int)$row['revisi_dari_id'],'digantikan_oleh_id'=>$row['digantikan_oleh_id']===null?null:(int)$row['digantikan_oleh_id'],'alasan_revisi'=>$row['alasan_revisi']===null?null:(string)$row['alasan_revisi']];}
+        if($detail){$result+=['uraian'=>(string)$row['uraian'],'saksi'=>$row['saksi']===null?null:(string)$row['saksi'],'katalog_id'=>$row['katalog_id']===null?null:(int)$row['katalog_id'],'katalog_kode'=>$row['katalog_kode']??null,'revisi_dari_id'=>$row['revisi_dari_id']===null?null:(int)$row['revisi_dari_id'],'digantikan_oleh_id'=>$row['digantikan_oleh_id']===null?null:(int)$row['digantikan_oleh_id'],'alasan_revisi'=>$row['alasan_revisi']===null?null:(string)$row['alasan_revisi'],'alasan_pembatalan'=>($row['alasan_pembatalan']??null)===null?null:(string)$row['alasan_pembatalan']];}
         return $result;
     }
 
     private function serializeLedger(array $row):array{return ['id'=>(int)$row['id'],'pelanggaran_id'=>(int)$row['pelanggaran_id'],'perubahan_poin'=>(int)$row['perubahan_poin'],'alasan'=>(string)$row['alasan'],'pembalik_dari_id'=>$row['pembalik_dari_id']===null?null:(int)$row['pembalik_dari_id'],'created_at'=>(string)$row['created_at']];}
-    private function serializeRecommendation(array $row):array{return ['id'=>(int)$row['id'],'ambang_id'=>(int)$row['ambang_id'],'dipicu_oleh_pelanggaran_id'=>(int)$row['dipicu_oleh_pelanggaran_id'],'total_poin'=>(int)$row['total_poin_snapshot'],'label'=>(string)$row['label_snapshot'],'rekomendasi'=>(string)$row['rekomendasi_snapshot'],'status'=>(string)$row['status'],'created_at'=>(string)$row['created_at']];}
+    private function serializeRecommendation(array $row):array{return ['id'=>(int)$row['id'],'ambang_id'=>(int)$row['ambang_id'],'dipicu_oleh_pelanggaran_id'=>(int)$row['dipicu_oleh_pelanggaran_id'],'total_poin'=>(int)$row['total_poin_snapshot'],'label'=>(string)$row['label_snapshot'],'rekomendasi'=>(string)$row['rekomendasi_snapshot'],'status'=>(string)$row['status'],'berlaku'=>($row['tidak_berlaku_pada']??null)===null,'tidak_berlaku_pada'=>$row['tidak_berlaku_pada']??null,'tidak_berlaku_alasan'=>$row['tidak_berlaku_alasan']??null,'created_at'=>(string)$row['created_at']];}
     private function serializeMurobi(array $row):array{return ['id'=>(int)$row['id'],'dilihat_pada'=>$row['dilihat_pada'],'diketahui_pada'=>$row['diketahui_pada'],'catatan'=>$row['catatan'],'sumber_version'=>(int)$row['sumber_version']];}
     private function serializeAttachment(array $row):array{return ['id'=>(int)$row['id'],'nama'=>(string)$row['nama_aman'],'mime'=>(string)$row['mime'],'ukuran'=>(int)$row['ukuran'],'sha256'=>(string)$row['sha256'],'created_at'=>(string)$row['created_at']];}
-    private function auditViolation(array $row):array{return ['id'=>(int)$row['id'],'santri_id'=>(int)$row['santri_id'],'tahun_ajaran_id'=>(int)$row['tahun_ajaran_id'],'waktu_kejadian'=>$row['waktu_kejadian'],'tempat'=>$row['tempat'],'uraian'=>$row['uraian'],'saksi'=>$row['saksi'],'kategori_snapshot'=>$row['kategori_snapshot'],'tingkat_snapshot'=>$row['tingkat_snapshot'],'poin_snapshot'=>(int)$row['poin_snapshot'],'status'=>$row['status'],'version'=>(int)$row['version']];}
+    private function auditViolation(array $row):array{return ['id'=>(int)$row['id'],'santri_id'=>(int)$row['santri_id'],'tahun_ajaran_id'=>(int)$row['tahun_ajaran_id'],'waktu_kejadian'=>$row['waktu_kejadian'],'tempat'=>$row['tempat'],'uraian'=>$row['uraian'],'saksi'=>$row['saksi'],'kategori_snapshot'=>$row['kategori_snapshot'],'tingkat_snapshot'=>$row['tingkat_snapshot'],'poin_snapshot'=>(int)$row['poin_snapshot'],'status'=>$row['status'],'alasan_revisi'=>$row['alasan_revisi']??null,'alasan_pembatalan'=>$row['alasan_pembatalan']??null,'version'=>(int)$row['version']];}
 
     private function replay(array $idem,string $hash):array
     {

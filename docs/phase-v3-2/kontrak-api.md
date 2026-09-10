@@ -19,4 +19,20 @@ Mutasi menerima `Idempotency-Key` atau `idempotency_key` pada JSON. Create memer
 
 Respons penolakan: autentikasi `401`, cakupan `403`, tidak ditemukan `404`, konflik idempotensi/versi/duplikasi `409`, validasi `422`, dan kegagalan transaksi/audit `503`. URL mutasi dengan GET tidak cocok dengan rute dan menghasilkan `404`; tidak ada perubahan status melalui GET.
 
+## Tambahan koreksi audit Claude Code
+
+Aditif, tidak menghapus atau mengganti arti field lama.
+
+- Respons `POST /v3/pelanggaran`, `PATCH /v3/pelanggaran/{id}`, dan
+  `POST /v3/pelanggaran/{id}/pembatalan` menyertakan `rekomendasi_disesuaikan`
+  berbentuk `{"dinonaktifkan":[id],"dipulihkan":[id]}`, yaitu rekomendasi yang
+  berpindah status berlaku karena total poin berubah pada mutasi tersebut.
+- Setiap rekomendasi pada detail memperoleh `berlaku` (boolean),
+  `tidak_berlaku_pada`, dan `tidak_berlaku_alasan`. Rekomendasi tidak pernah
+  dihapus dan tetap satu per santri/tahun/ambang.
+- Detail pelanggaran memperoleh `alasan_pembatalan` di samping `alasan_revisi`
+  yang sudah ada; pembatalan tidak lagi menimpa alasan koreksi.
+
+Klien lama yang mengabaikan field baru tetap berjalan tanpa perubahan.
+
 Menu aplikasi tidak ditambahkan pada Fase 2. Klien lama tetap membaca `profile.capabilities.default_mode` dan `profile.capabilities.menus` dari `ApiAuthService`; implementasi layar mobile adalah Fase 5.

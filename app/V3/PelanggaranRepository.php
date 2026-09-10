@@ -278,19 +278,29 @@ final class PelanggaranRepository
         return ['rows'=>$rows,'total'=>$total,'page'=>$page,'per_page'=>$size];
     }
 
+    /**
+     * Tandai catatan sumber sudah digantikan revisi. Fingerprint dilepas agar
+     * hanya catatan yang masih berlaku menempati slot unik duplikasi; nilainya
+     * turunan murni dari kolom bisnis yang tetap tersimpan.
+     */
     public function updateViolationVersion(int $id, int $expectedVersion, int $actorId): bool
     {
         return $this->execute(
-            'UPDATE v3_pelanggaran SET version=version+1,updated_by=? WHERE id=? AND version=?',
+            'UPDATE v3_pelanggaran SET version=version+1,updated_by=?,fingerprint=NULL WHERE id=? AND version=?',
             [$actorId, $id, $expectedVersion]
         ) === 1;
     }
 
+    /**
+     * Pembatalan menyimpan alasannya pada kolom sendiri sehingga alasan revisi
+     * milik koreksi sebelumnya tidak tertimpa, dan melepas fingerprint agar
+     * kejadian yang sama boleh dicatat ulang setelah dibatalkan.
+     */
     public function cancelViolation(int $id, int $expectedVersion, string $reason, int $actorId): bool
     {
         return $this->execute(
             "UPDATE v3_pelanggaran
-                SET status='Dibatalkan',alasan_revisi=?,version=version+1,updated_by=?
+                SET status='Dibatalkan',alasan_pembatalan=?,fingerprint=NULL,version=version+1,updated_by=?
               WHERE id=? AND version=? AND status<>'Dibatalkan'",
             [$reason, $actorId, $id, $expectedVersion]
         ) === 1;
@@ -384,12 +394,61 @@ final class PelanggaranRepository
         return (int) $this->db->insert_id;
     }
 
+    /**
+     * Selaraskan masa berlaku rekomendasi dengan total poin terkini.
+     *
+     * Rekomendasi tidak pernah dihapus dan tetap unik per santri/tahun/ambang.
+     * Ketika pembatalan atau koreksi menarik total keluar dari rentang ambang,
+     * barisnya ditandai tidak berlaku; ketika total kembali masuk rentang,
+     * tanda itu dilepas sehingga pembimbing melihat antrean yang jujur.
+     *
+     * @return array{dinonaktifkan:array<int,int>,dipulihkan:array<int,int>}
+     */
+    public function refreshRecommendationValidity(int $santriId, int $tahunId, int $total, int $actorId): array
+    {
+        $rows = $this->all(
+            'SELECT r.id,r.tidak_berlaku_pada,a.nilai_minimum,a.nilai_maksimum
+               FROM v3_rekomendasi r
+               JOIN v3_ambang a ON a.id=r.ambang_id
+              WHERE r.santri_id=? AND r.tahun_ajaran_id=? AND r.archived_at IS NULL
+              ORDER BY r.id FOR UPDATE',
+            [$santriId, $tahunId]
+        );
+        $disabled = [];
+        $restored = [];
+        foreach ($rows as $row) {
+            $maximum = $row['nilai_maksimum'] === null ? null : (int) $row['nilai_maksimum'];
+            $inBand = (int) $row['nilai_minimum'] <= $total && ($maximum === null || $maximum >= $total);
+            $marked = $row['tidak_berlaku_pada'] !== null;
+            if (!$inBand && !$marked) {
+                $this->execute(
+                    'UPDATE v3_rekomendasi
+                        SET tidak_berlaku_pada=NOW(),tidak_berlaku_alasan=?,updated_by=?,version=version+1
+                      WHERE id=? AND tidak_berlaku_pada IS NULL',
+                    ['Total poin ' . $total . ' berada di luar rentang ambang.', $actorId, (int) $row['id']]
+                );
+                $disabled[] = (int) $row['id'];
+                continue;
+            }
+            if ($inBand && $marked) {
+                $this->execute(
+                    'UPDATE v3_rekomendasi
+                        SET tidak_berlaku_pada=NULL,tidak_berlaku_alasan=NULL,updated_by=?,version=version+1
+                      WHERE id=? AND tidak_berlaku_pada IS NOT NULL',
+                    [$actorId, (int) $row['id']]
+                );
+                $restored[] = (int) $row['id'];
+            }
+        }
+        return ['dinonaktifkan' => $disabled, 'dipulihkan' => $restored];
+    }
+
     /** @return array<int,array<string,mixed>> */
     public function recommendations(int $santriId, int $tahunId): array
     {
         return $this->all(
             'SELECT id,ambang_id,dipicu_oleh_pelanggaran_id,total_poin_snapshot,label_snapshot,
-                    rekomendasi_snapshot,status,created_at
+                    rekomendasi_snapshot,status,tidak_berlaku_pada,tidak_berlaku_alasan,created_at
                FROM v3_rekomendasi
               WHERE santri_id=? AND tahun_ajaran_id=? AND archived_at IS NULL ORDER BY id',
             [$santriId,$tahunId]

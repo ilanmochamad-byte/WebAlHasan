@@ -15,6 +15,7 @@ Baseline: `af6285ffe31f9ca22407446b32c9785530beabaa`. Branch: `prd-v3-fase-2`.
 - `storage/private/.htaccess`
 - `storage/private/index.html`
 - `storage/private/v3/.gitignore`
+- `.htaccess` (koreksi audit T5)
 
 ## Capability dan navigasi
 
@@ -48,3 +49,16 @@ Baseline: `af6285ffe31f9ca22407446b32c9785530beabaa`. Branch: `prd-v3-fase-2`.
 - Seluruh berkas dalam `docs/phase-v3-2/`.
 
 Tidak ada berkas `alhasanApps`, migrasi 001–013, atau PRD Fase 3 yang diubah. Hash commit final dicatat pada riwayat Git setelah commit/push.
+
+## Koreksi audit Claude Code
+
+- `database/migrations/015_v3_fase2_koreksi_dan_rekomendasi.sql`
+- `database/rollbacks/015_v3_fase2_koreksi_dan_rekomendasi.sql`
+- `bin/v3_rekonsiliasi_agregat.php`
+- `docs/phase-v3-2/audit-claude-code.md`
+
+Berkas Fase 2 yang ikut berubah karena koreksi T1–T4:
+`app/V3/PelanggaranRepository.php`, `app/V3/PelanggaranService.php`,
+`portal/v3_pelanggaran_detail.php`, `bin/v3_phase2_verify.php`,
+`tests/v3_phase2_static.php`, `tests/v3_phase2_integration.php`,
+`tests/v3_phase2_migration.php`.

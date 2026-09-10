@@ -11,6 +11,7 @@ Paket ini mengimplementasikan tepat Fase 2: pencatatan pelanggaran sesuai cakupa
 - [Migrasi dan rollback](migrasi-dan-rollback.md)
 - [Hasil pengujian](test-results.md)
 - [Status penerimaan dan handoff](acceptance-status.md)
+- [Bukti audit Claude Code](audit-claude-code.md)
 - [Manifest berkas](manifest-berkas.md)
 
 Halaman `admin/admin_pelanggaran.php` tetap baca-saja dengan label **Data warisan**. Tidak ada backfill tabel warisan ke ledger V3, tidak ada merge ke `main`, dan tidak ada deploy produksi.

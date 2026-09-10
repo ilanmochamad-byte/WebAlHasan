@@ -18,7 +18,11 @@ Koreksi membuat baris revisi baru, satu pembalik ledger untuk revisi lama, dan s
 
 Setiap create, koreksi, pembatalan, dan tanda mengetahui memerlukan idempotency key. `v3_idempotency` menyimpan hash request serta respons untuk replay. Fingerprint bisnis mencegah pencatatan identik dengan key berbeda. Kolom `version` menolak tab/request lama dengan `409`, dan indeks unik memastikan satu pengganti langsung untuk satu revisi.
 
-Ambang aktif pada tahun ajaran aktif menghasilkan paling banyak satu `v3_rekomendasi` per santri/tahun/ambang. Rekomendasi hanya antrean tindak lanjut manual; tidak menulis hukuman, kasus konseling, sesi, atau penempatan akademik. Ambang tahun nonaktif tetap boleh disimpan, tetapi tidak pernah menjadi default dan ditampilkan sebagai peringatan operator karena belum dapat memicu rekomendasi.
+Fingerprint hanya menahan slot duplikasi untuk catatan yang masih berlaku. Catatan yang digantikan revisi atau dibatalkan melepas fingerprint-nya, sehingga koreksi boleh mengembalikan isi ke nilai sebelumnya dan kejadian yang sama boleh dicatat ulang sesudah pembatalan. Nilainya turunan murni dari kolom bisnis yang tetap tersimpan sehingga selalu dapat dihitung ulang.
+
+Alasan pembatalan disimpan pada `alasan_pembatalan`, terpisah dari `alasan_revisi` milik koreksi; pembatalan tidak pernah menimpa alasan koreksi.
+
+Ambang aktif pada tahun ajaran aktif menghasilkan paling banyak satu `v3_rekomendasi` per santri/tahun/ambang. Masa berlakunya mengikuti total poin terkini: setiap rekonsiliasi menandai rekomendasi yang totalnya keluar dari rentang ambang sebagai tidak berlaku, dan melepas penanda itu ketika total kembali masuk rentang. Barisnya tidak pernah dihapus dan tidak pernah digandakan. Rekomendasi hanya antrean tindak lanjut manual; tidak menulis hukuman, kasus konseling, sesi, atau penempatan akademik. Ambang tahun nonaktif tetap boleh disimpan, tetapi tidak pernah menjadi default dan ditampilkan sebagai peringatan operator karena belum dapat memicu rekomendasi.
 
 ## Privasi dan lampiran
 
