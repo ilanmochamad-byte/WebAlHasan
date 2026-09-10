@@ -6,6 +6,7 @@ Paket ini mengimplementasikan tepat Fase 2: pencatatan pelanggaran sesuai cakupa
 
 ## Dokumen
 
+- [Catatan untuk implementator Fase 3](catatan-untuk-fase-3.md) — baca sebelum memulai Fase 3
 - [Panduan pengisian Katalog & Ambang](panduan-katalog-ambang.md) — untuk admin pesantren
 - [Desain dan aturan](desain-dan-aturan.md)
 - [Kontrak API](kontrak-api.md)
