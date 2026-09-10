@@ -212,6 +212,58 @@ Dicatat supaya keputusannya sadar, bukan terlewat:
   peristiwa V3 seperti `v3_rekomendasi_baru`. Kosmetik dan tidak memengaruhi
   akses, tetapi membingungkan pembimbing; terlihat pada bukti produksi.
 
+## 6a. Keputusan operasional: akun smoke test produksi
+
+**Keputusan Human Developer, 10 September 2026: akun dan santri smoke test
+dipertahankan aktif di produksi, tidak dinonaktifkan sesudah Fase 2.**
+
+Alasannya: Fase 3–5 akan memerlukan smoke test produksi juga, dan membangun
+ulang rantai akun → penugasan pembimbing → penempatan kelas/kamar setiap fase
+jauh lebih mahal daripada memelihara satu set yang sudah terbukti berjalan.
+Penonaktifan dilakukan hanya ketika set ini benar-benar sudah tidak dibutuhkan.
+
+Keputusan ini menggantikan saran auditor sebelumnya yang menganjurkan
+penonaktifan sesudah Fase 2. Sesi berikutnya jangan memakai saran lama itu.
+
+Entitas terkait: akun `PENGURUS SMOKE AUDIT` (pengurus dengan penugasan
+pembimbing aktif) dan santri `SANTRI SMOKE AUDIT`.
+
+Syarat yang menyertai keputusan ini:
+
+- **Poin uji dikembalikan sesudah dipakai.** Catatan uji dibatalkan dengan
+  alasan sehingga pembalik poin mengembalikan total tanpa menghapus riwayat.
+  Penting menjelang Fase 5 yang membangun laporan teragregasi.
+- **Kredensial akun smoke tidak dibagikan.** Akun ini memegang penugasan
+  pembimbing aktif, jadi kewenangannya nyata di produksi.
+- **Penamaan `SMOKE AUDIT` dipertahankan** agar barisnya selalu dapat dikenali
+  pada laporan dan pemeriksaan.
+
+Catatan untuk Fase 4. Cakupan pembimbing berasal dari penempatan kelas/kamar,
+bukan dari relasi wali; santri dapat masuk cakupan tanpa wali sama sekali.
+Pemeriksaan pada 10 September 2026 pukul 21.44 memang menemukan `SANTRI SMOKE
+AUDIT` belum mempunyai relasi `santri_wali`, sehingga publikasi orang tua Fase 4
+belum akan punya penerima.
+
+Human Developer kemudian menambahkan wali fiktif `ORANG TUA SMOKE AUDIT`
+(hubungan Ayah, status aktif) dan menautkannya ke santri tersebut. Pemeriksaan
+ulang pukul 21.55 menunjukkan `total_relasi_wali` bernilai 1, dengan satu
+penempatan kelas aktif dan satu kamar. Set smoke kini memenuhi prasyarat data
+untuk menguji publikasi orang tua.
+
+Akun login walinya juga sudah ada dan diverifikasi pada 10 September 2026:
+`ortu_smoke.audit`, role `orang_tua`, status aktif, dengan satu santri terhubung.
+Ini penting karena relasi wali saja belum cukup — publikasi Fase 4 hanya sampai
+kepada wali yang mempunyai akun (`users.wali_id`).
+
+Dengan demikian rantai prasyarat data untuk menguji publikasi orang tua sudah
+lengkap: santri berpenempatan aktif → relasi `santri_wali` aktif → wali →
+akun login dengan role `orang_tua`. Tidak ada lagi prasyarat data yang tertunda
+untuk smoke test Fase 4.
+
+Seluruh wali smoke wajib fiktif. Menautkan santri uji ke wali sungguhan akan
+membuat publikasi uji coba terkirim kepada orang tua betulan begitu Fase 4
+aktif; itu satu-satunya jalur nyata data uji ini dapat bocor keluar sistem.
+
 ## 7. Bukti produksi (hosting cPanel, 10 September 2026)
 
 Dijalankan Human Developer pada host produksi sesudah koreksi T1–T5 dideploy.
