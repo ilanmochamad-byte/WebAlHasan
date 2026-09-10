@@ -8,6 +8,12 @@ $check=static function(bool $ok,string $label)use(&$fail):void{echo ($ok?'[lulus
 try {
     $r=new \App\V3\KatalogRepository(app_db());
     $count=static fn(string $sql,array $v=[]):int=>(int)array_values($r->rows($sql,$v)[0])[0];
+    // Kueri information_schema aman walau tabelnya belum ada, sehingga penyebab
+    // nyata dapat dinamai sebelum kueri lain menabrak error yang disamarkan.
+    if($count('SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=?',['schema_migrations'])!==1) {
+        $check(false,'Tabel schema_migrations belum ada: database ini belum pernah dimigrasi. Jalankan "php bin/migrate.php up" lebih dahulu.');
+        echo "BLOCKER: 1 pemeriksaan gagal.\n";exit(1);
+    }
     $check($count("SELECT COUNT(*) FROM schema_migrations WHERE migration='012_fondasi_penugasan_v3_v6.sql'")===1,'Fondasi 012 tercatat');
     foreach(['users','roles','user_roles','guru','pengurus','wali','santri','tahun_ajaran','kelas','kamar','santri_wali','pembimbing_assignments','murobi_assignments','audit_logs','notifikasi_outbox','perangkat_push','pelanggaran'] as $table) {
         $check($count('SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=?',[$table])===1,'Prasyarat '.$table);
@@ -58,7 +64,13 @@ try {
         }
         $check($count("SELECT COUNT(*) FROM v3_ambang a JOIN v3_ambang b ON a.id<b.id AND a.tahun_ajaran_id=b.tahun_ajaran_id WHERE a.is_active=1 AND b.is_active=1 AND a.archived_at IS NULL AND b.archived_at IS NULL AND a.nilai_minimum<=COALESCE(b.nilai_maksimum,2147483647) AND b.nilai_minimum<=COALESCE(a.nilai_maksimum,2147483647) AND a.tanggal_mulai<=COALESCE(b.tanggal_selesai,'9999-12-31') AND b.tanggal_mulai<=COALESCE(a.tanggal_selesai,'9999-12-31')")===0,'Tidak ada ambang bertumpang tindih');
     }
-} catch(Throwable $e) { $check(false,'Diagnostik tidak dapat diselesaikan; periksa koneksi/skema pada lingkungan yang tepat.'); }
+} catch(Throwable $e) {
+    // CLI-only (dijaga di atas), sehingga sebab teknis boleh ditampilkan kepada
+    // operator. Tanpa ini pesan generik menyembunyikan penyebab nyata seperti
+    // "schema_migrations belum ada" pada salinan struktur yang belum dimigrasi.
+    $check(false,'Diagnostik tidak dapat diselesaikan; periksa koneksi/skema pada lingkungan yang tepat.');
+    echo '        sebab: '.$e->getMessage().PHP_EOL;
+}
 if($warisan>0){echo "PERHATIAN: {$warisan} referensi yatim pada tabel warisan. Bukan dibuat migrasi 013; tangani terpisah dan JANGAN menghapus catatan bisnis lama.\n";}
 if($fail>0){echo "BLOCKER: {$fail} pemeriksaan gagal.\n";}
 elseif($warisan>0){echo "Struktur V3 lulus; masih ada temuan warisan di atas.\n";}
