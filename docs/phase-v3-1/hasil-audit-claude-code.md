@@ -161,7 +161,7 @@ Tidak berdampak pada Fase 1 (tidak ada mutasi operasional). Menjadi relevan pada
 
 ## 6. Yang tetap terbuka (bukan kegagalan, tetapi belum dibuktikan)
 
-1. **Uji pada salinan produksi representatif** MariaDB cPanel 10.6.27 atau MySQL 8. Probe `sql_mode` ketat mempersempit risiko tetapi tidak menggantikannya.
+1. ~~Uji pada salinan produksi representatif~~ **DITUTUP 10 September 2026.** Migrasi 013 dijalankan pada MariaDB hosting cPanel; `bin/v3_verify.php` menghasilkan 273 pemeriksaan LULUS tanpa blocker. Dijalankan langsung pada basis data produksi, bukan pada salinan uji. Temuan T-1 sekaligus terkonfirmasi: produksi tidak memiliki referensi yatim, sehingga yatim yang ditemukan auditor memang residu fixture lokal.
 2. **Smoke test Safari/iOS, perangkat fisik Android/iOS, dan cPanel.** Bukti browser memakai Chromium headless dengan aset lokal dan request eksternal diblokir.
 3. **T-2** wajib ditangani sebelum mutasi operasional Fase 2.
 4. Migrasi 013 kini **terpasang** pada DB regresi lokal `webalhasan_phase4_codex_20260823_test` (diterapkan auditor untuk membuktikan §3.8). Ini database uji lokal, bukan produksi.

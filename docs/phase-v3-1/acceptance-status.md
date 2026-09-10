@@ -19,7 +19,7 @@ Branch: `prd-v3-fase-1`. Baseline `14548541000e0df523343d82b28650061364bb65`. Pe
 | Formulir desktop/tablet/375 px | LULUS Chromium — bukti browser dan tinjauan screenshot |
 | Data warisan hanya baca | LULUS — keputusan pengguna PRD §5.2a; GET hapus/POST pencatatan 405 |
 | Tidak membuka fitur Fase 2–5 atau mengubah mobile | LULUS pemeriksaan perubahan; endpoint mutasi V3 tidak ada |
-| Salinan produksi representatif/versi database cPanel | **MEMERLUKAN UJI MYSQL** — dipersempit oleh probe `sql_mode` ketat auditor, tidak digantikan |
+| Versi database cPanel | **LULUS 10 September 2026** — migrasi 013 diterapkan pada MariaDB hosting pukul 10:20:23; `bin/v3_verify.php` 273 pemeriksaan LULUS, nol blocker, nol referensi yatim. Dijalankan langsung pada basis data produksi, bukan pada salinan uji. Lihat [uji-salinan-hosting.md](uji-salinan-hosting.md) |
 | Smoke Safari/perangkat fisik/cPanel | **MEMERLUKAN SMOKE TEST** |
 | Regresi V1/V2 **sesudah** migrasi 013 | LULUS — dibuktikan auditor; 49 suite/4.011 pemeriksaan identik sebelum dan sesudah 013 |
 | Audit akhir Claude Code | **SELESAI 9 September 2026** — seluruh suite direproduksi independen; 1 koreksi terarah (T-1). Lihat [hasil-audit-claude-code.md](hasil-audit-claude-code.md) |
