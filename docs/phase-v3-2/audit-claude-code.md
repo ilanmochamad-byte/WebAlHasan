@@ -207,10 +207,16 @@ Dicatat supaya keputusannya sadar, bukan terlewat:
 - Berkas staging `.v3-stage-*` yang tertinggal karena proses mati mendadak belum
   masuk pemeriksaan "tidak ada lampiran pending" yang kini hanya melihat akhiran
   `.pending`.
-- Halaman notifikasi masih berjudul "Pemberitahuan perizinan untuk akun Anda"
+- ~~Halaman notifikasi masih berjudul "Pemberitahuan perizinan untuk akun Anda"
   dengan breadcrumb `Beranda / Perizinan / Notifikasi`, padahal sekarang memuat
-  peristiwa V3 seperti `v3_rekomendasi_baru`. Kosmetik dan tidak memengaruhi
-  akses, tetapi membingungkan pembimbing; terlihat pada bukti produksi.
+  peristiwa V3.~~ **Sudah diperbaiki** atas permintaan Human Developer sesudah
+  terlihat pada bukti produksi: deskripsi menjadi "Pemberitahuan untuk akun
+  Anda" dan breadcrumb menjadi `Beranda / Notifikasi`. Breadcrumb default
+  `portal_header()` sengaja tidak diubah karena seluruh halaman lain yang
+  memakainya memang milik modul perizinan. Gating menu "Notifikasi Saya"
+  diperiksa dan tidak diubah: setiap penerima notifikasi V3 pasti memiliki
+  salah satu capability perizinan, sehingga tidak ada penerima yang kehilangan
+  menunya.
 
 ## 6a. Keputusan operasional: akun smoke test produksi
 
