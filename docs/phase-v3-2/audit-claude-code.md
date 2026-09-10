@@ -238,12 +238,31 @@ Syarat yang menyertai keputusan ini:
 - **Penamaan `SMOKE AUDIT` dipertahankan** agar barisnya selalu dapat dikenali
   pada laporan dan pemeriksaan.
 
-Catatan untuk Fase 4: per 10 September 2026 `SANTRI SMOKE AUDIT` **tidak
-mempunyai relasi `santri_wali`** — cakupan pembimbing berasal dari penempatan
-kelas/kamar, bukan dari relasi wali. Karena itu tidak ada risiko publikasi uji
-coba terkirim kepada orang tua sungguhan. Konsekuensinya, publikasi orang tua
-Fase 4 belum dapat di-smoke-test dengan set ini; perlu ditambahkan wali fiktif
-beserta akunnya dan ditautkan ke santri tersebut sebelum Fase 4 dikerjakan.
+Catatan untuk Fase 4. Cakupan pembimbing berasal dari penempatan kelas/kamar,
+bukan dari relasi wali; santri dapat masuk cakupan tanpa wali sama sekali.
+Pemeriksaan pada 10 September 2026 pukul 21.44 memang menemukan `SANTRI SMOKE
+AUDIT` belum mempunyai relasi `santri_wali`, sehingga publikasi orang tua Fase 4
+belum akan punya penerima.
+
+Human Developer kemudian menambahkan wali fiktif `ORANG TUA SMOKE AUDIT`
+(hubungan Ayah, status aktif) dan menautkannya ke santri tersebut. Pemeriksaan
+ulang pukul 21.55 menunjukkan `total_relasi_wali` bernilai 1, dengan satu
+penempatan kelas aktif dan satu kamar. Set smoke kini memenuhi prasyarat data
+untuk menguji publikasi orang tua.
+
+Yang belum diverifikasi: apakah wali tersebut sudah mempunyai akun login
+(`users.wali_id`). Relasi wali saja belum cukup untuk Fase 4 — publikasi hanya
+sampai kepada wali yang punya akun. Periksa sebelum Fase 4 dikerjakan:
+
+```
+SELECT w.id, w.nama_wali, u.id AS user_id, u.username, u.is_active
+  FROM wali w LEFT JOIN users u ON u.wali_id = w.id
+ WHERE w.nama_wali LIKE '%SMOKE%';
+```
+
+Seluruh wali smoke wajib fiktif. Menautkan santri uji ke wali sungguhan akan
+membuat publikasi uji coba terkirim kepada orang tua betulan begitu Fase 4
+aktif.
 
 ## 7. Bukti produksi (hosting cPanel, 10 September 2026)
 
