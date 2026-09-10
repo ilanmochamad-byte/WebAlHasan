@@ -122,8 +122,14 @@ final class PelanggaranService
                 $assignment=$capacity==='admin' ? ['id'=>$current['pembimbing_assignment_id'],'pengurus_id'=>$current['pembimbing_id'],'target_type'=>'Admin','kelas_id'=>null,'kamar_id'=>null] : $this->repo->pembimbingAssignment($actorId,(int)$current['santri_id'],(int)$current['tahun_ajaran_id'],substr($data['waktu_kejadian'],0,10));
                 if($assignment===null){throw new V3Exception('Penugasan pembimbing tidak berlaku pada tanggal kejadian.',403);}
                 $row=$this->violationRow($data,$catalog,$assignment,$capacity,$actorId,$id,$reason,(string)$current['status']);
-                $newId=$this->repo->insertViolation($row);
+                // Catatan sumber melepas fingerprint-nya lebih dahulu. Koreksi yang
+                // tidak mengubah isi -- misalnya hanya menambah alasan atau
+                // melampirkan bukti belakangan -- kalau tidak akan bertabrakan
+                // dengan catatan yang justru sedang dikoreksi. Keduanya berada
+                // dalam satu transaksi, dan pemeriksaan versi jadi gagal-cepat
+                // sebelum ada baris revisi yang tertulis.
                 if(!$this->repo->updateViolationVersion($id,$version,$actorId)){throw new V3Exception('Versi sudah berubah. Muat ulang data.',409);}
+                $newId=$this->repo->insertViolation($row);
                 $positive=$this->repo->positiveLedger($id)??throw new V3Exception('Ledger sumber tidak ditemukan.',503);
                 $reverseId=$this->repo->insertLedger($id,(int)$current['santri_id'],(int)$current['tahun_ajaran_id'],-(int)$positive['perubahan_poin'],'Pembalik karena koreksi','v3:pelanggaran:'.$id.':koreksi-pembalik:'.$newId,(int)$positive['id'],$actorId);
                 $ledgerId=$this->repo->insertLedger($newId,(int)$current['santri_id'],(int)$current['tahun_ajaran_id'],(int)$row['poin_snapshot'],'Poin hasil koreksi','v3:pelanggaran:'.$newId.':koreksi',null,$actorId);

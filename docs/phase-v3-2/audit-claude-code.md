@@ -19,9 +19,13 @@ Bukti pengujian implementator terbukti akurat: angka regresi 4.014 pemeriksaan
 pada 49 paket direproduksi persis, termasuk residu fixture 24 outbox dan 6 audit
 yatim yang memang sudah dicatat terbuka di `test-results.md`.
 
-Lima temuan diperbaiki pada audit ini (T1–T5). Tidak satu pun menggagalkan
-kriteria penerimaan, tetapi T1–T3 menyentuh perilaku koreksi/pembatalan yang
-akan dipakai Fase 3 sehingga diperbaiki sekarang, bukan diwariskan.
+Enam temuan diperbaiki pada audit ini (T1–T6). Tidak satu pun menggagalkan
+kriteria penerimaan, tetapi T1–T3 dan T6 menyentuh perilaku koreksi/pembatalan
+yang akan dipakai Fase 3 sehingga diperbaiki sekarang, bukan diwariskan.
+
+Sesudah koreksi T1–T5 dideploy, Human Developer menjalankan migrasi dan smoke
+test pada hosting cPanel. Hasilnya menutup dua batas bukti yang sebelumnya
+terbuka dan sekaligus memunculkan T6. Rinciannya di bagian 7.
 
 ## 2. Reproduksi pengujian implementator
 
@@ -30,7 +34,7 @@ fixture `sbx_*`. Tidak ada akses, migrasi, atau penghapusan data produksi.
 
 | Paket | Hasil sebelum koreksi | Hasil sesudah koreksi |
 | --- | --- | --- |
-| `bin/v3_phase2_run_tests.sh` | 131 pemeriksaan, exit 0 | **166** pemeriksaan, exit 0 |
+| `bin/v3_phase2_run_tests.sh` | 131 pemeriksaan, exit 0 | **172** pemeriksaan, exit 0 |
 | `bin/v3_phase1_run_tests.sh` | 71 pemeriksaan, exit 0 | 71 pemeriksaan, exit 0 |
 | `tests/v3_phase2_migration.php` | 9 pemeriksaan, exit 0 | **18** pemeriksaan, exit 0 |
 | `bin/v3_verify.php` | exit 0 | exit 0 |
@@ -123,6 +127,33 @@ selisih agregat nol tanpa satu pun mutasi baru.
 
 **Koreksi.** Kedua berkas ditambahkan ke `FilesMatch` di `.htaccess` root.
 
+### T6 — Koreksi yang tidak mengubah isi ditolak sebagai duplikat (sedang)
+
+Ditemukan dari smoke test produksi, bukan dari suite. Koreksi yang tidak mengubah
+satu pun field pembentuk fingerprint — misalnya hanya mengisi alasan, atau
+melampirkan bukti susulan — ditolak `409 Permintaan menduplikasi catatan yang
+sudah ada`.
+
+Sebabnya urutan di `PelanggaranService::correct()`: baris revisi baru di-`insert`
+sebelum baris sumber melepas fingerprint-nya. Ketika isinya tidak berubah,
+fingerprint keduanya sama dan revisi bertabrakan dengan catatan yang justru
+sedang dikoreksi.
+
+Koreksi T1 menutup dua kasus lain dari famili yang sama (koreksi balik ke nilai
+catatan yang sudah digantikan, dan pencatatan ulang sesudah pembatalan) tetapi
+tidak kasus ini, karena uji regresi T1 selalu mengubah `tempat`. Ini kelalaian
+dalam merancang uji, bukan pada perbaikannya.
+
+Skenario terdampak yang paling nyata: pembimbing ingin melampirkan bukti foto
+belakangan pada catatan yang isinya sudah benar. Lampiran bukan bagian
+fingerprint, sehingga koreksi itu selalu ditolak.
+
+**Koreksi.** `updateViolationVersion()` — yang melepas fingerprint sumber —
+dipindahkan ke sebelum `insertViolation()`. Keduanya tetap dalam satu transaksi,
+dan pemeriksaan versi menjadi gagal-cepat sebelum ada baris revisi yang tertulis.
+Uji regresi ditambahkan untuk koreksi tanpa perubahan isi maupun untuk pelampiran
+bukti susulan.
+
 ## 4. Migrasi 015
 
 `database/migrations/015_v3_fase2_koreksi_dan_rekomendasi.sql` bersifat aditif
@@ -152,13 +183,14 @@ jujur bahwa nilainya tidak tersedia, sedangkan alasan aslinya tetap tersimpan di
 - rekomendasi basi ditandai tidak berlaku
 - penanda dan alasan tidak berlaku selalu berpasangan
 
-`tests/v3_phase2_integration.php` bertambah 14 pemeriksaan regresi untuk T1–T3
-(34 → 48 assertion), `tests/v3_phase2_static.php` menjaga bentuk migrasi 015 dan
-`.htaccess`, dan `tests/v3_phase2_migration.php` menjadi drill dua migrasi dengan
-bukti agregat swa-pulih (9 → 18 pemeriksaan).
+`tests/v3_phase2_integration.php` bertambah 19 pemeriksaan regresi untuk T1–T3
+dan T6 (34 → 53 assertion), `tests/v3_phase2_static.php` menjaga bentuk migrasi
+015, `.htaccess`, serta urutan pelepasan fingerprint sebelum penulisan revisi,
+dan `tests/v3_phase2_migration.php` menjadi drill dua migrasi dengan bukti
+agregat swa-pulih (9 → 18 pemeriksaan).
 
-Rincian pemeriksaan Fase 2 sesudah koreksi: statis 68, integrasi 62, konkurensi 6,
-verifier 30 — total 166.
+Rincian pemeriksaan Fase 2 sesudah koreksi: statis 69, integrasi 67, konkurensi 6,
+verifier 30 — total 172.
 
 ## 6. Catatan kecil yang tidak diperbaiki
 
@@ -175,8 +207,60 @@ Dicatat supaya keputusannya sadar, bukan terlewat:
 - Berkas staging `.v3-stage-*` yang tertinggal karena proses mati mendadak belum
   masuk pemeriksaan "tidak ada lampiran pending" yang kini hanya melihat akhiran
   `.pending`.
+- Halaman notifikasi masih berjudul "Pemberitahuan perizinan untuk akun Anda"
+  dengan breadcrumb `Beranda / Perizinan / Notifikasi`, padahal sekarang memuat
+  peristiwa V3 seperti `v3_rekomendasi_baru`. Kosmetik dan tidak memengaruhi
+  akses, tetapi membingungkan pembimbing; terlihat pada bukti produksi.
 
-## 7. Kebersihan database uji
+## 7. Bukti produksi (hosting cPanel, 10 September 2026)
+
+Dijalankan Human Developer pada host produksi sesudah koreksi T1–T5 dideploy.
+Keluaran perintah dan tangkapan layar ditinjau langsung selama sesi audit; yang
+dicatat di bawah hanya hal yang benar-benar terlihat pada bukti tersebut.
+
+**Migrasi.** `php bin/migrate.php up` menerapkan `014` dan `015` pada MariaDB
+hosting tanpa galat. `bin/v3_verify.php` lulus penuh: seluruh tabel, kolom,
+constraint, indeks, dan **nol referensi yatim** pada semua tabel termasuk
+`v3_poin_agregat` dan `v3_rekomendasi`. Ini menutup batas bukti "MariaDB
+hosting/cPanel" dan "migrasi produksi" yang sebelumnya terbuka.
+
+**Smoke test operasional.** Satu santri, dua pencatatan, dua koreksi berurutan,
+satu pembatalan, dan satu pencatatan ulang. Ledger berakhir tujuh entri
+berpasangan dan `Agregat 2 · ledger 2 · selisih 0`. Karena itu pemeriksaan
+`Agregat dapat direkonsiliasi dari seluruh ledger` kini lulus atas data nyata,
+bukan atas tabel kosong seperti pada run pertama sesudah migrasi.
+
+**T2 terbukti di produksi.** Riwayat revisi menampilkan
+`Catatan #5 · versi 2 · Dibatalkan — koreksi: koreksi lagi — pembatalan:
+batalkan ini uji coba`. Kedua alasan hidup berdampingan pada satu baris; sebelum
+koreksi, alasan koreksi akan tertimpa alasan pembatalan.
+
+**T3 terbukti dua arah di produksi.** Rekomendasi `Perhatian Awal` terbit ketika
+total mencapai 12, lalu sesudah pembatalan berubah menjadi **Tidak berlaku**
+dengan keterangan `snapshot total 12 · Total poin 2 berada di luar rentang
+ambang`. Snapshot lama tetap utuh, baris tidak dihapus, dan tidak terbentuk
+baris kedua.
+
+**Sebagian T1 terbukti.** Pencatatan ulang kejadian sesudah pembatalan berhasil.
+
+**Kriteria penerimaan #9 terbukti di produksi.** Notifikasi in-app
+`v3_rekomendasi_baru` berbunyi "Ada rekomendasi pembinaan baru. Masuk untuk
+melihat sesuai kewenangan." — tanpa nama santri, kategori, uraian, poin, atau
+nomor telepon.
+
+**T6 muncul dari sesi ini.** Koreksi yang hanya mengisi alasan ditolak `409`.
+Diagnosis dibaca dari kode lalu direproduksi pada database uji sebelum
+diperbaiki; lihat bagian 3.
+
+`php bin/v3_phase2_verify.php` pada hosting: 30 pemeriksaan lulus, tanpa blocker.
+Angka itu berasal dari kode sebelum perbaikan T6, sehingga belum memuat penjaga
+statis urutan fingerprint yang ditambahkan sesudahnya.
+
+**Belum diuji di produksi:** perilaku sesudah perbaikan T6 (perlu deploy ulang),
+tanda mengetahui murobi, lampiran privat, akses lintas cakupan, dan aplikasi
+perangkat.
+
+## 8. Kebersihan database uji
 
 Audit ini hanya memakai `webalhasan_v3_phase1_test` dan fixture `sbx_*`.
 Regresi warisan kembali meninggalkan tepat 24 outbox dan 6 audit yatim seperti
