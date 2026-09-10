@@ -71,6 +71,8 @@ final class Navigation
         'admin_download.php' => 'konten.download',
         'admin_pelanggaran.php' => 'pelanggaran',
         'admin_v3_katalog.php' => 'v3.katalog',
+        'v3_pelanggaran.php' => 'v3.pelanggaran',
+        'v3_pelanggaran_detail.php' => 'v3.pelanggaran',
         'admin_penempatan_santri.php' => 'master.penempatan',
         // Alamat lama penempatan; kini hanya mengalihkan ke halaman di atas.
         'admin_santri.php' => 'master.penempatan',
@@ -82,7 +84,7 @@ final class Navigation
      * @param array<int, string> $capabilities
      * @return array<int, array{label:string, items:array<int, array<string, mixed>>}>
      */
-    public static function forUser(array $user, array $capabilities, ?int $unreadCount = null): array
+    public static function forUser(array $user, array $capabilities, ?int $unreadCount = null, array $v3Capabilities = []): array
     {
         $roles = $user['roles'] ?? [];
         $isAdmin = in_array('admin', $roles, true);
@@ -97,6 +99,12 @@ final class Navigation
             $beranda[] = self::item('admin.dashboard', 'Ringkasan Administrasi', '/admin/admin_dashboard.php', 'fa-gauge-high');
         }
         $groups[] = ['label' => 'Utama', 'items' => $beranda];
+
+        if (array_intersect(['v3.pelanggaran.kelola','v3.binaan.baca','v3.pengawasan','v3.koreksi'],array_keys($v3Capabilities)) !== []) {
+            $groups[] = ['label' => 'Pembinaan V3', 'items' => [
+                self::item('v3.pelanggaran', 'Pelanggaran & poin', '/portal/v3_pelanggaran.php', 'fa-triangle-exclamation'),
+            ]];
+        }
 
         if ($isGuru || $isAdmin) {
             $groups[] = ['label' => 'Pengajian', 'items' => [
@@ -165,7 +173,7 @@ final class Navigation
                 self::item('psb.rekap', 'Rekap Keuangan PSB', '/admin/admin_rekap_keuangan.php', 'fa-chart-area'),
             ]];
             $groups[] = ['label' => 'Lain-lain', 'items' => [
-                self::item('pelanggaran', 'Pelanggaran', '/admin/admin_pelanggaran.php', 'fa-triangle-exclamation'),
+                self::item('pelanggaran', 'Data pelanggaran warisan', '/admin/admin_pelanggaran.php', 'fa-box-archive'),
                 self::item('alumni', 'Data Alumni', '/admin/admin_alumni.php', 'fa-paper-plane'),
                 self::item('alumni.kelulusan', 'Kelulusan & Mutasi Keluar', '/admin/admin_kelulusan_santri.php', 'fa-user-graduate'),
                 self::item('konten.berita', 'Berita / Artikel', '/admin/admin_berita.php', 'fa-newspaper'),

@@ -26,7 +26,7 @@ try {
     http_response_code($e->status);$error=$e->getMessage();
     if ($_SERVER['REQUEST_METHOD']==='POST') { $input=array_filter($_POST,static fn($v)=>is_scalar($v)); }
 }
-try { $options=$service->options($currentUser);$list=$service->page($kind,$_GET,$currentUser); }
+try { $options=$service->options($currentUser);$list=$service->page($kind,$_GET,$currentUser);$operationalWarnings=v3_pelanggaran_service()->configurationWarnings(); }
 catch(V3Exception $e) { http_response_code($e->status); master_header('Katalog & Ambang V3');echo '<div class="alert alert-danger">'.ah_e($e->getMessage()).'</div>';master_footer();exit; }
 $labels=['kategori'=>'Kategori','katalog'=>'Jenis pelanggaran','ambang'=>'Ambang poin'];
 $tabs=[];foreach($labels as $k=>$label) { $tabs[]=['label'=>$label,'url'=>'admin_v3_katalog.php?jenis='.$k,'active'=>$kind===$k]; }
@@ -35,6 +35,7 @@ $value=static fn($key,$default='')=>ah_e($input[$key]??$default);
 ?>
 <style>.v3-form{min-width:0}.v3-form input,.v3-form select,.v3-form textarea{max-width:100%;min-width:0}.v3-history{white-space:pre-wrap;overflow-wrap:anywhere}.v3-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:1rem}</style>
 <?php if($error): ?><div class="alert alert-danger" role="alert"><?= ah_e($error) ?></div><?php endif ?>
+<?php foreach($operationalWarnings as $warning): ?><div class="alert alert-warning" role="status"><strong>Perlu perhatian operasional:</strong> <?= ah_e($warning) ?></div><?php endforeach ?>
 <section class="card p-3 mb-4"><h2 class="h5"><?= empty($input['id'])?'Tambah':'Ubah' ?> <?= ah_e($labels[$kind]) ?></h2>
 <p class="text-muted">Untuk nonaktifkan, pilih status Nonaktif. Untuk mengakhiri, isi tanggal selesai. Setiap perubahan data lama memerlukan alasan.</p>
 <form method="post" class="v3-form">
