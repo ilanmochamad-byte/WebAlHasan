@@ -67,6 +67,17 @@ $assert($r->rows("SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_S
 foreach([['UPDATE v3_katalog SET poin_default=-1 WHERE id=?',$kid],['UPDATE v3_katalog SET kategori_id=999999999 WHERE id=?',$kid],['UPDATE v3_ambang SET nilai_maksimum=-1 WHERE id=?',$aid]] as [$sql,$key]) {
     app_db()->begin_transaction();try { $r->execute($sql,[$key]);$assert(false,'Constraint database menolak data rusak'); } catch(\App\V3\V3Exception $e){$assert(true,'Constraint database menolak data rusak');} finally {app_db()->rollback();}
 }
+// Tahun aktif wajib menjadi pilihan pertama: ambang di tahun non-aktif tersimpan
+// tanpa galat tetapi belum terbaca pembimbing, sehingga default yang salah
+// menjadi jebakan konfigurasi yang sunyi.
+$tahun=$s->options($admin)['tahun'];
+$assert($tahun!==[]&&($tahun[0]['status']??'')==='Aktif','Tahun ajaran aktif menjadi pilihan pertama');
+$assert(array_key_exists('status',$tahun[0]),'Status tahun ajaran ikut dikirim ke formulir');
+$nonAktif=array_values(array_filter($tahun,static fn($y)=>($y['status']??'')!=='Aktif'));
+$assert($nonAktif===[]||(int)$nonAktif[0]['id']!==(int)$tahun[0]['id'],'Tahun non-aktif tidak menempati posisi default');
+$page=file_get_contents(APP_ROOT.'/admin/admin_v3_katalog.php');
+$assert(str_contains($page,'non-aktif'),'Formulir menandai tahun non-aktif');
+$assert(str_contains($page,'$defaults[$name]'),'Formulir memakai default per-field, bukan opsi pertama browser');
 for($i=0;$i<26;$i++) { $s->save('katalog',array_replace($kind,['kode'=>$tag.'P'.$i]),$admin); }
 $p1=$s->active('katalog',['kategori_id'=>$id,'page'=>1],$user);
 $p2=$s->active('katalog',['kategori_id'=>$id,'page'=>2],$user);

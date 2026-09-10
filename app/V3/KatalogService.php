@@ -85,7 +85,11 @@ final class KatalogService
     public function options(array $user): array
     {
         $this->requireAdmin($user);
-        return ['kategori'=>$this->repo->rows('SELECT id,nama FROM v3_kategori ORDER BY nama'),'tahun'=>$this->repo->rows('SELECT id,tahun,semester FROM tahun_ajaran WHERE archived_at IS NULL ORDER BY id DESC')];
+        // Tahun aktif didahulukan dan statusnya ikut dikirim. Ambang untuk tahun
+        // non-aktif tetap boleh dibuat (konfigurasi tahun depan), tetapi tidak
+        // boleh menjadi pilihan default: ambang di tahun non-aktif tersimpan
+        // tanpa galat namun belum terbaca pembimbing.
+        return ['kategori'=>$this->repo->rows('SELECT id,nama FROM v3_kategori ORDER BY nama'),'tahun'=>$this->repo->rows("SELECT id,tahun,semester,status FROM tahun_ajaran WHERE archived_at IS NULL ORDER BY (status='Aktif') DESC,id DESC")];
     }
     public function history(string $kind,int $id,array $user): array
     {

@@ -142,6 +142,20 @@ Verifikasi setelah koreksi:
 
 Tidak berdampak pada Fase 1 (tidak ada mutasi operasional). Menjadi relevan pada Fase 2–3 ketika koreksi admin wajib beralasan dan dibedakan dari tindakan pembimbing. Tidak dikoreksi karena berada di luar cakupan Fase 1 dan perbaikannya sebaiknya menyertai kode yang benar-benar memakainya. **Harus ditangani sebelum mutasi operasional Fase 2 ditulis.**
 
+### T-4 (rendah pada Fase 1, sedang pada Fase 2 — dikoreksi 10 September 2026) — default tahun ajaran menjadi jebakan konfigurasi sunyi
+
+Ditemukan dari smoke test produksi Human Developer: dropdown **Tahun ajaran** pada formulir ambang default ke tahun dengan `id` tertinggi, bukan tahun aktif. `KatalogService::options()` mengambil `ORDER BY id DESC` tanpa filter status, dan formulir tidak menandai mana yang aktif, sehingga browser memilih opsi pertama. Pada produksi 10 September 2026 default jatuh ke `2026/2027 / Genap` sedangkan tahun aktif adalah `2026/2027 / Ganjil`; operator harus mengubahnya manual setiap kali.
+
+Mengapa ini lebih dari sekadar kosmetik: `save()` hanya menuntut tahun ajaran tidak diarsipkan, **bukan** harus aktif. Ambang di tahun non-aktif karena itu tersimpan dengan pesan "Berhasil", tetapi `active('ambang')` menolak tahun non-aktif dengan `403` sehingga pembimbing tidak pernah membacanya. Pada Fase 1 dampaknya kecil karena ambang belum dipakai; pada Fase 2 ambang inilah yang memicu rekomendasi, sehingga ambang di tahun yang salah berarti **rekomendasi tidak pernah muncul tanpa galat apa pun**.
+
+**Koreksi yang diterapkan** (branch `perbaikan-default-tahun-ajaran-v3`):
+
+- `KatalogService::options()` mengurutkan `ORDER BY (status='Aktif') DESC, id DESC` dan mengirimkan `status`.
+- Formulir memakai default per-field sehingga tahun aktif terpilih otomatis; tahun non-aktif diberi label `— non-aktif`; ditambahkan catatan bahwa ambang tahun non-aktif tersimpan tetapi belum terbaca pembimbing.
+- Kemampuan membuat ambang untuk tahun depan **tidak dihapus** — hanya tidak lagi menjadi default diam-diam.
+
+Verifikasi: paket V3 71 pemeriksaan (naik dari 66) 0 gagal; formulir tambah memilih tahun aktif dan formulir ubah tetap memilih tahun milik barisnya; browser 74 0 gagal; post-check exit 0; regresi 49 suite/4.011 pemeriksaan 0 gagal.
+
 ### T-3 (informasi) — santri tanpa penempatan tidak pernah masuk cakupan
 
 `v3AppliesToSantri` memerlukan sedikitnya satu penempatan kelas atau kamar aktif pada tahun ajaran tersebut. Santri tanpa penempatan ditolak walaupun pembimbing memegang cakupan setahun penuh. Ini perilaku konservatif yang aman dan konsisten dengan PRD §5.3, dicatat agar Fase 2 tidak menganggapnya bug.
@@ -162,7 +176,7 @@ Tidak berdampak pada Fase 1 (tidak ada mutasi operasional). Menjadi relevan pada
 ## 6. Yang tetap terbuka (bukan kegagalan, tetapi belum dibuktikan)
 
 1. ~~Uji pada salinan produksi representatif~~ **DITUTUP 10 September 2026.** Migrasi 013 dijalankan pada MariaDB hosting cPanel; `bin/v3_verify.php` menghasilkan 273 pemeriksaan LULUS tanpa blocker. Dijalankan langsung pada basis data produksi, bukan pada salinan uji. Temuan T-1 sekaligus terkonfirmasi: produksi tidak memiliki referensi yatim, sehingga yatim yang ditemukan auditor memang residu fixture lokal.
-2. **Smoke test Safari/iOS, perangkat fisik Android/iOS, dan cPanel.** Bukti browser memakai Chromium headless dengan aset lokal dan request eksternal diblokir.
+2. ~~Smoke test Safari/iOS, perangkat fisik~~ **DITUTUP 10 September 2026.** Human Developer menjalankan smoke fungsional pada situs live: buat/baca ketiga entitas, overlap ditolak, nonaktif beralasan tercatat audit, non-admin memperoleh halaman 403, Data warisan baca-saja tanpa tombol hapus, 375 px pada Safari iOS, dan aplikasi Android lama berjalan normal tanpa menu operasional V3. Belum diuji di produksi: konkurensi dua admin, CSRF, dan kanal WhatsApp OFF — ketiganya lulus lokal.
 3. **T-2** wajib ditangani sebelum mutasi operasional Fase 2.
 4. Migrasi 013 kini **terpasang** pada DB regresi lokal `webalhasan_phase4_codex_20260823_test` (diterapkan auditor untuk membuktikan §3.8). Ini database uji lokal, bukan produksi.
 

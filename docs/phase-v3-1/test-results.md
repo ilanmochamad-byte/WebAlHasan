@@ -39,7 +39,7 @@ Lingkungan: PHP 8.4.14, MariaDB 12.3.2 lokal, database **baru** `webalhasan_v3_p
 ## Batas bukti
 
 - ~~**MEMERLUKAN UJI MYSQL**~~ **DITUTUP 10 September 2026:** migrasi 013 dijalankan pada MariaDB hosting cPanel (akun `k1807225`, host `sc133`) pukul 10:20:23 dan `bin/v3_verify.php` menghasilkan 273 pemeriksaan LULUS tanpa blocker. Catatan: dijalankan langsung pada basis data produksi dari `public_html`, bukan pada salinan uji seperti prosedur Jalur A.
-- **MEMERLUKAN SMOKE TEST:** Safari/iOS, perangkat Android/iOS fisik, dan smoke cPanel. Browser lokal memakai Chromium headless dengan aset lokal dan request eksternal diblokir.
+- ~~**MEMERLUKAN SMOKE TEST**~~ **DITUTUP 10 September 2026:** Human Developer menjalankan smoke fungsional pada situs live (Safari macOS, Safari iOS 375 px, dan aplikasi Android fisik). Tabel `pelanggaran` warisan di produksi memang kosong sejak dump 16 Agustus 2026 (nol pernyataan INSERT), sehingga halaman Data warisan menampilkan nol baris dengan benar; jalur render baris warisan terbukti lokal, bukan di produksi. Belum diuji di produksi: konkurensi dua admin, CSRF, dan kanal WhatsApp OFF — ketiganya sudah lulus lokal.
 - Pengakhiran katalog lewat web, pembacaan tanggal akhir dan alasan audit telah diuji. Fase 2–5 tidak diuji sebagai fitur karena belum dibuka.
 - Fixture tetap ada dalam DB uji; DB tidak diklaim kosong. Tidak ada penghapusan data produksi.
 
