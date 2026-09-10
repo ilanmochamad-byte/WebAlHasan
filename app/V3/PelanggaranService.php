@@ -224,16 +224,18 @@ final class PelanggaranService
         $ledger=$this->repo->ledgerHistory((int)$row['santri_id'],(int)$row['tahun_ajaran_id']);
         $ledgerTotal=array_sum(array_map(static fn(array $item):int=>(int)$item['perubahan_poin'],$ledger));
         $aggregate=$this->repo->aggregate((int)$row['santri_id'],(int)$row['tahun_ajaran_id']);
+        $history=$this->historyRows($row);
         return [
             'pelanggaran'=>$this->serializeViolation($row,true),
-            'riwayat_revisi'=>$this->historyRows($row),
+            'riwayat_revisi'=>$history,
             'ledger'=>array_map([$this,'serializeLedger'],$ledger),
             'total_poin'=>$ledgerTotal,
             'rekonsiliasi'=>['agregat'=>(int)($aggregate['total_poin']??0),'ledger'=>$ledgerTotal,'selisih'=>(int)($aggregate['total_poin']??0)-$ledgerTotal],
             'rekomendasi'=>array_map([$this,'serializeRecommendation'],$this->repo->recommendations((int)$row['santri_id'],(int)$row['tahun_ajaran_id'])),
             'murobi'=>array_map([$this,'serializeMurobi'],$this->repo->murobiNotes((int)$row['id'])),
             'lampiran'=>array_map([$this,'serializeAttachment'],$this->repo->attachments((int)$row['id'])),
-            'konseling'=>array_map([$this,'serializeCounselingLink'],$this->repo->counselingForViolation((int)$row['id'])),
+            // Tindak lanjut dibaca pada seluruh rantai revisi agar koreksi tidak memutus tampilannya.
+            'konseling'=>array_map([$this,'serializeCounselingLink'],$this->repo->counselingForViolations(array_column($history,'id'))),
             'peringatan_konfigurasi'=>$this->repo->configurationWarnings(),
         ];
     }

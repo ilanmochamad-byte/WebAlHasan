@@ -20,23 +20,10 @@ SET @sql := IF(
     'DO 0');
 PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
-SET @sql := IF(
-    (SELECT COUNT(*) FROM information_schema.COLUMNS
-      WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='v3_konseling_tautan'
-        AND COLUMN_NAME='sesi_unik_guard') = 0,
-    'ALTER TABLE v3_konseling_tautan ADD COLUMN sesi_unik_guard BIGINT UNSIGNED GENERATED ALWAYS AS (IFNULL(sesi_id,0)) STORED AFTER sesi_id',
-    'DO 0');
-PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
-
--- UNIQUE lama mengizinkan lebih dari satu NULL pada sesi_id. Guard menjadikan
--- tautan tingkat kasus bernilai 0, sementara tiap sesi tetap memakai ID asli.
-SET @sql := IF(
-    (SELECT COUNT(*) FROM information_schema.STATISTICS
-      WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='v3_konseling_tautan'
-        AND INDEX_NAME='tautan_unik_efektif') = 0,
-    'ALTER TABLE v3_konseling_tautan ADD UNIQUE KEY tautan_unik_efektif (pelanggaran_id,kasus_id,sesi_unik_guard)',
-    'DO 0');
-PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+-- Tautan tingkat kasus (sesi_id NULL) sudah dijaga UNIQUE tautan_unik milik
+-- 013 melalui kolom generated sesi_key=COALESCE(sesi_id,0). Draf awal 016
+-- memasang guard kedua yang identik; guard itu tidak lagi dipasang
+-- (audit Claude Code Fase 3, temuan K8).
 
 SET @sql := IF(
     (SELECT COUNT(*) FROM information_schema.COLUMNS
@@ -71,6 +58,13 @@ UPDATE v3_konseling_sesi
    AND (alasan_penjadwalan_ulang IS NULL OR alasan_penjadwalan_ulang='');
 
 UPDATE v3_konseling_sesi
+   SET alasan_pembatalan='Alasan pembatalan tidak tersedia pada baris warisan; telusuri audit_logs.'
+ WHERE status='Dibatalkan'
+   AND (alasan_pembatalan IS NULL OR alasan_pembatalan='');
+
+-- Kasus batal mendapat penanda yang sama. Tanpa ini, database yang pernah
+-- menjalankan rollback draf awal 016 gagal pada invariant verifier.
+UPDATE v3_konseling_kasus
    SET alasan_pembatalan='Alasan pembatalan tidak tersedia pada baris warisan; telusuri audit_logs.'
  WHERE status='Dibatalkan'
    AND (alasan_pembatalan IS NULL OR alasan_pembatalan='');

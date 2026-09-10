@@ -21,12 +21,34 @@ $parentStart=(int)strpos($service,'function parentSerializer');$parentEnd=(int)s
 foreach(['tujuan','ringkasan_internal','hasil','catatan_murobi','alasan_revisi','pembimbing_id'] as $forbidden)$assert(!str_contains($parentBody,"'{$forbidden}'"),'DTO orang tua tidak memuat '.$forbidden);
 $showBody=substr($service,(int)strpos($service,'function show('),2400);$assert(str_contains($showBody,"\$internal=\$mode!=='murobi'")&&str_contains($showBody,"'rekomendasi'=>\$internal?"),'Respons murobi memisahkan isi internal dan rekomendasi');
 $api=$source('api/v1/index.php');foreach(['/v3/konseling/options','/v3/konseling/kasus','/timeline','/tautan','/sesi','/diketahui'] as $route)$assert(str_contains($api,$route),'Rute API Fase 3 tersedia: '.$route);
-$assert(!preg_match("/\$method === 'GET'.*\/(?:status|tautan|sesi|diketahui)/",$api),'Tidak ada mutasi konseling melalui GET');
+// Pola lama di dalam string bertanda kutip ganda membaca `$` sebagai jangkar regex sehingga tidak pernah cocok (audit K10).
+// Penjaga ini membaca setiap baris rute GET dan membuktikan dirinya sendiri dapat mendeteksi rute mutasi sintetis.
+$getLines=preg_match_all('/^.*\$method === \'GET\'.*$/m',$api,$matches)?$matches[0]:[];
+$mutatingGet=static fn(array $lines):array=>array_values(array_filter($lines,static fn(string $line):bool=>str_contains($line,'/v3/konseling')&&preg_match('#/(?:status|tautan|sesi|diketahui)\b#',$line)===1));
+$assert($mutatingGet(['    if ($method === \'GET\' && preg_match(\'#^/v3/konseling/sesi/(\d+)/status$#\',$path,$matches)) {'])!==[],'Penjaga mutasi GET terbukti mendeteksi rute mutasi sintetis');
+$assert(count(array_filter($getLines,static fn(string $line):bool=>str_contains($line,'/v3/konseling')))>=4&&$mutatingGet($getLines)===[],'Tidak ada mutasi konseling melalui GET');
 $web=$source('portal/v3_konseling.php').$source('portal/v3_konseling_detail.php');$assert(substr_count($web,'Csrf::requireValid')===2,'Kedua controller mutasi web mewajibkan CSRF');$assert(str_contains($web,'method="post"'),'Form konseling memakai POST');$assert(str_contains($source('portal/v3_konseling_cetak.php'),'Cache-Control: private, no-store'),'Tampilan cetak internal tidak boleh dicache publik');
 $navigation=$source('app/Ui/Navigation.php');$assert(str_contains($navigation,"'/portal/v3_konseling.php'")&&str_contains($navigation,"'v3.konseling'"),'Navigasi konseling mengikuti capability V3');
-$violationService=$source('app/V3/PelanggaranService.php');$assert(str_contains($violationService,"'konseling'=>")&&str_contains($source('app/V3/PelanggaranRepository.php'),'function counselingForViolation'),'Detail pelanggaran memuat seluruh tindak lanjut konseling tanpa menggandakan induk');
-$migration=$source('database/migrations/016_v3_fase3_konseling.sql');foreach(['alasan_revisi_terakhir','alasan_pembatalan','alasan_penjadwalan_ulang','sesi_satu_revisi','sesi_unik_guard','tautan_unik_efektif','ditindaklanjuti_kasus_id','rekomendasi_kasus_fk'] as $needle)$assert(str_contains($migration,$needle),'Migrasi 016 memuat '.$needle);
+$violationService=$source('app/V3/PelanggaranService.php');$assert(str_contains($violationService,"'konseling'=>")&&str_contains($source('app/V3/PelanggaranRepository.php'),'function counselingForViolations'),'Detail pelanggaran memuat seluruh tindak lanjut konseling tanpa menggandakan induk');
+$migration=$source('database/migrations/016_v3_fase3_konseling.sql');foreach(['alasan_revisi_terakhir','alasan_pembatalan','alasan_penjadwalan_ulang','sesi_satu_revisi','ditindaklanjuti_kasus_id','rekomendasi_kasus_fk'] as $needle)$assert(str_contains($migration,$needle),'Migrasi 016 memuat '.$needle);
+$assert(!str_contains($migration,'ADD UNIQUE KEY tautan_unik_efektif')&&!str_contains($migration,'ADD COLUMN sesi_unik_guard'),'Migrasi 016 tidak memasang guard tautan yang menduplikasi tautan_unik 013');
+$assert(str_contains($migration,'UPDATE v3_konseling_kasus'),'Migrasi 016 memberi penanda jujur pada kasus batal tanpa alasan');
 $assert(!str_contains($migration,'DROP TABLE')&&!str_contains($migration,'DELETE FROM'),'Migrasi 016 tidak menghapus catatan bisnis');
+$rollback=$source('database/rollbacks/016_v3_fase3_konseling.sql');foreach(['alasan_revisi_terakhir','alasan_pembatalan','alasan_penjadwalan_ulang','ditindaklanjuti_kasus_id','ditindaklanjuti_pada'] as $column)$assert(preg_match('/DROP COLUMN '.$column.'\b/',$rollback)===0,'Rollback 016 mempertahankan kolom keputusan '.$column);
+$assert(!str_contains($rollback,'DROP FOREIGN KEY rekomendasi_kasus_fk')&&!str_contains($rollback,'DROP TABLE')&&!str_contains($rollback,'DELETE FROM'),'Rollback 016 tidak memutus tautan rekomendasi atau menghapus catatan');
+$assert(!str_contains($source('bin/v3_verify.php'),"\$table==='v3_konseling_tautan'&&\$type==='UNIQUE'"),'Verifier fondasi tidak mengharapkan unique tautan tambahan dari 016');
 foreach(range(1,16) as $number){$prefix=str_pad((string)$number,3,'0',STR_PAD_LEFT).'_';$assert(count(glob(APP_ROOT.'/database/migrations/'.$prefix.'*.sql')?:[])===1,'Migrasi tetap tunggal '.$prefix);}
 $auth=$source('app/Api/ApiAuthService.php');$assert(!str_contains($auth,'v3_konseling'),'Menu aplikasi belum diubah sebelum Fase 5');
+// Penjaga koreksi audit Claude Code Fase 3.
+$assert(str_contains($service,'Kasus sudah ditutup; status sesi tidak dapat diubah lagi.'),'K1 transisi sesi memeriksa status kasus yang terkunci');
+$assert(str_contains($service,'releaseRecommendations(')&&str_contains($repo,'function releaseRecommendations')&&str_contains($repo,"r.status=\\'Baru\\'"),'K2 kasus batal melepas rekomendasi dan antrean hanya memuat rekomendasi Baru');
+$assert(str_contains($service,"\$input['rekomendasi_ids']")&&substr_count($service,'linkRecommendation(')>=2,'K2 rekomendasi dapat ditautkan ke kasus yang sudah berjalan');
+$assert(str_contains($repo,'function violationChainLinkedToCase')&&str_contains($violationService,"counselingForViolations(array_column(\$history,'id'))"),'K3 tautan dan tampilan tindak lanjut membaca rantai revisi pelanggaran');
+$assert(str_contains($service,'ARRAY_FILTER_USE_BOTH')&&str_contains($service,"if(\$status==='Dibatalkan')\$data['realisasi']=null;"),'K5 field kosong formulir tidak menghapus rencana dan sesi batal tanpa realisasi');
+$assert(str_contains($service,'function sessionStateRules')&&str_contains($service,'$data=$this->sessionStateRules('),'K6 koreksi sesi menjaga arti statusnya');
+$assert(str_contains($service,"':v'.\$version"),'K7 kunci deduplikasi status memuat versi hasil');
+$detailPage=$source('portal/v3_konseling_detail.php');
+$assert(str_contains($detailPage,'->timeline($currentUser,(int)$id,$detail)')&&str_contains($source('portal/v3_konseling_cetak.php'),'->timeline($currentUser,(int)$id,$detail)'),'K9 halaman detail dan cetak tidak mengaudit akses admin dua kali');
+preg_match_all('/<label class="form-label[^"]*"(?![^>]*\bfor=)/',$detailPage,$bareLabels);$assert($bareLabels[0]===[],'K11 setiap label formulir halaman detail terhubung ke kontrolnya');
+$assert(str_contains($detailPage,'value="tambah_tautan"'),'K2 halaman detail menyediakan formulir tautan manual');
 exit($fail?1:0);

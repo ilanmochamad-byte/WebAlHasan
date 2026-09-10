@@ -135,7 +135,7 @@ final class KonselingRepository
         return $this->all(
             'SELECT r.id,r.santri_id,r.tahun_ajaran_id,r.label_snapshot,r.rekomendasi_snapshot,r.total_poin_snapshot,r.created_at,s.nama_santri
                FROM v3_rekomendasi r JOIN santri s ON s.id=r.santri_id
-              WHERE r.archived_at IS NULL AND r.tidak_berlaku_pada IS NULL AND r.ditindaklanjuti_kasus_id IS NULL
+              WHERE r.archived_at IS NULL AND r.tidak_berlaku_pada IS NULL AND r.ditindaklanjuti_kasus_id IS NULL AND r.status=\'Baru\'
                 AND ('.$scope.') ORDER BY r.id DESC', $params
         );
     }
@@ -205,10 +205,19 @@ final class KonselingRepository
     public function links(int $caseId):array
     {
         return $this->all(
-            'SELECT t.id,t.pelanggaran_id,t.sesi_id,t.alasan,t.created_at,p.waktu_kejadian,p.kategori_snapshot,p.tingkat_snapshot,p.poin_snapshot,p.status
+            'SELECT t.id,t.pelanggaran_id,t.sesi_id,t.alasan,t.created_at,p.waktu_kejadian,p.kategori_snapshot,p.tingkat_snapshot,p.poin_snapshot,p.status,
+                    (SELECT nx.id FROM v3_pelanggaran nx WHERE nx.revisi_dari_id=p.id LIMIT 1) AS digantikan_oleh_id
                FROM v3_konseling_tautan t JOIN v3_pelanggaran p ON p.id=t.pelanggaran_id
               WHERE t.kasus_id=? AND t.is_active=1 AND t.archived_at IS NULL ORDER BY t.id',[$caseId]
         );
+    }
+
+    /** Revisi pelanggaran tidak ditautkan ulang bila catatan leluhurnya sudah tertaut pada tingkat kasus yang sama. */
+    public function violationChainLinkedToCase(int $violationId,int $caseId):bool
+    {
+        $ids=[];$current=$violationId;
+        while($current!==null&&count($ids)<100&&!in_array($current,$ids,true)){$ids[]=$current;$row=$this->one('SELECT revisi_dari_id FROM v3_pelanggaran WHERE id=?',[$current]);$current=($row['revisi_dari_id']??null)===null?null:(int)$row['revisi_dari_id'];}
+        return $this->one('SELECT 1 AS ada FROM v3_konseling_tautan WHERE kasus_id=? AND sesi_id IS NULL AND is_active=1 AND archived_at IS NULL AND pelanggaran_id IN ('.implode(',',array_fill(0,count($ids),'?')).') LIMIT 1',[$caseId,...$ids])!==null;
     }
 
     public function linkRecommendation(int $id,int $caseId,int $santriId,int $tahunId,int $actorId):bool
@@ -216,7 +225,7 @@ final class KonselingRepository
         return $this->execute(
             "UPDATE v3_rekomendasi SET ditindaklanjuti_kasus_id=?,ditindaklanjuti_pada=NOW(),status='Ditinjau',updated_by=?,version=version+1
               WHERE id=? AND santri_id=? AND tahun_ajaran_id=? AND archived_at IS NULL
-                AND tidak_berlaku_pada IS NULL AND ditindaklanjuti_kasus_id IS NULL",
+                AND tidak_berlaku_pada IS NULL AND ditindaklanjuti_kasus_id IS NULL AND status='Baru'",
             [$caseId,$actorId,$id,$santriId,$tahunId]
         )===1;
     }
@@ -224,6 +233,14 @@ final class KonselingRepository
     public function recommendationsForCase(int $caseId):array
     {
         return $this->all('SELECT id,label_snapshot,rekomendasi_snapshot,total_poin_snapshot,status,ditindaklanjuti_pada FROM v3_rekomendasi WHERE ditindaklanjuti_kasus_id=? AND archived_at IS NULL ORDER BY id',[$caseId]);
+    }
+
+    /** Kasus batal melepas rekomendasinya agar kembali ke antrean tindak lanjut manual; ID lepasan dicatat di audit. */
+    public function releaseRecommendations(int $caseId,int $actorId):array
+    {
+        $ids=array_map('intval',array_column($this->all('SELECT id FROM v3_rekomendasi WHERE ditindaklanjuti_kasus_id=? AND archived_at IS NULL ORDER BY id FOR UPDATE',[$caseId]),'id'));
+        if($ids!==[])$this->execute("UPDATE v3_rekomendasi SET ditindaklanjuti_kasus_id=NULL,ditindaklanjuti_pada=NULL,status='Baru',updated_by=?,version=version+1 WHERE ditindaklanjuti_kasus_id=? AND archived_at IS NULL",[$actorId,$caseId]);
+        return $ids;
     }
 
     public function updateCaseDetails(int $id,int $version,string $purpose,string $privacy,string $reason,int $actorId):bool

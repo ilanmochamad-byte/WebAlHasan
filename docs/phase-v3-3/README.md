@@ -14,6 +14,7 @@ Fase 4 tidak dikerjakan. Tidak ada endpoint publikasi orang tua, tidak ada infor
 - [Hasil pengujian](test-results.md)
 - [Status penerimaan dan handoff](acceptance-status.md)
 - [Catatan untuk auditor](catatan-untuk-auditor.md)
+- [Bukti audit Claude Code](audit-claude-code.md)
 - [Manifest berkas](manifest-berkas.md)
 
-Tidak ada merge ke `main` dan tidak ada deploy atau migrasi produksi pada tahap implementator.
+Tidak ada merge ke `main` dan tidak ada deploy atau migrasi produksi pada tahap implementator maupun audit.

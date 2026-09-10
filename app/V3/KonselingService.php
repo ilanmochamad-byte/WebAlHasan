@@ -108,9 +108,11 @@ final class KonselingService
             if(!in_array($status,$allowed[(string)$current['status']]??[],true))throw new V3Exception('Transisi status kasus tidak sah.',422);
             if($status==='Selesai'&&$this->repo->completedSessionCount($id)<1)throw new V3Exception('Kasus hanya dapat ditutup setelah sedikitnya satu sesi selesai.',422);
             if(!$this->repo->updateCaseStatus($id,$version,$status,$summary,$reason,$actorId))throw new V3Exception('Versi kasus sudah berubah. Muat ulang data.',409);
-            $saved=$this->repo->case($id)??throw new V3Exception('Kasus tidak ditemukan.',503);$payload=['kasus'=>$this->serializeCase($saved,true)];
-            $this->auditRequired('v3.konseling.kasus.status','v3_konseling_kasus',$id,$this->auditCase($current),['kasus'=>$this->auditCase($saved),'alasan'=>$reason],$actorId);
-            $this->notifyMurobi((int)$probe['santri_id'],(int)$probe['tahun_ajaran_id'],$id,'v3_konseling_status');
+            // Kasus batal tidak menindaklanjuti apa pun, sehingga rekomendasinya kembali ke antrean manual.
+            $released=$status==='Dibatalkan'?$this->repo->releaseRecommendations($id,$actorId):[];
+            $saved=$this->repo->case($id)??throw new V3Exception('Kasus tidak ditemukan.',503);$payload=['kasus'=>$this->serializeCase($saved,true),'rekomendasi_dilepas'=>$released];
+            $this->auditRequired('v3.konseling.kasus.status','v3_konseling_kasus',$id,$this->auditCase($current),['kasus'=>$this->auditCase($saved),'alasan'=>$reason,'rekomendasi_dilepas'=>$released],$actorId);
+            $this->notifyMurobi((int)$probe['santri_id'],(int)$probe['tahun_ajaran_id'],$id,'v3_konseling_status',(int)$saved['version']);
             $this->repo->completeIdempotency((int)$idem['id'],$payload,200);return ['data'=>$payload,'status'=>200,'replayed'=>false];
         });
     }
@@ -119,12 +121,14 @@ final class KonselingService
     {
         $actorId=$this->actorId($user);$case=$this->caseOr404($id);$this->assertOperational($user,(int)$case['santri_id'],(int)$case['tahun_ajaran_id']);
         if(in_array($case['status'],['Selesai','Dibatalkan'],true))throw new V3Exception('Kasus yang sudah ditutup tidak dapat menerima tautan baru.',409);
-        $ids=$this->idList($input['pelanggaran_ids']??[],'Pelanggaran');if($ids===[])throw new V3Exception('Pilih sedikitnya satu pelanggaran.',422);
-        $reason=$this->optionalText($input['alasan']??null,1000,'Alasan tautan');$key=$this->idempotencyKey($input);$hash=$this->requestHash('case.links',[$id,$ids,$reason]);
-        return $this->repo->transaction(function()use($actorId,$case,$id,$ids,$reason,$key,$hash):array{
+        $ids=$this->idList($input['pelanggaran_ids']??[],'Pelanggaran');$recommendationIds=$this->idList($input['rekomendasi_ids']??[],'Rekomendasi');if($ids===[]&&$recommendationIds===[])throw new V3Exception('Pilih sedikitnya satu pelanggaran atau rekomendasi.',422);
+        $reason=$this->optionalText($input['alasan']??null,1000,'Alasan tautan');$key=$this->idempotencyKey($input);$hash=$this->requestHash('case.links',[$id,$ids,$reason,$recommendationIds]);
+        return $this->repo->transaction(function()use($actorId,$case,$id,$ids,$recommendationIds,$reason,$key,$hash):array{
             $this->repo->lockSubject((int)$case['santri_id'],(int)$case['tahun_ajaran_id'],$actorId);$idem=$this->repo->claimIdempotency($actorId,'v3.konseling.case.links:'.$id,$key,$hash);if($idem['response_json']!==null)return $this->replay($idem,$hash);
-            $created=[];foreach($ids as $violationId){if($this->repo->violationForLink($violationId,(int)$case['santri_id'],(int)$case['tahun_ajaran_id'],true)===null)throw new V3Exception('Pelanggaran tautan tidak sah atau bukan milik santri yang sama.',422);$created[]=$this->repo->insertLink($violationId,$id,null,$reason,$actorId);}
-            $payload=['kasus_id'=>$id,'tautan_ids'=>$created];$this->auditRequired('v3.konseling.tautan.ditambah','v3_konseling_kasus',$id,null,['pelanggaran_ids'=>$ids,'alasan'=>$reason],$actorId);$this->repo->completeIdempotency((int)$idem['id'],$payload,201);return ['data'=>$payload,'status'=>201,'replayed'=>false];
+            $locked=$this->repo->case($id,true)??throw new V3Exception('Kasus tidak ditemukan.',404);if(in_array($locked['status'],['Selesai','Dibatalkan'],true))throw new V3Exception('Kasus yang sudah ditutup tidak dapat menerima tautan baru.',409);
+            $created=[];foreach($ids as $violationId){if($this->repo->violationForLink($violationId,(int)$case['santri_id'],(int)$case['tahun_ajaran_id'],true)===null)throw new V3Exception('Pelanggaran tautan tidak sah atau bukan milik santri yang sama.',422);if($this->repo->violationChainLinkedToCase($violationId,$id))throw new V3Exception('Pelanggaran ini atau revisi sebelumnya sudah ditautkan ke kasus.',409);$created[]=$this->repo->insertLink($violationId,$id,null,$reason,$actorId);}
+            $linked=[];foreach($recommendationIds as $recommendationId){if(!$this->repo->linkRecommendation($recommendationId,$id,(int)$case['santri_id'],(int)$case['tahun_ajaran_id'],$actorId))throw new V3Exception('Rekomendasi sudah tidak berlaku atau sudah ditindaklanjuti.',409);$linked[]=$recommendationId;}
+            $payload=['kasus_id'=>$id,'tautan_ids'=>$created,'rekomendasi_ids'=>$linked];$this->auditRequired('v3.konseling.tautan.ditambah','v3_konseling_kasus',$id,null,['pelanggaran_ids'=>$ids,'rekomendasi_ids'=>$linked,'alasan'=>$reason],$actorId);$this->repo->completeIdempotency((int)$idem['id'],$payload,201);return ['data'=>$payload,'status'=>201,'replayed'=>false];
         });
     }
 
@@ -150,7 +154,8 @@ final class KonselingService
         $actorId=$this->actorId($user);$probe=$this->sessionWithCase($sessionId);$capacity=$this->correctionCapacity($user,$probe['case']);$version=$this->positiveInt($input,'version');$reason=$this->reason($input['alasan']??null);$data=$this->normaliseSession($input,$probe['session']);$hash=$this->requestHash('session.correct',[$sessionId,$version,$reason,$data]);
         return $this->repo->transaction(function()use($actorId,$probe,$sessionId,$version,$reason,$data,$capacity,$hash):array{
             $case=$probe['case'];$this->repo->lockSubject((int)$case['santri_id'],(int)$case['tahun_ajaran_id'],$actorId);$idem=$this->repo->claimIdempotency($actorId,'v3.konseling.session.correct:'.$sessionId,$data['idempotency_key'],$hash);if($idem['response_json']!==null)return $this->replay($idem,$hash);
-            $current=$this->repo->session($sessionId,true)??throw new V3Exception('Sesi tidak ditemukan.',404);if((int)$current['version']!==$version||$current['digantikan_oleh_id']!==null||!$this->repo->bumpSessionForRevision($sessionId,$version,$actorId))throw new V3Exception('Versi sesi sudah berubah. Muat ulang data.',409);
+            $current=$this->repo->session($sessionId,true)??throw new V3Exception('Sesi tidak ditemukan.',404);if((int)$current['version']!==$version||$current['digantikan_oleh_id']!==null)throw new V3Exception('Versi sesi sudah berubah. Muat ulang data.',409);
+            $data=$this->sessionStateRules((string)$current['status'],$data);if(!$this->repo->bumpSessionForRevision($sessionId,$version,$actorId))throw new V3Exception('Versi sesi sudah berubah. Muat ulang data.',409);
             $newId=$this->repo->insertSession($data+['kasus_id'=>(int)$current['kasus_id'],'pembimbing_id'=>(int)$current['pembimbing_id'],'status'=>(string)$current['status'],'realisasi'=>$data['realisasi']??$current['realisasi'],'revisi_dari_id'=>$sessionId,'alasan_revisi'=>$reason,'alasan_penjadwalan_ulang'=>$current['alasan_penjadwalan_ulang'],'alasan_pembatalan'=>$current['alasan_pembatalan'],'created_by'=>$actorId]);
             $saved=$this->repo->session($newId)??throw new V3Exception('Sesi hasil koreksi tidak ditemukan.',503);$payload=['sesi'=>$this->serializeSession($saved,true)];$this->auditRequired('v3.konseling.sesi.dikoreksi.'.$capacity,'v3_konseling_sesi',$newId,$this->auditSession($current),['sesi'=>$this->auditSession($saved),'alasan'=>$reason,'kapasitas'=>$capacity],$actorId);$this->repo->completeIdempotency((int)$idem['id'],$payload,200);return ['data'=>$payload,'status'=>200,'replayed'=>false];
         });
@@ -165,9 +170,14 @@ final class KonselingService
         return $this->repo->transaction(function()use($actorId,$case,$sessionId,$version,$status,$reason,$input,$key,$hash):array{
             $this->repo->lockSubject((int)$case['santri_id'],(int)$case['tahun_ajaran_id'],$actorId);$idem=$this->repo->claimIdempotency($actorId,'v3.konseling.session.status:'.$sessionId,$key,$hash);if($idem['response_json']!==null)return $this->replay($idem,$hash);$current=$this->repo->session($sessionId,true)??throw new V3Exception('Sesi tidak ditemukan.',404);
             if((int)$current['version']!==$version||$current['digantikan_oleh_id']!==null)throw new V3Exception('Versi sesi sudah berubah. Muat ulang data.',409);
+            // Kasus tertutup membekukan sesinya: tidak ada status baru maupun jadwal ulang sesudah penutupan.
+            $lockedCase=$this->repo->case((int)$current['kasus_id'],true)??throw new V3Exception('Kasus tidak ditemukan.',404);if(in_array($lockedCase['status'],['Selesai','Dibatalkan'],true))throw new V3Exception('Kasus sudah ditutup; status sesi tidak dapat diubah lagi.',422);
             if(!in_array($current['status'],['Dijadwalkan','Dijadwalkan Ulang'],true))throw new V3Exception('Transisi status sesi tidak sah.',422);
-            $data=$this->normaliseSession($input,$current);if($status==='Selesai'){$data['realisasi']=$this->dateTime($input['realisasi']??date('Y-m-d\TH:i'),false,'Waktu realisasi');$data['ringkasan_internal']=$this->requiredText($input['ringkasan_internal']??null,10000,'Ringkasan internal');$data['hasil']=$this->requiredText($input['hasil']??null,5000,'Hasil');}
-            if($status==='Tidak Hadir')$data['realisasi']=$this->dateTime($input['realisasi']??date('Y-m-d\TH:i'),false,'Waktu realisasi');
+            // Field opsional yang dikirim kosong oleh formulir web berarti "tidak diubah", bukan menghapus rencana yang sudah tersimpan.
+            $filled=array_filter($input,static fn(mixed $value,string|int $name):bool=>!in_array($name,['realisasi','ringkasan_internal','hasil','tindak_lanjut','jadwal_berikut'],true)||!(is_string($value)&&trim($value)===''),ARRAY_FILTER_USE_BOTH);
+            $data=$this->normaliseSession($filled,$current);$now=date('Y-m-d\TH:i');if($status==='Selesai'){$data['realisasi']=$this->dateTime($filled['realisasi']??$now,false,'Waktu realisasi');$data['ringkasan_internal']=$this->requiredText($input['ringkasan_internal']??null,10000,'Ringkasan internal');$data['hasil']=$this->requiredText($input['hasil']??null,5000,'Hasil');}
+            if($status==='Tidak Hadir')$data['realisasi']=$this->dateTime($filled['realisasi']??$now,false,'Waktu realisasi');
+            if($status==='Dibatalkan')$data['realisasi']=null;
             if($status==='Dijadwalkan Ulang'&&!array_key_exists('jadwal',$input))throw new V3Exception('Jadwal baru wajib diisi.',422);
             if($status==='Dijadwalkan Ulang'){
                 if(!$this->repo->bumpSessionForRevision($sessionId,$version,$actorId))throw new V3Exception('Versi sesi sudah berubah. Muat ulang data.',409);
@@ -176,7 +186,7 @@ final class KonselingService
                 $data['status']=$status;$data['alasan_pembatalan']=$status==='Dibatalkan'?$reason:null;
                 if(!$this->repo->updateSessionStatus($sessionId,$version,$data,$actorId))throw new V3Exception('Versi sesi sudah berubah. Muat ulang data.',409);$targetId=$sessionId;
             }
-            $saved=$this->repo->session($targetId)??throw new V3Exception('Sesi tidak ditemukan.',503);$payload=['sesi'=>$this->serializeSession($saved,true)];$this->auditRequired('v3.konseling.sesi.status','v3_konseling_sesi',$targetId,$this->auditSession($current),['sesi'=>$this->auditSession($saved),'alasan'=>$reason],$actorId);$this->notifyMurobi((int)$case['santri_id'],(int)$case['tahun_ajaran_id'],$targetId,'v3_konseling_sesi_status');$this->repo->completeIdempotency((int)$idem['id'],$payload,200);return ['data'=>$payload,'status'=>200,'replayed'=>false];
+            $saved=$this->repo->session($targetId)??throw new V3Exception('Sesi tidak ditemukan.',503);$payload=['sesi'=>$this->serializeSession($saved,true)];$this->auditRequired('v3.konseling.sesi.status','v3_konseling_sesi',$targetId,$this->auditSession($current),['sesi'=>$this->auditSession($saved),'alasan'=>$reason],$actorId);$this->notifyMurobi((int)$case['santri_id'],(int)$case['tahun_ajaran_id'],$targetId,'v3_konseling_sesi_status',(int)$saved['version']);$this->repo->completeIdempotency((int)$idem['id'],$payload,200);return ['data'=>$payload,'status'=>200,'replayed'=>false];
         });
     }
 
@@ -204,9 +214,10 @@ final class KonselingService
         $sessions=$this->repo->sessions($id,true);return ['kasus'=>$this->serializeCase($row,$internal),'sesi'=>array_map(fn(array $s):array=>$this->serializeSession($s,$internal),$sessions),'sesi_aktif'=>array_values(array_filter(array_map(fn(array $s):array=>$this->serializeSession($s,$internal),$sessions),static fn(array $s):bool=>$s['digantikan_oleh_id']===null)),'tautan'=>array_map(fn(array $link):array=>$this->serializeLink($link,$internal),$this->repo->links($id)),'rekomendasi'=>$internal?array_map([$this,'serializeRecommendation'],$this->repo->recommendationsForCase($id)):[],'catatan_murobi'=>array_map([$this,'serializeMurobi'],$this->repo->notes($id)),'akses_internal'=>$internal];
     }
 
-    public function timeline(array $user,int $id):array
+    /** Halaman yang sudah memanggil show() meneruskan detailnya agar satu pembukaan admin hanya diaudit sekali. */
+    public function timeline(array $user,int $id,?array $detail=null):array
     {
-        $detail=$this->show($user,$id);$events=[['jenis'=>'Kasus dibuka','waktu'=>$detail['kasus']['dibuka_pada'],'referensi_id'=>$id]];
+        if($detail===null||(int)($detail['kasus']['id']??0)!==$id)$detail=$this->show($user,$id);$events=[['jenis'=>'Kasus dibuka','waktu'=>$detail['kasus']['dibuka_pada'],'referensi_id'=>$id]];
         foreach($detail['sesi'] as $session)$events[]=['jenis'=>'Sesi · '.$session['status'],'waktu'=>$session['realisasi']??$session['jadwal'],'referensi_id'=>$session['id']];
         if($detail['kasus']['ditutup_pada']!==null)$events[]=['jenis'=>'Kasus '.$detail['kasus']['status'],'waktu'=>$detail['kasus']['ditutup_pada'],'referensi_id'=>$id];
         usort($events,static fn(array $a,array $b):int=>strcmp((string)$a['waktu'],(string)$b['waktu']));return ['rows'=>$events];
@@ -232,6 +243,14 @@ final class KonselingService
     {
         $caps=$this->capabilities->v3Capabilities($user);if(isset($caps['v3.koreksi']))return 'admin';$this->assertOperational($user,(int)$case['santri_id'],(int)$case['tahun_ajaran_id']);return 'pembimbing';
     }
+    /** Revisi sesi tidak boleh menghasilkan baris yang melanggar arti statusnya sendiri. */
+    private function sessionStateRules(string $status,array $data):array
+    {
+        if(in_array($status,['Dijadwalkan','Dijadwalkan Ulang'],true))$data['realisasi']=null;
+        if(in_array($status,['Selesai','Tidak Hadir'],true)&&$data['realisasi']===null)throw new V3Exception('Sesi berstatus '.$status.' wajib memiliki waktu realisasi.',422);
+        if($status==='Selesai'&&(($data['ringkasan_internal']??'')===''||($data['hasil']??'')===''))throw new V3Exception('Sesi selesai wajib tetap memiliki ringkasan internal dan hasil.',422);
+        return $data;
+    }
     private function assertOperational(array $user,int $santriId,int $tahunId):void
     {
         $caps=$this->capabilities->v3Capabilities($user);if(!isset($caps['v3.konseling.kelola'])||!$this->capabilities->v3AppliesToSantri($user,'v3.konseling.kelola',$santriId,$tahunId))throw new V3Exception('Santri berada di luar cakupan pembimbing.',403);
@@ -242,7 +261,8 @@ final class KonselingService
     }
     private function caseOr404(int $id):array{return $this->repo->case($id)??throw new V3Exception('Kasus tidak ditemukan.',404);}
     private function sessionWithCase(int $id):array{$session=$this->repo->session($id)??throw new V3Exception('Sesi tidak ditemukan.',404);$case=$this->caseOr404((int)$session['kasus_id']);return ['session'=>$session,'case'=>$case];}
-    private function notifyMurobi(int $santriId,int $tahunId,int $id,string $event):void{foreach($this->repo->relatedMurobiUsers($santriId,$tahunId) as $recipient)$this->repo->enqueueGeneric('v3:konseling:'.$id.':'.$event,$event,$recipient);}
+    /** Peristiwa yang dapat terjadi lebih dari sekali pada sumber yang sama memakai versi hasil agar deduplikasi tidak menelan peristiwa berikutnya. */
+    private function notifyMurobi(int $santriId,int $tahunId,int $id,string $event,?int $version=null):void{foreach($this->repo->relatedMurobiUsers($santriId,$tahunId) as $recipient)$this->repo->enqueueGeneric('v3:konseling:'.$id.':'.$event.($version===null?'':':v'.$version),$event,$recipient);}
 
     private function serializeCase(array $row,bool $internal=false):array
     {
@@ -254,7 +274,7 @@ final class KonselingService
         $result=['id'=>(int)$row['id'],'kasus_id'=>(int)$row['kasus_id'],'jadwal'=>(string)$row['jadwal'],'realisasi'=>$row['realisasi']??null,'status'=>(string)$row['status'],'jadwal_berikut'=>$row['jadwal_berikut']??null,'revisi_dari_id'=>$row['revisi_dari_id']===null?null:(int)$row['revisi_dari_id'],'digantikan_oleh_id'=>$row['digantikan_oleh_id']===null?null:(int)$row['digantikan_oleh_id'],'version'=>(int)$row['version'],'created_at'=>(string)($row['created_at']??'')];
         if($internal)$result+=['ringkasan_internal'=>$row['ringkasan_internal']??null,'hasil'=>$row['hasil']??null,'tindak_lanjut'=>$row['tindak_lanjut']??null,'alasan_revisi'=>$row['alasan_revisi']??null,'alasan_penjadwalan_ulang'=>$row['alasan_penjadwalan_ulang']??null,'alasan_pembatalan'=>$row['alasan_pembatalan']??null];return $result;
     }
-    private function serializeLink(array $row,bool $internal):array{$result=['id'=>(int)$row['id'],'pelanggaran_id'=>(int)$row['pelanggaran_id'],'sesi_id'=>$row['sesi_id']===null?null:(int)$row['sesi_id'],'waktu_kejadian'=>(string)$row['waktu_kejadian'],'kategori'=>(string)$row['kategori_snapshot'],'tingkat'=>(string)$row['tingkat_snapshot'],'poin'=>(int)$row['poin_snapshot'],'status'=>(string)$row['status']];if($internal)$result['alasan']=$row['alasan']??null;return $result;}
+    private function serializeLink(array $row,bool $internal):array{$result=['id'=>(int)$row['id'],'pelanggaran_id'=>(int)$row['pelanggaran_id'],'sesi_id'=>$row['sesi_id']===null?null:(int)$row['sesi_id'],'waktu_kejadian'=>(string)$row['waktu_kejadian'],'kategori'=>(string)$row['kategori_snapshot'],'tingkat'=>(string)$row['tingkat_snapshot'],'poin'=>(int)$row['poin_snapshot'],'status'=>(string)$row['status'],'pelanggaran_digantikan_oleh_id'=>($row['digantikan_oleh_id']??null)===null?null:(int)$row['digantikan_oleh_id']];if($internal)$result['alasan']=$row['alasan']??null;return $result;}
     private function serializeViolationLink(array $row):array{return ['id'=>(int)$row['id'],'waktu_kejadian'=>(string)$row['waktu_kejadian'],'kategori'=>(string)$row['kategori_snapshot'],'tingkat'=>(string)$row['tingkat_snapshot'],'poin'=>(int)$row['poin_snapshot'],'status'=>(string)$row['status']];}
     private function serializeRecommendation(array $row):array{return ['id'=>(int)$row['id'],'santri_id'=>(int)($row['santri_id']??0),'tahun_ajaran_id'=>(int)($row['tahun_ajaran_id']??0),'santri_nama'=>(string)($row['nama_santri']??''),'label'=>(string)$row['label_snapshot'],'rekomendasi'=>(string)$row['rekomendasi_snapshot'],'total_poin'=>(int)$row['total_poin_snapshot'],'status'=>(string)($row['status']??'Baru'),'ditindaklanjuti_pada'=>$row['ditindaklanjuti_pada']??null];}
     private function serializeMurobi(array $row):array{return ['id'=>(int)$row['id'],'kasus_id'=>$row['kasus_id']===null?null:(int)$row['kasus_id'],'sesi_id'=>$row['sesi_id']===null?null:(int)$row['sesi_id'],'dilihat_pada'=>$row['dilihat_pada'],'diketahui_pada'=>$row['diketahui_pada'],'catatan'=>$row['catatan'],'sumber_version'=>(int)$row['sumber_version']];}

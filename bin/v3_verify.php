@@ -48,7 +48,6 @@ try {
                 // Hitungan tetap eksak; ini bukan pelonggaran verifikasi.
                 if($phase2Applied&&$table==='v3_pelanggaran'&&$type==='UNIQUE'){$expected++;}
                 if($phase3Applied&&$table==='v3_konseling_sesi'&&$type==='UNIQUE'){$expected++;}
-                if($phase3Applied&&$table==='v3_konseling_tautan'&&$type==='UNIQUE'){$expected++;}
                 $check($count('SELECT COUNT(*) FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA=DATABASE() AND TABLE_NAME=? AND CONSTRAINT_TYPE=?',[$table,$type])===$expected,$type.' '.$table);
             }
             $check($count("SELECT COUNT(*) FROM information_schema.STATISTICS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=? AND INDEX_NAME='PRIMARY'",[$table])===1,'Primary index '.$table);
