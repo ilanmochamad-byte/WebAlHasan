@@ -328,9 +328,29 @@ Seluruh alur produksi di atas dijalankan pada Safari macOS. Itu membuktikan
 halaman Fase 2 dapat dipakai di Safari untuk alur tersebut, tetapi bukan
 pengganti suite peramban otomatis yang tetap belum dijalankan.
 
-**Belum diuji di produksi:** tanda mengetahui murobi, lampiran privat, akses
-lintas cakupan pembimbing/murobi/orang tua, aplikasi perangkat, suite peramban
-otomatis, pembaca layar nyata, push fisik, dan performa volume besar.
+**Tanda mengetahui murobi terbukti di produksi (10 September 2026).** Prasyarat
+diperiksa lebih dahulu dengan query yang meniru `relatedMurobiUsers()`: akun
+`guru_smoke.audit` memegang penugasan murobi bertarget Kamar yang mencakup santri
+smoke. Login sebagai akun itu memunculkan badge kemampuan aktif **Murobi**,
+daftar pelanggaran terbaca, dan tanda mengetahui tersimpan dengan catatan —
+`2026-09-10 23:19:47 — uji catatan singkat murobi di pelanggaran`. Verifier
+sesudahnya tetap lulus 30 pemeriksaan tanpa blocker, sehingga baris pertama
+`v3_murobi_catatan` di produksi tidak melanggar satu pun invariant.
+
+Pemisahan kewenangan ikut terbukti pada layar yang sama: halaman detail bagi
+murobi **tidak memunculkan formulir koreksi maupun pembatalan**, hanya bagian
+tanda mengetahui. Ini sesuai keputusan PRD bahwa murobi mengetahui dan memantau,
+bukan mengelola.
+
+Batas yang perlu dijaga kejujurannya: daftar milik murobi memang hanya memuat
+santri binaannya, tetapi pada produksi belum ada pelanggaran milik santri di
+luar cakupannya, sehingga **penyaringan cakupan belum benar-benar teruji di
+sana** — yang terlihat baru bahwa data dalam cakupan muncul. Penolakan lintas
+cakupan tetap hanya terbukti pada database uji.
+
+**Belum diuji di produksi:** penolakan akses lintas cakupan, lampiran privat,
+aplikasi perangkat, suite peramban otomatis, pembaca layar nyata, push fisik,
+dan performa volume besar.
 
 ## 8. Kebersihan database uji
 
