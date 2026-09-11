@@ -43,3 +43,19 @@ Berkas yang berubah karena koreksi K1–K11:
 - `portal/v3_konseling_detail.php` dan `portal/v3_konseling_cetak.php` — formulir tautan manual, label, pembekuan formulir status, audit akses tunggal
 - `tests/v3_phase3_static.php`, `tests/v3_phase3_migration.php`, `tests/v3_phase3_integration.php`, `tests/browser/uji-v3-fase3.mjs` — regresi koreksi
 - `docs/phase-v3-3/` — desain, kontrak API, migrasi, hasil uji, status penerimaan, README
+
+## Keputusan Human Developer 11 September 2026
+
+Berkas baru:
+
+- `database/migrations/017_v3_fase3_kerahasiaan_dan_revisi.sql`
+- `database/rollbacks/017_v3_fase3_kerahasiaan_dan_revisi.sql`
+
+Berkas yang berubah:
+
+- `PRD-V3.md` — bagian 5.5a mencatat keputusan kerahasiaan, penutupan, dan revisi kasus
+- `app/V3/KonselingService.php` dan `app/V3/KonselingRepository.php` — penyaring kerahasiaan, kepemilikan kasus Rahasia, penutupan otomatis sesi, revisi kasus, notifikasi hanya untuk kasus Internal
+- `app/V3/PelanggaranRepository.php` dan `app/V3/PelanggaranService.php` — tindak lanjut di detail pelanggaran mengikuti kerahasiaan pembaca
+- `portal/v3_konseling.php`, `portal/v3_konseling_detail.php`, `portal/v3_konseling_cetak.php` — penjelasan kerahasiaan, riwayat revisi kasus, keterangan penutupan otomatis
+- `bin/v3_phase3_preflight.php` dan `bin/v3_phase3_verify.php` — kompatibilitas dan invariant 017
+- `tests/v3_phase3_static.php`, `tests/v3_phase3_migration.php`, `tests/v3_phase3_integration.php`, `tests/browser/uji-v3-fase3.mjs`

@@ -28,8 +28,12 @@ try{
     $check($timeColumn===null||($timeColumn['DATA_TYPE']==='datetime'&&$timeColumn['IS_NULLABLE']==='YES'),'Kolom waktu tindak lanjut kosong atau sudah kompatibel');
     $foreign=$repo->one("SELECT REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='v3_rekomendasi' AND CONSTRAINT_NAME='rekomendasi_kasus_fk'");
     $check($foreign===null||($foreign['REFERENCED_TABLE_NAME']==='v3_konseling_kasus'&&$foreign['REFERENCED_COLUMN_NAME']==='id'),'Foreign key rekomendasi kosong atau sudah kompatibel');
-    echo 'Manifest baris: kasus '.$count('SELECT COUNT(*) FROM v3_konseling_kasus').', sesi '.$count('SELECT COUNT(*) FROM v3_konseling_sesi').', tautan '.$count('SELECT COUNT(*) FROM v3_konseling_tautan').', rekomendasi '.$count('SELECT COUNT(*) FROM v3_rekomendasi').PHP_EOL;
+    // Migrasi 017 (keputusan Human Developer 11 September 2026): tabel revisi kasus harus belum ada atau sudah kompatibel.
+    $revisionTable=$count("SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='v3_konseling_kasus_revisi'");
+    $check($revisionTable===0||$count("SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='v3_konseling_kasus_revisi' AND COLUMN_NAME IN ('kasus_id','versi_sebelum','tujuan_sebelum','tujuan_sesudah','kerahasiaan_sebelum','kerahasiaan_sesudah','alasan','kapasitas','created_by')")===9,'Tabel revisi kasus 017 kosong atau sudah kompatibel');
+    $dangling=$count("SELECT COUNT(*) FROM v3_konseling_sesi s JOIN v3_konseling_kasus k ON k.id=s.kasus_id WHERE NOT EXISTS (SELECT 1 FROM v3_konseling_sesi nx WHERE nx.revisi_dari_id=s.id) AND s.archived_at IS NULL AND s.status IN ('Dijadwalkan','Dijadwalkan Ulang') AND k.status IN ('Selesai','Dibatalkan')");
+    echo 'Manifest baris: kasus '.$count('SELECT COUNT(*) FROM v3_konseling_kasus').', sesi '.$count('SELECT COUNT(*) FROM v3_konseling_sesi').', tautan '.$count('SELECT COUNT(*) FROM v3_konseling_tautan').', rekomendasi '.$count('SELECT COUNT(*) FROM v3_rekomendasi').', sesi terjadwal pada kasus tertutup yang akan ditutup 017 '.$dangling.PHP_EOL;
 }catch(Throwable $exception){$check(false,'Preflight tidak dapat diselesaikan: '.$exception->getMessage());}
 
-echo $fail===0?'LULUS: migrasi 016 siap dijalankan setelah backup/restore point dibuat.'.PHP_EOL:'BLOCKER: '.$fail.' pemeriksaan preflight gagal.'.PHP_EOL;
+echo $fail===0?'LULUS: migrasi 016 dan 017 siap dijalankan setelah backup/restore point dibuat.'.PHP_EOL:'BLOCKER: '.$fail.' pemeriksaan preflight gagal.'.PHP_EOL;
 exit($fail===0?0:1);

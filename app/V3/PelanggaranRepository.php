@@ -603,23 +603,31 @@ final class PelanggaranRepository
      * Tautan dibaca pada seluruh rantai revisinya, sehingga koreksi pelanggaran
      * tidak memutus tampilan tindak lanjut pada catatan terkini.
      *
+     * Kasus Rahasia hanya ditampilkan kepada pembimbing pemilik dan admin; murobi
+     * tidak mengetahui keberadaannya (keputusan Human Developer 11 September 2026).
+     *
      * @param array<int,int> $violationIds
      */
-    public function counselingForViolations(array $violationIds): array
+    public function counselingForViolations(array $violationIds, string $mode, int $userId): array
     {
         $violationIds = array_values(array_unique(array_map('intval', $violationIds)));
         if ($violationIds === []) { return []; }
+        [$privacy, $privacyParams] = match ($mode) {
+            'admin' => ['1=1', []],
+            'pembimbing' => ["(k.kerahasiaan<>'Rahasia' OR k.pembimbing_id=(SELECT ox.pengurus_id FROM users ox WHERE ox.id=?))", [$userId]],
+            default => ["k.kerahasiaan<>'Rahasia'", []],
+        };
         return $this->all(
             'SELECT k.id AS kasus_id,k.status AS kasus_status,s.id AS sesi_id,s.status AS sesi_status,
                     s.jadwal,s.realisasi,s.jadwal_berikut
                FROM v3_konseling_kasus k
                LEFT JOIN v3_konseling_sesi s ON s.kasus_id=k.id AND s.archived_at IS NULL
                 AND NOT EXISTS (SELECT 1 FROM v3_konseling_sesi nx WHERE nx.revisi_dari_id=s.id)
-              WHERE k.archived_at IS NULL AND EXISTS (
+              WHERE k.archived_at IS NULL AND (' . $privacy . ') AND EXISTS (
                     SELECT 1 FROM v3_konseling_tautan t
                      WHERE t.kasus_id=k.id AND t.pelanggaran_id IN (' . implode(',', array_fill(0, count($violationIds), '?')) . ')
                        AND t.is_active=1 AND t.archived_at IS NULL
-              ) ORDER BY k.id,s.jadwal,s.id',$violationIds
+              ) ORDER BY k.id,s.jadwal,s.id',[...$privacyParams, ...$violationIds]
         );
     }
 

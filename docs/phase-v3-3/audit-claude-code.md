@@ -308,17 +308,9 @@ ditindaklanjuti dua kali, dan kasus asalnya tercatat di `audit_logs`.
 
 Tidak diperbaiki karena memerlukan keputusan produk atau berada di luar Fase 3:
 
-- **Makna `kerahasiaan`.** PRD 5.5 menyebut tingkat kerahasiaan tanpa
-  mendefinisikan `Internal` vs `Rahasia`. Saat ini keduanya identik: murobi hanya
-  memperoleh metadata. Perlu keputusan sebelum Fase 4/5.
-- **Menutup kasus dengan sesi yang masih terjadwal** diizinkan (suite
-  implementator melakukannya). Sesudah K1 sesi itu dibekukan apa adanya.
-  Pertimbangkan apakah penutupan `Selesai` harus mensyaratkan sesi terjadwal
-  diselesaikan atau dibatalkan dahulu.
-- **Koreksi kasus** memperbarui `tujuan`/`kerahasiaan` di tempat;
-  nilai lama tersimpan di `audit_logs` (memenuhi PRD 5.2) dan
-  `alasan_revisi_terakhir` hanya menyimpan alasan terakhir. PRD 5.5 hanya
-  mewajibkan revisi berbaris untuk sesi.
+- ~~**Makna `kerahasiaan`**, **menutup kasus dengan sesi yang masih
+  terjadwal**, dan **koreksi kasus tanpa revisi berbaris**.~~ **Sudah diputuskan
+  Human Developer pada 11 September 2026 dan diterapkan** — lihat bagian 9.
 - **Pembeda 404/403 pada mutasi.** ID yang tidak ada menghasilkan `404`, ID
   lintas cakupan `403`, sehingga keberadaan ID dapat ditebak — tanpa isi. Pola
   yang sama diwarisi dari Fase 2.
@@ -354,3 +346,108 @@ Audit hanya memakai `webalhasan_v3_phase1_test`.
   `login_succeeded` milik akun fixture yang sudah dihapus (aktor 1111–1116 dan
   1196–1201); nol baris `v3_*`. Hanya ID tersebut yang dihapus dalam satu
   transaksi berpenjaga hitungan. Verifier tidak dilonggarkan.
+
+## 9. Penerapan keputusan Human Developer — 11 September 2026
+
+Sesudah commit audit `f166bdd`, Human Developer menjawab tiga pertanyaan terbuka
+pada bagian 7. Empat detail yang mengubah implementasi dikonfirmasi langsung
+sebelum ditulis, bukan ditebak:
+
+1. **Kerahasiaan.** `Internal` diketahui pembimbing dan murobi; `Rahasia` hanya
+   pembimbing dan santrinya. Dikonfirmasi: admin **tetap** boleh membuka kasus
+   Rahasia untuk pengawasan dengan audit akses (PRD 5.3), dan "pembimbing" berarti
+   **pembimbing pemilik kasus**, bukan setiap pembimbing dalam cakupan.
+2. **Penutupan.** Kasus boleh ditutup `Selesai` walaupun ada sesi terjadwal, dan
+   sesi itu ikut ditutup otomatis. Dikonfirmasi: statusnya **`Dibatalkan` dengan
+   alasan sistem** (tidak mengarang realisasi, ringkasan, atau hasil), dan aturan
+   berlaku juga ketika kasus **`Dibatalkan`**.
+3. **Koreksi kasus** disimpan sebagai revisi.
+
+Keputusan dicatat pada PRD V3 bagian 5.5a dan diterapkan auditor sebagai koreksi
+terarah pada branch yang sama. Tidak ada pekerjaan Fase 4.
+
+### 9.1 Kerahasiaan
+
+| Pembaca | `Internal` | `Rahasia` |
+| --- | --- | --- |
+| Pembimbing pemilik (cakupan aktif) | baca isi, kelola | baca isi, kelola |
+| Pembimbing lain dalam cakupan | baca isi, kelola | tidak terlihat; mutasi `403` |
+| Murobi terkait | baca isi, tanda mengetahui, notifikasi generik | tidak terlihat di daftar/detail/detail pelanggaran; tanda mengetahui `403`; tanpa notifikasi |
+| Admin | pengawasan, koreksi beralasan, akses diaudit | pengawasan, koreksi beralasan, akses diaudit |
+
+Penyaring kerahasiaan berjalan di query (`privacySql()` untuk daftar dan detail
+kasus, serta `counselingForViolations()` untuk detail pelanggaran), dan setiap
+mutasi melewati `assertCaseAccess()` yang menggabungkan cakupan aktif dengan
+kepemilikan untuk kasus Rahasia. Tanda mengetahui memeriksa ulang kerahasiaan di
+dalam transaksi terkunci. `notifyMurobi()` memperlakukan kerahasiaan yang tidak
+diketahui sebagai Rahasia.
+
+Konsekuensi yang disengaja: DTO terbatas murobi tidak lagi dipakai, karena murobi
+kini hanya dapat membuka kasus Internal yang isinya memang boleh diketahuinya.
+Pemisahan data yang diwajibkan persyaratan 5 tetap berlaku pada model (catatan
+murobi di tabel sendiri) dan pada DTO orang tua.
+
+### 9.2 Penutupan otomatis sesi terjadwal
+
+Di dalam transaksi penutupan (`Selesai` atau `Dibatalkan`), setiap sesi terjadwal
+terkini diubah menjadi `Dibatalkan` dengan alasan `Ditutup otomatis: kasus
+diselesaikan/dibatalkan sebelum sesi dilaksanakan.`, realisasi kosong, versi
+naik, dan audit `v3.konseling.sesi.ditutup_otomatis` per sesi. ID-nya dikembalikan
+sebagai `sesi_ditutup_otomatis`. Syarat sedikitnya satu sesi selesai untuk
+penutupan `Selesai` tetap berlaku. Penjaga K1 tetap ada sebagai lapisan kedua.
+
+### 9.3 Revisi kasus
+
+Tabel `v3_konseling_kasus_revisi` menyimpan satu baris per versi sumber berisi
+tujuan dan kerahasiaan sebelum/sesudah, alasan, kapasitas, pelaku, dan waktu.
+Kasus tidak dipecah menjadi baris baru seperti sesi, karena sesi, tautan,
+rekomendasi, dan catatan murobi semuanya menunjuk ID kasus; baris kasus memegang
+nilai terkini, sedangkan riwayat tidak pernah ditimpa. Revisi tampil pada detail,
+API, dan cetak.
+
+### 9.4 Migrasi 017
+
+`017_v3_fase3_kerahasiaan_dan_revisi.sql` aditif dan idempoten: membuat tabel
+revisi dan menerapkan aturan penutupan pada data lama. Pada database uji, 13 sesi
+terjadwal pada kasus yang sudah ditutup — 10 ditinggalkan suite implementator,
+sisanya dari probe dan regresi audit — ditutup dengan alasan yang menyebut
+migrasi 017. Perubahan data migrasi tidak menulis `audit_logs`; jejaknya adalah
+alasan pada baris dan `schema_migrations`. Rollback 017 hanya melepas tabel revisi
+bila masih kosong dan tidak membuka kembali sesi yang sudah ditutup.
+
+### 9.5 Pengujian sesudah keputusan
+
+| Paket | Sesudah K1–K11 | Sesudah keputusan HD |
+| --- | --- | --- |
+| Suite Fase 3 | 255 | **297**, exit 0 |
+| — preflight / statis / drill / integrasi / verifier | 14 / 94 / 19 / 99 / 29 | 15 / 103 / 24 / 121 / 34 |
+| Suite Fase 2 | 172 | 172, exit 0 |
+| Suite Fase 1 | 71 | 71, exit 0 |
+| Regresi penuh | 49 suite / 4.017 | 49 suite / 4.017, 0 gagal, 0 dilewati |
+| Browser (1440 & 375 px) | 46 | **53**, exit 0 |
+| `v3_verify` / `v3_phase2_verify` / `v3_phase3_verify` akhir | 284 / 30 / 29 | 286 / 30 / 34, exit 0 |
+
+Regresi penuh kali ini kembali meninggalkan tepat 24 outbox `izin.*` (InApp,
+pengajuan izin terhapus) dan 6 audit `login_succeeded` milik akun fixture yang
+sudah dihapus (aktor 1281–1286), nol baris `v3_*`. Asalnya dibuktikan per run
+sebelum hanya 30 ID tersebut dihapus dalam satu transaksi berpenjaga hitungan.
+
+Putaran pertama suite gagal 2 pemeriksaan: uji "kegagalan outbox menggulung
+transaksi" memakai kasus Rahasia, sehingga sesuai keputusan baru tidak ada
+notifikasi murobi, outbox tidak ditulis, dan trigger kegagalan tidak pernah
+terpicu. Perilaku aplikasi benar; uji diubah memakai kasus Internal. Putaran
+gagal itu meninggalkan satu kasus fixture Rahasia `SBX outbox gagal` yang sah.
+
+### 9.6 Batasan yang perlu diketahui
+
+- **Tidak ada alih kepemilikan kasus.** Bila penugasan pembimbing pemilik
+  berakhir, kasus Rahasia hanya dapat diawasi admin dan tidak dapat dilanjutkan
+  pembimbing lain. Bila alih tangan dibutuhkan, perlu keputusan dan fitur baru.
+- **Uji pembimbing bukan pemilik** memindahkan `pembimbing_id` kasus uji secara
+  sementara, karena fixture tidak memiliki dua pembimbing dengan cakupan yang sama;
+  nilainya dipulihkan dalam blok `finally`.
+- **Penutupan otomatis** tidak mengirim notifikasi per sesi; notifikasi status
+  kasus (hanya untuk kasus Internal) sudah mewakilinya.
+- **Catatan murobi dan notifikasi lama** pada kasus yang kemudian dikoreksi menjadi
+  Rahasia tetap tersimpan sebagai riwayat, tetapi murobi tidak lagi dapat membuka
+  kasusnya.

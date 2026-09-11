@@ -234,8 +234,8 @@ final class PelanggaranService
             'rekomendasi'=>array_map([$this,'serializeRecommendation'],$this->repo->recommendations((int)$row['santri_id'],(int)$row['tahun_ajaran_id'])),
             'murobi'=>array_map([$this,'serializeMurobi'],$this->repo->murobiNotes((int)$row['id'])),
             'lampiran'=>array_map([$this,'serializeAttachment'],$this->repo->attachments((int)$row['id'])),
-            // Tindak lanjut dibaca pada seluruh rantai revisi agar koreksi tidak memutus tampilannya.
-            'konseling'=>array_map([$this,'serializeCounselingLink'],$this->repo->counselingForViolations(array_column($history,'id'))),
+            // Tindak lanjut dibaca pada seluruh rantai revisi agar koreksi tidak memutus tampilannya; kasus Rahasia mengikuti hak pembaca.
+            'konseling'=>array_map([$this,'serializeCounselingLink'],$this->repo->counselingForViolations(array_column($history,'id'),$mode,$this->actorId($user))),
             'peringatan_konfigurasi'=>$this->repo->configurationWarnings(),
         ];
     }

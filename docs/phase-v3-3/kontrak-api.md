@@ -32,3 +32,15 @@ Aditif; klien yang mengabaikan field baru tetap berjalan.
 - `PATCH /v3/konseling/sesi/{id}` menolak `422` bila revisi akan membuat sesi `Selesai` tanpa ringkasan internal/hasil/realisasi atau sesi `Tidak Hadir` tanpa realisasi; untuk sesi terjadwal, `realisasi` selalu `null`.
 - Setiap item `tautan` pada detail kasus memperoleh `pelanggaran_digantikan_oleh_id` (ID revisi langsung atau `null`).
 - `GET /v3/pelanggaran/{id}` → field `konseling` kini membaca tautan pada seluruh rantai revisi pelanggaran.
+
+## Tambahan keputusan Human Developer 11 September 2026
+
+Aditif; klien yang mengabaikan field baru tetap berjalan, tetapi hak baca berubah sesuai PRD V3 5.5a.
+
+- `GET /v3/konseling/kasus` dan `GET /v3/konseling/kasus/{id}` menyaring kerahasiaan pada query. Kasus `Rahasia` hanya terbaca oleh pembimbing pemilik kasus dan admin; murobi serta pembimbing lain memperoleh `403` pada detail dan tidak melihatnya pada daftar. Pada kasus `Internal`, murobi terkait kini memperoleh `akses_internal=true` beserta tujuan, ringkasan penutupan, isi sesi, dan rekomendasi tertaut.
+- Detail kasus memperoleh `riwayat_revisi_kasus`: daftar `{id, versi_sebelum, tujuan_sebelum, tujuan_sesudah, kerahasiaan_sebelum, kerahasiaan_sesudah, alasan, kapasitas, dikoreksi_oleh_user_id, created_at}`, kosong bila pembaca tidak berhak atas isi internal.
+- `PATCH /v3/konseling/kasus/{id}` mengembalikan `revisi_kasus_id`. Koreksi dengan versi lama tetap `409` dan tidak menulis revisi.
+- `POST /v3/konseling/kasus/{id}/status` mengembalikan `sesi_ditutup_otomatis` (daftar ID sesi) ketika status baru `Selesai` atau `Dibatalkan`; sesi tersebut kini berstatus `Dibatalkan` dengan alasan sistem.
+- Mutasi kasus `Rahasia` oleh pembimbing bukan pemilik — koreksi, status, tautan, sesi baru, status/koreksi sesi — ditolak `403`. Tanda mengetahui murobi pada kasus atau sesi `Rahasia` ditolak `403`.
+- `GET /v3/pelanggaran/{id}` → field `konseling` tidak memuat kasus `Rahasia` bagi murobi maupun pembimbing bukan pemilik.
+- Notifikasi generik murobi hanya dibentuk untuk kasus `Internal`.

@@ -162,11 +162,11 @@ final class KonselingRepository
 
     public function visibleCase(int $id,int $userId,string $mode):?array
     {
-        [$scope,$params]=$this->scopeSql($mode,$userId,'k');
+        [$scope,$params]=$this->scopeSql($mode,$userId,'k');[$privacy,$privacyParams]=$this->privacySql($mode,$userId);
         return $this->one(
             'SELECT k.*,s.nama_santri,ta.tahun,ta.semester
                FROM v3_konseling_kasus k JOIN santri s ON s.id=k.santri_id JOIN tahun_ajaran ta ON ta.id=k.tahun_ajaran_id
-              WHERE k.id=? AND k.archived_at IS NULL AND ('.$scope.')',[$id,...$params]
+              WHERE k.id=? AND k.archived_at IS NULL AND ('.$scope.') AND ('.$privacy.')',[$id,...$params,...$privacyParams]
         );
     }
 
@@ -176,7 +176,7 @@ final class KonselingRepository
         $page=max(1,min(1000000,(int)($filters['page']??1)));$size=25;$status=(string)($filters['status']??'');
         if(!in_array($status,['','Dibuka','Dalam Pendampingan','Selesai','Dibatalkan'],true))throw new V3Exception('Status filter tidak valid.');
         foreach(['santri_id','tahun_ajaran_id'] as $key)if(($filters[$key]??'')!==''&&!preg_match('/^[1-9][0-9]*$/D',(string)$filters[$key]))throw new V3Exception('Filter angka tidak valid.');
-        [$scope,$scopeParams]=$this->scopeSql($mode,$userId,'k');$where=['k.archived_at IS NULL','('.$scope.')'];$params=$scopeParams;
+        [$scope,$scopeParams]=$this->scopeSql($mode,$userId,'k');[$privacy,$privacyParams]=$this->privacySql($mode,$userId);$where=['k.archived_at IS NULL','('.$scope.')','('.$privacy.')'];$params=[...$scopeParams,...$privacyParams];
         if($status!==''){$where[]='k.status=?';$params[]=$status;}
         foreach(['santri_id','tahun_ajaran_id'] as $key)if(($filters[$key]??'')!==''){$where[]='k.'.$key.'=?';$params[]=(int)$filters[$key];}
         $from=' FROM v3_konseling_kasus k JOIN santri s ON s.id=k.santri_id JOIN tahun_ajaran ta ON ta.id=k.tahun_ajaran_id WHERE '.implode(' AND ',$where);
@@ -344,6 +344,42 @@ final class KonselingRepository
     private function insertOutbox(string $eventKey,string $eventType,string $channel,int $userId,string $title,string $body,string $data,string $status):void
     {
         $this->execute('INSERT INTO notifikasi_outbox (event_key,event_type,kanal,penerima_user_id,pengajuan_id,judul,isi,data_json,status,percobaan,dikirim_pada,tersedia_pada,created_at,updated_at) VALUES (?,?,?,?,NULL,?,?,?,?,0,'.($channel==='InApp'?'NOW()':'NULL').','.($channel==='Push'?'NOW()':'NULL').',NOW(),NOW()) ON DUPLICATE KEY UPDATE id=id',[$eventKey,$eventType,$channel,$userId,$title,$body,$data,$status]);
+    }
+
+    /**
+     * Keputusan Human Developer 11 September 2026: kasus Internal diketahui pembimbing
+     * dan murobi terkait; kasus Rahasia hanya pembimbing pemilik kasus, ditambah admin
+     * untuk pengawasan dengan audit akses. Dipakai bersama penjaga cakupan pada query.
+     */
+    private function privacySql(string $mode,int $userId):array
+    {
+        if($mode==='admin')return ['1=1',[]];
+        if($mode==='pembimbing')return ["(k.kerahasiaan<>'Rahasia' OR k.pembimbing_id=(SELECT ox.pengurus_id FROM users ox WHERE ox.id=?))",[$userId]];
+        return ["k.kerahasiaan<>'Rahasia'",[]];
+    }
+
+    public function pengurusIdForUser(int $userId):?int
+    {
+        $row=$this->one('SELECT pengurus_id FROM users WHERE id=?',[$userId]);return ($row['pengurus_id']??null)===null?null:(int)$row['pengurus_id'];
+    }
+
+    /** Menutup sesi terjadwal terkini ketika kasusnya ditutup; baris tidak dihapus dan versinya naik. */
+    public function closeScheduledSessions(int $caseId,string $reason,int $actorId):array
+    {
+        $rows=$this->all("SELECT s.* FROM v3_konseling_sesi s WHERE s.kasus_id=? AND s.archived_at IS NULL AND s.status IN ('Dijadwalkan','Dijadwalkan Ulang') AND NOT EXISTS (SELECT 1 FROM v3_konseling_sesi nx WHERE nx.revisi_dari_id=s.id) ORDER BY s.id FOR UPDATE",[$caseId]);
+        foreach($rows as $row){if($this->execute("UPDATE v3_konseling_sesi SET status='Dibatalkan',realisasi=NULL,alasan_pembatalan=?,updated_by=?,version=version+1 WHERE id=? AND version=?",[$reason,$actorId,(int)$row['id'],(int)$row['version']])!==1)throw new V3Exception('Sesi berubah saat kasus ditutup. Muat ulang data.',409);}
+        return $rows;
+    }
+
+    /** Revisi kasus berbaris: nilai sebelum/sesudah, alasan, kapasitas, dan pelaku; unik per versi sumber. */
+    public function insertCaseRevision(int $caseId,array $before,string $purpose,string $privacy,string $reason,string $capacity,int $actorId):int
+    {
+        return $this->insert('INSERT INTO v3_konseling_kasus_revisi (kasus_id,versi_sebelum,tujuan_sebelum,tujuan_sesudah,kerahasiaan_sebelum,kerahasiaan_sesudah,alasan,kapasitas,created_by) VALUES (?,?,?,?,?,?,?,?,?)',[$caseId,(int)$before['version'],(string)$before['tujuan'],$purpose,(string)$before['kerahasiaan'],$privacy,$reason,$capacity,$actorId]);
+    }
+
+    public function caseRevisions(int $caseId):array
+    {
+        return $this->all('SELECT id,versi_sebelum,tujuan_sebelum,tujuan_sesudah,kerahasiaan_sebelum,kerahasiaan_sesudah,alasan,kapasitas,created_by,created_at FROM v3_konseling_kasus_revisi WHERE kasus_id=? ORDER BY versi_sebelum,id',[$caseId]);
     }
 
     private function scopeSql(string $mode,int $userId,string $alias):array

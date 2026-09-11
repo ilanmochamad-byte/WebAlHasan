@@ -2,7 +2,7 @@
 
 Branch `prd-v3-fase-3`, baseline `927dcd89dfa2ba53d853f7bd900805bc16b9c6de` dari `main`.
 
-**Audit Claude Code selesai: seluruh kriteria penerimaan wajib Fase 3 terpenuhi sesudah koreksi audit K1–K11.** Belum siap produksi sampai migrasi 016 dan smoke test dijalankan pada hosting. Tidak ada merge ke `main`, tidak ada deploy, dan Fase 4 belum dimulai.
+**Audit Claude Code selesai: seluruh kriteria penerimaan wajib Fase 3 terpenuhi sesudah koreksi audit K1–K11 dan penerapan keputusan Human Developer 11 September 2026.** Belum siap produksi sampai migrasi 016 dan smoke test dijalankan pada hosting. Tidak ada merge ke `main`, tidak ada deploy, dan Fase 4 belum dimulai.
 
 | Kriteria PRD Fase 3 | Status implementator | Status audit Claude Code |
 | --- | --- | --- |
@@ -26,15 +26,19 @@ Branch `prd-v3-fase-3`, baseline `927dcd89dfa2ba53d853f7bd900805bc16b9c6de` dari
 
 Rincian bukti, reproduksi, dan sebelas temuan ada di [bukti audit](audit-claude-code.md).
 
-Ringkasnya: angka pengujian implementator tereproduksi persis pada commit asli (Fase 3 170, Fase 2 172, Fase 1 71, regresi 49 suite/4.017, browser 33). Sesudah koreksi: Fase 3 **255**, Fase 2 172, Fase 1 71, regresi 49 suite/4.017, browser **46**, dan ketiga verifier V3 exit 0.
+Ringkasnya: angka pengujian implementator tereproduksi persis pada commit asli (Fase 3 170, Fase 2 172, Fase 1 71, regresi 49 suite/4.017, browser 33). Sesudah koreksi: Fase 3 **255**, Fase 2 172, Fase 1 71, regresi 49 suite/4.017, browser **46**, dan ketiga verifier V3 exit 0. Sesudah penerapan keputusan Human Developer: Fase 3 **297**, Fase 2 172, Fase 1 71, regresi 49 suite/4.017, browser **53**, serta `v3_verify`/`v3_phase2_verify`/`v3_phase3_verify` 286/30/34, seluruhnya exit 0.
 
-## Keputusan terbuka untuk Human Developer
+## Keputusan Human Developer — 11 September 2026 (diterapkan)
 
-Tidak memblokir penerimaan Fase 3, tetapi perlu diputuskan sebelum Fase 4/5:
+Tiga keputusan terbuka sudah diputuskan, dicatat pada PRD V3 5.5a, dan diterapkan dengan migrasi 017 beserta regresinya. Rincian di [bukti audit](audit-claude-code.md) bagian 9.
 
-1. Makna tingkat kerahasiaan `Internal` vs `Rahasia` (saat ini identik bagi murobi).
-2. Apakah menutup kasus `Selesai` harus mensyaratkan sesi yang masih terjadwal diselesaikan atau dibatalkan dahulu.
-3. Apakah koreksi kasus perlu revisi berbaris seperti sesi, atau cukup audit sebelum/sesudah seperti sekarang.
+| Keputusan | Penerapan | Status |
+| --- | --- | --- |
+| `Internal` diketahui pembimbing dan murobi; `Rahasia` hanya pembimbing pemilik kasus (admin tetap mengawasi dengan audit akses) | Penyaring query daftar/detail/detail pelanggaran, penjaga kepemilikan pada mutasi, tanda mengetahui dan notifikasi murobi hanya untuk kasus Internal | **LULUS** integrasi, API, dan browser |
+| Kasus boleh ditutup walau ada sesi terjadwal; sesi itu ikut ditutup | Sesi terjadwal menjadi `Dibatalkan` dengan alasan sistem saat kasus `Selesai` maupun `Dibatalkan`, diaudit per sesi; migrasi 017 merapikan 13 sesi lama di DB uji | **LULUS** |
+| Koreksi kasus perlu revisi | Tabel `v3_konseling_kasus_revisi`, satu revisi per versi, ditampilkan di detail, API, dan cetak | **LULUS** |
+
+Batasan terbuka: belum ada fitur alih kepemilikan kasus; kasus Rahasia yang pemiliknya kehilangan penugasan hanya dapat diawasi admin.
 
 ## Langkah berikutnya yang disarankan
 
