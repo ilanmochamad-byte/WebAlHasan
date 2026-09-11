@@ -111,6 +111,15 @@ Rincian status, data sesi, kasus mandiri, tautan jamak, dan syarat penutupan ber
 - Koreksi sesi yang sudah selesai tidak menimpa catatan lama; alasan dan revisinya disimpan.
 - Catatan murobi dipisahkan dari catatan internal pembimbing serta dari ringkasan orang tua.
 
+### 5.5a Kerahasiaan, penutupan, dan revisi konseling — keputusan 11 September 2026
+
+Keputusan Human Developer berikut berlaku sejak Fase 3 dan menjawab pertanyaan terbuka audit Claude Code Fase 3.
+
+- Kasus berkerahasiaan `Internal` diketahui pembimbing dalam cakupan aktif dan murobi terkait; murobi terkait dapat membaca isi kasus dan sesinya.
+- Kasus berkerahasiaan `Rahasia` hanya diketahui pembimbing pemilik kasus dan santri yang bersangkutan. Murobi dan pembimbing lain tidak melihat kasus, isi, tindak lanjutnya pada detail pelanggaran, maupun notifikasinya. Admin tetap dapat membukanya untuk pengawasan, dan setiap pembukaan dicatat sebagai audit akses sesuai 5.3. Santri tetap tidak memiliki akun (Bagian 4).
+- Kasus boleh ditutup `Selesai` walaupun masih ada sesi terjadwal. Menutup kasus, baik `Selesai` maupun `Dibatalkan`, ikut menutup sesi yang masih terjadwal menjadi `Dibatalkan` dengan alasan sistem; baris sesi tidak dihapus dan penutupannya diaudit.
+- Koreksi kasus disimpan sebagai revisi berbaris yang memuat nilai sebelum/sesudah, alasan, kapasitas koreksi, pelaku, dan waktu; nilai lama tidak hanya bergantung pada audit.
+
 ### 5.6 Publikasi orang tua dan privasi
 
 Rincian versi publikasi, poin yang ditampilkan, penarikan, serta pemilihan wali penerima berikut merupakan rancangan awal.

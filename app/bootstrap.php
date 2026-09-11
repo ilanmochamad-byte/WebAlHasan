@@ -588,3 +588,13 @@ function v3_pelanggaran_service(): \App\V3\PelanggaranService
         new \App\V3\AttachmentStorage(APP_ROOT . '/storage/private/v3')
     );
 }
+
+/** Satu-satunya pintu kasus dan sesi konseling V3 untuk web dan REST API. */
+function v3_konseling_service(): \App\V3\KonselingService
+{
+    return new \App\V3\KonselingService(
+        new \App\V3\KonselingRepository(app_db()),
+        new \App\Auth\Capabilities(app_db()),
+        new \App\Audit\AuditLogger(app_db())
+    );
+}

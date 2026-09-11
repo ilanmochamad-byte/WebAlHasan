@@ -32,6 +32,7 @@ try {
     if(!$pre) {
         $check($count("SELECT COUNT(*) FROM schema_migrations WHERE migration='013_v3_fase1.sql'")===1,'Migrasi V3 tercatat');
         $phase2Applied=$count("SELECT COUNT(*) FROM schema_migrations WHERE migration='014_v3_fase2_pelanggaran.sql'")===1;
+        $phase3Applied=$count("SELECT COUNT(*) FROM schema_migrations WHERE migration='016_v3_fase3_konseling.sql'")===1;
         $sql=file_get_contents(APP_ROOT.'/database/migrations/013_v3_fase1.sql');
         preg_match_all('/CREATE TABLE IF NOT EXISTS (v3_\w+) \((.*?)\n\) ENGINE/s',$sql,$tables,PREG_SET_ORDER);
         foreach($tables as $t) {
@@ -43,8 +44,10 @@ try {
             foreach(['FOREIGN KEY'=>'FOREIGN KEY','CHECK'=>'CHECK','UNIQUE'=>'UNIQUE'] as $type=>$pattern) {
                 $expected=preg_match_all('/\b'.$pattern.'\b/',$body);
                 // Migrasi 014 menambah satu UNIQUE pada revisi pelanggaran.
+                // Migrasi 016 menambah satu UNIQUE pada revisi sesi konseling.
                 // Hitungan tetap eksak; ini bukan pelonggaran verifikasi.
                 if($phase2Applied&&$table==='v3_pelanggaran'&&$type==='UNIQUE'){$expected++;}
+                if($phase3Applied&&$table==='v3_konseling_sesi'&&$type==='UNIQUE'){$expected++;}
                 $check($count('SELECT COUNT(*) FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA=DATABASE() AND TABLE_NAME=? AND CONSTRAINT_TYPE=?',[$table,$type])===$expected,$type.' '.$table);
             }
             $check($count("SELECT COUNT(*) FROM information_schema.STATISTICS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=? AND INDEX_NAME='PRIMARY'",[$table])===1,'Primary index '.$table);

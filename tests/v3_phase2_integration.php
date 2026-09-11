@@ -14,7 +14,7 @@ $inactiveYear=(int)$repo->one("SELECT id FROM tahun_ajaran WHERE status<>'Aktif'
 $childA=(int)$repo->one("SELECT sw.santri_id FROM santri_wali sw JOIN users u ON u.wali_id=sw.wali_id WHERE u.username='sbx_ortu_a' AND sw.archived_at IS NULL LIMIT 1")['santri_id'];
 $childB=(int)$repo->one("SELECT sw.santri_id FROM santri_wali sw JOIN users u ON u.wali_id=sw.wali_id WHERE u.username='sbx_ortu_b' AND sw.archived_at IS NULL LIMIT 1")['santri_id'];
 $childName=(string)$repo->one('SELECT nama_santri FROM santri WHERE id=?',[$childA])['nama_santri'];
-$tag='SBX-F2-'.bin2hex(random_bytes(5));$period=['tanggal_mulai'=>date('Y-m-d'),'tanggal_selesai'=>'','is_active'=>1];
+$tag='SBX-F2-'.bin2hex(random_bytes(5));$period=['tanggal_mulai'=>date('Y-m-d',time()-86400),'tanggal_selesai'=>'','is_active'=>1];
 $categoryId=$catalogService->save('kategori',$period+['kode'=>$tag,'nama'=>'SBX Kategori Rahasia '.$tag,'uraian'=>'Fixture fiktif'],$admin);
 $catalogId=$catalogService->save('katalog',$period+['kode'=>$tag,'nama'=>'SBX Jenis '.$tag,'kategori_id'=>$categoryId,'tingkat'=>'Ringan','poin_default'=>7,'uraian'=>'Katalog fixture'],$admin);
 foreach($kRepo->rows('SELECT * FROM v3_ambang WHERE is_active=1 AND archived_at IS NULL') as $old){$catalogService->save('ambang',array_replace($old,['is_active'=>0,'alasan'=>'Isolasi suite Fase 2']),$admin,(int)$old['id']);}

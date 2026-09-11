@@ -224,15 +224,18 @@ final class PelanggaranService
         $ledger=$this->repo->ledgerHistory((int)$row['santri_id'],(int)$row['tahun_ajaran_id']);
         $ledgerTotal=array_sum(array_map(static fn(array $item):int=>(int)$item['perubahan_poin'],$ledger));
         $aggregate=$this->repo->aggregate((int)$row['santri_id'],(int)$row['tahun_ajaran_id']);
+        $history=$this->historyRows($row);
         return [
             'pelanggaran'=>$this->serializeViolation($row,true),
-            'riwayat_revisi'=>$this->historyRows($row),
+            'riwayat_revisi'=>$history,
             'ledger'=>array_map([$this,'serializeLedger'],$ledger),
             'total_poin'=>$ledgerTotal,
             'rekonsiliasi'=>['agregat'=>(int)($aggregate['total_poin']??0),'ledger'=>$ledgerTotal,'selisih'=>(int)($aggregate['total_poin']??0)-$ledgerTotal],
             'rekomendasi'=>array_map([$this,'serializeRecommendation'],$this->repo->recommendations((int)$row['santri_id'],(int)$row['tahun_ajaran_id'])),
             'murobi'=>array_map([$this,'serializeMurobi'],$this->repo->murobiNotes((int)$row['id'])),
             'lampiran'=>array_map([$this,'serializeAttachment'],$this->repo->attachments((int)$row['id'])),
+            // Tindak lanjut dibaca pada seluruh rantai revisi agar koreksi tidak memutus tampilannya; kasus Rahasia mengikuti hak pembaca.
+            'konseling'=>array_map([$this,'serializeCounselingLink'],$this->repo->counselingForViolations(array_column($history,'id'),$mode,$this->actorId($user))),
             'peringatan_konfigurasi'=>$this->repo->configurationWarnings(),
         ];
     }
@@ -394,6 +397,7 @@ final class PelanggaranService
     private function serializeRecommendation(array $row):array{return ['id'=>(int)$row['id'],'ambang_id'=>(int)$row['ambang_id'],'dipicu_oleh_pelanggaran_id'=>(int)$row['dipicu_oleh_pelanggaran_id'],'total_poin'=>(int)$row['total_poin_snapshot'],'label'=>(string)$row['label_snapshot'],'rekomendasi'=>(string)$row['rekomendasi_snapshot'],'status'=>(string)$row['status'],'berlaku'=>($row['tidak_berlaku_pada']??null)===null,'tidak_berlaku_pada'=>$row['tidak_berlaku_pada']??null,'tidak_berlaku_alasan'=>$row['tidak_berlaku_alasan']??null,'created_at'=>(string)$row['created_at']];}
     private function serializeMurobi(array $row):array{return ['id'=>(int)$row['id'],'dilihat_pada'=>$row['dilihat_pada'],'diketahui_pada'=>$row['diketahui_pada'],'catatan'=>$row['catatan'],'sumber_version'=>(int)$row['sumber_version']];}
     private function serializeAttachment(array $row):array{return ['id'=>(int)$row['id'],'nama'=>(string)$row['nama_aman'],'mime'=>(string)$row['mime'],'ukuran'=>(int)$row['ukuran'],'sha256'=>(string)$row['sha256'],'created_at'=>(string)$row['created_at']];}
+    private function serializeCounselingLink(array $row):array{return ['kasus_id'=>(int)$row['kasus_id'],'kasus_status'=>(string)$row['kasus_status'],'sesi_id'=>$row['sesi_id']===null?null:(int)$row['sesi_id'],'sesi_status'=>$row['sesi_status']??null,'jadwal'=>$row['jadwal']??null,'realisasi'=>$row['realisasi']??null,'jadwal_berikut'=>$row['jadwal_berikut']??null];}
     private function auditViolation(array $row):array{return ['id'=>(int)$row['id'],'santri_id'=>(int)$row['santri_id'],'tahun_ajaran_id'=>(int)$row['tahun_ajaran_id'],'waktu_kejadian'=>$row['waktu_kejadian'],'tempat'=>$row['tempat'],'uraian'=>$row['uraian'],'saksi'=>$row['saksi'],'kategori_snapshot'=>$row['kategori_snapshot'],'tingkat_snapshot'=>$row['tingkat_snapshot'],'poin_snapshot'=>(int)$row['poin_snapshot'],'status'=>$row['status'],'alasan_revisi'=>$row['alasan_revisi']??null,'alasan_pembatalan'=>$row['alasan_pembatalan']??null,'version'=>(int)$row['version']];}
 
     private function replay(array $idem,string $hash):array
