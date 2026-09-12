@@ -67,3 +67,11 @@ Kerahasiaan `Internal`/`Rahasia`, penutupan otomatis sesi terjadwal, dan revisi 
 | `v3_verify` / `v3_phase2_verify` / `v3_phase3_verify` akhir | 284 / 30 / 29, exit 0 | 286 / 30 / 34, exit 0 |
 
 Bukti perilaku baru: murobi terkait membaca isi kasus Internal pada API, website, dan cetak; kasus Rahasia tertolak `403` bagi murobi dan pembimbing bukan pemilik, tidak muncul pada daftar maupun detail pelanggaran, tidak dapat diberi tanda mengetahui, dan tidak menghasilkan notifikasi murobi; admin tetap dapat membukanya dengan audit akses; penutupan `Selesai` dan `Dibatalkan` menutup sesi terjadwal sebagai `Dibatalkan` beralasan sistem dan beraudit; koreksi kasus membentuk tepat satu revisi per versi, ditampilkan pada detail/API/cetak, versi lama `409`, dan database menolak revisi ganda. Putaran pertama suite gagal 2 pemeriksaan karena uji kegagalan outbox memakai kasus Rahasia yang kini sengaja tidak menulis outbox murobi; uji diperbaiki memakai kasus Internal.
+
+## Bukti produksi (hosting cPanel, 11–12 September 2026)
+
+Migrasi 016 dan 017 diterapkan pada hosting 11 September 2026 pukul 19.19.59. Preflight (15), `v3_verify`, `v3_phase2_verify` (30), dan `v3_phase3_verify` (34) semuanya lulus dengan `exit=0`, termasuk invariant 017 dan pemeriksaan yatim tabel revisi kasus. Manifest produksi sebelum smoke: kasus 0, sesi 0, tautan 0, rekomendasi 1, sesi menggantung 0.
+
+Smoke test 12 September 2026 membuktikan pada data nyata: kasus Rahasia hanya terbaca pembimbing pemilik dan admin; murobi terkait memperoleh daftar kosong, `403` pada detail dan cetak (termasuk ID tebakan), "Belum ditautkan ke kasus konseling" pada detail pelanggaran, dan nol notifikasi konseling; sesi terjadwal beserta rencananya tersimpan dan status kasus berpindah otomatis ke Dalam Pendampingan; poin uji dikembalikan lewat pembatalan beralasan dengan rekonsiliasi selisih nol.
+
+Belum diuji di produksi: kasus Internal dan pembacaan murobi, penyelesaian/koreksi/penjadwalan ulang sesi, revisi kasus, penutupan otomatis sesi, rekomendasi (satu-satunya rekomendasi produksi berstatus tidak berlaku), penolakan orang tua, 375 px, dan post-check verifier sesudah data smoke. Rinciannya di [bukti audit](audit-claude-code.md) bagian 10.
