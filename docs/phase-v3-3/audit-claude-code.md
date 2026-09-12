@@ -451,3 +451,80 @@ gagal itu meninggalkan satu kasus fixture Rahasia `SBX outbox gagal` yang sah.
 - **Catatan murobi dan notifikasi lama** pada kasus yang kemudian dikoreksi menjadi
   Rahasia tetap tersimpan sebagai riwayat, tetapi murobi tidak lagi dapat membuka
   kasusnya.
+
+## 10. Bukti smoke test produksi — 12 September 2026
+
+Dijalankan Human Developer pada hosting cPanel sesudah `6d9d59e` dideploy.
+Migrasi 016 dan 017 diterapkan 11 September 2026 pukul 19.19.59 melalui
+`php bin/migrate.php up`. Keluaran CLI dan tangkapan layar ditinjau langsung;
+yang dicatat di bawah hanya hal yang benar-benar terlihat pada bukti tersebut.
+
+### 10.1 Migrasi dan post-check CLI — LULUS
+
+- `php bin/migrate.php status` menampilkan 001–017 diterapkan, dengan 016 dan 017
+  bertanda waktu sama.
+- Konfirmasi berkas terpasang: `privacySql` 1, `closeScheduledSessions` 1,
+  `Riwayat revisi kasus` 1, dan rollback 017 ada.
+- `bin/v3_phase3_preflight.php`: 15 pemeriksaan lulus, `exit=0`. Manifest
+  produksi `kasus 0, sesi 0, tautan 0, rekomendasi 1, sesi terjadwal pada kasus
+  tertutup yang akan ditutup 017 0` — tidak ada data konseling lama yang perlu
+  dirapikan 017 di produksi.
+- `bin/v3_verify.php`: `exit=0`, termasuk pemeriksaan yatim baru
+  `v3_konseling_kasus_revisi.kasus_id` dan `.created_by`, sehingga tabel revisi
+  017 terbukti terpasang pada MariaDB hosting.
+- `bin/v3_phase2_verify.php`: 30 pemeriksaan lulus, `exit=0`; T1–T6 dan
+  rekonsiliasi agregat–ledger tetap utuh sesudah 016/017.
+- `bin/v3_phase3_verify.php`: **34** pemeriksaan lulus, `exit=0`, termasuk
+  `Migrasi 017 tercatat`, `Tabel revisi kasus memiliki unique per versi dan
+  foreign key`, `Kasus tertutup tidak menyisakan sesi terjadwal`, serta kedua
+  invariant revisi kasus.
+
+Keempat perintah dijalankan sebelum skenario web, ketika manifest masih nol
+kasus; post-check sesudah data smoke terbentuk belum dijalankan.
+
+### 10.2 Skenario yang terbukti di produksi
+
+| Langkah | Bukti |
+| --- | --- |
+| Pencatatan pelanggaran smoke | Catatan #7, `SMOKE AUDIT F3 ini adalah uji coba`, 2 poin; "Pelanggaran dicatat dan poin direkonsiliasi"; `Agregat 4 · ledger 4 · selisih 0` |
+| Kasus **Rahasia** dibuka pembimbing pemilik | Kasus #1, tujuan `SMOKE AUDIT F3 — kasus rahasia`, tautan pelanggaran #7; keterangan kerahasiaan tampil pada formulir dan detail sesuai keputusan Human Developer |
+| Sesi dan status | Sesi #1 dijadwalkan dengan rencana `SMOKE AUDIT F3 — rencana sesi rahasia`; status kasus otomatis **Dalam Pendampingan**; timeline memuat dua peristiwa; label `Tindak lanjut (kosongkan untuk mempertahankan rencana tersimpan)` tampil |
+| Murobi terkait ditolak dari kasus Rahasia | Daftar konseling "Belum ada kasus"; `v3_konseling_detail.php?id=1` → 403; `?id=7` (ID tebakan) → 403; `v3_konseling_cetak.php?id=7` → 403; detail pelanggaran #7 menampilkan "Belum ditautkan ke kasus konseling"; **Notifikasi Saya** hanya memuat `v3_pelanggaran_dicatat`, tanpa satu pun peristiwa konseling |
+| Admin mengawasi | Admin membuka kasus Rahasia #1: tujuan, sesi, dan formulir koreksi kasus terlihat beserta keterangan bahwa koreksi disimpan sebagai revisi |
+| Pemilik tetap melihat kasusnya | Daftar pembimbing memuat kasus #1 (Dalam Pendampingan, 1 sesi) |
+| Pengembalian poin uji | Pelanggaran #7 dibatalkan dengan alasan `SMOKE AUDIT F3 — uji pembatalan`: status Dibatalkan versi 2, ledger `-2 · Pembalik karena pembatalan (pembalik #10)`, `Agregat 2 · ledger 2 · selisih 0`, dan riwayat revisi menampilkan alasan pembatalan terpisah (T2 utuh) |
+| Tautan tetap terbaca sesudah pembatalan | Detail pelanggaran #7 yang sudah dibatalkan tetap menampilkan `Kasus #1 · Dalam Pendampingan · sesi #1` bagi pemiliknya (K3) |
+
+Identitas sesi pada langkah `?id=1` disimpulkan dari kesinambungan jendela privat
+yang sama (login murobi smoke 20.39–20.49); halaman 403 memang tidak menampilkan
+header akun.
+
+### 10.3 Belum diuji di produksi
+
+- Kasus **Internal** dan pembacaan isinya oleh murobi, termasuk tampilan cetak.
+- Penyelesaian sesi lewat formulir web (K5), koreksi sesi beserta penolakan
+  koreksi pengosong (K6), dan penjadwalan ulang.
+- Koreksi kasus menjadi revisi berbaris; `v3_konseling_kasus_revisi` masih kosong
+  di produksi.
+- Penutupan `Selesai` maupun pembatalan kasus beserta penutupan otomatis sesi
+  yang masih terjadwal.
+- **Rekomendasi.** Satu-satunya rekomendasi produksi (`Perhatian Awal`, snapshot
+  total 12) berstatus *Tidak berlaku* karena total poin santri smoke hanya 2–4,
+  di luar rentang ambang. Penautan manual dan pelepasan saat kasus dibatalkan
+  belum terbukti di produksi.
+- Penolakan orang tua, penolakan pembimbing bukan pemilik, tampilan 375 px, dan
+  post-check verifier sesudah data smoke terbentuk.
+- Dua query bukti pada panduan gagal karena placeholder belum diganti
+  (`#1054 Unknown column 'ID_RAHASIA'`), sehingga jumlah audit akses admin dan
+  status sesi/rekomendasi belum terverifikasi lewat SQL.
+
+### 10.4 Catatan kecil dari bukti
+
+- Detail kasus menampilkan pelanggaran yang sama pada dua baris ketika ditautkan
+  di tingkat kasus dan di tingkat sesi (`Pelanggaran #7` dan
+  `Pelanggaran #7 · sesi #1`). Catatan pelanggarannya tetap satu; ini soal
+  tampilan, bukan duplikasi data.
+- Kartu rekomendasi menampilkan alasan historis `Total poin 2 berada di luar
+  rentang ambang` walaupun total saat itu 4. Alasan memang direkam ketika penanda
+  dipasang dan tidak ditulis ulang selama status berlakunya tidak berubah
+  (perilaku T3 Fase 2).

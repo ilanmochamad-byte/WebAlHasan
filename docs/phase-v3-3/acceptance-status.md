@@ -2,7 +2,7 @@
 
 Branch `prd-v3-fase-3`, baseline `927dcd89dfa2ba53d853f7bd900805bc16b9c6de` dari `main`.
 
-**Audit Claude Code selesai: seluruh kriteria penerimaan wajib Fase 3 terpenuhi sesudah koreksi audit K1–K11 dan penerapan keputusan Human Developer 11 September 2026.** Belum siap produksi sampai migrasi 016 dan smoke test dijalankan pada hosting. Tidak ada merge ke `main`, tidak ada deploy, dan Fase 4 belum dimulai.
+**Audit Claude Code selesai: seluruh kriteria penerimaan wajib Fase 3 terpenuhi sesudah koreksi audit K1–K11 dan penerapan keputusan Human Developer 11 September 2026.** Migrasi 016 dan 017 sudah diterapkan pada hosting (11 September 2026) dan seluruh verifier di sana exit 0. Smoke test produksi baru sebagian; sisanya di bagian 10 [bukti audit](audit-claude-code.md). Tidak ada merge ke `main` dan Fase 4 belum dimulai.
 
 | Kriteria PRD Fase 3 | Status implementator | Status audit Claude Code |
 | --- | --- | --- |
@@ -20,7 +20,8 @@ Branch `prd-v3-fase-3`, baseline `927dcd89dfa2ba53d853f7bd900805bc16b9c6de` dari
 | Enam koreksi audit Fase 2 (T1–T6) | TETAP LULUS | **TETAP LULUS** — suite Fase 2 172 pemeriksaan, `.htaccess` T5 utuh |
 | Tidak ada implementasi Fase 4 | — | **TERBUKTI** — tidak ada rute/halaman/notifikasi publikasi orang tua |
 | Migrasi 016: preflight, drill rollback, pasang ulang | LULUS drill | **LULUS sesudah K4/K8** — rollback tidak lagi membuang keputusan bisnis; guard tautan duplikat dilepas |
-| Migrasi/smoke produksi | BELUM DIJALANKAN | BELUM DIJALANKAN |
+| Migrasi produksi (016 + 017) | BELUM DIJALANKAN | **LULUS di hosting cPanel 11 September 2026** — preflight, `v3_verify`, `v3_phase2_verify`, dan `v3_phase3_verify` (34) semuanya exit 0 |
+| Smoke test produksi | BELUM DIJALANKAN | **SEBAGIAN, 12 September 2026** — kerahasiaan Rahasia, tautan pelanggaran, sesi, pengawasan admin, dan pengembalian poin terbukti; kasus Internal, penutupan otomatis, revisi kasus, rekomendasi, dan penolakan orang tua belum diuji |
 
 ## Hasil audit Claude Code
 
@@ -43,6 +44,6 @@ Batasan terbuka: belum ada fitur alih kepemilikan kasus; kasus Rahasia yang pemi
 ## Langkah berikutnya yang disarankan
 
 1. Human Developer meninjau hasil audit dan keputusan terbuka.
-2. Deploy branch ke hosting sesuai prosedur, jalankan `php bin/v3_phase3_preflight.php`, migrator, lalu `php bin/v3_phase3_verify.php`.
-3. Smoke test produksi dengan set `SMOKE AUDIT`: buka kasus dari rekomendasi, dua sesi, jadwal ulang, penutupan, tanda mengetahui murobi, serta penolakan akun lintas cakupan.
+2. ~~Deploy dan migrasi hosting.~~ **Selesai 11 September 2026**; preflight dan ketiga verifier exit 0.
+3. Lanjutkan smoke test produksi yang tersisa mengikuti [panduan](panduan-smoke-test-produksi.md): kasus Internal beserta pembacaan murobi, penyelesaian/koreksi/penjadwalan ulang sesi, revisi kasus, penutupan yang menutup sesi terjadwal, penolakan orang tua, lalu post-check verifier. Rekomendasi baru dapat diuji bila total poin santri smoke kembali masuk rentang ambang.
 4. Merge ke `main` hanya sesudah langkah di atas lulus. Fase 4 dimulai atas perintah Human Developer.

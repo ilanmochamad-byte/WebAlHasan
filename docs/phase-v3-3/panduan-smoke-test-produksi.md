@@ -77,7 +77,10 @@ auditor sebelum melanjutkan.
 | Admin | akun admin Human Developer | uji pengawasan dan audit akses |
 | Santri | `SANTRI SMOKE AUDIT` | subjek seluruh kasus |
 
-Periksa kondisi awal lewat phpMyAdmin (hanya `SELECT`):
+Periksa kondisi awal lewat phpMyAdmin (hanya `SELECT`). **Ganti setiap
+`ID_RAHASIA`, `ID_INTERNAL`, dan `ID_REKOMENDASI` pada panduan ini dengan
+angka sebenarnya sebelum menjalankan query**; bila tidak, MySQL menolak dengan
+`#1054 Unknown column`:
 
 ```sql
 -- Pelanggaran santri smoke yang masih berlaku
