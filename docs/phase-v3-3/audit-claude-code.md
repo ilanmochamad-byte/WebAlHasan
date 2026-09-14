@@ -452,7 +452,7 @@ gagal itu meninggalkan satu kasus fixture Rahasia `SBX outbox gagal` yang sah.
   Rahasia tetap tersimpan sebagai riwayat, tetapi murobi tidak lagi dapat membuka
   kasusnya.
 
-## 10. Bukti smoke test produksi — 12 September 2026
+## 10. Bukti smoke test produksi — 12 dan 14 September 2026
 
 Dijalankan Human Developer pada hosting cPanel sesudah `6d9d59e` dideploy.
 Migrasi 016 dan 017 diterapkan 11 September 2026 pukul 19.19.59 melalui
@@ -482,7 +482,7 @@ yang dicatat di bawah hanya hal yang benar-benar terlihat pada bukti tersebut.
 Keempat perintah dijalankan sebelum skenario web, ketika manifest masih nol
 kasus; post-check sesudah data smoke terbentuk belum dijalankan.
 
-### 10.2 Skenario yang terbukti di produksi
+### 10.2 Skenario yang terbukti di produksi — putaran 12 September
 
 | Langkah | Bukti |
 | --- | --- |
@@ -499,7 +499,10 @@ Identitas sesi pada langkah `?id=1` disimpulkan dari kesinambungan jendela priva
 yang sama (login murobi smoke 20.39–20.49); halaman 403 memang tidak menampilkan
 header akun.
 
-### 10.3 Belum diuji di produksi
+### 10.3 Belum diuji sesudah putaran 12 September
+
+Daftar ini adalah keadaan pada 12 September. Sebagian sudah tertutup pada
+putaran 14 September (bagian 10.5); sisa terkini ada di bagian 10.6.
 
 - Kasus **Internal** dan pembacaan isinya oleh murobi, termasuk tampilan cetak.
 - Penyelesaian sesi lewat formulir web (K5), koreksi sesi beserta penolakan
@@ -518,7 +521,7 @@ header akun.
   (`#1054 Unknown column 'ID_RAHASIA'`), sehingga jumlah audit akses admin dan
   status sesi/rekomendasi belum terverifikasi lewat SQL.
 
-### 10.4 Catatan kecil dari bukti
+### 10.4 Catatan kecil dari bukti 12 September
 
 - Detail kasus menampilkan pelanggaran yang sama pada dua baris ketika ditautkan
   di tingkat kasus dan di tingkat sesi (`Pelanggaran #7` dan
@@ -528,3 +531,63 @@ header akun.
   rentang ambang` walaupun total saat itu 4. Alasan memang direkam ketika penanda
   dipasang dan tidak ditulis ulang selama status berlakunya tidak berubah
   (perilaku T3 Fase 2).
+
+### 10.5 Skenario kasus Internal — 14 September 2026, LULUS
+
+Putaran kedua dijalankan Human Developer pukul 22.21–22.31 pada hosting yang
+sama, dengan pembimbing `PENGURUS SMOKE AUDIT` dan murobi `GURU SMOKE AUDIT`
+(jendela privat terpisah). Tangkapan layar ditinjau satu per satu; hanya yang
+terlihat pada bukti yang dicatat. Kasus kedua ini dibuka untuk
+`SANTRI SMOKE AUDIT` 2026/2027 Ganjil, kerahasiaan **Internal**, tujuan
+`Percobaan kerahasiaan internal, apakah masuk atau tidak dibaca oleh murobi?`,
+dengan tautan pelanggaran #6.
+
+| Langkah | Bukti |
+| --- | --- |
+| Kasus Internal dibuka pembimbing | "Kasus konseling dibuka dengan audit dan tautan yang dipilih"; status Dibuka, versi 1, keterangan `Diketahui pembimbing dan murobi terkait.`, tautan `Pelanggaran #6` |
+| Murobi terkait membaca kasus Internal | Daftar konseling murobi memuat kasus ini (Dibuka, 0 sesi); detail terbuka penuh dengan tujuan, kerahasiaan, versi, tautan, dan timeline — sekaligus tetap **tanpa** kasus Rahasia #1 pada daftar yang sama |
+| Notifikasi murobi untuk kasus Internal | `v3_konseling_dibuka` diterima 22.23.34 dan `v3_konseling_sesi` 22.27.03, keduanya dari nol menjadi terbaca; kontras dengan kasus Rahasia yang tidak menghasilkan satu pun notifikasi konseling |
+| Tanda mengetahui murobi (tingkat kasus) | Catatan `baik, murobi mengetahui kasusnya` tersimpan; Riwayat catatan murobi menampilkan `2026-09-14 22:25:17 · kasus — baik, murobi mengetahui kasusnya`, terpisah dari catatan internal |
+| Transisi tak sah ditolak tanpa tulis parsial | Percobaan `Dibuka → Selesai` dengan ringkasan penutupan terisi menghasilkan "Gagal · Transisi status kasus tidak sah"; kasus tetap Dibuka dan versi tetap 1 (aturan `Dibuka` hanya boleh ke `Dalam Pendampingan`/`Dibatalkan`) |
+| Sesi dijadwalkan dan status berpindah otomatis | Sesi #2 (jadwal 15 September 22.26) dengan rencana `menjadwalkan sesi baru` dan tautan #6; kasus menjadi **Dalam Pendampingan** versi 2 tanpa langkah status terpisah |
+| Sesi diselesaikan lewat formulir web | Sesi #2 berstatus Selesai dengan realisasi 14 September 22.29, `Ringkasan internal: sesi ini selesai`, `Hasil: hasilnya selesai`, dan rencana tindak lanjut `menjadwalkan sesi baru` **tetap utuh** — perilaku K5 (isian kosong tidak menghapus nilai tersimpan) terlihat pada hasilnya |
+| Murobi membaca isi sesi kasus Internal | Tampilan murobi atas sesi Selesai memuat ringkasan internal dan hasil, sesuai keputusan Human Developer bahwa Internal diketahui pembimbing dan murobi (`KonselingService.php:220`) |
+| Penutupan kasus | `Selesai` dengan ringkasan `kasus ini selesai` berhasil: versi 3, timeline tiga peristiwa (22.21.00 kasus dibuka, 22.29.00 sesi selesai, 22.30.33 kasus selesai) |
+| Kasus tertutup tetap terbaca murobi | Sesudah penutupan, daftar murobi menampilkan kasus Selesai dengan 1 sesi dan detailnya memuat ringkasan penutupan serta timeline lengkap |
+| Daftar pembimbing memuat kedua kasus | Kasus Internal (Selesai, 1 sesi) dan kasus Rahasia 12 September (Dalam Pendampingan, 1 sesi) berdampingan pada daftar pemiliknya |
+
+Dengan putaran ini, pemisahan kerahasiaan terbukti dua arah pada data produksi:
+murobi terkait membaca kasus Internal beserta isi sesinya dan menerima
+notifikasinya, sementara kasus Rahasia pada santri yang sama tetap tidak terlihat,
+tidak dapat dibuka, dan tidak memicu notifikasi apa pun untuk murobi yang sama.
+
+### 10.6 Sisa yang belum diuji di produksi — per 14 September 2026
+
+- **Penutupan otomatis sesi terjadwal.** Kasus ditutup ketika sesi satu-satunya
+  sudah Selesai, sehingga jalur "sesi terjadwal ikut menjadi Dibatalkan dengan
+  alasan sistem" belum pernah berjalan pada data produksi. Pembatalan kasus juga
+  belum dicoba.
+- **Revisi kasus.** `Riwayat revisi kasus` masih "Belum ada koreksi";
+  `v3_konseling_kasus_revisi` diperkirakan tetap kosong di produksi.
+- **Koreksi sesi dan penjadwalan ulang.** Panel `Koreksi sesi dengan revisi`
+  terlihat pada bukti tetapi tidak dibuka; penolakan koreksi pengosong (K6) dan
+  `Dijadwalkan Ulang` belum diuji.
+- **Tanda mengetahui murobi tingkat sesi.** Catatan `sesi ini telah diketahui
+  oleh murobi` terlihat diketik pada 22.28, tetapi tidak ada tangkapan layar yang
+  menampilkannya kembali pada Riwayat catatan murobi, sehingga penyimpanannya
+  tidak saya klaim.
+- **Rekomendasi.** Masih satu-satunya rekomendasi produksi berstatus *Tidak
+  berlaku*; penautan manual dan pelepasan saat kasus dibatalkan belum terbukti.
+- **Penolakan orang tua** dan penolakan pembimbing bukan pemilik.
+- **Tampilan 375 px** dan **post-check verifier** sesudah data smoke terbentuk —
+  keempat perintah CLI pada 10.1 dijalankan ketika manifest masih nol kasus.
+
+### 10.7 Catatan kecil dari bukti 14 September
+
+- Tampilan dua baris untuk satu pelanggaran terulang di sini (`Pelanggaran #6` dan
+  `Pelanggaran #6 · sesi #2`) karena pelanggaran ditautkan sekaligus di tingkat
+  kasus dan tingkat sesi. Sama seperti 12 September: soal tampilan, bukan
+  penggandaan data.
+- Timeline memperbarui peristiwa sesi di tempat, bukan menambah baris: entri yang
+  semula `Sesi · Dijadwalkan` (jadwal 15 September) berubah menjadi
+  `Sesi · Selesai` (realisasi 14 September) sesudah sesi diselesaikan.
