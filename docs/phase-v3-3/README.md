@@ -16,6 +16,7 @@ Fase 4 tidak dikerjakan. Tidak ada endpoint publikasi orang tua, tidak ada infor
 - [Catatan untuk auditor](catatan-untuk-auditor.md)
 - [Bukti audit Claude Code](audit-claude-code.md)
 - [Panduan smoke test produksi](panduan-smoke-test-produksi.md)
+- [Handoff ke Fase 4](handoff-ke-fase-4.md)
 - [Manifest berkas](manifest-berkas.md)
 
-Tidak ada merge ke `main` dan tidak ada deploy atau migrasi produksi pada tahap implementator maupun audit.
+Migrasi produksi dijalankan Human Developer 11 September 2026 sesudah audit; smoke test produksi berjalan sebagian dan sisanya dilewati atas keputusan Human Developer 15 September 2026. Belum ada merge ke `main`; kelanjutan pekerjaan ada pada [handoff ke Fase 4](handoff-ke-fase-4.md).

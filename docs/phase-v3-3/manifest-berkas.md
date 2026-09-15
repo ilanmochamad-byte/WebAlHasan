@@ -59,3 +59,14 @@ Berkas yang berubah:
 - `portal/v3_konseling.php`, `portal/v3_konseling_detail.php`, `portal/v3_konseling_cetak.php` — penjelasan kerahasiaan, riwayat revisi kasus, keterangan penutupan otomatis
 - `bin/v3_phase3_preflight.php` dan `bin/v3_phase3_verify.php` — kompatibilitas dan invariant 017
 - `tests/v3_phase3_static.php`, `tests/v3_phase3_migration.php`, `tests/v3_phase3_integration.php`, `tests/browser/uji-v3-fase3.mjs`
+
+## Dokumen produksi dan handoff
+
+Berkas baru:
+
+- `docs/phase-v3-3/panduan-smoke-test-produksi.md` — panduan smoke test pada hosting
+- `docs/phase-v3-3/handoff-ke-fase-4.md` — serah terima ke Fase 4: invarian yang harus dijaga, titik sambung teknis, risiko dari sisa smoke yang dilewati, dan pertanyaan terbuka
+
+Berkas yang berubah: `docs/phase-v3-3/audit-claude-code.md` (bagian 10 bukti
+produksi tiga putaran), `test-results.md`, `acceptance-status.md`, dan `README.md`.
+Tidak ada berkas aplikasi yang diubah pada tahap ini.
