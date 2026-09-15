@@ -2,13 +2,13 @@
 
 Branch `prd-v3-fase-3`, baseline `927dcd89dfa2ba53d853f7bd900805bc16b9c6de` dari `main`.
 
-**Audit Claude Code selesai: seluruh kriteria penerimaan wajib Fase 3 terpenuhi sesudah koreksi audit K1–K11 dan penerapan keputusan Human Developer 11 September 2026.** Migrasi 016 dan 017 sudah diterapkan pada hosting (11 September 2026) dan seluruh verifier di sana exit 0. Smoke test produksi berjalan dua putaran (12 dan 14 September 2026) dan masih sebagian; sisanya di bagian 10.6 [bukti audit](audit-claude-code.md). Tidak ada merge ke `main` dan Fase 4 belum dimulai.
+**Audit Claude Code selesai: seluruh kriteria penerimaan wajib Fase 3 terpenuhi sesudah koreksi audit K1–K11 dan penerapan keputusan Human Developer 11 September 2026.** Migrasi 016 dan 017 sudah diterapkan pada hosting (11 September 2026) dan seluruh verifier di sana exit 0. Smoke test produksi berjalan tiga putaran (12, 14, dan 15 September 2026) dan masih sebagian; sisanya di bagian 10.9 [bukti audit](audit-claude-code.md). Tidak ada merge ke `main` dan Fase 4 belum dimulai.
 
 | Kriteria PRD Fase 3 | Status implementator | Status audit Claude Code |
 | --- | --- | --- |
 | Satu kasus dengan sedikitnya dua sesi berbeda | LULUS lokal | **LULUS** — integrasi, API, dan browser |
 | Pelanggaran menampilkan seluruh sesi tanpa menggandakan pelanggaran | LULUS lokal | **LULUS sesudah K3** — sebelumnya hilang pada catatan terkini begitu pelanggaran dikoreksi |
-| Kasus/sesi di luar cakupan tak terlihat dan mutasi ditolak `403` | LULUS integrasi/API/browser | **LULUS** — kini sembilan jalur mutasi/baca diuji untuk tiga aktor lintas cakupan dan admin murni, tanpa jejak tulis |
+| Kasus/sesi di luar cakupan tak terlihat dan mutasi ditolak `403` | LULUS integrasi/API/browser | **LULUS** — kini sembilan jalur mutasi/baca diuji untuk tiga aktor lintas cakupan dan admin murni, tanpa jejak tulis; terbukti juga di produksi 15 September lewat daftar kosong dan `403` pada ID tebakan |
 | Murobi terkait membaca DTO terbatas dan memberi catatan; murobi lain `403` | LULUS | **LULUS** — termasuk halaman dan cetak murobi tanpa isi rahasia; terbukti juga di produksi 14 September untuk kasus Internal |
 | Orang tua ditolak dari endpoint/halaman internal walau menebak ID | LULUS | **LULUS** — kini juga status/koreksi/tanda mengetahui sesi, tautan, dan timeline lewat HTTP |
 | Transisi tak sah `422` dan tidak menulis parsial | LULUS | **LULUS sesudah K1** — sebelumnya sesi pada kasus tertutup masih dapat dijadwalkan ulang dan diselesaikan |
@@ -21,7 +21,7 @@ Branch `prd-v3-fase-3`, baseline `927dcd89dfa2ba53d853f7bd900805bc16b9c6de` dari
 | Tidak ada implementasi Fase 4 | — | **TERBUKTI** — tidak ada rute/halaman/notifikasi publikasi orang tua |
 | Migrasi 016: preflight, drill rollback, pasang ulang | LULUS drill | **LULUS sesudah K4/K8** — rollback tidak lagi membuang keputusan bisnis; guard tautan duplikat dilepas |
 | Migrasi produksi (016 + 017) | BELUM DIJALANKAN | **LULUS di hosting cPanel 11 September 2026** — preflight, `v3_verify`, `v3_phase2_verify`, dan `v3_phase3_verify` (34) semuanya exit 0 |
-| Smoke test produksi | BELUM DIJALANKAN | **SEBAGIAN, 12 dan 14 September 2026** — kerahasiaan Rahasia maupun Internal, tautan pelanggaran, sesi hingga selesai, penutupan kasus, pengawasan admin, dan pengembalian poin terbukti; penutupan otomatis sesi terjadwal, revisi kasus, koreksi/penjadwalan ulang sesi, rekomendasi, dan penolakan orang tua belum diuji |
+| Smoke test produksi | BELUM DIJALANKAN | **SEBAGIAN, 12–15 September 2026** — kerahasiaan Rahasia maupun Internal, tautan pelanggaran, sesi hingga selesai, penutupan kasus, pengawasan admin, penolakan lintas cakupan beserta ID tebakan, tampilan ponsel, pengembalian poin, dan post-check `v3_phase3_verify` atas data nyata terbukti; pembatalan kasus dan penutupan otomatis sesi, revisi kasus, koreksi/penjadwalan ulang sesi, rekomendasi, serta penolakan orang tua belum diuji |
 
 ## Hasil audit Claude Code
 
@@ -45,5 +45,5 @@ Batasan terbuka: belum ada fitur alih kepemilikan kasus; kasus Rahasia yang pemi
 
 1. Human Developer meninjau hasil audit dan keputusan terbuka.
 2. ~~Deploy dan migrasi hosting.~~ **Selesai 11 September 2026**; preflight dan ketiga verifier exit 0.
-3. Lanjutkan smoke test produksi yang tersisa mengikuti [panduan](panduan-smoke-test-produksi.md): koreksi kasus menjadi revisi, koreksi dan penjadwalan ulang sesi, penutupan atau pembatalan kasus yang masih memiliki sesi terjadwal, catatan murobi tingkat sesi, penolakan orang tua dan pembimbing bukan pemilik, tampilan 375 px, lalu post-check verifier sesudah ada data smoke. Rekomendasi baru dapat diuji bila total poin santri smoke kembali masuk rentang ambang.
+3. Lanjutkan smoke test produksi yang tersisa mengikuti [panduan](panduan-smoke-test-produksi.md): pembatalan kasus yang masih memiliki sesi terjadwal (sekaligus membuktikan penutupan otomatis sesi), koreksi kasus menjadi revisi, koreksi dan penjadwalan ulang sesi, catatan murobi tingkat sesi, penolakan orang tua, lalu post-check `v3_verify` dan `v3_phase2_verify`. Rekomendasi baru dapat diuji bila total poin santri smoke kembali masuk rentang ambang.
 4. Merge ke `main` hanya sesudah langkah di atas lulus. Fase 4 dimulai atas perintah Human Developer.

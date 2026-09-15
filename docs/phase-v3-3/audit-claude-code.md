@@ -452,7 +452,7 @@ gagal itu meninggalkan satu kasus fixture Rahasia `SBX outbox gagal` yang sah.
   Rahasia tetap tersimpan sebagai riwayat, tetapi murobi tidak lagi dapat membuka
   kasusnya.
 
-## 10. Bukti smoke test produksi — 12 dan 14 September 2026
+## 10. Bukti smoke test produksi — 12, 14, dan 15 September 2026
 
 Dijalankan Human Developer pada hosting cPanel sesudah `6d9d59e` dideploy.
 Migrasi 016 dan 017 diterapkan 11 September 2026 pukul 19.19.59 melalui
@@ -582,6 +582,9 @@ tidak dapat dibuka, dan tidak memicu notifikasi apa pun untuk murobi yang sama.
 - **Tampilan 375 px** dan **post-check verifier** sesudah data smoke terbentuk —
   keempat perintah CLI pada 10.1 dijalankan ketika manifest masih nol kasus.
 
+Sebagian daftar ini tertutup pada putaran 15 September (bagian 10.8); sisa
+terkini ada di bagian 10.9.
+
 ### 10.7 Catatan kecil dari bukti 14 September
 
 - Tampilan dua baris untuk satu pelanggaran terulang di sini (`Pelanggaran #6` dan
@@ -591,3 +594,52 @@ tidak dapat dibuka, dan tidak memicu notifikasi apa pun untuk murobi yang sama.
 - Timeline memperbarui peristiwa sesi di tempat, bukan menambah baris: entri yang
   semula `Sesi · Dijadwalkan` (jadwal 15 September) berubah menjadi
   `Sesi · Selesai` (realisasi 14 September) sesudah sesi diselesaikan.
+
+### 10.8 Putaran ketiga — 15 September 2026, LULUS
+
+Dijalankan Human Developer pukul 07.45–07.51, ditutup dengan post-check verifier
+pada shell hosting. Putaran ini berfokus pada siklus pelanggaran–poin, penolakan
+lintas cakupan, dan tampilan sempit.
+
+| Langkah | Bukti |
+| --- | --- |
+| Pelanggaran baru dicatat pembimbing | Catatan #8 untuk `SANTRI SMOKE AUDIT`, jenis `KDS.TLM — Terlambat masuk kelas · Ringan · 2 poin`, waktu 15 September 07.45, uraian `ini adalah uji coba. untuk pembatalan kasus`; "Pelanggaran dicatat dan poin direkonsiliasi", status Dicatat versi 1, `Agregat 4 · ledger 4 · selisih 0` |
+| Murobi di luar cakupan tidak melihat apa pun | Akun murobi lain (bukan murobi terkait santri smoke) mendapat "Belum ada catatan — Belum ada pelanggaran yang dapat dibaca dalam cakupan aktif Anda" pada daftar pelanggaran |
+| ID tebakan ditolak | `portal/v3_pelanggaran_detail.php?id=8` pada akun yang sama → `403 — Akses ditolak`, "Catatan tidak ditemukan atau tidak dapat diakses. Pelanggaran berada di luar cakupan pengguna." |
+| Tampilan jendela sempit | Detail pelanggaran pada lebar ponsel: menu menjadi hamburger, kartu menumpuk satu kolom, angka poin dan rekonsiliasi tetap terbaca, tanpa luapan horizontal |
+| Pembatalan dengan pembalik poin | Alasan `uji coba pembatalan kasus` → "Perubahan tersimpan dengan audit dan riwayat": status Dibatalkan versi 2, alasan pembatalan tersimpan pada barisnya sendiri (T2 utuh), `Agregat 2 · ledger 2 · selisih 0`, dan daftar pelanggaran ikut berubah menjadi Dibatalkan |
+| Riwayat tidak tertimpa | Panel `Riwayat revisi` tetap menampilkan `Catatan #8 · versi 1 · Dicatat` sesudah pembatalan; formulir koreksi (`Buat revisi`) dan pembatalan tetap terpisah |
+| Post-check verifier sesudah ada data smoke | `php bin/v3_phase3_verify.php` di `public_html` hosting: **34** pemeriksaan lulus, `exit=0`, dijalankan dua kali dengan hasil identik |
+
+Post-check ini penting karena kali ini produksi sudah memuat data konseling
+nyata: `Kasus tertutup tidak menyisakan sesi terjadwal`, `Sesi selesai terkini
+memiliki realisasi, ringkasan internal, dan hasil`, `Kasus selesai memiliki waktu
+dan ringkasan penutupan`, serta kedua invariant revisi kasus lulus terhadap kasus
+Rahasia #1 dan kasus Internal 14 September — bukan lagi terhadap tabel kosong.
+
+### 10.9 Sisa yang belum diuji di produksi — per 15 September 2026
+
+- **Pembatalan kasus dan penutupan otomatis sesi terjadwal.** Uraian pelanggaran
+  #8 menyebut "untuk pembatalan kasus", tetapi bukti yang dikirim berhenti pada
+  pembatalan pelanggaran; tidak ada tangkapan layar kasus yang dibatalkan. Jalur
+  "sesi terjadwal ikut menjadi Dibatalkan dengan alasan sistem" karena itu masih
+  belum pernah berjalan pada data produksi.
+- **Revisi kasus.** Belum ada koreksi kasus; `v3_konseling_kasus_revisi`
+  diperkirakan tetap kosong (verifier lulus secara hampa untuk baris revisi).
+- **Koreksi sesi, penolakan koreksi pengosong (K6), dan penjadwalan ulang.**
+- **Tanda mengetahui murobi tingkat sesi** — masih belum terlihat tersimpan.
+- **Rekomendasi.** Tetap berstatus *Tidak berlaku*; penautan manual dan pelepasan
+  saat kasus dibatalkan belum terbukti.
+- **Penolakan orang tua** pada halaman dan endpoint internal.
+- **Post-check `v3_verify` dan `v3_phase2_verify`** sesudah data smoke — pada 15
+  September hanya `v3_phase3_verify` yang dijalankan ulang.
+
+### 10.10 Catatan kecil dari bukti 15 September
+
+- Kartu rekomendasi masih menampilkan alasan historis `Total poin 2 berada di
+  luar rentang ambang` ketika total sedang 4, sama seperti catatan 12 September:
+  alasan direkam saat penanda dipasang dan tidak ditulis ulang selama status
+  berlakunya tidak berubah (T3 Fase 2).
+- Penolakan pada ID tebakan memakai halaman `403` yang sama tanpa membocorkan
+  keberadaan catatan; pesannya berbunyi "tidak ditemukan atau tidak dapat
+  diakses", bukan menegaskan bahwa catatan #8 ada.
