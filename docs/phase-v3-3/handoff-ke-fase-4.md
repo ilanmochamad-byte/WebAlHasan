@@ -102,6 +102,11 @@ Persyaratan 11 Fase 5 memang menuntut smoke cPanel menyeluruh; item di atas
 paling murah ditutup di sana, atau pada smoke Fase 4 yang memang harus menyentuh
 portal orang tua.
 
+Pembersihan data smoke (bagian 8 panduan) menutup sebagian daftar ini sebagai
+efek samping: membatalkan kasus #1 menjalankan penutupan otomatis sesi terjadwal,
+dan post-check-nya menjalankan ketiga verifier atas data nyata. Catat hasilnya
+bila dijalankan.
+
 ## 7. Pertanyaan terbuka untuk Human Developer
 
 1. ~~**Publikasi kasus Rahasia.**~~ **Dijawab Human Developer 15 September 2026:
@@ -109,11 +114,18 @@ portal orang tua.
    publikasi baru mungkin sesudah kerahasiaannya dikoreksi menjadi `Internal`
    lewat revisi kasus, sehingga jejaknya terekam dan aturan kerahasiaan tetap
    satu pintu. Dicatat pada PRD V3 bagian 5.5a; konsekuensinya di bagian 9.
-2. **Data smoke produksi** — dibersihkan mengikuti panduan, atau dipertahankan?
+2. ~~**Data smoke produksi.**~~ **Dijawab 15 September 2026: dibersihkan.**
+   Prosedurnya ada pada [panduan smoke](panduan-smoke-test-produksi.md) bagian 8 —
+   tutup lewat aplikasi, arsipkan dengan `archived_at`, tanpa `DELETE` satu baris
+   pun, lalu post-check ketiga verifier. Belum dijalankan saat handoff ini
+   ditulis.
 3. **Merge PR #34 ke `main`** sebelum Fase 4 dicabang, atau Fase 4 dicabang dari
    `prd-v3-fase-3`? Saran saya: merge dulu agar baseline Fase 4 bersih.
-4. **Kanal**: push fisik dan WhatsApp tetap OFF selama Fase 4, sesuai persyaratan
-   9? Saran saya: ya; bukti pengiriman fisik ditunda ke Fase 5.
+4. ~~**Kanal.**~~ **Dijawab 15 September 2026: WhatsApp tetap OFF sampai seluruh
+   V3 selesai** — bukan hanya selama Fase 4. Adapter uji tidak boleh dianggap
+   bukti pengiriman (persyaratan 9 Fase 4), dan pengujian harus membuktikan nol
+   request ke provider WhatsApp. Status push fisik belum ditegaskan; anggap juga
+   OFF sampai ada perintah lain, dan tunda buktinya ke Fase 5.
 
 ## 8. Langkah pertama yang disarankan untuk implementator Fase 4
 

@@ -646,7 +646,7 @@ Rahasia #1 dan kasus Internal 14 September — bukan lagi terhadap tabel kosong.
 
 ## 11. Keputusan Human Developer — 15 September 2026
 
-Dua keputusan diambil sesudah putaran smoke ketiga.
+Empat keputusan diambil sesudah putaran smoke ketiga.
 
 1. **Sisa smoke test produksi dilewati.** Jalur pada bagian 10.9 tidak dijalankan
    dan tidak diklaim lulus; risikonya diwariskan ke Fase 4 lewat
@@ -656,6 +656,13 @@ Dua keputusan diambil sesudah putaran smoke ketiga.
    sehingga perubahannya terekam dan aturan kerahasiaan tetap satu pintu. Dicatat
    pada PRD V3 bagian 5.5a; konsekuensi rancangannya di
    [handoff](handoff-ke-fase-4.md) bagian 9.
+
+3. **Data smoke produksi dibersihkan**, dengan cara ditutup lewat aplikasi lalu
+   diarsipkan (`archived_at`) — tanpa `DELETE`, agar audit, ledger, dan riwayat
+   revisi tetap utuh. Prosedur pada [panduan smoke](panduan-smoke-test-produksi.md)
+   bagian 8; pelaksanaannya milik Human Developer dan belum tercatat di sini.
+4. **WhatsApp tetap OFF sampai seluruh V3 selesai.** Adapter uji tidak dianggap
+   bukti pengiriman.
 
 Keputusan 2 tidak mengubah kode Fase 3: kasus Rahasia memang sudah tidak memiliki
 jalur publikasi, dan `parentSerializer()` belum dirutekan ke mana pun. Yang

@@ -46,4 +46,6 @@ Batasan terbuka: belum ada fitur alih kepemilikan kasus; kasus Rahasia yang pemi
 1. ~~Human Developer meninjau hasil audit dan keputusan terbuka.~~ **Selesai**; tiga keputusan diterapkan (bagian di atas).
 2. ~~Deploy dan migrasi hosting.~~ **Selesai 11 September 2026**; preflight dan ketiga verifier exit 0.
 3. ~~Lanjutkan smoke test produksi yang tersisa.~~ **Dilewati atas keputusan Human Developer 15 September 2026.** Jalur yang belum terbukti di produksi tercatat apa adanya pada bagian 10.9 [bukti audit](audit-claude-code.md) dan diwariskan sebagai risiko ke [handoff Fase 4](handoff-ke-fase-4.md) bagian 6; paling murah ditutup pada smoke Fase 4/Fase 5.
-4. Merge PR #34 ke `main`, lalu mulai Fase 4 mengikuti [handoff ke Fase 4](handoff-ke-fase-4.md). Empat pertanyaan terbuka pada bagian 7 handoff perlu dijawab lebih dulu — terutama perlakuan kasus Rahasia pada publikasi orang tua.
+4. ~~Merge ke `main`.~~ **Selesai 15 September 2026** lewat PR #34–#39; `main` memuat seluruh Fase 3.
+5. Bersihkan data smoke produksi mengikuti [panduan](panduan-smoke-test-produksi.md) bagian 8 — tutup lewat aplikasi, arsipkan, jangan hapus, lalu post-check ketiga verifier.
+6. Mulai Fase 4 mengikuti [handoff ke Fase 4](handoff-ke-fase-4.md). Tiga dari empat pertanyaan terbuka sudah dijawab; yang tersisa hanya penegasan status push fisik.
