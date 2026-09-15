@@ -104,13 +104,11 @@ portal orang tua.
 
 ## 7. Pertanyaan terbuka untuk Human Developer
 
-1. **Publikasi kasus Rahasia.** Keputusan 5.5a menyatakan `Rahasia` hanya
-   diketahui pembimbing pemilik dan santri. Apakah kasus Rahasia (a) tidak boleh
-   diterbitkan sama sekali kepada orang tua, (b) boleh diterbitkan hanya sesudah
-   kerahasiaannya dikoreksi menjadi Internal lewat revisi, atau (c) boleh
-   diterbitkan langsung karena isi publikasi ditulis manual dan terpisah dari
-   catatan internal? Saran saya: **(b)** — jejaknya terekam sebagai revisi kasus
-   dan aturan kerahasiaan tetap satu pintu.
+1. ~~**Publikasi kasus Rahasia.**~~ **Dijawab Human Developer 15 September 2026:
+   pilihan (b).** Kasus `Rahasia` tidak boleh diterbitkan kepada orang tua;
+   publikasi baru mungkin sesudah kerahasiaannya dikoreksi menjadi `Internal`
+   lewat revisi kasus, sehingga jejaknya terekam dan aturan kerahasiaan tetap
+   satu pintu. Dicatat pada PRD V3 bagian 5.5a; konsekuensinya di bagian 9.
 2. **Data smoke produksi** — dibersihkan mengikuti panduan, atau dipertahankan?
 3. **Merge PR #34 ke `main`** sebelum Fase 4 dicabang, atau Fase 4 dicabang dari
    `prd-v3-fase-3`? Saran saya: merge dulu agar baseline Fase 4 bersih.
@@ -122,8 +120,8 @@ portal orang tua.
 1. Baca `AGENTS.md`, PRD V3 bagian Fase 4 dan 5.5a, [desain dan aturan](desain-dan-aturan.md),
    [kontrak API](kontrak-api.md), dan [bukti audit](audit-claude-code.md) bagian
    9 (keputusan kerahasiaan) sebelum menulis kode.
-2. Tunggu jawaban pertanyaan 7.1 — jawabannya menentukan bentuk tabel publikasi
-   dan penjaga aksesnya.
+2. Terapkan keputusan 7.1 sejak rancangan, bukan sebagai tambalan di akhir —
+   lihat bagian 9.
 3. Rancang migrasi 018 beserta rollback non-destruktifnya: tabel publikasi
    (sumber, versi sumber, penerima wali, ringkasan, tindak lanjut, status terbit/
    tarik, alasan penarikan, waktu baca) dan penghubung outbox untuk publikasi.
@@ -133,3 +131,31 @@ portal orang tua.
 5. Tulis uji akses silang wali A vs wali B, uji nol baris untuk data belum
    terbit, dan uji nol request ke provider ketika kanal OFF sejak awal, bukan di
    akhir.
+
+## 9. Konsekuensi keputusan publikasi kasus Rahasia
+
+Keputusan 7.1 mengikat rancangan Fase 4 sebagai berikut.
+
+- **Penjaga di sumber, bukan di tampilan.** Setiap jalur yang membuat atau
+  memperbarui publikasi harus menolak kasus dengan `kerahasiaan='Rahasia'`
+  dengan `422`, termasuk saat pratinjau. Penolakan diletakkan di service, bukan
+  hanya menyembunyikan tombol pada halaman.
+- **Jalur baca publikasi tidak boleh menyentuh kasus Rahasia.** Daftar dan detail
+  publikasi orang tua membaca tabel publikasi saja (persyaratan 3: jangan
+  mengambil isi internal secara dinamis), sehingga kerahasiaan sumber tidak
+  pernah menjadi satu-satunya penjaga.
+- **Publikasi yang sudah terbit lalu sumbernya dikembalikan ke `Rahasia`.**
+  Perlakuan yang saya sarankan: koreksi kerahasiaan `Internal → Rahasia` pada
+  kasus yang punya publikasi aktif ditolak sampai publikasinya ditarik lebih
+  dulu dengan alasan. Alternatifnya—penarikan otomatis—membuat orang tua melihat
+  informasi menghilang tanpa penjelasan. Perlu ditegaskan Human Developer bila
+  implementator memilih jalur lain.
+- **Regresi yang wajib ada.** Uji bahwa kasus Rahasia menolak publikasi dan
+  pratinjau; uji bahwa kasus yang sama, sesudah dikoreksi menjadi Internal
+  melalui revisi, dapat diterbitkan; uji bahwa revisi kerahasiaan itu tercatat
+  pada `v3_konseling_kasus_revisi` dengan nilai sebelum/sesudah; dan uji bahwa
+  tidak ada publikasi atau notifikasi yang pernah terbentuk selama kasus masih
+  Rahasia.
+- **Verifier.** Tambahkan invariant Fase 4: tidak ada baris publikasi yang
+  menunjuk kasus berkerahasiaan `Rahasia`. Invariant ini murah dan menangkap
+  kebocoran yang lolos dari pengujian aplikasi.

@@ -120,6 +120,10 @@ Keputusan Human Developer berikut berlaku sejak Fase 3 dan menjawab pertanyaan t
 - Kasus boleh ditutup `Selesai` walaupun masih ada sesi terjadwal. Menutup kasus, baik `Selesai` maupun `Dibatalkan`, ikut menutup sesi yang masih terjadwal menjadi `Dibatalkan` dengan alasan sistem; baris sesi tidak dihapus dan penutupannya diaudit.
 - Koreksi kasus disimpan sebagai revisi berbaris yang memuat nilai sebelum/sesudah, alasan, kapasitas koreksi, pelaku, dan waktu; nilai lama tidak hanya bergantung pada audit.
 
+Keputusan tambahan 15 September 2026, berlaku sejak Fase 4:
+
+- Kasus berkerahasiaan `Rahasia` tidak boleh diterbitkan kepada orang tua. Publikasi baru dapat dibuat sesudah kerahasiaannya dikoreksi menjadi `Internal` melalui revisi kasus, sehingga perubahannya terekam beserta nilai sebelum/sesudah, alasan, pelaku, dan waktu. Aturan kerahasiaan tetap satu pintu: tidak ada jalur publikasi yang membaca kasus Rahasia, sekalipun isi publikasi ditulis manual.
+
 ### 5.6 Publikasi orang tua dan privasi
 
 Rincian versi publikasi, poin yang ditampilkan, penarikan, serta pemilihan wali penerima berikut merupakan rancangan awal.
