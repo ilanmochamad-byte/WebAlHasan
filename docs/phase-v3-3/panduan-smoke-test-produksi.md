@@ -384,3 +384,120 @@ Salin tabel ini, isi, lalu kirim ke auditor bersama keluaran CLI dan hasil query
 | J. Orang tua ditolak | | |
 | K. 375 px (opsional) | | |
 | 5. Pembersihan dan verifier akhir | | |
+
+## 8. Pembersihan data smoke — keputusan Human Developer 15 September 2026
+
+Human Developer memutuskan sisa skenario dilewati dan **data smoke di produksi
+dibersihkan**. Bagian ini menggantikan bagian 5 untuk keadaan sesudah tiga
+putaran smoke (12, 14, dan 15 September 2026).
+
+Yang tertinggal di produksi: pelanggaran #6 (Dicatat, 2 poin), #7 dan #8
+(sudah Dibatalkan), kasus #1 (Rahasia, Dalam Pendampingan, 1 sesi terjadwal),
+kasus Internal 14 September (Selesai, 1 sesi Selesai), catatan murobi, tautan,
+serta notifikasi pada akun fixture.
+
+**Aturan yang tetap berlaku: jangan `DELETE` satu baris pun.** Audit, ledger, dan
+riwayat revisi adalah bukti; menghapusnya merusak rekonsiliasi dan invariant
+verifier. Pembersihan dilakukan dengan menutup melalui aplikasi, lalu
+mengarsipkan (`archived_at`) — keduanya dapat dibatalkan, penghapusan tidak.
+
+### 8.1 Tahap 1 — lewat aplikasi, tanpa SQL
+
+1. Login sebagai pembimbing smoke, buka **Konseling & tindak lanjut** → kasus #1
+   (Rahasia, Dalam Pendampingan). Ubah status menjadi **Dibatalkan** dengan alasan
+   `SMOKE AUDIT F3 — pembersihan data smoke`. Sesi #1 yang masih terjadwal akan
+   ikut tertutup menjadi `Dibatalkan` beralasan sistem — sekaligus menutup satu
+   jalur yang sebelumnya belum pernah dijalankan di produksi.
+2. Buka **Pelanggaran & poin** → pelanggaran #6 → **Batalkan dengan pembalik
+   poin**, alasan `SMOKE AUDIT F3 — pembersihan data smoke`.
+3. Pastikan detail menunjukkan `Agregat 0 · ledger 0 · selisih 0`. Rekomendasi
+   `Perhatian Awal` tetap *Tidak berlaku*; itu benar.
+
+Sesudah tahap ini tidak ada kasus terbuka, sesi terjadwal, atau poin uji yang
+tersisa. Baris-barisnya masih terlihat sebagai riwayat.
+
+### 8.2 Tahap 2 — arsipkan baris smoke (SQL, sesudah backup)
+
+Ambil backup lebih dulu (bagian 1). Jalankan pratinjau `SELECT` dan cocokkan
+angkanya sebelum menjalankan `UPDATE`.
+
+```sql
+SELECT 'kasus' AS tabel, COUNT(*) AS baris
+  FROM v3_konseling_kasus k JOIN santri s ON s.id = k.santri_id
+ WHERE s.nama_santri = 'SANTRI SMOKE AUDIT' AND k.archived_at IS NULL
+UNION ALL
+SELECT 'sesi', COUNT(*) FROM v3_konseling_sesi ss
+  JOIN v3_konseling_kasus k ON k.id = ss.kasus_id
+  JOIN santri s ON s.id = k.santri_id
+ WHERE s.nama_santri = 'SANTRI SMOKE AUDIT' AND ss.archived_at IS NULL
+UNION ALL
+SELECT 'tautan', COUNT(*) FROM v3_konseling_tautan t
+  JOIN v3_konseling_kasus k ON k.id = t.kasus_id
+  JOIN santri s ON s.id = k.santri_id
+ WHERE s.nama_santri = 'SANTRI SMOKE AUDIT' AND t.archived_at IS NULL
+UNION ALL
+SELECT 'pelanggaran', COUNT(*) FROM v3_pelanggaran p
+  JOIN santri s ON s.id = p.santri_id
+ WHERE s.nama_santri = 'SANTRI SMOKE AUDIT' AND p.archived_at IS NULL;
+```
+
+Bila angkanya sesuai, arsipkan dalam satu transaksi:
+
+```sql
+START TRANSACTION;
+
+UPDATE v3_konseling_tautan t
+  JOIN v3_konseling_kasus k ON k.id = t.kasus_id
+  JOIN santri s ON s.id = k.santri_id
+   SET t.archived_at = NOW()
+ WHERE s.nama_santri = 'SANTRI SMOKE AUDIT' AND t.archived_at IS NULL;
+
+UPDATE v3_murobi_catatan mc
+  LEFT JOIN v3_konseling_kasus kk ON kk.id = mc.kasus_id
+  LEFT JOIN v3_konseling_sesi ks ON ks.id = mc.sesi_id
+  LEFT JOIN v3_konseling_kasus ksk ON ksk.id = ks.kasus_id
+  LEFT JOIN v3_pelanggaran pp ON pp.id = mc.pelanggaran_id
+  JOIN santri s ON s.id = COALESCE(kk.santri_id, ksk.santri_id, pp.santri_id)
+   SET mc.archived_at = NOW()
+ WHERE s.nama_santri = 'SANTRI SMOKE AUDIT' AND mc.archived_at IS NULL;
+
+UPDATE v3_konseling_sesi ss
+  JOIN v3_konseling_kasus k ON k.id = ss.kasus_id
+  JOIN santri s ON s.id = k.santri_id
+   SET ss.archived_at = NOW()
+ WHERE s.nama_santri = 'SANTRI SMOKE AUDIT' AND ss.archived_at IS NULL;
+
+UPDATE v3_konseling_kasus k
+  JOIN santri s ON s.id = k.santri_id
+   SET k.archived_at = NOW()
+ WHERE s.nama_santri = 'SANTRI SMOKE AUDIT' AND k.archived_at IS NULL;
+
+UPDATE v3_pelanggaran p
+  JOIN santri s ON s.id = p.santri_id
+   SET p.archived_at = NOW()
+ WHERE s.nama_santri = 'SANTRI SMOKE AUDIT' AND p.archived_at IS NULL;
+
+COMMIT;
+```
+
+Catatan:
+
+- `v3_rekomendasi`, ledger poin, audit, dan outbox **tidak disentuh**. Rekomendasi
+  smoke berstatus *Tidak berlaku* dan tidak muncul sebagai antrean; notifikasi
+  hanya ada pada akun fixture.
+- Membatalkan pembersihan cukup dengan `SET archived_at = NULL` pada baris yang
+  sama.
+- Bila ingin lebih jauh, nonaktifkan akun fixture (`PENGURUS SMOKE AUDIT`,
+  `GURU SMOKE AUDIT`, `ortu_smoke.audit`) lewat menu admin, bukan SQL.
+
+### 8.3 Tahap 3 — post-check
+
+```bash
+php bin/v3_verify.php; echo "exit=$?"
+php bin/v3_phase2_verify.php; echo "exit=$?"
+php bin/v3_phase3_verify.php; echo "exit=$?"
+```
+
+Ketiganya harus `exit=0`. Rekonsiliasi agregat–ledger tetap berselisih nol karena
+pembatalan pada tahap 1 menulis baris pembalik, bukan menghapus baris positif.
+Simpan keluarannya sebagai bukti pembersihan.
