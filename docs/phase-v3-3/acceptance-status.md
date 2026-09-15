@@ -2,7 +2,7 @@
 
 Branch `prd-v3-fase-3`, baseline `927dcd89dfa2ba53d853f7bd900805bc16b9c6de` dari `main`.
 
-**Audit Claude Code selesai: seluruh kriteria penerimaan wajib Fase 3 terpenuhi sesudah koreksi audit K1–K11 dan penerapan keputusan Human Developer 11 September 2026.** Migrasi 016 dan 017 sudah diterapkan pada hosting (11 September 2026) dan seluruh verifier di sana exit 0. Smoke test produksi berjalan tiga putaran (12, 14, dan 15 September 2026) dan masih sebagian; sisanya di bagian 10.9 [bukti audit](audit-claude-code.md). Tidak ada merge ke `main` dan Fase 4 belum dimulai.
+**Audit Claude Code selesai: seluruh kriteria penerimaan wajib Fase 3 terpenuhi sesudah koreksi audit K1–K11 dan penerapan keputusan Human Developer 11 September 2026.** Migrasi 016 dan 017 sudah diterapkan pada hosting (11 September 2026) dan seluruh verifier di sana exit 0. Smoke test produksi berjalan tiga putaran (12, 14, dan 15 September 2026); **sisanya dilewati atas keputusan Human Developer 15 September 2026** dan tidak diklaim lulus — daftarnya di bagian 10.9 [bukti audit](audit-claude-code.md), risikonya di [handoff ke Fase 4](handoff-ke-fase-4.md) bagian 6. Fase 3 diserahkan; belum ada merge ke `main`.
 
 | Kriteria PRD Fase 3 | Status implementator | Status audit Claude Code |
 | --- | --- | --- |
@@ -43,7 +43,7 @@ Batasan terbuka: belum ada fitur alih kepemilikan kasus; kasus Rahasia yang pemi
 
 ## Langkah berikutnya yang disarankan
 
-1. Human Developer meninjau hasil audit dan keputusan terbuka.
+1. ~~Human Developer meninjau hasil audit dan keputusan terbuka.~~ **Selesai**; tiga keputusan diterapkan (bagian di atas).
 2. ~~Deploy dan migrasi hosting.~~ **Selesai 11 September 2026**; preflight dan ketiga verifier exit 0.
-3. Lanjutkan smoke test produksi yang tersisa mengikuti [panduan](panduan-smoke-test-produksi.md): pembatalan kasus yang masih memiliki sesi terjadwal (sekaligus membuktikan penutupan otomatis sesi), koreksi kasus menjadi revisi, koreksi dan penjadwalan ulang sesi, catatan murobi tingkat sesi, penolakan orang tua, lalu post-check `v3_verify` dan `v3_phase2_verify`. Rekomendasi baru dapat diuji bila total poin santri smoke kembali masuk rentang ambang.
-4. Merge ke `main` hanya sesudah langkah di atas lulus. Fase 4 dimulai atas perintah Human Developer.
+3. ~~Lanjutkan smoke test produksi yang tersisa.~~ **Dilewati atas keputusan Human Developer 15 September 2026.** Jalur yang belum terbukti di produksi tercatat apa adanya pada bagian 10.9 [bukti audit](audit-claude-code.md) dan diwariskan sebagai risiko ke [handoff Fase 4](handoff-ke-fase-4.md) bagian 6; paling murah ditutup pada smoke Fase 4/Fase 5.
+4. Merge PR #34 ke `main`, lalu mulai Fase 4 mengikuti [handoff ke Fase 4](handoff-ke-fase-4.md). Empat pertanyaan terbuka pada bagian 7 handoff perlu dijawab lebih dulu — terutama perlakuan kasus Rahasia pada publikasi orang tua.
