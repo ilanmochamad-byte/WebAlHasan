@@ -660,7 +660,7 @@ if (!$adaMobile) {
         'Deep link membuka layar detail izin'
     );
     $assert(
-        str_contains($context, 'tertunda.current = id'),
+        str_contains($context, 'tertunda.current = { tipe: payload.tipe, id }') && str_contains($context, 'menunggu.id'),
         'Deep link sebelum login ditunda sampai autentikasi berhasil'
     );
 

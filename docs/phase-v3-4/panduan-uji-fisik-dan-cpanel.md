@@ -1,0 +1,12 @@
+# Panduan uji fisik dan cPanel setelah persetujuan rilis
+
+Panduan ini **belum dijalankan**. Jangan mengubah sakelar Push produksi atau menyentuh data smoke produksi Fase 3 sebagai bagian dari audit kode.
+
+1. Siapkan staging setara cPanel dengan backup/restore point, akun uji pembimbing, dua wali aktif, satu santri uji, satu perangkat Android fisik dan satu iOS fisik. Catat versi aplikasi, OS, waktu, hash commit web/mobile, dan ID fixture tanpa data pribadi.
+2. Jalankan preflight 018, migrasi 018, verifier 1–4, serta cek `php bin/migrate.php status`. Jalankan juga rollback dan pemasangan ulang di salinan staging; cocokkan manifest baris. Uji di produksi hanya sesudah izin rilis tersendiri.
+3. Biarkan WhatsApp OFF. Untuk uji push fisik yang disetujui, hidupkan Push **hanya di staging** melalui kontrol admin dan daftarkan token kedua perangkat dengan akun wali fixture. Jangan masukkan token dalam bukti.
+4. Terbitkan satu publikasi Internal setelah melihat pratinjau dan konfirmasi. Pastikan satu baris per wali, notifikasi InApp, outbox Push, tiket, dan receipt akhir. Pada kedua perangkat, periksa pesan generik di foreground/background/cold start. Ketuk notifikasi saat belum login: aplikasi meminta login. Login sebagai wali benar: detail sesuai snapshot; login wali lain: ditolak. Cabut relasi, ulangi deep-link, pastikan ditolak.
+5. Ulangi koreksi dan penarikan beralasan. Pastikan versi/riwayat, pesan generik, detail ditarik tanpa teks lama, status baca, retry worker, dan nol request WhatsApp. Lakukan juga pengujian `Rahasia` manual/API dan perubahan `Internal → Rahasia` saat publikasi masih aktif.
+6. Matikan Push kembali di staging. Simpan bukti tanpa nama santri/isi kasus/token/nomor. Jika gagal, rollback **kode** dulu dan periksa outbox; jangan menghapus data bisnis. Jika kriteria fisik belum lulus, tetap tandai Fase 4 belum terpenuhi.
+
+Risiko smoke produksi Fase 3 dari `docs/phase-v3-3/handoff-ke-fase-4.md` §6 tetap terpisah: pembatalan kasus/penutupan sesi otomatis, koreksi sesi, penjadwalan ulang, catatan murobi sesi, rekomendasi, dan post-check lama atas data produksi belum semuanya dibuktikan. Penolakan orang tua terhadap halaman/API internal sudah diuji pada browser/API lokal Fase 4, belum pada produksi. Pembersihan data smoke produksi hanya menurut `docs/phase-v3-3/panduan-smoke-test-produksi.md` §8 oleh operator setelah verifikasi tersendiri; tidak dijalankan di fase ini.
