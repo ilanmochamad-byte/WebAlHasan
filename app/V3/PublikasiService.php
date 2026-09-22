@@ -77,10 +77,11 @@ final class PublikasiService
                 }else{
                     // Fingerprint bisnis juga melindungi dua pratinjau/klik dengan key berbeda.
                     $fingerprint='v3:publikasi:'.hash('sha256',$this->json([$draft['sumber_type'],(int)$draft['sumber_id'],(int)$source['version'],$wali,$content]));
-                    $latest=$this->repo->sql->one('SELECT id,ditarik_pada,event_key FROM v3_publikasi WHERE event_key=? OR event_key LIKE ? ORDER BY id DESC LIMIT 1',[$fingerprint,$fingerprint.':r%']);
-                    if($latest!==null&&$latest['ditarik_pada']===null){$ids[]=(int)$latest['id'];continue;}
-                    // Penarikan adalah keputusan baru: teks identik boleh diterbitkan ulang
-                    // hanya sebagai snapshot baru setelah alasan penarikan tercatat.
+                    $latest=$this->repo->sql->one('SELECT id,ditarik_pada,event_key,ringkasan,tindak_lanjut FROM v3_publikasi WHERE event_key=? OR event_key LIKE ? ORDER BY id DESC LIMIT 1',[$fingerprint,$fingerprint.':r%']);
+                    // Audit Fase 4: snapshot yang sudah dikoreksi tidak lagi mewakili isi pratinjau ini.
+                    if($latest!==null&&$latest['ditarik_pada']===null&&$latest['ringkasan']===$content['ringkasan']&&$latest['tindak_lanjut']===$content['tindak_lanjut']){$ids[]=(int)$latest['id'];continue;}
+                    // Penarikan atau koreksi menjadikan konfirmasi ini keputusan baru: teks identik
+                    // diterbitkan sebagai snapshot baru yang dirantai ke ID snapshot terakhir.
                     $event=$latest===null?$fingerprint:$fingerprint.':r'.(int)$latest['id'];
                     $this->repo->sql->execute('INSERT INTO v3_publikasi ('.$this->column($draft['sumber_type']).',sumber_version,santri_id,wali_id,ringkasan,tindak_lanjut,diterbitkan_pada,alasan_penerima,event_key,created_by,updated_by) VALUES (?,?,?,?,?,?,NOW(),?,?,?,?)',[(int)$draft['sumber_id'],(int)$source['version'],(int)$source['santri_id'],$wali,$content['ringkasan'],$content['tindak_lanjut'],$draft['alasan_penerima'],$event,$actor,$actor]);
                     $id=(int)$this->repo->sql->one('SELECT LAST_INSERT_ID() id')['id'];
@@ -145,8 +146,10 @@ final class PublikasiService
         $row=$this->repo->source($type,$id);
         if(!isset($caps['v3.koreksi'])&&!$this->caps->v3AppliesToSantri($user,$cap,(int)$row['santri_id'],(int)$row['tahun_ajaran_id']))throw new V3Exception('Sumber tidak dapat diakses.',403);
         if($row['archived_at']!==null)throw new V3Exception('Sumber tidak dapat diakses.',403);
+        // Audit Fase 4: Rahasia hanya diketahui pemilik dan admin (5.5a), termasuk jalur kelola/tarik tanpa cek privasi.
+        if(($row['kerahasiaan']??'Internal')!=='Internal'&&!isset($caps['v3.koreksi'])&&(int)($row['pembimbing_id']??0)!==(int)($this->repo->sql->pengurusIdForUser((int)$user['id'])??-1))throw new V3Exception('Sumber tidak dapat diakses.',403);
         if($checkPrivacy&&($row['status']==='Dibatalkan'||($type==='pelanggaran'&&$row['status']==='Draf')))throw new V3Exception('Catatan batal atau draf tidak dapat diterbitkan.',422);
-        if($checkPrivacy&&$type==='pelanggaran'&&$this->repo->sql->violationHasSecretCase($id,(int)$row['santri_id']))throw new V3Exception('Pelanggaran terkait kasus Rahasia tidak boleh dipratinjau atau diterbitkan.',422);
+        if($checkPrivacy&&$type==='pelanggaran'&&$this->repo->sql->violationHasSecretCase($id,(int)$row['santri_id']))throw new V3Exception('Pelanggaran ini tidak dapat dipratinjau atau diterbitkan kepada orang tua.',422);
         if($checkPrivacy&&($row['kerahasiaan']??'Internal')!=='Internal')throw new V3Exception('Kasus Rahasia tidak boleh dipratinjau atau diterbitkan. Revisi kerahasiaan terlebih dahulu.',422);
         return $row;
     }

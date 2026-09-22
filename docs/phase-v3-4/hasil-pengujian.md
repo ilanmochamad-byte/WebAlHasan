@@ -19,3 +19,7 @@ Semua pengujian database di bawah memakai **MariaDB lokal `webalhasan_v3_phase1_
 Pengujian utama sengaja memakai database uji yang sudah ada. Rangkaian regresi lama membuat fixture sementara; verifier 018 memeriksa tabel Fase 4 secara terpisah. Tidak ada klaim bahwa catatan smoke produksi Fase 3 atau pembersihan datanya telah dikerjakan.
 
 Verifier umum `bin/v3_verify.php` melaporkan tiga jenis referensi yatim pada tabel warisan database uji: 24 `notifikasi_outbox.penerima_user_id`, 24 `notifikasi_outbox.pengajuan_id`, dan 6 `audit_logs.actor_user_id`. Ini berasal dari fixture regresi lama dan tidak dibuat migrasi 018. Struktur V3 pada keluaran itu lulus; temuan warisan **belum dibersihkan** agar tidak menghapus catatan tanpa prosedur terverifikasi. Verifier khusus 018 lulus.
+
+## Pengujian ulang auditor
+
+Lihat [audit Claude Code](audit-claude-code.md) §4. Ringkas: suite Fase 4 121/121 sesudah koreksi audit, browser 34/34, Fase 2–3 dan regresi penugasan lulus. Klaim Fase 1 "71 lulus" di atas tidak tereproduksi pada DB uji saat ini: diagnostik gagal 2 karena yatim fixture V2 yang dibuat oleh run regresi hari ini (A4), bukan oleh 018.
