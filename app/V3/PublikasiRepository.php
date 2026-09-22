@@ -11,7 +11,7 @@ final class PublikasiRepository
     public function source(string $type,int $id):array
     {
         $table=match($type){'kasus'=>'v3_konseling_kasus','sesi'=>'v3_konseling_sesi','pelanggaran'=>'v3_pelanggaran',default=>throw new V3Exception('Sumber tidak valid.')};
-        $fields=$type==='sesi'?'s.id,s.version,s.status,k.santri_id,k.tahun_ajaran_id,k.kerahasiaan,k.id kasus_id,k.archived_at':('s.id,s.version,s.status,s.santri_id,s.tahun_ajaran_id,s.archived_at'.($type==='kasus'?',s.kerahasiaan,s.id kasus_id':',NULL kerahasiaan,NULL kasus_id'));
+        $fields=$type==='sesi'?'s.id,s.version,s.status,k.santri_id,k.tahun_ajaran_id,k.kerahasiaan,k.id kasus_id,k.pembimbing_id,k.archived_at':('s.id,s.version,s.status,s.santri_id,s.tahun_ajaran_id,s.archived_at'.($type==='kasus'?',s.kerahasiaan,s.id kasus_id,s.pembimbing_id':',NULL kerahasiaan,NULL kasus_id,NULL pembimbing_id'));
         return $this->sql->one('SELECT '.$fields.' FROM '.$table.' s'.($type==='sesi'?' JOIN v3_konseling_kasus k ON k.id=s.kasus_id':'').' WHERE s.id=? AND s.archived_at IS NULL',[$id])??throw new V3Exception('Sumber tidak dapat diakses.',403);
     }
 

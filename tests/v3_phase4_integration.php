@@ -103,4 +103,26 @@ $reject(fn()=>$k->correctCase($a,$cid,['version'=>(int)$r->case($cid)['version']
 $s->withdraw($a,$linkedId,['version'=>1,'alasan'=>'Tarik tautan sebelum rahasia','idempotency_key'=>$key()]);
 $k->correctCase($a,$cid,['version'=>(int)$r->case($cid)['version'],'kerahasiaan'=>'Rahasia','alasan'=>'Seluruh publikasi tautan sudah ditarik','idempotency_key'=>$key()]);
 $check($r->case($cid)['kerahasiaan']==='Rahasia','Perubahan ke Rahasia aman setelah semua penarikan');
+// Audit Claude Code Fase 4: Rahasia hanya diketahui pemilik/admin pada seluruh jalur publikasi (5.5a).
+$ownerPengurus=(int)$r->case($cid)['pembimbing_id'];$otherPengurus=(int)$r->one("SELECT pengurus_id FROM users WHERE username='sbx_pengurus_b'")['pengurus_id'];
+$r->execute('UPDATE v3_konseling_kasus SET pembimbing_id=? WHERE id=?',[$otherPengurus,$cid]);
+try{
+ $reject(fn()=>$s->options($a,'kasus',$cid),403,'Bukan pemilik tidak mengetahui kasus Rahasia lewat opsi publikasi');
+ $reject(fn()=>$s->options($a,'sesi',$sessionId),403,'Bukan pemilik tidak mengetahui sesi kasus Rahasia');
+ $reject(fn()=>$s->preview($a,['sumber_type'=>'kasus','sumber_id'=>$cid,'sumber_version'=>(int)$r->case($cid)['version'],'ringkasan'=>'Manual','tindak_lanjut'=>'Manual']),403,'Bukan pemilik tidak memperoleh pesan Rahasia pada pratinjau');
+ $reject(fn()=>$s->manage($a,$id),403,'Bukan pemilik tidak membaca riwayat publikasi kasus Rahasia');
+ $reject(fn()=>$s->withdraw($a,$id,['version'=>(int)$r->one('SELECT version FROM v3_publikasi WHERE id=?',[$id])['version'],'alasan'=>'Uji bukan pemilik','idempotency_key'=>$key()]),403,'Bukan pemilik tidak menarik publikasi kasus Rahasia');
+ $check($s->manage($admin,$id)['publikasi']['id']===$id,'Admin tetap dapat mengawasi publikasi kasus Rahasia');
+}finally{$r->execute('UPDATE v3_konseling_kasus SET pembimbing_id=? WHERE id=?',[$ownerPengurus,$cid]);}
+$check($s->manage($a,$id)['publikasi']['id']===$id,'Pemilik tetap dapat membuka publikasi kasus Rahasia yang telah ditarik');
+try{$s->preview($a,['sumber_type'=>'pelanggaran','sumber_id'=>$vid,'sumber_version'=>(int)$violation['version'],'ringkasan'=>'Teks','tindak_lanjut'=>'Teks']);$check(false,'Pesan penolakan pelanggaran tertaut netral');}catch(App\V3\V3Exception $e){$check($e->status===422&&!str_contains($e->getMessage(),'Rahasia'),'Pesan penolakan pelanggaran tertaut netral');}
+// Audit Claude Code Fase 4: fingerprint tidak boleh mengembalikan snapshot yang isinya sudah dikoreksi.
+$dc=$k->createCase($a,['santri_id'=>$sid,'tahun_ajaran_id'=>$year,'tujuan'=>'PRIVATE-F4-DEDUP','kerahasiaan'=>'Internal','dibuka_pada'=>date('Y-m-d H:i:s'),'idempotency_key'=>$key()])['data']['kasus']['id'];
+$dIn=['sumber_type'=>'kasus','sumber_id'=>$dc,'sumber_version'=>1,'ringkasan'=>'Isi asli audit','tindak_lanjut'=>'TL audit'];
+$dp=$s->preview($a,$dIn);$did=$s->publish($a,['pratinjau_token'=>$dp['pratinjau_token'],'konfirmasi'=>true,'idempotency_key'=>$key()])['data']['publikasi_ids'][0];
+$dcp=$s->preview($a,array_replace($dIn,['ringkasan'=>'Isi koreksi audit','publikasi_id'=>$did,'version'=>1,'alasan'=>'Koreksi isi audit']));$s->publish($a,['pratinjau_token'=>$dcp['pratinjau_token'],'konfirmasi'=>true,'idempotency_key'=>$key()]);
+$dp2=$s->preview($a,$dIn);$dr=$s->publish($a,['pratinjau_token'=>$dp2['pratinjau_token'],'konfirmasi'=>true,'idempotency_key'=>$key()]);$dnew=$dr['data']['publikasi_ids'][0];
+$check($dnew!==$did&&$r->one('SELECT ringkasan FROM v3_publikasi WHERE id=?',[$dnew])['ringkasan']===$dr['data']['konten']['ringkasan'],'Terbit ulang isi asli sesudah koreksi membuat snapshot yang sesuai respons');
+$dp3=$s->preview($a,$dIn);$check($s->publish($a,['pratinjau_token'=>$dp3['pratinjau_token'],'konfirmasi'=>true,'idempotency_key'=>$key()])['data']['publikasi_ids']===[$dnew],'Klik ganda sesudah terbit ulang tetap tidak menggandakan');
+foreach([$did,$dnew] as $cleanup)$s->withdraw($a,$cleanup,['version'=>(int)$r->one('SELECT version FROM v3_publikasi WHERE id=?',[$cleanup])['version'],'alasan'=>'Akhiri fixture audit','idempotency_key'=>$key()]);
 exit($fail?1:0);
