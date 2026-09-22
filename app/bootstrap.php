@@ -598,3 +598,13 @@ function v3_konseling_service(): \App\V3\KonselingService
         new \App\Audit\AuditLogger(app_db())
     );
 }
+
+/** Publikasi V3 berbagi capability, audit, resolver wali, dan pengaturan kanal. */
+function v3_publikasi_service(): \App\V3\PublikasiService
+{
+    return new \App\V3\PublikasiService(
+        new \App\V3\PublikasiRepository(new \App\V3\KonselingRepository(app_db())),
+        new \App\Auth\Capabilities(app_db()), new \App\Notification\RecipientResolver(app_db()),
+        v3_konseling_service(), new \App\Audit\AuditLogger(app_db()), new \App\Notification\SettingsRepository(app_db())
+    );
+}

@@ -1,0 +1,9 @@
+# Migrasi 018 dan rollback
+
+Migrasi 018 menambah `v3_publikasi_pratinjau`, `v3_publikasi_riwayat`, dan `v3_publikasi_outbox`, lengkap dengan FK, token hash unik, indeks publikasi+versi, dan unique riwayat per versi. Tabel snapshot `v3_publikasi` sudah tersedia sejak 013 dan tidak diubah. Tidak ada migrasi produksi lama yang diedit.
+
+Pada salinan MariaDB/MySQL, pastikan `DB_NAME=webalhasan_v3_phase1_test`, lalu jalankan `php bin/v3_phase4_preflight.php`, buat backup/restore point database dan berkas sesuai prosedur operator, `php bin/migrate.php up`, dan `php bin/v3_phase4_verify.php`. Simpan manifest jumlah baris sebelum/sesudah, status migrasi, serta keluaran verifier tanpa identitas santri atau credential. Jangan menjalankan `up` pada hosting sebelum audit dan keputusan rilis.
+
+Rollback kode adalah pilihan utama. Bila rollback skema diperlukan, simpan backup dan jalankan `php bin/migrate.php rollback` **sekali** hanya jika migrasi terakhir 018. Skrip rollback sengaja mempertahankan ketiga tabel, snapshot, riwayat, draft, dan relasi outbox, termasuk bila kosong. Kode versi sebelumnya mengabaikannya. Migrasi ulang `up` bersifat idempoten. Drill lokal membandingkan hash seluruh baris semua tabel sebelum rollback, sesudah rollback, dan sesudah pemasangan ulang, termasuk data bisnis lama. Jangan menghapus baris publikasi atau outbox secara manual.
+
+Preflight memerlukan 013 dan 017, tabel wali/notifikasi/idempotensi, serta nol publikasi aktif dari kasus Rahasia atau keluarga pelanggaran tertautnya. Verifier memeriksa invariant Rahasia, sumber tepat satu, revisi terbaru, alasan, relasi outbox, payload generik, dan nol outbox WhatsApp V3. Jalankan verifier lama (`v3_verify`, `v3_phase2_verify`, `v3_phase3_verify`) juga; temuan orphan warisan dari suite regresi harus dipisahkan dari migrasi 018.

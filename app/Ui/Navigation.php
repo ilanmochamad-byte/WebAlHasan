@@ -76,6 +76,8 @@ final class Navigation
         'v3_konseling.php' => 'v3.konseling',
         'v3_konseling_detail.php' => 'v3.konseling',
         'v3_konseling_cetak.php' => 'v3.konseling',
+        'v3_publikasi.php' => 'v3.publikasi',
+        'v3_publikasi_kelola.php' => 'v3.publikasi',
         'admin_penempatan_santri.php' => 'master.penempatan',
         // Alamat lama penempatan; kini hanya mengalihkan ke halaman di atas.
         'admin_santri.php' => 'master.penempatan',
@@ -107,7 +109,12 @@ final class Navigation
             $groups[] = ['label' => 'Pembinaan V3', 'items' => [
                 self::item('v3.pelanggaran', 'Pelanggaran & poin', '/portal/v3_pelanggaran.php', 'fa-triangle-exclamation'),
                 self::item('v3.konseling', 'Konseling & tindak lanjut', '/portal/v3_konseling.php', 'fa-people-arrows'),
+                self::item('v3.publikasi', 'Publikasi orang tua', '/portal/v3_publikasi_kelola.php', 'fa-envelope'),
             ]];
+        }
+
+        if (isset($v3Capabilities['v3.publikasi.baca'])) {
+            $groups[] = ['label'=>'Informasi keluarga','items'=>[self::item('v3.publikasi','Informasi pembinaan','/portal/v3_publikasi.php','fa-envelope')]];
         }
 
         if ($isGuru || $isAdmin) {

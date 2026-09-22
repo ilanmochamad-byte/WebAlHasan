@@ -220,6 +220,43 @@ final class KonselingRepository
         return $this->one('SELECT 1 AS ada FROM v3_konseling_tautan WHERE kasus_id=? AND sesi_id IS NULL AND is_active=1 AND archived_at IS NULL AND pelanggaran_id IN ('.implode(',',array_fill(0,count($ids),'?')).') LIMIT 1',[$caseId,...$ids])!==null;
     }
 
+    /** Identitas akar revisi dipakai untuk menutup jalur publikasi pelanggaran yang terkait kasus Rahasia. */
+    public function violationRoot(int $id):int
+    {
+        $seen=[];
+        while(count($seen)<100){
+            if(isset($seen[$id]))throw new V3Exception('Rantai revisi pelanggaran tidak valid.',409);
+            $seen[$id]=true;$row=$this->one('SELECT revisi_dari_id FROM v3_pelanggaran WHERE id=?',[$id]);
+            if($row===null)throw new V3Exception('Pelanggaran tidak ditemukan.',403);
+            if($row['revisi_dari_id']===null)return $id;
+            $id=(int)$row['revisi_dari_id'];
+        }
+        throw new V3Exception('Rantai revisi pelanggaran terlalu panjang.',409);
+    }
+
+    public function violationHasSecretCase(int $violationId,int $santriId):bool
+    {
+        $root=$this->violationRoot($violationId);
+        $links=$this->all("SELECT t.pelanggaran_id FROM v3_konseling_tautan t JOIN v3_konseling_kasus k ON k.id=t.kasus_id WHERE k.santri_id=? AND k.kerahasiaan='Rahasia' AND k.archived_at IS NULL AND t.is_active=1 AND t.archived_at IS NULL",[$santriId]);
+        foreach($links as $link)if($this->violationRoot((int)$link['pelanggaran_id'])===$root)return true;
+        return false;
+    }
+
+    public function activeViolationPublicationInFamily(int $violationId,int $santriId):bool
+    {
+        $root=$this->violationRoot($violationId);
+        $rows=$this->all('SELECT pelanggaran_id FROM v3_publikasi WHERE santri_id=? AND pelanggaran_id IS NOT NULL AND ditarik_pada IS NULL AND archived_at IS NULL',[$santriId]);
+        foreach($rows as $row)if($this->violationRoot((int)$row['pelanggaran_id'])===$root)return true;
+        return false;
+    }
+
+    public function caseHasActiveLinkedViolationPublication(int $caseId,int $santriId):bool
+    {
+        $links=$this->all('SELECT pelanggaran_id FROM v3_konseling_tautan WHERE kasus_id=? AND is_active=1 AND archived_at IS NULL',[$caseId]);
+        foreach($links as $link)if($this->activeViolationPublicationInFamily((int)$link['pelanggaran_id'],$santriId))return true;
+        return false;
+    }
+
     public function linkRecommendation(int $id,int $caseId,int $santriId,int $tahunId,int $actorId):bool
     {
         return $this->execute(

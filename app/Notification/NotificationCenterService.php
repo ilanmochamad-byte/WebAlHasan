@@ -135,11 +135,12 @@ final class NotificationCenterService
             'dibaca' => $row['dibaca_pada'] !== null,
             'dibaca_pada' => $row['dibaca_pada'] === null ? null : (string) $row['dibaca_pada'],
             'dibuat_pada' => (string) $row['created_at'],
-            // Hanya penunjuk sumber daya. Klien WAJIB tetap memanggil endpoint
-            // detail izin, yang memverifikasi hak akses di server.
+            // Hanya penunjuk sumber daya. Detail izin/publikasi tetap harus
+            // diminta dari API, yang memverifikasi hak akses saat dibuka.
             'tautan' => [
                 'tipe' => (string) ($data['tipe'] ?? 'sistem'),
                 'pengajuan_id' => isset($data['pengajuan_id']) ? (int) $data['pengajuan_id'] : null,
+                'publikasi_id' => isset($data['publikasi_id']) ? (int) $data['publikasi_id'] : null,
             ],
         ];
     }

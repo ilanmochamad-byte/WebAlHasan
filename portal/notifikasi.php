@@ -144,6 +144,9 @@ portal_header('Notifikasi', $userCapabilities, $modeAktif, $currentUser, [
                             Buka detail izin
                         </a>
                     <?php endif; ?>
+                    <?php if (($detail['tautan']['tipe']??'')==='v3_publikasi' && ($detail['tautan']['publikasi_id']??0)>0): ?>
+                    <a class="btn btn-primary" href="<?= portal_e(app_url('/portal/v3_publikasi.php?id='.(int)$detail['tautan']['publikasi_id'])) ?>">Buka informasi pembinaan</a>
+                    <?php endif ?>
                     <a class="btn btn-outline-secondary" href="<?= portal_e(app_url('/portal/notifikasi.php')) ?>">Tutup</a>
                 </div>
             </div>

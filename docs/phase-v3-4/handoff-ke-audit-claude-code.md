@@ -1,0 +1,9 @@
+# Handoff Fase 4 untuk audit independen Claude Code
+
+Audit **hanya PRD V3 Fase 4** pada branch `prd-v3-fase-4` di repositori web dan mobile. Baseline web `origin/main` sebelum implementasi adalah `03c3a05`. Jangan merge ke `main`, deploy, mengaktifkan Push/WhatsApp produksi, memulai Fase 5, atau membersihkan data smoke produksi.
+
+1. Baca `AGENTS.md`, `PRD-V3.md` §5.3, §5.5a, §5.6, §5.8–5.9, handoff/audit Fase 3, lalu [desain](desain-dan-aturan.md), [matriks akses](matriks-akses.md), [kontrak API](kontrak-api.md), [migrasi](migrasi-dan-rollback.md), [kanal](pengaturan-kanal.md), [hasil](hasil-pengujian.md), dan [status](status-penerimaan.md).
+2. Bandingkan commit Fase 4 dengan baseline terbaru; inspeksi jalur `Rahasia`, penguncian kasus-publikasi, akses wali pada query, payload outbox, dan koreksi/penarikan. Pastikan `pengajuan_id` V2 tetap kosong pada notifikasi V3 dan relasi `v3_publikasi_outbox` konsisten.
+3. Gunakan hanya database uji `webalhasan_v3_phase1_test` untuk `bin/v3_phase4_preflight.php`, migrasi 018, `bin/v3_phase4_run_tests.sh`, dan verifier. Jalankan browser lokal dengan `PERAPIHAN_AUDIT_DB=1`, `BASE_URL` localhost. Periksa juga regresi Fase 1–3, V1/V2, serta fondasi penugasan. Beri perhatian pada uji konkurensi V2 yang pernah fluktuatif pada satu run tetapi lulus ulang sendiri dan pada run lengkap.
+4. Audit perubahan mobile sebatas deep-link publikasi setelah login dan otorisasi ulang. Uji tipe/lint, lalu jalankan [uji fisik](panduan-uji-fisik-dan-cpanel.md) hanya setelah ada persetujuan perangkat/provider yang sah. Sampai bukti Android+iOS nyata tersedia, kriteria fisik dan Fase 4 keseluruhan tetap **BELUM TERPENUHI**.
+5. Catat temuan/koreksi terarah beserta hasil uji sendiri, commit dan push audit bila perlu, lalu berhenti. Tidak ada klaim lulus untuk smoke produksi Fase 3 §6 atau pembersihan data produksinya.

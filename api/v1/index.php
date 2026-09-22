@@ -54,6 +54,22 @@ try {
     // seperti sebelumnya, sehingga kontrak aplikasi guru tidak berubah.
     $user = api_authenticator()->authenticate();
 
+    if (str_starts_with($path, '/v3/publikasi')) {
+        header('Cache-Control: private, no-store');
+        $pub = v3_publikasi_service();
+        if ($method === 'GET' && $path === '/v3/publikasi') JsonResponse::success($pub->page($user,$_GET));
+        if ($method === 'GET' && preg_match('#^/v3/publikasi/sumber/(kasus|sesi|pelanggaran)/(\d+)$#',$path,$m)) JsonResponse::success($pub->options($user,$m[1],(int)$m[2]));
+        if ($method === 'GET' && preg_match('#^/v3/publikasi/(\d+)/kelola$#',$path,$m)) JsonResponse::success($pub->manage($user,(int)$m[1]));
+        if ($method === 'GET' && preg_match('#^/v3/publikasi/(\d+)$#',$path,$m)) JsonResponse::success($pub->show($user,(int)$m[1]));
+        if ($method === 'POST') {
+            $body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;
+            if ($path === '/v3/publikasi/pratinjau') JsonResponse::success($pub->preview($user,$body));
+            if ($path === '/v3/publikasi/terbit') {$result=$pub->publish($user,$body);JsonResponse::success($result['data'],$result['status']);}
+            if (preg_match('#^/v3/publikasi/(\d+)/tarik$#',$path,$m)) {$result=$pub->withdraw($user,(int)$m[1],$body);JsonResponse::success($result['data'],$result['status']);}
+            if (preg_match('#^/v3/publikasi/(\d+)/dibaca$#',$path,$m)) JsonResponse::success($pub->markRead($user,(int)$m[1],$body));
+        }
+    }
+
     // V3 aditif; kontrak capability/mode/menu mobile lama tidak disentuh.
     if ($method === 'GET' && $path === '/v3/capabilities') {
         $v3 = (new \App\Auth\Capabilities(app_db()))->v3Capabilities($user);

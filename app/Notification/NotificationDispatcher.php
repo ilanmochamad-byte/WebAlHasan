@@ -164,6 +164,15 @@ final class NotificationDispatcher
     {
         $outboxId = (int) $row['id'];
         $userId = (int) $row['penerima_user_id'];
+        // Relasi wali dapat dicabut sesudah antrean dibuat. Periksa lagi sebelum provider.
+        if (str_starts_with((string)$row['event_type'], 'v3_publikasi_')) {
+            $stmt = $this->db->prepare('SELECT p.santri_id,p.wali_id FROM v3_publikasi_outbox x JOIN v3_publikasi p ON p.id=x.publikasi_id JOIN users u ON u.id=? AND u.wali_id=p.wali_id WHERE x.outbox_id=?');
+            $stmt->bind_param('ii',$userId,$outboxId);$stmt->execute();$publication=$stmt->get_result()->fetch_assoc();$stmt->close();
+            if (!$publication || !in_array($userId,(new RecipientResolver($this->db))->waliSantri((int)$publication['santri_id']),true)) {
+                $this->outbox->markFailed($outboxId,$owner,'AKSES_BERUBAH','Penerima tidak lagi berhak.',true);
+                return 'gagal';
+            }
+        }
         $perangkat = $this->devices->activeTokensFor($userId);
 
         if ($perangkat === []) {
@@ -183,7 +192,9 @@ final class NotificationDispatcher
         $data = json_decode((string) ($row['data_json'] ?? ''), true);
         $data = is_array($data) ? $data : [];
         // Tegaskan: payload push tidak boleh membawa apa pun selain penunjuk.
-        $data = array_intersect_key($data, array_flip(['tipe', 'event', 'pengajuan_id', 'url']));
+        $data = str_starts_with((string)$row['event_type'], 'v3_publikasi_')
+            ? array_intersect_key($data, array_flip(['tipe', 'publikasi_id']))
+            : array_intersect_key($data, array_flip(['tipe', 'event', 'pengajuan_id', 'url']));
 
         $messages = [];
         $petaToken = [];
