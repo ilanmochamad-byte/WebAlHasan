@@ -9,10 +9,12 @@ pembersihan data smoke produksi oleh auditor.
 
 ## 1. Kesimpulan
 
-**Fase 4 secara keseluruhan tetap BELUM TERPENUHI.** Kriteria push fisik Android+iOS belum
-memiliki bukti perangkat/provider nyata, dan auditor tidak menjalankan uji fisik karena belum ada
-persetujuan perangkat/provider yang sah. Sembilan kriteria lain lulus otomatis sesudah koreksi
-audit di bawah.
+**Seluruh sepuluh kriteria penerimaan Fase 4 terpenuhi.** Sembilan kriteria lulus otomatis sesudah
+koreksi audit di bawah, dan kriteria push fisik Android+iOS dinyatakan lulus pada 27 September 2026
+berdasarkan uji perangkat nyata yang dijalankan Human Developer (§6). Pembaruan ini menggantikan
+penilaian awal audit 22 September 2026 yang menyatakan fase belum terpenuhi karena belum ada bukti
+fisik. Sisa risiko yang tetap terbuka — receipt provider belum ditelusuri sampai status final,
+smoke produksi Fase 3 §6, dan pembersihan data smoke — dicatat pada §7 dan tidak diklaim lulus.
 
 **Catatan proses penting (A0):** saat audit dimulai, `origin/main` web sudah berisi merge
 PR #41 (`353302c`, 22 September 2026 19:40) dan `origin/main` mobile sudah berisi merge PR #9
@@ -32,6 +34,7 @@ saat ini ke cPanel karena belum memuat koreksi A1.
 | A3 | Sedang (integritas) | Dedup fingerprint mencocokkan isi pratinjau **asli**, bukan isi snapshot sekarang. Setelah publikasi dikoreksi, menerbitkan kembali teks asli mengembalikan ID snapshot yang sudah berisi teks koreksi, sementara respons `konten` menyatakan teks asli. Petugas mengira teks asli terbit padahal tidak. | **Diperbaiki**: dedup hanya berlaku bila snapshot aktif terakhir masih memuat ringkasan/tindak lanjut yang sama; selain itu dibuat snapshot baru yang dirantai `:r<id>`. Klik ganda sesudahnya tetap tidak menggandakan. |
 | A4 | Rendah (bukti) | `hasil-pengujian.md` menyatakan Fase 1 lulus 71 pemeriksaan, tetapi pada DB uji saat ini `tests/v3_phase1_diagnostics.php` gagal 2 ("Sehat exit 0", "Setelah perbaikan exit 0") karena `bin/v3_verify.php` keluar non-nol oleh referensi yatim. Yatim tersebut (kini 72/72/18, naik dari 24/24/6) adalah outbox/audit `izin.*` yang dibuat **hari ini** oleh fixture regresi V2 (run implementator 19:11 dan run auditor 19:46), bukan data "sebelum migrasi 013" seperti label verifier. Tidak disebabkan migrasi 018 atau kode Fase 4. | Dicatat, tidak dibersihkan (sesuai larangan menghapus tanpa prosedur). Rekomendasi: perbaiki teardown fixture V2 atau label verifier di paket terpisah. |
 | A5 | Rendah | `v3_publikasi_pratinjau` tidak pernah dibersihkan sesudah kedaluwarsa, sehingga teks khusus orang tua yang tidak jadi terbit tetap tersimpan. | Dicatat untuk Fase 5 (retensi/purge); tidak diubah. |
+| A6 | Kosmetik (mobile) | Layar publikasi memakai pesan galat 403 umum dari V2 di `src/api/client.ts:386`: "Anda tidak memiliki akses ke tugas ini. Muat ulang jadwal Anda." Kata "tugas" dan "jadwal" tidak relevan untuk informasi pembinaan, meski penolakannya sendiri benar dan tidak membocorkan apa pun. | Dicatat untuk Fase 5; tidak diubah oleh auditor. |
 
 Koreksi A1–A3 berada di `app/V3/PublikasiService.php` dan `app/V3/PublikasiRepository.php`
 (kolom `pembimbing_id` ditambahkan ke proyeksi sumber). Sepuluh pemeriksaan regresi baru
@@ -127,19 +130,39 @@ Terbukti pada **kedua** platform:
 - Layar detail notifikasi Android menampilkan tombol **Buka informasi pembinaan**, dan status baca
   tercatat (14:27:13).
 
-**Belum diuji** dan karena itu tidak diklaim: penolakan ketika deep-link dibuka oleh akun wali
-lain, penolakan sesudah relasi `santri_wali` dicabut, tampilan publikasi yang ditarik pada
-aplikasi, receipt provider Expo yang tercatat sampai final, dan pengembalian sakelar Push.
+Uji dilanjutkan pukul 14.44–15.05 pada publikasi #3 (santri #363, wali #233) dan menutup sisa
+skenario:
 
-Human Developer menghentikan sisa skenario pada 27 September 2026 karena beban kerja uji dua
-perangkat. Auditor menghormati keputusan itu dan **tidak** menaikkan status kriteria push fisik
-menjadi lulus; statusnya kini **SEBAGIAN TERBUKTI**, naik dari tanpa bukti sama sekali.
+- **Deep-link saat belum login** (14.45–14.46): aplikasi menampilkan layar Masuk lebih dahulu,
+  lalu membuka detail sesudah autentikasi. Koreksi versi 2 tampil dengan riwayat dua baris dan
+  status baca ter-reset; penandaan dibaca dari aplikasi tersimpan 14:46:40.
+- **Akun wali yang salah** (14.53–14.55): sesudah koreksi versi 3–4, push generik tetap tiba,
+  tetapi membuka detail dengan akun bukan penerima ditolak server pada iOS **dan** Android —
+  layar galat tanpa ringkasan, tanpa tindak lanjut, tanpa identitas santri.
+- **Relasi wali dicabut** (15.01): wali #233 diarsipkan dari `admin` web, dan deep-link yang sama
+  seketika ditolak di aplikasi. Sesudah relasi dipulihkan, koreksi versi 5 terbuka normal dan
+  dibaca 15:03:43.
+- **Penarikan** (15.04–15.05): penarikan beralasan dari web menaikkan versi ke 6, dan aplikasi
+  menampilkan `Ditarik · versi 6` dengan ringkasan "Informasi ini telah ditarik.", tindak lanjut
+  `—`, serta riwayat enam versi **tanpa alasan penarikan** maupun teks lama.
+
+Dengan bukti ini kriteria PRD "push fisik Android dan iOS menampilkan pesan generik serta membuka
+detail yang benar setelah login dan pemeriksaan akses" dinilai **TERPENUHI**. Penolakan untuk akun
+salah terbukti di kedua platform; jalur relasi dicabut dan tampilan publikasi ditarik terbukti
+pada iOS, sementara Android menunjukkan push, deep-link, dan penolakan akun salah.
+
+**Masih di luar klaim:** receipt provider Expo yang ditelusuri sampai status final pada
+`notifikasi_percobaan`, dan pengembalian sakelar Push produksi. Keduanya tidak mengubah penilaian
+kriteria di atas karena pengiriman nyata ke dua perangkat sudah terbukti berulang kali.
+
 
 ## 7. Yang tidak diklaim
 
-- Push dan deep-link Android+iOS fisik: **SEBAGIAN TERBUKTI** (lihat §6); kriteria penuh belum
-  terpenuhi karena otorisasi ulang negatif dan receipt provider belum diuji.
+- Receipt provider Expo yang ditelusuri sampai status final pada `notifikasi_percobaan`: belum
+  diperiksa, walaupun pengiriman nyata ke kedua perangkat terbukti berulang (§6).
 - Smoke produksi Fase 3 §6 dan pembersihan data smoke produksi: **BELUM DIJALANKAN**.
 - Pemeriksaan log produksi: belum dijalankan.
-- Tindakan operasional yang masih terbuka bagi Human Developer: menentukan sakelar Push produksi
-  tetap ON atau dimatikan kembali, dan menarik publikasi smoke yang masih aktif dengan alasan.
+- Tindakan operasional yang sudah diselesaikan Human Developer pada 27 September 2026: publikasi
+  smoke #3 ditarik beralasan (versi 6), dan sakelar **Push produksi diputuskan tetap ON** sehingga
+  publikasi berikutnya mengirim push nyata kepada wali penerima. WhatsApp tetap OFF. Lihat
+  [pengaturan kanal](pengaturan-kanal.md).
