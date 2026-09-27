@@ -53,6 +53,7 @@ try {
     // Endpoint jadwal/laporan V1 tetap memakai penjaga admin/guru yang sama
     // seperti sebelumnya, sehingga kontrak aplikasi guru tidak berubah.
     $user = api_authenticator()->authenticate();
+    if (str_starts_with($path, '/v3/')) header('Cache-Control: private, no-store');
 
     if (str_starts_with($path, '/v3/publikasi')) {
         header('Cache-Control: private, no-store');
@@ -78,6 +79,24 @@ try {
             array_keys($v3)
         ) !== [];
         JsonResponse::success(['capabilities'=>$v3,'operasional_tersedia'=>$operational]);
+    }
+    if ($method === 'GET' && $path === '/v3/laporan') {
+        header('Cache-Control: private, no-store');
+        JsonResponse::success((new \App\V3\LaporanService(new \App\V3\PelanggaranRepository(app_db()),capabilities()))->read($user,$_GET));
+    }
+    if ($method === 'GET' && $path === '/v3/mobile/options') {
+        if(isset($_GET['page'])&&(!is_scalar($_GET['page'])||!preg_match('/^[1-9][0-9]{0,6}$/D',(string)$_GET['page'])))throw new \App\V3\V3Exception('Halaman tidak valid.');
+        header('Cache-Control: private, no-store');
+        JsonResponse::success(v3_pelanggaran_service()->options($user,['page'=>$_GET['page']??1]));
+    }
+    if ($method === 'GET' && $path === '/v3/mobile/rekomendasi') {
+        $caps=capabilities()->v3Capabilities($user);
+        if(!isset($caps['v3.konseling.kelola'])&&!isset($caps['v3.pengawasan']))throw new \App\V3\V3Exception('Data tidak dapat diakses.',403);
+        if(isset($_GET['page'])&&(!is_scalar($_GET['page'])||!preg_match('/^[1-9][0-9]{0,6}$/D',(string)$_GET['page'])))throw new \App\V3\V3Exception('Halaman tidak valid.');
+        $page=max(1,min(1000000,(int)($_GET['page']??1)));
+        $rows=(new \App\V3\KonselingRepository(app_db()))->pendingRecommendations((int)$user['id'],isset($caps['v3.pengawasan'])?'admin':'pembimbing',$page);
+        header('Cache-Control: private, no-store');
+        JsonResponse::success(['rows'=>$rows,'page'=>$page,'per_page'=>25]);
     }
     if ($method === 'GET' && in_array($path, ['/v3/katalog', '/v3/ambang'], true)) {
         JsonResponse::success(v3_katalog_service()->active($path === '/v3/katalog' ? 'katalog' : 'ambang', $_GET, $user));

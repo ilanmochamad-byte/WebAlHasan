@@ -1,0 +1,40 @@
+[lulus] API pelanggaran tanpa token ditolak
+[lulus] 1440px halaman operasional HTTP 200
+[lulus] 1440px tanpa luapan horizontal formulir
+[lulus] 1440px seluruh kontrol formulir berlabel
+[lulus] 375px halaman operasional HTTP 200
+[lulus] 375px tanpa luapan horizontal formulir
+[lulus] 375px seluruh kontrol formulir berlabel
+[lulus] Menu web membuka modul V3
+[lulus] Mutasi web tanpa CSRF ditolak
+[lulus] Pencatatan web tersimpan dan HTML berbahaya menjadi teks
+[lulus] Admin murni dapat mengawasi dan memperoleh jalur koreksi khusus
+[lulus] Murobi terkait dapat membaca dan menandai mengetahui
+[lulus] Tanda mengetahui web tersimpan
+[lulus] sbx_murobi_b ditolak dari detail lintas cakupan
+[lulus] sbx_ortu_a ditolak dari detail lintas cakupan
+[lulus] sbx_pengurus_b ditolak dari detail lintas cakupan
+[lulus] sbx_pengurus_a login API lama
+[lulus] sbx_murobi_a login API lama
+[lulus] sbx_murobi_b login API lama
+[lulus] sbx_ortu_a login API lama
+[lulus] sbx_pengurus_b login API lama
+[lulus] Capability operasional aplikasi tersedia bagi pembimbing
+[lulus] Kontrak profil V1/V2 tetap memuat default_mode dan menus
+[lulus] Menu aplikasi tetap berasal dari ApiAuthService tanpa menu web V3
+[lulus] Opsi API dibatasi ke cakupan aktif dan katalog aktif
+[lulus] POST aplikasi mencatat pelanggaran dengan token dan idempotency key
+[lulus] Retry API identik me-replay catatan yang sama
+[lulus] Detail API menunjukkan agregat terrekonsiliasi dari ledger
+[lulus] Serializer API tidak membocorkan kolom internal
+[lulus] Lampiran privat dapat diunduh pelaku dalam cakupan
+[lulus] Murobi terkait menandai mengetahui lewat POST bertoken
+[lulus] murobi lain ditolak dari detail API lintas cakupan
+[lulus] murobi lain ditolak dari tanda mengetahui API
+[lulus] orang tua ditolak dari detail API lintas cakupan
+[lulus] orang tua ditolak dari tanda mengetahui API
+[lulus] pengurus lain ditolak dari detail API lintas cakupan
+[lulus] pengurus lain ditolak dari tanda mengetahui API
+[lulus] GET tidak dapat membatalkan catatan
+[lulus] GET tidak dapat menandai mengetahui
+[lulus] Lampiran privat ditolak lintas cakupan

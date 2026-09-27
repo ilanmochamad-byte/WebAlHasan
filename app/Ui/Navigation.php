@@ -109,12 +109,13 @@ final class Navigation
             $groups[] = ['label' => 'Pembinaan V3', 'items' => [
                 self::item('v3.pelanggaran', 'Pelanggaran & poin', '/portal/v3_pelanggaran.php', 'fa-triangle-exclamation'),
                 self::item('v3.konseling', 'Konseling & tindak lanjut', '/portal/v3_konseling.php', 'fa-people-arrows'),
+                self::item('v3.laporan', 'Laporan pembinaan', '/portal/v3_laporan.php', 'fa-chart-column'),
                 self::item('v3.publikasi', 'Publikasi orang tua', '/portal/v3_publikasi_kelola.php', 'fa-envelope'),
             ]];
         }
 
         if (isset($v3Capabilities['v3.publikasi.baca'])) {
-            $groups[] = ['label'=>'Informasi keluarga','items'=>[self::item('v3.publikasi','Informasi pembinaan','/portal/v3_publikasi.php','fa-envelope')]];
+            $groups[] = ['label'=>'Informasi keluarga','items'=>[self::item('v3.publikasi','Informasi pembinaan','/portal/v3_publikasi.php','fa-envelope'),self::item('v3.laporan','Laporan pembinaan','/portal/v3_laporan.php','fa-chart-column')]];
         }
 
         if ($isGuru || $isAdmin) {

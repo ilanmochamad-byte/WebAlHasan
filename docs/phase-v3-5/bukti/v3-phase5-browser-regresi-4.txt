@@ -1,0 +1,34 @@
+[lulus] Tanpa token ditolak
+[lulus] API Rahasia menolak pratinjau manual
+[lulus] Orang tua ditolak API internal
+[lulus] API revisi sah menjadi Internal
+[lulus] API pratinjau Internal
+[lulus] API konfirmasi wajib
+[lulus] API publikasi berhasil
+[lulus] API retry idempoten
+[lulus] Respons orang tua persis konten pratinjau
+[lulus] Respons tanpa isi internal
+[lulus] IDOR API wali B ditolak
+[lulus] GET tidak menandai dibaca
+[lulus] GET tidak menarik publikasi
+[lulus] API menolak Internal ke Rahasia saat aktif
+[lulus] 1440px formulir kelola terbuka
+[lulus] 1440px tanpa scroll horizontal
+[lulus] 375px formulir kelola terbuka
+[lulus] 375px tanpa scroll horizontal
+[lulus] CSRF web wajib
+[lulus] Pratinjau meng-escape XSS
+[lulus] Web pratinjau-konfirmasi-terbit berhasil
+[lulus] Orang tua ditolak halaman internal
+[lulus] Orang tua ditolak cetak internal
+[lulus] Orang tua ditolak halaman kelola
+[lulus] Konten HTML orang tua persis HTML pratinjau
+[lulus] Detail orang tua meng-escape XSS
+[lulus] Detail orang tua 375px tanpa luapan
+[lulus] Status dibaca web tersimpan
+[lulus] Deep-link web meminta login
+[lulus] Sebelum login tidak membuka snapshot
+[lulus] Deep-link dipulihkan sesudah login dan wali B ditolak
+[lulus] API penarikan tanpa alasan ditolak
+[lulus] API penarikan beralasan
+[lulus] Penarikan menyembunyikan isi lama dari orang tua

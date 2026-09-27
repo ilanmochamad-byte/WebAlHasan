@@ -1,0 +1,20 @@
+[lulus] Menu pembimbing berbasis capability
+[lulus] Pelanggaran dicatat melalui UI aplikasi
+[lulus] Kasus dibuat melalui UI aplikasi
+[lulus] Konflik versi nyata UI menampilkan tindakan muat ulang
+[lulus] Rekomendasi ditautkan ke kasus UI yang sama
+[lulus] Dua sesi berbeda dan penutupan UI tanpa duplikasi
+[lulus] UI detail 375px tanpa luapan
+[lulus] Website membaca kasus dan dua sesi aplikasi yang sama
+[lulus] Murobi menandai kasus yang sama melalui UI
+[lulus] Menu wali hanya publikasi
+[lulus] Wali membaca snapshot aplikasi tanpa isi internal
+[lulus] Deep-link wali ke data internal ditolak server dengan pesan netral
+[lulus] Deep-link pembimbing lain ditolak server
+[lulus] Deep-link murobi lain ditolak server
+[lulus] Admin mengikuti capability pengawasan tanpa memperoleh tombol kelola
+[lulus] Keadaan kosong UI terarah
+[lulus] Galat server UI menyediakan retry setelah percobaan GET terbatas
+[lulus] Retry UI memuat capability nyata kembali
+[lulus] 401 UI menghapus sesi dan meminta login
+[lulus] Detail deep-link tanpa login tidak membaca isi

@@ -467,6 +467,9 @@ try {
     $idsIzin = array_values(array_unique(array_filter(array_map('intval', $created['izin']))));
     if ($idsIzin !== []) {
         $daftar = implode(',', $idsIzin);
+        // Residu A4: hapus hanya outbox/receipt yang dibuat fixture ini.
+        $db->query('DELETE FROM notifikasi_percobaan WHERE outbox_id IN (SELECT id FROM notifikasi_outbox WHERE pengajuan_id IN (' . $daftar . '))');
+        $db->query('DELETE FROM notifikasi_outbox WHERE pengajuan_id IN (' . $daftar . ')');
         $db->query('DELETE FROM audit_logs WHERE entity_type = \'izin_pengajuan\' AND entity_id IN (' . $daftar . ')');
         $db->query('DELETE FROM izin_keputusan_koreksi WHERE pengajuan_id IN (' . $daftar . ')');
         $db->query('DELETE FROM izin_keputusan WHERE pengajuan_id IN (' . $daftar . ')');
@@ -476,6 +479,10 @@ try {
     }
     $idsUser = array_values(array_filter(array_map('intval', $created['users'])));
     if ($idsUser !== []) {
+        $fixtureUsers = implode(',', $idsUser);
+        $db->query('DELETE FROM audit_logs WHERE actor_user_id IN (' . $fixtureUsers . ')');
+        $db->query('DELETE FROM notifikasi_percobaan WHERE outbox_id IN (SELECT id FROM notifikasi_outbox WHERE penerima_user_id IN (' . $fixtureUsers . '))');
+        $db->query('DELETE FROM notifikasi_outbox WHERE penerima_user_id IN (' . $fixtureUsers . ')');
         $db->query('DELETE FROM izin_idempotency_keys WHERE user_id IN (' . implode(',', $idsUser) . ')');
     }
     $cleanup = [

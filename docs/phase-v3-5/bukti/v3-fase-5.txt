@@ -1,0 +1,163 @@
+[lulus] Options internal menolak wali tanpa katalog
+[lulus] Options internal menolak wali tanpa katalog
+[lulus] Options tetap tersedia bagi petugas berhak: sbx_admin
+[lulus] Options tetap tersedia bagi petugas berhak: sbx_pengurus_a
+[lulus] Options tetap tersedia bagi petugas berhak: sbx_murobi_a
+[lulus] Retry satu kasus
+[lulus] Dua sesi tersimpan berbeda
+[lulus] Kasus selesai tanpa menghapus sesi
+[lulus] Versi lama ditolak
+[lulus] Murobi terkait mengetahui kasus yang sama
+[lulus] Kasus lintas cakupan ditolak
+[lulus] Kasus lintas cakupan ditolak
+[lulus] Kasus lintas cakupan ditolak
+[lulus] Laporan pelanggaran sesuai akses tanpa isi rahasia
+[lulus] Laporan kasus sesuai akses tanpa isi rahasia
+[lulus] Laporan pelanggaran sesuai akses tanpa isi rahasia
+[lulus] Laporan kasus sesuai akses tanpa isi rahasia
+[lulus] Laporan pelanggaran sesuai akses tanpa isi rahasia
+[lulus] Laporan kasus sesuai akses tanpa isi rahasia
+[lulus] Laporan lintas cakupan kosong
+[lulus] Laporan lintas cakupan kosong
+[lulus] Laporan wali snapshot tanpa internal
+[lulus] Laporan wali lain kosong
+[lulus] Wali menebak jenis internal ditolak
+[lulus] Filter internal wali ditolak
+[lulus] SQL injection angka ditolak
+[lulus] SQL injection teks terikat parameter
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Tanggal tidak sah ditolak
+[lulus] Options mobile katalog berhalaman
+[lulus] Halaman akhir kosong tetap mengizinkan kembali ke pilihan sebelumnya
+[lulus] Options halaman tidak sah ditolak
+[lulus] Filter pembimbing dan murobi mengikuti penugasan aktif
+[lulus] Filter periode/tingkat/poin menghasilkan data dalam cakupan
+[lulus] Halaman laporan tidak sah ditolak
+[lulus] Purge dry-run tidak menghapus draf
+[lulus] Purge gagal audit menggulung batch
+[lulus] Draf tetap ada setelah rollback
+[lulus] Purge hanya draf, snapshot/riwayat tetap
+[lulus] Purge batas batch
+[lulus] Purge bukan admin ditolak
+[lulus] Audit V3 baru hanya metadata/hash tanpa isi konseling
+Publikasi fixture F5 ID=311
+[lulus] Daftar 1.000 data berhalaman
+[lulus] Waktu daftar lokal di bawah 2 detik
+[lulus] 40 halaman tanpa duplikasi atau kehilangan data
+[lulus] Ekspor memuat semua 1.000 baris
+[lulus] 10.001 baris ditolak tanpa ekspor parsial
+{
+    "fixture_count": 1000,
+    "list_seconds": 0.005095005035400391,
+    "database": "MariaDB lokal; bukan staging\/cPanel",
+    "pagination_ids": 1000
+}
+[lulus] Fixture performa dibersihkan tepat sesuai run
+[lulus] 019 ulang idempoten
+[lulus] Rollback 019
+[lulus] Rollback tidak mengubah seluruh baris bisnis
+[lulus] Migrasi ulang 019
+[lulus] Migrasi ulang tidak mengubah data
+[lulus] 019 ulang kedua idempoten
+[lulus] Fixture v2_phase2_integration
+[lulus] Tidak menambah/menghapus residu lama: v2_phase2_integration
+[lulus] Fixture v2_phase2_web_smoke
+[lulus] Tidak menambah/menghapus residu lama: v2_phase2_web_smoke
+[lulus] Fixture v2_phase3_api_contract
+[lulus] Tidak menambah/menghapus residu lama: v2_phase3_api_contract
+{"orphan_before":[96,24],"orphan_after":[96,24],"database":"database uji saja"}
+[lulus] Indeks v3_preview_retensi
+[lulus] Indeks v3_laporan_periode
+[lulus] Indeks v3_laporan_kasus
+[lulus] Selisih poin nol
+[lulus] Publikasi duplikat nol
+[lulus] Status pelanggaran sah
+[lulus] Status kasus sah
+[lulus] Status sesi sah
+[lulus] Tidak yatim v3_murobi_catatan.pelanggaran_id
+[lulus] Tidak yatim v3_murobi_catatan.kasus_id
+[lulus] Tidak yatim v3_murobi_catatan.sesi_id
+[lulus] Tidak yatim v3_murobi_catatan.guru_id
+[lulus] Tidak yatim v3_murobi_catatan.murobi_assignment_id
+[lulus] Tidak yatim v3_murobi_catatan.created_by
+[lulus] Tidak yatim v3_murobi_catatan.updated_by
+[lulus] Tidak yatim v3_konseling_kasus.santri_id
+[lulus] Tidak yatim v3_konseling_kasus.tahun_ajaran_id
+[lulus] Tidak yatim v3_konseling_kasus.pembimbing_id
+[lulus] Tidak yatim v3_konseling_kasus.pembimbing_assignment_id
+[lulus] Tidak yatim v3_konseling_kasus.created_by
+[lulus] Tidak yatim v3_konseling_kasus.updated_by
+[lulus] Tidak yatim v3_publikasi_riwayat.publikasi_id
+[lulus] Tidak yatim v3_publikasi_riwayat.created_by
+[lulus] Tidak yatim v3_publikasi_outbox.outbox_id
+[lulus] Tidak yatim v3_publikasi_outbox.publikasi_id
+[lulus] Tidak yatim v3_lampiran.pelanggaran_id
+[lulus] Tidak yatim v3_lampiran.kasus_id
+[lulus] Tidak yatim v3_lampiran.sesi_id
+[lulus] Tidak yatim v3_lampiran.created_by
+[lulus] Tidak yatim v3_lampiran.updated_by
+[lulus] Tidak yatim v3_konseling_tautan.pelanggaran_id
+[lulus] Tidak yatim v3_konseling_tautan.kasus_id
+[lulus] Tidak yatim v3_konseling_tautan.sesi_id
+[lulus] Tidak yatim v3_konseling_tautan.created_by
+[lulus] Tidak yatim v3_konseling_tautan.updated_by
+[lulus] Tidak yatim v3_poin_ledger.pelanggaran_id
+[lulus] Tidak yatim v3_poin_ledger.santri_id
+[lulus] Tidak yatim v3_poin_ledger.tahun_ajaran_id
+[lulus] Tidak yatim v3_poin_ledger.pembalik_dari_id
+[lulus] Tidak yatim v3_poin_ledger.created_by
+[lulus] Tidak yatim v3_poin_ledger.updated_by
+[lulus] Tidak yatim v3_poin_agregat.created_by
+[lulus] Tidak yatim v3_poin_agregat.santri_id
+[lulus] Tidak yatim v3_poin_agregat.tahun_ajaran_id
+[lulus] Tidak yatim v3_poin_agregat.updated_by
+[lulus] Tidak yatim v3_publikasi.pelanggaran_id
+[lulus] Tidak yatim v3_publikasi.kasus_id
+[lulus] Tidak yatim v3_publikasi.sesi_id
+[lulus] Tidak yatim v3_publikasi.santri_id
+[lulus] Tidak yatim v3_publikasi.wali_id
+[lulus] Tidak yatim v3_publikasi.created_by
+[lulus] Tidak yatim v3_publikasi.updated_by
+[lulus] Tidak yatim v3_ambang.tahun_ajaran_id
+[lulus] Tidak yatim v3_ambang.created_by
+[lulus] Tidak yatim v3_ambang.updated_by
+[lulus] Tidak yatim v3_konseling_kasus_revisi.kasus_id
+[lulus] Tidak yatim v3_konseling_kasus_revisi.created_by
+[lulus] Tidak yatim v3_kategori.created_by
+[lulus] Tidak yatim v3_kategori.updated_by
+[lulus] Tidak yatim v3_pelanggaran.santri_id
+[lulus] Tidak yatim v3_pelanggaran.tahun_ajaran_id
+[lulus] Tidak yatim v3_pelanggaran.pembimbing_id
+[lulus] Tidak yatim v3_pelanggaran.pembimbing_assignment_id
+[lulus] Tidak yatim v3_pelanggaran.katalog_id
+[lulus] Tidak yatim v3_pelanggaran.revisi_dari_id
+[lulus] Tidak yatim v3_pelanggaran.created_by
+[lulus] Tidak yatim v3_pelanggaran.updated_by
+[lulus] Tidak yatim v3_katalog.kategori_id
+[lulus] Tidak yatim v3_katalog.created_by
+[lulus] Tidak yatim v3_katalog.updated_by
+[lulus] Tidak yatim v3_konseling_sesi.kasus_id
+[lulus] Tidak yatim v3_konseling_sesi.pembimbing_id
+[lulus] Tidak yatim v3_konseling_sesi.revisi_dari_id
+[lulus] Tidak yatim v3_konseling_sesi.created_by
+[lulus] Tidak yatim v3_konseling_sesi.updated_by
+[lulus] Tidak yatim v3_idempotency.user_id
+[lulus] Tidak yatim v3_idempotency.created_by
+[lulus] Tidak yatim v3_idempotency.updated_by
+[lulus] Tidak yatim v3_rekomendasi.ambang_id
+[lulus] Tidak yatim v3_rekomendasi.created_by
+[lulus] Tidak yatim v3_rekomendasi.ditindaklanjuti_kasus_id
+[lulus] Tidak yatim v3_rekomendasi.dipicu_oleh_pelanggaran_id
+[lulus] Tidak yatim v3_rekomendasi.santri_id
+[lulus] Tidak yatim v3_rekomendasi.tahun_ajaran_id
+[lulus] Tidak yatim v3_rekomendasi.updated_by
+[lulus] Tidak yatim v3_publikasi_pratinjau.created_by
+[lulus] Tidak yatim v3_publikasi_pratinjau.publikasi_id
+[operasional] Outbox tertunda >30 menit: 0
+[operasional] Publikasi aktif tanpa wali aktif (akses tetap ditolak): 0
+[operasional] Draf melewati retensi: 0

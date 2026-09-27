@@ -1,0 +1,300 @@
+[lulus] Prasyarat 013_v3_fase1.sql tercatat
+[lulus] Prasyarat 014_v3_fase2_pelanggaran.sql tercatat
+[lulus] Prasyarat 015_v3_fase2_koreksi_dan_rekomendasi.sql tercatat
+[lulus] Prasyarat tabel v3_konseling_kasus
+[lulus] Prasyarat tabel v3_konseling_sesi
+[lulus] Prasyarat tabel v3_konseling_tautan
+[lulus] Prasyarat tabel v3_rekomendasi
+[lulus] Tidak ada sumber sesi dengan lebih dari satu revisi langsung
+[lulus] Revisi sesi tidak berpindah kasus
+[lulus] Tidak ada tautan pelanggaran/kasus/sesi efektif yang ganda
+[lulus] Nama indeks sesi_satu_revisi kosong atau sudah kompatibel
+[lulus] Kolom tautan rekomendasi kosong atau sudah kompatibel
+[lulus] Kolom waktu tindak lanjut kosong atau sudah kompatibel
+[lulus] Foreign key rekomendasi kosong atau sudah kompatibel
+[lulus] Tabel revisi kasus 017 kosong atau sudah kompatibel
+Manifest baris: kasus 191, sesi 235, tautan 154, rekomendasi 61, sesi terjadwal pada kasus tertutup yang akan ditutup 017 0
+LULUS: migrasi 016 dan 017 siap dijalankan setelah backup/restore point dibuat.
+[lulus] Berkas Fase 3 tersedia: app/V3/KonselingRepository.php
+[lulus] Berkas Fase 3 tersedia: app/V3/KonselingService.php
+[lulus] Berkas Fase 3 tersedia: portal/v3_konseling.php
+[lulus] Berkas Fase 3 tersedia: portal/v3_konseling_detail.php
+[lulus] Berkas Fase 3 tersedia: portal/v3_konseling_cetak.php
+[lulus] Berkas Fase 3 tersedia: database/migrations/016_v3_fase3_konseling.sql
+[lulus] Berkas Fase 3 tersedia: database/rollbacks/016_v3_fase3_konseling.sql
+[lulus] Berkas Fase 3 tersedia: database/migrations/017_v3_fase3_kerahasiaan_dan_revisi.sql
+[lulus] Berkas Fase 3 tersedia: database/rollbacks/017_v3_fase3_kerahasiaan_dan_revisi.sql
+[lulus] Berkas Fase 3 tersedia: bin/v3_phase3_preflight.php
+[lulus] Berkas Fase 3 tersedia: bin/v3_phase3_verify.php
+[lulus] Berkas Fase 3 tersedia: bin/v3_phase3_run_tests.sh
+[lulus] Service menyediakan createCase(
+[lulus] Service menyediakan correctCase(
+[lulus] Service menyediakan transitionCase(
+[lulus] Service menyediakan addLinks(
+[lulus] Service menyediakan createSession(
+[lulus] Service menyediakan correctSession(
+[lulus] Service menyediakan transitionSession(
+[lulus] Service menyediakan acknowledge(
+[lulus] Service menyediakan page(
+[lulus] Service menyediakan show(
+[lulus] Service menyediakan timeline(
+[lulus] Service menyediakan parentSerializer(
+[lulus] Mutasi konseling memakai kunci subjek santri/tahun
+[lulus] Kunci operasional tidak memakai gerbang migrasi global
+[lulus] Kegagalan audit menggulung transaksi bisnis
+[lulus] Antrean rekomendasi menyaring rekomendasi tidak berlaku
+[lulus] Rekomendasi yang sudah ditindaklanjuti tidak kembali ke antrean
+[lulus] Satu sumber sesi hanya memiliki satu revisi langsung
+[lulus] Audit membedakan koreksi sesi admin dan pembimbing
+[lulus] Enum dan transisi status divalidasi server
+[lulus] Serializer memakai allowlist terpisah
+[lulus] DTO orang tua tidak memuat tujuan
+[lulus] DTO orang tua tidak memuat ringkasan_internal
+[lulus] DTO orang tua tidak memuat hasil
+[lulus] DTO orang tua tidak memuat catatan_murobi
+[lulus] DTO orang tua tidak memuat alasan_revisi
+[lulus] DTO orang tua tidak memuat pembimbing_id
+[lulus] Isi internal hanya untuk pembimbing/admin dan murobi pada kasus Internal
+[lulus] Rute API Fase 3 tersedia: /v3/konseling/options
+[lulus] Rute API Fase 3 tersedia: /v3/konseling/kasus
+[lulus] Rute API Fase 3 tersedia: /timeline
+[lulus] Rute API Fase 3 tersedia: /tautan
+[lulus] Rute API Fase 3 tersedia: /sesi
+[lulus] Rute API Fase 3 tersedia: /diketahui
+[lulus] Penjaga mutasi GET terbukti mendeteksi rute mutasi sintetis
+[lulus] Tidak ada mutasi konseling melalui GET
+[lulus] Kedua controller mutasi web mewajibkan CSRF
+[lulus] Form konseling memakai POST
+[lulus] Tampilan cetak internal tidak boleh dicache publik
+[lulus] Navigasi konseling mengikuti capability V3
+[lulus] Detail pelanggaran memuat seluruh tindak lanjut konseling tanpa menggandakan induk
+[lulus] Migrasi 016 memuat alasan_revisi_terakhir
+[lulus] Migrasi 016 memuat alasan_pembatalan
+[lulus] Migrasi 016 memuat alasan_penjadwalan_ulang
+[lulus] Migrasi 016 memuat sesi_satu_revisi
+[lulus] Migrasi 016 memuat ditindaklanjuti_kasus_id
+[lulus] Migrasi 016 memuat rekomendasi_kasus_fk
+[lulus] Migrasi 016 tidak memasang guard tautan yang menduplikasi tautan_unik 013
+[lulus] Migrasi 016 memberi penanda jujur pada kasus batal tanpa alasan
+[lulus] Migrasi 016 tidak menghapus catatan bisnis
+[lulus] Rollback 016 mempertahankan kolom keputusan alasan_revisi_terakhir
+[lulus] Rollback 016 mempertahankan kolom keputusan alasan_pembatalan
+[lulus] Rollback 016 mempertahankan kolom keputusan alasan_penjadwalan_ulang
+[lulus] Rollback 016 mempertahankan kolom keputusan ditindaklanjuti_kasus_id
+[lulus] Rollback 016 mempertahankan kolom keputusan ditindaklanjuti_pada
+[lulus] Rollback 016 tidak memutus tautan rekomendasi atau menghapus catatan
+[lulus] Verifier fondasi tidak mengharapkan unique tautan tambahan dari 016
+[lulus] Migrasi tetap tunggal 001_
+[lulus] Migrasi tetap tunggal 002_
+[lulus] Migrasi tetap tunggal 003_
+[lulus] Migrasi tetap tunggal 004_
+[lulus] Migrasi tetap tunggal 005_
+[lulus] Migrasi tetap tunggal 006_
+[lulus] Migrasi tetap tunggal 007_
+[lulus] Migrasi tetap tunggal 008_
+[lulus] Migrasi tetap tunggal 009_
+[lulus] Migrasi tetap tunggal 010_
+[lulus] Migrasi tetap tunggal 011_
+[lulus] Migrasi tetap tunggal 012_
+[lulus] Migrasi tetap tunggal 013_
+[lulus] Migrasi tetap tunggal 014_
+[lulus] Migrasi tetap tunggal 015_
+[lulus] Migrasi tetap tunggal 016_
+[lulus] Migrasi tetap tunggal 017_
+[lulus] Menu aplikasi belum diubah sebelum Fase 5
+[lulus] K1 transisi sesi memeriksa status kasus yang terkunci
+[lulus] K2 kasus batal melepas rekomendasi dan antrean hanya memuat rekomendasi Baru
+[lulus] K2 rekomendasi dapat ditautkan ke kasus yang sudah berjalan
+[lulus] K3 tautan dan tampilan tindak lanjut membaca rantai revisi pelanggaran sesuai hak pembaca
+[lulus] K5 field kosong formulir tidak menghapus rencana dan sesi batal tanpa realisasi
+[lulus] K6 koreksi sesi menjaga arti statusnya
+[lulus] K7 kunci deduplikasi status memuat versi hasil
+[lulus] K9 halaman detail dan cetak tidak mengaudit akses admin dua kali
+[lulus] K11 setiap label formulir halaman detail terhubung ke kontrolnya
+[lulus] K2 halaman detail menyediakan formulir tautan manual
+[lulus] Kerahasiaan disaring pada query daftar, detail kasus, dan tindak lanjut pelanggaran
+[lulus] Kasus Rahasia hanya untuk pembimbing pemilik dan tidak dibuka maupun diberitahukan kepada murobi
+[lulus] Penutupan kasus menutup sesi terjadwal secara beraudit
+[lulus] Koreksi kasus disimpan dan ditampilkan sebagai revisi berbaris
+[lulus] Migrasi 017 aditif tanpa DROP atau DELETE
+[lulus] Rollback 017 hanya melepas tabel revisi yang masih kosong
+[lulus] Runner ulang tidak menggandakan migrasi 016 dan 017
+[lulus] Rollback 017 berhasil
+[lulus] Rollback 017 mempertahankan riwayat revisi yang berisi dan hanya melepas tabel kosong
+[lulus] Rollback 017 tidak mengubah riwayat revisi maupun sesi yang sudah ditutup otomatis
+[lulus] Rollback 016 berhasil
+[lulus] Rollback tidak membuang kolom keputusan bisnis Fase 3
+[lulus] Rollback mempertahankan alasan kasus/sesi, tautan rekomendasi, dan riwayat revisi
+[lulus] Rollback melepas guard tautan draf yang redundan
+[lulus] Unique tautan 013 tetap menjaga tautan sesi NULL selama rollback
+[lulus] Rollback memulihkan indeks penyangga foreign key revisi
+[lulus] Rollback melepas indeks struktural milik 016
+[lulus] Rollback tidak menghapus kasus, sesi, tautan, rekomendasi, pelanggaran, atau ledger
+[lulus] Migrasi 016 dan 017 terpasang kembali berurutan
+[lulus] Pemasangan ulang tetap idempoten
+[lulus] Pasang ulang tidak menimpa keputusan bisnis yang sudah tersimpan
+[lulus] Pasang ulang memberi penanda jujur pada kasus batal tanpa alasan
+[lulus] Penjaga satu revisi sesi tersedia kembali
+[lulus] Pemasangan ulang tidak memasang guard tautan duplikat
+[lulus] Pemasangan ulang tidak meninggalkan indeks rollback redundan
+[lulus] Foreign key rekomendasi ke kasus tersedia kembali
+[lulus] Tabel revisi kasus 017 tersedia dengan unique per versi dan foreign key
+[lulus] Kasus tertutup tidak menyisakan sesi terjadwal sesudah pasang ulang
+[lulus] Fixture tautan tingkat kasus tersedia untuk uji guard database
+[lulus] Database menolak tautan tingkat kasus ganda dengan sesi NULL
+[lulus] Fixture menghasilkan rekomendasi yang masih berlaku
+[lulus] Pembimbing membuka kasus dalam cakupan
+[lulus] Satu kasus menautkan beberapa pelanggaran santri yang sama
+[lulus] Rekomendasi berlaku ditautkan manual ke kasus
+[lulus] Tautan tingkat kasus yang sama tidak dapat digandakan (409)
+[lulus] Retry kasus me-replay satu dampak bisnis
+[lulus] Pembimbing tidak membuat kasus di luar cakupan (403)
+[lulus] Rekomendasi yang sudah ditindaklanjuti tidak dapat ditautkan ulang (409)
+[lulus] Dua sesi tersimpan sebagai baris berbeda dalam satu kasus
+[lulus] Satu pelanggaran ditindaklanjuti pada tingkat kasus dan beberapa sesi
+[lulus] Detail pelanggaran menampilkan seluruh sesi tindak lanjut tanpa menggandakan pelanggaran
+[lulus] Sesi dapat diselesaikan dengan ringkasan dan hasil internal
+[lulus] Retry transisi sesi terminal me-replay dampak pertama
+[lulus] Versi lama sesi ditolak tanpa menimpa perubahan baru (409)
+[lulus] Koreksi sesi selesai membuat revisi beralasan
+[lulus] Koreksi sesi tidak menimpa isi historis
+[lulus] Sumber sesi tidak dapat memiliki revisi kedua (409)
+[lulus] Penjadwalan ulang membentuk revisi dengan alasan terpisah tanpa realisasi
+[lulus] Transisi dari sesi terminal ditolak (422)
+[lulus] Transisi tidak sah tidak menulis perubahan parsial
+[lulus] Murobi terkait membaca isi kasus Internal (keputusan Human Developer)
+[lulus] Murobi terkait membaca isi sesi pada kasus Internal
+[lulus] Murobi terkait memberi catatan kasus pada kolom sumber terpisah
+[lulus] Murobi lain ditolak dari detail kasus (403)
+[lulus] Pembimbing lain ditolak dari detail kasus (403)
+[lulus] Orang tua ditolak dari endpoint internal kasus (403)
+[lulus] Murobi lain tidak dapat memberi catatan (403)
+[lulus] Daftar pembimbing lain tidak membocorkan kasus
+[lulus] Murobi terkait melihat kasus pada daftar cakupannya
+[lulus] DTO orang tua allowlist tidak pernah membawa field internal
+[lulus] Pembukaan detail sensitif oleh admin tercatat sebagai audit akses
+[lulus] Admin mengoreksi kasus hanya melalui alasan wajib
+[lulus] Audit membedakan koreksi administratif
+[lulus] Koreksi kasus tersimpan sebagai revisi berbaris dengan nilai sebelum/sesudah
+[lulus] Detail kasus menampilkan riwayat revisi
+[lulus] Kasus Rahasia tidak dapat dibuka murobi terkait (403)
+[lulus] Murobi tidak dapat memberi tanda mengetahui pada kasus Rahasia (403)
+[lulus] Kasus Rahasia tidak muncul pada daftar murobi
+[lulus] Detail pelanggaran menyembunyikan kasus Rahasia dari murobi tetapi tidak dari pembimbing pemilik
+[lulus] Transisi status kasus yang tidak sah ditolak (422)
+[lulus] Transisi kasus tidak sah tidak mengubah versi
+[lulus] Kasus ditutup hanya dengan ringkasan hasil
+[lulus] Retry penutupan kasus me-replay dampak pertama
+[lulus] Penutupan mempertahankan seluruh sesi dan revisi
+[lulus] Penutupan mempertahankan seluruh tautan pelanggaran
+[lulus] Penutupan Selesai menutup sesi terjadwal sebagai Dibatalkan beralasan sistem
+[lulus] Penutupan otomatis sesi tercatat audit
+[lulus] Kegagalan audit menggulung kasus dan outbox (503)
+[lulus] Tidak ada kasus atau outbox parsial setelah audit gagal
+[lulus] Outbox konseling hanya memuat pesan generik tanpa rincian sensitif
+[lulus] K1 jadwal ulang sesi pada kasus Selesai ditolak (422)
+[lulus] K1 penyelesaian sesi pada kasus Selesai ditolak (422)
+[lulus] K1 kasus tertutup tidak memperoleh sesi atau status sesi baru
+[lulus] K1 replay transisi sebelum penutupan tetap dijawab dari idempotensi
+[lulus] K2 fixture menghasilkan rekomendasi baru
+[lulus] K2 pembatalan kasus melepas rekomendasi tanpa menghapus barisnya
+[lulus] K2 rekomendasi yang dilepas kembali ke antrean manual
+[lulus] K2 audit pembatalan mencatat rekomendasi yang dilepas
+[lulus] K2 rekomendasi dapat ditautkan manual ke kasus yang sudah berjalan
+[lulus] K2 penautan manual tidak mengubah ledger dan tidak membuat sesi otomatis
+[lulus] K2 rekomendasi yang sudah tertaut tidak dapat ditautkan dua kali (409)
+[lulus] K3 catatan pelanggaran terkini tetap menampilkan kasus yang menindaklanjuti revisi sebelumnya
+[lulus] K3 revisi pelanggaran tidak ditautkan ulang ke kasus yang sama (409)
+[lulus] K3 detail kasus menandai pelanggaran tertaut yang sudah direvisi tanpa menggandakannya
+[lulus] K5 penyelesaian lewat formulir web mempertahankan rencana tindak lanjut tersimpan
+[lulus] K5 sesi batal lewat formulir web tanpa realisasi dan rencananya tetap utuh
+[lulus] K6 koreksi tidak dapat mengosongkan ringkasan dan hasil sesi selesai (422)
+[lulus] K6 koreksi yang ditolak tidak menulis revisi atau menaikkan versi
+[lulus] K6 revisi sesi terjadwal tidak memperoleh waktu realisasi
+[lulus] K7 dua perubahan status kasus menghasilkan dua notifikasi murobi
+[lulus] K7 jadwal ulang lalu tidak hadir pada sesi yang sama menghasilkan dua notifikasi
+[lulus] K9 detail dan timeline dalam satu halaman admin hanya diaudit sekali
+[lulus] K9 timeline yang dibuka tersendiri oleh admin tetap diaudit
+[lulus] Lintas cakupan: pembimbing lain ditolak pada koreksi kasus (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada status kasus (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada tautan (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada sesi baru (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada status sesi (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada koreksi sesi (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada catatan murobi kasus (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada catatan murobi sesi (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada timeline (403)
+[lulus] Lintas cakupan: orang tua ditolak pada koreksi kasus (403)
+[lulus] Lintas cakupan: orang tua ditolak pada status kasus (403)
+[lulus] Lintas cakupan: orang tua ditolak pada tautan (403)
+[lulus] Lintas cakupan: orang tua ditolak pada sesi baru (403)
+[lulus] Lintas cakupan: orang tua ditolak pada status sesi (403)
+[lulus] Lintas cakupan: orang tua ditolak pada koreksi sesi (403)
+[lulus] Lintas cakupan: orang tua ditolak pada catatan murobi kasus (403)
+[lulus] Lintas cakupan: orang tua ditolak pada catatan murobi sesi (403)
+[lulus] Lintas cakupan: orang tua ditolak pada timeline (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada koreksi kasus (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada status kasus (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada tautan (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada sesi baru (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada status sesi (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada koreksi sesi (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada catatan murobi kasus (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada catatan murobi sesi (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada timeline (403)
+[lulus] Admin murni hanya mengoreksi: ditolak pada status kasus (403)
+[lulus] Admin murni hanya mengoreksi: ditolak pada tautan (403)
+[lulus] Admin murni hanya mengoreksi: ditolak pada sesi baru (403)
+[lulus] Admin murni hanya mengoreksi: ditolak pada status sesi (403)
+[lulus] Seluruh percobaan lintas cakupan tidak menulis sesi, tautan, versi, atau catatan murobi
+[lulus] Kasus Rahasia tidak menghasilkan notifikasi murobi
+[lulus] Pembimbing dalam cakupan yang bukan pemilik tidak dapat membuka kasus Rahasia (403)
+[lulus] Pembimbing bukan pemilik ditolak pada koreksi kasus kasus Rahasia (403)
+[lulus] Pembimbing bukan pemilik ditolak pada status kasus kasus Rahasia (403)
+[lulus] Pembimbing bukan pemilik ditolak pada sesi baru kasus Rahasia (403)
+[lulus] Pembimbing bukan pemilik ditolak pada tautan kasus Rahasia (403)
+[lulus] Kasus Rahasia milik pembimbing lain tidak muncul pada daftar maupun detail pelanggaran
+[lulus] Admin tetap dapat membuka kasus Rahasia untuk pengawasan
+[lulus] Pembimbing pemilik membaca kasus Rahasia miliknya
+[lulus] Koreksi pemilik ke Internal membuat revisi dan membuka kasus kepada murobi terkait
+[lulus] Koreksi kasus versi lama ditolak (409)
+[lulus] Koreksi yang ditolak tidak menulis revisi kedua
+[lulus] Database menolak revisi kasus ganda dari versi yang sama
+[lulus] Pembatalan kasus menutup sesi terjadwal sebagai Dibatalkan beralasan sistem
+[lulus] Kegagalan outbox menggulung pembukaan kasus (503)
+[lulus] Tidak ada kasus atau audit parsial setelah outbox gagal
+[lulus] Prasyarat 013_v3_fase1.sql tercatat
+[lulus] Prasyarat 014_v3_fase2_pelanggaran.sql tercatat
+[lulus] Prasyarat 015_v3_fase2_koreksi_dan_rekomendasi.sql tercatat
+[lulus] Prasyarat v3_konseling_kasus
+[lulus] Prasyarat v3_konseling_sesi
+[lulus] Prasyarat v3_konseling_tautan
+[lulus] Prasyarat v3_murobi_catatan
+[lulus] Prasyarat v3_rekomendasi
+[lulus] Prasyarat audit_logs
+[lulus] Prasyarat notifikasi_outbox
+[lulus] Migrasi 016 tercatat
+[lulus] Metadata alasan kasus lengkap
+[lulus] Metadata alasan sesi lengkap
+[lulus] Indeks unik satu revisi sesi terpasang
+[lulus] Unique tautan 013 mencegah duplikasi termasuk sesi NULL
+[lulus] Tidak ada guard tautan duplikat dari draf awal 016
+[lulus] Tautan pelanggaran tidak berpindah santri atau tahun
+[lulus] Tautan sesi selalu milik kasus yang sama
+[lulus] Revisi sesi tidak berpindah kasus
+[lulus] Sumber sesi tidak mempunyai dua revisi langsung
+[lulus] Kasus selesai memiliki waktu dan ringkasan penutupan
+[lulus] Kasus batal memiliki waktu dan alasan terpisah
+[lulus] Sesi dijadwalkan ulang memiliki alasan terpisah
+[lulus] Sesi batal memiliki alasan terpisah
+[lulus] Sesi selesai terkini memiliki realisasi, ringkasan internal, dan hasil
+[lulus] Waktu realisasi sesi terkini sesuai statusnya
+[lulus] Rekomendasi hanya ditautkan ke kasus dengan subjek yang sama
+[lulus] Rekomendasi tertaut tidak berada pada kasus batal dan antrean tidak membawa tautan
+[lulus] Migrasi 017 tercatat
+[lulus] Tabel revisi kasus memiliki unique per versi dan foreign key
+[lulus] Kasus tertutup tidak menyisakan sesi terjadwal
+[lulus] Revisi kasus selalu berasal dari versi sebelum versi kasus saat ini
+[lulus] Revisi kasus terakhir sama dengan nilai kasus saat ini
+[lulus] Payload notifikasi konseling tidak memuat rincian sensitif
+LULUS: pemeriksaan Fase 3 tanpa blocker.

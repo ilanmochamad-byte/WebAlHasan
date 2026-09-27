@@ -22,6 +22,10 @@ final class AuditLogger
         ?int $actorUserId = null
     ): bool {
         try {
+            if (str_starts_with($action, 'v3.')) {
+                $before = $before === null ? null : $this->v3Metadata($before);
+                $after = $after === null ? null : $this->v3Metadata($after);
+            }
             $actorUserId ??= isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
             $beforeJson = $before === null ? null : json_encode($before, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             $afterJson = $after === null ? null : json_encode($after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -40,8 +44,23 @@ final class AuditLogger
 
             return $saved;
         } catch (Throwable $exception) {
-            error_log('Audit log gagal: ' . $exception->getMessage());
+            error_log('Audit log gagal disimpan.');
             return false;
         }
+    }
+
+    /** Riwayat isi tetap di tabel bisnis privat; audit V3 menyimpan jejak hash. */
+    private function v3Metadata(array $data): array
+    {
+        $sensitive = ['tujuan','ringkasan','ringkasan_internal','ringkasan_penutupan','hasil','tindak_lanjut','catatan','uraian','saksi','santri_nama','nama_santri','alasan','alasan_revisi','alasan_revisi_terakhir','alasan_pembatalan','alasan_penjadwalan_ulang','tempat'];
+        $result = [];
+        foreach ($data as $key => $value) {
+            if (in_array($key, $sensitive, true)) {
+                $result[$key.'_sha256'] = $value === null ? null : hash('sha256', (string)$value);
+            } else {
+                $result[$key] = is_array($value) ? $this->v3Metadata($value) : $value;
+            }
+        }
+        return $result;
     }
 }

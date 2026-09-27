@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 require_once dirname(__DIR__).'/app/bootstrap.php';
 if(getenv('V3_RUN_TESTS')!=='1'||app_config('database.database')!=='webalhasan_v3_phase1_test')exit(77);
+require_once __DIR__.'/support/v3_migration_window.php';
+$migrationPath=v3MigrationWindow(17);
 $repo=new App\V3\KonselingRepository(app_db());$fail=0;$check=static function(bool $ok,string $label)use(&$fail){echo ($ok?'[lulus] ':'[gagal] ').$label.PHP_EOL;if(!$ok)$fail++;};$count=static fn(string $sql,array $p=[]):int=>(int)array_values($repo->one($sql,$p)??[0])[0];
 $latest=(string)$repo->one('SELECT migration FROM schema_migrations ORDER BY id DESC LIMIT 1')['migration'];if($latest!=='017_v3_fase3_kerahasiaan_dan_revisi.sql'){echo "Urutan migrasi tidak aman untuk drill Fase 3.\n";exit(2);}
 $index=static fn(string $table,string $name):int=>$count('SELECT COUNT(*) FROM information_schema.STATISTICS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=? AND INDEX_NAME=?',[$table,$name]);
@@ -12,7 +14,7 @@ $preserved=[];foreach(['v3_konseling_kasus','v3_konseling_sesi','v3_konseling_ta
 // Keputusan bisnis milik 016/017 tidak dapat dibangun ulang dari tabel lain, sehingga harus bertahan melewati rollback (audit K4).
 $decisions=static function()use($repo,$revisionTable):array{$queries=['kasus'=>'SELECT id,alasan_revisi_terakhir,alasan_pembatalan FROM v3_konseling_kasus ORDER BY id','sesi'=>'SELECT id,status,alasan_penjadwalan_ulang,alasan_pembatalan FROM v3_konseling_sesi ORDER BY id','rekomendasi'=>'SELECT id,status,ditindaklanjuti_kasus_id,ditindaklanjuti_pada FROM v3_rekomendasi ORDER BY id'];if($revisionTable()===1)$queries['revisi']='SELECT id,kasus_id,versi_sebelum,tujuan_sebelum,tujuan_sesudah,kerahasiaan_sebelum,kerahasiaan_sesudah,alasan,kapasitas FROM v3_konseling_kasus_revisi ORDER BY id';$out=[];foreach($queries as $name=>$sql)foreach($repo->all($sql) as $row)$out[$name][(int)$row['id']]=$row;return $out;};
 $before=$decisions();$revisionRows=$count('SELECT COUNT(*) FROM v3_konseling_kasus_revisi');
-$migrator=new App\Database\Migrator(app_db(),APP_ROOT.'/database/migrations',APP_ROOT.'/database/rollbacks');$check($migrator->up()===[],'Runner ulang tidak menggandakan migrasi 016 dan 017');
+$migrator=new App\Database\Migrator(app_db(),$migrationPath,APP_ROOT.'/database/rollbacks');$check($migrator->up()===[],'Runner ulang tidak menggandakan migrasi 016 dan 017');
 $check($migrator->rollbackLast()==='017_v3_fase3_kerahasiaan_dan_revisi.sql','Rollback 017 berhasil');
 $check($revisionRows>0?$revisionTable()===1:$revisionTable()===0,'Rollback 017 mempertahankan riwayat revisi yang berisi dan hanya melepas tabel kosong');
 $check($decisions()===$before,'Rollback 017 tidak mengubah riwayat revisi maupun sesi yang sudah ditutup otomatis');
