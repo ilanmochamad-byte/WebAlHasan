@@ -1,0 +1,61 @@
+# Bukti audit Claude Code Fase 5 — tersanitasi (tanpa credential/token)
+## Residu orphan [outbox, audit] pada salinan test_f5_audit_test
+awal [96,24]; baseline v2_phase2_integration [117,24]; baseline v2_phase2_web_smoke [124,30]; baseline v2_phase3_api_contract [124,30]; terkoreksi ketiganya [124,30] (94/36/116 lulus)
+DB utama setelah seluruh regresi audit: [96,24]
+
+## Probe Rahasia laporan (salinan)
+admin: kasus terlihat, pelanggaran di 'ada'; pembimbing_a (pemilik): kasus terlihat; murobi_a: kasus tidak terlihat, pelanggaran di 'belum'; pembimbing_b: tidak terlihat; sentinel tidak muncul
+
+## K1 reproduksi Expo web sebelum koreksi
+[gagal] Santri terpilih bertahan setelah pindah halaman katalog
+[gagal] Uraian bertahan setelah pindah halaman katalog
+## Expo web setelah koreksi
+[lulus] Menu pembimbing berbasis capability
+[lulus] Pilihan santri dan uraian bertahan saat pindah halaman katalog
+[lulus] Santri halaman 1 dapat dipadukan dengan katalog halaman 2
+[lulus] Aplikasi ke latar tetap menghapus isian privat dari memori layar
+[lulus] Pelanggaran dicatat melalui UI aplikasi
+[lulus] Kasus dibuat melalui UI aplikasi
+[lulus] Konflik versi nyata UI menampilkan tindakan muat ulang
+[lulus] Rekomendasi ditautkan ke kasus UI yang sama
+[lulus] Dua sesi berbeda dan penutupan UI tanpa duplikasi
+[lulus] UI detail 375px tanpa luapan
+[lulus] Website membaca kasus dan dua sesi aplikasi yang sama
+[lulus] Murobi menandai kasus yang sama melalui UI
+[lulus] Menu wali hanya publikasi
+[lulus] Wali membaca snapshot aplikasi tanpa isi internal
+[lulus] Deep-link wali ke data internal ditolak server dengan pesan netral
+[lulus] Deep-link pembimbing lain ditolak server
+[lulus] Deep-link murobi lain ditolak server
+[lulus] Admin mengikuti capability pengawasan tanpa memperoleh tombol kelola
+[lulus] Keadaan kosong UI terarah
+[lulus] Galat server UI menyediakan retry setelah percobaan GET terbatas
+[lulus] Retry UI memuat capability nyata kembali
+[lulus] 401 UI menghapus sesi dan meminta login
+[lulus] Detail deep-link tanpa login tidak membaca isi
+
+## Runner (audit)
+V3 Fase 1: lulus=69 gagal=2
+V3 Fase 2: lulus=172 gagal=0
+V3 Fase 3: lulus=297 gagal=0
+V3 Fase 4: lulus=122 gagal=0
+V3 Fase 5: lulus=153 gagal=0
+[gagal] Sehat exit 0
+[gagal] Setelah perbaikan exit 0
+V1/V2/fondasi run 1: 1 berkas gagal (v2_phase3_api_contract concurrency, intermiten); run 2: exit 0
+Total pemeriksaan lulus: 2378
+Pemeriksaan paket perapihan yang lulus: 248
+Pemeriksaan fitur pesan kredensial yang lulus: 215
+Pemeriksaan paket penempatan yang lulus: 257
+Pemeriksaan paket alumni yang lulus: 334
+Pemeriksaan paket penugasan yang lulus: 588
+Browser Fase 1: lulus=74 gagal=0
+Browser Fase 2: lulus=40 gagal=0
+Browser Fase 3: lulus=53 gagal=0
+Browser Fase 4: lulus=34 gagal=0
+Browser Fase 5: lulus=55 gagal=0
+[warisan] Tidak yatim notifikasi_outbox.penerima_user_id: 96 baris yatim pada tabel fondasi; waktu/asal belum ditentukan oleh verifier.
+[warisan] Tidak yatim notifikasi_outbox.pengajuan_id: 96 baris yatim pada tabel fondasi; waktu/asal belum ditentukan oleh verifier.
+[warisan] Tidak yatim audit_logs.actor_user_id: 24 baris yatim pada tabel fondasi; waktu/asal belum ditentukan oleh verifier.
+PERHATIAN: 3 referensi yatim pada tabel warisan. Asal wajib ditelusuri; tangani terpisah dan JANGAN menghapus catatan bisnis lama.
+Struktur V3 lulus; masih ada temuan warisan di atas.

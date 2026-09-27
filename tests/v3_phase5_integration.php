@@ -56,4 +56,9 @@ $ret->run(true,500,(int)$admin['id']);$check($r->one('SELECT id FROM v3_publikas
 $reject(fn()=>$ret->run(true,501,(int)$admin['id']),422,'Purge batas batch');$reject(fn()=>$ret->run(true,10,(int)$pa['id']),403,'Purge bukan admin ditolak');
 $audit=$r->all("SELECT before_json,after_json FROM audit_logs WHERE entity_type IN ('v3_konseling_kasus','v3_konseling_sesi') AND created_at>=DATE_SUB(NOW(),INTERVAL 1 MINUTE)");
 $check(!str_contains(json_encode($audit),'PRIVATE-F5'),'Audit V3 baru hanya metadata/hash tanpa isi konseling');
+// Audit Claude Code: data master tanpa tabel revisi tetap menyimpan nilai sebelum/sesudah yang terbaca.
+$masterText='SBX F5 uraian master '.bin2hex(random_bytes(4));
+$kat=v3_katalog_service()->save('kategori',['kode'=>'F5AUD'.strtoupper(bin2hex(random_bytes(4))),'nama'=>'SBX F5 audit master','uraian'=>$masterText,'tanggal_mulai'=>date('Y-m-d'),'is_active'=>0],$admin);
+$masterAudit=$r->one("SELECT after_json FROM audit_logs WHERE action='v3.kategori.buat' AND entity_type='v3_kategori' AND entity_id=? ORDER BY id DESC LIMIT 1",[$kat]);
+$check(str_contains((string)($masterAudit['after_json']??''),$masterText),'Audit kategori/katalog tetap memuat uraian sebelum/sesudah');
 echo 'Publikasi fixture F5 ID='.$id.PHP_EOL;exit($fail?1:0);

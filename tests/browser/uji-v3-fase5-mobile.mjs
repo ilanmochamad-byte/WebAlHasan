@@ -28,6 +28,20 @@ try{
  check(await page.getByRole('button',{name:'Catat pelanggaran',exact:true}).count()===1,'Menu pembimbing berbasis capability');
   const auth=await context.request.post(api+'/api/v1/auth/login',{data:{username:'sbx_pengurus_a',password:'Sandbox#123'}});const headers={Authorization:'Bearer '+(await auth.json()).data.token};
  const options=(await (await context.request.get(api+'/api/v1/v3/mobile/options',{headers})).json()).data;
+ // Audit Claude Code: santri dan katalog berbagi parameter halaman; berpindah halaman tidak boleh menghapus pilihan/isian.
+ const options2=(await (await context.request.get(api+'/api/v1/v3/mobile/options?page=2',{headers})).json()).data;
+ if(options2.katalog.length>0){
+  await page.goto(app+'/pembinaan/buat?jenis=pelanggaran');await page.getByRole('button',{name:options.santri[0].nama,exact:true}).click();
+  await page.getByText('Terpilih: '+options.santri[0].nama,{exact:true}).waitFor();await page.getByLabel('Uraian kejadian',{exact:true}).fill('SBX F5 paging');
+  await page.getByRole('button',{name:'Pilihan berikutnya',exact:true}).click();const k2=options2.katalog[0];const k2Button=page.getByRole('button',{name:`${k2.nama} · ${k2.tingkat} · ${k2.poin_default} poin`,exact:true}).first();await k2Button.waitFor();
+  check(await page.getByText('Terpilih: '+options.santri[0].nama,{exact:true}).count()===1&&await page.getByLabel('Uraian kejadian',{exact:true}).inputValue()==='SBX F5 paging','Pilihan santri dan uraian bertahan saat pindah halaman katalog');
+  await k2Button.click();await page.getByLabel('Waktu kejadian (YYYY-MM-DD HH:mm)',{exact:true}).fill('2026-09-27 09:00');
+  check(await page.getByRole('button',{name:'Simpan',exact:true}).isEnabled(),'Santri halaman 1 dapat dipadukan dengan katalog halaman 2');
+  const visibility=state=>page.evaluate(s=>{Object.defineProperty(document,'visibilityState',{configurable:true,get:()=>s});Object.defineProperty(document,'hidden',{configurable:true,get:()=>s==='hidden'});document.dispatchEvent(new Event('visibilitychange'));},state);
+  await visibility('hidden');await visibility('visible');await page.getByRole('button',{name:'Pilihan berikutnya',exact:true}).waitFor();
+  check(await page.getByText(/^Terpilih:/).count()===0&&await page.getByLabel('Uraian kejadian',{exact:true}).inputValue()==='','Aplikasi ke latar tetap menghapus isian privat dari memori layar');
+  await page.goto(app+'/pembinaan');await page.getByRole('button',{name:'Catat pelanggaran',exact:true}).waitFor({timeout:60000});
+ }else check(false,'Fixture memerlukan katalog aktif lebih dari 25 untuk uji halaman');
  await page.getByRole('button',{name:'Catat pelanggaran',exact:true}).click();
  await page.getByRole('button',{name:options.santri[0].nama,exact:true}).click();
  const catalog=options.katalog[0];await page.getByRole('button',{name:`${catalog.nama} · ${catalog.tingkat} · ${catalog.poin_default} poin`,exact:true}).click();

@@ -335,7 +335,7 @@ Pembagian fungsi per platform, daftar event notifikasi minimum, dan format lapor
 - [ ] Backup, manifest migrasi, hash commit rilis, panduan rollback, dan hasil smoke test produksi tersimpan tanpa credential atau data santri nyata.
 - [ ] Branch V3 telah diaudit Claude Code, worktree bersih, dan tidak di-merge ke `main` sebelum seluruh kriteria wajib terpenuhi.
 
-Bukti implementator Fase 5 pada database uji lokal dan Chromium: [hasil pengujian](docs/phase-v3-5/hasil-pengujian.md) serta [status penerimaan](docs/phase-v3-5/status-penerimaan.md). Centang di atas terbatas pada bukti yang dijalankan; audit independen, perangkat fisik, hosting setara produksi dan rekonsiliasi umum masih tertunda. Fase 5 belum selesai seluruhnya dan tidak di-merge/deploy.
+Bukti implementator Fase 5 pada database uji lokal dan Chromium: [hasil pengujian](docs/phase-v3-5/hasil-pengujian.md) serta [status penerimaan](docs/phase-v3-5/status-penerimaan.md). Centang di atas terbatas pada bukti yang dijalankan. Audit independen Claude Code selesai 27 September 2026 dengan dua koreksi terarah ([audit](docs/phase-v3-5/audit-claude-code.md)); perangkat fisik, hosting setara produksi dan rekonsiliasi orphan seluruh DB uji masih tertunda. Fase 5 belum selesai seluruhnya dan tidak di-merge/deploy.
 
 ## 7. Metrik Keberhasilan
 

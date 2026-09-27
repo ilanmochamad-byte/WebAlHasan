@@ -22,7 +22,9 @@ final class AuditLogger
         ?int $actorUserId = null
     ): bool {
         try {
-            if (str_starts_with($action, 'v3.')) {
+            // Katalog/kategori/ambang adalah data master admin tanpa tabel revisi;
+            // nilai sebelum/sesudahnya harus tetap terbaca di audit.
+            if (str_starts_with($action, 'v3.') && !in_array($entityType, ['v3_katalog', 'v3_kategori', 'v3_ambang'], true)) {
                 $before = $before === null ? null : $this->v3Metadata($before);
                 $after = $after === null ? null : $this->v3Metadata($after);
             }
