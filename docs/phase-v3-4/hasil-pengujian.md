@@ -14,7 +14,7 @@ Semua pengujian database di bawah memakai **MariaDB lokal `webalhasan_v3_phase1_
 | Push OFF dan WhatsApp OFF | **LULUS OTOMATIS** | Fake provider mencatat **nol request** untuk masing-masing kanal ketika OFF; retry dan receipt dicoba dengan fake provider setelah Push dinyalakan hanya pada fixture lokal. Adapter ini bukan bukti pengiriman fisik. |
 | Rollback dan migrasi ulang 018 | **LULUS OTOMATIS** | Drill membandingkan hash seluruh baris tabel bisnis sebelum/sesudah rollback non-destruktif, lalu migrasi ulang dua kali. |
 | Push dan deep-link Android+iOS fisik | **LULUS UJI FISIK** (27 September 2026) | Diuji Human Developer pada perangkat nyata; lihat [audit Claude Code](audit-claude-code.md) §6. Receipt provider sampai status final belum ditelusuri. |
-| Migrasi/smoke cPanel dan smoke produksi Fase 3 §6 | **BELUM DIJALANKAN** | Perlu jadwal rilis/persetujuan tersendiri. Browser lokal menutup sebagian risiko penolakan orang tua terhadap halaman/API internal, bukan bukti produksi. |
+| Migrasi/smoke cPanel dan smoke produksi Fase 3 §6 | **cPanel SUDAH DIJALANKAN** (22–23 September 2026); smoke produksi Fase 3 §6 **BELUM DIJALANKAN** | Perlu jadwal rilis/persetujuan tersendiri. Browser lokal menutup sebagian risiko penolakan orang tua terhadap halaman/API internal, bukan bukti produksi. |
 
 Pengujian utama sengaja memakai database uji yang sudah ada. Rangkaian regresi lama membuat fixture sementara; verifier 018 memeriksa tabel Fase 4 secara terpisah. Tidak ada klaim bahwa catatan smoke produksi Fase 3 atau pembersihan datanya telah dikerjakan.
 
