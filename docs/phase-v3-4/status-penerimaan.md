@@ -1,6 +1,6 @@
 # Status kriteria penerimaan PRD V3 Fase 4
 
-Penanda: **LULUS OTOMATIS** = diuji lokal; **LULUS UJI FISIK** = diuji pada perangkat/provider nyata (belum ada); **BELUM DIJALANKAN** = jalur uji belum dieksekusi; **BELUM TERPENUHI** = kriteria wajib belum memiliki bukti cukup. Status fase secara keseluruhan **BELUM TERPENUHI** sampai uji push Android dan iOS fisik lulus dan auditor menilai hasilnya. Pembaruan 27 September 2026: migrasi 018 dan smoke web sudah dijalankan di produksi cPanel, dan uji push fisik terbukti sebagian pada kedua platform.
+Penanda: **LULUS OTOMATIS** = diuji lokal; **LULUS UJI FISIK** = diuji pada perangkat/provider nyata (belum ada); **BELUM DIJALANKAN** = jalur uji belum dieksekusi; **BELUM TERPENUHI** = kriteria wajib belum memiliki bukti cukup. Pembaruan 27 September 2026: migrasi 018 dan smoke web sudah dijalankan di produksi cPanel, dan uji push fisik Android+iOS **lulus**. Dengan demikian **seluruh sepuluh kriteria penerimaan Fase 4 terpenuhi**. Sisa risiko yang tetap dicatat terbuka: receipt provider belum ditelusuri sampai status final, smoke produksi Fase 3 §6 belum dijalankan, dan pembersihan data smoke produksi mengikuti prosedur operator tersendiri.
 
 | Kriteria PRD | Status | Bukti atau kekurangan |
 | --- | --- | --- |
@@ -8,7 +8,7 @@ Penanda: **LULUS OTOMATIS** = diuji lokal; **LULUS UJI FISIK** = diuji pada pera
 | Respons tanpa isi internal dan ID petugas | **LULUS OTOMATIS** | Allowlist serializer, uji API/browser dan inspeksi audit/payload. |
 | Catatan belum terbit nol baris dan notifikasi | **LULUS OTOMATIS** | Uji kasus dan sesi belum terbit, termasuk Rahasia. |
 | Satu publikasi per penerima; retry tanpa duplikasi | **LULUS OTOMATIS** | Uji dua wali, klik ganda, request paralel, fingerprint/idempotensi. |
-| Push fisik Android+iOS generik dan detail benar setelah login/otorisasi | **SEBAGIAN TERBUKTI — BELUM TERPENUHI** | 27 September 2026: push generik tiba dan membuka detail yang benar sesudah login pada iPhone 17 Pro dan satu perangkat Android, termasuk cold start ([audit](audit-claude-code.md) §6). Otorisasi ulang negatif (wali lain, relasi dicabut), tampilan sesudah penarikan di aplikasi, dan receipt provider belum diuji; uji dihentikan atas keputusan Human Developer. |
+| Push fisik Android+iOS generik dan detail benar setelah login/otorisasi | **LULUS UJI FISIK** | 27 September 2026 pada iPhone 17 Pro dan satu perangkat Android ([audit](audit-claude-code.md) §6): push generik, deep-link sesudah login, cold start, penolakan akun wali salah di kedua platform, penolakan sesudah relasi wali diarsipkan, dan tampilan publikasi ditarik tanpa teks lama. Receipt provider sampai status final belum ditelusuri. |
 | Wali A tidak membaca ID wali B | **LULUS OTOMATIS** | API dan browser mengembalikan 403 aman. |
 | Penarikan wajib alasan, audit, tanpa isi internal | **LULUS OTOMATIS** | Uji versi, riwayat, audit, redaksi detail orang tua. |
 | Push OFF = nol request provider | **LULUS OTOMATIS** | Fake provider menghitung nol request; sakelar produksi tidak diubah. |

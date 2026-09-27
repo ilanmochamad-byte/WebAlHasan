@@ -13,7 +13,7 @@ Semua pengujian database di bawah memakai **MariaDB lokal `webalhasan_v3_phase1_
 | Mobile `npx tsc --noEmit` dan ESLint untuk berkas yang berubah | **LULUS OTOMATIS** | Memeriksa tipe dan aturan lint; tidak membuktikan push/deep-link perangkat nyata. |
 | Push OFF dan WhatsApp OFF | **LULUS OTOMATIS** | Fake provider mencatat **nol request** untuk masing-masing kanal ketika OFF; retry dan receipt dicoba dengan fake provider setelah Push dinyalakan hanya pada fixture lokal. Adapter ini bukan bukti pengiriman fisik. |
 | Rollback dan migrasi ulang 018 | **LULUS OTOMATIS** | Drill membandingkan hash seluruh baris tabel bisnis sebelum/sesudah rollback non-destruktif, lalu migrasi ulang dua kali. |
-| Push dan deep-link Android+iOS fisik | **BELUM TERPENUHI — MENUNGGU UJI FISIK** | Belum ada persetujuan menyalakan Push fisik/produksi, perangkat uji, atau receipt provider nyata. Panduan terpisah siap dijalankan di staging sesudah persetujuan. |
+| Push dan deep-link Android+iOS fisik | **LULUS UJI FISIK** (27 September 2026) | Diuji Human Developer pada perangkat nyata; lihat [audit Claude Code](audit-claude-code.md) §6. Receipt provider sampai status final belum ditelusuri. |
 | Migrasi/smoke cPanel dan smoke produksi Fase 3 §6 | **BELUM DIJALANKAN** | Perlu jadwal rilis/persetujuan tersendiri. Browser lokal menutup sebagian risiko penolakan orang tua terhadap halaman/API internal, bukan bukti produksi. |
 
 Pengujian utama sengaja memakai database uji yang sudah ada. Rangkaian regresi lama membuat fixture sementara; verifier 018 memeriksa tabel Fase 4 secara terpisah. Tidak ada klaim bahwa catatan smoke produksi Fase 3 atau pembersihan datanya telah dikerjakan.
@@ -26,4 +26,4 @@ Lihat [audit Claude Code](audit-claude-code.md) §4. Ringkas: suite Fase 4 121/1
 
 ## Produksi cPanel dan uji fisik parsial (27 September 2026)
 
-Migrasi 018 diterapkan di hosting pada 22 September 2026 21:18:43 dengan preflight dan empat verifier `exit=0`, diikuti smoke web produksi pada 23 September dan uji push fisik parsial Android+iOS pada 27 September. Rincian, batas, dan hal yang belum diuji ada di [audit Claude Code](audit-claude-code.md) §5–§7.
+Migrasi 018 diterapkan di hosting pada 22 September 2026 21:18:43 dengan preflight dan empat verifier `exit=0`, diikuti smoke web produksi pada 23 September dan uji push fisik Android+iOS pada 27 September yang **lulus** (push generik, deep-link sesudah login, cold start, penolakan akun salah di kedua platform, penolakan sesudah relasi wali diarsipkan, dan tampilan publikasi ditarik). Rincian serta hal yang tetap di luar klaim ada di [audit Claude Code](audit-claude-code.md) §5–§7.
