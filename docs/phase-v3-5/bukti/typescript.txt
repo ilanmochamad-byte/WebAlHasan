@@ -1,0 +1,3 @@
+Command: npx tsc --noEmit
+Exit: 0
+Stdout/stderr: kosong (TypeScript selesai tanpa diagnostik).

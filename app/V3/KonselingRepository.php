@@ -129,14 +129,14 @@ final class KonselingRepository
         );
     }
 
-    public function pendingRecommendations(int $userId,string $mode):array
+    public function pendingRecommendations(int $userId,string $mode,?int $page=null):array
     {
         [$scope,$params]=$this->scopeSql($mode,$userId,'r');
         return $this->all(
             'SELECT r.id,r.santri_id,r.tahun_ajaran_id,r.label_snapshot,r.rekomendasi_snapshot,r.total_poin_snapshot,r.created_at,s.nama_santri
                FROM v3_rekomendasi r JOIN santri s ON s.id=r.santri_id
               WHERE r.archived_at IS NULL AND r.tidak_berlaku_pada IS NULL AND r.ditindaklanjuti_kasus_id IS NULL AND r.status=\'Baru\'
-                AND ('.$scope.') ORDER BY r.id DESC', $params
+                AND ('.$scope.') ORDER BY r.id DESC'.($page===null?'':' LIMIT 25 OFFSET ?'), $page===null?$params:[...$params,($page-1)*25]
         );
     }
 

@@ -64,7 +64,7 @@ try {
             // nonzero (tidak dilonggarkan), tetapi dipisahkan agar operator tidak
             // menyimpulkan migrasi V3 yang merusaknya lalu menghapus catatan lama.
             if ($yatim!==0 && !str_starts_with($fk['TABLE_NAME'],'v3_')) {
-                $warisan++;echo '[warisan] '.$label.': '.$yatim.' baris yatim, sudah ada sebelum migrasi 013.'.PHP_EOL;
+                $warisan++;echo '[warisan] '.$label.': '.$yatim.' baris yatim pada tabel fondasi; waktu/asal belum ditentukan oleh verifier.'.PHP_EOL;
                 continue;
             }
             $check($yatim===0,$label);
@@ -78,7 +78,7 @@ try {
     $check(false,'Diagnostik tidak dapat diselesaikan; periksa koneksi/skema pada lingkungan yang tepat.');
     echo '        sebab: '.$e->getMessage().PHP_EOL;
 }
-if($warisan>0){echo "PERHATIAN: {$warisan} referensi yatim pada tabel warisan. Bukan dibuat migrasi 013; tangani terpisah dan JANGAN menghapus catatan bisnis lama.\n";}
+if($warisan>0){echo "PERHATIAN: {$warisan} referensi yatim pada tabel warisan. Asal wajib ditelusuri; tangani terpisah dan JANGAN menghapus catatan bisnis lama.\n";}
 if($fail>0){echo "BLOCKER: {$fail} pemeriksaan gagal.\n";}
 elseif($warisan>0){echo "Struktur V3 lulus; masih ada temuan warisan di atas.\n";}
 else{echo "LULUS: tidak ada blocker.\n";}

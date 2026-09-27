@@ -1,0 +1,173 @@
+[lulus] Berkas Fase 2 tersedia: app/V3/PelanggaranRepository.php
+[lulus] Berkas Fase 2 tersedia: app/V3/PelanggaranService.php
+[lulus] Berkas Fase 2 tersedia: app/V3/AttachmentStorage.php
+[lulus] Berkas Fase 2 tersedia: portal/v3_pelanggaran.php
+[lulus] Berkas Fase 2 tersedia: portal/v3_pelanggaran_detail.php
+[lulus] Berkas Fase 2 tersedia: portal/v3_lampiran.php
+[lulus] Berkas Fase 2 tersedia: database/migrations/014_v3_fase2_pelanggaran.sql
+[lulus] Berkas Fase 2 tersedia: database/rollbacks/014_v3_fase2_pelanggaran.sql
+[lulus] Berkas Fase 2 tersedia: database/migrations/015_v3_fase2_koreksi_dan_rekomendasi.sql
+[lulus] Berkas Fase 2 tersedia: database/rollbacks/015_v3_fase2_koreksi_dan_rekomendasi.sql
+[lulus] Berkas Fase 2 tersedia: bin/v3_rekonsiliasi_agregat.php
+[lulus] T-2 mempertahankan provenance capability fondasi
+[lulus] Kunci operasional memakai baris agregat santri/tahun
+[lulus] Mutasi operasional tidak memakai gerbang schema_migrations
+[lulus] Pembatalan dan koreksi memakai ledger pembalik
+[lulus] Deduplikasi idempotensi/rekomendasi ditegakkan database
+[lulus] Service menyediakan create(
+[lulus] Service menyediakan correct(
+[lulus] Service menyediakan cancel(
+[lulus] Service menyediakan acknowledge(
+[lulus] Service menyediakan page(
+[lulus] Service menyediakan show(
+[lulus] Service menyediakan history(
+[lulus] Audit membedakan koreksi admin dan pembimbing
+[lulus] Serializer baru memakai allowlist eksplisit
+[lulus] Service tidak mengembalikan baris database mentah
+[lulus] Rute mutasi V3 tersedia tanpa GET: $method === 'POST' && $path === '/v3/pelanggaran'
+[lulus] Rute mutasi V3 tersedia tanpa GET: $method === 'PATCH' && preg_match
+[lulus] Rute mutasi V3 tersedia tanpa GET: /pembatalan
+[lulus] Rute mutasi V3 tersedia tanpa GET: /diketahui
+[lulus] Tidak ada mutasi status melalui GET
+[lulus] Mutasi web mewajibkan CSRF
+[lulus] Form mutasi web memakai POST
+[lulus] Lampiran web dibatasi tipe aman
+[lulus] Halaman pelanggaran lama tetap berlabel Data warisan
+[lulus] Halaman warisan tidak membuka penghapusan
+[lulus] Menu web membedakan V3 dan data warisan
+[lulus] Menu aplikasi tetap bukan dari App\Ui\Navigation
+[lulus] Migrasi memberi satu kunci agregat per subjek
+[lulus] Migrasi menjamin satu rekomendasi per ambang
+[lulus] Migrasi mencegah dua revisi atas sumber yang sama
+[lulus] Migrasi lama tetap tunggal 001_
+[lulus] Migrasi lama tetap tunggal 002_
+[lulus] Migrasi lama tetap tunggal 003_
+[lulus] Migrasi lama tetap tunggal 004_
+[lulus] Migrasi lama tetap tunggal 005_
+[lulus] Migrasi lama tetap tunggal 006_
+[lulus] Migrasi lama tetap tunggal 007_
+[lulus] Migrasi lama tetap tunggal 008_
+[lulus] Migrasi lama tetap tunggal 009_
+[lulus] Migrasi lama tetap tunggal 010_
+[lulus] Migrasi lama tetap tunggal 011_
+[lulus] Migrasi lama tetap tunggal 012_
+[lulus] Migrasi lama tetap tunggal 013_
+[lulus] Migrasi lama tetap tunggal 014_
+[lulus] Migrasi 015 memisahkan alasan pembatalan
+[lulus] Migrasi 015 menyediakan penanda rekomendasi tidak berlaku
+[lulus] Migrasi 015 memulihkan agregat dari ledger
+[lulus] Migrasi 015 tidak menghapus catatan bisnis
+[lulus] Rollback 015 hanya melepas struktur miliknya
+[lulus] Catatan yang tidak berlaku melepas slot fingerprint
+[lulus] Pembatalan tidak lagi menulis ke alasan revisi
+[lulus] Repository menyelaraskan masa berlaku rekomendasi
+[lulus] Catatan sumber melepas fingerprint sebelum revisi ditulis
+[lulus] Mutasi create menyegarkan masa berlaku rekomendasi
+[lulus] Mutasi correct menyegarkan masa berlaku rekomendasi
+[lulus] Mutasi cancel menyegarkan masa berlaku rekomendasi
+[lulus] Dokumen PRD V3 tidak dapat diunduh dari web
+[lulus] Diagnostik yatim warisan tetap exit nonzero
+[lulus] Ambang tahun nonaktif memberi sinyal operator yang terlihat
+[lulus] Validasi gagal membersihkan lampiran pending (422)
+[lulus] Tidak ada lampiran yatim saat validasi gagal
+[lulus] Pembimbing mencatat pelanggaran dalam cakupan
+[lulus] Snapshot poin katalog tersimpan bersama catatan
+[lulus] Ledger awal tersimpan tepat satu
+[lulus] Ambang menghasilkan tepat satu rekomendasi
+[lulus] Rekomendasi unik per ambang dan subjek
+[lulus] Rekomendasi tidak membuat konseling atau perubahan akademik otomatis
+[lulus] Lampiran privat dicatat dengan metadata aman
+[lulus] Admin murni mengawasi seluruh catatan tanpa menyamar sebagai pembimbing
+[lulus] Idempotency key sama me-replay respons tanpa dampak kedua
+[lulus] Retry hanya menghasilkan satu pelanggaran
+[lulus] Fingerprint bisnis menolak duplikasi dengan key berbeda (409)
+[lulus] Pembimbing tidak dapat mencatat santri di luar cakupan (403)
+[lulus] Pengurus lain tidak dapat mencatat santri A (403)
+[lulus] Perubahan poin default tidak mengubah poin catatan lama
+[lulus] Akumulasi sama dengan penjumlahan ledger dan agregat terrekonsiliasi
+[lulus] Serializer detail tidak mengembalikan baris database mentah
+[lulus] Koreksi membuat revisi dan mempertahankan snapshot bila katalog sama
+[lulus] Koreksi tidak menimpa nilai historis
+[lulus] Pembalik koreksi dan ledger revisi tetap terrekonsiliasi
+[lulus] Koreksi membuat satu ledger pembalik
+[lulus] Optimistic version menolak koreksi versi lama (409)
+[lulus] T-2: admin merangkap pembimbing bersumber keduanya
+[lulus] Koreksi akun ganda tercatat sebagai admin beralasan
+[lulus] Murobi terkait menandai mengetahui tepat satu kali
+[lulus] Murobi lain ditolak (403)
+[lulus] Orang tua ditolak dari tanda mengetahui (403)
+[lulus] Pengurus di luar cakupan ditolak dari tanda mengetahui (403)
+[lulus] Pembimbing dan murobi terkait membaca daftar
+[lulus] Daftar pembimbing lain tidak membocorkan santri A
+[lulus] Daftar murobi lain tidak membocorkan santri A
+[lulus] Orang tua tidak membaca data internal Fase 2 (403)
+[lulus] Murobi lain ditolak dari detail (403)
+[lulus] Orang tua ditolak dari detail (403)
+[lulus] Pengurus lain ditolak dari detail (403)
+[lulus] Lampiran privat ditolak lintas cakupan (403)
+[lulus] Pembatalan mengubah status tanpa menghapus catatan
+[lulus] Pembatalan membuat pembalik poin, bukan mengedit total
+[lulus] Rekonsiliasi setelah koreksi berulang dan pembatalan berselisih nol
+[lulus] Pembatalan tidak menggandakan rekomendasi
+[lulus] Payload outbox/push hanya generik tanpa nama, kategori, uraian, poin, nomor, atau catatan rahasia
+[lulus] Santri tanpa penempatan tetap di luar cakupan
+[lulus] Pencatatan santri tanpa penempatan ditolak (403)
+[lulus] Kegagalan audit menggulung seluruh transaksi (503)
+[lulus] Tidak ada catatan parsial setelah audit gagal
+[lulus] Tidak ada hard delete catatan bisnis
+[lulus] Catatan yang digantikan revisi melepas fingerprint
+[lulus] Koreksi boleh mengembalikan isi ke nilai catatan yang sudah digantikan
+[lulus] Pembatalan tidak menimpa alasan koreksi
+[lulus] Alasan pembatalan tersimpan pada kolomnya sendiri
+[lulus] Catatan yang dibatalkan melepas fingerprint
+[lulus] Serializer detail memisahkan alasan koreksi dan pembatalan
+[lulus] Kejadian identik boleh dicatat ulang setelah pembatalan
+[lulus] Ambang tercapai memberi satu rekomendasi yang berlaku
+[lulus] Pembatalan menandai rekomendasi yang totalnya sudah tidak berlaku
+[lulus] Rekomendasi basi terbaca sebagai tidak berlaku
+[lulus] Total kembali ke rentang memulihkan rekomendasi tanpa membuat baris kedua
+[lulus] Rekomendasi tetap tepat satu per ambang setelah batal dan pulih
+[lulus] Rekomendasi yang dipulihkan berlaku kembali
+[lulus] Seluruh catatan koreksi audit tetap tersimpan
+[lulus] Koreksi tanpa perubahan isi tetap membentuk revisi beralasan
+[lulus] Revisi tanpa perubahan isi mempertahankan uraian sumber
+[lulus] Fingerprint berpindah dari catatan sumber ke revisinya
+[lulus] Bukti dapat dilampirkan lewat koreksi tanpa mengubah isi
+[lulus] Koreksi tanpa perubahan isi tetap terrekonsiliasi
+[lulus] Dua proses dengan idempotency sama: satu create dan satu replay
+[lulus] Konkurensi create hanya memberi satu dampak ledger
+[lulus] Dua koreksi versi lama: satu berhasil dan satu konflik 409
+[lulus] Optimistic concurrency menghasilkan tepat satu revisi
+[lulus] Agregat tetap sama dengan ledger sesudah balapan koreksi
+[lulus] Kunci santri/tahun A tidak menjadi gerbang global bagi subjek B
+[lulus] Fondasi V3 Fase 1 tercatat
+[lulus] Prasyarat v3_pelanggaran
+[lulus] Prasyarat v3_poin_ledger
+[lulus] Prasyarat v3_murobi_catatan
+[lulus] Prasyarat v3_idempotency
+[lulus] Prasyarat audit_logs
+[lulus] Prasyarat notifikasi_outbox
+[lulus] Migrasi 014 tercatat
+[lulus] Tabel v3_poin_agregat
+[lulus] Tabel v3_rekomendasi
+[lulus] Indeks satu revisi terpasang
+[lulus] Revisi tidak berpindah subjek atau tahun
+[lulus] Tidak ada sumber dengan dua revisi
+[lulus] Ledger cocok dengan subjek pelanggaran
+[lulus] Setiap ledger pembalik tepat menetralkan sumbernya
+[lulus] Pelanggaran batal mempunyai pembalik
+[lulus] Agregat dapat direkonsiliasi dari seluruh ledger
+[lulus] Tidak ada selisih agregat terhadap ledger
+[lulus] Rekomendasi tepat satu per ambang/subjek
+[lulus] Status dan snapshot rekomendasi valid
+[lulus] Migrasi 015 tercatat
+[lulus] Fingerprint hanya menahan catatan yang masih berlaku
+[lulus] Setiap pembatalan menyimpan alasannya sendiri
+[lulus] Pembatalan tidak menulis ke alasan revisi
+[lulus] Rekomendasi basi ditandai tidak berlaku
+[lulus] Penanda dan alasan tidak berlaku selalu berpasangan
+[lulus] Respons idempotensi berupa JSON valid
+[lulus] Payload outbox V3 tidak memuat field sensitif
+[lulus] Lampiran privat tersedia dan cocok dengan hash
+[lulus] Tidak ada file lampiran pending tertinggal
+LULUS: pemeriksaan Fase 2 tanpa blocker.

@@ -245,10 +245,15 @@ final class PelanggaranService
         return ['rows'=>$this->show($user,$id)['riwayat_revisi']];
     }
 
-    public function options(array $user):array
+    public function options(array $user,array $filters=[]):array
     {
+        // Pilihan katalog adalah data internal; gunakan penjaga baca yang sama
+        // dengan daftar/detail sebelum mengambil katalog atau peringatan.
+        $this->readMode($user);
         $caps=$this->capabilities->v3Capabilities($user);
-        $students=isset($caps['v3.pelanggaran.kelola'])?$this->repo->studentOptions($this->actorId($user)):[];
+        if(isset($filters['page'])&&(!is_scalar($filters['page'])||!preg_match('/^[1-9][0-9]{0,6}$/D',(string)$filters['page'])))throw new V3Exception('Halaman tidak valid.');
+        $page=isset($filters['page'])?max(1,min(1000000,(int)$filters['page'])):null;
+        $students=isset($caps['v3.pelanggaran.kelola'])?$this->repo->studentOptions($this->actorId($user),$page):[];
         return [
             'santri'=>array_map(static fn(array $row):array=>[
                 'santri_id'=>(int)$row['santri_id'],'tahun_ajaran_id'=>(int)$row['tahun_ajaran_id'],
@@ -257,8 +262,8 @@ final class PelanggaranService
             'katalog'=>array_map(static fn(array $row):array=>[
                 'id'=>(int)$row['id'],'kode'=>(string)$row['kode'],'nama'=>(string)$row['nama'],
                 'kategori'=>(string)$row['kategori_nama'],'tingkat'=>(string)$row['tingkat'],'poin_default'=>(int)$row['poin_default'],
-            ],$this->repo->katalogOptions()),
-            'dapat_mencatat'=>$students!==[],
+            ],$this->repo->katalogOptions($page)),
+            'dapat_mencatat'=>$page===null?$students!==[]:isset($caps['v3.pelanggaran.kelola']),
             'peringatan_konfigurasi'=>$this->repo->configurationWarnings(),
         ];
     }

@@ -194,6 +194,8 @@ register_shutdown_function(static function () use (&$createdPengajuan, $db): voi
     }
     $ids = implode(',', array_map('intval', $createdPengajuan));
     // Pembersihan fixture pengujian pada database *_test saja.
+    require_once __DIR__.'/support/izin_fixture_cleanup.php';
+    cleanupIzinFixture($db, $createdPengajuan);
     $db->query('DELETE FROM izin_keputusan_koreksi WHERE pengajuan_id IN (' . $ids . ')');
     $db->query('DELETE FROM izin_idempotency_keys WHERE pengajuan_id IN (' . $ids . ')');
     $db->query('DELETE FROM izin_riwayat_status WHERE pengajuan_id IN (' . $ids . ')');

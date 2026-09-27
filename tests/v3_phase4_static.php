@@ -4,7 +4,8 @@ require_once dirname(__DIR__).'/app/bootstrap.php';
 $fail=0;$check=static function($ok,$label)use(&$fail){echo ($ok?'[lulus] ':'[gagal] ').$label.PHP_EOL;if(!$ok)$fail++;};
 $files=['app/V3/PublikasiService.php','app/V3/PublikasiRepository.php','portal/v3_publikasi.php','portal/v3_publikasi_kelola.php','portal/partials/v3_publikasi_konten.php','bin/v3_phase4_preflight.php','bin/v3_phase4_verify.php'];
 foreach($files as $f){exec(escapeshellarg(PHP_BINARY).' -l '.escapeshellarg(APP_ROOT.'/'.$f),$out,$status);$check($status===0,'PHP lint '.$f);}
-$repo=file_get_contents(APP_ROOT.'/app/V3/PublikasiRepository.php');$from=substr($repo,strpos($repo,'private function parentFrom'),strpos($repo,'public function history')-strpos($repo,'private function parentFrom'));
+$repo=file_get_contents(APP_ROOT.'/app/V3/PublikasiRepository.php');preg_match('/(?:public|private) function parentFrom.*?(?=public function history)/s',$repo,$parentQuery);$from=$parentQuery[0]??'';
+$check($from!=='','Penjaga SQL menemukan metode parentFrom');
 $check(!str_contains($from,'v3_konseling')&&!str_contains($from,'v3_pelanggaran'),'SQL orang tua tidak mengambil isi kasus/sesi/pelanggaran');
 $check(str_contains($from,'sw.archived_at IS NULL')&&str_contains($from,'u.id=?')&&str_contains($from,'w.is_active=1'),'SQL pembacaan dibatasi pengguna dan relasi aktif');
 $service=file_get_contents(APP_ROOT.'/app/V3/PublikasiService.php');$check(str_contains($service,'parentSerializer(')&&str_contains($service,'waliSantri('),'Memakai allowlist dan resolver wali yang ada');

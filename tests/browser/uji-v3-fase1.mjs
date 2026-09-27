@@ -43,8 +43,8 @@ try{
  await page.locator('details summary').first().click();
  check((await page.locator('body').innerText()).includes('Pengakhiran uji'),'Alasan pengakhiran tampil di riwayat audit');
  await page.goto(base+path+'?jenis=ambang');await page.locator('#v3-label').fill(tag);await page.locator('#v3-nilai_minimum').fill(String(thresholdMin));await page.locator('#v3-nilai_maksimum').fill(String(thresholdMin+10));await page.locator('#v3-description').fill('Rekomendasi fiktif');
- await page.locator('#v3-tahun_ajaran_id').selectOption({label:'2026/2027 / Ganjil'});
- const year=await page.locator('#v3-tahun_ajaran_id').inputValue();
+ await page.locator('#v3-tahun_ajaran_id').selectOption({label:process.env.V3_BROWSER_YEAR_LABEL??'2026/2027 / Ganjil'});
+ const year=await page.locator('#v3-tahun_ajaran_id option').filter({hasText:'2026/2027 / Ganjil'}).getAttribute('value');
  await Promise.all([page.waitForNavigation(),page.locator('.v3-form button').click()]);check((await page.locator('body').innerText()).includes(tag),'Ambang dibuat melalui web');
  await page.goto(base+path+'?jenis=kategori');await page.locator('#v3-kode').fill(tag);await page.locator('#v3-nama').fill('Tetap tersimpan');
  await Promise.all([page.waitForNavigation(),page.locator('.v3-form button').click()]);check(await page.locator('#v3-nama').inputValue()==='Tetap tersimpan','Input aman dipertahankan setelah duplikasi');
@@ -55,10 +55,10 @@ try{
   const auth=await context.request.post(base+'/api/v1/auth/login',{data:{username:user,password:'Sandbox#123'}});const a=await auth.json();
   check(auth.status()===200,`${user} login API lama`);if(!a.data?.token)continue;
   const headers={Authorization:'Bearer '+a.data.token};
-  const caps=await context.request.get(base+'/api/v1/v3/capabilities',{headers});const c=await caps.json();check(caps.status()===200&&c.data.operasional_tersedia===false,`${user} API capability tanpa fitur operasional`);
+  const caps=await context.request.get(base+'/api/v1/v3/capabilities',{headers});const c=await caps.json();check(caps.status()===200&&c.data.operasional_tersedia===Object.keys(c.data.capabilities).some(k=>['v3.pelanggaran.kelola','v3.binaan.baca','v3.murobi.mengetahui','v3.pengawasan','v3.koreksi'].includes(k)),`${user} API capability sesuai kemampuan aktif`);
   const cat=await context.request.get(base+'/api/v1/v3/katalog',{headers});check(cat.status()===(['sbx_guru_biasa','sbx_ortu_a'].includes(user)?403:200),`${user} otorisasi katalog API`);
   const threshold=await context.request.get(base+'/api/v1/v3/ambang?tahun_ajaran_id='+year,{headers});check(threshold.status()===(['sbx_guru_biasa','sbx_ortu_a'].includes(user)?403:200),`${user} otorisasi ambang API`);
-  const mutation=await context.request.post(base+'/api/v1/v3/pelanggaran',{headers,data:{}});check(mutation.status()===404,`${user} endpoint fase 2 tidak ada`);
+  const mutation=await context.request.post(base+'/api/v1/v3/pelanggaran',{headers,data:{}});check(mutation.status()===422,`${user} endpoint fase 2 menolak payload kosong tanpa mutasi`);
   const profile=await (await context.request.get(base+'/api/v1/profile',{headers})).json();check(profile.data.capabilities!==undefined&&profile.data.roles!==undefined,`${user} field profil lama tersedia`);
  }
  for(const user of ['sbx_pengurus_a','sbx_murobi_a','sbx_ortu_a']){

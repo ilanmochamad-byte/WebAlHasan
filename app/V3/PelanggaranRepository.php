@@ -153,7 +153,7 @@ final class PelanggaranRepository
     }
 
     /** @return array<int,array<string,mixed>> */
-    public function studentOptions(int $userId): array
+    public function studentOptions(int $userId, ?int $page = null): array
     {
         return $this->all(
             "SELECT DISTINCT s.id AS santri_id,ta.id AS tahun_ajaran_id,s.nama_santri,ta.tahun,ta.semester
@@ -173,13 +173,13 @@ final class PelanggaranRepository
                         SELECT 1 FROM plotting_kamar pm WHERE pm.id_santri=s.id AND pm.id_tahun=ta.id
                           AND pm.id_kamar=pa.kamar_id
                     )))
-              ORDER BY s.nama_santri,s.id"
-            , [$userId]
+              ORDER BY s.nama_santri,s.id" . ($page === null ? '' : ' LIMIT 25 OFFSET ?')
+            , $page === null ? [$userId] : [$userId, ($page-1)*25]
         );
     }
 
     /** @return array<int,array<string,mixed>> */
-    public function katalogOptions(): array
+    public function katalogOptions(?int $page = null): array
     {
         return $this->all(
             "SELECT k.id,k.kode,k.nama,k.tingkat,k.poin_default,c.nama AS kategori_nama
@@ -188,7 +188,7 @@ final class PelanggaranRepository
                 AND k.tanggal_mulai<=CURDATE() AND (k.tanggal_selesai IS NULL OR k.tanggal_selesai>=CURDATE())
                 AND c.is_active=1 AND c.archived_at IS NULL
                 AND c.tanggal_mulai<=CURDATE() AND (c.tanggal_selesai IS NULL OR c.tanggal_selesai>=CURDATE())
-              ORDER BY c.nama,k.tingkat,k.nama"
+              ORDER BY c.nama,k.tingkat,k.nama,k.id" . ($page === null ? '' : ' LIMIT 25 OFFSET ?'), $page === null ? [] : [($page-1)*25]
         );
     }
 
@@ -631,8 +631,11 @@ final class PelanggaranRepository
         );
     }
 
-    private function scopeSql(string $mode, int $userId, string $alias): array
+    public function scopeSql(string $mode, int $userId, string $alias): array
     {
+        if (!in_array($mode, ['admin','pembimbing','murobi'], true) || !in_array($alias, ['p','k','r'], true)) {
+            throw new V3Exception('Cakupan tidak valid.',403);
+        }
         if ($mode === 'admin') { return ['1=1', []]; }
         $assignment = $mode === 'pembimbing' ? 'pembimbing_assignments' : 'murobi_assignments';
         $master = $mode === 'pembimbing' ? 'pengurus' : 'guru';

@@ -21,7 +21,7 @@ final class PublikasiRepository
     }
 
     /** Batas relasi ada pada SQL sebelum snapshot diambil. Tidak membaca kasus/sesi. */
-    private function parentFrom():string
+    public function parentFrom():string
     {
         return " FROM v3_publikasi p JOIN users u ON u.wali_id=p.wali_id AND u.is_active=1
          JOIN wali w ON w.id=p.wali_id AND w.is_active=1 AND w.archived_at IS NULL

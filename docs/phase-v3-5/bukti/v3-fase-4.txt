@@ -1,0 +1,122 @@
+[lulus] PHP lint app/V3/PublikasiService.php
+[lulus] PHP lint app/V3/PublikasiRepository.php
+[lulus] PHP lint portal/v3_publikasi.php
+[lulus] PHP lint portal/v3_publikasi_kelola.php
+[lulus] PHP lint portal/partials/v3_publikasi_konten.php
+[lulus] PHP lint bin/v3_phase4_preflight.php
+[lulus] PHP lint bin/v3_phase4_verify.php
+[lulus] Penjaga SQL menemukan metode parentFrom
+[lulus] SQL orang tua tidak mengambil isi kasus/sesi/pelanggaran
+[lulus] SQL pembacaan dibatasi pengguna dan relasi aktif
+[lulus] Memakai allowlist dan resolver wali yang ada
+[lulus] Rollback tidak menghapus data atau tabel bisnis
+[lulus] Tidak ada mutasi publikasi lewat GET
+[lulus] Penjaga GET mendeteksi contoh yang salah
+[lulus] Layar deep-link berada di Stack autentikasi
+[lulus] Detail memuat ulang API dan menghapus konten lama
+[lulus] Payload V3 divalidasi dan tujuan sebelum login ditunda
+[lulus] Layar publikasi tidak melog atau menyimpan isi ke penyimpanan/clipboard
+[lulus] Rahasia menolak pratinjau manual 422
+[lulus] Admin tidak melewati Rahasia 422
+[lulus] Rahasia tidak menghasilkan publikasi/outbox
+[lulus] Kasus belum terbit memiliki nol publikasi bagi orang tua
+[lulus] Revisi sah mencatat sebelum/sesudah
+[lulus] Pratinjau tidak menerbitkan baris bisnis
+[lulus] Orang tua tidak menyiapkan publikasi 403
+[lulus] Pembimbing luar cakupan ditolak 403
+[lulus] Konfirmasi wajib 422
+[lulus] Pratinjau = hasil terbit = snapshot orang tua
+[lulus] Allowlist tidak memuat isi internal atau petugas
+[lulus] Retry mengembalikan hasil pertama
+[lulus] Key dan pratinjau berbeda tetap tidak menggandakan bisnis/notifikasi
+[lulus] IDOR wali B ditolak 403
+[lulus] Pencabutan wali segera menutup akses 403
+[lulus] Internal ke Rahasia ditolak selama publikasi aktif 409
+[lulus] Kerahasiaan tetap Internal sesudah penolakan
+[lulus] Status dibaca hanya melalui mutasi
+[lulus] Koreksi wajib beralasan 422
+[lulus] Koreksi menyimpan versi, riwayat dan reset baca
+[lulus] Versi baca basi ditolak 409
+[lulus] Penarikan wajib beralasan 422
+[lulus] Penarikan menyisakan status dan riwayat aman
+[lulus] Koreksi publikasi sumber Rahasia ditolak 422
+[lulus] Replay terbit tidak melewati perubahan ke Rahasia 422
+[lulus] Baris bisnis tidak dihapus
+[lulus] Setelah penarikan, isi identik boleh diterbitkan ulang sebagai snapshot baru
+[lulus] Kegagalan audit_logs ditolak 503
+[lulus] Rollback penuh termasuk audit/idempotensi: audit_logs
+[lulus] Kegagalan notifikasi_outbox ditolak 503
+[lulus] Rollback penuh termasuk audit/idempotensi: notifikasi_outbox
+[lulus] Kegagalan v3_publikasi_outbox ditolak 503
+[lulus] Rollback penuh termasuk audit/idempotensi: v3_publikasi_outbox
+[lulus] Notifikasi setiap perubahan generik
+[lulus] Tidak menumpang perizinan atau WhatsApp
+[lulus] Audit publikasi hanya metadata
+[lulus] Credential sentinel tidak bocor pada payload atau audit publikasi
+[lulus] Memilih sebagian wali wajib alasan 422
+[lulus] Default semua wali aktif dengan akun
+[lulus] Satu tindakan menghasilkan tepat satu snapshot per wali
+[lulus] Wali membaca snapshot penerimanya sendiri
+[lulus] Relasi santri sama tidak membuka snapshot wali lain 403
+[lulus] Wali membaca snapshot penerimanya sendiri
+[lulus] Relasi santri sama tidak membuka snapshot wali lain 403
+[lulus] Subset beralasan diterima
+[lulus] Sumber berubah sesudah pratinjau menolak terbit 409
+[lulus] Publikasi sumber sesi juga memblokir perubahan Rahasia 409
+[lulus] Snapshot sesi tidak membawa isi sesi internal
+[lulus] Sesi induk Rahasia menolak preview manual 422
+[lulus] Sumber pelanggaran memakai snapshot pilihan, tanpa poin internal
+[lulus] Pelanggaran terbit tidak boleh ditautkan ke kasus Rahasia 409
+[lulus] Pelanggaran terkait Rahasia menolak pratinjau manual 422
+[lulus] Penolakan pelanggaran Rahasia tidak membuat notifikasi
+[lulus] Publikasi pelanggaran tertaut memblokir Internal ke Rahasia 409
+[lulus] Perubahan ke Rahasia aman setelah semua penarikan
+[lulus] Bukan pemilik tidak mengetahui kasus Rahasia lewat opsi publikasi 403
+[lulus] Bukan pemilik tidak mengetahui sesi kasus Rahasia 403
+[lulus] Bukan pemilik tidak memperoleh pesan Rahasia pada pratinjau 403
+[lulus] Bukan pemilik tidak membaca riwayat publikasi kasus Rahasia 403
+[lulus] Bukan pemilik tidak menarik publikasi kasus Rahasia 403
+[lulus] Admin tetap dapat mengawasi publikasi kasus Rahasia
+[lulus] Pemilik tetap dapat membuka publikasi kasus Rahasia yang telah ditarik
+[lulus] Pesan penolakan pelanggaran tertaut netral
+[lulus] Terbit ulang isi asli sesudah koreksi membuat snapshot yang sesuai respons
+[lulus] Klik ganda sesudah terbit ulang tetap tidak menggandakan
+[lulus] Publikasi konkuren tepat satu per wali, putaran 0
+[lulus] Kedua retry selesai dengan hasil konsisten
+[lulus] Outbox InApp konkuren tepat satu
+[lulus] Publikasi konkuren tepat satu per wali, putaran 1
+[lulus] Kedua retry selesai dengan hasil konsisten
+[lulus] Outbox InApp konkuren tepat satu
+[lulus] Konkurensi terbit/kerahasiaan mempertahankan invariant 2
+[lulus] Salah satu operasi ditolak dengan konflik/kerahasiaan
+[lulus] Konkurensi terbit/kerahasiaan mempertahankan invariant 3
+[lulus] Salah satu operasi ditolak dengan konflik/kerahasiaan
+[lulus] Push OFF: nol send dan nol request receipt
+[lulus] WhatsApp OFF: nol request provider
+[lulus] OFF saat terbit: hanya InApp, tanpa antrean provider
+[lulus] Fake kegagalan sementara dicatat dengan retry
+[lulus] Retry worker memakai baris yang sama, tidak mengirim ulang baris Sent
+[lulus] Payload push hanya penunjuk publikasi dan pesan generik
+[lulus] Receipt diproses melalui fake; bukan bukti perangkat fisik
+[lulus] Worker tidak mengirim sesudah relasi wali dicabut
+[lulus] Seluruh suite: WhatsApp tetap nol request
+[lulus] Migrasi ulang idempoten
+[lulus] Rollback 018 berjalan
+[lulus] Rollback mempertahankan hash seluruh baris semua tabel bisnis
+[lulus] Migrasi 018 kembali terpasang
+[lulus] Migrasi ulang mempertahankan semua data lama dan publikasi
+[lulus] Migrasi ulang kedua idempoten
+[lulus] Tabel v3_publikasi_pratinjau
+[lulus] Tabel v3_publikasi_riwayat
+[lulus] Tabel v3_publikasi_outbox
+[lulus] Aktif tidak menunjuk Rahasia
+[lulus] Sumber tepat satu
+[lulus] Riwayat versi terkini ada
+[lulus] Riwayat tidak yatim
+[lulus] Penarikan beralasan
+[lulus] Koreksi beralasan
+[lulus] Relasi outbox benar
+[lulus] Setiap outbox V3 memiliki relasi
+[lulus] Payload generik
+[lulus] WhatsApp V3 nol
+[lulus] Pelanggaran terbit tidak terkait kasus Rahasia melalui revisi

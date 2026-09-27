@@ -1,0 +1,55 @@
+[lulus] Baseline options menolak wali lewat HTTP
+[lulus] Laporan API memerlukan autentikasi
+[lulus] Options mobile berhalaman lewat HTTP
+[lulus] Laporan API lintas pembimbing kosong
+[lulus] sbx_admin HTML 1440px terbuka
+[lulus] sbx_admin 1440px tanpa luapan
+[lulus] sbx_admin HTML XSS tidak berjalan
+[lulus] sbx_admin CSV sesuai proyeksi tanpa isi rahasia
+[lulus] sbx_admin cetak escape XSS
+[lulus] sbx_admin PDF benar-benar dihasilkan Chromium
+[lulus] sbx_admin HTML 375px terbuka
+[lulus] sbx_admin 375px tanpa luapan
+[lulus] sbx_admin HTML XSS tidak berjalan
+[lulus] sbx_admin CSV sesuai proyeksi tanpa isi rahasia
+[lulus] sbx_admin cetak escape XSS
+[lulus] sbx_admin PDF benar-benar dihasilkan Chromium
+[lulus] sbx_pengurus_a HTML 1440px terbuka
+[lulus] sbx_pengurus_a 1440px tanpa luapan
+[lulus] sbx_pengurus_a HTML XSS tidak berjalan
+[lulus] sbx_pengurus_a CSV sesuai proyeksi tanpa isi rahasia
+[lulus] sbx_pengurus_a cetak escape XSS
+[lulus] sbx_pengurus_a PDF benar-benar dihasilkan Chromium
+[lulus] sbx_pengurus_a HTML 375px terbuka
+[lulus] sbx_pengurus_a 375px tanpa luapan
+[lulus] sbx_pengurus_a HTML XSS tidak berjalan
+[lulus] sbx_pengurus_a CSV sesuai proyeksi tanpa isi rahasia
+[lulus] sbx_pengurus_a cetak escape XSS
+[lulus] sbx_pengurus_a PDF benar-benar dihasilkan Chromium
+[lulus] sbx_murobi_a HTML 1440px terbuka
+[lulus] sbx_murobi_a 1440px tanpa luapan
+[lulus] sbx_murobi_a HTML XSS tidak berjalan
+[lulus] sbx_murobi_a CSV sesuai proyeksi tanpa isi rahasia
+[lulus] sbx_murobi_a cetak escape XSS
+[lulus] sbx_murobi_a PDF benar-benar dihasilkan Chromium
+[lulus] sbx_murobi_a HTML 375px terbuka
+[lulus] sbx_murobi_a 375px tanpa luapan
+[lulus] sbx_murobi_a HTML XSS tidak berjalan
+[lulus] sbx_murobi_a CSV sesuai proyeksi tanpa isi rahasia
+[lulus] sbx_murobi_a cetak escape XSS
+[lulus] sbx_murobi_a PDF benar-benar dihasilkan Chromium
+[lulus] sbx_ortu_a HTML 1440px terbuka
+[lulus] sbx_ortu_a 1440px tanpa luapan
+[lulus] sbx_ortu_a HTML XSS tidak berjalan
+[lulus] sbx_ortu_a CSV sesuai proyeksi tanpa isi rahasia
+[lulus] sbx_ortu_a cetak escape XSS
+[lulus] sbx_ortu_a PDF benar-benar dihasilkan Chromium
+[lulus] sbx_ortu_a HTML 375px terbuka
+[lulus] sbx_ortu_a 375px tanpa luapan
+[lulus] sbx_ortu_a HTML XSS tidak berjalan
+[lulus] sbx_ortu_a CSV sesuai proyeksi tanpa isi rahasia
+[lulus] sbx_ortu_a cetak escape XSS
+[lulus] sbx_ortu_a PDF benar-benar dihasilkan Chromium
+[lulus] Wali menebak jenis internal ditolak web
+[lulus] CSV keluarga menetralkan formula nyata dari snapshot
+[lulus] HTML keluarga menampilkan teks XSS secara aman

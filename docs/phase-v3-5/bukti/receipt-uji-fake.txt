@@ -1,0 +1,14 @@
+[
+    {
+        "status": "Sent",
+        "receipt_status": "Terkirim",
+        "receipt_kode": "OK",
+        "jumlah": 15
+    },
+    {
+        "status": "Failed",
+        "receipt_status": "Belum Diperlukan",
+        "receipt_kode": null,
+        "jumlah": 15
+    }
+]

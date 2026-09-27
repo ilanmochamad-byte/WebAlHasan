@@ -1,0 +1,53 @@
+[lulus] API konseling tanpa token ditolak
+[lulus] sbx_pengurus_a login API
+[lulus] sbx_murobi_a login API
+[lulus] sbx_murobi_b login API
+[lulus] sbx_ortu_a login API
+[lulus] sbx_pengurus_b login API
+[lulus] Fixture pelanggaran API tersedia untuk tautan konseling
+[lulus] Opsi konseling dibatasi ke santri dalam cakupan
+[lulus] POST aplikasi membuka kasus terhubung
+[lulus] Retry API kasus me-replay ID yang sama
+[lulus] Sesi 1 dibuat sebagai baris terpisah
+[lulus] Sesi 2 dibuat sebagai baris terpisah
+[lulus] Timeline API memuat kasus dan dua sesi
+[lulus] Status sesi selesai tersimpan lewat API
+[lulus] PATCH sesi selesai membuat revisi
+[lulus] Detail pembimbing memuat riwayat sesi internal
+[lulus] Murobi terkait membaca isi kasus Internal
+[lulus] Pembimbing membuka kasus Rahasia lewat API
+[lulus] Murobi terkait ditolak dari kasus Rahasia
+[lulus] Daftar murobi tidak memuat kasus Rahasia
+[lulus] Murobi tidak dapat menandai kasus Rahasia
+[lulus] Koreksi kasus lewat API membentuk revisi berbaris
+[lulus] Murobi terkait menandai mengetahui lewat API
+[lulus] murobi lain ditolak dari detail konseling
+[lulus] orang tua ditolak dari detail konseling
+[lulus] pembimbing lain ditolak dari detail konseling
+[lulus] GET tidak dapat mengubah status sesi
+[lulus] Orang tua ditolak pada status sesi meski menebak ID
+[lulus] Orang tua ditolak pada koreksi sesi meski menebak ID
+[lulus] Orang tua ditolak pada catatan murobi sesi meski menebak ID
+[lulus] Orang tua ditolak pada tautan kasus meski menebak ID
+[lulus] Orang tua ditolak pada timeline kasus meski menebak ID
+[lulus] GET tidak dapat menambah tautan kasus
+[lulus] Tautan tanpa pelanggaran maupun rekomendasi ditolak 422
+[lulus] 1440px halaman konseling HTTP 200
+[lulus] 1440px formulir konseling tanpa luapan horizontal
+[lulus] 1440px kontrol formulir konseling berlabel
+[lulus] 375px halaman konseling HTTP 200
+[lulus] 375px formulir konseling tanpa luapan horizontal
+[lulus] 375px kontrol formulir konseling berlabel
+[lulus] Mutasi web konseling tanpa CSRF ditolak
+[lulus] Pembimbing membaca detail internal pada website
+[lulus] 1440px detail konseling tanpa luapan horizontal
+[lulus] 1440px kontrol formulir detail konseling berlabel
+[lulus] 375px detail konseling tanpa luapan horizontal
+[lulus] 375px kontrol formulir detail konseling berlabel
+[lulus] Mutasi web detail konseling tanpa CSRF ditolak
+[lulus] Tampilan cetak pembimbing mengikuti hak internal
+[lulus] Website murobi merender isi kasus Internal
+[lulus] Tampilan cetak murobi mengikuti hak kasus Internal
+[lulus] Website murobi menolak kasus Rahasia tanpa membocorkan isinya
+[lulus] Tampilan cetak murobi menolak kasus Rahasia
+[lulus] Orang tua ditolak dari halaman internal meski menebak ID

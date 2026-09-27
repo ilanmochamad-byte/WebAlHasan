@@ -325,15 +325,17 @@ Pembagian fungsi per platform, daftar event notifikasi minimum, dan format lapor
 - [ ] Pembimbing menyelesaikan alur pelanggaran → rekomendasi → kasus → dua sesi → selesai pada website dan aplikasi menggunakan data uji yang sama tanpa duplikasi.
 - [ ] Murobi terkait melihat serta menandai data yang sama pada website dan aplikasi, sedangkan murobi lain memperoleh `403`/hasil kosong.
 - [ ] Orang tua melihat hanya publikasi yang dipilih pada website dan aplikasi; pengujian serializer serta akses silang menunjukkan nol field internal bocor.
-- [ ] Laporan pembimbing, murobi, orang tua, dan admin masing-masing hanya memuat data sesuai cakupannya pada HTML, PDF/cetak, dan CSV.
+- [x] Laporan pembimbing, murobi, orang tua, dan admin masing-masing hanya memuat data sesuai cakupannya pada HTML, PDF/cetak, dan CSV.
 - [ ] Rekonsiliasi seluruh data uji menghasilkan selisih poin `0`, referensi yatim `0`, publikasi duplikat `0`, dan status tidak sah `0`.
 - [ ] Seluruh pengujian otomatis V1, V2, dan V3 lulus pada MySQL yang setara produksi tanpa regresi.
-- [ ] Smoke test browser nyata lulus untuk admin, pembimbing, murobi, dan orang tua pada viewport desktop serta 375 px.
+- [x] Smoke test browser nyata lulus untuk admin, pembimbing, murobi, dan orang tua pada viewport desktop serta 375 px.
 - [ ] Push fisik Android dan iOS lulus untuk sedikitnya satu peristiwa murobi dan satu publikasi orang tua, dengan payload generik.
-- [ ] Uji kegagalan transaksi, retry, klik ganda, optimistic conflict, CSRF, IDOR, XSS, SQL injection, dan file upload berbahaya lulus.
+- [x] Uji kegagalan transaksi, retry, klik ganda, optimistic conflict, CSRF, IDOR, XSS, SQL injection, dan file upload berbahaya lulus.
 - [ ] Worker/cron produksi berjalan otomatis sesuai interval yang didokumentasikan dan receipt akhir push diperiksa bila infrastruktur mendukungnya.
 - [ ] Backup, manifest migrasi, hash commit rilis, panduan rollback, dan hasil smoke test produksi tersimpan tanpa credential atau data santri nyata.
 - [ ] Branch V3 telah diaudit Claude Code, worktree bersih, dan tidak di-merge ke `main` sebelum seluruh kriteria wajib terpenuhi.
+
+Bukti implementator Fase 5 pada database uji lokal dan Chromium: [hasil pengujian](docs/phase-v3-5/hasil-pengujian.md) serta [status penerimaan](docs/phase-v3-5/status-penerimaan.md). Centang di atas terbatas pada bukti yang dijalankan. Audit independen Claude Code selesai 27 September 2026 dengan dua koreksi terarah ([audit](docs/phase-v3-5/audit-claude-code.md)); perangkat fisik, hosting setara produksi dan rekonsiliasi orphan seluruh DB uji masih tertunda. Fase 5 belum selesai seluruhnya dan tidak di-merge/deploy.
 
 ## 7. Metrik Keberhasilan
 

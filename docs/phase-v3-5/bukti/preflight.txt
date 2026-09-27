@@ -1,0 +1,6 @@
+[lulus] 018_v3_fase4_publikasi.sql
+[lulus] v3_publikasi_pratinjau
+[lulus] v3_pelanggaran
+[lulus] v3_konseling_kasus
+[lulus] audit_logs
+Backup database dan berkas wajib dibuat operator; preflight tidak membuat backup.
