@@ -82,9 +82,64 @@ Lingkungan: PHP 8.4, MariaDB 12.3.2 lokal, DB `webalhasan_v3_phase1_test`, fixtu
 | Mobile `npx tsc --noEmit`, ESLint berkas berubah | Lulus, tanpa temuan |
 | Uji fisik Android/iOS | **Tidak dijalankan** — tidak ada persetujuan perangkat/provider |
 
-## 5. Yang tidak diklaim
+## 5. Migrasi dan smoke produksi cPanel — bukti Human Developer
 
-- Push dan deep-link Android+iOS fisik: **BELUM TERPENUHI — MENUNGGU UJI FISIK**.
-- Migrasi/smoke cPanel, smoke produksi Fase 3 §6, dan pembersihan data smoke produksi:
-  **BELUM DIJALANKAN**; tidak ada klaim lulus.
+Dikerjakan Human Developer pada hosting cPanel (`k1807225`, `public_html`), bukan oleh auditor.
+Auditor hanya menilai keluaran yang dikirimkan.
+
+**22 September 2026, 21:18:43 — migrasi 018.** `php bin/v3_phase4_preflight.php` lulus 8/8
+`exit=0`; `grep -c pengurusIdForUser app/V3/PublikasiService.php` = 1, jadi koreksi audit A1 ikut
+terpasang; `php bin/migrate.php up` menerapkan `018_v3_fase4_publikasi.sql` dan `status`
+menampilkan 001–018 `[diterapkan]`. Post-check `v3_phase4_verify` 14/14, `v3_phase3_verify` 34,
+`v3_phase2_verify` 30, dan `v3_verify` seluruhnya `exit=0`. Berbeda dengan database uji lokal,
+`v3_verify` produksi melaporkan **LULUS tanpa referensi yatim**; temuan A4 memang hanya milik DB uji.
+
+**23 September 2026, 07:23–07:36 — smoke web produksi** dengan set `SMOKE AUDIT` (santri #363,
+wali tunggal `ORANG TUA SMOKE AUDIT`, relasi `santri_wali` aktif diverifikasi lebih dahulu):
+
+- Kasus Rahasia menolak penyiapan publikasi; sesudah revisi beralasan ke Internal, pratinjau →
+  konfirmasi → terbit berhasil (publikasi #1).
+- `Internal → Rahasia` ditolak selama publikasi aktif.
+- Orang tua melihat isi persis pratinjau, tanpa tujuan kasus atau identitas petugas; notifikasi
+  in-app generik; `v3_konseling_detail.php` ditolak 403.
+- Koreksi menaikkan versi ke 2 dan mereset status baca; penarikan beralasan menghasilkan versi 3
+  dan orang tua hanya melihat "Informasi ini telah ditarik." tanpa teks lama maupun alasan.
+- Basis data: `v3_publikasi_riwayat` tiga versi (Terbit/Koreksi/Tarik) dengan alasan pada dua
+  tindakan terakhir; `audit_logs` memuat terbit, dibaca, koreksi, tarik; enam baris outbox dengan
+  `pengajuan_id` NULL, `data_json` persis `{"tipe":"v3_publikasi","publikasi_id":1}`, judul/isi
+  generik, dan **nol** baris WhatsApp. Baris Push saat itu `Failed` karena akun wali smoke belum
+  mempunyai perangkat terdaftar.
+
+## 6. Uji fisik Android + iOS — parsial, dihentikan atas keputusan Human Developer
+
+Dilakukan Human Developer pada 27 September 2026 pukul 14.09–14.34 dengan satu iPhone 17 Pro dan
+satu perangkat Android, memakai akun wali smoke. Push dinyalakan untuk keperluan uji; cron worker
+push produksi sudah terpasang sejak V2 Fase 4.
+
+Terbukti pada **kedua** platform:
+
+- Push tiba dengan judul `Pembaruan pembinaan` dan isi `Ada pembaruan pembinaan. Masuk untuk
+  melihat informasi.` — tanpa nama santri, pelanggaran, poin, alasan, atau isi konseling.
+- Ketukan notifikasi membuka layar *Informasi pembinaan* dengan snapshot yang benar sesudah
+  pengguna masuk; isi cocok dengan yang diterbitkan dari web.
+- Publikasi kedua (diterbitkan 14:32:16) terbuka benar pada aplikasi yang baru dijalankan,
+  mencakup jalur cold start.
+- Layar detail notifikasi Android menampilkan tombol **Buka informasi pembinaan**, dan status baca
+  tercatat (14:27:13).
+
+**Belum diuji** dan karena itu tidak diklaim: penolakan ketika deep-link dibuka oleh akun wali
+lain, penolakan sesudah relasi `santri_wali` dicabut, tampilan publikasi yang ditarik pada
+aplikasi, receipt provider Expo yang tercatat sampai final, dan pengembalian sakelar Push.
+
+Human Developer menghentikan sisa skenario pada 27 September 2026 karena beban kerja uji dua
+perangkat. Auditor menghormati keputusan itu dan **tidak** menaikkan status kriteria push fisik
+menjadi lulus; statusnya kini **SEBAGIAN TERBUKTI**, naik dari tanpa bukti sama sekali.
+
+## 7. Yang tidak diklaim
+
+- Push dan deep-link Android+iOS fisik: **SEBAGIAN TERBUKTI** (lihat §6); kriteria penuh belum
+  terpenuhi karena otorisasi ulang negatif dan receipt provider belum diuji.
+- Smoke produksi Fase 3 §6 dan pembersihan data smoke produksi: **BELUM DIJALANKAN**.
 - Pemeriksaan log produksi: belum dijalankan.
+- Tindakan operasional yang masih terbuka bagi Human Developer: menentukan sakelar Push produksi
+  tetap ON atau dimatikan kembali, dan menarik publikasi smoke yang masih aktif dengan alasan.

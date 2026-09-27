@@ -23,3 +23,7 @@ Verifier umum `bin/v3_verify.php` melaporkan tiga jenis referensi yatim pada tab
 ## Pengujian ulang auditor
 
 Lihat [audit Claude Code](audit-claude-code.md) §4. Ringkas: suite Fase 4 121/121 sesudah koreksi audit, browser 34/34, Fase 2–3 dan regresi penugasan lulus. Klaim Fase 1 "71 lulus" di atas tidak tereproduksi pada DB uji saat ini: diagnostik gagal 2 karena yatim fixture V2 yang dibuat oleh run regresi hari ini (A4), bukan oleh 018.
+
+## Produksi cPanel dan uji fisik parsial (27 September 2026)
+
+Migrasi 018 diterapkan di hosting pada 22 September 2026 21:18:43 dengan preflight dan empat verifier `exit=0`, diikuti smoke web produksi pada 23 September dan uji push fisik parsial Android+iOS pada 27 September. Rincian, batas, dan hal yang belum diuji ada di [audit Claude Code](audit-claude-code.md) §5–§7.
