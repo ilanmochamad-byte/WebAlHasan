@@ -178,7 +178,30 @@ $guruId = static function (string $nip) use ($db): int {
 
 // Rentang tanggal unik per eksekusi supaya pengujian dapat diulang tanpa bentrok
 // dengan pengajuan yang dibuat eksekusi sebelumnya.
-$offset = random_int(400, 3000);
+// Offset dipilih ulang bila jendela uji (-5..+45 hari) bersinggungan dengan
+// pengajuan berstatus menahan milik santri fixture, misalnya sisa run lama
+// sebelum teardown dikoreksi; tanpa ini tumpang tindih membuat uji acak gagal.
+$santriFixture = implode(',', array_map('intval', array_values($santri)));
+$statusMenahan = implode(',', array_map(
+    static fn (string $status): string => "'" . $db->real_escape_string($status) . "'",
+    \App\Izin\IzinWriteRepository::STATUS_MENAHAN
+));
+for ($percobaan = 0; ; $percobaan++) {
+    $offset = random_int(400, 3000);
+    $awalJendela = date('Y-m-d', strtotime('+' . ($offset - 5) . ' days'));
+    $akhirJendela = date('Y-m-d', strtotime('+' . ($offset + 45) . ' days'));
+    $bentrokJendela = $db->query(
+        'SELECT 1 FROM izin_pengajuan WHERE santri_id IN (' . $santriFixture . ') AND status IN (' . $statusMenahan . ")
+            AND tgl_izin <= '" . $akhirJendela . "' AND tgl_kembali >= '" . $awalJendela . "' LIMIT 1"
+    )?->fetch_assoc();
+    if ($bentrokJendela === null) {
+        break;
+    }
+    if ($percobaan >= 50) {
+        fwrite(STDERR, "Tidak menemukan rentang tanggal bebas untuk fixture setelah 50 percobaan.\n");
+        exit(1);
+    }
+}
 $tanggal = static function (int $mulai, int $lama) use ($offset): array {
     $from = date('Y-m-d', strtotime('+' . ($offset + $mulai) . ' days'));
 

@@ -11,7 +11,7 @@
 | Performa lingkungan setara produksi | 1.000 data diuji lokal; hosting/staging setara produksi **MENUNGGU PRODUKSI**. |
 | Penerimaan pengguna 95%, aksesibilitas/keyboard/perangkat | Expo web adalah bukti browser, bukan OS native/pembaca layar nyata/UAT. **MENUNGGU UJI FISIK**. |
 | Audit independen | Selesai 27 September 2026 ([audit](audit-claude-code.md)); K1 mobile dan K2 audit katalog dikoreksi. Tidak boleh merge sampai kriteria wajib terpenuhi. |
-| Flakiness `v2_phase3_api_contract` | Sekali gagal di blok concurrency pada run penuh audit (pengajuan race tidak terbentuk); lulus pada lima run terpisah. Offset tanggal acak. Belum ditelusuri; bukan perubahan Fase 5. |
+| Flakiness `v2_phase3_api_contract` | Ditelusuri dan dikoreksi: 46 pengajuan sisa run lama (sebelum koreksi teardown) untuk santri `SBX-S-001`, 30 berstatus `Disetujui`, bertahan karena outbox menahan FK. Offset tanggal acak bentrok pada 245 dari 2.601 offset (9,4%) dan `findOverlap` menolak pengajuan (409). Uji kini memilih ulang offset bila jendela −5..+45 hari bersinggungan dengan status menahan fixture; assertion tidak berubah dan sisa tidak dihapus. Offset 543 yang dipatok mereproduksi 4 kegagalan sebelum koreksi; setelah koreksi 10/10 run lulus 116/0. |
 
 Seluruh fase belum dinyatakan selesai. Jangan menghapus data lama agar verifier lulus. Sakelar Push ON/WhatsApp OFF tidak berubah. Tidak ada uji/migrasi/deploy pada produksi yang dihitung sebagai bukti sesi ini.
 

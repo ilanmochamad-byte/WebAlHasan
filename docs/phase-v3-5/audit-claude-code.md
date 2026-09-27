@@ -58,7 +58,7 @@ Jenis baris baru dari run baseline sama dengan residu: `izin.pengajuan_dibuat`, 
 | Expo web Fase 5 (375 px) | 23 | 0 | 20 implementator + 3 regresi K1 |
 | Mobile `tsc --noEmit`, `npm run lint`, `test:print-dialog` | lulus, lulus, 6 | 0 | |
 
-Intermiten: pada run penuh pertama `tests/v2_phase3_api_contract.php` gagal di blok concurrency (pengajuan race tidak terbentuk, keputusan 403/403). Berkas yang sama lulus 116/0 pada lima run terpisah dan pada run di salinan. Tanggal uji memakai offset acak 400–3000 hari; perubahan Fase 5 pada berkas ini hanya teardown saat shutdown. Dicatat sebagai flakiness V2 yang belum ditelusuri, bukan regresi Fase 5.
+Intermiten: pada run penuh pertama `tests/v2_phase3_api_contract.php` gagal di blok concurrency (pengajuan race tidak terbentuk, keputusan 403/403). Berkas yang sama lulus 116/0 pada lima run terpisah dan pada run di salinan. Tanggal uji memakai offset acak 400–3000 hari; perubahan Fase 5 pada berkas ini hanya teardown saat shutdown. Penelusuran lanjutan: 46 pengajuan sisa run lama (30 `Disetujui`) untuk `SBX-S-001` pada jendela offset acak memicu tolakan tumpang tindih (409) pada 245/2.601 offset (9,4%); offset 543 yang dipatok mereproduksi keempat kegagalan. Uji dikoreksi agar memilih ulang offset yang bebas status menahan; 10/10 run lulus 116/0, residu tetap [96,24]. Bukan regresi Fase 5.
 
 ## Tetap tertunda (bukan lulus)
 
