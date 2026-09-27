@@ -166,3 +166,47 @@ kriteria di atas karena pengiriman nyata ke dua perangkat sudah terbukti berulan
   smoke #3 ditarik beralasan (versi 6), dan sakelar **Push produksi diputuskan tetap ON** sehingga
   publikasi berikutnya mengirim push nyata kepada wali penerima. WhatsApp tetap OFF. Lihat
   [pengaturan kanal](pengaturan-kanal.md).
+
+## 8. Audit penutupan Fase 4 — 27 September 2026
+
+Dilakukan auditor sesudah seluruh bukti uji fisik diterima, untuk memastikan keadaan akhir Fase 4
+konsisten antara kode, produksi, dan dokumen.
+
+**Keadaan kode.** `origin/main` dan branch `prd-v3-fase-4` **identik pada seluruh berkas non-dokumen**
+(`git diff origin/main origin/prd-v3-fase-4 -- . ':!docs'` kosong), jadi kode yang diaudit,
+kode yang di-merge lewat PR #42, dan kode yang terpasang di cPanel adalah satu hal yang sama —
+dikuatkan `grep -c pengurusIdForUser` = 1 pada hosting. Tidak ada berkas Fase 5 pada seluruh
+rentang `03c3a05..HEAD`. Perbedaan yang tersisa hanya dokumentasi pada PR terbuka.
+
+**Pengujian ulang pada kode final** (DB uji `webalhasan_v3_phase1_test`):
+
+| Pemeriksaan | Hasil |
+| --- | --- |
+| `bin/v3_phase4_run_tests.sh` | 121/121 lulus, `exit=0` |
+| `bin/v3_phase4_verify.php` | 14/14 lulus, `exit=0` |
+| Browser `tests/browser/uji-v3-fase4.mjs` | 34/34 lulus |
+| `bin/v3_phase3_run_tests.sh` | 273 pemeriksaan lulus, nol gagal. Skrip keluar 1 hanya karena drill migrasi Fase 3 menolak berjalan dengan pesan "Urutan migrasi tidak aman untuk drill Fase 3" — penjagaan yang benar sesudah 018 menjadi migrasi terakhir, bukan kegagalan |
+| `bin/v3_phase2_run_tests.sh` | 172/172 lulus |
+| `bin/v3_phase1_run_tests.sh` | 69 lulus, 2 gagal — tetap A4 (yatim fixture V2 di DB uji), tidak berubah oleh Fase 4 |
+| `bin/penugasan_run_all_tests.sh` | seluruhnya lulus, `exit=0`, nol baris GAGAL |
+
+**Konsistensi dokumen.** Auditor memperbaiki pernyataan yang menjadi basi sesudah uji fisik dan
+merge: legenda status, paragraf yang masih menyebut koreksi audit belum ada di `main`, daftar
+risiko terbuka, kepala [panduan uji fisik](panduan-uji-fisik-dan-cpanel.md) yang menyatakan belum
+dijalankan, dan baris cPanel pada [hasil pengujian](hasil-pengujian.md). [Matriks akses](matriks-akses.md)
+juga dibetulkan agar mencerminkan koreksi A1: pembimbing bukan pemilik kini menerima 403 pada
+seluruh jalur kasus Rahasia, bukan 422. Delapan rute pada [kontrak API](kontrak-api.md) cocok
+dengan `api/v1/index.php`.
+
+**Kriteria penerimaan.** Kesepuluh kriteria Fase 4 memiliki bukti tercatat: sembilan dari pengujian
+otomatis dan satu (push fisik) dari uji perangkat nyata pada §6. Kotak centang di `PRD-V3.md`
+sengaja tidak diubah; berkas itu tidak pernah memakai penanda `[x]` untuk fase mana pun, dan
+status resmi ada di [status penerimaan](status-penerimaan.md).
+
+**Yang diserahkan terbuka ke Fase 5:** A4 (yatim fixture V2 pada DB uji dan label verifier yang
+menyebutnya warisan pra-013), A5 (retensi draf `v3_publikasi_pratinjau`), A6 (pesan galat 403
+aplikasi), penelusuran receipt provider sampai status final, dan smoke produksi Fase 3 §6 beserta
+pembersihan datanya. Tidak satu pun menghalangi penutupan Fase 4.
+
+**Kesimpulan penutupan: Fase 4 ditutup dengan seluruh kriteria terpenuhi.** Auditor tidak memulai
+pekerjaan Fase 5.

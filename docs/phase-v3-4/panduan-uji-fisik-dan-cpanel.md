@@ -1,6 +1,6 @@
 # Panduan uji fisik dan cPanel setelah persetujuan rilis
 
-Panduan ini **belum dijalankan**. Jangan mengubah sakelar Push produksi atau menyentuh data smoke produksi Fase 3 sebagai bagian dari audit kode.
+Panduan ini **sudah dijalankan** pada 22–27 September 2026 oleh Human Developer: migrasi 018 di cPanel, smoke web produksi, dan uji push fisik Android+iOS. Hasil serta batasnya tercatat pada [audit Claude Code](audit-claude-code.md) §5–§6. Langkah di bawah tetap berlaku sebagai prosedur untuk pengulangan atau rilis berikutnya. Sakelar Push produksi kini ON menurut keputusan Human Developer 27 September 2026 ([pengaturan kanal](pengaturan-kanal.md)); data smoke produksi Fase 3 tetap tidak disentuh.
 
 1. Siapkan staging setara cPanel dengan backup/restore point, akun uji pembimbing, dua wali aktif, satu santri uji, satu perangkat Android fisik dan satu iOS fisik. Catat versi aplikasi, OS, waktu, hash commit web/mobile, dan ID fixture tanpa data pribadi.
 2. Jalankan preflight 018, migrasi 018, verifier 1–4, serta cek `php bin/migrate.php status`. Jalankan juga rollback dan pemasangan ulang di salinan staging; cocokkan manifest baris. Uji di produksi hanya sesudah izin rilis tersendiri.
