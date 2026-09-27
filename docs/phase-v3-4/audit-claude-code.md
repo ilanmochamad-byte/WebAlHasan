@@ -162,5 +162,7 @@ kriteria di atas karena pengiriman nyata ke dua perangkat sudah terbukti berulan
   diperiksa, walaupun pengiriman nyata ke kedua perangkat terbukti berulang (§6).
 - Smoke produksi Fase 3 §6 dan pembersihan data smoke produksi: **BELUM DIJALANKAN**.
 - Pemeriksaan log produksi: belum dijalankan.
-- Tindakan operasional yang masih terbuka bagi Human Developer: menentukan sakelar Push produksi
-  tetap ON atau dimatikan kembali, dan menarik publikasi smoke yang masih aktif dengan alasan.
+- Tindakan operasional yang sudah diselesaikan Human Developer pada 27 September 2026: publikasi
+  smoke #3 ditarik beralasan (versi 6), dan sakelar **Push produksi diputuskan tetap ON** sehingga
+  publikasi berikutnya mengirim push nyata kepada wali penerima. WhatsApp tetap OFF. Lihat
+  [pengaturan kanal](pengaturan-kanal.md).
