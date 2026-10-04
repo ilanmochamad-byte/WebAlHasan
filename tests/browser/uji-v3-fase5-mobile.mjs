@@ -28,24 +28,29 @@ try{
  check(await page.getByRole('button',{name:'Catat pelanggaran',exact:true}).count()===1,'Menu pembimbing berbasis capability');
   const auth=await context.request.post(api+'/api/v1/auth/login',{data:{username:'sbx_pengurus_a',password:'Sandbox#123'}});const headers={Authorization:'Bearer '+(await auth.json()).data.token};
  const options=(await (await context.request.get(api+'/api/v1/v3/mobile/options',{headers})).json()).data;
- // Audit Claude Code: santri dan katalog berbagi parameter halaman; berpindah halaman tidak boleh menghapus pilihan/isian.
+ // Dropdown harus menyatukan katalog lintas halaman, dan draf bertahan di latar.
  const options2=(await (await context.request.get(api+'/api/v1/v3/mobile/options?page=2',{headers})).json()).data;
+ const choose=async(label,choice)=>{await page.getByRole('button',{name:label,exact:true}).click();await page.getByRole('button',{name:choice,exact:true}).click();};
+ const studentLabel=s=>`${s.nama}${s.tahun ? ` · ${s.tahun} / ${s.semester}` : ''}`;
  if(options2.katalog.length>0){
-  await page.goto(app+'/pembinaan/buat?jenis=pelanggaran');await page.getByRole('button',{name:options.santri[0].nama,exact:true}).click();
-  await page.getByText('Terpilih: '+options.santri[0].nama,{exact:true}).waitFor();await page.getByLabel('Uraian kejadian',{exact:true}).fill('SBX F5 paging');
-  await page.getByRole('button',{name:'Pilihan berikutnya',exact:true}).click();const k2=options2.katalog[0];const k2Button=page.getByRole('button',{name:`${k2.nama} · ${k2.tingkat} · ${k2.poin_default} poin`,exact:true}).first();await k2Button.waitFor();
-  check(await page.getByText('Terpilih: '+options.santri[0].nama,{exact:true}).count()===1&&await page.getByLabel('Uraian kejadian',{exact:true}).inputValue()==='SBX F5 paging','Pilihan santri dan uraian bertahan saat pindah halaman katalog');
-  await k2Button.click();await page.getByLabel('Waktu kejadian (YYYY-MM-DD HH:mm)',{exact:true}).fill('2026-09-27 09:00');
-  check(await page.getByRole('button',{name:'Simpan',exact:true}).isEnabled(),'Santri halaman 1 dapat dipadukan dengan katalog halaman 2');
+  await page.goto(app+'/pembinaan/buat?jenis=pelanggaran');
+  await choose('Santri dalam cakupan aktif',studentLabel(options.santri[0]));
+  await page.getByLabel('Uraian kejadian',{exact:true}).fill('SBX F5 dropdown');
+  const k2=options2.katalog[0];await page.getByRole('button',{name:'Jenis pelanggaran',exact:true}).click();
+  await page.getByLabel('Cari jenis pelanggaran',{exact:true}).fill(k2.nama);
+  await page.getByRole('button',{name:`${k2.nama} · ${k2.tingkat} · ${k2.poin_default} poin`,exact:true}).first().click();
+  check(await page.getByLabel('Uraian kejadian',{exact:true}).inputValue()==='SBX F5 dropdown','Memilih katalog lintas halaman tidak menghapus uraian');
+  await page.getByLabel('Waktu kejadian',{exact:true}).fill('2026-09-27T09:00');
+  check(await page.getByRole('button',{name:'Simpan',exact:true}).isEnabled(),'Santri halaman 1 dapat dipadukan dengan katalog halaman 2 melalui dropdown');
   const visibility=state=>page.evaluate(s=>{Object.defineProperty(document,'visibilityState',{configurable:true,get:()=>s});Object.defineProperty(document,'hidden',{configurable:true,get:()=>s==='hidden'});document.dispatchEvent(new Event('visibilitychange'));},state);
-  await visibility('hidden');await visibility('visible');await page.getByRole('button',{name:'Pilihan berikutnya',exact:true}).waitFor();
-  check(await page.getByText(/^Terpilih:/).count()===0&&await page.getByLabel('Uraian kejadian',{exact:true}).inputValue()==='','Aplikasi ke latar tetap menghapus isian privat dari memori layar');
+  await visibility('hidden');await visibility('visible');await page.getByRole('button',{name:'Jenis pelanggaran',exact:true}).waitFor();
+  check(await page.getByLabel('Uraian kejadian',{exact:true}).inputValue()==='SBX F5 dropdown'&&await page.getByRole('button',{name:'Simpan',exact:true}).isEnabled(),'Isian privat bertahan di memori setelah latar/aktif sesuai keputusan 4 Oktober');
   await page.goto(app+'/pembinaan');await page.getByRole('button',{name:'Catat pelanggaran',exact:true}).waitFor({timeout:60000});
- }else check(false,'Fixture memerlukan katalog aktif lebih dari 25 untuk uji halaman');
+ }else check(false,'Fixture memerlukan katalog aktif lebih dari 25 untuk uji dropdown');
  await page.getByRole('button',{name:'Catat pelanggaran',exact:true}).click();
- await page.getByRole('button',{name:options.santri[0].nama,exact:true}).click();
- const catalog=options.katalog[0];await page.getByRole('button',{name:`${catalog.nama} · ${catalog.tingkat} · ${catalog.poin_default} poin`,exact:true}).click();
- await page.getByLabel('Waktu kejadian (YYYY-MM-DD HH:mm)',{exact:true}).fill('2026-09-27 10:00');
+ await choose('Santri dalam cakupan aktif',studentLabel(options.santri[0]));
+ const catalog=options.katalog[0];await page.getByRole('button',{name:'Jenis pelanggaran',exact:true}).click();await page.getByLabel('Cari jenis pelanggaran',{exact:true}).fill(catalog.nama);await page.getByRole('button',{name:`${catalog.nama} · ${catalog.tingkat} · ${catalog.poin_default} poin`,exact:true}).click();
+ await page.getByLabel('Waktu kejadian',{exact:true}).fill('2026-09-27T10:00');
  await page.getByLabel('Uraian kejadian',{exact:true}).fill(note);
  await page.getByRole('button',{name:'Simpan',exact:true}).click();await page.waitForURL(u=>u.pathname.includes('/pembinaan/detail'));
  await page.getByText(note,{exact:true}).waitFor();check(true,'Pelanggaran dicatat melalui UI aplikasi');
@@ -53,9 +58,9 @@ try{
  const recommendations=(await (await context.request.get(api+'/api/v1/v3/mobile/rekomendasi',{headers})).json()).data.rows;
  const recommendation=recommendations.find(r=>r.santri_id===options.santri[0].santri_id);if(!recommendation)throw Error('Seed requires pending recommendation for first student');
  await page.getByRole('button',{name:`${recommendation.nama_santri} · ${recommendation.label_snapshot} · ${recommendation.rekomendasi_snapshot}`,exact:true}).first().click();
- await page.getByRole('button',{name:options.santri[0].nama,exact:true}).click();
+ await choose('Santri dalam cakupan aktif',studentLabel(options.santri[0]));
  await page.getByLabel('Tujuan pendampingan',{exact:true}).fill('SBX F5 alur Expo web');
- await page.getByRole('button',{name:'Kerahasiaan: Rahasia · ketuk untuk mengganti',exact:true}).click();
+ await choose('Kerahasiaan (wajib dipilih)','Internal');
  await page.getByRole('button',{name:'Simpan',exact:true}).click();
  await page.waitForURL(u=>u.pathname.includes('/pembinaan/detail'),{timeout:30000});cid=Number(new URL(page.url()).searchParams.get('id'));
  check(Number.isSafeInteger(cid)&&cid>0,'Kasus dibuat melalui UI aplikasi');
@@ -64,7 +69,7 @@ try{
  await page.getByRole('button',{name:'Mulai pendampingan',exact:true}).click();await page.getByText(/Muat ulang data sebelum mencoba kembali/).waitFor();check(true,'Konflik versi nyata UI menampilkan tindakan muat ulang');
  await page.getByRole('button',{name:'Muat ulang versi terbaru',exact:true}).click();await page.getByRole('button',{name:'Selesaikan kasus',exact:true}).waitFor();
  for(let n=1;n<=2;n++){
-  await page.getByLabel('Jadwal sesi baru / jadwal ulang (YYYY-MM-DD HH:mm)',{exact:true}).fill(`2026-09-${27+n} 10:00`);
+  await page.getByLabel('Jadwal sesi baru / jadwal ulang',{exact:true}).fill(`2026-09-${27+n}T10:00`);
   await page.getByRole('button',{name:'Tambahkan sesi baru',exact:true}).click();
   const done=page.getByRole('button',{name:/Selesaikan sesi #.* dengan isian di bawah/});await done.waitFor();
   await page.getByLabel('Ringkasan internal sesi / ringkasan penutupan',{exact:true}).fill(`SBX sesi ${n}`);
@@ -78,6 +83,14 @@ try{
  check(detail.kasus.status==='Selesai'&&detail.sesi_aktif.length===2&&detail.sesi_aktif.every(s=>s.status==='Selesai'),'Dua sesi berbeda dan penutupan UI tanpa duplikasi');
  check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'UI detail 375px tanpa luapan');await page.screenshot({path:out+'/pembimbing-375.png',fullPage:true});
   const web=await context.newPage();await web.goto(api+'/portal/');await web.locator('#username').fill('sbx_pengurus_a');await web.locator('#password').fill('Sandbox#123');await web.getByRole('button',{name:'Masuk',exact:true}).click();await web.waitForURL('**/portal/index.php');
+ await web.goto(api+'/portal/v3_konseling.php');
+ check(await web.locator('#case-privacy').inputValue()===''&&await web.locator('#case-privacy').evaluate(el=>el.required&&!el.checkValidity()),'Website meminta pemilihan kerahasiaan eksplisit');
+ await web.locator('#case-purpose').fill('SBX draf website');await web.locator('#case-privacy').selectOption('Internal');
+ await web.locator('#case-opened').fill('2026-09-27T10:00');
+ await web.evaluate(()=>{Object.defineProperty(document,'visibilityState',{configurable:true,get:()=> 'hidden'});document.dispatchEvent(new Event('visibilitychange'));Object.defineProperty(document,'visibilityState',{configurable:true,get:()=> 'visible'});document.dispatchEvent(new Event('visibilitychange'));});
+ check(await web.locator('#case-purpose').inputValue()==='SBX draf website'&&await web.locator('#case-privacy').inputValue()==='Internal'&&await web.locator('#case-opened').inputValue()==='2026-09-27T10:00','Website mempertahankan isian ketika halaman kembali aktif');
+ await web.goto(api+'/portal/v3_pelanggaran.php');
+ check(await web.locator('#v3-waktu').getAttribute('type')==='datetime-local'&&await web.locator('#v3-katalog').evaluate(el=>el.tagName==='SELECT'&&el.options.length>1),'Website sudah memiliki kalender/jam dan dropdown katalog');
  const wr=await web.goto(api+`/portal/v3_konseling_detail.php?id=${cid}`);check(wr.status()===200&&(await web.locator('body').innerText()).includes('SBX penutupan dua sesi'),'Website membaca kasus dan dua sesi aplikasi yang sama');
  await context.close();
  const m=await session('sbx_murobi_a');await m.page.goto(app+`/pembinaan/detail?jenis=kasus&id=${cid}`);
