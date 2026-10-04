@@ -72,10 +72,23 @@ try {
   await button('Simpan').click();
   await page.waitForTimeout(100); assert.ok(releaseMutation);
   await visibility('hidden'); releaseMutation(); holdMutation = false;
-  await page.waitForTimeout(200); await visibility('visible'); await ready();
-  await button('Simpan').click(); await page.waitForURL('**/pembinaan/detail?**');
-  check(writes.length === 2 && writes[0].idempotency_key === writes[1].idempotency_key, 'Respons simpan saat latar dapat diputar ulang dengan kunci sama, tanpa operasi baru');
+  await page.waitForTimeout(200); await visibility('visible'); await page.waitForURL('**/pembinaan/detail?**');
+  // Audit Claude Code: formulir yang sudah tersimpan tidak boleh tampil lagi untuk diubah lalu terkirim sebagai catatan kedua.
+  check(writes.length === 1, 'Respons simpan saat latar dibuka setelah akses dimuat ulang, satu POST tanpa kirim ulang');
   check(writes[0].waktu_kejadian === '2026-10-04T00:05', 'Waktu lokal terkirim tanpa pergeseran UTC');
+  const fillViolation = async (catalog, text) => {
+    await page.goto(app + '/pembinaan/buat?jenis=pelanggaran'); await ready();
+    await choose('Santri dalam cakupan aktif', 'Santri Uji'); await choose('Jenis pelanggaran', `Katalog ${catalog} · Ringan · 5 poin`, catalog);
+    await page.getByLabel('Waktu kejadian', { exact: true }).fill('2026-10-04T09:00'); await page.getByLabel('Uraian kejadian', { exact: true }).fill(text);
+    holdMutation = true; await button('Simpan').click(); await page.waitForTimeout(100); assert.ok(holdMutation && releaseMutation);
+  };
+  await fillViolation('02', 'Respons terlambat'); await resume(); releaseMutation(); holdMutation = false;
+  await page.waitForURL('**/pembinaan/detail?**');
+  check(writes.length === 2, 'Respons yang tiba setelah layar aktif kembali tetap dibuka tanpa POST ulang');
+  await fillViolation('03', 'Akses dicabut'); await visibility('hidden'); releaseMutation(); holdMutation = false; await page.waitForTimeout(200);
+  denied = true; await visibility('visible'); await button('Coba lagi').waitFor();
+  denied = false; await button('Coba lagi').click(); await ready();
+  check(new URL(page.url()).pathname.endsWith('/pembinaan/buat') && await page.getByLabel('Uraian kejadian', { exact: true }).inputValue() === '', 'Akses ditolak saat kembali: tidak dialihkan ke catatan dan draf dihapus');
   await page.goto(app + '/pembinaan/buat?jenis=kasus'); await ready();
   await choose('Santri dalam cakupan aktif', 'Santri Uji');
   await page.getByLabel('Tujuan pendampingan', { exact: true }).fill('Tujuan uji');
