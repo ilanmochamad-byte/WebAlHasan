@@ -46,3 +46,16 @@ Temuan dan koreksi:
 4. Catatan nonblokir: (a) pada native, "Waktu dibuka (opsional)" tidak dapat dikosongkan kembali setelah tanggal dipilih, dan Simpan nonaktif tanpa penjelasan sampai jam dipilih; (b) aplikasi tidak membatasi tanggal masa depan di pemilih, penolakan baru muncul dari server; (c) formulir kasus tetap mengunduh seluruh halaman katalog walau tidak memakainya, dan database uji memiliki lebih dari 150 katalog (≥6 request berurutan sebelum formulir tampil); (d) pada detail kasus, isian sesi tetap tampil setelah mutasi yang selesai di latar, tetapi sesi baru terlihat di daftar dan kirim ulang yang sama diputar ulang server; (e) harness menulis screenshot ke `/tmp`.
 
 Belum dijalankan: seluruh skenario Android/iOS pada handoff implementator (pemilih tanggal/jam, batal picker, screenshot, kunci layar, logout/pergantian akun), password sementara, dan performa produksi. Hambatan Fase 5 lama (fisik/produksi/orphan) tidak berubah.
+
+### Tambahan audit — simulator iOS, 5 Oktober 2026
+
+Build Debug aplikasi (`8313a41`) dijalankan di simulator iPhone 17 Pro iOS 26.5 terhadap API lokal dan MariaDB uji `webalhasan_v3_phase1_test`. Ini bukti simulator, bukan perangkat fisik, dan Android belum dijalankan.
+
+Lulus: dropdown santri; dropdown katalog dengan pencarian dan daftar gulir; kalender tanggal; batal picker tidak mengubah nilai; pemilih jam 24 jam; tanggal saja tetap tersimpan saat memilih jam; isian bertahan setelah tombol Home dan setelah kunci/buka layar; simpan satu kali menghasilkan tepat satu pelanggaran (`waktu_kejadian` 2026-10-03 16:03:00 sesuai pilihan) dan satu kasus (`Internal`, `dibuka_pada` 2026-10-05 17:06:00); dropdown kerahasiaan wajib; layar detail menampilkan pemilih jadwal native.
+
+Temuan:
+
+5. **Perintah Expo pada handoff tidak mengarahkan build native ke API lokal.** `EXPO_NO_DOTENV=1 EXPO_PUBLIC_API_BASE_URL=... npx expo start` tidak berlaku untuk bundel native: modul env Expo menimpa `process.env` dengan isi `.env.local`, yang berisi alamat produksi. Harness web tidak terpengaruh karena seluruh `/api/v1` dicegat dan diteruskan ke API lokal. Akibatnya satu percobaan login akun sandbox dari simulator terkirim ke `https://alhasan.co.id` dan ditolak 403 sebelum penyebabnya ditemukan; tidak ada data yang ditulis. Uji native lokal memerlukan `.env.development.local` sementara (diabaikan Git) dan pemeriksaan isi bundel sebelum aplikasi dibuka.
+6. Nonblokir: (a) temuan 4a terkonfirmasi di simulator, Simpan nonaktif tanpa penjelasan ketika "Waktu dibuka (opsional)" hanya berisi tanggal; (b) saat keyboard pencarian terbuka, bagian bawah daftar dropdown dan tombol "Tutup pilihan" tertutup keyboard; (c) baris terakhir kalender (25–31) berimpit dengan tombol lembar pemilih; (d) setelah lembar pemilih jam ditutup, keyboard kolom teks yang sebelumnya fokus muncul kembali.
+
+Belum dijalankan di simulator: screenshot perangkat, logout/pergantian akun, akses dicabut, kirim tepat sebelum latar, serta isian sesi di layar detail. Baris uji `SBX audit iOS …` (pelanggaran 90616, kasus 290) tertinggal di database uji.
