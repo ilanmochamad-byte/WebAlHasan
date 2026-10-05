@@ -59,3 +59,13 @@ Temuan:
 6. Nonblokir: (a) temuan 4a terkonfirmasi di simulator, Simpan nonaktif tanpa penjelasan ketika "Waktu dibuka (opsional)" hanya berisi tanggal; (b) saat keyboard pencarian terbuka, bagian bawah daftar dropdown dan tombol "Tutup pilihan" tertutup keyboard; (c) baris terakhir kalender (25–31) berimpit dengan tombol lembar pemilih; (d) setelah lembar pemilih jam ditutup, keyboard kolom teks yang sebelumnya fokus muncul kembali.
 
 Belum dijalankan di simulator: screenshot perangkat, logout/pergantian akun, akses dicabut, kirim tepat sebelum latar, serta isian sesi di layar detail. Baris uji `SBX audit iOS …` (pelanggaran 90616, kasus 290) tertinggal di database uji.
+
+### Tambahan audit — emulator Android, 5 Oktober 2026
+
+APK debug aplikasi (`8313a41`, dibangun ulang) dijalankan di emulator Medium_Phone Android 16, zona Asia/Jakarta, terhadap API lokal dan MariaDB uji `webalhasan_v3_phase1_test` melalui `adb reverse`. Bundel diperiksa mengarah ke API lokal sebelum aplikasi dibuka; tidak ada permintaan ke produksi. Ini bukti emulator, bukan perangkat fisik.
+
+Lulus: dropdown santri; dropdown katalog dengan pencarian; dialog kalender Material termasuk Batal tanpa mengubah nilai; dialog jam 24 jam; tanggal saja tetap tersimpan saat memilih jam; isian bertahan setelah tombol Home dan setelah kunci/buka layar; simpan lalu langsung ke latar menghasilkan tepat satu pelanggaran (`waktu_kejadian` 2026-10-03 16:45:00) dan layar berada di detail saat kembali; dropdown kerahasiaan termasuk tutup tanpa memilih (Simpan tetap nonaktif); satu kasus tersimpan (`Rahasia`, `dibuka_pada` 2026-10-05 09:49:00); layar detail menampilkan pemilih jadwal native; keluar formulir menghapus draf.
+
+Catatan: (a) temuan 4a terkonfirmasi juga di Android; (b) judul dialog tanggal/jam mengikuti bahasa perangkat ("Select date"), hanya tombol Pilih/Batal yang berbahasa Indonesia; (c) emulator memakai keyboard fisik, sehingga tumpang-tindih keyboard dengan dropdown tidak dapat dinilai di sini; (d) pada uji simpan-lalu-latar tidak dapat dipastikan apakah respons tiba sebelum atau sesudah aplikasi masuk latar, jadi jalur koreksi audit di native hanya terbukti lewat hasil akhirnya.
+
+Belum dijalankan di emulator: logout/pergantian akun, akses dicabut, screenshot perangkat, isian sesi di layar detail. Baris uji `SBX audit Android …` (pelanggaran 90617, kasus 291) tertinggal di database uji.
