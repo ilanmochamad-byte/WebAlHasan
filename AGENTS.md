@@ -24,6 +24,7 @@ Pembagian peran ditetapkan per workstream agar implementator dan auditor tidak t
 | --- | --- | --- |
 | PRD V1–V2 dan fondasi penugasan V3–V6 | Claude | Codex |
 | PRD V3 Fase 1–5 | Codex | Claude Code |
+| Koreksi UX formulir pembinaan V3 (permintaan 4 Oktober 2026) | Codex | Claude Code |
 | PRD V4–V6 | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
 
 Ketentuan:

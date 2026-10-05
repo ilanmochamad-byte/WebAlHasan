@@ -124,6 +124,15 @@ Keputusan tambahan 15 September 2026, berlaku sejak Fase 4:
 
 - Kasus berkerahasiaan `Rahasia` tidak boleh diterbitkan kepada orang tua. Publikasi baru dapat dibuat sesudah kerahasiaannya dikoreksi menjadi `Internal` melalui revisi kasus, sehingga perubahannya terekam beserta nilai sebelum/sesudah, alasan, pelaku, dan waktu. Aturan kerahasiaan tetap satu pintu: tidak ada jalur publikasi yang membaca kasus Rahasia, sekalipun isi publikasi ditulis manual.
 
+### 5.5b Perbaikan formulir — keputusan Human Developer 4 Oktober 2026
+
+- Tanggal dan waktu dipilih melalui kalender/pemilih jam, tanpa perlu mengetik format API. Nilai yang dikirim tetap tanggal/jam lokal, bukan konversi UTC.
+- Isian catat pelanggaran/kasus dan sesi pembinaan dipertahankan dalam memori ketika screenshot, aplikasi ke latar, atau layar mati. Saat kembali, data server/hak akses dimuat ulang sebelum formulir ditampilkan. Draf dihapus saat keluar dari layar, logout/pergantian akun, atau akses ditolak; penghentian proses aplikasi oleh OS belum termasuk penyimpanan draf permanen.
+- Ketentuan ini menggantikan perilaku Fase 5 lama yang menghapus isian formulir setiap kali aplikasi masuk latar. Halaman baca privat tetap menghapus data server di latar. Tidak menyimpan catatan rahasia ke penyimpanan browser/perangkat.
+- Kerahasiaan memakai dropdown dengan pilihan eksplisit sebelum simpan, tetap menjelaskan Internal/Rahasia.
+- Katalog pada formulir menggunakan dropdown dengan pencarian dan daftar gulir terbatas; pengguna tidak perlu membuka halaman pilihan satu per satu. Transport API tetap memakai pagination 25 item yang ada. Pilihan santri mengikuti pola dropdown yang sama.
+- Ruang lingkup ini koreksi UX V3, implementator Codex dan auditor Claude Code, bukan awal PRD V4–V6. Website yang sudah memiliki kalender dan dropdown dipertahankan; pemilihan eksplisit kerahasiaan diselaraskan.
+
 ### 5.6 Publikasi orang tua dan privasi
 
 Rincian versi publikasi, poin yang ditampilkan, penarikan, serta pemilihan wali penerima berikut merupakan rancangan awal.
