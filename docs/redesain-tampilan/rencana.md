@@ -1,6 +1,6 @@
 # Redesain tampilan aplikasi alhasanApps — 14 Oktober 2026
 
-Status: **rencana disetujui Human Developer; implementasi belum dimulai.** Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
+Status: **Fase 1 diimplementasikan, menunggu audit Codex** (lihat "Status Fase 1"). Fase 2–3 belum dimulai. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
 
 Branch kedua repositori: `redesain-tampilan`, dibuat dari `codex/perbaikan-form-pembinaan` (website `059ad37`, aplikasi `8313a41`) agar perbaikan formulir pembinaan yang belum digabung ke `main` ikut terbawa.
 
@@ -77,6 +77,30 @@ Kriteria penerimaan: seperti Fase 1, ditambah uji paginasi, mode cakupan ganda, 
 
 - Laporan dan Profil sesuai mockup, tanpa mengubah fungsi cetak/bagikan dan logout.
 - Uji menyeluruh semua peran, mode gelap, ukuran teks besar, web, iOS, dan Android; termasuk regresi harness `tests/browser/uji-form-pembinaan.mjs` dan `uji-v3-fase5-mobile.mjs`.
+
+## Status Fase 1 — implementasi Claude, 14 Oktober 2026
+
+Status: **siap audit Codex**, bukan persetujuan merge. Commit aplikasi `0ba6e9e` di branch `redesain-tampilan` (baseline `8313a41`). Website hanya berubah dokumen ini.
+
+Perubahan:
+
+- Paket baru `@expo-google-fonts/plus-jakarta-sans@0.4.2` (izin unduh dari Human Developer). Empat ketebalan dimuat dengan `useFonts` di `src/app/_layout.tsx`; splash menunggu huruf. `ThemedText` dan `KeyboardAwareTextInput` memetakan `fontWeight` ke keluarga huruf (`brandFontFamily` di `theme.ts`) dan memakai huruf sistem bila berkas gagal dimuat. Tidak perlu build native ulang.
+- `app-tabs.tsx` / `app-tabs.web.tsx`: 4 tab dengan aturan `hidden` yang sama; label tab 12 pt. `(app)/(reports)` dihapus; layar dipindah ke `src/app/reports.tsx` (rute tetap `/reports`) dengan tombol kembali (`ScreenHeader onBack`).
+- Beranda: komponen baru `ui/menu-tile.tsx` (kisi 3 kolom tetap, pengganjal untuk baris tidak penuh). `PembinaanEntry` menjadi hook `usePembinaanAkses`; tombol muat ulang tetap muncul bila pemeriksaan gagal. `BrandHeader`/`Greeting` dihapus karena tidak dipakai lagi. Token warna baru `info`, `violet` (+ versi lunak) untuk terang dan gelap.
+- Penyesuaian di luar mockup: tanggal di kanan judul "Jadwal hari ini" dihapus (sudah ada di sapaan; dengan teks besar judul terpecah per suku kata). Label ubin satu baris, `maxFontSizeMultiplier` 1,4 dan menyusut sampai 0,7; sapaan dibatasi 1,4×.
+
+Validasi:
+
+- `npx tsc --noEmit`, `npm run lint`: lulus. Unit `tests/date-time.test.ts` + `tests/print-dialog.test.ts`: 8 lulus, 0 gagal.
+- Simulator iOS (iPhone 17 Pro, iOS 26), dev client + API lokal `DB_NAME=webalhasan_v3_phase1_test` di 127.0.0.1:8940: login `sbx_guru_biasa` → Beranda 3 ubin (Jadwal, Absensi, Laporan), 3 tab; ubin Laporan membuka `/reports` tanpa bilah tab, tombol kembali ke Beranda. Ukuran teks `accessibility-large`: label ubin, sapaan, dan judul bagian utuh setelah koreksi.
+- Expo web 390 pt + Playwright, API lokal nyata lewat proxy CORS: guru (Jadwal, Absensi, Laporan), pengurus dan orang tua (Perizinan, Cetak Izin, Pembinaan + kartu perizinan + keterangan tanpa jadwal), murobi dan admin (6 ubin). Laporan buka/kembali lulus untuk peran berjadwal. Admin diuji dalam mode gelap. Tidak ada `pageerror`.
+
+Keterbatasan dan catatan untuk auditor:
+
+- **Android belum diuji.** Dev client di emulator `Medium_Phone` versi lama dan gagal sejak awal (`Cannot find native module 'ExpoPushTokenManager'`), tidak terkait Fase 1. Perlu `npx expo run:android` (unduh dependensi Gradle) sebelum uji Android.
+- Pada mode pengembangan, Expo memuat `.env.local` (alamat produksi) di runtime meskipun `EXPO_NO_DOTENV=1`. Untuk uji lokal dipakai `.env.development.local` sementara (diabaikan git, sudah dihapus). Satu percobaan login dengan akun sandbox sempat terkirim ke API produksi sebelum hal ini diketahui, dan ditolak server. `CI=1` juga mematikan pemantauan berkas Metro, jadi Metro harus dimulai ulang setelah setiap perubahan.
+- Kartu sorot (tidak diubah) tetap sempit pada teks aksesibilitas terbesar bila judul jadwal panjang. Bilah tab versi web adalah lapisan absolut di atas konten (sudah ada sebelumnya) dan menutupi sapaan pada lebar ponsel.
+- Lencana jumlah antrean pada ubin Perizinan tidak dibuat karena Beranda belum memuat data perizinan (sesuai rencana: hanya bila datanya tersedia tanpa permintaan tambahan).
 
 ## Di luar cakupan
 
