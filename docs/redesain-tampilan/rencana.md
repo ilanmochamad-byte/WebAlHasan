@@ -1,6 +1,6 @@
 # Redesain tampilan aplikasi alhasanApps — 14 Oktober 2026
 
-Status: **Fase 1 LULUS audit ulang Codex pada commit aplikasi `d49da77`** (15 Oktober 2026), dengan batas yang diterima pada keputusan nomor 5 dan catatan nonblokir di `audit-fase-1.md`. **Fase 2 belum lulus audit Codex; temuan 3–4 sudah dilengkapi Claude (aplikasi `e65229b`) dan menunggu audit ulang** (lihat `audit-fase-2.md` dan bagian "Pelengkap Claude atas audit Fase 2"); Fase 3 belum dimulai. Belum ada merge. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
+Status: **Fase 1 LULUS audit ulang Codex pada commit aplikasi `d49da77`** (15 Oktober 2026), dengan batas yang diterima pada keputusan nomor 5 dan catatan nonblokir di `audit-fase-1.md`. **Fase 2 LULUS audit ulang Codex pada aplikasi `e65229b` (15 Oktober 2026), dengan catatan nonblokir dan batas bukti native** (lihat `audit-fase-2.md` dan bagian "Pelengkap Claude atas audit Fase 2"); Fase 3 belum dimulai. Belum ada merge. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
 
 Branch kedua repositori: `redesain-tampilan`, dibuat dari `codex/perbaikan-form-pembinaan` (website `059ad37`, aplikasi `8313a41`) agar perbaikan formulir pembinaan yang belum digabung ke `main` ikut terbawa.
 
