@@ -16,7 +16,7 @@ Tiga konsep diajukan: A (menu ubin besar), B (agenda hari ini), dan C (daftar me
 2. Layar lain memakai **gabungan A, B, dan C** seperti pada mockup final.
 3. Bilah bawah **4 tab**: Beranda, Jadwal, Izin, Profil. Laporan keluar dari tab dan dibuka dari ubin Beranda.
 4. **Tanpa tombol + mengambang** (Konsep B tidak dipakai untuk bagian ini).
-5. (15 Oktober 2026, atas temuan audit 3) Label ubin **mengikuti ukuran teks sistem sepenuhnya**, tanpa batas skala atau pengecilan. Label boleh dua baris atau lebih dan ubin memanjang, tetapi kisi **tetap 3 kolom**. Bila satu kata tetap tidak muat pada ukuran ekstrem, hal itu dicatat sebagai batas yang diterima, bukan cacat.
+5. (15 Oktober 2026, atas temuan audit 3) Label ubin **mengikuti ukuran teks sistem sepenuhnya**, tanpa batas skala atau pengecilan. Label boleh dua baris atau lebih dan ubin memanjang, tetapi kisi **tetap 3 kolom**. Bila satu kata tetap tidak muat pada ukuran ekstrem, hal itu dicatat sebagai batas yang diterima, bukan cacat. Dikonfirmasi ulang 15 Oktober 2026 setelah melihat bukti: kisi **tetap 3 kolom** di semua ukuran teks; label satu kata yang terpecah di atas AX-Medium (iOS) / 1,3× (Android) **diterima** Human Developer. Alternatif dua kolom ditolak.
 
 ## Mockup final
 
@@ -146,7 +146,7 @@ Validasi (Claude):
 
 Batas yang diterima dan sisa catatan:
 
-- Label ubin satu kata utuh sampai AX-Medium (iOS) dan 1,3× (Android). Di atasnya, kata tunggal yang lebih lebar dari sepertiga layar terpecah di tengah kata. Ini konsekuensi tiga kolom tetap (keputusan nomor 5). Bila tidak dapat diterima, alternatifnya kisi dua kolom pada teks sangat besar, dan itu butuh keputusan Human Developer.
+- Label ubin satu kata utuh sampai AX-Medium (iOS) dan 1,3× (Android). Di atasnya, kata tunggal yang lebih lebar dari sepertiga layar terpecah di tengah kata. Ini konsekuensi tiga kolom tetap (keputusan nomor 5). Human Developer menerima batas ini dan menolak alternatif dua kolom (keputusan nomor 5).
 - `EmptyState` (komponen lama, di luar Fase 1) juga memecah kata panjang pada AX-XXXL.
 - Bilah tab versi web yang menutupi sapaan pada lebar ponsel belum diubah (sudah ada sebelum Fase 1).
 - Data uji memuat judul jadwal panjang tanpa spasi (`ed78749f`), sehingga kartu sorot tampak lebih padat daripada data nyata.
