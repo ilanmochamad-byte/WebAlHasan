@@ -1,6 +1,6 @@
 # Redesain tampilan aplikasi alhasanApps — 14 Oktober 2026
 
-Status: **Fase 1 LULUS audit ulang Codex pada commit aplikasi `d49da77`** (15 Oktober 2026), dengan batas yang diterima pada keputusan nomor 5 dan catatan nonblokir di `audit-fase-1.md`. **Fase 2 telah diaudit Codex: BELUM LULUS penuh; dua koreksi kode diuji, bukti cakupan ganda/native masih perlu dilengkapi (lihat `audit-fase-2.md`)**; Fase 3 belum dimulai. Belum ada merge. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
+Status: **Fase 1 LULUS audit ulang Codex pada commit aplikasi `d49da77`** (15 Oktober 2026), dengan batas yang diterima pada keputusan nomor 5 dan catatan nonblokir di `audit-fase-1.md`. **Fase 2 belum lulus audit Codex; temuan 3–4 sudah dilengkapi Claude (aplikasi `e65229b`) dan menunggu audit ulang** (lihat `audit-fase-2.md` dan bagian "Pelengkap Claude atas audit Fase 2"); Fase 3 belum dimulai. Belum ada merge. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
 
 Branch kedua repositori: `redesain-tampilan`, dibuat dari `codex/perbaikan-form-pembinaan` (website `059ad37`, aplikasi `8313a41`) agar perbaikan formulir pembinaan yang belum digabung ke `main` ikut terbawa.
 
@@ -201,6 +201,48 @@ Keterbatasan dan catatan untuk auditor:
 - iOS untuk Perizinan tidak diuji karena akun guru di simulator tidak memiliki kemampuan izin; Perizinan diuji di Android dan web.
 - Catatan nonblokir Fase 1 tetap berlaku: bilah tab web menutupi kepala layar pada lebar ponsel (terlihat juga di Jadwal/Perizinan web).
 - Komponen `Segmented`, `StatTile`, dan `Fab` tidak lagi dipakai Perizinan tetapi tidak dihapus. Pembersihannya ditinjau di Fase 3.
+
+## Pelengkap Claude atas audit Fase 2 — 15 Oktober 2026
+
+Status: **siap audit ulang Codex**. Aplikasi `e65229b` (di atas koreksi Codex `abca313`). Fase 3 belum dimulai karena audit Fase 2 belum lulus. Bukti tambahan ada di `bukti-fase2/lengkap-*.jpg`.
+
+**Fixture uji baru** (hanya untuk DB `*_test`, dapat dipulihkan, dan sudah **dipulihkan** setelah pengujian):
+- `tests/browser/fixture-redesain-multi-cakupan.sh pasang|pulihkan`: `sbx_murobi_a` diberi juga peran pengurus yang ditautkan ke "P5 Pengurus 01". Hasilnya dua cakupan nyata, `['pengurus','murobi']`, dari aturan `Capabilities::forUser` (tanpa respons buatan). Sebelumnya tidak ada akun uji dengan dua cakupan.
+- `tests/browser/fixture-redesain-sesi-hari-ini.sh pasang|pulihkan`: dua jadwal **hari ini** untuk `sbx_guru_biasa` (Tahfidz 07.30, Fiqih 10.00, tanpa pertemuan), ditandai `jam_migration_note = 'FIXTURE-REDESAIN-F2'`. Pemulihan juga menghapus pertemuan/absensi yang mungkin terbentuk. Harness `uji-redesain-fase2.mjs` dan `-race` harus dijalankan **tanpa** fixture ini, karena keduanya berasumsi tidak ada sesi hari ini.
+
+**Temuan 3 — cakupan ganda.** Harness baru `tests/browser/uji-redesain-fase2-cakupan.mjs`, semua dari API nyata: **9/9 lulus**.
+- Pengganti mode Pengurus/Murobi tampil, dengan bawaan `mode=pengurus`.
+- Pindah ke Murobi: permintaan `mode=murobi` dan label cakupan berganti. Antrean murobi nyata 0 tampil sebagai keadaan kosong.
+- Semua → halaman 2: `mode=murobi&page=2`, kartunya berbeda dari halaman 1.
+- Disetujui: `mode=murobi&page=1&status=Disetujui`, dan semua kartu Disetujui.
+- Pencarian "SBX Santri A1": `q` dikirim bersama `mode=murobi`, dan semua hasil memuat nama itu.
+- Detail: URL `/izin/1436?mode=murobi` dan permintaan `/izin/pengajuan/1436?mode=murobi`.
+- Kembali ke Pengurus: `mode=pengurus`. Tidak ada `pageerror`.
+
+Native dengan akun yang sama:
+- Android: pindah mode ("Perlu tindakan · 45" → "· 0"), Semua (46 pengajuan), halaman 2 dari 3, Disetujui (35 pengajuan), dan membuka detail #1436.
+- iOS: pindah Pengurus → Murobi, Semua dalam mode gelap, dan AX-XL.
+- Permintaan detail native tidak dapat dibaca (server PHP bawaan tidak mencatat URL). Pemakaian mode pada detail dibuktikan di web, dan detail native terbuka dengan data yang benar.
+
+**Temuan 4 — kartu jadwal berisi sesi dan Perizinan iOS.** Diuji dengan fixture sesi hari ini:
+- iOS normal, gelap, dan AX-XL; Android normal, gelap, dan 2,0×. Kartu memuat jam, judul, "Belum diabsen" (ikon + teks), dan penanda "Absen".
+- Uji ini menemukan dan memperbaiki tiga hal (`e65229b`):
+  1. Pada teks sangat besar (`fontScale > 1,35`) kartu sesi kini ditumpuk: jam, lalu judul, status, tempat, dan "Absen" di bawahnya. Sebelumnya mendatar.
+  2. `ScreenHeader`: pada teks sangat besar tombol aksi naik ke baris sendiri, karena sebelumnya judul "Perizina/n" terpecah. Berlaku untuk semua layar yang memakai komponen ini.
+  3. Perizinan: pada teks sangat besar, "Ajukan izin baru" ikut mengalir di atas pencarian. Sebelumnya, sebagai tombol tetap, ia menutupi kira-kira separuh layar di iOS AX-XL.
+- Perizinan iOS kini diuji (sebelumnya belum).
+
+Validasi akhir:
+
+- TypeScript, lint, `git diff --check`: lulus. Unit **17/17** lulus.
+- Harness web: Fase 1 **6 lulus** (fondasi dilewati); Fase 2 **14/14**; `-race` lulus (konten pekan terakhir 2 sesi, paginasi dan reset filter lulus); `-cakupan` **9/9**.
+
+Catatan terbuka (nonblokir, di luar perubahan Fase 2):
+
+- Lencana jumlah notifikasi di lonceng (`IconButton`, lingkaran 18 px berukuran tetap) terpotong pada teks sangat besar.
+- Tombol "Keluar dari aplikasi" di Profil sebagian tertutup bilah tab iOS saat tidak digulir. Ini dijadwalkan ditinjau di Fase 3 (Profil).
+- Mengubah ukuran teks saat Perizinan terbuka me-remount layar dan mengembalikan mode bawaan. Ini perilaku lama (`key` memuat `fontScale`).
+- Menu pengembang Expo muncul di dev client Android setelah instal ulang dan menutupi layar sampai ditutup. Ini hanya terjadi di lingkungan uji.
 
 ## Di luar cakupan
 
