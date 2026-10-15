@@ -1,6 +1,6 @@
 # Redesain tampilan aplikasi alhasanApps — 14 Oktober 2026
 
-Status: **Fase 1 dan Fase 2 LULUS audit Codex** (aplikasi `d49da77`, `e65229b`). **Fase 3 diimplementasikan Claude (aplikasi `d946356`), menunggu audit Codex.** Belum ada merge. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
+Status: **Fase 1, Fase 2, dan Fase 3 LULUS audit Codex** (aplikasi `d49da77`, `e65229b`, koreksi audit Fase 3 `a074955` di atas implementasi `d946356`). Belum ada merge. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
 
 Branch kedua repositori: `redesain-tampilan`, dibuat dari `codex/perbaikan-form-pembinaan` (website `059ad37`, aplikasi `8313a41`) agar perbaikan formulir pembinaan yang belum digabung ke `main` ikut terbawa.
 
@@ -287,6 +287,17 @@ Keterbatasan dan catatan untuk auditor:
 - Cetak PDF dan Bagikan di native tidak dijalankan (dialog sistem). Logikanya tidak berubah dan dicakup `tests/print-dialog.test.ts`.
 - Catatan nonblokir yang masih berlaku: lencana jumlah notifikasi terpotong pada teks sangat besar; perubahan ukuran teks me-remount Perizinan. Keduanya perilaku komponen lama di luar cakupan rencana.
 - Ikon pada baris ringkasan jadwal tampak kosong di satu tangkapan web awal. Berkas ikonnya valid, dan pada tangkapan berikutnya ikon tampil. Mohon diperhatikan saat audit.
+
+## Audit Codex Fase 3 — 15 Oktober 2026
+
+Status: **LULUS dengan koreksi auditor**. Implementasi Claude `d946356` diaudit dan koreksi terarah dibuat pada aplikasi `a074955`. Rincian bukti, temuan, pengujian, serta batas audit ada di `audit-fase-3.md`.
+
+Koreksi auditor menutup dua temuan:
+
+1. Angka ringkasan Laporan ditumpuk pada teks sistem sangat besar agar label "Pertemuan" dan "Baris kehadiran" tidak terpecah di tengah kata.
+2. Status pada detail kehadiran memakai ikon yang berbeda menurut status beserta teks; kotak warna seragam diganti agar memenuhi aturan ikon + teks.
+
+TypeScript, lint, 17/17 unit test, harness Fase 3 21/21, regresi Fase 1–2, uji formulir pembinaan 17/17, serta regresi lintas aplikasi–portal 26/26 lulus. Koreksi teks besar diperiksa independen pada simulator iOS; bukti Android Claude ditinjau, tetapi auditor tidak menjalankan ulang emulator Android karena tidak ada perangkat aktif.
 
 ## Di luar cakupan
 
