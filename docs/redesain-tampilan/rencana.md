@@ -1,6 +1,6 @@
 # Redesain tampilan aplikasi alhasanApps — 14 Oktober 2026
 
-Status: **Fase 1, Fase 2, dan Fase 3 LULUS audit Codex** (aplikasi `d49da77`, `e65229b`, koreksi audit Fase 3 `a074955` di atas implementasi `d946356`). Belum ada merge. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
+Status: **Fase 1, Fase 2, dan Fase 3 LULUS audit Codex** (aplikasi `d49da77`, `e65229b`, koreksi audit Fase 3 `a074955` di atas implementasi `d946356`). **Sudah digabung ke `main` pada 15 Oktober 2026** atas instruksi Human Developer: aplikasi lewat alhasanApps PR #12 (`main` = `dfae26d`), dokumen lewat WebAlHasan PR #50 (`main` = `070c6e0`). Belum ada deploy (cPanel/toko aplikasi). Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
 
 Branch kedua repositori: `redesain-tampilan`, dibuat dari `codex/perbaikan-form-pembinaan` (website `059ad37`, aplikasi `8313a41`) agar perbaikan formulir pembinaan yang belum digabung ke `main` ikut terbawa.
 
