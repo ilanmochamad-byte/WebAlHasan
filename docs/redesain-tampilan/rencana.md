@@ -1,6 +1,6 @@
 # Redesain tampilan aplikasi alhasanApps — 14 Oktober 2026
 
-Status: **Fase 1 LULUS audit ulang Codex pada commit aplikasi `d49da77`** (15 Oktober 2026), dengan batas yang diterima pada keputusan nomor 5 dan catatan nonblokir di `audit-fase-1.md`. **Fase 2 LULUS audit ulang Codex pada aplikasi `e65229b` (15 Oktober 2026), dengan catatan nonblokir dan batas bukti native** (lihat `audit-fase-2.md` dan bagian "Pelengkap Claude atas audit Fase 2"); Fase 3 belum dimulai. Belum ada merge. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
+Status: **Fase 1 dan Fase 2 LULUS audit Codex** (aplikasi `d49da77`, `e65229b`). **Fase 3 diimplementasikan Claude (aplikasi `d946356`), menunggu audit Codex.** Belum ada merge. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
 
 Branch kedua repositori: `redesain-tampilan`, dibuat dari `codex/perbaikan-form-pembinaan` (website `059ad37`, aplikasi `8313a41`) agar perbaikan formulir pembinaan yang belum digabung ke `main` ikut terbawa.
 
@@ -243,6 +243,50 @@ Catatan terbuka (nonblokir, di luar perubahan Fase 2):
 - Tombol "Keluar dari aplikasi" di Profil sebagian tertutup bilah tab iOS saat tidak digulir. Ini dijadwalkan ditinjau di Fase 3 (Profil).
 - Mengubah ukuran teks saat Perizinan terbuka me-remount layar dan mengembalikan mode bawaan. Ini perilaku lama (`key` memuat `fontScale`).
 - Menu pengembang Expo muncul di dev client Android setelah instal ulang dan menutupi layar sampai ditutup. Ini hanya terjadi di lingkungan uji.
+
+## Status Fase 3 — implementasi Claude, 15 Oktober 2026
+
+Status: **siap audit Codex**, bukan persetujuan merge. Commit aplikasi `d946356` (baseline `e65229b`, setelah Fase 2 lulus audit ulang). Tidak ada perubahan API/server. Bukti visual ada di `bukti-fase3/`. Uji web dapat diulang dengan `tests/browser/uji-redesain-fase3.mjs`.
+
+Perubahan:
+
+- **Laporan** (`src/app/reports.tsx`):
+  - Judul "Laporan kehadiran" dengan subjudul "Rekap absensi dari sesi yang Anda ajar". Tombol kembali dan tombol filter tetap ada.
+  - Angka Pertemuan dan Baris kehadiran, `StatusRecap`, pemeriksaan konsistensi, serta tombol "Cetak PDF" (primer) dan "Bagikan"/"Simpan PDF" kini berada dalam satu kartu.
+  - Ringkasan jadwal tampil sebagai `ListRow` berketerangan.
+  - Status pada kartu detail tampil sebagai penanda warna ditambah teks.
+  - Filter, paginasi, cetak/bagikan, dan tautan detail tidak berubah.
+- **Profil** (`(profil)/profil.tsx`):
+  - Kartu identitas hijau (token `hero*`) berisi avatar inisial, nama, username/NIP, dan label peran.
+  - Grup "Akun & pemberitahuan": cakupan perizinan, perangkat & push, dan riwayat notifikasi sebagai baris berketerangan. Untuk lebih dari satu cakupan ada nilai "Ganti" menuju Perizinan; baris cakupan hanya tampil bila ada cakupan.
+  - Grup "Tampilan" tidak berubah. Logout tetap memakai konfirmasi.
+  - `paddingBottom` 150 supaya tombol Keluar dapat digulir sepenuhnya di atas bilah tab iOS, menutup catatan Fase 2.
+  - Pada `fontScale > 1,35` avatar membesar dan ditumpuk di atas nama.
+- **ScreenHeader**: prop `subtitle` opsional.
+- **Bilah tab web** (`app-tabs.web.tsx`): kini berada dalam alur tata letak di atas konten, bukan lapisan absolut. Ini menutup catatan nonblokir sejak Fase 1 bahwa bilah tab menutupi kepala layar.
+- **StatusRecap**: kolom persen memakai lebar minimum, karena pada Android 2,0× sebelumnya terpecah menjadi "0 / %".
+- **Pembersihan**: `Fab` dan `StatTile` dihapus karena tidak lagi dipakai. `Segmented` tetap ada karena masih dipakai Notifikasi.
+
+Validasi (Claude):
+
+- TypeScript, lint, dan `git diff --check`: lulus. Unit **17/17** lulus.
+- Web `uji-redesain-fase3.mjs` (API lokal `webalhasan_v3_phase1_test`, data nyata): **21/21 lulus**.
+  - Laporan: judul/subjudul; filter `date_from=2026-01-01` dengan rekap "31 status = 31 baris detail"; tombol Cetak/Simpan PDF; baris ringkasan jadwal; kartu detail membuka `/report/113`; tombol Kembali ke Beranda; mode gelap.
+  - Profil untuk admin, orang tua, dan guru tanpa izin: label peran, baris cakupan sesuai kemampuan, baris berketerangan, Perangkat & push membuka `/notifikasi/perangkat`, dan Keluar meminta konfirmasi (dibatalkan, tetap login).
+  - Tidak ada `pageerror`.
+- **Regresi menyeluruh**: Fase 1 6 lulus (fondasi dilewati); Fase 2 14/14; `-race` lulus; `-cakupan` 9/9 (fixture dipasang lalu dipulihkan); `uji-form-pembinaan.mjs` 17/17; `PERAPIHAN_AUDIT_DB=1 uji-v3-fase5-mobile.mjs` 26/26.
+- iOS (iPhone 17 Pro, `sbx_murobi_a`), Laporan dan Profil:
+  - Normal, gelap, dan AX-XL. Pada AX-XL, avatar sempat meluber; sudah dikoreksi dan diuji ulang.
+  - Profil yang digulir: tombol Keluar utuh di atas bilah tab.
+- Android (emulator `Medium_Phone`): Laporan dan Profil pada normal, gelap, dan `font_scale` 2,0. Persen legenda pada 2,0 sempat terpecah; sudah dikoreksi dan diuji ulang.
+- Setelah pengujian, fixture dipulihkan (`sbx_murobi_a`: `pengurus_id` NULL; 0 jadwal fixture), dan konfigurasi lokal sementara dihapus.
+
+Keterbatasan dan catatan untuk auditor:
+
+- Rentang bawaan Laporan (awal bulan sampai hari ini) tidak berisi data di DB uji. Karena itu, tangkapan native menampilkan rekap kosong, dan rekap berisi data dibuktikan di web lewat filter.
+- Cetak PDF dan Bagikan di native tidak dijalankan (dialog sistem). Logikanya tidak berubah dan dicakup `tests/print-dialog.test.ts`.
+- Catatan nonblokir yang masih berlaku: lencana jumlah notifikasi terpotong pada teks sangat besar; perubahan ukuran teks me-remount Perizinan. Keduanya perilaku komponen lama di luar cakupan rencana.
+- Ikon pada baris ringkasan jadwal tampak kosong di satu tangkapan web awal. Berkas ikonnya valid, dan pada tangkapan berikutnya ikon tampil. Mohon diperhatikan saat audit.
 
 ## Di luar cakupan
 
