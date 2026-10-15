@@ -25,7 +25,7 @@ Pembagian peran ditetapkan per workstream agar implementator dan auditor tidak t
 | PRD V1–V2 dan fondasi penugasan V3–V6 | Claude | Codex |
 | PRD V3 Fase 1–5 | Codex | Claude Code |
 | Koreksi UX formulir pembinaan V3 (permintaan 4 Oktober 2026) | Codex | Claude Code |
-| Redesain tampilan aplikasi mobile (keputusan 14 Oktober 2026; rencana `docs/redesain-tampilan/rencana.md`, branch `redesain-tampilan`) | Claude | Codex |
+| Redesain tampilan aplikasi mobile (keputusan 14 Oktober 2026; rencana `docs/redesain-tampilan/rencana.md`, branch `redesain-tampilan`; Fase 1–3 lulus audit dan digabung ke `main` 15 Oktober 2026) | Claude | Codex |
 | PRD V4–V6 | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
 
 Ketentuan:
