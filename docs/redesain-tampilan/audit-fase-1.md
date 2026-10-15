@@ -1,6 +1,37 @@
 # Audit Codex — Fase 1 redesain tampilan
 
-Tanggal: 15 Oktober 2026 (Asia/Jakarta). Status: **BELUM LULUS; bukan persetujuan merge atau mulai Fase 2**.
+Tanggal: 15 Oktober 2026 (Asia/Jakarta). Status terbaru: **LULUS audit ulang pada aplikasi `d49da77`**, dengan batas yang diterima Human Developer dan catatan nonblokir di bawah. Bagian audit pertama dipertahankan sebagai riwayat; status terbuka di sana telah ditutup oleh audit ulang.
+
+## Audit ulang — koreksi Claude d49da77
+
+Baseline audit ulang aplikasi `e257a1f..d49da77`; dokumen koreksi `b6de582` dan keputusan Human Developer `8248746`. Kedua checkout bersih, branch `redesain-tampilan`. Semua delapan berkas koreksi diperiksa. Tidak ada perubahan kode aplikasi oleh auditor dalam audit ulang ini.
+
+### Penutupan temuan
+
+- Temuan 1 tetap tertutup: helper tujuan Absensi dan dua regresinya tetap lulus.
+- Temuan 2 tertutup: `WeekStrip` dan perhitungan pekan tersedia; `ListRow.subtitle` menyediakan keterangan dan label aksesibilitas gabungan. `Chip` digunakan sebagai fondasi pil. Komponen belum dipasang ke layar fase berikutnya, sesuai batas Fase 1.
+- Temuan 3 tertutup: pembatas skala/pengecilan label dan sapaan dihapus; kartu sorot serta tombol mengakomodasi teks besar. Bukti iOS normal, AX-Medium, AX-XL, AX-XXXL serta Android 1,3×/2,0× ditinjau secara visual oleh auditor. Kata yang membungkus di tengah pada ukuran ekstrem diterima sesuai keputusan nomor 5, bukan temuan baru.
+- Temuan 4 tertutup: keadaan memuat, gagal, dan kosong dipisahkan; pesan kosong hanya muncul setelah pemeriksaan kemampuan selesai. Dibuktikan ulang melalui browser, bukan hanya fungsi unit.
+
+### Pengujian independen Codex
+
+- TypeScript, lint, dan pemeriksaan whitespace diff: lulus.
+- Seluruh unit test: **14/14 lulus** pada TZ Asia/Jakarta. Empat test redesain juga **4/4 lulus** pada TZ America/Los_Angeles.
+- Harness `tests/browser/uji-redesain-fase1.mjs`: **6 pemeriksaan lulus**, fondasi dilewati karena rute pratinjau sementara tidak ada pada kode final. Tidak dihitung sebagai uji interaktif fondasi oleh auditor.
+- Pemeriksaan browser tambahan, lebar 390: guru biasa (Jadwal/Absensi/Laporan); pengurus khusus izin (Perizinan/Cetak Izin, respons kemampuan pembinaan dibuat kosong); orang tua (Perizinan/Cetak Izin/Pembinaan); admin (enam ubin). Semua sesuai, tanpa pageerror. Login/profil memakai API/database lokal; hanya skenario kemampuan tertentu dikendalikan.
+- Guru dan admin: ubin Laporan membuka `/reports`; tombol Kembali mengembalikan Beranda. Lulus.
+- Admin mode gelap setelah reload: enam label terbaca, warna sesuai token gelap. Bukti independen tersimpan di `bukti-audit-ulang/admin-dark.png`; keadaan menu kosong di `bukti-audit-ulang/web-tanpa-menu.png`.
+- API uji: localhost:8940, database `webalhasan_v3_phase1_test`; aplikasi localhost:8082. Harness menolak jaringan selain dua origin lokal. Percobaan pertama timeout karena konfigurasi runtime Expo; setelah memakai `.env.development.local` sementara untuk alamat lokal, harness lulus. Berkas sementara dihapus dan server audit dihentikan setelah pengujian.
+
+### Batas bukti dan keputusan
+
+Uji interaktif native tidak diulang oleh Codex. Penerimaan iOS/Android memakai bukti pengujian Claude di rencana dan gambar yang diperiksa auditor, digabung pemeriksaan kode dan pengujian independen di atas. Regresi menyeluruh formulir pembinaan tetap agenda Fase 3. Screenshot fondasi menunjukkan bentuk/aksesibilitas, sedangkan interaksi fondasi tetap bukti Claude; unit perhitungan pekan diuji ulang Codex.
+
+Catatan nonblokir yang tetap terbuka: bilah web menutupi bagian sapaan pada lebar ponsel (sudah ada sebelum fase ini); pergantian preferensi gelap saat halaman web berjalan belum dapat diandalkan pada percobaan ini sehingga bukti mode gelap diambil setelah reload; kata panjang pada ukuran ekstrem mengikuti batas yang diterima. Tidak ada klaim seluruh perilaku web/native sudah diuji menyeluruh.
+
+**Keputusan:** empat temuan audit pertama ditutup; Fase 1 memenuhi penerimaan berdasarkan bukti tersebut dan keputusan Human Developer terbaru. Tidak ada merge atau implementasi Fase 2–3 pada sesi ini. Handoff kembali kepada Human Developer untuk instruksi fase berikutnya.
+
+## Riwayat audit pertama — belum lulus
 
 ## Cakupan dan sumber
 
