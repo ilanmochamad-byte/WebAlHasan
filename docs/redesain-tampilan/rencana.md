@@ -1,6 +1,6 @@
 # Redesain tampilan aplikasi alhasanApps — 14 Oktober 2026
 
-Status: **Fase 1 diimplementasikan, menunggu audit Codex** (lihat "Status Fase 1"). Fase 2–3 belum dimulai. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
+Status: **Fase 1 belum lulus audit Codex, 15 Oktober 2026**. Koreksi terarah tujuan ubin Absensi sudah diuji; kelengkapan fondasi dan aksesibilitas masih perlu diperbaiki Claude. Lihat `audit-fase-1.md`. Fase 2–3 belum dimulai. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
 
 Branch kedua repositori: `redesain-tampilan`, dibuat dari `codex/perbaikan-form-pembinaan` (website `059ad37`, aplikasi `8313a41`) agar perbaikan formulir pembinaan yang belum digabung ke `main` ikut terbawa.
 
