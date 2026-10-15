@@ -1,6 +1,6 @@
 # Redesain tampilan aplikasi alhasanApps — 14 Oktober 2026
 
-Status: **Fase 1 LULUS audit ulang Codex pada commit aplikasi `d49da77`** (15 Oktober 2026), dengan batas yang diterima pada keputusan nomor 5 dan catatan nonblokir di `audit-fase-1.md`. Fase 2–3 belum dimulai; tidak ada merge dalam audit ini. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
+Status: **Fase 1 LULUS audit ulang Codex pada commit aplikasi `d49da77`** (15 Oktober 2026), dengan batas yang diterima pada keputusan nomor 5 dan catatan nonblokir di `audit-fase-1.md`. **Fase 2 diimplementasikan Claude (aplikasi `0f2e294`), menunggu audit Codex**; Fase 3 belum dimulai. Belum ada merge. Dokumen ini adalah sumber kebenaran workstream redesain tampilan. Implementator: Claude. Auditor: Codex (lihat `AGENTS.md`).
 
 Branch kedua repositori: `redesain-tampilan`, dibuat dari `codex/perbaikan-form-pembinaan` (website `059ad37`, aplikasi `8313a41`) agar perbaikan formulir pembinaan yang belum digabung ke `main` ikut terbawa.
 
@@ -150,6 +150,57 @@ Batas yang diterima dan sisa catatan:
 - `EmptyState` (komponen lama, di luar Fase 1) juga memecah kata panjang pada AX-XXXL.
 - Bilah tab versi web yang menutupi sapaan pada lebar ponsel belum diubah (sudah ada sebelum Fase 1).
 - Data uji memuat judul jadwal panjang tanpa spasi (`ed78749f`), sehingga kartu sorot tampak lebih padat daripada data nyata.
+
+## Status Fase 2 — implementasi Claude, 15 Oktober 2026
+
+Status: **siap audit Codex**, bukan persetujuan merge. Commit aplikasi `0f2e294` (baseline `d49da77`, setelah Fase 1 lulus audit ulang). Tidak ada perubahan API/server. Bukti visual ada di `bukti-fase2/`. Uji web dapat diulang dengan `tests/browser/uji-redesain-fase2.mjs`.
+
+Perubahan:
+
+- **Jadwal** (`(schedules)/schedules.tsx`):
+  - Pil "Per pekan" (bawaan) dan "Rentang kustom". Pil 7/30 hari yang lama dihapus.
+  - Per pekan memakai `WeekStrip` dan memuat Senin–Minggu dari tanggal terpilih (`/schedules?date_from&date_to`, parameter yang sama). Daftarnya berisi sesi tanggal terpilih dengan judul "KAMIS, 15 OKTOBER · N SESI".
+  - Memilih tanggal lain dalam pekan yang sama tidak memanggil server lagi. Data pekan lama tidak dipakai untuk tanggal pekan baru (dicocokkan dengan `filters`).
+  - Rentang kustom memakai panel dan daftar berkelompok yang lama.
+  - Bila pekan berisi lebih dari 100 sesi, ada peringatan.
+- **Kartu sesi** (`schedule-card.tsx`, juga dipakai di Beranda):
+  - Jam di kiri. Status ikon + teks dari `src/lib/schedule-status.ts`: Absensi selesai, Absensi dibuka, Draf absensi, Belum diabsen, Belum dimulai, Belum dibuka.
+  - Penanda "Absen" dan bingkai hijau hanya untuk sesi **hari ini** yang belum selesai. Penanda ini bukan tombol kedua; seluruh kartu tetap satu tombol menuju detail tugas.
+  - Garis rel di kiri dan lencana dihapus.
+- **Perizinan** (`(izin)/perizinan.tsx`):
+  - Segmen antrean/semua diganti pil "Perlu tindakan · N", "Semua", "Disetujui", "Ditolak".
+  - Pil status memakai parameter `status` yang sudah didukung `/izin/pengajuan`. Pil "Selesai" dari mockup diganti Disetujui/Ditolak karena API hanya menerima satu status.
+  - N adalah total paginasi antrean, atau `antrean_admin` bila server mengirimnya. N disembunyikan saat ada kata kunci pencarian atau saat pil lain aktif.
+  - Deret angka ringkasan dihapus. Gantinya "N pengajuan" dari total paginasi hasil filter, bukan `summary`, yang mencakup seluruh cakupan.
+  - FAB "Buat izin" diganti tombol tetap selebar layar "Ajukan izin baru" di atas bilah tab, dengan syarat tampil yang sama.
+  - Orang tua tidak melihat pil antrean maupun tombol pengajuan. Mode, panel anak, pencarian, laporan, dan paginasi tidak berubah.
+- **Kartu izin** (`izin-card.tsx`):
+  - Avatar inisial (kata yang diawali angka dilewati), status ikon + teks, rentang tanggal, alasan (2 baris), dan pengurus/murobi.
+  - Petunjuk "Tinjau & putuskan" / "Tetapkan murobi" berasal dari `aksi` server. Bingkai kuning menandai kartu yang perlu tindakan.
+  - Garis status di kiri dihapus.
+- **Keputusan rencana Fase 2 tentang tombol Setujui/Tolak di kartu: tidak dipasang.** `izin/[id].tsx` mengirim `alasan` (wajib, minimal 3 karakter) dan `version`, dan Admin Pengganti juga wajib mengisi `alasan_penggantian`. Karena keputusan selalu memerlukan isian, kartu menampilkan petunjuk dan membuka detail.
+- **Teks sangat besar** (`fontScale > 1,35`): deretan tanggal dapat digeser, dan kaki kartu izin ditumpuk.
+
+Validasi (Claude):
+
+- `npx tsc --noEmit`, `npm run lint`, dan `git diff --check`: lulus. `node --experimental-strip-types --test tests/*.test.ts`: **17 lulus, 0 gagal**, termasuk `tests/redesain-fase2.test.ts` (status sesi: hari ini, selesai, masa depan/lampau, pergantian tahun).
+- Web (`uji-redesain-fase2.mjs`, Playwright 390 pt, API lokal `webalhasan_v3_phase1_test`): **14/14 lulus**.
+  - Jadwal admin: pilih tanggal tanpa memuat ulang (1→1 permintaan), status "Belum dimulai", pekan berikutnya meminta 19–25 Okt, dan rentang kustom.
+  - Sesi hari ini (satu sesi disuntikkan ke respons, karena data uji tidak memiliki sesi hari ini): "Belum diabsen" + penanda "Absen".
+  - Perizinan admin: "Perlu tindakan · 120"; 20 kartu antrean memberi petunjuk tanpa tombol Setujui; pil Disetujui meminta `status=Disetujui` dan 20 kartu semuanya Disetujui; tombol "Ajukan izin baru" membuka `/izin/buat`.
+  - Orang tua: tanpa pil antrean dan tanpa tombol pengajuan.
+  - Tidak ada `pageerror`.
+- Regresi Fase 1 (`uji-redesain-fase1.mjs`): 6 lulus, bagian fondasi dilewati.
+- iOS (iPhone 17 Pro, guru): Jadwal normal sesuai mockup. Pada AX-XL deretan tanggal dapat digeser dan pil membungkus.
+- Android (emulator `Medium_Phone`, admin): Jadwal dan Perizinan pada `font_scale` 1,0 dan 2,0. Kaki kartu izin pada 2,0 awalnya terperas ("Belum dit/etapkan"); setelah ditumpuk, terbaca utuh.
+
+Keterbatasan dan catatan untuk auditor:
+
+- Data uji tidak memiliki sesi hari ini atau sesi berstatus Dibuka/Draf/Selesai. Keadaan itu dibuktikan lewat uji unit dan satu respons yang disuntikkan, bukan data nyata.
+- Navigasi pekan pada native dan interaksi pil di iOS hanya diperiksa visual. Interaksinya diuji di web.
+- iOS untuk Perizinan tidak diuji karena akun guru di simulator tidak memiliki kemampuan izin; Perizinan diuji di Android dan web.
+- Catatan nonblokir Fase 1 tetap berlaku: bilah tab web menutupi kepala layar pada lebar ponsel (terlihat juga di Jadwal/Perizinan web).
+- Komponen `Segmented`, `StatTile`, dan `Fab` tidak lagi dipakai Perizinan tetapi tidak dihapus. Pembersihannya ditinjau di Fase 3.
 
 ## Di luar cakupan
 
