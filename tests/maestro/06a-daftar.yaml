@@ -1,0 +1,8 @@
+# Skenario 15 (bagian 1): login dan buka daftar pelanggaran.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow:
+    file: login.yaml
+    env: { USER: sbx_pengurus_a }
+- openLink: alhasanapps://pembinaan/daftar?jenis=pelanggaran
+- extendedWaitUntil: { visible: ".*SBX Santri A1.*", timeout: 30000 }

@@ -16,3 +16,13 @@
 Seluruh fase belum dinyatakan selesai. Jangan menghapus data lama agar verifier lulus. Sakelar Push ON/WhatsApp OFF tidak berubah. Tidak ada uji/migrasi/deploy pada produksi yang dihitung sebagai bukti sesi ini.
 
 Catatan lingkungan uji Expo: pada percobaan awal, cache/config perangkat tetap menunjuk API nonlokal meskipun proses dijalankan dengan URL lokal. Login fixture sintetis gagal dari browser; apakah request mencapai server tidak diverifikasi. Tidak ada hasil/mutasi bisnis produksi yang diklaim. Setelah diketahui, harness memblokir jaringan luar dan mengalihkan seluruh request API ke localhost. Hanya run akhir terisolasi yang menjadi bukti UI. Konfigurasi/credential perangkat yang ada tidak diubah atau dimasukkan ke commit.
+
+## Setelah penutupan Fase 5 (15 Oktober 2026)
+
+| Temuan | Status dan tindakan |
+| --- | --- |
+| Push peristiwa murobi belum dibuktikan pada perangkat fisik | Diterima Human Developer; pantau melalui masukan pengguna dan receipt produksi. |
+| 3 outbox Push produksi berstatus Failed | Operator menelusuri `error_kode`/`error_terakhir` tanpa menyalin token. |
+| Deep link pasca-login kadang kehilangan parameter (S1, [uji simulator](uji-simulator.md)) | Rendah; navigasi notifikasi tidak terdampak. Usulan perbaikan klien untuk Codex. |
+| Build debug memakai `.env.local` (API produksi) saat berjalan (S2) | Proses uji: pindahkan `.env.local` sementara saat menguji ke server lokal. Percobaan login sintetis gagal sempat terkirim ke produksi pada 15 Okt; tidak ada perubahan data. |
+| Formulir memuat seluruh halaman katalog setiap dibuka (S4) | Pantau bila katalog produksi membesar. |

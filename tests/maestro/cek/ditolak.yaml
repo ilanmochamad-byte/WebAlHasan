@@ -1,0 +1,6 @@
+appId: com.ilanmochamad.alhasanApps
+---
+- extendedWaitUntil: { visible: ".*Informasi tidak dapat diakses\\. Muat ulang atau masuk dengan akun yang berhak.*", timeout: 30000 }
+- assertNotVisible: ".*SIM kasus Internal.*"
+- assertNotVisible: ".*SIM-RAHASIA.*"
+- takeScreenshot: ${PLATFORM}-${NAMA}-ditolak

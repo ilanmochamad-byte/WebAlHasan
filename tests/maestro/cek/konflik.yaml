@@ -1,0 +1,14 @@
+appId: com.ilanmochamad.alhasanApps
+---
+- scrollUntilVisible: { element: "Mulai pendampingan" }
+- runScript:
+    file: ../ubah-status-api.js
+    env: { KASUS: "${KASUS_INTERNAL}" }
+- assertTrue: ${output.statusKonflik == 200}
+- tapOn: "Mulai pendampingan"
+- scrollUntilVisible: { element: ".*Muat ulang data sebelum mencoba kembali.*", timeout: 30000 }
+- takeScreenshot: ${PLATFORM}-konflik-409
+- scrollUntilVisible: { element: "Muat ulang versi terbaru", direction: UP }
+- tapOn: "Muat ulang versi terbaru"
+- extendedWaitUntil: { visible: ".*Dalam Pendampingan.*", timeout: 20000 }
+- takeScreenshot: ${PLATFORM}-konflik-dimuat-ulang

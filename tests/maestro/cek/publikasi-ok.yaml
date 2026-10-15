@@ -1,0 +1,5 @@
+appId: com.ilanmochamad.alhasanApps
+---
+- extendedWaitUntil: { visible: "SIM ringkasan untuk keluarga", timeout: 30000 }
+- assertNotVisible: ".*SIM kasus Internal.*"
+- takeScreenshot: ${PLATFORM}-wali-a-publikasi

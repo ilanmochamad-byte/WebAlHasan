@@ -1,0 +1,6 @@
+# Skenario 15 (bagian 3): server kembali -> Coba lagi memuat data.
+appId: com.ilanmochamad.alhasanApps
+---
+- tapOn: "Coba lagi"
+- extendedWaitUntil: { visible: ".*SBX Santri A1.*", timeout: 30000 }
+- takeScreenshot: ${PLATFORM}-pulih

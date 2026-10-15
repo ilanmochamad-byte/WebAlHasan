@@ -1,0 +1,19 @@
+# Skenario 13: kasus diubah dari perangkat lain saat layar terbuka -> 409 dan muat ulang.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow:
+    file: login.yaml
+    env: { USER: sbx_pengurus_a }
+- openLink: alhasanapps://pembinaan/detail?jenis=kasus&id=${KASUS_INTERNAL}
+- scrollUntilVisible: { element: "Mulai pendampingan" }
+- runScript:
+    file: ubah-status-api.js
+    env: { KASUS: "${KASUS_INTERNAL}" }
+- assertTrue: ${output.statusKonflik == 200}
+- tapOn: "Mulai pendampingan"
+- scrollUntilVisible: { element: ".*Muat ulang data sebelum mencoba kembali.*", timeout: 30000 }
+- takeScreenshot: ${PLATFORM}-konflik-409
+- scrollUntilVisible: { element: "Muat ulang versi terbaru", direction: UP }
+- tapOn: "Muat ulang versi terbaru"
+- extendedWaitUntil: { visible: ".*Dalam Pendampingan.*", timeout: 20000 }
+- takeScreenshot: ${PLATFORM}-konflik-dimuat-ulang

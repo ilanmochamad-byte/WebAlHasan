@@ -1,0 +1,34 @@
+# Skenario 3/5/14: catat pelanggaran via pemilih santri/katalog/kalender; draf bertahan
+# saat aplikasi ke latar; ketuk ganda Simpan menghasilkan satu catatan.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow:
+    file: login.yaml
+    env: { USER: sbx_pengurus_a }
+- openLink: alhasanapps://pembinaan/buat?jenis=pelanggaran
+- extendedWaitUntil: { visible: "Santri dalam cakupan aktif", timeout: 20000 }
+- tapOn: { text: "Santri dalam cakupan aktif", index: 1 }
+- tapOn: { text: ".*SBX Santri A1.*", index: 0 }
+- tapOn: { text: "Jenis pelanggaran", index: 1 }
+- tapOn: { text: ".* · (Ringan|Sedang|Berat) · [0-9]+ poin", index: 0 }
+- tapOn: "Waktu kejadian — tanggal: Pilih tanggal"
+- runFlow: { when: { platform: iOS }, commands: [ { tapOn: "Pilih tanggal" } ] }
+- runFlow: { when: { platform: Android }, commands: [ { tapOn: "Pilih" } ] }
+- tapOn: "Waktu kejadian — jam: Pilih jam"
+- runFlow: { when: { platform: iOS }, commands: [ { tapOn: "Pilih jam" } ] }
+- runFlow: { when: { platform: Android }, commands: [ { tapOn: "Pilih" } ] }
+- tapOn: { text: "Uraian kejadian", index: 1 }
+- inputText: "${MARKER}"
+- hideKeyboard
+- takeScreenshot: ${PLATFORM}-catat-terisi
+# Skenario 14: aplikasi ke latar lalu dibuka lagi; draf formulir tetap ada.
+- pressKey: home
+- launchApp: { stopApp: false }
+- extendedWaitUntil: { visible: "${MARKER}", timeout: 20000 }
+- takeScreenshot: ${PLATFORM}-catat-setelah-latar
+# Skenario 5: ketuk ganda Simpan.
+- scrollUntilVisible: { element: "Simpan" }
+- tapOn: { text: "Simpan", repeat: 2, delay: 80 }
+- extendedWaitUntil: { visible: ".*Total poin.*", timeout: 20000 }
+- assertVisible: "${MARKER}"
+- takeScreenshot: ${PLATFORM}-catat-tersimpan
