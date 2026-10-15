@@ -1,0 +1,7 @@
+# Skenario 15 (bagian 4): token dicabut di server -> 401 -> kembali ke login.
+appId: com.ilanmochamad.alhasanApps
+---
+- scrollUntilVisible: { element: "Muat ulang" }
+- tapOn: "Muat ulang"
+- extendedWaitUntil: { visible: "Masukkan username", timeout: 30000 }
+- takeScreenshot: ${PLATFORM}-401-login

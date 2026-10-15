@@ -1,0 +1,13 @@
+# Skenario 6 dan 8: pembimbing/murobi lain menebak ID kasus Internal dan Rahasia.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow:
+    file: login.yaml
+    env: { USER: "${OTHER}" }
+- openLink: alhasanapps://pembinaan/detail?jenis=kasus&id=${KASUS_INTERNAL}
+- extendedWaitUntil: { visible: ".*Informasi tidak dapat diakses\\. Muat ulang atau masuk dengan akun yang berhak.*", timeout: 20000 }
+- assertNotVisible: ".*SIM kasus Internal.*"
+- openLink: alhasanapps://pembinaan/detail?jenis=kasus&id=${KASUS_RAHASIA}
+- extendedWaitUntil: { visible: ".*Informasi tidak dapat diakses\\. Muat ulang atau masuk dengan akun yang berhak.*", timeout: 20000 }
+- assertNotVisible: ".*SIM-RAHASIA.*"
+- takeScreenshot: ${PLATFORM}-${OTHER}-ditolak

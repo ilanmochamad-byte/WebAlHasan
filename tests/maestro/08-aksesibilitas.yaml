@@ -1,0 +1,13 @@
+# Skenario 16: teks sangat besar (diatur di luar flow) pada formulir kasus.
+appId: com.ilanmochamad.alhasanApps
+---
+# Prasyarat: sudah login sebagai sbx_pengurus_a (login.yaml), lalu ukuran teks diubah
+# dengan `xcrun simctl ui <udid> content_size accessibility-extra-extra-extra-large`
+# atau `adb shell settings put system font_scale 2.0`.
+- openLink: alhasanapps://pembinaan/buat?jenis=kasus
+- extendedWaitUntil: { visible: "Santri dalam cakupan aktif", timeout: 20000 }
+- takeScreenshot: ${PLATFORM}-teks-besar-potret
+- scrollUntilVisible: { element: "Kerahasiaan (wajib dipilih)" }
+- scrollUntilVisible: { element: "Simpan" }
+- takeScreenshot: ${PLATFORM}-teks-besar-kerahasiaan
+# Rotasi tidak diuji: app.json mengunci orientasi "portrait".

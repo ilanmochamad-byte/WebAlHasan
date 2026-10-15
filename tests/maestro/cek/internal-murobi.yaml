@@ -1,0 +1,12 @@
+# Android: dipanggil setelah deep link kasus Internal dibuka lewat adb.
+appId: com.ilanmochamad.alhasanApps
+---
+- extendedWaitUntil: { visible: ".*SIM kasus Internal.*", timeout: 30000 }
+- takeScreenshot: ${PLATFORM}-murobi-a-internal
+- tapOn: { text: "Catatan murobi / alasan tindakan", index: 1 }
+- inputText: "SIM catatan murobi ${PLATFORM}"
+- hideKeyboard
+- scrollUntilVisible: { element: "Tandai mengetahui" }
+- tapOn: "Tandai mengetahui"
+- scrollUntilVisible: { element: "Catatan murobi: SIM catatan murobi ${PLATFORM}" }
+- takeScreenshot: ${PLATFORM}-murobi-a-mengetahui

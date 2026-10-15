@@ -1,0 +1,36 @@
+# Subflow: login akun sintetis pada build lokal (API 127.0.0.1:8940, DB *_test).
+appId: com.ilanmochamad.alhasanApps
+---
+- launchApp:
+    clearState: true
+    clearKeychain: true
+# Android debug (dev client): build Release memblokir HTTP lokal, jadi bundel dimuat dari Metro.
+- runFlow:
+    when: { platform: Android }
+    commands:
+      - tapOn: "http://"
+      - inputText: "10.0.2.2:8082"
+      - tapOn: "Connect"
+      - tapOn: { text: "Continue", optional: true }
+      - tapOn: { text: "Close", optional: true }
+- extendedWaitUntil:
+    visible: "Masukkan username"
+    timeout: 30000
+- tapOn: "Masukkan username"
+- inputText: ${USER}
+# Android: pengetikan adb ke field tersembunyi menambah karakter; tampilkan dulu.
+- tapOn: { text: "Tampilkan password", optional: true }
+- tapOn: "Masukkan password"
+- inputText: "Sandbox#123"
+- hideKeyboard
+- tapOn: "Masuk"
+- extendedWaitUntil:
+    notVisible: "Masukkan username"
+    timeout: 30000
+# Dialog sistem iOS "Save Password?" bukan bagian aplikasi; tutup bila muncul.
+- tapOn:
+    text: "Not Now"
+    optional: true
+# Tunggu beranda stabil (perpindahan layar pasca-login selesai) sebelum deep link.
+- waitForAnimationToEnd: { timeout: 10000 }
+- extendedWaitUntil: { visible: ".*(Pembinaan|Jadwal|Perizinan|Beranda).*", timeout: 30000 }

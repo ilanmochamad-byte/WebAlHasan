@@ -1,0 +1,7 @@
+# Skenario 15 (bagian 2): server tidak terjangkau -> pesan jaringan + Coba lagi.
+appId: com.ilanmochamad.alhasanApps
+---
+- scrollUntilVisible: { element: "Muat ulang" }
+- tapOn: "Muat ulang"
+- extendedWaitUntil: { visible: ".*server tidak terjangkau.*", timeout: 90000 }
+- takeScreenshot: ${PLATFORM}-offline

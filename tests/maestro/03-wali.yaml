@@ -1,0 +1,19 @@
+# Skenario 10-11: wali A membaca snapshot miliknya; data internal ditolak. Wali B ditolak.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow:
+    file: login.yaml
+    env: { USER: sbx_ortu_a }
+- openLink: alhasanapps://publikasi/${PUBLIKASI}
+- extendedWaitUntil: { visible: "SIM ringkasan untuk keluarga", timeout: 20000 }
+- assertNotVisible: ".*SIM kasus Internal.*"
+- takeScreenshot: ${PLATFORM}-wali-a-publikasi
+- openLink: alhasanapps://pembinaan/detail?jenis=kasus&id=${KASUS_INTERNAL}
+- extendedWaitUntil: { visible: ".*Informasi tidak dapat diakses\\. Muat ulang atau masuk dengan akun yang berhak.*", timeout: 20000 }
+- runFlow:
+    file: login.yaml
+    env: { USER: sbx_ortu_b }
+- openLink: alhasanapps://publikasi/${PUBLIKASI}
+- extendedWaitUntil: { notVisible: ".*Memuat.*", timeout: 20000 }
+- assertNotVisible: "SIM ringkasan untuk keluarga"
+- takeScreenshot: ${PLATFORM}-wali-b-ditolak

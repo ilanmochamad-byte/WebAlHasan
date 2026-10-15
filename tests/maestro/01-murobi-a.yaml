@@ -1,0 +1,20 @@
+# Skenario 7, 6, 8: murobi terkait membaca dan menandai kasus Internal; kasus Rahasia ditolak.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow:
+    file: login.yaml
+    env: { USER: sbx_murobi_a }
+- openLink: alhasanapps://pembinaan/detail?jenis=kasus&id=${KASUS_INTERNAL}
+- extendedWaitUntil: { visible: ".*SIM kasus Internal.*", timeout: 20000 }
+- takeScreenshot: ${PLATFORM}-murobi-a-internal
+- tapOn: { text: "Catatan murobi / alasan tindakan", index: 1 }
+- inputText: "SIM catatan murobi ${PLATFORM}"
+- hideKeyboard
+- scrollUntilVisible: { element: "Tandai mengetahui" }
+- tapOn: "Tandai mengetahui"
+- scrollUntilVisible: { element: "Catatan murobi: SIM catatan murobi ${PLATFORM}" }
+- takeScreenshot: ${PLATFORM}-murobi-a-mengetahui
+- openLink: alhasanapps://pembinaan/detail?jenis=kasus&id=${KASUS_RAHASIA}
+- extendedWaitUntil: { visible: ".*Informasi tidak dapat diakses\\. Muat ulang atau masuk dengan akun yang berhak.*", timeout: 20000 }
+- assertNotVisible: ".*SIM-RAHASIA.*"
+- takeScreenshot: ${PLATFORM}-murobi-a-rahasia-ditolak
