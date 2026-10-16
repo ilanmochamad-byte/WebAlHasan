@@ -1,0 +1,60 @@
+# Audit Claude Code — HTTP/browser (server PHP lokal 127.0.0.1, Chromium Playwright)
+## uji-v4-fase1.mjs
+[lulus] API baca dua mapel 200
+[lulus] API v4_pengurus 403
+[lulus] API v4_guru 403
+[lulus] API v4_wali 403
+[lulus] API opsi pendidikan 200
+[lulus] API menolak mapel ganda 409
+[lulus] API pengaturan v4_pengurus 403
+[lulus] API pengaturan v4_guru 403
+[lulus] API pengaturan v4_wali 403
+[lulus] Server uji menolak akses langsung storage privat
+[lulus] Web membaca ulang rencana dua mapel
+[lulus] Web menampilkan dua mapel
+[lulus] Halaman 375 px tanpa gulir horizontal
+[lulus] Web menyimpan target baru
+[lulus] API membaca target yang diubah melalui web
+[lulus] Rencana menyimpan guru pengampu sesuai mapel
+[lulus] Halaman 375 px tetap tanpa gulir horizontal pada teks lebih besar
+[lulus] Web menolak target >100 dengan pesan 422
+[lulus] Simpan gagal tanpa peringatan PHP
+[lulus] Formulir rencana tetap tampil setelah simpan gagal
+[lulus] API v4_pengurus tanpa parameter tetap 403
+[lulus] API v4_guru tanpa parameter tetap 403
+[lulus] API v4_wali tanpa parameter tetap 403
+## uji-v4-fase2.mjs
+[lulus] API 85 predikat B
+[lulus] v4_wali baca 403
+[lulus] v4_wali tulis kosong 403
+[lulus] v4_pengurus baca 403
+[lulus] v4_pengurus tulis kosong 403
+[lulus] API guru mapel lain 403
+[lulus] Pendidikan tidak dapat menyamar melalui jalur guru
+[lulus] API pengganti tanpa alasan 422
+[lulus] API pengganti beralasan tercatat hanya pada komponen yang diubah
+[lulus] API retry versi usang 409
+[lulus] API nol dan Belum lengkap
+[lulus] API tanpa bearer 401
+[lulus] Web pengganti 375 px tersedia
+[lulus] Web tanpa CSRF 419
+[lulus] Web simpan draf 85 B
+[lulus] Catatan XSS tidak dieksekusi
+[lulus] API membaca hasil simpan web 85
+[lulus] Web penyerahan empat komponen
+[lulus] Web versi usang 409
+[lulus] Web koreksi kembali draf
+[lulus] 375 px tanpa overflow
+[lulus] 375 px teks 24 px tanpa overflow
+[lulus] Desktop tanpa overflow
+[lulus] Web nol tetap nol dan Belum lengkap
+[lulus] Web Pendidikan jalur guru 403
+## uji-v4-fase2-guru.mjs
+[lulus] Web guru membaca 85 B
+[lulus] Web guru koreksi tanpa alasan 422
+[lulus] Formulir tetap tersedia setelah gagal
+[lulus] Web guru menyimpan koreksi
+[lulus] Web guru menyerahkan nilai
+[lulus] Web guru akses silang 403
+[lulus] Web guru akses silang 403
+[lulus] Web guru akses silang 403

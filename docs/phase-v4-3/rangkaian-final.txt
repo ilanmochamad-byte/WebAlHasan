@@ -1,0 +1,4 @@
+Fixture, password, dan token sementara dibuat pada DB uji; token disimpan privat.
+Alias sintetis untuk tangkapan layar dan akun guru web disiapkan hanya pada DB uji.
+Fixture petugas, penugasan, dan token privat Fase 3 dibuat di DB uji.
+Seluruh rangkaian final Fase 1–3 exit 0; rollback berisi data ditolak sesuai harapan.

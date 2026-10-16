@@ -61,6 +61,8 @@ final class PenugasanJenis
     // Kesiapan V3 (konseling & pelanggaran memakai cakupan binaan murobi/pembimbing).
     public const CAP_MUROBI_BINAAN = 'murobi.binaan';
     public const CAP_PEMBIMBING_BINAAN = 'pembimbing.binaan';
+    public const CAP_SIKAP_INPUT = 'sikap.input';
+    public const CAP_SIKAP_MUROBI = 'sikap.murobi';
     // Kesiapan V4.
     public const CAP_NILAI_INPUT = 'nilai.input';
     public const CAP_NILAI_LIHAT_SENDIRI = 'nilai.lihat_sendiri';
@@ -115,7 +117,7 @@ final class PenugasanJenis
             'cakupan' => self::CAKUPAN_TARGET,
             'wajib_tahun_aktif' => true,
             'lama' => true,
-            'capabilities' => [self::CAP_MUROBI_BINAAN],
+            'capabilities' => [self::CAP_MUROBI_BINAAN, self::CAP_SIKAP_MUROBI],
             'prd' => 'V2 (berjalan) · V3',
             'keterangan' => 'Guru dengan penugasan murobi aktif. Capability keputusan perizinan V2 (`murobi`) tetap dihitung seperti sebelumnya; `murobi.binaan` menyiapkan cakupan kamar/kelas untuk konseling dan pelanggaran (V3).',
         ],
@@ -130,7 +132,7 @@ final class PenugasanJenis
             'cakupan' => self::CAKUPAN_TARGET,
             'wajib_tahun_aktif' => true,
             'lama' => true,
-            'capabilities' => [self::CAP_PEMBIMBING_BINAAN],
+            'capabilities' => [self::CAP_PEMBIMBING_BINAAN, self::CAP_SIKAP_INPUT],
             'prd' => 'V2 (berjalan) · V3',
             'keterangan' => 'Pengurus dengan penugasan pembimbing aktif. Cakupan pengajuan izin V2 tetap dihitung seperti sebelumnya; `pembimbing.binaan` menyiapkan cakupan kamar/kelas untuk konseling dan pelanggaran (V3).',
         ],

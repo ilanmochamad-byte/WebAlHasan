@@ -13,7 +13,7 @@ ok((await api('v4_guru',`/v4/nilai?rencana_mapel_id=${ids.other}`)).status===403
 ok((await api('v4_pendidikan',path)).status===403,'Pendidikan tidak dapat menyamar melalui jalur guru');
 let p={rencana_mapel_id:ids.mapel,santri_id:ids.santri,action:'koreksi',komponen:r.body.data.nilai};
 ok((await api('v4_pendidikan','/v4/nilai/pengganti',p)).status===422,'API pengganti tanpa alasan 422');
-p.alasan='Guru berhalangan pada uji HTTP';r=await api('v4_pendidikan','/v4/nilai/pengganti',p);ok(r.status===200&&r.body.data.riwayat[0].kapasitas==='pendidikan_pengganti','API pengganti beralasan tercatat');
+p.alasan='Guru berhalangan pada uji HTTP';p.komponen=p.komponen.map((c,i)=>i===0?{...c,catatan:'Dikoreksi pengganti via API'}:c);r=await api('v4_pendidikan','/v4/nilai/pengganti',p);ok(r.status===200&&r.body.data.riwayat[0].kapasitas==='pendidikan_pengganti'&&r.body.data.nilai.filter(n=>n.kapasitas==='pendidikan_pengganti').length===1,'API pengganti beralasan tercatat hanya pada komponen yang diubah');
 ok((await api('v4_pendidikan','/v4/nilai/pengganti',p)).status===409,'API retry versi usang 409');
 r=await api('v4_guru',`/v4/nilai?rencana_mapel_id=${ids.mapel}&santri_id=${ids.santri2}`);ok(r.body.data.hasil.kelengkapan==='Belum lengkap'&&Number(r.body.data.nilai[0].nilai)===0,'API nol dan Belum lengkap');
 const anonymous=await fetch(base+'/api/v1'+path);ok(anonymous.status===401,'API tanpa bearer 401');
@@ -33,7 +33,7 @@ try {
  const staleStatus=await page.evaluate(async body=>{const p=new URLSearchParams(body);p.set('alasan','Uji konflik');p.set('action','koreksi');return (await fetch(location.href,{method:'POST',body:p})).status;},staleForm);ok(staleStatus===409,'Web versi usang 409');
  await page.locator('[name=alasan]').fill('Koreksi catatan capaian');await page.locator('[name="komponen[0][catatan]"]').fill('Catatan terkoreksi');await page.getByRole('button',{name:'Koreksi beralasan',exact:true}).click();ok((await page.locator('.nilai-row h3').allTextContents()).filter(x=>x.includes('Draf')).length===4,'Web koreksi kembali draf');
  ok(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),'375 px tanpa overflow');await page.evaluate(()=>document.documentElement.style.fontSize='24px');ok(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),'375 px teks 24 px tanpa overflow');
- await page.screenshot({path:'docs/phase-v4-2/browser-375.png',fullPage:true});await page.setViewportSize({width:1440,height:1000});ok(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),'Desktop tanpa overflow');
+ await page.screenshot({path:(process.env.V4_EVIDENCE_DIR||'docs/phase-v4-2')+'/browser-375.png',fullPage:true});await page.setViewportSize({width:1440,height:1000});ok(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),'Desktop tanpa overflow');
  await page.goto(base+`/portal/nilai_semester.php?pengganti=1&rencana_mapel_id=${ids.mapel}&santri_id=${ids.santri2}`);ok((await page.locator('#hasil-nilai').textContent()).includes('Belum lengkap')&&await page.locator('[name="komponen[0][nilai]"]').inputValue()==='0.00','Web nol tetap nol dan Belum lengkap');
  const denied=await page.goto(base+`/portal/nilai_semester.php?rencana_mapel_id=${ids.mapel}`);ok(denied.status()===403,'Web Pendidikan jalur guru 403');
 } finally {await browser.close();}

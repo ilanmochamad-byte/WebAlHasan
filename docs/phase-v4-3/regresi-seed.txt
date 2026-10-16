@@ -1,0 +1,12 @@
+Fixture sandbox V2 Fase 3 selesai dibuat pada database `webalhasan_v3_phase1_test`.
+Akun uji (password fixture resmi disamarkan pada bukti):
+  - sbx_admin        admin
+  - sbx_pengurus_a   pengurus (kamar A + C)
+  - sbx_pengurus_b   pengurus (kamar B)
+  - sbx_murobi_a     guru + murobi kamar A
+  - sbx_murobi_b     guru + murobi kamar B
+  - sbx_murobi_c     guru + murobi kelas 1
+  - sbx_guru_biasa   guru tanpa penugasan murobi
+  - sbx_ortu_a       orang tua santri A1
+  - sbx_ortu_b       orang tua santri B1
+ID referensi: tahun_ajaran=1 kamarA=1 kamarB=2 kamarC=3 kelas=1 santriA1=1 santriA2=2 santriB1=3 santriC1=4

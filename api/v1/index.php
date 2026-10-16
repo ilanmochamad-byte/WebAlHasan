@@ -71,9 +71,18 @@ try {
         }
     }
 
-    // V4 Fase 1–2: endpoint aditif; klien lama tidak perlu mengubah payload.
+    // V4 Fase 1–3: endpoint aditif; klien lama tidak perlu mengubah payload.
     if (str_starts_with($path, '/v4/')) {
         header('Cache-Control: private, no-store');
+        $sikap = new \App\V4\SikapService(app_db(), audit_logger());
+        $verifikasi = new \App\V4\VerifikasiService(app_db(), audit_logger());
+        if ($method === 'GET' && $path === '/v4/sikap/options') JsonResponse::success($sikap->options($user, (string)($_GET['mode']??'pembimbing')));
+        if ($method === 'GET' && $path === '/v4/sikap') JsonResponse::success($sikap->read($user, (int)($_GET['rencana_id']??0), (int)($_GET['santri_id']??0), (string)($_GET['mode']??'pembimbing')));
+        if ($method === 'POST' && $path === '/v4/sikap') JsonResponse::success($sikap->save($user, Request::json()));
+        if ($method === 'POST' && $path === '/v4/sikap/murobi') JsonResponse::success($sikap->save($user, Request::json(), 'murobi'));
+        if ($method === 'GET' && $path === '/v4/verifikasi/options') JsonResponse::success($verifikasi->options($user));
+        if ($method === 'GET' && $path === '/v4/verifikasi') JsonResponse::success($verifikasi->read($user, (int)($_GET['rencana_id']??0), (int)($_GET['santri_id']??0)));
+        if ($method === 'POST' && $path === '/v4/verifikasi') JsonResponse::success($verifikasi->act($user, Request::json()));
         $nilai = new \App\V4\NilaiService(app_db(), capabilities(), audit_logger());
         if ($method === 'GET' && $path === '/v4/nilai/options') JsonResponse::success($nilai->options($user, ($_GET['pengganti']??'0')==='1'));
         if ($method === 'GET' && $path === '/v4/nilai') JsonResponse::success($nilai->read($user, (int)($_GET['rencana_mapel_id']??0), (int)($_GET['santri_id']??0), ($_GET['pengganti']??'0')==='1'));

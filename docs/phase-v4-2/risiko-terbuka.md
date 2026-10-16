@@ -1,6 +1,7 @@
 # Risiko dan batas pengujian Fase 2
 
-- Menunggu audit independen Claude Code; tidak ada klaim siap produksi atau izin merge/deploy.
+- Audit Claude Code selesai (lihat `audit-claude.md`); tidak ada klaim siap produksi. Merge/deploy menunggu keputusan Human Developer.
+- Setelah audit, simpan yang tidak mengubah komponen apa pun ditolak 422, dan komponen yang tidak berubah tidak lagi mendapat versi/riwayat/audit baru.
 - Uji berjalan pada MariaDB 12.3.2, PHP 8.4.14, Chromium lokal. MySQL/hosting cPanel, Safari, perangkat fisik, dan aplikasi mobile tidak diuji. Mobile memang di luar fase ini.
 - `tests/phase5_static.php` masih gagal pada path laporan mobile lama setelah redesain. Kegagalan yang sama ada pada baseline audit Fase 1. Seluruh integrasi V1 yang dijalankan lulus; file uji lama tidak diubah agar terlihat lulus.
 - Regresi V2 Fase 2 awal gagal karena proses anak PHP tidak mewarisi opsi socket CLI. Ulang dengan `PHP_INI_SCAN_DIR` khusus uji lulus. Regresi V3 Fase 2 awal gagal karena fixture resmi hanya membuat semester aktif; tambah semester nonaktif sintetis, lalu ulang lulus. Log awal dan ulang tetap disimpan.

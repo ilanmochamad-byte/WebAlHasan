@@ -1,0 +1,10 @@
+file:///Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/browser/uji-v4-fase3.mjs:7
+const ok=(v,s)=>{if(!v)throw Error(s);console.log('[lulus] '+s);};
+                             ^
+
+Error: API pembimbing membaca sikap privat
+    at ok (file:///Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/browser/uji-v4-fase3.mjs:7:30)
+    at file:///Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/browser/uji-v4-fase3.mjs:14:1
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v26.7.0

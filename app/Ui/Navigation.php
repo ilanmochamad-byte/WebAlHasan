@@ -81,6 +81,8 @@ final class Navigation
         'v3_publikasi_kelola.php' => 'v3.publikasi',
         'rencana_nilai.php' => 'v4.rencana',
         'nilai_semester.php' => 'v4.nilai',
+        'sikap_semester.php' => 'v4.sikap',
+        'verifikasi_semester.php' => 'v4.verifikasi',
         'admin_penempatan_santri.php' => 'master.penempatan',
         // Alamat lama penempatan; kini hanya mengalihkan ke halaman di atas.
         'admin_santri.php' => 'master.penempatan',
@@ -117,6 +119,9 @@ final class Navigation
         $nilaiItems = [];
         if (capabilities()->hasFeature($user, PenugasanJenis::CAP_NILAI_INPUT)) $nilaiItems[] = self::item('v4.nilai', 'Nilai semester', '/portal/nilai_semester.php', 'fa-pen');
         if (capabilities()->hasFeature($user, PenugasanJenis::CAP_NILAI_PENGGANTI)) $nilaiItems[] = self::item('v4.pengganti', 'Isi nilai pengganti', '/portal/nilai_semester.php?pengganti=1', 'fa-pen-to-square');
+        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_SIKAP_INPUT)) $nilaiItems[] = self::item('v4.sikap', 'Sikap semester', '/portal/sikap_semester.php', 'fa-heart');
+        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_SIKAP_MUROBI)) $nilaiItems[] = self::item('v4.murobi', 'Pemeriksaan sikap murobi', '/portal/sikap_semester.php?mode=murobi', 'fa-check');
+        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_RAPOR_VERIFIKASI)) $nilaiItems[] = self::item('v4.verifikasi', 'Kelengkapan semester', '/portal/verifikasi_semester.php', 'fa-list-check');
         if ($nilaiItems) $groups[] = ['label' => 'Pengisian nilai', 'items' => $nilaiItems];
 
         if (array_intersect(['v3.pelanggaran.kelola','v3.binaan.baca','v3.pengawasan','v3.koreksi'],array_keys($v3Capabilities)) !== []) {

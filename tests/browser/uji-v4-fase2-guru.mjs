@@ -16,6 +16,6 @@ try{
  await page.locator('[name="komponen[0][catatan]"]').fill('Capaian dikoreksi guru');await page.locator('[name=alasan]').fill('Penyesuaian catatan guru');await page.getByRole('button',{name:'Koreksi beralasan',exact:true}).click();
  ok(await page.locator('[name="komponen[0][catatan]"]').inputValue()==='Capaian dikoreksi guru','Web guru menyimpan koreksi');
  await page.getByRole('button',{name:'Serahkan nilai',exact:true}).click();ok((await page.locator('.nilai-row h3').allTextContents()).filter(x=>x.includes('Dikirim')).length===4,'Web guru menyerahkan nilai');
- await page.screenshot({path:'docs/phase-v4-2/browser-guru-375.png',fullPage:true});
+ await page.screenshot({path:(process.env.V4_EVIDENCE_DIR||'docs/phase-v4-2')+'/browser-guru-375.png',fullPage:true});
  for(const query of [`rencana_mapel_id=${ids.other}`,`rencana_mapel_id=${ids.mapel}&santri_id=99999999`,`pengganti=1&rencana_mapel_id=${ids.mapel}`]){ok((await page.goto(base+'/portal/nilai_semester.php?'+query)).status()===403,'Web guru akses silang 403');}
 }finally{await browser.close();}
