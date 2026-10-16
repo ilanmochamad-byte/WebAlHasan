@@ -69,6 +69,8 @@ final class PenugasanJenis
     public const CAP_RAPOR_FINALISASI = 'rapor.finalisasi';
     public const CAP_RAPOR_BUKA_KOREKSI = 'rapor.buka_koreksi';
     public const CAP_RAPOR_CETAK = 'rapor.cetak';
+    public const CAP_RAPOR_RENCANA = 'rapor.rencana';
+    public const CAP_NILAI_PENGGANTI = 'nilai.input_pengganti';
     // Kesiapan V5.
     public const CAP_PEMBIAYAAN_BULANAN_TAGIHAN = 'pembiayaan_bulanan.tagihan';
     public const CAP_PEMBIAYAAN_BULANAN_PEMBAYARAN = 'pembiayaan_bulanan.pembayaran';
@@ -158,7 +160,7 @@ final class PenugasanJenis
             'cakupan' => self::CAKUPAN_JENJANG,
             'wajib_tahun_aktif' => true,
             'lama' => false,
-            'capabilities' => [self::CAP_RAPOR_VERIFIKASI, self::CAP_RAPOR_FINALISASI, self::CAP_RAPOR_BUKA_KOREKSI, self::CAP_RAPOR_CETAK],
+            'capabilities' => [self::CAP_RAPOR_VERIFIKASI, self::CAP_RAPOR_FINALISASI, self::CAP_RAPOR_BUKA_KOREKSI, self::CAP_RAPOR_CETAK, self::CAP_RAPOR_RENCANA, self::CAP_NILAI_PENGGANTI],
             'prd' => 'V4',
             'keterangan' => 'Pengurus yang diangkat sebagai Bagian Pendidikan, opsional dibatasi satu unit/jenjang. Halaman rapor belum ada.',
         ],

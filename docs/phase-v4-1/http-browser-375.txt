@@ -1,0 +1,17 @@
+[lulus] API baca dua mapel 200
+[lulus] API v4_pengurus 403
+[lulus] API v4_guru 403
+[lulus] API v4_wali 403
+[lulus] API opsi pendidikan 200
+[lulus] API menolak mapel ganda 409
+[lulus] API pengaturan v4_pengurus 403
+[lulus] API pengaturan v4_guru 403
+[lulus] API pengaturan v4_wali 403
+[lulus] Server uji menolak akses langsung storage privat
+[lulus] Web membaca ulang rencana dua mapel
+[lulus] Web menampilkan dua mapel
+[lulus] Halaman 375 px tanpa gulir horizontal
+[lulus] Web menyimpan target baru
+[lulus] API membaca target yang diubah melalui web
+[lulus] Rencana menyimpan guru pengampu sesuai mapel
+[lulus] Halaman 375 px tetap tanpa gulir horizontal pada teks lebih besar

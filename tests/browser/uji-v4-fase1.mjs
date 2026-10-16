@@ -1,0 +1,35 @@
+import fs from 'node:fs';
+import { chromium } from 'playwright';
+const base=process.env.V4_TEST_URL||'http://127.0.0.1:8961';
+if(!process.env.V4_TEST_PASSWORD)throw new Error('V4_TEST_PASSWORD diperlukan untuk fixture lokal.');
+const tokens=JSON.parse(fs.readFileSync(process.env.V4_HTTP_TOKENS||'/private/tmp/webalhasan-v4-http-tokens.json','utf8'));
+const ok=(value,label)=>{if(!value)throw new Error(label);console.log('[lulus] '+label);};
+const auth=(token)=>({Authorization:'Bearer '+token});
+const get=async(key)=>fetch(base+'/api/v1/v4/rencana?tahun_ajaran_id=4&kelas_id=2',{headers:auth(tokens[key])});
+const read=await get('v4_pendidikan');const data=await read.json();ok(read.status===200&&data.data?.mapel?.length===2,'API baca dua mapel 200');
+for(const key of ['v4_pengurus','v4_guru','v4_wali']){const r=await get(key);ok(r.status===403,`API ${key} 403`);}
+const options=await fetch(base+'/api/v1/v4/rencana/options',{headers:auth(tokens.v4_pendidikan)});ok(options.status===200,'API opsi pendidikan 200');
+const mapel=data.data.mapel;const duplicate={tahun_ajaran_id:4,kelas_id:2,mapel:[{mata_pelajaran_id:mapel[0].mata_pelajaran_id,target_ketuntasan:70},{mata_pelajaran_id:mapel[0].mata_pelajaran_id,target_ketuntasan:70}]};
+const dup=await fetch(base+'/api/v1/v4/rencana',{method:'POST',headers:{...auth(tokens.v4_pendidikan),'Content-Type':'application/json'},body:JSON.stringify(duplicate)});ok(dup.status===409,'API menolak mapel ganda 409');
+for(const key of ['v4_pengurus','v4_guru','v4_wali']){const r=await fetch(base+'/api/v1/v4/rencana',{method:'POST',headers:{...auth(tokens[key]),'Content-Type':'application/json'},body:JSON.stringify(duplicate)});ok(r.status===403,`API pengaturan ${key} 403`);}
+const privateResponse=await fetch(base+'/storage/private/v4/.gitignore');ok(privateResponse.status===403,'Server uji menolak akses langsung storage privat');
+const browser=await chromium.launch({headless:true});const page=await browser.newPage({viewport:{width:375,height:812}});
+await page.goto(base+'/portal/index.php');await page.locator('input[name=username]').fill('v4_pendidikan');await page.locator('input[name=password]').fill(process.env.V4_TEST_PASSWORD);await page.locator('form').first().locator('button[type=submit]').click();
+await page.goto(base+'/portal/rencana_nilai.php?tahun_ajaran_id=4&kelas_id=2');
+ok((await page.locator('h2').allTextContents()).some(x=>x.includes('Ubah rencana')),'Web membaca ulang rencana dua mapel');
+ok(await page.locator('#v4-mapel-rows .v4-row').count()===2,'Web menampilkan dua mapel');
+const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);ok(!overflow,'Halaman 375 px tanpa gulir horizontal');
+await page.locator('input[name="target_ketuntasan[]"]').first().fill('81');
+const firstRow=page.locator('#v4-mapel-rows .v4-row').first();
+const teacherOption=firstRow.locator('.v4-guru option[data-mapel]').first();
+await firstRow.locator('.v4-guru').selectOption(await teacherOption.getAttribute('value'));
+await page.locator('select[name=pendidikan_penanda_id]').selectOption('');
+await page.locator('select[name=pendidikan_aset_id]').selectOption('');
+await page.getByRole('button',{name:'Simpan rencana'}).click();
+ok(page.url().includes('rencana_nilai.php'),'Web menyimpan target baru');
+const after=await get('v4_pendidikan');const updated=await after.json();ok(updated.data.mapel.some(x=>Number(x.target_ketuntasan)===81),'API membaca target yang diubah melalui web');
+ok(updated.data.mapel.some(x=>Number(x.guru_mapel_assignment_id)>0),'Rencana menyimpan guru pengampu sesuai mapel');
+await page.screenshot({path:process.env.V4_SCREENSHOT||'/private/tmp/webalhasan-v4-375.png',fullPage:true});
+await page.evaluate(()=>{document.documentElement.style.fontSize='20px';});
+ok(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),'Halaman 375 px tetap tanpa gulir horizontal pada teks lebih besar');
+await browser.close();

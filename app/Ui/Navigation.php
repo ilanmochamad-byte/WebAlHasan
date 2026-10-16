@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Ui;
 
 use App\Auth\Capabilities;
+use App\Penugasan\PenugasanJenis;
 
 /**
  * Peta navigasi Sistem Al Hasan (paket perapihan V1–V2).
@@ -78,6 +79,7 @@ final class Navigation
         'v3_konseling_cetak.php' => 'v3.konseling',
         'v3_publikasi.php' => 'v3.publikasi',
         'v3_publikasi_kelola.php' => 'v3.publikasi',
+        'rencana_nilai.php' => 'v4.rencana',
         'admin_penempatan_santri.php' => 'master.penempatan',
         // Alamat lama penempatan; kini hanya mengalihkan ke halaman di atas.
         'admin_santri.php' => 'master.penempatan',
@@ -104,6 +106,12 @@ final class Navigation
             $beranda[] = self::item('admin.dashboard', 'Ringkasan Administrasi', '/admin/admin_dashboard.php', 'fa-gauge-high');
         }
         $groups[] = ['label' => 'Utama', 'items' => $beranda];
+
+        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_RAPOR_RENCANA)) {
+            $groups[] = ['label' => 'Penilaian semester', 'items' => [
+                self::item('v4.rencana', 'Rencana nilai', '/portal/rencana_nilai.php', 'fa-list-check'),
+            ]];
+        }
 
         if (array_intersect(['v3.pelanggaran.kelola','v3.binaan.baca','v3.pengawasan','v3.koreksi'],array_keys($v3Capabilities)) !== []) {
             $groups[] = ['label' => 'Pembinaan V3', 'items' => [

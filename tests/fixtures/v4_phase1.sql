@@ -1,0 +1,11 @@
+INSERT INTO mata_pelajaran (kode,nama,is_active,created_by) VALUES ('V4UJI01','Mapel Uji A',1,1),('V4UJI02','Mapel Uji B',1,1);
+INSERT INTO pengurus (nama,jabatan) VALUES ('Pendidikan Uji V4','Pendidikan'),('Pengurus Uji Tanpa Tugas','Pengurus');
+INSERT INTO guru (nama_guru,status) VALUES ('Guru Uji V4','Guru');
+INSERT INTO users (name,username,password,pengurus_id) VALUES ('Pendidikan Uji V4','v4_pendidikan','!',(SELECT id FROM pengurus WHERE nama='Pendidikan Uji V4' ORDER BY id DESC LIMIT 1)),('Pengurus Uji V4','v4_pengurus','!',(SELECT id FROM pengurus WHERE nama='Pengurus Uji Tanpa Tugas' ORDER BY id DESC LIMIT 1));
+INSERT INTO users (name,username,password,guru_id) VALUES ('Guru Uji V4','v4_guru','!',(SELECT id FROM guru WHERE nama_guru='Guru Uji V4' ORDER BY id DESC LIMIT 1));
+INSERT INTO users (name,username,password) VALUES ('Wali Uji V4','v4_wali','!');
+INSERT INTO user_roles (user_id,role_id) SELECT id,3 FROM users WHERE username IN ('v4_pendidikan','v4_pengurus');
+INSERT INTO user_roles (user_id,role_id) SELECT id,2 FROM users WHERE username='v4_guru';
+INSERT INTO user_roles (user_id,role_id) SELECT id,4 FROM users WHERE username='v4_wali';
+INSERT INTO pendidikan_assignments (pengurus_id,tahun_ajaran_id,jenjang,tanggal_mulai,is_active,created_by) SELECT p.id,4,k.jenjang,'2026-01-01',1,1 FROM pengurus p JOIN kelas k ON k.id=2 WHERE p.nama='Pendidikan Uji V4' ORDER BY p.id DESC LIMIT 1;
+INSERT INTO guru_mapel_assignments (guru_id,mata_pelajaran_id,kelas_id,tahun_ajaran_id,tanggal_mulai,is_active,created_by) SELECT g.id,mp.id,2,4,'2026-01-01',1,1 FROM guru g JOIN mata_pelajaran mp ON mp.kode='V4UJI01' WHERE g.nama_guru='Guru Uji V4' ORDER BY g.id DESC LIMIT 1;

@@ -1,0 +1,7 @@
+MariaDB uji webalhasan_v4_test:
+SELECT COUNT(*) AS audit_v4,
+       SUM(CONCAT(COALESCE(before_json,''),COALESCE(after_json,''))
+           REGEXP 'private_path|data:image|Bearer |token|iVBOR') AS audit_berisiko
+FROM audit_logs WHERE action LIKE 'v4.%';
+Hasil: audit_v4 = 37; audit_berisiko = 0.
+Audit penanda tangan menyimpan ID/hash aset, tidak berkas atau path privat.

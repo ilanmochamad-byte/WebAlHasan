@@ -1,0 +1,47 @@
+[lulus] Ringkasan guru dan santri berasal dari sumber baris detail yang sama
+[lulus] Query laporan memakai parameter terikat dan repository tidak membaca input global
+[lulus] Repository laporan tidak menulis atau menghapus data absensi
+[lulus] Filter guru dipaksa ke guru dari token/session pada sisi server
+[lulus] Detail pertemuan memeriksa role dan kepemilikan di server
+[lulus] UI admin menyediakan filter date_from
+[lulus] UI admin menyediakan filter date_to
+[lulus] UI admin menyediakan filter academic_year_id
+[lulus] UI admin menyediakan filter teacher_id
+[lulus] UI admin menyediakan filter class_id
+[lulus] UI admin menyediakan filter schedule_id
+[lulus] UI admin menyediakan filter status
+[lulus] API V1 menyediakan endpoint /reports
+[lulus] API V1 menyediakan endpoint /reports/filters
+[lulus] API V1 menyediakan endpoint /reports/print
+[lulus] API V1 menyediakan endpoint /reports/meetings/
+[lulus] CSV memiliki BOM UTF-8 dan header terdokumentasi
+[lulus] CSV menetralkan formula berbahaya untuk aplikasi spreadsheet
+[lulus] HTML cetak memuat Pesantren Al Hasan
+[lulus] HTML cetak memuat Laporan Absensi Pengajian
+[lulus] HTML cetak memuat Rentang tanggal
+[lulus] HTML cetak memuat Dibuat:
+[lulus] HTML cetak memuat Pembuat:
+[lulus] HTML cetak memuat @media print
+[lulus] HTML cetak memuat .report-nav,.petunjuk-cetak{display:none
+[lulus] HTML cetak memberi nomor halaman "Halaman 1 dari 1" pada laporan kosong
+[lulus] HTML cetak tidak pernah memuat "Halaman 0"
+[lulus] Laporan kosong menghasilkan tepat satu lembar
+[lulus] Nomor halaman dihitung server, bukan oleh counter(page) di elemen position:fixed
+[lulus] Dokumen 400 baris terpecah menjadi lebih dari satu lembar (41)
+[lulus] Dokumen banyak halaman tidak memuat "Halaman 0"
+[lulus] Nomor halaman berurutan 1..n dan total sama dengan jumlah lembar
+[lulus] CSS cetak menjaga kolom utama dan baris pada halaman landscape
+[lulus] CSS cetak tidak memakai overflow-wrap:anywhere yang memotong kata di tengah
+[lulus] Halaman cetak memberi petunjuk orientasi lanskap
+[lulus] Migrasi indeks Fase 5 mengikuti pola scan EXPLAIN
+[lulus] Migrasi indeks aditif dan rollback hanya melepas indeks
+PHP Warning:  file_get_contents(/Users/ilanmochamad/alhasanApps/src/app/(app)/(reports)/reports.tsx): Failed to open stream: No such file or directory in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/phase5_static.php on line 112
+
+Warning: file_get_contents(/Users/ilanmochamad/alhasanApps/src/app/(app)/(reports)/reports.tsx): Failed to open stream: No such file or directory in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/phase5_static.php on line 112
+[gagal] Aplikasi guru menyediakan laporan dan detail pertemuan
+[lulus] Aplikasi dapat membuka dialog cetak dan berbagi PDF
+[lulus] Dependency cetak dan berbagi mengikuti Expo 57
+[lulus] Dokumentasi Fase 5 tersedia: docs/api-v1.md
+[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/release-runbook.md
+[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/csv-format.md
+[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/acceptance-checklist.md
