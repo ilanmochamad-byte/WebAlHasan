@@ -1,0 +1,49 @@
+[lulus] 80/90 + 78 + 92 = 85 B
+[lulus] Versi pertama keempat komponen tersimpan
+[lulus] Retry identik ditolak tanpa duplikasi HTTP 409
+[lulus] Tetap empat komponen berlaku
+[lulus] Penyerahan lengkap
+[lulus] Versi usang tidak menimpa HTTP 409
+[lulus] Koreksi tanpa alasan HTTP 422
+[lulus] Koreksi menyimpan versi 1–3, kembali draf
+[lulus] Nol tersimpan; komponen hilang Belum lengkap
+[lulus] Penyerahan belum lengkap ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Komponen ganda dalam payload ditolak HTTP 409
+[lulus] Guru mapel lain baca HTTP 403
+[lulus] Guru mapel lain tulis HTTP 403
+[lulus] Guru kelas/semester lain baca HTTP 403
+[lulus] Guru kelas/semester lain tulis HTTP 403
+[lulus] Pendidikan jenjang/semester lain baca HTTP 403
+[lulus] Pendidikan jenjang/semester lain tulis HTTP 403
+[lulus] Guru kelas/semester lain baca HTTP 403
+[lulus] Guru kelas/semester lain tulis HTTP 403
+[lulus] Pendidikan jenjang/semester lain baca HTTP 403
+[lulus] Pendidikan jenjang/semester lain tulis HTTP 403
+[lulus] Pengganti tanpa alasan HTTP 422
+[lulus] Pengganti menyimpan pelaku dan kapasitas
+[lulus] Pengganti tidak mengubah penugasan
+[lulus] Audit kapasitas pengganti
+[lulus] Peran tanpa hak ditolak HTTP 403
+[lulus] Detail peran tanpa hak ditolak HTTP 403
+[lulus] Peran tanpa hak ditolak HTTP 403
+[lulus] Detail peran tanpa hak ditolak HTTP 403
+[lulus] ID santri di luar cakupan HTTP 403
+[lulus] Nilai historis tidak mengikuti perpindahan kelas
+[lulus] Kegagalan audit menggulung transaksi HTTP 503
+[lulus] Nilai dan riwayat tetap setelah rollback
+[lulus] Half-up 89.5 menjadi 90 A
+[lulus] Seluruh komponen nol lengkap
+[lulus] Penugasan guru dicabut ditolak pada baca HTTP 403
+[lulus] Penugasan guru dicabut ditolak pada tulis HTTP 403
+[lulus] Rata-rata pecahan mempertahankan presisi hingga hasil internal dua desimal
+Selesai pada MariaDB uji, bukan produksi.

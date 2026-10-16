@@ -1,0 +1,25 @@
+[lulus] API 85 predikat B
+[lulus] v4_wali baca 403
+[lulus] v4_wali tulis kosong 403
+[lulus] v4_pengurus baca 403
+[lulus] v4_pengurus tulis kosong 403
+[lulus] API guru mapel lain 403
+[lulus] Pendidikan tidak dapat menyamar melalui jalur guru
+[lulus] API pengganti tanpa alasan 422
+[lulus] API pengganti beralasan tercatat
+[lulus] API retry versi usang 409
+[lulus] API nol dan Belum lengkap
+[lulus] API tanpa bearer 401
+[lulus] Web pengganti 375 px tersedia
+[lulus] Web tanpa CSRF 419
+[lulus] Web simpan draf 85 B
+[lulus] Catatan XSS tidak dieksekusi
+[lulus] API membaca hasil simpan web 85
+[lulus] Web penyerahan empat komponen
+[lulus] Web versi usang 409
+[lulus] Web koreksi kembali draf
+[lulus] 375 px tanpa overflow
+[lulus] 375 px teks 24 px tanpa overflow
+[lulus] Desktop tanpa overflow
+[lulus] Web nol tetap nol dan Belum lengkap
+[lulus] Web Pendidikan jalur guru 403

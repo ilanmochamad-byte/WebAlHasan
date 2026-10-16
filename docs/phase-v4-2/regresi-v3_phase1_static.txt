@@ -1,0 +1,15 @@
+[lulus] PHP lint admin/admin_v3_katalog.php
+[lulus] PHP lint admin/admin_pelanggaran.php
+[lulus] PHP lint app/V3/KatalogService.php
+[lulus] PHP lint app/V3/KatalogRepository.php
+[lulus] PHP lint app/V3/V3Exception.php
+[lulus] PHP lint app/Auth/Capabilities.php
+[lulus] PHP lint api/v1/index.php
+[lulus] PHP lint bin/v3_verify.php
+[lulus] Migrasi hanya menambah struktur tanpa mengganti/backfill lama
+[lulus] Tidak ada hard delete KatalogRepository.php
+[lulus] Tidak ada hard delete KatalogService.php
+[lulus] Tidak ada hard delete V3Exception.php
+[lulus] Guard dan CSRF web
+[lulus] Warisan hanya baca
+[lulus] Mutasi V3 hanya hadir bersama paket Fase 2

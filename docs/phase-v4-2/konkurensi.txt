@@ -1,0 +1,2 @@
+[lulus] Enam proses PHP/koneksi DB bersamaan: satu 200, lima 409.
+[lulus] Tepat satu komponen berlaku dan satu revisi, tanpa duplikasi.

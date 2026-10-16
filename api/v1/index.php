@@ -71,9 +71,14 @@ try {
         }
     }
 
-    // V4 Fase 1: endpoint aditif; klien lama tidak perlu mengubah payload.
+    // V4 Fase 1–2: endpoint aditif; klien lama tidak perlu mengubah payload.
     if (str_starts_with($path, '/v4/')) {
         header('Cache-Control: private, no-store');
+        $nilai = new \App\V4\NilaiService(app_db(), capabilities(), audit_logger());
+        if ($method === 'GET' && $path === '/v4/nilai/options') JsonResponse::success($nilai->options($user, ($_GET['pengganti']??'0')==='1'));
+        if ($method === 'GET' && $path === '/v4/nilai') JsonResponse::success($nilai->read($user, (int)($_GET['rencana_mapel_id']??0), (int)($_GET['santri_id']??0), ($_GET['pengganti']??'0')==='1'));
+        if ($method === 'POST' && $path === '/v4/nilai') JsonResponse::success($nilai->save($user, Request::json()));
+        if ($method === 'POST' && $path === '/v4/nilai/pengganti') JsonResponse::success($nilai->save($user, Request::json(), true));
         $rencana = new \App\V4\RencanaService(app_db(), capabilities(), audit_logger());
         if ($method === 'GET' && $path === '/v4/rencana/options') JsonResponse::success($rencana->options($user));
         if ($method === 'GET' && $path === '/v4/rencana') JsonResponse::success($rencana->read($user, (int)($_GET['tahun_ajaran_id']??0), (int)($_GET['kelas_id']??0)));

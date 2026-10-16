@@ -80,6 +80,7 @@ final class Navigation
         'v3_publikasi.php' => 'v3.publikasi',
         'v3_publikasi_kelola.php' => 'v3.publikasi',
         'rencana_nilai.php' => 'v4.rencana',
+        'nilai_semester.php' => 'v4.nilai',
         'admin_penempatan_santri.php' => 'master.penempatan',
         // Alamat lama penempatan; kini hanya mengalihkan ke halaman di atas.
         'admin_santri.php' => 'master.penempatan',
@@ -112,6 +113,11 @@ final class Navigation
                 self::item('v4.rencana', 'Rencana nilai', '/portal/rencana_nilai.php', 'fa-list-check'),
             ]];
         }
+
+        $nilaiItems = [];
+        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_NILAI_INPUT)) $nilaiItems[] = self::item('v4.nilai', 'Nilai semester', '/portal/nilai_semester.php', 'fa-pen');
+        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_NILAI_PENGGANTI)) $nilaiItems[] = self::item('v4.pengganti', 'Isi nilai pengganti', '/portal/nilai_semester.php?pengganti=1', 'fa-pen-to-square');
+        if ($nilaiItems) $groups[] = ['label' => 'Pengisian nilai', 'items' => $nilaiItems];
 
         if (array_intersect(['v3.pelanggaran.kelola','v3.binaan.baca','v3.pengawasan','v3.koreksi'],array_keys($v3Capabilities)) !== []) {
             $groups[] = ['label' => 'Pembinaan V3', 'items' => [

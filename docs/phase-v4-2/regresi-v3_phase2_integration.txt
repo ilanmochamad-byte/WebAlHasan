@@ -1,0 +1,9 @@
+PHP Warning:  Trying to access array offset on null in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v3_phase2_integration.php on line 13
+App\V3\V3Exception: Nilai tahun_ajaran_id tidak valid. in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/V3/KatalogService.php:30
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/V3/KatalogService.php(56): App\V3\KatalogService->number(Array, 'tahun_ajaran_id', 1)
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/V3/KatalogRepository.php(22): App\V3\KatalogService->{closure:App\V3\KatalogService::save():44}()
+#2 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/V3/KatalogService.php(44): App\V3\KatalogRepository->transaction(Object(Closure))
+#3 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v3_phase2_integration.php(22): App\V3\KatalogService->save('ambang', Array, Array)
+#4 {main}
+Perintah gagal. Aktifkan APP_DEBUG untuk detail.
