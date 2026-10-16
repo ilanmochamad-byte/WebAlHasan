@@ -72,6 +72,7 @@ final class VerifikasiService
         $this->db->begin_transaction();
         try{
             $this->repo->query('SELECT id FROM v4_rencana WHERE id=? FOR UPDATE','i',[$plan]);
+            RaporService::assertEditable($this->db,$sid,(int)$p['tahun_ajaran_id']);
             $p=$this->scope->plan($plan);$this->scope->education($u,$p,$action==='periksa_finalisasi'?PenugasanJenis::CAP_RAPOR_FINALISASI:PenugasanJenis::CAP_RAPOR_VERIFIKASI);$this->scope->student($p,$sid);
             $current=$this->read($u,$plan,$sid);$student=$current['matriks'][0];
             if($action==='periksa_finalisasi'){

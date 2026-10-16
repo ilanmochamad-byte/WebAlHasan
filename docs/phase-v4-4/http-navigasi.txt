@@ -1,0 +1,4 @@
+[lulus] Admin: rencana terpilih sesuai rencana yang disunting
+[lulus] Pendidikan: pilihan santri dimuat setelah memilih kelas
+[lulus] Pendidikan: pratinjau melalui pilihan nama santri
+[lulus] Navigasi pratinjau 375 px tanpa overflow

@@ -52,6 +52,7 @@ try {
     // Autentikasi sekali; penjaga hak akses diterapkan per endpoint di bawah.
     // Endpoint jadwal/laporan V1 tetap memakai penjaga admin/guru yang sama
     // seperti sebelumnya, sehingga kontrak aplikasi guru tidak berubah.
+    if (str_starts_with($path, '/v4/')) header('Cache-Control: private, no-store');
     $user = api_authenticator()->authenticate();
     if (str_starts_with($path, '/v3/')) header('Cache-Control: private, no-store');
 
@@ -71,9 +72,17 @@ try {
         }
     }
 
-    // V4 Fase 1–3: endpoint aditif; klien lama tidak perlu mengubah payload.
+    // V4 Fase 1–4: endpoint aditif; klien lama tidak perlu mengubah payload.
     if (str_starts_with($path, '/v4/')) {
         header('Cache-Control: private, no-store');
+        $rapor = new \App\V4\RaporService(app_db(), audit_logger());
+        if ($method === 'GET' && $path === '/v4/rapor') JsonResponse::success($rapor->listing($user));
+        if ($method === 'GET' && $path === '/v4/rapor/pratinjau') JsonResponse::success($rapor->preview($user,(int)($_GET['rencana_id']??0),(int)($_GET['santri_id']??0)));
+        if ($method === 'GET' && preg_match('#^/v4/rapor/(\d+)$#',$path,$m)) JsonResponse::success($rapor->show($user,(int)$m[1],($_GET['petugas']??'0')==='1'));
+        if ($method === 'GET' && preg_match('#^/v4/rapor/(\d+)/pdf/(\d+)$#',$path,$m)) \App\V4\RaporService::stream($rapor->pdf($user,(int)$m[1],(int)$m[2],($_GET['petugas']??'0')==='1'),(int)$m[1],(int)$m[2]);
+        if ($method === 'POST' && $path === '/v4/rapor/pratinjau') {$body=Request::json();if(isset($body['catatan_umum'])&&!is_string($body['catatan_umum']))throw new \App\V4\V4Exception('Catatan umum tidak valid.');JsonResponse::success($rapor->preview($user,(int)($body['rencana_id']??0),(int)($body['santri_id']??0),$body['catatan_umum']??''));}
+        if ($method === 'POST' && $path === '/v4/rapor') {$body=Request::json();$body['idempotency_key']??=$_SERVER['HTTP_IDEMPOTENCY_KEY']??null;JsonResponse::success($rapor->act($user,$body));}
+        if ($method === 'POST' && $path === '/v4/rencana/penanda') JsonResponse::success((new \App\V4\RencanaService(app_db(),capabilities(),audit_logger()))->changeSigners($user,Request::json()));
         $sikap = new \App\V4\SikapService(app_db(), audit_logger());
         $verifikasi = new \App\V4\VerifikasiService(app_db(), audit_logger());
         if ($method === 'GET' && $path === '/v4/sikap/options') JsonResponse::success($sikap->options($user, (string)($_GET['mode']??'pembimbing')));

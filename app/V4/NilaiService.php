@@ -130,6 +130,7 @@ final class NilaiService
             // Selalu kunci parent dahulu, sama dengan RencanaService. Serialisasi juga mencakup insert awal.
             $this->query('SELECT id FROM v4_rencana WHERE id=? FOR UPDATE', 'i', [(int)$p['rencana_id']]);
             $this->query('SELECT id FROM v4_rencana_mapel WHERE id=? FOR UPDATE', 'i', [$mapel]);
+            RaporService::assertEditable($this->db,$santri,(int)$p['tahun_ajaran_id']);
             $p = $this->plan($user, $mapel, $pengganti);
             $capacity = (new V4Access($this->caps))->nilaiInput($user, (int)$p['tahun_ajaran_id'], (int)$p['kelas_id'], (int)$p['mata_pelajaran_id'], $pengganti, $reason);
             if (!$this->query("SELECT r.id FROM v4_rencana r JOIN kelas k ON k.id=r.kelas_id AND k.is_active=1 AND k.archived_at IS NULL JOIN tahun_ajaran t ON t.id=r.tahun_ajaran_id AND t.status='Aktif' AND t.archived_at IS NULL JOIN v4_rencana_mapel rm ON rm.rencana_id=r.id JOIN mata_pelajaran mp ON mp.id=rm.mata_pelajaran_id AND mp.is_active=1 AND mp.archived_at IS NULL WHERE rm.id=?", 'i', [$mapel])) throw new V4Exception('Rencana kelas, semester, atau mata pelajaran tidak aktif.', 409);

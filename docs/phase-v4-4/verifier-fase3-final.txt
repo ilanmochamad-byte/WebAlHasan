@@ -1,0 +1,7 @@
+[lulus] Tabel v4_bahan
+[lulus] Tabel v4_bahan_riwayat
+[lulus] Migrasi 021 tercatat tepat sekali
+[lulus] Status bahan tidak yatim
+[lulus] Mapel bahan milik rencana yang sama
+[lulus] Riwayat bahan tidak yatim
+[lulus] Versi bahan mempunyai riwayat

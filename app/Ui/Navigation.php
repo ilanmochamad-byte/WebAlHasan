@@ -83,6 +83,9 @@ final class Navigation
         'nilai_semester.php' => 'v4.nilai',
         'sikap_semester.php' => 'v4.sikap',
         'verifikasi_semester.php' => 'v4.verifikasi',
+        'rapor_semester.php' => 'v4.rapor',
+        'rapor_wali.php' => 'v4.wali',
+        'rapor_penanda.php' => 'v4.penanda',
         'admin_penempatan_santri.php' => 'master.penempatan',
         // Alamat lama penempatan; kini hanya mengalihkan ke halaman di atas.
         'admin_santri.php' => 'master.penempatan',
@@ -121,6 +124,8 @@ final class Navigation
         if (capabilities()->hasFeature($user, PenugasanJenis::CAP_NILAI_PENGGANTI)) $nilaiItems[] = self::item('v4.pengganti', 'Isi nilai pengganti', '/portal/nilai_semester.php?pengganti=1', 'fa-pen-to-square');
         if (capabilities()->hasFeature($user, PenugasanJenis::CAP_SIKAP_INPUT)) $nilaiItems[] = self::item('v4.sikap', 'Sikap semester', '/portal/sikap_semester.php', 'fa-heart');
         if (capabilities()->hasFeature($user, PenugasanJenis::CAP_SIKAP_MUROBI)) $nilaiItems[] = self::item('v4.murobi', 'Pemeriksaan sikap murobi', '/portal/sikap_semester.php?mode=murobi', 'fa-check');
+        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_RAPOR_FINALISASI)) $nilaiItems[] = self::item('v4.rapor','Penerbitan rapor','/portal/rapor_semester.php','fa-file-pdf');
+        if ($isAdmin) $nilaiItems[] = self::item('v4.penanda','Ubah penanda rapor','/portal/rapor_penanda.php','fa-signature');
         if (capabilities()->hasFeature($user, PenugasanJenis::CAP_RAPOR_VERIFIKASI)) $nilaiItems[] = self::item('v4.verifikasi', 'Kelengkapan semester', '/portal/verifikasi_semester.php', 'fa-list-check');
         if ($nilaiItems) $groups[] = ['label' => 'Pengisian nilai', 'items' => $nilaiItems];
 
@@ -133,6 +138,7 @@ final class Navigation
             ]];
         }
 
+        if (in_array('orang_tua', $roles, true)) $groups[]=['label'=>'Rapor keluarga','items'=>[self::item('v4.wali','Rapor semester','/portal/rapor_wali.php','fa-file-pdf')]];
         if (isset($v3Capabilities['v3.publikasi.baca'])) {
             $groups[] = ['label'=>'Informasi keluarga','items'=>[self::item('v3.publikasi','Informasi pembinaan','/portal/v3_publikasi.php','fa-envelope'),self::item('v3.laporan','Laporan pembinaan','/portal/v3_laporan.php','fa-chart-column')]];
         }

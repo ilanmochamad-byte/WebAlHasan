@@ -141,6 +141,7 @@ final class NotificationCenterService
                 'tipe' => (string) ($data['tipe'] ?? 'sistem'),
                 'pengajuan_id' => isset($data['pengajuan_id']) ? (int) $data['pengajuan_id'] : null,
                 'publikasi_id' => isset($data['publikasi_id']) ? (int) $data['publikasi_id'] : null,
+                'rapor_id' => isset($data['rapor_id']) ? (int) $data['rapor_id'] : null,
             ],
         ];
     }

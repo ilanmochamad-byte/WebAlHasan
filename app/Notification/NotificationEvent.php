@@ -85,6 +85,7 @@ final class NotificationEvent
             self::PEMBATALAN => 'Pengajuan dibatalkan',
             self::KOREKSI => 'Keputusan dikoreksi',
             self::PESAN_UJI => 'Pesan uji kanal',
+            'v4_rapor_terbit' => 'Rapor semester tersedia',
             'v3_publikasi_terbit' => 'Informasi pembinaan diterbitkan',
             'v3_publikasi_koreksi' => 'Informasi pembinaan diperbarui',
             'v3_publikasi_tarik' => 'Informasi pembinaan ditarik',

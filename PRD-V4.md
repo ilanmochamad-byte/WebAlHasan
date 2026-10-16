@@ -2,7 +2,7 @@
 
 > **Untuk agen AI:** Dokumen ini adalah instruksi implementasi. Jika ada hal yang tidak jelas, jangan menebak—tanyakan kepada pengguna. Ketika keputusan berubah selama implementasi, perbarui dokumen ini agar tetap menjadi sumber kebenaran (*living document*).
 
-**Status:** Rancangan produk dan seluruh asumsi awal disetujui Human Developer pada 16 Oktober 2026. Fase 1 dan Fase 2 telah lulus audit Claude Code (Fase 2 dengan dua koreksi terarah; lihat `docs/phase-v4-2/audit-claude.md`); Fase 3 diimplementasikan Codex dan lulus audit Claude Code pada 16 Oktober 2026 dengan satu koreksi terarah (lihat `docs/phase-v4-3/audit-claude.md`); satuan verifikasi per isian mapel–santri pada Fase 3 butir 4 dicatat implementator dan perlu dikonfirmasi Human Developer; Fase 4 belum dikerjakan. Codex ditetapkan sebagai implementator V4 dan Claude Code sebagai auditor; pekerjaan dilakukan bergantian sesuai `AGENTS.md`.
+**Status:** Rancangan produk dan seluruh asumsi awal disetujui Human Developer pada 16 Oktober 2026. Fase 1 dan Fase 2 telah lulus audit Claude Code (Fase 2 dengan dua koreksi terarah; lihat `docs/phase-v4-2/audit-claude.md`); Fase 3 diimplementasikan Codex dan lulus audit Claude Code pada 16 Oktober 2026 dengan satu koreksi terarah (lihat `docs/phase-v4-3/audit-claude.md`); satuan verifikasi per isian mapel–santri pada Fase 3 butir 4 dikonfirmasi Human Developer 16 Oktober 2026; Fase 4 selesai implementasi Codex dan menunggu audit Claude Code (lihat `docs/phase-v4-4/status-penerimaan.md`). Codex ditetapkan sebagai implementator V4 dan Claude Code sebagai auditor; pekerjaan dilakukan bergantian sesuai `AGENTS.md`.
 
 ## 1. Gambaran Umum
 
@@ -55,6 +55,8 @@ Tujuannya adalah mencegah nilai ganda, penerbitan rapor yang belum lengkap, peru
 - Bagian Pendidikan memverifikasi dan menerbitkan rapor. Orang tua dapat melihat serta mengunduh versi terbit melalui web dan aplikasi; Bagian Pendidikan dapat mencetaknya. **[JANGAN DIUBAH]**
 - PDF memuat tempat/tanggal, gambar tanda tangan dan identitas Bagian Pendidikan serta pimpinan lembaga, berikut QR/kode yang memeriksa keaslian/status rapor di website. Tidak ada klaim tanda tangan sertifikat kriptografis. **[JANGAN DIUBAH]**
 - Orang tua mendapat notifikasi dalam aplikasi dan push dengan teks generik saat rapor diterbitkan; payload tidak berisi nama santri, nilai, NIS, atau gambar tanda tangan. **[JANGAN DIUBAH]**
+
+- Keputusan Human Developer 16 Oktober 2026 (Fase 4): admin boleh mengganti penanda tangan/aset/tempat setelah penilaian melalui tindakan khusus beralasan dan optimistic version, dengan riwayat privat. Tidak mengubah mapel, bobot, target, snapshot atau PDF terbit; hasil baru hanya berlaku pada penerbitan/penggantian versi berikutnya.
 
 ### 5.2 Fondasi dan kompatibilitas
 

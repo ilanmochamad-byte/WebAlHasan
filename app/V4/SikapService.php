@@ -50,6 +50,7 @@ final class SikapService
         $this->db->begin_transaction();
         try{
             $this->repo->query('SELECT id FROM v4_rencana WHERE id=? FOR UPDATE','i',[$plan]);
+            RaporService::assertEditable($this->db,$sid,(int)$p['tahun_ajaran_id']);
             $p=$this->scope->plan($plan);$this->allowed($u,$p,$sid,$mode);
             $old=$this->repo->query('SELECT * FROM v4_sikap WHERE santri_id=? AND tahun_ajaran_id=? FOR UPDATE','ii',[$sid,(int)$p['tahun_ajaran_id']])[0]??null;
             if($version!==(int)($old['version']??0))throw new V4Exception('Versi usang. Muat ulang sikap.',409);

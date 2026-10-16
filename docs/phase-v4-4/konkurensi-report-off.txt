@@ -1,0 +1,7 @@
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[gagal] Enam penerbit same hasil ["200","409","409","409","409","409"]

@@ -1,0 +1,17 @@
+[lulus] API preview catatan umum lewat body POST, tidak memakai URL
+[lulus] HTTP folder internal /storage/private/v4/test.pdf ditolak
+[lulus] HTTP folder internal /vendor/autoload.php ditolak
+[lulus] Web admin menyimpan tempat beralasan setelah penilaian/penerbitan
+[lulus] Redirect mempertahankan rencana yang disunting
+[lulus] PDF dan hash wajib
+[lulus] Kode dan versi konsisten
+[lulus] Operasi penerbitan wajib
+[lulus] Versi current ada
+[lulus] Tidak ada dua versi sah
+[lulus] PDF versi #4 utuh
+[lulus] PDF versi #5 utuh
+[lulus] PDF versi #6 utuh
+[lulus] PDF versi #7 utuh
+[lulus] PDF versi #8 utuh
+[lulus] PDF versi #9 utuh
+[lulus] PDF versi #10 utuh
