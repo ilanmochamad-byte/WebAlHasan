@@ -2,7 +2,7 @@
 
 > **Untuk agen AI:** Dokumen ini adalah instruksi implementasi. Jika ada hal yang tidak jelas, jangan menebak—tanyakan kepada pengguna. Ketika keputusan berubah selama implementasi, perbarui dokumen ini agar tetap menjadi sumber kebenaran (*living document*).
 
-**Status:** Rancangan produk dan seluruh asumsi awal disetujui Human Developer pada 16 Oktober 2026. Implementasi belum dimulai. Codex ditetapkan sebagai implementator V4 dan Claude Code sebagai auditor; pekerjaan dilakukan bergantian sesuai `AGENTS.md`.
+**Status:** Rancangan produk dan seluruh asumsi awal disetujui Human Developer pada 16 Oktober 2026. Fase 1 telah lulus audit Claude Code; Fase 2 selesai diimplementasikan dan diuji mandiri, menunggu audit independen (lihat `docs/phase-v4-2/status-penerimaan.md`). Codex ditetapkan sebagai implementator V4 dan Claude Code sebagai auditor; pekerjaan dilakukan bergantian sesuai `AGENTS.md`.
 
 ## 1. Gambaran Umum
 

@@ -1,0 +1,17 @@
+[info] Basis data terpilih: webalhasan_v4_fase2_test (preflight hanya membaca; migrasi produksi memerlukan otorisasi operator).
+[lulus] Tabel users
+[lulus] Tabel tahun_ajaran
+[lulus] Tabel kelas
+[lulus] Tabel santri
+[lulus] Tabel mata_pelajaran
+[lulus] Tabel guru_mapel_assignments
+[lulus] Tabel pendidikan_assignments
+[lulus] Tabel plotting_kelas
+[lulus] Tabel pertemuan_peserta
+[lulus] Tabel absensi_santri
+[lulus] Tabel audit_logs
+[lulus] Tabel notifikasi_outbox
+[lulus] Tabel schema_migrations
+[lulus] Migrasi 019 tercatat
+Manifest ditulis: /private/tmp/v4-fase2-baseline.json
+Backup DB, berkas privat, dan manifest ini wajib disimpan sebelum migrasi.
