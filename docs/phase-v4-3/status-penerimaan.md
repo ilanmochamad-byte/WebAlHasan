@@ -1,4 +1,4 @@
-# Status Fase 3 PRD V4 — implementasi selesai, menunggu audit Claude Code
+# Status Fase 3 PRD V4 — lulus audit Claude Code dengan satu koreksi terarah
 
 Tanggal: 16 Oktober 2026 (Asia/Jakarta). Implementator: Codex. Seluruh hasil di bawah adalah pengujian implementator, **bukan putusan audit independen**. Hanya Fase 3 web/API; tidak ada implementasi Fase 4–5, merge, atau deploy.
 
@@ -17,3 +17,7 @@ Hasil akhir: **70 integrasi**, **9 transaksi/audit**, **4 konkurensi**, dan **56
 Regresi Fase 1: 29 integrasi, 23 HTTP/browser lulus. Regresi Fase 2: 54 integrasi, 2 konkurensi, 25 HTTP/browser pengganti, 8 web guru lulus. Regresi V1–V3: 14 suite integrasi dan 14 dari 15 suite statis lulus; `phase5_static` tetap gagal pada path mobile lama. Lint/diff-check dan verifier skema lulus. Latihan rollback 021 kosong lalu penerapan ulang lulus; rollback berisi data ditolak baik oleh preflight maupun guard SQL.
 
 Lihat `hasil-pengujian.md` untuk perintah, `kontrak-dan-migrasi.md` untuk satuan verifikasi/migrasi, dan `risiko-terbuka.md` untuk batas aktual. Hash commit implementasi disampaikan pada handoff chat; audit seluruh diff terhadap `fe2ed92`.
+
+## Audit Claude Code (16 Oktober 2026)
+
+Audit independen menyatakan kelima kriteria **terpenuhi** setelah satu koreksi. Murobi pengganti yang sah sebelumnya ditolak 409 karena tanda diketahui milik murobi yang sudah dicabut tetap mengunci. Kini tanda hanya mengunci bila pemiliknya masih sah. Pada DB baru auditor, hasilnya: 73 integrasi, 9 transaksi/audit, 4 konkurensi, 56 HTTP/browser, regresi Fase 1–2, verifier, serta penolakan dan latihan rollback lulus. Detail dan catatan nonblokir ada di `audit-claude.md`. Merge dan Fase 4 menunggu keputusan Human Developer.

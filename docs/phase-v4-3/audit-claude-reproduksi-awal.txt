@@ -1,0 +1,94 @@
+Reproduksi suite Codex tanpa perubahan kode (DB baru, sebelum koreksi audit).
+== fase3
+[lulus] K1: tiga predikat dan catatan tersimpan
+[lulus] Retry draf tidak membuat versi ganda HTTP 409
+[lulus] Baca petugas di luar cakupan HTTP 403
+[lulus] Mutasi petugas di luar cakupan HTTP 403
+[lulus] Baca petugas di luar cakupan HTTP 403
+[lulus] Mutasi petugas di luar cakupan HTTP 403
+[lulus] Baca sikap tanpa tugas HTTP 403
+[lulus] Matriks tanpa Pendidikan HTTP 403
+[lulus] Baca sikap tanpa tugas HTTP 403
+[lulus] Matriks tanpa Pendidikan HTTP 403
+[lulus] Baca sikap tanpa tugas HTTP 403
+[lulus] Matriks tanpa Pendidikan HTTP 403
+[lulus] Pembimbing menyerahkan sikap
+[lulus] K2: murobi sah menandai diketahui
+[lulus] Diketahui tepat sekali walau versi terbaru HTTP 409
+[lulus] Koreksi murobi tanpa alasan ditolak HTTP 422
+[lulus] K2: koreksi versi baru mempertahankan masukan pembimbing
+[lulus] Identitas pembimbing historis tidak diganti murobi
+[lulus] Pendidikan memverifikasi sikap
+[lulus] Murobi dicabut pada instance layanan sama HTTP 403
+[lulus] Penghalang tanpa murobi aktif; tanpa persetujuan otomatis
+[lulus] Finalisasi tanpa murobi aktif ditolak HTTP 422
+[lulus] K3: satu pertemuan tanpa absensi = satu Belum dicatat dan nol Alpa
+[lulus] K3: satu pertemuan tanpa absensi menolak finalisasi HTTP 422
+[lulus] K3: tanpa absensi Belum dicatat tepat satu, tidak menambah Alpa
+[lulus] K4: kelima status masing-masing satu tanpa duplikasi
+[lulus] K3: Belum dicatat menghalangi finalisasi HTTP 422
+[lulus] Kehadiran tidak lengkap tidak dapat diserahkan HTTP 422
+[lulus] Draf dan Dibuka tidak masuk rekap
+[lulus] Verifikasi tidak mengubah komponen/atribusi/riwayat guru
+[lulus] Verifikasi tidak mengubah komponen/atribusi/riwayat guru
+[lulus] Semua bahan lengkap terverifikasi
+[lulus] Gate sah hanya memeriksa, tanpa penerbitan
+[lulus] K5: koreksi nilai membatalkan verifikasi mapel
+[lulus] K5: finalisasi sebelum verifikasi ulang nilai ditolak HTTP 422
+[lulus] K5: koreksi pembimbing membatalkan verifikasi dan pengetahuan murobi
+[lulus] K5: finalisasi sebelum verifikasi ulang sikap ditolak HTTP 422
+[lulus] Pengembalian membutuhkan alasan HTTP 422
+[lulus] Perlu Perbaikan tercatat
+[lulus] Bahan dikembalikan tidak bisa langsung diverifikasi HTTP 409
+[lulus] Retry verifikasi tidak membuat riwayat ganda HTTP 409
+[lulus] Perubahan sumber absensi membatalkan verifikasi efektif
+[lulus] Finalisasi dengan sumber lama ditolak 409 HTTP 409
+[lulus] Finalisasi absensi berubah memerlukan pemeriksaan ulang HTTP 422
+[lulus] Koreksi rekap kehadiran membutuhkan alasan HTTP 422
+Audit log gagal disimpan.
+[lulus] Kegagalan audit menggulung sikap dan riwayat HTTP 503
+Audit log gagal disimpan.
+[lulus] Kegagalan audit menggulung pemeriksaan dan riwayat HTTP 503
+[lulus] Rollback mempertahankan nilai sikap, status dan seluruh riwayat
+[lulus] Cakupan kamar membaca sikap pembimbing
+[lulus] Relasi kamar dicabut pembimbing HTTP 403
+[lulus] Cakupan kamar membaca sikap murobi
+[lulus] Relasi kamar dicabut murobi HTTP 403
+[lulus] Penugasan dicabut baca pembimbing HTTP 403
+[lulus] Penugasan dicabut mutasi pembimbing HTTP 403
+[lulus] Penugasan dicabut baca murobi HTTP 403
+[lulus] Penugasan dicabut mutasi murobi HTTP 403
+[lulus] Pendidikan dicabut baca HTTP 403
+[lulus] Pendidikan dicabut mutasi HTTP 403
+[lulus] Snapshot semester lain tidak masuk rekap
+[lulus] Snapshot tidak cocok semester jadwal dikecualikan
+[lulus] Santri di luar cakupan HTTP 403
+[lulus] Rencana di luar cakupan HTTP 403
+[lulus] Matriks Pendidikan kelas/semester di luar cakupan HTTP 403
+[lulus] Mutasi Pendidikan kelas/semester di luar cakupan HTTP 403
+[lulus] Matriks Pendidikan kelas/semester di luar cakupan HTTP 403
+[lulus] Mutasi Pendidikan kelas/semester di luar cakupan HTTP 403
+[lulus] K5: nol rapor terbit, versi, kode publik
+[lulus] Audit umum tidak memuat catatan sikap
+[lulus] Diketahui tidak melewati pengembalian beralasan HTTP 409
+[lulus] Nol outbox notifikasi Fase 3
+Selesai Fase 3 pada MariaDB uji.
+== fase3-transaksi
+Audit log gagal disimpan.
+[lulus] Audit workflow gagal setelah audit sikap berhasil HTTP 503
+Audit log gagal disimpan.
+[lulus] Audit workflow gagal setelah audit komponen nilai berhasil HTTP 503
+Audit log gagal disimpan.
+[lulus] Audit verifikasi gagal menggulung status dan riwayat pemeriksaan HTTP 503
+[lulus] Sikap dan dua jenis riwayat tetap utuh setelah rollback akhir
+[lulus] Nilai, atribusi, status dan dua jenis riwayat tetap utuh
+[lulus] Matriks dan audit pertama ikut digulung; tidak ada audit sukses palsu
+[lulus] Perpindahan kelas dengan nilai asal menjadi penghalang finalisasi
+[lulus] Gate menolak kelas semester ambigu HTTP 422
+[lulus] Perpindahan kelas tidak mengubah identitas/kelas/nilai pengisi historis
+== fase3-konkurensi
+[lulus] Enam proses/koneksi DB terpisah: satu 200 dan lima 409.
+[lulus] Tepat satu sikap, satu versi dan satu riwayat pemeriksaan.
+[lulus] Enam pemeriksa bersamaan: satu 200 dan lima 409.
+[lulus] Verifikasi tidak menggandakan riwayat: tiga versi sumber dan satu pemeriksaan.
+== fase3-http: 56 lulus

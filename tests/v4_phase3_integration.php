@@ -96,5 +96,19 @@ $sid2=$ids['santri2'];$returned=$sk->save($pb,array_replace($in,['santri_id'=>$s
 $mat2=$vs->read($pe,$plan,$sid2)['matriks'][0];$s2=array_values(array_filter($mat2['bahan'],fn($m)=>$m['jenis']==='sikap'))[0];
 $vs->act($pe,['rencana_id'=>$plan,'santri_id'=>$sid2,'jenis'=>'sikap','mapel_key'=>0,'action'=>'kembalikan','alasan'=>'Perbaiki sikap']+$s2['pemeriksaan']);
 $reject(fn()=>$sk->save($mu,['rencana_id'=>$plan,'santri_id'=>$sid2,'version'=>(int)$returned['sikap']['version'],'action'=>'diketahui'],'murobi'),409,'Diketahui tidak melewati pengembalian beralasan');
+// Audit Claude Code: setelah admin memperbaiki penugasan, murobi pengganti sah dapat mengetahui tanpa mengubah isi.
+$sid3=(int)$q("SELECT DISTINCT id_santri FROM plotting_kelas WHERE id_kelas=2 AND id_tahun=4 AND status='Aktif' ORDER BY id_santri")[12]['id_santri'];
+$r=$sk->save($pb,array_replace($in,['santri_id'=>$sid3,'version'=>0,'action'=>'serahkan','alasan'=>'']));$r=$sk->save($mu,['rencana_id'=>$plan,'santri_id'=>$sid3,'version'=>(int)$r['sikap']['version'],'action'=>'diketahui'],'murobi');$v3=(int)$r['sikap']['version'];
+$ml=$users['v4_murobi_lain'];$gMu=(int)$q('SELECT guru_id FROM users WHERE id='.$mu['id'])[0]['guru_id'];$gMl=(int)$q('SELECT guru_id FROM users WHERE id='.$ml['id'])[0]['guru_id'];
+$revoked=implode(',',array_map('intval',array_column($q("SELECT id FROM murobi_assignments WHERE guru_id=$gMu AND is_active=1"),'id')))?:'0';$db->query("UPDATE murobi_assignments SET is_active=0 WHERE id IN ($revoked)");
+$db->query("INSERT INTO murobi_assignments (guru_id,tahun_ajaran_id,target_type,kelas_id,tanggal_mulai,is_active,created_by) VALUES ($gMl,4,'Kelas',2,'2026-01-01',1,1)");$newAssignment=$db->insert_id;
+try{
+    $m3=array_values(array_filter($vs->read($pe,$plan,$sid3)['matriks'][0]['bahan'],fn($m)=>$m['jenis']==='sikap'))[0];
+    $check($m3['diketahui_sah']===false&&!$m3['lengkap'],'Tanda murobi yang dicabut tidak dihitung sah');
+    $r=$sk->save($ml,['rencana_id'=>$plan,'santri_id'=>$sid3,'version'=>$v3,'action'=>'diketahui'],'murobi');
+    $hist=array_column($r['riwayat'],'actor_user_id');
+    $check((int)$r['sikap']['diketahui_murobi_user_id']===$ml['id']&&(int)$r['sikap']['version']===$v3+1&&in_array($mu['id'],array_map('intval',$hist),true)&&$r['sikap']['adab']===$in['adab'],'Murobi pengganti sah mengetahui; tanda lama tetap di riwayat');
+    $reject(fn()=>$sk->save($ml,['rencana_id'=>$plan,'santri_id'=>$sid3,'version'=>$v3+1,'action'=>'diketahui'],'murobi'),409,'Murobi pengganti tetap hanya sekali per revisi');
+}finally{$db->query("DELETE FROM murobi_assignments WHERE id=$newAssignment");$db->query("UPDATE murobi_assignments SET is_active=1 WHERE id IN ($revoked)");}
 $check((int)$q('SELECT COUNT(*) n FROM notifikasi_outbox')[0]['n']===0,'Nol outbox notifikasi Fase 3');
 echo "Selesai Fase 3 pada MariaDB uji.\n";

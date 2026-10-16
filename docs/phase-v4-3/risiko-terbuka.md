@@ -1,6 +1,6 @@
 # Risiko terbuka dan batas aktual
 
-- Belum diaudit independen Claude Code; bukan persetujuan merge atau produksi. Fase 4–5 belum dikerjakan. Mobile tetap bersih pada `main`/`dfae26d`.
+- Diaudit Claude Code 16 Oktober 2026 (lihat `audit-claude.md`); hasil audit bukan persetujuan merge atau produksi. Fase 4–5 belum dikerjakan. Mobile tetap bersih pada `main`/`dfae26d`.
 - Uji aktual: MariaDB 12.3.2, PHP 8.4.14, Chromium Playwright lokal pada desktop/375 px/teks 24 px. MySQL/cPanel, Safari, perangkat fisik, iOS/Android belum diuji. Tidak ada akses/deploy produksi.
 - Risiko warisan Fase 2 dipertahankan: `tests/phase5_static.php` gagal pada path mobile laporan lama setelah redesain; tidak dilonggarkan. Regresi lama dapat menyisakan audit/outbox yatim setelah pembersihan fixture resmi. Residu DB regresi tidak dihapus untuk membuat verifier hijau. Verifier manifest V4 dijalankan pada salinan baru sebelum fixture bisnis; bukan klaim kebersihan semua data warisan.
 - Retry identik yang sukses tetap menghasilkan 409, bukan replay 200; klien harus memuat ulang versi. Kesalahan form menampilkan keadaan tersimpan terbaru, bukan menyimpan ulang input lokal otomatis.
@@ -10,3 +10,5 @@
 - Kehadiran memakai fingerprint sumber hidup dan snapshot privat pada pemeriksaan. Perubahan sumber membatalkan status **efektif** pada baca/mutasi; baris verifikasi sebelumnya sengaja tidak ditimpa saat GET. Penyerahan ulang mencatat versi/alasan baru. Gate Fase 3 tidak menerbitkan dan tidak memberi jaminan untuk transaksi masa depan; Fase 4 wajib memeriksa lagi serta mengunci sumber yang diperlukan saat penerbitan.
 - Batas komponen/catatan/alasan Fase 2 tetap (100 harian, catatan 2000, alasan 1000; belum ada penghapusan komponen tersimpan). Penanda tangan/tempat tetap terkunci setelah nilai ada. Perubahan penanda tangan pascapenilaian, pembukaan kembali rapor terbit, PDF/QR/publikasi/unduhan/notifikasi bukan cakupan ini.
 - SQL rollback memakai CHECK dan telah diuji pada MariaDB tersebut. Operator MySQL/cPanel wajib membuktikan dukungan/enforcement CHECK dan restore pada versi hosting sebelum memakai rollback; preflight kosong tetap wajib, penulis wajib dihentikan. Tidak ada latihan backup/restore produksi.
+- (Audit) Header dump produksi menyebut MariaDB 10.6.24 (`cll-lve`), yang menegakkan CHECK. Guard rollback tetap belum diuji pada hosting itu.
+- (Audit) Santri tanpa pertemuan Selesai pada semester dianggap kehadiran lengkap dengan hitungan nol dan hanya diperiksa manual oleh Pendidikan. Belum ada peringatan khusus.

@@ -2,7 +2,7 @@
 
 > **Untuk agen AI:** Dokumen ini adalah instruksi implementasi. Jika ada hal yang tidak jelas, jangan menebak—tanyakan kepada pengguna. Ketika keputusan berubah selama implementasi, perbarui dokumen ini agar tetap menjadi sumber kebenaran (*living document*).
 
-**Status:** Rancangan produk dan seluruh asumsi awal disetujui Human Developer pada 16 Oktober 2026. Fase 1 dan Fase 2 telah lulus audit Claude Code (Fase 2 dengan dua koreksi terarah; lihat `docs/phase-v4-2/audit-claude.md`); Implementasi Fase 3 selesai oleh Codex atas instruksi Human Developer 16 Oktober 2026 dan menunggu audit independen Claude Code (lihat `docs/phase-v4-3/status-penerimaan.md`); Fase 4 belum dikerjakan. Codex ditetapkan sebagai implementator V4 dan Claude Code sebagai auditor; pekerjaan dilakukan bergantian sesuai `AGENTS.md`.
+**Status:** Rancangan produk dan seluruh asumsi awal disetujui Human Developer pada 16 Oktober 2026. Fase 1 dan Fase 2 telah lulus audit Claude Code (Fase 2 dengan dua koreksi terarah; lihat `docs/phase-v4-2/audit-claude.md`); Fase 3 diimplementasikan Codex dan lulus audit Claude Code pada 16 Oktober 2026 dengan satu koreksi terarah (lihat `docs/phase-v4-3/audit-claude.md`); satuan verifikasi per isian mapel–santri pada Fase 3 butir 4 dicatat implementator dan perlu dikonfirmasi Human Developer; Fase 4 belum dikerjakan. Codex ditetapkan sebagai implementator V4 dan Claude Code sebagai auditor; pekerjaan dilakukan bergantian sesuai `AGENTS.md`.
 
 ## 1. Gambaran Umum
 
