@@ -173,6 +173,14 @@ final class NotificationDispatcher
                 return 'gagal';
             }
         }
+        if ((string)$row['event_type'] === 'v4_rapor_terbit') {
+            $pointer=json_decode((string)$row['data_json'],true);
+            $stmt=$this->db->prepare("SELECT santri_id,status,current_version FROM v4_rapor WHERE id=?");$rid=(int)($pointer['rapor_id']??0);$stmt->bind_param('i',$rid);$stmt->execute();$report=$stmt->get_result()->fetch_assoc();$stmt->close();
+            if (!$report || $report['status']!=='Terbit' || $row['event_key']!=="v4:rapor:$rid:v".$report['current_version'] || !in_array($userId,(new RecipientResolver($this->db))->waliSantri((int)$report['santri_id']),true)) {
+                $this->outbox->markFailed($outboxId,$owner,'AKSES_BERUBAH','Penerima atau versi tidak lagi berhak.',true);return 'gagal';
+            }
+            $row['judul']='Rapor semester tersedia';$row['isi']='Rapor semester tersedia';
+        }
         $perangkat = $this->devices->activeTokensFor($userId);
 
         if ($perangkat === []) {
@@ -192,9 +200,9 @@ final class NotificationDispatcher
         $data = json_decode((string) ($row['data_json'] ?? ''), true);
         $data = is_array($data) ? $data : [];
         // Tegaskan: payload push tidak boleh membawa apa pun selain penunjuk.
-        $data = str_starts_with((string)$row['event_type'], 'v3_publikasi_')
+        $data = (string)$row['event_type']==='v4_rapor_terbit' ? array_intersect_key($data,array_flip(['tipe','rapor_id'])) : (str_starts_with((string)$row['event_type'], 'v3_publikasi_')
             ? array_intersect_key($data, array_flip(['tipe', 'publikasi_id']))
-            : array_intersect_key($data, array_flip(['tipe', 'event', 'pengajuan_id', 'url']));
+            : array_intersect_key($data, array_flip(['tipe', 'event', 'pengajuan_id', 'url'])));
 
         $messages = [];
         $petaToken = [];

@@ -1,0 +1,46 @@
+[lulus] K1 bahan nilai tidak lengkap/belum diverifikasi HTTP 422
+[lulus] K1 nol PDF terbit/notifikasi nilai
+[lulus] K1 bahan sikap tidak lengkap/belum diverifikasi HTTP 422
+[lulus] K1 nol PDF terbit/notifikasi sikap
+[lulus] K1 bahan kehadiran tidak lengkap/belum diverifikasi HTTP 422
+[lulus] K1 nol PDF terbit/notifikasi kehadiran
+[lulus] Gate siap setelah sumber dipulihkan
+[lulus] Hash gambar tanda tangan berubah memblokir penerbitan HTTP 422
+[lulus] Aset tidak sah menghasilkan nol PDF/notifikasi baru
+[lulus] Kegagalan wajib audit_logs HTTP 503
+[lulus] Rollback bisnis, kode, outbox dan berkas audit_logs
+[lulus] Kegagalan wajib notifikasi_outbox HTTP 503
+[lulus] Rollback bisnis, kode, outbox dan berkas notifikasi_outbox
+[lulus] Kegagalan wajib v4_verifikasi HTTP 503
+[lulus] Rollback bisnis, kode, outbox dan berkas v4_verifikasi
+[lulus] Kegagalan filesystem parsial HTTP 503
+[lulus] Berkas parsial dibersihkan, nol dampak bisnis
+[lulus] Penerbitan admin tanpa alasan HTTP 422
+[lulus] Pratinjau usang ditolak HTTP 409
+[lulus] K2 satu penerbitan versi 1
+[lulus] K2 retry key sama replay aman
+[lulus] K2 klik ganda key berbeda versi usang HTTP 409
+[lulus] Key sama isi berbeda ditolak HTTP 409
+[lulus] K2 tepat satu snapshot/PDF/kode
+[lulus] K2 satu InApp per masing-masing dua wali berakun
+[lulus] K6 Push ON dua outbox; WhatsApp nol
+[lulus] Berkas kanonis rusak ditolak sebelum unduhan HTTP 503
+[lulus] K5 daftar hanya relasi aktif
+[lulus] K3 unduhan ulang dua wali/petugas hash identik
+[lulus] K5 akses silang detail HTTP 403
+[lulus] K5 akses silang PDF HTTP 403
+[lulus] K5 petugas=1 tidak memberi hak HTTP 403
+[lulus] K5 akses silang detail HTTP 403
+[lulus] K5 akses silang PDF HTTP 403
+[lulus] K5 petugas=1 tidak memberi hak HTTP 403
+[lulus] K5 akses silang detail HTTP 403
+[lulus] K5 akses silang PDF HTTP 403
+[lulus] K5 petugas=1 tidak memberi hak HTTP 403
+[lulus] K5 relasi dicabut detail HTTP 403
+[lulus] K5 relasi dicabut PDF HTTP 403
+[lulus] K5 daftar setelah pencabutan kosong
+[lulus] Rapor terbit mengunci koreksi nilai HTTP 409
+[lulus] Rapor terbit mengunci koreksi sikap HTTP 409
+[lulus] K6 payload antrean hanya generik dan penunjuk
+[lulus] K6 payload antrean hanya generik dan penunjuk
+Penerbitan kanonis dan akses sintetis selesai, bukan produksi.

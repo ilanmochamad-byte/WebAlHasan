@@ -124,6 +124,28 @@ final class RencanaService {
             $this->db->commit();return $this->read($user,$tahun,$kelas);
         } catch(Throwable $e) { $this->db->rollback();if ($e instanceof V4Exception) throw $e; if ($e instanceof \mysqli_sql_exception && (int)$e->getCode()===1062) throw new V4Exception('Rencana atau mata pelajaran ganda.',409);throw $e; }
     }
+    /** Keputusan Human Developer 16 Oktober 2026: jalur admin khusus, bukan edit mapel. */
+    public function changeSigners(array $user,array $input): array {
+        $this->requireSignerAdmin($user);
+        $id=(int)($input['rencana_id']??0);$reason=$input['alasan']??'';
+        if(!is_string($reason)||trim($reason)===''||mb_strlen($reason)>1000)throw new V4Exception('Alasan perubahan penanda tangan wajib diisi.');
+        $place=$input['tempat']??'';if(!is_string($place)||trim($place)===''||mb_strlen($place)>120)throw new V4Exception('Tempat wajib diisi (maksimal 120 karakter).');
+        $this->db->begin_transaction();
+        try {
+            $old=$this->one('SELECT * FROM v4_rencana WHERE id=? FOR UPDATE','i',[$id]);
+            if(!$old)throw new V4Exception('Rencana tidak ditemukan.',403);
+            $this->allowed($user,(int)$old['tahun_ajaran_id'],(int)$old['kelas_id']);
+            if((string)($input['version']??'')!==(string)$old['version'])throw new V4Exception('Rencana berubah. Muat ulang.',409);
+            $p=(int)($input['pendidikan_penanda_id']??0);$pa=(int)($input['pendidikan_aset_id']??0);$l=(int)($input['pimpinan_penanda_id']??0);$la=(int)($input['pimpinan_aset_id']??0);
+            $this->checkSigner($p,$pa,'Pendidikan');$this->checkSigner($l,$la,'Pimpinan');
+            $uid=(int)$user['id'];$repo=new BahanRepository($this->db,$this->audit);
+            $repo->query('UPDATE v4_rencana SET pendidikan_penanda_id=?,pendidikan_aset_id=?,pimpinan_penanda_id=?,pimpinan_aset_id=?,tempat=?,version=version+1,updated_by=? WHERE id=?','iiiisii',[$p,$pa,$l,$la,trim($place),$uid,$id]);
+            $new=$this->one('SELECT * FROM v4_rencana WHERE id=?','i',[$id]);
+            $repo->query('INSERT INTO v4_rencana_penanda_riwayat (rencana_id,version,snapshot_json,actor_user_id,alasan) VALUES (?,?,?,?,?)','iisis',[$id,(int)$new['version'],json_encode(['sebelum'=>$old,'sesudah'=>$new],JSON_THROW_ON_ERROR),$uid,trim($reason)]);
+            if(!$this->audit->log('v4.rencana.penanda','v4_rencana',$id,['version'=>(int)$old['version']],['version'=>(int)$new['version'],'kapasitas'=>'admin','alasan_tercatat'=>true],$uid))throw new V4Exception('Audit gagal.',503);
+            $this->db->commit();return $this->read($user,(int)$old['tahun_ajaran_id'],(int)$old['kelas_id']);
+        }catch(Throwable $e){$this->db->rollback();if($e instanceof V4Exception)throw $e;throw new V4Exception('Perubahan penanda tangan dibatalkan.',503);}
+    }
     public function saveSigner(array $user,array $input,?array $file=null): int {
         $this->requireSignerAdmin($user);
         $jabatan=(string)($input['jabatan']??'');$nama=trim((string)($input['nama']??''));$gelar=trim((string)($input['gelar']??''));

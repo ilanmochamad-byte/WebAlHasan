@@ -1,0 +1,56 @@
+[lulus] API pembimbing membaca sikap privat
+[lulus] API baca di luar cakupan v4_pembimbing_lain 403
+[lulus] API mutasi di luar cakupan v4_pembimbing_lain 403
+[lulus] API baca di luar cakupan v4_murobi_lain 403
+[lulus] API mutasi di luar cakupan v4_murobi_lain 403
+[lulus] API baca di luar cakupan v4_wali 403
+[lulus] API mutasi di luar cakupan v4_wali 403
+[lulus] API baca di luar cakupan v4_guru 403
+[lulus] API mutasi di luar cakupan v4_guru 403
+[lulus] API tanpa bearer 401
+[lulus] API Pendidikan di luar kelas/semester 403
+[lulus] API Pendidikan di luar kelas/semester 403
+[lulus] API penugasan dicabut baca v4_pembimbing
+[lulus] API penugasan dicabut tulis v4_pembimbing
+[lulus] API penugasan dicabut baca v4_murobi
+[lulus] API penugasan dicabut tulis v4_murobi
+[lulus] API penugasan dicabut baca v4_pendidikan
+[lulus] API penugasan dicabut tulis v4_pendidikan
+[lulus] API matriks v4_pembimbing 403
+[lulus] API matriks v4_murobi 403
+[lulus] API matriks v4_pengurus 403
+[lulus] API matriks v4_wali 403
+[lulus] API koreksi tanpa alasan 422
+[lulus] API pembimbing koreksi beralasan
+[lulus] API retry versi lama 409
+[lulus] API koreksi membatalkan verifikasi
+[lulus] API gate matriks usang 409
+[lulus] Web pembimbing formulir aman dari XSS
+[lulus] Web sikap CSRF salah 419
+[lulus] Web pembimbing menyerahkan sikap
+[lulus] Sikap pembimbing 375 px tanpa overflow
+[lulus] Sikap pembimbing teks 24 px tanpa overflow
+[lulus] Sikap pembimbing desktop tanpa overflow
+[lulus] Web murobi mengetahui
+[lulus] Web tombol diketahui tidak dapat diklik dua kali
+[lulus] API diketahui kedua kali 409
+[lulus] Web murobi koreksi beralasan
+[lulus] Sikap murobi 375 px tanpa overflow
+[lulus] Sikap murobi teks 24 px tanpa overflow
+[lulus] Sikap murobi desktop tanpa overflow
+[lulus] Web matriks dua mapel wajib dan santri
+[lulus] Web penghitung Belum dicatat terpisah
+[lulus] Web pengembalian tanpa alasan ditolak
+[lulus] Web pengembalian beralasan
+[lulus] Web gate menolak sikap belum diverifikasi
+[lulus] Matriks Pendidikan 375 px tanpa overflow
+[lulus] Matriks Pendidikan teks 24 px tanpa overflow
+[lulus] Matriks Pendidikan desktop tanpa overflow
+[lulus] Web verifikasi CSRF 419
+[lulus] Web pembimbing lain 403
+[lulus] Web murobi lain 403
+[lulus] Web pembimbing matriks 403
+[lulus] API Pendidikan verifikasi sikap
+[lulus] API retry verifikasi 409
+[lulus] Koreksi murobi pascaverifikasi memerlukan pemeriksaan ulang
+[lulus] API gate menolak pascakoreksi murobi

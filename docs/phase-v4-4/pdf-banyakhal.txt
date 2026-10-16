@@ -1,0 +1,2 @@
+[lulus] Dokumen uji 30 mapel dengan catatan panjang dirender tanpa mutasi penerbitan
+[lulus] 6 halaman, mapel terakhir 30 dan identitas penanda terbaca, tanpa halaman kosong

@@ -1,0 +1,1 @@
+[lulus] QR pada render PDF kanonis dapat dipindai; URL fragment cocok dengan kode 48 hex.

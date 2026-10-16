@@ -1,0 +1,2 @@
+[lulus] Worker koneksi terpisah selesai
+[gagal] Worker koneksi terpisah selesai Operasi gagal. Muat ulang; ulangi dengan key yang sama.

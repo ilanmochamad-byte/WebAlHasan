@@ -73,3 +73,10 @@ Human Developer akan menggunakan format berikut untuk memicu pergantian agen AI.
 1.  **Tidak Ada Eksekusi Bersamaan:** Claude dan Codex **TIDAK BOLEH** dijalankan secara bersamaan pada folder dan branch yang sama. Pekerjaan harus selalu bergantian (sekuensial).
 2.  **Satu Kebenaran:** Git dan PRD adalah ingatan bersama. Jangan mengandalkan riwayat percakapan AI sebelumnya.
 3.  **Hanya Gabung Jika Stabil:** Branch fitur hanya boleh di-merge ke `main` setelah auditor yang ditetapkan untuk workstream tersebut menyatakan fase memenuhi kriteria wajib berdasarkan bukti pengujian. Keterbatasan atau pengujian nonblokir yang belum dijalankan harus tetap dicatat secara terbuka.
+
+
+## Keputusan Human Developer — V4 Fase 4 (16 Oktober 2026)
+
+- Satuan verifikasi Fase 3 per isian mapel–santri–kelas–semester (seluruh komponen bersama) dikonfirmasi untuk gate penerbitan Fase 4.
+- Admin boleh mengganti penanda tangan/aset/tempat setelah penilaian melalui tindakan khusus beralasan dan optimistic version dengan riwayat; perubahan hanya berlaku untuk penerbitan/penggantian versi berikutnya, tidak mengubah snapshot/PDF terbit.
+- Fase 4 dikerjakan Codex pada `codex/prd-v4-fase-4` dari baseline audit `8b54106`; bukti/status/handoff ada di `docs/phase-v4-4/`. Claude Code menjadi auditor berikutnya. Fase 5 tetap belum dikerjakan.

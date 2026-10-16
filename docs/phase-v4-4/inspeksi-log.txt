@@ -1,0 +1,3 @@
+Kode QR aktual ada dalam log HTTP: False
+Warning/fatal PHP: 0
+Tidak ada pencatatan body unggahan atau header bearer pada aplikasi.

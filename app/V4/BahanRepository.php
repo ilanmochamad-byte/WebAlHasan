@@ -13,7 +13,7 @@ final class BahanRepository
         $s=$this->db->prepare($sql);
         if(!$s)throw new V4Exception('Basis data tidak tersedia.',503);
         if($types!=='')$s->bind_param($types,...$args);
-        if(!$s->execute()){ $code=$s->errno; $s->close(); throw new V4Exception('Perubahan gagal disimpan.',in_array($code,[1062,1213,1205],true)?409:503); }
+        if(!$s->execute()){ $code=$s->errno; $s->close(); throw new V4Exception('Perubahan gagal disimpan.',in_array($code,[1062,1020,1213,1205],true)?409:503,$code); }
         $r=$s->get_result();$rows=$r?$r->fetch_all(MYSQLI_ASSOC):[];$s->close();return $rows;
     }
     public static function fingerprint(array $source): string

@@ -1,0 +1,76 @@
+[lulus] Login tidak membandingkan username/password dengan nilai literal
+[lulus] Login lama memakai service autentikasi database
+[lulus] Koneksi tidak memuat password database literal
+[lulus] Seluruh POST pada route admin dijaga CSRF di server
+[lulus] index.php memuat bootstrap/koneksi sebelum menghasilkan header HTML
+[lulus] berita.php memuat bootstrap/koneksi sebelum menghasilkan header HTML
+[lulus] detail.php memuat bootstrap/koneksi sebelum menghasilkan header HTML
+[lulus] download.php memuat bootstrap/koneksi sebelum menghasilkan header HTML
+[lulus] galeri.php memuat bootstrap/koneksi sebelum menghasilkan header HTML
+[lulus] _guard.php memakai guard role admin
+[lulus] _master_ui.php memakai guard role admin
+[lulus] admin_akun.php memakai guard role admin
+[lulus] admin_akun_perizinan.php memakai guard role admin
+[lulus] admin_alumni.php memakai guard role admin
+[lulus] admin_berita.php memakai guard role admin
+[lulus] admin_dashboard.php memakai guard role admin
+[lulus] admin_data.php memakai guard role admin
+[lulus] admin_download.php memakai guard role admin
+[lulus] admin_galeri.php memakai guard role admin
+[lulus] admin_guru.php memakai guard role admin
+[lulus] admin_izin.php memakai guard role admin
+[lulus] admin_kamar.php memakai guard role admin
+[lulus] admin_kelas.php memakai guard role admin
+[lulus] admin_kelulusan_santri.php memakai guard role admin
+[lulus] admin_master_santri.php memakai guard role admin
+[lulus] admin_murobi.php memakai guard role admin
+[lulus] admin_notifikasi.php memakai guard role admin
+[lulus] admin_pelanggaran.php memakai guard role admin
+[lulus] admin_pembayaran_psb.php memakai guard role admin
+[lulus] admin_pembimbing.php memakai guard role admin
+[lulus] admin_penempatan_santri.php memakai guard role admin
+[lulus] admin_pengurus.php memakai guard role admin
+[lulus] admin_penugasan.php memakai guard role admin
+[lulus] admin_rekap_keuangan.php memakai guard role admin
+[lulus] admin_rekap_santri.php memakai guard role admin
+[lulus] admin_santri.php memakai guard role admin
+[lulus] admin_tahun.php memakai guard role admin
+[lulus] admin_v3_katalog.php memakai guard role admin
+[lulus] admin_wali.php memakai guard role admin
+[lulus] admin_wali_rekonsiliasi.php memakai guard role admin
+[lulus] edit_berita.php memakai guard role admin
+[lulus] export_master.php memakai guard role admin
+[lulus] export_pembayaran.php memakai guard role admin
+[lulus] export_psb.php memakai guard role admin
+[lulus] export_santri.php memakai guard role admin
+[lulus] get_santri_json.php memakai guard role admin
+[lulus] get_wali_json.php memakai guard role admin
+[lulus] hapus_siswa.php memakai guard role admin
+[lulus] proses_berita.php memakai guard role admin
+[lulus] proses_import_psb.php memakai guard role admin
+[lulus] proses_import_santri.php memakai guard role admin
+[lulus] proses_mutasi_alumni.php memakai guard role admin
+[lulus] proses_psb_admin.php memakai guard role admin
+[lulus] sidebar.php memakai guard role admin
+[lulus] tambah_berita.php memakai guard role admin
+[lulus] Guard laporan web hanya admin/guru dengan sesi dan menolak mutasi
+[lulus] admin_laporan_absensi.php memakai guard laporan baca-saja
+[lulus] laporan_absensi_detail.php memakai guard laporan baca-saja
+[lulus] export_laporan_absensi.php memakai guard laporan baca-saja
+[lulus] laporan_absensi_cetak.php memakai guard laporan baca-saja
+[lulus] admin_pengajian.php memakai guard pengguna dan membatasi role admin/guru
+[lulus] admin_pengajian.php melindungi seluruh POST dengan CSRF
+[lulus] pertemuan_pengajian.php meneruskan POST ke modul ber-guard, bukan mengalihkannya melewati validasi
+[lulus] admin_jadwal_ngaji.php meneruskan POST ke modul ber-guard, bukan mengalihkannya melewati validasi
+[lulus] _pengajian_jadwal.php menolak akses langsung (potongan tampilan, bukan halaman)
+[lulus] _pengajian_pertemuan.php menolak akses langsung (potongan tampilan, bukan halaman)
+[lulus] _santri_wali_field.php menolak akses langsung (potongan tampilan, bukan halaman)
+[lulus] Migrasi memuat roles
+[lulus] Migrasi memuat user_roles
+[lulus] Migrasi memuat api_tokens
+[lulus] Migrasi memuat audit_logs
+[lulus] Migrasi memuat users_guru_unique
+[lulus] Migrasi memuat force_password_change
+[lulus] Runtime mendukung password_hash/password_verify
+[lulus] Token CSRF valid dapat dibuat dan diverifikasi
+[lulus] Token CSRF salah ditolak

@@ -1,0 +1,5 @@
+[lulus] K1 bahan nilai tidak lengkap/belum diverifikasi HTTP 422
+[lulus] K1 nol PDF terbit/notifikasi nilai
+[lulus] K1 bahan sikap tidak lengkap/belum diverifikasi HTTP 422
+[lulus] K1 nol PDF terbit/notifikasi sikap
+[gagal] K1 bahan kehadiran tidak lengkap/belum diverifikasi

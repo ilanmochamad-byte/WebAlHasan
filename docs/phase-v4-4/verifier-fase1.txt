@@ -1,0 +1,125 @@
+[lulus] Tabel v4_penanda_tangan
+[lulus] Tabel v4_tanda_tangan_aset
+[lulus] Tabel v4_rencana
+[lulus] Tabel v4_rencana_mapel
+[lulus] Tabel v4_nilai
+[lulus] Tabel v4_nilai_riwayat
+[lulus] Tabel v4_sikap
+[lulus] Tabel v4_sikap_riwayat
+[lulus] Tabel v4_rapor
+[lulus] Tabel v4_rapor_versi
+[lulus] Tabel v4_verifikasi
+[lulus] Migrasi 020 tercatat sekali
+[lulus] Referensi baru v4_sikap.kelas_id tidak yatim
+[lulus] Referensi baru v4_sikap.diketahui_murobi_user_id tidak yatim
+[lulus] Referensi baru v4_sikap.pembimbing_user_id tidak yatim
+[lulus] Referensi baru v4_sikap.santri_id tidak yatim
+[lulus] Referensi baru v4_sikap.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana.created_by tidak yatim
+[lulus] Referensi baru v4_rencana.kelas_id tidak yatim
+[lulus] Referensi baru v4_rencana.pendidikan_aset_id tidak yatim
+[lulus] Referensi baru v4_rencana.pendidikan_penanda_id tidak yatim
+[lulus] Referensi baru v4_rencana.pimpinan_aset_id tidak yatim
+[lulus] Referensi baru v4_rencana.pimpinan_penanda_id tidak yatim
+[lulus] Referensi baru v4_rencana.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana.updated_by tidak yatim
+[lulus] Referensi baru v4_rencana_penanda_riwayat.actor_user_id tidak yatim
+[lulus] Referensi baru v4_rencana_penanda_riwayat.rencana_id tidak yatim
+[lulus] Referensi baru v4_bahan.actor_user_id tidak yatim
+[lulus] Referensi baru v4_bahan.rencana_id tidak yatim
+[lulus] Referensi baru v4_bahan.santri_id tidak yatim
+[lulus] Referensi baru v4_rapor.santri_id tidak yatim
+[lulus] Referensi baru v4_rapor.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.diterbitkan_oleh tidak yatim
+[lulus] Referensi baru v4_rapor_versi.pendidikan_aset_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.pimpinan_aset_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.rapor_id tidak yatim
+[lulus] Referensi baru v4_rapor_operasi.actor_user_id tidak yatim
+[lulus] Referensi baru v4_rapor_operasi.rapor_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.guru_mapel_assignment_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.mata_pelajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.rencana_id tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.activated_by tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.penanda_tangan_id tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.uploaded_by tidak yatim
+[lulus] Referensi baru v4_nilai.rencana_mapel_id tidak yatim
+[lulus] Referensi baru v4_nilai.pelaku_user_id tidak yatim
+[lulus] Referensi baru v4_nilai.santri_id tidak yatim
+[lulus] Referensi baru v4_nilai_riwayat.nilai_id tidak yatim
+[lulus] Referensi baru v4_nilai_riwayat.pelaku_user_id tidak yatim
+[lulus] Referensi baru v4_verifikasi.rapor_versi_id tidak yatim
+[lulus] Referensi baru v4_penanda_tangan.created_by tidak yatim
+[lulus] Referensi baru v4_penanda_tangan.updated_by tidak yatim
+[lulus] Referensi baru v4_sikap_riwayat.actor_user_id tidak yatim
+[lulus] Referensi baru v4_sikap_riwayat.sikap_id tidak yatim
+[lulus] Referensi baru v4_bahan_riwayat.bahan_id tidak yatim
+Jumlah referensi yatim V4: 0
+[lulus] Jumlah baris lama absensi_guru tetap 0
+[lulus] Jumlah baris lama absensi_santri tetap 0
+[lulus] Jumlah baris lama alumni tetap 0
+[lulus] Jumlah baris lama api_idempotency_keys tetap 0
+[lulus] Jumlah baris lama api_tokens tetap 0
+[lulus] Jumlah baris lama bendahara_bulanan_assignments tetap 0
+[lulus] Jumlah baris lama bendahara_psb_assignments tetap 0
+[lulus] Jumlah baris lama berita tetap 3
+[lulus] Jumlah baris lama download tetap 1
+[lulus] Jumlah baris lama galeri tetap 1
+[lulus] Jumlah baris lama guru tetap 25
+[lulus] Jumlah baris lama guru_mapel_assignments tetap 0
+[lulus] Jumlah baris lama izin_idempotency_keys tetap 0
+[lulus] Jumlah baris lama izin_keputusan tetap 0
+[lulus] Jumlah baris lama izin_keputusan_koreksi tetap 0
+[lulus] Jumlah baris lama izin_pengajuan tetap 0
+[lulus] Jumlah baris lama izin_riwayat_status tetap 0
+[lulus] Jumlah baris lama jadwal_jam_migration_report tetap 0
+[lulus] Jumlah baris lama jadwal_ngaji tetap 5
+[lulus] Jumlah baris lama kamar tetap 29
+[lulus] Jumlah baris lama kelas tetap 15
+[lulus] Jumlah baris lama mapel tetap 0
+[lulus] Jumlah baris lama mata_pelajaran tetap 0
+[lulus] Jumlah baris lama mengajar tetap 0
+[lulus] Jumlah baris lama murobi_assignments tetap 0
+[lulus] Jumlah baris lama notifikasi_outbox tetap 0
+[lulus] Jumlah baris lama notifikasi_pengaturan_audit tetap 0
+[lulus] Jumlah baris lama notifikasi_percobaan tetap 0
+[lulus] Jumlah baris lama notifikasi_worker_lock tetap 2
+[lulus] Jumlah baris lama panitia_psb_assignments tetap 0
+[lulus] Jumlah baris lama pelanggaran tetap 0
+[lulus] Jumlah baris lama pembimbing_assignments tetap 0
+[lulus] Jumlah baris lama pembimbing_kamar tetap 0
+[lulus] Jumlah baris lama pendidikan_assignments tetap 0
+[lulus] Jumlah baris lama pengaturan_notifikasi tetap 1
+[lulus] Jumlah baris lama pengurus tetap 0
+[lulus] Jumlah baris lama perangkat_push tetap 0
+[lulus] Jumlah baris lama perizinan tetap 0
+[lulus] Jumlah baris lama pertemuan_pengajian tetap 0
+[lulus] Jumlah baris lama pertemuan_peserta tetap 0
+[lulus] Jumlah baris lama plotting_kamar tetap 358
+[lulus] Jumlah baris lama plotting_kelas tetap 355
+[lulus] Jumlah baris lama psb_pembayaran tetap 103
+[lulus] Jumlah baris lama psb_pendaftar tetap 53
+[lulus] Jumlah baris lama roles tetap 4
+[lulus] Jumlah baris lama santri tetap 360
+[lulus] Jumlah baris lama santri_wali tetap 207
+[lulus] Jumlah baris lama tahun_ajaran tetap 4
+[lulus] Jumlah baris lama users tetap 1
+[lulus] Jumlah baris lama user_roles tetap 1
+[lulus] Jumlah baris lama v3_ambang tetap 0
+[lulus] Jumlah baris lama v3_idempotency tetap 0
+[lulus] Jumlah baris lama v3_katalog tetap 0
+[lulus] Jumlah baris lama v3_kategori tetap 0
+[lulus] Jumlah baris lama v3_konseling_kasus tetap 0
+[lulus] Jumlah baris lama v3_konseling_kasus_revisi tetap 0
+[lulus] Jumlah baris lama v3_konseling_sesi tetap 0
+[lulus] Jumlah baris lama v3_konseling_tautan tetap 0
+[lulus] Jumlah baris lama v3_lampiran tetap 0
+[lulus] Jumlah baris lama v3_murobi_catatan tetap 0
+[lulus] Jumlah baris lama v3_pelanggaran tetap 0
+[lulus] Jumlah baris lama v3_poin_agregat tetap 0
+[lulus] Jumlah baris lama v3_poin_ledger tetap 0
+[lulus] Jumlah baris lama v3_publikasi tetap 0
+[lulus] Jumlah baris lama v3_publikasi_outbox tetap 0
+[lulus] Jumlah baris lama v3_publikasi_pratinjau tetap 0
+[lulus] Jumlah baris lama v3_publikasi_riwayat tetap 0
+[lulus] Jumlah baris lama v3_rekomendasi tetap 0
+[lulus] Jumlah baris lama wali tetap 207

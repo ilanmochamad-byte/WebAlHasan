@@ -1,0 +1,6 @@
+[lulus] K7 kode v1 setelah penggantian menunjukkan Diganti
+[lulus] K7 wali tidak dapat mengunduh versi Diganti HTTP 403
+[lulus] Penarikan tanpa alasan ditolak HTTP 422
+[lulus] K7 penarikan beralasan idempoten
+[lulus] K7 wali tidak dapat mengunduh versi Ditarik HTTP 403
+[lulus] K7 wali melihat riwayat status tanpa PDF/snapshot ditarik

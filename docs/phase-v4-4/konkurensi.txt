@@ -1,0 +1,22 @@
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Enam penerbit same hasil ["200","200","200","200","200","200"]
+[lulus] K2 tepat satu versi/PDF baru dan dua InApp pada same
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Enam penerbit different hasil ["200","409","409","409","409","409"]
+[lulus] K2 tepat satu versi/PDF baru dan dua InApp pada different
+[lulus] Penerbit mencapai penulisan PDF sambil memegang kunci sumber
+[lulus] Kehadiran bersamaan timeout 1205 sebelum commit, tidak lolos gate
+[lulus] Penerbit terkontrol commit satu versi
+[lulus] Crash sebelum commit: nol versi/outbox baru
+[lulus] Berkas crash privat tanpa referensi; tidak tersedia lewat unduhan
+[lulus] Pembersihan fixture orphan terarah setelah DB dikonfirmasi

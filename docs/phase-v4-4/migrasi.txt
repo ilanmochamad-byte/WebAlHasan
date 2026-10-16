@@ -1,0 +1,3 @@
+Diterapkan:
+- 022_v4_fase4_publikasi.sql
+Tidak ada migrasi baru.

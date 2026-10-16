@@ -1,0 +1,6 @@
+RuntimeException: Migrasi gagal pada 022_v4_fase4_publikasi.sql: CONSTRAINT `v4_fase4_rollback_guard.jumlah` failed for `webalhasan_v4_fase2_test`.`v4_fase4_rollback_guard` in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Database/Migrator.php:123
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Database/Migrator.php(85): App\Database\Migrator->runSqlFile('/Users/ilanmoch...')
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/bin/migrate.php(24): App\Database\Migrator->rollbackLast()
+#2 {main}
+Perintah gagal. Aktifkan APP_DEBUG untuk detail.

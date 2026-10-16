@@ -15,3 +15,6 @@ tests/browser/tangkapan-penempatan/
 
 # Dependensi lokal Playwright untuk uji browser opsional
 tests/browser/node_modules/
+
+# Dependensi PDF/QR dipasang dari composer.lock
+/vendor/
