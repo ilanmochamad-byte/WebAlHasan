@@ -1,0 +1,14 @@
+RuntimeException: Migrasi gagal pada 021_v4_fase3_verifikasi.sql: CONSTRAINT `v4_fase3_rollback_guard.jumlah` failed for `webalhasan_v4_fase2_test`.`v4_fase3_rollback_guard` in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Database/Migrator.php:123
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Database/Migrator.php(85): App\Database\Migrator->runSqlFile('/Users/ilanmoch...')
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/bin/migrate.php(24): App\Database\Migrator->rollbackLast()
+#2 {main}
+Perintah gagal. Aktifkan APP_DEBUG untuk detail.
+Rollback berisi data exit=1 (harus bukan 0)
+[lulus] Tabel v4_bahan
+[lulus] Tabel v4_bahan_riwayat
+[lulus] Migrasi 021 tercatat tepat sekali
+[lulus] Status bahan tidak yatim
+[lulus] Mapel bahan milik rencana yang sama
+[lulus] Riwayat bahan tidak yatim
+[lulus] Versi bahan mempunyai riwayat

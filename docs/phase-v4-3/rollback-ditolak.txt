@@ -1,0 +1,3 @@
+v4_bahan_riwayat: 53 baris
+v4_bahan: 10 baris
+Rollback ditolak: ada status/riwayat bisnis. Pulihkan backup terverifikasi atau siapkan forward fix; jangan hapus riwayat.

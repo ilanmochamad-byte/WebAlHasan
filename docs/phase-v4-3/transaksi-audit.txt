@@ -1,0 +1,12 @@
+Audit log gagal disimpan.
+[lulus] Audit workflow gagal setelah audit sikap berhasil HTTP 503
+Audit log gagal disimpan.
+[lulus] Audit workflow gagal setelah audit komponen nilai berhasil HTTP 503
+Audit log gagal disimpan.
+[lulus] Audit verifikasi gagal menggulung status dan riwayat pemeriksaan HTTP 503
+[lulus] Sikap dan dua jenis riwayat tetap utuh setelah rollback akhir
+[lulus] Nilai, atribusi, status dan dua jenis riwayat tetap utuh
+[lulus] Matriks dan audit pertama ikut digulung; tidak ada audit sukses palsu
+[lulus] Perpindahan kelas dengan nilai asal menjadi penghalang finalisasi
+[lulus] Gate menolak kelas semester ambigu HTTP 422
+[lulus] Perpindahan kelas tidak mengubah identitas/kelas/nilai pengisi historis

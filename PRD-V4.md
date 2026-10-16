@@ -2,7 +2,7 @@
 
 > **Untuk agen AI:** Dokumen ini adalah instruksi implementasi. Jika ada hal yang tidak jelas, jangan menebak—tanyakan kepada pengguna. Ketika keputusan berubah selama implementasi, perbarui dokumen ini agar tetap menjadi sumber kebenaran (*living document*).
 
-**Status:** Rancangan produk dan seluruh asumsi awal disetujui Human Developer pada 16 Oktober 2026. Fase 1 dan Fase 2 telah lulus audit Claude Code (Fase 2 dengan dua koreksi terarah; lihat `docs/phase-v4-2/audit-claude.md`); Fase 3 belum dimulai dan menunggu keputusan Human Developer. Codex ditetapkan sebagai implementator V4 dan Claude Code sebagai auditor; pekerjaan dilakukan bergantian sesuai `AGENTS.md`.
+**Status:** Rancangan produk dan seluruh asumsi awal disetujui Human Developer pada 16 Oktober 2026. Fase 1 dan Fase 2 telah lulus audit Claude Code (Fase 2 dengan dua koreksi terarah; lihat `docs/phase-v4-2/audit-claude.md`); Implementasi Fase 3 selesai oleh Codex atas instruksi Human Developer 16 Oktober 2026 dan menunggu audit independen Claude Code (lihat `docs/phase-v4-3/status-penerimaan.md`); Fase 4 belum dikerjakan. Codex ditetapkan sebagai implementator V4 dan Claude Code sebagai auditor; pekerjaan dilakukan bergantian sesuai `AGENTS.md`.
 
 ## 1. Gambaran Umum
 
@@ -176,6 +176,7 @@ Jika santri berpindah kelas di tengah semester sehingga rencana mapel atau penil
 2. Rekap kehadiran membaca peserta snapshot dan absensi santri pada pertemuan pengajian semester terkait; hitung lima status terpisah dan daftar absensi yang belum dicatat.
 3. Bagian Pendidikan melihat matriks kelengkapan setiap santri: mapel wajib, komponen nilai, sikap, pengetahuan murobi, dan absensi.
 4. Sediakan alur `Draf → Diserahkan → Perlu Perbaikan/Terverifikasi` untuk setiap bahan, dengan alasan saat pengembalian/koreksi.
+   - Satuan verifikasi nilai Fase 3 adalah satu isian mapel–santri–kelas–semester (seluruh komponen Fase 2). Status pemeriksaan disimpan terpisah dari komponen; pemeriksaan Pendidikan tidak mengubah atribusi atau versi komponen guru. Sikap adalah satu bahan per santri/semester, dan kehadiran adalah satu rekap sumber semester per santri. Detail keputusan serta pemetaan status kode ada di `docs/phase-v4-3/kontrak-dan-migrasi.md`.
 5. Perubahan setelah verifikasi memerlukan verifikasi ulang. Finalisasi ditolak jika ada mapel wajib atau data sikap/kehadiran yang belum lengkap.
 6. Penugasan dan relasi semester diperiksa ulang pada setiap mutasi; perubahan cakupan tidak mengubah identitas pengisi historis.
 

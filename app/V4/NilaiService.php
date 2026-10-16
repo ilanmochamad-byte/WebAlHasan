@@ -32,6 +32,7 @@ final class NilaiService
 
     private function allowed(array $user, array $plan, bool $pengganti): bool
     {
+        $this->caps->forget((int)$user['id']);
         return $this->caps->featureAppliesTo($user, $this->capability($pengganti), [
             'tahun_ajaran_id' => (int)$plan['tahun_ajaran_id'], 'kelas_id' => (int)$plan['kelas_id'],
             'mata_pelajaran_id' => (int)$plan['mata_pelajaran_id'],
@@ -40,6 +41,7 @@ final class NilaiService
 
     public function options(array $user, bool $pengganti = false): array
     {
+        $this->caps->forget((int)$user['id']);
         if (!$this->caps->hasFeature($user, $this->capability($pengganti))) throw new V4Exception('Akses nilai ditolak.', 403);
         $rows = $this->query('SELECT rm.id,rm.mata_pelajaran_id,r.tahun_ajaran_id,r.kelas_id,k.nama_kelas,t.tahun,t.semester,mp.nama AS mata_pelajaran FROM v4_rencana_mapel rm JOIN v4_rencana r ON r.id=rm.rencana_id JOIN kelas k ON k.id=r.kelas_id JOIN tahun_ajaran t ON t.id=r.tahun_ajaran_id JOIN mata_pelajaran mp ON mp.id=rm.mata_pelajaran_id ORDER BY t.id DESC,k.nama_kelas,mp.nama');
         return array_values(array_filter($rows, fn($r) => $this->allowed($user, $r, $pengganti)));
@@ -47,8 +49,9 @@ final class NilaiService
 
     private function plan(array $user, int $id, bool $pengganti): array
     {
+        $this->caps->forget((int)$user['id']);
         if (!$this->caps->hasFeature($user, $this->capability($pengganti))) throw new V4Exception('Akses nilai ditolak.', 403);
-        $p = $this->query('SELECT rm.*,r.tahun_ajaran_id,r.kelas_id,k.nama_kelas,t.tahun,t.semester,mp.nama AS mata_pelajaran FROM v4_rencana_mapel rm JOIN v4_rencana r ON r.id=rm.rencana_id JOIN kelas k ON k.id=r.kelas_id JOIN tahun_ajaran t ON t.id=r.tahun_ajaran_id JOIN mata_pelajaran mp ON mp.id=rm.mata_pelajaran_id WHERE rm.id=?', 'i', [$id])[0] ?? null;
+        $p = $this->query("SELECT rm.*,r.tahun_ajaran_id,r.kelas_id,k.nama_kelas,t.tahun,t.semester,mp.nama AS mata_pelajaran FROM v4_rencana_mapel rm JOIN v4_rencana r ON r.id=rm.rencana_id JOIN kelas k ON k.id=r.kelas_id AND k.is_active=1 AND k.archived_at IS NULL JOIN tahun_ajaran t ON t.id=r.tahun_ajaran_id AND t.status='Aktif' AND t.archived_at IS NULL JOIN mata_pelajaran mp ON mp.id=rm.mata_pelajaran_id AND mp.is_active=1 AND mp.archived_at IS NULL WHERE rm.id=?", 'i', [$id])[0] ?? null;
         if (!$p || !$this->allowed($user, $p, $pengganti)) throw new V4Exception('Mapel, kelas, atau semester di luar cakupan.', 403);
         return $p;
     }
@@ -89,7 +92,11 @@ final class NilaiService
         if ($santri && !in_array($santri, array_map('intval', array_column($students, 'id')), true)) throw new V4Exception('Santri di luar kelas dan semester.', 403);
         $rows = $santri ? $this->query('SELECT * FROM v4_nilai WHERE rencana_mapel_id=? AND santri_id=? ORDER BY komponen,nomor_harian', 'ii', [$mapel, $santri]) : [];
         $history = $santri ? $this->query('SELECT h.* FROM v4_nilai_riwayat h JOIN v4_nilai n ON n.id=h.nilai_id WHERE n.rencana_mapel_id=? AND n.santri_id=? ORDER BY h.id DESC', 'ii', [$mapel, $santri]) : [];
-        return ['rencana_mapel' => $p, 'santri' => $students, 'nilai' => $rows, 'riwayat' => $history, 'hasil' => self::calculate($rows, (float)$p['target_ketuntasan'])];
+        $repo = new BahanRepository($this->db, $this->audit);
+        $initial = $rows && count(array_filter($rows, fn($r) => $r['status'] === 'Dikirim')) === count($rows) ? 'Dikirim' : 'Draf';
+        return ['rencana_mapel' => $p, 'santri' => $students, 'nilai' => $rows, 'riwayat' => $history, 'hasil' => self::calculate($rows, (float)$p['target_ketuntasan']),
+            'pemeriksaan' => $santri ? $repo->state((int)$p['rencana_id'], $santri, 'nilai', $mapel, $rows, $initial) : null,
+            'riwayat_pemeriksaan' => $santri ? $repo->history((int)$p['rencana_id'], $santri, 'nilai', $mapel) : []];
     }
 
     /** Payload mencakup seluruh komponen tersimpan; versi 0 hanya untuk komponen baru. */
@@ -124,6 +131,7 @@ final class NilaiService
             $this->query('SELECT id FROM v4_rencana WHERE id=? FOR UPDATE', 'i', [(int)$p['rencana_id']]);
             $this->query('SELECT id FROM v4_rencana_mapel WHERE id=? FOR UPDATE', 'i', [$mapel]);
             $p = $this->plan($user, $mapel, $pengganti);
+            $capacity = (new V4Access($this->caps))->nilaiInput($user, (int)$p['tahun_ajaran_id'], (int)$p['kelas_id'], (int)$p['mata_pelajaran_id'], $pengganti, $reason);
             if (!$this->query("SELECT r.id FROM v4_rencana r JOIN kelas k ON k.id=r.kelas_id AND k.is_active=1 AND k.archived_at IS NULL JOIN tahun_ajaran t ON t.id=r.tahun_ajaran_id AND t.status='Aktif' AND t.archived_at IS NULL JOIN v4_rencana_mapel rm ON rm.rencana_id=r.id JOIN mata_pelajaran mp ON mp.id=rm.mata_pelajaran_id AND mp.is_active=1 AND mp.archived_at IS NULL WHERE rm.id=?", 'i', [$mapel])) throw new V4Exception('Rencana kelas, semester, atau mata pelajaran tidak aktif.', 409);
             if (!$santri || !in_array($santri, array_map('intval', array_column($this->students($p), 'id')), true)) throw new V4Exception('Santri di luar kelas dan semester.', 403);
             $old = $this->query('SELECT * FROM v4_nilai WHERE rencana_mapel_id=? AND santri_id=? FOR UPDATE', 'ii', [$mapel, $santri]);
@@ -158,6 +166,8 @@ final class NilaiService
                 if (!$this->audit->log('v4.nilai.' . $action, 'v4_nilai', $id, $previous ? ['version' => (int)$previous['version']] : null, ['version' => $version, 'kapasitas' => $capacity, 'status' => $status, 'alasan_tercatat' => trim($reason) !== ''], $uid)) throw new V4Exception('Audit gagal; perubahan dibatalkan.', 503);
             }
             if (!$written) throw new V4Exception('Tidak ada perubahan untuk disimpan.');
+            $source = $this->query('SELECT * FROM v4_nilai WHERE rencana_mapel_id=? AND santri_id=? ORDER BY komponen,nomor_harian', 'ii', [$mapel, $santri]);
+            (new BahanRepository($this->db, $this->audit))->write((int)$p['rencana_id'], $santri, 'nilai', $mapel, $source, $status, $uid, $capacity, $reason);
             $result = $this->read($user, $mapel, $santri, $pengganti);
             $this->db->commit();
             return $result;

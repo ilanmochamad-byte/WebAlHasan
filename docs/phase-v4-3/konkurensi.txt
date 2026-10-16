@@ -1,0 +1,4 @@
+[lulus] Enam proses/koneksi DB terpisah: satu 200 dan lima 409.
+[lulus] Tepat satu sikap, satu versi dan satu riwayat pemeriksaan.
+[lulus] Enam pemeriksa bersamaan: satu 200 dan lima 409.
+[lulus] Verifikasi tidak menggandakan riwayat: tiga versi sumber dan satu pemeriksaan.

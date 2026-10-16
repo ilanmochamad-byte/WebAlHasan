@@ -1,0 +1,148 @@
+
+=== KN-1. Penerima yang berhak ===
+[lulus] KN-1a Pengajuan dengan satu murobi memberi tahu tepat murobi tujuan
+[lulus] KN-1b Murobi lain tidak menerima notifikasi pengajuan
+[lulus] KN-1c Guru tanpa penugasan murobi tidak menerima notifikasi
+[lulus] KN-1c2 Penugasan ke kelas nonaktif tidak memberi capability atau notifikasi murobi
+[lulus] KN-1d Pengaju tidak diberi tahu tentang tindakannya sendiri
+[lulus] KN-1e Tepat satu baris in-app dibuat untuk peristiwa pengajuan
+[lulus] KN-1f Pengajuan tanpa murobi tunggal memberi tahu admin
+[lulus] KN-1g Pengurus pengaju tidak diberi notifikasi atas tindakannya sendiri; statusnya sudah tampak pada daftarnya
+[lulus] KN-1h Murobi tidak diberi tahu pengajuan yang belum ditetapkan kepadanya
+[lulus] KN-1i Keputusan memberi tahu pengurus pengaju
+[lulus] KN-1j Keputusan memberi tahu orang tua dengan relasi wali aktif
+[lulus] KN-1k Wali dengan relasi terarsip tidak menerima notifikasi
+[lulus] KN-1l Murobi pemutus tidak diberi tahu keputusannya sendiri
+[lulus] KN-1m Alasan izin, catatan pengurus, dan alasan keputusan tidak pernah masuk isi notifikasi
+[lulus] KN-1n Koreksi memberi tahu pengurus, orang tua, dan murobi
+[lulus] KN-1o Penetapan murobi memberi tahu murobi baru dan pengurus
+[lulus] KN-1p Penetapan ulang memberi tahu murobi baru DAN murobi lama
+[lulus] KN-1q Pembatalan memberi tahu murobi tujuan agar antreannya bersih
+[lulus] KN-1r Keputusan Admin Pengganti memberi tahu pengurus, orang tua, dan murobi yang digantikan
+
+=== KN-2. Otorisasi notifikasi ===
+[lulus] KN-2a Murobi melihat notifikasinya sendiri
+[lulus] KN-2b Orang tua ditolak 403 saat membuka notifikasi milik murobi [403]
+[lulus] KN-2c Orang tua ditolak 403 saat menandai baca notifikasi milik murobi [403]
+[lulus] KN-2d Guru tanpa penugasan ditolak 403 untuk notifikasi milik orang lain [403]
+[lulus] KN-2e ID yang tidak ada dijawab 403, bukan 404 yang membocorkan keberadaan baris [403]
+[lulus] KN-2f Menandai dibaca mengurangi jumlah belum dibaca tepat satu
+[lulus] KN-2g Menandai dibaca dua kali tidak mengubah jumlah lagi (idempoten)
+[lulus] KN-2h Tandai semua dibaca mengosongkan jumlah belum dibaca pengguna itu saja
+[lulus] KN-2i Tandai semua milik pengurus tidak menyentuh notifikasi orang tua
+[lulus] KN-2j Pagination pusat notifikasi bekerja
+
+=== KN-3. Deduplikasi ===
+[lulus] KN-3a Tiga kali emit peristiwa yang sama tidak menambah satu baris pun
+[lulus] KN-3b Create kedua dengan kunci sama adalah replay
+[lulus] KN-3c Replay idempotensi tidak menghasilkan notifikasi tambahan
+[lulus] KN-3d Tidak ada duplikat (event_key, kanal, penerima) di seluruh tabel
+
+=== KN-4. Sakelar push ===
+[lulus] KN-4a Kunci perlindungan token push tersedia pada sandbox
+[lulus] KN-4b Perangkat push terdaftar
+[lulus] KN-4c Tepat satu perangkat aktif tercatat untuk murobi
+[lulus] KN-4d Registrasi ulang token yang sama tidak menumpuk baris perangkat
+[lulus] KN-4e Push mati: tidak ada satu pun baris push diantrekan
+[lulus] KN-4f Push mati: notifikasi in-app tetap dibuat seperti biasa
+[lulus] KN-4g Push nyala: baris push diantrekan untuk penerima berperangkat
+[lulus] KN-4h Perangkat dengan push dimatikan tidak lagi diantrekan
+[lulus] KN-4i Mematikan push perangkat tidak mengganggu notifikasi in-app
+[lulus] KN-4j Pengguna lain tidak dapat mencabut perangkat milik murobi [403]
+
+=== KN-5/KN-6. WhatsApp opsional ===
+[lulus] KN-5a WhatsApp ditolak menyala ketika pemeriksaan konfigurasi berstatus Gagal [409]
+[lulus] KN-5b Sakelar WhatsApp tetap mati setelah penolakan
+[lulus] KN-5c Repositori juga menolak menyalakan WhatsApp tanpa pemeriksaan Lulus
+[lulus] KN-5d Pemeriksaan Lulus penyedia lama tidak dapat menyalakan penyedia baru
+[lulus] KN-5e Kanal in-app tidak dapat dimatikan [422]
+[lulus] KN-6a Penyedia default melaporkan belum siap
+[lulus] KN-6b Verifikasi penyedia default gagal tanpa koneksi
+[lulus] KN-6c Penyedia default menolak mengirim secara permanen
+[lulus] KN-6d Adapter HTTP tanpa environment melaporkan belum siap
+[lulus] KN-6e Adapter HTTP berhenti sebelum koneksi ketika environment belum lengkap
+[lulus] KN-6f Worker WhatsApp tidak berjalan saat kanal mati
+[lulus] KN-6g Nol permintaan ke penyedia WhatsApp saat kanal mati
+[lulus] KN-6h Pengajuan tetap berhasil ketika WhatsApp mati
+[lulus] KN-6i WhatsApp mati: tidak ada baris WhatsApp diantrekan
+[lulus] KN-6j Masih nol permintaan penyedia setelah transaksi perizinan
+
+=== KN-7. Adapter uji WhatsApp ===
+[lulus] KN-7a Adapter uji menyatakan bukan pengiriman nyata
+[lulus] KN-7b Verifikasi adapter uji lulus tanpa jaringan
+[lulus] KN-7c Adapter uji ditolak ketika APP_ENV=production
+[lulus] KN-7d WhatsApp menyala setelah pemeriksaan Lulus
+[lulus] KN-7e WhatsApp nyala: baris WhatsApp diantrekan untuk penerima bernomor
+[lulus] KN-7f Adapter uji menandai baris WhatsApp sebagai terkirim
+[lulus] KN-7g Seluruh baris WhatsApp pengajuan itu berstatus Sent
+[lulus] KN-7h Putaran worker kedua tidak mengirim ulang baris yang sudah Sent
+[lulus] KN-7i Kegagalan pengiriman dicatat sebagai Failed
+[lulus] KN-7j Jumlah percobaan bertambah tepat satu
+[lulus] KN-7k Kegagalan sementara belum permanen
+[lulus] KN-7l Backoff menjadwalkan percobaan berikutnya
+[lulus] KN-7m Riwayat percobaan pengiriman tercatat
+[lulus] KN-7n Backoff mencegah percobaan ulang sebelum waktunya
+[lulus] KN-7o Kegagalan permanen ditandai dan tidak diambil worker lagi
+[lulus] KN-7p Admin dapat mengantrekan ulang baris gagal
+[lulus] KN-7q Percobaan ulang tidak menambah baris outbox baru
+[lulus] KN-7r Baris yang sama kembali ke antrean
+[lulus] KN-7s Mematikan WhatsApp mengosongkan antrean yang belum terkirim
+[lulus] KN-7t Mematikan WhatsApp tidak menyentuh satu pun notifikasi in-app
+
+=== KN-7b. Pengiriman push (klien tiruan) ===
+[lulus] KN-7u Baris push terkirim melalui klien push
+[lulus] KN-7v Klien push menerima batch pesan
+[lulus] KN-7w Pesan push menyertakan channelId Android yang sama dengan aplikasi
+[lulus] KN-7x Payload push hanya memuat penunjuk sumber daya
+[lulus] KN-7y Alasan izin tidak ikut pada payload push
+[lulus] KN-7z Token yang ditolak penyedia dicabut otomatis
+
+=== KN-8. Secret tidak bocor ===
+[lulus] KN-8a Token perangkat tidak tersimpan dalam bentuk terbaca
+[lulus] KN-8b Token perangkat hanya tersimpan sebagai hash
+[lulus] KN-8c Audit tidak memuat token perangkat
+[lulus] KN-8d Isi notifikasi tidak memuat token perangkat
+[lulus] KN-8e Audit kanal tidak memuat nomor telepon
+[lulus] KN-8f Respons daftar perangkat tidak pernah mengembalikan token
+[lulus] KN-8g Status kanal tidak membocorkan token maupun kunci environment
+[lulus] KN-8h Status kanal menyebut NAMA environment WhatsApp, bukan nilainya
+[lulus] KN-8i Token terlindungi dapat dibuka kembali oleh worker
+[lulus] KN-8j Bentuk terlindungi tidak memuat token terbaca
+[lulus] KN-8k Kunci berbeda tidak dapat membuka token
+[lulus] KN-8l Bentuk tersamar token tidak cukup untuk mengirim push
+
+=== KN-9/KN-10. Panel admin dan audit ===
+[lulus] KN-9a Admin melihat daftar pengiriman gagal
+[lulus] KN-9b Daftar kegagalan memuat kode, pesan aman, dan riwayat percobaan
+[lulus] KN-9c Daftar kegagalan tidak memuat token, nomor, atau credential
+[lulus] KN-9d Pengurus ditolak 403 saat membuka status kanal [403]
+[lulus] KN-9e Murobi ditolak 403 saat membuka daftar kegagalan [403]
+[lulus] KN-9f Orang tua ditolak 403 saat mengubah sakelar kanal [403]
+[lulus] KN-10a Setiap perubahan sakelar tercatat pada audit kanal
+[lulus] KN-10b Perubahan sakelar juga tercatat pada audit sistem
+[lulus] KN-10c Pemeriksaan konfigurasi tercatat pada audit kanal
+[lulus] KN-10d Audit menyimpan nilai sebelum dan sesudah sakelar
+[lulus] KN-9g Admin dapat mengirim pesan uji in-app kepada dirinya sendiri
+[lulus] KN-9h Pesan uji tercatat pada pusat notifikasi admin
+
+=== KN-11. Pencabutan perangkat ===
+[lulus] KN-11a Perangkat kedua terdaftar sebelum logout
+[lulus] KN-11b Logout mencabut tepat perangkat yang mengirim tokennya
+[lulus] KN-11c Alasan pencabutan tercatat sebagai logout
+[lulus] KN-11d Mencabut perangkat tidak menghapus notifikasi in-app pengguna
+[lulus] KN-11e Token yang bukan Expo push token ditolak 422 [422]
+[lulus] KN-11f Platform yang tidak dikenal ditolak 422 [422]
+[lulus] KN-11g Penonaktifan akun mencabut seluruh registrasi perangkat
+[lulus] KN-11h Worker tidak memperoleh token akun nonaktif
+
+=== KN-12. Ketahanan transaksi ===
+[lulus] KN-12a Pengajuan berhasil walaupun outbox sedang dalam keadaan tidak biasa
+[lulus] KN-12b Status pengajuan tersimpan normal
+[lulus] KN-12c Riwayat status tetap lengkap
+Notifikasi Fase 4 gagal untuk izin.tidak_ada: Peristiwa notifikasi tidak dikenal: izin.tidak_ada
+[lulus] KN-12d Peristiwa tidak dikenal dicatat sebagai galat aman, bukan exception
+
+=== Ringkasan ===
+[lulus] KN-13a Ringkasan admin menampilkan notifikasi in-app yang tersedia
+[lulus] KN-13b Backoff naik bertahap dan berhenti pada batas atas
+[bersih] Fixture uji Fase 4 dihapus dan pengaturan kanal dipulihkan.
