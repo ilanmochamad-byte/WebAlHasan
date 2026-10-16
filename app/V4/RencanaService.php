@@ -38,7 +38,7 @@ final class RencanaService {
         if ($tahun<1 || $kelas<1 || !$this->one('SELECT id FROM tahun_ajaran WHERE id=? AND archived_at IS NULL','i',[$tahun]) || !$this->one('SELECT id FROM kelas WHERE id=? AND is_active=1 AND archived_at IS NULL','i',[$kelas])) throw new V4Exception('Semester atau kelas tidak tersedia.');
     }
     public function options(array $user): array {
-        if (!$this->caps->hasFeature($user,PenugasanJenis::CAP_RAPOR_RENCANA)) throw new V4Exception('Akses ditolak.',403);
+        $this->requireFeature($user);
         $years=$this->rows('SELECT id,tahun,semester,status FROM tahun_ajaran WHERE archived_at IS NULL ORDER BY id DESC');
         $classes=$this->rows('SELECT id,nama_kelas,jenjang FROM kelas WHERE is_active=1 AND archived_at IS NULL ORDER BY nama_kelas');
         $classes=array_values(array_filter($classes,fn($k)=>array_filter($years,fn($y)=>$this->caps->featureAppliesToKelas($user,PenugasanJenis::CAP_RAPOR_RENCANA,(int)$k['id'],(int)$y['id']))!==[]));
@@ -47,7 +47,12 @@ final class RencanaService {
         $assignments=array_values(array_filter($assignments,fn($a)=>$this->caps->featureAppliesToKelas($user,PenugasanJenis::CAP_RAPOR_RENCANA,(int)$a['kelas_id'],(int)$a['tahun_ajaran_id'])));
         return ['tahun_ajaran'=>$years,'kelas'=>$classes,'mata_pelajaran'=>$this->rows('SELECT id,nama,kode FROM mata_pelajaran WHERE is_active=1 AND archived_at IS NULL ORDER BY nama'),'guru_assignments'=>$assignments,'penanda_tangan'=>$this->rows('SELECT id,jabatan,nama,gelar FROM v4_penanda_tangan WHERE is_active=1 ORDER BY jabatan,nama'),'aset'=>$this->rows('SELECT a.id,a.penanda_tangan_id,p.jabatan,p.nama FROM v4_tanda_tangan_aset a JOIN v4_penanda_tangan p ON p.id=a.penanda_tangan_id WHERE a.is_active=1 AND p.is_active=1 AND (a.berlaku_mulai IS NULL OR a.berlaku_mulai<=CURDATE()) AND (a.berlaku_selesai IS NULL OR a.berlaku_selesai>=CURDATE()) ORDER BY a.id DESC')];
     }
+    // Pengguna tanpa capability ditolak 403 sebelum validasi agar ID semester/kelas tidak terungkap.
+    private function requireFeature(array $user): void {
+        if (!$this->caps->hasFeature($user,PenugasanJenis::CAP_RAPOR_RENCANA)) throw new V4Exception('Akses ditolak.',403);
+    }
     public function read(array $user,int $tahun,int $kelas): array {
+        $this->requireFeature($user);
         $this->validScope($tahun,$kelas); $this->allowed($user,$tahun,$kelas);
         $plan=$this->one('SELECT r.*,k.nama_kelas,t.tahun,t.semester FROM v4_rencana r JOIN kelas k ON k.id=r.kelas_id JOIN tahun_ajaran t ON t.id=r.tahun_ajaran_id WHERE r.tahun_ajaran_id=? AND r.kelas_id=?','ii',[$tahun,$kelas]);
         if (!$plan) return ['rencana'=>null,'mapel'=>[]];
@@ -61,6 +66,7 @@ final class RencanaService {
         if (!$row) throw new V4Exception('Aset tanda tangan tidak aktif, kedaluwarsa, atau tidak cocok.');
     }
     public function save(array $user,array $input): array {
+        $this->requireFeature($user);
         $tahun=filter_var($input['tahun_ajaran_id']??null,FILTER_VALIDATE_INT);
         $kelas=filter_var($input['kelas_id']??null,FILTER_VALIDATE_INT);
         if (!$tahun || !$kelas) throw new V4Exception('Semester dan kelas wajib dipilih.');

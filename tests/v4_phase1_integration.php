@@ -23,6 +23,10 @@ $count=(int)$one('SELECT COUNT(*) n FROM v4_rencana_mapel')['n'];$duplicate=$pay
 try{$service->save($users['v4_pendidikan'],$duplicate);$assert(false,'Duplikasi ditolak');}catch(V4Exception $e){$assert($e->status===409,'Duplikasi ditolak 409');}
 $assert((int)$one('SELECT COUNT(*) n FROM v4_rencana_mapel')['n']===$count,'Duplikasi tidak menambah baris');
 foreach(['v4_pengurus','v4_guru','v4_wali'] as $key){try{$service->save($users[$key],$payload);$assert(false,"$key ditolak");}catch(V4Exception $e){$assert($e->status===403,"$key mendapat 403");}}
+// Audit Claude Code: tanpa capability tetap 403 walau parameter kosong/tidak dikenal (tidak membocorkan ID valid).
+foreach(['v4_pengurus','v4_guru','v4_wali'] as $key){foreach([[0,0],[999999,2]] as [$t,$k]){try{$service->read($users[$key],$t,$k);$assert(false,"$key baca $t/$k ditolak");}catch(V4Exception $e){$assert($e->status===403,"$key baca semester $t kelas $k mendapat 403");}}
+ try{$service->save($users[$key],[]);$assert(false,"$key simpan kosong ditolak");}catch(V4Exception $e){$assert($e->status===403,"$key simpan payload kosong mendapat 403");}
+ try{$service->options($users[$key]);$assert(false,"$key opsi ditolak");}catch(V4Exception $e){$assert($e->status===403,"$key opsi mendapat 403");}}
 $bad=$payload;$bad['mapel'][0]['target_ketuntasan']=101;try{$service->save($admin,$bad);$assert(false,'Target >100 ditolak');}catch(V4Exception $e){$assert($e->status===422,'Target >100 ditolak 422');}
 $bad=$payload;$bad['mapel'][0]['bobot_harian']=50;try{$service->save($admin,$bad);$assert(false,'Bobot salah ditolak');}catch(V4Exception $e){$assert($e->status===422,'Bobot salah ditolak 422');}
 $audit=$one("SELECT before_json,after_json FROM audit_logs WHERE action='v4.rencana.ubah' ORDER BY id DESC LIMIT 1");$json=($audit['before_json']??'').($audit['after_json']??'');$assert($json!==''&&!preg_match('/token|private_path|gambar|password/i',$json),'Audit rencana tanpa token atau gambar');

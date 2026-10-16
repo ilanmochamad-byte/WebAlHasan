@@ -1,6 +1,6 @@
 # Risiko dan batas bukti Fase 1
 
-- Audit independen Claude Code belum dilakukan. Branch tidak boleh digabung ke `main` sebelum audit dan keputusan Human Developer.
+- Audit independen Claude Code selesai 16 Oktober 2026 (`audit-claude.md`). Branch digabung ke `main` hanya atas keputusan Human Developer.
 - Pengujian memakai MariaDB 12.3.2 lokal, dump repositori, PHP 8.4, dan Chromium. Hosting cPanel/versi MySQL produksi, Safari, serta perangkat fisik belum diuji. Tidak ada deploy produksi.
 - Residu yatim DB uji V3 lama (96 outbox, 24 audit) yang tercatat pada `docs/phase-v3-5/risiko-tertunda.md` tidak dibersihkan. Verifier V4 menghitung **referensi baru V4**, bukan mengklaim semua yatim historis bernilai nol.
 - Rencana mengizinkan guru pengampu belum dipilih saat draf. Penugasan guru yang dipilih harus cocok dan aktif; pengisian nilai/finalisasi belum dibuka. Admin/Pendidikan perlu menuntaskan penugasan sebelum Fase 2.

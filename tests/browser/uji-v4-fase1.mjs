@@ -32,4 +32,11 @@ ok(updated.data.mapel.some(x=>Number(x.guru_mapel_assignment_id)>0),'Rencana men
 await page.screenshot({path:process.env.V4_SCREENSHOT||'/private/tmp/webalhasan-v4-375.png',fullPage:true});
 await page.evaluate(()=>{document.documentElement.style.fontSize='20px';});
 ok(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),'Halaman 375 px tetap tanpa gulir horizontal pada teks lebih besar');
+// Audit Claude Code: simpan gagal tetap menampilkan formulir tanpa peringatan PHP.
+await page.evaluate(()=>{document.documentElement.style.fontSize='';const i=document.querySelector('input[name="target_ketuntasan[]"]');i.removeAttribute('max');i.value='150';});
+const [failed]=await Promise.all([page.waitForNavigation(),page.getByRole('button',{name:'Simpan rencana'}).click()]);
+ok(failed.status()===422&&(await page.locator('.alert-danger').count())===1,'Web menolak target >100 dengan pesan 422');
+ok(!/Undefined variable|Warning:/.test(await page.content()),'Simpan gagal tanpa peringatan PHP');
+ok(await page.locator('#v4-mapel-rows .v4-row').count()===2,'Formulir rencana tetap tampil setelah simpan gagal');
+for(const key of ['v4_pengurus','v4_guru','v4_wali']){const r=await fetch(base+'/api/v1/v4/rencana',{headers:auth(tokens[key])});ok(r.status===403,`API ${key} tanpa parameter tetap 403`);}
 await browser.close();

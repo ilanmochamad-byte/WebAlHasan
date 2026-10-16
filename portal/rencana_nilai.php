@@ -7,6 +7,7 @@ require_once dirname(__DIR__).'/app/bootstrap.php';
 $user=authorization()->requireWebUser();
 $service=new RencanaService(app_db(),capabilities(),audit_logger());
 header('Cache-Control: private, no-store');
+$tahun=(int)($_POST['tahun_ajaran_id']??$_GET['tahun_ajaran_id']??0);$kelas=(int)($_POST['kelas_id']??$_GET['kelas_id']??0);
 try {
     $options=$service->options($user);
     if ($_SERVER['REQUEST_METHOD']==='POST') {
@@ -26,13 +27,15 @@ try {
         }
         ah_redirect(app_url('/portal/rencana_nilai.php').'?tahun_ajaran_id='.urlencode((string)($_POST['tahun_ajaran_id']??($_GET['tahun_ajaran_id']??''))).'&kelas_id='.urlencode((string)($_POST['kelas_id']??($_GET['kelas_id']??''))));
     }
-    $tahun=(int)($_GET['tahun_ajaran_id']??0);$kelas=(int)($_GET['kelas_id']??0);
     $current=($tahun>0&&$kelas>0)?$service->read($user,$tahun,$kelas):['rencana'=>null,'mapel'=>[]];
     $signers=in_array('admin',$user['roles'],true)?$service->signers($user):[];
 } catch(V4Exception $e) {
     http_response_code($e->status);
     if($e->status===403) {echo '403 — Akses ditolak.';exit;}
-    $error=$e->getMessage();$current=['rencana'=>null,'mapel'=>[]];$options=$options??['tahun_ajaran'=>[],'kelas'=>[],'mata_pelajaran'=>[],'guru_assignments'=>[],'penanda_tangan'=>[],'aset'=>[]];
+    $error=$e->getMessage();$current=null;$options=$options??['tahun_ajaran'=>[],'kelas'=>[],'mata_pelajaran'=>[],'guru_assignments'=>[],'penanda_tangan'=>[],'aset'=>[]];
+    // Setelah simpan gagal, tampilkan kembali rencana tersimpan agar pengguna dapat memperbaiki isian.
+    if($tahun>0&&$kelas>0){try{$current=$service->read($user,$tahun,$kelas);}catch(V4Exception){$current=null;}}
+    if(!isset($signers)){try{$signers=in_array('admin',$user['roles'],true)?$service->signers($user):[];}catch(V4Exception){$signers=[];}}
 }
 $e=static fn($v)=>ah_e($v);
 ah_page_open(['title'=>'Rencana Nilai Semester','user'=>$user,'description'=>'Susun mata pelajaran wajib, target ketuntasan, dan penanda tangan sebelum pengisian nilai.']);
@@ -42,7 +45,7 @@ ah_page_open(['title'=>'Rencana Nilai Semester','user'=>$user,'description'=>'Su
 <section class="card p-3 mb-3"><h2 class="h5">Pilih kelas dan semester</h2><form method="get" class="v4-grid">
 <label>Semester<select class="form-select" name="tahun_ajaran_id" required><option value="">Pilih semester</option><?php foreach($options['tahun_ajaran'] as $y): ?><option value="<?= (int)$y['id'] ?>" <?= $tahun===(int)$y['id']?'selected':'' ?>><?= $e($y['tahun'].' '.$y['semester'].' · '.$y['status']) ?></option><?php endforeach ?></select></label>
 <label>Kelas<select class="form-select" name="kelas_id" required><option value="">Pilih kelas</option><?php foreach($options['kelas'] as $k): ?><option value="<?= (int)$k['id'] ?>" <?= $kelas===(int)$k['id']?'selected':'' ?>><?= $e($k['nama_kelas'].' · '.$k['jenjang']) ?></option><?php endforeach ?></select></label><div class="align-self-end"><button class="btn btn-outline-primary">Buka rencana</button></div></form></section>
-<?php if($tahun>0&&$kelas>0&&!isset($error)): $plan=$current['rencana'];$rows=$current['mapel']?:[['mata_pelajaran_id'=>'','target_ketuntasan'=>70,'guru_mapel_assignment_id'=>''],['mata_pelajaran_id'=>'','target_ketuntasan'=>70,'guru_mapel_assignment_id'=>'']]; ?>
+<?php if($tahun>0&&$kelas>0&&$current!==null): $plan=$current['rencana'];$rows=$current['mapel']?:[['mata_pelajaran_id'=>'','target_ketuntasan'=>70,'guru_mapel_assignment_id'=>''],['mata_pelajaran_id'=>'','target_ketuntasan'=>70,'guru_mapel_assignment_id'=>'']]; ?>
 <section class="card p-3 mb-3"><h2 class="h5"><?= $plan?'Ubah rencana':'Rencana baru' ?></h2><p>Bobot tetap: harian/praktik 40%, tengah semester 30%, akhir semester 30%. Target dapat diubah sebelum nilai diisi.</p>
 <form method="post"><?= ah_csrf() ?><input type="hidden" name="tahun_ajaran_id" value="<?= $tahun ?>"><input type="hidden" name="kelas_id" value="<?= $kelas ?>">
 <div id="v4-mapel-rows"><?php foreach($rows as $i=>$row): ?><div class="v4-row v4-grid"><label>Mata pelajaran wajib<select class="form-select" name="mata_pelajaran_id[]" required><option value="">Pilih mapel</option><?php foreach($options['mata_pelajaran'] as $m): ?><option value="<?= (int)$m['id'] ?>" <?= (int)($row['mata_pelajaran_id']??0)===(int)$m['id']?'selected':'' ?>><?= $e($m['nama']) ?></option><?php endforeach ?></select></label><label>Target ketuntasan<input class="form-control" name="target_ketuntasan[]" type="number" min="0" max="100" step="0.01" value="<?= $e($row['target_ketuntasan']??70) ?>" required></label><label>Guru pengampu (opsional saat draf)<select class="form-select v4-guru" name="guru_mapel_assignment_id[]"><option value="">Belum ditugaskan</option><?php foreach($options['guru_assignments'] as $assignment): if((int)$assignment['tahun_ajaran_id']!==$tahun||(int)$assignment['kelas_id']!==$kelas)continue; ?><option value="<?= (int)$assignment['id'] ?>" data-mapel="<?= (int)$assignment['mata_pelajaran_id'] ?>" <?= (int)($row['guru_mapel_assignment_id']??0)===(int)$assignment['id']?'selected':'' ?>><?= $e($assignment['mata_pelajaran'].' · '.$assignment['nama_guru']) ?></option><?php endforeach ?></select></label></div><?php endforeach ?></div>
