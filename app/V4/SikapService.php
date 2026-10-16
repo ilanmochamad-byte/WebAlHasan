@@ -63,7 +63,8 @@ final class SikapService
             if($action==='diketahui'){
                 $state=$this->repo->state($plan,$sid,'sikap',0,[$old],$old['status']);
                 if($state['status']==='Dikembalikan')throw new V4Exception('Sikap dikembalikan memerlukan koreksi beralasan.',409);
-                if($old['diketahui_murobi_user_id']!==null)throw new V4Exception('Sikap versi ini sudah diketahui murobi.',409);
+                // Tanda dari murobi yang tidak lagi sah tidak mengunci murobi pengganti; riwayat tetap menyimpan tanda lama.
+                if($old['diketahui_murobi_user_id']!==null&&in_array((int)$old['diketahui_murobi_user_id'],$this->scope->murobis($p,$sid),true))throw new V4Exception('Sikap versi ini sudah diketahui murobi.',409);
                 $this->repo->query('UPDATE v4_sikap SET diketahui_murobi_user_id=?,diketahui_pada=NOW(),version=? WHERE id=?','iii',[$uid,$ver,(int)$old['id']]);
             }else{
                 $status=$action==='serahkan'||($mode==='murobi'&&$old['status']==='Dikirim')?'Dikirim':'Draf';

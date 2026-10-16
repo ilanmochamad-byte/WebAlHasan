@@ -1,0 +1,644 @@
+== penugasan_static
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanJenis.php
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanException.php
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanRepository.php
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanService.php
+[lulus] FS-1 lint bersih: admin/admin_penugasan.php
+[lulus] FS-1 lint bersih: bin/penugasan_preflight.php
+[lulus] FS-1 lint bersih: bin/penugasan_verify.php
+[lulus] FS-1 lint bersih: tests/penugasan_static.php
+[lulus] FS-1 lint bersih: tests/penugasan_integration.php
+[lulus] FS-1 lint bersih: tests/penugasan_web_smoke.php
+[lulus] FS-1 lint bersih: tests/penugasan_concurrency.php
+[lulus] FS-1 lint bersih: tests/penugasan_concurrency_worker.php
+[lulus] FS-1 lint bersih: app/Auth/Capabilities.php
+[lulus] FS-1 lint bersih: app/Api/ApiAuthService.php
+[lulus] FS-1 lint bersih: app/bootstrap.php
+[lulus] FS-1 lint bersih: app/Ui/Navigation.php
+[lulus] FS-1 lint bersih: admin/admin_akun.php
+[lulus] FS-1 lint bersih: admin/admin_murobi.php
+[lulus] FS-1 lint bersih: admin/admin_pembimbing.php
+[lulus] FS-2 migrasi 012 tidak menambah baris ke tabel roles
+[lulus] FS-2 AccountRepository::ROLES tetap empat role dasar
+[lulus] FS-2 "murobi" tidak dipakai sebagai role dasar
+[lulus] FS-2 "pembimbing" tidak dipakai sebagai role dasar
+[lulus] FS-2 "pendidikan" tidak dipakai sebagai role dasar
+[lulus] FS-2 "bendahara" tidak dipakai sebagai role dasar
+[lulus] FS-2 "panitia_psb" tidak dipakai sebagai role dasar
+[lulus] FS-2 "bendahara_psb" tidak dipakai sebagai role dasar
+[lulus] FS-2 "guru_mapel" tidak dipakai sebagai role dasar
+[lulus] FS-2 seluruh tujuh jenis memakai role dasar guru atau pengurus
+[lulus] FS-3 Capabilities::ALL tidak berubah (admin, pengurus, murobi, orang_tua)
+[lulus] FS-3 forUser() tidak menyertakan capability fondasi ke daftar perizinan V2
+[lulus] FS-4 tujuh jenis penugasan masing-masing memakai tabel sendiri
+[lulus] FS-4 katalog memuat tabel murobi_assignments
+[lulus] FS-4 katalog memuat tabel pembimbing_assignments
+[lulus] FS-4 katalog memuat tabel guru_mapel_assignments
+[lulus] FS-4 katalog memuat tabel pendidikan_assignments
+[lulus] FS-4 katalog memuat tabel bendahara_bulanan_assignments
+[lulus] FS-4 katalog memuat tabel panitia_psb_assignments
+[lulus] FS-4 katalog memuat tabel bendahara_psb_assignments
+[lulus] FS-4 capability terdefinisi: nilai.input
+[lulus] FS-4 capability terdefinisi: nilai.lihat_sendiri
+[lulus] FS-4 capability terdefinisi: nilai.koreksi_sendiri
+[lulus] FS-4 capability terdefinisi: rapor.verifikasi
+[lulus] FS-4 capability terdefinisi: rapor.finalisasi
+[lulus] FS-4 capability terdefinisi: rapor.buka_koreksi
+[lulus] FS-4 capability terdefinisi: rapor.cetak
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.tagihan
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.pembayaran
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.verifikasi
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.laporan
+[lulus] FS-4 capability terdefinisi: psb.pendaftar
+[lulus] FS-4 capability terdefinisi: psb.verifikasi
+[lulus] FS-4 capability terdefinisi: psb.seleksi
+[lulus] FS-4 capability terdefinisi: psb.penerimaan
+[lulus] FS-4 capability terdefinisi: psb_keuangan.tagihan
+[lulus] FS-4 capability terdefinisi: psb_keuangan.pembayaran
+[lulus] FS-4 capability terdefinisi: psb_keuangan.verifikasi
+[lulus] FS-4 capability terdefinisi: psb_keuangan.laporan
+[lulus] FS-4 capability terdefinisi: murobi.binaan
+[lulus] FS-4 capability terdefinisi: pembimbing.binaan
+[lulus] FS-4 panitia PSB dan bendahara PSB memakai himpunan capability yang terpisah
+[lulus] FS-5 migrasi 012 tidak memuat DROP TABLE
+[lulus] FS-5 migrasi 012 tidak memuat DROP COLUMN
+[lulus] FS-5 migrasi 012 tidak memuat TRUNCATE
+[lulus] FS-5 migrasi 012 tidak memuat DELETE FROM
+[lulus] FS-5 migrasi 012 tidak memuat pernyataan UPDATE (ON UPDATE CURRENT_TIMESTAMP bukan pernyataan)
+[lulus] FS-5 migrasi 012 tidak mengisi tabel penugasan berdasarkan tebakan
+[lulus] FS-5 enam tabel baru dibuat dengan IF NOT EXISTS (idempoten)
+[lulus] FS-5 seluruh ALTER pada tabel lama dijaga pemeriksaan information_schema
+[lulus] FS-5 rollback 012 berpasangan dan melepas enam tabel baru
+[lulus] FS-5 rollback memperingatkan kehilangan data secara eksplisit
+[lulus] FS-5 rollback tidak melepas kolom lama murobi/pembimbing
+[lulus] FS-6 kunci unik guru_mapel_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal guru_mapel
+[lulus] FS-6 kunci asing tahun ajaran guru_mapel
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) guru_mapel
+[lulus] FS-6 kunci unik pendidikan_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal pendidikan
+[lulus] FS-6 kunci asing tahun ajaran pendidikan
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) pendidikan
+[lulus] FS-6 kunci unik bendahara_bulanan_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal bendahara_bulanan
+[lulus] FS-6 kunci asing tahun ajaran bendahara_bulanan
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) bendahara_bulanan
+[lulus] FS-6 kunci unik panitia_psb_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal panitia_psb
+[lulus] FS-6 kunci asing tahun ajaran panitia_psb
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) panitia_psb
+[lulus] FS-6 kunci unik bendahara_psb_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal bendahara_psb
+[lulus] FS-6 kunci asing tahun ajaran bendahara_psb
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) bendahara_psb
+[lulus] FS-6 guru mapel merujuk guru lewat kunci asing
+[lulus] FS-6 guru mapel merujuk mata pelajaran lewat kunci asing
+[lulus] FS-6 guru mapel merujuk kelas lewat kunci asing
+[lulus] FS-6 empat penugasan pengurus merujuk pengurus lewat kunci asing
+[lulus] FS-6 tidak ada kolom target_id generik tanpa kunci asing
+[lulus] FS-7 halaman memakai guard admin
+[lulus] FS-7 seluruh mutasi berada di cabang REQUEST_METHOD === POST
+[lulus] FS-7 aksi buat hanya ditangani lewat POST
+[lulus] FS-7 aksi ubah hanya ditangani lewat POST
+[lulus] FS-7 aksi akhiri hanya ditangani lewat POST
+[lulus] FS-7 aksi nonaktifkan hanya ditangani lewat POST
+[lulus] FS-7 aksi aktifkan hanya ditangani lewat POST
+[lulus] FS-7 aksi mapel_simpan hanya ditangani lewat POST
+[lulus] FS-7 aksi mapel_status hanya ditangani lewat POST
+[lulus] FS-7 tidak ada aksi yang dibaca dari GET
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: mysqli_query
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: ->query(
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: ->prepare(
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: INSERT INTO
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: UPDATE
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: DELETE FROM
+[lulus] FS-7 halaman tidak menyediakan aksi penghapusan permanen
+[lulus] FS-7 setiap formulir mutasi menyertakan token CSRF
+[lulus] FS-7 tidak ada nilai baris yang dicetak tanpa escape
+[lulus] FS-7 keluaran data di-escape (master_e/ah_e)
+[lulus] FS-7 tindakan berdampak meminta konfirmasi dan alasan
+[lulus] FS-8 layanan memakai transaksi untuk mutasi
+[lulus] FS-8 setiap mutasi menulis audit yang kegagalannya membatalkan transaksi
+[lulus] FS-8 kegagalan audit menggagalkan mutasi
+[lulus] FS-8 seluruh mutasi (buat, ubah, akhiri, status aktif, mata pelajaran) memeriksa role admin pelaku di server
+[lulus] FS-8 public function buat memanggil requireAdmin
+[lulus] FS-8 public function ubah memanggil requireAdmin
+[lulus] FS-8 public function akhiri memanggil requireAdmin
+[lulus] FS-8 private function ubahStatusAktif memanggil requireAdmin
+[lulus] FS-8 public function simpanMataPelajaran memanggil requireAdmin
+[lulus] FS-8 public function setMataPelajaranState memanggil requireAdmin
+[lulus] FS-8 pemeriksaan tumpang tindih dijalankan di bawah kunci baris
+[lulus] FS-8 penguncian baris SELECT ... FOR UPDATE dipakai
+[lulus] FS-8 mutasi mengunci baris master subjek sebagai gerbang serialisasi (buat + kunciBaris)
+[lulus] FS-8 kunci master subjek selalu diambil SEBELUM kunci baris penugasan (urutan tetap, anti-deadlock)
+[lulus] FS-8 hasil get_result() false dengan errno tidak diperlakukan sebagai nol baris
+[lulus] FS-8 galat kunci 1205/1213 diterjemahkan menjadi konflik yang dapat dimengerti
+[lulus] FS-8 perubahan capability akun dicatat tersendiri
+[lulus] FS-8 percobaan duplikat/tumpang tindih dicatat pada audit
+[lulus] FS-8 aksi audit penugasan.buat
+[lulus] FS-8 aksi audit penugasan.ubah
+[lulus] FS-8 aksi audit penugasan.akhiri
+[lulus] FS-8 aksi audit penugasan.nonaktifkan
+[lulus] FS-8 aksi audit penugasan.aktifkan
+[lulus] FS-8 layanan tidak pernah menyentuh password/token
+[lulus] FS-8 repository tidak menghapus baris penugasan
+[lulus] FS-8 subjek dan tahun ajaran tidak dapat diganti lewat parameter ubah (anti-IDOR)
+[lulus] FS-9 repository hanya memakai prepared statement
+[lulus] FS-9 repository tidak membaca input HTTP
+[lulus] FS-9 nama tabel berasal dari katalog, bukan dari input
+[lulus] FS-9 duplikat nama/kode mata pelajaran dijawab pesan yang tepat, bukan pesan penugasan
+[lulus] FS-10 resolver membaca ulang role dari basis data
+[lulus] FS-10 featureCapabilities tidak mempercayai $user['roles'] dari pemanggil
+[lulus] FS-10 masa berlaku dinilai pada tanggal berjalan di dalam query
+[lulus] FS-10 tahun ajaran diperhitungkan (Aktif untuk non-PSB)
+[lulus] FS-10 metode terpusat featureAppliesToKelas tersedia
+[lulus] FS-10 metode terpusat featureAppliesToKamar tersedia
+[lulus] FS-10 metode terpusat featureAppliesToMataPelajaran tersedia
+[lulus] FS-10 metode terpusat featureAppliesToTahunAjaran tersedia
+[lulus] FS-10 metode terpusat featureAppliesToSemester tersedia
+[lulus] FS-10 metode terpusat featureAppliesToGelombangPsb tersedia
+[lulus] FS-10 metode terpusat featureSource tersedia
+[lulus] FS-10 metode terpusat hasFeature tersedia
+[lulus] FS-11 struktur capabilities (list/default_mode/konteks/menus/aksi) tidak berubah
+[lulus] FS-11 default_mode tetap dipilih dari empat mode lama
+[lulus] FS-11 tidak ada menu/mode aplikasi baru untuk fitur yang belum ada
+[lulus] FS-11 field aditif feature_capabilities pada profil
+[lulus] FS-11 respons login juga memuat field aditif
+[lulus] FS-11 field lama profil tidak dihapus/diubah
+[lulus] FS-12 navigasi memetakan halaman pusat penugasan
+[lulus] FS-12 menu Pusat Penugasan tersedia untuk admin
+[lulus] FS-12 menu murobi dan pembimbing lama dipertahankan
+[lulus] FS-12 Pusat Penugasan hanya tampil pada blok admin (dan tetap bukan kontrol akses)
+[lulus] FS-13 admin/admin_murobi.php menaut ke Pusat Penugasan
+[lulus] FS-13 admin/admin_murobi.php tetap memproses formulirnya sendiri (fungsi lama utuh)
+[lulus] FS-13 admin/admin_pembimbing.php menaut ke Pusat Penugasan
+[lulus] FS-13 admin/admin_pembimbing.php tetap memproses formulirnya sendiri (fungsi lama utuh)
+[lulus] FS-14 halaman akun menjelaskan role dasar vs penugasan
+[lulus] FS-14 halaman akun menaut ke Pusat Penugasan
+[lulus] FS-14 ringkasan penugasan efektif dihitung dari resolver server
+[lulus] FS-14 penugasan fungsional tidak ditambahkan ke pilihan role dasar
+[lulus] FS-15 migrasi tidak membuat tabel bisnis nilai_semester
+[lulus] FS-15 migrasi tidak membuat tabel bisnis nilai_santri
+[lulus] FS-15 migrasi tidak membuat tabel bisnis rapor
+[lulus] FS-15 migrasi tidak membuat tabel bisnis tagihan
+[lulus] FS-15 migrasi tidak membuat tabel bisnis kuitansi
+[lulus] FS-15 migrasi tidak membuat tabel bisnis jurnal
+[lulus] FS-15 migrasi tidak membuat tabel bisnis konseling
+[lulus] FS-15 migrasi tidak membuat tabel bisnis seleksi_psb
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: SimpleXLSX.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: SimpleXLSXGen.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _guard.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _laporan_guard.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _master_ui.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _pengajian_jadwal.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _pengajian_pertemuan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _santri_wali_field.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_akun.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_akun_perizinan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_alumni.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_dashboard.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_data.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_download.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_galeri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_guru.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_izin.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_jadwal_ngaji.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_kamar.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_kelas.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_kelulusan_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_laporan_absensi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_login.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_master_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_murobi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_notifikasi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pelanggaran.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pembayaran_psb.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pembimbing.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_penempatan_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pengajian.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pengurus.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_penugasan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_rekap_keuangan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_rekap_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_tahun.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_v3_katalog.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_wali.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_wali_rekonsiliasi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: cek_login.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: edit_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_laporan_absensi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_master.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_pembayaran.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_psb.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: get_santri_json.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: get_wali_json.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: hapus_siswa.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: laporan_absensi_cetak.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: laporan_absensi_detail.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: logout.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: pertemuan_pengajian.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_import_psb.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_import_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_mutasi_alumni.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_psb_admin.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: sidebar.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: tambah_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: ubah_password.php
+[lulus] FS-16 repositori aplikasi perangkat tidak berada/berubah di dalam repo ini
+[lulus] FS-16 tidak ada menu aplikasi baru pada payload profil
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/README.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/ringkasan-desain.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/matriks-capability.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/migrasi-dan-rollback.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/kontrak-api.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/panduan-admin.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/test-results.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/cpanel-deployment.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/acceptance-status.md
+[lulus] FS-17 matriks mendokumentasikan nilai.input
+[lulus] FS-17 matriks mendokumentasikan rapor.finalisasi
+[lulus] FS-17 matriks mendokumentasikan pembiayaan_bulanan.tagihan
+[lulus] FS-17 matriks mendokumentasikan psb.pendaftar
+[lulus] FS-17 matriks mendokumentasikan psb_keuangan.laporan
+[lulus] FS-17 matriks mendokumentasikan murobi.binaan
+[lulus] FS-17 matriks mendokumentasikan pembimbing.binaan
+[lulus] FS-17 dokumentasi menegaskan fitur bisnis V3–V6 belum diimplementasikan
+[lulus] FS-17 matriks hak akses lama diperbarui
+[lulus] FS-17 dokumentasi API menyebut field aditif
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa INSERT)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa UPDATE)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa DELETE)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa ALTER)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa DROP)
+[lulus] FS-18 bin/penugasan_preflight.php hanya dapat dijalankan dari CLI
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa INSERT)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa UPDATE)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa DELETE)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa ALTER)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa DROP)
+[lulus] FS-18 bin/penugasan_verify.php hanya dapat dijalankan dari CLI
+
+Total gagal: 0
+== v2_phase5_static
+=== 1. Migrasi 009 aditif dan berpasangan ===
+[lulus] Migrasi 009 dan rollback-nya ada
+[lulus] Setiap migrasi tetap memiliki tepat satu berkas rollback
+[lulus] Migrasi 009 tidak memakai DROP TABLE (aditif murni)
+[lulus] Migrasi 009 tidak memakai DROP COLUMN (aditif murni)
+[lulus] Migrasi 009 tidak memakai TRUNCATE (aditif murni)
+[lulus] Migrasi 009 tidak memakai DELETE FROM (aditif murni)
+[lulus] Setiap perubahan migrasi 009 dibungkus pemeriksaan INFORMATION_SCHEMA (idempoten)
+[lulus] Migrasi 009 tidak menyentuh tabel perizinan V1 maupun tabel inti V2
+[lulus] Migrasi 009 mencatat keputusan indeks laporan berbasis pengukuran
+[lulus] Migrasi 009 tidak menambahkan indeks izin_pengajuan yang tidak terbukti diperlukan
+[lulus] Rollback 009 hanya melepas kolom/indeks jejak, tidak menghapus tabel data
+[lulus] Rollback 009 tidak menghapus satu baris data pun
+
+=== 2. Satu definisi filter dan repository ===
+[lulus] Berkas app/Report/IzinReportFilter.php tersedia
+[lulus] Berkas app/Report/IzinReportRepository.php tersedia
+[lulus] Berkas app/Report/IzinReportService.php tersedia
+[lulus] Berkas app/Report/IzinCsvExport.php tersedia
+[lulus] Berkas app/Report/IzinPrintRenderer.php tersedia
+[lulus] Berkas app/Report/PrintLayout.php tersedia
+[lulus] IzinReportFilter tidak dapat dibangun sembarangan (konstruktor privat)
+[lulus] Seluruh kriteria filter bersifat readonly (immutable)
+[lulus] Filter menyediakan sidik jari kriteria untuk membuktikan konsistensi permukaan
+[lulus] Sidik jari kriteria TIDAK memuat pagination (halaman tidak boleh mengubah himpunan)
+[lulus] Klausa WHERE laporan dibangun di SATU tempat (conditions())
+[lulus] Seluruh query laporan memakai SATU klausa FROM yang sama
+[lulus] Metode summary() memakai conditions() yang sama
+[lulus] Metode decisionDuration() memakai conditions() yang sama
+[lulus] Metode page() memakai conditions() yang sama
+[lulus] Metode allRows() memakai conditions() yang sama
+[lulus] Metode explain() memakai conditions() yang sama
+[lulus] Kamar/kelas dibaca lewat subquery skalar agar baris pengajuan tidak berlipat
+[lulus] Median durasi memakai pola LIMIT/OFFSET yang kompatibel MySQL 5.7 (bukan window function)
+[lulus] Tidak ada window function yang akan gagal pada MySQL 5.7 cPanel
+[lulus] Dokumen cetak/CSV memakai jalur ekspor allRows(), bukan satu halaman pagination
+[lulus] CSV dibangun dari document() yang sama dengan cetak
+[lulus] Cetak dibangun dari document() yang sama dengan CSV
+[lulus] Tampilan berhalaman dan dokumen berangkat dari objek filter yang sama
+
+=== 3. Cakupan ditegakkan di server ===
+[lulus] Predikat cakupan dibangun di satu tempat khusus
+[lulus] Cakupan yang tidak dikenal menghasilkan 1 = 0, bukan seluruh baris
+[lulus] Cakupan Capabilities::PENGURUS dibatasi di SQL (p.pengurus_id = ?)
+[lulus] Cakupan Capabilities::MUROBI dibatasi di SQL (p.murobi_guru_id = ?)
+[lulus] Cakupan Capabilities::ORANG_TUA dibatasi di SQL (santri_wali)
+[lulus] conditions() selalu diawali predikat cakupan sehingga tidak dapat dilewati
+[lulus] Filter menolak parameter yang berusaha memperluas cakupan dengan 403
+[lulus] Cakupan dihitung ulang dari akun pada setiap pemanggilan laporan
+[lulus] EXPLAIN laporan dibatasi hanya untuk admin
+[lulus] Halaman portal/laporan.php tersedia
+[lulus] portal/laporan.php melewati guard portal sebelum menghasilkan output
+[lulus] portal/laporan.php memakai layanan laporan bersama, bukan query sendiri
+[lulus] portal/laporan.php tidak mengakses basis data secara langsung
+[lulus] Halaman portal/laporan_cetak.php tersedia
+[lulus] portal/laporan_cetak.php melewati guard portal sebelum menghasilkan output
+[lulus] portal/laporan_cetak.php memakai layanan laporan bersama, bukan query sendiri
+[lulus] portal/laporan_cetak.php tidak mengakses basis data secara langsung
+[lulus] Halaman portal/laporan_csv.php tersedia
+[lulus] portal/laporan_csv.php melewati guard portal sebelum menghasilkan output
+[lulus] portal/laporan_csv.php memakai layanan laporan bersama, bukan query sendiri
+[lulus] portal/laporan_csv.php tidak mengakses basis data secara langsung
+
+=== 4. CSV: header terdokumentasi dan formula injection ===
+[lulus] CSV memuat kolom yang memadai (30 kolom)
+[lulus] Setiap kolom CSV memiliki dokumentasi: lengkap
+[lulus] Tidak ada dokumentasi untuk kolom yang tidak ada: tidak ada
+[lulus] Tidak ada nama kolom CSV yang duplikat
+[lulus] Formula injection dinetralkan untuk '=SUM(A1:A9)' -> '\'=SUM(A1:A9)'
+[lulus] Formula injection dinetralkan untuk '+1+1' -> '\'+1+1'
+[lulus] Formula injection dinetralkan untuk '-2+3' -> '\'-2+3'
+[lulus] Formula injection dinetralkan untuk '@SUM(1)' -> '\'@SUM(1)'
+[lulus] Formula injection dinetralkan untuk '	=cmd' -> '\'	=cmd'
+[lulus] Formula injection dinetralkan untuk '=cmd' -> '\'=cmd'
+[lulus] Formula injection dinetralkan untuk ' =1+1' -> '\' =1+1'
+[lulus] Formula injection dinetralkan untuk '=HYPERLINK("http://x","klik")' -> '\'=HYPERLINK("http://x","klik")'
+[lulus] Formula injection dinetralkan untuk 'Nama Santri Biasa' -> 'Nama Santri Biasa'
+[lulus] Formula injection dinetralkan untuk '2026-01-01' -> '2026-01-01'
+[lulus] Formula injection dinetralkan untuk '' -> ''
+[lulus] Nilai null menjadi string kosong, bukan teks "null"
+[lulus] CSV diawali BOM UTF-8 agar Excel membaca huruf beraksen dengan benar
+[lulus] Daftar karakter pembuka berbahaya memuat = + - @ TAB dan CR
+[lulus] Unduhan CSV dipaksa sebagai lampiran dan tidak dirender peramban
+[lulus] Unduhan CSV mengumumkan jumlah baris agar dapat dicocokkan dengan ringkasan
+[lulus] CSV yang melebihi pagar memori ditolak eksplisit, bukan dikirim parsial
+[lulus] PRD menetapkan kontrak produk ekspor maksimum 20.000 baris tanpa CSV parsial
+[lulus] Dokumen menandai secara eksplisit bila hasil melebihi batas ekspor
+
+=== 5. Halaman cetak/PDF ===
+[lulus] Halaman cetak memuat identitas pesantren
+[lulus] Halaman cetak memuat pembuat laporan
+[lulus] Halaman cetak memuat waktu pembuatan
+[lulus] Halaman cetak memuat keputusan
+[lulus] Halaman cetak memuat filter aktif
+[lulus] CSS cetak yang dihasilkan tidak memakai counter(page) maupun footer position:fixed
+[lulus] Nomor halaman dihitung server dan dicetak sebagai teks biasa pada setiap lembar
+[lulus] CSS cetak tidak memakai overflow-wrap:anywhere yang memotong kata di tengah
+[lulus] Baris data dijaga tidak terbelah antarhalaman
+[lulus] Halaman cetak memberi petunjuk orientasi lanskap bagi peramban yang mengabaikan @page size
+[lulus] Seluruh nilai pada halaman cetak di-escape
+[lulus] Halaman cetak tidak boleh disimpan cache bersama (memuat data pribadi)
+[lulus] Halaman cetak memuat median durasi keputusan
+
+=== 6. Endpoint aditif ===
+[lulus] Endpoint /izin/laporan terpasang
+[lulus] Endpoint /izin/laporan/filters terpasang
+[lulus] Endpoint /izin/laporan/cetak terpasang
+[lulus] Endpoint /izin/laporan/csv terpasang
+[lulus] Endpoint /izin/laporan/explain terpasang
+[lulus] Endpoint lama /reports tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /reports/filters tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /reports/print tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /izin/pengajuan tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /izin/antrean tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /notifikasi tetap ada (tidak ada breaking change)
+[lulus] Seluruh endpoint laporan melewati layanan bersama
+[lulus] Parameter mode diperlakukan sebagai preferensi, bukan hak akses
+[lulus] Layanan laporan V2 ditambahkan tanpa mengganti layanan laporan absensi V1
+[lulus] Navigasi portal memuat tautan laporan untuk seluruh peran perizinan
+
+=== 7. Receipt push akhir (temuan terbuka Fase 4) ===
+[lulus] Antarmuka PushReceiptClient tersedia
+[lulus] Kontrak PushClient Fase 4 TIDAK berubah (klien tiruan Fase 4 tetap sah)
+[lulus] ExpoPushClient mengimplementasikan pengambilan receipt resmi Expo
+[lulus] Endpoint receipt sesuai dokumentasi Expo
+[lulus] Dispatcher melewatkan rekonsiliasi dengan tenang bila klien tidak mendukung receipt
+[lulus] Rekonsiliasi receipt berhenti SEBELUM permintaan apa pun ketika push mati
+[lulus] Receipt gagal TIDAK memicu pengiriman ulang (mencegah notifikasi ganda)
+[lulus] Repository outbox menyediakan klaim dan pencatatan receipt
+[lulus] Tiket tanpa jawaban berhenti diminta dan ditandai Tidak Tersedia, bukan Gagal
+[lulus] Kode dan pesan receipt melewati SafeError sebelum disimpan
+[lulus] Worker menyediakan mode --receipts untuk cron cPanel
+[lulus] Mode --status menampilkan sebaran receipt akhir, bukan hanya tiket awal
+[lulus] Id tiket disimpan saat pengiriman berhasil agar receipt dapat diambil
+[lulus] Pencabutan token dari receipt hanya dilakukan bila pemetaannya tidak ambigu
+
+=== 8. WhatsApp tetap ditangguhkan dan mati ===
+[lulus] Kalimat prinsip notifikasi PRD dipertahankan persis
+[lulus] Seluruh penanda [JANGAN DIUBAH] pada PRD tetap utuh
+[lulus] Status WhatsApp DITANGGUHKAN tetap tercatat pada PRD
+[lulus] Checklist aktivasi WhatsApp masa depan tetap disimpan
+[lulus] Dokumentasi Fase 5 (acceptance-status.md) tidak menyatakan WhatsApp lulus
+[lulus] Dokumentasi Fase 5 (test-results.md) tidak menyatakan WhatsApp lulus
+[lulus] Dokumentasi Fase 5 menyatakan secara eksplisit bahwa WhatsApp ditangguhkan dan tidak lulus
+[lulus] Preflight dan verifikasi memblokir rilis bila WhatsApp menyala
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada FakeProvider.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada HttpProvider.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada NullProvider.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada ProviderFactory.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada ProviderResult.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada WhatsAppMessage.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada WhatsAppProvider.php
+
+=== 9. Perkakas hanya berjalan pada database uji ===
+[lulus] Perkakas bin/v2_phase5_fixture.php tersedia
+[lulus] bin/v2_phase5_fixture.php hanya dapat dijalankan dari CLI
+[lulus] bin/v2_phase5_fixture.php memerlukan penanda lingkungan eksplisit
+[lulus] bin/v2_phase5_fixture.php menolak database yang tidak berakhiran _test
+[lulus] Perkakas bin/v2_phase5_ukur_laporan.php tersedia
+[lulus] bin/v2_phase5_ukur_laporan.php hanya dapat dijalankan dari CLI
+[lulus] bin/v2_phase5_ukur_laporan.php memerlukan penanda lingkungan eksplisit
+[lulus] bin/v2_phase5_ukur_laporan.php menolak database yang tidak berakhiran _test
+[lulus] Perkakas bin/v2_phase5_backup_restore_drill.php tersedia
+[lulus] bin/v2_phase5_backup_restore_drill.php hanya dapat dijalankan dari CLI
+[lulus] bin/v2_phase5_backup_restore_drill.php memerlukan penanda lingkungan eksplisit
+[lulus] bin/v2_phase5_backup_restore_drill.php menolak database yang tidak berakhiran _test
+[lulus] bin/v2_phase5_fixture.php menolak APP_ENV=production
+[lulus] bin/v2_phase5_backup_restore_drill.php menolak APP_ENV=production
+[lulus] Fixture performa memakai data sintetis berawalan P5 dan tidak menyentuh dump produksi
+[lulus] Latihan restore mengirim credential lewat berkas opsi terkutip, bukan argumen baris perintah
+[lulus] Preflight menyimpan sidik jari nilai bisnis perizinan lama
+[lulus] Verifikasi membandingkan ID dan nilai bisnis perizinan lama dengan manifest
+
+=== 10. Kebersihan repositori ===
+[lulus] Tidak ada credential tertanam pada IzinCsvExport.php
+[lulus] Tidak ada token push sungguhan pada IzinCsvExport.php
+[lulus] Tidak ada credential tertanam pada IzinPrintRenderer.php
+[lulus] Tidak ada token push sungguhan pada IzinPrintRenderer.php
+[lulus] Tidak ada credential tertanam pada IzinReportFilter.php
+[lulus] Tidak ada token push sungguhan pada IzinReportFilter.php
+[lulus] Tidak ada credential tertanam pada IzinReportRepository.php
+[lulus] Tidak ada token push sungguhan pada IzinReportRepository.php
+[lulus] Tidak ada credential tertanam pada IzinReportService.php
+[lulus] Tidak ada token push sungguhan pada IzinReportService.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_backup_restore_drill.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_backup_restore_drill.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_cron_check.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_cron_check.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_fixture.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_fixture.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_preflight.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_preflight.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_ukur_laporan.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_ukur_laporan.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_verify.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_verify.php
+[lulus] Tidak ada credential tertanam pada laporan.php
+[lulus] Tidak ada token push sungguhan pada laporan.php
+[lulus] Tidak ada credential tertanam pada laporan_cetak.php
+[lulus] Tidak ada token push sungguhan pada laporan_cetak.php
+[lulus] Tidak ada credential tertanam pada laporan_csv.php
+[lulus] Tidak ada token push sungguhan pada laporan_csv.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_api_contract.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_api_contract.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_cetak_pdf.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_cetak_pdf.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_integration.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_integration.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_performance.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_performance.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_static.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_static.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_web_smoke.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_web_smoke.php
+[lulus] Berkas .env tetap diabaikan Git
+
+=== 11. Aplikasi mobile ===
+[lulus] Expo TETAP ~57.0.15 (tidak dinaikkan)
+[lulus] React Native TETAP 0.86.2 (tidak dinaikkan)
+[lulus] expo-notifications tetap selaras SDK 57
+[lulus] expo-print selaras SDK 57
+[lulus] expo-sharing selaras SDK 57
+[lulus] expo-file-system selaras SDK 57
+[lulus] Modul dokumen laporan perizinan mobile tersedia
+[lulus] Layar laporan perizinan mobile tersedia
+[lulus] Cetak dan berbagi memakai API resmi Expo SDK 57
+[lulus] Penulisan berkas memakai API expo-file-system SDK 57 (Paths/File), bukan API lama
+[lulus] Aplikasi memakai endpoint laporan yang sama dengan website
+[lulus] Aplikasi memanggil /izin/laporan, bukan menyusun laporannya sendiri
+[lulus] Layar laporan tidak menegakkan otorisasi berbasis nama role di sisi aplikasi
+[lulus] Layar laporan tidak menyaring baris berdasarkan cakupan di sisi klien
+[lulus] Ringkasan pada aplikasi berasal dari server, tidak dihitung ulang dari satu halaman
+[lulus] Pilihan cakupan aplikasi berasal dari capability yang dikirim server
+[lulus] Aplikasi memverifikasi bahwa CSV memuat seluruh hasil filter
+[lulus] Jalur Expo Print meminta ukuran A4 lanskap (842×595 pada 72 PPI)
+[lulus] Dialog cetak iOS diminta dalam orientasi lanskap
+[lulus] PDF Android mengunci textZoom 100 agar tinggi baris tidak dipengaruhi WebView/OEM
+[lulus] Cetak dan PDF iOS memakai margin horizontal native sekurang-kurangnya 1 cm
+[lulus] HTML mempertahankan margin horizontal 10 mm untuk Android dan peramban
+[lulus] izin-report-document.ts tidak lagi mencetak dengan ukuran kertas bawaan US Letter
+[lulus] izin-report-document.ts memakai opsi halaman A4 lanskap bersama
+[lulus] izin-report-document.ts memakai penanganan pembatalan dialog cetak bersama
+[lulus] report-document.ts tidak lagi mencetak dengan ukuran kertas bawaan US Letter
+[lulus] report-document.ts memakai opsi halaman A4 lanskap bersama
+[lulus] report-document.ts memakai penanganan pembatalan dialog cetak bersama
+[lulus] Pembatalan cetak iOS dianggap normal tanpa menyembunyikan kegagalan printer nyata
+[lulus] Seluruh dialog cetak melewati normalisasi hasil native Expo Print
+[lulus] Tes mobile mencakup cetak dimulai, dibatalkan, dan kegagalan nyata
+[lulus] Tidak ada secret pada berkas laporan aplikasi
+
+=== 12. Lint sintaks PHP ===
+[lulus] php -l lulus: app/Report/CsvExport.php
+[lulus] php -l lulus: app/Report/IzinCsvExport.php
+[lulus] php -l lulus: app/Report/IzinPrintRenderer.php
+[lulus] php -l lulus: app/Report/IzinReportFilter.php
+[lulus] php -l lulus: app/Report/IzinReportRepository.php
+[lulus] php -l lulus: app/Report/IzinReportService.php
+[lulus] php -l lulus: app/Report/PrintLayout.php
+[lulus] php -l lulus: app/Report/PrintRenderer.php
+[lulus] php -l lulus: app/Report/ReportFilter.php
+[lulus] php -l lulus: app/Report/ReportRepository.php
+[lulus] php -l lulus: app/Report/ReportService.php
+[lulus] php -l lulus: app/Notification/Push/ExpoPushClient.php
+[lulus] php -l lulus: app/Notification/Push/PushClient.php
+[lulus] php -l lulus: app/Notification/Push/PushReceiptClient.php
+[lulus] php -l lulus: app/Notification/NotificationDispatcher.php
+[lulus] php -l lulus: app/Notification/OutboxRepository.php
+[lulus] php -l lulus: app/bootstrap.php
+[lulus] php -l lulus: api/v1/index.php
+[lulus] php -l lulus: portal/_guard.php
+[lulus] php -l lulus: portal/_ui.php
+[lulus] php -l lulus: portal/index.php
+[lulus] php -l lulus: portal/izin.php
+[lulus] php -l lulus: portal/izin_aksi.php
+[lulus] php -l lulus: portal/izin_antrean.php
+[lulus] php -l lulus: portal/izin_buat.php
+[lulus] php -l lulus: portal/izin_detail.php
+[lulus] php -l lulus: portal/izin_ringkasan.php
+[lulus] php -l lulus: portal/laporan.php
+[lulus] php -l lulus: portal/laporan_cetak.php
+[lulus] php -l lulus: portal/laporan_csv.php
+[lulus] php -l lulus: portal/nilai_semester.php
+[lulus] php -l lulus: portal/notifikasi.php
+[lulus] php -l lulus: portal/rencana_nilai.php
+[lulus] php -l lulus: portal/sikap_semester.php
+[lulus] php -l lulus: portal/v3_konseling.php
+[lulus] php -l lulus: portal/v3_konseling_cetak.php
+[lulus] php -l lulus: portal/v3_konseling_detail.php
+[lulus] php -l lulus: portal/v3_lampiran.php
+[lulus] php -l lulus: portal/v3_laporan.php
+[lulus] php -l lulus: portal/v3_pelanggaran.php
+[lulus] php -l lulus: portal/v3_pelanggaran_detail.php
+[lulus] php -l lulus: portal/v3_publikasi.php
+[lulus] php -l lulus: portal/v3_publikasi_kelola.php
+[lulus] php -l lulus: portal/verifikasi_semester.php
+[lulus] php -l lulus: bin/v2_phase5_backup_restore_drill.php
+[lulus] php -l lulus: bin/v2_phase5_cron_check.php
+[lulus] php -l lulus: bin/v2_phase5_fixture.php
+[lulus] php -l lulus: bin/v2_phase5_preflight.php
+[lulus] php -l lulus: bin/v2_phase5_ukur_laporan.php
+[lulus] php -l lulus: bin/v2_phase5_verify.php
+[lulus] php -l lulus: bin/notifikasi_worker.php
+[lulus] php -l lulus: tests/v2_phase5_api_contract.php
+[lulus] php -l lulus: tests/v2_phase5_cetak_pdf.php
+[lulus] php -l lulus: tests/v2_phase5_integration.php
+[lulus] php -l lulus: tests/v2_phase5_performance.php
+[lulus] php -l lulus: tests/v2_phase5_static.php
+[lulus] php -l lulus: tests/v2_phase5_web_smoke.php
+
+SELURUH PEMERIKSAAN STATIS FASE 5 LULUS.
+== phase5_static
+[lulus] Ringkasan guru dan santri berasal dari sumber baris detail yang sama
+[lulus] Query laporan memakai parameter terikat dan repository tidak membaca input global
+[lulus] Repository laporan tidak menulis atau menghapus data absensi
+[lulus] Filter guru dipaksa ke guru dari token/session pada sisi server
+[lulus] Detail pertemuan memeriksa role dan kepemilikan di server
+[lulus] UI admin menyediakan filter date_from
+[lulus] UI admin menyediakan filter date_to
+[lulus] UI admin menyediakan filter academic_year_id
+[lulus] UI admin menyediakan filter teacher_id
+[lulus] UI admin menyediakan filter class_id
+[lulus] UI admin menyediakan filter schedule_id
+[lulus] UI admin menyediakan filter status
+[lulus] API V1 menyediakan endpoint /reports
+[lulus] API V1 menyediakan endpoint /reports/filters
+[lulus] API V1 menyediakan endpoint /reports/print
+[lulus] API V1 menyediakan endpoint /reports/meetings/
+[lulus] CSV memiliki BOM UTF-8 dan header terdokumentasi
+[lulus] CSV menetralkan formula berbahaya untuk aplikasi spreadsheet
+[lulus] HTML cetak memuat Pesantren Al Hasan
+[lulus] HTML cetak memuat Laporan Absensi Pengajian
+[lulus] HTML cetak memuat Rentang tanggal
+[lulus] HTML cetak memuat Dibuat:
+[lulus] HTML cetak memuat Pembuat:
+[lulus] HTML cetak memuat @media print
+[lulus] HTML cetak memuat .report-nav,.petunjuk-cetak{display:none
+[lulus] HTML cetak memberi nomor halaman "Halaman 1 dari 1" pada laporan kosong
+[lulus] HTML cetak tidak pernah memuat "Halaman 0"
+[lulus] Laporan kosong menghasilkan tepat satu lembar
+[lulus] Nomor halaman dihitung server, bukan oleh counter(page) di elemen position:fixed
+[lulus] Dokumen 400 baris terpecah menjadi lebih dari satu lembar (41)
+[lulus] Dokumen banyak halaman tidak memuat "Halaman 0"
+[lulus] Nomor halaman berurutan 1..n dan total sama dengan jumlah lembar
+[lulus] CSS cetak menjaga kolom utama dan baris pada halaman landscape
+[lulus] CSS cetak tidak memakai overflow-wrap:anywhere yang memotong kata di tengah
+[lulus] Halaman cetak memberi petunjuk orientasi lanskap
+[lulus] Migrasi indeks Fase 5 mengikuti pola scan EXPLAIN
+[lulus] Migrasi indeks aditif dan rollback hanya melepas indeks
+PHP Warning:  file_get_contents(/Users/ilanmochamad/alhasanApps/src/app/(app)/(reports)/reports.tsx): Failed to open stream: No such file or directory in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/phase5_static.php on line 112
+
+Warning: file_get_contents(/Users/ilanmochamad/alhasanApps/src/app/(app)/(reports)/reports.tsx): Failed to open stream: No such file or directory in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/phase5_static.php on line 112
+[gagal] Aplikasi guru menyediakan laporan dan detail pertemuan
+[lulus] Aplikasi dapat membuka dialog cetak dan berbagi PDF
+[lulus] Dependency cetak dan berbagi mengikuti Expo 57
+[lulus] Dokumentasi Fase 5 tersedia: docs/api-v1.md
+[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/release-runbook.md
+[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/csv-format.md
+[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/acceptance-checklist.md
