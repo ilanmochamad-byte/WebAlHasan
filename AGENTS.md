@@ -26,7 +26,8 @@ Pembagian peran ditetapkan per workstream agar implementator dan auditor tidak t
 | PRD V3 Fase 1–5 | Codex | Claude Code |
 | Koreksi UX formulir pembinaan V3 (permintaan 4 Oktober 2026) | Codex | Claude Code |
 | Redesain tampilan aplikasi mobile (keputusan 14 Oktober 2026; rencana `docs/redesain-tampilan/rencana.md`, branch `redesain-tampilan`; Fase 1–3 lulus audit dan digabung ke `main` 15 Oktober 2026) | Claude | Codex |
-| PRD V4–V6 | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
+| PRD V4 Fase 1–5 (keputusan Human Developer 16 Oktober 2026) | Codex | Claude Code |
+| PRD V5–V6 | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
 
 Ketentuan:
 
@@ -56,6 +57,12 @@ Human Developer akan menggunakan format berikut untuk memicu pergantian agen AI.
 
 **Audit PRD V3 oleh Claude Code:**
 > *"Audit implementasi Fase [X] PRD V3 yang dibuat Codex pada branch [nama-branch]. Baca AGENTS.md dan PRD-V3.md, periksa seluruh commit fase, jalankan pengujian secara independen, dan lakukan koreksi terarah jika diperlukan. Commit dan push hasil audit, lalu berhenti. Jangan melanjutkan ke Fase [Y] sebelum seluruh kriteria penerimaan Fase [X] terpenuhi."*
+
+**Implementasi PRD V4 oleh Codex:**
+> *"Implementasikan hanya Fase [X] PRD V4 pada branch [nama-branch]. Baca AGENTS.md, PRD-V4.md, dokumen status fase sebelumnya, dan commit terbaru di kedua repositori yang relevan. Jalankan pengujian yang relevan, buat commit, push branch, lalu berhenti untuk audit Claude Code. Jangan melanjutkan ke Fase [Y]."*
+
+**Audit PRD V4 oleh Claude Code:**
+> *"Audit implementasi Fase [X] PRD V4 yang dibuat Codex pada branch [nama-branch]. Baca AGENTS.md dan PRD-V4.md, periksa seluruh commit fase, jalankan pengujian secara independen, dan lakukan koreksi terarah jika diperlukan. Commit dan push hasil audit, lalu berhenti. Jangan melanjutkan ke Fase [Y] sebelum seluruh kriteria penerimaan Fase [X] terpenuhi."*
 
 **Handoff workstream lama/fondasi ke Auditor Codex:**
 > *"Audit implementasi [fase/workstream] yang dibuat Claude pada branch [nama-branch]. Baca AGENTS.md dan PRD yang berlaku, periksa commit terbaru, jalankan seluruh pengujian, dan lakukan koreksi terarah jika diperlukan. Jangan melanjutkan ke fase berikutnya sebelum seluruh kriteria penerimaan terpenuhi."*
