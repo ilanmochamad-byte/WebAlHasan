@@ -33,7 +33,7 @@ c13c1b4734f23675170404ef6578744bc6bc66d63639ab5ae0465d8a8893b6f1  docs/phase-v4-
 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b  docs/phase-v4-4/composer-audit.txt
 19a6d12ee2da934ddb7099dacb26a35b9d7af09f5f535abdf7a4531ca453aa57  docs/phase-v4-4/fixture.txt
 0411fc4460e0edb588c132d8a226b84ada549dd4cb7c1d9c0e0f8b4f5774a7ab  docs/phase-v4-4/handoff-claude.md
-b33b101f6405024c750432233f7f291c6dd660d17711969e8f26f8ff66bb39ad  docs/phase-v4-4/hasil-pengujian.md
+ea3c791702fe270e4c5622b77c6a4b05841430eee7865fda73220414dd82d147  docs/phase-v4-4/hasil-pengujian.md
 0e043c00b2c472840748a3d05d39e8a0fc276c80f297a6de327a967522da97f8  docs/phase-v4-4/http-browser-awal.txt
 a8a8f0502c2da8f810e436ecc687d84054d51133964737aa615812226cc1e637  docs/phase-v4-4/http-browser.txt
 0aa6275e74944029a7e741d8d46e573d785ae27d648e20831449883fb6c2159c  docs/phase-v4-4/http-navigasi.txt
@@ -52,9 +52,10 @@ ac9360e115e4afabb79d52ca07f25384f8c87e3c8c881b4b0a93a1663caec32c  docs/phase-v4-
 ac9360e115e4afabb79d52ca07f25384f8c87e3c8c881b4b0a93a1663caec32c  docs/phase-v4-4/konkurensi.txt
 09087ab2eb0fe4b202dc395be9a44064f392fcc1ca61e1b3d7beb6e3f497b3ae  docs/phase-v4-4/kontak-browser-375.jpg
 1bf234d06de68ac2ac77a1d4086e1134aee6c48df48714d7df46418510bd90fd  docs/phase-v4-4/kontrak-dan-pemulihan.md
-0d4a7b9b6385edf868141392a4e8627abdd282f01d5df3a01e6d4d6eed9f19c1  docs/phase-v4-4/lint.txt
+2e187da5adbc1a0bb8ae8fe3099f73ec00bb56ce6898f3efd0e23f330af195e2  docs/phase-v4-4/lint.txt
 4d8f6c4a8a84f2ddf50d526eb12a276d078f2d791f64bd32392f3933b3aa6a3c  docs/phase-v4-4/migrasi-baseline.txt
 c87127088b92d55d3b01431bfb74134a4fd803d4458b801103ded501f7757d9f  docs/phase-v4-4/migrasi.txt
+69dac5244548007a1ed1c9fd0eb816d9ef880b39d8b8547aa82a0b71b933cbce  docs/phase-v4-4/nilai-belum-lengkap.txt
 ecdbfe8fea9627a208cfa38b5510c200d77f317850e3ff69587945d68e371239  docs/phase-v4-4/pdf-banyakhal-kontak.jpg
 13f2ecb1b6c7074079406d2b94c858db9103401c081bfa54af379946c050a099  docs/phase-v4-4/pdf-banyakhal.txt
 39890210e4e3bc8c1f2db645a06a03545a1c3dcb85cc3d1e8216ee613a879a3e  docs/phase-v4-4/pdf-hash.txt
@@ -120,7 +121,7 @@ c84509122761925c2bae5f5e861fc956b425478276c7d6bc2448fc33e0ca41ed  docs/phase-v4-
 31eb61d79955553cb047d5da7a83b9bc5489a2eb4b7e6c4a9665ac70676e84f5  docs/phase-v4-4/rollback-sql-ditolak.txt
 602db37e883c53b50a0b1325fa45853385eedf2754a587fd918d0af363faa3e7  docs/phase-v4-4/siklus-awal.txt
 62eb3c3448b6e1806c6caa6186c74e0495d9b8bdc47059930312d963f0f8abea  docs/phase-v4-4/siklus.txt
-7ee0f50b7e427695a405cf7de05612ca36c9ea5cd73a915f04b054dc1dd96d88  docs/phase-v4-4/status-penerimaan.md
+9b36345eebc7b3058ad07b43c05446d1013088bd38c57462dfcac97d3d0981b5  docs/phase-v4-4/status-penerimaan.md
 4f5117f5ce994e841606db818e72d00c44701af09e3a4efc4e8db7e90121301d  docs/phase-v4-4/validasi-tambahan.txt
 0d8c73d1b5984e2b1ac61df2262b6b743b0bbb522bfb25d0d8cb254c08275f58  docs/phase-v4-4/verifier-fase1.txt
 d83e9f0aea8a2933dc61182beac22d09b1144c8a80c0407a43cb07a3eafe548e  docs/phase-v4-4/verifier-fase3-final.txt
@@ -146,6 +147,7 @@ f15e26aaefb08b23696ae9b8279a429d9ce9052f6a226a744e5ec027d67c583c  tests/v4_phase
 0ca8c3bb2b5ac8f109c55542ef670664cfe6b5230e3a26f57ccafa477f3ef6ef  tests/v4_phase4_document.php
 eb05ee4003fb285773ff6667ea1caef0a2f4a8b7b9741164543e69969e8689d1  tests/v4_phase4_integration.php
 c8138f85f97baf163852ecc896fa00913a8f5bd4cf0fc1c937cf112ff6caea78  tests/v4_phase4_lifecycle.php
+7a42243d2a74fc1807370bb8888dd4c8c9ffe277c39c3c69700101f028afeb55  tests/v4_phase4_missing_grade.php
 3832f6880c923f7165567188b3bd55aae55b4d9273882f2421f3339a1ab0fbd1  tests/v4_phase4_mutate.php
 f5743ce498edb66ff425488ff498f9cb8d76df0f7eec061066135ed2f8cc5dc4  tests/v4_phase4_pdf.py
 dcbbeac633b2eb8104c52b90ef3a8c1f43d9b7e7abe0f3540fc5776776421f4e  tests/v4_phase4_push.php

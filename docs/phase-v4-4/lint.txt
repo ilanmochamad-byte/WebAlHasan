@@ -26,6 +26,7 @@ No syntax errors detected in tests/v4_phase4_concurrency.php
 No syntax errors detected in tests/v4_phase4_document.php
 No syntax errors detected in tests/v4_phase4_integration.php
 No syntax errors detected in tests/v4_phase4_lifecycle.php
+No syntax errors detected in tests/v4_phase4_missing_grade.php
 No syntax errors detected in tests/v4_phase4_mutate.php
 No syntax errors detected in tests/v4_phase4_push.php
 No syntax errors detected in tests/v4_phase4_qr.php
@@ -34,4 +35,4 @@ No syntax errors detected in tests/v4_phase4_seed.php
 No syntax errors detected in tests/v4_phase4_support.php
 No syntax errors detected in tests/v4_phase4_worker.php
 No syntax errors detected in verifikasi_rapor.php
-36 PHP files lint OK
+37 PHP files lint OK

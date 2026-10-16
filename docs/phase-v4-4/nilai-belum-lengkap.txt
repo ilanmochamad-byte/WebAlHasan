@@ -1,0 +1,16 @@
+[lulus] Komponen akhir mapel wajib hilang benar-benar Belum lengkap
+[lulus] Penerbitan versi baru ditolak saat satu komponen mapel wajib hilang HTTP 422
+[lulus] Nol versi/PDF terbit baru dan nol notifikasi pada nilai wajib hilang
+[lulus] PDF terbit terdahulu tetap identik setelah probe sumber sintetis
+[lulus] PDF dan hash wajib
+[lulus] Kode dan versi konsisten
+[lulus] Operasi penerbitan wajib
+[lulus] Versi current ada
+[lulus] Tidak ada dua versi sah
+[lulus] PDF versi #4 utuh
+[lulus] PDF versi #5 utuh
+[lulus] PDF versi #6 utuh
+[lulus] PDF versi #7 utuh
+[lulus] PDF versi #8 utuh
+[lulus] PDF versi #9 utuh
+[lulus] PDF versi #10 utuh

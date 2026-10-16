@@ -35,6 +35,7 @@ Urutan migrasi akhir: 001–021 dari salinan direktori migrasi sementara → `v4
 | Receipt mock setelah review | exit 0, 3 lulus | `receipt.txt` |
 | Navigasi UI setelah review | exit 0, 4 lulus | `http-navigasi.txt` |
 | API preview POST/admin form/internal folder | exit 0 | `http-pratinjau.txt` |
+| Komponen nilai akhir wajib hilang | exit 0, 4 lulus + verifier | `nilai-belum-lengkap.txt` |
 | Validasi catatan nonteks | exit 0, 2 lulus | `validasi-tambahan.txt` |
 | PDF teks/render, satu byte, scan QR | exit 0; 1 halaman, dua PNG tanda tangan + QR vektor | `pdf-hash.txt`, `qr.txt`, `pdf-inspeksi.txt`, `pdf-v1-1.png` |
 | PDF 30 mapel/catatan panjang | exit 0; 6 halaman, mapel 30 dan penanda terbaca, tanpa halaman kosong; ditinjau visual | `pdf-banyakhal.txt`, `pdf-banyakhal-kontak.jpg` |
@@ -53,6 +54,7 @@ Pemeriksaan tambahan setelah rangkaian akhir:
 
 ```sh
 php tests/v4_phase4_receipt.php
+php tests/v4_phase4_missing_grade.php
 node tests/browser/uji-v4-fase4-navigasi.mjs
 node tests/browser/uji-v4-fase4-pratinjau.mjs
 php bin/v4_phase4_verify.php
