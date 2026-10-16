@@ -61,20 +61,25 @@ final class NilaiService
 
     public static function calculate(array $rows, float $target = 70): array
     {
+        // Aritmetika bilangan bulat (perseratus) agar half-up tepat; float membuat 48,50 menjadi 48.
         $harian = []; $tengah = null; $akhir = null;
         foreach ($rows as $r) {
             if ($r['nilai'] === null || $r['nilai'] === '') continue;
-            if ($r['komponen'] === 'Harian') $harian[] = (float)$r['nilai'];
-            elseif ($r['komponen'] === 'Tengah') $tengah = (float)$r['nilai'];
-            elseif ($r['komponen'] === 'Akhir') $akhir = (float)$r['nilai'];
+            $v = (int)round((float)$r['nilai'] * 100);
+            if ($r['komponen'] === 'Harian') $harian[] = $v;
+            elseif ($r['komponen'] === 'Tengah') $tengah = $v;
+            elseif ($r['komponen'] === 'Akhir') $akhir = $v;
         }
-        $h = $harian ? array_sum($harian) / count($harian) : null;
-        $n = $h !== null && $tengah !== null && $akhir !== null ? $h * .4 + $tengah * .3 + $akhir * .3 : null;
-        $display = $n === null ? null : (int)round($n, 0, PHP_ROUND_HALF_UP);
-        return ['kelengkapan' => $n === null ? 'Belum lengkap' : 'Lengkap', 'rata_harian' => $h,
-            'nilai_internal' => $n === null ? null : round($n, 2, PHP_ROUND_HALF_UP),
+        $count = count($harian);
+        $h = $count ? array_sum($harian) / $count / 100.0 : null;
+        // N = num/den tepat: (0,4·ΣH/cnt + 0,3·T + 0,3·A) dengan komponen dalam perseratus.
+        $complete = $count && $tengah !== null && $akhir !== null;
+        $num = $complete ? 4 * array_sum($harian) + 3 * ($tengah + $akhir) * $count : 0; $den = 1000 * $count;
+        $display = $complete ? intdiv(2 * $num + $den, 2 * $den) : null;
+        return ['kelengkapan' => $complete ? 'Lengkap' : 'Belum lengkap', 'rata_harian' => $h,
+            'nilai_internal' => $complete ? intdiv(200 * $num + $den, 2 * $den) / 100.0 : null,
             'nilai_tampil' => $display, 'predikat' => $display === null ? null : ($display >= 90 ? 'A' : ($display >= 80 ? 'B' : ($display >= 70 ? 'C' : 'D'))),
-            'target_ketuntasan' => $target, 'tuntas' => $n === null ? null : $n >= $target];
+            'target_ketuntasan' => $target, 'tuntas' => $complete ? 100 * $num >= (int)round($target * 100) * $den : null];
     }
 
     public function read(array $user, int $mapel, int $santri = 0, bool $pengganti = false): array
@@ -133,9 +138,11 @@ final class NilaiService
                 if ($previous && ((float)$previous['nilai'] !== $r['nilai'] || (string)$previous['catatan'] !== $r['catatan']) && $action !== 'koreksi') throw new V4Exception('Perubahan nilai tersimpan memerlukan tindakan koreksi dan alasan.');
             }
             if ($action === 'serahkan' && self::calculate(array_values($data))['kelengkapan'] !== 'Lengkap') throw new V4Exception('Nilai Belum lengkap; lengkapi harian, tengah, dan akhir sebelum menyerahkan.');
-            $uid = (int)$user['id']; $status = $action === 'serahkan' ? 'Dikirim' : 'Draf';
+            $uid = (int)$user['id']; $status = $action === 'serahkan' ? 'Dikirim' : 'Draf'; $written = 0;
             foreach ($data as $key => $r) {
                 $previous = $indexed[$key] ?? null; $version = $r['version'] + 1;
+                // Komponen yang tidak berubah tetap milik pengisi semula; tidak ada versi/riwayat/audit baru.
+                if ($previous && (float)$previous['nilai'] === $r['nilai'] && (string)$previous['catatan'] === $r['catatan'] && $previous['status'] === $status) continue;
                 if ($previous) {
                     $id = (int)$previous['id'];
                     $this->query('UPDATE v4_nilai SET nilai=?,catatan=?,status=?,version=?,pelaku_user_id=?,kapasitas=?,alasan=? WHERE id=?', 'dssiissi', [$r['nilai'], $r['catatan'], $status, $version, $uid, $capacity, $reason, $id]);
@@ -143,12 +150,14 @@ final class NilaiService
                     $this->query('INSERT INTO v4_nilai (rencana_mapel_id,santri_id,komponen,nomor_harian,nilai,catatan,status,version,pelaku_user_id,kapasitas,alasan) VALUES (?,?,?,?,?,?,?,?,?,?,?)', 'iisidssiiss', [$mapel, $santri, $r['komponen'], $r['nomor_harian'], $r['nilai'], $r['catatan'], $status, $version, $uid, $capacity, $reason]);
                     $id = (int)$this->db->insert_id;
                 }
+                $written++;
                 $snapshot = $this->query('SELECT * FROM v4_nilai WHERE id=?', 'i', [$id])[0];
                 $json = json_encode($snapshot, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
                 $this->query('INSERT INTO v4_nilai_riwayat (nilai_id,version,snapshot_json,pelaku_user_id,kapasitas,alasan) VALUES (?,?,?,?,?,?)', 'iisiss', [$id, $version, $json, $uid, $capacity, $reason]);
                 // Isi nilai/catatan/alasan hanya di riwayat privat, audit umum hanya metadata.
                 if (!$this->audit->log('v4.nilai.' . $action, 'v4_nilai', $id, $previous ? ['version' => (int)$previous['version']] : null, ['version' => $version, 'kapasitas' => $capacity, 'status' => $status, 'alasan_tercatat' => trim($reason) !== ''], $uid)) throw new V4Exception('Audit gagal; perubahan dibatalkan.', 503);
             }
+            if (!$written) throw new V4Exception('Tidak ada perubahan untuk disimpan.');
             $result = $this->read($user, $mapel, $santri, $pengganti);
             $this->db->commit();
             return $result;

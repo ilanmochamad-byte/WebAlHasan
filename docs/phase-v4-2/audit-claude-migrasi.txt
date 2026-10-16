@@ -1,0 +1,11 @@
+# migrate up (1)
+- 018_v3_fase4_publikasi.sql
+- 019_v3_fase5_laporan_retensi.sql
+- 020_v4_fase1_fondasi.sql
+# migrate up (2)
+Tidak ada migrasi baru.
+# verifier
+116
+[lulus] Jumlah baris lama v3_publikasi_riwayat tetap 0
+[lulus] Jumlah baris lama v3_rekomendasi tetap 0
+[lulus] Jumlah baris lama wali tetap 207

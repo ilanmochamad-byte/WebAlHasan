@@ -52,10 +52,21 @@ $reject(fn()=>$service->read($guru,$mid,99999999),403,'ID santri di luar cakupan
 $placements=$rows("SELECT id,id_kelas FROM plotting_kelas WHERE id_santri=$sid AND id_tahun=4 AND id_kelas=2");
 try{$db->query("UPDATE plotting_kelas SET id_kelas=3 WHERE id_santri=$sid AND id_tahun=4 AND id_kelas=2");$historical=$service->read($guru,$mid,$sid);$check((int)$historical['rencana_mapel']['kelas_id']===2&&$historical['hasil']['nilai_tampil']===85,'Nilai historis tidak mengikuti perpindahan kelas');}finally{foreach($placements as $r)$db->query('UPDATE plotting_kelas SET id_kelas=2 WHERE id='.(int)$r['id']);}
 // Kegagalan audit harus menggulung nilai dan riwayat.
-$before=$service->read($guru,$mid,$sid);$input['komponen']=$before['nilai'];
+$before=$service->read($guru,$mid,$sid);$input['komponen']=$before['nilai'];$input['komponen'][0]['catatan']='Perubahan yang harus digulung';
 $db->query("CREATE TRIGGER v4_test_audit_fail BEFORE INSERT ON audit_logs FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Synthetic failure'");
 try{$reject(fn()=>$service->save($guru,$input),503,'Kegagalan audit menggulung transaksi');}finally{$db->query('DROP TRIGGER v4_test_audit_fail');}
 $check($before===$service->read($guru,$mid,$sid),'Nilai dan riwayat tetap setelah rollback');
+// Audit Claude: half-up tepat pada N = x,50 (float sebelumnya membulatkan 48,50 ke 48).
+$check(NilaiService::calculate([$component('Harian',1,14),$component('Tengah',0,97),$component('Akhir',0,46)])['nilai_tampil']===49,'Half-up tepat 14/97/46 = 48,50 menjadi 49');
+$check(NilaiService::calculate([$component('Harian',1,10),$component('Tengah',0,97),$component('Akhir',0,88)])['nilai_tampil']===60,'Half-up tepat 10/97/88 = 59,50 menjadi 60');
+$check(NilaiService::calculate([$component('Harian',1,20.5),$component('Tengah',0,69.5),$component('Akhir',0,69.5)],50)['nilai_internal']===49.9,'Hasil internal dua desimal tepat');
+// Audit Claude: komponen tak berubah tetap atas nama pengisi semula saat pengganti menambah harian.
+$sid5=(int)$students[4]['id'];$own=$service->save($guru,['rencana_mapel_id'=>$mid,'santri_id'=>$sid5,'komponen'=>[$component('Harian',1,80),$component('Tengah',0,78),$component('Akhir',0,92)]]);
+$items=$own['nilai'];$items[]=$component('Harian',2,90);$mix=$service->save($pend,['rencana_mapel_id'=>$mid,'santri_id'=>$sid5,'alasan'=>'Guru berhalangan','komponen'=>$items],true);
+$by=[];foreach($mix['nilai'] as $r)$by[$r['komponen'].$r['nomor_harian']]=$r;
+$check((int)$by['Harian1']['pelaku_user_id']===$guru['id']&&$by['Harian1']['kapasitas']==='guru'&&(int)$by['Tengah0']['version']===1&&(int)$by['Akhir0']['pelaku_user_id']===$guru['id'],'Komponen guru tak berubah tidak diatasnamakan pengganti');
+$check((int)$by['Harian2']['pelaku_user_id']===$pend['id']&&$by['Harian2']['kapasitas']==='pendidikan_pengganti'&&count($mix['riwayat'])===4,'Hanya komponen baru tercatat sebagai pengganti');
+$reject(fn()=>$service->save($pend,['rencana_mapel_id'=>$mid,'santri_id'=>$sid5,'alasan'=>'Tanpa perubahan','action'=>'koreksi','komponen'=>$mix['nilai']],true),422,'Simpan tanpa perubahan ditolak tanpa revisi');
 $check(NilaiService::calculate([$component('Harian',1,89.5),$component('Tengah',0,89.5),$component('Akhir',0,89.5)])['predikat']==='A','Half-up 89.5 menjadi 90 A');
 $check(NilaiService::calculate([$component('Harian',1,0),$component('Tengah',0,0),$component('Akhir',0,0)])['nilai_tampil']===0,'Seluruh komponen nol lengkap');
 // Penugasan dicabut harus ditolak pada request baru, lalu fixture dipulihkan.

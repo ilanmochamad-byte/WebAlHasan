@@ -1,0 +1,92 @@
+# Audit Claude Code — integrasi layanan Fase 2 (MariaDB 12.3.2 terisolasi, DB baru webalhasan_v4_fase2_test milik auditor)
+# Setelah koreksi audit; termasuk 6 pemeriksaan baru.
+[lulus] 80/90 + 78 + 92 = 85 B
+[lulus] Versi pertama keempat komponen tersimpan
+[lulus] Retry identik ditolak tanpa duplikasi HTTP 409
+[lulus] Tetap empat komponen berlaku
+[lulus] Penyerahan lengkap
+[lulus] Versi usang tidak menimpa HTTP 409
+[lulus] Koreksi tanpa alasan HTTP 422
+[lulus] Koreksi menyimpan versi 1–3, kembali draf
+[lulus] Nol tersimpan; komponen hilang Belum lengkap
+[lulus] Penyerahan belum lengkap ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Komponen ganda dalam payload ditolak HTTP 409
+[lulus] Guru mapel lain baca HTTP 403
+[lulus] Guru mapel lain tulis HTTP 403
+[lulus] Guru kelas/semester lain baca HTTP 403
+[lulus] Guru kelas/semester lain tulis HTTP 403
+[lulus] Pendidikan jenjang/semester lain baca HTTP 403
+[lulus] Pendidikan jenjang/semester lain tulis HTTP 403
+[lulus] Guru kelas/semester lain baca HTTP 403
+[lulus] Guru kelas/semester lain tulis HTTP 403
+[lulus] Pendidikan jenjang/semester lain baca HTTP 403
+[lulus] Pendidikan jenjang/semester lain tulis HTTP 403
+[lulus] Pengganti tanpa alasan HTTP 422
+[lulus] Pengganti menyimpan pelaku dan kapasitas
+[lulus] Pengganti tidak mengubah penugasan
+[lulus] Audit kapasitas pengganti
+[lulus] Peran tanpa hak ditolak HTTP 403
+[lulus] Detail peran tanpa hak ditolak HTTP 403
+[lulus] Peran tanpa hak ditolak HTTP 403
+[lulus] Detail peran tanpa hak ditolak HTTP 403
+[lulus] ID santri di luar cakupan HTTP 403
+[lulus] Nilai historis tidak mengikuti perpindahan kelas
+[lulus] Kegagalan audit menggulung transaksi HTTP 503
+[lulus] Nilai dan riwayat tetap setelah rollback
+[lulus] Half-up tepat 14/97/46 = 48,50 menjadi 49
+[lulus] Half-up tepat 10/97/88 = 59,50 menjadi 60
+[lulus] Hasil internal dua desimal tepat
+[lulus] Komponen guru tak berubah tidak diatasnamakan pengganti
+[lulus] Hanya komponen baru tercatat sebagai pengganti
+[lulus] Simpan tanpa perubahan ditolak tanpa revisi HTTP 422
+[lulus] Half-up 89.5 menjadi 90 A
+[lulus] Seluruh komponen nol lengkap
+[lulus] Penugasan guru dicabut ditolak pada baca HTTP 403
+[lulus] Penugasan guru dicabut ditolak pada tulis HTTP 403
+[lulus] Rata-rata pecahan mempertahankan presisi hingga hasil internal dua desimal
+Selesai pada MariaDB uji, bukan produksi.
+
+# Konkurensi (6 proses PHP, koneksi DB terpisah)
+[lulus] Enam proses PHP/koneksi DB bersamaan: satu 200, lima 409.
+[lulus] Tepat satu komponen berlaku dan satu revisi, tanpa duplikasi.
+
+# Regresi Fase 1 integrasi
+[lulus] Pendidikan menyimpan dua mapel wajib
+[lulus] Rencana terbaca ulang di layanan web dan API
+[lulus] Target berubah sebelum ada nilai
+[lulus] Duplikasi ditolak 409
+[lulus] Duplikasi tidak menambah baris
+[lulus] v4_pengurus mendapat 403
+[lulus] v4_guru mendapat 403
+[lulus] v4_wali mendapat 403
+[lulus] v4_pengurus baca semester 0 kelas 0 mendapat 403
+[lulus] v4_pengurus baca semester 999999 kelas 2 mendapat 403
+[lulus] v4_pengurus simpan payload kosong mendapat 403
+[lulus] v4_pengurus opsi mendapat 403
+[lulus] v4_guru baca semester 0 kelas 0 mendapat 403
+[lulus] v4_guru baca semester 999999 kelas 2 mendapat 403
+[lulus] v4_guru simpan payload kosong mendapat 403
+[lulus] v4_guru opsi mendapat 403
+[lulus] v4_wali baca semester 0 kelas 0 mendapat 403
+[lulus] v4_wali baca semester 999999 kelas 2 mendapat 403
+[lulus] v4_wali simpan payload kosong mendapat 403
+[lulus] v4_wali opsi mendapat 403
+[lulus] Target >100 ditolak 422
+[lulus] Bobot salah ditolak 422
+[lulus] Audit rencana tanpa token atau gambar
+[lulus] Guru sesuai cakupan memiliki capability input
+[lulus] Guru mapel lain ditolak 403
+[lulus] Pengganti tanpa alasan ditolak 422
+[lulus] Pengganti beralasan memiliki kapasitas khusus
+[lulus] Admin tanpa alasan ditolak 422
+[lulus] Admin beralasan tercatat dalam kapasitas admin

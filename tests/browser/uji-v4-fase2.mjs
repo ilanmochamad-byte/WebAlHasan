@@ -13,7 +13,7 @@ ok((await api('v4_guru',`/v4/nilai?rencana_mapel_id=${ids.other}`)).status===403
 ok((await api('v4_pendidikan',path)).status===403,'Pendidikan tidak dapat menyamar melalui jalur guru');
 let p={rencana_mapel_id:ids.mapel,santri_id:ids.santri,action:'koreksi',komponen:r.body.data.nilai};
 ok((await api('v4_pendidikan','/v4/nilai/pengganti',p)).status===422,'API pengganti tanpa alasan 422');
-p.alasan='Guru berhalangan pada uji HTTP';r=await api('v4_pendidikan','/v4/nilai/pengganti',p);ok(r.status===200&&r.body.data.riwayat[0].kapasitas==='pendidikan_pengganti','API pengganti beralasan tercatat');
+p.alasan='Guru berhalangan pada uji HTTP';p.komponen=p.komponen.map((c,i)=>i===0?{...c,catatan:'Dikoreksi pengganti via API'}:c);r=await api('v4_pendidikan','/v4/nilai/pengganti',p);ok(r.status===200&&r.body.data.riwayat[0].kapasitas==='pendidikan_pengganti'&&r.body.data.nilai.filter(n=>n.kapasitas==='pendidikan_pengganti').length===1,'API pengganti beralasan tercatat hanya pada komponen yang diubah');
 ok((await api('v4_pendidikan','/v4/nilai/pengganti',p)).status===409,'API retry versi usang 409');
 r=await api('v4_guru',`/v4/nilai?rencana_mapel_id=${ids.mapel}&santri_id=${ids.santri2}`);ok(r.body.data.hasil.kelengkapan==='Belum lengkap'&&Number(r.body.data.nilai[0].nilai)===0,'API nol dan Belum lengkap');
 const anonymous=await fetch(base+'/api/v1'+path);ok(anonymous.status===401,'API tanpa bearer 401');
