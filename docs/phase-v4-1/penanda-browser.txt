@@ -1,0 +1,5 @@
+[lulus] Admin mengunggah aset penanda tangan privat
+[lulus] Rencana menyimpan penanda tangan aktif
+[lulus] Admin menonaktifkan penanda tangan
+[lulus] Web menolak penggunaan aset nonaktif
+[lulus] Jalur aset privat ditolak server uji

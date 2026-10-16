@@ -1,0 +1,18 @@
+[lulus] Pendidikan menyimpan dua mapel wajib
+[lulus] Rencana terbaca ulang di layanan web dan API
+[lulus] Target berubah sebelum ada nilai
+[lulus] Duplikasi ditolak 409
+[lulus] Duplikasi tidak menambah baris
+[lulus] v4_pengurus mendapat 403
+[lulus] v4_guru mendapat 403
+[lulus] v4_wali mendapat 403
+[lulus] Target >100 ditolak 422
+[lulus] Bobot salah ditolak 422
+[lulus] Audit rencana tanpa token atau gambar
+[lulus] Guru sesuai cakupan memiliki capability input
+[lulus] Guru mapel lain ditolak 403
+[lulus] Pengganti tanpa alasan ditolak 422
+[lulus] Pengganti beralasan memiliki kapasitas khusus
+[lulus] Aset nonaktif ditolak 422
+[lulus] Admin tanpa alasan ditolak 422
+[lulus] Admin beralasan tercatat dalam kapasitas admin

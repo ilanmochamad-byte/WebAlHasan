@@ -71,6 +71,15 @@ try {
         }
     }
 
+    // V4 Fase 1: endpoint aditif; klien lama tidak perlu mengubah payload.
+    if (str_starts_with($path, '/v4/')) {
+        header('Cache-Control: private, no-store');
+        $rencana = new \App\V4\RencanaService(app_db(), capabilities(), audit_logger());
+        if ($method === 'GET' && $path === '/v4/rencana/options') JsonResponse::success($rencana->options($user));
+        if ($method === 'GET' && $path === '/v4/rencana') JsonResponse::success($rencana->read($user, (int)($_GET['tahun_ajaran_id']??0), (int)($_GET['kelas_id']??0)));
+        if ($method === 'POST' && $path === '/v4/rencana') JsonResponse::success($rencana->save($user, Request::json()));
+    }
+
     // V3 aditif; kontrak capability/mode/menu mobile lama tidak disentuh.
     if ($method === 'GET' && $path === '/v3/capabilities') {
         $v3 = (new \App\Auth\Capabilities(app_db()))->v3Capabilities($user);
@@ -398,6 +407,8 @@ try {
     }
 
     throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
+} catch (\App\V4\V4Exception $exception) {
+    JsonResponse::error(match($exception->status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$exception->status);
 } catch (\App\V3\V3Exception $exception) {
     $code=match($exception->status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'};
     JsonResponse::error($code,$exception->getMessage(),$exception->status);
