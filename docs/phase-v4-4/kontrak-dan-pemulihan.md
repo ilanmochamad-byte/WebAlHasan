@@ -2,7 +2,7 @@
 
 ## Pembacaan dan transaksi
 
-`RaporService::preview` menggunakan matriks/gate Fase 3, rumus Fase 2, rencana dan aset Fase 1. Preview memuat nilai/predikat/target/catatan, rata-rata dari nilai akhir sebelum pembulatan tampilan, sikap, lima status kehadiran/belum dicatat, kelas/semester, tempat/tanggal, penanda dan kekurangan. Hash preview mencakup snapshot, hash matriks dan versi rencana. Catatan umum maksimal 2000 karakter; alasan maksimal 1000.
+`RaporService::preview` menggunakan matriks/gate Fase 3, rumus Fase 2, rencana dan aset Fase 1. Preview memuat nilai/predikat/target/catatan, rata-rata dari nilai akhir sebelum pembulatan tampilan (disimpan dua desimal sebagai `rata_rata`; sejak koreksi audit ditampilkan bilangan bulat `rata_rata_tampil` sesuai PRD §5.1, snapshot lama tanpa kunci itu tetap tampil seperti PDF-nya), sikap, lima status kehadiran/belum dicatat, kelas/semester, tempat/tanggal, penanda dan kekurangan. Hash preview mencakup snapshot, hash matriks dan versi rencana. Catatan umum maksimal 2000 karakter; alasan maksimal 1000.
 
 Penerbitan memakai transaksi InnoDB **SERIALIZABLE**, parent rencana dikunci dahulu. Cakupan pelaku dan santri dibaca ulang; peserta/absensi santri dikunci termasuk rentang baris yang belum ada, lalu seluruh matriks/penanda/hash dibaca ulang di dalam transaksi. Read SERIALIZABLE mengunci sumber pertemuan/jadwal, bahan dan otorisasi yang dibaca hingga commit. Pendidikan membutuhkan `rapor.finalisasi`; Ganti/Tarik/Buka memakai `rapor.buka_koreksi`; unduhan petugas memakai `rapor.cetak`. Admin berkapasitas admin dan wajib alasan. Tidak mempercayai identitas pengisi historis sebagai izin saat ini.
 

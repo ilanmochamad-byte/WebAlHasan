@@ -1,0 +1,300 @@
+# regresi-fase1
+[lulus] Pendidikan menyimpan dua mapel wajib
+[lulus] Rencana terbaca ulang di layanan web dan API
+[lulus] Target berubah sebelum ada nilai
+[lulus] Duplikasi ditolak 409
+[lulus] Duplikasi tidak menambah baris
+[lulus] v4_pengurus mendapat 403
+[lulus] v4_guru mendapat 403
+[lulus] v4_wali mendapat 403
+[lulus] v4_pengurus baca semester 0 kelas 0 mendapat 403
+[lulus] v4_pengurus baca semester 999999 kelas 2 mendapat 403
+[lulus] v4_pengurus simpan payload kosong mendapat 403
+[lulus] v4_pengurus opsi mendapat 403
+[lulus] v4_guru baca semester 0 kelas 0 mendapat 403
+[lulus] v4_guru baca semester 999999 kelas 2 mendapat 403
+[lulus] v4_guru simpan payload kosong mendapat 403
+[lulus] v4_guru opsi mendapat 403
+[lulus] v4_wali baca semester 0 kelas 0 mendapat 403
+[lulus] v4_wali baca semester 999999 kelas 2 mendapat 403
+[lulus] v4_wali simpan payload kosong mendapat 403
+[lulus] v4_wali opsi mendapat 403
+[lulus] Target >100 ditolak 422
+[lulus] Bobot salah ditolak 422
+[lulus] Audit rencana tanpa token atau gambar
+[lulus] Guru sesuai cakupan memiliki capability input
+[lulus] Guru mapel lain ditolak 403
+[lulus] Pengganti tanpa alasan ditolak 422
+[lulus] Pengganti beralasan memiliki kapasitas khusus
+[lulus] Admin tanpa alasan ditolak 422
+[lulus] Admin beralasan tercatat dalam kapasitas admin
+# regresi-fase1-http
+[lulus] API baca dua mapel 200
+[lulus] API v4_pengurus 403
+[lulus] API v4_guru 403
+[lulus] API v4_wali 403
+[lulus] API opsi pendidikan 200
+[lulus] API menolak mapel ganda 409
+[lulus] API pengaturan v4_pengurus 403
+[lulus] API pengaturan v4_guru 403
+[lulus] API pengaturan v4_wali 403
+[lulus] Server uji menolak akses langsung storage privat
+[lulus] Web membaca ulang rencana dua mapel
+[lulus] Web menampilkan dua mapel
+[lulus] Halaman 375 px tanpa gulir horizontal
+[lulus] Web menyimpan target baru
+[lulus] API membaca target yang diubah melalui web
+[lulus] Rencana menyimpan guru pengampu sesuai mapel
+[lulus] Halaman 375 px tetap tanpa gulir horizontal pada teks lebih besar
+[lulus] Web menolak target >100 dengan pesan 422
+[lulus] Simpan gagal tanpa peringatan PHP
+[lulus] Formulir rencana tetap tampil setelah simpan gagal
+[lulus] API v4_pengurus tanpa parameter tetap 403
+[lulus] API v4_guru tanpa parameter tetap 403
+[lulus] API v4_wali tanpa parameter tetap 403
+# regresi-fase2
+[lulus] 80/90 + 78 + 92 = 85 B
+[lulus] Versi pertama keempat komponen tersimpan
+[lulus] Retry identik ditolak tanpa duplikasi HTTP 409
+[lulus] Tetap empat komponen berlaku
+[lulus] Penyerahan lengkap
+[lulus] Versi usang tidak menimpa HTTP 409
+[lulus] Koreksi tanpa alasan HTTP 422
+[lulus] Koreksi menyimpan versi 1–3, kembali draf
+[lulus] Nol tersimpan; komponen hilang Belum lengkap
+[lulus] Penyerahan belum lengkap ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Komponen ganda dalam payload ditolak HTTP 409
+[lulus] Guru mapel lain baca HTTP 403
+[lulus] Guru mapel lain tulis HTTP 403
+[lulus] Guru kelas/semester lain baca HTTP 403
+[lulus] Guru kelas/semester lain tulis HTTP 403
+[lulus] Pendidikan jenjang/semester lain baca HTTP 403
+[lulus] Pendidikan jenjang/semester lain tulis HTTP 403
+[lulus] Guru kelas/semester lain baca HTTP 403
+[lulus] Guru kelas/semester lain tulis HTTP 403
+[lulus] Pendidikan jenjang/semester lain baca HTTP 403
+[lulus] Pendidikan jenjang/semester lain tulis HTTP 403
+[lulus] Pengganti tanpa alasan HTTP 422
+[lulus] Pengganti menyimpan pelaku dan kapasitas
+[lulus] Pengganti tidak mengubah penugasan
+[lulus] Audit kapasitas pengganti
+[lulus] Peran tanpa hak ditolak HTTP 403
+[lulus] Detail peran tanpa hak ditolak HTTP 403
+[lulus] Peran tanpa hak ditolak HTTP 403
+[lulus] Detail peran tanpa hak ditolak HTTP 403
+[lulus] ID santri di luar cakupan HTTP 403
+[lulus] Nilai historis tidak mengikuti perpindahan kelas
+[lulus] Kegagalan audit menggulung transaksi HTTP 503
+[lulus] Nilai dan riwayat tetap setelah rollback
+[lulus] Half-up tepat 14/97/46 = 48,50 menjadi 49
+[lulus] Half-up tepat 10/97/88 = 59,50 menjadi 60
+[lulus] Hasil internal dua desimal tepat
+[lulus] Komponen guru tak berubah tidak diatasnamakan pengganti
+[lulus] Hanya komponen baru tercatat sebagai pengganti
+[lulus] Simpan tanpa perubahan ditolak tanpa revisi HTTP 422
+[lulus] Half-up 89.5 menjadi 90 A
+[lulus] Seluruh komponen nol lengkap
+[lulus] Penugasan guru dicabut ditolak pada baca HTTP 403
+[lulus] Penugasan guru dicabut ditolak pada tulis HTTP 403
+[lulus] Rata-rata pecahan mempertahankan presisi hingga hasil internal dua desimal
+Selesai pada MariaDB uji, bukan produksi.
+# regresi-fase2-konkurensi
+[lulus] Enam proses PHP/koneksi DB bersamaan: satu 200, lima 409.
+[lulus] Tepat satu komponen berlaku dan satu revisi, tanpa duplikasi.
+# regresi-fase2-http
+[lulus] API 85 predikat B
+[lulus] v4_wali baca 403
+[lulus] v4_wali tulis kosong 403
+[lulus] v4_pengurus baca 403
+[lulus] v4_pengurus tulis kosong 403
+[lulus] API guru mapel lain 403
+[lulus] Pendidikan tidak dapat menyamar melalui jalur guru
+[lulus] API pengganti tanpa alasan 422
+[lulus] API pengganti beralasan tercatat hanya pada komponen yang diubah
+[lulus] API retry versi usang 409
+[lulus] API nol dan Belum lengkap
+[lulus] API tanpa bearer 401
+[lulus] Web pengganti 375 px tersedia
+[lulus] Web tanpa CSRF 419
+[lulus] Web simpan draf 85 B
+[lulus] Catatan XSS tidak dieksekusi
+[lulus] API membaca hasil simpan web 85
+[lulus] Web penyerahan empat komponen
+[lulus] Web versi usang 409
+[lulus] Web koreksi kembali draf
+[lulus] 375 px tanpa overflow
+[lulus] 375 px teks 24 px tanpa overflow
+[lulus] Desktop tanpa overflow
+[lulus] Web nol tetap nol dan Belum lengkap
+[lulus] Web Pendidikan jalur guru 403
+# regresi-fase2-guru
+[lulus] Web guru membaca 85 B
+[lulus] Web guru koreksi tanpa alasan 422
+[lulus] Formulir tetap tersedia setelah gagal
+[lulus] Web guru menyimpan koreksi
+[lulus] Web guru menyerahkan nilai
+[lulus] Web guru akses silang 403
+[lulus] Web guru akses silang 403
+[lulus] Web guru akses silang 403
+# regresi-fase3
+[lulus] K1: tiga predikat dan catatan tersimpan
+[lulus] Retry draf tidak membuat versi ganda HTTP 409
+[lulus] Baca petugas di luar cakupan HTTP 403
+[lulus] Mutasi petugas di luar cakupan HTTP 403
+[lulus] Baca petugas di luar cakupan HTTP 403
+[lulus] Mutasi petugas di luar cakupan HTTP 403
+[lulus] Baca sikap tanpa tugas HTTP 403
+[lulus] Matriks tanpa Pendidikan HTTP 403
+[lulus] Baca sikap tanpa tugas HTTP 403
+[lulus] Matriks tanpa Pendidikan HTTP 403
+[lulus] Baca sikap tanpa tugas HTTP 403
+[lulus] Matriks tanpa Pendidikan HTTP 403
+[lulus] Pembimbing menyerahkan sikap
+[lulus] K2: murobi sah menandai diketahui
+[lulus] Diketahui tepat sekali walau versi terbaru HTTP 409
+[lulus] Koreksi murobi tanpa alasan ditolak HTTP 422
+[lulus] K2: koreksi versi baru mempertahankan masukan pembimbing
+[lulus] Identitas pembimbing historis tidak diganti murobi
+[lulus] Pendidikan memverifikasi sikap
+[lulus] Murobi dicabut pada instance layanan sama HTTP 403
+[lulus] Penghalang tanpa murobi aktif; tanpa persetujuan otomatis
+[lulus] Finalisasi tanpa murobi aktif ditolak HTTP 422
+[lulus] K3: satu pertemuan tanpa absensi = satu Belum dicatat dan nol Alpa
+[lulus] K3: satu pertemuan tanpa absensi menolak finalisasi HTTP 422
+[lulus] K3: tanpa absensi Belum dicatat tepat satu, tidak menambah Alpa
+[lulus] K4: kelima status masing-masing satu tanpa duplikasi
+[lulus] K3: Belum dicatat menghalangi finalisasi HTTP 422
+[lulus] Kehadiran tidak lengkap tidak dapat diserahkan HTTP 422
+[lulus] Draf dan Dibuka tidak masuk rekap
+[lulus] Verifikasi tidak mengubah komponen/atribusi/riwayat guru
+[lulus] Verifikasi tidak mengubah komponen/atribusi/riwayat guru
+[lulus] Semua bahan lengkap terverifikasi
+[lulus] Gate sah hanya memeriksa, tanpa penerbitan
+[lulus] K5: koreksi nilai membatalkan verifikasi mapel
+[lulus] K5: finalisasi sebelum verifikasi ulang nilai ditolak HTTP 422
+[lulus] K5: koreksi pembimbing membatalkan verifikasi dan pengetahuan murobi
+[lulus] K5: finalisasi sebelum verifikasi ulang sikap ditolak HTTP 422
+[lulus] Pengembalian membutuhkan alasan HTTP 422
+[lulus] Perlu Perbaikan tercatat
+[lulus] Bahan dikembalikan tidak bisa langsung diverifikasi HTTP 409
+[lulus] Retry verifikasi tidak membuat riwayat ganda HTTP 409
+[lulus] Perubahan sumber absensi membatalkan verifikasi efektif
+[lulus] Finalisasi dengan sumber lama ditolak 409 HTTP 409
+[lulus] Finalisasi absensi berubah memerlukan pemeriksaan ulang HTTP 422
+[lulus] Koreksi rekap kehadiran membutuhkan alasan HTTP 422
+Audit log gagal disimpan.
+[lulus] Kegagalan audit menggulung sikap dan riwayat HTTP 503
+Audit log gagal disimpan.
+[lulus] Kegagalan audit menggulung pemeriksaan dan riwayat HTTP 503
+[lulus] Rollback mempertahankan nilai sikap, status dan seluruh riwayat
+[lulus] Cakupan kamar membaca sikap pembimbing
+[lulus] Relasi kamar dicabut pembimbing HTTP 403
+[lulus] Cakupan kamar membaca sikap murobi
+[lulus] Relasi kamar dicabut murobi HTTP 403
+[lulus] Penugasan dicabut baca pembimbing HTTP 403
+[lulus] Penugasan dicabut mutasi pembimbing HTTP 403
+[lulus] Penugasan dicabut baca murobi HTTP 403
+[lulus] Penugasan dicabut mutasi murobi HTTP 403
+[lulus] Pendidikan dicabut baca HTTP 403
+[lulus] Pendidikan dicabut mutasi HTTP 403
+[lulus] Snapshot semester lain tidak masuk rekap
+[lulus] Snapshot tidak cocok semester jadwal dikecualikan
+[lulus] Santri di luar cakupan HTTP 403
+[lulus] Rencana di luar cakupan HTTP 403
+[lulus] Matriks Pendidikan kelas/semester di luar cakupan HTTP 403
+[lulus] Mutasi Pendidikan kelas/semester di luar cakupan HTTP 403
+[lulus] Matriks Pendidikan kelas/semester di luar cakupan HTTP 403
+[lulus] Mutasi Pendidikan kelas/semester di luar cakupan HTTP 403
+[lulus] K5: nol rapor terbit, versi, kode publik
+[lulus] Audit umum tidak memuat catatan sikap
+[lulus] Diketahui tidak melewati pengembalian beralasan HTTP 409
+[lulus] Tanda murobi yang dicabut tidak dihitung sah
+[lulus] Murobi pengganti sah mengetahui; tanda lama tetap di riwayat
+[lulus] Murobi pengganti tetap hanya sekali per revisi HTTP 409
+[lulus] Nol outbox notifikasi Fase 3
+Selesai Fase 3 pada MariaDB uji.
+# regresi-fase3-konkurensi
+[lulus] Enam proses/koneksi DB terpisah: satu 200 dan lima 409.
+[lulus] Tepat satu sikap, satu versi dan satu riwayat pemeriksaan.
+[lulus] Enam pemeriksa bersamaan: satu 200 dan lima 409.
+[lulus] Verifikasi tidak menggandakan riwayat: tiga versi sumber dan satu pemeriksaan.
+# regresi-fase3-http
+[lulus] API pembimbing membaca sikap privat
+[lulus] API baca di luar cakupan v4_pembimbing_lain 403
+[lulus] API mutasi di luar cakupan v4_pembimbing_lain 403
+[lulus] API baca di luar cakupan v4_murobi_lain 403
+[lulus] API mutasi di luar cakupan v4_murobi_lain 403
+[lulus] API baca di luar cakupan v4_wali 403
+[lulus] API mutasi di luar cakupan v4_wali 403
+[lulus] API baca di luar cakupan v4_guru 403
+[lulus] API mutasi di luar cakupan v4_guru 403
+[lulus] API tanpa bearer 401
+[lulus] API Pendidikan di luar kelas/semester 403
+[lulus] API Pendidikan di luar kelas/semester 403
+[lulus] API penugasan dicabut baca v4_pembimbing
+[lulus] API penugasan dicabut tulis v4_pembimbing
+[lulus] API penugasan dicabut baca v4_murobi
+[lulus] API penugasan dicabut tulis v4_murobi
+[lulus] API penugasan dicabut baca v4_pendidikan
+[lulus] API penugasan dicabut tulis v4_pendidikan
+[lulus] API matriks v4_pembimbing 403
+[lulus] API matriks v4_murobi 403
+[lulus] API matriks v4_pengurus 403
+[lulus] API matriks v4_wali 403
+[lulus] API koreksi tanpa alasan 422
+[lulus] API pembimbing koreksi beralasan
+[lulus] API retry versi lama 409
+[lulus] API koreksi membatalkan verifikasi
+[lulus] API gate matriks usang 409
+[lulus] Web pembimbing formulir aman dari XSS
+[lulus] Web sikap CSRF salah 419
+[lulus] Web pembimbing menyerahkan sikap
+[lulus] Sikap pembimbing 375 px tanpa overflow
+[lulus] Sikap pembimbing teks 24 px tanpa overflow
+[lulus] Sikap pembimbing desktop tanpa overflow
+[lulus] Web murobi mengetahui
+[lulus] Web tombol diketahui tidak dapat diklik dua kali
+[lulus] API diketahui kedua kali 409
+[lulus] Web murobi koreksi beralasan
+[lulus] Sikap murobi 375 px tanpa overflow
+[lulus] Sikap murobi teks 24 px tanpa overflow
+[lulus] Sikap murobi desktop tanpa overflow
+[lulus] Web matriks dua mapel wajib dan santri
+[lulus] Web penghitung Belum dicatat terpisah
+[lulus] Web pengembalian tanpa alasan ditolak
+[lulus] Web pengembalian beralasan
+[lulus] Web gate menolak sikap belum diverifikasi
+[lulus] Matriks Pendidikan 375 px tanpa overflow
+[lulus] Matriks Pendidikan teks 24 px tanpa overflow
+[lulus] Matriks Pendidikan desktop tanpa overflow
+[lulus] Web verifikasi CSRF 419
+[lulus] Web pembimbing lain 403
+[lulus] Web murobi lain 403
+[lulus] Web pembimbing matriks 403
+[lulus] API Pendidikan verifikasi sikap
+[lulus] API retry verifikasi 409
+[lulus] Koreksi murobi pascaverifikasi memerlukan pemeriksaan ulang
+[lulus] API gate menolak pascakoreksi murobi
+# regresi-fase3-transaksi
+Audit log gagal disimpan.
+[lulus] Audit workflow gagal setelah audit sikap berhasil HTTP 503
+Audit log gagal disimpan.
+[lulus] Audit workflow gagal setelah audit komponen nilai berhasil HTTP 503
+Audit log gagal disimpan.
+[lulus] Audit verifikasi gagal menggulung status dan riwayat pemeriksaan HTTP 503
+[lulus] Sikap dan dua jenis riwayat tetap utuh setelah rollback akhir
+[lulus] Nilai, atribusi, status dan dua jenis riwayat tetap utuh
+[lulus] Matriks dan audit pertama ikut digulung; tidak ada audit sukses palsu
+[lulus] Perpindahan kelas dengan nilai asal menjadi penghalang finalisasi
+[lulus] Gate menolak kelas semester ambigu HTTP 422
+[lulus] Perpindahan kelas tidak mengubah identitas/kelas/nilai pengisi historis

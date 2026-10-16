@@ -12,7 +12,9 @@ final class RaporDocument
         foreach($s['mapel'] as $m){$r=$m['hasil'];$html.='<tr><td>'.$e($m['nama']).'</td><td>'.$e($r['nilai_tampil']??'Belum lengkap').'</td><td>'.$e($r['predikat']??'—').'</td><td>'.$e($m['target']).'</td></tr>';
             if($m['catatan']!=='')$html.='<tr><td colspan="4">Catatan: '.nl2br($e($m['catatan'])).'</td></tr>';
         }
-        $html.='</tbody></table><p>Rata-rata nilai: '.$e($s['rata_rata']??'Belum lengkap').'</p><h2>Sikap</h2>';
+        // PRD §5.1: rapor menampilkan bilangan bulat. Snapshot lama tanpa kunci ini tetap tampil seperti PDF-nya.
+        $avg=array_key_exists('rata_rata_tampil',$s)?$s['rata_rata_tampil']:($s['rata_rata']??null);
+        $html.='</tbody></table><p>Rata-rata nilai: '.$e($avg??'Belum lengkap').'</p><h2>Sikap</h2>';
         foreach(['adab'=>'Adab/akhlak','kedisiplinan'=>'Kedisiplinan','tanggung_jawab'=>'Tanggung jawab'] as $key=>$label)$html.='<p>'.$label.': '.$e($s['sikap'][$key]??'Belum lengkap').'</p>';
         $html.='<p>Catatan pembimbing: '.nl2br($e($s['sikap']['catatan']??'')).'</p><h2>Kehadiran</h2><p>';
         foreach($s['kehadiran']['hitungan'] as $k=>$v)$html.=$e($k).': '.$e($v).' &nbsp; ';

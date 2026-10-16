@@ -1,0 +1,39 @@
+# Ringkasan run DB baru auditor (setelah koreksi). Kolom kedua: exit; angka = baris lulus.
+regresi-fase1 exit=0 29 [lulus] Admin beralasan tercatat dalam kapasitas admin
+regresi-fase1-http exit=0 23 [lulus] API v4_wali tanpa parameter tetap 403
+regresi-fase2 exit=0 54 Selesai pada MariaDB uji, bukan produksi.
+regresi-fase2-konkurensi exit=0 2 [lulus] Tepat satu komponen berlaku dan satu revisi, tanpa duplikasi.
+regresi-fase2-http exit=0 25 [lulus] Web Pendidikan jalur guru 403
+regresi-fase2-guru exit=0 8 [lulus] Web guru akses silang 403
+regresi-fase3 exit=0 73 Selesai Fase 3 pada MariaDB uji.
+regresi-fase3-konkurensi exit=0 4 [lulus] Verifikasi tidak menggandakan riwayat: tiga versi sumber dan satu pemeriksaan.
+regresi-fase3-http exit=0 56 [lulus] API gate menolak pascakoreksi murobi
+regresi-fase3-transaksi exit=0 9 [lulus] Perpindahan kelas tidak mengubah identitas/kelas/nilai pengisi historis
+verifier-fase3 exit=0 7 [lulus] Versi bahan mempunyai riwayat
+seed4 0
+integrasi exit=0 45 Penerbitan kanonis dan akses sintetis selesai, bukan produksi.
+pdf-hash exit=0 0 PDF sintetis dirender dan diperiksa: 1 halaman; dua PNG tanda tangan, QR vektor, identitas penanda dan lima status hadir
+push exit=0 10 Tidak ada panggilan jaringan/provider nyata atau pengiriman push fisik dalam suite ini.
+http-browser exit=0 92 [lulus] K7 hash PDF lama tidak berubah setelah penggantian web
+konkurensi exit=0 22 [lulus] Pembersihan fixture orphan terarah setelah DB dikonfirmasi
+siklus exit=0 16 [lulus] Push OFF selama seluruh penggantian tidak menambah outbox provider
+pdf-banyakhal exit=0 1 [lulus] Dokumen uji 30 mapel dengan catatan panjang dirender tanpa mutasi penerbitan
+verifier-fase4 exit=0 12 [lulus] PDF versi #10 utuh
+verifier-fase3-final exit=0 7 [lulus] Versi bahan mempunyai riwayat
+rekonsiliasi exit=0 12 [lulus] PDF versi #10 utuh
+receipt exit=0 3 [lulus] Receipt ulang idempoten tanpa request tambahan
+nilai-belum-lengkap exit=0 4 [lulus] PDF terbit terdahulu tetap identik setelah probe sumber sintetis
+http-navigasi exit=0 4 [lulus] Navigasi pratinjau 375 px tanpa overflow
+http-pratinjau exit=0 5 [lulus] Redirect mempertahankan rencana yang disunting
+qr exit=0 1 [lulus] QR pada render PDF kanonis dapat dipindai; URL fragment cocok dengan kode 48 hex.
+verifier-fase4-akhir exit=0 12 [lulus] PDF versi #10 utuh
+
+# Probe auditor, rollback, log server (jumlah warning/fatal pada baris terakhir)
+audit-probe exit=0 lulus=83 gagal=0
+verifier-pasca-probe exit=0 lulus=21 gagal=0
+rekonsiliasi-akhir exit=0 lulus=21 gagal=0
+rollback-preflight-berisi exit=1 lulus=0 gagal=0
+rollback-sql-berisi exit=1 lulus=0 gagal=0
+verifier-pasca-rollback-ditolak exit=0 lulus=21 gagal=0
+rollback-kosong exit=0
+0

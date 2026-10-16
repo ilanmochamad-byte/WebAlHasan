@@ -1,0 +1,15 @@
+[lulus] Proteksi token sintetis siap
+[lulus] K6 Push OFF + WhatsApp OFF: tepat nol request mock provider meskipun outbox pending
+[lulus] Kegagalan provider sintetis menyimpan dua kegagalan retry
+[lulus] Retry baris yang sama sukses pada mock, tanpa duplikasi outbox
+[lulus] Worker ulang tidak mengirim baris Sent
+[lulus] K6 payload provider benar-benar hanya generik dan penunjuk
+[lulus] K6 payload provider benar-benar hanya generik dan penunjuk
+[lulus] K6 payload provider benar-benar hanya generik dan penunjuk
+[lulus] K6 payload provider benar-benar hanya generik dan penunjuk
+[lulus] Retry provider mempertahankan dua InApp dan dua outbox Push
+Tidak ada panggilan jaringan/provider nyata atau pengiriman push fisik dalam suite ini.
+# receipt
+[lulus] Push OFF: nol request receipt provider
+[lulus] Receipt mock DeviceNotRegistered: dua token sintetis dicabut tanpa warning/fatal
+[lulus] Receipt ulang idempoten tanpa request tambahan

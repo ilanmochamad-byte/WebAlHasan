@@ -1,0 +1,36 @@
+# PDF/QR
+PDF sintetis dirender dan diperiksa: 1 halaman; dua PNG tanda tangan, QR vektor, identitas penanda dan lima status hadir
+[lulus] QR pada render PDF kanonis dapat dipindai; URL fragment cocok dengan kode 48 hex.
+[lulus] Dokumen uji 30 mapel dengan catatan panjang dirender tanpa mutasi penerbitan
+# inspeksi
+[lulus] PDF 1 halaman, dua tanda tangan + QR tertanam
+[lulus] Kode 48 hex terbaca
+[lulus] Ubah tepat satu byte -> hash berbeda
+Rapor Semester Al Hasan
+Santri Sintetis Fase 4 #286 · NIS UJI4-286
+Kelas 1 IBTIDA PI · 2026/2027 / Ganjil
+Mata pelajaran Nilai Predikat Target
+Mapel Uji A 85 B 81.00
+Catatan: Capaian dikoreksi guru
+Capaian <script>window.v4xss=1</script>
+Mapel Uji B 84 B 75.00
+Catatan: Capaian <script>window.v4xss=1</script>
+Rata-rata nilai: 85
+Sikap
+Adab/akhlak: Sangat Baik
+Kedisiplinan: Sangat Baik
+Tanggung jawab: Cukup
+Catatan pembimbing: Koreksi murobi terbaru
+Kehadiran
+Hadir: 1   Terlambat: 1   Izin: 1   Sakit: 2   Alpa: 1  
+Pertemuan: 6 · Belum dicatat: 0
+Catatan umum
+Catatan umum sintetis <script>window.v4xss=1</script>
+Kota Sintetis, 2026-10-16 · Versi 1
+Pendidikan
+Penanda Sintetis Pendidikan UJI
+Pimpinan
+Penanda Sintetis Pimpinan UJI
+Kode verifikasi: <kode sintetis disamarkan>
+Pindai QR untuk status. Cocokkan berkas PDF melalui halaman verifikasi.
+Gambar tanda tangan; bukan tanda tangan sertifikat kriptografis.
