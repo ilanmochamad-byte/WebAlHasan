@@ -1,0 +1,308 @@
+# migrasi baseline 001-021
+001_phase1_security.sql
+002_phase2_master_data.sql
+003_phase3_schedules_meetings.sql
+004_phase4_api_attendance.sql
+005_phase5_reporting_indexes.sql
+006_v2_phase1_perizinan_foundation.sql
+007_v2_phase2_pengajuan_routing_keputusan.sql
+008_v2_phase4_notifikasi_push_whatsapp.sql
+009_v2_phase5_laporan_dan_push_receipt.sql
+010_perapihan_rekonsiliasi_wali.sql
+011_koreksi_alumni.sql
+012_fondasi_penugasan_v3_v6.sql
+013_v3_fase1.sql
+014_v3_fase2_pelanggaran.sql
+015_v3_fase2_koreksi_dan_rekomendasi.sql
+016_v3_fase3_konseling.sql
+017_v3_fase3_kerahasiaan_dan_revisi.sql
+018_v3_fase4_publikasi.sql
+019_v3_fase5_laporan_retensi.sql
+020_v4_fase1_fondasi.sql
+021_v4_fase3_verifikasi.sql
+# preflight
+[info] Basis data terpilih: webalhasan_v4_fase2_test (preflight hanya membaca; migrasi produksi memerlukan otorisasi operator).
+[lulus] Tabel users
+[lulus] Tabel tahun_ajaran
+[lulus] Tabel kelas
+[lulus] Tabel santri
+[lulus] Tabel mata_pelajaran
+[lulus] Tabel guru_mapel_assignments
+[lulus] Tabel pendidikan_assignments
+[lulus] Tabel plotting_kelas
+[lulus] Tabel pertemuan_peserta
+[lulus] Tabel absensi_santri
+[lulus] Tabel audit_logs
+[lulus] Tabel notifikasi_outbox
+[lulus] Tabel schema_migrations
+[lulus] Migrasi 019 tercatat
+Manifest ditulis: <TMP_AUDITOR>/fx/baseline.json
+Backup DB, berkas privat, dan manifest ini wajib disimpan sebelum migrasi.
+# 022 lalu up ulang
+Diterapkan:
+- 022_v4_fase4_publikasi.sql
+Tidak ada migrasi baru.
+# verifier 020+manifest
+[lulus] Tabel v4_penanda_tangan
+[lulus] Tabel v4_tanda_tangan_aset
+[lulus] Tabel v4_rencana
+[lulus] Tabel v4_rencana_mapel
+[lulus] Tabel v4_nilai
+[lulus] Tabel v4_nilai_riwayat
+[lulus] Tabel v4_sikap
+[lulus] Tabel v4_sikap_riwayat
+[lulus] Tabel v4_rapor
+[lulus] Tabel v4_rapor_versi
+[lulus] Tabel v4_verifikasi
+[lulus] Migrasi 020 tercatat sekali
+[lulus] Referensi baru v4_sikap.kelas_id tidak yatim
+[lulus] Referensi baru v4_sikap.diketahui_murobi_user_id tidak yatim
+[lulus] Referensi baru v4_sikap.pembimbing_user_id tidak yatim
+[lulus] Referensi baru v4_sikap.santri_id tidak yatim
+[lulus] Referensi baru v4_sikap.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana.created_by tidak yatim
+[lulus] Referensi baru v4_rencana.kelas_id tidak yatim
+[lulus] Referensi baru v4_rencana.pendidikan_aset_id tidak yatim
+[lulus] Referensi baru v4_rencana.pendidikan_penanda_id tidak yatim
+[lulus] Referensi baru v4_rencana.pimpinan_aset_id tidak yatim
+[lulus] Referensi baru v4_rencana.pimpinan_penanda_id tidak yatim
+[lulus] Referensi baru v4_rencana.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana.updated_by tidak yatim
+[lulus] Referensi baru v4_rencana_penanda_riwayat.actor_user_id tidak yatim
+[lulus] Referensi baru v4_rencana_penanda_riwayat.rencana_id tidak yatim
+[lulus] Referensi baru v4_bahan.actor_user_id tidak yatim
+[lulus] Referensi baru v4_bahan.rencana_id tidak yatim
+[lulus] Referensi baru v4_bahan.santri_id tidak yatim
+[lulus] Referensi baru v4_rapor.santri_id tidak yatim
+[lulus] Referensi baru v4_rapor.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.diterbitkan_oleh tidak yatim
+[lulus] Referensi baru v4_rapor_versi.pendidikan_aset_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.pimpinan_aset_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.rapor_id tidak yatim
+[lulus] Referensi baru v4_rapor_operasi.actor_user_id tidak yatim
+[lulus] Referensi baru v4_rapor_operasi.rapor_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.guru_mapel_assignment_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.mata_pelajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.rencana_id tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.activated_by tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.penanda_tangan_id tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.uploaded_by tidak yatim
+[lulus] Referensi baru v4_nilai.rencana_mapel_id tidak yatim
+[lulus] Referensi baru v4_nilai.pelaku_user_id tidak yatim
+[lulus] Referensi baru v4_nilai.santri_id tidak yatim
+[lulus] Referensi baru v4_nilai_riwayat.nilai_id tidak yatim
+[lulus] Referensi baru v4_nilai_riwayat.pelaku_user_id tidak yatim
+[lulus] Referensi baru v4_verifikasi.rapor_versi_id tidak yatim
+[lulus] Referensi baru v4_penanda_tangan.created_by tidak yatim
+[lulus] Referensi baru v4_penanda_tangan.updated_by tidak yatim
+[lulus] Referensi baru v4_sikap_riwayat.actor_user_id tidak yatim
+[lulus] Referensi baru v4_sikap_riwayat.sikap_id tidak yatim
+[lulus] Referensi baru v4_bahan_riwayat.bahan_id tidak yatim
+Jumlah referensi yatim V4: 0
+[lulus] Jumlah baris lama absensi_guru tetap 0
+[lulus] Jumlah baris lama absensi_santri tetap 0
+[lulus] Jumlah baris lama alumni tetap 0
+[lulus] Jumlah baris lama api_idempotency_keys tetap 0
+[lulus] Jumlah baris lama api_tokens tetap 0
+[lulus] Jumlah baris lama bendahara_bulanan_assignments tetap 0
+[lulus] Jumlah baris lama bendahara_psb_assignments tetap 0
+[lulus] Jumlah baris lama berita tetap 3
+[lulus] Jumlah baris lama download tetap 1
+[lulus] Jumlah baris lama galeri tetap 1
+[lulus] Jumlah baris lama guru tetap 25
+[lulus] Jumlah baris lama guru_mapel_assignments tetap 0
+[lulus] Jumlah baris lama izin_idempotency_keys tetap 0
+[lulus] Jumlah baris lama izin_keputusan tetap 0
+[lulus] Jumlah baris lama izin_keputusan_koreksi tetap 0
+[lulus] Jumlah baris lama izin_pengajuan tetap 0
+[lulus] Jumlah baris lama izin_riwayat_status tetap 0
+[lulus] Jumlah baris lama jadwal_jam_migration_report tetap 0
+[lulus] Jumlah baris lama jadwal_ngaji tetap 5
+[lulus] Jumlah baris lama kamar tetap 29
+[lulus] Jumlah baris lama kelas tetap 15
+[lulus] Jumlah baris lama mapel tetap 0
+[lulus] Jumlah baris lama mata_pelajaran tetap 0
+[lulus] Jumlah baris lama mengajar tetap 0
+[lulus] Jumlah baris lama murobi_assignments tetap 0
+[lulus] Jumlah baris lama notifikasi_outbox tetap 0
+[lulus] Jumlah baris lama notifikasi_pengaturan_audit tetap 0
+[lulus] Jumlah baris lama notifikasi_percobaan tetap 0
+[lulus] Jumlah baris lama notifikasi_worker_lock tetap 2
+[lulus] Jumlah baris lama panitia_psb_assignments tetap 0
+[lulus] Jumlah baris lama pelanggaran tetap 0
+[lulus] Jumlah baris lama pembimbing_assignments tetap 0
+[lulus] Jumlah baris lama pembimbing_kamar tetap 0
+[lulus] Jumlah baris lama pendidikan_assignments tetap 0
+[lulus] Jumlah baris lama pengaturan_notifikasi tetap 1
+[lulus] Jumlah baris lama pengurus tetap 0
+[lulus] Jumlah baris lama perangkat_push tetap 0
+[lulus] Jumlah baris lama perizinan tetap 0
+[lulus] Jumlah baris lama pertemuan_pengajian tetap 0
+[lulus] Jumlah baris lama pertemuan_peserta tetap 0
+[lulus] Jumlah baris lama plotting_kamar tetap 358
+[lulus] Jumlah baris lama plotting_kelas tetap 355
+[lulus] Jumlah baris lama psb_pembayaran tetap 103
+[lulus] Jumlah baris lama psb_pendaftar tetap 53
+[lulus] Jumlah baris lama roles tetap 4
+[lulus] Jumlah baris lama santri tetap 360
+[lulus] Jumlah baris lama santri_wali tetap 207
+[lulus] Jumlah baris lama tahun_ajaran tetap 4
+[lulus] Jumlah baris lama users tetap 1
+[lulus] Jumlah baris lama user_roles tetap 1
+[lulus] Jumlah baris lama v3_ambang tetap 0
+[lulus] Jumlah baris lama v3_idempotency tetap 0
+[lulus] Jumlah baris lama v3_katalog tetap 0
+[lulus] Jumlah baris lama v3_kategori tetap 0
+[lulus] Jumlah baris lama v3_konseling_kasus tetap 0
+[lulus] Jumlah baris lama v3_konseling_kasus_revisi tetap 0
+[lulus] Jumlah baris lama v3_konseling_sesi tetap 0
+[lulus] Jumlah baris lama v3_konseling_tautan tetap 0
+[lulus] Jumlah baris lama v3_lampiran tetap 0
+[lulus] Jumlah baris lama v3_murobi_catatan tetap 0
+[lulus] Jumlah baris lama v3_pelanggaran tetap 0
+[lulus] Jumlah baris lama v3_poin_agregat tetap 0
+[lulus] Jumlah baris lama v3_poin_ledger tetap 0
+[lulus] Jumlah baris lama v3_publikasi tetap 0
+[lulus] Jumlah baris lama v3_publikasi_outbox tetap 0
+[lulus] Jumlah baris lama v3_publikasi_pratinjau tetap 0
+[lulus] Jumlah baris lama v3_publikasi_riwayat tetap 0
+[lulus] Jumlah baris lama v3_rekomendasi tetap 0
+[lulus] Jumlah baris lama wali tetap 207
+# verifier 021 awal/akhir
+[lulus] Tabel v4_bahan
+[lulus] Tabel v4_bahan_riwayat
+[lulus] Migrasi 021 tercatat tepat sekali
+[lulus] Status bahan tidak yatim
+[lulus] Mapel bahan milik rencana yang sama
+[lulus] Riwayat bahan tidak yatim
+[lulus] Versi bahan mempunyai riwayat
+[lulus] Tabel v4_bahan
+[lulus] Tabel v4_bahan_riwayat
+[lulus] Migrasi 021 tercatat tepat sekali
+[lulus] Status bahan tidak yatim
+[lulus] Mapel bahan milik rencana yang sama
+[lulus] Riwayat bahan tidak yatim
+[lulus] Versi bahan mempunyai riwayat
+# verifier 022 setelah suite Codex
+[lulus] PDF dan hash wajib
+[lulus] Kode dan versi konsisten
+[lulus] Operasi penerbitan wajib
+[lulus] Versi current ada
+[lulus] Tidak ada dua versi sah
+[lulus] PDF versi #4 utuh
+[lulus] PDF versi #5 utuh
+[lulus] PDF versi #6 utuh
+[lulus] PDF versi #7 utuh
+[lulus] PDF versi #8 utuh
+[lulus] PDF versi #9 utuh
+[lulus] PDF versi #10 utuh
+# verifier setelah probe auditor
+[lulus] PDF dan hash wajib
+[lulus] Kode dan versi konsisten
+[lulus] Operasi penerbitan wajib
+[lulus] Versi current ada
+[lulus] Tidak ada dua versi sah
+[lulus] PDF versi #4 utuh
+[lulus] PDF versi #5 utuh
+[lulus] PDF versi #6 utuh
+[lulus] PDF versi #7 utuh
+[lulus] PDF versi #8 utuh
+[lulus] PDF versi #9 utuh
+[lulus] PDF versi #10 utuh
+[lulus] PDF versi #11 utuh
+[lulus] PDF versi #18 utuh
+[lulus] PDF versi #25 utuh
+[lulus] PDF versi #30 utuh
+[lulus] PDF versi #31 utuh
+[lulus] PDF versi #32 utuh
+[lulus] PDF versi #34 utuh
+[lulus] PDF versi #35 utuh
+[lulus] PDF versi #36 utuh
+# rekonsiliasi read-only
+PDF tanpa referensi berumur >24 jam: 0. Tidak ada berkas dihapus. Hentikan penulis, backup dan periksa DB sebelum pembersihan manual.
+[lulus] PDF dan hash wajib
+[lulus] Kode dan versi konsisten
+[lulus] Operasi penerbitan wajib
+[lulus] Versi current ada
+[lulus] Tidak ada dua versi sah
+[lulus] PDF versi #4 utuh
+[lulus] PDF versi #5 utuh
+[lulus] PDF versi #6 utuh
+[lulus] PDF versi #7 utuh
+[lulus] PDF versi #8 utuh
+[lulus] PDF versi #9 utuh
+[lulus] PDF versi #10 utuh
+[lulus] PDF versi #11 utuh
+[lulus] PDF versi #18 utuh
+[lulus] PDF versi #25 utuh
+[lulus] PDF versi #30 utuh
+[lulus] PDF versi #31 utuh
+[lulus] PDF versi #32 utuh
+[lulus] PDF versi #34 utuh
+[lulus] PDF versi #35 utuh
+[lulus] PDF versi #36 utuh
+# rollback berisi data: preflight
+Rollback ditolak: data publikasi/riwayat harus dipertahankan.
+# rollback berisi data: guard SQL (2 baris pertama)
+RuntimeException: Migrasi gagal pada 022_v4_fase4_publikasi.sql: CONSTRAINT `v4_fase4_rollback_guard.jumlah` failed for `webalhasan_v4_fase2_test`.`v4_fase4_rollback_guard` in <APP_ROOT_AUDITOR>/app/Database/Migrator.php:123
+# data dan tabel guard sesudah penolakan
+rapor	versi	operasi
+1	16	19
+Tables_in_webalhasan_v4_fase2_test (v4_fase4_rollback_guard)
+v4_fase4_rollback_guard
+# verifier setelah rollback ditolak
+[lulus] PDF dan hash wajib
+[lulus] Kode dan versi konsisten
+[lulus] Operasi penerbitan wajib
+[lulus] Versi current ada
+[lulus] Tidak ada dua versi sah
+[lulus] PDF versi #4 utuh
+[lulus] PDF versi #5 utuh
+[lulus] PDF versi #6 utuh
+[lulus] PDF versi #7 utuh
+[lulus] PDF versi #8 utuh
+[lulus] PDF versi #9 utuh
+[lulus] PDF versi #10 utuh
+[lulus] PDF versi #11 utuh
+[lulus] PDF versi #18 utuh
+[lulus] PDF versi #25 utuh
+[lulus] PDF versi #30 utuh
+[lulus] PDF versi #31 utuh
+[lulus] PDF versi #32 utuh
+[lulus] PDF versi #34 utuh
+[lulus] PDF versi #35 utuh
+[lulus] PDF versi #36 utuh
+# latihan rollback kosong (DB skema terpisah)
+Diterapkan:
+- 001_phase1_security.sql
+- 002_phase2_master_data.sql
+- 003_phase3_schedules_meetings.sql
+- 004_phase4_api_attendance.sql
+- 005_phase5_reporting_indexes.sql
+- 006_v2_phase1_perizinan_foundation.sql
+- 007_v2_phase2_pengajuan_routing_keputusan.sql
+- 008_v2_phase4_notifikasi_push_whatsapp.sql
+- 009_v2_phase5_laporan_dan_push_receipt.sql
+- 010_perapihan_rekonsiliasi_wali.sql
+- 011_koreksi_alumni.sql
+- 012_fondasi_penugasan_v3_v6.sql
+- 013_v3_fase1.sql
+- 014_v3_fase2_pelanggaran.sql
+- 015_v3_fase2_koreksi_dan_rekomendasi.sql
+- 016_v3_fase3_konseling.sql
+- 017_v3_fase3_kerahasiaan_dan_revisi.sql
+- 018_v3_fase4_publikasi.sql
+- 019_v3_fase5_laporan_retensi.sql
+- 020_v4_fase1_fondasi.sql
+- 021_v4_fase3_verifikasi.sql
+- 022_v4_fase4_publikasi.sql
+Tabel bisnis Fase 4 kosong. Hentikan penulis sebelum rollback.
+Rollback selesai: 022_v4_fase4_publikasi.sql
+Diterapkan:
+- 022_v4_fase4_publikasi.sql
+Tidak ada migrasi baru.
+[lulus] PDF dan hash wajib
+[lulus] Kode dan versi konsisten
+[lulus] Operasi penerbitan wajib
+[lulus] Versi current ada
+[lulus] Tidak ada dua versi sah

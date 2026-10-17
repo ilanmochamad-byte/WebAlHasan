@@ -1,0 +1,6 @@
+Apache/2.4.67 lokal, Listen 127.0.0.1:8966; .htaccess disalin tanpa perubahan ke document root sintetis.
+AllowOverride All, mod_rewrite, mod_authz_core dan mod_setenvif aktif.
+403: composer.json, composer.lock, PRD-V4.md, AGENTS.md, .env, dump.sql.
+403: storage/private.pdf, vendor/autoload.php, docs/status.md, bin/tool.php, app/bootstrap.php, database/schema.sql, tests/fixture.php.
+200: ok.txt (kontrol positif).
+Ini bukti Apache lokal, bukan konfigurasi cPanel/FastCGI produksi. Seluruh probe berisi teks sintetis.

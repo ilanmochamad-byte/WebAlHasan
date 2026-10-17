@@ -1,0 +1,3 @@
+v4p5-final-backup.sql sha256=725a9a4df3009101c647a9416857f961a112f33cf996ca7f4c60b64ed8ce2e82
+v4p5-final-storage.tgz sha256=f69237e791f999e18b83b7f41243b3ba5d47014c24b51d8562c3696db56d0165
+Restore point lokal sesudah E2E final; arsip privat tidak disertakan Git.

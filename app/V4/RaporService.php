@@ -49,7 +49,7 @@ final class RaporService
         }
         $finals=array_column(array_column($subjects,'hasil'),'nilai_internal');$average=count($finals)===count($subjects)&&$finals?round(array_sum($finals)/count($finals),2,PHP_ROUND_HALF_UP):null;
         $cur=$this->current($sid,(int)$p['tahun_ajaran_id']);
-        $snapshot=['santri'=>$this->one('SELECT id,nama_santri,nis FROM santri WHERE id=?','i',[$sid]),'rencana_id'=>$plan,'tahun_ajaran_id'=>(int)$p['tahun_ajaran_id'],'kelas_id'=>(int)$p['kelas_id'],'kelas'=>$p['nama_kelas'],'tahun'=>$p['tahun'],'semester'=>$p['semester'],'mapel'=>$subjects,'rata_rata'=>$average,'sikap'=>$attitude,'kehadiran'=>$att,'catatan_umum'=>$note,'penanda'=>$signers,'tempat'=>$p['tempat'],'tanggal'=>date('Y-m-d'),'version'=>(int)($cur['current_version']??0)+1,'kekurangan'=>$missing];
+        $snapshot=['santri'=>$this->one('SELECT id,nama_santri,nis FROM santri WHERE id=?','i',[$sid]),'rencana_id'=>$plan,'tahun_ajaran_id'=>(int)$p['tahun_ajaran_id'],'kelas_id'=>(int)$p['kelas_id'],'kelas'=>$p['nama_kelas'],'tahun'=>$p['tahun'],'semester'=>$p['semester'],'mapel'=>$subjects,'rata_rata'=>$average,'rata_rata_tampil'=>$average===null?null:(int)round($average,0,PHP_ROUND_HALF_UP),'sikap'=>$attitude,'kehadiran'=>$att,'catatan_umum'=>$note,'penanda'=>$signers,'tempat'=>$p['tempat'],'tanggal'=>date('Y-m-d'),'version'=>(int)($cur['current_version']??0)+1,'kekurangan'=>$missing];
         return ['snapshot'=>$snapshot,'pratinjau_hash'=>BahanRepository::fingerprint([$snapshot,$matrix['matriks_hash'],$p['version']]),'siap_terbit'=>!$missing,'current_version'=>(int)($cur['current_version']??0),'revision'=>(int)($cur['revision']??0),'status'=>$cur['status']??'Draf','rapor_id'=>(int)($cur['id']??0)];
     }
     /** SERIALIZABLE locks rows and matching gaps of live sources and authorization reads.
@@ -186,6 +186,23 @@ final class RaporService
             if($staff||($v['status']==='Terbit'&&$r['status']==='Terbit'))$item['snapshot']=json_decode($v['snapshot_json'],true,512,JSON_THROW_ON_ERROR);
             $out['versi'][]=$item;
         }return $out;
+    }
+    /** API projection only: persisted snapshot and canonical PDF are never rewritten. */
+    public function parentView(array $u,int $rid): array
+    {
+        $out=$this->show($u,$rid);
+        foreach($out['versi'] as &$v){
+            if(!isset($v['snapshot']))continue;
+            $s=$v['snapshot'];
+            $s=array_intersect_key($s,array_flip(['santri','kelas','tahun','semester','mapel','rata_rata','rata_rata_tampil','sikap','kehadiran','catatan_umum','penanda','tempat','tanggal','version']));
+            $s['santri']=array_intersect_key($s['santri'],array_flip(['nama_santri','nis']));
+            $s['sikap']=array_intersect_key($s['sikap'],array_flip(['adab','kedisiplinan','tanggung_jawab','catatan']));
+            $s['kehadiran']=array_intersect_key($s['kehadiran'],array_flip(['hitungan','jumlah_pertemuan','belum_dicatat']));
+            $s['penanda']=array_map(static fn($p)=>array_intersect_key($p,array_flip(['jabatan','nama','gelar'])),$s['penanda']);
+            foreach($s['mapel'] as &$m){$m=array_intersect_key($m,array_flip(['nama','hasil','target','catatan']));$m['hasil']=array_intersect_key($m['hasil'],array_flip(['nilai_tampil','predikat','tuntas']));}
+            unset($m);$v['snapshot']=$s;
+        }
+        unset($v);return $out;
     }
     public function pdf(array $u,int $rid,int $version,bool $staff=false): string
     {

@@ -1,0 +1,5 @@
+[2026-10-17 07:38:51] Ringkasan antrean notifikasi
+  In-app  : selalu aktif | total 32, belum dibaca 31
+  Push    : nonaktif | menunggu 0, terkirim 2, gagal 0 (permanen 0)
+  WhatsApp: nonaktif | menunggu 0, terkirim 0, gagal 0 (permanen 0)
+  receipt : menunggu 2, terkirim 0, gagal 0, tidak tersedia 0, belum diperlukan 0

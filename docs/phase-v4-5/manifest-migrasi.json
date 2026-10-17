@@ -1,0 +1,101 @@
+{
+  "schema_required": "022_v4_fase4_publikasi.sql",
+  "new_migration_in_phase5": null,
+  "migrations": [
+    {
+      "file": "database/migrations/001_phase1_security.sql",
+      "sha256": "8cd56c0710fe6d1d06beef70df3c7be1ff7377cb404c6a2be61c7347500c8106"
+    },
+    {
+      "file": "database/migrations/002_phase2_master_data.sql",
+      "sha256": "4e9ef6fe5dd5cdde8751618294b3517a6afe27025e42e4dc49bba73f6274bb2e"
+    },
+    {
+      "file": "database/migrations/003_phase3_schedules_meetings.sql",
+      "sha256": "921d8e9e43d915a34f28e95cca18ff26b08d2e4076be2f845074ca2f93d3d4c7"
+    },
+    {
+      "file": "database/migrations/004_phase4_api_attendance.sql",
+      "sha256": "21eabfaeb623e1689fbeed72c8842153caa7d5e7fdd69c0830fd12e688f350f3"
+    },
+    {
+      "file": "database/migrations/005_phase5_reporting_indexes.sql",
+      "sha256": "f3a825beeb27129e679705e9d797d915c20af5c7122589f519afc430dcfebfb2"
+    },
+    {
+      "file": "database/migrations/006_v2_phase1_perizinan_foundation.sql",
+      "sha256": "42f980afb337b28248277aa0e1b1b13ffb846d87d63971fcba8d6e3e8c8e5c3a"
+    },
+    {
+      "file": "database/migrations/007_v2_phase2_pengajuan_routing_keputusan.sql",
+      "sha256": "1ea20a72c0cff122dabd25853b168afb8b8c4b9690d47d4353688484bf6a38c0"
+    },
+    {
+      "file": "database/migrations/008_v2_phase4_notifikasi_push_whatsapp.sql",
+      "sha256": "24491c48b2d0aeb3965c63ce7c8bee7de2b012ecf5b368a23dac55087ad303ec"
+    },
+    {
+      "file": "database/migrations/009_v2_phase5_laporan_dan_push_receipt.sql",
+      "sha256": "4100d880cbc873e212b4cfc13f59b30dc9189beecbfcaef0052fbdd58a60fbbc"
+    },
+    {
+      "file": "database/migrations/010_perapihan_rekonsiliasi_wali.sql",
+      "sha256": "0346c2dc84654ba647bd73dee6c72c307daa238ab288ee1df2571e33d3f9fc59"
+    },
+    {
+      "file": "database/migrations/011_koreksi_alumni.sql",
+      "sha256": "89bfc7016d12c6a4f6a87949c57375b0977f7a9bb8bdd2c81774e676fc642d3c"
+    },
+    {
+      "file": "database/migrations/012_fondasi_penugasan_v3_v6.sql",
+      "sha256": "919f835c5825ea90c2597ccf43aee700e8a4e5543d9e423ff1d4892a41fc4c72"
+    },
+    {
+      "file": "database/migrations/013_v3_fase1.sql",
+      "sha256": "0133acf59b87af08cb6c9a9dda4b558153855b2309591e91cc2f6f90727f100e"
+    },
+    {
+      "file": "database/migrations/014_v3_fase2_pelanggaran.sql",
+      "sha256": "905061487c1d3f61ef13e5b1731aea483b71e59ad13c6c1da53a397f429f0425"
+    },
+    {
+      "file": "database/migrations/015_v3_fase2_koreksi_dan_rekomendasi.sql",
+      "sha256": "12b93c9e125de2758bec9a40225c44bef50856829553aa7ec7b8813a61179a45"
+    },
+    {
+      "file": "database/migrations/016_v3_fase3_konseling.sql",
+      "sha256": "dbf974c0ef11eea083816a2bcc7f604b0cb3d63d2ede385924ea7c0b39cbe783"
+    },
+    {
+      "file": "database/migrations/017_v3_fase3_kerahasiaan_dan_revisi.sql",
+      "sha256": "db685155366be4e8332514a82aca47ec95b41a5dd6db9c72c542412fffffb6a0"
+    },
+    {
+      "file": "database/migrations/018_v3_fase4_publikasi.sql",
+      "sha256": "2c993d5593a251b37d38bc93120f9575eecab349898c65ea2798dd4a6146d395"
+    },
+    {
+      "file": "database/migrations/019_v3_fase5_laporan_retensi.sql",
+      "sha256": "363b3a35be0baec14513d1720260109cb0662caea7f37a8b9874e7f5dee04a07"
+    },
+    {
+      "file": "database/migrations/020_v4_fase1_fondasi.sql",
+      "sha256": "c5890cde72908326e4a0398139d7615b2f2ce5ae4b9a9ef49ed9e60fbe785955"
+    },
+    {
+      "file": "database/migrations/021_v4_fase3_verifikasi.sql",
+      "sha256": "d23c415b5e9f15e8a39e03cd0be98990f3e4ab65370626b80132350f053a65a4"
+    },
+    {
+      "file": "database/migrations/022_v4_fase4_publikasi.sql",
+      "sha256": "08835ed0e0b3d2d1853bbdacc108569838dca34b74c8858a66217bd4aaaf4350"
+    }
+  ],
+  "composer_lock_sha256": "423824a810f519e903172aeb287ad6a115461da64815f9aefcec97092037aeb7",
+  "mobile_package_lock_sha256": "800ed563cbbd81b7639fdfc2731e501596e5147e9daaf585f266306d584ef7c3",
+  "web_implementation_commit": "2deb8f93b8404200aa12ae5a218cddb96e7b1b98",
+  "mobile_implementation_commit": "c969374eb24d9d12bb065f03d0f5516f91b1a30f",
+  "web_baseline": "831017ac37a09d4465e9f64131f212f040410420",
+  "mobile_baseline": "dfae26d69fe776492cfda274d10fddf79a1590f2",
+  "note": "Commit sesudah implementasi hanya dokumentasi/bukti; HEAD handoff disampaikan di chat dan dapat diverifikasi melalui Git."
+}

@@ -1,0 +1,92 @@
+[lulus] Pratinjau tanpa penugasan v4_wali4a 403
+[lulus] Penerbitan tanpa penugasan v4_wali4a 403
+[lulus] Pratinjau tanpa penugasan v4_guru 403
+[lulus] Penerbitan tanpa penugasan v4_guru 403
+[lulus] Pratinjau tanpa penugasan v4_pengurus 403
+[lulus] Penerbitan tanpa penugasan v4_pengurus 403
+[lulus] Pratinjau Pendidikan dicabut 403
+[lulus] Penerbitan Pendidikan dicabut 403
+[lulus] API detail wali privat
+[lulus] API daftar wali lain kosong
+[lulus] API akses silang v4_wali4lain rapor/4 403
+[lulus] API akses silang v4_wali4lain rapor/4/pdf/1 403
+[lulus] API akses silang v4_wali4lain rapor/4/pdf/1?petugas=1 403
+[lulus] API akses silang v4_guru rapor/4 403
+[lulus] API akses silang v4_guru rapor/4/pdf/1 403
+[lulus] API akses silang v4_guru rapor/4/pdf/1?petugas=1 403
+[lulus] API akses silang v4_pengurus rapor/4 403
+[lulus] API akses silang v4_pengurus rapor/4/pdf/1 403
+[lulus] API akses silang v4_pengurus rapor/4/pdf/1?petugas=1 403
+[lulus] API tanpa bearer ditolak
+[lulus] API tanpa bearer ditolak
+[lulus] API PDF privat
+[lulus] API PDF privat
+[lulus] API PDF privat
+[lulus] K3 HTTP PDF berulang identik
+[lulus] K5 API pencabutan relasi langsung efektif
+[lulus] K5 API pencabutan relasi langsung efektif
+[lulus] Web wali snapshot terbit aman XSS
+[lulus] wali 375 px tanpa overflow
+[lulus] wali teks 24 px tanpa overflow
+[lulus] wali desktop tanpa overflow
+[lulus] Web wali lain detail/PDF 403
+[lulus] Web wali lain detail/PDF 403
+[lulus] Web relasi dicabut detail/PDF 403
+[lulus] Web relasi dicabut detail/PDF 403
+[lulus] Web tanpa akun wajib login detail/PDF
+[lulus] Web tanpa akun wajib login detail/PDF
+[lulus] Web Pendidikan pratinjau dan penggantian
+[lulus] pendidikan 375 px tanpa overflow
+[lulus] pendidikan teks 24 px tanpa overflow
+[lulus] pendidikan desktop tanpa overflow
+[lulus] Web publikasi CSRF 419
+[lulus] API pratinjau usang 409
+[lulus] QR fragment dipindahkan ke form dan dihapus dari URL
+[lulus] K4 kode sah hanya status/versi/tanggal
+[lulus] verifikasi 375 px tanpa overflow
+[lulus] verifikasi teks 24 px tanpa overflow
+[lulus] verifikasi desktop tanpa overflow
+[lulus] K3 PDF cocok melalui unggahan HTTP
+[lulus] K3 PDF tidak cocok melalui unggahan HTTP
+[lulus] Unggahan non-PDF ditolak 422
+[lulus] Unggahan melebihi 10 MB ditolak 422
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] K4 rate limit 429 dan Retry-After
+[lulus] K4 batas 20 pemeriksaan per IP/menit tidak dapat dilewati kode berbeda
+[lulus] penanda 375 px tanpa overflow
+[lulus] penanda teks 24 px tanpa overflow
+[lulus] penanda desktop tanpa overflow
+[lulus] Web penanda khusus admin
+[lulus] Web mengonfirmasi versi pengganti 2
+[lulus] K2 penggantian web tepat satu versi baru dan InApp per wali
+[lulus] K7 hash PDF lama tidak berubah setelah penggantian web

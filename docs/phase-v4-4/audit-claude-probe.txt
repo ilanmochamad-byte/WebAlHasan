@@ -1,0 +1,85 @@
+[lulus] Awal: PDF versi #4 cocok hash tersimpan
+[lulus] Awal: PDF versi #5 cocok hash tersimpan
+[lulus] Awal: PDF versi #6 cocok hash tersimpan
+[lulus] Awal: PDF versi #7 cocok hash tersimpan
+[lulus] Awal: PDF versi #8 cocok hash tersimpan
+[lulus] Awal: PDF versi #9 cocok hash tersimpan
+[lulus] Awal: PDF versi #10 cocok hash tersimpan
+[lulus] A0 Penerbit lambat mencapai tulis PDF sambil memegang transaksi
+[lulus] A Sumber 'phantom peserta baru santri' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'status pertemuan sumber' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'semester jadwal sumber' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'status pertemuan menjadi Batal' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'absensi santri ada' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'nilai santri' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'sikap santri' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'pemeriksaan bahan' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'penempatan kelas' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'penugasan Pendidikan pelaku' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'aset tanda tangan' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'rencana mapel/target' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'phantom absensi belum dicatat' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Penerbit lambat commit satu versi (200 )
+[lulus] B Injeksi kode verifikasi → HTTP 503
+[lulus] B Injeksi kode verifikasi: versi/kode/operasi/outbox/audit/status/berkas PDF tidak berubah
+[lulus] B Injeksi outbox wali kedua (sesudah wali pertama sukses) → HTTP 503
+[lulus] B Injeksi outbox wali kedua (sesudah wali pertama sukses): versi/kode/operasi/outbox/audit/status/berkas PDF tidak berubah
+[lulus] B Injeksi operasi/idempotensi → HTTP 503
+[lulus] B Injeksi operasi/idempotensi: versi/kode/operasi/outbox/audit/status/berkas PDF tidak berubah
+Audit log gagal disimpan.
+[lulus] B Injeksi audit umum → HTTP 503
+[lulus] B Injeksi audit umum: versi/kode/operasi/outbox/audit/status/berkas PDF tidak berubah
+[lulus] B Injeksi pembatalan versi lama → HTTP 503
+[lulus] B Injeksi pembatalan versi lama: versi/kode/operasi/outbox/audit/status/berkas PDF tidak berubah
+[lulus] B Tulis parsial → 503
+[lulus] B Tulis parsial: berkas parsial dihapus, tidak ada perubahan DB
+[lulus] C strict: 2 konflik 1213 dicoba ulang → tepat satu versi/operasi/PDF
+[lulus] C strict: konflik 1213 terus-menerus → 409 tanpa dampak, berkas tiap percobaan dihapus
+[lulus] C off: 2 konflik 1213 dicoba ulang → tepat satu versi/operasi/PDF
+[lulus] C off: konflik 1213 terus-menerus → 409 tanpa dampak, berkas tiap percobaan dihapus
+[lulus] C Revisi usang 409 tanpa retry yang menimpa revisi
+[lulus] D commit sukses, jawaban false → 503 'ulangi dengan key yang sama'
+[lulus] D commit sukses, jawaban false: versi ter-commit tetap menunjuk berkas yang tidak dihapus
+[lulus] D commit sukses, jawaban false: PDF ter-commit terbaca dan hash cocok
+[lulus] D commit sukses, jawaban false: ulang key sama → replay tanpa versi baru
+[lulus] D commit sukses, koneksi hilang → 503 'ulangi dengan key yang sama'
+[lulus] D commit sukses, koneksi hilang: versi ter-commit tetap menunjuk berkas yang tidak dihapus
+[lulus] D commit sukses, koneksi hilang: PDF ter-commit terbaca dan hash cocok
+[lulus] D commit sukses, koneksi hilang: ulang key sama → replay tanpa versi baru
+[lulus] D commit gagal sungguhan → 503 'ulangi dengan key yang sama'
+[lulus] D commit gagal sungguhan: tidak ada versi dan berkas yatim dihapus
+[lulus] E Replay key sama setelah penugasan Pendidikan dicabut ditolak HTTP 403
+[lulus] E Pratinjau setelah penugasan dicabut ditolak HTTP 403
+[lulus] E Riwayat/cetak petugas setelah penugasan dicabut ditolak HTTP 403
+[lulus] E PDF petugas setelah penugasan dicabut ditolak HTTP 403
+[lulus] E Replay setelah status berubah mengembalikan metadata saat ini tanpa menerbitkan ulang
+[lulus] E Key sama isi berbeda ditolak HTTP 409
+[lulus] F Wali A berelasi aktif mengunduh versi sah
+[lulus] F Wali A tidak dapat mengunduh versi Diganti HTTP 403
+[lulus] F Wali lain ditolak pada detail ID langsung HTTP 403
+[lulus] F Wali lain ditolak pada PDF ID langsung HTTP 403
+[lulus] F ID rapor acak memberi penolakan yang sama HTTP 403
+[lulus] F Wali dengan flag petugas palsu ditolak HTTP 403
+[lulus] F Guru dengan flag petugas ditolak HTTP 403
+[lulus] F Relasi dicabut: detail ditolak HTTP 403
+[lulus] F Relasi dicabut: PDF ditolak HTTP 403
+[lulus] F Relasi dicabut: daftar kosong
+[lulus] F Akun wali nonaktif ditolak HTTP 403
+[lulus] F Wali melihat status semua versi, snapshot hanya versi sah
+[lulus] F Riwayat wali tanpa alasan/pelaku petugas
+[lulus] G Satu InApp per wali berakun aktif; tanpa akun dan wali lain nol
+[lulus] G Tidak ada WhatsApp untuk rapor
+[lulus] G Isi outbox generik dan penunjuk saja (InApp)
+[lulus] G Isi outbox generik dan penunjuk saja (InApp)
+[lulus] G Snapshot dan PDF versi #4 byte-identik setelah seluruh probe
+[lulus] G Snapshot dan PDF versi #5 byte-identik setelah seluruh probe
+[lulus] G Snapshot dan PDF versi #6 byte-identik setelah seluruh probe
+[lulus] G Snapshot dan PDF versi #7 byte-identik setelah seluruh probe
+[lulus] G Snapshot dan PDF versi #8 byte-identik setelah seluruh probe
+[lulus] G Snapshot dan PDF versi #9 byte-identik setelah seluruh probe
+[lulus] G Snapshot dan PDF versi #10 byte-identik setelah seluruh probe
+[lulus] G Status kode verifikasi selalu sama dengan status versi
+[lulus] H Rata-rata baru tampil bilangan bulat (84.6 → 85), internal dua desimal tetap di snapshot
+[lulus] H Snapshot lama tanpa kunci tampil tetap sama dengan PDF terbitnya
+[lulus] H Versi pengganti baru menyimpan rata-rata tampil bulat dalam snapshot
+Probe auditor Fase 4 selesai pada DB uji sintetis.

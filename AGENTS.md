@@ -80,3 +80,11 @@ Human Developer akan menggunakan format berikut untuk memicu pergantian agen AI.
 - Satuan verifikasi Fase 3 per isian mapel–santri–kelas–semester (seluruh komponen bersama) dikonfirmasi untuk gate penerbitan Fase 4.
 - Admin boleh mengganti penanda tangan/aset/tempat setelah penilaian melalui tindakan khusus beralasan dan optimistic version dengan riwayat; perubahan hanya berlaku untuk penerbitan/penggantian versi berikutnya, tidak mengubah snapshot/PDF terbit.
 - Fase 4 dikerjakan Codex pada `codex/prd-v4-fase-4` dari baseline audit `8b54106`; bukti/status/handoff ada di `docs/phase-v4-4/`. Claude Code menjadi auditor berikutnya. Fase 5 tetap belum dikerjakan.
+
+
+## Keputusan Human Developer — V4 Fase 5 (17 Oktober 2026)
+
+- Codex mengimplementasikan hanya Fase 5 pada `codex/prd-v4-fase-5` di web dan mobile; Claude Code mengaudit secara independen sesudah handoff.
+- Baseline remote web terverifikasi `831017ac37a09d4465e9f64131f212f040410420` (audit Fase 4), mobile `dfae26d69fe776492cfda274d10fddf79a1590f2` (`origin/main`). Tidak membuat worktree.
+- Bukti, manifest, panduan rilis/pemulihan, batas uji, dan handoff Fase 5 ada di `docs/phase-v4-5/` pada kedua repositori.
+- Tidak merge, deploy/migrasi produksi, mengirim rilis aplikasi, menjalankan Claude bersamaan, atau melanjutkan PRD berikutnya. Uji lokal/emulator bukan persetujuan produksi; smoke cPanel dan Push fisik tetap memerlukan pelaksanaan serta keputusan Human Developer.

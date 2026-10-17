@@ -1,0 +1,39 @@
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Enam penerbit same hasil ["200","200","200","200","200","200"]
+[lulus] K2 tepat satu versi/PDF baru dan dua InApp pada same
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Enam penerbit different hasil ["200","409","409","409","409","409"]
+[lulus] K2 tepat satu versi/PDF baru dan dua InApp pada different
+[lulus] Penerbit mencapai penulisan PDF sambil memegang kunci sumber
+[lulus] Kehadiran bersamaan timeout 1205 sebelum commit, tidak lolos gate
+[lulus] Penerbit terkontrol commit satu versi
+[lulus] Crash sebelum commit: nol versi/outbox baru
+[lulus] Berkas crash privat tanpa referensi; tidak tersedia lewat unduhan
+[lulus] Pembersihan fixture orphan terarah setelah DB dikonfirmasi
+# siklus
+[lulus] K7 kode v1 setelah penggantian menunjukkan Diganti
+[lulus] K7 wali tidak dapat mengunduh versi Diganti HTTP 403
+[lulus] Penarikan tanpa alasan ditolak HTTP 422
+[lulus] K7 penarikan beralasan idempoten
+[lulus] K7 wali tidak dapat mengunduh versi Ditarik HTTP 403
+[lulus] K7 wali melihat riwayat status tanpa PDF/snapshot ditarik
+[lulus] K7 kode versi yang ditarik menyimpan status Ditarik
+[lulus] Pembukaan kembali beralasan membatalkan versi sah dan membuka koreksi
+[lulus] Koreksi setelah pembukaan wajib verifikasi ulang HTTP 422
+[lulus] Perubahan penanda khusus wajib alasan HTTP 422
+[lulus] Snapshot lama tetap identik setelah tempat rencana berubah
+[lulus] Versi baru terbit setelah pemeriksaan ulang
+[lulus] K7 PDF lama tetap identik setelah ganti, tarik, buka, koreksi dan ganti penanda
+[lulus] K7 seluruh operasi koreksi/ganti/tarik/buka mempunyai alasan dan kapasitas/pelaku/waktu
+[lulus] Kode lama v1 tetap Diganti setelah seluruh siklus
+[lulus] Push OFF selama seluruh penggantian tidak menambah outbox provider

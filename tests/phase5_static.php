@@ -109,7 +109,8 @@ $assert(str_contains($migration, 'pertemuan_date_schedule_report_index') && str_
 $assert(!preg_match('/\b(?:DELETE|TRUNCATE|DROP\s+TABLE)\b/i', $migration) && substr_count($rollback, 'DROP INDEX') === 3, 'Migrasi indeks aditif dan rollback hanya melepas indeks');
 
 $mobileRoot = getenv('MOBILE_APP_ROOT') ?: dirname($root, 4) . '/alhasanApps';
-$mobileReport = (string) file_get_contents($mobileRoot . '/src/app/(app)/(reports)/reports.tsx');
+// Redesain memindahkan rute /reports keluar tab; cek layar aktual dengan kontrak yang sama.
+$mobileReport = (string) file_get_contents($mobileRoot . '/src/app/reports.tsx');
 $mobileDocument = (string) file_get_contents($mobileRoot . '/src/report/report-document.ts');
 $mobilePackage = (string) file_get_contents($mobileRoot . '/package.json');
 $assert(str_contains($mobileReport, 'api.report(') && str_contains($mobileReport, "pathname: '/report/[id]'"), 'Aplikasi guru menyediakan laporan dan detail pertemuan');

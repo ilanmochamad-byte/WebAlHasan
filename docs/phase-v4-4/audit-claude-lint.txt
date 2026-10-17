@@ -1,0 +1,4 @@
+No syntax errors detected in app/V4/RaporService.php
+No syntax errors detected in app/V4/RaporDocument.php
+No syntax errors detected in tests/v4_phase4_audit_claude.php
+git diff --check bersih

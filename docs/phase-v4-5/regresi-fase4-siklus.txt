@@ -1,0 +1,16 @@
+[lulus] K7 kode v1 setelah penggantian menunjukkan Diganti
+[lulus] K7 wali tidak dapat mengunduh versi Diganti HTTP 403
+[lulus] Penarikan tanpa alasan ditolak HTTP 422
+[lulus] K7 penarikan beralasan idempoten
+[lulus] K7 wali tidak dapat mengunduh versi Ditarik HTTP 403
+[lulus] K7 wali melihat riwayat status tanpa PDF/snapshot ditarik
+[lulus] K7 kode versi yang ditarik menyimpan status Ditarik
+[lulus] Pembukaan kembali beralasan membatalkan versi sah dan membuka koreksi
+[lulus] Koreksi setelah pembukaan wajib verifikasi ulang HTTP 422
+[lulus] Perubahan penanda khusus wajib alasan HTTP 422
+[lulus] Snapshot lama tetap identik setelah tempat rencana berubah
+[lulus] Versi baru terbit setelah pemeriksaan ulang
+[lulus] K7 PDF lama tetap identik setelah ganti, tarik, buka, koreksi dan ganti penanda
+[lulus] K7 seluruh operasi koreksi/ganti/tarik/buka mempunyai alasan dan kapasitas/pelaku/waktu
+[lulus] Kode lama v1 tetap Diganti setelah seluruh siklus
+[lulus] Push OFF selama seluruh penggantian tidak menambah outbox provider

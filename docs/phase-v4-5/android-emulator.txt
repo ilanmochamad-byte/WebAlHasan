@@ -1,0 +1,12 @@
+[lulus] Android emulator: development client dibangun ulang, BUILD SUCCESSFUL (455 tasks).
+[lulus] Login guru, menu capability Rapor, pilihan mapel/santri dan komponen nilai terbaca.
+[lulus] Logout akun sintetis; deep-link sebelum login bertahan dan meminta login wali.
+[lulus] ID rapor yang tidak berhak ditolak 403 setelah login.
+[lulus] ID rapor fixture sah dapat dibaca wali setelah pemeriksaan server.
+[lulus] Dialog simpan/bagikan eksplisit terbuka; tidak memilih aplikasi tujuan/penerima.
+[lulus] SHA-256 PDF cache Android sama dengan hash kanonis DB:
+d01483f398d5817ceebcfecc990a1a6f624e04e4d9a3f14a0fb203c9a26fb7e2
+[lulus] Dialog dibatalkan; find cache -name 'v4-rapor-*.pdf' tidak menghasilkan baris.
+Batas: emulator Android, bukan perangkat fisik. Tidak mengirim Push atau membagikan PDF ke provider.
+Mutasi penuh empat peran diuji pada Expo web; Android hanya smoke guru/wali di atas.
+Awal: client native lama gagal ExpoPushTokenManager; teratasi setelah expo run:android --no-bundler --no-install membangun ulang debug client.

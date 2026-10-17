@@ -1,0 +1,92 @@
+Using src/app as the root directory for Expo Router.
+React Compiler enabled
+Starting Metro Bundler
+
+| (node:20551) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:20551) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:20551) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:20551) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:20551) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:20551) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+iOS Bundled 10194ms ../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/entry.js (1431 modules)
+Android Bundled 13095ms ../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/entry.js (1491 modules)
+
+› Assets (140):
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/material-symbols/400Regular/MaterialSymbols_400Regular.ttf (963KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/200ExtraLight_Italic/PlusJakartaSans_200ExtraLight_Italic.ttf (97KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/200ExtraLight/PlusJakartaSans_200ExtraLight.ttf (95KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/300Light_Italic/PlusJakartaSans_300Light_Italic.ttf (97KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/300Light/PlusJakartaSans_300Light.ttf (95KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/400Regular_Italic/PlusJakartaSans_400Regular_Italic.ttf (97KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/400Regular/PlusJakartaSans_400Regular.ttf (95KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/500Medium_Italic/PlusJakartaSans_500Medium_Italic.ttf (97KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/500Medium/PlusJakartaSans_500Medium.ttf (95KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/600SemiBold_Italic/PlusJakartaSans_600SemiBold_Italic.ttf (97KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/600SemiBold/PlusJakartaSans_600SemiBold.ttf (95KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/700Bold_Italic/PlusJakartaSans_700Bold_Italic.ttf (97KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/700Bold/PlusJakartaSans_700Bold.ttf (95KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/800ExtraBold_Italic/PlusJakartaSans_800ExtraBold_Italic.ttf (97KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/@expo-google-fonts/plus-jakarta-sans/800ExtraBold/PlusJakartaSans_800ExtraBold.ttf (95KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/arrow_down.png (9.5KB)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/arrow_right.xml (307B)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/checkmark.xml (312B)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/error.png (469B)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/file.png (138B)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/forward.png (188B)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/pkg.png (364B)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/react-navigation/elements/back-icon-mask.png (653B)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/react-navigation/elements/back-icon.png (8 variations | 359B)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/react-navigation/elements/clear-icon.png (4 variations | 425B)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/react-navigation/elements/close-icon.png (4 variations | 235B)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/react-navigation/elements/search-icon.png (7 variations | 592B)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/sitemap.png (465B)
+../../../Users/ilanmochamad/alhasanApps/node_modules/expo-router/assets/unmatched.png (4.8KB)
+assets/images/icons/arrow-right.png (3 variations | 306B)
+assets/images/icons/bell.png (3 variations | 758B)
+assets/images/icons/book.png (3 variations | 440B)
+assets/images/icons/calendar.png (3 variations | 667B)
+assets/images/icons/chart.png (3 variations | 705B)
+assets/images/icons/check.png (3 variations | 405B)
+assets/images/icons/chevron-down.png (3 variations | 253B)
+assets/images/icons/chevron-left.png (3 variations | 229B)
+assets/images/icons/chevron-right.png (3 variations | 230B)
+assets/images/icons/clock.png (3 variations | 1KB)
+assets/images/icons/close.png (3 variations | 344B)
+assets/images/icons/device.png (3 variations | 573B)
+assets/images/icons/dots.png (3 variations | 171B)
+assets/images/icons/eye.png (3 variations | 970B)
+assets/images/icons/filter.png (3 variations | 468B)
+assets/images/icons/home.png (3 variations | 590B)
+assets/images/icons/info.png (3 variations | 1KB)
+assets/images/icons/izin.png (3 variations | 676B)
+assets/images/icons/lock.png (3 variations | 663B)
+assets/images/icons/logout.png (3 variations | 544B)
+assets/images/icons/moon.png (3 variations | 882B)
+assets/images/icons/person.png (3 variations | 765B)
+assets/images/icons/pin.png (3 variations | 1KB)
+assets/images/icons/plus.png (3 variations | 312B)
+assets/images/icons/printer.png (3 variations | 640B)
+assets/images/icons/refresh.png (3 variations | 922B)
+assets/images/icons/search.png (3 variations | 791B)
+assets/images/icons/share.png (3 variations | 464B)
+assets/images/icons/text-size.png (3 variations | 516B)
+assets/images/icons/users.png (3 variations | 942B)
+assets/images/Logo_alhasanApps_potrait_dark.png (69KB)
+assets/images/Logo_alhasanApps_potrait.png (79KB)
+
+› ios bundles (1):
+_expo/static/js/ios/entry-a099e94034aa18e10f82b48baeadd436.hbc (3.2MB)
+
+› android bundles (1):
+_expo/static/js/android/entry-9e08992ab65b77b6be6db757984da6e1.hbc (3.3MB)
+
+› Files (1):
+metadata.json (17KB)
+
+Exported: /private/tmp/v4p5-native-final

@@ -1,4 +1,11 @@
-# Fase 4 PRD V4 — selesai implementasi, menunggu audit Claude Code
+# Fase 4 PRD V4 — lulus audit Claude Code dengan satu koreksi terarah
+
+## Audit Claude Code (16 Oktober 2026)
+
+Audit independen menyatakan ketujuh kriteria **terpenuhi** setelah satu koreksi. Rata-rata nilai pada PDF/web sebelumnya tampil desimal (mis. 84.6), sedangkan PRD §5.1 mewajibkan tampilan bilangan bulat. Kini snapshot baru menyimpan `rata_rata` dua desimal dan `rata_rata_tampil` bulat; snapshot/PDF lama tidak berubah. Pada DB baru auditor, seluruh suite Codex lulus ulang, dan probe auditor lulus 83/0. Probe tersebut mencakup 14 sumber gate yang terkunci selama penerbitan, injeksi kegagalan, retry 1213 strict/OFF, commit ambigu, otorisasi ID langsung/flag/relasi/penugasan dicabut, serta imutabilitas snapshot/PDF. Verifier, penolakan rollback dan latihan rollback kosong, regresi Fase 1–3, dan regresi V1–V3 (14 integrasi; 14/15 statis, `phase5_static` warisan) juga lulus. Lihat `audit-claude.md`. Ini bukan persetujuan merge atau produksi.
+
+## Hasil implementator (Codex)
+
 
 16 Oktober 2026 (Asia/Jakarta). Implementator: Codex. **Ini hasil pengujian implementator, bukan putusan auditor atau persetujuan merge.** Branch `codex/prd-v4-fase-4`; baseline audit `8b5410662f65681da236603c488e89c29205b098` diverifikasi dengan `git ls-remote origin refs/heads/codex/prd-v4-fase-3` sebelum branch dibuat. Kedua checkout awal bersih. Mobile tetap `main` / `dfae26d69fe776492cfda274d10fddf79a1590f2`, tanpa perubahan. Tidak membuat worktree, merge, deploy, migrasi produksi, layar mobile, atau persiapan rilis Fase 5.
 
