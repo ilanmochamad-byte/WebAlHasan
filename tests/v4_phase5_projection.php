@@ -17,6 +17,15 @@ foreach($view['versi'] as $v){
  $ok(isset($staff['versi'][0]['snapshot']['penanda'][0]['gambar']),'Pembacaan petugas/web tetap lengkap');
 }
 $ok($found,'Fixture memiliki versi terbit untuk uji proyeksi');
+// Audit Claude Fase 5: rata-rata desimal tidak dikirim bila nilai tampil ada; snapshot lama tetap fallback.
+$terbit=array_values(array_filter($view['versi'],fn($v)=>isset($v['snapshot'])))[0]['snapshot'];
+$ok(array_key_exists('rata_rata_tampil',$terbit)&&!array_key_exists('rata_rata',$terbit),'Wali hanya menerima rata-rata tampil bilangan bulat');
+$db->begin_transaction();
+try{
+ $db->query("UPDATE v4_rapor_versi SET snapshot_json=JSON_REMOVE(snapshot_json,'$.rata_rata_tampil') WHERE rapor_id=$rid AND status='Terbit'");
+ $legacy=array_values(array_filter($svc->parentView($users['v4_wali4a'],$rid)['versi'],fn($v)=>isset($v['snapshot'])))[0]['snapshot'];
+ $ok(array_key_exists('rata_rata',$legacy)&&!array_key_exists('rata_rata_tampil',$legacy),'Snapshot lama tanpa rata_rata_tampil tetap memakai fallback rata_rata');
+}finally{$db->rollback();}
 $ok($before===$q("SELECT snapshot_json,pdf_sha256 FROM v4_rapor_versi WHERE rapor_id=$rid ORDER BY version"),'Proyeksi tidak mengubah snapshot/hash versi lama');
 $reject(fn()=>$svc->parentView($users['v4_wali4lain'],$rid),403,'Proyeksi tetap menolak wali lain');
 $ok(in_array('rapor.wali',capabilities()->v4Capabilities($users['v4_wali4a'])['list'],true),'Menu wali berasal dari relasi aktif server');

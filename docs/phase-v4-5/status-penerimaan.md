@@ -13,3 +13,7 @@
 | 7. Auditor menyatakan wajib terpenuhi; branch bersih sebelum merge | **Menunggu audit independen dan keputusan Human Developer.** Tidak ada izin merge/produksi dalam sesi ini. | handoff-claude.md |
 
 Tidak mengklaim seluruh Fase 5 siap rilis hanya dari lokal. Tidak merge, deploy, migrasi produksi, memasang cron, mengirim rilis aplikasi, mengubah kanal produksi atau mengerjakan PRD berikutnya. Lihat risiko-terbuka.md untuk kegagalan awal yang dikoreksi serta batas yang belum diuji.
+
+## Audit Claude Code — 17 Oktober 2026
+
+Audit independen selesai; lihat `audit-claude.md` dan bukti `audit-claude-*`. Dua koreksi terarah: (1) mobile `notification-context.tsx` — URI `alhasanapps://rapor/ID` saat sesi aktif tidak lagi menumpuk dua layar detail (diuji Android emulator A/B/C); (2) web `RaporService::parentView` — wali tidak lagi menerima `rata_rata` desimal bila `rata_rata_tampil` ada, fallback snapshot lama dipertahankan (regresi di `tests/v4_phase5_projection.php`). Kriteria 1, 2, 3, 5 lulus pada lingkungan lokal yang tersedia; kriteria 4 dan 6 lulus untuk bagian lokal, tetapi iOS/perangkat fisik/Push nyata dan smoke cPanel/produksi **masih menunggu pelaksanaan**; kriteria 7 menunggu keputusan Human Developer. Belum siap rilis produksi.

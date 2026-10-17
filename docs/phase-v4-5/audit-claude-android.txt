@@ -1,0 +1,27 @@
+Audit Claude Code — Android emulator (Medium_Phone, AVD lokal, -no-snapshot-save), 17 Oktober 2026
+Client: app-debug.apk development build yang dibuat Codex 17 Okt 07:26 (tanpa perubahan native di Fase 5),
+dipasang ulang karena AVD tanpa snapshot kehilangan instalasi sebelumnya. Metro auditor port 8095 dari
+checkout mobile; API PHP auditor 127.0.0.1:8975 lewat adb reverse. Akun sintetis v4_wali4a / v4_wali4lain.
+Input lewat UIAutomator + adb input; credential dibaca dari env privat, tidak dicetak.
+
+Temuan (kode Codex c969374):
+[gagal] Sesi aktif + URI alhasanapps://rapor/4 (aplikasi hangat): layar "Rapor keluarga" bertumpuk dua.
+        Back 1 tetap "Rapor keluarga"; Back 2 baru kembali ke Beranda.
+[lulus] Pembanding rute lain tanpa listener (alhasanapps://notifikasi): satu layar, Back 1 → Beranda.
+[lulus] Pembanding navigasi dalam aplikasi (Beranda → Rapor → item): Back 1 → hub "Rapor semester".
+[lulus] Pembanding listener URI dimatikan sementara (Metro --clear): satu layar, Back 1 → Beranda.
+        Kesimpulan: expo-router sudah menavigasi URI skema aplikasi; listener rapor menambah push kedua.
+Catatan: percobaan pertama dengan `dangerouslySingular` pada Stack.Screen rapor/[id] tidak mencegah tumpukan
+dan dibatalkan. Watcher Metro tidak andal saat itu; setiap varian akhir diuji setelah restart Metro --clear
+dan pemeriksaan bundel yang tersaji.
+
+Sesudah koreksi audit (notification-context.tsx; Metro --clear, bundel diperiksa memuat koreksi):
+[lulus] A. Sesi aktif + URI rapor/4: satu layar detail; Back 1 → Beranda. (audit-claude-android-deeplink-login.png)
+[lulus] B. Logout → URI rapor/4 → layar login → login wali4a → detail rapor tampil sekali; Back 1 → Beranda.
+        (audit-claude-android-deeplink-sebelum-login.png)
+[lulus] C. Logout → URI rapor/4 → login akun salah (v4_wali4lain) → "Informasi tidak dapat diakses" (403);
+        logout → login wali4a → penunjuk tertunda membuka detail sekali; Back 1 → Beranda.
+
+Tidak diuji: cold start dengan URI pada build non-dev (development client membuka layar launcher, bukan
+bundel, saat diluncurkan dengan URI); ketukan Push nyata; iOS; perangkat fisik. Penjaga lokasi pada efek
+tujuan tertunda untuk cold start hanya diperiksa lewat tinjauan kode, bukan runtime.

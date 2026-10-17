@@ -1,0 +1,49 @@
+===== git diff --stat (koreksi audit)
+ src/api/rapor.ts                           |  2 +-
+ src/notifications/notification-context.tsx | 19 +++++++++++++++----
+ 2 files changed, 16 insertions(+), 5 deletions(-)
+===== npx tsc --noEmit
+exit=0
+===== EXPO_NO_DOTENV=1 npm run lint
+
+> alhasanapps@1.0.0 lint
+> expo lint
+
+exit=0
+===== node --experimental-strip-types --test tests/*.test.ts
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+✔ Absensi kembali ke daftar jadwal saat hari kosong atau seluruh sesi selesai (0.377917ms)
+✔ Absensi memilih sesi pertama yang belum selesai, termasuk yang belum dibuka (0.070791ms)
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+✔ tanggal/jam lokal lengkap termasuk tengah malam dan tahun kabisat (1.15325ms)
+✔ tolak bagian kosong, format manual salah dan tanggal yang dinormalisasi JS (0.079292ms)
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+✔ mengenali exception pembatalan cetak iOS dari nama dan pesan (0.922834ms)
+✔ mengenali bentuk CodedError dari bridge native (0.170833ms)
+✔ tidak menyembunyikan kegagalan cetak yang sebenarnya (0.109458ms)
+✔ mengembalikan hasil normal ketika pencetakan dimulai (0.124375ms)
+✔ mengubah penutupan dialog menjadi hasil dibatalkan (0.158375ms)
+✔ meneruskan kegagalan printer tanpa perubahan (0.621334ms)
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+✔ Kosong tetap belum lengkap, nol sah, versi lama tetap dikirim (2.167583ms)
+✔ Validasi angka/reason tidak meloloskan nilai tak sah atau alasan kosong (0.34675ms)
+✔ Push hanya penunjuk valid; data/nilai/tautan lain tidak dipakai (0.476667ms)
+✔ Deep-link native hanya skema/rute rapor sah; ID bertahan sebagai penunjuk (0.195416ms)
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+✔ pekan dimulai Senin, termasuk ketika tanggal terpilih hari Minggu (6.113875ms)
+✔ pekan melintasi pergantian bulan, tahun, dan 29 Februari (0.110375ms)
+✔ geser pekan maju dan mundur mempertahankan hari (0.065708ms)
+✔ pesan tanpa menu hanya muncul setelah akses pembinaan selesai diperiksa (0.0545ms)
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+✔ sesi hari ini yang belum dibuka atau belum selesai ditandai perlu absen (0.641916ms)
+✔ sesi selesai tidak pernah meminta absen, kapan pun tanggalnya (0.065ms)
+✔ sesi hari lain tidak diberi penanda absen dan dibedakan masa depan/lampau (0.058875ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 117.276209
+exit=0 (ℹ fail 0)

@@ -1,0 +1,60 @@
+===== privasi-log-payload.txt
+[lulus] Audit V4 tanpa isi sensitif: "nilai"
+[lulus] Audit V4 tanpa isi sensitif: "catatan"
+[lulus] Audit V4 tanpa isi sensitif: "nama_santri"
+[lulus] Audit V4 tanpa isi sensitif: data:image
+[lulus] Audit V4 tanpa isi sensitif: "gambar"
+[lulus] Audit V4 tanpa isi sensitif: "password"
+[lulus] Audit V4 tanpa isi sensitif: "token"
+[lulus] Ada outbox rapor untuk pemeriksaan payload
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Outbox hanya teks generik dan penunjuk rapor
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log umum tidak berisi credential/token uji (nilai tidak ditampilkan)
+[lulus] Log HTTP/Metro tanpa nama santri, catatan, gambar atau bearer
+[lulus] Log HTTP/Metro tanpa warning/fatal PHP atau error runtime
+

@@ -1,0 +1,51 @@
+===== backup-hashes.txt
+bb7633b7acb4f5fb55721e14c85d3ba268012880f804fef3747f97f1439f54c3  v4a5-backup.sql
+8c241043077c4d230ce2ec5291aead48b2f55d0c37b3c93a4e590cf2610983d2  v4a5-storage.tgz
+
+===== restore-bisnis-dan-korupsi.txt
+[lulus] Baris bisnis restore identik: v4_sikap
+[lulus] Baris bisnis restore identik: v4_rencana
+[lulus] Baris bisnis restore identik: v4_rencana_penanda_riwayat
+[lulus] Baris bisnis restore identik: v4_bahan
+[lulus] Baris bisnis restore identik: v4_rapor
+[lulus] Baris bisnis restore identik: v4_rapor_versi
+[lulus] Baris bisnis restore identik: v4_rapor_operasi
+[lulus] Baris bisnis restore identik: v4_rencana_mapel
+[lulus] Baris bisnis restore identik: v4_tanda_tangan_aset
+[lulus] Baris bisnis restore identik: v4_nilai
+[lulus] Baris bisnis restore identik: v4_nilai_riwayat
+[lulus] Baris bisnis restore identik: v4_verifikasi
+[lulus] Baris bisnis restore identik: v4_penanda_tangan
+[lulus] Baris bisnis restore identik: v4_sikap_riwayat
+[lulus] Baris bisnis restore identik: v4_verifikasi_laju
+[lulus] Baris bisnis restore identik: v4_bahan_riwayat
+[lulus] Byte backup tepercaya cocok dengan hash kanonis
+[lulus] PDF korup pada restore ditolak 503
+[lulus] Pemulihan byte backup tanpa regenerasi mengembalikan PDF identik
+
+===== restore-verifier.txt
+[lulus] PDF dan hash wajib
+[lulus] Kode dan versi konsisten
+[lulus] Operasi penerbitan wajib
+[lulus] Versi current ada
+[lulus] Tidak ada dua versi sah
+[lulus] PDF versi #4 utuh
+[lulus] PDF versi #5 utuh
+[lulus] PDF versi #6 utuh
+[lulus] PDF versi #7 utuh
+[lulus] PDF versi #8 utuh
+[lulus] PDF versi #9 utuh
+[lulus] PDF versi #10 utuh
+[lulus] PDF versi #11 utuh
+[lulus] PDF versi #18 utuh
+[lulus] PDF versi #25 utuh
+[lulus] PDF versi #30 utuh
+[lulus] PDF versi #31 utuh
+[lulus] PDF versi #32 utuh
+[lulus] PDF versi #34 utuh
+[lulus] PDF versi #35 utuh
+[lulus] PDF versi #36 utuh
+
+===== rollback-berisi-data.txt
+Rollback ditolak: data publikasi/riwayat harus dipertahankan.
+
