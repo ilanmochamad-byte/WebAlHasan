@@ -1,0 +1,3 @@
+[lulus] Admin tanpa relasi wali ditolak 403 pada layar aplikasi wali
+[lulus] Admin tidak menyamar sebagai wali pada API
+[lulus] Admin tanpa relasi wali ditolak web wali

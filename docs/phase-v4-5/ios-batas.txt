@@ -1,0 +1,4 @@
+xcrun simctl list devices booted: melewati timeout 20 detik pada percobaan eskalasi.
+Percobaan sandbox sebelumnya: CoreSimulatorService invalid / connection refused.
+iOS runtime tidak diuji, tidak lulus. Bundel iOS saja berhasil diekspor.
+Perangkat fisik iOS/Android dan pengiriman Push nyata: menunggu pelaksanaan.

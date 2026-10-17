@@ -1,0 +1,12 @@
+[lulus] Wali hanya menerima sikap tampilan
+[lulus] Wali tidak menerima sumber kehadiran/ID internal
+[lulus] Penanda wali tanpa gambar/aset/hash internal
+[lulus] Penanda wali tanpa gambar/aset/hash internal
+[lulus] JSON wali nol gambar tanda tangan
+[lulus] Pembacaan petugas/web tetap lengkap
+[lulus] Fixture memiliki versi terbit untuk uji proyeksi
+[lulus] Proyeksi tidak mengubah snapshot/hash versi lama
+[lulus] Proyeksi tetap menolak wali lain HTTP 403
+[lulus] Menu wali berasal dari relasi aktif server
+[lulus] Guru tidak mendapat menu verifikasi
+[lulus] Pendidikan mendapat menu pengganti

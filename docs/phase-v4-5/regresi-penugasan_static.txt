@@ -1,0 +1,284 @@
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanJenis.php
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanException.php
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanRepository.php
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanService.php
+[lulus] FS-1 lint bersih: admin/admin_penugasan.php
+[lulus] FS-1 lint bersih: bin/penugasan_preflight.php
+[lulus] FS-1 lint bersih: bin/penugasan_verify.php
+[lulus] FS-1 lint bersih: tests/penugasan_static.php
+[lulus] FS-1 lint bersih: tests/penugasan_integration.php
+[lulus] FS-1 lint bersih: tests/penugasan_web_smoke.php
+[lulus] FS-1 lint bersih: tests/penugasan_concurrency.php
+[lulus] FS-1 lint bersih: tests/penugasan_concurrency_worker.php
+[lulus] FS-1 lint bersih: app/Auth/Capabilities.php
+[lulus] FS-1 lint bersih: app/Api/ApiAuthService.php
+[lulus] FS-1 lint bersih: app/bootstrap.php
+[lulus] FS-1 lint bersih: app/Ui/Navigation.php
+[lulus] FS-1 lint bersih: admin/admin_akun.php
+[lulus] FS-1 lint bersih: admin/admin_murobi.php
+[lulus] FS-1 lint bersih: admin/admin_pembimbing.php
+[lulus] FS-2 migrasi 012 tidak menambah baris ke tabel roles
+[lulus] FS-2 AccountRepository::ROLES tetap empat role dasar
+[lulus] FS-2 "murobi" tidak dipakai sebagai role dasar
+[lulus] FS-2 "pembimbing" tidak dipakai sebagai role dasar
+[lulus] FS-2 "pendidikan" tidak dipakai sebagai role dasar
+[lulus] FS-2 "bendahara" tidak dipakai sebagai role dasar
+[lulus] FS-2 "panitia_psb" tidak dipakai sebagai role dasar
+[lulus] FS-2 "bendahara_psb" tidak dipakai sebagai role dasar
+[lulus] FS-2 "guru_mapel" tidak dipakai sebagai role dasar
+[lulus] FS-2 seluruh tujuh jenis memakai role dasar guru atau pengurus
+[lulus] FS-3 Capabilities::ALL tidak berubah (admin, pengurus, murobi, orang_tua)
+[lulus] FS-3 forUser() tidak menyertakan capability fondasi ke daftar perizinan V2
+[lulus] FS-4 tujuh jenis penugasan masing-masing memakai tabel sendiri
+[lulus] FS-4 katalog memuat tabel murobi_assignments
+[lulus] FS-4 katalog memuat tabel pembimbing_assignments
+[lulus] FS-4 katalog memuat tabel guru_mapel_assignments
+[lulus] FS-4 katalog memuat tabel pendidikan_assignments
+[lulus] FS-4 katalog memuat tabel bendahara_bulanan_assignments
+[lulus] FS-4 katalog memuat tabel panitia_psb_assignments
+[lulus] FS-4 katalog memuat tabel bendahara_psb_assignments
+[lulus] FS-4 capability terdefinisi: nilai.input
+[lulus] FS-4 capability terdefinisi: nilai.lihat_sendiri
+[lulus] FS-4 capability terdefinisi: nilai.koreksi_sendiri
+[lulus] FS-4 capability terdefinisi: rapor.verifikasi
+[lulus] FS-4 capability terdefinisi: rapor.finalisasi
+[lulus] FS-4 capability terdefinisi: rapor.buka_koreksi
+[lulus] FS-4 capability terdefinisi: rapor.cetak
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.tagihan
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.pembayaran
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.verifikasi
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.laporan
+[lulus] FS-4 capability terdefinisi: psb.pendaftar
+[lulus] FS-4 capability terdefinisi: psb.verifikasi
+[lulus] FS-4 capability terdefinisi: psb.seleksi
+[lulus] FS-4 capability terdefinisi: psb.penerimaan
+[lulus] FS-4 capability terdefinisi: psb_keuangan.tagihan
+[lulus] FS-4 capability terdefinisi: psb_keuangan.pembayaran
+[lulus] FS-4 capability terdefinisi: psb_keuangan.verifikasi
+[lulus] FS-4 capability terdefinisi: psb_keuangan.laporan
+[lulus] FS-4 capability terdefinisi: murobi.binaan
+[lulus] FS-4 capability terdefinisi: pembimbing.binaan
+[lulus] FS-4 panitia PSB dan bendahara PSB memakai himpunan capability yang terpisah
+[lulus] FS-5 migrasi 012 tidak memuat DROP TABLE
+[lulus] FS-5 migrasi 012 tidak memuat DROP COLUMN
+[lulus] FS-5 migrasi 012 tidak memuat TRUNCATE
+[lulus] FS-5 migrasi 012 tidak memuat DELETE FROM
+[lulus] FS-5 migrasi 012 tidak memuat pernyataan UPDATE (ON UPDATE CURRENT_TIMESTAMP bukan pernyataan)
+[lulus] FS-5 migrasi 012 tidak mengisi tabel penugasan berdasarkan tebakan
+[lulus] FS-5 enam tabel baru dibuat dengan IF NOT EXISTS (idempoten)
+[lulus] FS-5 seluruh ALTER pada tabel lama dijaga pemeriksaan information_schema
+[lulus] FS-5 rollback 012 berpasangan dan melepas enam tabel baru
+[lulus] FS-5 rollback memperingatkan kehilangan data secara eksplisit
+[lulus] FS-5 rollback tidak melepas kolom lama murobi/pembimbing
+[lulus] FS-6 kunci unik guru_mapel_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal guru_mapel
+[lulus] FS-6 kunci asing tahun ajaran guru_mapel
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) guru_mapel
+[lulus] FS-6 kunci unik pendidikan_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal pendidikan
+[lulus] FS-6 kunci asing tahun ajaran pendidikan
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) pendidikan
+[lulus] FS-6 kunci unik bendahara_bulanan_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal bendahara_bulanan
+[lulus] FS-6 kunci asing tahun ajaran bendahara_bulanan
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) bendahara_bulanan
+[lulus] FS-6 kunci unik panitia_psb_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal panitia_psb
+[lulus] FS-6 kunci asing tahun ajaran panitia_psb
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) panitia_psb
+[lulus] FS-6 kunci unik bendahara_psb_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal bendahara_psb
+[lulus] FS-6 kunci asing tahun ajaran bendahara_psb
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) bendahara_psb
+[lulus] FS-6 guru mapel merujuk guru lewat kunci asing
+[lulus] FS-6 guru mapel merujuk mata pelajaran lewat kunci asing
+[lulus] FS-6 guru mapel merujuk kelas lewat kunci asing
+[lulus] FS-6 empat penugasan pengurus merujuk pengurus lewat kunci asing
+[lulus] FS-6 tidak ada kolom target_id generik tanpa kunci asing
+[lulus] FS-7 halaman memakai guard admin
+[lulus] FS-7 seluruh mutasi berada di cabang REQUEST_METHOD === POST
+[lulus] FS-7 aksi buat hanya ditangani lewat POST
+[lulus] FS-7 aksi ubah hanya ditangani lewat POST
+[lulus] FS-7 aksi akhiri hanya ditangani lewat POST
+[lulus] FS-7 aksi nonaktifkan hanya ditangani lewat POST
+[lulus] FS-7 aksi aktifkan hanya ditangani lewat POST
+[lulus] FS-7 aksi mapel_simpan hanya ditangani lewat POST
+[lulus] FS-7 aksi mapel_status hanya ditangani lewat POST
+[lulus] FS-7 tidak ada aksi yang dibaca dari GET
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: mysqli_query
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: ->query(
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: ->prepare(
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: INSERT INTO
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: UPDATE
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: DELETE FROM
+[lulus] FS-7 halaman tidak menyediakan aksi penghapusan permanen
+[lulus] FS-7 setiap formulir mutasi menyertakan token CSRF
+[lulus] FS-7 tidak ada nilai baris yang dicetak tanpa escape
+[lulus] FS-7 keluaran data di-escape (master_e/ah_e)
+[lulus] FS-7 tindakan berdampak meminta konfirmasi dan alasan
+[lulus] FS-8 layanan memakai transaksi untuk mutasi
+[lulus] FS-8 setiap mutasi menulis audit yang kegagalannya membatalkan transaksi
+[lulus] FS-8 kegagalan audit menggagalkan mutasi
+[lulus] FS-8 seluruh mutasi (buat, ubah, akhiri, status aktif, mata pelajaran) memeriksa role admin pelaku di server
+[lulus] FS-8 public function buat memanggil requireAdmin
+[lulus] FS-8 public function ubah memanggil requireAdmin
+[lulus] FS-8 public function akhiri memanggil requireAdmin
+[lulus] FS-8 private function ubahStatusAktif memanggil requireAdmin
+[lulus] FS-8 public function simpanMataPelajaran memanggil requireAdmin
+[lulus] FS-8 public function setMataPelajaranState memanggil requireAdmin
+[lulus] FS-8 pemeriksaan tumpang tindih dijalankan di bawah kunci baris
+[lulus] FS-8 penguncian baris SELECT ... FOR UPDATE dipakai
+[lulus] FS-8 mutasi mengunci baris master subjek sebagai gerbang serialisasi (buat + kunciBaris)
+[lulus] FS-8 kunci master subjek selalu diambil SEBELUM kunci baris penugasan (urutan tetap, anti-deadlock)
+[lulus] FS-8 hasil get_result() false dengan errno tidak diperlakukan sebagai nol baris
+[lulus] FS-8 galat kunci 1205/1213 diterjemahkan menjadi konflik yang dapat dimengerti
+[lulus] FS-8 perubahan capability akun dicatat tersendiri
+[lulus] FS-8 percobaan duplikat/tumpang tindih dicatat pada audit
+[lulus] FS-8 aksi audit penugasan.buat
+[lulus] FS-8 aksi audit penugasan.ubah
+[lulus] FS-8 aksi audit penugasan.akhiri
+[lulus] FS-8 aksi audit penugasan.nonaktifkan
+[lulus] FS-8 aksi audit penugasan.aktifkan
+[lulus] FS-8 layanan tidak pernah menyentuh password/token
+[lulus] FS-8 repository tidak menghapus baris penugasan
+[lulus] FS-8 subjek dan tahun ajaran tidak dapat diganti lewat parameter ubah (anti-IDOR)
+[lulus] FS-9 repository hanya memakai prepared statement
+[lulus] FS-9 repository tidak membaca input HTTP
+[lulus] FS-9 nama tabel berasal dari katalog, bukan dari input
+[lulus] FS-9 duplikat nama/kode mata pelajaran dijawab pesan yang tepat, bukan pesan penugasan
+[lulus] FS-10 resolver membaca ulang role dari basis data
+[lulus] FS-10 featureCapabilities tidak mempercayai $user['roles'] dari pemanggil
+[lulus] FS-10 masa berlaku dinilai pada tanggal berjalan di dalam query
+[lulus] FS-10 tahun ajaran diperhitungkan (Aktif untuk non-PSB)
+[lulus] FS-10 metode terpusat featureAppliesToKelas tersedia
+[lulus] FS-10 metode terpusat featureAppliesToKamar tersedia
+[lulus] FS-10 metode terpusat featureAppliesToMataPelajaran tersedia
+[lulus] FS-10 metode terpusat featureAppliesToTahunAjaran tersedia
+[lulus] FS-10 metode terpusat featureAppliesToSemester tersedia
+[lulus] FS-10 metode terpusat featureAppliesToGelombangPsb tersedia
+[lulus] FS-10 metode terpusat featureSource tersedia
+[lulus] FS-10 metode terpusat hasFeature tersedia
+[lulus] FS-11 struktur capabilities (list/default_mode/konteks/menus/aksi) tidak berubah
+[lulus] FS-11 default_mode tetap dipilih dari empat mode lama
+[lulus] FS-11 tidak ada menu/mode aplikasi baru untuk fitur yang belum ada
+[lulus] FS-11 field aditif feature_capabilities pada profil
+[lulus] FS-11 respons login juga memuat field aditif
+[lulus] FS-11 field lama profil tidak dihapus/diubah
+[lulus] FS-12 navigasi memetakan halaman pusat penugasan
+[lulus] FS-12 menu Pusat Penugasan tersedia untuk admin
+[lulus] FS-12 menu murobi dan pembimbing lama dipertahankan
+[lulus] FS-12 Pusat Penugasan hanya tampil pada blok admin (dan tetap bukan kontrol akses)
+[lulus] FS-13 admin/admin_murobi.php menaut ke Pusat Penugasan
+[lulus] FS-13 admin/admin_murobi.php tetap memproses formulirnya sendiri (fungsi lama utuh)
+[lulus] FS-13 admin/admin_pembimbing.php menaut ke Pusat Penugasan
+[lulus] FS-13 admin/admin_pembimbing.php tetap memproses formulirnya sendiri (fungsi lama utuh)
+[lulus] FS-14 halaman akun menjelaskan role dasar vs penugasan
+[lulus] FS-14 halaman akun menaut ke Pusat Penugasan
+[lulus] FS-14 ringkasan penugasan efektif dihitung dari resolver server
+[lulus] FS-14 penugasan fungsional tidak ditambahkan ke pilihan role dasar
+[lulus] FS-15 migrasi tidak membuat tabel bisnis nilai_semester
+[lulus] FS-15 migrasi tidak membuat tabel bisnis nilai_santri
+[lulus] FS-15 migrasi tidak membuat tabel bisnis rapor
+[lulus] FS-15 migrasi tidak membuat tabel bisnis tagihan
+[lulus] FS-15 migrasi tidak membuat tabel bisnis kuitansi
+[lulus] FS-15 migrasi tidak membuat tabel bisnis jurnal
+[lulus] FS-15 migrasi tidak membuat tabel bisnis konseling
+[lulus] FS-15 migrasi tidak membuat tabel bisnis seleksi_psb
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: SimpleXLSX.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: SimpleXLSXGen.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _guard.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _laporan_guard.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _master_ui.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _pengajian_jadwal.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _pengajian_pertemuan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _santri_wali_field.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_akun.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_akun_perizinan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_alumni.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_dashboard.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_data.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_download.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_galeri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_guru.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_izin.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_jadwal_ngaji.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_kamar.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_kelas.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_kelulusan_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_laporan_absensi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_login.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_master_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_murobi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_notifikasi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pelanggaran.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pembayaran_psb.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pembimbing.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_penempatan_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pengajian.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pengurus.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_penugasan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_rekap_keuangan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_rekap_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_tahun.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_v3_katalog.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_wali.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_wali_rekonsiliasi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: cek_login.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: edit_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_laporan_absensi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_master.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_pembayaran.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_psb.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: get_santri_json.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: get_wali_json.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: hapus_siswa.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: laporan_absensi_cetak.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: laporan_absensi_detail.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: logout.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: pertemuan_pengajian.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_import_psb.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_import_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_mutasi_alumni.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_psb_admin.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: sidebar.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: tambah_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: ubah_password.php
+[lulus] FS-16 repositori aplikasi perangkat tidak berada/berubah di dalam repo ini
+[lulus] FS-16 tidak ada menu aplikasi baru pada payload profil
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/README.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/ringkasan-desain.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/matriks-capability.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/migrasi-dan-rollback.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/kontrak-api.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/panduan-admin.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/test-results.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/cpanel-deployment.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/acceptance-status.md
+[lulus] FS-17 matriks mendokumentasikan nilai.input
+[lulus] FS-17 matriks mendokumentasikan rapor.finalisasi
+[lulus] FS-17 matriks mendokumentasikan pembiayaan_bulanan.tagihan
+[lulus] FS-17 matriks mendokumentasikan psb.pendaftar
+[lulus] FS-17 matriks mendokumentasikan psb_keuangan.laporan
+[lulus] FS-17 matriks mendokumentasikan murobi.binaan
+[lulus] FS-17 matriks mendokumentasikan pembimbing.binaan
+[lulus] FS-17 dokumentasi menegaskan fitur bisnis V3–V6 belum diimplementasikan
+[lulus] FS-17 matriks hak akses lama diperbarui
+[lulus] FS-17 dokumentasi API menyebut field aditif
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa INSERT)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa UPDATE)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa DELETE)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa ALTER)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa DROP)
+[lulus] FS-18 bin/penugasan_preflight.php hanya dapat dijalankan dari CLI
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa INSERT)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa UPDATE)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa DELETE)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa ALTER)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa DROP)
+[lulus] FS-18 bin/penugasan_verify.php hanya dapat dijalankan dari CLI
+
+Total gagal: 0

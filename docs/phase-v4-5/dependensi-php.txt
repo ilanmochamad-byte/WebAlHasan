@@ -1,0 +1,5 @@
+ext-dom      20031129   success
+ext-iconv    8.4.14     success
+ext-json     8.4.14     success
+ext-mbstring 8.4.14     success
+php          8.4.14     success

@@ -1,0 +1,57 @@
+[lulus] Tabel v4_penanda_tangan
+[lulus] Tabel v4_tanda_tangan_aset
+[lulus] Tabel v4_rencana
+[lulus] Tabel v4_rencana_mapel
+[lulus] Tabel v4_nilai
+[lulus] Tabel v4_nilai_riwayat
+[lulus] Tabel v4_sikap
+[lulus] Tabel v4_sikap_riwayat
+[lulus] Tabel v4_rapor
+[lulus] Tabel v4_rapor_versi
+[lulus] Tabel v4_verifikasi
+[lulus] Migrasi 020 tercatat sekali
+[lulus] Referensi baru v4_sikap.kelas_id tidak yatim
+[lulus] Referensi baru v4_sikap.diketahui_murobi_user_id tidak yatim
+[lulus] Referensi baru v4_sikap.pembimbing_user_id tidak yatim
+[lulus] Referensi baru v4_sikap.santri_id tidak yatim
+[lulus] Referensi baru v4_sikap.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana.created_by tidak yatim
+[lulus] Referensi baru v4_rencana.kelas_id tidak yatim
+[lulus] Referensi baru v4_rencana.pendidikan_aset_id tidak yatim
+[lulus] Referensi baru v4_rencana.pendidikan_penanda_id tidak yatim
+[lulus] Referensi baru v4_rencana.pimpinan_aset_id tidak yatim
+[lulus] Referensi baru v4_rencana.pimpinan_penanda_id tidak yatim
+[lulus] Referensi baru v4_rencana.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana.updated_by tidak yatim
+[lulus] Referensi baru v4_rencana_penanda_riwayat.actor_user_id tidak yatim
+[lulus] Referensi baru v4_rencana_penanda_riwayat.rencana_id tidak yatim
+[lulus] Referensi baru v4_bahan.actor_user_id tidak yatim
+[lulus] Referensi baru v4_bahan.rencana_id tidak yatim
+[lulus] Referensi baru v4_bahan.santri_id tidak yatim
+[lulus] Referensi baru v4_rapor.santri_id tidak yatim
+[lulus] Referensi baru v4_rapor.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.diterbitkan_oleh tidak yatim
+[lulus] Referensi baru v4_rapor_versi.pendidikan_aset_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.pimpinan_aset_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.rapor_id tidak yatim
+[lulus] Referensi baru v4_rapor_operasi.actor_user_id tidak yatim
+[lulus] Referensi baru v4_rapor_operasi.rapor_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.guru_mapel_assignment_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.mata_pelajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.rencana_id tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.activated_by tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.penanda_tangan_id tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.uploaded_by tidak yatim
+[lulus] Referensi baru v4_nilai.rencana_mapel_id tidak yatim
+[lulus] Referensi baru v4_nilai.pelaku_user_id tidak yatim
+[lulus] Referensi baru v4_nilai.santri_id tidak yatim
+[lulus] Referensi baru v4_nilai_riwayat.nilai_id tidak yatim
+[lulus] Referensi baru v4_nilai_riwayat.pelaku_user_id tidak yatim
+[lulus] Referensi baru v4_verifikasi.rapor_versi_id tidak yatim
+[lulus] Referensi baru v4_penanda_tangan.created_by tidak yatim
+[lulus] Referensi baru v4_penanda_tangan.updated_by tidak yatim
+[lulus] Referensi baru v4_sikap_riwayat.actor_user_id tidak yatim
+[lulus] Referensi baru v4_sikap_riwayat.sikap_id tidak yatim
+[lulus] Referensi baru v4_bahan_riwayat.bahan_id tidak yatim
+Jumlah referensi yatim V4: 0
+[belum diperiksa] Perbandingan baris V1–V3: berikan path manifest preflight.

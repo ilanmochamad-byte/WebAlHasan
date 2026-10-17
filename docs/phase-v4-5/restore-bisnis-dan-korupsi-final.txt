@@ -1,0 +1,19 @@
+[lulus] Baris bisnis restore identik: v4_sikap
+[lulus] Baris bisnis restore identik: v4_rencana
+[lulus] Baris bisnis restore identik: v4_rencana_penanda_riwayat
+[lulus] Baris bisnis restore identik: v4_bahan
+[lulus] Baris bisnis restore identik: v4_rapor
+[lulus] Baris bisnis restore identik: v4_rapor_versi
+[lulus] Baris bisnis restore identik: v4_rapor_operasi
+[lulus] Baris bisnis restore identik: v4_rencana_mapel
+[lulus] Baris bisnis restore identik: v4_tanda_tangan_aset
+[lulus] Baris bisnis restore identik: v4_nilai
+[lulus] Baris bisnis restore identik: v4_nilai_riwayat
+[lulus] Baris bisnis restore identik: v4_verifikasi
+[lulus] Baris bisnis restore identik: v4_penanda_tangan
+[lulus] Baris bisnis restore identik: v4_sikap_riwayat
+[lulus] Baris bisnis restore identik: v4_verifikasi_laju
+[lulus] Baris bisnis restore identik: v4_bahan_riwayat
+[lulus] Byte backup tepercaya cocok dengan hash kanonis
+[lulus] PDF korup pada restore ditolak 503
+[lulus] Pemulihan byte backup tanpa regenerasi mengembalikan PDF identik

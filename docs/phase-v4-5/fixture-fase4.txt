@@ -1,0 +1,3 @@
+[lulus] Perubahan penanda versi usang ditolak HTTP 409
+[lulus] Pendidikan tidak dapat memakai jalur khusus admin HTTP 403
+Fixture Fase 4 sintetis: dua wali berakun aktif, satu tanpa akun, satu di luar relasi; dua PNG uji privat.

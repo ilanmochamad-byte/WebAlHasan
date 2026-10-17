@@ -1,0 +1,38 @@
+[lulus] Aplikasi guru menyerahkan nilai ke API nyata
+[lulus] Nilai aplikasi tersimpan 3 komponen dan 85 B
+[lulus] Nilai aplikasi identik pada website
+[lulus] guru 375 px tanpa overflow
+[lulus] guru 1440 px tanpa overflow
+[lulus] Sesi lain menyimpan versi baru
+[lulus] Aplikasi versi usang mendapat 409
+[lulus] 409 aplikasi tidak menimpa versi terbaru
+[lulus] Aplikasi pembimbing menyerahkan sikap
+[lulus] pembimbing 375 px tanpa overflow
+[lulus] pembimbing 1440 px tanpa overflow
+[lulus] Sikap aplikasi identik pada website
+[lulus] Aplikasi murobi mengetahui sikap
+[lulus] murobi 375 px tanpa overflow
+[lulus] murobi 1440 px tanpa overflow
+[lulus] Aplikasi murobi koreksi beralasan
+[lulus] Aplikasi Pendidikan mengisi pengganti beralasan
+[lulus] Riwayat kapasitas pengganti tersimpan oleh server
+[lulus] Aplikasi Pendidikan memverifikasi sikap
+[lulus] Pratinjau aplikasi memakai gate server
+[lulus] Aplikasi menahan terbit saat mapel wajib lain belum lengkap
+[lulus] pendidikan 375 px tanpa overflow
+[lulus] pendidikan 1440 px tanpa overflow
+[lulus] Aplikasi menolak akses nilai v4_pengurus
+[lulus] Aplikasi menolak akses nilai v4_wali4lain
+[lulus] Aplikasi menolak akses nilai v4_murobi_lain
+[lulus] Aplikasi menolak akses nilai v4_pembimbing_lain
+[lulus] Notifikasi InApp rapor generik
+[lulus] PDF unduhan aplikasi dan website hash identik
+[lulus] wali 375 px tanpa overflow
+[lulus] wali 1440 px tanpa overflow
+[lulus] Wali lain ditolak aplikasi pada ID langsung
+[lulus] Wali lain ditolak API pada ID langsung
+[lulus] Aplikasi menampilkan keadaan tanpa akses ketika relasi wali kosong
+[lulus] Aplikasi memberi pesan jaringan dan retry aman (gangguan mock)
+[lulus] Retry baca memuat ulang server
+[lulus] 401 membersihkan token dan meminta login (respons mock)
+Bukti ini Expo WEB Chromium, bukan simulator/perangkat fisik atau pengiriman Push nyata.

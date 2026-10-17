@@ -1,0 +1,5 @@
+Tabel bisnis Fase 4 kosong. Hentikan penulis sebelum rollback.
+Rollback selesai: 022_v4_fase4_publikasi.sql
+Diterapkan:
+- 022_v4_fase4_publikasi.sql
+Tidak ada migrasi baru.
