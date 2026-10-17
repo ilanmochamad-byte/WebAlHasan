@@ -162,6 +162,23 @@ final class Capabilities
         ) !== null;
     }
 
+    /** Navigation hints only; V4 services recheck assignment scope on every request. */
+    public function v4Capabilities(array $user): array
+    {
+        $this->forget((int) $user['id']);
+        $result = [];
+        foreach (['nilai.input', 'nilai.input_pengganti', 'sikap.input', 'sikap.murobi',
+            'rapor.verifikasi', 'rapor.finalisasi', 'rapor.buka_koreksi', 'rapor.cetak', 'rapor.rencana'] as $key) {
+            if ($this->hasFeature($user, $key)) $result[] = $key;
+        }
+        if (in_array('orang_tua', $this->rolesFromDatabase((int) $user['id']) ?? [], true)
+            && $this->scalar("SELECT 1 AS nilai FROM users u JOIN wali w ON w.id=u.wali_id
+                JOIN santri_wali sw ON sw.wali_id=w.id AND sw.archived_at IS NULL
+                WHERE u.id=? AND u.is_active=1 AND w.is_active=1 AND w.archived_at IS NULL LIMIT 1",
+                (int) $user['id']) !== null) $result[] = 'rapor.wali';
+        return ['list' => $result];
+    }
+
     /** V3 is additive: never used to build legacy modes or menus. */
     public function v3Capabilities(array $user): array
     {

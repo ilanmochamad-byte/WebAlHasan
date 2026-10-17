@@ -187,6 +187,23 @@ final class RaporService
             $out['versi'][]=$item;
         }return $out;
     }
+    /** API projection only: persisted snapshot and canonical PDF are never rewritten. */
+    public function parentView(array $u,int $rid): array
+    {
+        $out=$this->show($u,$rid);
+        foreach($out['versi'] as &$v){
+            if(!isset($v['snapshot']))continue;
+            $s=$v['snapshot'];
+            $s=array_intersect_key($s,array_flip(['santri','kelas','tahun','semester','mapel','rata_rata','rata_rata_tampil','sikap','kehadiran','catatan_umum','penanda','tempat','tanggal','version']));
+            $s['santri']=array_intersect_key($s['santri'],array_flip(['nama_santri','nis']));
+            $s['sikap']=array_intersect_key($s['sikap'],array_flip(['adab','kedisiplinan','tanggung_jawab','catatan']));
+            $s['kehadiran']=array_intersect_key($s['kehadiran'],array_flip(['hitungan','jumlah_pertemuan','belum_dicatat']));
+            $s['penanda']=array_map(static fn($p)=>array_intersect_key($p,array_flip(['jabatan','nama','gelar'])),$s['penanda']);
+            foreach($s['mapel'] as &$m){$m=array_intersect_key($m,array_flip(['nama','hasil','target','catatan']));$m['hasil']=array_intersect_key($m['hasil'],array_flip(['nilai_tampil','predikat','tuntas']));}
+            unset($m);$v['snapshot']=$s;
+        }
+        unset($v);return $out;
+    }
     public function pdf(array $u,int $rid,int $version,bool $staff=false): string
     {
         $out=$this->show($u,$rid,$staff);
