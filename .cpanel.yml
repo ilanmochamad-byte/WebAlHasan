@@ -1,0 +1,4 @@
+---
+deployment:
+  tasks:
+    - /bin/bash /DATA/k1807225/repositories/WebAlHasan/bin/deploy-cpanel.sh
