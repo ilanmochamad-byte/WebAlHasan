@@ -1,0 +1,128 @@
+[lulus] Login fixture admin
+[lulus] Login fixture pengurus_a
+[lulus] Login fixture ortu_a
+[lulus] Login fixture ortu_b
+[lulus] Proses uji memakai IZIN_LEGACY_ENABLED=true (server dijalankan dengan environment sama)
+[lulus] Data warisan sintetis termigrasi dengan ID sama
+[lulus] HEAD mutasi lama ditolak ?legacy=1&id=1&status=Disetujui
+[lulus] HEAD mutasi lama ditolak ?legacy=1&hapus=1
+[lulus] POST dengan X-HTTP-Method-Override: GET tetap 410
+[lulus] POST dengan X-HTTP-Method: GET tetap 410
+[lulus] POST dengan X-Method-Override: GET tetap 410
+[lulus] POST dengan _method=GET tetap 410
+[lulus] Metode get tidak diperlakukan sebagai GET (0)
+[lulus] Metode PROPFIND tidak diperlakukan sebagai GET (410)
+[lulus] Metode TRACE tidak diperlakukan sebagai GET (410)
+[lulus] Path-info + hapus tidak memproses mutasi (410)
+[lulus] Location tetap aman untuk ?id=1%0d%0aSet-Cookie:%20x=1
+[lulus] Location tetap aman untuk ?id=1%0aLocation:%20https://example.com
+[lulus] Location tetap aman untuk ?id=//example.com
+[lulus] Location tetap aman untuk ?id=1%23x
+[lulus] Cache-Control no-store redirect
+[lulus] Cache-Control no-store ?hapus=1
+[lulus] Anonim GET hapus diarahkan ke login
+[lulus] Wali GET hapus 403
+[lulus] Anonim HEAD hapus diarahkan ke login
+[lulus] Wali HEAD hapus 403
+[lulus] Anonim POST hapus diarahkan ke login
+[lulus] Wali POST hapus 403
+[lulus] V2 izin_aksi tanpa CSRF ditolak 419 (419)
+[lulus] Detail warisan tidak menawarkan formulir aksi
+[lulus] Token CSRF portal tersedia
+[lulus] V2 menolak putuskan pada data warisan dengan guard warisan (409)
+[lulus] V2 menolak koreksi pada data warisan dengan guard warisan (409)
+[lulus] V2 menolak batalkan pada data warisan dengan guard warisan (409)
+[lulus] V2 menolak tetapkan pada data warisan dengan guard warisan (409)
+[lulus] Detail warisan ortu_a dalam cakupan (200)
+[lulus] Detail warisan ortu_b di luar cakupan (403)
+[lulus] Preservasi absensi_guru
+[lulus] Preservasi absensi_santri
+[lulus] Preservasi alumni
+[lulus] Preservasi api_idempotency_keys
+[lulus] Preservasi api_tokens
+[lulus] Preservasi audit_logs
+[lulus] Preservasi bendahara_bulanan_assignments
+[lulus] Preservasi bendahara_psb_assignments
+[lulus] Preservasi berita
+[lulus] Preservasi download
+[lulus] Preservasi galeri
+[lulus] Preservasi guru
+[lulus] Preservasi guru_mapel_assignments
+[lulus] Preservasi izin_idempotency_keys
+[lulus] Preservasi izin_keputusan
+[lulus] Preservasi izin_keputusan_koreksi
+[lulus] Preservasi izin_pengajuan
+[lulus] Preservasi izin_riwayat_status
+[lulus] Preservasi jadwal_jam_migration_report
+[lulus] Preservasi jadwal_ngaji
+[lulus] Preservasi kamar
+[lulus] Preservasi kelas
+[lulus] Preservasi mapel
+[lulus] Preservasi mata_pelajaran
+[lulus] Preservasi mengajar
+[lulus] Preservasi murobi_assignments
+[lulus] Preservasi notifikasi_outbox
+[lulus] Preservasi notifikasi_pengaturan_audit
+[lulus] Preservasi notifikasi_percobaan
+[lulus] Preservasi notifikasi_worker_lock
+[lulus] Preservasi panitia_psb_assignments
+[lulus] Preservasi pelanggaran
+[lulus] Preservasi pembimbing_assignments
+[lulus] Preservasi pembimbing_kamar
+[lulus] Preservasi pendidikan_assignments
+[lulus] Preservasi pengaturan_notifikasi
+[lulus] Preservasi pengurus
+[lulus] Preservasi perangkat_push
+[lulus] Preservasi perizinan
+[lulus] Preservasi pertemuan_pengajian
+[lulus] Preservasi pertemuan_peserta
+[lulus] Preservasi plotting_kamar
+[lulus] Preservasi plotting_kelas
+[lulus] Preservasi psb_pembayaran
+[lulus] Preservasi psb_pendaftar
+[lulus] Preservasi roles
+[lulus] Preservasi santri
+[lulus] Preservasi santri_wali
+[lulus] Preservasi schema_migrations
+[lulus] Preservasi tahun_ajaran
+[lulus] Preservasi users
+[lulus] Preservasi user_roles
+[lulus] Preservasi v3_ambang
+[lulus] Preservasi v3_idempotency
+[lulus] Preservasi v3_katalog
+[lulus] Preservasi v3_kategori
+[lulus] Preservasi v3_konseling_kasus
+[lulus] Preservasi v3_konseling_kasus_revisi
+[lulus] Preservasi v3_konseling_sesi
+[lulus] Preservasi v3_konseling_tautan
+[lulus] Preservasi v3_lampiran
+[lulus] Preservasi v3_murobi_catatan
+[lulus] Preservasi v3_pelanggaran
+[lulus] Preservasi v3_poin_agregat
+[lulus] Preservasi v3_poin_ledger
+[lulus] Preservasi v3_publikasi
+[lulus] Preservasi v3_publikasi_outbox
+[lulus] Preservasi v3_publikasi_pratinjau
+[lulus] Preservasi v3_publikasi_riwayat
+[lulus] Preservasi v3_rekomendasi
+[lulus] Preservasi v4_bahan
+[lulus] Preservasi v4_bahan_riwayat
+[lulus] Preservasi v4_nilai
+[lulus] Preservasi v4_nilai_riwayat
+[lulus] Preservasi v4_penanda_tangan
+[lulus] Preservasi v4_rapor
+[lulus] Preservasi v4_rapor_operasi
+[lulus] Preservasi v4_rapor_versi
+[lulus] Preservasi v4_rencana
+[lulus] Preservasi v4_rencana_mapel
+[lulus] Preservasi v4_rencana_penanda_riwayat
+[lulus] Preservasi v4_sikap
+[lulus] Preservasi v4_sikap_riwayat
+[lulus] Preservasi v4_tanda_tangan_aset
+[lulus] Preservasi v4_verifikasi
+[lulus] Preservasi v4_verifikasi_laju
+[lulus] Preservasi wali
+[lulus] Preservasi auto_increment
+[lulus] Tidak ada keputusan V2 yang menempel pada data warisan
+[lulus] Status/version data warisan tidak berubah
+Hasil audit Claude cleanup: 127 lulus, 0 gagal.

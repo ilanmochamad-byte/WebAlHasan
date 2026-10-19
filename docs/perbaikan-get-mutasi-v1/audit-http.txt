@@ -1,0 +1,90 @@
+[lulus] Login fixture admin
+[lulus] Halaman /admin/admin_data.php memakai formulir POST + CSRF, tanpa tautan bermutasi
+[lulus] Halaman /admin/admin_pembayaran_psb.php memakai formulir POST + CSRF, tanpa tautan bermutasi
+[lulus] Halaman /admin/admin_berita.php memakai formulir POST + CSRF, tanpa tautan bermutasi
+[lulus] Halaman /admin/admin_galeri.php memakai formulir POST + CSRF, tanpa tautan bermutasi
+[lulus] Halaman /admin/admin_download.php memakai formulir POST + CSRF, tanpa tautan bermutasi
+[lulus] admin_data menampilkan tombol terima/tolak/migrasi sebagai POST
+[lulus] Filter GET pembayaran PSB tetap tersedia
+[lulus] Token CSRF admin tersedia
+[lulus] GET lama ditolak 405 /admin/hapus_siswa.php
+[lulus] HEAD lama ditolak 405 /admin/hapus_siswa.php
+[lulus] GET lama ditolak 405 /admin/hapus_siswa.php
+[lulus] HEAD lama ditolak 405 /admin/hapus_siswa.php
+[lulus] GET lama ditolak 405 /admin/hapus_siswa.php
+[lulus] HEAD lama ditolak 405 /admin/hapus_siswa.php
+[lulus] GET lama ditolak 405 /admin/proses_psb_admin.php
+[lulus] HEAD lama ditolak 405 /admin/proses_psb_admin.php
+[lulus] GET lama ditolak 405 /admin/proses_psb_admin.php
+[lulus] HEAD lama ditolak 405 /admin/proses_psb_admin.php
+[lulus] GET lama ditolak 405 /admin/proses_psb_admin.php
+[lulus] HEAD lama ditolak 405 /admin/proses_psb_admin.php
+[lulus] GET lama ditolak 405 /admin/admin_pembayaran_psb.php
+[lulus] HEAD lama ditolak 405 /admin/admin_pembayaran_psb.php
+[lulus] GET lama ditolak 405 /admin/admin_pembayaran_psb.php
+[lulus] HEAD lama ditolak 405 /admin/admin_pembayaran_psb.php
+[lulus] GET lama ditolak 405 /admin/proses_berita.php
+[lulus] HEAD lama ditolak 405 /admin/proses_berita.php
+[lulus] GET lama ditolak 405 /admin/proses_berita.php
+[lulus] HEAD lama ditolak 405 /admin/proses_berita.php
+[lulus] GET lama ditolak 405 /admin/admin_galeri.php
+[lulus] HEAD lama ditolak 405 /admin/admin_galeri.php
+[lulus] GET lama ditolak 405 /admin/admin_download.php
+[lulus] HEAD lama ditolak 405 /admin/admin_download.php
+[lulus] GET lama ditolak 405 /admin/admin_download.php
+[lulus] HEAD lama ditolak 405 /admin/admin_download.php
+[lulus] PUT hapus_siswa ditolak 405
+[lulus] DELETE hapus_siswa ditolak 405
+[lulus] GET/HEAD/PUT/DELETE lama tidak mengubah satu tabel pun
+[lulus] GET lama tidak menghapus berkas unggahan maupun berkas canary
+[lulus] POST tanpa CSRF ditolak 419 /admin/hapus_siswa.php
+[lulus] POST CSRF salah ditolak 419 /admin/hapus_siswa.php
+[lulus] Non-admin ditolak 403 /admin/hapus_siswa.php
+[lulus] Anonim wajib login /admin/hapus_siswa.php
+[lulus] POST tanpa CSRF ditolak 419 /admin/proses_psb_admin.php
+[lulus] POST CSRF salah ditolak 419 /admin/proses_psb_admin.php
+[lulus] Non-admin ditolak 403 /admin/proses_psb_admin.php
+[lulus] Anonim wajib login /admin/proses_psb_admin.php
+[lulus] POST tanpa CSRF ditolak 419 /admin/proses_psb_admin.php
+[lulus] POST CSRF salah ditolak 419 /admin/proses_psb_admin.php
+[lulus] Non-admin ditolak 403 /admin/proses_psb_admin.php
+[lulus] Anonim wajib login /admin/proses_psb_admin.php
+[lulus] POST tanpa CSRF ditolak 419 /admin/admin_pembayaran_psb.php
+[lulus] POST CSRF salah ditolak 419 /admin/admin_pembayaran_psb.php
+[lulus] Non-admin ditolak 403 /admin/admin_pembayaran_psb.php
+[lulus] Anonim wajib login /admin/admin_pembayaran_psb.php
+[lulus] POST tanpa CSRF ditolak 419 /admin/proses_berita.php?act=hapus
+[lulus] POST CSRF salah ditolak 419 /admin/proses_berita.php?act=hapus
+[lulus] Non-admin ditolak 403 /admin/proses_berita.php?act=hapus
+[lulus] Anonim wajib login /admin/proses_berita.php?act=hapus
+[lulus] POST tanpa CSRF ditolak 419 /admin/admin_galeri.php
+[lulus] POST CSRF salah ditolak 419 /admin/admin_galeri.php
+[lulus] Non-admin ditolak 403 /admin/admin_galeri.php
+[lulus] Anonim wajib login /admin/admin_galeri.php
+[lulus] POST tanpa CSRF ditolak 419 /admin/admin_download.php
+[lulus] POST CSRF salah ditolak 419 /admin/admin_download.php
+[lulus] Non-admin ditolak 403 /admin/admin_download.php
+[lulus] Anonim wajib login /admin/admin_download.php
+[lulus] Status di luar daftar ditolak 422
+[lulus] Muatan injeksi status ditolak 422
+[lulus] POST hapus_siswa dengan muatan injeksi diproses sebagai id 0
+[lulus] POST ditolak/injeksi tidak mengubah satu tabel pun
+[lulus] POST hapus_siswa sah dialihkan ke admin_data
+[lulus] Hanya pendaftar target terhapus
+[lulus] POST status sah hanya mengubah pendaftar target
+[lulus] POST tolak sah tersimpan
+[lulus] POST migrasi sah membuat satu santri dengan NIS prefiks lama
+[lulus] POST lunas sah hanya mengubah tagihan target
+[lulus] POST batal lunas sah tersimpan
+[lulus] POST hapus berita sah: baris dan berkas target saja yang terhapus
+[lulus] Nama berkas traversal di DB berita tidak menghapus berkas di luar folder unggahan
+[lulus] POST hapus galeri sah: baris dan berkas target saja yang terhapus
+[lulus] Nama berkas traversal di DB galeri tidak menghapus berkas di luar folder unggahan
+[lulus] POST hapus download sah: baris dan berkas target saja yang terhapus
+[lulus] Nama berkas traversal di DB download tidak menghapus berkas di luar folder unggahan
+[lulus] Situs publik /
+[lulus] Situs publik /psb.php
+[lulus] Situs publik /berita.php
+[lulus] Situs publik /galeri.php
+[lulus] Situs publik /download.php
+Ringkasan: 89 lulus, 0 gagal

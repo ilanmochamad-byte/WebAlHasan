@@ -15,11 +15,23 @@ if(isset($_POST['upload_foto'])){
         echo "<script>alert('Foto Berhasil Diupload'); window.location='admin_galeri.php';</script>";
     }
 }
+// Proses Hapus (hanya POST; nama berkas diambil dari baris galeri, bukan dari permintaan)
 if(isset($_GET['hapus'])){
-    $id = $_GET['hapus'];
-    $gbr = $_GET['file'];
-    unlink('../gambar_galeri/'.$gbr);
-    mysqli_query($koneksi, "DELETE FROM galeri WHERE id='$id'");
+    admin_require_post();
+}
+if(isset($_POST['hapus'])){
+    $id = (int) $_POST['hapus'];
+    $stmt = mysqli_prepare($koneksi, "SELECT gambar FROM galeri WHERE id=?");
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+    mysqli_stmt_execute($stmt);
+    $row = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+    $nama_berkas = basename((string) ($row['gambar'] ?? ''));
+    if($nama_berkas !== '' && is_file('../gambar_galeri/'.$nama_berkas)){
+        unlink('../gambar_galeri/'.$nama_berkas);
+    }
+    $stmt = mysqli_prepare($koneksi, "DELETE FROM galeri WHERE id=?");
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+    mysqli_stmt_execute($stmt);
     echo "<script>window.location='admin_galeri.php';</script>";
 }
 ?>
@@ -85,7 +97,13 @@ if(isset($_GET['hapus'])){
                                     <tr>
                                         <td><img src="../gambar_galeri/<?php echo $d['gambar']; ?>" width="80"></td>
                                         <td><b><?php echo $d['judul']; ?></b><br><small><?php echo $d['keterangan']; ?></small></td>
-                                        <td><a href="admin_galeri.php?hapus=<?php echo $d['id']; ?>&file=<?php echo $d['gambar']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Hapus?')"><i class="fas fa-trash"></i></a></td>
+                                        <td>
+                                            <form method="post" action="admin_galeri.php" class="m-0" onsubmit="return confirm('Hapus?')">
+                                                <?= \App\Http\Csrf::input() ?>
+                                                <input type="hidden" name="hapus" value="<?php echo (int) $d['id']; ?>">
+                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                            </form>
+                                        </td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>

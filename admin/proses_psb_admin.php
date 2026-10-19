@@ -1,13 +1,20 @@
 <?php
 require_once __DIR__ . '/_guard.php';
+admin_require_post();
 
-$act = $_GET['act'];
-$id = (int)$_GET['id'];
+$act = $_POST['act'] ?? '';
+$id = (int) ($_POST['id'] ?? 0);
 
 // 1. FUNGSI UBAH STATUS (Diterima / Ditolak / Cadangan)
 if($act == 'status'){
-    $status = mysqli_real_escape_string($koneksi, $_GET['val']);
-    mysqli_query($koneksi, "UPDATE psb_pendaftar SET status='$status' WHERE id='$id'");
+    $status = (string) ($_POST['val'] ?? '');
+    if(!in_array($status, ['Diterima', 'Ditolak', 'Cadangan'], true)){
+        http_response_code(422);
+        exit('Status pendaftar tidak valid.');
+    }
+    $stmt = mysqli_prepare($koneksi, "UPDATE psb_pendaftar SET status=? WHERE id=?");
+    mysqli_stmt_bind_param($stmt, 'si', $status, $id);
+    mysqli_stmt_execute($stmt);
     echo "<script>window.location='admin_data.php';</script>";
 }
 

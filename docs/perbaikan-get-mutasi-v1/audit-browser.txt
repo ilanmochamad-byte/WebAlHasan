@@ -1,0 +1,33 @@
+[lulus] 1440: external reject button associates with CSRF POST form
+[lulus] 1440: accept/reject buttons have usable boxes
+[lulus] 1440: cancel reject sends no POST
+[lulus] 375: external reject button associates with CSRF POST form
+[lulus] 375: accept/reject buttons have usable boxes
+[lulus] 375: cancel reject sends no POST
+[lulus] proses_psb_admin.php: real click submits POST, CSRF, target
+[lulus] proses_psb_admin.php: confirmation appears
+[lulus] Reject status visible after real submit
+[lulus] proses_psb_admin.php: real click submits POST, CSRF, target
+[lulus] Accepted status visible after real submit
+[lulus] proses_psb_admin.php: real click submits POST, CSRF, target
+[lulus] proses_psb_admin.php: confirmation appears
+[lulus] Migration button gone after successful migration
+[lulus] hapus_siswa.php: real click submits POST, CSRF, target
+[lulus] hapus_siswa.php: confirmation appears
+[lulus] Deleted applicant gone from list
+[lulus] admin_pembayaran_psb.php: real click submits POST, CSRF, target
+[lulus] admin_pembayaran_psb.php: confirmation appears
+[lulus] Approve changes button to cancel payment
+[lulus] admin_pembayaran_psb.php: real click submits POST, CSRF, target
+[lulus] admin_pembayaran_psb.php: confirmation appears
+[lulus] Cancel payment restores approve button
+[lulus] proses_berita.php: real click submits POST, CSRF, target
+[lulus] proses_berita.php: confirmation appears
+[lulus] berita: deleted row gone from list
+[lulus] admin_galeri.php: real click submits POST, CSRF, target
+[lulus] admin_galeri.php: confirmation appears
+[lulus] galeri: deleted row gone from list
+[lulus] admin_download.php: real click submits POST, CSRF, target
+[lulus] admin_download.php: confirmation appears
+[lulus] download: deleted row gone from list
+Browser GET mutation audit: 32 passed, 0 failed.

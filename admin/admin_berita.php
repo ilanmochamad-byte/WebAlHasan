@@ -55,7 +55,11 @@ require_once __DIR__ . '/_guard.php';
                                     <td><?php echo $d['tanggal']; ?></td>
                                     <td>
                                        <a href="edit_berita.php?id=<?php echo $d['id']; ?>" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
-                                       <a href="proses_berita.php?act=hapus&id=<?php echo $d['id']; ?>&gbr=<?php echo $d['gambar']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Hapus?')"><i class="fas fa-trash"></i></a>
+                                       <form method="post" action="proses_berita.php?act=hapus" class="d-inline" onsubmit="return confirm('Hapus?')">
+                                           <?= \App\Http\Csrf::input() ?>
+                                           <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
+                                           <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                       </form>
                                     </td>
                                 </tr>
                                 <?php } ?>

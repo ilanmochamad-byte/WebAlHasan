@@ -1,17 +1,23 @@
 <?php
 require_once __DIR__ . '/_guard.php';
 
+// Aksi ubah status hanya lewat POST; GET ?act= lama ditolak tanpa mutasi.
+if(isset($_GET['act'])){
+    admin_require_post();
+}
+$act = $_POST['act'] ?? '';
+
 // PROSES APPROVAL LUNAS
-if(isset($_GET['act']) && $_GET['act'] == 'lunas'){
-    $id = (int)$_GET['id'];
+if($act == 'lunas'){
+    $id = (int) ($_POST['id'] ?? 0);
     mysqli_query($koneksi, "UPDATE psb_pembayaran SET status_pembayaran='Lunas', waktu_lunas=NOW() WHERE id='$id'");
     echo "<script>alert('Pembayaran divalidasi: LUNAS!'); window.location='admin_pembayaran_psb.php';</script>";
     exit;
 }
 
 // PROSES BATAL LUNAS
-if(isset($_GET['act']) && $_GET['act'] == 'batal'){
-    $id = (int)$_GET['id'];
+if($act == 'batal'){
+    $id = (int) ($_POST['id'] ?? 0);
     mysqli_query($koneksi, "UPDATE psb_pembayaran SET status_pembayaran='Belum Lunas', waktu_lunas=NULL WHERE id='$id'");
     echo "<script>window.location='admin_pembayaran_psb.php';</script>";
     exit;
@@ -184,13 +190,23 @@ if(isset($_GET['act']) && $_GET['act'] == 'batal'){
                                         </button>
 
                                         <?php if($d['status_pembayaran'] == 'Belum Lunas'): ?>
-                                            <a href="admin_pembayaran_psb.php?act=lunas&id=<?php echo $d['id']; ?>" class="btn btn-sm btn-success fw-bold shadow-sm mb-1 w-100" onclick="return confirm('Validasi pembayaran menjadi LUNAS?')">
-                                                <i class="fas fa-check me-1"></i> Approve (Lunas)
-                                            </a>
+                                            <form method="post" action="admin_pembayaran_psb.php" class="m-0" onsubmit="return confirm('Validasi pembayaran menjadi LUNAS?')">
+                                                <?= \App\Http\Csrf::input() ?>
+                                                <input type="hidden" name="act" value="lunas">
+                                                <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
+                                                <button type="submit" class="btn btn-sm btn-success fw-bold shadow-sm mb-1 w-100">
+                                                    <i class="fas fa-check me-1"></i> Approve (Lunas)
+                                                </button>
+                                            </form>
                                         <?php else: ?>
-                                            <a href="admin_pembayaran_psb.php?act=batal&id=<?php echo $d['id']; ?>" class="btn btn-sm btn-outline-danger mb-1 w-100" onclick="return confirm('Batalkan status lunas?')">
-                                                <i class="fas fa-times me-1"></i> Batal Lunas
-                                            </a>
+                                            <form method="post" action="admin_pembayaran_psb.php" class="m-0" onsubmit="return confirm('Batalkan status lunas?')">
+                                                <?= \App\Http\Csrf::input() ?>
+                                                <input type="hidden" name="act" value="batal">
+                                                <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger mb-1 w-100">
+                                                    <i class="fas fa-times me-1"></i> Batal Lunas
+                                                </button>
+                                            </form>
                                         <?php endif; ?>
                                         <a href="../cetak_biaya_psb.php?noreg=<?php echo $d['no_pendaftaran']; ?>" target="_blank" class="btn btn-sm btn-dark w-100">
                                             <i class="fas fa-print me-1"></i> Cetak Kwitansi

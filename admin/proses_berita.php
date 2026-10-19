@@ -65,16 +65,25 @@ elseif($act == "update"){
 
 // --- PROSES HAPUS BERITA ---
 elseif($act == "hapus"){
-    $id = $_GET['id'];
-    $gbr = $_GET['gbr'];
-    
+    admin_require_post();
+    $id = (int) ($_POST['id'] ?? 0);
+
+    // Nama gambar diambil dari baris berita, bukan dari permintaan
+    $stmt = mysqli_prepare($koneksi, "SELECT gambar FROM berita WHERE id=?");
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+    mysqli_stmt_execute($stmt);
+    $row = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+    $gbr = basename((string) ($row['gambar'] ?? ''));
+
     // Hapus file gambar fisik di folder
-    if(file_exists("gambar/".$gbr)){
+    if($gbr !== '' && is_file("gambar/".$gbr)){
         unlink("gambar/".$gbr);
     }
-    
+
     // Hapus data di database
-    mysqli_query($koneksi, "DELETE FROM berita WHERE id='$id'");
+    $stmt = mysqli_prepare($koneksi, "DELETE FROM berita WHERE id=?");
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+    mysqli_stmt_execute($stmt);
     header("Location: admin_berita.php");
 }
 ?>
