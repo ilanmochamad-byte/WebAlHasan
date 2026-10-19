@@ -1,0 +1,92 @@
+Ringkasan audit Claude Code Fase 5 — putaran final (DB/storage/fixture baru, kode web+mobile terkoreksi)
+MariaDB 12.3.2 instance auditor (/private/tmp/v4a5.sock, --skip-networking); PHP 8.4.14 127.0.0.1:8975; Expo web/Metro 127.0.0.1:8095
+
+== V4 Fase 1–4 (urutan perintah-regresi-v4.sh)
+fase1-http.txt exit=0 23 lulus 0 gagal
+fase2.txt exit=0 54 lulus 0 gagal
+fase2-konkurensi.txt exit=0 2 lulus 0 gagal
+fase2-http.txt exit=0 25 lulus 0 gagal
+fase2-guru.txt exit=0 8 lulus 0 gagal
+fase3.txt exit=0 73 lulus 0 gagal
+fase3-konkurensi.txt exit=0 4 lulus 0 gagal
+fase3-http.txt exit=0 56 lulus 0 gagal
+fase3-transaksi.txt exit=0 9 lulus 0 gagal
+verifier-fase3.txt exit=0 7 lulus 0 gagal
+fase4-integrasi.txt exit=0 45 lulus 0 gagal
+fase4-push.txt exit=0 10 lulus 0 gagal
+fase4-pdf.txt exit=0 0 lulus 0 gagal
+fase4-http.txt exit=0 92 lulus 0 gagal
+fase4-konkurensi.txt exit=0 22 lulus 0 gagal
+fase4-siklus.txt exit=0 16 lulus 0 gagal
+fase4-dokumen.txt exit=0 1 lulus 0 gagal
+probe-audit-fase4.txt exit=0 83 lulus 0 gagal
+verifier-fase1-akhir.txt exit=1 106 lulus 18 gagal
+verifier-fase3-akhir.txt exit=0 7 lulus 0 gagal
+verifier-fase4.txt exit=0 21 lulus 0 gagal
+DONE
+verifier-fase1-akhir: 18 'gagal' = jumlah baris lama berubah karena fixture uji (dibandingkan manifest pra-migrasi); verifier yang sama sebelum fixture 0 gagal dan verifier struktur sesudah fixture exit=0.
+
+== Fase 5
+proyeksi-wali lulus=14 gagal=0
+probe-auditor-api lulus=70 gagal=0
+app-browser lulus=37 gagal=0
+akses-admin lulus=3 gagal=0
+probe-auditor-app lulus=12 gagal=0
+privasi-log-payload lulus=58 gagal=0
+restore-bisnis-dan-korupsi lulus=19 gagal=0
+restore-verifier lulus=21 gagal=0
+rollback-preflight (DB berisi data): exit=1, 'Rollback ditolak: data publikasi/riwayat harus dipertahankan.'
+
+== V1–V3 (DB webalhasan_v3_phase1_test dari schema baseline)
+phase1_static exit=0
+phase2_static exit=0
+phase3_static exit=0
+phase4_static exit=0
+phase5_static exit=0
+penugasan_static exit=0
+v2_phase1_static exit=0
+v2_phase2_static exit=0
+v2_phase3_static exit=0
+v2_phase4_static exit=0
+v2_phase5_static exit=0
+v3_phase1_static exit=0
+v3_phase2_static exit=0
+v3_phase3_static exit=0
+v3_phase4_static exit=0
+phase2_integration exit=0
+phase3_integration exit=0
+phase4_integration exit=0
+phase5_integration exit=0
+penugasan_integration exit=0
+v2_phase1_integration exit=0
+v2_phase2_integration exit=0
+v2_phase4_integration exit=0
+v2_phase5_integration exit=0
+v3_phase1_integration exit=0
+v3_phase2_integration exit=0
+v3_phase3_integration exit=0
+v3_phase4_integration exit=0
+v3_phase5_integration exit=0
+-- statis final sesudah koreksi:
+phase1_static exit=0 gagal=0
+phase2_static exit=0 gagal=0
+phase3_static exit=0 gagal=0
+phase4_static exit=0 gagal=0
+phase5_static exit=0 gagal=0
+penugasan_static exit=0 gagal=0
+v2_phase1_static exit=0 gagal=0
+v2_phase2_static exit=0 gagal=0
+v2_phase3_static exit=0 gagal=0
+v2_phase4_static exit=0 gagal=0
+v2_phase5_static exit=0 gagal=0
+v3_phase1_static exit=0 gagal=0
+v3_phase2_static exit=0 gagal=0
+v3_phase3_static exit=0 gagal=0
+v3_phase4_static exit=0 gagal=0
+
+== Mobile
+exit=0
+exit=0
+ℹ pass 21
+ℹ fail 0
+exit=0 (ℹ fail 0)

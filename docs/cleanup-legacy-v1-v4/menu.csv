@@ -1,0 +1,50 @@
+key,label,tujuan,status,sumber,keputusan
+beranda,Beranda,/portal/index.php,aktif,app/Ui/Navigation.php:110,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+admin.dashboard,Ringkasan Administrasi,/admin/admin_dashboard.php,aktif,app/Ui/Navigation.php:112,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v4.rencana,Rencana nilai,/portal/rencana_nilai.php,aktif,app/Ui/Navigation.php:118,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v4.nilai,Nilai semester,/portal/nilai_semester.php,aktif,app/Ui/Navigation.php:123,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v4.pengganti,Isi nilai pengganti,/portal/nilai_semester.php?pengganti=1,aktif,app/Ui/Navigation.php:124,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v4.sikap,Sikap semester,/portal/sikap_semester.php,aktif,app/Ui/Navigation.php:125,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v4.murobi,Pemeriksaan sikap murobi,/portal/sikap_semester.php?mode=murobi,aktif,app/Ui/Navigation.php:126,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v4.rapor,Penerbitan rapor,/portal/rapor_semester.php,aktif,app/Ui/Navigation.php:127,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v4.penanda,Ubah penanda rapor,/portal/rapor_penanda.php,aktif,app/Ui/Navigation.php:128,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v4.verifikasi,Kelengkapan semester,/portal/verifikasi_semester.php,aktif,app/Ui/Navigation.php:129,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v3.pelanggaran,Pelanggaran & poin,/portal/v3_pelanggaran.php,aktif,app/Ui/Navigation.php:134,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v3.konseling,Konseling & tindak lanjut,/portal/v3_konseling.php,aktif,app/Ui/Navigation.php:135,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v3.laporan,Laporan pembinaan,/portal/v3_laporan.php,aktif,app/Ui/Navigation.php:136,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v3.publikasi,Publikasi orang tua,/portal/v3_publikasi_kelola.php,aktif,app/Ui/Navigation.php:137,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v4.wali,Rapor semester,/portal/rapor_wali.php,aktif,app/Ui/Navigation.php:141,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v3.publikasi,Informasi pembinaan,/portal/v3_publikasi.php,aktif,app/Ui/Navigation.php:143,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v3.laporan,Laporan pembinaan,/portal/v3_laporan.php,aktif,app/Ui/Navigation.php:143,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+pengajian,Jadwal & Pertemuan,/admin/admin_pengajian.php,aktif,app/Ui/Navigation.php:148,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+kehadiran,Laporan Kehadiran,/admin/admin_laporan_absensi.php,aktif,app/Ui/Navigation.php:149,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+izin.ringkasan,Ringkasan Perizinan,/portal/izin_ringkasan.php,aktif,app/Ui/Navigation.php:155,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+izin.daftar,Daftar Pengajuan,/portal/izin.php,aktif,app/Ui/Navigation.php:156,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+izin.antrean,Antrean Keputusan,/portal/izin_antrean.php,aktif,app/Ui/Navigation.php:157,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+izin.buat,Buat Pengajuan,/portal/izin_buat.php,aktif,app/Ui/Navigation.php:160,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+izin.laporan,Laporan Perizinan,/portal/laporan.php,aktif,app/Ui/Navigation.php:162,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+master.santri,Data Santri,/admin/admin_master_santri.php,aktif,app/Ui/Navigation.php:168,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+master.penempatan,Penempatan Kelas & Kamar,/admin/admin_penempatan_santri.php,aktif,app/Ui/Navigation.php:169,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+master.wali,Orang Tua / Wali,/admin/admin_wali.php,aktif,app/Ui/Navigation.php:170,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+master.rekonsiliasi,Rekonsiliasi Wali,/admin/admin_wali_rekonsiliasi.php,aktif,app/Ui/Navigation.php:171,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+master.guru,Data Guru,/admin/admin_guru.php,aktif,app/Ui/Navigation.php:172,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+master.pengurus,Data Pengurus,/admin/admin_pengurus.php,aktif,app/Ui/Navigation.php:173,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+master.kelas,Data Kelas,/admin/admin_kelas.php,aktif,app/Ui/Navigation.php:174,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+master.kamar,Data Kamar,/admin/admin_kamar.php,aktif,app/Ui/Navigation.php:175,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+v3.katalog,Katalog & Ambang V3,/admin/admin_v3_katalog.php,aktif,app/Ui/Navigation.php:176,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+master.tahun,Tahun Ajaran,/admin/admin_tahun.php,aktif,app/Ui/Navigation.php:177,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+master.penugasan,Pusat Penugasan,/admin/admin_penugasan.php,aktif,app/Ui/Navigation.php:182,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+master.murobi,Penugasan Murobi,/admin/admin_murobi.php,aktif,app/Ui/Navigation.php:183,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+master.pembimbing,Penugasan Pembimbing,/admin/admin_pembimbing.php,aktif,app/Ui/Navigation.php:184,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+sistem.akun,Akun & Hak Akses,/admin/admin_akun.php,aktif,app/Ui/Navigation.php:200,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+sistem.notifikasi,Kanal Notifikasi,/admin/admin_notifikasi.php,aktif,app/Ui/Navigation.php:201,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+akun.password,Ganti Password,/admin/ubah_password.php,aktif,app/Ui/Navigation.php:203,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+psb.pendaftar,Data Pendaftar,/admin/admin_data.php,dipertahankan untuk V5/V6,app/Ui/Navigation.php:208,"PSB belum diganti V1–V4; fitur lama tetap beroperasi, keamanan khusus perlu audit terpisah"
+psb.pembayaran,Pembayaran PSB,/admin/admin_pembayaran_psb.php,dipertahankan untuk V5/V6,app/Ui/Navigation.php:209,"PSB belum diganti V1–V4; fitur lama tetap beroperasi, keamanan khusus perlu audit terpisah"
+psb.rekap,Rekap Keuangan PSB,/admin/admin_rekap_keuangan.php,dipertahankan untuk V5/V6,app/Ui/Navigation.php:210,"PSB belum diganti V1–V4; fitur lama tetap beroperasi, keamanan khusus perlu audit terpisah"
+pelanggaran,Data pelanggaran warisan,/admin/admin_pelanggaran.php,arsip baca-saja,app/Ui/Navigation.php:213,PRD V3 §5.2a; URL/menu/data wajib dipertahankan
+alumni,Data Alumni,/admin/admin_alumni.php,aktif,app/Ui/Navigation.php:214,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+alumni.kelulusan,Kelulusan & Mutasi Keluar,/admin/admin_kelulusan_santri.php,aktif,app/Ui/Navigation.php:215,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+konten.berita,Berita / Artikel,/admin/admin_berita.php,aktif,app/Ui/Navigation.php:216,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+konten.galeri,Galeri Foto,/admin/admin_galeri.php,aktif,app/Ui/Navigation.php:217,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point
+konten.download,File Download,/admin/admin_download.php,aktif,app/Ui/Navigation.php:218,Tidak dipensiunkan pada tahap ini; termasuk komponen bersama bila bukan entry point

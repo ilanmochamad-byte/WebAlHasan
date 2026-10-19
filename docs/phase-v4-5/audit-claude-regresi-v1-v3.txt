@@ -1,0 +1,2978 @@
+===== ringkasan.txt
+phase1_static exit=0
+phase2_static exit=0
+phase3_static exit=0
+phase4_static exit=0
+phase5_static exit=0
+penugasan_static exit=0
+v2_phase1_static exit=0
+v2_phase2_static exit=0
+v2_phase3_static exit=0
+v2_phase4_static exit=0
+v2_phase5_static exit=0
+v3_phase1_static exit=0
+v3_phase2_static exit=0
+v3_phase3_static exit=0
+v3_phase4_static exit=0
+phase2_integration exit=0
+phase3_integration exit=0
+phase4_integration exit=0
+phase5_integration exit=0
+penugasan_integration exit=0
+v2_phase1_integration exit=0
+v2_phase2_integration exit=0
+v2_phase4_integration exit=0
+v2_phase5_integration exit=0
+v3_phase1_integration exit=0
+v3_phase2_integration exit=0
+v3_phase3_integration exit=0
+v3_phase4_integration exit=0
+v3_phase5_integration exit=0
+
+===== statis-final.txt
+phase1_static exit=0 gagal=0
+phase2_static exit=0 gagal=0
+phase3_static exit=0 gagal=0
+phase4_static exit=0 gagal=0
+phase5_static exit=0 gagal=0
+penugasan_static exit=0 gagal=0
+v2_phase1_static exit=0 gagal=0
+v2_phase2_static exit=0 gagal=0
+v2_phase3_static exit=0 gagal=0
+v2_phase4_static exit=0 gagal=0
+v2_phase5_static exit=0 gagal=0
+v3_phase1_static exit=0 gagal=0
+v3_phase2_static exit=0 gagal=0
+v3_phase3_static exit=0 gagal=0
+v3_phase4_static exit=0 gagal=0
+
+===== penugasan_integration.txt
+[lulus] FI-1 daftar capability perizinan V2 tidak berubah
+[lulus] FI-1 akun admin tetap memperoleh capability admin
+[lulus] FI-1 guru tanpa penugasan murobi tidak memperoleh capability perizinan
+[lulus] FI-1 pengurus dengan relasi master aktif tetap memperoleh capability pengurus
+[lulus] FI-1 orang tua dengan wali aktif tetap memperoleh capability orang_tua
+[lulus] FI-1 tanpa penugasan tidak ada feature capability
+[lulus] FI-1 admin memperoleh seluruh feature capability sebagai pengawasan
+[lulus] FI-1 sumber capability admin ditandai "admin" (pengawasan), bukan operasional
+[lulus] FI-4 admin membuat penugasan murobi (#5)
+[lulus] FI-4 admin membuat penugasan pembimbing (#4)
+[lulus] FI-4 admin membuat penugasan guru_mapel (#1)
+[lulus] FI-4 admin membuat penugasan pendidikan (#1)
+[lulus] FI-4 admin membuat penugasan bendahara_bulanan (#1)
+[lulus] FI-4 admin membuat penugasan panitia_psb (#1)
+[lulus] FI-4 admin membuat penugasan bendahara_psb (#1)
+[lulus] FI-4 baris guru_mapel_assignments menyimpan created_by admin
+[lulus] FI-4 baris pendidikan_assignments menyimpan created_by admin
+[lulus] FI-4 baris bendahara_bulanan_assignments menyimpan created_by admin
+[lulus] FI-4 baris panitia_psb_assignments menyimpan created_by admin
+[lulus] FI-4 baris bendahara_psb_assignments menyimpan created_by admin
+[lulus] FI-2 penugasan murobi tetap menghasilkan capability murobi V2 pada akun guru
+[lulus] FI-2 penugasan murobi menghasilkan capability binaan (kesiapan V3)
+[lulus] FI-2 cakupan binaan murobi mengikuti kamar penugasan
+[lulus] FI-2 cakupan kamar tidak mewakili kelas
+[lulus] FI-3 role pengurus tetap menghasilkan capability pengurus V2
+[lulus] FI-3 penugasan pembimbing menghasilkan capability binaan pengurus
+[lulus] FI-3 layanan pembimbing V2 tetap membaca penugasan yang dibuat pusat penugasan
+[lulus] FI-3 cakupan binaan pembimbing mengikuti kelas penugasan
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh pembimbing.binaan
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh rapor.verifikasi
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh rapor.finalisasi
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh rapor.buka_koreksi
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh rapor.cetak
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh pembiayaan_bulanan.tagihan
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh pembiayaan_bulanan.pembayaran
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh pembiayaan_bulanan.verifikasi
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh pembiayaan_bulanan.laporan
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh psb.pendaftar
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh psb.verifikasi
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh psb.seleksi
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh psb.penerimaan
+[lulus] FI-7 sumber capability pengurus adalah penugasan (operasional)
+[lulus] FI-7 cakupan Bagian Pendidikan mengikuti jenjang
+[lulus] FI-7 cakupan jenjang mencakup kelas dengan jenjang itu
+[lulus] FI-7 bendahara bulanan tanpa jenjang berlaku untuk seluruh unit
+[lulus] FI-7 cakupan panitia PSB mengikuti gelombang
+[lulus] FI-7 capability PSB tidak berlaku pada tahun ajaran lain
+[lulus] FI-12 guru mapel memperoleh nilai.input
+[lulus] FI-12 guru mapel memperoleh nilai.lihat_sendiri
+[lulus] FI-12 guru mapel memperoleh nilai.koreksi_sendiri
+[lulus] FI-12 capability nilai berlaku pada kelas yang ditugaskan
+[lulus] FI-12 capability nilai TIDAK berlaku pada kelas lain
+[lulus] FI-12 capability nilai berlaku pada mata pelajaran yang ditugaskan
+[lulus] FI-12 capability nilai TIDAK berlaku pada mata pelajaran lain
+[lulus] FI-12 capability nilai berlaku pada tahun ajaran/semester yang ditugaskan
+[lulus] FI-12 capability nilai TIDAK berlaku pada tahun ajaran/semester lain
+[lulus] FI-12 capability nilai TIDAK berlaku pada tahun ajaran lain
+[lulus] FI-12 guru tidak memperoleh capability penugasan pengurus
+[lulus] FI-10 panitia PSB tidak otomatis memperoleh capability bendahara PSB
+[lulus] FI-11 bendahara PSB tidak otomatis memperoleh capability panitia PSB
+[lulus] FI-10/11 pengurus boleh menjadi panitia PSB dan bendahara PSB sekaligus
+[lulus] FI-26 penugasan PSB pada tahun ajaran yang BELUM aktif tetap efektif
+[lulus] FI-26 tahun ajaran yang diarsipkan ditolak [422: Tahun ajaran tidak valid atau sudah diarsipkan.]
+[lulus] FI-26 penugasan non-PSB pada tahun ajaran yang belum aktif BELUM menghasilkan capability
+[lulus] FI-6 penugasan yang belum mulai tidak menghasilkan capability
+[lulus] FI-6 status penugasan belum mulai = Akan Datang
+[lulus] FI-8 penugasan yang sudah berakhir tidak menghasilkan capability
+[lulus] FI-8 status penugasan lampau = Berakhir
+[lulus] FI-8 pengakhiran pada hari ini masih berlaku sampai akhir tanggal selesai
+[lulus] FI-8 pengakhiran mencatat pelaku, waktu, dan alasan
+[lulus] FI-8 tanggal selesai mendahului tanggal mulai ditolak [422: Tanggal selesai tidak boleh mendahului tanggal mulai (2026-10-17).]
+[lulus] FI-8 penugasan yang dinonaktifkan tidak lagi menghasilkan capability
+[lulus] FI-8 menonaktifkan penugasan tidak menonaktifkan akun dan tidak mencabut role dasar
+[lulus] FI-8 baris penugasan yang dinonaktifkan tetap tersimpan (tidak dihapus)
+[lulus] FI-8 pengaktifan kembali memulihkan capability
+[lulus] FI-8 menonaktifkan murobi dari pusat penugasan mencabut capability murobi V2 dan binaan
+[lulus] FI-8 mengaktifkan kembali murobi memulihkan capability V2
+[lulus] FI-13 penugasan identik ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #1 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-13 penugasan murobi identik ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #5 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-13 penugasan bendahara PSB identik ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #1 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-13 penolakan duplikat tidak menyimpan baris
+[lulus] FI-13 percobaan duplikat tercatat pada audit
+[lulus] FI-14 periode beririsan dengan penugasan tanpa akhir ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #1 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-14 cakupan jenjang tertentu bertumpang tindih dengan cakupan seluruh unit ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #1 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-14 gelombang tertentu bertumpang tindih dengan seluruh gelombang ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #2 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-14 periode beririsan dengan penugasan lampau ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #2 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-14 mata pelajaran sama pada kelas berbeda diterima
+[lulus] FI-14 periode berurutan setelah penugasan lampau berakhir diterima
+[lulus] FI-14 murobi kamar dan murobi kelas untuk guru yang sama diterima (cakupan berbeda)
+[lulus] FI-14 mengubah cakupan menjadi bertumpang tindih ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #1 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-14 mengaktifkan kembali penugasan yang sudah aktif ditolak sebagai konflik [409: Penugasan ini sudah aktif.]
+[lulus] FI-5 guru tidak dapat membuat penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 pengurus tidak dapat membuat penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 orang tua tidak dapat membuat penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 anonim tidak dapat membuat penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 pengurus tidak dapat mengakhiri penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 guru tidak dapat menonaktifkan penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 orang tua tidak dapat mengubah penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 guru tidak dapat menambah mata pelajaran [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 percobaan tanpa hak tercatat pada audit
+[lulus] FI-16 ID yang tidak ada ditolak (404) [404: Penugasan tidak ditemukan.]
+[lulus] FI-16 ID nol ditolak [404: Penugasan tidak ditemukan.]
+[lulus] FI-16 parameter guru_id/tahun_ajaran_id pada ubah diabaikan (subjek dan tahun dikunci)
+[lulus] FI-16 guru nonaktif ditolak [422: Guru harus dipilih dari data Guru yang aktif dan belum diarsipkan.]
+[lulus] FI-16 kelas nonaktif ditolak [422: Kelas tidak ditemukan atau sudah tidak aktif.]
+[lulus] FI-16 mata pelajaran yang tidak ada ditolak [422: Mata pelajaran harus dipilih dari master yang aktif.]
+[lulus] FI-16 jenjang yang tidak dipakai kelas ditolak [422: Unit/jenjang harus salah satu jenjang yang dipakai data kelas, atau dikosongkan untuk seluruh unit.]
+[lulus] FI-16 ID guru dipakai sebagai pengurus ditolak bila bukan pengurus aktif [422: Pengurus harus dipilih dari data Pengurus yang aktif dan belum diarsipkan.]
+[lulus] FI-16 target Kelas tanpa kelas ditolak [422: Kelas tidak ditemukan atau sudah tidak aktif.]
+[lulus] FI-16 jenis target di luar pilihan ditolak [422: Jenis kelompok harus Kamar atau Kelas.]
+[lulus] FI-16 label gelombang dengan karakter tak wajar ditolak [422: Label gelombang maksimal 50 karakter huruf/angka, atau dikosongkan untuk seluruh gelombang.]
+[lulus] FI-16 tanggal tidak valid ditolak [422: Tanggal mulai wajib diisi dengan tanggal yang valid.]
+[lulus] FI-16 tanggal selesai mendahului tanggal mulai ditolak [422: Tanggal selesai tidak boleh mendahului tanggal mulai.]
+[lulus] FI-16 jenis penugasan tak dikenal ditolak [422: Jenis penugasan tidak dikenal.]
+[lulus] FI-16 alasan perubahan terlalu pendek ditolak [422: Alasan perubahan wajib diisi (5–500 karakter).]
+[lulus] FI-15 kegagalan pencatatan audit menggagalkan pembuatan [Perubahan penugasan dibatalkan karena audit tidak dapat disimpan. Silakan coba lagi.]
+[lulus] FI-15 rollback penuh: tidak ada baris penugasan tersimpan tanpa audit
+[lulus] FI-15 tidak ada capability yang bocor dari transaksi yang dibatalkan
+[lulus] FI-15 pembuatan yang berhasil menulis audit beserta pelakunya
+[lulus] FI-15 hanya satu audit pembuatan bertambah
+[lulus] FI-15 perubahan capability akun tercatat (bertambah psb_keuangan.*)
+[lulus] FI-25 penugasan untuk pengurus tanpa akun tersimpan, dijelaskan belum efektif
+[lulus] FI-25 akun tanpa role guru tidak memperoleh capability walau penugasan aktif
+[lulus] FI-25 pusat penugasan menjelaskan role dasar yang belum diberikan
+[lulus] FI-25 setelah role guru diberikan, capability langsung efektif tanpa mengubah penugasan
+[lulus] FI-25 mencabut role dasar mematikan capability tanpa menghapus riwayat penugasan
+[lulus] FI-25 master guru nonaktif mematikan seluruh capability penugasan
+[lulus] FI-25 akun nonaktif tidak memperoleh capability apa pun
+[lulus] FI-25 mata pelajaran nonaktif menghentikan capability penugasan yang memakainya
+[lulus] FI-23 role sesi yang dimanipulasi ditimpa role dari basis data
+[lulus] FI-23 capability admin tidak muncul dari sesi palsu
+[lulus] FI-23 role palsu pada input resolver diabaikan; hasil sama dengan role basis data
+[lulus] FI-23 capability pengurus tidak diperoleh guru lewat manipulasi input
+[lulus] FI-23 sesi palsu tidak memberi hak mengelola penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-19 profil memuat field lama pada urutan lama + satu field aditif
+[lulus] FI-19 struktur capabilities lama tidak berubah
+[lulus] FI-19 mode guru-murobi tetap seperti sebelumnya
+[lulus] FI-20 menu aplikasi guru tidak berubah walau punya penugasan mapel
+[lulus] FI-19 field aditif memuat capability fondasi beserta sumbernya
+[lulus] FI-20 field aditif tidak membawa menu atau mode baru
+[lulus] FI-20 mode dan menu pengurus tidak berubah walau punya banyak penugasan
+[lulus] FI-20 tidak ada mode baru pendidikan/bendahara pada daftar mode
+[lulus] FI-19 profil orang tua tidak berubah dan tanpa feature capability
+[lulus] FI-21 login web admin tetap berfungsi
+[lulus] FI-21 login web guru tetap berfungsi
+[lulus] FI-21 login web pengurus tetap berfungsi
+[lulus] FI-21 login web orang tua tetap berfungsi
+[lulus] FI-24 audit penugasan tidak memuat password/token
+[lulus] FI-24 audit perubahan menyimpan nilai sebelum/sesudah, jenis, subjek, dan alasan
+[lulus] FI-24 aksi audit tercatat: penugasan.buat
+[lulus] FI-24 aksi audit tercatat: penugasan.ubah
+[lulus] FI-24 aksi audit tercatat: penugasan.akhiri
+[lulus] FI-24 aksi audit tercatat: penugasan.nonaktifkan
+[lulus] FI-24 aksi audit tercatat: penugasan.aktifkan
+[lulus] FI-24 aksi audit tercatat: penugasan.capability_berubah
+[lulus] FI-24 aksi audit tercatat: penugasan.tolak_tumpang_tindih
+[lulus] FI-24 aksi audit tercatat: penugasan.tolak_hak
+[lulus] FI-daftar filter nama + status + kelas mengembalikan penugasan yang tepat
+[lulus] FI-daftar filter Berakhir mengembalikan penugasan lampau
+[lulus] FI-daftar filter Akan Datang mengembalikan penugasan mendatang
+[lulus] FI-daftar nilai filter berbahaya diperlakukan sebagai teks biasa
+
+Total gagal: 0
+
+===== phase2_integration.txt
+[lulus] Guru dapat dibuat, dilihat, dicari, dan difilter
+[lulus] Santri dapat dibuat, dilihat, dicari, dan difilter
+[lulus] NIP duplikat ditolak
+[lulus] NIS duplikat ditolak
+[lulus] Nonaktif tidak menghapus guru atau santri
+[lulus] Satu wali terhubung ke dua santri dan dapat dibaca kembali
+[lulus] Tepat satu semester aktif
+[lulus] Keanggotaan kelas baru aktif dan riwayat lama tersimpan
+[lulus] Penugasan murobi tidak membuat akun atau akses approval izin
+[lulus] Jumlah ekspor guru sama dengan hasil filter UI
+[lulus] Jumlah ekspor santri sama dengan hasil filter UI
+[lulus] Audit menyimpan pelaku dan waktu tanpa nilai rahasia
+
+===== phase3_integration.txt
+[lulus] Admin dapat membuat jadwal dan melihatnya pada filter semester aktif
+[lulus] Admin dapat mengubah jadwal dari service yang dipakai UI
+[lulus] Bentrok guru ditolak
+[lulus] Bentrok kelas dan tempat ditampilkan sebagai peringatan tanpa kehilangan jadwal
+[lulus] Pertemuan dibuka dan menyimpan snapshot peserta kelas
+[lulus] Pertemuan kedua untuk jadwal dan tanggal sama ditolak
+[lulus] Perubahan kelas setelah pembukaan tidak mengubah snapshot pertemuan
+[lulus] Status pertemuan berubah ke Selesai dan tercatat
+[lulus] Jadwal nonaktif tidak muncul sebagai tugas aktif
+[lulus] Constraint dan alur aplikasi menjaga duplikasi jadwal–tanggal tetap nol
+
+===== phase4_integration.txt
+[lulus] Akun guru aktif login dan profil tidak membocorkan password/hash token
+[lulus] Server hanya menyimpan hash bearer token
+[lulus] Credential salah/nonaktif ditolak generik dengan 401
+[lulus] Credential salah/nonaktif ditolak generik dengan 401
+[lulus] Beranda/rentang jadwal hanya memuat jadwal guru yang login pada semester aktif
+[lulus] Guru A menerima 403 saat mengakses jadwal Guru B
+[lulus] Retry pembukaan dengan idempotency key sama tidak membuat pertemuan tambahan
+[lulus] Absensi guru dan seluruh santri tersimpan serta dapat dibaca kembali
+[lulus] Retry payload sama tidak membuat absensi tambahan
+[lulus] Koreksi memperbarui baris yang sama dan nilai terbaru dapat dibaca
+[lulus] Guru lintas kepemilikan menerima 403 saat menyimpan absensi
+[lulus] Kegagalan di tengah transaksi tidak meninggalkan absensi sebagian
+[lulus] Constraint unik menjaga duplikasi pertemuan–guru dan pertemuan–santri tetap nol
+[lulus] Token lama menerima 401 setelah logout
+
+===== phase5_integration.txt
+[lulus] Filter admin menampilkan 50 pertemuan guru/kelas/jadwal/tahun ajaran yang dipilih
+[lulus] UI dipaginasi tetapi total mencakup 1.050 absensi sintetis
+[lulus] Total ringkasan status sama dengan jumlah seluruh baris detail
+[lulus] Ekspor mengambil seluruh hasil filter tanpa terpotong pagination
+[lulus] CSV memiliki satu header dan seluruh baris hasil filter
+[lulus] HTML cetak memuat identitas dan nomor halaman 1..81 tanpa navigasi admin
+[lulus] Membaca, mengekspor, dan mencetak laporan tidak mengubah data absensi
+[lulus] Halaman pertama selesai 12.36 ms (< 2.000 ms)
+[lulus] Filter status hanya menghitung status yang dipilih
+[lulus] Filter admin valid dan menghasilkan data untuk academic_year_id
+[lulus] Filter admin valid dan menghasilkan data untuk teacher_id
+[lulus] Filter admin valid dan menghasilkan data untuk class_id
+[lulus] Filter admin valid dan menghasilkan data untuk schedule_id
+[lulus] Laporan guru hanya memuat jadwal milik guru dari token
+[lulus] Manipulasi teacher_id guru lain menerima 403
+[lulus] Manipulasi schedule_id guru lain tidak mengembalikan data
+[lulus] Manipulasi ID detail pertemuan guru lain menerima 403
+[lulus] Detail pertemuan memuat guru dan seluruh peserta snapshot
+[lulus] EXPLAIN nyata menghasilkan rencana dengan indeks terpilih
+[ukur] phase5_first_page_ms=12.36
+[ukur] phase5_explain=[{"id":1,"select_type":"PRIMARY","table":"<derived2>","type":"ALL","possible_keys":null,"key":null,"key_len":null,"ref":null,"rows":"101","Extra":"Using filesort"},{"id":2,"select_type":"DERIVED","table":"j","type":"const","possible_keys":"PRIMARY,jadwal_year_status_index,jadwal_teacher_slot_index,jadwal_class_slot_index,jadwal_place_slot_index","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":2,"select_type":"DERIVED","table":"ta","type":"const","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":2,"select_type":"DERIVED","table":"g","type":"const","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":2,"select_type":"DERIVED","table":"k","type":"const","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":2,"select_type":"DERIVED","table":"attendance","type":"ALL","possible_keys":"absensi_guru_meeting_teacher_unique","key":null,"key_len":null,"ref":null,"rows":"51","Extra":""},{"id":2,"select_type":"DERIVED","table":"p","type":"eq_ref","possible_keys":"PRIMARY,pertemuan_schedule_date_unique,pertemuan_date_schedule_report_index","key":"PRIMARY","key_len":"8","ref":"webalhasan_v3_phase1_test.attendance.pertemuan_id","rows":"1","Extra":"Using where"},{"id":2,"select_type":"DERIVED","table":"actor","type":"eq_ref","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"8","ref":"webalhasan_v3_phase1_test.attendance.dicatat_oleh","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"j","type":"const","possible_keys":"PRIMARY,jadwal_year_status_index,jadwal_teacher_slot_index,jadwal_class_slot_index,jadwal_place_slot_index","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"ta","type":"const","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"g","type":"const","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"k","type":"const","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"p","type":"ALL","possible_keys":"PRIMARY,pertemuan_schedule_date_unique,pertemuan_date_schedule_report_index","key":null,"key_len":null,"ref":null,"rows":"51","Extra":"Using where"},{"id":3,"select_type":"UNION","table":"attendance","type":"ref","possible_keys":"absensi_santri_meeting_student_unique,absensi_santri_student_index","key":"absensi_santri_meeting_student_unique","key_len":"8","ref":"webalhasan_v3_phase1_test.p.id","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"pp","type":"eq_ref","possible_keys":"pertemuan_participant_unique,pertemuan_peserta_santri_index","key":"pertemuan_participant_unique","key_len":"12","ref":"webalhasan_v3_phase1_test.p.id,webalhasan_v3_phase1_test.attendance.santri_id","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"actor","type":"eq_ref","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"8","ref":"webalhasan_v3_phase1_test.attendance.dicatat_oleh","rows":"1","Extra":""}]
+[ukur] phase5_explain_status=[{"id":1,"select_type":"PRIMARY","table":"<derived2>","type":"ALL","possible_keys":null,"key":null,"key_len":null,"ref":null,"rows":"51","Extra":"Using filesort"},{"id":2,"select_type":"DERIVED","table":"j","type":"const","possible_keys":"PRIMARY,jadwal_year_status_index,jadwal_teacher_slot_index,jadwal_class_slot_index,jadwal_place_slot_index","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":2,"select_type":"DERIVED","table":"ta","type":"const","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":2,"select_type":"DERIVED","table":"g","type":"const","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":2,"select_type":"DERIVED","table":"k","type":"const","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":2,"select_type":"DERIVED","table":"attendance","type":"ref","possible_keys":"absensi_guru_meeting_teacher_unique,absensi_guru_status_meeting_report_index","key":"absensi_guru_status_meeting_report_index","key_len":"1","ref":"const","rows":"1","Extra":"Using index condition"},{"id":2,"select_type":"DERIVED","table":"p","type":"eq_ref","possible_keys":"PRIMARY,pertemuan_schedule_date_unique,pertemuan_date_schedule_report_index","key":"PRIMARY","key_len":"8","ref":"webalhasan_v3_phase1_test.attendance.pertemuan_id","rows":"1","Extra":"Using where"},{"id":2,"select_type":"DERIVED","table":"actor","type":"eq_ref","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"8","ref":"webalhasan_v3_phase1_test.attendance.dicatat_oleh","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"j","type":"const","possible_keys":"PRIMARY,jadwal_year_status_index,jadwal_teacher_slot_index,jadwal_class_slot_index,jadwal_place_slot_index","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"ta","type":"const","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"g","type":"const","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"k","type":"const","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"4","ref":"const","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"p","type":"ALL","possible_keys":"PRIMARY,pertemuan_schedule_date_unique,pertemuan_date_schedule_report_index","key":null,"key_len":null,"ref":null,"rows":"51","Extra":"Using where"},{"id":3,"select_type":"UNION","table":"attendance","type":"ref","possible_keys":"absensi_santri_meeting_student_unique,absensi_santri_student_index,absensi_santri_status_meeting_report_index","key":"absensi_santri_meeting_student_unique","key_len":"8","ref":"webalhasan_v3_phase1_test.p.id","rows":"1","Extra":"Using where"},{"id":3,"select_type":"UNION","table":"pp","type":"eq_ref","possible_keys":"pertemuan_participant_unique,pertemuan_peserta_santri_index","key":"pertemuan_participant_unique","key_len":"12","ref":"webalhasan_v3_phase1_test.p.id,webalhasan_v3_phase1_test.attendance.santri_id","rows":"1","Extra":""},{"id":3,"select_type":"UNION","table":"actor","type":"eq_ref","possible_keys":"PRIMARY","key":"PRIMARY","key_len":"8","ref":"webalhasan_v3_phase1_test.attendance.dicatat_oleh","rows":"1","Extra":""}]
+[lulus] Backup dipulihkan pada database uji dengan jumlah baris tabel inti yang sama
+[ukur] phase5_backup_core_counts={"absensi_guru":51,"absensi_santri":1000,"guru":6,"jadwal_ngaji":2,"pertemuan_pengajian":51,"pertemuan_peserta":1000,"santri":24,"users":11}
+
+===== v2_phase1_integration.txt
+[lulus] Akun admin memperoleh kemampuan admin
+[lulus] Akun pengurus dengan relasi aktif memperoleh kemampuan pengurus
+[lulus] Akun orang tua dengan relasi wali aktif memperoleh kemampuan orang tua
+[lulus] Guru dengan penugasan murobi aktif memperoleh kemampuan murobi
+[lulus] Guru tanpa penugasan murobi aktif TIDAK memperoleh kemampuan keputusan izin
+[lulus] Akun tanpa role dan relasi tidak memperoleh kemampuan apa pun
+[lulus] Penugasan murobi yang sudah berakhir mencabut kemampuan keputusan
+[lulus] Penugasan murobi aktif kembali memberi kemampuan murobi
+[lulus] Penugasan pembimbing dapat dibuat untuk pengurus aktif dan kamar valid
+[lulus] Penugasan pembimbing menolak pengurus tidak aktif
+[lulus] Penugasan pembimbing menolak kamar yang tidak ada
+[lulus] Penugasan pembimbing menolak tanggal selesai sebelum tanggal mulai
+[lulus] Pengurus melihat santri di kamar binaannya
+[lulus] Pengurus tidak melihat santri di luar cakupan pembimbingnya
+[lulus] Satu akun orang tua hanya melihat santri dengan relasi wali aktif
+[lulus] Relasi wali yang sudah diarsipkan tidak terlihat oleh orang tua
+[lulus] Admin dapat membuat akun pengurus dengan password sementara
+[lulus] Akun pengurus terhubung ke tepat satu baris pengurus
+[lulus] Akun baru wajib mengganti password awal
+[lulus] Satu baris pengurus tidak dapat dihubungkan ke lebih dari satu akun
+[lulus] Akun tidak dapat dibuat untuk pengurus yang tidak aktif
+[lulus] Admin dapat menghubungkan akun yang sudah ada ke satu baris wali
+[lulus] Satu wali tidak dapat dihubungkan ke lebih dari satu akun
+[lulus] Akun yang baru dihubungkan langsung memperoleh kemampuan orang tua
+[lulus] Admin dapat memeriksa relasi wali–santri aktif maupun yang diarsipkan
+[lulus] Pengurus hanya melihat pengajuan yang dibuat atas namanya
+[lulus] Murobi hanya melihat pengajuan yang diarahkan kepadanya
+[lulus] Murobi A menerima 403 saat membuka pengajuan milik Murobi B
+[lulus] Pengurus menerima 403 saat membuka pengajuan pengurus lain
+[lulus] Orang tua A menerima 403 untuk pengajuan santri yang tidak terhubung dengannya
+[lulus] Guru tanpa kemampuan perizinan menerima 403
+[lulus] Orang tua dapat membuka pengajuan santri yang terhubung dengannya
+[lulus] Admin dapat membuka seluruh pengajuan
+[lulus] Parameter mode tidak dapat memperluas cakupan di luar kemampuan pengguna
+[lulus] Tidak ada baris perizinan warisan pada database uji (lewati pemeriksaan label)
+[lulus] Audit mencatat perizinan_account_created
+[lulus] Audit mencatat perizinan_account_linked
+[lulus] Audit mencatat pembimbing_assignment_created
+[lulus] Audit tidak menyimpan credential atau password
+[bersih] Fixture uji dihapus.
+
+===== v2_phase2_integration.txt
+[lulus] KP-1a Pengurus melihat seluruh santri dalam cakupan pembimbingnya
+[lulus] KP-1b Santri di luar cakupan tidak muncul pada daftar pilihan
+[lulus] KP-1c Santri pada kelas nonaktif tidak muncul pada daftar pilihan
+[lulus] KP-1d Pencarian tidak dapat memunculkan santri di luar cakupan
+[lulus] KP-1e Pengajuan untuk santri di luar cakupan ditolak 403 [403]
+[lulus] KP-1f Pengajuan melalui penugasan kelas nonaktif ditolak 403 [403]
+[lulus] KP-1g Kelas nonaktif tidak menghasilkan kandidat routing
+[lulus] KP-1h Penugasan pada kelas nonaktif tidak memberi kemampuan murobi
+[lulus] KP-1i Penolakan cakupan tidak menyimpan baris pengajuan
+[lulus] KP-2a Tanggal kembali sebelum tanggal izin ditolak 422 [422]
+[lulus] KP-2b Tanggal yang tidak ada pada kalender ditolak 422 [422]
+[lulus] KP-2c Alasan kosong ditolak 422 [422]
+[lulus] KP-2d Seluruh penolakan validasi tidak menyimpan baris
+[lulus] KP-3a Dua request dengan idempotency key sama menghasilkan satu pengajuan
+[lulus] KP-3b Request kedua ditandai sebagai putar ulang idempoten
+[lulus] KP-3c Hanya satu baris pengajuan bertambah setelah retry
+[lulus] KP-3d Kunci idempotensi yang dipakai untuk isi berbeda ditolak 409 [409]
+[lulus] KP-5a Pengajuan dengan satu murobi valid berstatus Diajukan
+[lulus] KP-5b Routing memilih murobi dari penugasan aktif yang cocok
+[lulus] KP-5c Pengajuan muncul pada antrean murobi yang ditetapkan
+[lulus] KP-5d Murobi lain tidak melihat pengajuan tersebut
+[lulus] KP-4a Pengajuan dengan rentang identik ditolak 409 [409]
+[lulus] KP-4b Pengajuan dengan rentang bersinggungan sebagian ditolak 409 [409]
+[lulus] KP-4c Penolakan tumpang tindih tidak menyimpan baris
+[lulus] KP-4d Rentang yang tidak bersinggungan tetap diterima
+[lulus] KP-6a Routing tanpa kandidat masuk antrean penetapan admin
+[lulus] KP-6b Jumlah kandidat nol tercatat pada pengajuan
+[lulus] KP-6c Routing dengan lebih dari satu kandidat masuk antrean penetapan admin
+[lulus] KP-6d Jumlah kandidat lebih dari satu tercatat pada pengajuan
+[lulus] KP-6e Kedua kasus muncul pada antrean admin
+[lulus] KP-6f Pengajuan tanpa routing tunggal tidak terlihat oleh murobi yang tidak ditetapkan (user 31)
+[lulus] KP-6f Pengajuan tanpa routing tunggal tidak terlihat oleh murobi yang tidak ditetapkan (user 32)
+[lulus] KP-7a Murobi B menerima 403 saat memutus pengajuan milik Murobi A [403]
+[lulus] KP-7b Murobi B menerima 403 saat membuka detail pengajuan Murobi A [403]
+[lulus] KP-7c Guru tanpa penugasan murobi aktif tidak dapat memutus [403]
+[lulus] KP-7d Pengurus tidak dapat memberi keputusan [403]
+[lulus] KP-7e Murobi tidak dapat membuat pengajuan [403]
+[lulus] KP-8a Penetapan murobi tanpa alasan ditolak 422 [422]
+[lulus] KP-8b Guru tanpa penugasan murobi aktif tidak dapat ditetapkan [422]
+[lulus] KP-8c Non-admin menerima 403 saat menetapkan murobi [403]
+[lulus] KP-8d Admin dapat menetapkan murobi dan status kembali ke Diajukan
+[lulus] KP-8e Pengajuan yang ditetapkan muncul pada antrean murobi tujuan
+[lulus] KP-8f Admin dapat menetapkan ulang murobi sebelum ada keputusan
+[lulus] KP-8g Penetapan dan penetapan ulang tercatat sebagai peristiwa terpisah pada riwayat
+[lulus] KP-9a Admin Pengganti tidak dapat memutus tanpa alasan penggantian (422) [422]
+[lulus] KP-9b Keputusan admin tersimpan dengan kapasitas Admin Pengganti
+[lulus] KP-9c Basis data menyimpan kapasitas dan alasan penggantian
+[lulus] KP-10a Orang tua dapat melihat status izin santri yang terhubung
+[lulus] KP-10b Orang tua A menerima 403 untuk pengajuan santri yang tidak terhubung [403]
+[lulus] KP-10c Orang tua tidak dapat memberi keputusan [403]
+[lulus] KP-10d Orang tua tidak dapat membatalkan pengajuan [403]
+[lulus] KP-10e Orang tua tidak dapat membuat pengajuan [403]
+[lulus] KP-11a Pengurus lain menerima 403 saat membatalkan pengajuan bukan miliknya [403]
+[lulus] KP-11b Pembatalan tanpa alasan ditolak 422 [422]
+[lulus] KP-11c Pengurus dapat membatalkan pengajuan sebelum keputusan
+[lulus] KP-11d Pembatalan menambah riwayat tanpa menghapus riwayat sebelumnya
+[lulus] KP-11e Riwayat pembuatan tetap ada setelah pembatalan
+[lulus] KP-11f Pembatalan kedua ditolak 409 [409]
+[lulus] KP-11g Pengajuan dibatalkan tidak lagi menahan rentang tanggal santri
+[lulus] KP-12a Murobi yang ditugaskan dapat memutus dengan kapasitas Murobi
+[lulus] KP-12b Keputusan kedua atas pengajuan yang sama ditolak 409 [409]
+[lulus] KP-12c Pembatalan setelah keputusan ditolak 409 [409]
+[lulus] KP-12d Versi optimistic yang kedaluwarsa ditolak 409 [409]
+[lulus] KP-13a Dua keputusan bersamaan: tepat satu berhasil ([{"ok":false,"status":409,"message":"Pengajuan ini berstatus Ditolak sehingga tidak dapat diproses lagi."},{"ok":true,"status":200,"response":{"id":9,"keputusan_id":3,"status":"Ditolak","kapasitas":"Murobi","version":2,"idempotent_replay":false}}])
+[lulus] KP-13b Request kedua menerima 409 tanpa menimpa keputusan pertama
+[lulus] KP-13c Hanya satu baris keputusan tersimpan
+[lulus] KP-13d Status akhir tunggal dan konsisten: Ditolak
+[lulus] KP-13e Dua pembuatan bersamaan dengan kunci sama hanya menambah satu pengajuan
+[lulus] KP-13f Sedikitnya satu dari dua request bersamaan berhasil ([{"ok":true,"status":200,"response":{"id":10,"status":"Perlu Penetapan Admin","murobi_guru_id":null,"routing_kandidat":2,"routing_catatan":"Ditemukan 2 murobi kandidat (Guru Murobi Dua 6FD3A6, Guru Murobi Tiga 6FD3A6); admin harus menetapkan satu.","idempotent_replay":false}},{"ok":true,"status":200,"response":{"id":10,"status":"Perlu Penetapan Admin","murobi_guru_id":null,"routing_kandidat":2,"routing_catatan":"Ditemukan 2 murobi kandidat (Guru Murobi Dua 6FD3A6, Guru Murobi Tiga 6FD3A6); admin harus menetapkan satu.","idempotent_replay":true}}])
+[lulus] KP-14a Non-admin menerima 403 saat mengoreksi keputusan [403]
+[lulus] KP-14b Koreksi tanpa alasan koreksi ditolak 422 [422]
+[lulus] KP-14c Admin dapat mengoreksi keputusan melalui peristiwa koreksi
+[lulus] KP-14d Koreksi tersimpan sebagai satu peristiwa
+[lulus] KP-14e Koreksi menyimpan nilai sebelum dan sesudah
+[lulus] KP-14f Koreksi menambah riwayat, tidak menghapusnya
+[lulus] KP-14g Riwayat keputusan pertama tetap ada setelah koreksi
+[lulus] KP-14h Koreksi tidak menghapus atau menggandakan baris keputusan
+[lulus] KP-15a Riwayat memuat peristiwa pengajuan_dibuat
+[lulus] KP-15a Riwayat memuat peristiwa routing_otomatis
+[lulus] KP-15a Riwayat memuat peristiwa keputusan
+[lulus] KP-15a Riwayat memuat peristiwa keputusan_dikoreksi
+[lulus] KP-15b Setiap riwayat V2 memiliki pelaku, alasan, dan waktu
+[lulus] KP-15c Audit mencatat izin_pengajuan_created
+[lulus] KP-15c Audit mencatat izin_routing_resolved
+[lulus] KP-15c Audit mencatat izin_murobi_assigned
+[lulus] KP-15c Audit mencatat izin_decision_recorded
+[lulus] KP-15c Audit mencatat izin_cancelled
+[lulus] KP-15c Audit mencatat izin_decision_corrected
+[lulus] KP-15d Audit perizinan tidak memuat credential atau secret
+[lulus] KP-15e Daftar mendukung pencarian dan pagination
+[lulus] KP-15f Filter tanpa hasil menghasilkan empty state, bukan galat
+[lulus] KP-15g Filter status hanya mengembalikan status yang diminta
+[lulus] KP-15h Tidak ada baris warisan pada database uji (lewati pemeriksaan)
+[lulus] KP-15i Orang tua tidak memperoleh satu pun tombol mutasi
+[bersih] Fixture uji Fase 2 dihapus.
+
+===== v2_phase4_integration.txt
+
+=== KN-1. Penerima yang berhak ===
+[lulus] KN-1a Pengajuan dengan satu murobi memberi tahu tepat murobi tujuan
+[lulus] KN-1b Murobi lain tidak menerima notifikasi pengajuan
+[lulus] KN-1c Guru tanpa penugasan murobi tidak menerima notifikasi
+[lulus] KN-1c2 Penugasan ke kelas nonaktif tidak memberi capability atau notifikasi murobi
+[lulus] KN-1d Pengaju tidak diberi tahu tentang tindakannya sendiri
+[lulus] KN-1e Tepat satu baris in-app dibuat untuk peristiwa pengajuan
+[lulus] KN-1f Pengajuan tanpa murobi tunggal memberi tahu admin
+[lulus] KN-1g Pengurus pengaju tidak diberi notifikasi atas tindakannya sendiri; statusnya sudah tampak pada daftarnya
+[lulus] KN-1h Murobi tidak diberi tahu pengajuan yang belum ditetapkan kepadanya
+[lulus] KN-1i Keputusan memberi tahu pengurus pengaju
+[lulus] KN-1j Keputusan memberi tahu orang tua dengan relasi wali aktif
+[lulus] KN-1k Wali dengan relasi terarsip tidak menerima notifikasi
+[lulus] KN-1l Murobi pemutus tidak diberi tahu keputusannya sendiri
+[lulus] KN-1m Alasan izin, catatan pengurus, dan alasan keputusan tidak pernah masuk isi notifikasi
+[lulus] KN-1n Koreksi memberi tahu pengurus, orang tua, dan murobi
+[lulus] KN-1o Penetapan murobi memberi tahu murobi baru dan pengurus
+[lulus] KN-1p Penetapan ulang memberi tahu murobi baru DAN murobi lama
+[lulus] KN-1q Pembatalan memberi tahu murobi tujuan agar antreannya bersih
+[lulus] KN-1r Keputusan Admin Pengganti memberi tahu pengurus, orang tua, dan murobi yang digantikan
+
+=== KN-2. Otorisasi notifikasi ===
+[lulus] KN-2a Murobi melihat notifikasinya sendiri
+[lulus] KN-2b Orang tua ditolak 403 saat membuka notifikasi milik murobi [403]
+[lulus] KN-2c Orang tua ditolak 403 saat menandai baca notifikasi milik murobi [403]
+[lulus] KN-2d Guru tanpa penugasan ditolak 403 untuk notifikasi milik orang lain [403]
+[lulus] KN-2e ID yang tidak ada dijawab 403, bukan 404 yang membocorkan keberadaan baris [403]
+[lulus] KN-2f Menandai dibaca mengurangi jumlah belum dibaca tepat satu
+[lulus] KN-2g Menandai dibaca dua kali tidak mengubah jumlah lagi (idempoten)
+[lulus] KN-2h Tandai semua dibaca mengosongkan jumlah belum dibaca pengguna itu saja
+[lulus] KN-2i Tandai semua milik pengurus tidak menyentuh notifikasi orang tua
+[lulus] KN-2j Pagination pusat notifikasi bekerja
+
+=== KN-3. Deduplikasi ===
+[lulus] KN-3a Tiga kali emit peristiwa yang sama tidak menambah satu baris pun
+[lulus] KN-3b Create kedua dengan kunci sama adalah replay
+[lulus] KN-3c Replay idempotensi tidak menghasilkan notifikasi tambahan
+[lulus] KN-3d Tidak ada duplikat (event_key, kanal, penerima) di seluruh tabel
+
+=== KN-4. Sakelar push ===
+[lulus] KN-4a Kunci perlindungan token push tersedia pada sandbox
+[lulus] KN-4b Perangkat push terdaftar
+[lulus] KN-4c Tepat satu perangkat aktif tercatat untuk murobi
+[lulus] KN-4d Registrasi ulang token yang sama tidak menumpuk baris perangkat
+[lulus] KN-4e Push mati: tidak ada satu pun baris push diantrekan
+[lulus] KN-4f Push mati: notifikasi in-app tetap dibuat seperti biasa
+[lulus] KN-4g Push nyala: baris push diantrekan untuk penerima berperangkat
+[lulus] KN-4h Perangkat dengan push dimatikan tidak lagi diantrekan
+[lulus] KN-4i Mematikan push perangkat tidak mengganggu notifikasi in-app
+[lulus] KN-4j Pengguna lain tidak dapat mencabut perangkat milik murobi [403]
+
+=== KN-5/KN-6. WhatsApp opsional ===
+[lulus] KN-5a WhatsApp ditolak menyala ketika pemeriksaan konfigurasi berstatus Gagal [409]
+[lulus] KN-5b Sakelar WhatsApp tetap mati setelah penolakan
+[lulus] KN-5c Repositori juga menolak menyalakan WhatsApp tanpa pemeriksaan Lulus
+[lulus] KN-5d Pemeriksaan Lulus penyedia lama tidak dapat menyalakan penyedia baru
+[lulus] KN-5e Kanal in-app tidak dapat dimatikan [422]
+[lulus] KN-6a Penyedia default melaporkan belum siap
+[lulus] KN-6b Verifikasi penyedia default gagal tanpa koneksi
+[lulus] KN-6c Penyedia default menolak mengirim secara permanen
+[lulus] KN-6d Adapter HTTP tanpa environment melaporkan belum siap
+[lulus] KN-6e Adapter HTTP berhenti sebelum koneksi ketika environment belum lengkap
+[lulus] KN-6f Worker WhatsApp tidak berjalan saat kanal mati
+[lulus] KN-6g Nol permintaan ke penyedia WhatsApp saat kanal mati
+[lulus] KN-6h Pengajuan tetap berhasil ketika WhatsApp mati
+[lulus] KN-6i WhatsApp mati: tidak ada baris WhatsApp diantrekan
+[lulus] KN-6j Masih nol permintaan penyedia setelah transaksi perizinan
+
+=== KN-7. Adapter uji WhatsApp ===
+[lulus] KN-7a Adapter uji menyatakan bukan pengiriman nyata
+[lulus] KN-7b Verifikasi adapter uji lulus tanpa jaringan
+[lulus] KN-7c Adapter uji ditolak ketika APP_ENV=production
+[lulus] KN-7d WhatsApp menyala setelah pemeriksaan Lulus
+[lulus] KN-7e WhatsApp nyala: baris WhatsApp diantrekan untuk penerima bernomor
+[lulus] KN-7f Adapter uji menandai baris WhatsApp sebagai terkirim
+[lulus] KN-7g Seluruh baris WhatsApp pengajuan itu berstatus Sent
+[lulus] KN-7h Putaran worker kedua tidak mengirim ulang baris yang sudah Sent
+[lulus] KN-7i Kegagalan pengiriman dicatat sebagai Failed
+[lulus] KN-7j Jumlah percobaan bertambah tepat satu
+[lulus] KN-7k Kegagalan sementara belum permanen
+[lulus] KN-7l Backoff menjadwalkan percobaan berikutnya
+[lulus] KN-7m Riwayat percobaan pengiriman tercatat
+[lulus] KN-7n Backoff mencegah percobaan ulang sebelum waktunya
+[lulus] KN-7o Kegagalan permanen ditandai dan tidak diambil worker lagi
+[lulus] KN-7p Admin dapat mengantrekan ulang baris gagal
+[lulus] KN-7q Percobaan ulang tidak menambah baris outbox baru
+[lulus] KN-7r Baris yang sama kembali ke antrean
+[lulus] KN-7s Mematikan WhatsApp mengosongkan antrean yang belum terkirim
+[lulus] KN-7t Mematikan WhatsApp tidak menyentuh satu pun notifikasi in-app
+
+=== KN-7b. Pengiriman push (klien tiruan) ===
+[lulus] KN-7u Baris push terkirim melalui klien push
+[lulus] KN-7v Klien push menerima batch pesan
+[lulus] KN-7w Pesan push menyertakan channelId Android yang sama dengan aplikasi
+[lulus] KN-7x Payload push hanya memuat penunjuk sumber daya
+[lulus] KN-7y Alasan izin tidak ikut pada payload push
+[lulus] KN-7z Token yang ditolak penyedia dicabut otomatis
+
+=== KN-8. Secret tidak bocor ===
+[lulus] KN-8a Token perangkat tidak tersimpan dalam bentuk terbaca
+[lulus] KN-8b Token perangkat hanya tersimpan sebagai hash
+[lulus] KN-8c Audit tidak memuat token perangkat
+[lulus] KN-8d Isi notifikasi tidak memuat token perangkat
+[lulus] KN-8e Audit kanal tidak memuat nomor telepon
+[lulus] KN-8f Respons daftar perangkat tidak pernah mengembalikan token
+[lulus] KN-8g Status kanal tidak membocorkan token maupun kunci environment
+[lulus] KN-8h Status kanal menyebut NAMA environment WhatsApp, bukan nilainya
+[lulus] KN-8i Token terlindungi dapat dibuka kembali oleh worker
+[lulus] KN-8j Bentuk terlindungi tidak memuat token terbaca
+[lulus] KN-8k Kunci berbeda tidak dapat membuka token
+[lulus] KN-8l Bentuk tersamar token tidak cukup untuk mengirim push
+
+=== KN-9/KN-10. Panel admin dan audit ===
+[lulus] KN-9a Admin melihat daftar pengiriman gagal
+[lulus] KN-9b Daftar kegagalan memuat kode, pesan aman, dan riwayat percobaan
+[lulus] KN-9c Daftar kegagalan tidak memuat token, nomor, atau credential
+[lulus] KN-9d Pengurus ditolak 403 saat membuka status kanal [403]
+[lulus] KN-9e Murobi ditolak 403 saat membuka daftar kegagalan [403]
+[lulus] KN-9f Orang tua ditolak 403 saat mengubah sakelar kanal [403]
+[lulus] KN-10a Setiap perubahan sakelar tercatat pada audit kanal
+[lulus] KN-10b Perubahan sakelar juga tercatat pada audit sistem
+[lulus] KN-10c Pemeriksaan konfigurasi tercatat pada audit kanal
+[lulus] KN-10d Audit menyimpan nilai sebelum dan sesudah sakelar
+[lulus] KN-9g Admin dapat mengirim pesan uji in-app kepada dirinya sendiri
+[lulus] KN-9h Pesan uji tercatat pada pusat notifikasi admin
+
+=== KN-11. Pencabutan perangkat ===
+[lulus] KN-11a Perangkat kedua terdaftar sebelum logout
+[lulus] KN-11b Logout mencabut tepat perangkat yang mengirim tokennya
+[lulus] KN-11c Alasan pencabutan tercatat sebagai logout
+[lulus] KN-11d Mencabut perangkat tidak menghapus notifikasi in-app pengguna
+[lulus] KN-11e Token yang bukan Expo push token ditolak 422 [422]
+[lulus] KN-11f Platform yang tidak dikenal ditolak 422 [422]
+[lulus] KN-11g Penonaktifan akun mencabut seluruh registrasi perangkat
+[lulus] KN-11h Worker tidak memperoleh token akun nonaktif
+
+=== KN-12. Ketahanan transaksi ===
+[lulus] KN-12a Pengajuan berhasil walaupun outbox sedang dalam keadaan tidak biasa
+[lulus] KN-12b Status pengajuan tersimpan normal
+[lulus] KN-12c Riwayat status tetap lengkap
+Notifikasi Fase 4 gagal untuk izin.tidak_ada: Peristiwa notifikasi tidak dikenal: izin.tidak_ada
+[lulus] KN-12d Peristiwa tidak dikenal dicatat sebagai galat aman, bukan exception
+
+=== Ringkasan ===
+[lulus] KN-13a Ringkasan admin menampilkan notifikasi in-app yang tersedia
+[lulus] KN-13b Backoff naik bertahap dan berhenti pada batas atas
+[bersih] Fixture uji Fase 4 dihapus dan pengaturan kanal dipulihkan.
+
+===== v2_phase5_integration.txt
+=== Menyiapkan fixture Fase 5 (9BD969DC) ===
+[ok] Fixture siap: 6 pengajuan pada rentang 2029-03-01 s.d. 2029-03-11
+
+=== KL-1. Konsistensi total antar permukaan ===
+[lulus] KL-1 [seluruh rentang] total ringkasan (6) = jumlah baris dokumen (6)
+[lulus] KL-1 [seluruh rentang] total ringkasan = jumlah baris CSV (6)
+[lulus] KL-1 [seluruh rentang] total ringkasan = jumlah baris cetak
+[lulus] KL-1 [seluruh rentang] jumlah per status = total ringkasan
+[lulus] KL-1 [seluruh rentang] keempat permukaan memakai sidik jari kriteria yang sama
+[lulus] KL-1 [seluruh rentang] berkas CSV memuat 6 baris data + 1 header
+[lulus] KL-1 [seluruh rentang] halaman dibatasi 2 baris tetapi ekspor tetap seluruh hasil
+[lulus] KL-1 [status Disetujui] total ringkasan (3) = jumlah baris dokumen (3)
+[lulus] KL-1 [status Disetujui] total ringkasan = jumlah baris CSV (3)
+[lulus] KL-1 [status Disetujui] total ringkasan = jumlah baris cetak
+[lulus] KL-1 [status Disetujui] jumlah per status = total ringkasan
+[lulus] KL-1 [status Disetujui] keempat permukaan memakai sidik jari kriteria yang sama
+[lulus] KL-1 [status Disetujui] berkas CSV memuat 3 baris data + 1 header
+[lulus] KL-1 [status Disetujui] halaman dibatasi 2 baris tetapi ekspor tetap seluruh hasil
+[lulus] KL-1 [kamar A] total ringkasan (5) = jumlah baris dokumen (5)
+[lulus] KL-1 [kamar A] total ringkasan = jumlah baris CSV (5)
+[lulus] KL-1 [kamar A] total ringkasan = jumlah baris cetak
+[lulus] KL-1 [kamar A] jumlah per status = total ringkasan
+[lulus] KL-1 [kamar A] keempat permukaan memakai sidik jari kriteria yang sama
+[lulus] KL-1 [kamar A] berkas CSV memuat 5 baris data + 1 header
+[lulus] KL-1 [kamar A] halaman dibatasi 2 baris tetapi ekspor tetap seluruh hasil
+[lulus] KL-1 [murobi A] total ringkasan (5) = jumlah baris dokumen (5)
+[lulus] KL-1 [murobi A] total ringkasan = jumlah baris CSV (5)
+[lulus] KL-1 [murobi A] total ringkasan = jumlah baris cetak
+[lulus] KL-1 [murobi A] jumlah per status = total ringkasan
+[lulus] KL-1 [murobi A] keempat permukaan memakai sidik jari kriteria yang sama
+[lulus] KL-1 [murobi A] berkas CSV memuat 5 baris data + 1 header
+[lulus] KL-1 [murobi A] halaman dibatasi 2 baris tetapi ekspor tetap seluruh hasil
+[lulus] KL-1 [basis keputusan] total ringkasan (2) = jumlah baris dokumen (2)
+[lulus] KL-1 [basis keputusan] total ringkasan = jumlah baris CSV (2)
+[lulus] KL-1 [basis keputusan] total ringkasan = jumlah baris cetak
+[lulus] KL-1 [basis keputusan] jumlah per status = total ringkasan
+[lulus] KL-1 [basis keputusan] keempat permukaan memakai sidik jari kriteria yang sama
+[lulus] KL-1 [basis keputusan] berkas CSV memuat 2 baris data + 1 header
+[lulus] KL-1 [durasi >= 2 jam] total ringkasan (3) = jumlah baris dokumen (3)
+[lulus] KL-1 [durasi >= 2 jam] total ringkasan = jumlah baris CSV (3)
+[lulus] KL-1 [durasi >= 2 jam] total ringkasan = jumlah baris cetak
+[lulus] KL-1 [durasi >= 2 jam] jumlah per status = total ringkasan
+[lulus] KL-1 [durasi >= 2 jam] keempat permukaan memakai sidik jari kriteria yang sama
+[lulus] KL-1 [durasi >= 2 jam] berkas CSV memuat 3 baris data + 1 header
+[lulus] KL-1 [durasi >= 2 jam] halaman dibatasi 2 baris tetapi ekspor tetap seluruh hasil
+
+=== KL-2. Isolasi cakupan ===
+[lulus] KL-2a Admin melihat seluruh 6 pengajuan pada rentang uji
+[lulus] KL-2b Pengurus A hanya melihat 5 pengajuan miliknya
+[lulus] KL-2c Pengurus B hanya melihat 1 pengajuan miliknya
+[lulus] KL-2d Murobi A hanya melihat pengajuan yang diarahkan kepadanya
+[lulus] KL-2e Murobi B hanya melihat pengajuan yang diarahkan kepadanya
+[lulus] KL-2f Orang tua A hanya melihat 2 pengajuan santri terhubung (A1)
+[lulus] KL-2f2 Seluruh baris orang tua A hanya milik santri yang terhubung
+[lulus] KL-2g Orang tua B hanya melihat pengajuan santri terhubung (B1)
+[lulus] KL-2h Detail Pengurus B hanya memuat pengajuannya sendiri
+[lulus] KL-2i Detail orang tua B hanya memuat santri terhubung
+[lulus] KL-2j CSV pengurus B hanya memuat barisnya sendiri
+[lulus] KL-2k CSV pengurus B tidak memuat data pengurus lain
+[lulus] KL-2l Cetak orang tua B tidak memuat santri yang tidak terhubung
+
+=== KL-3. Parameter tidak memperluas cakupan ===
+[lulus] KL-3a Pengurus A ditolak saat meminta laporan pengurus B [403]
+[lulus] KL-3b Murobi A ditolak saat meminta laporan murobi B [403]
+[lulus] KL-3c Penolakan berlaku juga pada ekspor CSV [403]
+[lulus] KL-3d Penolakan berlaku juga pada halaman cetak [403]
+[lulus] KL-3e Parameter mode=admin dari akun orang tua tidak memberi hak admin
+[lulus] KL-3f Mode yang tidak dimiliki akun diabaikan dan kembali ke cakupan sah
+[lulus] KL-3g Orang tua yang memfilter santri orang lain menerima hasil kosong
+
+=== KL-4. Filter PRD ===
+[lulus] KL-4a Filter status Disetujui menghasilkan 3
+[lulus] KL-4b Filter status Dibatalkan menghasilkan 1
+[lulus] KL-4c Filter santri menghasilkan 2
+[lulus] KL-4d Filter pengurus menghasilkan 1
+[lulus] KL-4e Filter murobi menghasilkan 1
+[lulus] KL-4f Filter kamar A menghasilkan 5
+[lulus] KL-4g Filter kamar B menghasilkan 1
+[lulus] KL-4h Filter kelas menghasilkan 2 (santri A1)
+[lulus] KL-4i Filter tahun ajaran aktif menghasilkan 6
+[lulus] KL-4j Filter sumber V2 menghasilkan 6
+[lulus] KL-4k Filter data warisan menghasilkan 0 pada fixture V2
+[lulus] KL-4l Durasi minimal 2 jam menghasilkan 3 (120, 180, 600 menit)
+[lulus] KL-4m Durasi maksimal 2 jam menghasilkan 2 (60, 120 menit)
+[lulus] KL-4n Rentang durasi 2-3 jam menghasilkan 2
+[lulus] KL-4o Pencarian teks pada alasan mempersempit hasil
+[lulus] KL-4p Basis tanggal keputusan menghasilkan baris
+[lulus] KL-4p2 Basis keputusan hanya memuat pengajuan yang SUDAH diputus
+[lulus] KL-4p3 Basis keputusan menyaring berdasarkan tanggal keputusan, bukan tanggal izin
+[lulus] KL-4p4 Rentang diperlebar menangkap seluruh 4 keputusan fixture
+[lulus] KL-4q Basis tanggal pengajuan menghasilkan baris
+[lulus] KL-4r Filter kanal Push menghasilkan 0 pada pengajuan tanpa notifikasi
+[lulus] KL-4s Filter kanal Push menemukan pengajuan yang punya baris Push
+[lulus] KL-4t Filter kanal WhatsApp tetap 0 (tidak ada baris WhatsApp)
+[lulus] KL-4u Rentang tanggal sempit membatasi hasil
+
+=== KL-5. Median durasi keputusan ===
+[lulus] KL-5a Hanya keputusan dengan kedua waktu yang dihitung (3 dari 5)
+[lulus] KL-5b Median ganjil = nilai tengah (120 menit)
+[lulus] KL-5c Durasi tercepat 60 menit
+[lulus] KL-5d Durasi terlama 180 menit
+[lulus] KL-5e Label median manusiawi: 2 jam
+[lulus] KL-5f Admin menghitung 4 keputusan
+[lulus] KL-5g Median genap = rata-rata dua nilai tengah (150 menit)
+[lulus] KL-5h Tanpa keputusan, median dilaporkan Tidak tersedia dan bukan 0
+
+=== KL-6. Ekspor CSV ===
+[lulus] KL-6a CSV diawali BOM UTF-8
+[lulus] KL-6b CSV memuat 6 baris data + 1 header
+PHP Deprecated:  str_getcsv(): the $escape parameter must be provided as its default value will change in /private/tmp/v4a5-web/tests/v2_phase5_integration.php on line 598
+[lulus] KL-6c Baris header CSV sama persis dengan konstanta terdokumentasi
+[lulus] KL-6d Nama santri berawalan = dinetralkan dengan kutip tunggal
+[lulus] KL-6e Alasan izin berawalan = dinetralkan
+[lulus] KL-6f NIS berawalan = dinetralkan
+PHP Deprecated:  str_getcsv(): the $escape parameter must be provided as its default value will change in /private/tmp/v4a5-web/tests/v2_phase5_integration.php on line 618
+PHP Deprecated:  str_getcsv(): the $escape parameter must be provided as its default value will change in /private/tmp/v4a5-web/tests/v2_phase5_integration.php on line 618
+PHP Deprecated:  str_getcsv(): the $escape parameter must be provided as its default value will change in /private/tmp/v4a5-web/tests/v2_phase5_integration.php on line 618
+PHP Deprecated:  str_getcsv(): the $escape parameter must be provided as its default value will change in /private/tmp/v4a5-web/tests/v2_phase5_integration.php on line 618
+PHP Deprecated:  str_getcsv(): the $escape parameter must be provided as its default value will change in /private/tmp/v4a5-web/tests/v2_phase5_integration.php on line 618
+PHP Deprecated:  str_getcsv(): the $escape parameter must be provided as its default value will change in /private/tmp/v4a5-web/tests/v2_phase5_integration.php on line 618
+[lulus] KL-6g Tidak ada satu pun sel CSV yang masih diawali karakter formula
+[lulus] KL-6h CSV mengabaikan pagination dan tetap memuat seluruh 6 hasil filter
+[lulus] KL-6i Nama berkas CSV deskriptif: laporan-perizinan-admin-2029-03-01-sd-2029-03-11-2026-10-17-08-35-41.csv
+[lulus] KL-6j Hasil tidak ditandai terpotong pada jumlah wajar
+
+=== KL-7. Halaman cetak / PDF ===
+[lulus] KL-7a Cetak memuat identitas pesantren
+[lulus] KL-7b Cetak memuat judul laporan
+[lulus] KL-7c Cetak memuat nama pembuat laporan
+[lulus] KL-7d Cetak memuat waktu pembuatan
+[lulus] KL-7e Cetak memuat nomor halaman 1..2 tanpa "Halaman 0"
+[lulus] KL-7f Cetak memuat rentang filter aktif
+[lulus] KL-7g Cetak memuat median durasi keputusan
+[lulus] KL-7h Cetak memuat seluruh baris hasil filter (6 data + header)
+[lulus] KL-7i Nilai pada halaman cetak di-escape sebagai HTML
+[lulus] KL-7j Cetak menyebutkan cakupan laporan
+
+=== KL-8. Validasi input ===
+[lulus] KL-8a Tanggal akhir sebelum tanggal awal ditolak 422 [422]
+[lulus] KL-8b Format tanggal salah ditolak 422 [422]
+[lulus] KL-8c Status tidak dikenal ditolak 422, bukan diabaikan diam-diam [422]
+[lulus] KL-8d Basis tanggal tidak dikenal ditolak 422 [422]
+[lulus] KL-8e Kanal tidak dikenal ditolak 422 [422]
+[lulus] KL-8f ID non-numerik ditolak 422 (tidak pernah masuk SQL) [422]
+[lulus] KL-8g Durasi maksimum lebih kecil dari minimum ditolak 422 [422]
+[lulus] KL-8h Filter kamar dan kelas bersamaan ditolak 422 [422]
+[lulus] KL-8i per_page dibatasi server pada 100
+
+=== KL-9. Receipt push akhir ===
+[lulus] KL-9a Push terkirim dan menghasilkan tiket awal
+[lulus] KL-9b Id tiket disimpan dan baris menunggu receipt akhir
+[lulus] KL-9c Rekonsiliasi receipt berjalan
+[lulus] KL-9d Receipt sukses menandai pengantaran terkonfirmasi
+[lulus] KL-9e receipt_status menjadi Terkirim
+[lulus] KL-9f Status pengiriman utama tidak berubah
+[lulus] KL-9g Rekonsiliasi TIDAK mengirim ulang pesan (jumlah panggilan send tidak bertambah)
+[lulus] KL-9h Receipt gagal tercatat
+[lulus] KL-9i receipt_status menjadi Gagal
+[lulus] KL-9j Baris TIDAK dikembalikan ke antrean kirim
+[lulus] KL-9k Tidak ada pengiriman ulang setelah receipt gagal
+[lulus] KL-9l Kode receipt tersimpan aman tanpa token
+[lulus] KL-9m Tiket tanpa jawaban dihitung sebagai belum tersedia
+[lulus] KL-9n Tiket tanpa jawaban tetap Menunggu dan percobaannya bertambah
+[lulus] KL-9o Tiket tanpa jawaban berulang ditandai Tidak Tersedia, bukan Gagal
+[lulus] KL-9p Rekonsiliasi ulang tidak mengubah baris yang sudah final (idempoten)
+
+=== KL-10. Push mati ===
+[lulus] KL-10a Worker push berhenti saat kanal mati
+[lulus] KL-10b Rekonsiliasi receipt berhenti saat kanal mati
+[lulus] KL-10c NOL permintaan pengiriman ke penyedia saat push mati
+[lulus] KL-10d NOL permintaan receipt ke penyedia saat push mati
+[lulus] KL-10e Laporan tetap berfungsi penuh saat kanal notifikasi mati
+
+=== Pembersihan fixture ===
+[ok] Fixture Fase 5 dibersihkan dan pengaturan kanal dipulihkan.
+
+SELURUH PENGUJIAN INTEGRASI FASE 5 LULUS.
+
+===== v3_phase1_integration.txt
+[lulus] Kategori dibuat dan dibaca kembali
+[lulus] Katalog dibuat dan dibaca kembali
+[lulus] Ambang dibuat dan dibaca kembali
+[lulus] Kode duplikat ditolak
+[lulus] Duplikat tidak menambah baris
+[lulus] Batas bersentuhan bertumpang tindih ditolak
+[lulus] Input katalog tidak valid
+[lulus] Input katalog tidak valid
+[lulus] Input katalog tidak valid
+[lulus] Input katalog tidak valid
+[lulus] Input katalog tidak valid
+[lulus] Input katalog tidak valid
+[lulus] Pengurus tidak dapat mengelola katalog
+[lulus] Role klien tidak dipercaya
+[lulus] IDOR baca admin ditolak
+[lulus] Ambang negatif ditolak
+[lulus] Maksimum negatif ditolak
+[lulus] Rentang terbalik ditolak
+[lulus] Manipulasi filter array ditolak
+[lulus] Optimistic version menolak tab lama
+[lulus] Satu audit per mutasi
+[lulus] Escape XSS pada keluaran
+[lulus] Gagal audit membatalkan transaksi
+[lulus] Tidak ada baris setelah gagal audit
+[lulus] Capability aktif v3.pelanggaran.kelola
+[lulus] Capability dicabut saat relasi/penugasan berakhir v3.pelanggaran.kelola
+[lulus] Capability aktif v3.murobi.mengetahui
+[lulus] Capability dicabut saat relasi/penugasan berakhir v3.murobi.mengetahui
+[lulus] Capability aktif v3.publikasi.baca
+[lulus] Capability dicabut saat relasi/penugasan berakhir v3.publikasi.baca
+[lulus] Cakupan anak sendiri v3.pelanggaran.kelola
+[lulus] Cakupan anak lain ditolak v3.pelanggaran.kelola
+[lulus] Cakupan anak sendiri v3.murobi.mengetahui
+[lulus] Cakupan anak lain ditolak v3.murobi.mengetahui
+[lulus] Cakupan anak sendiri v3.publikasi.baca
+[lulus] Cakupan anak lain ditolak v3.publikasi.baca
+[lulus] Empat role dasar tetap
+[lulus] API baca katalog untuk pembimbing aktif
+[lulus] Orang tua tidak membaca katalog internal
+[lulus] Tabel lama tetap ada
+[lulus] Constraint database menolak data rusak
+[lulus] Constraint database menolak data rusak
+[lulus] Constraint database menolak data rusak
+[lulus] Tahun ajaran aktif menjadi pilihan pertama
+[lulus] Status tahun ajaran ikut dikirim ke formulir
+[lulus] Tahun non-aktif tidak menempati posisi default
+[lulus] Formulir menandai tahun non-aktif
+[lulus] Formulir memakai default per-field, bukan opsi pertama browser
+[lulus] Pagination katalog 25 + 2 baris
+[lulus] Pagination tidak mengulang baris antarhalaman
+
+===== v3_phase2_integration.txt
+[lulus] Ambang tahun nonaktif memberi sinyal operator yang terlihat
+[lulus] Validasi gagal membersihkan lampiran pending (422)
+[lulus] Tidak ada lampiran yatim saat validasi gagal
+[lulus] Pembimbing mencatat pelanggaran dalam cakupan
+[lulus] Snapshot poin katalog tersimpan bersama catatan
+[lulus] Ledger awal tersimpan tepat satu
+[lulus] Ambang menghasilkan tepat satu rekomendasi
+[lulus] Rekomendasi unik per ambang dan subjek
+[lulus] Rekomendasi tidak membuat konseling atau perubahan akademik otomatis
+[lulus] Lampiran privat dicatat dengan metadata aman
+[lulus] Admin murni mengawasi seluruh catatan tanpa menyamar sebagai pembimbing
+[lulus] Idempotency key sama me-replay respons tanpa dampak kedua
+[lulus] Retry hanya menghasilkan satu pelanggaran
+[lulus] Fingerprint bisnis menolak duplikasi dengan key berbeda (409)
+[lulus] Pembimbing tidak dapat mencatat santri di luar cakupan (403)
+[lulus] Pengurus lain tidak dapat mencatat santri A (403)
+[lulus] Perubahan poin default tidak mengubah poin catatan lama
+[lulus] Akumulasi sama dengan penjumlahan ledger dan agregat terrekonsiliasi
+[lulus] Serializer detail tidak mengembalikan baris database mentah
+[lulus] Koreksi membuat revisi dan mempertahankan snapshot bila katalog sama
+[lulus] Koreksi tidak menimpa nilai historis
+[lulus] Pembalik koreksi dan ledger revisi tetap terrekonsiliasi
+[lulus] Koreksi membuat satu ledger pembalik
+[lulus] Optimistic version menolak koreksi versi lama (409)
+[lulus] T-2: admin merangkap pembimbing bersumber keduanya
+[lulus] Koreksi akun ganda tercatat sebagai admin beralasan
+[lulus] Murobi terkait menandai mengetahui tepat satu kali
+[lulus] Murobi lain ditolak (403)
+[lulus] Orang tua ditolak dari tanda mengetahui (403)
+[lulus] Pengurus di luar cakupan ditolak dari tanda mengetahui (403)
+[lulus] Pembimbing dan murobi terkait membaca daftar
+[lulus] Daftar pembimbing lain tidak membocorkan santri A
+[lulus] Daftar murobi lain tidak membocorkan santri A
+[lulus] Orang tua tidak membaca data internal Fase 2 (403)
+[lulus] Murobi lain ditolak dari detail (403)
+[lulus] Orang tua ditolak dari detail (403)
+[lulus] Pengurus lain ditolak dari detail (403)
+[lulus] Lampiran privat ditolak lintas cakupan (403)
+[lulus] Pembatalan mengubah status tanpa menghapus catatan
+[lulus] Pembatalan membuat pembalik poin, bukan mengedit total
+[lulus] Rekonsiliasi setelah koreksi berulang dan pembatalan berselisih nol
+[lulus] Pembatalan tidak menggandakan rekomendasi
+[lulus] Payload outbox/push hanya generik tanpa nama, kategori, uraian, poin, nomor, atau catatan rahasia
+[lulus] Santri tanpa penempatan tetap di luar cakupan
+[lulus] Pencatatan santri tanpa penempatan ditolak (403)
+[lulus] Kegagalan audit menggulung seluruh transaksi (503)
+[lulus] Tidak ada catatan parsial setelah audit gagal
+[lulus] Tidak ada hard delete catatan bisnis
+[lulus] Catatan yang digantikan revisi melepas fingerprint
+[lulus] Koreksi boleh mengembalikan isi ke nilai catatan yang sudah digantikan
+[lulus] Pembatalan tidak menimpa alasan koreksi
+[lulus] Alasan pembatalan tersimpan pada kolomnya sendiri
+[lulus] Catatan yang dibatalkan melepas fingerprint
+[lulus] Serializer detail memisahkan alasan koreksi dan pembatalan
+[lulus] Kejadian identik boleh dicatat ulang setelah pembatalan
+[lulus] Ambang tercapai memberi satu rekomendasi yang berlaku
+[lulus] Pembatalan menandai rekomendasi yang totalnya sudah tidak berlaku
+[lulus] Rekomendasi basi terbaca sebagai tidak berlaku
+[lulus] Total kembali ke rentang memulihkan rekomendasi tanpa membuat baris kedua
+[lulus] Rekomendasi tetap tepat satu per ambang setelah batal dan pulih
+[lulus] Rekomendasi yang dipulihkan berlaku kembali
+[lulus] Seluruh catatan koreksi audit tetap tersimpan
+[lulus] Koreksi tanpa perubahan isi tetap membentuk revisi beralasan
+[lulus] Revisi tanpa perubahan isi mempertahankan uraian sumber
+[lulus] Fingerprint berpindah dari catatan sumber ke revisinya
+[lulus] Bukti dapat dilampirkan lewat koreksi tanpa mengubah isi
+[lulus] Koreksi tanpa perubahan isi tetap terrekonsiliasi
+
+===== v3_phase3_integration.txt
+[lulus] Fixture menghasilkan rekomendasi yang masih berlaku
+[lulus] Pembimbing membuka kasus dalam cakupan
+[lulus] Satu kasus menautkan beberapa pelanggaran santri yang sama
+[lulus] Rekomendasi berlaku ditautkan manual ke kasus
+[lulus] Tautan tingkat kasus yang sama tidak dapat digandakan (409)
+[lulus] Retry kasus me-replay satu dampak bisnis
+[lulus] Pembimbing tidak membuat kasus di luar cakupan (403)
+[lulus] Rekomendasi yang sudah ditindaklanjuti tidak dapat ditautkan ulang (409)
+[lulus] Dua sesi tersimpan sebagai baris berbeda dalam satu kasus
+[lulus] Satu pelanggaran ditindaklanjuti pada tingkat kasus dan beberapa sesi
+[lulus] Detail pelanggaran menampilkan seluruh sesi tindak lanjut tanpa menggandakan pelanggaran
+[lulus] Sesi dapat diselesaikan dengan ringkasan dan hasil internal
+[lulus] Retry transisi sesi terminal me-replay dampak pertama
+[lulus] Versi lama sesi ditolak tanpa menimpa perubahan baru (409)
+[lulus] Koreksi sesi selesai membuat revisi beralasan
+[lulus] Koreksi sesi tidak menimpa isi historis
+[lulus] Sumber sesi tidak dapat memiliki revisi kedua (409)
+[lulus] Penjadwalan ulang membentuk revisi dengan alasan terpisah tanpa realisasi
+[lulus] Transisi dari sesi terminal ditolak (422)
+[lulus] Transisi tidak sah tidak menulis perubahan parsial
+[lulus] Murobi terkait membaca isi kasus Internal (keputusan Human Developer)
+[lulus] Murobi terkait membaca isi sesi pada kasus Internal
+[lulus] Murobi terkait memberi catatan kasus pada kolom sumber terpisah
+[lulus] Murobi lain ditolak dari detail kasus (403)
+[lulus] Pembimbing lain ditolak dari detail kasus (403)
+[lulus] Orang tua ditolak dari endpoint internal kasus (403)
+[lulus] Murobi lain tidak dapat memberi catatan (403)
+[lulus] Daftar pembimbing lain tidak membocorkan kasus
+[lulus] Murobi terkait melihat kasus pada daftar cakupannya
+[lulus] DTO orang tua allowlist tidak pernah membawa field internal
+[lulus] Pembukaan detail sensitif oleh admin tercatat sebagai audit akses
+[lulus] Admin mengoreksi kasus hanya melalui alasan wajib
+[lulus] Audit membedakan koreksi administratif
+[lulus] Koreksi kasus tersimpan sebagai revisi berbaris dengan nilai sebelum/sesudah
+[lulus] Detail kasus menampilkan riwayat revisi
+[lulus] Kasus Rahasia tidak dapat dibuka murobi terkait (403)
+[lulus] Murobi tidak dapat memberi tanda mengetahui pada kasus Rahasia (403)
+[lulus] Kasus Rahasia tidak muncul pada daftar murobi
+[lulus] Detail pelanggaran menyembunyikan kasus Rahasia dari murobi tetapi tidak dari pembimbing pemilik
+[lulus] Transisi status kasus yang tidak sah ditolak (422)
+[lulus] Transisi kasus tidak sah tidak mengubah versi
+[lulus] Kasus ditutup hanya dengan ringkasan hasil
+[lulus] Retry penutupan kasus me-replay dampak pertama
+[lulus] Penutupan mempertahankan seluruh sesi dan revisi
+[lulus] Penutupan mempertahankan seluruh tautan pelanggaran
+[lulus] Penutupan Selesai menutup sesi terjadwal sebagai Dibatalkan beralasan sistem
+[lulus] Penutupan otomatis sesi tercatat audit
+[lulus] Kegagalan audit menggulung kasus dan outbox (503)
+[lulus] Tidak ada kasus atau outbox parsial setelah audit gagal
+[lulus] Outbox konseling hanya memuat pesan generik tanpa rincian sensitif
+[lulus] K1 jadwal ulang sesi pada kasus Selesai ditolak (422)
+[lulus] K1 penyelesaian sesi pada kasus Selesai ditolak (422)
+[lulus] K1 kasus tertutup tidak memperoleh sesi atau status sesi baru
+[lulus] K1 replay transisi sebelum penutupan tetap dijawab dari idempotensi
+[lulus] K2 fixture menghasilkan rekomendasi baru
+[lulus] K2 pembatalan kasus melepas rekomendasi tanpa menghapus barisnya
+[lulus] K2 rekomendasi yang dilepas kembali ke antrean manual
+[lulus] K2 audit pembatalan mencatat rekomendasi yang dilepas
+[lulus] K2 rekomendasi dapat ditautkan manual ke kasus yang sudah berjalan
+[lulus] K2 penautan manual tidak mengubah ledger dan tidak membuat sesi otomatis
+[lulus] K2 rekomendasi yang sudah tertaut tidak dapat ditautkan dua kali (409)
+[lulus] K3 catatan pelanggaran terkini tetap menampilkan kasus yang menindaklanjuti revisi sebelumnya
+[lulus] K3 revisi pelanggaran tidak ditautkan ulang ke kasus yang sama (409)
+[lulus] K3 detail kasus menandai pelanggaran tertaut yang sudah direvisi tanpa menggandakannya
+[lulus] K5 penyelesaian lewat formulir web mempertahankan rencana tindak lanjut tersimpan
+[lulus] K5 sesi batal lewat formulir web tanpa realisasi dan rencananya tetap utuh
+[lulus] K6 koreksi tidak dapat mengosongkan ringkasan dan hasil sesi selesai (422)
+[lulus] K6 koreksi yang ditolak tidak menulis revisi atau menaikkan versi
+[lulus] K6 revisi sesi terjadwal tidak memperoleh waktu realisasi
+[lulus] K7 dua perubahan status kasus menghasilkan dua notifikasi murobi
+[lulus] K7 jadwal ulang lalu tidak hadir pada sesi yang sama menghasilkan dua notifikasi
+[lulus] K9 detail dan timeline dalam satu halaman admin hanya diaudit sekali
+[lulus] K9 timeline yang dibuka tersendiri oleh admin tetap diaudit
+[lulus] Lintas cakupan: pembimbing lain ditolak pada koreksi kasus (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada status kasus (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada tautan (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada sesi baru (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada status sesi (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada koreksi sesi (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada catatan murobi kasus (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada catatan murobi sesi (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada timeline (403)
+[lulus] Lintas cakupan: orang tua ditolak pada koreksi kasus (403)
+[lulus] Lintas cakupan: orang tua ditolak pada status kasus (403)
+[lulus] Lintas cakupan: orang tua ditolak pada tautan (403)
+[lulus] Lintas cakupan: orang tua ditolak pada sesi baru (403)
+[lulus] Lintas cakupan: orang tua ditolak pada status sesi (403)
+[lulus] Lintas cakupan: orang tua ditolak pada koreksi sesi (403)
+[lulus] Lintas cakupan: orang tua ditolak pada catatan murobi kasus (403)
+[lulus] Lintas cakupan: orang tua ditolak pada catatan murobi sesi (403)
+[lulus] Lintas cakupan: orang tua ditolak pada timeline (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada koreksi kasus (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada status kasus (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada tautan (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada sesi baru (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada status sesi (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada koreksi sesi (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada catatan murobi kasus (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada catatan murobi sesi (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada timeline (403)
+[lulus] Admin murni hanya mengoreksi: ditolak pada status kasus (403)
+[lulus] Admin murni hanya mengoreksi: ditolak pada tautan (403)
+[lulus] Admin murni hanya mengoreksi: ditolak pada sesi baru (403)
+[lulus] Admin murni hanya mengoreksi: ditolak pada status sesi (403)
+[lulus] Seluruh percobaan lintas cakupan tidak menulis sesi, tautan, versi, atau catatan murobi
+[lulus] Kasus Rahasia tidak menghasilkan notifikasi murobi
+[lulus] Pembimbing dalam cakupan yang bukan pemilik tidak dapat membuka kasus Rahasia (403)
+[lulus] Pembimbing bukan pemilik ditolak pada koreksi kasus kasus Rahasia (403)
+[lulus] Pembimbing bukan pemilik ditolak pada status kasus kasus Rahasia (403)
+[lulus] Pembimbing bukan pemilik ditolak pada sesi baru kasus Rahasia (403)
+[lulus] Pembimbing bukan pemilik ditolak pada tautan kasus Rahasia (403)
+[lulus] Kasus Rahasia milik pembimbing lain tidak muncul pada daftar maupun detail pelanggaran
+[lulus] Admin tetap dapat membuka kasus Rahasia untuk pengawasan
+[lulus] Pembimbing pemilik membaca kasus Rahasia miliknya
+[lulus] Koreksi pemilik ke Internal membuat revisi dan membuka kasus kepada murobi terkait
+[lulus] Koreksi kasus versi lama ditolak (409)
+[lulus] Koreksi yang ditolak tidak menulis revisi kedua
+[lulus] Database menolak revisi kasus ganda dari versi yang sama
+[lulus] Pembatalan kasus menutup sesi terjadwal sebagai Dibatalkan beralasan sistem
+[lulus] Kegagalan outbox menggulung pembukaan kasus (503)
+[lulus] Tidak ada kasus atau audit parsial setelah outbox gagal
+
+===== v3_phase4_integration.txt
+[lulus] Rahasia menolak pratinjau manual 422
+[lulus] Admin tidak melewati Rahasia 422
+[lulus] Rahasia tidak menghasilkan publikasi/outbox
+[lulus] Kasus belum terbit memiliki nol publikasi bagi orang tua
+[lulus] Revisi sah mencatat sebelum/sesudah
+[lulus] Pratinjau tidak menerbitkan baris bisnis
+[lulus] Orang tua tidak menyiapkan publikasi 403
+[lulus] Pembimbing luar cakupan ditolak 403
+[lulus] Konfirmasi wajib 422
+[lulus] Pratinjau = hasil terbit = snapshot orang tua
+[lulus] Allowlist tidak memuat isi internal atau petugas
+[lulus] Retry mengembalikan hasil pertama
+[lulus] Key dan pratinjau berbeda tetap tidak menggandakan bisnis/notifikasi
+[lulus] IDOR wali B ditolak 403
+[lulus] Pencabutan wali segera menutup akses 403
+[lulus] Internal ke Rahasia ditolak selama publikasi aktif 409
+[lulus] Kerahasiaan tetap Internal sesudah penolakan
+[lulus] Status dibaca hanya melalui mutasi
+[lulus] Koreksi wajib beralasan 422
+[lulus] Koreksi menyimpan versi, riwayat dan reset baca
+[lulus] Versi baca basi ditolak 409
+[lulus] Penarikan wajib beralasan 422
+[lulus] Penarikan menyisakan status dan riwayat aman
+[lulus] Koreksi publikasi sumber Rahasia ditolak 422
+[lulus] Replay terbit tidak melewati perubahan ke Rahasia 422
+[lulus] Baris bisnis tidak dihapus
+[lulus] Setelah penarikan, isi identik boleh diterbitkan ulang sebagai snapshot baru
+[lulus] Kegagalan audit_logs ditolak 503
+[lulus] Rollback penuh termasuk audit/idempotensi: audit_logs
+[lulus] Kegagalan notifikasi_outbox ditolak 503
+[lulus] Rollback penuh termasuk audit/idempotensi: notifikasi_outbox
+[lulus] Kegagalan v3_publikasi_outbox ditolak 503
+[lulus] Rollback penuh termasuk audit/idempotensi: v3_publikasi_outbox
+[lulus] Notifikasi setiap perubahan generik
+[lulus] Tidak menumpang perizinan atau WhatsApp
+[lulus] Audit publikasi hanya metadata
+[lulus] Credential sentinel tidak bocor pada payload atau audit publikasi
+[lulus] Memilih sebagian wali wajib alasan 422
+[lulus] Default semua wali aktif dengan akun
+[lulus] Satu tindakan menghasilkan tepat satu snapshot per wali
+[lulus] Wali membaca snapshot penerimanya sendiri
+[lulus] Relasi santri sama tidak membuka snapshot wali lain 403
+[lulus] Wali membaca snapshot penerimanya sendiri
+[lulus] Relasi santri sama tidak membuka snapshot wali lain 403
+[lulus] Subset beralasan diterima
+[lulus] Sumber berubah sesudah pratinjau menolak terbit 409
+[lulus] Publikasi sumber sesi juga memblokir perubahan Rahasia 409
+[lulus] Snapshot sesi tidak membawa isi sesi internal
+[lulus] Sesi induk Rahasia menolak preview manual 422
+[lulus] Sumber pelanggaran memakai snapshot pilihan, tanpa poin internal
+[lulus] Pelanggaran terbit tidak boleh ditautkan ke kasus Rahasia 409
+[lulus] Pelanggaran terkait Rahasia menolak pratinjau manual 422
+[lulus] Penolakan pelanggaran Rahasia tidak membuat notifikasi
+[lulus] Publikasi pelanggaran tertaut memblokir Internal ke Rahasia 409
+[lulus] Perubahan ke Rahasia aman setelah semua penarikan
+[lulus] Bukan pemilik tidak mengetahui kasus Rahasia lewat opsi publikasi 403
+[lulus] Bukan pemilik tidak mengetahui sesi kasus Rahasia 403
+[lulus] Bukan pemilik tidak memperoleh pesan Rahasia pada pratinjau 403
+[lulus] Bukan pemilik tidak membaca riwayat publikasi kasus Rahasia 403
+[lulus] Bukan pemilik tidak menarik publikasi kasus Rahasia 403
+[lulus] Admin tetap dapat mengawasi publikasi kasus Rahasia
+[lulus] Pemilik tetap dapat membuka publikasi kasus Rahasia yang telah ditarik
+[lulus] Pesan penolakan pelanggaran tertaut netral
+[lulus] Terbit ulang isi asli sesudah koreksi membuat snapshot yang sesuai respons
+[lulus] Klik ganda sesudah terbit ulang tetap tidak menggandakan
+
+===== v3_phase5_integration.txt
+[lulus] Retry satu kasus
+[lulus] Dua sesi tersimpan berbeda
+[lulus] Kasus selesai tanpa menghapus sesi
+[lulus] Versi lama ditolak
+[lulus] Murobi terkait mengetahui kasus yang sama
+[lulus] Kasus lintas cakupan ditolak
+[lulus] Kasus lintas cakupan ditolak
+[lulus] Kasus lintas cakupan ditolak
+[lulus] Laporan pelanggaran sesuai akses tanpa isi rahasia
+[lulus] Laporan kasus sesuai akses tanpa isi rahasia
+[lulus] Laporan pelanggaran sesuai akses tanpa isi rahasia
+[lulus] Laporan kasus sesuai akses tanpa isi rahasia
+[lulus] Laporan pelanggaran sesuai akses tanpa isi rahasia
+[lulus] Laporan kasus sesuai akses tanpa isi rahasia
+[lulus] Laporan lintas cakupan kosong
+[lulus] Laporan lintas cakupan kosong
+[lulus] Laporan wali snapshot tanpa internal
+[lulus] Laporan wali lain kosong
+[lulus] Wali menebak jenis internal ditolak
+[lulus] Filter internal wali ditolak
+[lulus] SQL injection angka ditolak
+[lulus] SQL injection teks terikat parameter
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Tanggal tidak sah ditolak
+[lulus] Options mobile katalog berhalaman
+[lulus] Halaman akhir kosong tetap mengizinkan kembali ke pilihan sebelumnya
+[lulus] Options halaman tidak sah ditolak
+[lulus] Filter pembimbing dan murobi mengikuti penugasan aktif
+[lulus] Filter periode/tingkat/poin menghasilkan data dalam cakupan
+[lulus] Halaman laporan tidak sah ditolak
+[lulus] Purge dry-run tidak menghapus draf
+[lulus] Purge gagal audit menggulung batch
+[lulus] Draf tetap ada setelah rollback
+[lulus] Purge hanya draf, snapshot/riwayat tetap
+[lulus] Purge batas batch
+[lulus] Purge bukan admin ditolak
+[lulus] Audit V3 baru hanya metadata/hash tanpa isi konseling
+[lulus] Audit kategori/katalog tetap memuat uraian sebelum/sesudah
+Publikasi fixture F5 ID=13
+
+===== penugasan_static-final.txt
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanJenis.php
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanException.php
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanRepository.php
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanService.php
+[lulus] FS-1 lint bersih: admin/admin_penugasan.php
+[lulus] FS-1 lint bersih: bin/penugasan_preflight.php
+[lulus] FS-1 lint bersih: bin/penugasan_verify.php
+[lulus] FS-1 lint bersih: tests/penugasan_static.php
+[lulus] FS-1 lint bersih: tests/penugasan_integration.php
+[lulus] FS-1 lint bersih: tests/penugasan_web_smoke.php
+[lulus] FS-1 lint bersih: tests/penugasan_concurrency.php
+[lulus] FS-1 lint bersih: tests/penugasan_concurrency_worker.php
+[lulus] FS-1 lint bersih: app/Auth/Capabilities.php
+[lulus] FS-1 lint bersih: app/Api/ApiAuthService.php
+[lulus] FS-1 lint bersih: app/bootstrap.php
+[lulus] FS-1 lint bersih: app/Ui/Navigation.php
+[lulus] FS-1 lint bersih: admin/admin_akun.php
+[lulus] FS-1 lint bersih: admin/admin_murobi.php
+[lulus] FS-1 lint bersih: admin/admin_pembimbing.php
+[lulus] FS-2 migrasi 012 tidak menambah baris ke tabel roles
+[lulus] FS-2 AccountRepository::ROLES tetap empat role dasar
+[lulus] FS-2 "murobi" tidak dipakai sebagai role dasar
+[lulus] FS-2 "pembimbing" tidak dipakai sebagai role dasar
+[lulus] FS-2 "pendidikan" tidak dipakai sebagai role dasar
+[lulus] FS-2 "bendahara" tidak dipakai sebagai role dasar
+[lulus] FS-2 "panitia_psb" tidak dipakai sebagai role dasar
+[lulus] FS-2 "bendahara_psb" tidak dipakai sebagai role dasar
+[lulus] FS-2 "guru_mapel" tidak dipakai sebagai role dasar
+[lulus] FS-2 seluruh tujuh jenis memakai role dasar guru atau pengurus
+[lulus] FS-3 Capabilities::ALL tidak berubah (admin, pengurus, murobi, orang_tua)
+[lulus] FS-3 forUser() tidak menyertakan capability fondasi ke daftar perizinan V2
+[lulus] FS-4 tujuh jenis penugasan masing-masing memakai tabel sendiri
+[lulus] FS-4 katalog memuat tabel murobi_assignments
+[lulus] FS-4 katalog memuat tabel pembimbing_assignments
+[lulus] FS-4 katalog memuat tabel guru_mapel_assignments
+[lulus] FS-4 katalog memuat tabel pendidikan_assignments
+[lulus] FS-4 katalog memuat tabel bendahara_bulanan_assignments
+[lulus] FS-4 katalog memuat tabel panitia_psb_assignments
+[lulus] FS-4 katalog memuat tabel bendahara_psb_assignments
+[lulus] FS-4 capability terdefinisi: nilai.input
+[lulus] FS-4 capability terdefinisi: nilai.lihat_sendiri
+[lulus] FS-4 capability terdefinisi: nilai.koreksi_sendiri
+[lulus] FS-4 capability terdefinisi: rapor.verifikasi
+[lulus] FS-4 capability terdefinisi: rapor.finalisasi
+[lulus] FS-4 capability terdefinisi: rapor.buka_koreksi
+[lulus] FS-4 capability terdefinisi: rapor.cetak
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.tagihan
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.pembayaran
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.verifikasi
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.laporan
+[lulus] FS-4 capability terdefinisi: psb.pendaftar
+[lulus] FS-4 capability terdefinisi: psb.verifikasi
+[lulus] FS-4 capability terdefinisi: psb.seleksi
+[lulus] FS-4 capability terdefinisi: psb.penerimaan
+[lulus] FS-4 capability terdefinisi: psb_keuangan.tagihan
+[lulus] FS-4 capability terdefinisi: psb_keuangan.pembayaran
+[lulus] FS-4 capability terdefinisi: psb_keuangan.verifikasi
+[lulus] FS-4 capability terdefinisi: psb_keuangan.laporan
+[lulus] FS-4 capability terdefinisi: murobi.binaan
+[lulus] FS-4 capability terdefinisi: pembimbing.binaan
+[lulus] FS-4 panitia PSB dan bendahara PSB memakai himpunan capability yang terpisah
+[lulus] FS-5 migrasi 012 tidak memuat DROP TABLE
+[lulus] FS-5 migrasi 012 tidak memuat DROP COLUMN
+[lulus] FS-5 migrasi 012 tidak memuat TRUNCATE
+[lulus] FS-5 migrasi 012 tidak memuat DELETE FROM
+[lulus] FS-5 migrasi 012 tidak memuat pernyataan UPDATE (ON UPDATE CURRENT_TIMESTAMP bukan pernyataan)
+[lulus] FS-5 migrasi 012 tidak mengisi tabel penugasan berdasarkan tebakan
+[lulus] FS-5 enam tabel baru dibuat dengan IF NOT EXISTS (idempoten)
+[lulus] FS-5 seluruh ALTER pada tabel lama dijaga pemeriksaan information_schema
+[lulus] FS-5 rollback 012 berpasangan dan melepas enam tabel baru
+[lulus] FS-5 rollback memperingatkan kehilangan data secara eksplisit
+[lulus] FS-5 rollback tidak melepas kolom lama murobi/pembimbing
+[lulus] FS-6 kunci unik guru_mapel_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal guru_mapel
+[lulus] FS-6 kunci asing tahun ajaran guru_mapel
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) guru_mapel
+[lulus] FS-6 kunci unik pendidikan_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal pendidikan
+[lulus] FS-6 kunci asing tahun ajaran pendidikan
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) pendidikan
+[lulus] FS-6 kunci unik bendahara_bulanan_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal bendahara_bulanan
+[lulus] FS-6 kunci asing tahun ajaran bendahara_bulanan
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) bendahara_bulanan
+[lulus] FS-6 kunci unik panitia_psb_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal panitia_psb
+[lulus] FS-6 kunci asing tahun ajaran panitia_psb
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) panitia_psb
+[lulus] FS-6 kunci unik bendahara_psb_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal bendahara_psb
+[lulus] FS-6 kunci asing tahun ajaran bendahara_psb
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) bendahara_psb
+[lulus] FS-6 guru mapel merujuk guru lewat kunci asing
+[lulus] FS-6 guru mapel merujuk mata pelajaran lewat kunci asing
+[lulus] FS-6 guru mapel merujuk kelas lewat kunci asing
+[lulus] FS-6 empat penugasan pengurus merujuk pengurus lewat kunci asing
+[lulus] FS-6 tidak ada kolom target_id generik tanpa kunci asing
+[lulus] FS-7 halaman memakai guard admin
+[lulus] FS-7 seluruh mutasi berada di cabang REQUEST_METHOD === POST
+[lulus] FS-7 aksi buat hanya ditangani lewat POST
+[lulus] FS-7 aksi ubah hanya ditangani lewat POST
+[lulus] FS-7 aksi akhiri hanya ditangani lewat POST
+[lulus] FS-7 aksi nonaktifkan hanya ditangani lewat POST
+[lulus] FS-7 aksi aktifkan hanya ditangani lewat POST
+[lulus] FS-7 aksi mapel_simpan hanya ditangani lewat POST
+[lulus] FS-7 aksi mapel_status hanya ditangani lewat POST
+[lulus] FS-7 tidak ada aksi yang dibaca dari GET
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: mysqli_query
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: ->query(
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: ->prepare(
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: INSERT INTO
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: UPDATE
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: DELETE FROM
+[lulus] FS-7 halaman tidak menyediakan aksi penghapusan permanen
+[lulus] FS-7 setiap formulir mutasi menyertakan token CSRF
+[lulus] FS-7 tidak ada nilai baris yang dicetak tanpa escape
+[lulus] FS-7 keluaran data di-escape (master_e/ah_e)
+[lulus] FS-7 tindakan berdampak meminta konfirmasi dan alasan
+[lulus] FS-8 layanan memakai transaksi untuk mutasi
+[lulus] FS-8 setiap mutasi menulis audit yang kegagalannya membatalkan transaksi
+[lulus] FS-8 kegagalan audit menggagalkan mutasi
+[lulus] FS-8 seluruh mutasi (buat, ubah, akhiri, status aktif, mata pelajaran) memeriksa role admin pelaku di server
+[lulus] FS-8 public function buat memanggil requireAdmin
+[lulus] FS-8 public function ubah memanggil requireAdmin
+[lulus] FS-8 public function akhiri memanggil requireAdmin
+[lulus] FS-8 private function ubahStatusAktif memanggil requireAdmin
+[lulus] FS-8 public function simpanMataPelajaran memanggil requireAdmin
+[lulus] FS-8 public function setMataPelajaranState memanggil requireAdmin
+[lulus] FS-8 pemeriksaan tumpang tindih dijalankan di bawah kunci baris
+[lulus] FS-8 penguncian baris SELECT ... FOR UPDATE dipakai
+[lulus] FS-8 mutasi mengunci baris master subjek sebagai gerbang serialisasi (buat + kunciBaris)
+[lulus] FS-8 kunci master subjek selalu diambil SEBELUM kunci baris penugasan (urutan tetap, anti-deadlock)
+[lulus] FS-8 hasil get_result() false dengan errno tidak diperlakukan sebagai nol baris
+[lulus] FS-8 galat kunci 1205/1213 diterjemahkan menjadi konflik yang dapat dimengerti
+[lulus] FS-8 perubahan capability akun dicatat tersendiri
+[lulus] FS-8 percobaan duplikat/tumpang tindih dicatat pada audit
+[lulus] FS-8 aksi audit penugasan.buat
+[lulus] FS-8 aksi audit penugasan.ubah
+[lulus] FS-8 aksi audit penugasan.akhiri
+[lulus] FS-8 aksi audit penugasan.nonaktifkan
+[lulus] FS-8 aksi audit penugasan.aktifkan
+[lulus] FS-8 layanan tidak pernah menyentuh password/token
+[lulus] FS-8 repository tidak menghapus baris penugasan
+[lulus] FS-8 subjek dan tahun ajaran tidak dapat diganti lewat parameter ubah (anti-IDOR)
+[lulus] FS-9 repository hanya memakai prepared statement
+[lulus] FS-9 repository tidak membaca input HTTP
+[lulus] FS-9 nama tabel berasal dari katalog, bukan dari input
+[lulus] FS-9 duplikat nama/kode mata pelajaran dijawab pesan yang tepat, bukan pesan penugasan
+[lulus] FS-10 resolver membaca ulang role dari basis data
+[lulus] FS-10 featureCapabilities tidak mempercayai $user['roles'] dari pemanggil
+[lulus] FS-10 masa berlaku dinilai pada tanggal berjalan di dalam query
+[lulus] FS-10 tahun ajaran diperhitungkan (Aktif untuk non-PSB)
+[lulus] FS-10 metode terpusat featureAppliesToKelas tersedia
+[lulus] FS-10 metode terpusat featureAppliesToKamar tersedia
+[lulus] FS-10 metode terpusat featureAppliesToMataPelajaran tersedia
+[lulus] FS-10 metode terpusat featureAppliesToTahunAjaran tersedia
+[lulus] FS-10 metode terpusat featureAppliesToSemester tersedia
+[lulus] FS-10 metode terpusat featureAppliesToGelombangPsb tersedia
+[lulus] FS-10 metode terpusat featureSource tersedia
+[lulus] FS-10 metode terpusat hasFeature tersedia
+[lulus] FS-11 struktur capabilities (list/default_mode/konteks/menus/aksi) tidak berubah
+[lulus] FS-11 default_mode tetap dipilih dari empat mode lama
+[lulus] FS-11 tidak ada menu/mode aplikasi baru untuk fitur yang belum ada
+[lulus] FS-11 field aditif feature_capabilities pada profil
+[lulus] FS-11 respons login juga memuat field aditif
+[lulus] FS-11 field lama profil tidak dihapus/diubah
+[lulus] FS-12 navigasi memetakan halaman pusat penugasan
+[lulus] FS-12 menu Pusat Penugasan tersedia untuk admin
+[lulus] FS-12 menu murobi dan pembimbing lama dipertahankan
+[lulus] FS-12 Pusat Penugasan hanya tampil pada blok admin (dan tetap bukan kontrol akses)
+[lulus] FS-13 admin/admin_murobi.php menaut ke Pusat Penugasan
+[lulus] FS-13 admin/admin_murobi.php tetap memproses formulirnya sendiri (fungsi lama utuh)
+[lulus] FS-13 admin/admin_pembimbing.php menaut ke Pusat Penugasan
+[lulus] FS-13 admin/admin_pembimbing.php tetap memproses formulirnya sendiri (fungsi lama utuh)
+[lulus] FS-14 halaman akun menjelaskan role dasar vs penugasan
+[lulus] FS-14 halaman akun menaut ke Pusat Penugasan
+[lulus] FS-14 ringkasan penugasan efektif dihitung dari resolver server
+[lulus] FS-14 penugasan fungsional tidak ditambahkan ke pilihan role dasar
+[lulus] FS-15 migrasi tidak membuat tabel bisnis nilai_semester
+[lulus] FS-15 migrasi tidak membuat tabel bisnis nilai_santri
+[lulus] FS-15 migrasi tidak membuat tabel bisnis rapor
+[lulus] FS-15 migrasi tidak membuat tabel bisnis tagihan
+[lulus] FS-15 migrasi tidak membuat tabel bisnis kuitansi
+[lulus] FS-15 migrasi tidak membuat tabel bisnis jurnal
+[lulus] FS-15 migrasi tidak membuat tabel bisnis konseling
+[lulus] FS-15 migrasi tidak membuat tabel bisnis seleksi_psb
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: SimpleXLSX.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: SimpleXLSXGen.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _guard.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _laporan_guard.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _master_ui.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _pengajian_jadwal.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _pengajian_pertemuan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _santri_wali_field.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_akun.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_akun_perizinan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_alumni.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_dashboard.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_data.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_download.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_galeri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_guru.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_izin.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_jadwal_ngaji.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_kamar.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_kelas.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_kelulusan_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_laporan_absensi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_login.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_master_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_murobi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_notifikasi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pelanggaran.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pembayaran_psb.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pembimbing.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_penempatan_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pengajian.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pengurus.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_penugasan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_rekap_keuangan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_rekap_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_tahun.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_v3_katalog.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_wali.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_wali_rekonsiliasi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: cek_login.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: edit_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_laporan_absensi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_master.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_pembayaran.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_psb.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: get_santri_json.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: get_wali_json.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: hapus_siswa.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: laporan_absensi_cetak.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: laporan_absensi_detail.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: logout.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: pertemuan_pengajian.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_import_psb.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_import_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_mutasi_alumni.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_psb_admin.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: sidebar.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: tambah_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: ubah_password.php
+[lulus] FS-16 repositori aplikasi perangkat tidak berada/berubah di dalam repo ini
+[lulus] FS-16 tidak ada menu aplikasi baru pada payload profil
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/README.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/ringkasan-desain.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/matriks-capability.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/migrasi-dan-rollback.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/kontrak-api.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/panduan-admin.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/test-results.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/cpanel-deployment.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/acceptance-status.md
+[lulus] FS-17 matriks mendokumentasikan nilai.input
+[lulus] FS-17 matriks mendokumentasikan rapor.finalisasi
+[lulus] FS-17 matriks mendokumentasikan pembiayaan_bulanan.tagihan
+[lulus] FS-17 matriks mendokumentasikan psb.pendaftar
+[lulus] FS-17 matriks mendokumentasikan psb_keuangan.laporan
+[lulus] FS-17 matriks mendokumentasikan murobi.binaan
+[lulus] FS-17 matriks mendokumentasikan pembimbing.binaan
+[lulus] FS-17 dokumentasi menegaskan fitur bisnis V3–V6 belum diimplementasikan
+[lulus] FS-17 matriks hak akses lama diperbarui
+[lulus] FS-17 dokumentasi API menyebut field aditif
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa INSERT)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa UPDATE)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa DELETE)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa ALTER)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa DROP)
+[lulus] FS-18 bin/penugasan_preflight.php hanya dapat dijalankan dari CLI
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa INSERT)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa UPDATE)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa DELETE)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa ALTER)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa DROP)
+[lulus] FS-18 bin/penugasan_verify.php hanya dapat dijalankan dari CLI
+
+Total gagal: 0
+
+===== phase1_static-final.txt
+[lulus] Login tidak membandingkan username/password dengan nilai literal
+[lulus] Login lama memakai service autentikasi database
+[lulus] Koneksi tidak memuat password database literal
+[lulus] Seluruh POST pada route admin dijaga CSRF di server
+[lulus] index.php memuat bootstrap/koneksi sebelum menghasilkan header HTML
+[lulus] berita.php memuat bootstrap/koneksi sebelum menghasilkan header HTML
+[lulus] detail.php memuat bootstrap/koneksi sebelum menghasilkan header HTML
+[lulus] download.php memuat bootstrap/koneksi sebelum menghasilkan header HTML
+[lulus] galeri.php memuat bootstrap/koneksi sebelum menghasilkan header HTML
+[lulus] _guard.php memakai guard role admin
+[lulus] _master_ui.php memakai guard role admin
+[lulus] admin_akun.php memakai guard role admin
+[lulus] admin_akun_perizinan.php memakai guard role admin
+[lulus] admin_alumni.php memakai guard role admin
+[lulus] admin_berita.php memakai guard role admin
+[lulus] admin_dashboard.php memakai guard role admin
+[lulus] admin_data.php memakai guard role admin
+[lulus] admin_download.php memakai guard role admin
+[lulus] admin_galeri.php memakai guard role admin
+[lulus] admin_guru.php memakai guard role admin
+[lulus] admin_izin.php memakai guard role admin
+[lulus] admin_kamar.php memakai guard role admin
+[lulus] admin_kelas.php memakai guard role admin
+[lulus] admin_kelulusan_santri.php memakai guard role admin
+[lulus] admin_master_santri.php memakai guard role admin
+[lulus] admin_murobi.php memakai guard role admin
+[lulus] admin_notifikasi.php memakai guard role admin
+[lulus] admin_pelanggaran.php memakai guard role admin
+[lulus] admin_pembayaran_psb.php memakai guard role admin
+[lulus] admin_pembimbing.php memakai guard role admin
+[lulus] admin_penempatan_santri.php memakai guard role admin
+[lulus] admin_pengurus.php memakai guard role admin
+[lulus] admin_penugasan.php memakai guard role admin
+[lulus] admin_rekap_keuangan.php memakai guard role admin
+[lulus] admin_rekap_santri.php memakai guard role admin
+[lulus] admin_santri.php memakai guard role admin
+[lulus] admin_tahun.php memakai guard role admin
+[lulus] admin_v3_katalog.php memakai guard role admin
+[lulus] admin_wali.php memakai guard role admin
+[lulus] admin_wali_rekonsiliasi.php memakai guard role admin
+[lulus] edit_berita.php memakai guard role admin
+[lulus] export_master.php memakai guard role admin
+[lulus] export_pembayaran.php memakai guard role admin
+[lulus] export_psb.php memakai guard role admin
+[lulus] export_santri.php memakai guard role admin
+[lulus] get_santri_json.php memakai guard role admin
+[lulus] get_wali_json.php memakai guard role admin
+[lulus] hapus_siswa.php memakai guard role admin
+[lulus] proses_berita.php memakai guard role admin
+[lulus] proses_import_psb.php memakai guard role admin
+[lulus] proses_import_santri.php memakai guard role admin
+[lulus] proses_mutasi_alumni.php memakai guard role admin
+[lulus] proses_psb_admin.php memakai guard role admin
+[lulus] sidebar.php memakai guard role admin
+[lulus] tambah_berita.php memakai guard role admin
+[lulus] Guard laporan web hanya admin/guru dengan sesi dan menolak mutasi
+[lulus] admin_laporan_absensi.php memakai guard laporan baca-saja
+[lulus] laporan_absensi_detail.php memakai guard laporan baca-saja
+[lulus] export_laporan_absensi.php memakai guard laporan baca-saja
+[lulus] laporan_absensi_cetak.php memakai guard laporan baca-saja
+[lulus] admin_pengajian.php memakai guard pengguna dan membatasi role admin/guru
+[lulus] admin_pengajian.php melindungi seluruh POST dengan CSRF
+[lulus] pertemuan_pengajian.php meneruskan POST ke modul ber-guard, bukan mengalihkannya melewati validasi
+[lulus] admin_jadwal_ngaji.php meneruskan POST ke modul ber-guard, bukan mengalihkannya melewati validasi
+[lulus] _pengajian_jadwal.php menolak akses langsung (potongan tampilan, bukan halaman)
+[lulus] _pengajian_pertemuan.php menolak akses langsung (potongan tampilan, bukan halaman)
+[lulus] _santri_wali_field.php menolak akses langsung (potongan tampilan, bukan halaman)
+[lulus] Migrasi memuat roles
+[lulus] Migrasi memuat user_roles
+[lulus] Migrasi memuat api_tokens
+[lulus] Migrasi memuat audit_logs
+[lulus] Migrasi memuat users_guru_unique
+[lulus] Migrasi memuat force_password_change
+[lulus] Runtime mendukung password_hash/password_verify
+[lulus] Token CSRF valid dapat dibuat dan diverifikasi
+[lulus] Token CSRF salah ditolak
+
+===== phase2_static-final.txt
+[lulus] Migrasi Fase 2 memuat ALTER TABLE guru
+[lulus] Migrasi Fase 2 memuat ALTER TABLE santri
+[lulus] Migrasi Fase 2 memuat CREATE TABLE wali
+[lulus] Migrasi Fase 2 memuat CREATE TABLE santri_wali
+[lulus] Migrasi Fase 2 memuat CREATE TABLE pengurus
+[lulus] Migrasi Fase 2 memuat CREATE TABLE murobi_assignments
+[lulus] Migrasi Fase 2 memuat active_guard
+[lulus] Migrasi Fase 2 memuat plotting_kelas_one_active_unique
+[lulus] Migrasi Fase 2 memuat guru_nip_unique
+[lulus] Migrasi naik tidak menghapus tabel atau kolom lama
+[lulus] Migrasi wali memiliki jejak sumber dan mempertahankan kolom ayah/ibu
+[lulus] Rollback berpasangan memperingatkan agar tidak dijalankan sembarang di produksi
+[lulus] Akses data baru memakai prepared statement dengan tipe parameter
+[lulus] Create, update, dan arsip dicatat ke audit
+[lulus] Perubahan relasi penting memakai transaksi
+[lulus] Perubahan kelas menutup keanggotaan lama tanpa menghapus riwayat
+[lulus] admin_guru.php menyediakan Pencarian
+[lulus] admin_guru.php menyediakan Detail
+[lulus] admin_guru.php menyediakan Tambah
+[lulus] admin_guru.php menyediakan Ubah
+[lulus] admin_guru.php menyediakan Nonaktifkan
+[lulus] admin_guru.php menyediakan Arsipkan
+[lulus] admin_guru.php tidak menghapus guru/santri permanen
+[lulus] admin_master_santri.php menyediakan Pencarian
+[lulus] admin_master_santri.php menyediakan Detail
+[lulus] admin_master_santri.php menyediakan Tambah
+[lulus] admin_master_santri.php menyediakan Ubah
+[lulus] admin_master_santri.php menyediakan Nonaktifkan
+[lulus] admin_master_santri.php menyediakan Arsipkan
+[lulus] admin_master_santri.php tidak menghapus guru/santri permanen
+[lulus] admin/admin_wali.php tersedia
+[lulus] admin/admin_pengurus.php tersedia
+[lulus] admin/admin_murobi.php tersedia
+[lulus] admin/admin_tahun.php tersedia
+[lulus] admin/admin_kelas.php tersedia
+[lulus] admin/export_master.php tersedia
+[lulus] UI wali mendukung relasi ke banyak santri
+[lulus] UI murobi menjelaskan bahwa approval izin tidak diberikan
+[lulus] Guru dan santri dapat diekspor CSV sesuai filter
+[lulus] Impor lama memvalidasi dan melaporkan baris gagal secara terpisah
+[lulus] Username, email, dan nomor HP akun dinormalisasi dan divalidasi
+[lulus] Mutasi alumni mengarsipkan santri dan tidak menghapus data sumber
+[lulus] Modul penempatan lama tidak lagi menghapus riwayat kelas
+[lulus] NIS/NIP dinormalisasi konsisten
+[lulus] Nomor HP dinormalisasi ke format lokal
+[lulus] Tanggal tidak valid ditolak
+
+===== phase3_static-final.txt
+[lulus] Migrasi Fase 3 memuat ALTER TABLE jadwal_ngaji
+[lulus] Migrasi Fase 3 memuat ADD COLUMN hari
+[lulus] Migrasi Fase 3 memuat ADD COLUMN waktu_mulai
+[lulus] Migrasi Fase 3 memuat ADD COLUMN waktu_selesai
+[lulus] Migrasi Fase 3 memuat jam_migration_status
+[lulus] Migrasi Fase 3 memuat CREATE TABLE jadwal_jam_migration_report
+[lulus] Migrasi Fase 3 memuat CREATE TABLE pertemuan_pengajian
+[lulus] Migrasi Fase 3 memuat CREATE TABLE pertemuan_peserta
+[lulus] Migrasi Fase 3 memuat pertemuan_schedule_date_unique
+[lulus] Migrasi Fase 3 memuat pertemuan_participant_unique
+[lulus] Migrasi naik tidak menghapus tabel, kolom, atau baris lama
+[lulus] Migrasi naik tidak menimpa kolom jam lama
+[lulus] Nilai jam gagal parsing dicatat bersama nilai asli
+[lulus] Rollback berpasangan memuat peringatan produksi
+[lulus] Pemeriksaan bentrok memakai aturan overlap rentang waktu
+[lulus] Bentrok guru ditolak dengan pesan yang dapat ditindaklanjuti
+[lulus] Bentrok kelas dan tempat menghasilkan peringatan
+[lulus] Pembuatan, pembukaan, dan penyelesaian pertemuan memakai transaksi
+[lulus] Pembukaan pertemuan membekukan peserta dari keanggotaan kelas aktif
+[lulus] Status Draf, Dibuka, dan Selesai tersedia
+[lulus] Guru dibatasi ke jadwal miliknya
+[lulus] Tugas guru hanya mengambil jadwal aktif pada semester aktif
+[lulus] UI jadwal menyediakan Pencarian
+[lulus] UI jadwal menyediakan Detail
+[lulus] UI jadwal menyediakan Tambah jadwal
+[lulus] UI jadwal menyediakan Ubah
+[lulus] UI jadwal menyediakan Nonaktifkan
+[lulus] UI jadwal menyediakan Arsipkan
+[lulus] UI jadwal tidak menghapus jadwal permanen
+[lulus] UI pertemuan mendukung seluruh perubahan status
+[lulus] Form jadwal dan pertemuan dilindungi CSRF
+[lulus] Jadwal dan pertemuan saling tertaut dengan konteks terbawa
+[lulus] Format jam lama pada dump dapat diparsing tanpa mengubah sumber
+[lulus] Format ambigu ditolak parser dan harus dilaporkan
+[lulus] Rentang lintas tengah malam tidak ditebak oleh parser
+
+===== phase4_static-final.txt
+[lulus] Kontrak API mendokumentasikan POST /api/v1/auth/login
+[lulus] Kontrak API mendokumentasikan GET /api/v1/profile
+[lulus] Kontrak API mendokumentasikan POST /api/v1/auth/logout
+[lulus] Kontrak API mendokumentasikan GET /api/v1/schedules/today
+[lulus] Kontrak API mendokumentasikan GET /api/v1/schedules
+[lulus] Kontrak API mendokumentasikan POST /api/v1/schedules/{schedule_id}/meetings
+[lulus] Kontrak API mendokumentasikan GET /api/v1/meetings/{meeting_id}
+[lulus] Kontrak API mendokumentasikan PUT /api/v1/meetings/{meeting_id}/attendance
+[lulus] Kontrak API mendokumentasikan pagination
+[lulus] Kontrak API mendokumentasikan 401
+[lulus] Kontrak API mendokumentasikan 403
+[lulus] Kontrak API mendokumentasikan 409
+[lulus] Kontrak API mendokumentasikan 422
+[lulus] Migrasi Fase 4 memuat CREATE TABLE absensi_guru
+[lulus] Migrasi Fase 4 memuat CREATE TABLE absensi_santri
+[lulus] Migrasi Fase 4 memuat CREATE TABLE api_idempotency_keys
+[lulus] Migrasi Fase 4 memuat absensi_guru_meeting_teacher_unique
+[lulus] Migrasi Fase 4 memuat absensi_santri_meeting_student_unique
+[lulus] Migrasi Fase 4 memuat api_idempotency_user_key_unique
+[lulus] Migrasi naik Fase 4 tidak menghapus tabel, kolom, atau baris lama
+[lulus] Rollback Fase 4 memperingatkan risiko produksi
+[lulus] Bearer token acak dan hanya dicocokkan melalui hash HMAC
+[lulus] Profil dan response API tidak mengembalikan hash token
+[lulus] Password salah dan akun nonaktif memakai kegagalan generik
+[lulus] Logout mencabut token dan autentikasi menolak token tercabut
+[lulus] Service menerapkan kepemilikan jadwal dengan pengecualian admin
+[lulus] Pembukaan pertemuan dan penyimpanan absensi memakai transaksi
+[lulus] Pembukaan dan absensi memakai idempotency key persisten
+[lulus] Koreksi memperbarui baris yang sama dan mewajibkan alasan
+[lulus] Daftar absensi wajib sama persis dengan snapshot peserta
+[lulus] Router API memuat route /auth/login
+[lulus] Router API memuat route /auth/logout
+[lulus] Router API memuat route /profile
+[lulus] Router API memuat route /schedules/today
+[lulus] Router API memuat route /meetings
+[lulus] Router API memuat route /attendance
+[lulus] Secret token dan TTL dikonfigurasi melalui environment
+[lulus] Backup SQL mengecualikan generated column dan menulis daftar kolom eksplisit
+
+===== phase5_static-final.txt
+[lulus] Ringkasan guru dan santri berasal dari sumber baris detail yang sama
+[lulus] Query laporan memakai parameter terikat dan repository tidak membaca input global
+[lulus] Repository laporan tidak menulis atau menghapus data absensi
+[lulus] Filter guru dipaksa ke guru dari token/session pada sisi server
+[lulus] Detail pertemuan memeriksa role dan kepemilikan di server
+[lulus] UI admin menyediakan filter date_from
+[lulus] UI admin menyediakan filter date_to
+[lulus] UI admin menyediakan filter academic_year_id
+[lulus] UI admin menyediakan filter teacher_id
+[lulus] UI admin menyediakan filter class_id
+[lulus] UI admin menyediakan filter schedule_id
+[lulus] UI admin menyediakan filter status
+[lulus] API V1 menyediakan endpoint /reports
+[lulus] API V1 menyediakan endpoint /reports/filters
+[lulus] API V1 menyediakan endpoint /reports/print
+[lulus] API V1 menyediakan endpoint /reports/meetings/
+[lulus] CSV memiliki BOM UTF-8 dan header terdokumentasi
+[lulus] CSV menetralkan formula berbahaya untuk aplikasi spreadsheet
+[lulus] HTML cetak memuat Pesantren Al Hasan
+[lulus] HTML cetak memuat Laporan Absensi Pengajian
+[lulus] HTML cetak memuat Rentang tanggal
+[lulus] HTML cetak memuat Dibuat:
+[lulus] HTML cetak memuat Pembuat:
+[lulus] HTML cetak memuat @media print
+[lulus] HTML cetak memuat .report-nav,.petunjuk-cetak{display:none
+[lulus] HTML cetak memberi nomor halaman "Halaman 1 dari 1" pada laporan kosong
+[lulus] HTML cetak tidak pernah memuat "Halaman 0"
+[lulus] Laporan kosong menghasilkan tepat satu lembar
+[lulus] Nomor halaman dihitung server, bukan oleh counter(page) di elemen position:fixed
+[lulus] Dokumen 400 baris terpecah menjadi lebih dari satu lembar (41)
+[lulus] Dokumen banyak halaman tidak memuat "Halaman 0"
+[lulus] Nomor halaman berurutan 1..n dan total sama dengan jumlah lembar
+[lulus] CSS cetak menjaga kolom utama dan baris pada halaman landscape
+[lulus] CSS cetak tidak memakai overflow-wrap:anywhere yang memotong kata di tengah
+[lulus] Halaman cetak memberi petunjuk orientasi lanskap
+[lulus] Migrasi indeks Fase 5 mengikuti pola scan EXPLAIN
+[lulus] Migrasi indeks aditif dan rollback hanya melepas indeks
+[lulus] Aplikasi guru menyediakan laporan dan detail pertemuan
+[lulus] Aplikasi dapat membuka dialog cetak dan berbagi PDF
+[lulus] Dependency cetak dan berbagi mengikuti Expo 57
+[lulus] Dokumentasi Fase 5 tersedia: docs/api-v1.md
+[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/release-runbook.md
+[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/csv-format.md
+[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/acceptance-checklist.md
+
+===== statis-final.txt
+phase1_static exit=0 gagal=0
+phase2_static exit=0 gagal=0
+phase3_static exit=0 gagal=0
+phase4_static exit=0 gagal=0
+phase5_static exit=0 gagal=0
+penugasan_static exit=0 gagal=0
+v2_phase1_static exit=0 gagal=0
+v2_phase2_static exit=0 gagal=0
+v2_phase3_static exit=0 gagal=0
+v2_phase4_static exit=0 gagal=0
+v2_phase5_static exit=0 gagal=0
+v3_phase1_static exit=0 gagal=0
+v3_phase2_static exit=0 gagal=0
+v3_phase3_static exit=0 gagal=0
+v3_phase4_static exit=0 gagal=0
+
+===== v2_phase1_static-final.txt
+[lulus] Migrasi 006 memuat INSERT INTO roles (slug, name) VALUES ('pengurus'
+[lulus] Migrasi 006 memuat INSERT INTO roles (slug, name) VALUES ('orang_tua'
+[lulus] Migrasi 006 memuat ADD COLUMN pengurus_id
+[lulus] Migrasi 006 memuat ADD COLUMN wali_id
+[lulus] Migrasi 006 memuat users_pengurus_unique
+[lulus] Migrasi 006 memuat users_wali_unique
+[lulus] Migrasi 006 memuat CREATE TABLE pembimbing_assignments
+[lulus] Migrasi 006 memuat CREATE TABLE izin_pengajuan
+[lulus] Migrasi 006 memuat CREATE TABLE izin_keputusan
+[lulus] Migrasi 006 memuat CREATE TABLE izin_riwayat_status
+[lulus] Migrasi 006 memuat CREATE TABLE izin_idempotency_keys
+[lulus] Migrasi 006 memuat CREATE TABLE notifikasi_outbox
+[lulus] Migrasi 006 memuat CREATE TABLE perangkat_push
+[lulus] Migrasi 006 memuat CREATE TABLE pengaturan_notifikasi
+[lulus] Migrasi naik sepenuhnya aditif: tanpa DROP, DELETE, atau TRUNCATE
+[lulus] Migrasi tidak pernah mengubah tabel `perizinan` lama
+[lulus] Pemetaan status lama sesuai PRD 5.5
+[lulus] Backfill mempertahankan ID pengajuan lama secara eksplisit
+[lulus] Backfill idempoten dan tidak pernah menduplikasi baris warisan
+[lulus] Blok backfill diberi penanda agar dipakai ulang oleh bin/v2_phase1_backfill.php
+[lulus] AUTO_INCREMENT diselaraskan agar ID warisan tidak dipakai ulang
+[lulus] Keputusan admin pengganti wajib memiliki alasan penggantian di tingkat basis data
+[lulus] Outbox notifikasi memiliki kunci unik peristiwa/kanal/penerima
+[lulus] WhatsApp hanya dapat aktif setelah pemeriksaan konfigurasi lulus
+[lulus] Skema notifikasi tidak menyediakan tempat penyimpanan credential provider
+[lulus] Rollback melepas tabel V2 tanpa menyentuh tabel `perizinan` lama
+[lulus] Rollback memperingatkan agar tidak dijalankan sembarangan di produksi
+[lulus] Hak murobi berasal dari penugasan aktif, bukan dari role terpisah
+[lulus] Penugasan murobi dinilai pada tanggal berjalan dan tahun ajaran aktif
+[lulus] Kemampuan pengurus dan orang tua menuntut role sekaligus relasi master aktif
+[lulus] Guard portal menolak kemampuan yang tidak berwenang dengan 403 di server
+[lulus] Cakupan yang tidak dikenal tidak pernah mengembalikan baris
+[lulus] Repository dan service perizinan tidak membaca input global secara langsung
+[lulus] Fase 1 baca-saja: repository perizinan tidak menulis atau menghapus data
+[lulus] Orang tua hanya dapat membaca santri dengan relasi wali aktif
+[lulus] Detail di luar cakupan menghasilkan 403, bukan kebocoran keberadaan data
+[lulus] Mode cakupan yang diminta harus berada dalam kemampuan yang benar-benar dimiliki
+[lulus] Penugasan pembimbing memakai validasi pengurus aktif di layanan pusat
+[lulus] Target kamar/kelas divalidasi layanan pusat
+[lulus] Mutasi pembimbing dan audit memakai transaksi pusat
+[lulus] Pembuatan dan penghubungan akun tercatat pada audit
+[lulus] Akun hanya dapat dihubungkan ke master aktif yang belum terpakai
+[lulus] Satu akun tidak dapat terhubung ke lebih dari satu master
+[lulus] Akun baru mewajibkan penggantian password awal
+[lulus] Pembuatan akun beserta relasi dan role memakai transaksi
+[lulus] Repository akun perizinan tidak membaca input global secara langsung
+[lulus] Halaman tersedia: admin/admin_pembimbing.php
+[lulus] Halaman tersedia: admin/admin_akun_perizinan.php
+[lulus] Halaman tersedia: portal/_guard.php
+[lulus] Halaman tersedia: portal/_ui.php
+[lulus] Halaman tersedia: portal/index.php
+[lulus] Halaman tersedia: portal/izin.php
+[lulus] Halaman tersedia: portal/izin_detail.php
+[lulus] admin_pembimbing.php memakai guard role admin
+[lulus] admin_akun_perizinan.php memakai guard role admin
+[lulus] index.php memuat guard portal sebelum output
+[lulus] izin.php memuat guard portal sebelum output
+[lulus] izin_detail.php memuat guard portal sebelum output
+[lulus] Guard portal memeriksa kemampuan dan melindungi seluruh POST dengan CSRF
+[lulus] Daftar perizinan menyediakan empty state
+[lulus] Data lama tanpa pelaku ditampilkan sebagai Data warisan
+[lulus] bootstrap menyediakan capabilities()
+[lulus] bootstrap menyediakan portal_guard()
+[lulus] bootstrap menyediakan izin_service()
+[lulus] bootstrap menyediakan pembimbing_service()
+[lulus] bootstrap menyediakan perizinan_account_service()
+[lulus] Helper V1 teacher_api_service() dipertahankan
+[lulus] Helper V1 report_service() dipertahankan
+[lulus] Helper V1 schedule_service() dipertahankan
+[lulus] Helper V1 master_data_service() dipertahankan
+[lulus] Helper V1 api_auth_service() dipertahankan
+[lulus] Rute API V1 dipertahankan: '/auth/login'
+[lulus] Rute API V1 dipertahankan: '/profile'
+[lulus] Rute API V1 dipertahankan: '/auth/logout'
+[lulus] Rute API V1 dipertahankan: '/schedules/today'
+[lulus] Rute API V1 dipertahankan: '/schedules'
+[lulus] Rute API V1 dipertahankan: '/meetings'
+[lulus] Rute API V1 dipertahankan: '/reports'
+[lulus] Rute API V1 dipertahankan: '/reports/filters'
+[lulus] Rute API V1 dipertahankan: '/reports/print'
+[lulus] Rute API V1 dipertahankan: #^/schedules/(\d+)$#
+[lulus] Rute API V1 dipertahankan: #^/schedules/(\d+)/meetings$#
+[lulus] Rute API V1 dipertahankan: #^/meetings/(\d+)(?:/attendance)?$#
+[lulus] Rute API V1 dipertahankan: #^/meetings/(\d+)/attendance$#
+[lulus] Rute API V1 dipertahankan: #^/reports/meetings/(\d+)$#
+[lulus] Endpoint jadwal/laporan V1 tetap dijaga penjaga role admin/guru yang sama
+[lulus] Alur login memakai satu sumber kebenaran dan seluruh peran mendarat di beranda tunggal
+[lulus] Pintasan beranda dihitung dari capability nyata, bukan dari nama role
+[lulus] Akun pengurus/orang tua diarahkan ke beranda setelah mengganti password awal
+[lulus] Modul izin lama belum dihapus (baru dipensiunkan pada Fase 2 setelah persetujuan)
+[lulus] Skrip tersedia: bin/v2_phase1_preflight.php
+[lulus] v2_phase1_preflight.php hanya dapat dijalankan dari CLI
+[lulus] Skrip tersedia: bin/v2_phase1_backfill.php
+[lulus] v2_phase1_backfill.php hanya dapat dijalankan dari CLI
+[lulus] Skrip tersedia: bin/v2_phase1_verify.php
+[lulus] v2_phase1_verify.php hanya dapat dijalankan dari CLI
+[lulus] Preflight memblokir migrasi bila ada relasi izin yatim
+[lulus] Preflight menghasilkan backup, manifest jumlah baris, dan inventaris skema
+[lulus] Verifikasi membandingkan ID pengajuan lama sebelum dan sesudah migrasi
+[lulus] Dokumentasi tersedia: docs/phase-v2-1/inventory.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-1/migration-and-rollback.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-1/acceptance-status.md
+[lulus] Runbook memuat preflight, migrasi naik, verifikasi, dan petunjuk rollback
+[lulus] php -l lulus untuk app/Auth/Capabilities.php
+[lulus] php -l lulus untuk app/Auth/PortalGuard.php
+[lulus] php -l lulus untuk app/bootstrap.php
+[lulus] php -l lulus untuk app/Izin/IzinException.php
+[lulus] php -l lulus untuk app/Izin/IzinRepository.php
+[lulus] php -l lulus untuk app/Izin/IzinService.php
+[lulus] php -l lulus untuk app/Izin/PembimbingRepository.php
+[lulus] php -l lulus untuk app/Izin/PembimbingService.php
+[lulus] php -l lulus untuk app/Account/PerizinanAccountRepository.php
+[lulus] php -l lulus untuk app/Account/PerizinanAccountService.php
+[lulus] php -l lulus untuk admin/admin_pembimbing.php
+[lulus] php -l lulus untuk admin/admin_akun_perizinan.php
+[lulus] php -l lulus untuk admin/cek_login.php
+[lulus] php -l lulus untuk admin/admin_login.php
+[lulus] php -l lulus untuk admin/logout.php
+[lulus] php -l lulus untuk admin/sidebar.php
+[lulus] php -l lulus untuk portal/_guard.php
+[lulus] php -l lulus untuk portal/_ui.php
+[lulus] php -l lulus untuk portal/index.php
+[lulus] php -l lulus untuk portal/izin.php
+[lulus] php -l lulus untuk portal/izin_detail.php
+[lulus] php -l lulus untuk bin/v2_phase1_preflight.php
+[lulus] php -l lulus untuk bin/v2_phase1_backfill.php
+[lulus] php -l lulus untuk bin/v2_phase1_verify.php
+
+===== v2_phase2_static-final.txt
+[lulus] Migrasi 007 memuat routing_kandidat
+[lulus] Migrasi 007 memuat routing_catatan
+[lulus] Migrasi 007 memuat murobi_ditetapkan_oleh_user_id
+[lulus] Migrasi 007 memuat dibatalkan_oleh_user_id
+[lulus] Migrasi 007 memuat alasan_pembatalan
+[lulus] Migrasi 007 memuat CREATE TABLE IF NOT EXISTS izin_keputusan_koreksi
+[lulus] Migrasi 007 memuat izin_pengajuan_antrean_index
+[lulus] Migrasi 007 memuat izin_pengajuan_overlap_index
+[lulus] Migrasi naik 007 sepenuhnya aditif: tanpa DROP, DELETE, atau TRUNCATE
+[lulus] Migrasi 007 tidak pernah mengubah tabel `perizinan` lama
+[lulus] Setiap penambahan kolom/indeks dijaga pemeriksaan INFORMATION_SCHEMA (dapat dijalankan ulang)
+[lulus] Seluruh pernyataan dinamis migrasi dilepas kembali (tanpa kebocoran prepared statement)
+[lulus] Alasan koreksi wajib terisi pada tingkat basis data
+[lulus] Rollback 007 hanya melepas jejak Fase 2; pengajuan, keputusan, riwayat, dan `perizinan` tetap ada
+[lulus] Rollback 007 memperingatkan agar tidak dijalankan sembarangan di produksi
+[lulus] Rollback 007 juga dapat dijalankan ulang dengan aman
+[lulus] IzinRepository tetap baca-saja setelah Fase 2
+[lulus] IzinRepository.php tidak membaca input global secara langsung
+[lulus] IzinWriteRepository.php tidak membaca input global secara langsung
+[lulus] IzinService.php tidak membaca input global secara langsung
+[lulus] IzinWorkflowService.php tidak membaca input global secara langsung
+[lulus] IzinRouter.php tidak membaca input global secara langsung
+[lulus] IzinIdempotency.php tidak membaca input global secara langsung
+[lulus] Seluruh mutasi memakai prepared statement, bukan penggabungan string
+[lulus] Pengajuan dikunci baris sebelum diperiksa dan diperbarui
+[lulus] Pembuatan pengajuan menserialkan santri yang sama lewat penguncian baris
+[lulus] Perubahan status memakai optimistic version
+[lulus] Jumlah baris terpengaruh dibaca dari statement (bukan setelah statement ditutup)
+[lulus] Setiap mutasi berjalan dalam satu transaksi dengan rollback pada kegagalan
+[lulus] Kelima mutasi (create, assign, decide, cancel, correction) memakai idempotency key
+[lulus] Penjaga idempotensi membaca baris terkunci dan membandingkan hash request secara aman
+[lulus] Kunci idempotensi yang dipakai untuk isi berbeda menghasilkan konflik, bukan diam-diam diterima
+[lulus] Duplikasi keputusan dari kunci unik basis data diterjemahkan menjadi konflik yang jelas
+[lulus] Tersedia status konflik 409 yang eksplisit
+[lulus] Routing hanya mengarahkan bila tepat satu murobi kandidat
+[lulus] Routing menilai penugasan murobi aktif, tahun ajaran aktif, serta kamar/kelas santri
+[lulus] Cakupan pembimbing menolak target kelas yang sudah nonaktif atau diarsipkan
+[lulus] Penetapan manual admin dibatasi pada guru dengan penugasan murobi aktif
+[lulus] Keputusan Admin Pengganti wajib memuat alasan penggantian
+[lulus] Kapasitas pemberi keputusan dibedakan antara Murobi dan Admin Pengganti
+[lulus] Murobi hanya dapat memutus pengajuan yang diarahkan kepadanya
+[lulus] Pembatalan dan keputusan hanya mungkin sebelum pengajuan diputus
+[lulus] Tumpang tindih dinilai terhadap status Diajukan, Perlu Penetapan Admin, dan Disetujui
+[lulus] Koreksi menambah peristiwa dan tidak pernah menghapus keputusan atau riwayat
+[lulus] Data warisan V1 tetap baca-saja pada alur V2
+[lulus] Audit mencatat aksi izin_pengajuan_created
+[lulus] Audit mencatat aksi izin_routing_resolved
+[lulus] Audit mencatat aksi izin_murobi_assigned
+[lulus] Audit mencatat aksi izin_decision_recorded
+[lulus] Audit mencatat aksi izin_cancelled
+[lulus] Audit mencatat aksi izin_decision_corrected
+[lulus] Seluruh mutasi menulis audit (pembuatan menulis dua peristiwa: pengajuan dan routing)
+[lulus] Kegagalan audit membatalkan transaksi perizinan, bukan diabaikan
+[lulus] Setiap transisi status menulis riwayat yang tidak pernah ditimpa
+[lulus] Riwayat menyimpan IP dan user agent tanpa credential
+[lulus] Audit dan riwayat perizinan tidak menyentuh credential atau secret
+[lulus] Halaman tersedia: portal/izin_buat.php
+[lulus] izin_buat.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/izin_aksi.php
+[lulus] izin_aksi.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/izin_antrean.php
+[lulus] izin_antrean.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/izin_detail.php
+[lulus] izin_detail.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/izin.php
+[lulus] izin.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/index.php
+[lulus] index.php memuat guard portal sebelum output
+[lulus] Controller mutasi hanya menerima POST
+[lulus] Sukses memakai POST/Redirect/GET; kegagalan mempertahankan status HTTP asli (403/409/422)
+[lulus] Seluruh POST portal dilindungi CSRF
+[lulus] Setiap formulir mutasi membawa kunci idempotensi
+[lulus] Helper kunci idempotensi dan pesan hasil tersedia untuk seluruh halaman portal
+[lulus] Tombol pada detail hanya cermin hak yang dihitung server
+[lulus] Halaman antrean dan pengajuan menyediakan empty state yang informatif
+[lulus] Antrean admin dan murobi dibatasi server sesuai peran
+[lulus] Cakupan yang tidak dikenal tetap tidak mengembalikan baris
+[lulus] Modul izin lama TIDAK dihapus
+[lulus] Modul izin lama dialihkan secara kompatibel dengan 302
+[lulus] Modul lama hanya dapat dibuka lewat feature flag eksplisit untuk pemulihan darurat
+[lulus] Kode modul lama tetap utuh di bawah blok pengalihan (tidak dihapus)
+[lulus] Pengarsipan tidak menghapus data perizinan lama
+[lulus] Feature flag modul lama terdokumentasi dan mati secara bawaan
+[lulus] Router API tidak memanggil IzinWorkflowService langsung (selalu lewat IzinApiService)
+[lulus] Endpoint perizinan Fase 3 tersedia melalui IzinApiService
+[lulus] Rute V1 '/schedules/today' tetap ada setelah Fase 3
+[lulus] Rute V1 '/meetings' tetap ada setelah Fase 3
+[lulus] Rute V1 '/reports' tetap ada setelah Fase 3
+[lulus] Rute V1 '/auth/login' tetap ada setelah Fase 3
+[lulus] bootstrap menyediakan izin_workflow_service()
+[lulus] bootstrap menyediakan izin_router()
+[lulus] bootstrap menyediakan izin_repository()
+[lulus] Helper lama teacher_api_service() dipertahankan
+[lulus] Helper lama report_service() dipertahankan
+[lulus] Helper lama schedule_service() dipertahankan
+[lulus] Helper lama master_data_service() dipertahankan
+[lulus] Helper lama api_auth_service() dipertahankan
+[lulus] Helper lama izin_service() dipertahankan
+[lulus] Helper lama pembimbing_service() dipertahankan
+[lulus] Alur login V1/Fase 1 tidak diubah oleh Fase 2
+[lulus] Skrip tersedia: bin/v2_phase2_preflight.php
+[lulus] v2_phase2_preflight.php hanya dapat dijalankan dari CLI
+[lulus] Skrip tersedia: bin/v2_phase2_verify.php
+[lulus] v2_phase2_verify.php hanya dapat dijalankan dari CLI
+[lulus] Preflight menghasilkan backup, manifest jumlah baris, dan laporan konflik
+[lulus] Preflight memblokir migrasi bila menemukan konflik yang memblokir
+[lulus] Verifikasi memeriksa invarian keputusan tunggal dan keutuhan data warisan
+[lulus] Dokumentasi tersedia: docs/phase-v2-2/acceptance-status.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-2/migration-and-rollback.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-2/test-results.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-2/cpanel-deployment.md
+[lulus] Runbook memuat preflight, migrasi naik, verifikasi, dan petunjuk rollback
+[lulus] Berkas uji tersedia: tests/v2_phase2_integration.php
+[lulus] v2_phase2_integration.php menolak berjalan di luar database *_test
+[lulus] Berkas uji tersedia: tests/v2_phase2_concurrency_worker.php
+[lulus] v2_phase2_concurrency_worker.php menolak berjalan di luar database *_test
+[lulus] Berkas uji tersedia: tests/v2_phase2_web_smoke.php
+[lulus] v2_phase2_web_smoke.php menolak berjalan di luar database *_test
+[lulus] Uji dua keputusan bersamaan memakai dua proses PHP yang benar-benar terpisah
+[lulus] Tujuan pasca-login punya satu sumber kebenaran: app/Auth/LandingRouter.php
+[lulus] Pintasan murobi memakai Capabilities, bukan role mentah
+[lulus] Murobi tetap mendapat pintasan ke /portal/izin_antrean.php?mode=murobi
+[lulus] LandingRouter menegaskan dirinya bukan pengganti pemeriksaan otorisasi
+[lulus] Peta navigasi menegaskan dirinya bukan pengganti pemeriksaan otorisasi
+[lulus] cek_login.php memakai LandingRouter yang sama
+[lulus] cek_login.php tidak lagi mengarahkan seluruh role guru ke jadwal tanpa memeriksa capability
+[lulus] ubah_password.php memakai LandingRouter yang sama
+[lulus] ubah_password.php tidak lagi mengarahkan seluruh role guru ke jadwal tanpa memeriksa capability
+[lulus] admin_login.php menjadi alamat lama yang mengarahkan ke pintu masuk baru dengan tujuan tervalidasi
+[lulus] bootstrap menyediakan landing_router()
+[lulus] Modul pengajian menghitung hak antrean dari capability murobi
+[lulus] Tautan Antrean Perizinan pada modul pengajian hanya dirender untuk murobi aktif
+[lulus] Modul pengajian menegaskan tautan bukan pengganti pemeriksaan server
+[lulus] Guard server modul pengajian tidak dilonggarkan
+[lulus] Beranda umum hanya menuntut sesi yang sah, bukan kemampuan perizinan
+[lulus] Pintu masuk memakai penangan login yang sudah ada, bukan sistem login kedua
+[lulus] izin.php tetap dijaga guard kemampuan perizinan
+[lulus] izin_ringkasan.php tetap dijaga guard kemampuan perizinan
+[lulus] izin_antrean.php tetap dijaga guard kemampuan perizinan
+[lulus] izin_buat.php tetap dijaga guard kemampuan perizinan
+[lulus] laporan.php tetap dijaga guard kemampuan perizinan
+[lulus] Guard portal tetap menolak akun tanpa kemampuan perizinan dengan 403
+[lulus] Tersedia uji navigasi murobi yang hanya berjalan pada database *_test
+[lulus] php -l lulus untuk app/Izin/IzinRouter.php
+[lulus] php -l lulus untuk app/Izin/IzinIdempotency.php
+[lulus] php -l lulus untuk app/Izin/IzinWriteRepository.php
+[lulus] php -l lulus untuk app/Izin/IzinWorkflowService.php
+[lulus] php -l lulus untuk app/Audit/AuditLogger.php
+[lulus] php -l lulus untuk app/Auth/Capabilities.php
+[lulus] php -l lulus untuk portal/izin_buat.php
+[lulus] php -l lulus untuk portal/izin_aksi.php
+[lulus] php -l lulus untuk portal/izin_antrean.php
+[lulus] php -l lulus untuk bin/v2_phase2_preflight.php
+[lulus] php -l lulus untuk bin/v2_phase2_verify.php
+[lulus] php -l lulus untuk tests/v2_phase2_static.php
+[lulus] php -l lulus untuk tests/v2_phase2_integration.php
+[lulus] php -l lulus untuk tests/v2_phase2_concurrency_worker.php
+[lulus] php -l lulus untuk tests/v2_phase2_web_smoke.php
+[lulus] php -l lulus untuk app/Auth/LandingRouter.php
+[lulus] php -l lulus untuk tests/v2_phase2_navigasi_murobi.php
+[lulus] php -l lulus untuk app/bootstrap.php
+[lulus] php -l lulus untuk app/Izin/IzinException.php
+[lulus] php -l lulus untuk app/Izin/IzinRepository.php
+[lulus] php -l lulus untuk app/Izin/IzinService.php
+[lulus] php -l lulus untuk portal/_ui.php
+[lulus] php -l lulus untuk portal/index.php
+[lulus] php -l lulus untuk portal/izin.php
+[lulus] php -l lulus untuk portal/izin_detail.php
+[lulus] php -l lulus untuk admin/admin_izin.php
+[lulus] php -l lulus untuk admin/sidebar.php
+[lulus] php -l lulus untuk admin/cek_login.php
+[lulus] php -l lulus untuk admin/admin_login.php
+[lulus] php -l lulus untuk admin/ubah_password.php
+[lulus] php -l lulus untuk admin/pertemuan_pengajian.php
+
+===== v2_phase3_static-final.txt
+
+=== 1. Kompatibilitas kontrak API V1 ===
+[lulus] Rute V1 dipertahankan: '/auth/login'
+[lulus] Rute V1 dipertahankan: '/profile'
+[lulus] Rute V1 dipertahankan: '/auth/logout'
+[lulus] Rute V1 dipertahankan: '/schedules/today'
+[lulus] Rute V1 dipertahankan: '/schedules'
+[lulus] Rute V1 dipertahankan: '/meetings'
+[lulus] Rute V1 dipertahankan: '/reports'
+[lulus] Rute V1 dipertahankan: '/reports/filters'
+[lulus] Rute V1 dipertahankan: '/reports/print'
+[lulus] Rute V1 dipertahankan: #^/schedules/(\d+)$#
+[lulus] Rute V1 dipertahankan: #^/schedules/(\d+)/meetings$#
+[lulus] Rute V1 dipertahankan: #^/meetings/(\d+)(?:/attendance)?$#
+[lulus] Rute V1 dipertahankan: #^/meetings/(\d+)/attendance$#
+[lulus] Rute V1 dipertahankan: #^/reports/meetings/(\d+)$#
+[lulus] Seluruh endpoint jadwal/laporan V1 tetap memakai penjaga role admin/guru
+[lulus] Method V1 requireScheduleAccess() tetap tersedia untuk pemanggil lama
+[lulus] Envelope JSON V1 tidak diubah
+[lulus] Field profil V1 'id' => dipertahankan
+[lulus] Field profil V1 'name' => dipertahankan
+[lulus] Field profil V1 'username' => dipertahankan
+[lulus] Field profil V1 'guru' => dipertahankan
+[lulus] Field profil V1 'roles' => dipertahankan
+[lulus] Profil menambahkan capability secara aditif
+
+=== 2. Endpoint Fase 3 ===
+[lulus] Endpoint akun dan capability terpasang ('/me/capabilities')
+[lulus] Endpoint daftar santri dalam cakupan pengurus terpasang ('/izin/santri')
+[lulus] Endpoint pembuatan dan daftar pengajuan terpasang ('/izin/pengajuan')
+[lulus] Endpoint detail pengajuan terpasang (#^/izin/pengajuan/(\d+)$#)
+[lulus] Endpoint antrean murobi dan admin terpasang ('/izin/antrean')
+[lulus] Endpoint pemantauan admin terpasang ('/izin/admin/monitor')
+[lulus] Endpoint routing murobi terpasang (#^/izin/pengajuan/(\d+)/routing$#)
+[lulus] Endpoint penetapan murobi oleh admin terpasang (#^/izin/pengajuan/(\d+)/penetapan-murobi$#)
+[lulus] Endpoint keputusan murobi dan Admin Pengganti terpasang (#^/izin/pengajuan/(\d+)/keputusan$#)
+[lulus] Endpoint pembatalan pengajuan terpasang (#^/izin/pengajuan/(\d+)/pembatalan$#)
+[lulus] Endpoint koreksi keputusan terpasang (#^/izin/pengajuan/(\d+)/koreksi$#)
+[lulus] Endpoint riwayat perubahan terpasang (#^/izin/pengajuan/(\d+)/riwayat$#)
+[lulus] Endpoint status orang tua terpasang ('/izin/anak')
+[lulus] Endpoint pilihan filter terpasang ('/izin/filters')
+[lulus] Router tidak memanggil layanan domain langsung; seluruh akses lewat IzinApiService
+[lulus] bootstrap menyediakan izin_api_service()
+
+=== 3. Otorisasi dan idempotensi ===
+[lulus] `mode` dari request hanya boleh mempersempit, tidak pernah menaikkan cakupan
+[lulus] Seluruh operasi API perizinan melewati penerjemah error tunggal
+[lulus] Pemetaan status HTTP memuat 403 => 'FORBIDDEN'
+[lulus] Pemetaan status HTTP memuat 404 => 'NOT_FOUND'
+[lulus] Pemetaan status HTTP memuat 409 => 'CONFLICT'
+[lulus] Pemetaan status HTTP memuat 'VALIDATION_FAILED'
+[lulus] Mutasi create() meneruskan idempotency key ke lapisan domain
+[lulus] Mutasi decide() meneruskan idempotency key ke lapisan domain
+[lulus] Mutasi assign() meneruskan idempotency key ke lapisan domain
+[lulus] Mutasi cancel() meneruskan idempotency key ke lapisan domain
+[lulus] Mutasi correct() meneruskan idempotency key ke lapisan domain
+[lulus] Retry create/keputusan membalas 200 (pemutaran ulang), bukan 201 baru
+[lulus] Lapisan API tidak pernah menulis langsung ke basis data
+[lulus] Capability murobi tetap berasal dari penugasan aktif, bukan role terpisah
+[lulus] Login pengurus/orang tua hanya diizinkan bila relasi masternya aktif
+[lulus] Aturan login admin dan guru V1 tidak berubah
+
+=== 4. Batas ruang lingkup modul Fase 3 ===
+[lulus] Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: app/Api/IzinApiService.php
+[lulus] Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: app/Api/ApiAuthService.php
+[lulus] Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: app/Api/ApiAuthRepository.php
+[lulus] Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: app/Auth/ApiTokenAuthenticator.php
+[lulus] Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: bin/v2_phase3_sandbox_seed.php
+[lulus] Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: tests/v2_phase3_api_contract.php
+[lulus] Fase 3 tidak menambah migrasi skema (seluruh tabel sudah ada sejak Fase 1–2)
+[lulus] Fase 3 sendiri tidak menambah migrasi; migrasi lain (008 Fase 4, 009 Fase 5, 010 perapihan, 011 alumni, 012 fondasi penugasan) sah
+[lulus] Migrasi 008 Fase 4 memiliki pasangan rollback
+[lulus] Setiap migrasi tetap memiliki satu berkas rollback
+[lulus] Migrasi 009 Fase 5 memiliki pasangan rollback
+[lulus] Endpoint Fase 3 tetap utuh dan endpoint laporan Fase 5 bersifat aditif
+
+=== 5. Kebersihan repositori ===
+[lulus] Seed fixture hanya dapat dijalankan dari CLI
+[lulus] Seed fixture menolak database selain *_test
+[lulus] Seed fixture memerlukan penanda lingkungan eksplisit
+[lulus] Fixture memakai data sintetis berawalan SBX dan tidak menyentuh dump produksi
+[lulus] Pengujian API menolak berjalan di luar database *_test
+[lulus] .env.example tidak memuat nilai secret sesungguhnya
+[lulus] Tidak ada password tertanam pada app/Api/IzinApiService.php
+[lulus] Tidak ada password tertanam pada api/v1/index.php
+[lulus] Tidak ada password tertanam pada tests/v2_phase3_api_contract.php
+
+=== 6. Aplikasi Expo ===
+[lulus] Expo SDK 57 dan React Native 0.86 tidak di-upgrade
+[lulus] Arsitektur klien HTTP Fase 3 tidak diganti
+[lulus] Klien API menyediakan izinSantri()
+[lulus] Klien API menyediakan izinAnak()
+[lulus] Klien API menyediakan izinList()
+[lulus] Klien API menyediakan izinAntrean()
+[lulus] Klien API menyediakan izinMonitorAdmin()
+[lulus] Klien API menyediakan izinDetail()
+[lulus] Klien API menyediakan izinRiwayat()
+[lulus] Klien API menyediakan izinRouting()
+[lulus] Klien API menyediakan izinBuat()
+[lulus] Klien API menyediakan izinKeputusan()
+[lulus] Klien API menyediakan izinPenetapanMurobi()
+[lulus] Klien API menyediakan izinPembatalan()
+[lulus] Klien API menyediakan izinKoreksi()
+[lulus] Klien API menyediakan capabilities()
+[lulus] Kelima mutasi perizinan (dan mutasi V1 yang sudah ada) mengirim idempotency key dari pemanggil
+[lulus] actionableError menangani 401
+[lulus] actionableError menangani 403
+[lulus] actionableError menangani 404
+[lulus] actionableError menangani 409
+[lulus] actionableError menangani 422
+[lulus] actionableError menangani NETWORK_ERROR
+[lulus] actionableError menangani TIMEOUT
+[lulus] Penjaga mutasi menolak request kedua selama request berjalan
+[lulus] Kunci idempotensi dibuat sekali per operasi dan dipakai ulang saat retry
+[lulus] Kunci lama dibuang bila payload berubah atau operasi telah selesai definitif
+[lulus] Tab perizinan ditampilkan berdasarkan capability aktual
+[lulus] Navigasi tetap memakai NativeTabs Expo Router (tanpa perubahan arsitektur)
+[lulus] Navigasi web juga berbasis capability
+[lulus] Konteks autentikasi mengambil capability dari profil server
+[lulus] Layar perizinan menangani LoadingState
+[lulus] Layar perizinan menangani EmptyState
+[lulus] Layar perizinan menangani ErrorState
+[lulus] Layar perizinan menangani RefreshControl
+[lulus] Layar perizinan menangani ModeSwitcher
+[lulus] Layar perizinan menyembunyikan tombol mutasi bagi orang tua
+[lulus] Layar detail memuat aksi.putuskan_murobi
+[lulus] Layar detail memuat aksi.putuskan_admin
+[lulus] Layar detail memuat aksi.tetapkan_murobi
+[lulus] Layar detail memuat aksi.batalkan
+[lulus] Layar detail memuat alasanPenggantian
+[lulus] Layar detail memuat scope.hanya_baca
+[lulus] Layar detail memuat Riwayat perubahan
+[lulus] Tombol dan isian dinonaktifkan selama mutasi berjalan
+[lulus] Mutasi mengirim optimistic version agar konflik menghasilkan 409
+[lulus] Alur pengurus mencakup pilih santri, isi data, dan konfirmasi
+[lulus] Daftar santri berasal dari endpoint bercakupan server
+[lulus] Pengiriman pengajuan memakai penjaga mutasi
+[lulus] Seluruh layar mutasi mengikat siklus kunci idempotensi ke fingerprint payload
+
+=== 7. Dokumentasi Fase 3 ===
+[lulus] Dokumentasi tersedia: docs/api-v1.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/endpoint-inventory.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/capability-matrix.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/testing-sandbox.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/acceptance-status.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/cpanel-deployment.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/mobile-build-and-smoke-test.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/migration-and-rollback.md
+[lulus] Kontrak API terdokumentasi memuat endpoint perizinan Fase 3
+
+=== 8. php -l ===
+[lulus] php -l lulus: api/v1/index.php
+[lulus] php -l lulus: app/Api/IzinApiService.php
+[lulus] php -l lulus: app/Api/ApiAuthService.php
+[lulus] php -l lulus: app/Api/ApiAuthRepository.php
+[lulus] php -l lulus: app/Auth/ApiTokenAuthenticator.php
+[lulus] php -l lulus: app/bootstrap.php
+[lulus] php -l lulus: portal/_ui.php
+[lulus] php -l lulus: bin/v2_phase3_sandbox_seed.php
+[lulus] php -l lulus: tests/v2_phase3_api_contract.php
+[lulus] php -l lulus: tests/v2_phase3_concurrency_worker.php
+[lulus] php -l lulus: tests/v2_phase3_router.php
+[lulus] php -l lulus: tests/v2_phase3_static.php
+
+SELURUH PEMERIKSAAN STATIS FASE 3 LULUS.
+
+===== v2_phase4_static-final.txt
+
+=== 1. Migrasi 008 dan rollback ===
+[lulus] Migrasi 008 Fase 4 tersedia
+[lulus] Rollback 008 Fase 4 tersedia
+[lulus] Migrasi 008 tidak memakai DROP TABLE
+[lulus] Migrasi 008 tidak memakai TRUNCATE
+[lulus] Migrasi 008 tidak memakai DELETE FROM
+[lulus] Migrasi 008 tidak memakai DROP DATABASE
+[lulus] Migrasi 008 tidak melepas kolom mana pun
+[lulus] Migrasi 008 tidak memperbarui satu pun baris data bisnis
+[lulus] Rollback 008 tidak menyentuh tabel perizinan maupun audit Fase 1-3
+[lulus] Setiap ALTER pada migrasi 008 dibungkus pemeriksaan INFORMATION_SCHEMA (21 ALTER, 21 penjaga)
+[lulus] Seluruh CREATE TABLE pada migrasi 008 memakai IF NOT EXISTS
+[lulus] Seluruh DROP TABLE pada rollback memakai IF EXISTS
+[lulus] Migrasi 008 menambahkan notifikasi_percobaan
+[lulus] Migrasi 008 menambahkan notifikasi_pengaturan_audit
+[lulus] Migrasi 008 menambahkan notifikasi_worker_lock
+[lulus] Migrasi 008 menambahkan gagal_permanen
+[lulus] Migrasi 008 menambahkan tersedia_pada
+[lulus] Migrasi 008 menambahkan locked_by
+[lulus] Migrasi 008 menambahkan locked_until
+[lulus] Migrasi 008 menambahkan push_aktif
+[lulus] Migrasi 008 menambahkan device_id
+[lulus] Migrasi 008 menambahkan alasan_pencabutan
+[lulus] Migrasi 008 menambahkan pengaturan_notifikasi_inapp_check
+[lulus] Basis data menegakkan notifikasi in-app tidak dapat dimatikan
+[lulus] Skema Fase 4 tidak menyediakan tempat penyimpanan credential penyedia
+
+=== 2. Endpoint notifikasi ===
+[lulus] Rute Fase 4 terpasang: '/notifikasi'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/belum-dibaca'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/dibaca-semua'
+[lulus] Rute Fase 4 terpasang: #^/notifikasi/(\d+)$#
+[lulus] Rute Fase 4 terpasang: #^/notifikasi/(\d+)/dibaca$#
+[lulus] Rute Fase 4 terpasang: '/notifikasi/perangkat'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/perangkat/pencabutan'
+[lulus] Rute Fase 4 terpasang: #^/notifikasi/perangkat/(\d+)/push$#
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/status'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/pemeriksaan'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/sakelar'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/pesan-uji'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/kegagalan'
+[lulus] Rute Fase 4 terpasang: #^/notifikasi/admin/kegagalan/(\d+)/coba-ulang$#
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/worker'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/audit'
+[lulus] Router tidak memotong jalur: seluruh notifikasi melewati notification_api_service()
+[lulus] Rute perangkat didaftarkan sebelum pola id numerik
+[lulus] Logout mencabut registrasi perangkat push
+
+=== 3. Notifikasi in-app sebagai sumber status utama ===
+[lulus] In-app dibuat tanpa memeriksa sakelar kanal mana pun
+[lulus] Push dan WhatsApp diantrekan hanya ketika kanalnya menyala
+[lulus] Baris in-app langsung berstatus Sent tanpa menunggu penyedia eksternal
+[lulus] Layanan admin menolak permintaan mematikan kanal in-app
+[lulus] Pembacaan pengaturan selalu melaporkan in-app aktif
+
+=== 4. WhatsApp opsional ===
+[lulus] Repositori hanya menyalakan WhatsApp ketika pemeriksaan berstatus Lulus
+[lulus] Repositori mengikat pemeriksaan Lulus pada penyedia WhatsApp yang sedang dipilih
+[lulus] Layanan admin menolak menyalakan WhatsApp sebelum pemeriksaan lulus
+[lulus] Layanan admin memeriksa ulang identitas penyedia dan kelengkapan konfigurasi saat menyalakan WhatsApp
+[lulus] Basis data juga menegakkan syarat pemeriksaan lulus (CHECK dari migrasi 006)
+[lulus] Penyedia default adalah NullProvider (WhatsApp mati, tanpa vendor)
+[lulus] NullProvider tidak pernah membuka koneksi jaringan
+[lulus] Adapter uji tidak pernah membuka koneksi jaringan
+[lulus] Adapter uji menyatakan dirinya BUKAN pengiriman nyata
+[lulus] Adapter uji menolak dipakai ketika APP_ENV=production
+[lulus] Panel admin menandai hasil adapter uji sebagai bukan bukti pengiriman nyata
+[lulus] Terdapat antarmuka penyedia WhatsApp yang netral vendor
+[lulus] Worker berhenti sebelum menghubungi penyedia ketika kanal mati
+
+=== 5. Payload aman ===
+[lulus] Isi notifikasi tidak pernah membaca konteks alasan
+[lulus] Isi notifikasi tidak pernah membaca konteks catatan_pengurus
+[lulus] Isi notifikasi tidak pernah membaca konteks alasan_keputusan
+[lulus] Isi notifikasi tidak pernah membaca konteks alasan_penggantian
+[lulus] Isi notifikasi tidak pernah membaca konteks alasan_koreksi
+[lulus] Pembuat notifikasi tidak pernah membaca alasan atau catatan pengurus
+[lulus] Kanal eksternal memakai varian isi ringkas terpisah
+[lulus] Payload deep link hanya memuat penunjuk sumber daya
+[lulus] Worker push membatasi payload data ke daftar kunci yang diizinkan
+[lulus] Pusat notifikasi pengguna tidak pernah mengembalikan token atau nomor telepon
+
+=== 6. Pembersihan galat (SafeError) ===
+[lulus] SafeError menyamarkan token push Expo
+[lulus] SafeError menyamarkan bearer token
+[lulus] SafeError menyamarkan nomor telepon
+[lulus] SafeError menyamarkan nilai api_key pada JSON
+[lulus] SafeError menyamarkan credential pada query string
+[lulus] SafeError membatasi panjang pesan agar muat pada kolom error aman
+[lulus] SafeError menormalkan kode galat menjadi bentuk aman
+[lulus] SafeError::scrub menghapus nilai pada kunci sensitif dan mempertahankan sisanya
+
+=== 7. Deduplikasi ===
+[lulus] Enqueue memakai ON DUPLICATE KEY sehingga peristiwa yang sama tidak menghasilkan baris kedua
+[lulus] Enqueue membedakan baris baru dari duplikat yang diabaikan
+[lulus] Kunci peristiwa deterministik memakai id pengajuan dan versi baris
+[lulus] Percobaan ulang mengembalikan baris yang SAMA ke antrean, bukan membuat baris baru
+[lulus] Alur perizinan memicu NotificationEvent::PENGAJUAN_DIBUAT
+[lulus] Alur perizinan memicu NotificationEvent::ROUTING_PERLU_ADMIN
+[lulus] Alur perizinan memicu NotificationEvent::MUROBI_DITETAPKAN
+[lulus] Alur perizinan memicu NotificationEvent::MUROBI_DITETAPKAN_ULANG
+[lulus] Alur perizinan memicu NotificationEvent::KEPUTUSAN_DISETUJUI
+[lulus] Alur perizinan memicu NotificationEvent::KEPUTUSAN_DITOLAK
+[lulus] Alur perizinan memicu NotificationEvent::KEPUTUSAN_ADMIN_PENGGANTI
+[lulus] Alur perizinan memicu NotificationEvent::PEMBATALAN
+[lulus] Alur perizinan memicu NotificationEvent::KOREKSI
+[lulus] Notifikasi dipicu pada kelima mutasi perizinan (create, assign, decide, cancel, correct)
+[lulus] Kegagalan notifikasi tidak pernah menggagalkan transaksi perizinan
+
+=== 8. Worker outbox ===
+[lulus] Retry dibatasi jumlahnya
+[lulus] Retry memakai backoff dengan batas atas
+[lulus] Klaim baris memakai satu UPDATE atomik dengan pemilik dan masa berlaku
+[lulus] Penyelesaian baris hanya berlaku bagi worker pemiliknya
+[lulus] Sewa worker hanya dapat diambil satu proses pada satu waktu
+[lulus] Sewa worker selalu dilepas walaupun terjadi galat
+[lulus] Worker memperpanjang sewa proses dan klaim baris sebelum setiap pengiriman
+[lulus] Worker hanya dapat dijalankan dari CLI
+[lulus] Worker menyediakan mode manual yang aman (uji coba dan status)
+[lulus] Worker tidak pernah mencetak token atau membuang isi variabel
+[lulus] Setiap percobaan pengiriman dicatat pada tabel riwayat percobaan
+[lulus] Antrean kanal yang dimatikan ditandai jelas dan tidak diambil worker
+
+=== 9. Otorisasi ===
+[lulus] Query listForUser() wajib menyertakan penerima_user_id
+[lulus] Query unreadCount() wajib menyertakan penerima_user_id
+[lulus] Query findForUser() wajib menyertakan penerima_user_id
+[lulus] Query markRead() wajib menyertakan penerima_user_id
+[lulus] Query markAllRead() wajib menyertakan penerima_user_id
+[lulus] Setiap query pusat notifikasi menyaring berdasarkan penerima
+[lulus] Notifikasi milik pengguna lain dijawab 403, bukan isinya
+[lulus] Pencabutan perangkat selalu dibatasi pemiliknya
+[lulus] Seluruh operasi panel kanal memeriksa capability admin di server
+[lulus] Penerima ditentukan dari relasi nyata (penugasan murobi, relasi wali, relasi pengurus)
+[lulus] Guru tanpa penugasan murobi aktif tidak pernah menjadi penerima
+[lulus] Penugasan murobi berbasis kelas hanya sah ketika kelas masih aktif
+[lulus] Token perangkat hanya diambil untuk akun pengguna yang masih aktif
+[lulus] Penonaktifan akun langsung mencabut seluruh token perangkat pengguna
+
+=== 10. Tidak ada secret atau data produksi ===
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/DeviceRepository.php
+[lulus] Tidak ada credential tertanam pada app/Notification/DeviceRepository.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/DeviceService.php
+[lulus] Tidak ada credential tertanam pada app/Notification/DeviceService.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationAdminService.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationAdminService.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationCenterService.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationCenterService.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationChannel.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationChannel.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationDispatcher.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationDispatcher.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationEvent.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationEvent.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationException.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationException.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationRepository.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationRepository.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationService.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationService.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/OutboxRepository.php
+[lulus] Tidak ada credential tertanam pada app/Notification/OutboxRepository.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/PushTokenProtector.php
+[lulus] Tidak ada credential tertanam pada app/Notification/PushTokenProtector.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/RecipientResolver.php
+[lulus] Tidak ada credential tertanam pada app/Notification/RecipientResolver.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/SafeError.php
+[lulus] Tidak ada credential tertanam pada app/Notification/SafeError.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/SettingsRepository.php
+[lulus] Tidak ada credential tertanam pada app/Notification/SettingsRepository.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WorkerLock.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WorkerLock.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/Push/ExpoPushClient.php
+[lulus] Tidak ada credential tertanam pada app/Notification/Push/ExpoPushClient.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/Push/PushClient.php
+[lulus] Tidak ada credential tertanam pada app/Notification/Push/PushClient.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/Push/PushReceiptClient.php
+[lulus] Tidak ada credential tertanam pada app/Notification/Push/PushReceiptClient.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/FakeProvider.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/FakeProvider.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/HttpProvider.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/HttpProvider.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/NullProvider.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/NullProvider.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/ProviderFactory.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/ProviderFactory.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/ProviderResult.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/ProviderResult.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/WhatsAppMessage.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/WhatsAppMessage.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/WhatsAppProvider.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/WhatsAppProvider.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Api/NotificationApiService.php
+[lulus] Tidak ada credential tertanam pada app/Api/NotificationApiService.php
+[lulus] Tidak ada token push sungguhan tertanam pada bin/notifikasi_worker.php
+[lulus] Tidak ada credential tertanam pada bin/notifikasi_worker.php
+[lulus] Tidak ada token push sungguhan tertanam pada bin/v2_phase4_preflight.php
+[lulus] Tidak ada credential tertanam pada bin/v2_phase4_preflight.php
+[lulus] Tidak ada token push sungguhan tertanam pada bin/v2_phase4_verify.php
+[lulus] Tidak ada credential tertanam pada bin/v2_phase4_verify.php
+[lulus] Tidak ada token push sungguhan tertanam pada portal/notifikasi.php
+[lulus] Tidak ada credential tertanam pada portal/notifikasi.php
+[lulus] Tidak ada token push sungguhan tertanam pada admin/admin_notifikasi.php
+[lulus] Tidak ada credential tertanam pada admin/admin_notifikasi.php
+[lulus] .env.example mendokumentasikan PUSH_TOKEN_KEY
+[lulus] .env.example tidak memuat NILAI untuk PUSH_TOKEN_KEY
+[lulus] .env.example mendokumentasikan WHATSAPP_PROVIDER
+[lulus] .env.example tidak memuat NILAI untuk WHATSAPP_PROVIDER
+[lulus] .env.example mendokumentasikan WHATSAPP_API_URL
+[lulus] .env.example tidak memuat NILAI untuk WHATSAPP_API_URL
+[lulus] .env.example mendokumentasikan WHATSAPP_API_TOKEN
+[lulus] .env.example tidak memuat NILAI untuk WHATSAPP_API_TOKEN
+[lulus] Hasil preflight (backup dan manifest) tidak masuk repositori
+[lulus] Tidak ada berkas Fase 4 yang menyentuh dump produksi
+
+=== 11. Aplikasi Expo SDK 57 ===
+[lulus] Expo SDK 57 dan React Native 0.86 TIDAK di-upgrade
+[lulus] expo-notifications memakai versi selaras SDK 57 (~57.0.13)
+[lulus] Plugin expo-notifications terdaftar pada app.json
+[lulus] Kanal Android bawaan diselaraskan dengan pengirim server
+[lulus] Aplikasi membuat kanal Android bernama sama dengan channelId server
+[lulus] Kanal Android dibuat sebelum permintaan izin (urutan SDK 57)
+[lulus] Izin tidak diminta berulang tanpa kebutuhan
+[lulus] Identitas instalasi perangkat disimpan stabil di SecureStore, bukan hanya selama sesi aplikasi
+[lulus] Registrasi otomatis tidak memunculkan dialog izin tanpa tindakan pengguna
+[lulus] Token diambil dengan projectId sesuai dokumentasi SDK 57
+[lulus] Registrasi menolak simulator/emulator dan menjelaskan alasannya
+[lulus] Kebutuhan development build didokumentasikan pada kode registrasi
+[lulus] Handler foreground memakai API SDK 57 (shouldShowBanner/shouldShowList)
+[lulus] Aplikasi menangani foreground, ketukan, dan cold start dari notifikasi
+[lulus] Deep link membuka layar detail izin
+[lulus] Deep link sebelum login ditunda sampai autentikasi berhasil
+[lulus] Token push perangkat disimpan pada SecureStore
+[lulus] Berkas mobile Fase 4 tersedia: src/notifications/push-registration.ts
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/notifications/push-registration.ts
+[lulus] Berkas mobile Fase 4 tersedia: src/notifications/notification-context.tsx
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/notifications/notification-context.tsx
+[lulus] Berkas mobile Fase 4 tersedia: src/notifications/push-token-storage.ts
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/notifications/push-token-storage.ts
+[lulus] Berkas mobile Fase 4 tersedia: src/app/notifikasi/[id].tsx
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/app/notifikasi/[id].tsx
+[lulus] Berkas mobile Fase 4 tersedia: src/app/notifikasi/perangkat.tsx
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/app/notifikasi/perangkat.tsx
+[lulus] Berkas mobile Fase 4 tersedia: src/app/notifikasi/index.tsx
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/app/notifikasi/index.tsx
+[lulus] Tidak ada token perangkat sungguhan tertanam pada bundle
+[lulus] Secret server tidak pernah masuk konfigurasi bundle mobile
+[lulus] Layar notifikasi menyediakan LoadingState
+[lulus] Layar notifikasi menyediakan EmptyState
+[lulus] Layar notifikasi menyediakan ErrorState
+[lulus] Layar notifikasi menyediakan Tandai semua dibaca
+[lulus] Layar notifikasi menyediakan Halaman
+[lulus] Lonceng header merender lencana jumlah belum dibaca dan membuka pusat notifikasi
+[lulus] Rute layar notifikasi baru terdaftar
+[lulus] Daftar dan lencana notifikasi terikat identitas sesi
+[lulus] Layar daftar/detail tetap memakai operasi client notifikasi
+[lulus] Logout mencabut registrasi perangkat dan membersihkan token lokal
+
+=== 12. Halaman web ===
+[lulus] Pusat notifikasi web menyediakan jumlah_belum_dibaca
+[lulus] Pusat notifikasi web menyediakan tandai_dibaca
+[lulus] Pusat notifikasi web menyediakan tandai_semua
+[lulus] Pusat notifikasi web menyediakan portal_pagination
+[lulus] Pusat notifikasi web menyediakan Belum ada notifikasi
+[lulus] Seluruh mutasi pusat notifikasi web dilindungi CSRF
+[lulus] Panel admin menyediakan Periksa konfigurasi
+[lulus] Panel admin menyediakan Kirim pesan uji
+[lulus] Panel admin menyediakan Pengiriman gagal
+[lulus] Panel admin menyediakan Coba ulang
+[lulus] Panel admin menyediakan Audit perubahan kanal
+[lulus] Panel admin menyediakan Jalankan worker sekali
+[lulus] Panel admin menyediakan Uji coba (tanpa kirim)
+[lulus] Panel admin hanya menampilkan NAMA environment, bukan nilainya
+[lulus] Navigasi portal menampilkan lencana notifikasi belum dibaca
+
+=== 13. php -l berkas Fase 4 ===
+[lulus] php -l lulus: app/Notification/DeviceRepository.php
+[lulus] php -l lulus: app/Notification/DeviceService.php
+[lulus] php -l lulus: app/Notification/NotificationAdminService.php
+[lulus] php -l lulus: app/Notification/NotificationCenterService.php
+[lulus] php -l lulus: app/Notification/NotificationChannel.php
+[lulus] php -l lulus: app/Notification/NotificationDispatcher.php
+[lulus] php -l lulus: app/Notification/NotificationEvent.php
+[lulus] php -l lulus: app/Notification/NotificationException.php
+[lulus] php -l lulus: app/Notification/NotificationRepository.php
+[lulus] php -l lulus: app/Notification/NotificationService.php
+[lulus] php -l lulus: app/Notification/OutboxRepository.php
+[lulus] php -l lulus: app/Notification/PushTokenProtector.php
+[lulus] php -l lulus: app/Notification/RecipientResolver.php
+[lulus] php -l lulus: app/Notification/SafeError.php
+[lulus] php -l lulus: app/Notification/SettingsRepository.php
+[lulus] php -l lulus: app/Notification/WorkerLock.php
+[lulus] php -l lulus: app/Notification/Push/ExpoPushClient.php
+[lulus] php -l lulus: app/Notification/Push/PushClient.php
+[lulus] php -l lulus: app/Notification/Push/PushReceiptClient.php
+[lulus] php -l lulus: app/Notification/WhatsApp/FakeProvider.php
+[lulus] php -l lulus: app/Notification/WhatsApp/HttpProvider.php
+[lulus] php -l lulus: app/Notification/WhatsApp/NullProvider.php
+[lulus] php -l lulus: app/Notification/WhatsApp/ProviderFactory.php
+[lulus] php -l lulus: app/Notification/WhatsApp/ProviderResult.php
+[lulus] php -l lulus: app/Notification/WhatsApp/WhatsAppMessage.php
+[lulus] php -l lulus: app/Notification/WhatsApp/WhatsAppProvider.php
+[lulus] php -l lulus: app/Api/NotificationApiService.php
+[lulus] php -l lulus: bin/notifikasi_worker.php
+[lulus] php -l lulus: bin/v2_phase4_preflight.php
+[lulus] php -l lulus: bin/v2_phase4_verify.php
+[lulus] php -l lulus: portal/notifikasi.php
+[lulus] php -l lulus: admin/admin_notifikasi.php
+[lulus] php -l lulus: app/bootstrap.php
+[lulus] php -l lulus: app/Izin/IzinWorkflowService.php
+[lulus] php -l lulus: api/v1/index.php
+[lulus] php -l lulus: portal/_ui.php
+[lulus] php -l lulus: admin/sidebar.php
+[lulus] php -l lulus: tests/v2_phase4_static.php
+
+SELURUH PEMERIKSAAN STATIS FASE 4 LULUS.
+
+===== v2_phase5_static-final.txt
+=== 1. Migrasi 009 aditif dan berpasangan ===
+[lulus] Migrasi 009 dan rollback-nya ada
+[lulus] Setiap migrasi tetap memiliki tepat satu berkas rollback
+[lulus] Migrasi 009 tidak memakai DROP TABLE (aditif murni)
+[lulus] Migrasi 009 tidak memakai DROP COLUMN (aditif murni)
+[lulus] Migrasi 009 tidak memakai TRUNCATE (aditif murni)
+[lulus] Migrasi 009 tidak memakai DELETE FROM (aditif murni)
+[lulus] Setiap perubahan migrasi 009 dibungkus pemeriksaan INFORMATION_SCHEMA (idempoten)
+[lulus] Migrasi 009 tidak menyentuh tabel perizinan V1 maupun tabel inti V2
+[lulus] Migrasi 009 mencatat keputusan indeks laporan berbasis pengukuran
+[lulus] Migrasi 009 tidak menambahkan indeks izin_pengajuan yang tidak terbukti diperlukan
+[lulus] Rollback 009 hanya melepas kolom/indeks jejak, tidak menghapus tabel data
+[lulus] Rollback 009 tidak menghapus satu baris data pun
+
+=== 2. Satu definisi filter dan repository ===
+[lulus] Berkas app/Report/IzinReportFilter.php tersedia
+[lulus] Berkas app/Report/IzinReportRepository.php tersedia
+[lulus] Berkas app/Report/IzinReportService.php tersedia
+[lulus] Berkas app/Report/IzinCsvExport.php tersedia
+[lulus] Berkas app/Report/IzinPrintRenderer.php tersedia
+[lulus] Berkas app/Report/PrintLayout.php tersedia
+[lulus] IzinReportFilter tidak dapat dibangun sembarangan (konstruktor privat)
+[lulus] Seluruh kriteria filter bersifat readonly (immutable)
+[lulus] Filter menyediakan sidik jari kriteria untuk membuktikan konsistensi permukaan
+[lulus] Sidik jari kriteria TIDAK memuat pagination (halaman tidak boleh mengubah himpunan)
+[lulus] Klausa WHERE laporan dibangun di SATU tempat (conditions())
+[lulus] Seluruh query laporan memakai SATU klausa FROM yang sama
+[lulus] Metode summary() memakai conditions() yang sama
+[lulus] Metode decisionDuration() memakai conditions() yang sama
+[lulus] Metode page() memakai conditions() yang sama
+[lulus] Metode allRows() memakai conditions() yang sama
+[lulus] Metode explain() memakai conditions() yang sama
+[lulus] Kamar/kelas dibaca lewat subquery skalar agar baris pengajuan tidak berlipat
+[lulus] Median durasi memakai pola LIMIT/OFFSET yang kompatibel MySQL 5.7 (bukan window function)
+[lulus] Tidak ada window function yang akan gagal pada MySQL 5.7 cPanel
+[lulus] Dokumen cetak/CSV memakai jalur ekspor allRows(), bukan satu halaman pagination
+[lulus] CSV dibangun dari document() yang sama dengan cetak
+[lulus] Cetak dibangun dari document() yang sama dengan CSV
+[lulus] Tampilan berhalaman dan dokumen berangkat dari objek filter yang sama
+
+=== 3. Cakupan ditegakkan di server ===
+[lulus] Predikat cakupan dibangun di satu tempat khusus
+[lulus] Cakupan yang tidak dikenal menghasilkan 1 = 0, bukan seluruh baris
+[lulus] Cakupan Capabilities::PENGURUS dibatasi di SQL (p.pengurus_id = ?)
+[lulus] Cakupan Capabilities::MUROBI dibatasi di SQL (p.murobi_guru_id = ?)
+[lulus] Cakupan Capabilities::ORANG_TUA dibatasi di SQL (santri_wali)
+[lulus] conditions() selalu diawali predikat cakupan sehingga tidak dapat dilewati
+[lulus] Filter menolak parameter yang berusaha memperluas cakupan dengan 403
+[lulus] Cakupan dihitung ulang dari akun pada setiap pemanggilan laporan
+[lulus] EXPLAIN laporan dibatasi hanya untuk admin
+[lulus] Halaman portal/laporan.php tersedia
+[lulus] portal/laporan.php melewati guard portal sebelum menghasilkan output
+[lulus] portal/laporan.php memakai layanan laporan bersama, bukan query sendiri
+[lulus] portal/laporan.php tidak mengakses basis data secara langsung
+[lulus] Halaman portal/laporan_cetak.php tersedia
+[lulus] portal/laporan_cetak.php melewati guard portal sebelum menghasilkan output
+[lulus] portal/laporan_cetak.php memakai layanan laporan bersama, bukan query sendiri
+[lulus] portal/laporan_cetak.php tidak mengakses basis data secara langsung
+[lulus] Halaman portal/laporan_csv.php tersedia
+[lulus] portal/laporan_csv.php melewati guard portal sebelum menghasilkan output
+[lulus] portal/laporan_csv.php memakai layanan laporan bersama, bukan query sendiri
+[lulus] portal/laporan_csv.php tidak mengakses basis data secara langsung
+
+=== 4. CSV: header terdokumentasi dan formula injection ===
+[lulus] CSV memuat kolom yang memadai (30 kolom)
+[lulus] Setiap kolom CSV memiliki dokumentasi: lengkap
+[lulus] Tidak ada dokumentasi untuk kolom yang tidak ada: tidak ada
+[lulus] Tidak ada nama kolom CSV yang duplikat
+[lulus] Formula injection dinetralkan untuk '=SUM(A1:A9)' -> '\'=SUM(A1:A9)'
+[lulus] Formula injection dinetralkan untuk '+1+1' -> '\'+1+1'
+[lulus] Formula injection dinetralkan untuk '-2+3' -> '\'-2+3'
+[lulus] Formula injection dinetralkan untuk '@SUM(1)' -> '\'@SUM(1)'
+[lulus] Formula injection dinetralkan untuk '	=cmd' -> '\'	=cmd'
+[lulus] Formula injection dinetralkan untuk '=cmd' -> '\'=cmd'
+[lulus] Formula injection dinetralkan untuk ' =1+1' -> '\' =1+1'
+[lulus] Formula injection dinetralkan untuk '=HYPERLINK("http://x","klik")' -> '\'=HYPERLINK("http://x","klik")'
+[lulus] Formula injection dinetralkan untuk 'Nama Santri Biasa' -> 'Nama Santri Biasa'
+[lulus] Formula injection dinetralkan untuk '2026-01-01' -> '2026-01-01'
+[lulus] Formula injection dinetralkan untuk '' -> ''
+[lulus] Nilai null menjadi string kosong, bukan teks "null"
+[lulus] CSV diawali BOM UTF-8 agar Excel membaca huruf beraksen dengan benar
+[lulus] Daftar karakter pembuka berbahaya memuat = + - @ TAB dan CR
+[lulus] Unduhan CSV dipaksa sebagai lampiran dan tidak dirender peramban
+[lulus] Unduhan CSV mengumumkan jumlah baris agar dapat dicocokkan dengan ringkasan
+[lulus] CSV yang melebihi pagar memori ditolak eksplisit, bukan dikirim parsial
+[lulus] PRD menetapkan kontrak produk ekspor maksimum 20.000 baris tanpa CSV parsial
+[lulus] Dokumen menandai secara eksplisit bila hasil melebihi batas ekspor
+
+=== 5. Halaman cetak/PDF ===
+[lulus] Halaman cetak memuat identitas pesantren
+[lulus] Halaman cetak memuat pembuat laporan
+[lulus] Halaman cetak memuat waktu pembuatan
+[lulus] Halaman cetak memuat keputusan
+[lulus] Halaman cetak memuat filter aktif
+[lulus] CSS cetak yang dihasilkan tidak memakai counter(page) maupun footer position:fixed
+[lulus] Nomor halaman dihitung server dan dicetak sebagai teks biasa pada setiap lembar
+[lulus] CSS cetak tidak memakai overflow-wrap:anywhere yang memotong kata di tengah
+[lulus] Baris data dijaga tidak terbelah antarhalaman
+[lulus] Halaman cetak memberi petunjuk orientasi lanskap bagi peramban yang mengabaikan @page size
+[lulus] Seluruh nilai pada halaman cetak di-escape
+[lulus] Halaman cetak tidak boleh disimpan cache bersama (memuat data pribadi)
+[lulus] Halaman cetak memuat median durasi keputusan
+
+=== 6. Endpoint aditif ===
+[lulus] Endpoint /izin/laporan terpasang
+[lulus] Endpoint /izin/laporan/filters terpasang
+[lulus] Endpoint /izin/laporan/cetak terpasang
+[lulus] Endpoint /izin/laporan/csv terpasang
+[lulus] Endpoint /izin/laporan/explain terpasang
+[lulus] Endpoint lama /reports tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /reports/filters tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /reports/print tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /izin/pengajuan tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /izin/antrean tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /notifikasi tetap ada (tidak ada breaking change)
+[lulus] Seluruh endpoint laporan melewati layanan bersama
+[lulus] Parameter mode diperlakukan sebagai preferensi, bukan hak akses
+[lulus] Layanan laporan V2 ditambahkan tanpa mengganti layanan laporan absensi V1
+[lulus] Navigasi portal memuat tautan laporan untuk seluruh peran perizinan
+
+=== 7. Receipt push akhir (temuan terbuka Fase 4) ===
+[lulus] Antarmuka PushReceiptClient tersedia
+[lulus] Kontrak PushClient Fase 4 TIDAK berubah (klien tiruan Fase 4 tetap sah)
+[lulus] ExpoPushClient mengimplementasikan pengambilan receipt resmi Expo
+[lulus] Endpoint receipt sesuai dokumentasi Expo
+[lulus] Dispatcher melewatkan rekonsiliasi dengan tenang bila klien tidak mendukung receipt
+[lulus] Rekonsiliasi receipt berhenti SEBELUM permintaan apa pun ketika push mati
+[lulus] Receipt gagal TIDAK memicu pengiriman ulang (mencegah notifikasi ganda)
+[lulus] Repository outbox menyediakan klaim dan pencatatan receipt
+[lulus] Tiket tanpa jawaban berhenti diminta dan ditandai Tidak Tersedia, bukan Gagal
+[lulus] Kode dan pesan receipt melewati SafeError sebelum disimpan
+[lulus] Worker menyediakan mode --receipts untuk cron cPanel
+[lulus] Mode --status menampilkan sebaran receipt akhir, bukan hanya tiket awal
+[lulus] Id tiket disimpan saat pengiriman berhasil agar receipt dapat diambil
+[lulus] Pencabutan token dari receipt hanya dilakukan bila pemetaannya tidak ambigu
+
+=== 8. WhatsApp tetap ditangguhkan dan mati ===
+[lulus] Kalimat prinsip notifikasi PRD dipertahankan persis
+[lulus] Seluruh penanda [JANGAN DIUBAH] pada PRD tetap utuh
+[lulus] Status WhatsApp DITANGGUHKAN tetap tercatat pada PRD
+[lulus] Checklist aktivasi WhatsApp masa depan tetap disimpan
+[lulus] Dokumentasi Fase 5 (acceptance-status.md) tidak menyatakan WhatsApp lulus
+[lulus] Dokumentasi Fase 5 (test-results.md) tidak menyatakan WhatsApp lulus
+[lulus] Dokumentasi Fase 5 menyatakan secara eksplisit bahwa WhatsApp ditangguhkan dan tidak lulus
+[lulus] Preflight dan verifikasi memblokir rilis bila WhatsApp menyala
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada FakeProvider.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada HttpProvider.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada NullProvider.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada ProviderFactory.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada ProviderResult.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada WhatsAppMessage.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada WhatsAppProvider.php
+
+=== 9. Perkakas hanya berjalan pada database uji ===
+[lulus] Perkakas bin/v2_phase5_fixture.php tersedia
+[lulus] bin/v2_phase5_fixture.php hanya dapat dijalankan dari CLI
+[lulus] bin/v2_phase5_fixture.php memerlukan penanda lingkungan eksplisit
+[lulus] bin/v2_phase5_fixture.php menolak database yang tidak berakhiran _test
+[lulus] Perkakas bin/v2_phase5_ukur_laporan.php tersedia
+[lulus] bin/v2_phase5_ukur_laporan.php hanya dapat dijalankan dari CLI
+[lulus] bin/v2_phase5_ukur_laporan.php memerlukan penanda lingkungan eksplisit
+[lulus] bin/v2_phase5_ukur_laporan.php menolak database yang tidak berakhiran _test
+[lulus] Perkakas bin/v2_phase5_backup_restore_drill.php tersedia
+[lulus] bin/v2_phase5_backup_restore_drill.php hanya dapat dijalankan dari CLI
+[lulus] bin/v2_phase5_backup_restore_drill.php memerlukan penanda lingkungan eksplisit
+[lulus] bin/v2_phase5_backup_restore_drill.php menolak database yang tidak berakhiran _test
+[lulus] bin/v2_phase5_fixture.php menolak APP_ENV=production
+[lulus] bin/v2_phase5_backup_restore_drill.php menolak APP_ENV=production
+[lulus] Fixture performa memakai data sintetis berawalan P5 dan tidak menyentuh dump produksi
+[lulus] Latihan restore mengirim credential lewat berkas opsi terkutip, bukan argumen baris perintah
+[lulus] Preflight menyimpan sidik jari nilai bisnis perizinan lama
+[lulus] Verifikasi membandingkan ID dan nilai bisnis perizinan lama dengan manifest
+
+=== 10. Kebersihan repositori ===
+[lulus] Tidak ada credential tertanam pada IzinCsvExport.php
+[lulus] Tidak ada token push sungguhan pada IzinCsvExport.php
+[lulus] Tidak ada credential tertanam pada IzinPrintRenderer.php
+[lulus] Tidak ada token push sungguhan pada IzinPrintRenderer.php
+[lulus] Tidak ada credential tertanam pada IzinReportFilter.php
+[lulus] Tidak ada token push sungguhan pada IzinReportFilter.php
+[lulus] Tidak ada credential tertanam pada IzinReportRepository.php
+[lulus] Tidak ada token push sungguhan pada IzinReportRepository.php
+[lulus] Tidak ada credential tertanam pada IzinReportService.php
+[lulus] Tidak ada token push sungguhan pada IzinReportService.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_backup_restore_drill.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_backup_restore_drill.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_cron_check.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_cron_check.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_fixture.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_fixture.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_preflight.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_preflight.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_ukur_laporan.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_ukur_laporan.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_verify.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_verify.php
+[lulus] Tidak ada credential tertanam pada laporan.php
+[lulus] Tidak ada token push sungguhan pada laporan.php
+[lulus] Tidak ada credential tertanam pada laporan_cetak.php
+[lulus] Tidak ada token push sungguhan pada laporan_cetak.php
+[lulus] Tidak ada credential tertanam pada laporan_csv.php
+[lulus] Tidak ada token push sungguhan pada laporan_csv.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_api_contract.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_api_contract.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_cetak_pdf.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_cetak_pdf.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_integration.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_integration.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_performance.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_performance.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_static.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_static.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_web_smoke.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_web_smoke.php
+[lulus] Berkas .env tetap diabaikan Git
+
+=== 11. Aplikasi mobile ===
+[lulus] Expo TETAP ~57.0.15 (tidak dinaikkan)
+[lulus] React Native TETAP 0.86.2 (tidak dinaikkan)
+[lulus] expo-notifications tetap selaras SDK 57
+[lulus] expo-print selaras SDK 57
+[lulus] expo-sharing selaras SDK 57
+[lulus] expo-file-system selaras SDK 57
+[lulus] Modul dokumen laporan perizinan mobile tersedia
+[lulus] Layar laporan perizinan mobile tersedia
+[lulus] Cetak dan berbagi memakai API resmi Expo SDK 57
+[lulus] Penulisan berkas memakai API expo-file-system SDK 57 (Paths/File), bukan API lama
+[lulus] Aplikasi memakai endpoint laporan yang sama dengan website
+[lulus] Aplikasi memanggil /izin/laporan, bukan menyusun laporannya sendiri
+[lulus] Layar laporan tidak menegakkan otorisasi berbasis nama role di sisi aplikasi
+[lulus] Layar laporan tidak menyaring baris berdasarkan cakupan di sisi klien
+[lulus] Ringkasan pada aplikasi berasal dari server, tidak dihitung ulang dari satu halaman
+[lulus] Pilihan cakupan aplikasi berasal dari capability yang dikirim server
+[lulus] Aplikasi memverifikasi bahwa CSV memuat seluruh hasil filter
+[lulus] Jalur Expo Print meminta ukuran A4 lanskap (842×595 pada 72 PPI)
+[lulus] Dialog cetak iOS diminta dalam orientasi lanskap
+[lulus] PDF Android mengunci textZoom 100 agar tinggi baris tidak dipengaruhi WebView/OEM
+[lulus] Cetak dan PDF iOS memakai margin horizontal native sekurang-kurangnya 1 cm
+[lulus] HTML mempertahankan margin horizontal 10 mm untuk Android dan peramban
+[lulus] izin-report-document.ts tidak lagi mencetak dengan ukuran kertas bawaan US Letter
+[lulus] izin-report-document.ts memakai opsi halaman A4 lanskap bersama
+[lulus] izin-report-document.ts memakai penanganan pembatalan dialog cetak bersama
+[lulus] report-document.ts tidak lagi mencetak dengan ukuran kertas bawaan US Letter
+[lulus] report-document.ts memakai opsi halaman A4 lanskap bersama
+[lulus] report-document.ts memakai penanganan pembatalan dialog cetak bersama
+[lulus] Pembatalan cetak iOS dianggap normal tanpa menyembunyikan kegagalan printer nyata
+[lulus] Seluruh dialog cetak melewati normalisasi hasil native Expo Print
+[lulus] Tes mobile mencakup cetak dimulai, dibatalkan, dan kegagalan nyata
+[lulus] Tidak ada secret pada berkas laporan aplikasi
+
+=== 12. Lint sintaks PHP ===
+[lulus] php -l lulus: app/Report/CsvExport.php
+[lulus] php -l lulus: app/Report/IzinCsvExport.php
+[lulus] php -l lulus: app/Report/IzinPrintRenderer.php
+[lulus] php -l lulus: app/Report/IzinReportFilter.php
+[lulus] php -l lulus: app/Report/IzinReportRepository.php
+[lulus] php -l lulus: app/Report/IzinReportService.php
+[lulus] php -l lulus: app/Report/PrintLayout.php
+[lulus] php -l lulus: app/Report/PrintRenderer.php
+[lulus] php -l lulus: app/Report/ReportFilter.php
+[lulus] php -l lulus: app/Report/ReportRepository.php
+[lulus] php -l lulus: app/Report/ReportService.php
+[lulus] php -l lulus: app/Notification/Push/ExpoPushClient.php
+[lulus] php -l lulus: app/Notification/Push/PushClient.php
+[lulus] php -l lulus: app/Notification/Push/PushReceiptClient.php
+[lulus] php -l lulus: app/Notification/NotificationDispatcher.php
+[lulus] php -l lulus: app/Notification/OutboxRepository.php
+[lulus] php -l lulus: app/bootstrap.php
+[lulus] php -l lulus: api/v1/index.php
+[lulus] php -l lulus: portal/_guard.php
+[lulus] php -l lulus: portal/_ui.php
+[lulus] php -l lulus: portal/index.php
+[lulus] php -l lulus: portal/izin.php
+[lulus] php -l lulus: portal/izin_aksi.php
+[lulus] php -l lulus: portal/izin_antrean.php
+[lulus] php -l lulus: portal/izin_buat.php
+[lulus] php -l lulus: portal/izin_detail.php
+[lulus] php -l lulus: portal/izin_ringkasan.php
+[lulus] php -l lulus: portal/laporan.php
+[lulus] php -l lulus: portal/laporan_cetak.php
+[lulus] php -l lulus: portal/laporan_csv.php
+[lulus] php -l lulus: portal/nilai_semester.php
+[lulus] php -l lulus: portal/notifikasi.php
+[lulus] php -l lulus: portal/rapor_pdf.php
+[lulus] php -l lulus: portal/rapor_penanda.php
+[lulus] php -l lulus: portal/rapor_semester.php
+[lulus] php -l lulus: portal/rapor_wali.php
+[lulus] php -l lulus: portal/rencana_nilai.php
+[lulus] php -l lulus: portal/sikap_semester.php
+[lulus] php -l lulus: portal/v3_konseling.php
+[lulus] php -l lulus: portal/v3_konseling_cetak.php
+[lulus] php -l lulus: portal/v3_konseling_detail.php
+[lulus] php -l lulus: portal/v3_lampiran.php
+[lulus] php -l lulus: portal/v3_laporan.php
+[lulus] php -l lulus: portal/v3_pelanggaran.php
+[lulus] php -l lulus: portal/v3_pelanggaran_detail.php
+[lulus] php -l lulus: portal/v3_publikasi.php
+[lulus] php -l lulus: portal/v3_publikasi_kelola.php
+[lulus] php -l lulus: portal/verifikasi_semester.php
+[lulus] php -l lulus: bin/v2_phase5_backup_restore_drill.php
+[lulus] php -l lulus: bin/v2_phase5_cron_check.php
+[lulus] php -l lulus: bin/v2_phase5_fixture.php
+[lulus] php -l lulus: bin/v2_phase5_preflight.php
+[lulus] php -l lulus: bin/v2_phase5_ukur_laporan.php
+[lulus] php -l lulus: bin/v2_phase5_verify.php
+[lulus] php -l lulus: bin/notifikasi_worker.php
+[lulus] php -l lulus: tests/v2_phase5_api_contract.php
+[lulus] php -l lulus: tests/v2_phase5_cetak_pdf.php
+[lulus] php -l lulus: tests/v2_phase5_integration.php
+[lulus] php -l lulus: tests/v2_phase5_performance.php
+[lulus] php -l lulus: tests/v2_phase5_static.php
+[lulus] php -l lulus: tests/v2_phase5_web_smoke.php
+
+SELURUH PEMERIKSAAN STATIS FASE 5 LULUS.
+
+===== v3_phase1_static-final.txt
+[lulus] PHP lint admin/admin_v3_katalog.php
+[lulus] PHP lint admin/admin_pelanggaran.php
+[lulus] PHP lint app/V3/KatalogService.php
+[lulus] PHP lint app/V3/KatalogRepository.php
+[lulus] PHP lint app/V3/V3Exception.php
+[lulus] PHP lint app/Auth/Capabilities.php
+[lulus] PHP lint api/v1/index.php
+[lulus] PHP lint bin/v3_verify.php
+[lulus] Migrasi hanya menambah struktur tanpa mengganti/backfill lama
+[lulus] Tidak ada hard delete KatalogRepository.php
+[lulus] Tidak ada hard delete KatalogService.php
+[lulus] Tidak ada hard delete V3Exception.php
+[lulus] Guard dan CSRF web
+[lulus] Warisan hanya baca
+[lulus] Mutasi V3 hanya hadir bersama paket Fase 2
+
+===== v3_phase2_static-final.txt
+[lulus] Berkas Fase 2 tersedia: app/V3/PelanggaranRepository.php
+[lulus] Berkas Fase 2 tersedia: app/V3/PelanggaranService.php
+[lulus] Berkas Fase 2 tersedia: app/V3/AttachmentStorage.php
+[lulus] Berkas Fase 2 tersedia: portal/v3_pelanggaran.php
+[lulus] Berkas Fase 2 tersedia: portal/v3_pelanggaran_detail.php
+[lulus] Berkas Fase 2 tersedia: portal/v3_lampiran.php
+[lulus] Berkas Fase 2 tersedia: database/migrations/014_v3_fase2_pelanggaran.sql
+[lulus] Berkas Fase 2 tersedia: database/rollbacks/014_v3_fase2_pelanggaran.sql
+[lulus] Berkas Fase 2 tersedia: database/migrations/015_v3_fase2_koreksi_dan_rekomendasi.sql
+[lulus] Berkas Fase 2 tersedia: database/rollbacks/015_v3_fase2_koreksi_dan_rekomendasi.sql
+[lulus] Berkas Fase 2 tersedia: bin/v3_rekonsiliasi_agregat.php
+[lulus] T-2 mempertahankan provenance capability fondasi
+[lulus] Kunci operasional memakai baris agregat santri/tahun
+[lulus] Mutasi operasional tidak memakai gerbang schema_migrations
+[lulus] Pembatalan dan koreksi memakai ledger pembalik
+[lulus] Deduplikasi idempotensi/rekomendasi ditegakkan database
+[lulus] Service menyediakan create(
+[lulus] Service menyediakan correct(
+[lulus] Service menyediakan cancel(
+[lulus] Service menyediakan acknowledge(
+[lulus] Service menyediakan page(
+[lulus] Service menyediakan show(
+[lulus] Service menyediakan history(
+[lulus] Audit membedakan koreksi admin dan pembimbing
+[lulus] Serializer baru memakai allowlist eksplisit
+[lulus] Service tidak mengembalikan baris database mentah
+[lulus] Rute mutasi V3 tersedia tanpa GET: $method === 'POST' && $path === '/v3/pelanggaran'
+[lulus] Rute mutasi V3 tersedia tanpa GET: $method === 'PATCH' && preg_match
+[lulus] Rute mutasi V3 tersedia tanpa GET: /pembatalan
+[lulus] Rute mutasi V3 tersedia tanpa GET: /diketahui
+[lulus] Tidak ada mutasi status melalui GET
+[lulus] Mutasi web mewajibkan CSRF
+[lulus] Form mutasi web memakai POST
+[lulus] Lampiran web dibatasi tipe aman
+[lulus] Halaman pelanggaran lama tetap berlabel Data warisan
+[lulus] Halaman warisan tidak membuka penghapusan
+[lulus] Menu web membedakan V3 dan data warisan
+[lulus] Menu aplikasi tetap bukan dari App\Ui\Navigation
+[lulus] Migrasi memberi satu kunci agregat per subjek
+[lulus] Migrasi menjamin satu rekomendasi per ambang
+[lulus] Migrasi mencegah dua revisi atas sumber yang sama
+[lulus] Migrasi lama tetap tunggal 001_
+[lulus] Migrasi lama tetap tunggal 002_
+[lulus] Migrasi lama tetap tunggal 003_
+[lulus] Migrasi lama tetap tunggal 004_
+[lulus] Migrasi lama tetap tunggal 005_
+[lulus] Migrasi lama tetap tunggal 006_
+[lulus] Migrasi lama tetap tunggal 007_
+[lulus] Migrasi lama tetap tunggal 008_
+[lulus] Migrasi lama tetap tunggal 009_
+[lulus] Migrasi lama tetap tunggal 010_
+[lulus] Migrasi lama tetap tunggal 011_
+[lulus] Migrasi lama tetap tunggal 012_
+[lulus] Migrasi lama tetap tunggal 013_
+[lulus] Migrasi lama tetap tunggal 014_
+[lulus] Migrasi 015 memisahkan alasan pembatalan
+[lulus] Migrasi 015 menyediakan penanda rekomendasi tidak berlaku
+[lulus] Migrasi 015 memulihkan agregat dari ledger
+[lulus] Migrasi 015 tidak menghapus catatan bisnis
+[lulus] Rollback 015 hanya melepas struktur miliknya
+[lulus] Catatan yang tidak berlaku melepas slot fingerprint
+[lulus] Pembatalan tidak lagi menulis ke alasan revisi
+[lulus] Repository menyelaraskan masa berlaku rekomendasi
+[lulus] Catatan sumber melepas fingerprint sebelum revisi ditulis
+[lulus] Mutasi create menyegarkan masa berlaku rekomendasi
+[lulus] Mutasi correct menyegarkan masa berlaku rekomendasi
+[lulus] Mutasi cancel menyegarkan masa berlaku rekomendasi
+[lulus] Dokumen PRD V3 tidak dapat diunduh dari web
+[lulus] Diagnostik yatim warisan tetap exit nonzero
+
+===== v3_phase3_static-final.txt
+[lulus] Berkas Fase 3 tersedia: app/V3/KonselingRepository.php
+[lulus] Berkas Fase 3 tersedia: app/V3/KonselingService.php
+[lulus] Berkas Fase 3 tersedia: portal/v3_konseling.php
+[lulus] Berkas Fase 3 tersedia: portal/v3_konseling_detail.php
+[lulus] Berkas Fase 3 tersedia: portal/v3_konseling_cetak.php
+[lulus] Berkas Fase 3 tersedia: database/migrations/016_v3_fase3_konseling.sql
+[lulus] Berkas Fase 3 tersedia: database/rollbacks/016_v3_fase3_konseling.sql
+[lulus] Berkas Fase 3 tersedia: database/migrations/017_v3_fase3_kerahasiaan_dan_revisi.sql
+[lulus] Berkas Fase 3 tersedia: database/rollbacks/017_v3_fase3_kerahasiaan_dan_revisi.sql
+[lulus] Berkas Fase 3 tersedia: bin/v3_phase3_preflight.php
+[lulus] Berkas Fase 3 tersedia: bin/v3_phase3_verify.php
+[lulus] Berkas Fase 3 tersedia: bin/v3_phase3_run_tests.sh
+[lulus] Service menyediakan createCase(
+[lulus] Service menyediakan correctCase(
+[lulus] Service menyediakan transitionCase(
+[lulus] Service menyediakan addLinks(
+[lulus] Service menyediakan createSession(
+[lulus] Service menyediakan correctSession(
+[lulus] Service menyediakan transitionSession(
+[lulus] Service menyediakan acknowledge(
+[lulus] Service menyediakan page(
+[lulus] Service menyediakan show(
+[lulus] Service menyediakan timeline(
+[lulus] Service menyediakan parentSerializer(
+[lulus] Mutasi konseling memakai kunci subjek santri/tahun
+[lulus] Kunci operasional tidak memakai gerbang migrasi global
+[lulus] Kegagalan audit menggulung transaksi bisnis
+[lulus] Antrean rekomendasi menyaring rekomendasi tidak berlaku
+[lulus] Rekomendasi yang sudah ditindaklanjuti tidak kembali ke antrean
+[lulus] Satu sumber sesi hanya memiliki satu revisi langsung
+[lulus] Audit membedakan koreksi sesi admin dan pembimbing
+[lulus] Enum dan transisi status divalidasi server
+[lulus] Serializer memakai allowlist terpisah
+[lulus] DTO orang tua tidak memuat tujuan
+[lulus] DTO orang tua tidak memuat ringkasan_internal
+[lulus] DTO orang tua tidak memuat hasil
+[lulus] DTO orang tua tidak memuat catatan_murobi
+[lulus] DTO orang tua tidak memuat alasan_revisi
+[lulus] DTO orang tua tidak memuat pembimbing_id
+[lulus] Isi internal hanya untuk pembimbing/admin dan murobi pada kasus Internal
+[lulus] Rute API Fase 3 tersedia: /v3/konseling/options
+[lulus] Rute API Fase 3 tersedia: /v3/konseling/kasus
+[lulus] Rute API Fase 3 tersedia: /timeline
+[lulus] Rute API Fase 3 tersedia: /tautan
+[lulus] Rute API Fase 3 tersedia: /sesi
+[lulus] Rute API Fase 3 tersedia: /diketahui
+[lulus] Penjaga mutasi GET terbukti mendeteksi rute mutasi sintetis
+[lulus] Tidak ada mutasi konseling melalui GET
+[lulus] Kedua controller mutasi web mewajibkan CSRF
+[lulus] Form konseling memakai POST
+[lulus] Tampilan cetak internal tidak boleh dicache publik
+[lulus] Navigasi konseling mengikuti capability V3
+[lulus] Detail pelanggaran memuat seluruh tindak lanjut konseling tanpa menggandakan induk
+[lulus] Migrasi 016 memuat alasan_revisi_terakhir
+[lulus] Migrasi 016 memuat alasan_pembatalan
+[lulus] Migrasi 016 memuat alasan_penjadwalan_ulang
+[lulus] Migrasi 016 memuat sesi_satu_revisi
+[lulus] Migrasi 016 memuat ditindaklanjuti_kasus_id
+[lulus] Migrasi 016 memuat rekomendasi_kasus_fk
+[lulus] Migrasi 016 tidak memasang guard tautan yang menduplikasi tautan_unik 013
+[lulus] Migrasi 016 memberi penanda jujur pada kasus batal tanpa alasan
+[lulus] Migrasi 016 tidak menghapus catatan bisnis
+[lulus] Rollback 016 mempertahankan kolom keputusan alasan_revisi_terakhir
+[lulus] Rollback 016 mempertahankan kolom keputusan alasan_pembatalan
+[lulus] Rollback 016 mempertahankan kolom keputusan alasan_penjadwalan_ulang
+[lulus] Rollback 016 mempertahankan kolom keputusan ditindaklanjuti_kasus_id
+[lulus] Rollback 016 mempertahankan kolom keputusan ditindaklanjuti_pada
+[lulus] Rollback 016 tidak memutus tautan rekomendasi atau menghapus catatan
+[lulus] Verifier fondasi tidak mengharapkan unique tautan tambahan dari 016
+[lulus] Migrasi tetap tunggal 001_
+[lulus] Migrasi tetap tunggal 002_
+[lulus] Migrasi tetap tunggal 003_
+[lulus] Migrasi tetap tunggal 004_
+[lulus] Migrasi tetap tunggal 005_
+[lulus] Migrasi tetap tunggal 006_
+[lulus] Migrasi tetap tunggal 007_
+[lulus] Migrasi tetap tunggal 008_
+[lulus] Migrasi tetap tunggal 009_
+[lulus] Migrasi tetap tunggal 010_
+[lulus] Migrasi tetap tunggal 011_
+[lulus] Migrasi tetap tunggal 012_
+[lulus] Migrasi tetap tunggal 013_
+[lulus] Migrasi tetap tunggal 014_
+[lulus] Migrasi tetap tunggal 015_
+[lulus] Migrasi tetap tunggal 016_
+[lulus] Migrasi tetap tunggal 017_
+[lulus] Menu aplikasi belum diubah sebelum Fase 5
+[lulus] K1 transisi sesi memeriksa status kasus yang terkunci
+[lulus] K2 kasus batal melepas rekomendasi dan antrean hanya memuat rekomendasi Baru
+[lulus] K2 rekomendasi dapat ditautkan ke kasus yang sudah berjalan
+[lulus] K3 tautan dan tampilan tindak lanjut membaca rantai revisi pelanggaran sesuai hak pembaca
+[lulus] K5 field kosong formulir tidak menghapus rencana dan sesi batal tanpa realisasi
+[lulus] K6 koreksi sesi menjaga arti statusnya
+[lulus] K7 kunci deduplikasi status memuat versi hasil
+[lulus] K9 halaman detail dan cetak tidak mengaudit akses admin dua kali
+[lulus] K11 setiap label formulir halaman detail terhubung ke kontrolnya
+[lulus] K2 halaman detail menyediakan formulir tautan manual
+[lulus] Kerahasiaan disaring pada query daftar, detail kasus, dan tindak lanjut pelanggaran
+[lulus] Kasus Rahasia hanya untuk pembimbing pemilik dan tidak dibuka maupun diberitahukan kepada murobi
+[lulus] Penutupan kasus menutup sesi terjadwal secara beraudit
+[lulus] Koreksi kasus disimpan dan ditampilkan sebagai revisi berbaris
+[lulus] Migrasi 017 aditif tanpa DROP atau DELETE
+[lulus] Rollback 017 hanya melepas tabel revisi yang masih kosong
+
+===== v3_phase4_static-final.txt
+[lulus] PHP lint app/V3/PublikasiService.php
+[lulus] PHP lint app/V3/PublikasiRepository.php
+[lulus] PHP lint portal/v3_publikasi.php
+[lulus] PHP lint portal/v3_publikasi_kelola.php
+[lulus] PHP lint portal/partials/v3_publikasi_konten.php
+[lulus] PHP lint bin/v3_phase4_preflight.php
+[lulus] PHP lint bin/v3_phase4_verify.php
+[lulus] Penjaga SQL menemukan metode parentFrom
+[lulus] SQL orang tua tidak mengambil isi kasus/sesi/pelanggaran
+[lulus] SQL pembacaan dibatasi pengguna dan relasi aktif
+[lulus] Memakai allowlist dan resolver wali yang ada
+[lulus] Rollback tidak menghapus data atau tabel bisnis
+[lulus] Tidak ada mutasi publikasi lewat GET
+[lulus] Penjaga GET mendeteksi contoh yang salah
+[lulus] Layar deep-link berada di Stack autentikasi
+[lulus] Detail memuat ulang API dan menghapus konten lama
+[lulus] Payload V3 divalidasi dan tujuan sebelum login ditunda
+[lulus] Layar publikasi tidak melog atau menyimpan isi ke penyimpanan/clipboard
+

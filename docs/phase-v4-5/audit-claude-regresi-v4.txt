@@ -1,0 +1,981 @@
+===== preflight.txt
+[info] Basis data terpilih: webalhasan_v4_fase2_test (preflight hanya membaca; migrasi produksi memerlukan otorisasi operator).
+[lulus] Tabel users
+[lulus] Tabel tahun_ajaran
+[lulus] Tabel kelas
+[lulus] Tabel santri
+[lulus] Tabel mata_pelajaran
+[lulus] Tabel guru_mapel_assignments
+[lulus] Tabel pendidikan_assignments
+[lulus] Tabel plotting_kelas
+[lulus] Tabel pertemuan_peserta
+[lulus] Tabel absensi_santri
+[lulus] Tabel audit_logs
+[lulus] Tabel notifikasi_outbox
+[lulus] Tabel schema_migrations
+[lulus] Migrasi 019 tercatat
+Manifest ditulis: /private/tmp/v4a5-baseline.json
+Backup DB, berkas privat, dan manifest ini wajib disimpan sebelum migrasi.
+
+===== migrasi.txt
+Diterapkan:
+- 020_v4_fase1_fondasi.sql
+- 021_v4_fase3_verifikasi.sql
+- 022_v4_fase4_publikasi.sql
+Tidak ada migrasi baru.
+
+===== verifier-fase1.txt
+[lulus] Tabel v4_penanda_tangan
+[lulus] Tabel v4_tanda_tangan_aset
+[lulus] Tabel v4_rencana
+[lulus] Tabel v4_rencana_mapel
+[lulus] Tabel v4_nilai
+[lulus] Tabel v4_nilai_riwayat
+[lulus] Tabel v4_sikap
+[lulus] Tabel v4_sikap_riwayat
+[lulus] Tabel v4_rapor
+[lulus] Tabel v4_rapor_versi
+[lulus] Tabel v4_verifikasi
+[lulus] Migrasi 020 tercatat sekali
+[lulus] Referensi baru v4_sikap.kelas_id tidak yatim
+[lulus] Referensi baru v4_sikap.diketahui_murobi_user_id tidak yatim
+[lulus] Referensi baru v4_sikap.pembimbing_user_id tidak yatim
+[lulus] Referensi baru v4_sikap.santri_id tidak yatim
+[lulus] Referensi baru v4_sikap.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana.created_by tidak yatim
+[lulus] Referensi baru v4_rencana.kelas_id tidak yatim
+[lulus] Referensi baru v4_rencana.pendidikan_aset_id tidak yatim
+[lulus] Referensi baru v4_rencana.pendidikan_penanda_id tidak yatim
+[lulus] Referensi baru v4_rencana.pimpinan_aset_id tidak yatim
+[lulus] Referensi baru v4_rencana.pimpinan_penanda_id tidak yatim
+[lulus] Referensi baru v4_rencana.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana.updated_by tidak yatim
+[lulus] Referensi baru v4_rencana_penanda_riwayat.actor_user_id tidak yatim
+[lulus] Referensi baru v4_rencana_penanda_riwayat.rencana_id tidak yatim
+[lulus] Referensi baru v4_bahan.actor_user_id tidak yatim
+[lulus] Referensi baru v4_bahan.rencana_id tidak yatim
+[lulus] Referensi baru v4_bahan.santri_id tidak yatim
+[lulus] Referensi baru v4_rapor.santri_id tidak yatim
+[lulus] Referensi baru v4_rapor.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.diterbitkan_oleh tidak yatim
+[lulus] Referensi baru v4_rapor_versi.pendidikan_aset_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.pimpinan_aset_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.rapor_id tidak yatim
+[lulus] Referensi baru v4_rapor_operasi.actor_user_id tidak yatim
+[lulus] Referensi baru v4_rapor_operasi.rapor_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.guru_mapel_assignment_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.mata_pelajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.rencana_id tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.activated_by tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.penanda_tangan_id tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.uploaded_by tidak yatim
+[lulus] Referensi baru v4_nilai.rencana_mapel_id tidak yatim
+[lulus] Referensi baru v4_nilai.pelaku_user_id tidak yatim
+[lulus] Referensi baru v4_nilai.santri_id tidak yatim
+[lulus] Referensi baru v4_nilai_riwayat.nilai_id tidak yatim
+[lulus] Referensi baru v4_nilai_riwayat.pelaku_user_id tidak yatim
+[lulus] Referensi baru v4_verifikasi.rapor_versi_id tidak yatim
+[lulus] Referensi baru v4_penanda_tangan.created_by tidak yatim
+[lulus] Referensi baru v4_penanda_tangan.updated_by tidak yatim
+[lulus] Referensi baru v4_sikap_riwayat.actor_user_id tidak yatim
+[lulus] Referensi baru v4_sikap_riwayat.sikap_id tidak yatim
+[lulus] Referensi baru v4_bahan_riwayat.bahan_id tidak yatim
+Jumlah referensi yatim V4: 0
+[lulus] Jumlah baris lama absensi_guru tetap 0
+[lulus] Jumlah baris lama absensi_santri tetap 0
+[lulus] Jumlah baris lama alumni tetap 0
+[lulus] Jumlah baris lama api_idempotency_keys tetap 0
+[lulus] Jumlah baris lama api_tokens tetap 0
+[lulus] Jumlah baris lama bendahara_bulanan_assignments tetap 0
+[lulus] Jumlah baris lama bendahara_psb_assignments tetap 0
+[lulus] Jumlah baris lama berita tetap 3
+[lulus] Jumlah baris lama download tetap 1
+[lulus] Jumlah baris lama galeri tetap 1
+[lulus] Jumlah baris lama guru tetap 25
+[lulus] Jumlah baris lama guru_mapel_assignments tetap 0
+[lulus] Jumlah baris lama izin_idempotency_keys tetap 0
+[lulus] Jumlah baris lama izin_keputusan tetap 0
+[lulus] Jumlah baris lama izin_keputusan_koreksi tetap 0
+[lulus] Jumlah baris lama izin_pengajuan tetap 0
+[lulus] Jumlah baris lama izin_riwayat_status tetap 0
+[lulus] Jumlah baris lama jadwal_jam_migration_report tetap 0
+[lulus] Jumlah baris lama jadwal_ngaji tetap 5
+[lulus] Jumlah baris lama kamar tetap 29
+[lulus] Jumlah baris lama kelas tetap 15
+[lulus] Jumlah baris lama mapel tetap 0
+[lulus] Jumlah baris lama mata_pelajaran tetap 0
+[lulus] Jumlah baris lama mengajar tetap 0
+[lulus] Jumlah baris lama murobi_assignments tetap 0
+[lulus] Jumlah baris lama notifikasi_outbox tetap 0
+[lulus] Jumlah baris lama notifikasi_pengaturan_audit tetap 0
+[lulus] Jumlah baris lama notifikasi_percobaan tetap 0
+[lulus] Jumlah baris lama notifikasi_worker_lock tetap 2
+[lulus] Jumlah baris lama panitia_psb_assignments tetap 0
+[lulus] Jumlah baris lama pelanggaran tetap 0
+[lulus] Jumlah baris lama pembimbing_assignments tetap 0
+[lulus] Jumlah baris lama pembimbing_kamar tetap 0
+[lulus] Jumlah baris lama pendidikan_assignments tetap 0
+[lulus] Jumlah baris lama pengaturan_notifikasi tetap 1
+[lulus] Jumlah baris lama pengurus tetap 0
+[lulus] Jumlah baris lama perangkat_push tetap 0
+[lulus] Jumlah baris lama perizinan tetap 0
+[lulus] Jumlah baris lama pertemuan_pengajian tetap 0
+[lulus] Jumlah baris lama pertemuan_peserta tetap 0
+[lulus] Jumlah baris lama plotting_kamar tetap 358
+[lulus] Jumlah baris lama plotting_kelas tetap 355
+[lulus] Jumlah baris lama psb_pembayaran tetap 103
+[lulus] Jumlah baris lama psb_pendaftar tetap 53
+[lulus] Jumlah baris lama roles tetap 4
+[lulus] Jumlah baris lama santri tetap 360
+[lulus] Jumlah baris lama santri_wali tetap 207
+[lulus] Jumlah baris lama tahun_ajaran tetap 4
+[lulus] Jumlah baris lama users tetap 1
+[lulus] Jumlah baris lama user_roles tetap 1
+[lulus] Jumlah baris lama v3_ambang tetap 0
+[lulus] Jumlah baris lama v3_idempotency tetap 0
+[lulus] Jumlah baris lama v3_katalog tetap 0
+[lulus] Jumlah baris lama v3_kategori tetap 0
+[lulus] Jumlah baris lama v3_konseling_kasus tetap 0
+[lulus] Jumlah baris lama v3_konseling_kasus_revisi tetap 0
+[lulus] Jumlah baris lama v3_konseling_sesi tetap 0
+[lulus] Jumlah baris lama v3_konseling_tautan tetap 0
+[lulus] Jumlah baris lama v3_lampiran tetap 0
+[lulus] Jumlah baris lama v3_murobi_catatan tetap 0
+[lulus] Jumlah baris lama v3_pelanggaran tetap 0
+[lulus] Jumlah baris lama v3_poin_agregat tetap 0
+[lulus] Jumlah baris lama v3_poin_ledger tetap 0
+[lulus] Jumlah baris lama v3_publikasi tetap 0
+[lulus] Jumlah baris lama v3_publikasi_outbox tetap 0
+[lulus] Jumlah baris lama v3_publikasi_pratinjau tetap 0
+[lulus] Jumlah baris lama v3_publikasi_riwayat tetap 0
+[lulus] Jumlah baris lama v3_rekomendasi tetap 0
+[lulus] Jumlah baris lama wali tetap 207
+
+===== regresi-fase1.txt
+[lulus] Pendidikan menyimpan dua mapel wajib
+[lulus] Rencana terbaca ulang di layanan web dan API
+[lulus] Target berubah sebelum ada nilai
+[lulus] Duplikasi ditolak 409
+[lulus] Duplikasi tidak menambah baris
+[lulus] v4_pengurus mendapat 403
+[lulus] v4_guru mendapat 403
+[lulus] v4_wali mendapat 403
+[lulus] v4_pengurus baca semester 0 kelas 0 mendapat 403
+[lulus] v4_pengurus baca semester 999999 kelas 2 mendapat 403
+[lulus] v4_pengurus simpan payload kosong mendapat 403
+[lulus] v4_pengurus opsi mendapat 403
+[lulus] v4_guru baca semester 0 kelas 0 mendapat 403
+[lulus] v4_guru baca semester 999999 kelas 2 mendapat 403
+[lulus] v4_guru simpan payload kosong mendapat 403
+[lulus] v4_guru opsi mendapat 403
+[lulus] v4_wali baca semester 0 kelas 0 mendapat 403
+[lulus] v4_wali baca semester 999999 kelas 2 mendapat 403
+[lulus] v4_wali simpan payload kosong mendapat 403
+[lulus] v4_wali opsi mendapat 403
+[lulus] Target >100 ditolak 422
+[lulus] Bobot salah ditolak 422
+[lulus] Audit rencana tanpa token atau gambar
+[lulus] Guru sesuai cakupan memiliki capability input
+[lulus] Guru mapel lain ditolak 403
+[lulus] Pengganti tanpa alasan ditolak 422
+[lulus] Pengganti beralasan memiliki kapasitas khusus
+[lulus] Admin tanpa alasan ditolak 422
+[lulus] Admin beralasan tercatat dalam kapasitas admin
+
+===== fase1-http.txt
+[lulus] API baca dua mapel 200
+[lulus] API v4_pengurus 403
+[lulus] API v4_guru 403
+[lulus] API v4_wali 403
+[lulus] API opsi pendidikan 200
+[lulus] API menolak mapel ganda 409
+[lulus] API pengaturan v4_pengurus 403
+[lulus] API pengaturan v4_guru 403
+[lulus] API pengaturan v4_wali 403
+[lulus] Server uji menolak akses langsung storage privat
+[lulus] Web membaca ulang rencana dua mapel
+[lulus] Web menampilkan dua mapel
+[lulus] Halaman 375 px tanpa gulir horizontal
+[lulus] Web menyimpan target baru
+[lulus] API membaca target yang diubah melalui web
+[lulus] Rencana menyimpan guru pengampu sesuai mapel
+[lulus] Halaman 375 px tetap tanpa gulir horizontal pada teks lebih besar
+[lulus] Web menolak target >100 dengan pesan 422
+[lulus] Simpan gagal tanpa peringatan PHP
+[lulus] Formulir rencana tetap tampil setelah simpan gagal
+[lulus] API v4_pengurus tanpa parameter tetap 403
+[lulus] API v4_guru tanpa parameter tetap 403
+[lulus] API v4_wali tanpa parameter tetap 403
+
+===== fase2.txt
+[lulus] 80/90 + 78 + 92 = 85 B
+[lulus] Versi pertama keempat komponen tersimpan
+[lulus] Retry identik ditolak tanpa duplikasi HTTP 409
+[lulus] Tetap empat komponen berlaku
+[lulus] Penyerahan lengkap
+[lulus] Versi usang tidak menimpa HTTP 409
+[lulus] Koreksi tanpa alasan HTTP 422
+[lulus] Koreksi menyimpan versi 1–3, kembali draf
+[lulus] Nol tersimpan; komponen hilang Belum lengkap
+[lulus] Penyerahan belum lengkap ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Skala/tipe tidak sah ditolak HTTP 422
+[lulus] Komponen ganda dalam payload ditolak HTTP 409
+[lulus] Guru mapel lain baca HTTP 403
+[lulus] Guru mapel lain tulis HTTP 403
+[lulus] Guru kelas/semester lain baca HTTP 403
+[lulus] Guru kelas/semester lain tulis HTTP 403
+[lulus] Pendidikan jenjang/semester lain baca HTTP 403
+[lulus] Pendidikan jenjang/semester lain tulis HTTP 403
+[lulus] Guru kelas/semester lain baca HTTP 403
+[lulus] Guru kelas/semester lain tulis HTTP 403
+[lulus] Pendidikan jenjang/semester lain baca HTTP 403
+[lulus] Pendidikan jenjang/semester lain tulis HTTP 403
+[lulus] Pengganti tanpa alasan HTTP 422
+[lulus] Pengganti menyimpan pelaku dan kapasitas
+[lulus] Pengganti tidak mengubah penugasan
+[lulus] Audit kapasitas pengganti
+[lulus] Peran tanpa hak ditolak HTTP 403
+[lulus] Detail peran tanpa hak ditolak HTTP 403
+[lulus] Peran tanpa hak ditolak HTTP 403
+[lulus] Detail peran tanpa hak ditolak HTTP 403
+[lulus] ID santri di luar cakupan HTTP 403
+[lulus] Nilai historis tidak mengikuti perpindahan kelas
+[lulus] Kegagalan audit menggulung transaksi HTTP 503
+[lulus] Nilai dan riwayat tetap setelah rollback
+[lulus] Half-up tepat 14/97/46 = 48,50 menjadi 49
+[lulus] Half-up tepat 10/97/88 = 59,50 menjadi 60
+[lulus] Hasil internal dua desimal tepat
+[lulus] Komponen guru tak berubah tidak diatasnamakan pengganti
+[lulus] Hanya komponen baru tercatat sebagai pengganti
+[lulus] Simpan tanpa perubahan ditolak tanpa revisi HTTP 422
+[lulus] Half-up 89.5 menjadi 90 A
+[lulus] Seluruh komponen nol lengkap
+[lulus] Penugasan guru dicabut ditolak pada baca HTTP 403
+[lulus] Penugasan guru dicabut ditolak pada tulis HTTP 403
+[lulus] Rata-rata pecahan mempertahankan presisi hingga hasil internal dua desimal
+Selesai pada MariaDB uji, bukan produksi.
+
+===== fase2-konkurensi.txt
+[lulus] Enam proses PHP/koneksi DB bersamaan: satu 200, lima 409.
+[lulus] Tepat satu komponen berlaku dan satu revisi, tanpa duplikasi.
+
+===== fase2-http.txt
+[lulus] API 85 predikat B
+[lulus] v4_wali baca 403
+[lulus] v4_wali tulis kosong 403
+[lulus] v4_pengurus baca 403
+[lulus] v4_pengurus tulis kosong 403
+[lulus] API guru mapel lain 403
+[lulus] Pendidikan tidak dapat menyamar melalui jalur guru
+[lulus] API pengganti tanpa alasan 422
+[lulus] API pengganti beralasan tercatat hanya pada komponen yang diubah
+[lulus] API retry versi usang 409
+[lulus] API nol dan Belum lengkap
+[lulus] API tanpa bearer 401
+[lulus] Web pengganti 375 px tersedia
+[lulus] Web tanpa CSRF 419
+[lulus] Web simpan draf 85 B
+[lulus] Catatan XSS tidak dieksekusi
+[lulus] API membaca hasil simpan web 85
+[lulus] Web penyerahan empat komponen
+[lulus] Web versi usang 409
+[lulus] Web koreksi kembali draf
+[lulus] 375 px tanpa overflow
+[lulus] 375 px teks 24 px tanpa overflow
+[lulus] Desktop tanpa overflow
+[lulus] Web nol tetap nol dan Belum lengkap
+[lulus] Web Pendidikan jalur guru 403
+
+===== fase2-guru.txt
+[lulus] Web guru membaca 85 B
+[lulus] Web guru koreksi tanpa alasan 422
+[lulus] Formulir tetap tersedia setelah gagal
+[lulus] Web guru menyimpan koreksi
+[lulus] Web guru menyerahkan nilai
+[lulus] Web guru akses silang 403
+[lulus] Web guru akses silang 403
+[lulus] Web guru akses silang 403
+
+===== fase3.txt
+[lulus] K1: tiga predikat dan catatan tersimpan
+[lulus] Retry draf tidak membuat versi ganda HTTP 409
+[lulus] Baca petugas di luar cakupan HTTP 403
+[lulus] Mutasi petugas di luar cakupan HTTP 403
+[lulus] Baca petugas di luar cakupan HTTP 403
+[lulus] Mutasi petugas di luar cakupan HTTP 403
+[lulus] Baca sikap tanpa tugas HTTP 403
+[lulus] Matriks tanpa Pendidikan HTTP 403
+[lulus] Baca sikap tanpa tugas HTTP 403
+[lulus] Matriks tanpa Pendidikan HTTP 403
+[lulus] Baca sikap tanpa tugas HTTP 403
+[lulus] Matriks tanpa Pendidikan HTTP 403
+[lulus] Pembimbing menyerahkan sikap
+[lulus] K2: murobi sah menandai diketahui
+[lulus] Diketahui tepat sekali walau versi terbaru HTTP 409
+[lulus] Koreksi murobi tanpa alasan ditolak HTTP 422
+[lulus] K2: koreksi versi baru mempertahankan masukan pembimbing
+[lulus] Identitas pembimbing historis tidak diganti murobi
+[lulus] Pendidikan memverifikasi sikap
+[lulus] Murobi dicabut pada instance layanan sama HTTP 403
+[lulus] Penghalang tanpa murobi aktif; tanpa persetujuan otomatis
+[lulus] Finalisasi tanpa murobi aktif ditolak HTTP 422
+[lulus] K3: satu pertemuan tanpa absensi = satu Belum dicatat dan nol Alpa
+[lulus] K3: satu pertemuan tanpa absensi menolak finalisasi HTTP 422
+[lulus] K3: tanpa absensi Belum dicatat tepat satu, tidak menambah Alpa
+[lulus] K4: kelima status masing-masing satu tanpa duplikasi
+[lulus] K3: Belum dicatat menghalangi finalisasi HTTP 422
+[lulus] Kehadiran tidak lengkap tidak dapat diserahkan HTTP 422
+[lulus] Draf dan Dibuka tidak masuk rekap
+[lulus] Verifikasi tidak mengubah komponen/atribusi/riwayat guru
+[lulus] Verifikasi tidak mengubah komponen/atribusi/riwayat guru
+[lulus] Semua bahan lengkap terverifikasi
+[lulus] Gate sah hanya memeriksa, tanpa penerbitan
+[lulus] K5: koreksi nilai membatalkan verifikasi mapel
+[lulus] K5: finalisasi sebelum verifikasi ulang nilai ditolak HTTP 422
+[lulus] K5: koreksi pembimbing membatalkan verifikasi dan pengetahuan murobi
+[lulus] K5: finalisasi sebelum verifikasi ulang sikap ditolak HTTP 422
+[lulus] Pengembalian membutuhkan alasan HTTP 422
+[lulus] Perlu Perbaikan tercatat
+[lulus] Bahan dikembalikan tidak bisa langsung diverifikasi HTTP 409
+[lulus] Retry verifikasi tidak membuat riwayat ganda HTTP 409
+[lulus] Perubahan sumber absensi membatalkan verifikasi efektif
+[lulus] Finalisasi dengan sumber lama ditolak 409 HTTP 409
+[lulus] Finalisasi absensi berubah memerlukan pemeriksaan ulang HTTP 422
+[lulus] Koreksi rekap kehadiran membutuhkan alasan HTTP 422
+Audit log gagal disimpan.
+[lulus] Kegagalan audit menggulung sikap dan riwayat HTTP 503
+Audit log gagal disimpan.
+[lulus] Kegagalan audit menggulung pemeriksaan dan riwayat HTTP 503
+[lulus] Rollback mempertahankan nilai sikap, status dan seluruh riwayat
+[lulus] Cakupan kamar membaca sikap pembimbing
+[lulus] Relasi kamar dicabut pembimbing HTTP 403
+[lulus] Cakupan kamar membaca sikap murobi
+[lulus] Relasi kamar dicabut murobi HTTP 403
+[lulus] Penugasan dicabut baca pembimbing HTTP 403
+[lulus] Penugasan dicabut mutasi pembimbing HTTP 403
+[lulus] Penugasan dicabut baca murobi HTTP 403
+[lulus] Penugasan dicabut mutasi murobi HTTP 403
+[lulus] Pendidikan dicabut baca HTTP 403
+[lulus] Pendidikan dicabut mutasi HTTP 403
+[lulus] Snapshot semester lain tidak masuk rekap
+[lulus] Snapshot tidak cocok semester jadwal dikecualikan
+[lulus] Santri di luar cakupan HTTP 403
+[lulus] Rencana di luar cakupan HTTP 403
+[lulus] Matriks Pendidikan kelas/semester di luar cakupan HTTP 403
+[lulus] Mutasi Pendidikan kelas/semester di luar cakupan HTTP 403
+[lulus] Matriks Pendidikan kelas/semester di luar cakupan HTTP 403
+[lulus] Mutasi Pendidikan kelas/semester di luar cakupan HTTP 403
+[lulus] K5: nol rapor terbit, versi, kode publik
+[lulus] Audit umum tidak memuat catatan sikap
+[lulus] Diketahui tidak melewati pengembalian beralasan HTTP 409
+[lulus] Tanda murobi yang dicabut tidak dihitung sah
+[lulus] Murobi pengganti sah mengetahui; tanda lama tetap di riwayat
+[lulus] Murobi pengganti tetap hanya sekali per revisi HTTP 409
+[lulus] Nol outbox notifikasi Fase 3
+Selesai Fase 3 pada MariaDB uji.
+
+===== fase3-konkurensi.txt
+[lulus] Enam proses/koneksi DB terpisah: satu 200 dan lima 409.
+[lulus] Tepat satu sikap, satu versi dan satu riwayat pemeriksaan.
+[lulus] Enam pemeriksa bersamaan: satu 200 dan lima 409.
+[lulus] Verifikasi tidak menggandakan riwayat: tiga versi sumber dan satu pemeriksaan.
+
+===== fase3-http.txt
+[lulus] API pembimbing membaca sikap privat
+[lulus] API baca di luar cakupan v4_pembimbing_lain 403
+[lulus] API mutasi di luar cakupan v4_pembimbing_lain 403
+[lulus] API baca di luar cakupan v4_murobi_lain 403
+[lulus] API mutasi di luar cakupan v4_murobi_lain 403
+[lulus] API baca di luar cakupan v4_wali 403
+[lulus] API mutasi di luar cakupan v4_wali 403
+[lulus] API baca di luar cakupan v4_guru 403
+[lulus] API mutasi di luar cakupan v4_guru 403
+[lulus] API tanpa bearer 401
+[lulus] API Pendidikan di luar kelas/semester 403
+[lulus] API Pendidikan di luar kelas/semester 403
+[lulus] API penugasan dicabut baca v4_pembimbing
+[lulus] API penugasan dicabut tulis v4_pembimbing
+[lulus] API penugasan dicabut baca v4_murobi
+[lulus] API penugasan dicabut tulis v4_murobi
+[lulus] API penugasan dicabut baca v4_pendidikan
+[lulus] API penugasan dicabut tulis v4_pendidikan
+[lulus] API matriks v4_pembimbing 403
+[lulus] API matriks v4_murobi 403
+[lulus] API matriks v4_pengurus 403
+[lulus] API matriks v4_wali 403
+[lulus] API koreksi tanpa alasan 422
+[lulus] API pembimbing koreksi beralasan
+[lulus] API retry versi lama 409
+[lulus] API koreksi membatalkan verifikasi
+[lulus] API gate matriks usang 409
+[lulus] Web pembimbing formulir aman dari XSS
+[lulus] Web sikap CSRF salah 419
+[lulus] Web pembimbing menyerahkan sikap
+[lulus] Sikap pembimbing 375 px tanpa overflow
+[lulus] Sikap pembimbing teks 24 px tanpa overflow
+[lulus] Sikap pembimbing desktop tanpa overflow
+[lulus] Web murobi mengetahui
+[lulus] Web tombol diketahui tidak dapat diklik dua kali
+[lulus] API diketahui kedua kali 409
+[lulus] Web murobi koreksi beralasan
+[lulus] Sikap murobi 375 px tanpa overflow
+[lulus] Sikap murobi teks 24 px tanpa overflow
+[lulus] Sikap murobi desktop tanpa overflow
+[lulus] Web matriks dua mapel wajib dan santri
+[lulus] Web penghitung Belum dicatat terpisah
+[lulus] Web pengembalian tanpa alasan ditolak
+[lulus] Web pengembalian beralasan
+[lulus] Web gate menolak sikap belum diverifikasi
+[lulus] Matriks Pendidikan 375 px tanpa overflow
+[lulus] Matriks Pendidikan teks 24 px tanpa overflow
+[lulus] Matriks Pendidikan desktop tanpa overflow
+[lulus] Web verifikasi CSRF 419
+[lulus] Web pembimbing lain 403
+[lulus] Web murobi lain 403
+[lulus] Web pembimbing matriks 403
+[lulus] API Pendidikan verifikasi sikap
+[lulus] API retry verifikasi 409
+[lulus] Koreksi murobi pascaverifikasi memerlukan pemeriksaan ulang
+[lulus] API gate menolak pascakoreksi murobi
+
+===== fase3-transaksi.txt
+Audit log gagal disimpan.
+[lulus] Audit workflow gagal setelah audit sikap berhasil HTTP 503
+Audit log gagal disimpan.
+[lulus] Audit workflow gagal setelah audit komponen nilai berhasil HTTP 503
+Audit log gagal disimpan.
+[lulus] Audit verifikasi gagal menggulung status dan riwayat pemeriksaan HTTP 503
+[lulus] Sikap dan dua jenis riwayat tetap utuh setelah rollback akhir
+[lulus] Nilai, atribusi, status dan dua jenis riwayat tetap utuh
+[lulus] Matriks dan audit pertama ikut digulung; tidak ada audit sukses palsu
+[lulus] Perpindahan kelas dengan nilai asal menjadi penghalang finalisasi
+[lulus] Gate menolak kelas semester ambigu HTTP 422
+[lulus] Perpindahan kelas tidak mengubah identitas/kelas/nilai pengisi historis
+
+===== verifier-fase3.txt
+[lulus] Tabel v4_bahan
+[lulus] Tabel v4_bahan_riwayat
+[lulus] Migrasi 021 tercatat tepat sekali
+[lulus] Status bahan tidak yatim
+[lulus] Mapel bahan milik rencana yang sama
+[lulus] Riwayat bahan tidak yatim
+[lulus] Versi bahan mempunyai riwayat
+
+===== fase4-integrasi.txt
+[lulus] K1 bahan nilai tidak lengkap/belum diverifikasi HTTP 422
+[lulus] K1 nol PDF terbit/notifikasi nilai
+[lulus] K1 bahan sikap tidak lengkap/belum diverifikasi HTTP 422
+[lulus] K1 nol PDF terbit/notifikasi sikap
+[lulus] K1 bahan kehadiran tidak lengkap/belum diverifikasi HTTP 422
+[lulus] K1 nol PDF terbit/notifikasi kehadiran
+[lulus] Gate siap setelah sumber dipulihkan
+[lulus] Hash gambar tanda tangan berubah memblokir penerbitan HTTP 422
+[lulus] Aset tidak sah menghasilkan nol PDF/notifikasi baru
+Audit log gagal disimpan.
+[lulus] Kegagalan wajib audit_logs HTTP 503
+[lulus] Rollback bisnis, kode, outbox dan berkas audit_logs
+[lulus] Kegagalan wajib notifikasi_outbox HTTP 503
+[lulus] Rollback bisnis, kode, outbox dan berkas notifikasi_outbox
+[lulus] Kegagalan wajib v4_verifikasi HTTP 503
+[lulus] Rollback bisnis, kode, outbox dan berkas v4_verifikasi
+[lulus] Kegagalan filesystem parsial HTTP 503
+[lulus] Berkas parsial dibersihkan, nol dampak bisnis
+[lulus] Penerbitan admin tanpa alasan HTTP 422
+[lulus] Pratinjau usang ditolak HTTP 409
+[lulus] K2 satu penerbitan versi 1
+[lulus] K2 retry key sama replay aman
+[lulus] K2 klik ganda key berbeda versi usang HTTP 409
+[lulus] Key sama isi berbeda ditolak HTTP 409
+[lulus] K2 tepat satu snapshot/PDF/kode
+[lulus] K2 satu InApp per masing-masing dua wali berakun
+[lulus] K6 Push ON dua outbox; WhatsApp nol
+[lulus] Berkas kanonis rusak ditolak sebelum unduhan HTTP 503
+[lulus] K5 daftar hanya relasi aktif
+[lulus] K3 unduhan ulang dua wali/petugas hash identik
+[lulus] K5 akses silang detail HTTP 403
+[lulus] K5 akses silang PDF HTTP 403
+[lulus] K5 petugas=1 tidak memberi hak HTTP 403
+[lulus] K5 akses silang detail HTTP 403
+[lulus] K5 akses silang PDF HTTP 403
+[lulus] K5 petugas=1 tidak memberi hak HTTP 403
+[lulus] K5 akses silang detail HTTP 403
+[lulus] K5 akses silang PDF HTTP 403
+[lulus] K5 petugas=1 tidak memberi hak HTTP 403
+[lulus] K5 relasi dicabut detail HTTP 403
+[lulus] K5 relasi dicabut PDF HTTP 403
+[lulus] K5 daftar setelah pencabutan kosong
+[lulus] Rapor terbit mengunci koreksi nilai HTTP 409
+[lulus] Rapor terbit mengunci koreksi sikap HTTP 409
+[lulus] K6 payload antrean hanya generik dan penunjuk
+[lulus] K6 payload antrean hanya generik dan penunjuk
+Penerbitan kanonis dan akses sintetis selesai, bukan produksi.
+
+===== fase4-push.txt
+[lulus] Proteksi token sintetis siap
+[lulus] K6 Push OFF + WhatsApp OFF: tepat nol request mock provider meskipun outbox pending
+[lulus] Kegagalan provider sintetis menyimpan dua kegagalan retry
+[lulus] Retry baris yang sama sukses pada mock, tanpa duplikasi outbox
+[lulus] Worker ulang tidak mengirim baris Sent
+[lulus] K6 payload provider benar-benar hanya generik dan penunjuk
+[lulus] K6 payload provider benar-benar hanya generik dan penunjuk
+[lulus] K6 payload provider benar-benar hanya generik dan penunjuk
+[lulus] K6 payload provider benar-benar hanya generik dan penunjuk
+[lulus] Retry provider mempertahankan dua InApp dan dua outbox Push
+Tidak ada panggilan jaringan/provider nyata atau pengiriman push fisik dalam suite ini.
+
+===== fase4-pdf.txt
+PDF sintetis dirender dan diperiksa: 1 halaman; dua PNG tanda tangan, QR vektor, identitas penanda dan lima status hadir
+
+===== fase4-http.txt
+[lulus] Pratinjau tanpa penugasan v4_wali4a 403
+[lulus] Penerbitan tanpa penugasan v4_wali4a 403
+[lulus] Pratinjau tanpa penugasan v4_guru 403
+[lulus] Penerbitan tanpa penugasan v4_guru 403
+[lulus] Pratinjau tanpa penugasan v4_pengurus 403
+[lulus] Penerbitan tanpa penugasan v4_pengurus 403
+[lulus] Pratinjau Pendidikan dicabut 403
+[lulus] Penerbitan Pendidikan dicabut 403
+[lulus] API detail wali privat
+[lulus] API daftar wali lain kosong
+[lulus] API akses silang v4_wali4lain rapor/4 403
+[lulus] API akses silang v4_wali4lain rapor/4/pdf/1 403
+[lulus] API akses silang v4_wali4lain rapor/4/pdf/1?petugas=1 403
+[lulus] API akses silang v4_guru rapor/4 403
+[lulus] API akses silang v4_guru rapor/4/pdf/1 403
+[lulus] API akses silang v4_guru rapor/4/pdf/1?petugas=1 403
+[lulus] API akses silang v4_pengurus rapor/4 403
+[lulus] API akses silang v4_pengurus rapor/4/pdf/1 403
+[lulus] API akses silang v4_pengurus rapor/4/pdf/1?petugas=1 403
+[lulus] API tanpa bearer ditolak
+[lulus] API tanpa bearer ditolak
+[lulus] API PDF privat
+[lulus] API PDF privat
+[lulus] API PDF privat
+[lulus] K3 HTTP PDF berulang identik
+[lulus] K5 API pencabutan relasi langsung efektif
+[lulus] K5 API pencabutan relasi langsung efektif
+[lulus] Web wali snapshot terbit aman XSS
+[lulus] wali 375 px tanpa overflow
+[lulus] wali teks 24 px tanpa overflow
+[lulus] wali desktop tanpa overflow
+[lulus] Web wali lain detail/PDF 403
+[lulus] Web wali lain detail/PDF 403
+[lulus] Web relasi dicabut detail/PDF 403
+[lulus] Web relasi dicabut detail/PDF 403
+[lulus] Web tanpa akun wajib login detail/PDF
+[lulus] Web tanpa akun wajib login detail/PDF
+[lulus] Web Pendidikan pratinjau dan penggantian
+[lulus] pendidikan 375 px tanpa overflow
+[lulus] pendidikan teks 24 px tanpa overflow
+[lulus] pendidikan desktop tanpa overflow
+[lulus] Web publikasi CSRF 419
+[lulus] API pratinjau usang 409
+[lulus] QR fragment dipindahkan ke form dan dihapus dari URL
+[lulus] K4 kode sah hanya status/versi/tanggal
+[lulus] verifikasi 375 px tanpa overflow
+[lulus] verifikasi teks 24 px tanpa overflow
+[lulus] verifikasi desktop tanpa overflow
+[lulus] K3 PDF cocok melalui unggahan HTTP
+[lulus] K3 PDF tidak cocok melalui unggahan HTTP
+[lulus] Unggahan non-PDF ditolak 422
+[lulus] Unggahan melebihi 10 MB ditolak 422
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] Kode acak 404
+[lulus] K4 kode acak tanpa data pribadi
+[lulus] K4 rate limit 429 dan Retry-After
+[lulus] K4 batas 20 pemeriksaan per IP/menit tidak dapat dilewati kode berbeda
+[lulus] penanda 375 px tanpa overflow
+[lulus] penanda teks 24 px tanpa overflow
+[lulus] penanda desktop tanpa overflow
+[lulus] Web penanda khusus admin
+[lulus] Web mengonfirmasi versi pengganti 2
+[lulus] K2 penggantian web tepat satu versi baru dan InApp per wali
+[lulus] K7 hash PDF lama tidak berubah setelah penggantian web
+
+===== fase4-konkurensi.txt
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Enam penerbit same hasil ["200","200","200","200","200","200"]
+[lulus] K2 tepat satu versi/PDF baru dan dua InApp pada same
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Worker koneksi terpisah selesai
+[lulus] Enam penerbit different hasil ["200","409","409","409","409","409"]
+[lulus] K2 tepat satu versi/PDF baru dan dua InApp pada different
+[lulus] Penerbit mencapai penulisan PDF sambil memegang kunci sumber
+[lulus] Kehadiran bersamaan timeout 1205 sebelum commit, tidak lolos gate
+[lulus] Penerbit terkontrol commit satu versi
+[lulus] Crash sebelum commit: nol versi/outbox baru
+[lulus] Berkas crash privat tanpa referensi; tidak tersedia lewat unduhan
+[lulus] Pembersihan fixture orphan terarah setelah DB dikonfirmasi
+
+===== fase4-siklus.txt
+[lulus] K7 kode v1 setelah penggantian menunjukkan Diganti
+[lulus] K7 wali tidak dapat mengunduh versi Diganti HTTP 403
+[lulus] Penarikan tanpa alasan ditolak HTTP 422
+[lulus] K7 penarikan beralasan idempoten
+[lulus] K7 wali tidak dapat mengunduh versi Ditarik HTTP 403
+[lulus] K7 wali melihat riwayat status tanpa PDF/snapshot ditarik
+[lulus] K7 kode versi yang ditarik menyimpan status Ditarik
+[lulus] Pembukaan kembali beralasan membatalkan versi sah dan membuka koreksi
+[lulus] Koreksi setelah pembukaan wajib verifikasi ulang HTTP 422
+[lulus] Perubahan penanda khusus wajib alasan HTTP 422
+[lulus] Snapshot lama tetap identik setelah tempat rencana berubah
+[lulus] Versi baru terbit setelah pemeriksaan ulang
+[lulus] K7 PDF lama tetap identik setelah ganti, tarik, buka, koreksi dan ganti penanda
+[lulus] K7 seluruh operasi koreksi/ganti/tarik/buka mempunyai alasan dan kapasitas/pelaku/waktu
+[lulus] Kode lama v1 tetap Diganti setelah seluruh siklus
+[lulus] Push OFF selama seluruh penggantian tidak menambah outbox provider
+
+===== fase4-dokumen.txt
+[lulus] Dokumen uji 30 mapel dengan catatan panjang dirender tanpa mutasi penerbitan
+
+===== probe-audit-fase4.txt
+[lulus] Awal: PDF versi #4 cocok hash tersimpan
+[lulus] Awal: PDF versi #5 cocok hash tersimpan
+[lulus] Awal: PDF versi #6 cocok hash tersimpan
+[lulus] Awal: PDF versi #7 cocok hash tersimpan
+[lulus] Awal: PDF versi #8 cocok hash tersimpan
+[lulus] Awal: PDF versi #9 cocok hash tersimpan
+[lulus] Awal: PDF versi #10 cocok hash tersimpan
+[lulus] A0 Penerbit lambat mencapai tulis PDF sambil memegang transaksi
+[lulus] A Sumber 'phantom peserta baru santri' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'status pertemuan sumber' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'semester jadwal sumber' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'status pertemuan menjadi Batal' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'absensi santri ada' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'nilai santri' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'sikap santri' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'pemeriksaan bahan' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'penempatan kelas' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'penugasan Pendidikan pelaku' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'aset tanda tangan' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'rencana mapel/target' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Sumber 'phantom absensi belum dicatat' terkunci (1205) selama penerbitan; kode 1205
+[lulus] A Penerbit lambat commit satu versi (200 )
+[lulus] B Injeksi kode verifikasi → HTTP 503
+[lulus] B Injeksi kode verifikasi: versi/kode/operasi/outbox/audit/status/berkas PDF tidak berubah
+[lulus] B Injeksi outbox wali kedua (sesudah wali pertama sukses) → HTTP 503
+[lulus] B Injeksi outbox wali kedua (sesudah wali pertama sukses): versi/kode/operasi/outbox/audit/status/berkas PDF tidak berubah
+[lulus] B Injeksi operasi/idempotensi → HTTP 503
+[lulus] B Injeksi operasi/idempotensi: versi/kode/operasi/outbox/audit/status/berkas PDF tidak berubah
+Audit log gagal disimpan.
+[lulus] B Injeksi audit umum → HTTP 503
+[lulus] B Injeksi audit umum: versi/kode/operasi/outbox/audit/status/berkas PDF tidak berubah
+[lulus] B Injeksi pembatalan versi lama → HTTP 503
+[lulus] B Injeksi pembatalan versi lama: versi/kode/operasi/outbox/audit/status/berkas PDF tidak berubah
+[lulus] B Tulis parsial → 503
+[lulus] B Tulis parsial: berkas parsial dihapus, tidak ada perubahan DB
+[lulus] C strict: 2 konflik 1213 dicoba ulang → tepat satu versi/operasi/PDF
+[lulus] C strict: konflik 1213 terus-menerus → 409 tanpa dampak, berkas tiap percobaan dihapus
+[lulus] C off: 2 konflik 1213 dicoba ulang → tepat satu versi/operasi/PDF
+[lulus] C off: konflik 1213 terus-menerus → 409 tanpa dampak, berkas tiap percobaan dihapus
+[lulus] C Revisi usang 409 tanpa retry yang menimpa revisi
+[lulus] D commit sukses, jawaban false → 503 'ulangi dengan key yang sama'
+[lulus] D commit sukses, jawaban false: versi ter-commit tetap menunjuk berkas yang tidak dihapus
+[lulus] D commit sukses, jawaban false: PDF ter-commit terbaca dan hash cocok
+[lulus] D commit sukses, jawaban false: ulang key sama → replay tanpa versi baru
+[lulus] D commit sukses, koneksi hilang → 503 'ulangi dengan key yang sama'
+[lulus] D commit sukses, koneksi hilang: versi ter-commit tetap menunjuk berkas yang tidak dihapus
+[lulus] D commit sukses, koneksi hilang: PDF ter-commit terbaca dan hash cocok
+[lulus] D commit sukses, koneksi hilang: ulang key sama → replay tanpa versi baru
+[lulus] D commit gagal sungguhan → 503 'ulangi dengan key yang sama'
+[lulus] D commit gagal sungguhan: tidak ada versi dan berkas yatim dihapus
+[lulus] E Replay key sama setelah penugasan Pendidikan dicabut ditolak HTTP 403
+[lulus] E Pratinjau setelah penugasan dicabut ditolak HTTP 403
+[lulus] E Riwayat/cetak petugas setelah penugasan dicabut ditolak HTTP 403
+[lulus] E PDF petugas setelah penugasan dicabut ditolak HTTP 403
+[lulus] E Replay setelah status berubah mengembalikan metadata saat ini tanpa menerbitkan ulang
+[lulus] E Key sama isi berbeda ditolak HTTP 409
+[lulus] F Wali A berelasi aktif mengunduh versi sah
+[lulus] F Wali A tidak dapat mengunduh versi Diganti HTTP 403
+[lulus] F Wali lain ditolak pada detail ID langsung HTTP 403
+[lulus] F Wali lain ditolak pada PDF ID langsung HTTP 403
+[lulus] F ID rapor acak memberi penolakan yang sama HTTP 403
+[lulus] F Wali dengan flag petugas palsu ditolak HTTP 403
+[lulus] F Guru dengan flag petugas ditolak HTTP 403
+[lulus] F Relasi dicabut: detail ditolak HTTP 403
+[lulus] F Relasi dicabut: PDF ditolak HTTP 403
+[lulus] F Relasi dicabut: daftar kosong
+[lulus] F Akun wali nonaktif ditolak HTTP 403
+[lulus] F Wali melihat status semua versi, snapshot hanya versi sah
+[lulus] F Riwayat wali tanpa alasan/pelaku petugas
+[lulus] G Satu InApp per wali berakun aktif; tanpa akun dan wali lain nol
+[lulus] G Tidak ada WhatsApp untuk rapor
+[lulus] G Isi outbox generik dan penunjuk saja (InApp)
+[lulus] G Isi outbox generik dan penunjuk saja (InApp)
+[lulus] G Snapshot dan PDF versi #4 byte-identik setelah seluruh probe
+[lulus] G Snapshot dan PDF versi #5 byte-identik setelah seluruh probe
+[lulus] G Snapshot dan PDF versi #6 byte-identik setelah seluruh probe
+[lulus] G Snapshot dan PDF versi #7 byte-identik setelah seluruh probe
+[lulus] G Snapshot dan PDF versi #8 byte-identik setelah seluruh probe
+[lulus] G Snapshot dan PDF versi #9 byte-identik setelah seluruh probe
+[lulus] G Snapshot dan PDF versi #10 byte-identik setelah seluruh probe
+[lulus] G Status kode verifikasi selalu sama dengan status versi
+[lulus] H Rata-rata baru tampil bilangan bulat (84.6 → 85), internal dua desimal tetap di snapshot
+[lulus] H Snapshot lama tanpa kunci tampil tetap sama dengan PDF terbitnya
+[lulus] H Versi pengganti baru menyimpan rata-rata tampil bulat dalam snapshot
+Probe auditor Fase 4 selesai pada DB uji sintetis.
+
+===== verifier-fase1-struktur.txt
+[lulus] Tabel v4_penanda_tangan
+[lulus] Tabel v4_tanda_tangan_aset
+[lulus] Tabel v4_rencana
+[lulus] Tabel v4_rencana_mapel
+[lulus] Tabel v4_nilai
+[lulus] Tabel v4_nilai_riwayat
+[lulus] Tabel v4_sikap
+[lulus] Tabel v4_sikap_riwayat
+[lulus] Tabel v4_rapor
+[lulus] Tabel v4_rapor_versi
+[lulus] Tabel v4_verifikasi
+[lulus] Migrasi 020 tercatat sekali
+[lulus] Referensi baru v4_sikap.kelas_id tidak yatim
+[lulus] Referensi baru v4_sikap.diketahui_murobi_user_id tidak yatim
+[lulus] Referensi baru v4_sikap.pembimbing_user_id tidak yatim
+[lulus] Referensi baru v4_sikap.santri_id tidak yatim
+[lulus] Referensi baru v4_sikap.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana.created_by tidak yatim
+[lulus] Referensi baru v4_rencana.kelas_id tidak yatim
+[lulus] Referensi baru v4_rencana.pendidikan_aset_id tidak yatim
+[lulus] Referensi baru v4_rencana.pendidikan_penanda_id tidak yatim
+[lulus] Referensi baru v4_rencana.pimpinan_aset_id tidak yatim
+[lulus] Referensi baru v4_rencana.pimpinan_penanda_id tidak yatim
+[lulus] Referensi baru v4_rencana.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana.updated_by tidak yatim
+[lulus] Referensi baru v4_rencana_penanda_riwayat.actor_user_id tidak yatim
+[lulus] Referensi baru v4_rencana_penanda_riwayat.rencana_id tidak yatim
+[lulus] Referensi baru v4_bahan.actor_user_id tidak yatim
+[lulus] Referensi baru v4_bahan.rencana_id tidak yatim
+[lulus] Referensi baru v4_bahan.santri_id tidak yatim
+[lulus] Referensi baru v4_rapor.santri_id tidak yatim
+[lulus] Referensi baru v4_rapor.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.diterbitkan_oleh tidak yatim
+[lulus] Referensi baru v4_rapor_versi.pendidikan_aset_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.pimpinan_aset_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.rapor_id tidak yatim
+[lulus] Referensi baru v4_rapor_operasi.actor_user_id tidak yatim
+[lulus] Referensi baru v4_rapor_operasi.rapor_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.guru_mapel_assignment_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.mata_pelajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.rencana_id tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.activated_by tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.penanda_tangan_id tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.uploaded_by tidak yatim
+[lulus] Referensi baru v4_nilai.rencana_mapel_id tidak yatim
+[lulus] Referensi baru v4_nilai.pelaku_user_id tidak yatim
+[lulus] Referensi baru v4_nilai.santri_id tidak yatim
+[lulus] Referensi baru v4_nilai_riwayat.nilai_id tidak yatim
+[lulus] Referensi baru v4_nilai_riwayat.pelaku_user_id tidak yatim
+[lulus] Referensi baru v4_verifikasi.rapor_versi_id tidak yatim
+[lulus] Referensi baru v4_penanda_tangan.created_by tidak yatim
+[lulus] Referensi baru v4_penanda_tangan.updated_by tidak yatim
+[lulus] Referensi baru v4_sikap_riwayat.actor_user_id tidak yatim
+[lulus] Referensi baru v4_sikap_riwayat.sikap_id tidak yatim
+[lulus] Referensi baru v4_bahan_riwayat.bahan_id tidak yatim
+Jumlah referensi yatim V4: 0
+[belum diperiksa] Perbandingan baris V1–V3: berikan path manifest preflight.
+
+===== verifier-fase1-akhir.txt
+[lulus] Tabel v4_penanda_tangan
+[lulus] Tabel v4_tanda_tangan_aset
+[lulus] Tabel v4_rencana
+[lulus] Tabel v4_rencana_mapel
+[lulus] Tabel v4_nilai
+[lulus] Tabel v4_nilai_riwayat
+[lulus] Tabel v4_sikap
+[lulus] Tabel v4_sikap_riwayat
+[lulus] Tabel v4_rapor
+[lulus] Tabel v4_rapor_versi
+[lulus] Tabel v4_verifikasi
+[lulus] Migrasi 020 tercatat sekali
+[lulus] Referensi baru v4_sikap.kelas_id tidak yatim
+[lulus] Referensi baru v4_sikap.diketahui_murobi_user_id tidak yatim
+[lulus] Referensi baru v4_sikap.pembimbing_user_id tidak yatim
+[lulus] Referensi baru v4_sikap.santri_id tidak yatim
+[lulus] Referensi baru v4_sikap.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana.created_by tidak yatim
+[lulus] Referensi baru v4_rencana.kelas_id tidak yatim
+[lulus] Referensi baru v4_rencana.pendidikan_aset_id tidak yatim
+[lulus] Referensi baru v4_rencana.pendidikan_penanda_id tidak yatim
+[lulus] Referensi baru v4_rencana.pimpinan_aset_id tidak yatim
+[lulus] Referensi baru v4_rencana.pimpinan_penanda_id tidak yatim
+[lulus] Referensi baru v4_rencana.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana.updated_by tidak yatim
+[lulus] Referensi baru v4_rencana_penanda_riwayat.actor_user_id tidak yatim
+[lulus] Referensi baru v4_rencana_penanda_riwayat.rencana_id tidak yatim
+[lulus] Referensi baru v4_bahan.actor_user_id tidak yatim
+[lulus] Referensi baru v4_bahan.rencana_id tidak yatim
+[lulus] Referensi baru v4_bahan.santri_id tidak yatim
+[lulus] Referensi baru v4_rapor.santri_id tidak yatim
+[lulus] Referensi baru v4_rapor.tahun_ajaran_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.diterbitkan_oleh tidak yatim
+[lulus] Referensi baru v4_rapor_versi.pendidikan_aset_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.pimpinan_aset_id tidak yatim
+[lulus] Referensi baru v4_rapor_versi.rapor_id tidak yatim
+[lulus] Referensi baru v4_rapor_operasi.actor_user_id tidak yatim
+[lulus] Referensi baru v4_rapor_operasi.rapor_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.guru_mapel_assignment_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.mata_pelajaran_id tidak yatim
+[lulus] Referensi baru v4_rencana_mapel.rencana_id tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.activated_by tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.penanda_tangan_id tidak yatim
+[lulus] Referensi baru v4_tanda_tangan_aset.uploaded_by tidak yatim
+[lulus] Referensi baru v4_nilai.rencana_mapel_id tidak yatim
+[lulus] Referensi baru v4_nilai.pelaku_user_id tidak yatim
+[lulus] Referensi baru v4_nilai.santri_id tidak yatim
+[lulus] Referensi baru v4_nilai_riwayat.nilai_id tidak yatim
+[lulus] Referensi baru v4_nilai_riwayat.pelaku_user_id tidak yatim
+[lulus] Referensi baru v4_verifikasi.rapor_versi_id tidak yatim
+[lulus] Referensi baru v4_penanda_tangan.created_by tidak yatim
+[lulus] Referensi baru v4_penanda_tangan.updated_by tidak yatim
+[lulus] Referensi baru v4_sikap_riwayat.actor_user_id tidak yatim
+[lulus] Referensi baru v4_sikap_riwayat.sikap_id tidak yatim
+[lulus] Referensi baru v4_bahan_riwayat.bahan_id tidak yatim
+Jumlah referensi yatim V4: 0
+[lulus] Jumlah baris lama absensi_guru tetap 0
+[gagal] Jumlah baris lama absensi_santri tetap 0
+[lulus] Jumlah baris lama alumni tetap 0
+[lulus] Jumlah baris lama api_idempotency_keys tetap 0
+[gagal] Jumlah baris lama api_tokens tetap 0
+[lulus] Jumlah baris lama bendahara_bulanan_assignments tetap 0
+[lulus] Jumlah baris lama bendahara_psb_assignments tetap 0
+[lulus] Jumlah baris lama berita tetap 3
+[lulus] Jumlah baris lama download tetap 1
+[lulus] Jumlah baris lama galeri tetap 1
+[gagal] Jumlah baris lama guru tetap 25
+[gagal] Jumlah baris lama guru_mapel_assignments tetap 0
+[lulus] Jumlah baris lama izin_idempotency_keys tetap 0
+[lulus] Jumlah baris lama izin_keputusan tetap 0
+[lulus] Jumlah baris lama izin_keputusan_koreksi tetap 0
+[lulus] Jumlah baris lama izin_pengajuan tetap 0
+[lulus] Jumlah baris lama izin_riwayat_status tetap 0
+[lulus] Jumlah baris lama jadwal_jam_migration_report tetap 0
+[lulus] Jumlah baris lama jadwal_ngaji tetap 5
+[lulus] Jumlah baris lama kamar tetap 29
+[lulus] Jumlah baris lama kelas tetap 15
+[lulus] Jumlah baris lama mapel tetap 0
+[gagal] Jumlah baris lama mata_pelajaran tetap 0
+[lulus] Jumlah baris lama mengajar tetap 0
+[gagal] Jumlah baris lama murobi_assignments tetap 0
+[gagal] Jumlah baris lama notifikasi_outbox tetap 0
+[lulus] Jumlah baris lama notifikasi_pengaturan_audit tetap 0
+[gagal] Jumlah baris lama notifikasi_percobaan tetap 0
+[lulus] Jumlah baris lama notifikasi_worker_lock tetap 2
+[lulus] Jumlah baris lama panitia_psb_assignments tetap 0
+[lulus] Jumlah baris lama pelanggaran tetap 0
+[gagal] Jumlah baris lama pembimbing_assignments tetap 0
+[lulus] Jumlah baris lama pembimbing_kamar tetap 0
+[gagal] Jumlah baris lama pendidikan_assignments tetap 0
+[lulus] Jumlah baris lama pengaturan_notifikasi tetap 1
+[gagal] Jumlah baris lama pengurus tetap 0
+[gagal] Jumlah baris lama perangkat_push tetap 0
+[lulus] Jumlah baris lama perizinan tetap 0
+[gagal] Jumlah baris lama pertemuan_pengajian tetap 0
+[gagal] Jumlah baris lama pertemuan_peserta tetap 0
+[lulus] Jumlah baris lama plotting_kamar tetap 358
+[lulus] Jumlah baris lama plotting_kelas tetap 355
+[lulus] Jumlah baris lama psb_pembayaran tetap 103
+[lulus] Jumlah baris lama psb_pendaftar tetap 53
+[lulus] Jumlah baris lama roles tetap 4
+[lulus] Jumlah baris lama santri tetap 360
+[gagal] Jumlah baris lama santri_wali tetap 207
+[lulus] Jumlah baris lama tahun_ajaran tetap 4
+[gagal] Jumlah baris lama users tetap 1
+[gagal] Jumlah baris lama user_roles tetap 1
+[lulus] Jumlah baris lama v3_ambang tetap 0
+[lulus] Jumlah baris lama v3_idempotency tetap 0
+[lulus] Jumlah baris lama v3_katalog tetap 0
+[lulus] Jumlah baris lama v3_kategori tetap 0
+[lulus] Jumlah baris lama v3_konseling_kasus tetap 0
+[lulus] Jumlah baris lama v3_konseling_kasus_revisi tetap 0
+[lulus] Jumlah baris lama v3_konseling_sesi tetap 0
+[lulus] Jumlah baris lama v3_konseling_tautan tetap 0
+[lulus] Jumlah baris lama v3_lampiran tetap 0
+[lulus] Jumlah baris lama v3_murobi_catatan tetap 0
+[lulus] Jumlah baris lama v3_pelanggaran tetap 0
+[lulus] Jumlah baris lama v3_poin_agregat tetap 0
+[lulus] Jumlah baris lama v3_poin_ledger tetap 0
+[lulus] Jumlah baris lama v3_publikasi tetap 0
+[lulus] Jumlah baris lama v3_publikasi_outbox tetap 0
+[lulus] Jumlah baris lama v3_publikasi_pratinjau tetap 0
+[lulus] Jumlah baris lama v3_publikasi_riwayat tetap 0
+[lulus] Jumlah baris lama v3_rekomendasi tetap 0
+[gagal] Jumlah baris lama wali tetap 207
+
+===== verifier-fase3-akhir.txt
+[lulus] Tabel v4_bahan
+[lulus] Tabel v4_bahan_riwayat
+[lulus] Migrasi 021 tercatat tepat sekali
+[lulus] Status bahan tidak yatim
+[lulus] Mapel bahan milik rencana yang sama
+[lulus] Riwayat bahan tidak yatim
+[lulus] Versi bahan mempunyai riwayat
+
+===== verifier-fase4.txt
+[lulus] PDF dan hash wajib
+[lulus] Kode dan versi konsisten
+[lulus] Operasi penerbitan wajib
+[lulus] Versi current ada
+[lulus] Tidak ada dua versi sah
+[lulus] PDF versi #4 utuh
+[lulus] PDF versi #5 utuh
+[lulus] PDF versi #6 utuh
+[lulus] PDF versi #7 utuh
+[lulus] PDF versi #8 utuh
+[lulus] PDF versi #9 utuh
+[lulus] PDF versi #10 utuh
+[lulus] PDF versi #11 utuh
+[lulus] PDF versi #18 utuh
+[lulus] PDF versi #25 utuh
+[lulus] PDF versi #30 utuh
+[lulus] PDF versi #31 utuh
+[lulus] PDF versi #32 utuh
+[lulus] PDF versi #34 utuh
+[lulus] PDF versi #35 utuh
+[lulus] PDF versi #36 utuh
+

@@ -27,6 +27,7 @@ Pembagian peran ditetapkan per workstream agar implementator dan auditor tidak t
 | Koreksi UX formulir pembinaan V3 (permintaan 4 Oktober 2026) | Codex | Claude Code |
 | Redesain tampilan aplikasi mobile (keputusan 14 Oktober 2026; rencana `docs/redesain-tampilan/rencana.md`, branch `redesain-tampilan`; Fase 1–3 lulus audit dan digabung ke `main` 15 Oktober 2026) | Claude | Codex |
 | PRD V4 Fase 1–5 (keputusan Human Developer 16 Oktober 2026) | Codex | Claude Code |
+| Cleanup fitur lama V1–V4 tahap pertama (keputusan 19 Oktober 2026) | Codex | Audit independen berikutnya; penunjukan oleh Human Developer |
 | PRD V5–V6 | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
 
 Ketentuan:
@@ -88,3 +89,12 @@ Human Developer akan menggunakan format berikut untuk memicu pergantian agen AI.
 - Baseline remote web terverifikasi `831017ac37a09d4465e9f64131f212f040410420` (audit Fase 4), mobile `dfae26d69fe776492cfda274d10fddf79a1590f2` (`origin/main`). Tidak membuat worktree.
 - Bukti, manifest, panduan rilis/pemulihan, batas uji, dan handoff Fase 5 ada di `docs/phase-v4-5/` pada kedua repositori.
 - Tidak merge, deploy/migrasi produksi, mengirim rilis aplikasi, menjalankan Claude bersamaan, atau melanjutkan PRD berikutnya. Uji lokal/emulator bukan persetujuan produksi; smoke cPanel dan Push fisik tetap memerlukan pelaksanaan serta keputusan Human Developer.
+
+## Keputusan Human Developer — Cleanup V1–V4 tahap pertama (19 Oktober 2026)
+
+- Branch web `codex/cleanup-legacy-v1-v4` dari audit `0cf77fc`, bukan `main`; baseline mobile baca-saja `ee6621a`. Tidak membuat worktree.
+- Pensiunkan hanya antarmuka/jalur tulis yang terbukti duplikat. `admin/admin_izin.php` menjadi alamat kompatibilitas tanpa implementasi tulis atau sakelar darurat; mutasi lama ditolak, pembacaan melalui portal V2 tetap tersedia.
+- `admin/admin_pelanggaran.php`, menu, tabel dan data pelanggaran tetap arsip baca-saja sesuai PRD V3 §5.2a. Semua tabel/data historis, identitas santri/wali, relasi, akun, kolom ayah/ibu, penempatan, alumni, PSB/keuangannya, situs publik dan laporan tanpa pengganti tetap dipertahankan.
+- Tidak ada penghapusan tabel/baris/kolom, pembersihan data smoke, migrasi produksi, merge/deploy, perubahan mobile tanpa bukti kebutuhan, atau awal PRD V5. Dump lampiran bersifat pribadi rahasia; bukti cleanup hanya menggunakan fixture sintetis.
+- Direktori belum terlacak `docs/panduan-pengguna-v4/`, `docs/presentasi-al-hasan-v4/`, dan `output/` milik pekerjaan lain, tidak boleh disentuh atau dimasukkan commit cleanup.
+- Matriks, bukti, batas pengujian dan rollback ada di `docs/cleanup-legacy-v1-v4/`. Rekomendasi auditor berikutnya Claude Code, secara bergantian; ini bukan klaim audit independen sudah dilakukan. Penghapusan database historis memerlukan keputusan tahap terpisah.

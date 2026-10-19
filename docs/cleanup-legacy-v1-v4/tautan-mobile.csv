@@ -1,0 +1,54 @@
+pemanggil_mobile,literal_atau_template,status,keputusan
+src/api/client.ts:188,/auth/login,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:199,/auth/logout,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:203,/schedules/today,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:206,"/schedules${query({ date_from: dateFrom, date_to: dateTo, page, per_page: perPage })}",aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:210,/schedules/${id}${query({ date })},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:213,/schedules/${scheduleId}/meetings,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:217,/meetings/${id},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:219,/meetings/${meetingId}/attendance,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:222,"/reports${query({ ...filters, page, per_page: perPage })}",aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:224,/reports/filters,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:225,/reports/meetings/${id},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:227,/reports/print${query(filters)},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:237,/me/capabilities,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:240,"/izin/santri${query({ mode, q, page, per_page: perPage })}",aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:242,/izin/anak,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:244,"/izin/pengajuan${query({ ...params, per_page: params.per_page ?? 20 })}",aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:247,"/izin/antrean${query({ ...params, per_page: params.per_page ?? 20 })}",aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:250,"/izin/admin/monitor${query({ ...params, per_page: params.per_page ?? 20 })}",aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:253,/izin/pengajuan/${id}${query({ mode })},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:256,/izin/pengajuan/${id}/riwayat${query({ mode })},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:259,/izin/pengajuan/${id}/routing,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:272,/izin/pengajuan${query({ mode })},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:283,/izin/pengajuan/${id}/keputusan${query({ mode })},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:293,/izin/pengajuan/${id}/penetapan-murobi,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:304,/izin/pengajuan/${id}/pembatalan${query({ mode })},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:314,/izin/pengajuan/${id}/koreksi,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:332,/v3/publikasi/${id},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:333,/v3/publikasi/${id}/dibaca,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:354,"/izin/laporan${query({ ...filters, page, per_page: perPage })}",aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:358,/izin/laporan/filters${query({ ...filters })},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:362,/izin/laporan/cetak${query({ ...filters })},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/client.ts:370,/izin/laporan/csv${query({ ...filters })},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/pembinaan.ts:13,/v3/capabilities,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/pembinaan.ts:14,/v3/mobile/options?page=${page},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/pembinaan.ts:15,/v3/${kind === 'kasus' ? 'konseling/kasus' : kind}?page=${page},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/pembinaan.ts:16,/v3/publikasi?page=${page},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/pembinaan.ts:17,/v3/mobile/rekomendasi?page=${page},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/pembinaan.ts:18,/v3/konseling/kasus/${id},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/pembinaan.ts:19,/v3/pelanggaran/${id},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/pembinaan.ts:20,/v3/${path},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/rapor.ts:19,/v4/${path},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/rapor.ts:21,/v4/capabilities,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/rapor.ts:22,/v4/nilai/options?pengganti=${Number(substitute)},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/rapor.ts:23,/v4/nilai?rencana_mapel_id=${mapel}&santri_id=${student}&pengganti=${Number(substitute)},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/rapor.ts:25,/v4/sikap/options?mode=${mode},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/rapor.ts:26,/v4/sikap?rencana_id=${plan}&santri_id=${student}&mode=${mode},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/rapor.ts:28,/v4/verifikasi/options,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/rapor.ts:29,/v4/verifikasi?rencana_id=${plan}&santri_id=${student},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/rapor.ts:33,/v4/rapor,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/rapor.ts:34,/v4/rapor/${id},aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/api/types.ts:538,/izin/laporan*,aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/notifications/notification-context.tsx:161,/izin/[id],aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php
+src/notifications/notification-context.tsx:273,/izin/[id],aktif,API atau rute internal app tetap dipertahankan; tidak memanggil admin/admin_izin.php

@@ -195,6 +195,8 @@ final class RaporService
             if(!isset($v['snapshot']))continue;
             $s=$v['snapshot'];
             $s=array_intersect_key($s,array_flip(['santri','kelas','tahun','semester','mapel','rata_rata','rata_rata_tampil','sikap','kehadiran','catatan_umum','penanda','tempat','tanggal','version']));
+            // Audit Fase 5: rata-rata desimal hanya fallback snapshot lama tanpa nilai tampil (sama dengan PDF).
+            if(array_key_exists('rata_rata_tampil',$s))unset($s['rata_rata']);
             $s['santri']=array_intersect_key($s['santri'],array_flip(['nama_santri','nis']));
             $s['sikap']=array_intersect_key($s['sikap'],array_flip(['adab','kedisiplinan','tanggung_jawab','catatan']));
             $s['kehadiran']=array_intersect_key($s['kehadiran'],array_flip(['hitungan','jumlah_pertemuan','belum_dicatat']));

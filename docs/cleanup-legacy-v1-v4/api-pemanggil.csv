@@ -1,0 +1,110 @@
+sumber,metode_di_baris,literal_atau_regex,status,keputusan,pemanggil_atau_keluarga_path
+api/v1/index.php:44,GET,/,aktif,Kontrak V1–V4 dipertahankan,Metadata root API; tanpa autentikasi
+api/v1/index.php:48,POST,/auth/login,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:188
+api/v1/index.php:62,GET,/v3/publikasi,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:332; mobile:src/api/pembinaan.ts:16
+api/v1/index.php:63,GET,#^/v3/publikasi/sumber/(kasus|sesi|pelanggaran)/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:64,GET,#^/v3/publikasi/(\d+)/kelola$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:332; mobile:src/api/pembinaan.ts:16
+api/v1/index.php:65,GET,#^/v3/publikasi/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:332; mobile:src/api/pembinaan.ts:16
+api/v1/index.php:68,lihat cabang induk/aksi,/v3/publikasi/pratinjau,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:69,lihat cabang induk/aksi,/v3/publikasi/terbit,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:70,lihat cabang induk/aksi,#^/v3/publikasi/(\d+)/tarik$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:332; mobile:src/api/pembinaan.ts:16
+api/v1/index.php:71,lihat cabang induk/aksi,#^/v3/publikasi/(\d+)/dibaca$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:332; mobile:src/api/pembinaan.ts:16
+api/v1/index.php:77,GET,/v4/capabilities,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:21
+api/v1/index.php:80,GET,/v4/rapor,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:33; mobile:src/rapor/pdf.ts:8
+api/v1/index.php:81,GET,/v4/rapor/pratinjau,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:82,GET,#^/v4/rapor/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:33; mobile:src/rapor/pdf.ts:8
+api/v1/index.php:83,GET,#^/v4/rapor/(\d+)/pdf/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:33; mobile:src/rapor/pdf.ts:8
+api/v1/index.php:84,POST,/v4/rapor/pratinjau,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:85,POST,/v4/rapor,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:33; mobile:src/rapor/pdf.ts:8
+api/v1/index.php:86,POST,/v4/rencana/penanda,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:89,GET,/v4/sikap/options,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:25
+api/v1/index.php:90,GET,/v4/sikap,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:25
+api/v1/index.php:91,POST,/v4/sikap,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:25
+api/v1/index.php:92,POST,/v4/sikap/murobi,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:93,GET,/v4/verifikasi/options,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:28
+api/v1/index.php:94,GET,/v4/verifikasi,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:28
+api/v1/index.php:95,POST,/v4/verifikasi,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:28
+api/v1/index.php:97,GET,/v4/nilai/options,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:22
+api/v1/index.php:98,GET,/v4/nilai,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:22
+api/v1/index.php:99,POST,/v4/nilai,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/rapor.ts:22
+api/v1/index.php:100,POST,/v4/nilai/pengganti,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:102,GET,/v4/rencana/options,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:103,GET,/v4/rencana,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:104,POST,/v4/rencana,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:108,GET,/v3/capabilities,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:13
+api/v1/index.php:116,GET,/v3/laporan,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:120,GET,/v3/mobile/options,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:14
+api/v1/index.php:125,GET,/v3/mobile/rekomendasi,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:17
+api/v1/index.php:135,lihat cabang induk/aksi,/v3/katalog,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:137,GET,/v3/pelanggaran/options,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:140,GET,/v3/pelanggaran,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:19
+api/v1/index.php:143,POST,/v3/pelanggaran,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:19
+api/v1/index.php:150,GET,#^/v3/pelanggaran/(\d+)/riwayat$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:19
+api/v1/index.php:153,GET,#^/v3/pelanggaran/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:19
+api/v1/index.php:156,PATCH,#^/v3/pelanggaran/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:19
+api/v1/index.php:162,POST,#^/v3/pelanggaran/(\d+)/pembatalan$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:19
+api/v1/index.php:167,POST,#^/v3/pelanggaran/(\d+)/diketahui$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:19
+api/v1/index.php:172,GET,#^/v3/lampiran/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:180,GET,/v3/konseling/options,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:184,GET,/v3/konseling/kasus,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:18
+api/v1/index.php:187,POST,/v3/konseling/kasus,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:18
+api/v1/index.php:190,GET,#^/v3/konseling/kasus/(\d+)/timeline$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:18
+api/v1/index.php:193,GET,#^/v3/konseling/kasus/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:18
+api/v1/index.php:196,PATCH,#^/v3/konseling/kasus/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:18
+api/v1/index.php:199,POST,#^/v3/konseling/kasus/(\d+)/status$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:18
+api/v1/index.php:202,POST,#^/v3/konseling/kasus/(\d+)/tautan$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:18
+api/v1/index.php:205,POST,#^/v3/konseling/kasus/(\d+)/sesi$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:18
+api/v1/index.php:208,POST,#^/v3/konseling/kasus/(\d+)/diketahui$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/pembinaan.ts:18
+api/v1/index.php:211,POST,#^/v3/konseling/sesi/(\d+)/status$#,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:214,POST,#^/v3/konseling/sesi/(\d+)/diketahui$#,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:217,PATCH,#^/v3/konseling/sesi/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:221,GET,/profile,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:192
+api/v1/index.php:224,POST,/auth/logout,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:199
+api/v1/index.php:238,GET,/me/capabilities,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:237
+api/v1/index.php:245,GET,/izin/santri,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:240
+api/v1/index.php:248,GET,/izin/anak,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:242
+api/v1/index.php:251,GET,/izin/filters,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:254,GET,/izin/antrean,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:247
+api/v1/index.php:257,GET,/izin/admin/monitor,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:250
+api/v1/index.php:260,GET,/izin/pengajuan,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:244
+api/v1/index.php:263,POST,/izin/pengajuan,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:244
+api/v1/index.php:267,GET,#^/izin/pengajuan/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:244
+api/v1/index.php:270,GET,#^/izin/pengajuan/(\d+)/riwayat$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:244
+api/v1/index.php:273,GET,#^/izin/pengajuan/(\d+)/routing$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:244
+api/v1/index.php:276,POST,#^/izin/pengajuan/(\d+)/penetapan-murobi$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:244
+api/v1/index.php:280,POST,#^/izin/pengajuan/(\d+)/keputusan$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:244
+api/v1/index.php:284,POST,#^/izin/pengajuan/(\d+)/pembatalan$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:244
+api/v1/index.php:288,POST,#^/izin/pengajuan/(\d+)/koreksi$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:244
+api/v1/index.php:301,GET,/izin/laporan,aktif,Kontrak V1–V4 dipertahankan,web:app/Report/IzinReportService.php:17; mobile:src/api/client.ts:354; mobile:src/api/types.ts:538; mobile:src/app/(app)/(home)/index.tsx:136; mobile:src/app/(app)/(izin)/perizinan.tsx:150; mobile:src/app/izin/laporan.tsx:37; mobile:src/report/izin-report-document.ts:14
+api/v1/index.php:304,GET,/izin/laporan/filters,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:358
+api/v1/index.php:307,GET,/izin/laporan/cetak,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:362; mobile:src/report/izin-report-document.ts:14
+api/v1/index.php:312,GET,/izin/laporan/csv,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:370; mobile:src/report/izin-report-document.ts:14
+api/v1/index.php:318,GET,/izin/laporan/explain,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:331,GET,/notifikasi,aktif,Kontrak V1–V4 dipertahankan,web:admin/admin_notifikasi.php:107; web:app/Ui/Navigation.php:193; web:app/V4/VerifikasiService.php:81; web:bin/notifikasi_worker.php:11; web:bin/v2_phase5_cron_check.php:220; web:portal/notifikasi.php:45; mobile:src/api/client.ts:329; mobile:src/app/(app)/(profil)/profil.tsx:135; mobile:src/app/notifikasi/index.tsx:98; mobile:src/components/notification-bell.tsx:24
+api/v1/index.php:334,GET,/notifikasi/belum-dibaca,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:334
+api/v1/index.php:337,POST,/notifikasi/dibaca-semua,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:340
+api/v1/index.php:342,GET,/notifikasi/perangkat,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:373; mobile:src/app/(app)/(profil)/profil.tsx:135; mobile:src/app/notifikasi/index.tsx:122
+api/v1/index.php:345,POST,/notifikasi/perangkat,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:373; mobile:src/app/(app)/(profil)/profil.tsx:135; mobile:src/app/notifikasi/index.tsx:122
+api/v1/index.php:348,POST,/notifikasi/perangkat/pencabutan,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:384
+api/v1/index.php:351,POST,#^/notifikasi/perangkat/(\d+)/push$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:373; mobile:src/app/(app)/(profil)/profil.tsx:135; mobile:src/app/notifikasi/index.tsx:122
+api/v1/index.php:356,GET,/notifikasi/admin/status,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:359,GET,/notifikasi/admin/kegagalan,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:362,GET,/notifikasi/admin/audit,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:365,POST,/notifikasi/admin/pemeriksaan,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:368,POST,/notifikasi/admin/sakelar,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:371,POST,/notifikasi/admin/pesan-uji,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:374,POST,/notifikasi/admin/worker,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:377,POST,#^/notifikasi/admin/kegagalan/(\d+)/coba-ulang$#,aktif,Kontrak V1–V4 dipertahankan,Tidak ditemukan referensi statis literal; akses URL langsung/dinamis belum disangkal
+api/v1/index.php:385,GET,#^/notifikasi/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,web:admin/admin_notifikasi.php:107; web:app/Ui/Navigation.php:193; web:app/V4/VerifikasiService.php:81; web:bin/notifikasi_worker.php:11; web:bin/v2_phase5_cron_check.php:220; web:portal/notifikasi.php:45; mobile:src/api/client.ts:329; mobile:src/app/(app)/(profil)/profil.tsx:135; mobile:src/app/notifikasi/index.tsx:98; mobile:src/components/notification-bell.tsx:24
+api/v1/index.php:388,POST,#^/notifikasi/(\d+)/dibaca$#,aktif,Kontrak V1–V4 dipertahankan,web:admin/admin_notifikasi.php:107; web:app/Ui/Navigation.php:193; web:app/V4/VerifikasiService.php:81; web:bin/notifikasi_worker.php:11; web:bin/v2_phase5_cron_check.php:220; web:portal/notifikasi.php:45; mobile:src/api/client.ts:329; mobile:src/app/(app)/(profil)/profil.tsx:135; mobile:src/app/notifikasi/index.tsx:98; mobile:src/components/notification-bell.tsx:24
+api/v1/index.php:395,GET,/schedules/today,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:203
+api/v1/index.php:398,GET,/schedules,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:203; mobile:src/app/(app)/(home)/index.tsx:113; mobile:src/components/app-tabs.web.tsx:37
+api/v1/index.php:401,GET,/meetings,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:213
+api/v1/index.php:404,GET,/reports,aktif,Kontrak V1–V4 dipertahankan,web:app/Report/PrintRenderer.php:23; web:bin/phase3_preflight.php:11; mobile:src/api/client.ts:222; mobile:src/app/(app)/(home)/index.tsx:127; mobile:src/app/_layout.tsx:54; mobile:src/components/app-tabs.tsx:29
+api/v1/index.php:407,GET,/reports/filters,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:224
+api/v1/index.php:410,GET,/reports/print,aktif,Kontrak V1–V4 dipertahankan,web:app/Report/PrintRenderer.php:23; mobile:src/api/client.ts:227
+api/v1/index.php:415,GET,#^/reports/meetings/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:225
+api/v1/index.php:418,GET,#^/schedules/(\d+)$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:203; mobile:src/app/(app)/(home)/index.tsx:113; mobile:src/components/app-tabs.web.tsx:37
+api/v1/index.php:421,POST,#^/schedules/(\d+)/meetings$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:203; mobile:src/app/(app)/(home)/index.tsx:113; mobile:src/components/app-tabs.web.tsx:37
+api/v1/index.php:425,GET,#^/meetings/(\d+)(?:/attendance)?$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:213
+api/v1/index.php:428,PUT,#^/meetings/(\d+)/attendance$#,aktif,Kontrak V1–V4 dipertahankan,mobile:src/api/client.ts:213

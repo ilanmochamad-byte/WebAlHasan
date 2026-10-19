@@ -419,6 +419,23 @@ penerimaan, hasil pengujian, dan risiko: **`docs/fondasi-penugasan-v3-v6/`**.
 > `feat/fondasi-penugasan-v3-v6`, **menunggu audit Codex**. Belum di-merge,
 > belum dirilis, dan tidak dinyatakan siap produksi.
 
+## 6d. Cleanup antarmuka lama — keputusan 19 Oktober 2026
+
+Tahap pertama cleanup V1–V4 menutup permanen implementasi tulis di
+`admin/admin_izin.php`. Alamat itu tetap mengalihkan GET/HEAD daftar/detail ke
+portal V2; POST/metode lain dan aksi GET `status`/`hapus` ditolak `410` sesudah
+autentikasi/otorisasi admin. Tidak meneruskan mutasi atau menambahkan jalur tulis
+kedua. `IZIN_LEGACY_ENABLED` tidak lagi digunakan, termasuk bila konfigurasi
+lama berisi `true`. Ini menggantikan prosedur darurat membuka modul lama pada
+dokumentasi Fase 2 historis; kode lama tetap dapat ditelusuri di Git.
+
+Tabel `perizinan`, ID, seluruh nilai lama dan riwayat V2 tetap dipertahankan;
+tidak ada migrasi atau penghapusan data pada paket ini. Riwayat termigrasi dapat
+dibaca dengan filter **Data warisan** di portal. Sebelum rilis, verifier V2
+tetap diperlukan untuk menemukan baris lama yang mungkin bercabang setelah
+migrasi; snapshot/dump bukan bukti penggunaan jalur darurat. Bukti dan batas
+cleanup ada di `docs/cleanup-legacy-v1-v4/`. Paket ini bukan awal PRD V5/V6.
+
 ## 7. Metrik Keberhasilan
 
 - 100% pengajuan baru memiliki pengurus pengaju, santri, rentang tanggal, status, routing, serta audit yang valid.
