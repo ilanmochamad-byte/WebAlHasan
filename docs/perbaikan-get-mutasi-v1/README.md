@@ -1,6 +1,6 @@
 # Perbaikan keamanan mutasi V1 lewat GET (19 Oktober 2026)
 
-Status: **implementasi selesai, menunggu audit Codex.** Belum di-merge, belum dideploy, tanpa migrasi.
+Status: **lulus audit independen Codex pada 20 Oktober 2026, tanpa koreksi kode aplikasi.** Belum di-merge, belum dideploy, tanpa migrasi produksi. Laporan, temuan di luar cakupan, bukti dan batas audit: [AUDIT-CODEX.md](AUDIT-CODEX.md).
 
 ## Keputusan Human Developer
 
@@ -52,10 +52,12 @@ Yang dibuktikan suite HTTP:
 3. Unggah galeri/download/berita dan input manual PSB masih memakai SQL interpolasi dan nama berkas dari klien (sudah POST + CSRF). Bukan GET-mutasi; memerlukan tahap terpisah.
 4. Halaman V1 menampilkan judul/nama berkas tanpa `htmlspecialchars` (XSS tersimpan oleh admin). Tidak diubah.
 
-## Belum dijalankan
+## Belum dijalankan oleh implementator
 
 - Browser nyata (klik tombol, dialog `confirm()`, tata letak `btn-group`). Hanya HTML hasil render yang diperiksa lewat HTTP.
 - Regresi V1–V4 integrasi/konkurensi/browser/PDF lain, mobile (tidak ada perubahan mobile), smoke cPanel, produksi.
+
+Audit Codex kemudian menjalankan klik browser Chromium (32/0), probe independen tambahan (84/0), mengulang HTTP (89/0), preservasi (156/0), regresi cleanup (127/0), serta 20 suite statis dan lint 63 berkas admin. Browser menguji tombol pada 1440/375 dan alur mutasi desktop; bukan klaim audit visual seluruh halaman. Lihat `AUDIT-CODEX.md` untuk temuan folder gambar berita lama dan batas bukti penghapusan aset.
 
 ## Rollback
 
