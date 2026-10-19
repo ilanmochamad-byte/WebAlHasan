@@ -27,7 +27,7 @@ Pembagian peran ditetapkan per workstream agar implementator dan auditor tidak t
 | Koreksi UX formulir pembinaan V3 (permintaan 4 Oktober 2026) | Codex | Claude Code |
 | Redesain tampilan aplikasi mobile (keputusan 14 Oktober 2026; rencana `docs/redesain-tampilan/rencana.md`, branch `redesain-tampilan`; Fase 1–3 lulus audit dan digabung ke `main` 15 Oktober 2026) | Claude | Codex |
 | PRD V4 Fase 1–5 (keputusan Human Developer 16 Oktober 2026) | Codex | Claude Code |
-| Cleanup fitur lama V1–V4 tahap pertama (keputusan 19 Oktober 2026) | Codex | Audit independen berikutnya; penunjukan oleh Human Developer |
+| Cleanup fitur lama V1–V4 tahap pertama (keputusan 19 Oktober 2026; lulus audit Claude Code 19 Oktober 2026, `docs/cleanup-legacy-v1-v4/AUDIT-CLAUDE.md`) | Codex | Claude Code |
 | PRD V5–V6 | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
 
 Ketentuan:
@@ -98,3 +98,4 @@ Human Developer akan menggunakan format berikut untuk memicu pergantian agen AI.
 - Tidak ada penghapusan tabel/baris/kolom, pembersihan data smoke, migrasi produksi, merge/deploy, perubahan mobile tanpa bukti kebutuhan, atau awal PRD V5. Dump lampiran bersifat pribadi rahasia; bukti cleanup hanya menggunakan fixture sintetis.
 - Direktori belum terlacak `docs/panduan-pengguna-v4/`, `docs/presentasi-al-hasan-v4/`, dan `output/` milik pekerjaan lain, tidak boleh disentuh atau dimasukkan commit cleanup.
 - Matriks, bukti, batas pengujian dan rollback ada di `docs/cleanup-legacy-v1-v4/`. Rekomendasi auditor berikutnya Claude Code, secara bergantian; ini bukan klaim audit independen sudah dilakukan. Penghapusan database historis memerlukan keputusan tahap terpisah.
+- Audit independen Claude Code (19 Oktober 2026) atas penunjukan Human Developer: **lulus tanpa koreksi kode**, branch `claude/audit-cleanup-legacy-v1-v4` dari `origin/main` `b807165`. Temuan nonblokir dan risiko PSB GET-hapus/injeksi `admin/hapus_siswa.php` dicatat di `docs/cleanup-legacy-v1-v4/AUDIT-CLAUDE.md`; perbaikannya memerlukan keputusan tahap terpisah. Merge bukan izin deploy.
