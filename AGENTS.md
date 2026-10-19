@@ -28,6 +28,7 @@ Pembagian peran ditetapkan per workstream agar implementator dan auditor tidak t
 | Redesain tampilan aplikasi mobile (keputusan 14 Oktober 2026; rencana `docs/redesain-tampilan/rencana.md`, branch `redesain-tampilan`; Fase 1–3 lulus audit dan digabung ke `main` 15 Oktober 2026) | Claude | Codex |
 | PRD V4 Fase 1–5 (keputusan Human Developer 16 Oktober 2026) | Codex | Claude Code |
 | Cleanup fitur lama V1–V4 tahap pertama (keputusan 19 Oktober 2026; lulus audit Claude Code 19 Oktober 2026, `docs/cleanup-legacy-v1-v4/AUDIT-CLAUDE.md`) | Codex | Claude Code |
+| Perbaikan keamanan mutasi V1 lewat GET (keputusan 19 Oktober 2026; branch `claude/fix-get-mutasi-v1`, `docs/perbaikan-get-mutasi-v1/`) | Claude | Codex |
 | PRD V5–V6 | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
 
 Ketentuan:
@@ -99,3 +100,9 @@ Human Developer akan menggunakan format berikut untuk memicu pergantian agen AI.
 - Direktori belum terlacak `docs/panduan-pengguna-v4/`, `docs/presentasi-al-hasan-v4/`, dan `output/` milik pekerjaan lain, tidak boleh disentuh atau dimasukkan commit cleanup.
 - Matriks, bukti, batas pengujian dan rollback ada di `docs/cleanup-legacy-v1-v4/`. Rekomendasi auditor berikutnya Claude Code, secara bergantian; ini bukan klaim audit independen sudah dilakukan. Penghapusan database historis memerlukan keputusan tahap terpisah.
 - Audit independen Claude Code (19 Oktober 2026) atas penunjukan Human Developer: **lulus tanpa koreksi kode**, branch `claude/audit-cleanup-legacy-v1-v4` dari `origin/main` `b807165`. Temuan nonblokir dan risiko PSB GET-hapus/injeksi `admin/hapus_siswa.php` dicatat di `docs/cleanup-legacy-v1-v4/AUDIT-CLAUDE.md`; perbaikannya memerlukan keputusan tahap terpisah. Merge bukan izin deploy.
+
+## Keputusan Human Developer — Perbaikan keamanan mutasi V1 lewat GET (19 Oktober 2026)
+
+- Tindak lanjut risiko R-1 audit cleanup. Implementator Claude, auditor Codex. Branch `claude/fix-get-mutasi-v1` dari `origin/main` `6bec08e`, tanpa worktree.
+- Cakupan hanya mutasi: `hapus_siswa.php`, `proses_psb_admin.php`, `admin_pembayaran_psb.php`, `proses_berita.php` (hapus), `admin_galeri.php`, `admin_download.php` dipindah ke POST + CSRF dengan cast int/prepared statement; GET bermutasi → 405; nama berkas yang dihapus diambil dari DB dengan `basename()`. Pemanggil diganti formulir POST. Fungsi bisnis PSB/konten publik, tabel dan data tidak berubah.
+- Injeksi baca-saja filter GET `admin_pembayaran_psb.php` di luar cakupan (temuan). Tidak merge/deploy/migrasi produksi, tidak mengubah mobile. Bukti, temuan, batas uji dan handoff di `docs/perbaikan-get-mutasi-v1/`.

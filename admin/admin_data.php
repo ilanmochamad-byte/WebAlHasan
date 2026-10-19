@@ -232,20 +232,44 @@ if(isset($_POST['tambah_manual'])){
                                             </button>
 
                                             <?php if($d['status'] == 'Baru' || $d['status'] == 'Cadangan'){ ?>
-                                                <a href="proses_psb_admin.php?act=status&id=<?php echo $d['id']; ?>&val=Diterima" class="btn btn-success" title="Terima Santri"><i class="fas fa-check"></i></a>
-                                                <a href="proses_psb_admin.php?act=status&id=<?php echo $d['id']; ?>&val=Ditolak" class="btn btn-danger" onclick="return confirm('Yakin ingin menolak pendaftar ini?')"><i class="fas fa-times"></i></a>
+                                                <button type="submit" form="formStatusTerima<?php echo (int) $d['id']; ?>" class="btn btn-success" title="Terima Santri"><i class="fas fa-check"></i></button>
+                                                <button type="submit" form="formStatusTolak<?php echo (int) $d['id']; ?>" class="btn btn-danger"><i class="fas fa-times"></i></button>
                                             <?php } ?>
                                         </div>
 
+                                        <?php if($d['status'] == 'Baru' || $d['status'] == 'Cadangan'){ ?>
+                                            <form id="formStatusTerima<?php echo (int) $d['id']; ?>" method="post" action="proses_psb_admin.php" class="d-none">
+                                                <?= \App\Http\Csrf::input() ?>
+                                                <input type="hidden" name="act" value="status">
+                                                <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
+                                                <input type="hidden" name="val" value="Diterima">
+                                            </form>
+                                            <form id="formStatusTolak<?php echo (int) $d['id']; ?>" method="post" action="proses_psb_admin.php" class="d-none" onsubmit="return confirm('Yakin ingin menolak pendaftar ini?')">
+                                                <?= \App\Http\Csrf::input() ?>
+                                                <input type="hidden" name="act" value="status">
+                                                <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
+                                                <input type="hidden" name="val" value="Ditolak">
+                                            </form>
+                                        <?php } ?>
+
                                         <?php if($d['status'] == 'Diterima'){ ?>
-                                            <a href="proses_psb_admin.php?act=migrasi&id=<?php echo $d['id']; ?>" class="btn btn-primary btn-sm w-100 fw-bold mb-1" onclick="return confirm('Ini akan memindahkan data santri ke Master Data secara otomatis. Lanjutkan?')">
-                                                <i class="fas fa-share-square me-1"></i> Migrasi Master
-                                            </a>
+                                            <form method="post" action="proses_psb_admin.php" class="m-0" onsubmit="return confirm('Ini akan memindahkan data santri ke Master Data secara otomatis. Lanjutkan?')">
+                                                <?= \App\Http\Csrf::input() ?>
+                                                <input type="hidden" name="act" value="migrasi">
+                                                <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
+                                                <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold mb-1">
+                                                    <i class="fas fa-share-square me-1"></i> Migrasi Master
+                                                </button>
+                                            </form>
                                         <?php } ?>
 
                                         <div class="mt-1 d-flex gap-1 justify-content-center">
                                             <a href="../cetak_bukti.php?noreg=<?php echo $d['no_pendaftaran']; ?>" target="_blank" class="btn btn-outline-secondary btn-sm w-50" title="Cetak Bukti"><i class="fas fa-print"></i> Cetak</a>
-                                            <a href="hapus_siswa.php?id=<?php echo $d['id']; ?>" class="btn btn-outline-danger btn-sm w-50" onclick="return confirm('Hapus data pendaftaran ini permanen?')"><i class="fas fa-trash"></i> Hapus</a>
+                                            <form method="post" action="hapus_siswa.php" class="w-50 m-0" onsubmit="return confirm('Hapus data pendaftaran ini permanen?')">
+                                                <?= \App\Http\Csrf::input() ?>
+                                                <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm w-100"><i class="fas fa-trash"></i> Hapus</button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>

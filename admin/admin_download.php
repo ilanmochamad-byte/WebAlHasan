@@ -16,12 +16,23 @@ if(isset($_POST['upload_file'])){
     }
 }
 
-// Proses Hapus
+// Proses Hapus (hanya POST; nama berkas diambil dari baris download, bukan dari permintaan)
 if(isset($_GET['hapus'])){
-    $id = $_GET['hapus'];
-    $file = $_GET['file'];
-    unlink('file_download/'.$file);
-    mysqli_query($koneksi, "DELETE FROM download WHERE id='$id'");
+    admin_require_post();
+}
+if(isset($_POST['hapus'])){
+    $id = (int) $_POST['hapus'];
+    $stmt = mysqli_prepare($koneksi, "SELECT nama_file FROM download WHERE id=?");
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+    mysqli_stmt_execute($stmt);
+    $row = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+    $nama_berkas = basename((string) ($row['nama_file'] ?? ''));
+    if($nama_berkas !== '' && is_file('file_download/'.$nama_berkas)){
+        unlink('file_download/'.$nama_berkas);
+    }
+    $stmt = mysqli_prepare($koneksi, "DELETE FROM download WHERE id=?");
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+    mysqli_stmt_execute($stmt);
     echo "<script>window.location='admin_download.php';</script>";
 }
 ?>
@@ -96,7 +107,11 @@ if(isset($_GET['hapus'])){
                                         <a href="file_download/<?php echo $d['nama_file']; ?>" target="_blank" class="btn btn-sm btn-info text-white">Download</a>
                                     </td>
                                     <td>
-                                        <a href="admin_download.php?hapus=<?php echo $d['id']; ?>&file=<?php echo $d['nama_file']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Hapus?')"><i class="fas fa-trash"></i></a>
+                                        <form method="post" action="admin_download.php" class="m-0" onsubmit="return confirm('Hapus?')">
+                                            <?= \App\Http\Csrf::input() ?>
+                                            <input type="hidden" name="hapus" value="<?php echo (int) $d['id']; ?>">
+                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                        </form>
                                     </td>
                                 </tr>
                                 <?php } ?>
