@@ -303,20 +303,25 @@ $assert(
     'Modul izin lama dialihkan secara kompatibel dengan 302'
 );
 $assert(
-    str_contains($legacyModule, 'IZIN_LEGACY_ENABLED') && str_contains($legacyModule, "\$_GET['legacy'] === '1'"),
-    'Modul lama hanya dapat dibuka lewat feature flag eksplisit untuk pemulihan darurat'
+    !str_contains($legacyModule, 'Env::bool') && !str_contains($legacyModule, "\$_GET['legacy']"),
+    'Keputusan cleanup 19 Oktober 2026: flag darurat tidak membuka implementasi lama'
 );
 $assert(
-    str_contains($legacyModule, 'INSERT INTO perizinan') && str_contains($legacyModule, 'SELECT p.*, s.nama_santri FROM perizinan'),
-    'Kode modul lama tetap utuh di bawah blok pengalihan (tidak dihapus)'
+    !preg_match('/\b(INSERT\s+INTO|UPDATE|DELETE\s+FROM)\s+perizinan\b/i', $legacyModule),
+    'Implementasi tulis perizinan lama dipensiunkan; data tetap dipertahankan'
+);
+$assert(
+    str_contains($legacyModule, 'http_response_code(410)') && str_contains($legacyModule, "\$_GET['hapus']")
+    && str_contains($legacyModule, "\$_GET['status']"),
+    'Permintaan mutasi lama ditolak secara eksplisit tanpa diteruskan'
 );
 $assert(
     !preg_match('/\bDROP\s+TABLE\b|\bTRUNCATE\b/i', $legacyModule),
     'Pengarsipan tidak menghapus data perizinan lama'
 );
 $assert(
-    str_contains($source('.env.example'), 'IZIN_LEGACY_ENABLED=false'),
-    'Feature flag modul lama terdokumentasi dan mati secara bawaan'
+    !str_contains($source('.env.example'), 'IZIN_LEGACY_ENABLED=false'),
+    'Pengaturan untuk membuka penulisan lama sudah dipensiunkan'
 );
 
 $apiRouter = $source('api/v1/index.php');

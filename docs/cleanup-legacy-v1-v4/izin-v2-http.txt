@@ -1,0 +1,36 @@
+[lulus] WEB-1 Anonim diarahkan ke halaman masuk (302)
+[lulus] WEB-2 Halaman buat pengajuan tertutup bagi anonim
+[lulus] WEB-3 Pengurus masuk dan diarahkan ke portal
+[lulus] WEB-4 Pengurus dapat membuka /portal/index.php
+[lulus] WEB-4 Pengurus dapat membuka /portal/izin.php
+[lulus] WEB-4 Pengurus dapat membuka /portal/izin_antrean.php
+[lulus] WEB-4 Pengurus dapat membuka /portal/izin_buat.php
+[lulus] WEB-5 Pengurus ditolak 403 pada /admin/admin_dashboard.php [403]
+[lulus] WEB-5 Pengurus ditolak 403 pada /admin/admin_pembimbing.php [403]
+[lulus] WEB-6 POST tanpa token CSRF ditolak 419 [419]
+[lulus] WEB-7 Pengajuan tersimpan dan dialihkan ke detail (303) [303]
+[lulus] WEB-8 ID pengajuan baru terbaca dari redirect
+[lulus] WEB-9 Pengiriman ulang tetap dialihkan tanpa galat
+[lulus] WEB-10 Pengiriman ulang dengan kunci sama tidak menambah pengajuan
+[lulus] WEB-11 Tanggal kembali sebelum tanggal izin ditolak 422 lewat HTTP [422]
+[lulus] WEB-12 Pengajuan tumpang tindih ditolak 409 lewat HTTP [409]
+[lulus] WEB-13 Murobi lain menerima 403 pada detail pengajuan bukan miliknya [403]
+[lulus] WEB-14 Murobi yang ditugaskan melihat panel keputusan
+[lulus] WEB-15 Pengajuan muncul pada antrean murobi
+[lulus] WEB-16 Keputusan murobi tersimpan dan dialihkan (303) [303]
+[lulus] WEB-17 Keputusan kedua ditolak 409 lewat HTTP [409]
+[lulus] WEB-18a Admin mendarat di beranda tunggal
+[lulus] WEB-18b Panel administrasi tetap dapat dibuka admin dari beranda
+[lulus] WEB-19 Admin dapat membuka /portal/izin.php
+[lulus] WEB-19 Admin dapat membuka /portal/izin_antrean.php
+[lulus] WEB-19 Admin dapat membuka /portal/izin_buat.php
+[lulus] WEB-19 Admin dapat membuka /admin/admin_dashboard.php
+[lulus] WEB-20 Modul izin lama mengalihkan ke portal (302) [302]
+[lulus] WEB-21 Tautan lama dengan ID dialihkan ke detail pengajuan yang sama
+[lulus] WEB-22 Admin melihat panel keputusan Admin Pengganti
+[lulus] WEB-23 Admin Pengganti tanpa alasan penggantian ditolak 422 [422]
+[lulus] WEB-24 Keputusan Admin Pengganti dengan alasan berhasil (303) [303]
+[lulus] WEB-25 Orang tua dapat membuka izin santri yang terhubung
+[lulus] WEB-26 Halaman orang tua tidak memuat satu pun formulir mutasi
+[lulus] WEB-27 Orang tua ditolak 403 pada halaman buat pengajuan
+[lulus] WEB-28 Orang tua lain menerima 403 untuk santri yang tidak terhubung [403]

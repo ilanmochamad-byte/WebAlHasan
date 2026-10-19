@@ -1,0 +1,27 @@
+[lulus] 1440: satu menu daftar izin V2
+[lulus] 1440: tidak ada menu tulis izin lama
+[lulus] 1440: menu arsip pelanggaran tetap ada
+[lulus] 1440: menu PSB tetap ada
+[lulus] 1440: filter riwayat izin warisan tersedia
+[lulus] 1440: riwayat sintetis tampil setelah filter
+[lulus] 1440: judul arsip baca-saja
+[lulus] 1440: arsip tanpa form tambah/hapus
+[lulus] 1440: isi arsip dirender sebagai teks
+[lulus] 1440: tab jadwal ke pertemuan tetap berjalan
+[lulus] 375: satu menu daftar izin V2
+[lulus] 375: tidak ada menu tulis izin lama
+[lulus] 375: menu arsip pelanggaran tetap ada
+[lulus] 375: menu PSB tetap ada
+[lulus] 375: filter riwayat izin warisan tersedia
+[lulus] 375: riwayat sintetis tampil setelah filter
+[lulus] 375: judul arsip baca-saja
+[lulus] 375: arsip tanpa form tambah/hapus
+[lulus] 375: isi arsip dirender sebagai teks
+[lulus] 375: tab jadwal ke pertemuan tetap berjalan
+[lulus] sbx_guru_biasa: tidak ditawarkan antarmuka lama
+[lulus] sbx_guru_biasa: arsip admin tidak ditawarkan
+[lulus] sbx_pengurus_a: tidak ditawarkan antarmuka lama
+[lulus] sbx_pengurus_a: arsip admin tidak ditawarkan
+[lulus] sbx_ortu_a: tidak ditawarkan antarmuka lama
+[lulus] sbx_ortu_a: arsip admin tidak ditawarkan
+Hasil browser cleanup: 26 lulus, 0 gagal.

@@ -1,0 +1,34 @@
+19 Oktober 2026 — pemeriksaan implementator, bukan audit independen.
+
+php -l admin/admin_izin.php: exit 0
+php -l tests/v2_phase2_static.php: exit 0
+php -l tests/cleanup_legacy_fixture.php: exit 0
+php -l tests/cleanup_legacy_http.php: exit 0
+node --check tests/browser/uji-cleanup-legacy.mjs: exit 0
+v2_phase2_static pada checkout akhir: exit 0 (175 label lulus)
+git diff --check: exit 0
+
+Branch codex/cleanup-legacy-v1-v4 dibuat tepat dari 0cf77fc060e6cd277a2708c459ee0cda761c5b5c.
+Baseline remote web dan mobile diverifikasi lewat git ls-remote sebelum perubahan.
+Mobile tetap ee6621a420c23605be57427e0353df4814297b80 dan status Git bersih.
+Manifest privat tiga direktori untracked milik pekerjaan lain: 89 file, nama/isi/hash identik sebelum/sesudah.
+Tidak ada berkas ketiganya dalam daftar staging cleanup.
+
+Pencarian literal SQL pada PHP runtime HTTP terlacak (tanpa tests/bin/library pihak ketiga):
+0 INSERT/UPDATE/DELETE langsung terhadap tabel perizinan/pelanggaran.
+Source admin/admin_pelanggaran.php dan Navigation.php tidak diubah.
+Tidak ada perubahan database/migrations, rollbacks, file SQL, dependency atau service bisnis.
+
+Inventaris metadata: 114 halaman/endpoint/komponen, 109 kondisi router API,
+49 pemanggilan menu literal, 87 tabel, 53 referensi mobile.
+Tidak menyimpulkan penggunaan produksi dari inventaris statis.
+
+Hasil akhir: 156/0 HTTP cleanup + preservasi 87 tabel, 26/0 browser cleanup.
+Regresi V1–V3: 19 statis + 18 integrasi + HTTP V2, semua exit 0 setelah koreksi setup tercatat.
+Regresi V4: 13 suite layanan/konkurensi/audit/proyeksi exit 0; browser Fase 3 56/0;
+PDF sintetis satu halaman diperiksa. Daftar hasil per suite ada dalam regresi-v*.txt.
+Batas/percobaan awal/risiko produksi dicatat pada README.md.
+
+Dump pribadi lampiran tidak dibuka, diimpor, disalin atau dimasukkan laporan/screenshot/Git.
+Pengujian hanya memakai struktur V1 tanpa data dan fixture sintetis.
+Tidak memeriksa/mengubah database produksi, tidak deploy/merge/mobile/PRD V5.
