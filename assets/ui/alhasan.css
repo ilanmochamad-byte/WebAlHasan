@@ -1,5 +1,6 @@
 /*!
- * Sistem Al Hasan — lapisan desain bersama (paket perapihan V1–V2, 30 Agustus 2026).
+ * Sistem Al Hasan — lapisan desain bersama (paket perapihan V1–V2, 30 Agustus 2026;
+ * kerangka tiga ukuran dan komponen bersama redesain website Tahap 1, 22 Oktober 2026).
  *
  * Satu berkas untuk SELURUH halaman internal (admin + portal). Dibangun di atas
  * Bootstrap 5.3 yang sudah dipakai V1: berkas ini hanya menyetel token dan
@@ -43,7 +44,11 @@
     --ah-radius-sm: 8px;
     --ah-shadow: 0 1px 2px rgba(16, 32, 24, .06), 0 8px 24px rgba(16, 32, 24, .06);
     --ah-space: 1rem;
-    --ah-sidebar-w: 264px;
+    --ah-sidebar-w: 240px;
+    --ah-rail-w: 46px;
+    --ah-panel-w: 420px;
+    --ah-bottombar-h: 60px;
+    --ah-topbar-h: 56px;
     --ah-touch: 44px;
 
     --bs-body-bg: var(--ah-canvas);
@@ -169,6 +174,63 @@ body.ah {
     .ah-topbar__btn { padding: .35rem .5rem; }
 }
 
+/* Judul halaman di topbar hanya untuk HP; di ukuran lain merek pesantren. */
+.ah-topbar__title {
+    display: none;
+    min-width: 0;
+    font-weight: 700;
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (max-width: 575.98px) {
+    .ah-brand { display: none; }
+    .ah-topbar__title { display: block; flex: 1 1 auto; }
+    .ah-topbar__spacer { display: none; }
+    .ah-topbar .ah-profile { display: none; }
+}
+
+.ah-topbar__bell { position: relative; }
+.ah-topbar__bell[aria-current="page"] { background: rgba(255, 255, 255, .16); }
+.ah-topbar__count {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--ah-danger);
+    color: #fff;
+    font-size: .68rem;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+}
+
+.ah-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .18);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .74rem;
+    font-weight: 700;
+    flex: 0 0 auto;
+}
+
+.ah-profile__name { max-width: 16ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ah-profile__caret { font-size: .7rem; opacity: .8; }
+
+@media (max-width: 767.98px) {
+    .ah-profile__name, .ah-profile__caret { display: none; }
+}
+
 .ah-topbar__btn {
     min-width: var(--ah-touch);
     min-height: var(--ah-touch);
@@ -248,17 +310,204 @@ body.ah {
     padding: 1.25rem clamp(.85rem, 2vw, 1.75rem) 3rem;
 }
 
+/* Desktop lebar: isi dibatasi 1320px agar baris tidak terlalu panjang. */
+@media (min-width: 1400px) {
+    .ah-main { max-width: calc(1320px + 3.5rem); }
+}
+
+/* Bilah bawah HP: 4–5 menu utama sesuai akun. */
+.ah-bottombar { display: none; }
+
+@media (max-width: 575.98px) {
+    .ah-bottombar {
+        display: block;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1030;
+        background: var(--ah-surface);
+        border-top: 1px solid var(--ah-line);
+        box-shadow: 0 -2px 10px rgba(16, 32, 24, .06);
+        padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+
+    .ah-bottombar ul { display: flex; }
+    .ah-bottombar li { flex: 1 1 0; min-width: 0; }
+
+    .ah-bottombar a {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: .15rem;
+        min-height: var(--ah-bottombar-h);
+        padding: .35rem .15rem;
+        color: var(--ah-ink-muted);
+        font-size: .7rem;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .ah-bottombar a span:not(.ah-bottombar__count):not(.ah-visually-hidden) {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .ah-bottombar i { font-size: 1.1rem; }
+    .ah-bottombar a[aria-current="page"] { color: var(--ah-green-800); }
+    .ah-bottombar a[aria-current="page"]::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 25%;
+        right: 25%;
+        height: 3px;
+        border-radius: 0 0 3px 3px;
+        background: var(--ah-green-700);
+    }
+
+    .ah-bottombar__count {
+        position: absolute;
+        top: 4px;
+        left: calc(50% + 4px);
+        min-width: 18px;
+        height: 18px;
+        padding: 0 4px;
+        border-radius: 999px;
+        background: var(--ah-danger);
+        color: #fff;
+        font-size: .66rem;
+        line-height: 18px;
+    }
+
+    .ah-has-bottombar .ah-main { padding-bottom: calc(var(--ah-bottombar-h) + 3rem + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* Grup sidebar dapat dilipat di desktop; di laci semua grup terbuka. */
+.ah-nav-group__btn {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    min-height: 32px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    border-radius: 4px;
+}
+
+.ah-nav-group__btn i { font-size: .65rem; transition: transform .15s ease-out; }
+.ah-nav-group__btn[aria-expanded="false"] i { transform: rotate(-90deg); }
+.ah-nav-group__btn:hover { color: var(--ah-green-900); }
+.ah-nav-group__text { display: none; }
+
+@media (min-width: 992px) {
+    .ah-nav-sec.is-collapsed .ah-nav { display: none; }
+}
+
+.ah-drawer-head,
+.ah-drawer-foot { display: none; }
+
+/* Rel ikon (HP besar / tablet tegak, 576–991px). */
+.ah-rail { display: none; }
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+    .ah-rail {
+        display: block;
+        flex: 0 0 var(--ah-rail-w);
+        width: var(--ah-rail-w);
+        position: sticky;
+        top: var(--ah-topbar-h);
+        height: calc(100dvh - var(--ah-topbar-h));
+        overflow-y: auto;
+        scrollbar-width: thin;
+        background: var(--ah-surface);
+        border-right: 1px solid var(--ah-line);
+        padding: .4rem 0 1.5rem;
+    }
+}
+
+.ah-rail a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ah-touch);
+    height: var(--ah-touch);
+    margin: 0 auto 2px;
+    border-radius: var(--ah-radius-sm);
+    color: var(--ah-ink-soft);
+}
+
+.ah-rail a:hover { background: var(--ah-green-050); color: var(--ah-green-900); }
+.ah-rail a[aria-current="page"] { background: var(--ah-green-100); color: var(--ah-green-900); }
+.ah-rail__sep { height: 1px; margin: .35rem .5rem; background: var(--ah-line); }
+.ah-rail__dot {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ah-danger);
+}
+
+.ah-tip {
+    position: fixed;
+    z-index: 1070;
+    padding: .3rem .55rem;
+    border-radius: 6px;
+    background: var(--ah-ink);
+    color: #fff;
+    font-size: .8rem;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
 /* Ponsel & tablet: sidebar menjadi laci yang dapat dibuka/ditutup. */
 @media (max-width: 991.98px) {
     .ah-sidebar {
         position: fixed;
         inset: 56px auto 0 0;
         z-index: 1040;
+        width: min(85vw, 320px);
         max-height: none;
         height: calc(100dvh - 56px);
         transform: translateX(-100%);
         transition: transform .18s ease-out;
         box-shadow: var(--ah-shadow);
+    }
+
+    .ah-nav-group__btn { display: none; }
+    .ah-nav-group__text { display: inline; }
+
+    .ah-drawer-head {
+        display: flex;
+        align-items: center;
+        gap: .65rem;
+        padding: 0 .6rem .9rem;
+        margin-bottom: .5rem;
+        border-bottom: 1px solid var(--ah-line);
+    }
+
+    .ah-drawer-head .ah-avatar { background: var(--ah-green-100); color: var(--ah-green-900); }
+    .ah-drawer-head b { display: block; line-height: 1.2; }
+    .ah-drawer-head span:not(.ah-avatar) { display: block; color: var(--ah-ink-muted); font-size: .8rem; }
+
+    .ah-drawer-foot {
+        display: block;
+        margin-top: 1rem;
+        padding-top: .5rem;
+        border-top: 1px solid var(--ah-line);
     }
 
     .ah-shell.is-nav-open .ah-sidebar { transform: translateX(0); }
@@ -496,11 +745,357 @@ body.ah {
     box-shadow: inset 0 3px 0 var(--ah-green-700);
 }
 
+/* Di HP tab modul menjadi chip yang dapat digeser, bukan baris bertumpuk. */
+@media (max-width: 575.98px) {
+    .ah-tabs {
+        flex-wrap: nowrap;
+        gap: .4rem;
+        overflow-x: auto;
+        border-bottom: 0;
+        padding-bottom: .25rem;
+        scrollbar-width: none;
+    }
+
+    .ah-tabs::-webkit-scrollbar { display: none; }
+    .ah-tabs li { flex: 0 0 auto; }
+
+    .ah-tabs a {
+        border: 1px solid var(--ah-line-strong);
+        border-radius: 999px;
+        margin: 0;
+        padding: .4rem .9rem;
+        background: var(--ah-surface);
+        white-space: nowrap;
+    }
+
+    .ah-tabs a[aria-current="page"] {
+        background: var(--ah-green-700);
+        border-color: var(--ah-green-700);
+        color: #fff;
+        box-shadow: none;
+    }
+}
+
+/* --- Menu ⋯ dan menu profil (<details>, tetap jalan tanpa JavaScript) ---- */
+
+.ah-menu { position: relative; display: inline-block; }
+.ah-menu > summary { list-style: none; cursor: pointer; }
+.ah-menu > summary::-webkit-details-marker { display: none; }
+
+.ah-menu__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--ah-touch);
+    min-height: var(--ah-touch);
+    padding: 0 .6rem;
+    border: 1px solid var(--ah-line-strong);
+    border-radius: var(--ah-radius-sm);
+    background: var(--ah-surface);
+    color: var(--ah-ink-soft);
+}
+
+.ah-menu__btn:hover, .ah-menu[open] > .ah-menu__btn { background: var(--ah-green-050); color: var(--ah-green-900); }
+
+.ah-menu__list {
+    position: absolute;
+    z-index: 1060;
+    top: calc(100% + 4px);
+    right: 0;
+    min-width: 210px;
+    max-width: min(320px, calc(100vw - 16px));
+    padding: .35rem;
+    background: var(--ah-surface);
+    border: 1px solid var(--ah-line);
+    border-radius: var(--ah-radius-sm);
+    box-shadow: var(--ah-shadow);
+    color: var(--ah-ink);
+    text-align: left;
+}
+
+.ah-menu__list form { margin: 0; }
+
+.ah-menu__item {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    width: 100%;
+    min-height: var(--ah-touch);
+    padding: .5rem .7rem;
+    border: 0;
+    border-radius: 6px;
+    background: none;
+    color: var(--ah-ink);
+    font-size: .9rem;
+    text-align: left;
+    text-decoration: none;
+}
+
+.ah-topbar .ah-menu__list a.ah-menu__item { color: var(--ah-ink); }
+.ah-menu__item i { width: 1.1rem; text-align: center; color: var(--ah-ink-muted); }
+.ah-menu__item:hover { background: var(--ah-green-050); color: var(--ah-green-900); }
+.ah-menu__item--danger, .ah-menu__item--danger i { color: var(--ah-danger); }
+.ah-menu__item--danger:hover { background: var(--ah-danger-bg); color: var(--ah-danger); }
+.ah-menu__sep { height: 1px; margin: .3rem 0; background: var(--ah-line); border: 0; }
+
+.ah-menu__info {
+    padding: .45rem .7rem .6rem;
+    margin-bottom: .25rem;
+    border-bottom: 1px solid var(--ah-line);
+    font-size: .85rem;
+}
+
+.ah-menu__info b { display: block; }
+.ah-menu__info span { color: var(--ah-ink-muted); }
+
+/* --- Panel samping (tambah/ubah/detail) ---------------------------------- */
+/* Tanpa JavaScript: bagian biasa di halaman. Dengan JavaScript: panel kanan. */
+
+.ah-panel {
+    background: var(--ah-surface);
+    border: 1px solid var(--ah-line);
+    border-radius: var(--ah-radius);
+    box-shadow: var(--ah-shadow);
+    margin-bottom: 1.25rem;
+}
+
+.ah-panel__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    padding: .75rem 1.1rem;
+    border-bottom: 1px solid var(--ah-line);
+    background: var(--ah-green-050);
+}
+
+.ah-panel__head h2 { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.ah-panel__body { padding: 1.1rem; }
+
+.ah-panel__foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: .5rem;
+    padding: .75rem 0 0;
+}
+
+.ah-js .ah-panel {
+    position: fixed;
+    top: var(--ah-topbar-h);
+    right: 0;
+    bottom: 0;
+    z-index: 1045;
+    width: var(--ah-panel-w);
+    margin: 0;
+    border-radius: 0;
+    border-width: 0 0 0 1px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -8px 0 24px rgba(16, 32, 24, .12);
+}
+
+.ah-js .ah-panel__body { flex: 1 1 auto; overflow-y: auto; }
+
+.ah-js .ah-panel__foot {
+    position: sticky;
+    bottom: -1.1rem;
+    margin: 0 -1.1rem -1.1rem;
+    padding: .75rem 1.1rem calc(.75rem + env(safe-area-inset-bottom, 0px));
+    background: var(--ah-surface);
+    border-top: 1px solid var(--ah-line);
+}
+
+.ah-panel-scrim { display: none; }
+
+@media (min-width: 1200px) {
+    .ah-js.ah-panel-open .ah-main { padding-right: calc(var(--ah-panel-w) + 1.5rem); }
+}
+
+@media (max-width: 1199.98px) {
+    .ah-js .ah-panel-scrim {
+        display: block;
+        position: fixed;
+        inset: var(--ah-topbar-h) 0 0 0;
+        z-index: 1044;
+        background: rgba(16, 32, 24, .38);
+    }
+}
+
+@media (max-width: 991.98px) {
+    .ah-js .ah-panel { width: 70vw; }
+}
+
+@media (max-width: 575.98px) {
+    .ah-js .ah-panel { top: 0; width: 100vw; z-index: 1050; border: 0; }
+    .ah-js .ah-panel-scrim { display: none; }
+}
+
+/* --- Dialog konfirmasi ---------------------------------------------------- */
+
+.ah-dialog {
+    width: min(460px, calc(100vw - 2rem));
+    padding: 0;
+    border: 0;
+    border-radius: var(--ah-radius);
+    box-shadow: 0 20px 48px rgba(16, 32, 24, .25);
+    color: var(--ah-ink);
+}
+
+.ah-dialog::backdrop { background: rgba(16, 32, 24, .45); }
+.ah-dialog__box { padding: 1.25rem 1.25rem 1rem; margin: 0; }
+.ah-dialog__title { font-size: 1.15rem; font-weight: 700; margin: 0 0 .5rem; }
+.ah-dialog__text { color: var(--ah-ink-soft); margin: 0 0 1rem; white-space: pre-line; }
+.ah-dialog__reason { margin-bottom: 1rem; }
+.ah-dialog__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; }
+body.ah .btn-danger { --bs-btn-bg: var(--ah-danger); --bs-btn-border-color: var(--ah-danger); --bs-btn-hover-bg: #8a1c14; --bs-btn-hover-border-color: #8a1c14; }
+
+/* --- Pemberitahuan (toast) ------------------------------------------------ */
+
+.ah-toasts {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 1080;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    width: min(380px, calc(100vw - 2rem));
+    pointer-events: none;
+}
+
+.ah-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: .6rem;
+    padding: .7rem .5rem .7rem .9rem;
+    border-radius: var(--ah-radius-sm);
+    border: 1px solid var(--ah-line);
+    border-left-width: 4px;
+    background: var(--ah-surface);
+    box-shadow: var(--ah-shadow);
+    pointer-events: auto;
+    animation: ah-toast-in .18s ease-out;
+}
+
+.ah-toast > i { margin-top: .2rem; }
+.ah-toast__text { flex: 1 1 auto; font-size: .9rem; }
+.ah-toast__close { border: 0; background: none; color: var(--ah-ink-muted); width: 32px; height: 32px; border-radius: 6px; flex: 0 0 auto; }
+.ah-toast__close:hover { background: var(--ah-green-050); }
+.ah-toast--ok { border-left-color: var(--ah-ok); } .ah-toast--ok > i { color: var(--ah-ok); }
+.ah-toast--info { border-left-color: var(--ah-info); } .ah-toast--info > i { color: var(--ah-info); }
+.ah-toast--warn { border-left-color: var(--ah-warn); } .ah-toast--warn > i { color: var(--ah-warn); }
+.ah-toast--danger { border-left-color: var(--ah-danger); } .ah-toast--danger > i { color: var(--ah-danger); }
+
+@keyframes ah-toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 575.98px) {
+    .ah-toasts { left: 1rem; right: 1rem; width: auto; }
+    .ah-has-bottombar .ah-toasts { bottom: calc(var(--ah-bottombar-h) + .75rem + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* --- Bilah pilihan massal & proses massal -------------------------------- */
+
+.ah-selbar {
+    position: sticky;
+    bottom: .75rem;
+    z-index: 1020;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem 1rem;
+    margin: 1rem 0;
+    padding: .6rem .9rem;
+    border-radius: var(--ah-radius);
+    background: var(--ah-green-900);
+    color: #fff;
+    box-shadow: var(--ah-shadow);
+}
+
+.ah-selbar[hidden] { display: none; }
+.ah-selbar__count { font-weight: 700; margin-right: auto; }
+.ah-selbar .btn-link { color: #fff; }
+
+@media (max-width: 575.98px) {
+    .ah-has-bottombar .ah-selbar { bottom: calc(var(--ah-bottombar-h) + .5rem + env(safe-area-inset-bottom, 0px)); }
+}
+
+.ah-bulk {
+    background: var(--ah-surface);
+    border: 1px solid var(--ah-line);
+    border-radius: var(--ah-radius);
+    padding: 1rem 1.1rem;
+    margin-bottom: 1.25rem;
+}
+
+.ah-bulk__title { font-size: 1.05rem; font-weight: 700; margin: 0 0 .6rem; }
+.ah-bulk__bar { display: flex; align-items: center; gap: .75rem; }
+.ah-bulk__progress { flex: 1 1 auto; height: 12px; accent-color: var(--ah-green-700); }
+.ah-bulk__count { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ah-bulk__current { color: var(--ah-ink-muted); font-size: .88rem; min-height: 1.3em; margin: .4rem 0 .6rem; overflow-wrap: anywhere; }
+.ah-bulk__actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.ah-bulk__summary { font-weight: 700; margin: .75rem 0 .35rem; }
+.ah-bulk__failed { margin: 0 0 .75rem; padding-left: 1.2rem; color: var(--ah-danger); overflow-wrap: anywhere; }
+.ah-bulk__failed b { color: var(--ah-ink); }
+
+/* --- Tabel menjadi kartu di HP (opsional: .ah-table--cards) -------------- */
+
+@media (max-width: 575.98px) {
+    .ah-table--cards thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+    }
+
+    .ah-table--cards, .ah-table--cards tbody, .ah-table--cards tr, .ah-table--cards td { display: block; width: 100%; }
+
+    .ah-table--cards tr {
+        margin-bottom: .75rem;
+        padding: .5rem .85rem;
+        border: 1px solid var(--ah-line);
+        border-radius: var(--ah-radius-sm);
+        background: var(--ah-surface);
+    }
+
+    .ah-table--cards tbody tr:hover { background: var(--ah-surface); }
+
+    .ah-table--cards td {
+        display: flex;
+        gap: .75rem;
+        justify-content: space-between;
+        padding: .35rem 0;
+        border-bottom: 1px solid var(--ah-line);
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+
+    .ah-table--cards td:last-child { border-bottom: 0; }
+
+    .ah-table--cards td[data-label]::before {
+        content: attr(data-label);
+        flex: 0 0 38%;
+        text-align: left;
+        color: var(--ah-ink-muted);
+        font-size: .8rem;
+        font-weight: 600;
+    }
+
+    .ah-table--cards td[data-label=""]::before { display: none; }
+}
+
 /* --- Cetak: kerangka navigasi dibuang seluruhnya -------------------------- */
 
 @media print {
     .ah-topbar,
     .ah-sidebar,
+    .ah-rail,
+    .ah-bottombar,
+    .ah-toasts,
+    .ah-panel-scrim,
+    .ah-selbar,
+    .ah-dialog,
     .ah-scrim,
     .ah-skip,
     .ah-tabs,

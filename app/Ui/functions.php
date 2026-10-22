@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use App\Http\Csrf;
 use App\Ui\Layout;
+use App\Ui\Status;
 
 if (!function_exists('ah_e')) {
     function ah_e(mixed $value): string
@@ -167,6 +168,156 @@ if (!function_exists('ah_badge')) {
         $tone = in_array($tone, ['ok', 'warn', 'danger', 'info', 'muted'], true) ? $tone : 'muted';
 
         return '<span class="ah-badge ah-badge--' . $tone . '">' . ah_e($text) . '</span>';
+    }
+}
+
+if (!function_exists('ah_status')) {
+    /**
+     * Label status memakai kamus warna bersama (`App\Ui\Status`): hijau
+     * selesai, biru diajukan, kuning menunggu, merah ditolak, abu draf/arsip.
+     */
+    function ah_status(string $status, ?string $label = null): string
+    {
+        return ah_badge($label ?? $status, Status::tone($status));
+    }
+}
+
+if (!function_exists('ah_menu')) {
+    /**
+     * Menu aksi ⋯ (redesain Tahap 1, K-3). Tindakan lain selain tindakan
+     * utama dikumpulkan di sini; tindakan berbahaya selalu di bawah dan merah.
+     * Memakai <details>, sehingga tetap dapat dibuka tanpa JavaScript.
+     *
+     * Butir tautan:  ['label' => 'Ubah', 'url' => '...', 'icon' => 'fa-pen']
+     * Butir POST:    ['label' => 'Nonaktifkan', 'action' => '...', 'fields' => ['id' => 5],
+     *                 'danger' => true, 'confirm' => ['title' => 'Nonaktifkan Ust. Mahmud?',
+     *                 'text' => 'Akibatnya …', 'ok' => 'Nonaktifkan', 'reason' => 'alasan',
+     *                 'reason_label' => 'Alasan']]
+     *
+     * Menu ini hanya tampilan; setiap tindakan POST tetap diperiksa CSRF dan
+     * hak aksesnya oleh halaman tujuan.
+     *
+     * @param array<int, array<string, mixed>> $items
+     */
+    function ah_menu(array $items, string $label = 'Tindakan lain', bool $row = true): string
+    {
+        $safe = [];
+        $danger = [];
+        foreach ($items as $item) {
+            if (!empty($item['danger'])) {
+                $danger[] = $item;
+            } else {
+                $safe[] = $item;
+            }
+        }
+        $html = '';
+        foreach ($safe as $item) {
+            $html .= ah_menu_item($item);
+        }
+        if ($safe !== [] && $danger !== []) {
+            $html .= '<hr class="ah-menu__sep">';
+        }
+        foreach ($danger as $item) {
+            $html .= ah_menu_item($item);
+        }
+
+        return '<details class="ah-menu' . ($row ? ' ah-menu--row' : '') . '">'
+            . '<summary class="ah-menu__btn"><i class="fas fa-ellipsis" aria-hidden="true"></i>'
+            . '<span class="ah-visually-hidden">' . ah_e($label) . '</span></summary>'
+            . '<div class="ah-menu__list">' . $html . '</div></details>';
+    }
+
+    /**
+     * @param array<string, mixed> $item
+     */
+    function ah_menu_item(array $item): string
+    {
+        $class = 'ah-menu__item' . (!empty($item['danger']) ? ' ah-menu__item--danger' : '');
+        $icon = !empty($item['icon']) ? '<i class="fas ' . ah_e($item['icon']) . '" aria-hidden="true"></i>' : '';
+        $text = $icon . '<span>' . ah_e($item['label'] ?? '') . '</span>';
+        if (!isset($item['action'])) {
+            return '<a class="' . $class . '" href="' . ah_e($item['url'] ?? '#') . '">' . $text . '</a>';
+        }
+        $attributes = '';
+        $confirm = $item['confirm'] ?? null;
+        if (is_array($confirm)) {
+            $attributes .= ' data-confirm="' . ah_e($confirm['text'] ?? '') . '"';
+            foreach (['title' => 'data-confirm-title', 'ok' => 'data-confirm-ok', 'reason' => 'data-confirm-reason', 'reason_label' => 'data-confirm-reason-label'] as $key => $attribute) {
+                if (!empty($confirm[$key])) {
+                    $attributes .= ' ' . $attribute . '="' . ah_e($confirm[$key]) . '"';
+                }
+            }
+            if (!empty($item['danger'])) {
+                $attributes .= ' data-confirm-tone="danger"';
+            }
+        }
+        $fields = Csrf::input();
+        foreach ((array) ($item['fields'] ?? []) as $name => $value) {
+            $fields .= '<input type="hidden" name="' . ah_e($name) . '" value="' . ah_e($value) . '">';
+        }
+
+        return '<form method="post" action="' . ah_e($item['action']) . '"' . $attributes . '>' . $fields
+            . '<button class="' . $class . '" type="submit">' . $text . '</button></form>';
+    }
+}
+
+if (!function_exists('ah_panel_open')) {
+    /**
+     * Panel samping untuk tambah/ubah/detail (redesain Tahap 1, K-3).
+     *
+     * Halaman merender panel ini saat alamatnya memuat ?action=create/edit,
+     * bersama daftar di bawahnya. Tanpa JavaScript panel tampil sebagai bagian
+     * halaman biasa; dengan JavaScript ia menjadi panel kanan (desktop),
+     * 70% lebar (tablet), atau layar penuh (HP). Tombol Tutup dan tombol Esc
+     * kembali ke `close_url`, sehingga tidak ada keadaan yang hanya ada di JS.
+     *
+     * @param array{title:string, close_url:string, description?:string} $options
+     */
+    function ah_panel_open(array $options): void
+    {
+        echo '<section class="ah-panel" id="ah-panel" aria-labelledby="ah-panel-title" data-ah-close="'
+            . ah_e($options['close_url']) . '"><div class="ah-panel__head"><div>'
+            . '<h2 id="ah-panel-title">' . ah_e($options['title']) . '</h2>'
+            . (!empty($options['description']) ? '<p class="small text-muted mb-0">' . ah_e($options['description']) . '</p>' : '')
+            . '</div><a class="btn btn-sm btn-outline-secondary" href="' . ah_e($options['close_url']) . '">'
+            . '<i class="fas fa-xmark" aria-hidden="true"></i> Tutup</a></div><div class="ah-panel__body">';
+    }
+
+    function ah_panel_close(): void
+    {
+        echo '</div></section>';
+    }
+}
+
+if (!function_exists('ah_selection_bar')) {
+    /**
+     * Bilah "12 santri dipilih" + tindakan massal. Letakkan di dalam wadah
+     * `data-ah-selection="santri"` yang memuat kotak centang `data-ah-select`.
+     */
+    function ah_selection_bar(string $actionsHtml): string
+    {
+        return '<div class="ah-selbar" hidden><span class="ah-selbar__count" data-ah-selcount></span>'
+            . $actionsHtml
+            . '<button class="btn btn-link btn-sm" type="button" data-ah-select-clear>Batalkan pilihan</button></div>';
+    }
+}
+
+if (!function_exists('ah_error_summary')) {
+    /**
+     * Ringkasan galat di atas formulir; pesan rinci tetap di bawah tiap isian
+     * (`ah_field_error`). Kosong bila tidak ada galat.
+     */
+    function ah_error_summary(string $bucket, string $lead = 'Data belum tersimpan.'): string
+    {
+        $errors = $_SESSION[$bucket . '_errors'] ?? [];
+        $count = is_array($errors) ? count(array_filter($errors, static fn ($m): bool => is_string($m) && $m !== '')) : 0;
+        if ($count === 0) {
+            return '';
+        }
+
+        return '<div class="ah-note ah-note--danger" role="alert"><i class="fas fa-circle-exclamation mt-1" aria-hidden="true"></i><div>'
+            . '<strong class="ah-note__title">' . ah_e($lead) . '</strong>'
+            . '<span>Perbaiki ' . $count . ' isian bertanda merah.</span></div></div>';
     }
 }
 

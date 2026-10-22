@@ -164,13 +164,10 @@ function portal_pagination(int $total, int $page, int $perPage): void
 
 function portal_status_badge(string $status): string
 {
-    return ah_badge($status, match ($status) {
-        'Disetujui' => 'ok',
-        'Ditolak' => 'danger',
-        'Dibatalkan' => 'muted',
-        'Perlu Penetapan Admin' => 'warn',
-        default => 'info',
-    });
+    // Kamus warna bersama (redesain Tahap 1); hasil untuk kelima status izin
+    // sama dengan pemetaan lama: Disetujui hijau, Diajukan biru, Perlu Penetapan
+    // Admin kuning, Ditolak merah, Dibatalkan abu.
+    return ah_status($status);
 }
 
 /**
