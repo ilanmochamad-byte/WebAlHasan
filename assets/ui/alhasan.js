@@ -247,7 +247,7 @@
             + '<span class="ah-field-error" id="ah-dialog-reason-error" hidden>Alasan wajib diisi.</span>'
             + '</div>'
             + '<div class="ah-dialog__actions">'
-            + '<button class="btn btn-outline-secondary" value="batal" data-ah-cancel>Batal</button>'
+            + '<button class="btn btn-outline-secondary" value="batal" formnovalidate data-ah-cancel>Batal</button>'
             + '<button class="btn btn-primary" value="ok" data-ah-ok>Lanjutkan</button>'
             + '</div></form>';
         doc.body.appendChild(dialog);
@@ -300,7 +300,13 @@
                 ok.removeEventListener('click', onOk);
                 box.removeEventListener('close', onClose);
                 var accepted = box.returnValue === 'ok';
-                if (opener && opener.focus && doc.contains(opener)) { opener.focus(); }
+                if (opener && opener.focus && doc.contains(opener)) {
+                    // Menu ⋯ bisa tertutup selama dialog terbuka. Kembalikan
+                    // fokus ke pemicu menu bila tombol asal tersembunyi.
+                    var menu = opener.closest('details.ah-menu');
+                    var focusTarget = menu && !menu.open ? menu.querySelector('summary') : opener;
+                    if (focusTarget) { focusTarget.focus(); }
+                }
                 resolve({ok: accepted, reason: accepted ? reason.value.trim() : ''});
             }
             ok.addEventListener('click', onOk);
@@ -552,6 +558,11 @@
             return response.json().catch(function () { return null; }).then(function (json) {
                 if (!response.ok || (json && json.ok === false)) {
                     throw new Error((json && (json.message || json.error)) || ('Server menjawab ' + response.status + '.'));
+                }
+                // Sesi habis dapat mengalihkan ke halaman masuk dengan HTTP
+                // 200. Respons HTML/kosong bukan bukti tindakan berhasil.
+                if (!json || typeof json !== 'object') {
+                    throw new Error('Server tidak mengembalikan data JSON. Muat ulang halaman dan periksa sesi masuk.');
                 }
                 return json;
             });

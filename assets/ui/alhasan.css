@@ -895,12 +895,13 @@ body.ah {
     box-shadow: -8px 0 24px rgba(16, 32, 24, .12);
 }
 
-.ah-js .ah-panel__body { flex: 1 1 auto; overflow-y: auto; }
+.ah-js .ah-panel__body { flex: 1 1 auto; overflow-y: auto; display: flex; flex-direction: column; }
+.ah-js .ah-panel__body > form { flex: 1 0 auto; display: flex; flex-direction: column; }
 
 .ah-js .ah-panel__foot {
     position: sticky;
     bottom: -1.1rem;
-    margin: 0 -1.1rem -1.1rem;
+    margin: auto -1.1rem -1.1rem;
     padding: .75rem 1.1rem calc(.75rem + env(safe-area-inset-bottom, 0px));
     background: var(--ah-surface);
     border-top: 1px solid var(--ah-line);

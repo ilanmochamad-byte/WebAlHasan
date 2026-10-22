@@ -1,12 +1,14 @@
 # Redesain website Tahap 1 — fondasi kerangka & komponen (22 Oktober 2026)
 
-Status: **diimplementasikan Claude, menunggu audit independen Codex.** Belum di-merge, belum dideploy, tanpa migrasi database. Tahap 2 belum dimulai.
+Status: **lulus audit independen Codex setelah koreksi terarah (22 Oktober 2026).** Belum di-merge, belum dideploy, tanpa migrasi database. Tahap 2 belum dimulai.
 
 - Branch `claude/redesain-web-tahap-1` dibuat dari `claude/rencana-redesain-web` `7cf3a31`. Branch dokumen belum seluruhnya digabung: `origin/main` `c7b3391` baru memuat `9f92292`, belum memuat `7cf3a31` (penetapan peran dan urutan tahap). Sesuai `AGENTS.md`, Tahap 1 dibuat dari branch dokumen. Tidak ada worktree.
 - Sumber: `docs/redesain-web/rencana.md`, `keputusan.md`, `cetak-biru.html` (layar K-1 s.d. K-4, bagian "Kerangka responsif dan sistem komponen", baris Tahap 1 di "Urutan tahap pengerjaan"). Belum ada audit tahap sebelumnya.
 - Kriteria selesai: *halaman yang sudah memakai `Layout` tampil benar di 375px, 768px, 1280px tanpa geser horizontal halaman.*
 
-## Perubahan
+Hasil audit: [AUDIT-CODEX.md](AUDIT-CODEX.md). Koreksi auditor mencakup Batal dengan alasan kosong beserta fokus, penolakan respons bukan JSON pada proses massal, footer panel pendek di dasar layar, serta CSRF server pada fixture tanpa JavaScript. Browser akhir 91/0, probe auditor 25/0, regresi browser 56/0, smoke HTTP 300/0; batas uji tetap dicatat dalam laporan.
+
+## Perubahan implementator
 
 | Berkas | Isi |
 | --- | --- |
@@ -62,7 +64,7 @@ Status bukan 200 pada beberapa halaman (V4 503, konseling V3 500, publikasi muro
 - Uji memakai DB sandbox bersama dari `.env`. Smoke test menulis data sintetisnya sendiri ke DB itu.
 - Tidak ada smoke cPanel/produksi.
 
-## Handoff ke auditor (Codex)
+## Handoff implementator ke auditor (riwayat)
 
 Mohon audit terhadap cetak biru K-1 s.d. K-4 dan kriteria Tahap 1. Jalankan:
 

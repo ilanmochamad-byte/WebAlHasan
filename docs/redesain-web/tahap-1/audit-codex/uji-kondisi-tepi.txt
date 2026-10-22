@@ -1,0 +1,27 @@
+[lulus] Batal dengan alasan kosong menutup dialog tanpa POST dan mengembalikan fokus 375px
+[lulus] Batal dengan alasan kosong menutup dialog tanpa POST dan mengembalikan fokus 768px
+[lulus] Batal dengan alasan kosong menutup dialog tanpa POST dan mengembalikan fokus 1280px
+[lulus] Konfirmasi halaman lama membuka dialog tanpa POST: admin_guru.php
+[lulus] Batal halaman lama tetap dapat dipakai: admin_guru.php
+[lulus] Konfirmasi halaman lama membuka dialog tanpa POST: admin_pengurus.php
+[lulus] Batal halaman lama tetap dapat dipakai: admin_pengurus.php
+[lulus] Konfirmasi halaman lama membuka dialog tanpa POST: admin_kelas.php
+[lulus] Batal halaman lama tetap dapat dipakai: admin_kelas.php
+[catatan] Tidak ada fixture tindakan data-confirm pada admin_tahun.php
+[lulus] Konfirmasi halaman lama membuka dialog tanpa POST: admin_master_santri.php
+[lulus] Batal halaman lama tetap dapat dipakai: admin_master_santri.php
+[lulus] Formulir pendek: tombol simpan menempel di dasar panel 375px
+[lulus] Formulir panjang: tombol tetap terlihat dan isian dapat digulir 375px
+[lulus] Formulir pendek: tombol simpan menempel di dasar panel 768px
+[lulus] Formulir panjang: tombol tetap terlihat dan isian dapat digulir 768px
+[lulus] Formulir pendek: tombol simpan menempel di dasar panel 1280px
+[lulus] Formulir panjang: tombol tetap terlihat dan isian dapat digulir 1280px
+[lulus] POST menolak HTML 200 (misalnya sesi habis), bukan dianggap berhasil
+[lulus] Proses massal mencatat respons bukan JSON sebagai gagal beserta sebab
+[lulus] POST mempertahankan sebab penolakan JSON dari server
+[lulus] POST mengirim token CSRF pada body dan header
+[lulus] POST JSON berhasil tetap mengembalikan payload
+[lulus] Hentikan menyelesaikan data berjalan dan menawarkan ulangi dua sisanya
+[lulus] Panel tanpa JavaScript memiliki token CSRF dari server
+[lulus] Panel tanpa JavaScript benar-benar menyimpan fixture dan kembali ke daftar
+25 lulus, 0 gagal.
