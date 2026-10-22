@@ -106,9 +106,13 @@ Hasilnya 17 menu dalam 7 grup: Beranda · Kegiatan santri (Perizinan, Pengajian,
 | AR | Peran aktif disimpan di sesi sampai keluar, tanpa perubahan database. |
 | AS | Laporan cetak perizinan dan kehadiran diberi satu tanda tangan "Bagian Pendidikan" dengan garis nama kosong untuk diisi manual. |
 
+## Penetapan peran & urutan tahap
+
+Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Codex**, delapan tahap berurutan seperti di `rencana.md` dan `AGENTS.md`. Tahap 7 menunggu rapor Ganjil 2026/2027 terbit; Tahap 8 menunggu tahap perbaikan keamanan PSB.
+
 ## Masih menunggu keputusan
 
-1. Implementator, auditor, dan urutan tahap workstream ini (lihat `AGENTS.md`).
+1. Peran untuk tahap perbaikan keamanan PSB (workstream terpisah, syarat Tahap 8).
 2. Pemindahan rincian pembiayaan PSB ke dalam portal pendaftar yang harus masuk (P-7).
 3. Isi resmi halaman Profil, tahun berdiri, nomor WhatsApp/telepon resmi, logo dan foto, serta angka statistik Beranda situs.
 4. Komponen biaya PSB untuk MI dan RA.
