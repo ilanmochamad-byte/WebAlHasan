@@ -86,6 +86,7 @@ if ($action === 'create') {
     ?>
     <?= ah_error_summary('_uji_komponen') ?>
     <form method="post" action="<?= ah_e($self) ?>" id="uji-form-panel">
+        <?= Csrf::input() ?>
         <div class="mb-3">
             <label class="form-label" for="nip">NIP</label>
             <input class="form-control" id="nip" name="nip" inputmode="numeric">
@@ -166,6 +167,7 @@ if ($action === 'create') {
     <div class="ah-card__head"><h2 class="h6 mb-0" id="uji-konfirmasi">Dialog konfirmasi lama (data-confirm)</h2></div>
     <div class="ah-card__body">
         <form method="post" action="<?= ah_e($self) ?>" data-confirm="Data contoh akan diarsipkan." id="uji-form-lama">
+            <?= Csrf::input() ?>
             <input type="hidden" name="nama" value="Contoh">
             <button class="btn btn-outline-danger" type="submit" name="tindakan" value="arsipkan">Arsipkan contoh</button>
         </form>

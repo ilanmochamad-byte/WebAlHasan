@@ -206,9 +206,11 @@ $assert(
     str_contains($halamanGuru, 'Data Guru') && !str_contains($halamanGuru, 'Guru &amp; Pembimbing'),
     'Label halaman guru menjadi Data Guru'
 );
+// Redesain website Tahap 2 (keputusan E): data guru berada di menu
+// "Asatidz & pengurus" dengan tab "Asatidz".
 $assert(
-    str_contains($source('app/Ui/Navigation.php'), "'Data Guru'"),
-    'Menu memakai label Data Guru'
+    str_contains($source('app/Ui/Navigation.php'), "self::tab('Asatidz', '/admin/admin_guru.php'"),
+    'Menu memakai label Asatidz untuk data guru'
 );
 $assert(
     str_contains($masterRepo, "'UPDATE guru SET nip = ?, nama_guru = ?, no_hp = ?, updated_at = NOW() WHERE id = ?'"),

@@ -17,7 +17,7 @@ use App\Izin\IzinException;
 
 require_once __DIR__ . '/_ui.php';
 
-$requestedMode = isset($_GET['mode']) ? (string) $_GET['mode'] : null;
+$requestedMode = portal_requested_mode($currentUser, $userCapabilities);
 
 try {
     $overview = izin_service()->list($currentUser, [], 1, 5, $requestedMode);

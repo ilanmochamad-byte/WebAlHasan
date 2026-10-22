@@ -1,0 +1,346 @@
+## perapihan
+
+=== PM-1. Pintu masuk tanpa sesi ===
+[lulus] PM-1a /portal/ tanpa sesi menjawab 200, bukan pengalihan berulang [200]
+[lulus] PM-1b /portal/ tanpa sesi menampilkan halaman Masuk Sistem Al Hasan
+[lulus] PM-1c Formulir masuk mengirim ke penangan autentikasi yang sudah ada
+[lulus] PM-1d Halaman internal tanpa sesi mengarah ke pintu masuk dengan tujuan tersimpan
+
+=== PM-2. Login seluruh peran mendarat di beranda ===
+[lulus] PM-2 admin berhasil masuk dan mendarat di beranda tunggal [/portal/index.php]
+[lulus] PM-2b Beranda admin terbuka [200]
+[lulus] PM-2 murobi berhasil masuk dan mendarat di beranda tunggal [/portal/index.php]
+[lulus] PM-2b Beranda murobi terbuka [200]
+[lulus] PM-2 guru berhasil masuk dan mendarat di beranda tunggal [/portal/index.php]
+[lulus] PM-2b Beranda guru terbuka [200]
+[lulus] PM-2 pengurus berhasil masuk dan mendarat di beranda tunggal [/portal/index.php]
+[lulus] PM-2b Beranda pengurus terbuka [200]
+[lulus] PM-2 orang_tua berhasil masuk dan mendarat di beranda tunggal [/portal/index.php]
+[lulus] PM-2b Beranda orang_tua terbuka [200]
+
+=== PM-3. Guru non-murobi: beranda terbuka, perizinan tertutup ===
+[lulus] PM-3a Guru non-murobi dapat membuka beranda umum
+[lulus] PM-3b Guru non-murobi ditolak 403 pada /portal/izin_ringkasan.php [403]
+[lulus] PM-3b Guru non-murobi ditolak 403 pada /portal/izin.php [403]
+[lulus] PM-3b Guru non-murobi ditolak 403 pada /portal/izin_antrean.php?mode=murobi [403]
+[lulus] PM-3b Guru non-murobi ditolak 403 pada /portal/izin_aksi.php [403]
+[lulus] PM-3b Guru non-murobi ditolak 403 pada /portal/laporan.php [403]
+[lulus] PM-3c Murobi tetap dapat membuka antrean keputusan
+
+=== PM-4/5. Berpindah modul tanpa login ulang ===
+[lulus] PM-4a Membuka pintu masuk saat sesi hidup tidak meminta login ulang
+[lulus] PM-4b Murobi berpindah ke /admin/admin_pengajian.php?tab=jadwal tanpa login ulang [200]
+[lulus] PM-4b Murobi berpindah ke /admin/admin_pengajian.php?tab=pertemuan tanpa login ulang [200]
+[lulus] PM-4b Murobi berpindah ke /portal/izin_antrean.php?mode=murobi tanpa login ulang [200]
+[lulus] PM-4b Murobi berpindah ke /portal/notifikasi.php tanpa login ulang [200]
+[lulus] PM-5 Akun admin dapat memakai menu /admin/admin_dashboard.php [200]
+[lulus] PM-5 Akun admin dapat memakai menu /admin/admin_akun.php [200]
+[lulus] PM-5 Akun admin dapat memakai menu /admin/admin_master_santri.php [200]
+[lulus] PM-5 Akun admin dapat memakai menu /admin/admin_laporan_absensi.php [200]
+[lulus] PM-5 Akun admin dapat memakai menu /admin/admin_wali_rekonsiliasi.php [200]
+[lulus] PM-5 Akun admin dapat memakai menu /portal/izin_ringkasan.php [200]
+
+=== PM-6. Alamat lama ===
+[lulus] PM-6a /admin/admin_login.php tetap berfungsi dan mengarah ke pintu masuk baru
+[lulus] PM-6b Alamat lama saat sesi hidup tidak meminta login ulang
+
+=== PM-7. Kasus tepi autentikasi ===
+[lulus] PM-7a Password salah ditolak dan dijelaskan di pintu masuk
+[lulus] PM-7b Pesan kegagalan tidak membocorkan akun mana yang ada
+[lulus] PM-7c Akun nonaktif tidak dapat masuk
+[lulus] PM-7d Password sementara wajib diselesaikan lebih dulu
+[lulus] PM-7e Fungsi operasional tertutup sebelum password sementara diganti
+[lulus] PM-7f Beranda pun mengarahkan kembali ke ganti password (tanpa lingkaran)
+[lulus] PM-7g Setelah logout, halaman internal mengarah kembali ke pintu masuk yang sama
+
+=== PM-8. Tidak ada redirect loop atau tujuan eksternal ===
+[lulus] PM-8a Tujuan tidak sah ditolak: https://contoh-jahat.example/curi [/portal/index.php]
+[lulus] PM-8a Tujuan tidak sah ditolak: //contoh-jahat.example/curi [/portal/index.php]
+[lulus] PM-8a Tujuan tidak sah ditolak: javascript:alert(1) [/portal/index.php]
+[lulus] PM-8a Tujuan tidak sah ditolak: /etc/passwd [/portal/index.php]
+[lulus] PM-8a Tujuan tidak sah ditolak: /admin/logout.php [/portal/index.php]
+[lulus] PM-8b Rantai pengalihan dari alamat lama berhenti dalam <= 2 langkah [1]
+
+=== PM-9. Tujuan tersimpan tetap diperiksa haknya ===
+[lulus] PM-9a Tujuan internal yang sah dipulihkan setelah masuk
+[lulus] PM-9b Tujuan yang dipulihkan TETAP diperiksa haknya di server: guru ditolak 403 [403]
+[lulus] PM-9c Setelah berganti ke akun berhak, tujuan yang sama dapat dibuka
+
+=== PM-10/11. Alamat lama modul dan halaman cetak ===
+[lulus] PM-10 Alamat lama /admin/admin_jadwal_ngaji.php mengarah ke admin_pengajian.php [302]
+[lulus] PM-10 Alamat lama /admin/pertemuan_pengajian.php mengarah ke admin_pengajian.php [302]
+[lulus] PM-10 Alamat lama /admin/admin_akun_perizinan.php mengarah ke admin_akun.php [302]
+[lulus] PM-11a Halaman cetak laporan kehadiran terbuka
+[lulus] PM-11b Halaman cetak tidak memuat sidebar atau topbar
+[lulus] PM-11c Halaman cetak mencantumkan penyajian pada daftar filter aktif
+[bersih] Fixture smoke test perapihan dihapus.
+
+SELURUH SMOKE TEST WEB PERAPIHAN LULUS.
+
+## alumni
+[lulus] AW-1 halaman arsip alumni tertutup bagi yang belum masuk [302]
+[lulus] AW-1 halaman kelulusan & mutasi tertutup bagi yang belum masuk [302]
+[lulus] AW-1 tamu tidak dapat memicu alamat hapus lama dan datanya tetap ada [302]
+[lulus] AW-2a akun guru berhasil masuk [302]
+[lulus] AW-2b guru DITOLAK membuka /admin/admin_alumni.php [403]
+[lulus] AW-2b guru DITOLAK membuka /admin/admin_kelulusan_santri.php [403]
+[lulus] AW-2b guru DITOLAK membuka /admin/proses_mutasi_alumni.php [403]
+[lulus] AW-2c POST guru ke aksi alumni tidak mengubah data [403]
+[lulus] AW-3a admin uji berhasil masuk [302]
+[lulus] AW-3b halaman alumni terbuka untuk admin [200]
+[lulus] AW-3c daftar alumni tampil
+[lulus] AW-3d menu Data Alumni ditandai aktif
+[lulus] AW-3e breadcrumb kerangka bersama tampil
+[lulus] AW-3f sidebar aplikasi tampil (bukan halaman bergaya sendiri)
+[lulus] AW-3g halaman tidak lagi memuat DataTables lama
+[lulus] AW-3h halaman kelulusan terbuka untuk admin [200]
+[lulus] AW-3i menu Kelulusan & Mutasi ditandai aktif
+[lulus] AW-14 tautan "Luluskan / Mutasi keluar" tersedia pada baris santri aktif
+[lulus] AW-4a POST tanpa token CSRF ditolak [419]
+[lulus] AW-4b POST tanpa CSRF tidak mengubah satu baris pun
+[lulus] AW-4c token CSRF palsu ditolak [419]
+[lulus] AW-4d token palsu tidak memproses santri
+[lulus] AW-5a alamat hapus permanen lama ditolak 405 [405]
+[lulus] AW-5b alamat hapus lama TIDAK menghapus catatan alumni
+[lulus] AW-5c pesan penolakan menunjukkan tindakan pengganti yang benar
+[lulus] AW-6 aksi proses lewat GET ditolak 405 [405]
+[lulus] AW-7a alamat lama mengalihkan GET beserta pemetaan kelasnya [301]
+[lulus] AW-7b alamat lama MENOLAK POST dengan 410 [410]
+[lulus] AW-7c POST ke alamat lama tidak memproses satu santri pun
+[lulus] AW-8a formulir individual menampilkan ringkasan santri dan kelas aktifnya
+[lulus] AW-8b tahap tinjau menampilkan layar konfirmasi [200]
+[lulus] AW-8c tahap tinjau TIDAK mengubah data apa pun
+[lulus] AW-8d layar konfirmasi memuat token sekali pakai
+[lulus] AW-8e penerapan mengalihkan setelah berhasil (POST-redirect-GET) [302]
+[lulus] AW-8f catatan alumni tercipta dengan pelaku yang benar
+[lulus] AW-8g santri sumber diarsipkan, bukan dihapus
+[lulus] AW-8h admin diarahkan ke detail alumni yang dapat diverifikasi
+[lulus] AW-9a pengiriman ulang dijawab pengalihan, bukan galat [302]
+[lulus] AW-9b pengiriman ulang tinjauan TIDAK membuat catatan alumni kedua
+[lulus] AW-10a daftar massal per kelas mengecualikan santri yang sudah menjadi alumni
+[lulus] AW-10b layar konfirmasi massal memperingatkan cakupan tindakan
+[lulus] AW-10c penerapan massal berhasil [302]
+[lulus] AW-10d seluruh santri kelas diproses dan kelas aktifnya ditutup
+[lulus] AW-11a arsip tanpa alasan ditolak 422 [422]
+[lulus] AW-11b penolakan alasan tidak mengarsipkan
+[lulus] AW-11c arsip beralasan berhasil [302]
+[lulus] AW-11d catatan diarsipkan TANPA dihapus
+[lulus] AW-11e catatan dapat dipulihkan kembali [302]
+[lulus] AW-12a filter berisi muatan SQL/XSS tetap dijawab 200 [200]
+[lulus] AW-12b muatan XSS pada filter tidak muncul mentah di HTML
+[lulus] AW-12c muatan XSS pada filter di-escape
+[lulus] AW-12d detail alumni bermuatan XSS tetap terbuka [200]
+[lulus] AW-12e nama bermuatan XSS tidak muncul mentah
+[lulus] AW-12f alamat bermuatan XSS tidak muncul mentah
+[lulus] AW-12g catatan warisan ditandai belum terhubung ke santri
+[lulus] AW-13 respons #0 tidak membocorkan query atau jejak galat internal
+[lulus] AW-13 respons #1 tidak membocorkan query atau jejak galat internal
+[lulus] AW-13 respons #2 tidak membocorkan query atau jejak galat internal
+[lulus] AW-13 respons #3 tidak membocorkan query atau jejak galat internal
+[lulus] AW-13 respons #4 tidak membocorkan query atau jejak galat internal
+[lulus] AW-13 respons #5 tidak membocorkan query atau jejak galat internal
+
+SELURUH SMOKE TEST WEB ALUMNI LULUS.
+
+## kredensial
+[lulus] PW-0 admin uji berhasil masuk [302]
+
+=== PW: jalur guru ===
+[lulus] PW-1a POST pembuatan akun guru menjawab redirect [302]
+[lulus] PW-1b panel pesan kredensial tampil setelah akun guru dibuat
+[lulus] PW-1c tombol salin dan area status tersedia
+[lulus] PW-1d password sementara tampil pada panel
+[lulus] PW-2 respons berisi password memakai Cache-Control private, no-store
+[lulus] PW-3a password yang tampil cocok dengan hash akun yang tersimpan
+[lulus] PW-3b basis data tetap hanya menyimpan hash
+[lulus] PW-9 isi kotak pesan sama persis dengan teks baku
+[lulus] PW-9b isi yang disalin berupa teks biasa tanpa markup
+[lulus] PW-4a memuat ulang halaman menghilangkan panel kredensial
+[lulus] PW-4b password tidak muncul lagi pada muat ulang
+[lulus] PW-4c membuka kembali halaman tidak menyajikan password dari sesi
+[lulus] PW-5a password tidak pernah ditulis ke cookie
+[lulus] PW-5b header Location tidak membawa password
+
+=== PW: jalur pengurus ===
+[lulus] PW-1a POST pembuatan akun pengurus menjawab redirect [302]
+[lulus] PW-1b panel pesan kredensial tampil setelah akun pengurus dibuat
+[lulus] PW-1c tombol salin dan area status tersedia
+[lulus] PW-1d password sementara tampil pada panel
+[lulus] PW-2 respons berisi password memakai Cache-Control private, no-store
+[lulus] PW-3a password yang tampil cocok dengan hash akun yang tersimpan
+[lulus] PW-3b basis data tetap hanya menyimpan hash
+[lulus] PW-9 isi kotak pesan sama persis dengan teks baku
+[lulus] PW-9b isi yang disalin berupa teks biasa tanpa markup
+[lulus] PW-4a memuat ulang halaman menghilangkan panel kredensial
+[lulus] PW-4b password tidak muncul lagi pada muat ulang
+[lulus] PW-4c membuka kembali halaman tidak menyajikan password dari sesi
+[lulus] PW-5a password tidak pernah ditulis ke cookie
+[lulus] PW-5b header Location tidak membawa password
+
+=== PW: jalur orang tua ===
+[lulus] PW-1a POST pembuatan akun orang tua menjawab redirect [302]
+[lulus] PW-1b panel pesan kredensial tampil setelah akun orang tua dibuat
+[lulus] PW-1c tombol salin dan area status tersedia
+[lulus] PW-1d password sementara tampil pada panel
+[lulus] PW-2 respons berisi password memakai Cache-Control private, no-store
+[lulus] PW-3a password yang tampil cocok dengan hash akun yang tersimpan
+[lulus] PW-3b basis data tetap hanya menyimpan hash
+[lulus] PW-9 isi kotak pesan sama persis dengan teks baku
+[lulus] PW-9b isi yang disalin berupa teks biasa tanpa markup
+[lulus] PW-4a memuat ulang halaman menghilangkan panel kredensial
+[lulus] PW-4b password tidak muncul lagi pada muat ulang
+[lulus] PW-4c membuka kembali halaman tidak menyajikan password dari sesi
+[lulus] PW-5a password tidak pernah ditulis ke cookie
+[lulus] PW-5b header Location tidak membawa password
+
+=== PW-6 s.d. PW-10. Kegagalan, retry, dan daftar akun ===
+[lulus] PW-6 ketiga jalur (guru, pengurus, orang tua) menampilkan panel yang sama
+[lulus] PW-6b setiap akun memperoleh password sementara yang berbeda
+[lulus] PW-7a pembuatan akun yang gagal tetap menjawab redirect
+[lulus] PW-7b kegagalan tidak menampilkan panel kredensial palsu
+[lulus] PW-7c kegagalan dijelaskan dengan pesan galat
+[lulus] PW-8 retry tidak membuat akun kedua dengan username yang sama
+[lulus] PW-10a daftar akun tidak pernah menampilkan password sementara
+[lulus] PW-10b tidak ada password pada URL maupun header Location sepanjang alur (19 alamat diperiksa)
+
+SELURUH SMOKE TEST WEB PESAN KREDENSIAL LULUS.
+
+## penempatan
+[lulus] PW-1 halaman penempatan tertutup bagi yang belum masuk [302]
+[lulus] PW-1 alamat lama pun tidak melayani tamu sebelum guard admin [302]
+[lulus] PW-2a admin uji berhasil masuk [302]
+[lulus] PW-2b halaman penempatan terbuka untuk admin [200]
+[lulus] PW-2c judul halaman tampil
+[lulus] PW-2d menu Master Data → Penempatan Kelas & Kamar ditandai aktif
+[lulus] PW-2e breadcrumb tampil
+[lulus] PW-2f pencarian NIS menyaring daftar santri
+[lulus] PW-2g santri tanpa kamar ditandai jelas
+[lulus] PW-3a POST tanpa token CSRF ditolak [419]
+[lulus] PW-3b POST tanpa CSRF tidak mengubah satu baris pun
+[lulus] PW-4 aksi mutasi lewat GET ditolak 405 [405]
+[lulus] PW-5a alamat lama mengalihkan permintaan GET [301]
+[lulus] PW-5b filter lama dipetakan ke parameter baru [/admin/admin_penempatan_santri.php?q=PW7517C1&jk=L&status=tanpa_kamar]
+[lulus] PW-6a endpoint POST lama dihentikan dengan 410 [410]
+[lulus] PW-6b POST lama TIDAK dialihkan secara buta
+[lulus] PW-6c POST lama tidak mengubah data penempatan
+[lulus] PW-6d POST lama TANPA token CSRF pun dijawab 410 [410]
+[lulus] PW-6e jawaban 410 menyebut halaman pengganti sehingga klien lama tahu ke mana harus pindah
+[lulus] PW-6f POST lama tanpa CSRF tetap tidak mengubah data
+[lulus] PW-7a tinjauan tampil sebelum perubahan diterapkan [200]
+[lulus] PW-7b tinjauan menyebut jumlah santri terpilih
+[lulus] PW-7c tinjauan menampilkan status kapasitas kamar
+[lulus] PW-7d tinjauan sama sekali tidak mengubah data
+[lulus] PW-7e penerapan memakai pola POST-redirect-GET [302]
+[lulus] PW-7f dua santri benar-benar tersimpan pada kamar tujuan
+[lulus] PW-7g pesan hasil ditampilkan setelah pengalihan
+[lulus] PW-8a pengiriman ulang tinjauan yang sama dialihkan kembali [302]
+[lulus] PW-8b admin diberi tahu bahwa tinjauan itu sudah dipakai
+[lulus] PW-8c tidak ada penempatan ganda dari pengiriman ulang
+[lulus] PW-9a penempatan ke kamar penuh ditolak 422 [422]
+[lulus] PW-9b pesan kapasitas dijelaskan kepada admin
+[lulus] PW-9c penolakan kapasitas tidak mengubah satu baris pun
+[lulus] PW-10a filter kamar dari Data Kamar hanya menampilkan penghuni kamar itu
+[lulus] PW-10b filter kelas dari Data Kelas hanya menampilkan anggota kelas itu
+[lulus] PW-10c Data Kamar menautkan penempatan berfilter
+[lulus] PW-10d Data Kelas menautkan penempatan berfilter
+[lulus] PW-10e Data Santri menautkan halaman penempatan
+[lulus] PW-12 tamu tidak menerima jawaban 410: guard admin berjalan lebih dahulu [302]
+[lulus] PW-11 respons tidak membocorkan detail internal: SELECT
+[lulus] PW-11 respons tidak membocorkan detail internal: INSERT INTO
+[lulus] PW-11 respons tidak membocorkan detail internal: UPDATE plotting
+[lulus] PW-11 respons tidak membocorkan detail internal: FOR UPDATE
+[lulus] PW-11 respons tidak membocorkan detail internal: mysqli
+[lulus] PW-11 respons tidak membocorkan detail internal: Stack trace
+[lulus] PW-11 respons tidak membocorkan detail internal: /home/
+[lulus] PW-11 respons tidak membocorkan detail internal: SQLSTATE
+
+SELURUH SMOKE TEST WEB PENEMPATAN LULUS.
+
+## penugasan
+[lulus] FW-10a login API guru berhasil
+[lulus] FW-10b struktur capabilities lama utuh pada profil guru
+[lulus] FW-10c field aditif feature_capabilities ada dan kosong sebelum penugasan
+[lulus] FW-10d respons login memuat field lama (default_mode guru biasa tetap null) dan field aditif
+[lulus] FW-10e default_mode pengurus sebelum penugasan
+[lulus] FW-1a tanpa sesi diarahkan ke pintu masuk [302]
+[lulus] FW-11a login web admin berhasil
+[lulus] FW-1b admin membuka tab murobi [200]
+[lulus] FW-1b admin membuka tab pembimbing [200]
+[lulus] FW-1b admin membuka tab guru_mapel [200]
+[lulus] FW-1b admin membuka tab pendidikan [200]
+[lulus] FW-1b admin membuka tab bendahara_bulanan [200]
+[lulus] FW-1b admin membuka tab panitia_psb [200]
+[lulus] FW-1b admin membuka tab bendahara_psb [200]
+[lulus] FW-1b admin membuka tab mata_pelajaran [200]
+[lulus] FW-1c jenis tak dikenal jatuh ke tab murobi, bukan galat
+[lulus] FW-1d sidebar admin memuat menu Pusat Penugasan
+[lulus] FW-1e menu murobi dan pembimbing lama tetap ada
+[lulus] FW-11b login web guru berhasil
+[lulus] FW-2a guru DITOLAK membuka Pusat Penugasan [403]
+[lulus] FW-2b POST guru ke Pusat Penugasan ditolak tanpa mengubah data [403]
+[lulus] FW-2c guru tetap ditolak pada halaman murobi lama [403]
+[lulus] FW-11b login web pengurus berhasil
+[lulus] FW-2a pengurus DITOLAK membuka Pusat Penugasan [403]
+[lulus] FW-2b POST pengurus ke Pusat Penugasan ditolak tanpa mengubah data [403]
+[lulus] FW-11b login web orang tua berhasil
+[lulus] FW-2a orang tua DITOLAK membuka Pusat Penugasan [403]
+[lulus] FW-2b POST orang tua ke Pusat Penugasan ditolak tanpa mengubah data [403]
+[lulus] FW-3a POST tanpa token CSRF ditolak 419 tanpa perubahan
+[lulus] FW-3b POST dengan token CSRF palsu ditolak 419 tanpa perubahan
+[lulus] FW-4 parameter aksi lewat GET tidak memutasi data
+[lulus] FW-5a mata pelajaran tersimpan lewat formulir
+[lulus] FW-12 nama mata pelajaran berisi tag HTML di-escape
+[lulus] FW-5b penugasan guru mapel tersimpan lewat formulir
+[lulus] FW-5c daftar menampilkan status Aktif dan capability efektif akun guru
+[lulus] FW-5d daftar menampilkan cakupan dan masa berlaku
+[lulus] FW-5e guru tanpa akun: penugasan tersimpan dengan pesan yang jelas
+[lulus] FW-5f penugasan Bagian Pendidikan tersimpan
+[lulus] FW-5g penugasan bendahara bulanan tersimpan
+[lulus] FW-5h penugasan panitia PSB tersimpan
+[lulus] FW-5i penugasan bendahara PSB tersimpan
+[lulus] FW-5j penugasan murobi tersimpan dari pusat
+[lulus] FW-5k penugasan pembimbing tersimpan dari pusat
+[lulus] FW-5l tab panitia PSB hanya menampilkan capability panitia, bukan keuangan
+[lulus] FW-5m filter status Dinonaktifkan mengembalikan kosong sebelum ada yang dinonaktifkan
+[lulus] FW-6a penugasan bertumpang tindih ditolak lewat formulir dengan pesan
+[lulus] FW-6b penugasan identik ditolak lewat formulir
+[lulus] FW-6c tanggal selesai mendahului tanggal mulai ditolak dengan pesan pada kolom
+[lulus] FW-7a ubah cakupan dan masa berlaku tercermin di data
+[lulus] FW-7b ubah tanpa alasan ditolak dan kembali ke formulir ubah
+[lulus] FW-7c akhiri lewat formulir mencatat tanggal, pelaku, dan alasan
+[lulus] FW-7d nonaktifkan murobi lewat pusat tercermin di tabel lama
+[lulus] FW-7e filter Dinonaktifkan menampilkan penugasan dengan tombol Aktifkan
+[lulus] FW-7f aktifkan kembali lewat formulir
+[lulus] FW-7g audit web menyimpan IP dan user agent pelaku
+[lulus] FW-13a ID yang tidak ada pada tabel jenis itu dijawab tidak ditemukan tanpa mengubah baris mana pun
+[lulus] FW-13b guru_id yang disuntikkan pada ubah diabaikan
+[lulus] FW-8a admin_murobi.php tetap terbuka dan menaut ke Pusat Penugasan
+[lulus] FW-8a admin_pembimbing.php tetap terbuka dan menaut ke Pusat Penugasan
+[lulus] FW-8b formulir lama admin_murobi.php masih menyimpan penugasan
+[lulus] FW-8c penugasan dari halaman lama tampil di Pusat Penugasan
+[lulus] FW-8d formulir lama admin_pembimbing.php masih menyimpan penugasan
+[lulus] FW-8e murobi deactivate tanpa alasan tidak mengubah data
+[lulus] FW-8e murobi archive tanpa alasan tidak mengubah data
+[lulus] FW-8f murobi deactivate dengan alasan melalui pusat
+[lulus] FW-8f murobi activate dengan alasan melalui pusat
+[lulus] FW-8f murobi archive dengan alasan melalui pusat
+[lulus] FW-8f murobi restore dengan alasan melalui pusat
+[lulus] FW-8e pembimbing deactivate tanpa alasan tidak mengubah data
+[lulus] FW-8e pembimbing archive tanpa alasan tidak mengubah data
+[lulus] FW-8f pembimbing deactivate dengan alasan melalui pusat
+[lulus] FW-8f pembimbing activate dengan alasan melalui pusat
+[lulus] FW-8f pembimbing archive dengan alasan melalui pusat
+[lulus] FW-8f pembimbing restore dengan alasan melalui pusat
+[lulus] FW-9a halaman akun menjelaskan role dasar vs penugasan
+[lulus] FW-9b halaman akun menampilkan ringkasan penugasan efektif dan tautan ke pusat
+[lulus] FW-9c penugasan tidak muncul sebagai pilihan role dasar
+[lulus] FW-10f field profil guru sebelum dan sesudah penugasan identik urutan dan namanya
+[lulus] FW-10g menu/mode guru tetap: jadwal, laporan, dan murobi (karena penugasan murobi), tanpa menu nilai
+[lulus] FW-10h field aditif memuat capability nilai dari penugasan guru mapel
+[lulus] FW-10i struktur capabilities pengurus IDENTIK sebelum dan sesudah empat penugasan
+[lulus] FW-10j capability fondasi hanya pada field aditif; tidak ada mode pendidikan/bendahara
+[lulus] FW-10k endpoint /me/capabilities tidak berubah bentuk
+[lulus] FW-10l endpoint jadwal V1 tetap 403 untuk pengurus
+[lulus] FW-10m endpoint jadwal V1 tetap 200 untuk guru
+
+Total gagal: 0

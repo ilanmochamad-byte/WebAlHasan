@@ -16,7 +16,7 @@ try{
         ah_redirect(app_url('/portal/verifikasi_semester.php').'?rencana_id='.$plan.'&santri_id='.$sid);
     }
     if($plan)$current=$service->read($user,$plan,$sid);
-}catch(V4Exception $ex){http_response_code($ex->status);if($ex->status===403){echo '403 — Akses ditolak.';exit;}$error=$ex->getMessage();if($plan){try{$current=$service->read($user,$plan,$sid);}catch(V4Exception){}}}
+}catch(V4Exception $ex){http_response_code($ex->status);if($ex->status===403){\App\Ui\Denial::page('Kelengkapan semester','Bagian Pendidikan',$ex->getMessage());}$error=$ex->getMessage();if($plan){try{$current=$service->read($user,$plan,$sid);}catch(V4Exception){}}}
 $e=static fn($v)=>ah_e($v);$labels=['Dikirim'=>'Diserahkan','Dikembalikan'=>'Perlu Perbaikan','Draf'=>'Draf','Terverifikasi'=>'Terverifikasi'];
 ah_page_open(['title'=>'Kelengkapan Semester','user'=>$user,'description'=>'Pemeriksaan nilai, sikap, dan sumber kehadiran sebelum finalisasi.']);
 ?>

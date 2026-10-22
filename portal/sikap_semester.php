@@ -18,7 +18,7 @@ try{
         ah_redirect(app_url('/portal/sikap_semester.php').'?mode='.urlencode($mode).'&rencana_id='.$plan.'&santri_id='.$sid);
     }
     if($plan&&$sid)$current=$service->read($user,$plan,$sid,$mode);
-}catch(V4Exception $ex){http_response_code($ex->status);if($ex->status===403){echo '403 — Akses ditolak.';exit;}$error=$ex->getMessage();if($plan&&$sid){try{$current=$service->read($user,$plan,$sid,$mode);}catch(V4Exception){}}}
+}catch(V4Exception $ex){http_response_code($ex->status);if($ex->status===403){\App\Ui\Denial::page('Sikap semester','pembimbing, murobi, atau Bagian Pendidikan yang memegang penugasan aktif',$ex->getMessage());}$error=$ex->getMessage();if($plan&&$sid){try{$current=$service->read($user,$plan,$sid,$mode);}catch(V4Exception){}}}
 $e=static fn($v)=>ah_e($v);
 ah_page_open(['title'=>$mode==='murobi'?'Pemeriksaan Sikap Murobi':'Sikap Semester','user'=>$user,'description'=>'Tiga aspek sikap dan riwayat pemeriksaannya.']);
 ?>

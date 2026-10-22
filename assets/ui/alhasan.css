@@ -895,12 +895,13 @@ body.ah {
     box-shadow: -8px 0 24px rgba(16, 32, 24, .12);
 }
 
-.ah-js .ah-panel__body { flex: 1 1 auto; overflow-y: auto; }
+.ah-js .ah-panel__body { flex: 1 1 auto; overflow-y: auto; display: flex; flex-direction: column; }
+.ah-js .ah-panel__body > form { flex: 1 0 auto; display: flex; flex-direction: column; }
 
 .ah-js .ah-panel__foot {
     position: sticky;
     bottom: -1.1rem;
-    margin: 0 -1.1rem -1.1rem;
+    margin: auto -1.1rem -1.1rem;
     padding: .75rem 1.1rem calc(.75rem + env(safe-area-inset-bottom, 0px));
     background: var(--ah-surface);
     border-top: 1px solid var(--ah-line);
@@ -1175,4 +1176,300 @@ body.ah .ah-kredensial__status {
 /* Layar lebar boleh dua kolom; ponsel tetap satu kolom penuh. */
 @media (min-width: 48em) {
     body.ah .ah-kredensial__data { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ==========================================================================
+   Redesain website Tahap 2 — navigasi, peran & Beranda (22 Oktober 2026)
+   ========================================================================== */
+
+/* --- Pencarian menu (keputusan AQ) ---------------------------------------- */
+/* Hanya untuk menu dan tab yang boleh dibuka akun; berjalan di peramban.
+   Tanpa JavaScript kotak ini disembunyikan karena tidak ada fungsinya. */
+.ah-nojs .ah-search, .ah-nojs .ah-topbar__find { display: none !important; }
+
+.ah-search { position: relative; min-width: 0; }
+.ah-search__icon { position: absolute; left: .7rem; top: 20px; transform: translateY(-50%); font-size: .8rem; opacity: .7; pointer-events: none; }
+.ah-search__input {
+    width: 100%;
+    min-height: 40px;
+    padding: .4rem .75rem .4rem 2rem;
+    border-radius: var(--ah-radius-sm);
+    border: 1px solid var(--ah-line-strong);
+    background: var(--ah-surface);
+    color: var(--ah-ink);
+    font-size: .9rem;
+}
+.ah-search--top { flex: 0 1 300px; margin-left: 1rem; }
+.ah-search--top .ah-search__input { border-color: rgba(255, 255, 255, .35); background: rgba(255, 255, 255, .12); color: #fff; }
+.ah-search--top .ah-search__input::placeholder { color: rgba(255, 255, 255, .78); }
+.ah-search--top .ah-search__icon { color: #fff; }
+.ah-search__results {
+    position: absolute;
+    z-index: 1065;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    min-width: 240px;
+    max-height: min(60vh, 360px);
+    overflow-y: auto;
+    margin: 0;
+    padding: .3rem;
+    list-style: none;
+    background: var(--ah-surface);
+    color: var(--ah-ink);
+    border: 1px solid var(--ah-line);
+    border-radius: var(--ah-radius-sm);
+    box-shadow: var(--ah-shadow);
+}
+.ah-search__results li { margin: 0; }
+.ah-search__results a, .ah-search__results .ah-search__none {
+    display: flex;
+    flex-direction: column;
+    min-height: var(--ah-touch);
+    justify-content: center;
+    padding: .35rem .65rem;
+    border-radius: 6px;
+    color: var(--ah-ink);
+    text-decoration: none;
+    font-size: .9rem;
+}
+.ah-search__results a small, .ah-search__none { color: var(--ah-ink-muted); font-size: .78rem; }
+.ah-search__results a[aria-selected="true"], .ah-search__results a:hover { background: var(--ah-green-100); color: var(--ah-green-900); }
+.ah-topbar .ah-search__results a { color: var(--ah-ink); }
+
+.ah-topbar__find { display: none; }
+@media (max-width: 991.98px) {
+    .ah-search--top { display: none; }
+}
+@media (min-width: 576px) and (max-width: 991.98px) {
+    .ah-topbar__find { display: inline-flex; }
+}
+
+.ah-drawer-search { display: none; }
+@media (max-width: 991.98px) {
+    .ah-drawer-search { display: block; padding: 0 .4rem .75rem; }
+    .ah-drawer-search .ah-search__results { position: static; box-shadow: none; margin-top: .35rem; max-height: none; }
+}
+
+/* --- Pemilih peran (A-2, keputusan AR) ------------------------------------ */
+.ah-peran { display: none; }
+@media (min-width: 992px) { .ah-peran { display: inline-block; } }
+.ah-peran__pill { border-radius: 999px; font-weight: 600; white-space: nowrap; }
+.ah-peran__head { margin: .2rem .7rem .35rem; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ah-ink-muted); }
+.ah-peran__item { justify-content: space-between; }
+.ah-peran__item > span:first-child { display: flex; flex-direction: column; min-width: 0; }
+.ah-peran__item small { color: var(--ah-ink-muted); font-size: .78rem; }
+.ah-peran__item[aria-current="true"] { background: var(--ah-green-050); }
+.ah-peran__note { margin: .35rem .7rem .2rem; font-size: .75rem; color: var(--ah-ink-muted); max-width: 30ch; }
+
+.ah-drawer-peran { display: none; }
+@media (max-width: 991.98px) {
+    .ah-drawer-peran { display: block; margin: 0 .4rem .75rem; border: 1px solid var(--ah-line); border-radius: var(--ah-radius-sm); }
+    .ah-drawer-peran > summary { display: flex; align-items: center; gap: .35rem; min-height: var(--ah-touch); padding: .4rem .7rem; cursor: pointer; list-style: none; font-size: .9rem; }
+    .ah-drawer-peran > summary::-webkit-details-marker { display: none; }
+    .ah-drawer-peran > summary i { margin-left: auto; font-size: .7rem; }
+    .ah-drawer-peran__list { padding: .25rem; border-top: 1px solid var(--ah-line); }
+    .ah-drawer-peran__list form { margin: 0; }
+}
+
+/* --- Lonceng dengan pratinjau 5 terbaru (N-3) ----------------------------- */
+.ah-bell > summary { position: relative; }
+.ah-bell > summary[data-current="page"] { background: rgba(255, 255, 255, .16); }
+.ah-bell__list { width: min(360px, calc(100vw - 16px)); max-width: none; }
+.ah-bell__head { margin: .2rem .7rem .35rem; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ah-ink-muted); }
+.ah-bell__empty { margin: .4rem .7rem .6rem; font-size: .88rem; color: var(--ah-ink-muted); }
+.ah-bell__item span { display: flex; flex-direction: column; min-width: 0; }
+.ah-bell__item b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.ah-bell__item small { color: var(--ah-ink-muted); font-size: .78rem; }
+.ah-bell__item.is-unread b::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--ah-info); margin-right: .4rem; vertical-align: middle; }
+@media (max-width: 575.98px) {
+    .ah-bell .ah-menu__list { position: fixed; top: calc(var(--ah-topbar-h) + 4px); right: 8px; left: 8px; width: auto; }
+}
+
+/* --- Keluar lewat formulir POST di menu dan laci (A-4) -------------------- */
+.ah-logout { margin: 0; }
+.ah-drawer-foot__btn {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    width: 100%;
+    min-height: var(--ah-touch);
+    padding: .55rem .6rem;
+    border: 0;
+    border-radius: var(--ah-radius-sm);
+    background: none;
+    color: var(--ah-danger);
+    font-size: .9rem;
+    text-align: left;
+}
+.ah-drawer-foot__btn:hover { background: var(--ah-danger-bg); }
+.ah-drawer-foot__btn i { width: 1.15rem; text-align: center; }
+
+/* Bilah bawah: butir "Menu" membuka laci. */
+.ah-bottombar a[data-ah-drawer] { cursor: pointer; }
+
+/* --- Tab modul dari peta menu --------------------------------------------- */
+.ah-modtabs { margin-bottom: .25rem; }
+.ah-tabs--module { margin-bottom: 1rem; }
+.ah-modtabs + .ah-page-head { margin-top: 0; }
+
+/* Chip penyaring (notifikasi, pilih anak). */
+.ah-chips { border-bottom: 0; gap: .4rem; }
+.ah-chips a { border: 1px solid var(--ah-line-strong); border-radius: 999px; margin: 0; background: var(--ah-surface); padding: .35rem .9rem; }
+.ah-chips a[aria-current="page"] { background: var(--ah-green-700); border-color: var(--ah-green-700); color: #fff; box-shadow: none; }
+
+/* Kerangka polos saat kata sandi sementara wajib diganti (A-3). */
+.ah-bare .ah-main { margin: 0 auto; max-width: 44rem; width: 100%; }
+.ah-narrow { max-width: 40rem; }
+
+/* Kolom sekunder (~) disembunyikan di tablet. */
+@media (min-width: 576px) and (max-width: 991.98px) {
+    .ah-col-secondary { display: none; }
+}
+
+/* --- Beranda (B-1 s.d. B-5) ----------------------------------------------- */
+.ah-beranda__section { margin-bottom: 1.25rem; }
+.ah-section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .35rem 1rem; margin-bottom: .6rem; }
+.ah-section-head h2 { text-transform: uppercase; letter-spacing: .05em; color: var(--ah-ink-soft); }
+
+.ah-task-grid { display: grid; gap: .85rem; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.ah-task-grid--one { grid-template-columns: 1fr; }
+@media (max-width: 1199.98px) { .ah-task-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ah-task-grid--one { grid-template-columns: 1fr; } }
+@media (max-width: 575.98px) { .ah-task-grid { grid-template-columns: 1fr; } }
+
+.ah-task {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+    padding: .9rem 1rem;
+    background: var(--ah-surface);
+    border: 1px solid var(--ah-line);
+    border-left: 4px solid var(--ah-green-700);
+    border-radius: var(--ah-radius);
+    min-width: 0;
+}
+.ah-task--warn { background: var(--ah-warn-bg); border-color: #f0d9ad; border-left-color: var(--ah-warn); }
+.ah-task__num { margin: 0; font-size: 1.9rem; font-weight: 800; line-height: 1; color: var(--ah-ink); }
+.ah-task__title { margin: 0; font-weight: 600; }
+.ah-task__note { margin: 0; font-size: .8rem; color: var(--ah-warn); }
+.ah-task__btn { align-self: flex-start; margin-top: .45rem; }
+
+.ah-stat--link { display: block; text-decoration: none; color: inherit; }
+.ah-stat--link:hover { border-color: var(--ah-green-600); background: var(--ah-green-050); color: inherit; }
+.ah-stat--warn { background: var(--ah-warn-bg); border-color: #f0d9ad; }
+.ah-stat--warn .ah-stat__value { color: var(--ah-warn); }
+@media (max-width: 575.98px) {
+    .ah-beranda__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.ah-schedule-grid { display: grid; gap: .85rem; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.ah-schedule { display: flex; flex-direction: column; gap: .25rem; padding: .9rem 1rem; background: var(--ah-surface); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); }
+.ah-schedule__title { margin: 0; font-weight: 700; }
+.ah-schedule__meta { margin: 0 0 .4rem; color: var(--ah-ink-muted); font-size: .88rem; }
+.ah-schedule .btn { align-self: flex-start; }
+
+.ah-progress-list, .ah-mini-list { list-style: none; margin: 0; padding: 0; }
+.ah-progress-list li + li, .ah-mini-list li + li { border-top: 1px solid var(--ah-line); }
+.ah-progress-list a { display: grid; grid-template-columns: minmax(0, 1fr) 6.5rem auto; align-items: center; gap: .75rem; min-height: var(--ah-touch); padding: .35rem 0; color: inherit; text-decoration: none; }
+.ah-progress-list__label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ah-progress-list__bar { height: 8px; border-radius: 999px; background: var(--ah-line); overflow: hidden; }
+.ah-progress-list__bar i { display: block; height: 100%; background: var(--ah-green-700); }
+.ah-progress-list__num { font-variant-numeric: tabular-nums; color: var(--ah-ink-muted); font-size: .85rem; }
+
+.ah-mini-list a, .ah-mini-list__row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; min-height: var(--ah-touch); padding: .4rem 0; color: inherit; text-decoration: none; }
+.ah-mini-list__row { justify-content: flex-start; }
+.ah-mini-list__main { display: flex; flex-direction: column; min-width: 0; }
+.ah-mini-list__main b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ah-mini-list__main small { color: var(--ah-ink-muted); font-size: .8rem; }
+.ah-avatar--soft { background: var(--ah-green-100); color: var(--ah-green-900); }
+
+@media (max-width: 575.98px) {
+    .ah-btn-block-sm { width: 100%; justify-content: center; }
+    .ah-page-head__actions { width: 100%; }
+}
+
+/* Orang tua: dirancang HP dulu, kartu besar dan huruf lebih besar. */
+.ah-kv { display: grid; gap: .5rem 1.5rem; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin: 0; }
+.ah-kv dt { font-size: .78rem; color: var(--ah-ink-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.ah-kv dd { margin: 0; font-size: 1.05rem; font-weight: 600; }
+.ah-parent-grid { display: grid; gap: .85rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.ah-parent-card { display: flex; flex-direction: column; gap: .35rem; padding: 1.1rem; background: var(--ah-surface); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); font-size: 1.05rem; }
+.ah-parent-card--hl { border-color: var(--ah-green-600); box-shadow: inset 4px 0 0 var(--ah-green-700); }
+.ah-parent-card__title { margin: 0; font-weight: 700; font-size: 1.1rem; }
+.ah-parent-card__text { margin: 0 0 .5rem; color: var(--ah-ink-soft); }
+.ah-parent-card .btn { align-self: flex-start; min-height: var(--ah-touch); }
+
+/* --- Pusat notifikasi (N-3) ----------------------------------------------- */
+.ah-notif-group { margin-bottom: 1.25rem; }
+.ah-notif-group__title { font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ah-ink-muted); margin: 0 0 .5rem; }
+.ah-notif { margin: 0; background: var(--ah-surface); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); overflow: hidden; }
+.ah-notif__item { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .75rem; padding: .35rem .85rem .35rem 0; border-left: 4px solid transparent; }
+.ah-notif__item + .ah-notif__item { border-top: 1px solid var(--ah-line); }
+.ah-notif__item.is-unread { border-left-color: var(--ah-info); background: #f6fafc; }
+.ah-notif__link { flex: 1 1 18rem; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .35rem .75rem; padding: .5rem .85rem; color: inherit; text-decoration: none; min-height: var(--ah-touch); }
+.ah-notif__link:hover { background: var(--ah-green-050); color: inherit; }
+.ah-notif__main { display: flex; flex-direction: column; min-width: 0; flex: 1 1 14rem; }
+.ah-notif__main b { font-weight: 600; }
+.ah-notif__isi { font-size: .88rem; color: var(--ah-ink-soft); overflow-wrap: anywhere; }
+.ah-notif__main small { color: var(--ah-ink-muted); font-size: .78rem; }
+.ah-notif__state { display: flex; flex-wrap: wrap; gap: .3rem; }
+.ah-notif__mark { margin: 0 0 0 .85rem; }
+
+/* --- Halaman masuk (A-1) -------------------------------------------------- */
+body.ah-masuk { min-height: 100dvh; background: var(--ah-green-050); }
+.ah-masuk__wrap { min-height: 100dvh; display: grid; grid-template-columns: 1fr; }
+.ah-masuk__id { display: none; }
+.ah-masuk__form { display: flex; flex-direction: column; justify-content: center; width: 100%; max-width: 26rem; margin: 0 auto; padding: 1.25rem; }
+.ah-masuk__mark { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 14px; background: var(--ah-green-800); color: #fff; font-size: 1.4rem; }
+.ah-masuk__mark--small { width: 48px; height: 48px; font-size: 1.2rem; margin-bottom: .5rem; }
+@media (min-width: 992px) {
+    .ah-masuk__wrap { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .ah-masuk__id { display: flex; flex-direction: column; justify-content: center; gap: .6rem; padding: 3rem clamp(2rem, 6vw, 5rem); background: var(--ah-green-800); color: #fff; }
+    .ah-masuk__id .ah-masuk__mark { background: #fff; color: var(--ah-green-800); }
+    .ah-masuk__name { margin: .5rem 0 0; font-size: 2rem; font-weight: 800; }
+    .ah-masuk__tag { margin: 0; max-width: 32ch; font-size: 1.05rem; color: var(--ah-green-100); }
+    .ah-masuk__mark--small { display: none; }
+}
+
+.ah-reveal { position: relative; }
+.ah-reveal .form-control { padding-right: 7.5rem; }
+.ah-reveal__btn {
+    position: absolute;
+    top: 50%;
+    right: .35rem;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    min-height: 36px;
+    padding: .2rem .6rem;
+    border: 0;
+    border-radius: 6px;
+    background: var(--ah-green-050);
+    color: var(--ah-green-900);
+    font-size: .82rem;
+}
+.ah-nojs .ah-reveal__btn { display: none; }
+.ah-nojs .ah-reveal .form-control { padding-right: .75rem; }
+
+/* --- Ganti kata sandi (A-3): syarat sebagai daftar centang ---------------- */
+.ah-checklist { list-style: none; margin: .5rem 0 0; padding: 0; display: grid; gap: .2rem; font-size: .85rem; color: var(--ah-ink-muted); }
+.ah-checklist li { display: flex; align-items: center; gap: .45rem; }
+.ah-checklist li i { font-size: .55rem; }
+.ah-checklist li.is-ok { color: var(--ah-ok); }
+.ah-checklist li.is-ok i::before { content: "\f00c"; font-size: .75rem; }
+
+/* --- Akses ditolak (A-5) -------------------------------------------------- */
+.ah-denial { max-width: 40rem; }
+
+@media print {
+    .ah-modtabs, .ah-search, .ah-peran, .ah-bell { display: none !important; }
+}
+
+/* Tombol kecil bertinggi sentuh 44px: teks di tengah, bukan di atas. */
+.ah-card__head .btn-sm, .ah-card .ah-table .btn-sm, .ah-task__btn, .ah-schedule .btn, .ah-parent-card .btn, .ah-page-head__actions .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .35rem;
 }

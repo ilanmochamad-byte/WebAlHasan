@@ -14,7 +14,7 @@ try{
   if(isset($_POST['action'])){$result=$svc->act($user,$_POST);ah_flash_set('success','Operasi rapor tersimpan.');ah_redirect(app_url('/portal/rapor_semester.php').'?rencana_id='.$plan.'&santri_id='.$sid);}
  }
  if($plan&&$sid){$preview=$svc->preview($user,$plan,$sid,$note);if($preview['rapor_id'])$detail=$svc->show($user,$preview['rapor_id'],true);}
-}catch(V4Exception $ex){http_response_code($ex->status);if($ex->status===403){echo '403 — Akses ditolak.';exit;}$error=$ex->getMessage();}
+}catch(V4Exception $ex){http_response_code($ex->status);if($ex->status===403){\App\Ui\Denial::page('Penerbitan rapor','Bagian Pendidikan',$ex->getMessage());}$error=$ex->getMessage();}
 ah_page_open(['title'=>'Penerbitan Rapor Semester','user'=>$user,'description'=>'Pratinjau, penerbitan dan riwayat versi tetap.']);$e=static fn($v)=>ah_e($v);
 ?>
 <style>.rapor{overflow-wrap:anywhere}.rapor table{width:100%;border-collapse:collapse;table-layout:fixed}.rapor td,.rapor th{border:1px solid #cbd5d1;padding:.4rem;word-break:break-word}.rapor .sign td{text-align:center}.rapor img{max-width:100%;height:auto}.rapor textarea,.rapor select,.rapor input{max-width:100%;width:100%}.rapor h1{font-size:1.5rem}.rapor h2{font-size:1.2rem}.rapor-actions{display:flex;gap:.7rem;flex-wrap:wrap}</style>

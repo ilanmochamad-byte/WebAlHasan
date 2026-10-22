@@ -18,7 +18,7 @@ require_once __DIR__ . '/_guard.php';
  * dan konstanta `IzinCsvExport::DOKUMENTASI`.
  */
 
-$requestedMode = isset($_GET['mode']) ? (string) $_GET['mode'] : null;
+$requestedMode = portal_requested_mode($currentUser, $userCapabilities);
 
 try {
     $ekspor = izin_report_service()->csv($currentUser, $_GET, $requestedMode);

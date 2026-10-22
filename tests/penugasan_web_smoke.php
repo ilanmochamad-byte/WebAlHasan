@@ -273,7 +273,14 @@ try {
     $beranda = $admin->request('/admin/admin_penugasan.php?jenis=tidak_ada');
     $assert($beranda['status'] === 200 && str_contains($beranda['body'], 'Murobi adalah penugasan, bukan role'), 'FW-1c jenis tak dikenal jatuh ke tab murobi, bukan galat');
     $assert(str_contains($beranda['body'], 'href="/admin/admin_penugasan.php"') && str_contains($beranda['body'], 'Pusat Penugasan</span>'), 'FW-1d sidebar admin memuat menu Pusat Penugasan');
-    $assert(str_contains($beranda['body'], '/admin/admin_murobi.php') && str_contains($beranda['body'], '/admin/admin_pembimbing.php'), 'FW-1e menu murobi dan pembimbing lama tetap ada');
+    // Redesain website Tahap 2 (keputusan C): halaman murobi/pembimbing lama
+    // bukan lagi butir menu, tetapi tetap terbuka di bawah menu Penugasan
+    // sampai dialihkan di Tahap 6 (G-1).
+    $lamaMurobi = $admin->request('/admin/admin_murobi.php');
+    $lamaPembimbing = $admin->request('/admin/admin_pembimbing.php');
+    $menuPenugasan = '#<a href="[^"]*admin_penugasan\.php" aria-current="page">#';
+    $assert($lamaMurobi['status'] === 200 && $lamaPembimbing['status'] === 200
+        && preg_match($menuPenugasan, $lamaMurobi['body']) === 1 && preg_match($menuPenugasan, $lamaPembimbing['body']) === 1, 'FW-1e halaman murobi dan pembimbing lama tetap terbuka di bawah menu Penugasan');
 
     // ------------------------------------------------------------- FW-2
     foreach (['guru' => 'fw.guru.' . $kecil, 'pengurus' => 'fw.pengurus.' . $kecil, 'orang tua' => 'fw.ortu.' . $kecil] as $label => $username) {

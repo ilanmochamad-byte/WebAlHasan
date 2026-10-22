@@ -8,289 +8,491 @@ use App\Auth\Capabilities;
 use App\Penugasan\PenugasanJenis;
 
 /**
- * Peta navigasi Sistem Al Hasan (paket perapihan V1–V2).
+ * Peta navigasi Sistem Al Hasan per peran (redesain website Tahap 2).
+ *
+ * Peta menu mengikuti keputusan Human Developer 22 Oktober 2026 (A–K):
+ * admin 17 menu dalam 7 grup; guru & murobi; pengurus/pembimbing; Bagian
+ * Pendidikan; orang tua. Menu disusun menurut PERAN AKTIF (`Peran`), dan di
+ * dalam peran itu hanya menu yang menjadi hak nyata akun yang ditampilkan.
  *
  * Kelas ini SENGAJA tidak memuat guard apa pun. Ia hanya menjawab pertanyaan
- * "menu apa yang pantas ditampilkan kepada akun ini", sehingga komponen
- * navigasi dapat dipakai lintas peran (admin, guru, murobi, pengurus, orang
- * tua) tanpa menyeret `admin/_guard.php` yang khusus admin.
+ * "menu apa yang pantas ditampilkan kepada akun ini". Menyembunyikan menu
+ * BUKAN kontrol akses: setiap halaman tujuan tetap memeriksa hak dan
+ * cakupannya sendiri di server (`Authorization`, `PortalGuard`, layanan).
  *
- * PENTING: menyembunyikan menu BUKAN kontrol akses. Setiap halaman tujuan tetap
- * memeriksa hak dan cakupannya sendiri di server (`Authorization`,
- * `PortalGuard`, dan pemeriksaan cakupan tiap layanan). Peta ini hanya
- * mengurangi kebingungan pengguna, bukan menggantikan otorisasi.
+ * Setiap menu memuat daftar halaman miliknya (`pages`) dan tab modulnya
+ * (`tabs`). Alamat lama yang tidak lagi menjadi butir menu tetap dapat dibuka
+ * dan ditempatkan di bawah menu barunya lewat daftar halaman itu.
  *
- * Struktur keluaran:
- *   [ ['label' => 'MODUL', 'items' => [ ['key','label','url','icon','badge'] ] ] ]
+ * Struktur keluaran `forUser()`:
+ *   [ ['label' => 'Grup'|'', 'items' => [ ['key','label','url','icon','badge',
+ *      'badge_label','pages','tabs','short'] ] ] ]
  */
 final class Navigation
 {
     /**
-     * Kunci menu aktif ditebak dari nama skrip bila halaman tidak menyebutkannya.
+     * Butir bilah bawah HP per peran (cetak biru, peta menu): jumlah menu
+     * utama dan kandidatnya menurut prioritas. Beranda selalu pertama;
+     * Notifikasi dan Menu ditambahkan di ujung.
      *
-     * @var array<string, string>
+     * @var array<string, array{0:int, 1:array<int, string>}>
      */
-    private const SCRIPT_KEYS = [
-        'index.php' => 'beranda',
-        'izin_ringkasan.php' => 'izin.ringkasan',
-        'izin.php' => 'izin.daftar',
-        'izin_detail.php' => 'izin.daftar',
-        'izin_buat.php' => 'izin.buat',
-        'izin_antrean.php' => 'izin.antrean',
-        'laporan.php' => 'izin.laporan',
-        'notifikasi.php' => 'notifikasi',
-        'admin_dashboard.php' => 'admin.dashboard',
-        'admin_pengajian.php' => 'pengajian',
-        'admin_jadwal_ngaji.php' => 'pengajian',
-        'pertemuan_pengajian.php' => 'pengajian',
-        'admin_laporan_absensi.php' => 'kehadiran',
-        'laporan_absensi_detail.php' => 'kehadiran',
-        'admin_master_santri.php' => 'master.santri',
-        'admin_wali.php' => 'master.wali',
-        'admin_wali_rekonsiliasi.php' => 'master.rekonsiliasi',
-        'admin_guru.php' => 'master.guru',
-        'admin_pengurus.php' => 'master.pengurus',
-        'admin_kelas.php' => 'master.kelas',
-        'admin_kamar.php' => 'master.kamar',
-        'admin_tahun.php' => 'master.tahun',
-        'admin_penugasan.php' => 'master.penugasan',
-        'admin_murobi.php' => 'master.murobi',
-        'admin_pembimbing.php' => 'master.pembimbing',
-        'admin_akun.php' => 'sistem.akun',
-        'admin_akun_perizinan.php' => 'sistem.akun',
-        'admin_notifikasi.php' => 'sistem.notifikasi',
-        'ubah_password.php' => 'akun.password',
-        'admin_data.php' => 'psb.pendaftar',
-        'admin_pembayaran_psb.php' => 'psb.pembayaran',
-        'admin_rekap_keuangan.php' => 'psb.rekap',
-        'admin_alumni.php' => 'alumni',
-        'admin_kelulusan_santri.php' => 'alumni.kelulusan',
-        // Alamat lama pemroses mutasi; kini hanya mengalihkan ke halaman di atas.
-        'proses_mutasi_alumni.php' => 'alumni.kelulusan',
-        'admin_berita.php' => 'konten.berita',
-        'admin_galeri.php' => 'konten.galeri',
-        'admin_download.php' => 'konten.download',
-        'admin_pelanggaran.php' => 'pelanggaran',
-        'admin_v3_katalog.php' => 'v3.katalog',
-        'v3_pelanggaran.php' => 'v3.pelanggaran',
-        'v3_pelanggaran_detail.php' => 'v3.pelanggaran',
-        'v3_konseling.php' => 'v3.konseling',
-        'v3_konseling_detail.php' => 'v3.konseling',
-        'v3_konseling_cetak.php' => 'v3.konseling',
-        'v3_publikasi.php' => 'v3.publikasi',
-        'v3_publikasi_kelola.php' => 'v3.publikasi',
-        'rencana_nilai.php' => 'v4.rencana',
-        'nilai_semester.php' => 'v4.nilai',
-        'sikap_semester.php' => 'v4.sikap',
-        'verifikasi_semester.php' => 'v4.verifikasi',
-        'rapor_semester.php' => 'v4.rapor',
-        'rapor_wali.php' => 'v4.wali',
-        'rapor_penanda.php' => 'v4.penanda',
-        'admin_penempatan_santri.php' => 'master.penempatan',
-        // Alamat lama penempatan; kini hanya mengalihkan ke halaman di atas.
-        'admin_santri.php' => 'master.penempatan',
-        'admin_rekap_santri.php' => 'master.rekap_santri',
+    private const BOTTOM_BAR = [
+        Peran::ADMIN => [2, ['izin', 'santri']],
+        Peran::GURU => [2, ['pengajian', 'nilai', 'antrean', 'sikap_binaan']],
+        Peran::PENGURUS => [2, ['izin', 'sikap', 'pembinaan']],
+        Peran::PENDIDIKAN => [1, ['rapor', 'pengganti']],
+        Peran::ORANG_TUA => [3, ['izin_anak', 'rapor_wali', 'info']],
     ];
 
+    /** @var array<string, array<string, mixed>> */
+    private static array $cache = [];
+
     /**
+     * Grup menu yang tampil untuk akun pada peran aktifnya.
+     *
      * @param array<string, mixed> $user
      * @param array<int, string> $capabilities
+     * @param array<string, array<string, mixed>> $v3Capabilities
      * @return array<int, array{label:string, items:array<int, array<string, mixed>>}>
      */
-    public static function forUser(array $user, array $capabilities, ?int $unreadCount = null, array $v3Capabilities = []): array
+    public static function forUser(array $user, array $capabilities, ?int $unreadCount = null, array $v3Capabilities = [], ?string $peran = null): array
     {
-        $roles = $user['roles'] ?? [];
-        $isAdmin = in_array('admin', $roles, true);
-        $isGuru = in_array('guru', $roles, true);
-        $hasPerizinan = array_intersect(Capabilities::ALL, $capabilities) !== [];
-        $canCreateIzin = array_intersect([Capabilities::ADMIN, Capabilities::PENGURUS], $capabilities) !== [];
-
-        $groups = [];
-
-        $beranda = [self::item('beranda', 'Beranda', '/portal/index.php', 'fa-house')];
-        if ($isAdmin) {
-            $beranda[] = self::item('admin.dashboard', 'Ringkasan Administrasi', '/admin/admin_dashboard.php', 'fa-gauge-high');
-        }
-        $groups[] = ['label' => 'Utama', 'items' => $beranda];
-
-        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_RAPOR_RENCANA)) {
-            $groups[] = ['label' => 'Penilaian semester', 'items' => [
-                self::item('v4.rencana', 'Rencana nilai', '/portal/rencana_nilai.php', 'fa-list-check'),
-            ]];
-        }
-
-        $nilaiItems = [];
-        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_NILAI_INPUT)) $nilaiItems[] = self::item('v4.nilai', 'Nilai semester', '/portal/nilai_semester.php', 'fa-pen');
-        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_NILAI_PENGGANTI)) $nilaiItems[] = self::item('v4.pengganti', 'Isi nilai pengganti', '/portal/nilai_semester.php?pengganti=1', 'fa-pen-to-square');
-        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_SIKAP_INPUT)) $nilaiItems[] = self::item('v4.sikap', 'Sikap semester', '/portal/sikap_semester.php', 'fa-heart');
-        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_SIKAP_MUROBI)) $nilaiItems[] = self::item('v4.murobi', 'Pemeriksaan sikap murobi', '/portal/sikap_semester.php?mode=murobi', 'fa-check');
-        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_RAPOR_FINALISASI)) $nilaiItems[] = self::item('v4.rapor','Penerbitan rapor','/portal/rapor_semester.php','fa-file-pdf');
-        if ($isAdmin) $nilaiItems[] = self::item('v4.penanda','Ubah penanda rapor','/portal/rapor_penanda.php','fa-signature');
-        if (capabilities()->hasFeature($user, PenugasanJenis::CAP_RAPOR_VERIFIKASI)) $nilaiItems[] = self::item('v4.verifikasi', 'Kelengkapan semester', '/portal/verifikasi_semester.php', 'fa-list-check');
-        if ($nilaiItems) $groups[] = ['label' => 'Pengisian nilai', 'items' => $nilaiItems];
-
-        if (array_intersect(['v3.pelanggaran.kelola','v3.binaan.baca','v3.pengawasan','v3.koreksi'],array_keys($v3Capabilities)) !== []) {
-            $groups[] = ['label' => 'Pembinaan V3', 'items' => [
-                self::item('v3.pelanggaran', 'Pelanggaran & poin', '/portal/v3_pelanggaran.php', 'fa-triangle-exclamation'),
-                self::item('v3.konseling', 'Konseling & tindak lanjut', '/portal/v3_konseling.php', 'fa-people-arrows'),
-                self::item('v3.laporan', 'Laporan pembinaan', '/portal/v3_laporan.php', 'fa-chart-column'),
-                self::item('v3.publikasi', 'Publikasi orang tua', '/portal/v3_publikasi_kelola.php', 'fa-envelope'),
-            ]];
-        }
-
-        if (in_array('orang_tua', $roles, true)) $groups[]=['label'=>'Rapor keluarga','items'=>[self::item('v4.wali','Rapor semester','/portal/rapor_wali.php','fa-file-pdf')]];
-        if (isset($v3Capabilities['v3.publikasi.baca'])) {
-            $groups[] = ['label'=>'Informasi keluarga','items'=>[self::item('v3.publikasi','Informasi pembinaan','/portal/v3_publikasi.php','fa-envelope'),self::item('v3.laporan','Laporan pembinaan','/portal/v3_laporan.php','fa-chart-column')]];
-        }
-
-        if ($isGuru || $isAdmin) {
-            $groups[] = ['label' => 'Pengajian', 'items' => [
-                self::item('pengajian', 'Jadwal & Pertemuan', '/admin/admin_pengajian.php', 'fa-book-open'),
-                self::item('kehadiran', 'Laporan Kehadiran', '/admin/admin_laporan_absensi.php', 'fa-chart-column'),
-            ]];
-        }
-
-        if ($hasPerizinan) {
-            $izin = [
-                self::item('izin.ringkasan', 'Ringkasan Perizinan', '/portal/izin_ringkasan.php', 'fa-clipboard-list'),
-                self::item('izin.daftar', 'Daftar Pengajuan', '/portal/izin.php', 'fa-file-shield'),
-                self::item('izin.antrean', 'Antrean Keputusan', '/portal/izin_antrean.php', 'fa-inbox'),
-            ];
-            if ($canCreateIzin) {
-                $izin[] = self::item('izin.buat', 'Buat Pengajuan', '/portal/izin_buat.php', 'fa-square-plus');
-            }
-            $izin[] = self::item('izin.laporan', 'Laporan Perizinan', '/portal/laporan.php', 'fa-file-lines');
-            $groups[] = ['label' => 'Perizinan', 'items' => $izin];
-        }
-
-        if ($isAdmin) {
-            $groups[] = ['label' => 'Master Data', 'items' => [
-                self::item('master.santri', 'Data Santri', '/admin/admin_master_santri.php', 'fa-address-book'),
-                self::item('master.penempatan', 'Penempatan Kelas & Kamar', '/admin/admin_penempatan_santri.php', 'fa-people-arrows'),
-                self::item('master.wali', 'Orang Tua / Wali', '/admin/admin_wali.php', 'fa-people-roof'),
-                self::item('master.rekonsiliasi', 'Rekonsiliasi Wali', '/admin/admin_wali_rekonsiliasi.php', 'fa-code-compare'),
-                self::item('master.guru', 'Data Guru', '/admin/admin_guru.php', 'fa-chalkboard-user'),
-                self::item('master.pengurus', 'Data Pengurus', '/admin/admin_pengurus.php', 'fa-user-tie'),
-                self::item('master.kelas', 'Data Kelas', '/admin/admin_kelas.php', 'fa-school'),
-                self::item('master.kamar', 'Data Kamar', '/admin/admin_kamar.php', 'fa-bed'),
-                self::item('v3.katalog', 'Katalog & Ambang V3', '/admin/admin_v3_katalog.php', 'fa-list-check'),
-                self::item('master.tahun', 'Tahun Ajaran', '/admin/admin_tahun.php', 'fa-calendar-days'),
-            ]];
-            // Fondasi V3–V6: satu pusat untuk seluruh penugasan fungsional. Halaman
-            // murobi/pembimbing lama tetap tersedia dan mengarah ke pusat yang sama.
-            $groups[] = ['label' => 'Penugasan', 'items' => [
-                self::item('master.penugasan', 'Pusat Penugasan', '/admin/admin_penugasan.php', 'fa-id-badge'),
-                self::item('master.murobi', 'Penugasan Murobi', '/admin/admin_murobi.php', 'fa-user-group'),
-                self::item('master.pembimbing', 'Penugasan Pembimbing', '/admin/admin_pembimbing.php', 'fa-user-shield'),
-            ]];
-        }
-
-        $sistem = [];
-        if ($hasPerizinan) {
-            $sistem[] = self::item(
-                'notifikasi',
-                'Notifikasi Saya',
-                '/portal/notifikasi.php',
-                'fa-bell',
-                $unreadCount !== null && $unreadCount > 0 ? ($unreadCount > 99 ? '99+' : (string) $unreadCount) : null,
-                $unreadCount !== null && $unreadCount > 0 ? $unreadCount . ' notifikasi belum dibaca' : null
-            );
-        }
-        if ($isAdmin) {
-            $sistem[] = self::item('sistem.akun', 'Akun & Hak Akses', '/admin/admin_akun.php', 'fa-user-lock');
-            $sistem[] = self::item('sistem.notifikasi', 'Kanal Notifikasi', '/admin/admin_notifikasi.php', 'fa-tower-broadcast');
-        }
-        $sistem[] = self::item('akun.password', 'Ganti Password', '/admin/ubah_password.php', 'fa-key');
-        $groups[] = ['label' => 'Akun & Sistem', 'items' => $sistem];
-
-        if ($isAdmin) {
-            $groups[] = ['label' => 'PSB & Keuangan', 'items' => [
-                self::item('psb.pendaftar', 'Data Pendaftar', '/admin/admin_data.php', 'fa-users'),
-                self::item('psb.pembayaran', 'Pembayaran PSB', '/admin/admin_pembayaran_psb.php', 'fa-money-bill'),
-                self::item('psb.rekap', 'Rekap Keuangan PSB', '/admin/admin_rekap_keuangan.php', 'fa-chart-area'),
-            ]];
-            $groups[] = ['label' => 'Lain-lain', 'items' => [
-                self::item('pelanggaran', 'Data pelanggaran warisan', '/admin/admin_pelanggaran.php', 'fa-box-archive'),
-                self::item('alumni', 'Data Alumni', '/admin/admin_alumni.php', 'fa-paper-plane'),
-                self::item('alumni.kelulusan', 'Kelulusan & Mutasi Keluar', '/admin/admin_kelulusan_santri.php', 'fa-user-graduate'),
-                self::item('konten.berita', 'Berita / Artikel', '/admin/admin_berita.php', 'fa-newspaper'),
-                self::item('konten.galeri', 'Galeri Foto', '/admin/admin_galeri.php', 'fa-images'),
-                self::item('konten.download', 'File Download', '/admin/admin_download.php', 'fa-download'),
-            ]];
-        }
-
-        return $groups;
+        return self::build($user, $capabilities, $unreadCount, $v3Capabilities, $peran)['groups'];
     }
 
     /**
-     * Label pendek bilah bawah HP, menurut prioritas tampil.
+     * Peta lengkap: grup tampil, butir tersembunyi (notifikasi, kata sandi),
+     * dan peran yang dipakai.
      *
-     * Tahap 1 redesain hanya memilih dari menu yang SUDAH ada pada peta lama;
-     * peta bilah bawah per peran ditetapkan ulang di Tahap 2 bersama peta menu
-     * baru. Kunci yang tidak dimiliki akun otomatis terlewati.
-     *
-     * @var array<string, string>
+     * @param array<string, mixed> $user
+     * @param array<int, string> $capabilities
+     * @param array<string, array<string, mixed>> $v3Capabilities
+     * @return array{peran:?string, groups:array<int, array{label:string, items:array<int, array<string, mixed>>}>, extras:array<int, array<string, mixed>>}
      */
-    private const BOTTOM_BAR = [
-        'izin.ringkasan' => 'Perizinan',
-        'pengajian' => 'Pengajian',
-        'v4.nilai' => 'Nilai',
-        'v4.sikap' => 'Sikap',
-        'v4.wali' => 'Rapor',
-        'v3.publikasi' => 'Pembinaan',
-        'v3.pelanggaran' => 'Pembinaan',
-        'master.santri' => 'Santri',
-        'v4.verifikasi' => 'Kelengkapan',
-        'v4.rapor' => 'Rapor',
-        'v4.rencana' => 'Rencana',
-        'notifikasi' => 'Notifikasi',
-    ];
-
-    /**
-     * Awalan kunci yang dianggap satu modul, sehingga butir bilah bawah tetap
-     * tersorot saat pengguna membuka sub-halaman modul itu.
-     *
-     * @var array<string, string>
-     */
-    private const BOTTOM_SECTIONS = [
-        'izin.ringkasan' => 'izin.',
-        'v3.pelanggaran' => 'v3.',
-        'master.santri' => 'master.',
-    ];
-
-    /**
-     * Butir bilah bawah HP: Beranda lalu paling banyak empat menu lain.
-     *
-     * @param array<int, array{label:string, items:array<int, array<string, mixed>>}> $groups
-     * @return array<int, array<string, mixed>>
-     */
-    public static function bottomBar(array $groups, string $active, int $limit = 5): array
+    public static function build(array $user, array $capabilities, ?int $unreadCount = null, array $v3Capabilities = [], ?string $peran = null): array
     {
-        $byKey = [];
-        foreach ($groups as $group) {
-            foreach ($group['items'] as $item) {
-                $byKey[$item['key']] ??= $item;
-            }
+        $peran ??= Peran::active($user);
+        $cacheKey = (int) ($user['id'] ?? 0) . '|' . ($peran ?? '-') . '|' . ($unreadCount ?? 'x');
+        if (isset(self::$cache[$cacheKey])) {
+            return self::$cache[$cacheKey];
         }
 
-        $bar = [];
-        $labels = ['beranda' => 'Beranda'] + self::BOTTOM_BAR;
-        foreach ($labels as $key => $short) {
-            if (count($bar) >= $limit || !isset($byKey[$key])) {
-                continue;
+        $badge = $unreadCount !== null && $unreadCount > 0 ? ($unreadCount > 99 ? '99+' : (string) $unreadCount) : null;
+        $badgeLabel = $badge !== null ? $unreadCount . ' notifikasi belum dibaca' : null;
+        $notifikasi = self::item('notifikasi', 'Notifikasi', '/portal/notifikasi.php', 'fa-bell', ['notifikasi.php'], [], 'Notifikasi');
+        $notifikasi['badge'] = $badge;
+        $notifikasi['badge_label'] = $badgeLabel;
+        $password = self::item('akun.password', 'Ganti kata sandi', '/admin/ubah_password.php', 'fa-key', ['ubah_password.php']);
+
+        $ctx = new NavigationContext($user, $capabilities, $v3Capabilities);
+        $groups = match ($peran) {
+            Peran::ADMIN => self::admin($ctx),
+            Peran::GURU => self::guru($ctx),
+            Peran::PENGURUS => self::pengurus($ctx),
+            Peran::PENDIDIKAN => self::pendidikan($ctx),
+            Peran::ORANG_TUA => self::orangTua($ctx, $notifikasi),
+            default => [['label' => '', 'items' => [self::beranda()]]],
+        };
+
+        // Grup kosong (mis. pengurus bukan pembimbing tanpa penugasan) dibuang.
+        $groups = array_values(array_filter($groups, static fn (array $group): bool => $group['items'] !== []));
+
+        $extras = [$password];
+        if (self::find($groups, 'notifikasi') === null) {
+            $extras[] = $notifikasi;
+        }
+
+        return self::$cache[$cacheKey] = ['peran' => $peran, 'groups' => $groups, 'extras' => $extras];
+    }
+
+    /** @return array<int, array{label:string, items:array<int, array<string, mixed>>}> */
+    private static function admin(NavigationContext $c): array
+    {
+        $beranda = self::beranda([
+            self::tab('Tugas saya', '/portal/index.php', ['index.php']),
+            self::tab('Ringkasan administrasi', '/admin/admin_dashboard.php', ['admin_dashboard.php']),
+        ]);
+
+        return [
+            ['label' => '', 'items' => [$beranda]],
+            ['label' => 'Kegiatan santri', 'items' => [
+                self::perizinan(),
+                self::pengajian(),
+                self::pembinaan(true),
+            ]],
+            ['label' => 'Akademik', 'items' => array_filter([self::penilaian($c, true)])],
+            ['label' => 'Data pesantren', 'items' => [
+                self::item('santri', 'Data santri', '/admin/admin_master_santri.php', 'fa-address-book', [], [
+                    self::tab('Santri', '/admin/admin_master_santri.php', ['admin_master_santri.php', 'export_santri.php', 'proses_import_santri.php', 'hapus_siswa.php']),
+                    self::tab('Penempatan', '/admin/admin_penempatan_santri.php', ['admin_penempatan_santri.php', 'admin_santri.php']),
+                    self::tab('Orang tua/wali', '/admin/admin_wali.php', ['admin_wali.php', 'admin_wali_rekonsiliasi.php']),
+                    self::tab('Kelulusan & alumni', '/admin/admin_alumni.php', ['admin_alumni.php', 'admin_kelulusan_santri.php', 'proses_mutasi_alumni.php']),
+                    self::tab('Rekap jumlah', '/admin/admin_rekap_santri.php', ['admin_rekap_santri.php']),
+                ], 'Santri'),
+                self::item('asatidz', 'Asatidz & pengurus', '/admin/admin_guru.php', 'fa-chalkboard-user', [], [
+                    self::tab('Asatidz', '/admin/admin_guru.php', ['admin_guru.php']),
+                    self::tab('Pengurus', '/admin/admin_pengurus.php', ['admin_pengurus.php']),
+                ], 'Asatidz'),
+                self::item('kelas', 'Kelas & kobong', '/admin/admin_kelas.php', 'fa-school', [], [
+                    self::tab('Kelas', '/admin/admin_kelas.php', ['admin_kelas.php']),
+                    self::tab('Kamar/kobong', '/admin/admin_kamar.php', ['admin_kamar.php']),
+                ], 'Kelas'),
+            ]],
+            ['label' => 'PSB', 'items' => [
+                self::item('psb.pendaftar', 'Pendaftar', '/admin/admin_data.php', 'fa-user-plus', ['admin_data.php', 'proses_psb_admin.php', 'export_psb.php', 'proses_import_psb.php']),
+                self::item('psb.pembayaran', 'Pembayaran', '/admin/admin_pembayaran_psb.php', 'fa-money-bill', ['admin_pembayaran_psb.php', 'export_pembayaran.php']),
+                self::item('psb.rekap', 'Rekap keuangan', '/admin/admin_rekap_keuangan.php', 'fa-chart-area', ['admin_rekap_keuangan.php'], [], 'Rekap'),
+            ]],
+            ['label' => 'Website', 'items' => [
+                self::item('konten', 'Konten website', '/admin/admin_berita.php', 'fa-newspaper', [], [
+                    self::tab('Berita', '/admin/admin_berita.php', ['admin_berita.php', 'tambah_berita.php', 'edit_berita.php', 'proses_berita.php']),
+                    self::tab('Galeri', '/admin/admin_galeri.php', ['admin_galeri.php']),
+                    self::tab('Unduhan', '/admin/admin_download.php', ['admin_download.php']),
+                ], 'Website'),
+            ]],
+            ['label' => 'Pengaturan', 'items' => [
+                self::item('tahun', 'Tahun ajaran', '/admin/admin_tahun.php', 'fa-calendar-days', ['admin_tahun.php']),
+                self::item('penugasan', 'Penugasan', '/admin/admin_penugasan.php', 'fa-id-badge', ['admin_penugasan.php', 'admin_murobi.php', 'admin_pembimbing.php']),
+                self::item('akun', 'Akun & hak akses', '/admin/admin_akun.php', 'fa-user-lock', ['admin_akun.php', 'admin_akun_perizinan.php'], [], 'Akun'),
+                self::item('kanal', 'Kanal notifikasi', '/admin/admin_notifikasi.php', 'fa-tower-broadcast', ['admin_notifikasi.php'], [], 'Kanal'),
+                self::item('arsip', 'Data sistem lama', '/admin/admin_pelanggaran.php', 'fa-box-archive', ['admin_pelanggaran.php'], [], 'Arsip'),
+            ]],
+        ];
+    }
+
+    /** @return array<int, array{label:string, items:array<int, array<string, mixed>>}> */
+    private static function guru(NavigationContext $c): array
+    {
+        $mengajar = [];
+        if ($c->showPengajian()) {
+            $mengajar[] = self::pengajian();
+        }
+        if ($c->own(PenugasanJenis::CAP_NILAI_INPUT)) {
+            $mengajar[] = self::item('nilai', 'Nilai semester', '/portal/nilai_semester.php', 'fa-pen', ['nilai_semester.php'], [], 'Nilai');
+        }
+
+        $murobi = [];
+        if ($c->izin(Capabilities::MUROBI)) {
+            $murobi[] = self::item('antrean', 'Antrean izin', '/portal/izin_antrean.php', 'fa-inbox', [], [
+                self::tab('Menunggu keputusan', '/portal/izin_antrean.php', ['izin_antrean.php']),
+                self::tab('Riwayat', '/portal/izin.php', ['izin.php', 'izin_detail.php', 'izin_ringkasan.php', 'izin_aksi.php']),
+                self::tab('Laporan', '/portal/laporan.php', ['laporan.php', 'laporan_cetak.php', 'laporan_csv.php']),
+            ], 'Antrean');
+        }
+        if ($c->own(PenugasanJenis::CAP_SIKAP_MUROBI)) {
+            $murobi[] = self::item('sikap_binaan', 'Sikap binaan', '/portal/sikap_semester.php?mode=murobi', 'fa-heart', ['sikap_semester.php?mode=murobi'], [], 'Sikap');
+        }
+        if (isset($c->v3['v3.binaan.baca'])) {
+            $murobi[] = self::item('pembinaan_binaan', 'Pembinaan binaan', '/portal/v3_pelanggaran.php', 'fa-scale-balanced', [], [
+                self::tab('Pelanggaran', '/portal/v3_pelanggaran.php', ['v3_pelanggaran.php', 'v3_pelanggaran_detail.php', 'v3_lampiran.php']),
+                self::tab('Konseling', '/portal/v3_konseling.php', ['v3_konseling.php', 'v3_konseling_detail.php', 'v3_konseling_cetak.php']),
+            ], 'Pembinaan');
+        }
+
+        return [
+            ['label' => '', 'items' => [self::beranda()]],
+            ['label' => 'Mengajar', 'items' => $mengajar],
+            ['label' => 'Murobi', 'items' => $murobi],
+        ];
+    }
+
+    /** @return array<int, array{label:string, items:array<int, array<string, mixed>>}> */
+    private static function pengurus(NavigationContext $c): array
+    {
+        $items = [];
+        if ($c->izin(Capabilities::PENGURUS)) {
+            $items[] = self::perizinan();
+        }
+        // Keputusan J: Sikap semester dan Pembinaan hanya bagi pengurus yang
+        // memegang penugasan pembimbing aktif.
+        if ($c->own(PenugasanJenis::CAP_SIKAP_INPUT)) {
+            $items[] = self::item('sikap', 'Sikap semester', '/portal/sikap_semester.php', 'fa-heart', ['sikap_semester.php'], [], 'Binaan');
+        }
+        if (isset($c->v3['v3.pelanggaran.kelola'])) {
+            $items[] = self::pembinaan(false);
+        }
+
+        return [
+            ['label' => '', 'items' => [self::beranda()]],
+            ['label' => 'Santri binaan', 'items' => $items],
+        ];
+    }
+
+    /** @return array<int, array{label:string, items:array<int, array<string, mixed>>}> */
+    private static function pendidikan(NavigationContext $c): array
+    {
+        $akademik = array_filter([self::penilaian($c, false)]);
+        if ($c->own(PenugasanJenis::CAP_NILAI_PENGGANTI)) {
+            $akademik[] = self::item('pengganti', 'Nilai pengganti', '/portal/nilai_semester.php?pengganti=1', 'fa-pen-to-square', ['nilai_semester.php?pengganti=1'], [], 'Pengganti');
+        }
+
+        // Menu "Laporan absensi pengajian" (keputusan H) menyertai perubahan
+        // penjaga laporan di Tahap 4, karena menambah hak akses.
+        return [
+            ['label' => '', 'items' => [self::beranda()]],
+            ['label' => 'Akademik', 'items' => array_values($akademik)],
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $notifikasi
+     * @return array<int, array{label:string, items:array<int, array<string, mixed>>}>
+     */
+    private static function orangTua(NavigationContext $c, array $notifikasi): array
+    {
+        $items = [self::beranda()];
+        if ($c->izin(Capabilities::ORANG_TUA)) {
+            $items[] = self::item('izin_anak', 'Izin anak', '/portal/izin.php', 'fa-file-shield', [], [
+                self::tab('Daftar izin', '/portal/izin.php', ['izin.php', 'izin_detail.php', 'izin_antrean.php']),
+                self::tab('Ringkasan', '/portal/izin_ringkasan.php', ['izin_ringkasan.php']),
+                self::tab('Laporan', '/portal/laporan.php', ['laporan.php', 'laporan_cetak.php', 'laporan_csv.php']),
+            ], 'Izin');
+        }
+        if ($c->raporWali()) {
+            $items[] = self::item('rapor_wali', 'Rapor', '/portal/rapor_wali.php', 'fa-file-lines', ['rapor_wali.php', 'rapor_pdf.php'], [], 'Rapor');
+        }
+        if (isset($c->v3['v3.publikasi.baca'])) {
+            // Keputusan F: orang tua melihat "Informasi pembinaan".
+            $items[] = self::item('info', 'Informasi pembinaan', '/portal/v3_publikasi.php', 'fa-envelope-open-text', [], [
+                self::tab('Informasi', '/portal/v3_publikasi.php', ['v3_publikasi.php']),
+                self::tab('Laporan pembinaan', '/portal/v3_laporan.php', ['v3_laporan.php']),
+            ], 'Info');
+        }
+        // Keputusan K: notifikasi orang tua juga tampil sebagai menu.
+        $items[] = $notifikasi;
+
+        return [['label' => '', 'items' => $items]];
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $tabs
+     * @return array<string, mixed>
+     */
+    private static function beranda(array $tabs = []): array
+    {
+        return self::item('beranda', 'Beranda', '/portal/index.php', 'fa-house', ['index.php'], $tabs, 'Beranda');
+    }
+
+    /** @return array<string, mixed> */
+    private static function perizinan(): array
+    {
+        return self::item('izin', 'Perizinan', '/portal/izin_ringkasan.php', 'fa-file-shield', ['admin_izin.php'], [
+            self::tab('Ringkasan', '/portal/izin_ringkasan.php', ['izin_ringkasan.php']),
+            self::tab('Pengajuan', '/portal/izin.php', ['izin.php', 'izin_detail.php', 'izin_buat.php', 'izin_aksi.php']),
+            self::tab('Antrean', '/portal/izin_antrean.php', ['izin_antrean.php']),
+            self::tab('Laporan', '/portal/laporan.php', ['laporan.php', 'laporan_cetak.php', 'laporan_csv.php']),
+        ], 'Perizinan');
+    }
+
+    /** @return array<string, mixed> */
+    private static function pengajian(): array
+    {
+        return self::item('pengajian', 'Pengajian', '/admin/admin_pengajian.php', 'fa-book-open', [], [
+            self::tab('Jadwal & pertemuan', '/admin/admin_pengajian.php', ['admin_pengajian.php', 'admin_jadwal_ngaji.php', 'pertemuan_pengajian.php']),
+            self::tab('Kehadiran', '/admin/admin_laporan_absensi.php', ['admin_laporan_absensi.php', 'laporan_absensi_detail.php', 'laporan_absensi_cetak.php', 'export_laporan_absensi.php']),
+        ], 'Pengajian');
+    }
+
+    /** @return array<string, mixed> */
+    private static function pembinaan(bool $katalog): array
+    {
+        $tabs = [
+            self::tab('Pelanggaran', '/portal/v3_pelanggaran.php', ['v3_pelanggaran.php', 'v3_pelanggaran_detail.php', 'v3_lampiran.php']),
+            self::tab('Konseling', '/portal/v3_konseling.php', ['v3_konseling.php', 'v3_konseling_detail.php', 'v3_konseling_cetak.php']),
+            // Keputusan E/F: staf menyebutnya "Publikasi ke orang tua".
+            self::tab('Publikasi ke orang tua', '/portal/v3_publikasi_kelola.php', ['v3_publikasi_kelola.php', 'v3_publikasi.php']),
+            self::tab('Laporan', '/portal/v3_laporan.php', ['v3_laporan.php']),
+        ];
+        if ($katalog) {
+            $tabs[] = self::tab('Katalog & poin', '/admin/admin_v3_katalog.php', ['admin_v3_katalog.php']);
+        }
+
+        return self::item('pembinaan', 'Pembinaan', '/portal/v3_pelanggaran.php', 'fa-scale-balanced', [], $tabs, 'Pembinaan');
+    }
+
+    /**
+     * Menu "Penilaian & rapor": tab sesuai hak akun. Admin juga melihat tab
+     * pengawasan (nilai, sikap, penanda tangan, mata pelajaran) agar tidak ada
+     * fungsi lama yang kehilangan jalan masuk.
+     *
+     * @return array<string, mixed>|null
+     */
+    private static function penilaian(NavigationContext $c, bool $admin): ?array
+    {
+        $tabs = [];
+        if ($c->feature(PenugasanJenis::CAP_RAPOR_RENCANA)) {
+            $tabs[] = self::tab('Rencana', '/portal/rencana_nilai.php', ['rencana_nilai.php']);
+        }
+        if ($c->feature(PenugasanJenis::CAP_RAPOR_VERIFIKASI)) {
+            $tabs[] = self::tab('Kelengkapan', '/portal/verifikasi_semester.php', ['verifikasi_semester.php']);
+        }
+        if ($c->feature(PenugasanJenis::CAP_RAPOR_FINALISASI)) {
+            $tabs[] = self::tab('Penerbitan', '/portal/rapor_semester.php', ['rapor_semester.php', 'rapor_pdf.php']);
+        }
+        if ($admin) {
+            $tabs[] = self::tab('Penanda tangan', '/portal/rapor_penanda.php', ['rapor_penanda.php']);
+            if ($c->feature(PenugasanJenis::CAP_NILAI_INPUT)) {
+                $tabs[] = self::tab('Nilai semester', '/portal/nilai_semester.php', ['nilai_semester.php']);
             }
-            $item = $byKey[$key];
-            // Satu modul cukup satu butir (mis. Pembinaan dari dua sumber).
-            if (in_array($short, array_column($bar, 'short'), true)) {
-                continue;
+            if ($c->feature(PenugasanJenis::CAP_NILAI_PENGGANTI)) {
+                $tabs[] = self::tab('Nilai pengganti', '/portal/nilai_semester.php?pengganti=1', ['nilai_semester.php?pengganti=1']);
             }
-            $section = self::BOTTOM_SECTIONS[$key] ?? null;
-            $item['short'] = $short;
-            $item['current'] = $active === $key || ($section !== null && $active !== '' && str_starts_with($active, $section));
-            $bar[] = $item;
+            if ($c->feature(PenugasanJenis::CAP_SIKAP_INPUT)) {
+                $tabs[] = self::tab('Sikap semester', '/portal/sikap_semester.php', ['sikap_semester.php']);
+            }
+            $tabs[] = self::tab('Mata pelajaran', '/admin/admin_penugasan.php?jenis=mata_pelajaran', ['admin_penugasan.php?jenis=mata_pelajaran']);
+        }
+        if ($tabs === []) {
+            return null;
+        }
+
+        return self::item('rapor', 'Penilaian & rapor', self::path($tabs[0]['url']), 'fa-file-signature', [], $tabs, 'Rapor');
+    }
+
+    /**
+     * Butir bilah bawah HP: Beranda, menu utama peran, lalu
+     * Notifikasi (dan Menu, yang membuka laci, bila masih ada tempat).
+     *
+     * @param array<int, array{label:string, items:array<int, array<string, mixed>>}> $groups
+     * @param array<int, array<string, mixed>> $extras
+     * @return array<int, array<string, mixed>>
+     */
+    public static function bottomBar(array $groups, string $active, ?string $peran = null, array $extras = []): array
+    {
+        $beranda = self::find($groups, 'beranda');
+        if ($beranda === null) {
+            return [];
+        }
+        $bar = [$beranda];
+        [$batas, $kandidat] = self::BOTTOM_BAR[$peran ?? ''] ?? [0, []];
+        foreach ($kandidat as $key) {
+            $item = self::find($groups, $key);
+            if ($item !== null && count($bar) <= $batas) {
+                $bar[] = $item;
+            }
+        }
+        $notifikasi = self::find($groups, 'notifikasi') ?? self::findIn($extras, 'notifikasi');
+        if ($notifikasi !== null) {
+            $bar[] = $notifikasi;
+        }
+        foreach ($bar as &$item) {
+            $item['short'] ??= $item['label'];
+            $item['current'] = $item['key'] === $active;
+        }
+        unset($item);
+        // Laci tetap dapat dibuka dari ≡ di topbar; butir "Menu" ditambahkan
+        // bila bilah bawah masih punya tempat (paling banyak lima butir).
+        if (count($bar) < 5 && $peran !== Peran::ORANG_TUA) {
+            $bar[] = ['key' => '_menu', 'short' => 'Menu', 'label' => 'Menu', 'icon' => 'fa-bars', 'url' => '#ah-sidebar', 'current' => false, 'badge' => null, 'badge_label' => null];
         }
 
         return $bar;
+    }
+
+    /**
+     * Menu dan tab yang boleh dibuka akun, untuk pencarian menu di peramban
+     * (keputusan AQ). Tidak memuat data santri atau nomor izin.
+     *
+     * @param array<int, array{label:string, items:array<int, array<string, mixed>>}> $groups
+     * @param array<int, array<string, mixed>> $extras
+     * @return array<int, array{label:string, context:string, url:string}>
+     */
+    public static function searchIndex(array $groups, array $extras = []): array
+    {
+        $index = [];
+        $seen = [];
+        $push = static function (string $label, string $context, string $url) use (&$index, &$seen): void {
+            $id = $label . '|' . $url;
+            if (isset($seen[$id])) {
+                return;
+            }
+            $seen[$id] = true;
+            $index[] = ['label' => $label, 'context' => $context, 'url' => $url];
+        };
+        foreach ($groups as $group) {
+            foreach ($group['items'] as $item) {
+                $push($item['label'], $group['label'], $item['url']);
+                foreach ($item['tabs'] as $tab) {
+                    if ($tab['label'] !== $item['label']) {
+                        $push($tab['label'], $item['label'], $tab['url']);
+                    }
+                }
+            }
+        }
+        foreach ($extras as $item) {
+            $push($item['label'], 'Akun', $item['url']);
+        }
+
+        return $index;
+    }
+
+    /**
+     * Menu dan tab tempat sebuah halaman berada.
+     *
+     * Aturan halaman berupa nama skrip, opsional dengan parameter wajib
+     * (`sikap_semester.php?mode=murobi`). Aturan dengan parameter lebih banyak
+     * yang cocok menang, sehingga sub-halaman berparameter tidak tertukar
+     * dengan halaman induknya.
+     *
+     * @param array<int, array{label:string, items:array<int, array<string, mixed>>}> $groups
+     * @param array<int, array<string, mixed>> $extras
+     * @param array<string, mixed>|null $query
+     * @return array{key:string, tab:?int}|null
+     */
+    public static function locate(array $groups, array $extras = [], ?string $script = null, ?array $query = null): ?array
+    {
+        $script ??= basename((string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+        $query ??= $_GET;
+        $best = null;
+        $bestScore = -1;
+        $consider = static function (array $item) use ($script, $query, &$best, &$bestScore): void {
+            foreach ($item['pages'] as $rule) {
+                $score = self::match($rule, $script, $query);
+                if ($score > $bestScore) {
+                    $bestScore = $score;
+                    $best = ['key' => $item['key'], 'tab' => null];
+                }
+            }
+            foreach ($item['tabs'] as $index => $tab) {
+                foreach ($tab['pages'] as $rule) {
+                    $score = self::match($rule, $script, $query);
+                    // Halaman yang sekaligus menjadi tab menu induknya (mis.
+                    // Beranda › Tugas saya) menyorot tab itu juga.
+                    $samaInduk = $best !== null && $best['key'] === $item['key'] && $best['tab'] === null;
+                    if ($score > $bestScore || ($score >= 0 && $score === $bestScore && $samaInduk)) {
+                        $bestScore = $score;
+                        $best = ['key' => $item['key'], 'tab' => $index];
+                    }
+                }
+            }
+        };
+        foreach ($groups as $group) {
+            foreach ($group['items'] as $item) {
+                $consider($item);
+            }
+        }
+        foreach ($extras as $item) {
+            $consider($item);
+        }
+
+        return $best;
+    }
+
+    /**
+     * Kunci menu aktif untuk skrip yang sedang berjalan (kompatibilitas
+     * `admin/sidebar.php`).
+     */
+    public static function activeKey(?string $script = null): string
+    {
+        $user = authorization()->currentUser();
+        if ($user === null) {
+            return '';
+        }
+        $context = ui_context($user);
+        $map = self::build($user, $context['capabilities'], $context['unread'], $context['v3_capabilities']);
+
+        return self::locate($map['groups'], $map['extras'], $script)['key'] ?? '';
     }
 
     /**
@@ -300,10 +502,9 @@ final class Navigation
     public static function find(array $groups, string $key): ?array
     {
         foreach ($groups as $group) {
-            foreach ($group['items'] as $item) {
-                if ($item['key'] === $key) {
-                    return $item;
-                }
+            $found = self::findIn($group['items'], $key);
+            if ($found !== null) {
+                return $found;
             }
         }
 
@@ -311,33 +512,78 @@ final class Navigation
     }
 
     /**
-     * Kunci menu aktif untuk skrip yang sedang berjalan.
+     * @param array<int, array<string, mixed>> $items
+     * @return array<string, mixed>|null
      */
-    public static function activeKey(?string $script = null): string
+    private static function findIn(array $items, string $key): ?array
     {
-        $script = $script ?? basename((string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+        foreach ($items as $item) {
+            if (($item['key'] ?? null) === $key) {
+                return $item;
+            }
+        }
 
-        return self::SCRIPT_KEYS[$script] ?? '';
+        return null;
     }
 
     /**
+     * Skor kecocokan aturan halaman: -1 tidak cocok, 0 cocok nama skrip,
+     * 1+ cocok dengan sejumlah parameter.
+     *
+     * @param array<string, mixed> $query
+     */
+    private static function match(string $rule, string $script, array $query): int
+    {
+        $parts = explode('?', $rule, 2);
+        if ($parts[0] !== $script) {
+            return -1;
+        }
+        if (!isset($parts[1])) {
+            return 0;
+        }
+        parse_str($parts[1], $required);
+        foreach ($required as $name => $value) {
+            if (!isset($query[$name]) || (string) $query[$name] !== (string) $value) {
+                return -1;
+            }
+        }
+
+        return count($required);
+    }
+
+    private static function path(string $url): string
+    {
+        $base = rtrim(app_url(''), '/');
+
+        return $base !== '' && str_starts_with($url, $base) ? substr($url, strlen($base)) : $url;
+    }
+
+    /**
+     * @param array<int, string> $pages
+     * @return array{label:string, url:string, pages:array<int, string>}
+     */
+    private static function tab(string $label, string $path, array $pages): array
+    {
+        return ['label' => $label, 'url' => app_url($path), 'pages' => $pages];
+    }
+
+    /**
+     * @param array<int, string> $pages
+     * @param array<int, array{label:string, url:string, pages:array<int, string>}> $tabs
      * @return array<string, mixed>
      */
-    private static function item(
-        string $key,
-        string $label,
-        string $path,
-        string $icon,
-        ?string $badge = null,
-        ?string $badgeLabel = null
-    ): array {
+    private static function item(string $key, string $label, string $path, string $icon, array $pages, array $tabs = [], ?string $short = null): array
+    {
         return [
             'key' => $key,
             'label' => $label,
             'url' => app_url($path),
             'icon' => $icon,
-            'badge' => $badge,
-            'badge_label' => $badgeLabel,
+            'badge' => null,
+            'badge_label' => null,
+            'pages' => $pages,
+            'tabs' => $tabs,
+            'short' => $short ?? $label,
         ];
     }
 }

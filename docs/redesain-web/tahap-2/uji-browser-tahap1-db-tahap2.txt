@@ -1,0 +1,111 @@
+[lulus] T1-A sbx_admin: menu sidebar terbaca (22 alamat)
+[lulus] T1-A sbx_admin 375px: 17 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_admin 768px: 17 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_admin 1280px: 17 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[catatan] sbx_admin: belum memakai Layout (di luar kriteria Tahap 1): /admin/admin_data.php, /admin/admin_pembayaran_psb.php, /admin/admin_rekap_keuangan.php, /admin/admin_berita.php, /admin/admin_notifikasi.php
+[lulus] T1-A sbx_guru_biasa: menu sidebar terbaca (2 alamat)
+[lulus] T1-A sbx_guru_biasa 375px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_guru_biasa 768px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_guru_biasa 1280px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_murobi_a: menu sidebar terbaca (5 alamat)
+[lulus] T1-A sbx_murobi_a 375px: 5 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_murobi_a 768px: 5 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_murobi_a 1280px: 5 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pengurus_a: menu sidebar terbaca (4 alamat)
+[lulus] T1-A sbx_pengurus_a 375px: 4 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pengurus_a 768px: 4 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pengurus_a 1280px: 4 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_ortu_a: menu sidebar terbaca (5 alamat)
+[lulus] T1-A sbx_ortu_a 375px: 5 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_ortu_a 768px: 5 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_ortu_a 1280px: 5 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pendidikan: menu sidebar terbaca (3 alamat)
+[lulus] T1-A sbx_pendidikan 375px: 3 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pendidikan 768px: 3 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pendidikan 1280px: 3 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_guru_mapel: menu sidebar terbaca (2 alamat)
+[lulus] T1-A sbx_guru_mapel 375px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_guru_mapel 768px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_guru_mapel 1280px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pengurus_biasa: menu sidebar terbaca (2 alamat)
+[lulus] T1-A sbx_pengurus_biasa 375px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pengurus_biasa 768px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pengurus_biasa 1280px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_ganda: menu sidebar terbaca (17 alamat)
+[lulus] T1-A sbx_ganda 375px: 12 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_ganda 768px: 12 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_ganda 1280px: 12 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[catatan] sbx_ganda: belum memakai Layout (di luar kriteria Tahap 1): /admin/admin_data.php, /admin/admin_pembayaran_psb.php, /admin/admin_rekap_keuangan.php, /admin/admin_berita.php, /admin/admin_notifikasi.php
+[lulus] T1-B 375: laci tertutup tidak masuk urutan Tab
+[lulus] T1-B 375: laci terbuka, fokus di laci, konten inert
+[lulus] T1-B 375: laci ≤ 85% layar (319px)
+[lulus] T1-B 375: laci memuat nama akun dan Keluar
+[lulus] T1-B 375: Shift+Tab berputar di dalam laci
+[lulus] T1-B 375: Esc menutup laci dan mengembalikan fokus
+[lulus] T1-B 768: laci tertutup tidak masuk urutan Tab
+[lulus] T1-B 768: laci terbuka, fokus di laci, konten inert
+[lulus] T1-B 768: laci ≤ 85% layar (320px)
+[lulus] T1-B 768: laci memuat nama akun dan Keluar
+[lulus] T1-B 768: Shift+Tab berputar di dalam laci
+[lulus] T1-B 768: Esc menutup laci dan mengembalikan fokus
+[lulus] T1-B 375: bilah bawah berisi 5 menu (2–5)
+[lulus] T1-B 375: sasaran sentuh topbar & bilah bawah ≥ 44px (44)
+[lulus] T1-B 375: topbar hanya ≡, judul halaman, lonceng
+[lulus] T1-B 768: rel ikon 46px menampilkan nama menu saat disorot
+[lulus] T1-B 768: lebar rel ikon 46px
+[lulus] T1-C grup sidebar dapat dilipat
+[lulus] T1-C grup yang dilipat diingat setelah muat ulang
+[lulus] T1-C grup berisi halaman aktif tetap terbuka
+[lulus] T1-C sidebar desktop 240px
+[lulus] T1-D menu ⋯: tindakan berbahaya paling bawah
+[lulus] T1-D menu ⋯: tindakan berbahaya berwarna merah
+[lulus] T1-D menu ⋯ tampil utuh di layar (tidak terpotong wadah tabel)
+[lulus] T1-D menu ⋯ melaporkan aria-expanded
+[lulus] T1-D Esc menutup menu ⋯ dan fokus kembali ke pemicu
+[lulus] T1-D klik di luar menutup menu ⋯
+[lulus] T1-E dialog menyebut nama objek
+[lulus] T1-E tombol berbahaya merah dengan kata kerjanya
+[lulus] T1-E fokus pindah ke isian alasan
+[lulus] T1-E alasan wajib: dialog tetap terbuka, tidak ada POST
+[lulus] T1-E konfirmasi mengirim formulir beserta alasannya
+[lulus] T1-F toast tampil (tidak dibacakan dua kali)
+[lulus] T1-F toast di pojok kanan bawah
+[lulus] T1-F toast hilang setelah 5 detik, pesan di halaman tetap ada
+[lulus] T1-E data-confirm lama memakai dialog yang sama
+[lulus] T1-E batal: tanpa POST, tombol tetap aktif, fokus kembali
+[lulus] T1-E Esc membatalkan dialog
+[lulus] T1-G 1280: panel samping di kanan selebar 420px
+[lulus] T1-G 1280: daftar tetap terlihat utuh di samping panel
+[lulus] T1-G 1280: tombol simpan terlihat menempel di bawah panel
+[lulus] T1-G 1280: panel tidak membuat halaman melebar
+[lulus] T1-G 1280: Esc menutup panel ke alamat daftar
+[lulus] T1-G 768: panel samping di kanan selebar 538px
+[lulus] T1-G 768: tombol simpan terlihat menempel di bawah panel
+[lulus] T1-G 768: panel tidak membuat halaman melebar
+[lulus] T1-G 768: Esc menutup panel ke alamat daftar
+[lulus] T1-G 375: panel samping di kanan selebar 375px
+[lulus] T1-G 375: tombol simpan terlihat menempel di bawah panel
+[lulus] T1-G 375: panel tidak membuat halaman melebar
+[lulus] T1-G 375: Esc menutup panel ke alamat daftar
+[lulus] T1-G galat: ringkasan di atas formulir
+[lulus] T1-G galat: pesan di bawah isian, isian ditandai
+[lulus] T1-G saat menyimpan tombol menjadi "Menyimpan…" dan terkunci
+[lulus] T1-H bilah pilihan tersembunyi saat tidak ada yang dipilih
+[lulus] T1-H "2 guru dipilih", centang semua setengah
+[lulus] T1-H centang semua memilih 5
+[lulus] T1-H proses massal maju satu per satu hingga "5 / 5"
+[lulus] T1-H ringkasan berhasil/gagal
+[lulus] T1-H yang gagal didaftar beserta sebabnya
+[lulus] T1-H tombol ulangi hanya memproses yang gagal
+[lulus] T1-I kamus status: hijau/biru/kuning/merah/abu sesuai cetak biru
+[lulus] T1-K media cetak membuang topbar, sidebar, rel, bilah bawah, toast
+[lulus] T1-A 375: tabel bertanda ah-table--cards menjadi kartu berlabel
+[lulus] T1-A 375: tab modul menjadi chip yang dapat digeser
+[lulus] T1-J tanpa JS: formulir tampil sebagai bagian halaman biasa
+[lulus] T1-J tanpa JS: tombol Tutup kembali ke daftar
+[lulus] T1-J tanpa JS: menu ⋯ tetap terbuka (details)
+[lulus] T1-J tanpa JS 375: menu tetap terjangkau tanpa geser horizontal
+[lulus] T1-J tanpa JS 768: menu tetap terjangkau tanpa geser horizontal
+[lulus] Tanpa galat JavaScript di konsol
+
+107 lulus, 0 gagal. Tangkapan layar: /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/23beb0df-1461-4290-a01d-abff5f3f87cf/scratchpad/t1

@@ -65,11 +65,13 @@ final class Authorization
     {
         $user = $this->requireWebUser();
         if (!in_array($role, $user['roles'], true)) {
-            Denial::render(
-                'Akun ini tidak memiliki hak untuk membuka fungsi tersebut.',
-                'Halaman yang Anda buka hanya untuk pemegang role ' . $role . '. '
-                    . 'Beranda dan menu lain yang menjadi hak Anda tetap dapat dibuka.'
-            );
+            Denial::render('Halaman ini bukan untuk peran Anda', 'Halaman yang Anda buka hanya untuk ' . match ($role) {
+                'admin' => 'admin',
+                'guru' => 'guru',
+                'pengurus' => 'pengurus',
+                'orang_tua' => 'orang tua/wali',
+                default => 'pemegang peran ' . $role,
+            } . '.');
         }
 
         return $user;

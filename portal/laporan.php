@@ -19,7 +19,7 @@ require_once __DIR__ . '/_ui.php';
  * kontrol akses ada di server (PRD 5.2).
  */
 
-$requestedMode = isset($_GET['mode']) ? (string) $_GET['mode'] : null;
+$requestedMode = portal_requested_mode($currentUser, $userCapabilities);
 
 try {
     $laporan = izin_report_service()->report($currentUser, $_GET, $requestedMode);

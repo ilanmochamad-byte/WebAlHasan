@@ -31,15 +31,16 @@ final class NotificationCenterService
     {
         $userId = $this->userId($user);
         $filter = $this->filter($query);
+        $kategori = $this->kategori($query);
         [$page, $perPage] = $this->pageOf($query);
 
-        $result = $this->repository->listForUser($userId, $filter, $page, $perPage);
+        $result = $this->repository->listForUser($userId, $filter, $page, $perPage, $kategori);
         $total = (int) $result['total'];
 
         return [
             'items' => array_map([$this, 'present'], $result['rows']),
             'jumlah_belum_dibaca' => $this->repository->unreadCount($userId),
-            'filters' => ['status' => $filter],
+            'filters' => ['status' => $filter, 'jenis' => $kategori],
             'pagination' => [
                 'current_page' => $page,
                 'per_page' => $perPage,
@@ -167,6 +168,18 @@ final class NotificationCenterService
         $status = strtolower(trim((string) ($query['status'] ?? 'semua')));
 
         return in_array($status, ['belum_dibaca', 'sudah_dibaca'], true) ? $status : 'semua';
+    }
+
+    /**
+     * Kategori jenis peristiwa (Perizinan, Rapor, Pembinaan) atau null.
+     *
+     * @param array<string, mixed> $query
+     */
+    private function kategori(array $query): ?string
+    {
+        $jenis = strtolower(trim((string) ($query['jenis'] ?? '')));
+
+        return isset(NotificationRepository::KATEGORI[$jenis]) ? $jenis : null;
     }
 
     /**

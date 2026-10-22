@@ -131,8 +131,11 @@ function portal_footer(): void
 }
 
 /**
- * Pemilih cakupan untuk akun dengan lebih dari satu kemampuan.
- * Satu sesi, tanpa login ulang (PRD 5.6).
+ * Keterangan cakupan untuk akun dengan lebih dari satu kemampuan.
+ *
+ * Deretan tombol mode per halaman dihapus di redesain Tahap 2 (A-2): cakupan
+ * kini mengikuti peran aktif yang dipilih dari pil "Peran" di topbar atau di
+ * laci menu. Tanda tangan fungsi dipertahankan agar halaman lama tetap jalan.
  *
  * @param array<int, string> $capabilities
  */
@@ -141,20 +144,9 @@ function portal_mode_switcher(array $capabilities, string $activeMode, string $p
     if (count($capabilities) < 2) {
         return;
     }
-    ?>
-    <div class="ah-card ah-no-print"><div class="ah-card__body py-2">
-        <p class="mb-2 small text-muted" id="ah-mode-label">Anda memegang lebih dari satu peran. Pilih cakupan data yang ingin dilihat:</p>
-        <div class="btn-group flex-wrap" role="group" aria-labelledby="ah-mode-label">
-            <?php foreach ($capabilities as $capability): ?>
-                <a class="btn btn-sm btn-<?= $capability === $activeMode ? 'primary' : 'outline-primary' ?>"
-                   <?= $capability === $activeMode ? 'aria-current="true"' : '' ?>
-                   href="<?= portal_e($page . '?' . ah_query(['mode' => $capability, 'page' => null])) ?>">
-                    <?= portal_e(portal_capability_label($capability)) ?>
-                </a>
-            <?php endforeach; ?>
-        </div>
-    </div></div>
-    <?php
+    echo '<p class="small text-muted ah-no-print" data-ah-cakupan>Cakupan data: <b>'
+        . portal_e(izin_service()->label($activeMode))
+        . '</b>. Ganti peran dari menu Peran untuk melihat cakupan lain.</p>';
 }
 
 function portal_pagination(int $total, int $page, int $perPage): void

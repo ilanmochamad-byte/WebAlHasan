@@ -39,7 +39,7 @@ $sidebarActive = Navigation::activeKey();
         <span class="ah-brand__text">Sistem Al Hasan<small>Pesantren Al Hasan Ciamis</small></span>
     </a>
     <?php foreach ($sidebarGroups as $sidebarGroup): ?>
-        <p class="ah-nav-group"><?= ah_e($sidebarGroup['label']) ?></p>
+        <?php if ($sidebarGroup['label'] !== ''): ?><p class="ah-nav-group"><?= ah_e($sidebarGroup['label']) ?></p><?php endif; ?>
         <ul class="ah-nav list-unstyled mb-0">
             <?php foreach ($sidebarGroup['items'] as $sidebarItem): ?>
                 <li>

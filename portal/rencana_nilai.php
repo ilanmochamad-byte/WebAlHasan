@@ -31,7 +31,7 @@ try {
     $signers=in_array('admin',$user['roles'],true)?$service->signers($user):[];
 } catch(V4Exception $e) {
     http_response_code($e->status);
-    if($e->status===403) {echo '403 — Akses ditolak.';exit;}
+    if($e->status===403){\App\Ui\Denial::page('Rencana nilai','Bagian Pendidikan',$e->getMessage());}
     $error=$e->getMessage();$current=null;$options=$options??['tahun_ajaran'=>[],'kelas'=>[],'mata_pelajaran'=>[],'guru_assignments'=>[],'penanda_tangan'=>[],'aset'=>[]];
     // Setelah simpan gagal, tampilkan kembali rencana tersimpan agar pengguna dapat memperbaiki isian.
     if($tahun>0&&$kelas>0){try{$current=$service->read($user,$tahun,$kelas);}catch(V4Exception){$current=null;}}

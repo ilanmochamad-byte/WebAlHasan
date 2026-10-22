@@ -165,9 +165,11 @@ try {
       && await page.locator('#ah-konten').evaluate((n) => n.inert), `T1-B ${lebar}: laci terbuka, fokus di laci, konten inert`);
     const lebarLaci = await page.locator('#ah-sidebar').evaluate((n) => n.getBoundingClientRect().width);
     cek(lebarLaci <= Math.ceil(lebar * 0.85) + 1, `T1-B ${lebar}: laci ≤ 85% layar (${Math.round(lebarLaci)}px)`);
-    cek(await page.locator('#ah-sidebar .ah-drawer-foot a', { hasText: 'Keluar' }).isVisible()
+    // Sejak Tahap 2 (A-4) Keluar berupa tombol POST ber-CSRF dengan dialog.
+    cek(await page.locator('#ah-sidebar .ah-drawer-foot :is(a, button)', { hasText: 'Keluar' }).isVisible()
       && await page.locator('#ah-sidebar .ah-drawer-head').isVisible(), `T1-B ${lebar}: laci memuat nama akun dan Keluar`);
-    const links = page.locator('#ah-sidebar a[href]');
+    // Laci Tahap 2 juga memuat tombol (pilih peran, Keluar) dan kotak cari.
+    const links = page.locator('#ah-sidebar :is(a[href], button:not([disabled]), input:not([type="hidden"]), summary):visible');
     await links.first().focus();
     await page.keyboard.press('Shift+Tab');
     cek(await links.last().evaluate((n) => document.activeElement === n), `T1-B ${lebar}: Shift+Tab berputar di dalam laci`);
@@ -194,7 +196,7 @@ try {
   // ---------------------------------------------------------------- T1-C
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto(BASE + GALERI);
-  const grup = page.locator('.ah-nav-sec:not([data-ah-active])').first();
+  const grup = page.locator('.ah-nav-sec:not([data-ah-active]):has(.ah-nav-group__btn)').first();
   const slug = await grup.getAttribute('data-ah-group');
   await grup.locator('.ah-nav-group__btn').click();
   cek(await grup.locator('.ah-nav-group__btn').getAttribute('aria-expanded') === 'false' && !(await grup.locator('.ah-nav').isVisible()), 'T1-C grup sidebar dapat dilipat');
@@ -327,7 +329,7 @@ try {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto(BASE + GALERI);
   cek(await page.locator('#uji-pilihan tbody td').nth(2).evaluate((n) => getComputedStyle(n, '::before').content === '"Nama"' && getComputedStyle(n).display === 'flex'), 'T1-A 375: tabel bertanda ah-table--cards menjadi kartu berlabel');
-  cek(await page.locator('.ah-tabs').evaluate((n) => getComputedStyle(n).flexWrap === 'nowrap' && getComputedStyle(n).overflowX === 'auto'), 'T1-A 375: tab modul menjadi chip yang dapat digeser');
+  cek(await page.locator('.ah-tabs:not(.ah-tabs--module)').evaluate((n) => getComputedStyle(n).flexWrap === 'nowrap' && getComputedStyle(n).overflowX === 'auto'), 'T1-A 375: tab modul menjadi chip yang dapat digeser');
   await page.screenshot({ path: `${OUT}/a-galeri-375.jpg`, type: 'jpeg', quality: 70, fullPage: true });
   await context.close();
 

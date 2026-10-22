@@ -1,0 +1,52 @@
+# Regresi redesain website Tahap 2 — 23 Oktober 2026
+# Format: kode_keluar|uji|lulus|gagal|baris terakhir. DB sandbox .env (*_test); server branch 127.0.0.1:8931, baseline d6c5da0 (git archive) 127.0.0.1:8933.
+# v3_phase2/3_static exit 77 = gate khusus DB V3, sama dengan baseline Tahap 1 (tidak diklaim lulus).
+# Satu baris git diff --check (baris kosong di akhir portal/index.php) diperbaiki sesudahnya; git diff --check akhir bersih, php -l portal/index.php lulus.
+
+== statis (DB sandbox .env)
+0|statis-alumni_static|180|0|SELURUH PEMERIKSAAN STATIS ALUMNI LULUS.
+0|statis-get_mutasi_v1_static|28|0|Ringkasan: 28 lulus, 0 gagal
+0|statis-kredensial_static|105|0|SELURUH PEMERIKSAAN STATIS PESAN KREDENSIAL LULUS.
+0|statis-penempatan_static|138|0|SELURUH PEMERIKSAAN STATIS PENEMPATAN LULUS.
+0|statis-penugasan_static|282|0|Total gagal: 0
+0|statis-perapihan_static|132|0|SELURUH PEMERIKSAAN STATIS PERAPIHAN LULUS.
+0|statis-phase1_static|76|0|[lulus] Token CSRF salah ditolak
+0|statis-phase2_static|46|0|[lulus] Tanggal tidak valid ditolak
+0|statis-phase3_static|35|0|[lulus] Rentang lintas tengah malam tidak ditebak oleh parser
+0|statis-phase4_static|38|0|[lulus] Backup SQL mengecualikan generated column dan menulis daftar kolom eksplisit
+0|statis-phase5_static|44|0|[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/acceptance-checklist.md
+0|statis-redesain_web_tahap1_static|69|0|Semua pemeriksaan lulus.
+0|statis-redesain_web_tahap2_static|96|0|Semua pemeriksaan lulus (96).
+0|statis-v2_phase1_static|127|0|[lulus] php -l lulus untuk bin/v2_phase1_verify.php
+0|statis-v2_phase2_static|175|0|[lulus] php -l lulus untuk admin/pertemuan_pengajian.php
+0|statis-v2_phase3_static|147|0|SELURUH PEMERIKSAAN STATIS FASE 3 LULUS.
+0|statis-v2_phase4_static|289|0|SELURUH PEMERIKSAAN STATIS FASE 4 LULUS.
+0|statis-v2_phase5_static|290|0|SELURUH PEMERIKSAAN STATIS FASE 5 LULUS.
+0|statis-v3_phase1_static|15|0|[lulus] Mutasi V3 hanya hadir bersama paket Fase 2
+77|statis-v3_phase2_static|0|0|
+77|statis-v3_phase3_static|0|0|
+0|statis-v3_phase4_static|18|0|[lulus] Layar publikasi tidak melog atau menyimpan isi ke penyimpanan/clipboard
+== lint
+php -l: 371 berkas, 0 gagal
+node --check alhasan.js: lulus
+portal/index.php:694: new blank line at EOF.
+== smoke HTTP (DB sandbox .env)
+0|perapihan-web|56|0|SELURUH SMOKE TEST WEB PERAPIHAN LULUS.
+0|alumni-web|61|0|SELURUH SMOKE TEST WEB ALUMNI LULUS.
+0|kredensial-web|51|0|SELURUH SMOKE TEST WEB PESAN KREDENSIAL LULUS.
+0|penempatan-web|47|0|SELURUH SMOKE TEST WEB PENEMPATAN LULUS.
+0|penugasan-web|85|0|Total gagal: 0
+0|v2-fase2-web|36|0|[bersih] Fixture smoke test dihapus.
+0|v2-fase4-web|46|0|[bersih] Fixture smoke test Fase 4 dihapus.
+0|v2-fase5-web|79|0|SELURUH SMOKE TEST WEB FASE 5 LULUS.
+0|v2-fase4-api|92|0|[bersih] Fixture kontrak Fase 4 dihapus.
+0|v2-navigasi-murobi|40|0|[bersih] Fixture uji navigasi dihapus.
+== integrasi (DB sandbox .env)
+0|v2-fase2-int|94|0|[bersih] Fixture uji Fase 2 dihapus.
+0|v2-fase4-int|122|0|[bersih] Fixture uji Fase 4 dihapus dan pengaturan kanal dipulihkan.
+0|perapihan-int|53|0|SELURUH PENGUJIAN INTEGRASI PERAPIHAN LULUS.
+0|penugasan-int|161|0|Total gagal: 0
+== browser (DB sandbox .env, server 8931; baseline d6c5da0 di 8933)
+0|browser-perapihan|56|0|Tangkapan layar: /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/23beb0df-1
+0|browser-tahap1|91|0|91 lulus, 0 gagal. Tangkapan layar: /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-We
+0|banding-baseline|0|0|91 alamat dibandingkan; status berbeda tanpa keputusan: 0; halaman Layout melebar: 0

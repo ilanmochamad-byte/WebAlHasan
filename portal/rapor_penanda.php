@@ -10,7 +10,7 @@ try{
  if($_SERVER['REQUEST_METHOD']==='POST'){Csrf::requireValid(is_string($_POST['_csrf']??null)?$_POST['_csrf']:null);$svc->changeSigners($user,$_POST);ah_flash_set('success','Penanda tangan dan tempat diperbarui dengan riwayat.');ah_redirect(app_url('/portal/rapor_penanda.php').'?rencana_id='.$id);}
  $plans=(new App\V4\VerifikasiService(app_db(),audit_logger()))->options($user);
  if($id){$repo=new App\V4\BahanRepository(app_db(),audit_logger());$plan=$repo->query('SELECT * FROM v4_rencana WHERE id=?','i',[$id])[0]??null;$history=$repo->query('SELECT version,actor_user_id,alasan,created_at FROM v4_rencana_penanda_riwayat WHERE rencana_id=? ORDER BY id DESC','i',[$id]);}
-}catch(V4Exception $e){http_response_code($e->status);if($e->status===403){echo '403 — Akses ditolak.';exit;}$error=$e->getMessage();}
+}catch(V4Exception $e){http_response_code($e->status);if($e->status===403){\App\Ui\Denial::page('Penanda tangan rapor','admin',$e->getMessage());}$error=$e->getMessage();}
 ah_page_open(['title'=>'Perubahan Penanda Tangan Rapor','user'=>$user,'description'=>'Tindakan khusus admin beralasan; berlaku pada penerbitan versi berikutnya.']);
 ?>
 <?php if(isset($error)):?><p role="alert"><?= ah_e($error) ?></p><?php endif ?>

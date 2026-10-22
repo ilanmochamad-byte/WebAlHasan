@@ -1,0 +1,1174 @@
+
+## redesain_web_tahap1_static
+=== S-1. Kamus status ===
+[lulus] Status ok: Selesai, Disetujui, Lunas, Terbit, Diterbitkan, Terverifikasi, Diterima
+[lulus] Status info: Diajukan, Baru, Diserahkan
+[lulus] Status warn: Menunggu, Perlu Perbaikan, Perlu Penetapan Admin, Belum Lunas, Menunggu keputusan Anda, Dikembalikan
+[lulus] Status danger: Ditolak, Ditarik, Gagal
+[lulus] Status muted: Draf, Arsip, Dibatalkan
+[lulus] Status tak dikenal memakai cadangan yang dipilih pemanggil
+[lulus] Lencana kelima status izin identik dengan pemetaan portal_status_badge lama
+[lulus] portal_status_badge memakai kamus bersama
+[lulus] Label status di-escape
+
+=== S-2. Bilah bawah HP ===
+[lulus] Paling banyak 5 butir dengan Beranda pertama
+[lulus] Urutan peta admin: Beranda, Perizinan, Santri, Notifikasi, Menu: Beranda, Perizinan, Santri, Notifikasi, Menu
+[lulus] Halaman modul (izin) menyorot butir Perizinan
+[lulus] Peta orang tua: lima menu tanpa butir Menu
+[lulus] Akun dengan satu menu tetap mendapat Beranda
+[lulus] Navigation::find mencari butir menurut kunci
+
+=== S-3. Menu ⋯ ===
+[lulus] Menu memakai <details>/<summary> (jalan tanpa JavaScript)
+[lulus] Tindakan berbahaya dipisah dan diletakkan paling bawah
+[lulus] Tindakan bermutasi berupa formulir POST dengan CSRF
+[lulus] Konfirmasi: judul di-escape, nada bahaya, alasan wajib
+[lulus] Tautan di-escape dan tombol ⋯ punya nama yang terbaca
+[lulus] Tanpa tindakan bahaya tidak ada pemisah
+
+=== S-4. Panel samping, pilihan massal, galat ===
+[lulus] Panel menutup ke alamat daftar lewat tautan biasa (tanpa JS) dan Esc (JS)
+[lulus] Panel berlabel judul dan membungkus isi
+[lulus] Bilah pilihan tersembunyi sampai ada yang dipilih dan dapat dibatalkan
+[lulus] Tanpa galat tidak ada ringkasan
+[lulus] Ringkasan galat menyebut jumlah isian
+
+=== S-5. Kerangka Layout ===
+[lulus] Layout memuat rel ikon tablet
+[lulus] Layout memuat bilah bawah HP
+[lulus] Layout memuat wadah toast
+[lulus] Layout memuat kepala laci (nama & peran)
+[lulus] Layout memuat Keluar di laci
+[lulus] Layout memuat grup sidebar dapat dilipat
+[lulus] Layout memuat judul halaman di topbar HP
+[lulus] Layout memuat lonceng notifikasi
+[lulus] Layout memuat menu profil
+[lulus] ID lama (#ah-nav-toggle tombol, #ah-sidebar, #ah-konten) dipertahankan
+[lulus] Penanda tanpa-JS/JS untuk panel samping
+[lulus] Perilaku dimuat dari alhasan.js setelah token CSRF disetel
+[lulus] Daftar "Kemampuan aktif" di atas sidebar dihapus (pindah ke menu profil/laci)
+[lulus] Pesan hasil tindakan ditandai untuk toast
+
+=== S-6. CSS ===
+[lulus] Ukuran cetak biru: sidebar 240px, rel 46px, panel 420px
+[lulus] Batas ukuran Bootstrap: <576, 576–991, ≥992, ≥1400
+[lulus] Desktop lebar dibatasi 1320px
+[lulus] Cetak membuang rel, bilah bawah, dan toast
+[lulus] Sasaran sentuh 44px
+[lulus] Tanpa aset eksternal baru di CSS
+
+=== S-7. JavaScript ===
+[lulus] alhasan.js memuat AlHasan.toast
+[lulus] alhasan.js memuat AlHasan.confirm
+[lulus] alhasan.js memuat AlHasan.bulk
+[lulus] alhasan.js memuat AlHasan.post
+[lulus] alhasan.js memuat AlHasan.selected
+[lulus] alhasan.js memuat 'Menyimpan…'
+[lulus] alhasan.js memuat pageshow
+[lulus] alhasan.js memuat showModal
+[lulus] confirm() bawaan hanya cadangan peramban tanpa <dialog>
+[lulus] Proses massal berurutan satu per satu (tanpa Promise.all)
+[lulus] POST dari halaman membawa CSRF
+[lulus] Sintaks alhasan.js valid (node --check)
+
+=== S-8. Galeri uji ===
+[lulus] Alamat /__uji/ tidak dirujuk kode produksi
+[lulus] Galeri uji tetap mewajibkan admin dan CSRF
+[lulus] Folder tests ditolak oleh router/konfigurasi produksi
+
+=== S-9. Lint ===
+[lulus] php -l app/Ui/Layout.php
+[lulus] php -l app/Ui/Navigation.php
+[lulus] php -l app/Ui/Status.php
+[lulus] php -l app/Ui/functions.php
+[lulus] php -l portal/_ui.php
+[lulus] php -l portal/notifikasi.php
+[lulus] php -l tests/fixtures/redesain_web_komponen.php
+[lulus] php -l tests/redesain_web_tahap1_router.php
+
+Semua pemeriksaan lulus.
+
+## perapihan_static
+=== 1. Pusat Akun & Hak Akses ===
+[lulus] Repository akun menyediakan penambahan dan pencabutan role per satu relasi
+[lulus] Jalur lama yang menghapus SELURUH role sebelum menetapkan satu role sudah dihapus
+[lulus] Pencabutan role hanya menyentuh satu baris relasi, bukan seluruh role akun
+[lulus] Role guru/pengurus/orang tua menuntut relasi master yang valid di server
+[lulus] Pemberian role admin menuntut konfirmasi khusus
+[lulus] Perlindungan admin terakhir memakai penguncian baris di dalam transaksi (tahan permintaan bersamaan)
+[lulus] Admin tidak dapat menghilangkan aksesnya sendiri karena kesalahan
+[lulus] Setiap perubahan hak akses tercatat pada audit
+[lulus] Murobi ditampilkan sebagai kemampuan berdasarkan penugasan aktif, bukan role
+[lulus] Tidak ada lagi dropdown role tunggal yang memaksa akun menjadi satu kategori
+[lulus] Halaman akun lama meneruskan POST ke pusat akun (guard admin dan CSRF tetap berjalan)
+[lulus] Reset password, pencabutan perangkat, dan kewajiban ganti password awal dipertahankan
+
+=== 2. Data santri dan wali ===
+[lulus] saveSantri menerima spesifikasi wali yang eksplisit
+[lulus] Pembuatan wali otomatis per santri baru sudah dihapus
+[lulus] Santri, wali baru, dan relasinya disimpan dalam satu transaksi
+[lulus] Formulir santri dilindungi token sekali pakai terhadap pengiriman ulang
+[lulus] Formulir santri menyediakan pemilihan wali terdaftar dan pembuatan wali baru
+[lulus] Pembuatan atau pemilihan wali dinyatakan tidak membuat akun login
+[lulus] Jalur master data tidak pernah membuat akun login
+[lulus] Nilai kolom lama yang bertentangan hanya ditimpa setelah konfirmasi, dengan audit sebelum/sesudah
+[lulus] Kolom lama tidak dikosongkan hanya karena formulir tidak lagi mengirimkannya
+[lulus] Perubahan identitas wali bersama menampilkan santri terdampak dan menuntut konfirmasi
+[lulus] Penggabungan identitas dilakukan satu pasang, dapat diblokir, dan mempertahankan baris sumber
+[lulus] Rekonsiliasi tidak pernah menghapus wali atau relasinya (ID lama dipertahankan)
+[lulus] Halaman rekonsiliasi menegaskan tidak ada penggabungan massal
+[lulus] Laporan kandidat duplikasi, konflik, dan hubungan belum lengkap tersedia
+[lulus] Detail santri menampilkan hubungan wali aktual, bukan hanya teks kolom lama
+
+=== 3. Data guru dan penugasan ===
+[lulus] Pilihan tugas lama Guru/Pembimbing/Keduanya dihapus dari formulir dan validasi
+[lulus] Tidak ada dropdown pengganti pada formulir guru
+[lulus] Label halaman guru menjadi Data Guru
+[lulus] Menu memakai label Asatidz untuk data guru
+[lulus] Menyimpan guru tidak menyentuh kolom status lama (data historis dipertahankan)
+[lulus] Penugasan dihitung dari jadwal dan penugasan murobi, bukan dari label tugas
+[lulus] Status aktif/nonaktif guru dipertahankan
+[lulus] Keterangan murobi diperbarui mengikuti aturan V2 dan menyebut guru tanpa jadwal
+
+=== 4. Modul Pengajian terpadu ===
+[lulus] Satu menu Pengajian dengan tab Jadwal dan Pertemuan
+[lulus] Tab dirender lewat kerangka bersama
+[lulus] Konteks dan filter terbawa saat berpindah tab dan saat membuka pertemuan sebuah jadwal
+[lulus] Guru tidak memperoleh hak pengelolaan jadwal admin (ditolak di server)
+[lulus] Filter guru dipaksa di server sehingga guru tidak melihat jadwal guru lain
+[lulus] admin_jadwal_ngaji.php tetap berfungsi: GET dialihkan, POST diteruskan penuh
+[lulus] pertemuan_pengajian.php tetap berfungsi: GET dialihkan, POST diteruskan penuh
+[lulus] Modul pengajian tidak menghapus pertemuan, peserta, atau absensi
+
+=== 5. Pemisahan laporan kehadiran ===
+[lulus] Tersedia tiga penyajian: santri, guru, gabungan
+[lulus] Default kontrak API lama TIDAK berubah (tetap gabungan)
+[lulus] Halaman web memakai penyajian Santri sebagai tampilan awal secara eksplisit
+[lulus] Pemisahan dilakukan pada satu tempat di repository laporan
+[lulus] Ringkasan, ringkasan per jadwal, halaman, ekspor, dan EXPLAIN memakai definisi filter yang sama
+[lulus] CSV dan cetak memakai penyajian awal yang sama dengan layar
+[lulus] Tombol ekspor dan cetak membawa penyajian yang sedang aktif
+[lulus] Penyajian ikut tercetak pada daftar filter aktif
+[lulus] Absensi guru tidak dihapus oleh pemisahan penyajian
+[lulus] Guru tetap tampil sebagai pengampu pada laporan santri
+
+=== 6. Desain dan navigasi bersama ===
+[lulus] Berkas desain bersama tersedia: assets/ui/alhasan.css
+[lulus] Warna, jarak, dan sudut memakai token bersama
+[lulus] Halaman cetak membuang kerangka navigasi
+[lulus] Preferensi pengurangan animasi dihormati
+[lulus] Fokus keyboard selalu terlihat
+[lulus] Tabel lebar menggulir di dalam wadahnya sendiri
+[lulus] Ukuran sentuh minimum ditetapkan untuk ponsel
+[lulus] Tidak ada aset eksternal baru pada berkas desain
+[lulus] Komponen navigasi bebas dari guard khusus admin sehingga aman lintas peran
+[lulus] sidebar.php tidak lagi menyeret guard khusus admin
+[lulus] Tersedia tautan lompat ke konten utama
+[lulus] Menu aktif dan breadcrumb tersedia
+[lulus] Menu ponsel dapat dibuka/ditutup dengan status yang terbaca pembaca layar
+[lulus] Isian pengguna dipertahankan saat validasi gagal
+[lulus] Tersedia keadaan kosong yang menjelaskan langkah berikutnya
+[lulus] _master_ui.php memakai kerangka bersama, bukan menggambar layout sendiri
+[lulus] _ui.php memakai kerangka bersama, bukan menggambar layout sendiri
+[lulus] Halaman cetak tidak memuat kerangka bersidebar
+
+=== 7. Satu pintu masuk /portal/ ===
+[lulus] Pengguna anonim yang membuka /portal/ mendapat halaman Masuk Sistem Al Hasan
+[lulus] Tidak ada sistem login kedua: formulir memakai penangan autentikasi yang sudah ada
+[lulus] Beranda umum tidak memakai pemeriksaan kemampuan perizinan
+[lulus] Password sementara wajib diselesaikan sebelum fungsi operasional
+[lulus] Akun tanpa role atau relasi valid mendapat penjelasan tanpa akses tambahan
+[lulus] Logout mengakhiri sesi dan kembali ke pintu masuk yang sama
+[lulus] Alamat lama /admin/admin_login.php mengarahkan ke pintu masuk baru
+[lulus] Sesi kedaluwarsa mengarah ke pintu masuk yang sama
+[lulus] Pemulihan tujuan hanya menerima alamat internal dan menolak tujuan eksternal atau berulang
+[lulus] Pembatasan percobaan masuk dan CSRF tetap berlaku pada penangan login
+[lulus] Regenerasi sesi saat login dipertahankan
+[lulus] Pembatasan percobaan masuk memakai audit yang sudah ada dan tidak mengunci semua orang bila gagal dihitung
+[lulus] Endpoint autentikasi API tidak ikut diubah oleh penyatuan pintu masuk web
+
+=== 8. Migrasi 010 ===
+[lulus] Migrasi 010 memiliki rollback berpasangan
+[lulus] Migrasi 010 sepenuhnya aditif: tidak menghapus atau mengubah data
+[lulus] Migrasi 010 berpenjaga INFORMATION_SCHEMA sehingga aman dijalankan ulang
+[lulus] Nomor HP tidak dijadikan kunci unik (boleh dipakai bersama)
+[lulus] Rollback melepas kolom penanda dan menjelaskan jejak yang tetap tersimpan pada audit
+
+=== 9. Lint PHP berkas baru/diubah ===
+[lulus] php -l lulus untuk app/Ui/Layout.php
+[lulus] php -l lulus untuk app/Ui/Navigation.php
+[lulus] php -l lulus untuk app/Ui/Denial.php
+[lulus] php -l lulus untuk app/Ui/functions.php
+[lulus] php -l lulus untuk app/Http/SafeRedirect.php
+[lulus] php -l lulus untuk app/Auth/LoginThrottle.php
+[lulus] php -l lulus untuk app/Auth/LandingRouter.php
+[lulus] php -l lulus untuk app/Auth/Authorization.php
+[lulus] php -l lulus untuk app/Auth/PortalGuard.php
+[lulus] php -l lulus untuk app/bootstrap.php
+[lulus] php -l lulus untuk app/Account/AccountRepository.php
+[lulus] php -l lulus untuk app/Account/AccountService.php
+[lulus] php -l lulus untuk app/MasterData/MasterDataRepository.php
+[lulus] php -l lulus untuk app/MasterData/MasterDataService.php
+[lulus] php -l lulus untuk app/Report/ReportFilter.php
+[lulus] php -l lulus untuk app/Report/ReportRepository.php
+[lulus] php -l lulus untuk app/Report/ReportService.php
+[lulus] php -l lulus untuk admin/_master_ui.php
+[lulus] php -l lulus untuk admin/sidebar.php
+[lulus] php -l lulus untuk admin/admin_akun.php
+[lulus] php -l lulus untuk admin/admin_akun_perizinan.php
+[lulus] php -l lulus untuk admin/admin_guru.php
+[lulus] php -l lulus untuk admin/admin_murobi.php
+[lulus] php -l lulus untuk admin/admin_master_santri.php
+[lulus] php -l lulus untuk admin/admin_wali.php
+[lulus] php -l lulus untuk admin/admin_wali_rekonsiliasi.php
+[lulus] php -l lulus untuk admin/get_wali_json.php
+[lulus] php -l lulus untuk admin/_santri_wali_field.php
+[lulus] php -l lulus untuk admin/admin_pengajian.php
+[lulus] php -l lulus untuk admin/_pengajian_jadwal.php
+[lulus] php -l lulus untuk admin/_pengajian_pertemuan.php
+[lulus] php -l lulus untuk admin/admin_jadwal_ngaji.php
+[lulus] php -l lulus untuk admin/pertemuan_pengajian.php
+[lulus] php -l lulus untuk admin/admin_laporan_absensi.php
+[lulus] php -l lulus untuk admin/export_laporan_absensi.php
+[lulus] php -l lulus untuk admin/laporan_absensi_cetak.php
+[lulus] php -l lulus untuk admin/admin_login.php
+[lulus] php -l lulus untuk admin/cek_login.php
+[lulus] php -l lulus untuk admin/logout.php
+[lulus] php -l lulus untuk admin/ubah_password.php
+[lulus] php -l lulus untuk portal/_ui.php
+[lulus] php -l lulus untuk portal/index.php
+[lulus] php -l lulus untuk portal/izin_ringkasan.php
+
+SELURUH PEMERIKSAAN STATIS PERAPIHAN LULUS.
+
+## penugasan_static
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanJenis.php
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanException.php
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanRepository.php
+[lulus] FS-1 lint bersih: app/Penugasan/PenugasanService.php
+[lulus] FS-1 lint bersih: admin/admin_penugasan.php
+[lulus] FS-1 lint bersih: bin/penugasan_preflight.php
+[lulus] FS-1 lint bersih: bin/penugasan_verify.php
+[lulus] FS-1 lint bersih: tests/penugasan_static.php
+[lulus] FS-1 lint bersih: tests/penugasan_integration.php
+[lulus] FS-1 lint bersih: tests/penugasan_web_smoke.php
+[lulus] FS-1 lint bersih: tests/penugasan_concurrency.php
+[lulus] FS-1 lint bersih: tests/penugasan_concurrency_worker.php
+[lulus] FS-1 lint bersih: app/Auth/Capabilities.php
+[lulus] FS-1 lint bersih: app/Api/ApiAuthService.php
+[lulus] FS-1 lint bersih: app/bootstrap.php
+[lulus] FS-1 lint bersih: app/Ui/Navigation.php
+[lulus] FS-1 lint bersih: admin/admin_akun.php
+[lulus] FS-1 lint bersih: admin/admin_murobi.php
+[lulus] FS-1 lint bersih: admin/admin_pembimbing.php
+[lulus] FS-2 migrasi 012 tidak menambah baris ke tabel roles
+[lulus] FS-2 AccountRepository::ROLES tetap empat role dasar
+[lulus] FS-2 "murobi" tidak dipakai sebagai role dasar
+[lulus] FS-2 "pembimbing" tidak dipakai sebagai role dasar
+[lulus] FS-2 "pendidikan" tidak dipakai sebagai role dasar
+[lulus] FS-2 "bendahara" tidak dipakai sebagai role dasar
+[lulus] FS-2 "panitia_psb" tidak dipakai sebagai role dasar
+[lulus] FS-2 "bendahara_psb" tidak dipakai sebagai role dasar
+[lulus] FS-2 "guru_mapel" tidak dipakai sebagai role dasar
+[lulus] FS-2 seluruh tujuh jenis memakai role dasar guru atau pengurus
+[lulus] FS-3 Capabilities::ALL tidak berubah (admin, pengurus, murobi, orang_tua)
+[lulus] FS-3 forUser() tidak menyertakan capability fondasi ke daftar perizinan V2
+[lulus] FS-4 tujuh jenis penugasan masing-masing memakai tabel sendiri
+[lulus] FS-4 katalog memuat tabel murobi_assignments
+[lulus] FS-4 katalog memuat tabel pembimbing_assignments
+[lulus] FS-4 katalog memuat tabel guru_mapel_assignments
+[lulus] FS-4 katalog memuat tabel pendidikan_assignments
+[lulus] FS-4 katalog memuat tabel bendahara_bulanan_assignments
+[lulus] FS-4 katalog memuat tabel panitia_psb_assignments
+[lulus] FS-4 katalog memuat tabel bendahara_psb_assignments
+[lulus] FS-4 capability terdefinisi: nilai.input
+[lulus] FS-4 capability terdefinisi: nilai.lihat_sendiri
+[lulus] FS-4 capability terdefinisi: nilai.koreksi_sendiri
+[lulus] FS-4 capability terdefinisi: rapor.verifikasi
+[lulus] FS-4 capability terdefinisi: rapor.finalisasi
+[lulus] FS-4 capability terdefinisi: rapor.buka_koreksi
+[lulus] FS-4 capability terdefinisi: rapor.cetak
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.tagihan
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.pembayaran
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.verifikasi
+[lulus] FS-4 capability terdefinisi: pembiayaan_bulanan.laporan
+[lulus] FS-4 capability terdefinisi: psb.pendaftar
+[lulus] FS-4 capability terdefinisi: psb.verifikasi
+[lulus] FS-4 capability terdefinisi: psb.seleksi
+[lulus] FS-4 capability terdefinisi: psb.penerimaan
+[lulus] FS-4 capability terdefinisi: psb_keuangan.tagihan
+[lulus] FS-4 capability terdefinisi: psb_keuangan.pembayaran
+[lulus] FS-4 capability terdefinisi: psb_keuangan.verifikasi
+[lulus] FS-4 capability terdefinisi: psb_keuangan.laporan
+[lulus] FS-4 capability terdefinisi: murobi.binaan
+[lulus] FS-4 capability terdefinisi: pembimbing.binaan
+[lulus] FS-4 panitia PSB dan bendahara PSB memakai himpunan capability yang terpisah
+[lulus] FS-5 migrasi 012 tidak memuat DROP TABLE
+[lulus] FS-5 migrasi 012 tidak memuat DROP COLUMN
+[lulus] FS-5 migrasi 012 tidak memuat TRUNCATE
+[lulus] FS-5 migrasi 012 tidak memuat DELETE FROM
+[lulus] FS-5 migrasi 012 tidak memuat pernyataan UPDATE (ON UPDATE CURRENT_TIMESTAMP bukan pernyataan)
+[lulus] FS-5 migrasi 012 tidak mengisi tabel penugasan berdasarkan tebakan
+[lulus] FS-5 enam tabel baru dibuat dengan IF NOT EXISTS (idempoten)
+[lulus] FS-5 seluruh ALTER pada tabel lama dijaga pemeriksaan information_schema
+[lulus] FS-5 rollback 012 berpasangan dan melepas enam tabel baru
+[lulus] FS-5 rollback memperingatkan kehilangan data secara eksplisit
+[lulus] FS-5 rollback tidak melepas kolom lama murobi/pembimbing
+[lulus] FS-6 kunci unik guru_mapel_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal guru_mapel
+[lulus] FS-6 kunci asing tahun ajaran guru_mapel
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) guru_mapel
+[lulus] FS-6 kunci unik pendidikan_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal pendidikan
+[lulus] FS-6 kunci asing tahun ajaran pendidikan
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) pendidikan
+[lulus] FS-6 kunci unik bendahara_bulanan_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal bendahara_bulanan
+[lulus] FS-6 kunci asing tahun ajaran bendahara_bulanan
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) bendahara_bulanan
+[lulus] FS-6 kunci unik panitia_psb_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal panitia_psb
+[lulus] FS-6 kunci asing tahun ajaran panitia_psb
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) panitia_psb
+[lulus] FS-6 kunci unik bendahara_psb_assignment_unique
+[lulus] FS-6 CHECK rentang tanggal bendahara_psb
+[lulus] FS-6 kunci asing tahun ajaran bendahara_psb
+[lulus] FS-6 kunci asing pelaku (created_by/updated_by/diakhiri_oleh) bendahara_psb
+[lulus] FS-6 guru mapel merujuk guru lewat kunci asing
+[lulus] FS-6 guru mapel merujuk mata pelajaran lewat kunci asing
+[lulus] FS-6 guru mapel merujuk kelas lewat kunci asing
+[lulus] FS-6 empat penugasan pengurus merujuk pengurus lewat kunci asing
+[lulus] FS-6 tidak ada kolom target_id generik tanpa kunci asing
+[lulus] FS-7 halaman memakai guard admin
+[lulus] FS-7 seluruh mutasi berada di cabang REQUEST_METHOD === POST
+[lulus] FS-7 aksi buat hanya ditangani lewat POST
+[lulus] FS-7 aksi ubah hanya ditangani lewat POST
+[lulus] FS-7 aksi akhiri hanya ditangani lewat POST
+[lulus] FS-7 aksi nonaktifkan hanya ditangani lewat POST
+[lulus] FS-7 aksi aktifkan hanya ditangani lewat POST
+[lulus] FS-7 aksi mapel_simpan hanya ditangani lewat POST
+[lulus] FS-7 aksi mapel_status hanya ditangani lewat POST
+[lulus] FS-7 tidak ada aksi yang dibaca dari GET
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: mysqli_query
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: ->query(
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: ->prepare(
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: INSERT INTO
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: UPDATE
+[lulus] FS-7 halaman tidak menyentuh basis data langsung: DELETE FROM
+[lulus] FS-7 halaman tidak menyediakan aksi penghapusan permanen
+[lulus] FS-7 setiap formulir mutasi menyertakan token CSRF
+[lulus] FS-7 tidak ada nilai baris yang dicetak tanpa escape
+[lulus] FS-7 keluaran data di-escape (master_e/ah_e)
+[lulus] FS-7 tindakan berdampak meminta konfirmasi dan alasan
+[lulus] FS-8 layanan memakai transaksi untuk mutasi
+[lulus] FS-8 setiap mutasi menulis audit yang kegagalannya membatalkan transaksi
+[lulus] FS-8 kegagalan audit menggagalkan mutasi
+[lulus] FS-8 seluruh mutasi (buat, ubah, akhiri, status aktif, mata pelajaran) memeriksa role admin pelaku di server
+[lulus] FS-8 public function buat memanggil requireAdmin
+[lulus] FS-8 public function ubah memanggil requireAdmin
+[lulus] FS-8 public function akhiri memanggil requireAdmin
+[lulus] FS-8 private function ubahStatusAktif memanggil requireAdmin
+[lulus] FS-8 public function simpanMataPelajaran memanggil requireAdmin
+[lulus] FS-8 public function setMataPelajaranState memanggil requireAdmin
+[lulus] FS-8 pemeriksaan tumpang tindih dijalankan di bawah kunci baris
+[lulus] FS-8 penguncian baris SELECT ... FOR UPDATE dipakai
+[lulus] FS-8 mutasi mengunci baris master subjek sebagai gerbang serialisasi (buat + kunciBaris)
+[lulus] FS-8 kunci master subjek selalu diambil SEBELUM kunci baris penugasan (urutan tetap, anti-deadlock)
+[lulus] FS-8 hasil get_result() false dengan errno tidak diperlakukan sebagai nol baris
+[lulus] FS-8 galat kunci 1205/1213 diterjemahkan menjadi konflik yang dapat dimengerti
+[lulus] FS-8 perubahan capability akun dicatat tersendiri
+[lulus] FS-8 percobaan duplikat/tumpang tindih dicatat pada audit
+[lulus] FS-8 aksi audit penugasan.buat
+[lulus] FS-8 aksi audit penugasan.ubah
+[lulus] FS-8 aksi audit penugasan.akhiri
+[lulus] FS-8 aksi audit penugasan.nonaktifkan
+[lulus] FS-8 aksi audit penugasan.aktifkan
+[lulus] FS-8 layanan tidak pernah menyentuh password/token
+[lulus] FS-8 repository tidak menghapus baris penugasan
+[lulus] FS-8 subjek dan tahun ajaran tidak dapat diganti lewat parameter ubah (anti-IDOR)
+[lulus] FS-9 repository hanya memakai prepared statement
+[lulus] FS-9 repository tidak membaca input HTTP
+[lulus] FS-9 nama tabel berasal dari katalog, bukan dari input
+[lulus] FS-9 duplikat nama/kode mata pelajaran dijawab pesan yang tepat, bukan pesan penugasan
+[lulus] FS-10 resolver membaca ulang role dari basis data
+[lulus] FS-10 featureCapabilities tidak mempercayai $user['roles'] dari pemanggil
+[lulus] FS-10 masa berlaku dinilai pada tanggal berjalan di dalam query
+[lulus] FS-10 tahun ajaran diperhitungkan (Aktif untuk non-PSB)
+[lulus] FS-10 metode terpusat featureAppliesToKelas tersedia
+[lulus] FS-10 metode terpusat featureAppliesToKamar tersedia
+[lulus] FS-10 metode terpusat featureAppliesToMataPelajaran tersedia
+[lulus] FS-10 metode terpusat featureAppliesToTahunAjaran tersedia
+[lulus] FS-10 metode terpusat featureAppliesToSemester tersedia
+[lulus] FS-10 metode terpusat featureAppliesToGelombangPsb tersedia
+[lulus] FS-10 metode terpusat featureSource tersedia
+[lulus] FS-10 metode terpusat hasFeature tersedia
+[lulus] FS-11 struktur capabilities (list/default_mode/konteks/menus/aksi) tidak berubah
+[lulus] FS-11 default_mode tetap dipilih dari empat mode lama
+[lulus] FS-11 tidak ada menu/mode aplikasi baru untuk fitur yang belum ada
+[lulus] FS-11 field aditif feature_capabilities pada profil
+[lulus] FS-11 respons login juga memuat field aditif
+[lulus] FS-11 field lama profil tidak dihapus/diubah
+[lulus] FS-12 navigasi memetakan halaman pusat penugasan
+[lulus] FS-12 menu Penugasan tersedia untuk admin
+[lulus] FS-12 halaman murobi dan pembimbing lama dipertahankan
+[lulus] FS-12 Penugasan hanya tampil pada peta menu admin (dan tetap bukan kontrol akses)
+[lulus] FS-13 admin/admin_murobi.php menaut ke Pusat Penugasan
+[lulus] FS-13 admin/admin_murobi.php tetap memproses formulirnya sendiri (fungsi lama utuh)
+[lulus] FS-13 admin/admin_pembimbing.php menaut ke Pusat Penugasan
+[lulus] FS-13 admin/admin_pembimbing.php tetap memproses formulirnya sendiri (fungsi lama utuh)
+[lulus] FS-14 halaman akun menjelaskan role dasar vs penugasan
+[lulus] FS-14 halaman akun menaut ke Pusat Penugasan
+[lulus] FS-14 ringkasan penugasan efektif dihitung dari resolver server
+[lulus] FS-14 penugasan fungsional tidak ditambahkan ke pilihan role dasar
+[lulus] FS-15 migrasi tidak membuat tabel bisnis nilai_semester
+[lulus] FS-15 migrasi tidak membuat tabel bisnis nilai_santri
+[lulus] FS-15 migrasi tidak membuat tabel bisnis rapor
+[lulus] FS-15 migrasi tidak membuat tabel bisnis tagihan
+[lulus] FS-15 migrasi tidak membuat tabel bisnis kuitansi
+[lulus] FS-15 migrasi tidak membuat tabel bisnis jurnal
+[lulus] FS-15 migrasi tidak membuat tabel bisnis konseling
+[lulus] FS-15 migrasi tidak membuat tabel bisnis seleksi_psb
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: SimpleXLSX.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: SimpleXLSXGen.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _guard.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _laporan_guard.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _master_ui.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _pengajian_jadwal.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _pengajian_pertemuan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: _santri_wali_field.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_akun.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_akun_perizinan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_alumni.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_dashboard.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_data.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_download.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_galeri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_guru.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_izin.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_jadwal_ngaji.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_kamar.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_kelas.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_kelulusan_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_laporan_absensi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_login.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_master_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_murobi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_notifikasi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pelanggaran.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pembayaran_psb.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pembimbing.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_penempatan_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pengajian.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_pengurus.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_penugasan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_rekap_keuangan.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_rekap_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_tahun.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_v3_katalog.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_wali.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: admin_wali_rekonsiliasi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: cek_login.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: edit_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_laporan_absensi.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_master.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_pembayaran.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_psb.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: export_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: get_santri_json.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: get_wali_json.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: hapus_siswa.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: laporan_absensi_cetak.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: laporan_absensi_detail.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: logout.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: pertemuan_pengajian.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_import_psb.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_import_santri.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_mutasi_alumni.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: proses_psb_admin.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: sidebar.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: tambah_berita.php
+[lulus] FS-15 tidak ada halaman fitur bisnis V3–V6: ubah_password.php
+[lulus] FS-16 repositori aplikasi perangkat tidak berada/berubah di dalam repo ini
+[lulus] FS-16 tidak ada menu aplikasi baru pada payload profil
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/README.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/ringkasan-desain.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/matriks-capability.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/migrasi-dan-rollback.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/kontrak-api.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/panduan-admin.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/test-results.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/cpanel-deployment.md
+[lulus] FS-17 dokumen tersedia: docs/fondasi-penugasan-v3-v6/acceptance-status.md
+[lulus] FS-17 matriks mendokumentasikan nilai.input
+[lulus] FS-17 matriks mendokumentasikan rapor.finalisasi
+[lulus] FS-17 matriks mendokumentasikan pembiayaan_bulanan.tagihan
+[lulus] FS-17 matriks mendokumentasikan psb.pendaftar
+[lulus] FS-17 matriks mendokumentasikan psb_keuangan.laporan
+[lulus] FS-17 matriks mendokumentasikan murobi.binaan
+[lulus] FS-17 matriks mendokumentasikan pembimbing.binaan
+[lulus] FS-17 dokumentasi menegaskan fitur bisnis V3–V6 belum diimplementasikan
+[lulus] FS-17 matriks hak akses lama diperbarui
+[lulus] FS-17 dokumentasi API menyebut field aditif
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa INSERT)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa UPDATE)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa DELETE)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa ALTER)
+[lulus] FS-18 bin/penugasan_preflight.php hanya membaca (tanpa DROP)
+[lulus] FS-18 bin/penugasan_preflight.php hanya dapat dijalankan dari CLI
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa INSERT)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa UPDATE)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa DELETE)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa ALTER)
+[lulus] FS-18 bin/penugasan_verify.php hanya membaca (tanpa DROP)
+[lulus] FS-18 bin/penugasan_verify.php hanya dapat dijalankan dari CLI
+
+Total gagal: 0
+
+## v2_phase1_static
+[lulus] Migrasi 006 memuat INSERT INTO roles (slug, name) VALUES ('pengurus'
+[lulus] Migrasi 006 memuat INSERT INTO roles (slug, name) VALUES ('orang_tua'
+[lulus] Migrasi 006 memuat ADD COLUMN pengurus_id
+[lulus] Migrasi 006 memuat ADD COLUMN wali_id
+[lulus] Migrasi 006 memuat users_pengurus_unique
+[lulus] Migrasi 006 memuat users_wali_unique
+[lulus] Migrasi 006 memuat CREATE TABLE pembimbing_assignments
+[lulus] Migrasi 006 memuat CREATE TABLE izin_pengajuan
+[lulus] Migrasi 006 memuat CREATE TABLE izin_keputusan
+[lulus] Migrasi 006 memuat CREATE TABLE izin_riwayat_status
+[lulus] Migrasi 006 memuat CREATE TABLE izin_idempotency_keys
+[lulus] Migrasi 006 memuat CREATE TABLE notifikasi_outbox
+[lulus] Migrasi 006 memuat CREATE TABLE perangkat_push
+[lulus] Migrasi 006 memuat CREATE TABLE pengaturan_notifikasi
+[lulus] Migrasi naik sepenuhnya aditif: tanpa DROP, DELETE, atau TRUNCATE
+[lulus] Migrasi tidak pernah mengubah tabel `perizinan` lama
+[lulus] Pemetaan status lama sesuai PRD 5.5
+[lulus] Backfill mempertahankan ID pengajuan lama secara eksplisit
+[lulus] Backfill idempoten dan tidak pernah menduplikasi baris warisan
+[lulus] Blok backfill diberi penanda agar dipakai ulang oleh bin/v2_phase1_backfill.php
+[lulus] AUTO_INCREMENT diselaraskan agar ID warisan tidak dipakai ulang
+[lulus] Keputusan admin pengganti wajib memiliki alasan penggantian di tingkat basis data
+[lulus] Outbox notifikasi memiliki kunci unik peristiwa/kanal/penerima
+[lulus] WhatsApp hanya dapat aktif setelah pemeriksaan konfigurasi lulus
+[lulus] Skema notifikasi tidak menyediakan tempat penyimpanan credential provider
+[lulus] Rollback melepas tabel V2 tanpa menyentuh tabel `perizinan` lama
+[lulus] Rollback memperingatkan agar tidak dijalankan sembarangan di produksi
+[lulus] Hak murobi berasal dari penugasan aktif, bukan dari role terpisah
+[lulus] Penugasan murobi dinilai pada tanggal berjalan dan tahun ajaran aktif
+[lulus] Kemampuan pengurus dan orang tua menuntut role sekaligus relasi master aktif
+[lulus] Guard portal menolak kemampuan yang tidak berwenang dengan 403 di server
+[lulus] Cakupan yang tidak dikenal tidak pernah mengembalikan baris
+[lulus] Repository dan service perizinan tidak membaca input global secara langsung
+[lulus] Fase 1 baca-saja: repository perizinan tidak menulis atau menghapus data
+[lulus] Orang tua hanya dapat membaca santri dengan relasi wali aktif
+[lulus] Detail di luar cakupan menghasilkan 403, bukan kebocoran keberadaan data
+[lulus] Mode cakupan yang diminta harus berada dalam kemampuan yang benar-benar dimiliki
+[lulus] Penugasan pembimbing memakai validasi pengurus aktif di layanan pusat
+[lulus] Target kamar/kelas divalidasi layanan pusat
+[lulus] Mutasi pembimbing dan audit memakai transaksi pusat
+[lulus] Pembuatan dan penghubungan akun tercatat pada audit
+[lulus] Akun hanya dapat dihubungkan ke master aktif yang belum terpakai
+[lulus] Satu akun tidak dapat terhubung ke lebih dari satu master
+[lulus] Akun baru mewajibkan penggantian password awal
+[lulus] Pembuatan akun beserta relasi dan role memakai transaksi
+[lulus] Repository akun perizinan tidak membaca input global secara langsung
+[lulus] Halaman tersedia: admin/admin_pembimbing.php
+[lulus] Halaman tersedia: admin/admin_akun_perizinan.php
+[lulus] Halaman tersedia: portal/_guard.php
+[lulus] Halaman tersedia: portal/_ui.php
+[lulus] Halaman tersedia: portal/index.php
+[lulus] Halaman tersedia: portal/izin.php
+[lulus] Halaman tersedia: portal/izin_detail.php
+[lulus] admin_pembimbing.php memakai guard role admin
+[lulus] admin_akun_perizinan.php memakai guard role admin
+[lulus] index.php memuat guard portal sebelum output
+[lulus] izin.php memuat guard portal sebelum output
+[lulus] izin_detail.php memuat guard portal sebelum output
+[lulus] Guard portal memeriksa kemampuan dan melindungi seluruh POST dengan CSRF
+[lulus] Daftar perizinan menyediakan empty state
+[lulus] Data lama tanpa pelaku ditampilkan sebagai Data warisan
+[lulus] bootstrap menyediakan capabilities()
+[lulus] bootstrap menyediakan portal_guard()
+[lulus] bootstrap menyediakan izin_service()
+[lulus] bootstrap menyediakan pembimbing_service()
+[lulus] bootstrap menyediakan perizinan_account_service()
+[lulus] Helper V1 teacher_api_service() dipertahankan
+[lulus] Helper V1 report_service() dipertahankan
+[lulus] Helper V1 schedule_service() dipertahankan
+[lulus] Helper V1 master_data_service() dipertahankan
+[lulus] Helper V1 api_auth_service() dipertahankan
+[lulus] Rute API V1 dipertahankan: '/auth/login'
+[lulus] Rute API V1 dipertahankan: '/profile'
+[lulus] Rute API V1 dipertahankan: '/auth/logout'
+[lulus] Rute API V1 dipertahankan: '/schedules/today'
+[lulus] Rute API V1 dipertahankan: '/schedules'
+[lulus] Rute API V1 dipertahankan: '/meetings'
+[lulus] Rute API V1 dipertahankan: '/reports'
+[lulus] Rute API V1 dipertahankan: '/reports/filters'
+[lulus] Rute API V1 dipertahankan: '/reports/print'
+[lulus] Rute API V1 dipertahankan: #^/schedules/(\d+)$#
+[lulus] Rute API V1 dipertahankan: #^/schedules/(\d+)/meetings$#
+[lulus] Rute API V1 dipertahankan: #^/meetings/(\d+)(?:/attendance)?$#
+[lulus] Rute API V1 dipertahankan: #^/meetings/(\d+)/attendance$#
+[lulus] Rute API V1 dipertahankan: #^/reports/meetings/(\d+)$#
+[lulus] Endpoint jadwal/laporan V1 tetap dijaga penjaga role admin/guru yang sama
+[lulus] Alur login memakai satu sumber kebenaran dan seluruh peran mendarat di beranda tunggal
+[lulus] Pintasan beranda dihitung dari capability nyata, bukan dari nama role
+[lulus] Akun pengurus/orang tua diarahkan ke beranda setelah mengganti password awal
+[lulus] Modul izin lama belum dihapus (baru dipensiunkan pada Fase 2 setelah persetujuan)
+[lulus] Skrip tersedia: bin/v2_phase1_preflight.php
+[lulus] v2_phase1_preflight.php hanya dapat dijalankan dari CLI
+[lulus] Skrip tersedia: bin/v2_phase1_backfill.php
+[lulus] v2_phase1_backfill.php hanya dapat dijalankan dari CLI
+[lulus] Skrip tersedia: bin/v2_phase1_verify.php
+[lulus] v2_phase1_verify.php hanya dapat dijalankan dari CLI
+[lulus] Preflight memblokir migrasi bila ada relasi izin yatim
+[lulus] Preflight menghasilkan backup, manifest jumlah baris, dan inventaris skema
+[lulus] Verifikasi membandingkan ID pengajuan lama sebelum dan sesudah migrasi
+[lulus] Dokumentasi tersedia: docs/phase-v2-1/inventory.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-1/migration-and-rollback.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-1/acceptance-status.md
+[lulus] Runbook memuat preflight, migrasi naik, verifikasi, dan petunjuk rollback
+[lulus] php -l lulus untuk app/Auth/Capabilities.php
+[lulus] php -l lulus untuk app/Auth/PortalGuard.php
+[lulus] php -l lulus untuk app/bootstrap.php
+[lulus] php -l lulus untuk app/Izin/IzinException.php
+[lulus] php -l lulus untuk app/Izin/IzinRepository.php
+[lulus] php -l lulus untuk app/Izin/IzinService.php
+[lulus] php -l lulus untuk app/Izin/PembimbingRepository.php
+[lulus] php -l lulus untuk app/Izin/PembimbingService.php
+[lulus] php -l lulus untuk app/Account/PerizinanAccountRepository.php
+[lulus] php -l lulus untuk app/Account/PerizinanAccountService.php
+[lulus] php -l lulus untuk admin/admin_pembimbing.php
+[lulus] php -l lulus untuk admin/admin_akun_perizinan.php
+[lulus] php -l lulus untuk admin/cek_login.php
+[lulus] php -l lulus untuk admin/admin_login.php
+[lulus] php -l lulus untuk admin/logout.php
+[lulus] php -l lulus untuk admin/sidebar.php
+[lulus] php -l lulus untuk portal/_guard.php
+[lulus] php -l lulus untuk portal/_ui.php
+[lulus] php -l lulus untuk portal/index.php
+[lulus] php -l lulus untuk portal/izin.php
+[lulus] php -l lulus untuk portal/izin_detail.php
+[lulus] php -l lulus untuk bin/v2_phase1_preflight.php
+[lulus] php -l lulus untuk bin/v2_phase1_backfill.php
+[lulus] php -l lulus untuk bin/v2_phase1_verify.php
+
+## v2_phase2_static
+[lulus] Migrasi 007 memuat routing_kandidat
+[lulus] Migrasi 007 memuat routing_catatan
+[lulus] Migrasi 007 memuat murobi_ditetapkan_oleh_user_id
+[lulus] Migrasi 007 memuat dibatalkan_oleh_user_id
+[lulus] Migrasi 007 memuat alasan_pembatalan
+[lulus] Migrasi 007 memuat CREATE TABLE IF NOT EXISTS izin_keputusan_koreksi
+[lulus] Migrasi 007 memuat izin_pengajuan_antrean_index
+[lulus] Migrasi 007 memuat izin_pengajuan_overlap_index
+[lulus] Migrasi naik 007 sepenuhnya aditif: tanpa DROP, DELETE, atau TRUNCATE
+[lulus] Migrasi 007 tidak pernah mengubah tabel `perizinan` lama
+[lulus] Setiap penambahan kolom/indeks dijaga pemeriksaan INFORMATION_SCHEMA (dapat dijalankan ulang)
+[lulus] Seluruh pernyataan dinamis migrasi dilepas kembali (tanpa kebocoran prepared statement)
+[lulus] Alasan koreksi wajib terisi pada tingkat basis data
+[lulus] Rollback 007 hanya melepas jejak Fase 2; pengajuan, keputusan, riwayat, dan `perizinan` tetap ada
+[lulus] Rollback 007 memperingatkan agar tidak dijalankan sembarangan di produksi
+[lulus] Rollback 007 juga dapat dijalankan ulang dengan aman
+[lulus] IzinRepository tetap baca-saja setelah Fase 2
+[lulus] IzinRepository.php tidak membaca input global secara langsung
+[lulus] IzinWriteRepository.php tidak membaca input global secara langsung
+[lulus] IzinService.php tidak membaca input global secara langsung
+[lulus] IzinWorkflowService.php tidak membaca input global secara langsung
+[lulus] IzinRouter.php tidak membaca input global secara langsung
+[lulus] IzinIdempotency.php tidak membaca input global secara langsung
+[lulus] Seluruh mutasi memakai prepared statement, bukan penggabungan string
+[lulus] Pengajuan dikunci baris sebelum diperiksa dan diperbarui
+[lulus] Pembuatan pengajuan menserialkan santri yang sama lewat penguncian baris
+[lulus] Perubahan status memakai optimistic version
+[lulus] Jumlah baris terpengaruh dibaca dari statement (bukan setelah statement ditutup)
+[lulus] Setiap mutasi berjalan dalam satu transaksi dengan rollback pada kegagalan
+[lulus] Kelima mutasi (create, assign, decide, cancel, correction) memakai idempotency key
+[lulus] Penjaga idempotensi membaca baris terkunci dan membandingkan hash request secara aman
+[lulus] Kunci idempotensi yang dipakai untuk isi berbeda menghasilkan konflik, bukan diam-diam diterima
+[lulus] Duplikasi keputusan dari kunci unik basis data diterjemahkan menjadi konflik yang jelas
+[lulus] Tersedia status konflik 409 yang eksplisit
+[lulus] Routing hanya mengarahkan bila tepat satu murobi kandidat
+[lulus] Routing menilai penugasan murobi aktif, tahun ajaran aktif, serta kamar/kelas santri
+[lulus] Cakupan pembimbing menolak target kelas yang sudah nonaktif atau diarsipkan
+[lulus] Penetapan manual admin dibatasi pada guru dengan penugasan murobi aktif
+[lulus] Keputusan Admin Pengganti wajib memuat alasan penggantian
+[lulus] Kapasitas pemberi keputusan dibedakan antara Murobi dan Admin Pengganti
+[lulus] Murobi hanya dapat memutus pengajuan yang diarahkan kepadanya
+[lulus] Pembatalan dan keputusan hanya mungkin sebelum pengajuan diputus
+[lulus] Tumpang tindih dinilai terhadap status Diajukan, Perlu Penetapan Admin, dan Disetujui
+[lulus] Koreksi menambah peristiwa dan tidak pernah menghapus keputusan atau riwayat
+[lulus] Data warisan V1 tetap baca-saja pada alur V2
+[lulus] Audit mencatat aksi izin_pengajuan_created
+[lulus] Audit mencatat aksi izin_routing_resolved
+[lulus] Audit mencatat aksi izin_murobi_assigned
+[lulus] Audit mencatat aksi izin_decision_recorded
+[lulus] Audit mencatat aksi izin_cancelled
+[lulus] Audit mencatat aksi izin_decision_corrected
+[lulus] Seluruh mutasi menulis audit (pembuatan menulis dua peristiwa: pengajuan dan routing)
+[lulus] Kegagalan audit membatalkan transaksi perizinan, bukan diabaikan
+[lulus] Setiap transisi status menulis riwayat yang tidak pernah ditimpa
+[lulus] Riwayat menyimpan IP dan user agent tanpa credential
+[lulus] Audit dan riwayat perizinan tidak menyentuh credential atau secret
+[lulus] Halaman tersedia: portal/izin_buat.php
+[lulus] izin_buat.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/izin_aksi.php
+[lulus] izin_aksi.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/izin_antrean.php
+[lulus] izin_antrean.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/izin_detail.php
+[lulus] izin_detail.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/izin.php
+[lulus] izin.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/index.php
+[lulus] index.php memuat guard portal sebelum output
+[lulus] Controller mutasi hanya menerima POST
+[lulus] Sukses memakai POST/Redirect/GET; kegagalan mempertahankan status HTTP asli (403/409/422)
+[lulus] Seluruh POST portal dilindungi CSRF
+[lulus] Setiap formulir mutasi membawa kunci idempotensi
+[lulus] Helper kunci idempotensi dan pesan hasil tersedia untuk seluruh halaman portal
+[lulus] Tombol pada detail hanya cermin hak yang dihitung server
+[lulus] Halaman antrean dan pengajuan menyediakan empty state yang informatif
+[lulus] Antrean admin dan murobi dibatasi server sesuai peran
+[lulus] Cakupan yang tidak dikenal tetap tidak mengembalikan baris
+[lulus] Modul izin lama TIDAK dihapus
+[lulus] Modul izin lama dialihkan secara kompatibel dengan 302
+[lulus] Keputusan cleanup 19 Oktober 2026: flag darurat tidak membuka implementasi lama
+[lulus] Implementasi tulis perizinan lama dipensiunkan; data tetap dipertahankan
+[lulus] Permintaan mutasi lama ditolak secara eksplisit tanpa diteruskan
+[lulus] Pengarsipan tidak menghapus data perizinan lama
+[lulus] Pengaturan untuk membuka penulisan lama sudah dipensiunkan
+[lulus] Router API tidak memanggil IzinWorkflowService langsung (selalu lewat IzinApiService)
+[lulus] Endpoint perizinan Fase 3 tersedia melalui IzinApiService
+[lulus] Rute V1 '/schedules/today' tetap ada setelah Fase 3
+[lulus] Rute V1 '/meetings' tetap ada setelah Fase 3
+[lulus] Rute V1 '/reports' tetap ada setelah Fase 3
+[lulus] Rute V1 '/auth/login' tetap ada setelah Fase 3
+[lulus] bootstrap menyediakan izin_workflow_service()
+[lulus] bootstrap menyediakan izin_router()
+[lulus] bootstrap menyediakan izin_repository()
+[lulus] Helper lama teacher_api_service() dipertahankan
+[lulus] Helper lama report_service() dipertahankan
+[lulus] Helper lama schedule_service() dipertahankan
+[lulus] Helper lama master_data_service() dipertahankan
+[lulus] Helper lama api_auth_service() dipertahankan
+[lulus] Helper lama izin_service() dipertahankan
+[lulus] Helper lama pembimbing_service() dipertahankan
+[lulus] Alur login V1/Fase 1 tidak diubah oleh Fase 2
+[lulus] Skrip tersedia: bin/v2_phase2_preflight.php
+[lulus] v2_phase2_preflight.php hanya dapat dijalankan dari CLI
+[lulus] Skrip tersedia: bin/v2_phase2_verify.php
+[lulus] v2_phase2_verify.php hanya dapat dijalankan dari CLI
+[lulus] Preflight menghasilkan backup, manifest jumlah baris, dan laporan konflik
+[lulus] Preflight memblokir migrasi bila menemukan konflik yang memblokir
+[lulus] Verifikasi memeriksa invarian keputusan tunggal dan keutuhan data warisan
+[lulus] Dokumentasi tersedia: docs/phase-v2-2/acceptance-status.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-2/migration-and-rollback.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-2/test-results.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-2/cpanel-deployment.md
+[lulus] Runbook memuat preflight, migrasi naik, verifikasi, dan petunjuk rollback
+[lulus] Berkas uji tersedia: tests/v2_phase2_integration.php
+[lulus] v2_phase2_integration.php menolak berjalan di luar database *_test
+[lulus] Berkas uji tersedia: tests/v2_phase2_concurrency_worker.php
+[lulus] v2_phase2_concurrency_worker.php menolak berjalan di luar database *_test
+[lulus] Berkas uji tersedia: tests/v2_phase2_web_smoke.php
+[lulus] v2_phase2_web_smoke.php menolak berjalan di luar database *_test
+[lulus] Uji dua keputusan bersamaan memakai dua proses PHP yang benar-benar terpisah
+[lulus] Tujuan pasca-login punya satu sumber kebenaran: app/Auth/LandingRouter.php
+[lulus] Pintasan murobi memakai Capabilities, bukan role mentah
+[lulus] Murobi tetap mendapat pintasan ke /portal/izin_antrean.php?mode=murobi
+[lulus] LandingRouter menegaskan dirinya bukan pengganti pemeriksaan otorisasi
+[lulus] Peta navigasi menegaskan dirinya bukan pengganti pemeriksaan otorisasi
+[lulus] cek_login.php memakai LandingRouter yang sama
+[lulus] cek_login.php tidak lagi mengarahkan seluruh role guru ke jadwal tanpa memeriksa capability
+[lulus] ubah_password.php memakai LandingRouter yang sama
+[lulus] ubah_password.php tidak lagi mengarahkan seluruh role guru ke jadwal tanpa memeriksa capability
+[lulus] admin_login.php menjadi alamat lama yang mengarahkan ke pintu masuk baru dengan tujuan tervalidasi
+[lulus] bootstrap menyediakan landing_router()
+[lulus] Modul pengajian menghitung hak antrean dari capability murobi
+[lulus] Tautan Antrean Perizinan pada modul pengajian hanya dirender untuk murobi aktif
+[lulus] Modul pengajian menegaskan tautan bukan pengganti pemeriksaan server
+[lulus] Guard server modul pengajian tidak dilonggarkan
+[lulus] Beranda umum hanya menuntut sesi yang sah, bukan kemampuan perizinan
+[lulus] Pintu masuk memakai penangan login yang sudah ada, bukan sistem login kedua
+[lulus] izin.php tetap dijaga guard kemampuan perizinan
+[lulus] izin_ringkasan.php tetap dijaga guard kemampuan perizinan
+[lulus] izin_antrean.php tetap dijaga guard kemampuan perizinan
+[lulus] izin_buat.php tetap dijaga guard kemampuan perizinan
+[lulus] laporan.php tetap dijaga guard kemampuan perizinan
+[lulus] Guard portal tetap menolak akun tanpa kemampuan perizinan dengan 403
+[lulus] Tersedia uji navigasi murobi yang hanya berjalan pada database *_test
+[lulus] php -l lulus untuk app/Izin/IzinRouter.php
+[lulus] php -l lulus untuk app/Izin/IzinIdempotency.php
+[lulus] php -l lulus untuk app/Izin/IzinWriteRepository.php
+[lulus] php -l lulus untuk app/Izin/IzinWorkflowService.php
+[lulus] php -l lulus untuk app/Audit/AuditLogger.php
+[lulus] php -l lulus untuk app/Auth/Capabilities.php
+[lulus] php -l lulus untuk portal/izin_buat.php
+[lulus] php -l lulus untuk portal/izin_aksi.php
+[lulus] php -l lulus untuk portal/izin_antrean.php
+[lulus] php -l lulus untuk bin/v2_phase2_preflight.php
+[lulus] php -l lulus untuk bin/v2_phase2_verify.php
+[lulus] php -l lulus untuk tests/v2_phase2_static.php
+[lulus] php -l lulus untuk tests/v2_phase2_integration.php
+[lulus] php -l lulus untuk tests/v2_phase2_concurrency_worker.php
+[lulus] php -l lulus untuk tests/v2_phase2_web_smoke.php
+[lulus] php -l lulus untuk app/Auth/LandingRouter.php
+[lulus] php -l lulus untuk tests/v2_phase2_navigasi_murobi.php
+[lulus] php -l lulus untuk app/bootstrap.php
+[lulus] php -l lulus untuk app/Izin/IzinException.php
+[lulus] php -l lulus untuk app/Izin/IzinRepository.php
+[lulus] php -l lulus untuk app/Izin/IzinService.php
+[lulus] php -l lulus untuk portal/_ui.php
+[lulus] php -l lulus untuk portal/index.php
+[lulus] php -l lulus untuk portal/izin.php
+[lulus] php -l lulus untuk portal/izin_detail.php
+[lulus] php -l lulus untuk admin/admin_izin.php
+[lulus] php -l lulus untuk admin/sidebar.php
+[lulus] php -l lulus untuk admin/cek_login.php
+[lulus] php -l lulus untuk admin/admin_login.php
+[lulus] php -l lulus untuk admin/ubah_password.php
+[lulus] php -l lulus untuk admin/pertemuan_pengajian.php
+
+## v2_phase4_static
+
+=== 1. Migrasi 008 dan rollback ===
+[lulus] Migrasi 008 Fase 4 tersedia
+[lulus] Rollback 008 Fase 4 tersedia
+[lulus] Migrasi 008 tidak memakai DROP TABLE
+[lulus] Migrasi 008 tidak memakai TRUNCATE
+[lulus] Migrasi 008 tidak memakai DELETE FROM
+[lulus] Migrasi 008 tidak memakai DROP DATABASE
+[lulus] Migrasi 008 tidak melepas kolom mana pun
+[lulus] Migrasi 008 tidak memperbarui satu pun baris data bisnis
+[lulus] Rollback 008 tidak menyentuh tabel perizinan maupun audit Fase 1-3
+[lulus] Setiap ALTER pada migrasi 008 dibungkus pemeriksaan INFORMATION_SCHEMA (21 ALTER, 21 penjaga)
+[lulus] Seluruh CREATE TABLE pada migrasi 008 memakai IF NOT EXISTS
+[lulus] Seluruh DROP TABLE pada rollback memakai IF EXISTS
+[lulus] Migrasi 008 menambahkan notifikasi_percobaan
+[lulus] Migrasi 008 menambahkan notifikasi_pengaturan_audit
+[lulus] Migrasi 008 menambahkan notifikasi_worker_lock
+[lulus] Migrasi 008 menambahkan gagal_permanen
+[lulus] Migrasi 008 menambahkan tersedia_pada
+[lulus] Migrasi 008 menambahkan locked_by
+[lulus] Migrasi 008 menambahkan locked_until
+[lulus] Migrasi 008 menambahkan push_aktif
+[lulus] Migrasi 008 menambahkan device_id
+[lulus] Migrasi 008 menambahkan alasan_pencabutan
+[lulus] Migrasi 008 menambahkan pengaturan_notifikasi_inapp_check
+[lulus] Basis data menegakkan notifikasi in-app tidak dapat dimatikan
+[lulus] Skema Fase 4 tidak menyediakan tempat penyimpanan credential penyedia
+
+=== 2. Endpoint notifikasi ===
+[lulus] Rute Fase 4 terpasang: '/notifikasi'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/belum-dibaca'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/dibaca-semua'
+[lulus] Rute Fase 4 terpasang: #^/notifikasi/(\d+)$#
+[lulus] Rute Fase 4 terpasang: #^/notifikasi/(\d+)/dibaca$#
+[lulus] Rute Fase 4 terpasang: '/notifikasi/perangkat'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/perangkat/pencabutan'
+[lulus] Rute Fase 4 terpasang: #^/notifikasi/perangkat/(\d+)/push$#
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/status'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/pemeriksaan'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/sakelar'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/pesan-uji'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/kegagalan'
+[lulus] Rute Fase 4 terpasang: #^/notifikasi/admin/kegagalan/(\d+)/coba-ulang$#
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/worker'
+[lulus] Rute Fase 4 terpasang: '/notifikasi/admin/audit'
+[lulus] Router tidak memotong jalur: seluruh notifikasi melewati notification_api_service()
+[lulus] Rute perangkat didaftarkan sebelum pola id numerik
+[lulus] Logout mencabut registrasi perangkat push
+
+=== 3. Notifikasi in-app sebagai sumber status utama ===
+[lulus] In-app dibuat tanpa memeriksa sakelar kanal mana pun
+[lulus] Push dan WhatsApp diantrekan hanya ketika kanalnya menyala
+[lulus] Baris in-app langsung berstatus Sent tanpa menunggu penyedia eksternal
+[lulus] Layanan admin menolak permintaan mematikan kanal in-app
+[lulus] Pembacaan pengaturan selalu melaporkan in-app aktif
+
+=== 4. WhatsApp opsional ===
+[lulus] Repositori hanya menyalakan WhatsApp ketika pemeriksaan berstatus Lulus
+[lulus] Repositori mengikat pemeriksaan Lulus pada penyedia WhatsApp yang sedang dipilih
+[lulus] Layanan admin menolak menyalakan WhatsApp sebelum pemeriksaan lulus
+[lulus] Layanan admin memeriksa ulang identitas penyedia dan kelengkapan konfigurasi saat menyalakan WhatsApp
+[lulus] Basis data juga menegakkan syarat pemeriksaan lulus (CHECK dari migrasi 006)
+[lulus] Penyedia default adalah NullProvider (WhatsApp mati, tanpa vendor)
+[lulus] NullProvider tidak pernah membuka koneksi jaringan
+[lulus] Adapter uji tidak pernah membuka koneksi jaringan
+[lulus] Adapter uji menyatakan dirinya BUKAN pengiriman nyata
+[lulus] Adapter uji menolak dipakai ketika APP_ENV=production
+[lulus] Panel admin menandai hasil adapter uji sebagai bukan bukti pengiriman nyata
+[lulus] Terdapat antarmuka penyedia WhatsApp yang netral vendor
+[lulus] Worker berhenti sebelum menghubungi penyedia ketika kanal mati
+
+=== 5. Payload aman ===
+[lulus] Isi notifikasi tidak pernah membaca konteks alasan
+[lulus] Isi notifikasi tidak pernah membaca konteks catatan_pengurus
+[lulus] Isi notifikasi tidak pernah membaca konteks alasan_keputusan
+[lulus] Isi notifikasi tidak pernah membaca konteks alasan_penggantian
+[lulus] Isi notifikasi tidak pernah membaca konteks alasan_koreksi
+[lulus] Pembuat notifikasi tidak pernah membaca alasan atau catatan pengurus
+[lulus] Kanal eksternal memakai varian isi ringkas terpisah
+[lulus] Payload deep link hanya memuat penunjuk sumber daya
+[lulus] Worker push membatasi payload data ke daftar kunci yang diizinkan
+[lulus] Pusat notifikasi pengguna tidak pernah mengembalikan token atau nomor telepon
+
+=== 6. Pembersihan galat (SafeError) ===
+[lulus] SafeError menyamarkan token push Expo
+[lulus] SafeError menyamarkan bearer token
+[lulus] SafeError menyamarkan nomor telepon
+[lulus] SafeError menyamarkan nilai api_key pada JSON
+[lulus] SafeError menyamarkan credential pada query string
+[lulus] SafeError membatasi panjang pesan agar muat pada kolom error aman
+[lulus] SafeError menormalkan kode galat menjadi bentuk aman
+[lulus] SafeError::scrub menghapus nilai pada kunci sensitif dan mempertahankan sisanya
+
+=== 7. Deduplikasi ===
+[lulus] Enqueue memakai ON DUPLICATE KEY sehingga peristiwa yang sama tidak menghasilkan baris kedua
+[lulus] Enqueue membedakan baris baru dari duplikat yang diabaikan
+[lulus] Kunci peristiwa deterministik memakai id pengajuan dan versi baris
+[lulus] Percobaan ulang mengembalikan baris yang SAMA ke antrean, bukan membuat baris baru
+[lulus] Alur perizinan memicu NotificationEvent::PENGAJUAN_DIBUAT
+[lulus] Alur perizinan memicu NotificationEvent::ROUTING_PERLU_ADMIN
+[lulus] Alur perizinan memicu NotificationEvent::MUROBI_DITETAPKAN
+[lulus] Alur perizinan memicu NotificationEvent::MUROBI_DITETAPKAN_ULANG
+[lulus] Alur perizinan memicu NotificationEvent::KEPUTUSAN_DISETUJUI
+[lulus] Alur perizinan memicu NotificationEvent::KEPUTUSAN_DITOLAK
+[lulus] Alur perizinan memicu NotificationEvent::KEPUTUSAN_ADMIN_PENGGANTI
+[lulus] Alur perizinan memicu NotificationEvent::PEMBATALAN
+[lulus] Alur perizinan memicu NotificationEvent::KOREKSI
+[lulus] Notifikasi dipicu pada kelima mutasi perizinan (create, assign, decide, cancel, correct)
+[lulus] Kegagalan notifikasi tidak pernah menggagalkan transaksi perizinan
+
+=== 8. Worker outbox ===
+[lulus] Retry dibatasi jumlahnya
+[lulus] Retry memakai backoff dengan batas atas
+[lulus] Klaim baris memakai satu UPDATE atomik dengan pemilik dan masa berlaku
+[lulus] Penyelesaian baris hanya berlaku bagi worker pemiliknya
+[lulus] Sewa worker hanya dapat diambil satu proses pada satu waktu
+[lulus] Sewa worker selalu dilepas walaupun terjadi galat
+[lulus] Worker memperpanjang sewa proses dan klaim baris sebelum setiap pengiriman
+[lulus] Worker hanya dapat dijalankan dari CLI
+[lulus] Worker menyediakan mode manual yang aman (uji coba dan status)
+[lulus] Worker tidak pernah mencetak token atau membuang isi variabel
+[lulus] Setiap percobaan pengiriman dicatat pada tabel riwayat percobaan
+[lulus] Antrean kanal yang dimatikan ditandai jelas dan tidak diambil worker
+
+=== 9. Otorisasi ===
+[lulus] Query listForUser() wajib menyertakan penerima_user_id
+[lulus] Query unreadCount() wajib menyertakan penerima_user_id
+[lulus] Query findForUser() wajib menyertakan penerima_user_id
+[lulus] Query markRead() wajib menyertakan penerima_user_id
+[lulus] Query markAllRead() wajib menyertakan penerima_user_id
+[lulus] Setiap query pusat notifikasi menyaring berdasarkan penerima
+[lulus] Notifikasi milik pengguna lain dijawab 403, bukan isinya
+[lulus] Pencabutan perangkat selalu dibatasi pemiliknya
+[lulus] Seluruh operasi panel kanal memeriksa capability admin di server
+[lulus] Penerima ditentukan dari relasi nyata (penugasan murobi, relasi wali, relasi pengurus)
+[lulus] Guru tanpa penugasan murobi aktif tidak pernah menjadi penerima
+[lulus] Penugasan murobi berbasis kelas hanya sah ketika kelas masih aktif
+[lulus] Token perangkat hanya diambil untuk akun pengguna yang masih aktif
+[lulus] Penonaktifan akun langsung mencabut seluruh token perangkat pengguna
+
+=== 10. Tidak ada secret atau data produksi ===
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/DeviceRepository.php
+[lulus] Tidak ada credential tertanam pada app/Notification/DeviceRepository.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/DeviceService.php
+[lulus] Tidak ada credential tertanam pada app/Notification/DeviceService.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationAdminService.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationAdminService.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationCenterService.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationCenterService.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationChannel.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationChannel.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationDispatcher.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationDispatcher.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationEvent.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationEvent.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationException.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationException.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationRepository.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationRepository.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/NotificationService.php
+[lulus] Tidak ada credential tertanam pada app/Notification/NotificationService.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/OutboxRepository.php
+[lulus] Tidak ada credential tertanam pada app/Notification/OutboxRepository.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/PushTokenProtector.php
+[lulus] Tidak ada credential tertanam pada app/Notification/PushTokenProtector.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/RecipientResolver.php
+[lulus] Tidak ada credential tertanam pada app/Notification/RecipientResolver.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/SafeError.php
+[lulus] Tidak ada credential tertanam pada app/Notification/SafeError.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/SettingsRepository.php
+[lulus] Tidak ada credential tertanam pada app/Notification/SettingsRepository.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WorkerLock.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WorkerLock.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/Push/ExpoPushClient.php
+[lulus] Tidak ada credential tertanam pada app/Notification/Push/ExpoPushClient.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/Push/PushClient.php
+[lulus] Tidak ada credential tertanam pada app/Notification/Push/PushClient.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/Push/PushReceiptClient.php
+[lulus] Tidak ada credential tertanam pada app/Notification/Push/PushReceiptClient.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/FakeProvider.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/FakeProvider.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/HttpProvider.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/HttpProvider.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/NullProvider.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/NullProvider.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/ProviderFactory.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/ProviderFactory.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/ProviderResult.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/ProviderResult.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/WhatsAppMessage.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/WhatsAppMessage.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Notification/WhatsApp/WhatsAppProvider.php
+[lulus] Tidak ada credential tertanam pada app/Notification/WhatsApp/WhatsAppProvider.php
+[lulus] Tidak ada token push sungguhan tertanam pada app/Api/NotificationApiService.php
+[lulus] Tidak ada credential tertanam pada app/Api/NotificationApiService.php
+[lulus] Tidak ada token push sungguhan tertanam pada bin/notifikasi_worker.php
+[lulus] Tidak ada credential tertanam pada bin/notifikasi_worker.php
+[lulus] Tidak ada token push sungguhan tertanam pada bin/v2_phase4_preflight.php
+[lulus] Tidak ada credential tertanam pada bin/v2_phase4_preflight.php
+[lulus] Tidak ada token push sungguhan tertanam pada bin/v2_phase4_verify.php
+[lulus] Tidak ada credential tertanam pada bin/v2_phase4_verify.php
+[lulus] Tidak ada token push sungguhan tertanam pada portal/notifikasi.php
+[lulus] Tidak ada credential tertanam pada portal/notifikasi.php
+[lulus] Tidak ada token push sungguhan tertanam pada admin/admin_notifikasi.php
+[lulus] Tidak ada credential tertanam pada admin/admin_notifikasi.php
+[lulus] .env.example mendokumentasikan PUSH_TOKEN_KEY
+[lulus] .env.example tidak memuat NILAI untuk PUSH_TOKEN_KEY
+[lulus] .env.example mendokumentasikan WHATSAPP_PROVIDER
+[lulus] .env.example tidak memuat NILAI untuk WHATSAPP_PROVIDER
+[lulus] .env.example mendokumentasikan WHATSAPP_API_URL
+[lulus] .env.example tidak memuat NILAI untuk WHATSAPP_API_URL
+[lulus] .env.example mendokumentasikan WHATSAPP_API_TOKEN
+[lulus] .env.example tidak memuat NILAI untuk WHATSAPP_API_TOKEN
+[lulus] Hasil preflight (backup dan manifest) tidak masuk repositori
+[lulus] Tidak ada berkas Fase 4 yang menyentuh dump produksi
+
+=== 11. Aplikasi Expo SDK 57 ===
+[lulus] Expo SDK 57 dan React Native 0.86 TIDAK di-upgrade
+[lulus] expo-notifications memakai versi selaras SDK 57 (~57.0.13)
+[lulus] Plugin expo-notifications terdaftar pada app.json
+[lulus] Kanal Android bawaan diselaraskan dengan pengirim server
+[lulus] Aplikasi membuat kanal Android bernama sama dengan channelId server
+[lulus] Kanal Android dibuat sebelum permintaan izin (urutan SDK 57)
+[lulus] Izin tidak diminta berulang tanpa kebutuhan
+[lulus] Identitas instalasi perangkat disimpan stabil di SecureStore, bukan hanya selama sesi aplikasi
+[lulus] Registrasi otomatis tidak memunculkan dialog izin tanpa tindakan pengguna
+[lulus] Token diambil dengan projectId sesuai dokumentasi SDK 57
+[lulus] Registrasi menolak simulator/emulator dan menjelaskan alasannya
+[lulus] Kebutuhan development build didokumentasikan pada kode registrasi
+[lulus] Handler foreground memakai API SDK 57 (shouldShowBanner/shouldShowList)
+[lulus] Aplikasi menangani foreground, ketukan, dan cold start dari notifikasi
+[lulus] Deep link membuka layar detail izin
+[lulus] Deep link sebelum login ditunda sampai autentikasi berhasil
+[lulus] Token push perangkat disimpan pada SecureStore
+[lulus] Berkas mobile Fase 4 tersedia: src/notifications/push-registration.ts
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/notifications/push-registration.ts
+[lulus] Berkas mobile Fase 4 tersedia: src/notifications/notification-context.tsx
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/notifications/notification-context.tsx
+[lulus] Berkas mobile Fase 4 tersedia: src/notifications/push-token-storage.ts
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/notifications/push-token-storage.ts
+[lulus] Berkas mobile Fase 4 tersedia: src/app/notifikasi/[id].tsx
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/app/notifikasi/[id].tsx
+[lulus] Berkas mobile Fase 4 tersedia: src/app/notifikasi/perangkat.tsx
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/app/notifikasi/perangkat.tsx
+[lulus] Berkas mobile Fase 4 tersedia: src/app/notifikasi/index.tsx
+[lulus] Tidak ada pencatatan konsol yang dapat membocorkan token pada src/app/notifikasi/index.tsx
+[lulus] Tidak ada token perangkat sungguhan tertanam pada bundle
+[lulus] Secret server tidak pernah masuk konfigurasi bundle mobile
+[lulus] Layar notifikasi menyediakan LoadingState
+[lulus] Layar notifikasi menyediakan EmptyState
+[lulus] Layar notifikasi menyediakan ErrorState
+[lulus] Layar notifikasi menyediakan Tandai semua dibaca
+[lulus] Layar notifikasi menyediakan Halaman
+[lulus] Lonceng header merender lencana jumlah belum dibaca dan membuka pusat notifikasi
+[lulus] Rute layar notifikasi baru terdaftar
+[lulus] Daftar dan lencana notifikasi terikat identitas sesi
+[lulus] Layar daftar/detail tetap memakai operasi client notifikasi
+[lulus] Logout mencabut registrasi perangkat dan membersihkan token lokal
+
+=== 12. Halaman web ===
+[lulus] Pusat notifikasi web menyediakan jumlah_belum_dibaca
+[lulus] Pusat notifikasi web menyediakan tandai_dibaca
+[lulus] Pusat notifikasi web menyediakan tandai_semua
+[lulus] Pusat notifikasi web menyediakan ah_pagination
+[lulus] Pusat notifikasi web menyediakan Belum ada notifikasi
+[lulus] Seluruh mutasi pusat notifikasi web dilindungi CSRF
+[lulus] Panel admin menyediakan Periksa konfigurasi
+[lulus] Panel admin menyediakan Kirim pesan uji
+[lulus] Panel admin menyediakan Pengiriman gagal
+[lulus] Panel admin menyediakan Coba ulang
+[lulus] Panel admin menyediakan Audit perubahan kanal
+[lulus] Panel admin menyediakan Jalankan worker sekali
+[lulus] Panel admin menyediakan Uji coba (tanpa kirim)
+[lulus] Panel admin hanya menampilkan NAMA environment, bukan nilainya
+[lulus] Navigasi portal menampilkan lencana notifikasi belum dibaca
+
+=== 13. php -l berkas Fase 4 ===
+[lulus] php -l lulus: app/Notification/DeviceRepository.php
+[lulus] php -l lulus: app/Notification/DeviceService.php
+[lulus] php -l lulus: app/Notification/NotificationAdminService.php
+[lulus] php -l lulus: app/Notification/NotificationCenterService.php
+[lulus] php -l lulus: app/Notification/NotificationChannel.php
+[lulus] php -l lulus: app/Notification/NotificationDispatcher.php
+[lulus] php -l lulus: app/Notification/NotificationEvent.php
+[lulus] php -l lulus: app/Notification/NotificationException.php
+[lulus] php -l lulus: app/Notification/NotificationRepository.php
+[lulus] php -l lulus: app/Notification/NotificationService.php
+[lulus] php -l lulus: app/Notification/OutboxRepository.php
+[lulus] php -l lulus: app/Notification/PushTokenProtector.php
+[lulus] php -l lulus: app/Notification/RecipientResolver.php
+[lulus] php -l lulus: app/Notification/SafeError.php
+[lulus] php -l lulus: app/Notification/SettingsRepository.php
+[lulus] php -l lulus: app/Notification/WorkerLock.php
+[lulus] php -l lulus: app/Notification/Push/ExpoPushClient.php
+[lulus] php -l lulus: app/Notification/Push/PushClient.php
+[lulus] php -l lulus: app/Notification/Push/PushReceiptClient.php
+[lulus] php -l lulus: app/Notification/WhatsApp/FakeProvider.php
+[lulus] php -l lulus: app/Notification/WhatsApp/HttpProvider.php
+[lulus] php -l lulus: app/Notification/WhatsApp/NullProvider.php
+[lulus] php -l lulus: app/Notification/WhatsApp/ProviderFactory.php
+[lulus] php -l lulus: app/Notification/WhatsApp/ProviderResult.php
+[lulus] php -l lulus: app/Notification/WhatsApp/WhatsAppMessage.php
+[lulus] php -l lulus: app/Notification/WhatsApp/WhatsAppProvider.php
+[lulus] php -l lulus: app/Api/NotificationApiService.php
+[lulus] php -l lulus: bin/notifikasi_worker.php
+[lulus] php -l lulus: bin/v2_phase4_preflight.php
+[lulus] php -l lulus: bin/v2_phase4_verify.php
+[lulus] php -l lulus: portal/notifikasi.php
+[lulus] php -l lulus: admin/admin_notifikasi.php
+[lulus] php -l lulus: app/bootstrap.php
+[lulus] php -l lulus: app/Izin/IzinWorkflowService.php
+[lulus] php -l lulus: api/v1/index.php
+[lulus] php -l lulus: portal/_ui.php
+[lulus] php -l lulus: admin/sidebar.php
+[lulus] php -l lulus: tests/v2_phase4_static.php
+
+SELURUH PEMERIKSAAN STATIS FASE 4 LULUS.
+
+## v3_phase4_static
+[lulus] PHP lint app/V3/PublikasiService.php
+[lulus] PHP lint app/V3/PublikasiRepository.php
+[lulus] PHP lint portal/v3_publikasi.php
+[lulus] PHP lint portal/v3_publikasi_kelola.php
+[lulus] PHP lint portal/partials/v3_publikasi_konten.php
+[lulus] PHP lint bin/v3_phase4_preflight.php
+[lulus] PHP lint bin/v3_phase4_verify.php
+[lulus] Penjaga SQL menemukan metode parentFrom
+[lulus] SQL orang tua tidak mengambil isi kasus/sesi/pelanggaran
+[lulus] SQL pembacaan dibatasi pengguna dan relasi aktif
+[lulus] Memakai allowlist dan resolver wali yang ada
+[lulus] Rollback tidak menghapus data atau tabel bisnis
+[lulus] Tidak ada mutasi publikasi lewat GET
+[lulus] Penjaga GET mendeteksi contoh yang salah
+[lulus] Layar deep-link berada di Stack autentikasi
+[lulus] Detail memuat ulang API dan menghapus konten lama
+[lulus] Payload V3 divalidasi dan tujuan sebelum login ditunda
+[lulus] Layar publikasi tidak melog atau menyimpan isi ke penyimpanan/clipboard

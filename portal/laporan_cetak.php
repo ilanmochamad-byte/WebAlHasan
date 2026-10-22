@@ -19,7 +19,7 @@ require_once __DIR__ . '/_guard.php';
  * bersih; tombol "Cetak / Simpan PDF" disediakan `IzinPrintRenderer`.
  */
 
-$requestedMode = isset($_GET['mode']) ? (string) $_GET['mode'] : null;
+$requestedMode = portal_requested_mode($currentUser, $userCapabilities);
 
 try {
     $dokumen = izin_report_service()->document($currentUser, $_GET, $requestedMode);

@@ -1,0 +1,89 @@
+[lulus] T2-A sbx_admin 375px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_admin 768px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_admin 1280px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_guru_biasa 375px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_guru_biasa 768px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_guru_biasa 1280px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_murobi_a 375px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_murobi_a 768px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_murobi_a 1280px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_guru_mapel 375px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_guru_mapel 768px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_guru_mapel 1280px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_pengurus_a 375px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_pengurus_a 768px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_pengurus_a 1280px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_pengurus_biasa 375px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_pengurus_biasa 768px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_pengurus_biasa 1280px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_pendidikan 375px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_pendidikan 768px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_pendidikan 1280px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_ortu_a 375px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_ortu_a 768px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-A sbx_ortu_a 1280px: Beranda rapi, navigasi sesuai ukuran
+[lulus] T2-B admin: "penem" menemukan Penempatan · Data santri
+[lulus] T2-B combobox: hasil pertama terpilih, aria-expanded
+[lulus] T2-B Enter membuka halaman Penempatan
+[lulus] T2-B panah bawah memindah pilihan (Kelas · Kelas & kobong)
+[lulus] T2-B Esc menutup hasil dan mengosongkan kotak
+[lulus] T2-B pencarian tanpa hasil menjelaskan
+[lulus] T2-B hanya mencari menu, bukan data santri (AQ)
+[lulus] T2-B pencarian berjalan di peramban tanpa permintaan ke server
+[lulus] T2-B 768: tombol ⌕ membuka laci dengan fokus di kotak cari
+[lulus] T2-B 768: hasil tampil di laci
+[lulus] T2-B 375: topbar HP tetap ≡, judul, lonceng
+[lulus] T2-B 375: butir Menu membuka laci berisi pencarian
+[lulus] T2-B guru: menu admin tidak muncul di pencarian
+[lulus] T2-C pil "Peran: Admin" di topbar desktop
+[lulus] T2-C pilihan peran: Admin, Guru
+[lulus] T2-C setelah memilih Guru, menu menjadi menu guru (Beranda, Pengajian, Antrean izin, Sikap binaan, Pembinaan binaan)
+[lulus] T2-C pil dan pesan menyebut peran aktif
+[lulus] T2-C 375: pemilih peran di bagian atas laci
+[lulus] T2-C 375: kembali ke Admin menampilkan kartu prioritas
+[lulus] T2-C akun berperan tunggal tidak mendapat pemilih peran
+[lulus] T2-D 375: lonceng memuat 5 notifikasi (≤5) dan Lihat semua
+[lulus] T2-D 375: pratinjau lonceng tidak terpotong layar
+[lulus] T2-D 375: pusat notifikasi dengan 6 chip tanpa geser horizontal
+[lulus] T2-D 1280: lonceng memuat 5 notifikasi (≤5) dan Lihat semua
+[lulus] T2-D 1280: pratinjau lonceng tidak terpotong layar
+[lulus] T2-D 1280: pusat notifikasi dengan 6 chip tanpa geser horizontal
+[lulus] T2-E 375: Keluar membuka dialog
+[lulus] T2-E 375: Batal tidak mengirim apa pun
+[lulus] T2-E 375: Ya, keluar mengirim POST dan kembali ke halaman masuk
+[lulus] T2-E 375: sesi benar-benar berakhir
+[lulus] T2-E 1280: Keluar membuka dialog
+[lulus] T2-E 1280: Batal tidak mengirim apa pun
+[lulus] T2-E 1280: Ya, keluar mengirim POST dan kembali ke halaman masuk
+[lulus] T2-E 1280: sesi benar-benar berakhir
+[lulus] T2-F 375: satu kartu tanpa geser horizontal
+[lulus] T2-F 375: pesan gagal ditulis ulang
+[lulus] T2-F 375: Tampilkan memperlihatkan kata sandi
+[lulus] T2-F 375: Sembunyikan mengembalikan
+[lulus] T2-F 1280: dua panel tanpa geser horizontal
+[lulus] T2-F 1280: pesan gagal ditulis ulang
+[lulus] T2-F 1280: Tampilkan memperlihatkan kata sandi
+[lulus] T2-F 1280: Sembunyikan mengembalikan
+[lulus] T2-G kata sandi wajib: kerangka polos tanpa menu
+[lulus] T2-G syarat belum terpenuhi saat kosong
+[lulus] T2-G huruf kecil tercentang
+[lulus] T2-G keempat syarat tercentang, tanpa geser horizontal
+[lulus] T2-H 1280: "Perlu tindakan" 4 kartu dalam 4 kolom (4)
+[lulus] T2-H "Lihat semua" menampilkan 8 kartu
+[lulus] T2-H 375: tab modul data-santri (chip), satu aktif, tanpa geser
+[lulus] T2-H 1280: tab modul data-santri (tab), satu aktif, tanpa geser
+[lulus] T2-H 375: tab modul perizinan (chip), satu aktif, tanpa geser
+[lulus] T2-H 1280: tab modul perizinan (tab), satu aktif, tanpa geser
+[lulus] T2-H 375: tab modul pembinaan (chip), satu aktif, tanpa geser
+[lulus] T2-H 1280: tab modul pembinaan (tab), satu aktif, tanpa geser
+[lulus] T2-H 375: kartu tindakan 1 kolom, statistik 2 kolom (1/2)
+[lulus] T2-H 375 pendidikan: tanpa geser horizontal
+[lulus] T2-H 375 ortu: tanpa geser horizontal
+[lulus] T2-H 375 ortu: pilihan dua anak, huruf kartu 16.8px
+[lulus] T2-H 375 ditolak: tanpa geser horizontal
+[lulus] T2-H akses ditolak di dalam kerangka
+[lulus] T2-H 375 pengurus: tanpa geser horizontal
+[lulus] T2-H 375 pengurus: Ajukan izin penuh lebar (348px)
+[lulus] T2-I tanpa galat JavaScript
+
+Ringkasan: 87 lulus, 0 gagal

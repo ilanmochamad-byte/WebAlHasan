@@ -357,6 +357,16 @@ function ui_context(array $user): array
     ];
 }
 
+/**
+ * Data Beranda per peran (redesain website Tahap 2). Hanya membaca; setiap
+ * angka memakai cakupan nyata akun dan halaman tujuan tetap menjaga dirinya.
+ */
+function beranda_service(): \App\Beranda\BerandaService
+{
+    static $service;
+    return $service ??= new \App\Beranda\BerandaService(app_db(), capabilities());
+}
+
 function izin_repository(): IzinRepository
 {
     static $repository;

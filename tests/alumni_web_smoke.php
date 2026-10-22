@@ -290,7 +290,10 @@ try {
 
     $halamanProses = $klien->request('/admin/admin_kelulusan_santri.php');
     $assert($halamanProses['status'] === 200, 'AW-3h halaman kelulusan terbuka untuk admin [' . $halamanProses['status'] . ']');
-    $assert(preg_match('#<a href="[^"]*admin_kelulusan_santri\.php" aria-current="page">#', $halamanProses['body']) === 1, 'AW-3i menu Kelulusan & Mutasi ditandai aktif');
+    // Redesain website Tahap 2 (keputusan A–E): kelulusan berada di tab
+    // "Kelulusan & alumni" menu Data santri.
+    $assert(preg_match('#<a href="[^"]*admin_alumni\.php" aria-current="page"><span>Kelulusan &amp; alumni</span>#', $halamanProses['body']) === 1
+        && preg_match('#<a href="[^"]*admin_master_santri\.php" aria-current="page">#', $halamanProses['body']) === 1, 'AW-3i menu Data santri › Kelulusan & alumni ditandai aktif');
 
     // ================================================================= AW-14
     $master = $klien->request('/admin/admin_master_santri.php?q=AW' . $suffix);
