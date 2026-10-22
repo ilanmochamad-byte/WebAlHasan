@@ -1,0 +1,18 @@
+[lulus] Fixture menampilkan seluruh delapan prioritas admin | ["izin_penetapan","psb_baru","psb_belum_lunas","notifikasi_gagal","izin_tertunda","bahan_perbaikan","santri_tanpa_tempat","rekomendasi"]
+[lulus] B-1: kartu pendaftar baru hanya menampilkan pendaftar Baru | {"url":"/admin/admin_data.php?status=Baru","status":["Baru","Baru"]}
+[lulus] B-1/AA: pemantauan Admin memuat tepat rekomendasi tertunda yang dihitung | {"kartu":1,"daftar":[1]}
+[lulus] V3: pemantauan Admin menjelaskan tindak lanjut oleh pembimbing
+[lulus] V3: pembimbing tetap dapat memilih rekomendasi untuk tindak lanjut
+[lulus] AR: halaman bersama mempertahankan peran Guru
+[lulus] A-2/A-5: halaman Admin dari peran Guru menawarkan perpindahan eksplisit | {"http":403,"otomatis":false}
+[lulus] AR: membuka tautan peran lain tidak mengganti pilihan sesi tanpa pilihan pengguna
+[lulus] F-1: POST pemroses izin tidak memakai kapasitas Admin dari peran Guru | {"payload":{"aksi":"buat","mode":"admin"},"http":403}
+[lulus] F-1: POST pemroses izin tidak memakai kapasitas Admin dari peran Guru | {"payload":{"aksi":"tetapkan"},"http":403}
+[lulus] Fixture akun layanan tersedia
+[lulus] B-4: jumlah terverifikasi mengikuti status efektif sumber V4 | {"beranda":0,"matriks":0}
+[lulus] Fixture akun ganda hanya ditugaskan pada satu mapel | 1
+[lulus] B-2: tugas nilai peran Guru dibatasi ke penugasan sendiri | ["Fiqih · SBX Kelas 1"]
+[lulus] F-2: Beranda akun Admin+Pendidikan hanya kelas penugasan sendiri
+[gagal] F-4: tujuan perbaikan Pendidikan tetap dalam kelas yang dihitung Beranda
+[lulus] F-2: pengawasan semua kelas tetap tersedia setelah memilih Admin
+Ringkasan: 16 lulus, 1 gagal

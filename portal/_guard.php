@@ -39,14 +39,15 @@ function portal_requested_mode(array $user, array $capabilities): ?string
 {
     $aktif = Peran::active($user);
     $modeAktif = Peran::izinMode($aktif, $capabilities);
-    $diminta = isset($_GET['mode']) ? (string) $_GET['mode'] : null;
+    $masukan = $_SERVER['REQUEST_METHOD'] === 'POST' ? $_POST : $_GET;
+    $diminta = isset($masukan['mode']) ? (string) $masukan['mode'] : null;
     if ($diminta !== null && $diminta !== $modeAktif && in_array($diminta, $capabilities, true)) {
         $peran = Peran::fromIzinMode($diminta);
         if ($peran !== null && $peran !== $aktif && in_array($peran, Peran::available($user), true)) {
             // Tanpa peran aktif yang memiliki perizinan, alamat dibuka dengan
             // cakupan bawaan layanan seperti sebelumnya.
             $lanjut = null;
-            if ($modeAktif !== null) {
+            if ($modeAktif !== null && $_SERVER['REQUEST_METHOD'] === 'GET') {
                 $query = $_GET;
                 unset($query['mode']);
                 $lanjut = strtok((string) ($_SERVER['REQUEST_URI'] ?? ''), '?') . ($query === [] ? '' : '?' . http_build_query($query));

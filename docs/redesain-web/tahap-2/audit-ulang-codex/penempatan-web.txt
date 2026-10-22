@@ -1,0 +1,49 @@
+[lulus] PW-1 halaman penempatan tertutup bagi yang belum masuk [302]
+[lulus] PW-1 alamat lama pun tidak melayani tamu sebelum guard admin [302]
+[lulus] PW-2a admin uji berhasil masuk [302]
+[lulus] PW-2b halaman penempatan terbuka untuk admin [200]
+[lulus] PW-2c judul halaman tampil
+[lulus] PW-2d menu Master Data → Penempatan Kelas & Kamar ditandai aktif
+[lulus] PW-2e breadcrumb tampil
+[lulus] PW-2f pencarian NIS menyaring daftar santri
+[lulus] PW-2g santri tanpa kamar ditandai jelas
+[lulus] PW-3a POST tanpa token CSRF ditolak [419]
+[lulus] PW-3b POST tanpa CSRF tidak mengubah satu baris pun
+[lulus] PW-4 aksi mutasi lewat GET ditolak 405 [405]
+[lulus] PW-5a alamat lama mengalihkan permintaan GET [301]
+[lulus] PW-5b filter lama dipetakan ke parameter baru [/admin/admin_penempatan_santri.php?q=PW299168&jk=L&status=tanpa_kamar]
+[lulus] PW-6a endpoint POST lama dihentikan dengan 410 [410]
+[lulus] PW-6b POST lama TIDAK dialihkan secara buta
+[lulus] PW-6c POST lama tidak mengubah data penempatan
+[lulus] PW-6d POST lama TANPA token CSRF pun dijawab 410 [410]
+[lulus] PW-6e jawaban 410 menyebut halaman pengganti sehingga klien lama tahu ke mana harus pindah
+[lulus] PW-6f POST lama tanpa CSRF tetap tidak mengubah data
+[lulus] PW-7a tinjauan tampil sebelum perubahan diterapkan [200]
+[lulus] PW-7b tinjauan menyebut jumlah santri terpilih
+[lulus] PW-7c tinjauan menampilkan status kapasitas kamar
+[lulus] PW-7d tinjauan sama sekali tidak mengubah data
+[lulus] PW-7e penerapan memakai pola POST-redirect-GET [302]
+[lulus] PW-7f dua santri benar-benar tersimpan pada kamar tujuan
+[lulus] PW-7g pesan hasil ditampilkan setelah pengalihan
+[lulus] PW-8a pengiriman ulang tinjauan yang sama dialihkan kembali [302]
+[lulus] PW-8b admin diberi tahu bahwa tinjauan itu sudah dipakai
+[lulus] PW-8c tidak ada penempatan ganda dari pengiriman ulang
+[lulus] PW-9a penempatan ke kamar penuh ditolak 422 [422]
+[lulus] PW-9b pesan kapasitas dijelaskan kepada admin
+[lulus] PW-9c penolakan kapasitas tidak mengubah satu baris pun
+[lulus] PW-10a filter kamar dari Data Kamar hanya menampilkan penghuni kamar itu
+[lulus] PW-10b filter kelas dari Data Kelas hanya menampilkan anggota kelas itu
+[lulus] PW-10c Data Kamar menautkan penempatan berfilter
+[lulus] PW-10d Data Kelas menautkan penempatan berfilter
+[lulus] PW-10e Data Santri menautkan halaman penempatan
+[lulus] PW-12 tamu tidak menerima jawaban 410: guard admin berjalan lebih dahulu [302]
+[lulus] PW-11 respons tidak membocorkan detail internal: SELECT
+[lulus] PW-11 respons tidak membocorkan detail internal: INSERT INTO
+[lulus] PW-11 respons tidak membocorkan detail internal: UPDATE plotting
+[lulus] PW-11 respons tidak membocorkan detail internal: FOR UPDATE
+[lulus] PW-11 respons tidak membocorkan detail internal: mysqli
+[lulus] PW-11 respons tidak membocorkan detail internal: Stack trace
+[lulus] PW-11 respons tidak membocorkan detail internal: /home/
+[lulus] PW-11 respons tidak membocorkan detail internal: SQLSTATE
+
+SELURUH SMOKE TEST WEB PENEMPATAN LULUS.

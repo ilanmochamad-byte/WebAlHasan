@@ -1,0 +1,30 @@
+[lulus] Fixture menampilkan seluruh delapan prioritas admin | ["izin_penetapan","psb_baru","psb_belum_lunas","notifikasi_gagal","izin_tertunda","bahan_perbaikan","santri_tanpa_tempat","rekomendasi"]
+[lulus] B-1: kartu pendaftar baru hanya menampilkan pendaftar Baru | {"url":"/admin/admin_data.php?status=Baru","status":["Baru","Baru"]}
+[lulus] B-1/AA: pemantauan Admin memuat tepat rekomendasi tertunda yang dihitung | {"kartu":1,"daftar":[1]}
+[lulus] V3: pemantauan Admin menjelaskan tindak lanjut oleh pembimbing
+[lulus] V3: Admin murni tetap ditolak membuka kasus tanpa penugasan pembimbing | 403
+[lulus] V3: pembimbing tetap dapat memilih rekomendasi untuk tindak lanjut
+[lulus] F-4: daftar perbaikan hanya memuat bahan yang dihitung kartu | {"daftar":2,"kartu":2}
+[lulus] AR: halaman bersama mempertahankan peran Guru
+[lulus] A-2/A-5: halaman Admin dari peran Guru menawarkan perpindahan eksplisit | {"http":403,"otomatis":false}
+[lulus] AR: membuka tautan peran lain tidak mengganti pilihan sesi tanpa pilihan pengguna
+[lulus] F-1: POST pemroses izin tidak memakai kapasitas Admin dari peran Guru | {"payload":{"aksi":"buat","mode":"admin"},"http":403}
+[lulus] F-1: POST pemroses izin tidak memakai kapasitas Admin dari peran Guru | {"payload":{"aksi":"tetapkan"},"http":403}
+[lulus] Fixture akun layanan tersedia
+[lulus] B-4: jumlah terverifikasi mengikuti status efektif sumber V4 | {"beranda":0,"matriks":0}
+[lulus] Fixture akun ganda hanya ditugaskan pada satu mapel | 1
+[lulus] B-2: tugas nilai peran Guru dibatasi ke penugasan sendiri | ["Fiqih · SBX Kelas 1"]
+[lulus] F-3: sumber sah lalu keadaan awal tetap setara matriks | {"terverifikasi":3,"perbaikan":9}
+[lulus] Fixture F-3 mempunyai status sah pada kedua hitungan
+[lulus] F-3: sumber sah lalu nilai berubah tetap setara matriks | {"terverifikasi":3,"perbaikan":8}
+[lulus] F-3: perubahan nilai mengeluarkan satu bahan perbaikan
+[lulus] F-3: sumber sah lalu sikap berubah tetap setara matriks | {"terverifikasi":2,"perbaikan":8}
+[lulus] F-3: perubahan sikap membatalkan satu verifikasi sah
+[lulus] F-3: sumber sah lalu kehadiran berubah tetap setara matriks | {"terverifikasi":2,"perbaikan":7}
+[lulus] F-3: perubahan kehadiran mengeluarkan satu bahan perbaikan
+[lulus] F-2: Beranda akun Admin+Pendidikan hanya kelas penugasan sendiri
+[lulus] F-4: tujuan perbaikan Pendidikan tetap dalam kelas yang dihitung Beranda
+[lulus] F-1/F-2: rencana di luar Pendidikan menawarkan Admin sebelum GET/POST berjalan | "GET"
+[lulus] F-1/F-2: rencana di luar Pendidikan menawarkan Admin sebelum GET/POST berjalan | "POST"
+[lulus] F-2: pengawasan semua kelas tetap tersedia setelah memilih Admin
+Ringkasan: 29 lulus, 0 gagal

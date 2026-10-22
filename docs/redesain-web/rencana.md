@@ -1,6 +1,6 @@
 # Redesain tampilan website Al Hasan — rencana, 22 Oktober 2026
 
-Status: **rencana disetujui per bagian.** Branch `claude/rencana-redesain-web` hanya berisi dokumen. Implementator **Claude**, auditor **Codex** (ditetapkan Human Developer 22 Oktober 2026, lihat `AGENTS.md`). **Tahap 1 lulus audit independen Codex setelah koreksi terarah 22 Oktober 2026 di `claude/redesain-web-tahap-1`** (`tahap-1/AUDIT-CODEX.md`). **Tahap 2 diimplementasikan 23 Oktober 2026 di `claude/redesain-web-tahap-2`, belum lulus audit Codex karena empat temuan P2** (`tahap-2/AUDIT-CODEX.md`). Koreksi Claude atas keempat temuan selesai 23 Oktober 2026 (`tahap-2/KOREKSI-CLAUDE.md`), **menunggu audit ulang Codex**; Tahap 3 belum dimulai.
+Status: **rencana disetujui per bagian.** Implementator **Claude**, auditor **Codex** sesuai `AGENTS.md`. **Tahap 1 lulus audit independen Codex 22 Oktober 2026** (`tahap-1/AUDIT-CODEX.md`). **Tahap 2 lulus audit ulang Codex setelah koreksi terarah 23 Oktober 2026** pada `claude/redesain-web-tahap-2` (`tahap-2/AUDIT-ULANG-CODEX.md`), setelah audit pertama dan koreksi Claude `e9b5b8c`. Tahap 3 belum dimulai dan tetap memerlukan instruksi Human Developer. Belum merge/deploy.
 
 ## Isi folder
 
