@@ -1,6 +1,6 @@
 # Redesain website Tahap 2 — navigasi, peran & Beranda (22–23 Oktober 2026)
 
-Status: **diimplementasikan Claude, menunggu audit independen Codex.** Ini bukan klaim lulus audit. Belum di-merge, belum dideploy, tanpa migrasi database produksi. Tahap 3 belum dimulai.
+Status audit 23 Oktober 2026: **BELUM LULUS audit independen Codex; empat temuan P2 masih terbuka.** Lihat `AUDIT-CODEX.md` dan `audit-codex/` untuk reproduksi, hasil uji, penilaian penafsiran, dan handoff koreksi Tahap 2 ke Claude. Catatan implementator berikut dipertahankan sebagai riwayat implementasi, bukan bukti kelulusan. Belum di-merge, belum dideploy, tanpa migrasi database produksi. Tahap 3 belum dimulai.
 
 - Branch `claude/redesain-web-tahap-2` dibuat dari `d6c5da0` (ujung `claude/redesain-web-tahap-1` yang lulus audit Codex). `origin/main` `ee52d65` sudah memuat implementasi Tahap 1 (`4802e35`) tetapi belum memuat commit audit `d6c5da0` (koreksi auditor), sehingga Tahap 2 dibuat dari commit audit itu. Tidak ada worktree.
 - Sumber: `AGENTS.md`, `docs/redesain-web/rencana.md`, `keputusan.md`, `cetak-biru.html` (A-1 s.d. A-5, B-1 s.d. B-5, N-3, peta menu per peran, pemetaan menu lama, baris Tahap 2 di "Urutan tahap pengerjaan"), dan `tahap-1/AUDIT-CODEX.md`.

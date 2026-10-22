@@ -1,0 +1,63 @@
+
+=== WN-1. Anonim ===
+[lulus] WN-1a Anonim diarahkan ke halaman masuk dari pusat notifikasi
+[lulus] WN-1b Anonim diarahkan ke halaman masuk dari panel kanal
+
+=== WN-2. Akses seluruh peran ===
+[lulus] WN-2 admin dapat membuka pusat notifikasi
+[lulus] WN-2 pengurus dapat membuka pusat notifikasi
+[lulus] WN-2 murobi dapat membuka pusat notifikasi
+[lulus] WN-2 ortu dapat membuka pusat notifikasi
+
+=== WN-3. Tampilan pusat notifikasi ===
+[lulus] WN-3a Pusat notifikasi menampilkan filter "Notifikasi"
+[lulus] WN-3a Pusat notifikasi menampilkan filter "Belum dibaca"
+[lulus] WN-3a Pusat notifikasi menampilkan filter "Sudah dibaca"
+[lulus] WN-3a Pusat notifikasi menampilkan filter "Semua"
+[gagal] WN-3b Ringkasan jumlah belum dibaca ditampilkan
+[lulus] WN-3c Alasan izin tidak pernah tampil pada daftar notifikasi
+[lulus] WN-3d Filter status dapat dibuka tanpa galat
+
+=== WN-4. Tandai dibaca ===
+[lulus] WN-4a Tandai dibaca memakai pola POST/Redirect/GET
+[lulus] WN-4b Notifikasi tercatat sudah dibaca
+[lulus] WN-4c Tandai semua dibaca mengalihkan kembali ke daftar
+[lulus] WN-4d Seluruh notifikasi murobi tercatat sudah dibaca
+[lulus] WN-4e Detail notifikasi dapat dibuka pemiliknya
+[lulus] WN-4f Panel detail notifikasi ditampilkan
+
+=== WN-5. Otorisasi silang ===
+[lulus] WN-5a Orang tua melihat pesan penolakan, bukan isi notifikasi murobi
+[lulus] WN-5b Isi notifikasi milik murobi tidak bocor ke halaman orang tua
+[lulus] WN-5c Percobaan menandai notifikasi orang lain dialihkan
+[lulus] WN-5d Pesan penolakan ditampilkan setelah percobaan lintas pengguna
+
+=== WN-6. CSRF ===
+[lulus] WN-6a POST tanpa token CSRF ditolak 419
+[lulus] WN-6b Panel admin menolak token CSRF yang salah
+
+=== WN-7. Panel kanal admin ===
+[lulus] WN-7a pengurus ditolak 403 pada panel kanal admin
+[lulus] WN-7a murobi ditolak 403 pada panel kanal admin
+[lulus] WN-7a ortu ditolak 403 pada panel kanal admin
+[lulus] WN-7b Admin dapat membuka panel kanal
+[lulus] WN-7c Panel memuat bagian "Kanal Notifikasi"
+[lulus] WN-7c Panel memuat bagian "Periksa konfigurasi"
+[lulus] WN-7c Panel memuat bagian "Kirim pesan uji"
+[lulus] WN-7c Panel memuat bagian "Pengiriman gagal"
+[lulus] WN-7c Panel memuat bagian "Audit perubahan kanal"
+[lulus] WN-7d Sakelar kanal memakai POST/Redirect/GET
+[lulus] WN-7e Sakelar push tersimpan
+[lulus] WN-7f Sakelar push dapat dimatikan kembali
+[lulus] WN-7g Permintaan menyalakan WhatsApp diproses
+[lulus] WN-7h WhatsApp tetap mati karena pemeriksaan konfigurasi belum lulus
+[lulus] WN-7i Alasan penolakan WhatsApp ditampilkan kepada admin
+
+=== WN-8/WN-9. Keamanan tampilan ===
+[lulus] WN-8a Panel admin tidak menampilkan token perangkat
+[lulus] WN-8b Panel admin tidak menampilkan NILAI environment
+[lulus] WN-8c Panel admin menampilkan NAMA environment yang dibutuhkan
+[lulus] WN-9a Kanal in-app ditandai selalu aktif dan tidak dapat dimatikan
+[lulus] WN-9b Permintaan mematikan in-app diproses dan dialihkan
+[lulus] WN-9c Notifikasi in-app tetap aktif apa pun yang diminta
+[bersih] Fixture smoke test Fase 4 dihapus.

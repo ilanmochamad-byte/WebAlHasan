@@ -1,0 +1,119 @@
+=== S2-1. Peta menu per peran ===
+[lulus] Admin: 17 menu dalam urutan keputusan A–E: Beranda · Perizinan · Pengajian · Pembinaan · Penilaian & rapor · Data santri · Asatidz & pengurus · Kelas & kobong · Pendaftar · Pembayaran · Rekap keuangan · Konten website · Tahun ajaran · Penugasan · Akun & hak akses · Kanal notifikasi · Data sistem lama
+[lulus] Admin: 7 grup (Beranda + 6 grup bernama)
+[lulus] Tanpa label versi pada menu dan tab
+[lulus] F: staf "Publikasi ke orang tua", orang tua "Informasi pembinaan"
+[lulus] G: murobi mendapat tiga menu di grup Murobi
+[lulus] Guru mapel tanpa jadwal tidak melihat Pengajian
+[lulus] J: Sikap semester dan Pembinaan hanya bagi pembimbing
+[lulus] H: menu laporan absensi Bagian Pendidikan ditunda ke Tahap 4 bersama hak aksesnya
+[lulus] H: penjaga laporan tidak diubah di Tahap 2
+[lulus] K: notifikasi orang tua juga tampil sebagai menu
+[lulus] Alamat lama ditempatkan di bawah menu barunya
+[lulus] Peta menu bukan kontrol akses (tanpa guard)
+
+=== S2-2. Peran aktif di sesi ===
+[lulus] Pilihan peran diikat ke id akun
+[lulus] Peran di luar hak akun ditolak
+[lulus] Peran aktif tanpa perubahan database (AR)
+[lulus] portal/peran.php: masuk, POST + CSRF, tujuan kembali disaring
+[lulus] Masuk ulang kembali ke peran bawaan
+
+=== S2-3. Cakupan perizinan dari peran sesi ===
+[lulus] izin.php memakai cakupan peran sesi
+[lulus] izin_antrean.php memakai cakupan peran sesi
+[lulus] izin_ringkasan.php memakai cakupan peran sesi
+[lulus] izin_buat.php memakai cakupan peran sesi
+[lulus] izin_detail.php memakai cakupan peran sesi
+[lulus] laporan.php memakai cakupan peran sesi
+[lulus] laporan_cetak.php memakai cakupan peran sesi
+[lulus] laporan_csv.php memakai cakupan peran sesi
+[lulus] Deretan tombol mode per halaman dihapus
+
+=== S2-4. Notifikasi untuk semua akun ===
+[lulus] AK: penjaga perizinan diganti penjaga akun masuk
+[lulus] Mutasi ber-CSRF; penerima tidak pernah diambil dari parameter
+[lulus] Kategori dari daftar tetap; query tetap mewajibkan penerima
+
+=== S2-5. Akses ditolak ===
+[lulus] sikap_semester.php: teks polos 403 diganti halaman akses ditolak
+[lulus] verifikasi_semester.php: teks polos 403 diganti halaman akses ditolak
+[lulus] rapor_penanda.php: teks polos 403 diganti halaman akses ditolak
+[lulus] rapor_semester.php: teks polos 403 diganti halaman akses ditolak
+[lulus] nilai_semester.php: teks polos 403 diganti halaman akses ditolak
+[lulus] rencana_nilai.php: teks polos 403 diganti halaman akses ditolak
+[lulus] Denial di dalam kerangka, tetap 403, menyebut siapa yang memberi akses
+
+=== S2-6. Kerangka ===
+[lulus] Layout memuat data pencarian menu
+[lulus] Layout memuat kotak cari sebagai combobox
+[lulus] Layout memuat pil peran topbar
+[lulus] Layout memuat pemilih peran di laci
+[lulus] Layout memuat pratinjau lonceng
+[lulus] Layout memuat tab modul dari peta menu
+[lulus] Layout memuat butir Menu bilah bawah
+[lulus] Layout memuat kerangka polos
+[lulus] A-4: Keluar berupa formulir POST dengan dialog, bukan tautan
+[lulus] Lonceng memuat 5 notifikasi terbaru
+[lulus] Halaman milik peran lain akun ini mengalihkan peran dengan pesan
+
+=== S2-7. Beranda ===
+[lulus] BerandaService hanya membaca
+[lulus] BerandaService memakai prepared statement
+[lulus] L/P: 4 tempat, batas tertunda 1 hari
+[lulus] L + AA: urutan delapan kartu prioritas
+[lulus] Beranda tidak memuat guard perizinan
+[lulus] Beranda per peran B-1 s.d. B-5
+[lulus] B-5: pilihan anak dibatasi anak yang terhubung
+
+=== S2-8. Masuk, kata sandi, keluar ===
+[lulus] A-1 memuat: Nama pengguna atau kata sandi salah.
+[lulus] A-1 memuat: Sesi Anda berakhir. Silakan masuk lagi.
+[lulus] A-1 memuat: Anda sudah keluar.
+[lulus] A-1 memuat: Terlalu banyak percobaan. Coba lagi beberapa saat lagi.
+[lulus] A-1 memuat: Akun ini belum punya hak akses. Hubungi admin.
+[lulus] A-1 memuat: data-ah-reveal="password"
+[lulus] A-1 memuat: ah-masuk__id
+[lulus] A-3: kerangka (polos saat wajib), daftar centang, syarat tetap di server
+[lulus] A-4: keluar hanya lewat POST ber-CSRF; GET konfirmasi di kerangka
+
+=== S2-9. CSS dan JavaScript ===
+[lulus] CSS komponen Tahap 2 tanpa aset eksternal
+[lulus] alhasan.js memuat getElementById('ah-menu-data')
+[lulus] alhasan.js memuat aria-activedescendant
+[lulus] alhasan.js memuat data-ah-reveal
+[lulus] alhasan.js memuat data-ah-password
+[lulus] alhasan.js memuat [data-ah-drawer]
+[lulus] alhasan.js memuat [data-ah-find]
+[lulus] Pencarian menu tanpa permintaan jaringan (AQ)
+[lulus] Sintaks alhasan.js valid
+
+=== S2-10. Fixture ===
+[lulus] Fixture hanya untuk DB uji test_*_test dari sandbox *_test
+
+=== S2-11. Lint ===
+[lulus] php -l app/Ui/Navigation.php
+[lulus] php -l app/Ui/NavigationContext.php
+[lulus] php -l app/Ui/Peran.php
+[lulus] php -l app/Ui/Layout.php
+[lulus] php -l app/Ui/Denial.php
+[lulus] php -l app/Ui/Status.php
+[lulus] php -l app/Beranda/BerandaService.php
+[lulus] php -l app/Notification/NotificationRepository.php
+[lulus] php -l app/Notification/NotificationCenterService.php
+[lulus] php -l app/Auth/Authorization.php
+[lulus] php -l app/Auth/PortalGuard.php
+[lulus] php -l app/bootstrap.php
+[lulus] php -l portal/index.php
+[lulus] php -l portal/peran.php
+[lulus] php -l portal/notifikasi.php
+[lulus] php -l portal/_guard.php
+[lulus] php -l portal/_ui.php
+[lulus] php -l admin/ubah_password.php
+[lulus] php -l admin/logout.php
+[lulus] php -l admin/cek_login.php
+[lulus] php -l admin/sidebar.php
+[lulus] php -l tests/redesain_web_tahap2_seed.php
+[lulus] php -l tests/redesain_web_tahap2_http.php
+
+Semua pemeriksaan lulus (96).
