@@ -29,7 +29,7 @@ Pembagian peran ditetapkan per workstream agar implementator dan auditor tidak t
 | PRD V4 Fase 1–5 (keputusan Human Developer 16 Oktober 2026) | Codex | Claude Code |
 | Cleanup fitur lama V1–V4 tahap pertama (keputusan 19 Oktober 2026; lulus audit Claude Code 19 Oktober 2026, `docs/cleanup-legacy-v1-v4/AUDIT-CLAUDE.md`) | Codex | Claude Code |
 | Perbaikan keamanan mutasi V1 lewat GET (keputusan 19 Oktober 2026; branch `claude/fix-get-mutasi-v1`, `docs/perbaikan-get-mutasi-v1/`) | Claude | Codex |
-| Redesain tampilan website (rencana 22 Oktober 2026; branch dokumen `claude/rencana-redesain-web`, `docs/redesain-web/`) | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
+| Redesain tampilan website Tahap 1–8 (rencana dan penetapan peran 22 Oktober 2026; branch dokumen `claude/rencana-redesain-web`, `docs/redesain-web/`) | Claude | Codex |
 | PRD V5–V6 | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
 
 Ketentuan:
@@ -66,6 +66,12 @@ Human Developer akan menggunakan format berikut untuk memicu pergantian agen AI.
 
 **Audit PRD V4 oleh Claude Code:**
 > *"Audit implementasi Fase [X] PRD V4 yang dibuat Codex pada branch [nama-branch]. Baca AGENTS.md dan PRD-V4.md, periksa seluruh commit fase, jalankan pengujian secara independen, dan lakukan koreksi terarah jika diperlukan. Commit dan push hasil audit, lalu berhenti. Jangan melanjutkan ke Fase [Y] sebelum seluruh kriteria penerimaan Fase [X] terpenuhi."*
+
+**Implementasi Redesain Website oleh Claude:**
+> *"Implementasikan hanya Tahap [N] redesain tampilan website pada branch claude/redesain-web-tahap-[N]. Baca AGENTS.md, docs/redesain-web/rencana.md, keputusan.md, cetak-biru.html, dan hasil audit tahap sebelumnya. Jalankan pengujian yang relevan, buat commit, push branch, lalu berhenti untuk audit Codex. Jangan melanjutkan ke Tahap [N+1]."*
+
+**Audit Redesain Website oleh Codex:**
+> *"Audit implementasi Tahap [N] redesain tampilan website yang dibuat Claude pada branch claude/redesain-web-tahap-[N]. Baca AGENTS.md dan docs/redesain-web/, periksa seluruh commit tahap, jalankan pengujian secara independen termasuk tampilan 375px, 768px, dan 1280px, dan lakukan koreksi terarah jika diperlukan. Commit dan push hasil audit, lalu berhenti. Jangan melanjutkan ke Tahap [N+1] sebelum seluruh kriteria selesai Tahap [N] terpenuhi."*
 
 **Handoff workstream lama/fondasi ke Auditor Codex:**
 > *"Audit implementasi [fase/workstream] yang dibuat Claude pada branch [nama-branch]. Baca AGENTS.md dan PRD yang berlaku, periksa commit terbaru, jalankan seluruh pengujian, dan lakukan koreksi terarah jika diperlukan. Jangan melanjutkan ke fase berikutnya sebelum seluruh kriteria penerimaan terpenuhi."*
@@ -114,5 +120,16 @@ Human Developer akan menggunakan format berikut untuk memicu pergantian agen AI.
 - Rencana redesain seluruh menu website (situs publik, PSB/portal pendaftar, sistem internal semua peran) disusun Claude dan ditinjau per bagian oleh Human Developer. Sumber kebenaran: `docs/redesain-web/rencana.md`, cetak biru `docs/redesain-web/cetak-biru.html`, dan log keputusan A–AS `docs/redesain-web/keputusan.md`.
 - Branch `claude/rencana-redesain-web` dari `origin/main` `e445c50` hanya berisi dokumen; tidak ada perubahan kode, database, atau aset. Tidak membuat worktree.
 - Peta menu admin final 17 menu dalam 7 grup (keputusan A–E); peta menu peran lain (F–K); keputusan tinjauan layar L–AS. Keputusan yang menyentuh hak akses (H, Z, AB, AK), database (AD, AE), atau fitur baru (V, AC) wajib dikerjakan dan diuji di server, bukan hanya di tampilan.
-- Implementator, auditor, branch implementasi, dan urutan tahap belum ditetapkan. Jangan memulai implementasi sebelum Human Developer menetapkannya dan mencatatnya di tabel peran di atas.
+- Penetapan peran (22 Oktober 2026): **implementator Claude, auditor Codex** untuk Tahap 1–8, bergantian dan tidak bersamaan. Satu tahap per giliran: Claude mengerjakan satu tahap, menguji, commit, push, lalu berhenti; Codex mengaudit tahap itu; tahap berikutnya baru dimulai setelah lulus audit dan atas instruksi Human Developer.
+- Urutan tahap (rincian syarat dan kriteria selesai di bagian "Urutan tahap pengerjaan" cetak biru):
+  1. Fondasi kerangka & komponen.
+  2. Navigasi, peran & Beranda.
+  3. Halaman lama ke kerangka baru.
+  4. Perizinan, pengajian & cetak.
+  5. Pembinaan.
+  6. Data pesantren & penugasan (memuat migrasi database keputusan AD, AE).
+  7. Penilaian & rapor — baru dimulai setelah rapor semester Ganjil 2026/2027 terbit, agar alur penilaian tidak berubah di tengah masa pengisian nilai.
+  8. Situs publik & PSB — baru dimulai setelah tahap perbaikan keamanan PSB (workstream terpisah, peran belum ditetapkan) lulus, dan isi Profil, nomor resmi, aset, serta biaya MI/RA tersedia.
+- Branch implementasi per tahap: `claude/redesain-web-tahap-N`. Tahap 1 dibuat dari `origin/main` setelah branch dokumen digabung, atau dari `claude/rencana-redesain-web` bila belum digabung. Bukti, batas uji, dan handoff tiap tahap di `docs/redesain-web/tahap-N/`.
+- Tidak merge, deploy, atau migrasi produksi tanpa keputusan Human Developer. Tahap 6 dan keputusan berhak akses (H, Z, AB, AK) wajib punya uji server, bukan hanya uji tampilan.
 - Temuan keamanan selama penyusunan disampaikan langsung kepada Human Developer dan sengaja tidak dirinci di repositori publik. Perbaikannya memerlukan tahap tersendiri yang ditetapkan Human Developer.

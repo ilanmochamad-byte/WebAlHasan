@@ -1,6 +1,6 @@
 # Redesain tampilan website Al Hasan — rencana, 22 Oktober 2026
 
-Status: **rencana disetujui per bagian, belum ada implementasi.** Tidak ada perubahan kode aplikasi, database, atau aset di branch `claude/rencana-redesain-web`; branch ini hanya berisi dokumen. Implementator dan auditor belum ditetapkan (lihat `AGENTS.md`).
+Status: **rencana disetujui per bagian, belum ada implementasi.** Tidak ada perubahan kode aplikasi, database, atau aset di branch `claude/rencana-redesain-web`; branch ini hanya berisi dokumen. Implementator **Claude**, auditor **Codex** (ditetapkan Human Developer 22 Oktober 2026, lihat `AGENTS.md`). Tahap 1 belum dimulai.
 
 ## Isi folder
 
@@ -26,20 +26,32 @@ Tampilan semua menu website (situs publik, PSB dan portal pendaftar, sistem inte
 
 Menyembunyikan menu tetap bukan kontrol akses. Setiap perubahan hak akses dari keputusan (H, Z, AB, AK) harus dikerjakan di server dan diuji tersendiri.
 
-## Usulan tahapan
+## Urutan tahap (ditetapkan 22 Oktober 2026)
 
-Rinciannya ada di bagian "Usulan tahapan pengerjaan" cetak biru. Ringkas:
+Implementator Claude, auditor Codex. Rincian cakupan, syarat mulai, dan kriteria selesai ada di bagian "Urutan tahap pengerjaan" cetak biru.
 
-1. Fondasi kerangka & komponen (K-1 s.d. K-4).
-2. Navigasi & Beranda (A, B, N-3).
-3. Halaman lama ke kerangka baru (N-4, K-5 s.d. K-8, W, N-2).
-4. Kegiatan harian: Perizinan & Pengajian (I, J).
-5. Penilaian & rapor (R, M-5) — tahap terbesar karena tindakan massal dan kisi per kelas.
-6. Pembinaan (V, M-4).
-7. Data & penugasan (D, M-1 s.d. M-3, G-1).
-8. Situs publik & PSB (U, P).
+| Tahap | Cakupan | Layar & keputusan | Syarat mulai |
+| --- | --- | --- | --- |
+| 1 | Fondasi kerangka & komponen | K-1 s.d. K-4 | — |
+| 2 | Navigasi, peran & Beranda | A-1 s.d. A-5, B-1 s.d. B-5, N-3 · A–K, L, P, AA, AK, AQ, AR | Tahap 1 lulus |
+| 3 | Halaman lama ke kerangka baru | N-2, N-4, N-5, K-5 s.d. K-8 (tanpa pratinjau berkas), W-1 s.d. W-4 · AH, AI, AL | Tahap 2 lulus |
+| 4 | Perizinan, pengajian & cetak | I-1 s.d. I-7, J-1 s.d. J-6, X-1 · H, M, N, O, Q, R, S, T, AS | Tahap 3 lulus |
+| 5 | Pembinaan | V-1 s.d. V-7, M-4 · F, Z | Tahap 4 lulus |
+| 6 | Data pesantren & penugasan | D-1 s.d. D-10, M-1 s.d. M-3, G-1 · AB, AC, AD, AE, AF | Tahap 5 lulus |
+| 7 | Penilaian & rapor | R-1 s.d. R-8, M-5 · U, V, W, X, Y | Tahap 6 lulus dan rapor Ganjil 2026/2027 sudah terbit |
+| 8 | Situs publik & PSB | U-1 s.d. U-10, P-1 s.d. P-8 · AG, AJ, AM, AN, AO, AP | Tahap 7 lulus, tahap perbaikan keamanan PSB lulus, isi dan biaya MI/RA tersedia |
 
-Setiap tahap mengikuti alur bergantian di `AGENTS.md`: satu tahap, uji, commit, push, lalu audit oleh agen lain.
+Alasan urutan:
+
+- **Fondasi dulu**: semua layar memakai kerangka dan komponen yang sama.
+- **Navigasi dan Beranda kedua**: setiap peran langsung merasakan menu baru dan daftar tugasnya, dan tahap berikutnya tinggal mengisi halaman di bawah menu yang sudah benar.
+- **Halaman lama ketiga**: setelah itu `admin/sidebar.php` dan kerangka ganda bisa pensiun.
+- **Perizinan dan pengajian keempat**: dipakai harian oleh paling banyak orang, terutama dari HP.
+- **Pembinaan sebelum data pesantren**: pembinaan hanya menambah satu data untuk orang tua, sedangkan data pesantren memuat dua migrasi database dan perubahan hak akses yang lebih besar.
+- **Penilaian & rapor ketujuh**: tahap terbesar (kisi per kelas, tindakan massal), dan sengaja menunggu rapor Ganjil 2026/2027 terbit supaya guru tidak berganti alur di tengah masa pengisian nilai.
+- **Situs publik & PSB terakhir**: bergantung pada perbaikan keamanan PSB dan isi resmi dari pesantren.
+
+Setiap tahap: branch `claude/redesain-web-tahap-N`, uji, commit, push, berhenti untuk audit Codex. Bukti dan handoff di `docs/redesain-web/tahap-N/`.
 
 ## Batasan
 
