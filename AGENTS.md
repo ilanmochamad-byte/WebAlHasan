@@ -29,6 +29,7 @@ Pembagian peran ditetapkan per workstream agar implementator dan auditor tidak t
 | PRD V4 Fase 1–5 (keputusan Human Developer 16 Oktober 2026) | Codex | Claude Code |
 | Cleanup fitur lama V1–V4 tahap pertama (keputusan 19 Oktober 2026; lulus audit Claude Code 19 Oktober 2026, `docs/cleanup-legacy-v1-v4/AUDIT-CLAUDE.md`) | Codex | Claude Code |
 | Perbaikan keamanan mutasi V1 lewat GET (keputusan 19 Oktober 2026; branch `claude/fix-get-mutasi-v1`, `docs/perbaikan-get-mutasi-v1/`) | Claude | Codex |
+| Redesain tampilan website (rencana 22 Oktober 2026; branch dokumen `claude/rencana-redesain-web`, `docs/redesain-web/`) | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
 | PRD V5–V6 | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
 
 Ketentuan:
@@ -107,3 +108,11 @@ Human Developer akan menggunakan format berikut untuk memicu pergantian agen AI.
 - Cakupan hanya mutasi: `hapus_siswa.php`, `proses_psb_admin.php`, `admin_pembayaran_psb.php`, `proses_berita.php` (hapus), `admin_galeri.php`, `admin_download.php` dipindah ke POST + CSRF dengan cast int/prepared statement; GET bermutasi → 405; nama berkas yang dihapus diambil dari DB dengan `basename()`. Pemanggil diganti formulir POST. Fungsi bisnis PSB/konten publik, tabel dan data tidak berubah.
 - Injeksi baca-saja filter GET `admin_pembayaran_psb.php` di luar cakupan (temuan). Tidak merge/deploy/migrasi produksi, tidak mengubah mobile. Bukti, temuan, batas uji dan handoff di `docs/perbaikan-get-mutasi-v1/`.
 - Audit independen Codex atas permintaan Human Developer (20 Oktober 2026), commit implementasi `113ee1f` di atas `6bec08e` pada branch yang sama: **lulus tanpa koreksi kode aplikasi**. HTTP 89/0, probe tambahan 84/0, browser 32/0, preservasi 156/0, regresi cleanup 127/0, 20 suite statis exit 0 dan lint 63 PHP admin. Laporan `docs/perbaikan-get-mutasi-v1/AUDIT-CODEX.md` mencatat ketidaksesuaian folder gambar berita dan filter SELECT `admin_data.php` yang sudah ada sejak baseline, di luar cakupan. Belum merge/deploy; keputusan berikutnya tetap Human Developer.
+
+## Keputusan Human Developer — Redesain tampilan website (22 Oktober 2026)
+
+- Rencana redesain seluruh menu website (situs publik, PSB/portal pendaftar, sistem internal semua peran) disusun Claude dan ditinjau per bagian oleh Human Developer. Sumber kebenaran: `docs/redesain-web/rencana.md`, cetak biru `docs/redesain-web/cetak-biru.html`, dan log keputusan A–AS `docs/redesain-web/keputusan.md`.
+- Branch `claude/rencana-redesain-web` dari `origin/main` `e445c50` hanya berisi dokumen; tidak ada perubahan kode, database, atau aset. Tidak membuat worktree.
+- Peta menu admin final 17 menu dalam 7 grup (keputusan A–E); peta menu peran lain (F–K); keputusan tinjauan layar L–AS. Keputusan yang menyentuh hak akses (H, Z, AB, AK), database (AD, AE), atau fitur baru (V, AC) wajib dikerjakan dan diuji di server, bukan hanya di tampilan.
+- Implementator, auditor, branch implementasi, dan urutan tahap belum ditetapkan. Jangan memulai implementasi sebelum Human Developer menetapkannya dan mencatatnya di tabel peran di atas.
+- Temuan keamanan selama penyusunan disampaikan langsung kepada Human Developer dan sengaja tidak dirinci di repositori publik. Perbaikannya memerlukan tahap tersendiri yang ditetapkan Human Developer.
