@@ -1,0 +1,75 @@
+# Regresi redesain web Tahap 1 — 22 Oktober 2026
+
+## Seluruh tests/*_static.php (exit 77 = dilewati karena gate DB V3, sama dengan baseline)
+### branch ini
+tests/alumni_static.php exit=0
+tests/get_mutasi_v1_static.php exit=0
+tests/kredensial_static.php exit=0
+tests/penempatan_static.php exit=0
+tests/penugasan_static.php exit=0
+tests/perapihan_static.php exit=0
+tests/phase1_static.php exit=0
+tests/phase2_static.php exit=0
+tests/phase3_static.php exit=0
+tests/phase4_static.php exit=0
+tests/phase5_static.php exit=0
+tests/redesain_web_tahap1_static.php exit=0
+tests/v2_phase1_static.php exit=0
+tests/v2_phase2_static.php exit=0
+tests/v2_phase3_static.php exit=0
+tests/v2_phase4_static.php exit=0
+tests/v2_phase5_static.php exit=0
+tests/v3_phase1_static.php exit=0
+tests/v3_phase2_static.php exit=77
+tests/v3_phase3_static.php exit=77
+tests/v3_phase4_static.php exit=0
+### baseline 7cf3a31
+tests/alumni_static.php exit=0
+tests/get_mutasi_v1_static.php exit=0
+tests/kredensial_static.php exit=0
+tests/penempatan_static.php exit=0
+tests/penugasan_static.php exit=0
+tests/perapihan_static.php exit=0
+tests/phase1_static.php exit=0
+tests/phase2_static.php exit=0
+tests/phase3_static.php exit=0
+tests/phase4_static.php exit=0
+tests/phase5_static.php exit=0
+tests/redesain_web_tahap1_static.php exit=255
+tests/v2_phase1_static.php exit=0
+tests/v2_phase2_static.php exit=0
+tests/v2_phase3_static.php exit=0
+tests/v2_phase4_static.php exit=0
+tests/v2_phase5_static.php exit=0
+tests/v3_phase1_static.php exit=0
+tests/v3_phase2_static.php exit=77
+tests/v3_phase3_static.php exit=77
+tests/v3_phase4_static.php exit=0
+(redesain_web_tahap1_static.php gagal di baseline karena kodenya belum ada — diharapkan)
+
+## php -l admin/*.php portal/*.php app/Ui/*.php: 99 berkas tanpa galat
+
+## tests/perapihan_web_smoke.php
+  56 [lulus]
+SELURUH SMOKE TEST WEB PERAPIHAN LULUS.
+
+## tests/alumni_web_smoke.php
+  61 [lulus]
+SELURUH SMOKE TEST WEB ALUMNI LULUS.
+
+## tests/kredensial_web_smoke.php
+  51 [lulus]
+SELURUH SMOKE TEST WEB PESAN KREDENSIAL LULUS.
+
+## tests/penempatan_web_smoke.php
+  47 [lulus]
+SELURUH SMOKE TEST WEB PENEMPATAN LULUS.
+
+## tests/penugasan_web_smoke.php
+  85 [lulus]
+Total gagal: 0
+
+## tests/browser/uji-perapihan.mjs (BASE_URL branch ini)
+  56 [lulus]
+Total pemeriksaan: 56, gagal: 0
+Tangkapan layar: <scratchpad>/perapihan

@@ -192,7 +192,7 @@ portal_header('Notifikasi', $userCapabilities, $modeAktif, $currentUser, [
                 <li class="list-group-item <?= $item['dibaca'] ? '' : 'bg-light-subtle border-start border-4 border-success' ?>">
                     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
                         <div class="pe-3">
-                            <div class="d-flex align-items-center gap-2 mb-1">
+                            <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
                                 <?php if (!$item['dibaca']): ?>
                                     <span class="badge text-bg-success">Baru</span>
                                 <?php endif; ?>

@@ -1,0 +1,182 @@
+# Banding status HTTP & geser horizontal menu per peran (Chromium, 375/768/1280)
+# baseline = claude/rencana-redesain-web 7cf3a31 (salinan git archive, port 8932); tahap1 = branch ini (port 8931); DB sandbox _test yang sama
+
+## baseline
+sbx_admin /portal/index.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_dashboard.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /portal/rencana_nilai.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/nilai_semester.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/nilai_semester.php?pengganti=1 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/sikap_semester.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/sikap_semester.php?mode=murobi 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/rapor_semester.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/rapor_penanda.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/verifikasi_semester.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/v3_pelanggaran.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/v3_konseling.php 375:500(bukan Layout) geser=0 | 768:500(bukan Layout) geser=0 | 1280:500(bukan Layout) geser=0
+sbx_admin /portal/v3_laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/v3_publikasi_kelola.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_pengajian.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_laporan_absensi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/izin_ringkasan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/izin.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/izin_antrean.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/izin_buat.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_master_santri.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_penempatan_santri.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_wali.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_wali_rekonsiliasi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_guru.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_pengurus.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_kelas.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_kamar.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_v3_katalog.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_tahun.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_penugasan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_murobi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_pembimbing.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/notifikasi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_akun.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_notifikasi.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/ubah_password.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/admin_data.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/admin_pembayaran_psb.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/admin_rekap_keuangan.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/admin_pelanggaran.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_alumni.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_kelulusan_santri.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_berita.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/admin_galeri.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/admin_download.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_guru_biasa /portal/index.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_guru_biasa /admin/admin_pengajian.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_guru_biasa /admin/admin_laporan_absensi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_guru_biasa /admin/ubah_password.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_murobi_a /portal/index.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/sikap_semester.php?mode=murobi 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_murobi_a /portal/v3_pelanggaran.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/v3_konseling.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/v3_laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/v3_publikasi_kelola.php 375:403(bukan Layout) geser=0 | 768:403(bukan Layout) geser=0 | 1280:403(bukan Layout) geser=0
+sbx_murobi_a /admin/admin_pengajian.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /admin/admin_laporan_absensi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/izin_ringkasan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/izin.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/izin_antrean.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/notifikasi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /admin/ubah_password.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_pengurus_a /portal/index.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/sikap_semester.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_pengurus_a /portal/v3_pelanggaran.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/v3_konseling.php 375:500(bukan Layout) geser=0 | 768:500(bukan Layout) geser=0 | 1280:500(bukan Layout) geser=0
+sbx_pengurus_a /portal/v3_laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/v3_publikasi_kelola.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/izin_ringkasan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/izin.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/izin_antrean.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/izin_buat.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/notifikasi.php 375:200 geser=13 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /admin/ubah_password.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_ortu_a /portal/index.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/rapor_wali.php 375:503(bukan Layout) geser=0 | 768:503(bukan Layout) geser=0 | 1280:503(bukan Layout) geser=0
+sbx_ortu_a /portal/v3_publikasi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/v3_laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/izin_ringkasan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/izin.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/izin_antrean.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/notifikasi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /admin/ubah_password.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+
+## tahap1
+sbx_admin /portal/index.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_dashboard.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /portal/rencana_nilai.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/nilai_semester.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/nilai_semester.php?pengganti=1 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/sikap_semester.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/sikap_semester.php?mode=murobi 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/rapor_semester.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/rapor_penanda.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/verifikasi_semester.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_admin /portal/v3_pelanggaran.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/v3_konseling.php 375:500(bukan Layout) geser=0 | 768:500(bukan Layout) geser=0 | 1280:500(bukan Layout) geser=0
+sbx_admin /portal/v3_laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/v3_publikasi_kelola.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_pengajian.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_laporan_absensi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/izin_ringkasan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/izin.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/izin_antrean.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/izin_buat.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_master_santri.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_penempatan_santri.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_wali.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_wali_rekonsiliasi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_guru.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_pengurus.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_kelas.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_kamar.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_v3_katalog.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_tahun.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_penugasan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_murobi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_pembimbing.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /portal/notifikasi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_akun.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_notifikasi.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/ubah_password.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/admin_data.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/admin_pembayaran_psb.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/admin_rekap_keuangan.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/admin_pelanggaran.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_alumni.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_kelulusan_santri.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_admin /admin/admin_berita.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/admin_galeri.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_admin /admin/admin_download.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_guru_biasa /portal/index.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_guru_biasa /admin/admin_pengajian.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_guru_biasa /admin/admin_laporan_absensi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_guru_biasa /admin/ubah_password.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_murobi_a /portal/index.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/sikap_semester.php?mode=murobi 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_murobi_a /portal/v3_pelanggaran.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/v3_konseling.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/v3_laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/v3_publikasi_kelola.php 375:403(bukan Layout) geser=0 | 768:403(bukan Layout) geser=0 | 1280:403(bukan Layout) geser=0
+sbx_murobi_a /admin/admin_pengajian.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /admin/admin_laporan_absensi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/izin_ringkasan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/izin.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/izin_antrean.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /portal/notifikasi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_murobi_a /admin/ubah_password.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_pengurus_a /portal/index.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/sikap_semester.php 375:503 geser=0 | 768:503 geser=0 | 1280:503 geser=0
+sbx_pengurus_a /portal/v3_pelanggaran.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/v3_konseling.php 375:500(bukan Layout) geser=0 | 768:500(bukan Layout) geser=0 | 1280:500(bukan Layout) geser=0
+sbx_pengurus_a /portal/v3_laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/v3_publikasi_kelola.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/izin_ringkasan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/izin.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/izin_antrean.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/izin_buat.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /portal/notifikasi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_pengurus_a /admin/ubah_password.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0
+sbx_ortu_a /portal/index.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/rapor_wali.php 375:503(bukan Layout) geser=0 | 768:503(bukan Layout) geser=0 | 1280:503(bukan Layout) geser=0
+sbx_ortu_a /portal/v3_publikasi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/v3_laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/izin_ringkasan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/izin.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/izin_antrean.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/laporan.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /portal/notifikasi.php 375:200 geser=0 | 768:200 geser=0 | 1280:200 geser=0
+sbx_ortu_a /admin/ubah_password.php 375:200(bukan Layout) geser=0 | 768:200(bukan Layout) geser=0 | 1280:200(bukan Layout) geser=0

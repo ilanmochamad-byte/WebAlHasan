@@ -223,6 +223,94 @@ final class Navigation
     }
 
     /**
+     * Label pendek bilah bawah HP, menurut prioritas tampil.
+     *
+     * Tahap 1 redesain hanya memilih dari menu yang SUDAH ada pada peta lama;
+     * peta bilah bawah per peran ditetapkan ulang di Tahap 2 bersama peta menu
+     * baru. Kunci yang tidak dimiliki akun otomatis terlewati.
+     *
+     * @var array<string, string>
+     */
+    private const BOTTOM_BAR = [
+        'izin.ringkasan' => 'Perizinan',
+        'pengajian' => 'Pengajian',
+        'v4.nilai' => 'Nilai',
+        'v4.sikap' => 'Sikap',
+        'v4.wali' => 'Rapor',
+        'v3.publikasi' => 'Pembinaan',
+        'v3.pelanggaran' => 'Pembinaan',
+        'master.santri' => 'Santri',
+        'v4.verifikasi' => 'Kelengkapan',
+        'v4.rapor' => 'Rapor',
+        'v4.rencana' => 'Rencana',
+        'notifikasi' => 'Notifikasi',
+    ];
+
+    /**
+     * Awalan kunci yang dianggap satu modul, sehingga butir bilah bawah tetap
+     * tersorot saat pengguna membuka sub-halaman modul itu.
+     *
+     * @var array<string, string>
+     */
+    private const BOTTOM_SECTIONS = [
+        'izin.ringkasan' => 'izin.',
+        'v3.pelanggaran' => 'v3.',
+        'master.santri' => 'master.',
+    ];
+
+    /**
+     * Butir bilah bawah HP: Beranda lalu paling banyak empat menu lain.
+     *
+     * @param array<int, array{label:string, items:array<int, array<string, mixed>>}> $groups
+     * @return array<int, array<string, mixed>>
+     */
+    public static function bottomBar(array $groups, string $active, int $limit = 5): array
+    {
+        $byKey = [];
+        foreach ($groups as $group) {
+            foreach ($group['items'] as $item) {
+                $byKey[$item['key']] ??= $item;
+            }
+        }
+
+        $bar = [];
+        $labels = ['beranda' => 'Beranda'] + self::BOTTOM_BAR;
+        foreach ($labels as $key => $short) {
+            if (count($bar) >= $limit || !isset($byKey[$key])) {
+                continue;
+            }
+            $item = $byKey[$key];
+            // Satu modul cukup satu butir (mis. Pembinaan dari dua sumber).
+            if (in_array($short, array_column($bar, 'short'), true)) {
+                continue;
+            }
+            $section = self::BOTTOM_SECTIONS[$key] ?? null;
+            $item['short'] = $short;
+            $item['current'] = $active === $key || ($section !== null && $active !== '' && str_starts_with($active, $section));
+            $bar[] = $item;
+        }
+
+        return $bar;
+    }
+
+    /**
+     * @param array<int, array{label:string, items:array<int, array<string, mixed>>}> $groups
+     * @return array<string, mixed>|null
+     */
+    public static function find(array $groups, string $key): ?array
+    {
+        foreach ($groups as $group) {
+            foreach ($group['items'] as $item) {
+                if ($item['key'] === $key) {
+                    return $item;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Kunci menu aktif untuk skrip yang sedang berjalan.
      */
     public static function activeKey(?string $script = null): string

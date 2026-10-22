@@ -1,6 +1,6 @@
 # Redesain tampilan website Al Hasan — rencana, 22 Oktober 2026
 
-Status: **rencana disetujui per bagian, belum ada implementasi.** Tidak ada perubahan kode aplikasi, database, atau aset di branch `claude/rencana-redesain-web`; branch ini hanya berisi dokumen. Implementator **Claude**, auditor **Codex** (ditetapkan Human Developer 22 Oktober 2026, lihat `AGENTS.md`). Tahap 1 belum dimulai.
+Status: **rencana disetujui per bagian.** Branch `claude/rencana-redesain-web` hanya berisi dokumen. Implementator **Claude**, auditor **Codex** (ditetapkan Human Developer 22 Oktober 2026, lihat `AGENTS.md`). **Tahap 1 diimplementasikan 22 Oktober 2026 di `claude/redesain-web-tahap-1`, menunggu audit Codex** (`tahap-1/README.md`); Tahap 2 belum dimulai.
 
 ## Isi folder
 

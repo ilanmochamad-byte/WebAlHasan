@@ -1,0 +1,87 @@
+=== S-1. Kamus status ===
+[lulus] Status ok: Selesai, Disetujui, Lunas, Terbit, Diterbitkan, Terverifikasi, Diterima
+[lulus] Status info: Diajukan, Baru, Diserahkan
+[lulus] Status warn: Menunggu, Perlu Perbaikan, Perlu Penetapan Admin, Belum Lunas, Menunggu keputusan Anda, Dikembalikan
+[lulus] Status danger: Ditolak, Ditarik, Gagal
+[lulus] Status muted: Draf, Arsip, Dibatalkan
+[lulus] Status tak dikenal memakai cadangan yang dipilih pemanggil
+[lulus] Lencana kelima status izin identik dengan pemetaan portal_status_badge lama
+[lulus] portal_status_badge memakai kamus bersama
+[lulus] Label status di-escape
+
+=== S-2. Bilah bawah HP ===
+[lulus] Paling banyak 5 butir dengan Beranda pertama
+[lulus] Urutan prioritas dan satu butir per modul (Pembinaan tidak ganda): Beranda, Perizinan, Nilai, Sikap, Pembinaan
+[lulus] Sub-halaman modul (izin.daftar) menyorot butir Perizinan
+[lulus] Akun dengan satu menu tetap mendapat Beranda
+[lulus] Navigation::find mencari butir menurut kunci
+
+=== S-3. Menu ⋯ ===
+[lulus] Menu memakai <details>/<summary> (jalan tanpa JavaScript)
+[lulus] Tindakan berbahaya dipisah dan diletakkan paling bawah
+[lulus] Tindakan bermutasi berupa formulir POST dengan CSRF
+[lulus] Konfirmasi: judul di-escape, nada bahaya, alasan wajib
+[lulus] Tautan di-escape dan tombol ⋯ punya nama yang terbaca
+[lulus] Tanpa tindakan bahaya tidak ada pemisah
+
+=== S-4. Panel samping, pilihan massal, galat ===
+[lulus] Panel menutup ke alamat daftar lewat tautan biasa (tanpa JS) dan Esc (JS)
+[lulus] Panel berlabel judul dan membungkus isi
+[lulus] Bilah pilihan tersembunyi sampai ada yang dipilih dan dapat dibatalkan
+[lulus] Tanpa galat tidak ada ringkasan
+[lulus] Ringkasan galat menyebut jumlah isian
+
+=== S-5. Kerangka Layout ===
+[lulus] Layout memuat rel ikon tablet
+[lulus] Layout memuat bilah bawah HP
+[lulus] Layout memuat wadah toast
+[lulus] Layout memuat kepala laci (nama & peran)
+[lulus] Layout memuat Keluar di laci
+[lulus] Layout memuat grup sidebar dapat dilipat
+[lulus] Layout memuat judul halaman di topbar HP
+[lulus] Layout memuat lonceng notifikasi
+[lulus] Layout memuat menu profil
+[lulus] ID lama (#ah-nav-toggle tombol, #ah-sidebar, #ah-konten) dipertahankan
+[lulus] Penanda tanpa-JS/JS untuk panel samping
+[lulus] Perilaku dimuat dari alhasan.js setelah token CSRF disetel
+[lulus] Daftar "Kemampuan aktif" di atas sidebar dihapus (pindah ke menu profil/laci)
+[lulus] Pesan hasil tindakan ditandai untuk toast
+
+=== S-6. CSS ===
+[lulus] Ukuran cetak biru: sidebar 240px, rel 46px, panel 420px
+[lulus] Batas ukuran Bootstrap: <576, 576–991, ≥992, ≥1400
+[lulus] Desktop lebar dibatasi 1320px
+[lulus] Cetak membuang rel, bilah bawah, dan toast
+[lulus] Sasaran sentuh 44px
+[lulus] Tanpa aset eksternal baru di CSS
+
+=== S-7. JavaScript ===
+[lulus] alhasan.js memuat AlHasan.toast
+[lulus] alhasan.js memuat AlHasan.confirm
+[lulus] alhasan.js memuat AlHasan.bulk
+[lulus] alhasan.js memuat AlHasan.post
+[lulus] alhasan.js memuat AlHasan.selected
+[lulus] alhasan.js memuat 'Menyimpan…'
+[lulus] alhasan.js memuat pageshow
+[lulus] alhasan.js memuat showModal
+[lulus] confirm() bawaan hanya cadangan peramban tanpa <dialog>
+[lulus] Proses massal berurutan satu per satu (tanpa Promise.all)
+[lulus] POST dari halaman membawa CSRF
+[lulus] Sintaks alhasan.js valid (node --check)
+
+=== S-8. Galeri uji ===
+[lulus] Alamat /__uji/ tidak dirujuk kode produksi
+[lulus] Galeri uji tetap mewajibkan admin dan CSRF
+[lulus] Folder tests ditolak oleh router/konfigurasi produksi
+
+=== S-9. Lint ===
+[lulus] php -l app/Ui/Layout.php
+[lulus] php -l app/Ui/Navigation.php
+[lulus] php -l app/Ui/Status.php
+[lulus] php -l app/Ui/functions.php
+[lulus] php -l portal/_ui.php
+[lulus] php -l portal/notifikasi.php
+[lulus] php -l tests/fixtures/redesain_web_komponen.php
+[lulus] php -l tests/redesain_web_tahap1_router.php
+
+Semua pemeriksaan lulus.
