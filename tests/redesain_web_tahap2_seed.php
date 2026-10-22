@@ -102,6 +102,14 @@ foreach ($santriKelas as $sid) {
         $q("INSERT INTO plotting_kelas (id_santri, id_kelas, id_tahun, tanggal_mulai, status) VALUES (?,?,?,?, 'Aktif')", 'iiis', [$sid, $kelas, $tahun, $mulaiTugas]);
     }
 }
+// Satu santri berkelas tetapi tanpa kamar, agar kartu "tanpa kelas atau kamar"
+// memuat dua jenis kekurangan sekaligus (koreksi audit F-4).
+// Kelas terpisah tanpa rencana V4, sehingga angka penilaian tidak berubah.
+$tanpaKamar = $q("INSERT INTO santri (nis, nama_santri, jenis_kelamin, tempat_lahir, tgl_lahir, alamat, desa, kecamatan, kab_kota, provinsi, nama_ayah, nama_ibu, asal_sekolah, sekolah_saat_ini, is_active)
+    VALUES ('SBX-T2-TK', 'SBX Santri Tanpa Kamar', 'L', 'Ciamis', '2013-01-01', 'Jl. Contoh', 'Desa', 'Kecamatan', 'Ciamis', 'Jawa Barat', 'Ayah Contoh', 'Ibu Contoh', 'SD Contoh', 'SMP', 1)");
+$kelasLain = $q("INSERT INTO kelas (nama_kelas, jenjang, is_active) VALUES ('SBX Kelas 2', 'Tsanawi', 1)");
+$q("INSERT INTO plotting_kelas (id_santri, id_kelas, id_tahun, tanggal_mulai, status) VALUES (?,?,?,?, 'Aktif')", 'iiis', [$tanpaKamar, $kelasLain, $tahun, $mulaiTugas]);
+
 $santriKelas = [];
 $res = $db->query("SELECT id_santri FROM plotting_kelas WHERE id_kelas = $kelas AND id_tahun = $tahun AND status = 'Aktif' ORDER BY id_santri");
 while ($row = $res->fetch_row()) {
@@ -121,14 +129,31 @@ foreach (array_slice($santriKelas, 0, 5) as $i => $sid) {
         $q("INSERT INTO v4_nilai (rencana_mapel_id, santri_id, komponen, nomor_harian, nilai, status, pelaku_user_id, kapasitas) VALUES (?,?,?,?,?, 'Draf', ?, 'guru')", 'iisidi', [$rmFiqih, $sid, $komponen, $nomor, 75 + $i, $guruMapel]);
     }
 }
-$hashSumber = hash('sha256', 'sbx-tahap2');
+// Sidik sumber dihitung dengan pembacaan yang sama dengan matriks V4
+// (`BahanRepository::state()`), sehingga status pemeriksaan berlaku.
+$bahanRepo = new App\V4\BahanRepository($db, audit_logger());
+$sidikNilai = static fn (int $sid): string => App\V4\BahanRepository::fingerprint($bahanRepo->query(
+    'SELECT * FROM v4_nilai WHERE rencana_mapel_id=? AND santri_id=? ORDER BY komponen,nomor_harian', 'ii', [$rmFiqih, $sid]
+));
+$bahan = static function (int $sid, string $jenis, int $key, string $status, string $hash, string $alasan) use ($q, $rencana, $pendidikan): void {
+    $q("INSERT INTO v4_bahan (rencana_id, santri_id, jenis, mapel_key, status, sumber_hash, actor_user_id, kapasitas, alasan, updated_at) VALUES (?,?,?,?,?,?,?, 'pendidikan', ?, NOW() - INTERVAL 2 DAY)", 'iisissis', [$rencana, $sid, $jenis, $key, $status, $hash, $pendidikan, $alasan]);
+};
+// Dua bahan nilai dikembalikan (sumber belum berubah: tetap perlu perbaikan).
 foreach (array_slice($santriKelas, 0, 2) as $sid) {
-    $q("INSERT INTO v4_bahan (rencana_id, santri_id, jenis, mapel_key, status, sumber_hash, actor_user_id, kapasitas, alasan, updated_at) VALUES (?,?, 'nilai', ?, 'Dikembalikan', ?, ?, 'pendidikan', 'Nilai harian perlu dilengkapi', NOW() - INTERVAL 2 DAY)", 'iiisi', [$rencana, $sid, $rmFiqih, $hashSumber, $pendidikan]);
+    $bahan($sid, 'nilai', $rmFiqih, 'Dikembalikan', $sidikNilai($sid), 'Nilai harian perlu dilengkapi');
+}
+// Satu bahan nilai terverifikasi sah (sumber sama).
+if (isset($santriKelas[2])) {
+    $bahan($santriKelas[2], 'nilai', $rmFiqih, 'Terverifikasi', $sidikNilai($santriKelas[2]), '');
 }
 $pengurusA = (int) $val("SELECT id FROM users WHERE username='sbx_pengurus_a'");
-foreach (array_slice($santriKelas, 0, 3) as $sid) {
+// Sikap diserahkan untuk dua santri; santri ketiga belum (Sikap belum diisi).
+foreach (array_slice($santriKelas, 0, 2) as $sid) {
     $q("INSERT INTO v4_sikap (santri_id, tahun_ajaran_id, kelas_id, adab, kedisiplinan, tanggung_jawab, pembimbing_user_id, status) VALUES (?,?,?, 'Baik', 'Baik', 'Cukup', ?, 'Dikirim')", 'iiii', [$sid, $tahun, $kelas, $pengurusA]);
 }
+// Bahan sikap pernah terverifikasi, lalu sumbernya berubah (sidik lama):
+// status efektifnya Draf/perlu verifikasi ulang, bukan Terverifikasi (F-3).
+$bahan($santriKelas[0], 'sikap', 0, 'Terverifikasi', hash('sha256', 'sumber-lama'), '');
 
 // --- Jadwal pengajian hari ini --------------------------------------------
 $jadwal = static function (int $guru, string $waktu, string $mulai, string $selesai, string $fan, string $tempat) use ($q, $tahun, $kelas, $hari, $admin): int {

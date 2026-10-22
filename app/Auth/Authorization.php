@@ -58,6 +58,10 @@ final class Authorization
             exit;
         }
 
+        // Akun berperan ganda: halaman milik peran lain ditahan dengan pilihan
+        // "Buka sebagai …" (redesain Tahap 2, A-2/A-5). Hanya mempersempit.
+        \App\Ui\Peran::gate($user);
+
         return $user;
     }
 

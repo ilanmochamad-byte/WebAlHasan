@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Ui;
 
 use App\Auth\Capabilities;
+use App\Http\SafeRedirect;
 use App\Penugasan\PenugasanJenis;
 
 /**
@@ -18,9 +19,12 @@ use App\Penugasan\PenugasanJenis;
  *   - Daftar peran yang boleh dipilih dihitung ulang dari hak NYATA akun pada
  *     setiap request (role + relasi master + penugasan aktif). Nilai sesi yang
  *     tidak ada di daftar itu diabaikan dan jatuh ke peran bawaan.
- *   - Peran hanya mempersempit tampilan; peran tidak pernah memberi hak.
- *     Setiap halaman tetap menjaga dirinya sendiri di server (guard, cakupan
+ *   - Peran hanya MEMPERSEMPIT; peran tidak pernah memberi hak. Setiap
+ *     halaman tetap menjaga dirinya sendiri di server (guard, cakupan
  *     layanan). Menyembunyikan menu bukan kontrol akses.
+ *   - Peran tidak pernah berganti sendiri. Halaman milik peran lain akun yang
+ *     sama ditahan `gate()` dengan pilihan eksplisit "Buka sebagai …" (A-2,
+ *     A-5); pergantian hanya lewat POST ber-CSRF ke `portal/peran.php`.
  *   - Nilai sesi diikat ke id akun, sehingga pilihan akun lain pada peramban
  *     yang sama tidak pernah terbawa.
  */
@@ -153,6 +157,48 @@ final class Peran
     {
         unset($_SESSION[self::SESSION_KEY]);
         self::$cache = [];
+    }
+
+    /**
+     * Gerbang peran aktif untuk akun berperan ganda (A-2, A-5).
+     *
+     * Dipanggil `Authorization::requireWebUser()` sebelum halaman bekerja.
+     * Bila halaman yang diminta termasuk peta menu peran LAIN milik akun ini
+     * tetapi tidak termasuk peta peran aktif, permintaan ditolak 403 dengan
+     * tawaran "Buka sebagai …" — baik GET maupun POST, sehingga tindakan tidak
+     * terjadi di bawah peran yang tidak dipilih. Halaman di luar peta semua
+     * peran (pemroses lama, ekspor, JSON) tidak dipersempit; guard halaman
+     * itu sendiri yang memutuskan. Akun berperan tunggal tidak terpengaruh.
+     *
+     * @param array<string, mixed> $user
+     */
+    public static function gate(array $user): void
+    {
+        $tersedia = self::available($user);
+        if (count($tersedia) < 2) {
+            return;
+        }
+        $aktif = self::active($user);
+        $context = ui_context($user);
+        $peta = static fn (string $peran): array => Navigation::build($user, $context['capabilities'], $context['unread'], $context['v3_capabilities'], $peran);
+        $milikAktif = $peta((string) $aktif);
+        if (Navigation::locate($milikAktif['groups'], $milikAktif['extras']) !== null) {
+            return;
+        }
+        $cocok = [];
+        foreach ($tersedia as $peran) {
+            if ($peran === $aktif) {
+                continue;
+            }
+            $map = $peta($peran);
+            if (Navigation::locate($map['groups'], []) !== null) {
+                $cocok[] = $peran;
+            }
+        }
+        if ($cocok === []) {
+            return;
+        }
+        Denial::otherRole((string) $aktif, $cocok, SafeRedirect::currentRequest(), null);
     }
 
     /**

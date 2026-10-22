@@ -110,7 +110,12 @@ foreach (['ah-menu-data' => 'data pencarian menu', 'role="combobox"' => 'kotak c
 }
 $assert(!preg_match('/<a[^>]+\$logoutUrl/', $layout) && str_contains($layout, 'data-confirm-title="Keluar dari Sistem Al Hasan?"'), 'A-4: Keluar berupa formulir POST dengan dialog, bukan tautan');
 $assert(str_contains($layout, "'per_page' => 5"), 'Lonceng memuat 5 notifikasi terbaru');
-$assert(str_contains($layout, 'Peran::set($user, $peran)') && str_contains($layout, 'Peran beralih ke'), 'Halaman milik peran lain akun ini mengalihkan peran dengan pesan');
+// Koreksi audit F-1: kerangka tidak pernah mengganti peran; gerbang server
+// menahan halaman peran lain dengan pilihan "Buka sebagai …".
+$assert(!str_contains($tanpaKomentar($layout), 'Peran::set(') && !str_contains($layout, 'Peran beralih ke'), 'F-1: kerangka tidak mengganti peran aktif');
+$assert(str_contains($source('app/Auth/Authorization.php'), '\\App\\Ui\\Peran::gate($user);') && str_contains($peran, 'Denial::otherRole(') && str_contains($denial, 'data-ah-buka-sebagai='), 'F-1: gerbang peran di requireWebUser dengan pilihan Buka sebagai');
+$guardPortal = $tanpaKomentar($source('portal/_guard.php'));
+$assert(!str_contains($guardPortal, 'Peran::set(') && str_contains($guardPortal, 'Denial::otherRole('), 'F-1: ?mode= lama menawarkan pilihan, tidak mengganti peran');
 
 echo PHP_EOL . '=== S2-7. Beranda ===' . PHP_EOL;
 $beranda = $tanpaKomentar($source('app/Beranda/BerandaService.php'));
@@ -119,6 +124,11 @@ $assert(!preg_match('/->query\(/', $beranda) && str_contains($beranda, '->prepar
 $assert(str_contains($beranda, 'TEMPAT_PRIORITAS = 4') && str_contains($beranda, 'BATAS_TERTUNDA_JAM = 24'), 'L/P: 4 tempat, batas tertunda 1 hari');
 preg_match_all("/\\\$this->kartu\\(\\\$kartu, '([a-z_]+)'/", $beranda, $urutan);
 $assert($urutan[1] === ['izin_penetapan', 'psb_baru', 'psb_belum_lunas', 'notifikasi_gagal', 'izin_tertunda', 'bahan_perbaikan', 'santri_tanpa_tempat', 'rekomendasi'], 'L + AA: urutan delapan kartu prioritas');
+$assert(substr_count($beranda, 'featureOwnAppliesTo(') === 2 && str_contains($source('app/Auth/Capabilities.php'), 'public function featureOwnAppliesTo('), 'F-2: Beranda Guru dan Bagian Pendidikan memakai cakupan penugasan sendiri');
+$assert(str_contains($beranda, 'BahanRepository::fingerprint($sumber)') && !preg_match("/SUM\\(status = 'Terverifikasi'\\)/", $beranda), 'F-3: status bahan efektif dari sidik sumber, bukan status tersimpan');
+foreach (["'/admin/admin_data.php?status=Baru'", "'/portal/izin.php?status=Diajukan&tertunda=1'", "'/portal/verifikasi_semester.php?status=Dikembalikan'", "'/admin/admin_penempatan_santri.php?status=tanpa_tempat'", "'/portal/v3_konseling.php#rekomendasi'", "'/portal/sikap_semester.php?status=belum'", "'/portal/v3_laporan.php?jenis=ambang'"] as $tujuan) {
+    $assert(str_contains($beranda, $tujuan), "F-4: tujuan kartu tersaring {$tujuan}");
+}
 $index = $source('portal/index.php');
 $assert(!preg_match("/require[^;]*_(guard|ui)\\.php/", $index), 'Beranda tidak memuat guard perizinan');
 $assert(str_contains($index, 'Peran::ADMIN') && str_contains($index, 'Peran::GURU') && str_contains($index, 'Peran::PENGURUS') && str_contains($index, 'Peran::PENDIDIKAN'), 'Beranda per peran B-1 s.d. B-5');
@@ -148,7 +158,7 @@ echo PHP_EOL . '=== S2-10. Fixture ===' . PHP_EOL;
 $assert(str_contains($source('tests/redesain_web_tahap2_seed.php'), "preg_match('/^test_.*_test\$/', \$namaDb)") && str_contains($source('tests/redesain_web_tahap2_db.sh'), 'case "$ASAL" in *_test)'), 'Fixture hanya untuk DB uji test_*_test dari sandbox *_test');
 
 echo PHP_EOL . '=== S2-11. Lint ===' . PHP_EOL;
-foreach (['app/Ui/Navigation.php', 'app/Ui/NavigationContext.php', 'app/Ui/Peran.php', 'app/Ui/Layout.php', 'app/Ui/Denial.php', 'app/Ui/Status.php', 'app/Beranda/BerandaService.php', 'app/Notification/NotificationRepository.php', 'app/Notification/NotificationCenterService.php', 'app/Auth/Authorization.php', 'app/Auth/PortalGuard.php', 'app/bootstrap.php', 'portal/index.php', 'portal/peran.php', 'portal/notifikasi.php', 'portal/_guard.php', 'portal/_ui.php', 'admin/ubah_password.php', 'admin/logout.php', 'admin/cek_login.php', 'admin/sidebar.php', 'tests/redesain_web_tahap2_seed.php', 'tests/redesain_web_tahap2_http.php'] as $berkas) {
+foreach (['app/Auth/Capabilities.php', 'app/V3/LaporanService.php', 'app/V4/SikapService.php', 'app/Izin/IzinRepository.php', 'app/MasterData/PenempatanService.php', 'app/MasterData/PenempatanRepository.php', 'portal/verifikasi_semester.php', 'portal/sikap_semester.php', 'portal/v3_konseling.php', 'portal/v3_laporan.php', 'portal/izin.php', 'admin/admin_data.php', 'admin/export_psb.php', 'admin/admin_notifikasi.php', 'admin/admin_penempatan_santri.php', 'app/Ui/Navigation.php', 'app/Ui/NavigationContext.php', 'app/Ui/Peran.php', 'app/Ui/Layout.php', 'app/Ui/Denial.php', 'app/Ui/Status.php', 'app/Beranda/BerandaService.php', 'app/Notification/NotificationRepository.php', 'app/Notification/NotificationCenterService.php', 'app/Auth/Authorization.php', 'app/Auth/PortalGuard.php', 'app/bootstrap.php', 'portal/index.php', 'portal/peran.php', 'portal/notifikasi.php', 'portal/_guard.php', 'portal/_ui.php', 'admin/ubah_password.php', 'admin/logout.php', 'admin/cek_login.php', 'admin/sidebar.php', 'tests/redesain_web_tahap2_seed.php', 'tests/redesain_web_tahap2_http.php'] as $berkas) {
     exec('php -l ' . escapeshellarg($root . '/' . $berkas) . ' 2>&1', $keluaran, $kode);
     $assert($kode === 0, 'php -l ' . $berkas);
 }

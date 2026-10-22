@@ -3,6 +3,12 @@ require_once __DIR__ . '/_guard.php';
 
 $where = "WHERE 1=1";
 
+// Saringan status yang sama dengan admin_data.php (daftar tetap, Tahap 2).
+$statusPsb = in_array($_GET['status'] ?? '', ['Baru', 'Diterima', 'Cadangan', 'Ditolak'], true) ? (string) $_GET['status'] : '';
+if ($statusPsb !== '') {
+    $where .= " AND status = '" . $statusPsb . "'";
+}
+
 if(!empty($_GET['jk'])) {
     $jk = mysqli_real_escape_string($koneksi, $_GET['jk']);
     $where .= " AND jenis_kelamin = '$jk'";

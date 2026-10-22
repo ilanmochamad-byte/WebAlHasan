@@ -269,7 +269,7 @@ $punya = static fn (string $key): bool => Navigation::find($map['groups'], $key)
 
 if ($peran === Peran::ADMIN) {
     // B-1: "Perlu tindakan" daftar prioritas 4 tempat (keputusan L, P, AA).
-    $prioritas = $beranda->prioritasAdmin();
+    $prioritas = $beranda->prioritasAdmin($currentUser);
     $semua = isset($_GET['semua']);
     $tampil = $semua ? $prioritas : array_slice($prioritas, 0, BerandaService::TEMPAT_PRIORITAS);
     $lebih = count($prioritas) - count($tampil);
@@ -389,7 +389,7 @@ if ($peran === Peran::GURU) {
     }
     if ($punya('sikap_binaan')) {
         try {
-            $murobi[] = ['jumlah' => $beranda->sikapPerluDiketahui($currentUser), 'judul' => 'Sikap binaan perlu diketahui', 'tombol' => 'Periksa', 'url' => app_url('/portal/sikap_semester.php?mode=murobi'), 'key' => 'murobi_sikap'];
+            $murobi[] = ['jumlah' => $beranda->sikapPerluDiketahui($currentUser), 'judul' => 'Sikap binaan perlu diketahui', 'tombol' => 'Periksa', 'url' => app_url('/portal/sikap_semester.php?mode=murobi&status=perlu_diketahui'), 'key' => 'murobi_sikap'];
         } catch (Throwable $exception) {
             error_log('Beranda murobi: sikap gagal dibaca: ' . $exception->getMessage());
         }
@@ -495,7 +495,7 @@ if ($peran === Peran::PENGURUS) {
             . '<i class="fas fa-plus" aria-hidden="true"></i> Ajukan izin</a>';
     }
     $statistik = $bisaAjukan
-        ? $beranda->statistikPengurus($currentUser, array_column($binaan, 'id'), $punya('sikap'), $punya('pembinaan'))
+        ? $beranda->statistikPengurus($currentUser, $punya('sikap'), $punya('pembinaan'))
         : [];
     $izinSaya = null;
     if ($bisaAjukan) {
@@ -576,7 +576,7 @@ if ($peran === Peran::PENDIDIKAN) {
         beranda_statistik([
             ['label' => 'Kelas', 'nilai' => (string) count($kelas)],
             ['label' => 'Bahan terverifikasi', 'nilai' => $harapan > 0 ? round(100 * $terverifikasi / $harapan) . '%' : '—'],
-            ['label' => 'Perlu perbaikan', 'nilai' => (string) $perbaikan, 'sorot' => $perbaikan > 0, 'url' => app_url('/portal/verifikasi_semester.php')],
+            ['label' => 'Perlu perbaikan', 'nilai' => (string) $perbaikan, 'sorot' => $perbaikan > 0, 'url' => app_url('/portal/verifikasi_semester.php?status=Dikembalikan')],
             ['label' => 'Rapor terbit', 'nilai' => $kelasTerbit . ' kelas'],
         ]);
         ?>
@@ -592,7 +592,7 @@ if ($peran === Peran::PENDIDIKAN) {
                         <td><?= $baris['nilai_persen'] === null ? '—' : (int) $baris['nilai_persen'] . '%' ?></td>
                         <td><?= $baris['sikap_persen'] === null ? '—' : (int) $baris['sikap_persen'] . '%' ?></td>
                         <td><?= $baris['kehadiran_belum'] > 0 ? ah_status('Belum lengkap') . ' <span class="ah-cell-sub">' . (int) $baris['kehadiran_belum'] . ' belum dicatat</span>' : ah_status('Lengkap') ?></td>
-                        <td class="ah-col-secondary"><?= $baris['terverifikasi_persen'] === null ? '—' : (int) $baris['terverifikasi_persen'] . '%' ?><?= $baris['perbaikan'] > 0 ? ' <span class="ah-cell-sub">' . (int) $baris['perbaikan'] . ' perlu perbaikan</span>' : '' ?></td>
+                        <td class="ah-col-secondary"><?= $baris['terverifikasi_persen'] === null ? '—' : (int) $baris['terverifikasi_persen'] . '%' ?><?= $baris['perbaikan'] > 0 ? ' <a class="ah-cell-sub" href="' . ah_e($baris['url_perbaikan']) . '">' . (int) $baris['perbaikan'] . ' perlu perbaikan</a>' : '' ?></td>
                         <td><?= $baris['santri'] > 0 && $baris['terbit'] >= $baris['santri'] ? ah_status('Terbit') : ($baris['terbit'] > 0 ? ah_status('Terbit', 'Terbit ' . (int) $baris['terbit'] . '/' . (int) $baris['santri']) : ah_status('Belum terbit')) ?></td>
                         <td><a class="btn btn-sm btn-outline-primary" href="<?= ah_e($baris['url']) ?>">Buka<span class="ah-visually-hidden"> kelengkapan <?= ah_e($baris['kelas']) ?></span></a></td>
                     </tr>

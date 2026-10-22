@@ -25,6 +25,29 @@ final class SikapService
         $rows=$this->repo->query("SELECT DISTINCT r.id AS rencana_id,r.tahun_ajaran_id,r.kelas_id,s.id AS santri_id,s.nama_santri,k.nama_kelas,t.tahun,t.semester FROM v4_rencana r JOIN kelas k ON k.id=r.kelas_id JOIN tahun_ajaran t ON t.id=r.tahun_ajaran_id JOIN plotting_kelas pk ON pk.id_kelas=r.kelas_id AND pk.id_tahun=r.tahun_ajaran_id JOIN santri s ON s.id=pk.id_santri ORDER BY t.id DESC,k.nama_kelas,s.nama_santri");
         return array_values(array_filter($rows,function($r)use($u,$mode){try{$p=$this->scope->plan((int)$r['rencana_id']);$this->allowed($u,$p,(int)$r['santri_id'],$mode);return true;}catch(V4Exception){return false;}}));
     }
+    /**
+     * Saringan baca-saja atas hasil `options()` (redesain website Tahap 2):
+     * `belum` = sikap belum diserahkan pembimbing (belum ada, Draf, atau
+     * Dikembalikan); `perlu_diketahui` = sudah diserahkan tetapi belum
+     * diketahui murobi. Dipakai halaman Sikap dan angka Beranda agar keduanya
+     * menghitung himpunan yang sama. Saringan lain mengembalikan daftar utuh.
+     */
+    public function filterOptions(array $options,string $filter): array
+    {
+        if(!in_array($filter,['belum','perlu_diketahui'],true)||$options===[])return $options;
+        $rows=[];
+        foreach(array_unique(array_map(static fn($o)=>(int)$o['tahun_ajaran_id'],$options)) as $tahun){
+            $ids=array_values(array_unique(array_map(static fn($o)=>(int)$o['santri_id'],array_filter($options,static fn($o)=>(int)$o['tahun_ajaran_id']===$tahun))));
+            $in=implode(',',array_fill(0,count($ids),'?'));
+            foreach($this->repo->query("SELECT santri_id,status,diketahui_murobi_user_id FROM v4_sikap WHERE tahun_ajaran_id=? AND santri_id IN ($in)",'i'.str_repeat('i',count($ids)),array_merge([$tahun],$ids)) as $r)$rows[$tahun.'|'.(int)$r['santri_id']]=$r;
+        }
+        return array_values(array_filter($options,function($o)use($rows,$filter){
+            $r=$rows[(int)$o['tahun_ajaran_id'].'|'.(int)$o['santri_id']]??null;
+            return $filter==='belum'
+                ?($r===null||!in_array($r['status'],['Dikirim','Terverifikasi'],true))
+                :($r!==null&&$r['status']==='Dikirim'&&$r['diketahui_murobi_user_id']===null);
+        }));
+    }
     public function read(array $u,int $plan,int $sid,string $mode='pembimbing'): array
     {
         $p=$this->scope->plan($plan);$this->allowed($u,$p,$sid,$mode);

@@ -108,6 +108,14 @@ if(isset($_POST['tambah_manual'])){
                 <div class="card-body">
                     <form method="GET" class="row g-2">
                         <div class="col-md-2">
+                            <select name="status" class="form-select form-select-sm" aria-label="Status pendaftar">
+                                <option value="">Semua status</option>
+                                <?php foreach (['Baru', 'Diterima', 'Cadangan', 'Ditolak'] as $opsiStatus): ?>
+                                <option value="<?= $opsiStatus ?>" <?= ($_GET['status'] ?? '') === $opsiStatus ? 'selected' : '' ?>><?= $opsiStatus ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
                             <select name="jk" class="form-select form-select-sm">
                                 <option value="">Semua JK</option>
                                 <option value="L" <?php if(isset($_GET['jk']) && $_GET['jk']=='L') echo 'selected'; ?>>Laki-laki</option>
@@ -180,6 +188,10 @@ if(isset($_POST['tambah_manual'])){
                                 // PERBAIKAN: Secara default sembunyikan pendaftar yang sudah dimigrasi ke data master santri
                                 $where = "WHERE status != 'Dimigrasi'";
                                 
+                                // Saringan status (kartu Beranda "Pendaftar PSB baru", Tahap 2):
+                                // hanya nilai dari daftar tetap yang masuk ke SQL.
+                                $statusPsb = in_array($_GET['status'] ?? '', ['Baru', 'Diterima', 'Cadangan', 'Ditolak'], true) ? (string) $_GET['status'] : '';
+                                if ($statusPsb !== '') $where .= " AND status = '" . $statusPsb . "'";
                                 if(!empty($_GET['jk'])) $where .= " AND jenis_kelamin = '$_GET[jk]'";
                                 if(!empty($_GET['jenjang'])) $where .= " AND jenjang_tujuan = '$_GET[jenjang]'";
                                 if(!empty($_GET['kecamatan'])) $where .= " AND kecamatan LIKE '%$_GET[kecamatan]%'";

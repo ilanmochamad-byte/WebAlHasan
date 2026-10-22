@@ -1,0 +1,100 @@
+migrasi 014_v3_fase2_pelanggaran.sql
+migrasi 015_v3_fase2_koreksi_dan_rekomendasi.sql
+migrasi 016_v3_fase3_konseling.sql
+migrasi 017_v3_fase3_kerahasiaan_dan_revisi.sql
+migrasi 018_v3_fase4_publikasi.sql
+migrasi 019_v3_fase5_laporan_retensi.sql
+migrasi 020_v4_fase1_fondasi.sql
+migrasi 021_v4_fase3_verifikasi.sql
+migrasi 022_v4_fase4_publikasi.sql
+{
+    "db": "test_redesain_t2_test",
+    "akun": {
+        "pendidikan": 1021,
+        "guruMapel": 1022,
+        "ganda": 1023,
+        "pengurusBiasa": 1024,
+        "sandiWajib": 1025
+    },
+    "rencana": 1,
+    "santri_kelas": 3,
+    "jadwal_hari": "Jumat",
+    "santri_binaan_poin": 1,
+    "anak_kedua": 2
+}
+DB uji Tahap 2 siap: test_redesain_t2_test (kosong: test_redesain_t2_kosong_test)
+migrasi 014_v3_fase2_pelanggaran.sql
+migrasi 015_v3_fase2_koreksi_dan_rekomendasi.sql
+migrasi 016_v3_fase3_konseling.sql
+migrasi 017_v3_fase3_kerahasiaan_dan_revisi.sql
+migrasi 018_v3_fase4_publikasi.sql
+migrasi 019_v3_fase5_laporan_retensi.sql
+migrasi 020_v4_fase1_fondasi.sql
+migrasi 021_v4_fase3_verifikasi.sql
+migrasi 022_v4_fase4_publikasi.sql
+{
+    "db": "test_redesain_t2_test",
+    "akun": {
+        "pendidikan": 1021,
+        "guruMapel": 1022,
+        "ganda": 1023,
+        "pengurusBiasa": 1024,
+        "sandiWajib": 1025
+    },
+    "rencana": 1,
+    "santri_kelas": 3,
+    "jadwal_hari": "Jumat",
+    "santri_binaan_poin": 1,
+    "anak_kedua": 2
+}
+DB uji Tahap 2 siap: test_redesain_t2_test (kosong: test_redesain_t2_kosong_test)
+migrasi 014_v3_fase2_pelanggaran.sql
+migrasi 015_v3_fase2_koreksi_dan_rekomendasi.sql
+migrasi 016_v3_fase3_konseling.sql
+migrasi 017_v3_fase3_kerahasiaan_dan_revisi.sql
+migrasi 018_v3_fase4_publikasi.sql
+migrasi 019_v3_fase5_laporan_retensi.sql
+migrasi 020_v4_fase1_fondasi.sql
+migrasi 021_v4_fase3_verifikasi.sql
+migrasi 022_v4_fase4_publikasi.sql
+{
+    "db": "test_redesain_t2_test",
+    "akun": {
+        "pendidikan": 1021,
+        "guruMapel": 1022,
+        "ganda": 1023,
+        "pengurusBiasa": 1024,
+        "sandiWajib": 1025
+    },
+    "rencana": 1,
+    "santri_kelas": 3,
+    "jadwal_hari": "Jumat",
+    "santri_binaan_poin": 1,
+    "anak_kedua": 2
+}
+DB uji Tahap 2 siap: test_redesain_t2_test (kosong: test_redesain_t2_kosong_test)
+migrasi 014_v3_fase2_pelanggaran.sql
+migrasi 015_v3_fase2_koreksi_dan_rekomendasi.sql
+migrasi 016_v3_fase3_konseling.sql
+migrasi 017_v3_fase3_kerahasiaan_dan_revisi.sql
+migrasi 018_v3_fase4_publikasi.sql
+migrasi 019_v3_fase5_laporan_retensi.sql
+migrasi 020_v4_fase1_fondasi.sql
+migrasi 021_v4_fase3_verifikasi.sql
+migrasi 022_v4_fase4_publikasi.sql
+{
+    "db": "test_redesain_t2_test",
+    "akun": {
+        "pendidikan": 1021,
+        "guruMapel": 1022,
+        "ganda": 1023,
+        "pengurusBiasa": 1024,
+        "sandiWajib": 1025
+    },
+    "rencana": 1,
+    "santri_kelas": 3,
+    "jadwal_hari": "Jumat",
+    "santri_binaan_poin": 1,
+    "anak_kedua": 2
+}
+DB uji Tahap 2 siap: test_redesain_t2_test (kosong: test_redesain_t2_kosong_test)

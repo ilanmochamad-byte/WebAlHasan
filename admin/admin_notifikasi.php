@@ -258,7 +258,7 @@ $csrf = \App\Http\Csrf::input();
             <?php endforeach; ?>
         </div>
 
-        <div class="card border-0 shadow-sm mb-4">
+        <div class="card border-0 shadow-sm mb-4" id="pengiriman-gagal">
             <div class="card-header bg-white d-flex flex-wrap justify-content-between align-items-center gap-2">
                 <h2 class="h5 mb-0">Pengiriman gagal</h2>
                 <form method="get" class="d-flex gap-2 mb-0">

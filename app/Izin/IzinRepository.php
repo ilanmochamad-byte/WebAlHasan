@@ -439,6 +439,11 @@ final class IzinRepository
             $parts[] = 'p.tgl_izin <= ?';
             $params[] = (string) $filters['date_to'];
         }
+        // Tertunda lebih dari 1 hari (redesain web Tahap 2, keputusan P):
+        // diajukan lebih dari 24 jam lalu. Dipakai bersama `status`.
+        if (($filters['tertunda'] ?? '') === '1') {
+            $parts[] = 'COALESCE(p.diajukan_pada, p.created_at) < NOW() - INTERVAL 24 HOUR';
+        }
 
         // Antrean = pengajuan yang menunggu tindakan pengguna pada cakupannya.
         // Cakupan di atas sudah membatasi baris; filter ini hanya mempersempit.

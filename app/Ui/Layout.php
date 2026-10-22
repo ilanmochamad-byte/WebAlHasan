@@ -68,25 +68,9 @@ final class Layout
 
         $map = Navigation::build($user, $capabilities, $unread, $v3);
         $location = self::locate($map, $options['active'] ?? null);
-        $switched = null;
-        if ($location === null && !$bare) {
-            // Halaman milik peran lain akun ini (mis. tautan lama atau tautan
-            // notifikasi): peran aktif ikut beralih agar menu sesuai halaman.
-            // Peran tidak memberi hak; halaman sudah melewati guard-nya sendiri.
-            foreach (Peran::available($user) as $peran) {
-                if ($peran === $map['peran']) {
-                    continue;
-                }
-                $other = Navigation::build($user, $capabilities, $unread, $v3, $peran);
-                $found = self::locate($other, null);
-                if ($found !== null && Peran::set($user, $peran)) {
-                    $map = $other;
-                    $location = $found;
-                    $switched = $peran;
-                    break;
-                }
-            }
-        }
+        // Peran aktif tidak pernah diganti oleh kerangka. Halaman milik peran
+        // lain akun ini sudah ditahan lebih dulu oleh `Peran::gate()` dengan
+        // pilihan "Buka sebagai …" yang eksplisit (A-2, A-5).
         $groups = $bare ? [] : $map['groups'];
         $active = $location['key'] ?? '';
         $current = $location === null ? null
@@ -347,9 +331,6 @@ final class Layout
             <?php endif; ?>
 
             <?php
-            if ($switched !== null) {
-                self::note('info', 'Peran beralih ke ' . Peran::label($switched) . ' untuk membuka halaman ini.');
-            }
             $flash = $options['flash'] ?? null;
             if (is_array($flash) && ($flash['message'] ?? '') !== '') {
                 self::note((string) $flash['type'], (string) $flash['message'], $flash['extra'] ?? null, true);

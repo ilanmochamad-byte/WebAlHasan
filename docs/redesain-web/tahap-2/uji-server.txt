@@ -44,7 +44,7 @@
 [lulus] sbx_pendidikan: lonceng notifikasi tampil (AK)
 [lulus] sbx_ortu_a: Beranda 200
 [lulus] sbx_ortu_a: menu = Beranda · Izin anak · Rapor · Informasi pembinaan · Notifikasi
-[lulus] sbx_ortu_a: grup = 
+[lulus] sbx_ortu_a: grup =
 [lulus] sbx_ortu_a: bilah bawah = Beranda · Izin · Rapor · Info · Notifikasi
 [lulus] sbx_ortu_a: tanpa label versi di menu
 [lulus] sbx_ortu_a: lonceng notifikasi tampil (AK)

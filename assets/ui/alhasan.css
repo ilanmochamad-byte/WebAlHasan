@@ -1467,7 +1467,7 @@ body.ah-masuk { min-height: 100dvh; background: var(--ah-green-050); }
 }
 
 /* Tombol kecil bertinggi sentuh 44px: teks di tengah, bukan di atas. */
-.ah-card__head .btn-sm, .ah-card .ah-table .btn-sm, .ah-task__btn, .ah-schedule .btn, .ah-parent-card .btn, .ah-page-head__actions .btn {
+.ah-card__head .btn-sm, .ah-card .ah-table .btn-sm, .ah-denial .btn, .ah-task__btn, .ah-schedule .btn, .ah-parent-card .btn, .ah-page-head__actions .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;

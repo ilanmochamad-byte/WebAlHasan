@@ -27,7 +27,10 @@ declare(strict_types=1);
  *         orang lain 403 dan basis data tidak berubah), kategori, kelompok hari;
  *   H2-F  halaman masuk (A-1), ganti kata sandi (A-3), keluar (A-4), akses
  *         ditolak (A-5) termasuk teks polos V4 yang diganti;
- *   H2-G  tidak ada galat/peringatan PHP di log server.
+ *   H2-G  tidak ada galat/peringatan PHP di log server;
+ *   H2-H  koreksi audit F-2/F-3/F-4: tujuan setiap kartu berisi himpunan
+ *         yang dihitung; Beranda Guru akun ganda hanya penugasan sendiri;
+ *         status bahan efektif sama dengan matriks setelah sumber berubah.
  *
  * Jalankan setelah menyiapkan DB:
  *   bash tests/redesain_web_tahap2_db.sh
@@ -191,7 +194,7 @@ foreach ($harapan as $user => $h) {
     $p = $peta($r['body']);
     $assert($r['status'] === 200, "{$user}: Beranda 200");
     $assert($p['menu'] === $h['menu'], "{$user}: menu = " . implode(' · ', $p['menu']));
-    $assert($p['grup'] === $h['grup'], "{$user}: grup = " . implode(' · ', $p['grup']));
+    $assert($p['grup'] === $h['grup'], "{$user}: grup = " . ($p['grup'] === [] ? '(tanpa grup bernama)' : implode(' · ', $p['grup'])));
     $assert($p['bar'] === $h['bar'], "{$user}: bilah bawah = " . implode(' · ', $p['bar']));
     $assert(preg_match('/\b(V2|V3|V4)\b/', implode(' ', array_merge($p['menu'], $p['grup']))) !== 1, "{$user}: tanpa label versi di menu");
     $assert(str_contains($r['body'], 'class="ah-topbar__btn ah-topbar__bell"'), "{$user}: lonceng notifikasi tampil (AK)");
@@ -269,10 +272,24 @@ $r = $ganda->req('/portal/peran.php', ['_csrf' => $ganda->csrf(), 'peran' => 'gu
 $assert(str_ends_with((string) $r['location'], '/portal/izin_antrean.php'), 'Halaman asal milik peran baru dipertahankan setelah beralih');
 $h = $ganda->req('/portal/izin_antrean.php')['body'];
 $assert(str_contains($h, 'Cakupan data: <b>Murobi') && !str_contains($h, 'btn-group flex-wrap'), 'Perizinan memakai cakupan peran sesi (Murobi); deretan tombol mode dihapus');
-$h = $ganda->req('/admin/admin_master_santri.php')['body'];
-$assert(str_contains($h, 'Peran beralih ke Admin untuk membuka halaman ini.') && $peta($h)['aktif'] === 'Data santri', 'Halaman milik peran lain akun ini mengalihkan peran ke Admin');
+// Koreksi audit F-1 (A-2/A-5): peran tidak pernah berganti sendiri.
+$r = $ganda->req('/admin/admin_master_santri.php');
+$assert($r['status'] === 403 && str_contains($r['body'], 'data-ah-buka-sebagai="admin"') && str_contains($r['body'], 'Buka sebagai Admin')
+    && str_contains($r['body'], 'class="ah-topbar"') && !str_contains($r['body'], 'Peran beralih'), 'Halaman Admin dari peran Guru: 403 dengan pilihan eksplisit "Buka sebagai Admin"');
+$assert(str_contains($ganda->req('/portal/index.php')['body'], 'Peran: Guru'), 'Membuka halaman peran lain tidak mengganti peran sesi');
+$jumlahSantri = (int) $sql('SELECT COUNT(*) n FROM santri')[0]['n'];
+$r = $ganda->req('/admin/admin_master_santri.php', ['_csrf' => $ganda->csrf(), 'action' => 'create', 'nis' => 'T2-GERBANG', 'nama_santri' => 'Uji Gerbang']);
+$assert($r['status'] === 403 && (int) $sql('SELECT COUNT(*) n FROM santri')[0]['n'] === $jumlahSantri, 'POST ke halaman peran lain ditolak 403 sebelum halaman bekerja (tidak ada data baru)');
+$r = $ganda->req('/portal/peran.php', ['_csrf' => $ganda->csrf(), 'peran' => 'admin', 'kembali' => '/admin/admin_master_santri.php']);
+$assert(str_ends_with((string) $r['location'], '/admin/admin_master_santri.php') && $peta($ganda->req('/admin/admin_master_santri.php')['body'])['aktif'] === 'Data santri', '"Buka sebagai Admin" (POST + CSRF) membuka halaman semula di peran Admin');
+$r = $ganda->req('/portal/izin_antrean.php?mode=murobi');
+$assert($r['status'] === 403 && str_contains($r['body'], 'Buka sebagai Guru') && str_contains($r['body'], 'href="/portal/izin_antrean.php">Lanjutkan sebagai Admin'), 'Alamat lama ?mode=murobi dari peran Admin: pilihan Buka sebagai Guru atau Lanjutkan sebagai Admin');
+$assert(str_contains($ganda->req('/portal/index.php')['body'], 'Peran: Admin'), '?mode= lama tidak mengganti peran sesi diam-diam');
+$h = $ganda->req('/portal/izin_antrean.php?mode=admin')['body'];
+$assert(str_contains($h, 'Cakupan data: <b>Admin'), '?mode= yang sama dengan peran aktif dibuka seperti biasa');
+$ganda->req('/portal/peran.php', ['_csrf' => $ganda->csrf(), 'peran' => 'guru']);
 $h = $ganda->req('/portal/izin_antrean.php?mode=murobi')['body'];
-$assert(str_contains($h, 'Peran: Guru') && str_contains($h, 'Cakupan data: <b>Murobi'), 'Alamat lama ?mode=murobi menyelaraskan peran aktif ke Guru');
+$assert(str_contains($h, 'Peran: Guru') && str_contains($h, 'Cakupan data: <b>Murobi'), '?mode=murobi pada peran Guru dibuka dengan cakupan Murobi');
 $h = $ganda->req('/portal/izin.php?mode=orang_tua')['body'];
 $assert(str_contains($h, 'Peran: Guru') && !str_contains($h, 'Cakupan data: <b>Orang tua'), '?mode= di luar hak akun diabaikan server');
 $ganda->login('sbx_ganda');
@@ -287,6 +304,13 @@ $pendidikan->req('/portal/peran.php', ['_csrf' => $pendidikan->csrf(), 'peran' =
 $p = $peta($pendidikan->req('/portal/index.php')['body']);
 $assert($p['menu'] === ['Beranda', 'Perizinan'], 'Peran Pengurus tanpa pembimbing hanya Beranda + Perizinan (keputusan J)');
 $pendidikan->req('/portal/peran.php', ['_csrf' => $pendidikan->csrf(), 'peran' => 'pendidikan']);
+$idIzin = (int) $sql("SELECT MIN(id) id FROM izin_pengajuan WHERE pengurus_id = 86")[0]['id'];
+$r = $pendidikan->req('/portal/izin_detail.php?id=' . $idIzin);
+$assert($r['status'] === 403 && str_contains($r['body'], 'Buka sebagai Pengurus') && str_contains($pendidikan->req('/portal/index.php')['body'], 'Peran: Bagian Pendidikan'), 'Tautan detail izin (mis. dari notifikasi) di peran Bagian Pendidikan menawarkan Buka sebagai Pengurus tanpa mengganti peran');
+$r = $pendidikan->req('/portal/notifikasi.php');
+$assert($r['status'] === 200 && str_contains($r['body'], 'Peran: Bagian Pendidikan'), 'Halaman bersama (notifikasi) tetap terbuka di peran aktif');
+$tunggal = $klien('sbx_pengurus_a');
+$assert($tunggal->req('/portal/izin_antrean.php?mode=admin')['status'] === 200, 'Akun berperan tunggal tidak terpengaruh gerbang peran (?mode= di luar hak diabaikan)');
 
 // ============================================================ H2-D Beranda
 echo PHP_EOL . '=== H2-D. Beranda per peran ===' . PHP_EOL;
@@ -298,11 +322,11 @@ $semua = $admin->req('/portal/index.php?semua=1')['body'];
 preg_match_all('/data-ah-kartu="([^"]+)"/', $semua, $kartuSemua);
 $assert($kartuSemua[1] === ['izin_penetapan', 'psb_baru', 'psb_belum_lunas', 'notifikasi_gagal', 'izin_tertunda', 'bahan_perbaikan', 'santri_tanpa_tempat', 'rekomendasi'], 'B-1: "Lihat semua" menampilkan kedelapan kartu (L + AA)');
 $assert(substr_count($semua, 'ah-task--warn') >= 5 && str_contains($teks($semua), 'Ada yang tertunda lebih dari 1 hari'), 'B-1: kartu bertunda > 1 hari berwarna kuning (P)');
-$hitung = $sql("SELECT (SELECT COUNT(*) FROM izin_pengajuan WHERE status='Perlu Penetapan Admin') a, (SELECT COUNT(*) FROM psb_pendaftar WHERE status='Baru') b, (SELECT COUNT(*) FROM v3_rekomendasi WHERE status IN ('Baru','Ditinjau')) c")[0];
+$hitung = $sql("SELECT (SELECT COUNT(*) FROM izin_pengajuan WHERE status='Perlu Penetapan Admin') a, (SELECT COUNT(*) FROM psb_pendaftar WHERE status='Baru') b, (SELECT COUNT(*) FROM v3_rekomendasi WHERE status = 'Baru' AND ditindaklanjuti_kasus_id IS NULL AND tidak_berlaku_pada IS NULL AND archived_at IS NULL) c")[0];
 $assert(preg_match('/<p class="ah-task__num">' . number_format((int) $hitung['a'], 0, ',', '.') . '<\/p><p class="ah-task__title">Izin menunggu penetapan murobi/', $h) === 1
     && preg_match('/<p class="ah-task__num">' . (int) $hitung['b'] . '<\/p><p class="ah-task__title">Pendaftar PSB baru/', $h) === 1
     && preg_match('/<p class="ah-task__num">' . (int) $hitung['c'] . '<\/p><p class="ah-task__title">Rekomendasi pembinaan/', $semua) === 1, 'B-1: angka kartu sama dengan basis data');
-$assert(str_contains($h, 'href="/portal/izin_antrean.php"') && str_contains($semua, 'href="/admin/admin_penempatan_santri.php?status=tanpa_kelas"') && str_contains($semua, 'href="/portal/izin.php?status=Diajukan"'), 'B-1: kartu membuka daftar yang tersaring');
+$assert(str_contains($h, 'href="/portal/izin_antrean.php"') && str_contains($h, 'href="/admin/admin_data.php?status=Baru"') && str_contains($semua, 'href="/admin/admin_penempatan_santri.php?status=tanpa_tempat"') && str_contains($semua, 'href="/portal/izin.php?status=Diajukan&amp;tertunda=1"') && str_contains($semua, 'href="/portal/v3_konseling.php#rekomendasi"'), 'B-1: kartu membuka daftar yang tersaring');
 foreach (['Santri aktif', 'Izin aktif hari ini', 'Pertemuan hari ini', 'Hunian asrama', 'Pengajian hari ini', 'Pengajuan izin terbaru'] as $bagian) {
     $assert(str_contains($teks($h), $bagian), "B-1: memuat {$bagian}");
 }
@@ -341,6 +365,145 @@ $assert($namaLain !== '' && !str_contains($h, 'id="ah-anak-nama">' . htmlspecial
 $anak2 = (int) ($sql("SELECT santri_id FROM santri_wali WHERE wali_id = 1 ORDER BY id DESC LIMIT 1")[0]['santri_id']);
 $nama2 = (string) $sql("SELECT nama_santri FROM santri WHERE id = {$anak2}")[0]['nama_santri'];
 $assert(str_contains($ortu->req('/portal/index.php?anak=' . $anak2)['body'], 'id="ah-anak-nama">' . htmlspecialchars($nama2)), 'B-5: anak kedua dapat dipilih');
+
+// ============================================================ H2-H koreksi audit F-2/F-3/F-4
+echo PHP_EOL . '=== H2-H. Tujuan kartu = himpunan yang dihitung; cakupan sendiri; status bahan efektif ===' . PHP_EOL;
+/** @return array{jumlah:int, url:string}|null */
+$kartuAdmin = static function (string $html, string $kunci): ?array {
+    if (preg_match('/data-ah-kartu="' . preg_quote($kunci, '/') . '"><p class="ah-task__num">([\d.]+)<\/p>.*?href="([^"]+)"/s', $html, $m) !== 1) {
+        return null;
+    }
+    return ['jumlah' => (int) str_replace('.', '', $m[1]), 'url' => html_entity_decode($m[2])];
+};
+$dom = static function (string $html): DOMXPath {
+    $d = new DOMDocument();
+    @$d->loadHTML('<?xml encoding="UTF-8">' . $html);
+    return new DOMXPath($d);
+};
+$angkaStat = static function (string $html, string $label): ?int {
+    return preg_match('/' . preg_quote($label, '/') . '<\/p><p class="ah-stat__value">([\d.]+)</', $html, $m) === 1 ? (int) str_replace('.', '', $m[1]) : null;
+};
+
+$k = $kartuAdmin($semua, 'psb_baru');
+$x = $dom($admin->req($k['url'])['body']);
+$status = [];
+foreach ($x->query('//table[@id="tabelSantri"]//tbody/tr/td[6]') as $sel) {
+    $status[] = trim($sel->textContent);
+}
+$assert($status !== [] && count($status) === $k['jumlah'] && array_filter($status, static fn ($v) => strcasecmp($v, 'Baru') !== 0) === [], 'F-4 PSB baru: tujuan hanya berisi ' . $k['jumlah'] . ' pendaftar Baru (' . implode(',', $status) . ')');
+
+$k = $kartuAdmin($semua, 'izin_tertunda');
+$hTujuan = $admin->req(parse_url($k['url'], PHP_URL_PATH) . '?' . parse_url($k['url'], PHP_URL_QUERY))['body'];
+$harap = (int) $sql("SELECT COUNT(*) n FROM izin_pengajuan WHERE status='Diajukan' AND COALESCE(diajukan_pada, created_at) < NOW() - INTERVAL 24 HOUR")[0]['n'];
+$baru = (int) $sql("SELECT COUNT(*) n FROM izin_pengajuan WHERE status='Diajukan' AND COALESCE(diajukan_pada, created_at) >= NOW() - INTERVAL 24 HOUR")[0]['n'];
+$assert($k['jumlah'] === $harap && str_contains($hTujuan, '— ' . $harap . ' pengajuan.') && str_contains($hTujuan, 'id="tertunda" name="tertunda" value="1" checked'), "F-4 izin > 1 hari: kartu {$k['jumlah']} = daftar tujuan {$harap} (Diajukan < 24 jam yang dikecualikan: {$baru})");
+
+$k = $kartuAdmin($semua, 'santri_tanpa_tempat');
+$harap = (int) $sql("SELECT COUNT(*) n FROM santri s WHERE s.is_active = 1 AND s.archived_at IS NULL AND (
+        NOT EXISTS (SELECT 1 FROM plotting_kelas pk JOIN tahun_ajaran t ON t.id = pk.id_tahun AND t.status = 'Aktif' WHERE pk.id_santri = s.id AND pk.status = 'Aktif')
+     OR NOT EXISTS (SELECT 1 FROM plotting_kamar pm JOIN tahun_ajaran t ON t.id = pm.id_tahun AND t.status = 'Aktif' WHERE pm.id_santri = s.id))")[0]['n'];
+$tanpaKelas = (int) $sql("SELECT COUNT(*) n FROM santri s WHERE s.is_active = 1 AND s.archived_at IS NULL AND NOT EXISTS (SELECT 1 FROM plotting_kelas pk JOIN tahun_ajaran t ON t.id = pk.id_tahun AND t.status = 'Aktif' WHERE pk.id_santri = s.id AND pk.status = 'Aktif')")[0]['n'];
+$tanpaKamar = (int) $sql("SELECT COUNT(*) n FROM santri s WHERE s.is_active = 1 AND s.archived_at IS NULL AND NOT EXISTS (SELECT 1 FROM plotting_kamar pm JOIN tahun_ajaran t ON t.id = pm.id_tahun AND t.status = 'Aktif' WHERE pm.id_santri = s.id)")[0]['n'];
+$hTujuan = $admin->req(parse_url($k['url'], PHP_URL_PATH) . '?' . parse_url($k['url'], PHP_URL_QUERY))['body'];
+$assert($k['jumlah'] === $harap && $tanpaKelas > 0 && $tanpaKamar > 0 && $harap >= max($tanpaKelas, $tanpaKamar) && str_contains($hTujuan, 'value="tanpa_tempat" selected'), "F-4 tanpa kelas/kamar: kartu {$k['jumlah']} = gabungan tanpa kelas ({$tanpaKelas}) ATAU tanpa kamar ({$tanpaKamar}); tujuan memakai saringan gabungan");
+$total = (int) penempatan_service()->listPage(['status' => 'tanpa_tempat'], (int) $sql("SELECT id FROM tahun_ajaran WHERE status='Aktif' LIMIT 1")[0]['id'], 1, 1)['total'];
+$assert($total === $harap, 'F-4 tanpa kelas/kamar: saringan server penempatan menghasilkan himpunan yang sama');
+
+$k = $kartuAdmin($semua, 'rekomendasi');
+$x = $dom($admin->req('/portal/v3_konseling.php')['body']);
+$baris = $x->query('//section[@id="rekomendasi"]//tr[@data-rekomendasi]')->length;
+$assert($k['url'] === '/portal/v3_konseling.php#rekomendasi' && $baris === $k['jumlah'] && $baris === (int) $hitung['c'], "F-4 rekomendasi: tujuan memuat daftar rekomendasi belum ditindaklanjuti ({$baris} baris = kartu {$k['jumlah']})");
+$pengurusKonseling = $klien('sbx_pengurus_a')->req('/portal/v3_konseling.php')['body'];
+$assert(str_contains($pengurusKonseling, 'name="rekomendasi_ids[]"') && str_contains($pengurusKonseling, 'id="rekomendasi"'), 'F-4 rekomendasi: pembimbing dapat memilih rekomendasi untuk ditindaklanjuti di halaman yang sama');
+
+$k = $kartuAdmin($semua, 'notifikasi_gagal');
+$assert($k['jumlah'] === (int) $sql("SELECT COUNT(*) n FROM notifikasi_outbox WHERE status='Failed'")[0]['n'] && str_contains($admin->req('/admin/admin_notifikasi.php')['body'], 'id="pengiriman-gagal"'), 'F-4 notifikasi gagal: kartu = daftar Pengiriman gagal (anchor tersedia)');
+
+$k = $kartuAdmin($semua, 'bahan_perbaikan');
+$hTujuan = $admin->req(parse_url($k['url'], PHP_URL_PATH) . '?' . parse_url($k['url'], PHP_URL_QUERY))['body'];
+$x = $dom($hTujuan);
+$santriTujuan = $x->query('//section[@data-santri]')->length;
+$perluTujuan = 0;
+foreach ($x->query('//section[@data-santri]//article[contains(@class,"bahan-card")]/h3') as $judul) {
+    if (str_contains($judul->textContent, 'Perlu Perbaikan')) {
+        $perluTujuan++;
+    }
+}
+$assert($k['jumlah'] === 2 && $perluTujuan === 2 && $santriTujuan === 2 && str_contains($hTujuan, 'data-ah-saringan="Dikembalikan"'), "F-4 bahan perlu perbaikan: tujuan hanya santri dengan bahan Perlu Perbaikan ({$santriTujuan} santri, {$perluTujuan} bahan = kartu {$k['jumlah']})");
+
+$pengurus = $klien('sbx_pengurus_a');
+$hp = $pengurus->req('/portal/index.php')['body'];
+$nSikap = $angkaStat($hp, 'Sikap belum diisi');
+$x = $dom($pengurus->req('/portal/sikap_semester.php?status=belum')['body']);
+$tautan = $x->query('//details//a[contains(@href,"santri_id=")]')->length;
+$assert($nSikap === 1 && $tautan === $nSikap && str_contains($hp, 'href="/portal/sikap_semester.php?status=belum"'), "F-4 sikap belum diisi: angka {$nSikap} = daftar tujuan {$tautan}");
+$nAmbang = $angkaStat($hp, 'Santri mencapai ambang');
+$hl = $pengurus->req('/portal/v3_laporan.php?jenis=ambang')['body'];
+$assert($nAmbang === 1 && str_contains($hl, $nAmbang . ' baris sesuai filter · ambang') && str_contains($hl, '<th>Total poin</th>') && str_contains($hp, 'href="/portal/v3_laporan.php?jenis=ambang"'), "F-4 santri mencapai ambang: angka {$nAmbang} = laporan santri per total poin");
+$nLanggar = $angkaStat($hp, 'Pelanggaran bulan ini');
+$hl = $pengurus->req('/portal/v3_laporan.php?jenis=pelanggaran&mulai=' . date('Y-m-01') . '&aktif=1')['body'];
+$assert($nLanggar === 1 && str_contains($hl, $nLanggar . ' baris sesuai filter · pelanggaran'), "F-4 pelanggaran bulan ini: angka {$nLanggar} = laporan bulan ini tanpa yang dibatalkan");
+$murobiC = $klien('sbx_murobi_c');
+$hm = $murobiC->req('/portal/index.php')['body'];
+$kSikap = $kartuAdmin($hm, 'murobi_sikap');
+$x = $dom($murobiC->req('/portal/sikap_semester.php?mode=murobi&status=perlu_diketahui')['body']);
+$tautan = $x->query('//details//a[contains(@href,"santri_id=")]')->length;
+$assert($kSikap !== null && $kSikap['jumlah'] === 2 && $tautan === 2, 'F-4 sikap binaan perlu diketahui: kartu murobi = daftar tujuan (' . $tautan . ')');
+
+// F-2: Beranda Guru akun admin+guru hanya menghitung penugasan sendiri.
+$db = app_db();
+$repo = new App\Auth\AuthRepository($db);
+$multi = $repo->findByUsername('sbx_ganda');
+$pendidikanUser = $repo->findByUsername('sbx_pendidikan');
+$db->begin_transaction();
+try {
+    $db->query('UPDATE guru_mapel_assignments SET guru_id = 206 WHERE id = (SELECT guru_mapel_assignment_id FROM v4_rencana_mapel ORDER BY id LIMIT 1)');
+    $caps = new App\Auth\Capabilities($db);
+    $nilai = (new App\Beranda\BerandaService($db, $caps))->kemajuanNilai($multi);
+    $assert(count($caps->featureScopes($multi, App\Penugasan\PenugasanJenis::CAP_NILAI_INPUT)) === 1 && count($nilai) === 1, 'F-2: Beranda Guru akun admin+guru hanya memuat 1 tugas mapel miliknya (' . implode(', ', array_column($nilai, 'label')) . ')');
+    $assert(count((new App\V4\NilaiService($db, $caps, audit_logger()))->options($multi)) === 2, 'F-2: pengawasan Admin pada layanan nilai tetap utuh (2 mapel)');
+} finally {
+    $db->rollback();
+}
+
+// F-3: status efektif = matriks VerifikasiService::read(), termasuk setelah
+// sumber nilai, sikap, atau kehadiran berubah sesudah diverifikasi.
+$banding = static function (string $keadaan) use ($db, $pendidikanUser, $assert): void {
+    $layanan = new App\V4\VerifikasiService($db, audit_logger());
+    $beranda = new App\Beranda\BerandaService($db, new App\Auth\Capabilities($db));
+    $hasil = [];
+    foreach ($layanan->options($pendidikanUser) as $plan) {
+        $m = ['terverifikasi' => 0, 'perbaikan' => 0, 'item' => 0];
+        foreach ($layanan->read($pendidikanUser, (int) $plan['id'])['matriks'] as $santri) {
+            foreach ($santri['bahan'] as $b) {
+                $m['item']++;
+                $m['terverifikasi'] += $b['pemeriksaan']['status'] === 'Terverifikasi' ? 1 : 0;
+                $m['perbaikan'] += $b['pemeriksaan']['status'] === 'Dikembalikan' ? 1 : 0;
+            }
+        }
+        $r = $beranda->ringkasBahan((int) $plan['id'], (int) $plan['tahun_ajaran_id'], (int) $plan['kelas_id']);
+        $hasil[] = $m === ['terverifikasi' => $r['terverifikasi'], 'perbaikan' => $r['perbaikan'], 'item' => $r['harapan']] ? 'sama' : json_encode(['matriks' => $m, 'beranda' => $r]);
+    }
+    $assert($hasil !== [] && array_unique($hasil) === ['sama'], "F-3 {$keadaan}: ringkasan Beranda = matriks kelengkapan " . implode(' | ', $hasil));
+};
+$banding('fixture awal (1 sah, 1 sikap usang, 2 dikembalikan)');
+$db->begin_transaction();
+try {
+    $db->query("UPDATE v4_bahan SET status = 'Terverifikasi'");
+    $banding('semua tersimpan Terverifikasi dengan sidik campuran');
+    $db->query('UPDATE v4_nilai SET nilai = nilai + 1 WHERE id = (SELECT id FROM (SELECT MIN(id) id FROM v4_nilai) x)');
+    $banding('nilai berubah sesudah verifikasi');
+    $db->query("UPDATE v4_sikap SET catatan = 'diubah' WHERE id = (SELECT id FROM (SELECT MIN(id) id FROM v4_sikap) x)");
+    $banding('sikap berubah sesudah verifikasi');
+    $sidPeserta = (int) $db->query("SELECT pk.id_santri FROM plotting_kelas pk JOIN v4_rencana r ON r.kelas_id = pk.id_kelas AND r.tahun_ajaran_id = pk.id_tahun ORDER BY pk.id_santri LIMIT 1")->fetch_row()[0];
+    $pertemuan = (int) $db->query("SELECT p.id FROM pertemuan_pengajian p WHERE p.status = 'Selesai' LIMIT 1")->fetch_row()[0];
+    $db->query("INSERT INTO pertemuan_peserta (pertemuan_id, santri_id, nis_snapshot, nama_santri_snapshot, kelas_id_snapshot, tahun_ajaran_id_snapshot) SELECT {$pertemuan}, s.id, s.nis, s.nama_santri, pk.id_kelas, pk.id_tahun FROM santri s JOIN plotting_kelas pk ON pk.id_santri = s.id WHERE s.id = {$sidPeserta} LIMIT 1");
+    $banding('kehadiran berubah (peserta pertemuan baru)');
+} finally {
+    $db->rollback();
+}
+$hd = $klien('sbx_pendidikan')->req('/portal/index.php')['body'];
+$assert($angkaStat($hd, 'Perlu perbaikan') === 2 && preg_match('/Bahan terverifikasi<\/p><p class="ah-stat__value">8%</', $hd) === 1, 'F-3: Beranda Bagian Pendidikan menghitung 1 bahan sah dari 12 (8%), bahan sikap bersidik lama tidak dihitung');
 
 // ============================================================ H2-E notifikasi
 echo PHP_EOL . '=== H2-E. Notifikasi untuk semua akun ===' . PHP_EOL;

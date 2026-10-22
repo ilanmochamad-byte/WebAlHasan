@@ -17,12 +17,27 @@ try{
     }
     if($plan)$current=$service->read($user,$plan,$sid);
 }catch(V4Exception $ex){http_response_code($ex->status);if($ex->status===403){\App\Ui\Denial::page('Kelengkapan semester','Bagian Pendidikan',$ex->getMessage());}$error=$ex->getMessage();if($plan){try{$current=$service->read($user,$plan,$sid);}catch(V4Exception){}}}
+// Saringan "perlu perbaikan" dari kartu Beranda (Tahap 2): status EFEKTIF
+// Dikembalikan pada matriks, himpunan yang sama dengan angka Beranda.
+$saringPerbaikan=($_GET['status']??'')==='Dikembalikan';
+$daftarPerbaikan=[];
+if($saringPerbaikan&&$current){
+    $current['matriks']=array_values(array_filter($current['matriks'],static fn($st)=>array_filter($st['bahan'],static fn($m)=>$m['pemeriksaan']['status']==='Dikembalikan')!==[]));
+}elseif($saringPerbaikan&&!$plan){
+    foreach($options as $o){
+        try{$r=beranda_service()->ringkasBahan((int)$o['id'],(int)$o['tahun_ajaran_id'],(int)$o['kelas_id']);}catch(Throwable){continue;}
+        if($r['perbaikan']>0)$daftarPerbaikan[]=['rencana'=>$o,'perbaikan'=>$r['perbaikan']];
+    }
+}
 $e=static fn($v)=>ah_e($v);$labels=['Dikirim'=>'Diserahkan','Dikembalikan'=>'Perlu Perbaikan','Draf'=>'Draf','Terverifikasi'=>'Terverifikasi'];
 ah_page_open(['title'=>'Kelengkapan Semester','user'=>$user,'description'=>'Pemeriksaan nilai, sikap, dan sumber kehadiran sebelum finalisasi.']);
 ?>
 <style>.bahan-card{border:1px solid #ddd;border-radius:8px;padding:1rem;margin:.75rem 0;overflow-wrap:anywhere}.bahan-actions{display:flex;gap:.75rem;flex-wrap:wrap}.bahan-card input,.bahan-card textarea{max-width:100%;width:100%}.bahan-list{padding-left:1.2rem}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style>
 <?php if(isset($error)):?><p class="alert alert-danger" role="alert"><?= $e($error) ?> Data terbaru ditampilkan; periksa sebelum mencoba lagi.</p><?php endif ?>
-<section class="card p-3 mb-3"><form method="get"><label>Kelas dan semester<select class="form-select" name="rencana_id" required><option value="">Pilih rencana</option><?php foreach($options as $o):?><option value="<?= (int)$o['id'] ?>" <?= $plan===(int)$o['id']?'selected':'' ?>><?= $e($o['nama_kelas'].' · '.$o['tahun'].' '.$o['semester']) ?></option><?php endforeach ?></select></label><button class="btn btn-primary mt-3">Buka matriks</button></form><?php if(!$options):?><p>Belum ada rencana dalam cakupan Pendidikan Anda.</p><?php endif ?></section>
+<section class="card p-3 mb-3"><form method="get"><label>Kelas dan semester<select class="form-select" name="rencana_id" required><option value="">Pilih rencana</option><?php foreach($options as $o):?><option value="<?= (int)$o['id'] ?>" <?= $plan===(int)$o['id']?'selected':'' ?>><?= $e($o['nama_kelas'].' · '.$o['tahun'].' '.$o['semester']) ?></option><?php endforeach ?></select></label><?php if($saringPerbaikan):?><input type="hidden" name="status" value="Dikembalikan"><?php endif ?><button class="btn btn-primary mt-3">Buka matriks</button></form><?php if(!$options):?><p>Belum ada rencana dalam cakupan Pendidikan Anda.</p><?php endif ?></section>
+<?php if($saringPerbaikan):?><section class="card p-3 mb-3" data-ah-saringan="Dikembalikan"><p class="mb-2"><b>Saringan: bahan perlu perbaikan.</b> <a href="<?= $e(app_url('/portal/verifikasi_semester.php').($plan?'?rencana_id='.$plan:'')) ?>">Tampilkan semua</a></p>
+<?php if($plan&&$current):?><p class="mb-0"><?= count($current['matriks']) ?> santri dengan bahan perlu perbaikan.</p>
+<?php elseif(!$plan):?><?php if($daftarPerbaikan===[]):?><p class="mb-0">Tidak ada bahan perlu perbaikan.</p><?php else:?><ul class="mb-0"><?php foreach($daftarPerbaikan as $d):?><li><a href="?rencana_id=<?= (int)$d['rencana']['id'] ?>&amp;status=Dikembalikan"><?= $e($d['rencana']['nama_kelas'].' · '.$d['rencana']['tahun'].' '.$d['rencana']['semester']) ?></a> · <?= (int)$d['perbaikan'] ?> bahan</li><?php endforeach ?></ul><?php endif ?><?php endif ?></section><?php endif ?>
 <?php if($current):foreach($current['matriks'] as $student):$id=(int)$student['santri']['id']; ?>
 <section class="card p-3 mb-3" data-santri="<?= $id ?>"><h2 class="h5"><?= $e($student['santri']['nama_santri']) ?></h2>
 <p><?= $student['siap_finalisasi']?'Seluruh bahan terverifikasi':'Masih ada kekurangan / perlu verifikasi' ?></p>

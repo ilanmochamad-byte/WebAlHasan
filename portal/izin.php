@@ -16,6 +16,7 @@ $filters = [
     'source' => (string) ($_GET['source'] ?? ''),
     'date_from' => (string) ($_GET['date_from'] ?? ''),
     'date_to' => (string) ($_GET['date_to'] ?? ''),
+    'tertunda' => ($_GET['tertunda'] ?? '') === '1' ? '1' : '',
 ];
 
 try {
@@ -58,6 +59,12 @@ portal_header('Daftar Perizinan', $userCapabilities, $scope['mode'], $currentUse
                 <option value="<?= portal_e($status) ?>" <?= $filters['status'] === $status ? 'selected' : '' ?>><?= portal_e($status) ?></option>
             <?php endforeach; ?>
         </select>
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="tertunda" name="tertunda" value="1" <?= $filters['tertunda'] === '1' ? 'checked' : '' ?>>
+            <label class="form-check-label" for="tertunda">Diajukan &gt; 1 hari</label>
+        </div>
     </div>
     <div class="col-md-2">
         <label class="form-label" for="source">Sumber data</label>

@@ -27,13 +27,15 @@ ah_page_open(['title'=>'Laporan pembinaan','heading'=>'Laporan pembinaan V3','de
 ?>
 <?php if(!$print): ?>
 <form method="get" class="row g-3 mb-4">
-<div class="col-12 col-md-4"><label for="jenis" class="form-label">Jenis laporan</label><select id="jenis" name="jenis" class="form-select"><?php foreach($kinds as $kind): ?><option value="<?= ah_e($kind) ?>" <?= $list['jenis']===$kind?'selected':'' ?>><?= ah_e(ucfirst($kind)) ?></option><?php endforeach ?></select></div>
+<div class="col-12 col-md-4"><label for="jenis" class="form-label">Jenis laporan</label><select id="jenis" name="jenis" class="form-select"><?php foreach($kinds as $kind): ?><option value="<?= ah_e($kind) ?>" <?= $list['jenis']===$kind?'selected':'' ?>><?= ah_e($kind==='ambang'?'Santri mencapai ambang':ucfirst($kind)) ?></option><?php endforeach ?></select></div>
 <?php
 $fields=['mulai'=>['Awal periode','date'],'sampai'=>['Akhir periode','date'],'santri_id'=>['ID santri','number'],'status'=>['Status','text'],'tindak_lanjut'=>['Tindak lanjut (ada / belum)','text']];
-if($list['jenis']!=='publikasi')$fields+=['kelas_id'=>['ID kelas','number'],'kamar_id'=>['ID kamar','number'],'kategori'=>['Kategori','text'],'tingkat'=>['Tingkat','text'],'poin_min'=>['Poin minimum','number'],'poin_max'=>['Poin maksimum','number'],'pembimbing_id'=>['ID pembimbing','number'],'murobi_id'=>['ID murobi','number']];
+if($list['jenis']==='ambang')$fields=['santri_id'=>['ID santri','number'],'kelas_id'=>['ID kelas','number'],'kamar_id'=>['ID kamar','number']];
+elseif($list['jenis']!=='publikasi')$fields+=['kelas_id'=>['ID kelas','number'],'kamar_id'=>['ID kamar','number'],'kategori'=>['Kategori','text'],'tingkat'=>['Tingkat','text'],'poin_min'=>['Poin minimum','number'],'poin_max'=>['Poin maksimum','number'],'pembimbing_id'=>['ID pembimbing','number'],'murobi_id'=>['ID murobi','number']];
 foreach($fields as $name=>[$label,$type]): ?>
 <div class="col-12 col-md-4"><label for="<?= ah_e($name) ?>" class="form-label"><?= ah_e($label) ?></label><input id="<?= ah_e($name) ?>" name="<?= ah_e($name) ?>" type="<?= ah_e($type) ?>" class="form-control" value="<?= ah_e(is_scalar($_GET[$name]??'')?$_GET[$name]??'':'') ?>"></div>
 <?php endforeach ?>
+<?php if(($_GET['aktif']??'')==='1'): ?><input type="hidden" name="aktif" value="1"><p class="col-12 small mb-0">Tanpa catatan yang dibatalkan.</p><?php endif ?>
 <div class="col-12"><button class="btn btn-primary">Terapkan filter</button></div></form>
 <p>Batas ekspor: 10.000 baris. Jika melebihi batas, persempit periode atau filter; ekspor ditolak seluruhnya.</p>
 <div class="d-flex flex-wrap gap-2 mb-3">
