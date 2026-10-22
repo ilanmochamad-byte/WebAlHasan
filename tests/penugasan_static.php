@@ -310,15 +310,16 @@ $assert(str_contains($api, "\$profile['feature_capabilities'] = \$this->featureC
 $assert(!str_contains($api, "unset(\$profile['capabilities']") && str_contains($api, "'roles' => array_values(\$user['roles']),"), 'FS-11 field lama profil tidak dihapus/diubah');
 
 // ============================================================== FS-12
-$assert(str_contains($navigasi, "'admin_penugasan.php' => 'master.penugasan'"), 'FS-12 navigasi memetakan halaman pusat penugasan');
-$assert(str_contains($navigasi, "self::item('master.penugasan', 'Pusat Penugasan', '/admin/admin_penugasan.php'"), 'FS-12 menu Pusat Penugasan tersedia untuk admin');
+// Redesain website Tahap 2 (keputusan C): Penugasan pindah ke grup Pengaturan.
+// Halaman murobi/pembimbing lama tetap terbuka dan menandai menu Penugasan
+// sampai dialihkan di Tahap 6 (G-1).
+$itemPenugasan = "self::item('penugasan', 'Penugasan', '/admin/admin_penugasan.php', 'fa-id-badge', ['admin_penugasan.php', 'admin_murobi.php', 'admin_pembimbing.php'])";
+$assert(str_contains($navigasi, $itemPenugasan), 'FS-12 navigasi memetakan halaman pusat penugasan');
+$assert(str_contains($navigasi, $itemPenugasan), 'FS-12 menu Penugasan tersedia untuk admin');
+$assert(str_contains($navigasi, "'admin_murobi.php', 'admin_pembimbing.php'"), 'FS-12 halaman murobi dan pembimbing lama dipertahankan');
 $assert(
-    str_contains($navigasi, "'/admin/admin_murobi.php'") && str_contains($navigasi, "'/admin/admin_pembimbing.php'"),
-    'FS-12 menu murobi dan pembimbing lama dipertahankan'
-);
-$assert(
-    preg_match('/if \(\$isAdmin\) \{\s*\$groups\[\] = \[\'label\' => \'Master Data\'.*?self::item\(\'master\.penugasan\'/s', $navigasi) === 1,
-    'FS-12 Pusat Penugasan hanya tampil pada blok admin (dan tetap bukan kontrol akses)'
+    preg_match('/private static function admin\(NavigationContext \$c\): array.*?\[\'label\' => \'Pengaturan\'.*?self::item\(\'penugasan\'.*?private static function guru/s', $navigasi) === 1,
+    'FS-12 Penugasan hanya tampil pada peta menu admin (dan tetap bukan kontrol akses)'
 );
 
 // ============================================================== FS-13

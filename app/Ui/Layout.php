@@ -28,6 +28,9 @@ final class Layout
     /** @var array<int, array<string, mixed>> */
     private static array $bottomBar = [];
 
+    /** @var array<int, array{label:string, context:string, url:string}> */
+    private static array $search = [];
+
     public static function escape(mixed $value): string
     {
         return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
@@ -48,6 +51,7 @@ final class Layout
      *     tabs?:array<int, array{label:string, url:string, active?:bool, badge?:string}>,
      *     flash?:array{type:string, message:string}|null,
      *     active?:string,
+     *     bare?:bool,
      *     wide?:bool
      * } $options
      */
@@ -56,20 +60,58 @@ final class Layout
         self::$opened = true;
         $user = $options['user'];
         $capabilities = $options['capabilities'] ?? [];
-        $active = $options['active'] ?? Navigation::activeKey();
-        $groups = Navigation::forUser($user, $capabilities, $options['unread'] ?? null, $options['v3_capabilities'] ?? []);
-        $bottomBar = Navigation::bottomBar($groups, $active);
-        $notifikasi = Navigation::find($groups, 'notifikasi');
-        $password = Navigation::find($groups, 'akun.password');
+        $v3 = $options['v3_capabilities'] ?? [];
+        $unread = $options['unread'] ?? null;
+        // Kerangka polos: tanpa menu, pencarian, peran, dan lonceng. Dipakai saat
+        // kata sandi sementara wajib diganti sebelum fungsi lain dibuka (A-3).
+        $bare = !empty($options['bare']);
+
+        $map = Navigation::build($user, $capabilities, $unread, $v3);
+        $location = self::locate($map, $options['active'] ?? null);
+        $switched = null;
+        if ($location === null && !$bare) {
+            // Halaman milik peran lain akun ini (mis. tautan lama atau tautan
+            // notifikasi): peran aktif ikut beralih agar menu sesuai halaman.
+            // Peran tidak memberi hak; halaman sudah melewati guard-nya sendiri.
+            foreach (Peran::available($user) as $peran) {
+                if ($peran === $map['peran']) {
+                    continue;
+                }
+                $other = Navigation::build($user, $capabilities, $unread, $v3, $peran);
+                $found = self::locate($other, null);
+                if ($found !== null && Peran::set($user, $peran)) {
+                    $map = $other;
+                    $location = $found;
+                    $switched = $peran;
+                    break;
+                }
+            }
+        }
+        $groups = $bare ? [] : $map['groups'];
+        $active = $location['key'] ?? '';
+        $current = $location === null ? null
+            : (Navigation::find($map['groups'], $active) ?? self::findExtra($map['extras'], $active));
+        $bottomBar = $bare ? [] : Navigation::bottomBar($groups, $active, $map['peran'], $map['extras']);
+        $notifikasi = Navigation::find($map['groups'], 'notifikasi') ?? self::findExtra($map['extras'], 'notifikasi');
+        $password = self::findExtra($map['extras'], 'akun.password');
+        $peranAktif = $map['peran'];
+        $peranList = $bare ? [] : Peran::available($user);
         $title = (string) $options['title'];
         $heading = (string) ($options['heading'] ?? $title);
-        $options['breadcrumbs'] ??= [
-            ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
-            ['label' => $title],
-        ];
+        if (!isset($options['breadcrumbs'])) {
+            $options['breadcrumbs'] = [['label' => 'Beranda', 'url' => app_url('/portal/index.php')]];
+            if ($current !== null && $current['key'] !== 'beranda' && $current['label'] !== $title) {
+                $options['breadcrumbs'][] = ['label' => $current['label'], 'url' => $current['url']];
+            }
+            $options['breadcrumbs'][] = ['label' => $title];
+        }
+        $moduleTabs = ($current !== null && count($current['tabs']) > 1) ? $current['tabs'] : [];
         $name = (string) ($user['name'] ?? '');
-        $roleText = implode(' · ', array_map(static fn (string $c): string => self::capabilityLabel($c), $capabilities));
+        $roleText = $peranAktif === null ? '' : Peran::label($peranAktif);
         $logoutUrl = app_url('/admin/logout.php');
+        $here = (string) ($_SERVER['REQUEST_URI'] ?? '');
+        $preview = $bare || $notifikasi === null ? null : self::notificationPreview($user);
+        $search = $bare ? [] : Navigation::searchIndex($groups, $map['extras']);
         $e = static fn (mixed $value): string => self::escape($value);
         ?>
 <!DOCTYPE html>
@@ -84,28 +126,68 @@ final class Layout
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="<?= $e(self::asset('/assets/ui/alhasan.css')) ?>">
 </head>
-<body class="ah<?= $bottomBar !== [] ? ' ah-has-bottombar' : '' ?>">
+<body class="ah<?= $bottomBar !== [] ? ' ah-has-bottombar' : '' ?><?= $bare ? ' ah-bare' : '' ?>">
 <a class="ah-skip" href="#ah-konten">Lompat ke konten utama</a>
 <div class="ah-shell" id="ah-shell">
     <header class="ah-topbar">
+        <?php if (!$bare): ?>
         <button class="ah-topbar__btn ah-topbar__toggle" type="button" id="ah-nav-toggle"
                 aria-controls="ah-sidebar" aria-expanded="false">
             <i class="fas fa-bars" aria-hidden="true"></i><span class="ah-visually-hidden">Buka menu navigasi</span>
         </button>
+        <?php endif; ?>
         <a class="ah-brand" href="<?= $e(app_url('/portal/index.php')) ?>">
             <span class="ah-brand__mark" aria-hidden="true"><i class="fas fa-mosque"></i></span>
             <span class="ah-brand__text">Sistem Al Hasan<small>Pesantren Al Hasan Ciamis</small></span>
         </a>
         <span class="ah-topbar__title" aria-hidden="true"><?= $e($heading) ?></span>
+        <?php if ($search !== []): ?>
+            <?php self::searchBox('ah-cari-atas', 'ah-search--top'); ?>
+        <?php endif; ?>
         <span class="ah-topbar__spacer"></span>
-        <?php if ($notifikasi !== null): ?>
-            <a class="ah-topbar__btn ah-topbar__bell" href="<?= $e($notifikasi['url']) ?>"<?= $active === 'notifikasi' ? ' aria-current="page"' : '' ?>>
-                <i class="fas fa-bell" aria-hidden="true"></i>
-                <span class="ah-visually-hidden">Notifikasi<?= !empty($notifikasi['badge_label']) ? ', ' . $e($notifikasi['badge_label']) : '' ?></span>
-                <?php if (!empty($notifikasi['badge'])): ?>
-                    <span class="ah-topbar__count" aria-hidden="true"><?= $e($notifikasi['badge']) ?></span>
-                <?php endif; ?>
-            </a>
+        <?php if ($search !== []): ?>
+            <button class="ah-topbar__btn ah-topbar__find" type="button" data-ah-find aria-controls="ah-sidebar">
+                <i class="fas fa-magnifying-glass" aria-hidden="true"></i><span class="ah-visually-hidden">Cari menu</span>
+            </button>
+        <?php endif; ?>
+        <?php if (count($peranList) > 1): ?>
+            <details class="ah-menu ah-peran">
+                <summary class="ah-topbar__btn ah-peran__pill">
+                    <span>Peran: <?= $e($roleText) ?></span>
+                    <i class="fas fa-chevron-down ah-profile__caret" aria-hidden="true"></i>
+                </summary>
+                <div class="ah-menu__list ah-menu__list--end">
+                    <?php self::roleChoices($peranList, $peranAktif, $here); ?>
+                </div>
+            </details>
+        <?php endif; ?>
+        <?php if ($notifikasi !== null && !$bare): ?>
+            <details class="ah-menu ah-bell">
+                <summary class="ah-topbar__btn ah-topbar__bell"<?= $active === 'notifikasi' ? ' data-current="page"' : '' ?>>
+                    <i class="fas fa-bell" aria-hidden="true"></i>
+                    <span class="ah-visually-hidden">Notifikasi<?= !empty($notifikasi['badge_label']) ? ', ' . $e($notifikasi['badge_label']) : '' ?></span>
+                    <?php if (!empty($notifikasi['badge'])): ?>
+                        <span class="ah-topbar__count" aria-hidden="true"><?= $e($notifikasi['badge']) ?></span>
+                    <?php endif; ?>
+                </summary>
+                <div class="ah-menu__list ah-menu__list--end ah-bell__list">
+                    <p class="ah-bell__head">Notifikasi terbaru</p>
+                    <?php if ($preview === null): ?>
+                        <p class="ah-bell__empty">Notifikasi belum dapat dimuat.</p>
+                    <?php elseif ($preview === []): ?>
+                        <p class="ah-bell__empty">Belum ada notifikasi.</p>
+                    <?php else: ?>
+                        <?php foreach ($preview as $item): ?>
+                            <a class="ah-menu__item ah-bell__item<?= $item['dibaca'] ? '' : ' is-unread' ?>"
+                               href="<?= $e(app_url('/portal/notifikasi.php?detail=' . (int) $item['id'])) ?>">
+                                <span><b><?= $e($item['judul']) ?></b><small><?= $e(self::shortTime((string) $item['dibuat_pada'])) ?><?= $item['dibaca'] ? '' : ' · Belum dibaca' ?></small></span>
+                            </a>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                    <hr class="ah-menu__sep">
+                    <a class="ah-menu__item" href="<?= $e($notifikasi['url']) ?>"><i class="fas fa-list" aria-hidden="true"></i>Lihat semua notifikasi</a>
+                </div>
+            </details>
         <?php endif; ?>
         <details class="ah-menu ah-profile">
             <summary class="ah-topbar__btn">
@@ -119,15 +201,16 @@ final class Layout
                     <b><?= $e($name) ?></b>
                     <?php if ($roleText !== ''): ?><span>Peran: <?= $e($roleText) ?></span><?php endif; ?>
                 </div>
-                <?php if ($password !== null): ?>
-                    <a class="ah-menu__item" href="<?= $e($password['url']) ?>"><i class="fas fa-key" aria-hidden="true"></i>Ganti password</a>
+                <?php if ($password !== null && !$bare): ?>
+                    <a class="ah-menu__item" href="<?= $e($password['url']) ?>"><i class="fas fa-key" aria-hidden="true"></i>Ganti kata sandi</a>
                 <?php endif; ?>
-                <a class="ah-menu__item" href="<?= $e($logoutUrl) ?>"><i class="fas fa-arrow-right-from-bracket" aria-hidden="true"></i>Keluar</a>
+                <?php self::logoutForm($logoutUrl, 'ah-menu__item'); ?>
             </div>
         </details>
     </header>
 
     <div class="ah-body">
+        <?php if (!$bare): ?>
         <nav class="ah-rail" aria-label="Menu ringkas">
             <ul class="list-unstyled mb-0">
                 <?php foreach ($groups as $groupIndex => $group): ?>
@@ -150,22 +233,34 @@ final class Layout
                 <span class="ah-avatar" aria-hidden="true"><?= $e(self::initials($name)) ?></span>
                 <div>
                     <b><?= $e($name) ?></b>
-                    <?php if ($roleText !== ''): ?><span>Peran: <?= $e($roleText) ?></span><?php endif; ?>
+                    <?php if ($roleText !== '' && count($peranList) < 2): ?><span>Peran: <?= $e($roleText) ?></span><?php endif; ?>
                 </div>
             </div>
+            <?php if (count($peranList) > 1): ?>
+                <details class="ah-drawer-peran">
+                    <summary>Peran: <b><?= $e($roleText) ?></b> <i class="fas fa-chevron-down" aria-hidden="true"></i></summary>
+                    <div class="ah-drawer-peran__list"><?php self::roleChoices($peranList, $peranAktif, $here); ?></div>
+                </details>
+            <?php endif; ?>
+            <?php if ($search !== []): ?>
+                <div class="ah-drawer-search"><?php self::searchBox('ah-cari-laci', 'ah-search--drawer'); ?></div>
+            <?php endif; ?>
             <?php foreach ($groups as $groupIndex => $group): ?>
                 <?php
                 $groupId = 'ah-grup-' . $groupIndex;
                 $hasActive = in_array($active, array_column($group['items'], 'key'), true);
+                $label = $group['label'];
                 ?>
-                <div class="ah-nav-sec" data-ah-group="<?= $e(self::slug($group['label'])) ?>"<?= $hasActive ? ' data-ah-active' : '' ?>>
+                <div class="ah-nav-sec" data-ah-group="<?= $e($label === '' ? 'utama' : self::slug($label)) ?>"<?= $hasActive ? ' data-ah-active' : '' ?>>
+                    <?php if ($label !== ''): ?>
                     <p class="ah-nav-group">
                         <button class="ah-nav-group__btn" type="button" aria-expanded="true" aria-controls="<?= $e($groupId) ?>">
-                            <span><?= $e($group['label']) ?></span>
+                            <span><?= $e($label) ?></span>
                             <i class="fas fa-chevron-down" aria-hidden="true"></i>
                         </button>
-                        <span class="ah-nav-group__text"><?= $e($group['label']) ?></span>
+                        <span class="ah-nav-group__text"><?= $e($label) ?></span>
                     </p>
+                    <?php endif; ?>
                     <ul class="ah-nav list-unstyled mb-0" id="<?= $e($groupId) ?>">
                         <?php foreach ($group['items'] as $item): ?>
                             <li>
@@ -186,13 +281,17 @@ final class Layout
                 </div>
             <?php endforeach; ?>
             <ul class="ah-nav ah-drawer-foot list-unstyled mb-0">
-                <li><a href="<?= $e($logoutUrl) ?>"><i class="fas fa-arrow-right-from-bracket" aria-hidden="true"></i><span>Keluar</span></a></li>
+                <?php if ($password !== null): ?>
+                    <li><a href="<?= $e($password['url']) ?>"><i class="fas fa-key" aria-hidden="true"></i><span>Ganti kata sandi</span></a></li>
+                <?php endif; ?>
+                <li><?php self::logoutForm($logoutUrl, 'ah-drawer-foot__btn'); ?></li>
             </ul>
         </nav>
         <div class="ah-scrim" id="ah-scrim" hidden></div>
+        <?php endif; ?>
 
         <main class="ah-main" id="ah-konten" tabindex="-1">
-            <?php if (!empty($options['breadcrumbs'])): ?>
+            <?php if (!empty($options['breadcrumbs']) && !$bare): ?>
                 <nav aria-label="Jalur halaman">
                     <ol class="ah-crumbs">
                         <?php foreach ($options['breadcrumbs'] as $crumbIndex => $crumb): ?>
@@ -205,6 +304,16 @@ final class Layout
                             </li>
                         <?php endforeach; ?>
                     </ol>
+                </nav>
+            <?php endif; ?>
+
+            <?php if ($moduleTabs !== []): ?>
+                <nav class="ah-modtabs" aria-label="<?= $e($current['label']) ?>">
+                    <ul class="ah-tabs ah-tabs--module">
+                        <?php foreach ($moduleTabs as $tabIndex => $tab): ?>
+                            <li><a href="<?= $e($tab['url']) ?>"<?= ($location['tab'] ?? null) === $tabIndex ? ' aria-current="page"' : '' ?>><span><?= $e($tab['label']) ?></span></a></li>
+                        <?php endforeach; ?>
+                    </ul>
                 </nav>
             <?php endif; ?>
 
@@ -238,11 +347,15 @@ final class Layout
             <?php endif; ?>
 
             <?php
+            if ($switched !== null) {
+                self::note('info', 'Peran beralih ke ' . Peran::label($switched) . ' untuk membuka halaman ini.');
+            }
             $flash = $options['flash'] ?? null;
             if (is_array($flash) && ($flash['message'] ?? '') !== '') {
                 self::note((string) $flash['type'], (string) $flash['message'], $flash['extra'] ?? null, true);
             }
             self::$bottomBar = $bottomBar;
+            self::$search = $search;
     }
 
     public static function close(): void
@@ -260,6 +373,11 @@ final class Layout
             <ul class="list-unstyled mb-0">
                 <?php foreach (self::$bottomBar as $item): ?>
                     <li>
+                        <?php if ($item['key'] === '_menu'): ?>
+                            <a href="#ah-sidebar" role="button" data-ah-drawer aria-controls="ah-sidebar">
+                                <i class="fas fa-bars" aria-hidden="true"></i><span>Menu</span>
+                            </a>
+                        <?php else: ?>
                         <a href="<?= $e($item['url']) ?>"<?= $item['current'] ? ' aria-current="page"' : '' ?>>
                             <i class="fas <?= $e($item['icon']) ?>" aria-hidden="true"></i>
                             <span><?= $e($item['short']) ?></span>
@@ -267,6 +385,7 @@ final class Layout
                                 <span class="ah-bottombar__count"><?= $e($item['badge']) ?><?php if (!empty($item['badge_label'])): ?><span class="ah-visually-hidden"> — <?= $e($item['badge_label']) ?></span><?php endif; ?></span>
                             <?php endif; ?>
                         </a>
+                        <?php endif; ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -274,6 +393,9 @@ final class Layout
     <?php endif; ?>
 </div>
 <div class="ah-toasts ah-no-print" id="ah-toasts" aria-live="polite"></div>
+<?php if (self::$search !== []): ?>
+<script type="application/json" id="ah-menu-data"><?= json_encode(self::$search, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?></script>
+<?php endif; ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 window.ALHASAN_CSRF = <?= json_encode(Csrf::token(), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
@@ -283,6 +405,153 @@ window.ALHASAN_CSRF = <?= json_encode(Csrf::token(), JSON_HEX_TAG | JSON_HEX_AMP
 </html>
         <?php
         self::$bottomBar = [];
+        self::$search = [];
+    }
+
+    /**
+     * Lokasi halaman pada peta menu. Kunci `active` dari halaman dipakai bila
+     * memang ada di peta peran aktif; selain itu ditebak dari skrip + query.
+     *
+     * @param array{peran:?string, groups:array<int, array<string, mixed>>, extras:array<int, array<string, mixed>>} $map
+     * @return array{key:string, tab:?int}|null
+     */
+    private static function locate(array $map, ?string $active): ?array
+    {
+        $found = Navigation::locate($map['groups'], $map['extras']);
+        if ($found !== null) {
+            return $found;
+        }
+        if ($active !== null && Navigation::find($map['groups'], $active) !== null) {
+            return ['key' => $active, 'tab' => null];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $extras
+     * @return array<string, mixed>|null
+     */
+    private static function findExtra(array $extras, string $key): ?array
+    {
+        foreach ($extras as $item) {
+            if ($item['key'] === $key) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Pilihan peran (A-2). Setiap pilihan adalah formulir POST ber-CSRF ke
+     * `portal/peran.php`; server menolak peran di luar hak akun.
+     *
+     * @param array<int, string> $peranList
+     */
+    private static function roleChoices(array $peranList, ?string $aktif, string $kembali): void
+    {
+        $e = static fn (mixed $value): string => self::escape($value);
+        echo '<p class="ah-peran__head">Lihat sebagai</p>';
+        foreach ($peranList as $peran) {
+            $isActive = $peran === $aktif;
+            echo '<form method="post" action="' . $e(app_url('/portal/peran.php')) . '">' . Csrf::input()
+                . '<input type="hidden" name="peran" value="' . $e($peran) . '">'
+                . '<input type="hidden" name="kembali" value="' . $e($kembali) . '">'
+                . '<button class="ah-menu__item ah-peran__item" type="submit"' . ($isActive ? ' aria-current="true"' : '') . '>'
+                . '<span><b>' . $e(Peran::label($peran)) . '</b><small>' . $e(Peran::description($peran)) . '</small></span>'
+                . ($isActive ? '<span class="ah-badge ah-badge--ok">Aktif</span>' : '<i class="fas fa-chevron-right" aria-hidden="true"></i>')
+                . '</button></form>';
+        }
+        echo '<p class="ah-peran__note">Mengganti peran mengubah menu dan cakupan data. Hak akses tetap diperiksa server.</p>';
+    }
+
+    /**
+     * Keluar lewat POST ber-CSRF dengan dialog konfirmasi (A-4). Tanpa
+     * JavaScript formulir terkirim langsung; `admin/logout.php` tetap
+     * menyediakan halaman konfirmasi untuk alamat lama.
+     */
+    private static function logoutForm(string $url, string $class): void
+    {
+        echo '<form method="post" action="' . self::escape($url) . '" class="ah-logout"'
+            . ' data-confirm="Anda perlu masuk lagi untuk membuka data."'
+            . ' data-confirm-title="Keluar dari Sistem Al Hasan?" data-confirm-ok="Ya, keluar">'
+            . Csrf::input()
+            . '<button class="' . self::escape($class) . '" type="submit"><i class="fas fa-arrow-right-from-bracket" aria-hidden="true"></i><span>Keluar</span></button>'
+            . '</form>';
+    }
+
+    /**
+     * Kotak pencarian menu (AQ). Hanya mencari nama menu dan tab yang boleh
+     * dibuka akun ini, di peramban, tanpa permintaan ke server.
+     */
+    private static function searchBox(string $id, string $class): void
+    {
+        $e = static fn (mixed $value): string => self::escape($value);
+        echo '<div class="ah-search ' . $e($class) . '" role="search">'
+            . '<label class="ah-visually-hidden" for="' . $e($id) . '">Cari menu</label>'
+            . '<i class="fas fa-magnifying-glass ah-search__icon" aria-hidden="true"></i>'
+            . '<input class="ah-search__input" id="' . $e($id) . '" type="search" autocomplete="off" spellcheck="false"'
+            . ' placeholder="Cari menu… (mis. penempatan)" role="combobox" aria-expanded="false" aria-autocomplete="list"'
+            . ' aria-controls="' . $e($id) . '-hasil">'
+            . '<ul class="ah-search__results" id="' . $e($id) . '-hasil" role="listbox" aria-label="Hasil pencarian menu" hidden></ul>'
+            . '</div>';
+    }
+
+    /**
+     * Lima notifikasi terbaru milik akun untuk pratinjau lonceng (N-3).
+     *
+     * @param array<string, mixed> $user
+     * @return array<int, array<string, mixed>>|null null bila gagal dibaca.
+     */
+    private static function notificationPreview(array $user): ?array
+    {
+        try {
+            return notification_center_service()->index($user, ['per_page' => 5])['items'];
+        } catch (\Throwable $exception) {
+            error_log('Pratinjau notifikasi gagal dibaca: ' . $exception->getMessage());
+
+            return null;
+        }
+    }
+
+    /**
+     * Waktu ringkas: jam untuk hari ini, "Kemarin", nama hari dalam sepekan,
+     * selain itu tanggal.
+     */
+    public static function shortTime(string $datetime): string
+    {
+        $time = strtotime($datetime);
+        if ($time === false) {
+            return $datetime;
+        }
+        $days = (int) floor((strtotime('today') - strtotime(date('Y-m-d', $time))) / 86400);
+        if ($days <= 0) {
+            return date('H.i', $time);
+        }
+        if ($days === 1) {
+            return 'Kemarin';
+        }
+        if ($days < 7) {
+            return self::dayName($time);
+        }
+
+        return self::date($time);
+    }
+
+    /**
+     * Nama hari bahasa Indonesia; Minggu ditulis "Ahad" (keputusan T).
+     */
+    public static function dayName(int $time): string
+    {
+        return ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][(int) date('w', $time)];
+    }
+
+    public static function date(int $time, bool $withYear = true): string
+    {
+        $bulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'][(int) date('n', $time) - 1];
+
+        return (int) date('j', $time) . ' ' . $bulan . ($withYear ? ' ' . date('Y', $time) : '');
     }
 
     /**

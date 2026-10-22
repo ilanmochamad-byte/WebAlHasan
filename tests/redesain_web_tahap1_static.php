@@ -72,20 +72,22 @@ $assert(str_contains($source('portal/_ui.php'), 'return ah_status($status);'), '
 $assert(ah_status('<b>') === '<span class="ah-badge ah-badge--info">&lt;b&gt;</span>', 'Label status di-escape');
 
 echo PHP_EOL . '=== S-2. Bilah bawah HP ===' . PHP_EOL;
-$item = static fn (string $key): array => ['key' => $key, 'label' => $key, 'url' => '/' . $key, 'icon' => 'fa-x', 'badge' => null, 'badge_label' => null];
+// Sejak redesain Tahap 2 bilah bawah mengikuti peta menu per peran (cetak
+// biru): Beranda, menu utama peran, Notifikasi, lalu Menu (membuka laci).
+$item = static fn (string $key, string $short) => ['key' => $key, 'label' => $key, 'url' => '/' . $key, 'icon' => 'fa-x', 'badge' => null, 'badge_label' => null, 'pages' => [], 'tabs' => [], 'short' => $short];
 $grup = [
-    ['label' => 'Utama', 'items' => [$item('beranda'), $item('admin.dashboard')]],
-    ['label' => 'Nilai', 'items' => [$item('v4.nilai'), $item('v4.sikap'), $item('v4.rapor')]],
-    ['label' => 'Pembinaan', 'items' => [$item('v3.pelanggaran'), $item('v3.publikasi')]],
-    ['label' => 'Izin', 'items' => [$item('izin.ringkasan'), $item('izin.daftar')]],
-    ['label' => 'Master', 'items' => [$item('master.santri'), $item('master.guru')]],
+    ['label' => '', 'items' => [$item('beranda', 'Beranda')]],
+    ['label' => 'Kegiatan santri', 'items' => [$item('izin', 'Perizinan'), $item('pengajian', 'Pengajian'), $item('pembinaan', 'Pembinaan')]],
+    ['label' => 'Data pesantren', 'items' => [$item('santri', 'Santri'), $item('asatidz', 'Asatidz')]],
 ];
-$bar = Navigation::bottomBar($grup, 'izin.daftar');
+$bar = Navigation::bottomBar($grup, 'izin', 'admin', [$item('notifikasi', 'Notifikasi')]);
 $assert(count($bar) === 5 && $bar[0]['key'] === 'beranda', 'Paling banyak 5 butir dengan Beranda pertama');
-$assert(array_column($bar, 'short') === ['Beranda', 'Perizinan', 'Nilai', 'Sikap', 'Pembinaan'], 'Urutan prioritas dan satu butir per modul (Pembinaan tidak ganda): ' . implode(', ', array_column($bar, 'short')));
-$assert($bar[1]['current'] === true && $bar[0]['current'] === false, 'Sub-halaman modul (izin.daftar) menyorot butir Perizinan');
-$assert(Navigation::bottomBar([['label' => 'Utama', 'items' => [$item('beranda')]]], 'beranda')[0]['current'] === true, 'Akun dengan satu menu tetap mendapat Beranda');
-$assert(Navigation::find($grup, 'master.guru')['url'] === '/master.guru' && Navigation::find($grup, 'tidak.ada') === null, 'Navigation::find mencari butir menurut kunci');
+$assert(array_column($bar, 'short') === ['Beranda', 'Perizinan', 'Santri', 'Notifikasi', 'Menu'], 'Urutan peta admin: Beranda, Perizinan, Santri, Notifikasi, Menu: ' . implode(', ', array_column($bar, 'short')));
+$assert($bar[1]['current'] === true && $bar[0]['current'] === false, 'Halaman modul (izin) menyorot butir Perizinan');
+$ortu = Navigation::bottomBar([['label' => '', 'items' => [$item('beranda', 'Beranda'), $item('izin_anak', 'Izin'), $item('rapor_wali', 'Rapor'), $item('info', 'Info'), $item('notifikasi', 'Notifikasi')]]], 'info', 'orang_tua');
+$assert(array_column($ortu, 'short') === ['Beranda', 'Izin', 'Rapor', 'Info', 'Notifikasi'], 'Peta orang tua: lima menu tanpa butir Menu');
+$assert(Navigation::bottomBar([['label' => '', 'items' => [$item('beranda', 'Beranda')]]], 'beranda')[0]['current'] === true, 'Akun dengan satu menu tetap mendapat Beranda');
+$assert(Navigation::find($grup, 'asatidz')['url'] === '/asatidz' && Navigation::find($grup, 'tidak.ada') === null, 'Navigation::find mencari butir menurut kunci');
 
 echo PHP_EOL . '=== S-3. Menu ⋯ ===' . PHP_EOL;
 $menu = ah_menu([

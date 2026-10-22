@@ -26,7 +26,7 @@ try {
     if($mapel)$current=$service->read($user,$mapel,$santri,$pengganti);
 } catch(V4Exception $ex) {
     http_response_code($ex->status);
-    if($ex->status===403){echo '403 — Akses ditolak.';exit;}
+    if($ex->status===403){\App\Ui\Denial::page('Nilai semester','guru mata pelajaran yang ditugaskan, atau Bagian Pendidikan untuk nilai pengganti',$ex->getMessage());}
     $error=$ex->getMessage();
     if($mapel){try{$current=$service->read($user,$mapel,$santri,$pengganti);}catch(V4Exception){}}
 }

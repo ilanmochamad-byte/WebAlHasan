@@ -35,12 +35,14 @@ final class Status
         'terkirim' => 'ok',
         'lulus' => 'ok',
         'hadir' => 'ok',
+        'lengkap' => 'ok',
         // Biru
         'diajukan' => 'info',
         'baru' => 'info',
         'diserahkan' => 'info',
         'dibuka' => 'info',
         'berlangsung' => 'info',
+        'belum dibaca' => 'info',
         // Kuning
         'menunggu' => 'warn',
         'perlu perbaikan' => 'warn',
@@ -62,6 +64,9 @@ final class Status
         'berakhir' => 'muted',
         'ditutup' => 'muted',
         'ditangguhkan' => 'muted',
+        'dibaca' => 'muted',
+        'belum terbit' => 'muted',
+        'belum waktunya' => 'muted',
     ];
 
     /** Awalan kata yang selalu bermakna "menunggu tindakan". */

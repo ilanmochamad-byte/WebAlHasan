@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Auth\AuthService;
 use App\Http\Csrf;
 use App\Http\SafeRedirect;
+use App\Ui\Peran;
 
 /**
  * Penangan POST login — satu-satunya, dipakai bersama oleh pintu masuk baru
@@ -49,6 +50,10 @@ if (!$service->attempt($username, (string) ($_POST['password'] ?? ''))) {
     header('Location: ' . $pintuMasuk . '?pesan=gagal' . $suffix);
     exit;
 }
+
+// Keputusan AR: setelah masuk, akun berperan ganda selalu mulai dari peran
+// bawaan; pilihan peran sesi sebelumnya tidak terbawa.
+Peran::reset();
 
 if (!empty($_SESSION['force_password_change'])) {
     header('Location: ' . app_url('/admin/ubah_password.php') . ($next === null ? '' : '?next=' . rawurlencode($next)));

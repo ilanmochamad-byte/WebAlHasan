@@ -51,9 +51,9 @@ final class PortalGuard
     private function deny(): never
     {
         Denial::render(
-            'Akun ini tidak memiliki kemampuan perizinan yang diperlukan.',
-            'Modul perizinan hanya terbuka bagi admin, pengurus, murobi (guru dengan penugasan murobi aktif), '
-                . 'dan orang tua dengan relasi wali aktif. Beranda serta menu lain yang menjadi hak Anda tetap dapat dibuka.'
+            'Halaman ini bukan untuk peran Anda',
+            'Perizinan hanya untuk admin, pengurus yang terhubung dengan data pengurus, murobi (guru dengan '
+                . 'penugasan murobi aktif), dan orang tua dengan relasi wali aktif.'
         );
     }
 }

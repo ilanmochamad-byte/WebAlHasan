@@ -14,7 +14,7 @@ declare(strict_types=1);
  *   AS-4  halaman alumni tidak menyentuh basis data langsung;
  *   AS-5  seluruh SQL alumni memakai prepared statement tanpa interpolasi;
  *   AS-6  halaman memakai kerangka bersama master_header/footer + sidebar;
- *   AS-7  navigasi memuat kunci `alumni.kelulusan` beserta tautannya;
+ *   AS-7  navigasi memuat halaman kelulusan & alumni beserta tautannya;
  *   AS-8  alamat lama hanya mengalihkan GET dan MENOLAK POST;
  *   AS-9  mutasi hanya lewat POST, ber-CSRF, dan bertoken sekali pakai;
  *   AS-10 layanan memakai transaksi, penguncian baris, dan urutan kunci tetap;
@@ -202,13 +202,14 @@ foreach (['admin/admin_alumni.php' => $halamanAlumni, 'admin/admin_kelulusan_san
 
 // ============================================================== AS-7
 $navigasi = $source('app/Ui/Navigation.php');
-$assert(str_contains($navigasi, "'admin_kelulusan_santri.php' => 'alumni.kelulusan'"), 'AS-7 navigasi mengenali halaman kelulusan');
-$assert(str_contains($navigasi, "'proses_mutasi_alumni.php' => 'alumni.kelulusan'"), 'AS-7 alamat lama tetap menandai menu yang sama');
-$assert(
-    str_contains($navigasi, "self::item('alumni.kelulusan', 'Kelulusan & Mutasi Keluar', '/admin/admin_kelulusan_santri.php'"),
-    'AS-7 menu Kelulusan & Mutasi Keluar tersedia untuk admin'
-);
-$assert(str_contains($navigasi, "self::item('alumni', 'Data Alumni'"), 'AS-7 menu Data Alumni lama tetap ada');
+// Redesain website Tahap 2 (keputusan A–E, 22 Oktober 2026): kelulusan dan
+// alumni menjadi tab "Kelulusan & alumni" di menu Data santri. Halaman baru,
+// alamat lama, dan halaman Data Alumni tetap menandai tab yang sama.
+$tabKelulusan = "self::tab('Kelulusan & alumni', '/admin/admin_alumni.php', ['admin_alumni.php', 'admin_kelulusan_santri.php', 'proses_mutasi_alumni.php'])";
+$assert(str_contains($navigasi, $tabKelulusan), 'AS-7 navigasi mengenali halaman kelulusan');
+$assert(str_contains($navigasi, $tabKelulusan), 'AS-7 alamat lama tetap menandai menu yang sama');
+$assert(str_contains($navigasi, "self::item('santri', 'Data santri'"), 'AS-7 menu Kelulusan & Mutasi Keluar tersedia untuk admin (tab di Data santri)');
+$assert(str_contains($navigasi, "'/admin/admin_alumni.php'"), 'AS-7 menu Data Alumni lama tetap ada');
 
 // ============================================================== AS-8
 $kodeLama = $tanpaKomentar($prosesLama);

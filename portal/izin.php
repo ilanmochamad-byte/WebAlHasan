@@ -8,7 +8,7 @@ use App\Izin\IzinRepository;
 
 require_once __DIR__ . '/_ui.php';
 
-$requestedMode = isset($_GET['mode']) ? (string) $_GET['mode'] : null;
+$requestedMode = portal_requested_mode($currentUser, $userCapabilities);
 $page = max(1, (int) ($_GET['page'] ?? 1));
 $filters = [
     'q' => (string) ($_GET['q'] ?? ''),

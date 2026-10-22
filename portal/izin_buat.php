@@ -15,7 +15,7 @@ require_once __DIR__ . '/_ui.php';
  * `403` oleh IzinWorkflowService::create(); daftar ini hanya kenyamanan tampilan.
  */
 
-$requestedMode = isset($_GET['mode']) ? (string) $_GET['mode'] : null;
+$requestedMode = portal_requested_mode($currentUser, $userCapabilities);
 $page = max(1, (int) ($_GET['page'] ?? 1));
 $query = trim((string) ($_GET['q'] ?? ''));
 

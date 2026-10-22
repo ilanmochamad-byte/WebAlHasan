@@ -130,9 +130,12 @@ foreach (['ah-card', 'ah-table', 'ah-actions', 'ah_badge(', 'ah-stat'] as $kompo
 
 // ============================================================== PS-5
 $nav = $source('app/Ui/Navigation.php');
-$assert(str_contains($nav, "self::item('master.penempatan', 'Penempatan Kelas & Kamar', '/admin/admin_penempatan_santri.php'"), 'PS-5 menu Master Data memuat Penempatan Kelas & Kamar');
-$assert(str_contains($nav, "'admin_penempatan_santri.php' => 'master.penempatan'"), 'PS-5 skrip baru dipetakan ke kunci menu aktif');
-$assert(str_contains($nav, "'admin_santri.php' => 'master.penempatan'"), 'PS-5 alamat lama dipetakan ke kunci menu yang sama');
+// Redesain website Tahap 2 (keputusan A–E): Penempatan menjadi tab menu
+// Data santri; halaman baru dan alamat lama menandai tab yang sama.
+$tabPenempatan = "self::tab('Penempatan', '/admin/admin_penempatan_santri.php', ['admin_penempatan_santri.php', 'admin_santri.php'])";
+$assert(str_contains($nav, $tabPenempatan), 'PS-5 menu Data santri memuat tab Penempatan');
+$assert(str_contains($nav, $tabPenempatan), 'PS-5 skrip baru dipetakan ke menu aktif');
+$assert(str_contains($nav, $tabPenempatan), 'PS-5 alamat lama dipetakan ke menu yang sama');
 $assert(!str_contains($nav, 'master.santri_lama'), 'PS-5 kunci menu lama yang membingungkan sudah tidak dipakai');
 
 // ============================================================== PS-6

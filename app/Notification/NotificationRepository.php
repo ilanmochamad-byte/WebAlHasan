@@ -24,6 +24,17 @@ use mysqli;
  */
 final class NotificationRepository
 {
+    /**
+     * Pola jenis peristiwa per kategori pusat notifikasi (tetap, bukan masukan).
+     *
+     * @var array<string, string>
+     */
+    public const KATEGORI = [
+        'perizinan' => 'izin.%',
+        'rapor' => 'v4%',
+        'pembinaan' => 'v3%',
+    ];
+
     public function __construct(private mysqli $db)
     {
     }
@@ -116,7 +127,7 @@ final class NotificationRepository
     /**
      * @return array{rows:array<int, array<string, mixed>>, total:int}
      */
-    public function listForUser(int $userId, string $filter, int $page, int $perPage): array
+    public function listForUser(int $userId, string $filter, int $page, int $perPage, ?string $kategori = null): array
     {
         $page = max(1, $page);
         $perPage = max(1, min(100, $perPage));
@@ -127,6 +138,12 @@ final class NotificationRepository
             $where .= ' AND n.dibaca_pada IS NULL';
         } elseif ($filter === 'sudah_dibaca') {
             $where .= ' AND n.dibaca_pada IS NOT NULL';
+        }
+        // Kategori diambil dari jenis peristiwa yang sudah tercatat (redesain
+        // Tahap 2, N-3); nilai di luar daftar ini tidak pernah masuk ke SQL.
+        $pola = self::KATEGORI[$kategori ?? ''] ?? null;
+        if ($pola !== null) {
+            $where .= " AND n.event_type LIKE '" . $pola . "'";
         }
 
         $kanal = NotificationChannel::IN_APP;

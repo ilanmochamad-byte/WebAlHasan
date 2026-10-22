@@ -56,7 +56,7 @@
         return !!shell && shell.classList.contains('is-nav-open');
     }
 
-    function setOpen(open) {
+    function setOpen(open, focusTarget) {
         if (!shell || !sidebar) { return; }
         shell.classList.toggle('is-nav-open', open);
         if (toggle) {
@@ -70,10 +70,24 @@
         sidebar.inert = smallScreen.matches && !open;
         if (main) { main.inert = smallScreen.matches && open; }
         if (smallScreen.matches && open) {
-            var first = sidebar.querySelector('a');
+            var first = focusTarget || sidebar.querySelector('a, summary, button, input');
             if (first) { first.focus(); }
         }
     }
+
+    // Butir "Menu" di bilah bawah HP dan tombol cari di tablet membuka laci yang
+    // sama; tombol cari langsung menaruh fokus di kotak pencarian menu.
+    qsa('[data-ah-drawer]').forEach(function (opener) {
+        opener.addEventListener('click', function (event) {
+            event.preventDefault();
+            setOpen(true);
+        });
+    });
+    qsa('[data-ah-find]').forEach(function (opener) {
+        opener.addEventListener('click', function () {
+            setOpen(true, sidebar ? sidebar.querySelector('.ah-search__input') : null);
+        });
+    });
 
     if (sidebar) {
         sidebar.inert = smallScreen.matches;
@@ -490,7 +504,9 @@
             }
         }
         if (event.key === 'Tab' && smallScreen.matches && drawerOpen()) {
-            var links = sidebar.querySelectorAll('a[href]');
+            var links = qsa('a[href], button:not([disabled]), input:not([type="hidden"]), summary', sidebar).filter(function (node) {
+                return node.offsetParent !== null;
+            });
             var first = links[0], last = links[links.length - 1];
             if (event.shiftKey && doc.activeElement === first) { event.preventDefault(); last.focus(); }
             else if (!event.shiftKey && doc.activeElement === last) { event.preventDefault(); first.focus(); }
@@ -672,6 +688,144 @@
         var done = next(0);
         return {stop: function () { stop.click(); }, done: done, element: section};
     };
+
+    /* --- Pencarian menu (redesain Tahap 2, keputusan AQ) ----------------- */
+    // Hanya mencari nama menu dan tab yang boleh dibuka akun ini; datanya
+    // dirender server ke halaman, sehingga tidak ada permintaan tambahan.
+    // Pencarian santri dan nomor izin sengaja belum ada (fitur lanjutan).
+    var menuData = doc.getElementById('ah-menu-data');
+    var menuIndex = [];
+    try { menuIndex = menuData ? JSON.parse(menuData.textContent || '[]') : []; } catch (e) { menuIndex = []; }
+
+    function normal(text) {
+        return String(text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' dan ');
+    }
+
+    qsa('.ah-search').forEach(function (box) {
+        var input = box.querySelector('.ah-search__input');
+        var list = box.querySelector('.ah-search__results');
+        if (!input || !list) { return; }
+        var hits = [];
+        var active = -1;
+
+        function close() {
+            list.hidden = true;
+            input.setAttribute('aria-expanded', 'false');
+            input.removeAttribute('aria-activedescendant');
+            active = -1;
+        }
+
+        function mark(index) {
+            var links = qsa('a', list);
+            links.forEach(function (link, i) { link.setAttribute('aria-selected', i === index ? 'true' : 'false'); });
+            active = index;
+            if (links[index]) {
+                input.setAttribute('aria-activedescendant', links[index].id);
+                links[index].scrollIntoView({block: 'nearest'});
+            }
+        }
+
+        function render() {
+            var query = normal(input.value).trim();
+            list.innerHTML = '';
+            if (query === '') { close(); return; }
+            var words = query.split(/\s+/);
+            hits = menuIndex.filter(function (item) {
+                var text = normal(item.label + ' ' + item.context);
+                return words.every(function (word) { return text.indexOf(word) !== -1; });
+            }).sort(function (a, b) {
+                var aStart = normal(a.label).indexOf(query) === 0 ? 0 : 1;
+                var bStart = normal(b.label).indexOf(query) === 0 ? 0 : 1;
+                return aStart - bStart;
+            }).slice(0, 8);
+            if (hits.length === 0) {
+                var none = el('li', 'ah-search__none', 'Menu tidak ditemukan.');
+                none.setAttribute('role', 'option');
+                none.setAttribute('aria-disabled', 'true');
+                list.appendChild(none);
+            }
+            hits.forEach(function (item, index) {
+                var li = el('li');
+                li.setAttribute('role', 'presentation');
+                var link = el('a');
+                link.href = item.url;
+                link.id = input.id + '-opsi-' + index;
+                link.setAttribute('role', 'option');
+                link.setAttribute('aria-selected', 'false');
+                link.tabIndex = -1;
+                link.appendChild(el('span', '', item.label));
+                if (item.context) { link.appendChild(el('small', '', item.context)); }
+                li.appendChild(link);
+                list.appendChild(li);
+            });
+            list.hidden = false;
+            input.setAttribute('aria-expanded', 'true');
+            mark(hits.length ? 0 : -1);
+        }
+
+        input.addEventListener('input', render);
+        input.addEventListener('focus', function () { if (input.value.trim() !== '') { render(); } });
+        input.addEventListener('keydown', function (event) {
+            if (event.key === 'ArrowDown' && hits.length) {
+                event.preventDefault();
+                mark((active + 1) % hits.length);
+            } else if (event.key === 'ArrowUp' && hits.length) {
+                event.preventDefault();
+                mark((active - 1 + hits.length) % hits.length);
+            } else if (event.key === 'Enter') {
+                event.preventDefault();
+                if (hits[active]) { window.location.href = hits[active].url; }
+            } else if (event.key === 'Escape' && !list.hidden) {
+                event.preventDefault();
+                event.stopPropagation();
+                input.value = '';
+                close();
+            }
+        });
+        doc.addEventListener('click', function (event) {
+            if (!box.contains(event.target)) { close(); }
+        });
+    });
+
+    /* --- Tampilkan kata sandi (A-1) --------------------------------------- */
+    qsa('[data-ah-reveal]').forEach(function (button) {
+        var input = doc.getElementById(button.getAttribute('data-ah-reveal'));
+        var label = button.querySelector('span');
+        var glyph = button.querySelector('i');
+        if (!input) { return; }
+        button.addEventListener('click', function () {
+            var show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            button.setAttribute('aria-pressed', show ? 'true' : 'false');
+            if (label) { label.textContent = show ? 'Sembunyikan' : 'Tampilkan'; }
+            if (glyph) { glyph.className = 'fas ' + (show ? 'fa-eye-slash' : 'fa-eye'); }
+            input.focus();
+        });
+    });
+
+    /* --- Syarat kata sandi sebagai daftar centang (A-3) -------------------- */
+    // Hanya bantuan tampilan; server tetap memeriksa syarat yang sama.
+    qsa('form[data-ah-password]').forEach(function (form) {
+        var input = form.querySelector('input[name="password_baru"]');
+        if (!input) { return; }
+        var rules = {
+            panjang: function (v) { return v.length >= 12; },
+            besar: function (v) { return /[A-Z]/.test(v); },
+            kecil: function (v) { return /[a-z]/.test(v); },
+            angka: function (v) { return /\d/.test(v); }
+        };
+        function check() {
+            qsa('[data-ah-rule]', form).forEach(function (item) {
+                var rule = rules[item.getAttribute('data-ah-rule')];
+                var ok = rule ? rule(input.value) : false;
+                item.classList.toggle('is-ok', ok);
+                var state = item.querySelector('[data-ah-rule-state]');
+                if (state) { state.textContent = ok ? ' (terpenuhi)' : ' (belum)'; }
+            });
+        }
+        input.addEventListener('input', check);
+        check();
+    });
 
     if (window.jQuery) {
         window.jQuery.ajaxSetup({headers: {'X-CSRF-Token': window.ALHASAN_CSRF}});

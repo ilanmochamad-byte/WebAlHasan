@@ -362,7 +362,7 @@ try {
         'PM-7a Password salah ditolak dan dijelaskan di pintu masuk'
     );
     $assert(
-        str_contains($salah->request('/portal/index.php?pesan=gagal')['body'], 'Username atau password salah'),
+        str_contains($salah->request('/portal/index.php?pesan=gagal')['body'], 'Nama pengguna atau kata sandi salah.'),
         'PM-7b Pesan kegagalan tidak membocorkan akun mana yang ada'
     );
 

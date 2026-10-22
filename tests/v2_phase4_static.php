@@ -722,11 +722,14 @@ if (!$adaMobile) {
 echo PHP_EOL . '=== 12. Halaman web ===' . PHP_EOL;
 
 $pusat = $source('portal/notifikasi.php');
-foreach (['jumlah_belum_dibaca', 'tandai_dibaca', 'tandai_semua', 'portal_pagination', 'Belum ada notifikasi'] as $bagian) {
+// Redesain website Tahap 2 (keputusan AK): pusat notifikasi terbuka bagi semua
+// akun, tidak lagi memuat adaptor perizinan `portal/_ui.php`; pagination dan
+// CSRF memakai fungsi bersama yang setara.
+foreach (['jumlah_belum_dibaca', 'tandai_dibaca', 'tandai_semua', 'ah_pagination', 'Belum ada notifikasi'] as $bagian) {
     $assert(str_contains($pusat, $bagian), 'Pusat notifikasi web menyediakan ' . $bagian);
 }
 $assert(
-    str_contains($pusat, 'portal_csrf()'),
+    str_contains($pusat, 'Csrf::requireValid(') && substr_count($pusat, 'Csrf::input()') >= 2,
     'Seluruh mutasi pusat notifikasi web dilindungi CSRF'
 );
 $panel = $source('admin/admin_notifikasi.php');

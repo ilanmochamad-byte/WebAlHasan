@@ -153,7 +153,8 @@ try {
     const judulBeranda = await page.textContent('h1');
     catat(
       `B-2a [${layar.nama}] Beranda menyapa pengguna yang masuk`,
-      (judulBeranda ?? '').includes('Selamat datang'),
+      // Redesain Tahap 2 (B-1 s.d. B-5): Beranda menyapa "Assalamu'alaikum, …".
+      (judulBeranda ?? '').includes("Assalamu'alaikum"),
       judulBeranda ?? ''
     );
     catat(`B-2b [${layar.nama}] Beranda tidak melebar`, !(await halamanMelebar(page)));
@@ -179,11 +180,11 @@ try {
 
     // ---------------------------------------------------------------- B-4
     await page.goto(`${BASE}/admin/admin_pengajian.php?tab=jadwal`, { waitUntil: 'domcontentloaded' });
-    const tabAktifJadwal = await page.locator('.ah-tabs a[aria-current="page"]').textContent();
+    const tabAktifJadwal = await page.locator('.ah-tabs:not(.ah-tabs--module) a[aria-current="page"]').textContent();
     catat(`B-4a [${layar.nama}] Tab Jadwal ditandai aktif`, (tabAktifJadwal ?? '').includes('Jadwal'), tabAktifJadwal ?? '');
-    await page.click('.ah-tabs a:has-text("Pertemuan")');
+    await page.click('.ah-tabs:not(.ah-tabs--module) a:has-text("Pertemuan")');
     await page.waitForLoadState('domcontentloaded');
-    const tabAktifPertemuan = await page.locator('.ah-tabs a[aria-current="page"]').textContent();
+    const tabAktifPertemuan = await page.locator('.ah-tabs:not(.ah-tabs--module) a[aria-current="page"]').textContent();
     catat(
       `B-4b [${layar.nama}] Berpindah ke tab Pertemuan tanpa keluar dari modul`,
       (tabAktifPertemuan ?? '').includes('Pertemuan') && page.url().includes('admin_pengajian.php'),
@@ -196,7 +197,7 @@ try {
     await page.goto(`${BASE}/admin/admin_laporan_absensi.php`, { waitUntil: 'domcontentloaded' });
     const penyajianAwal = await page.locator('#subject_scope').inputValue();
     catat(`B-5a [${layar.nama}] Penyajian awal laporan adalah Santri`, penyajianAwal === 'santri', penyajianAwal);
-    await page.click('.ah-tabs a:has-text("Gabungan")');
+    await page.click('.ah-tabs:not(.ah-tabs--module) a:has-text("Gabungan")');
     await page.waitForLoadState('domcontentloaded');
     const penyajianGabungan = await page.locator('#subject_scope').inputValue();
     catat(`B-5b [${layar.nama}] Tab Gabungan mengubah penyajian`, penyajianGabungan === 'gabungan', penyajianGabungan);
@@ -260,14 +261,17 @@ try {
   const halamanGuru = await konteksGuru.newPage();
   await masuk(halamanGuru, AKUN.guru);
   const judulGuru = await halamanGuru.textContent('h1');
-  catat('B-10a Guru non-murobi mendarat di beranda', (judulGuru ?? '').includes('Selamat datang'), judulGuru ?? '');
+  catat('B-10a Guru non-murobi mendarat di beranda', (judulGuru ?? '').includes("Assalamu'alaikum"), judulGuru ?? '');
   await bidik(halamanGuru, 'guru-beranda');
   await halamanGuru.goto(`${BASE}/portal/izin_ringkasan.php`, { waitUntil: 'domcontentloaded' });
-  const teksTolak = await halamanGuru.textContent('h1');
+  // Redesain Tahap 2 (A-5): penolakan menyebut halaman, siapa yang berhak,
+  // siapa yang memberi akses, dan tetap di dalam kerangka.
+  const teksTolak = await halamanGuru.textContent('main');
   catat(
     'B-10b Guru non-murobi ditolak dari perizinan dengan penjelasan dan jalan keluar',
-    (teksTolak ?? '').includes('tidak memiliki kemampuan perizinan'),
-    teksTolak ?? ''
+    (teksTolak ?? '').includes('Halaman ini bukan untuk peran Anda') && (teksTolak ?? '').includes('Perizinan hanya untuk')
+      && (teksTolak ?? '').includes('Kembali ke Beranda'),
+    (teksTolak ?? '').slice(0, 160)
   );
   await bidik(halamanGuru, 'guru-ditolak-perizinan');
   await konteksGuru.close();
