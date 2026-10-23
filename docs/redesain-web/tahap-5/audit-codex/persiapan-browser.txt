@@ -1,0 +1,18 @@
+{
+    "tahap": 5,
+    "pelanggaran": {
+        "a1_tsb": 2,
+        "a1_bls": 3,
+        "a2": 4,
+        "c1": 5
+    },
+    "kasus_internal": 1,
+    "sesi_selesai": 1,
+    "kasus_rahasia": 2,
+    "publikasi": {
+        "kasus": 1,
+        "pelanggaran": 2,
+        "ditarik": 3
+    }
+}
+DB uji Tahap 5 siap: test_redesain_t5_test

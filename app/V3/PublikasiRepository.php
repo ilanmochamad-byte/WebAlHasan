@@ -95,7 +95,7 @@ final class PublikasiRepository
     {
         $page=max(1,min(1000000,(int)($filters['page']??1)));$size=25;
         $inner="SELECT p.id,p.santri_id,p.wali_id,p.kasus_id,p.sesi_id,p.pelanggaran_id,p.version,p.diterbitkan_pada,p.ditarik_pada,p.dibaca_pada,
-                s.nama_santri,w.nama AS wali_nama,COALESCE(sv.tahun_ajaran_id,sk.tahun_ajaran_id,ssk.tahun_ajaran_id) AS tahun_ajaran_id,
+                s.nama_santri,w.nama AS wali_nama,COALESCE(sk.id,ssk.id) AS sumber_kasus_id,COALESCE(sv.tahun_ajaran_id,sk.tahun_ajaran_id,ssk.tahun_ajaran_id) AS tahun_ajaran_id,
                 COALESCE(sk.kerahasiaan,ssk.kerahasiaan,'Internal') AS kerahasiaan,COALESCE(sk.pembimbing_id,ssk.pembimbing_id) AS kasus_pembimbing_id,
                 sv.waktu_kejadian,sv.kategori_snapshot,sk.dibuka_pada,ss.jadwal AS sesi_jadwal
             FROM v3_publikasi p JOIN santri s ON s.id=p.santri_id JOIN wali w ON w.id=p.wali_id

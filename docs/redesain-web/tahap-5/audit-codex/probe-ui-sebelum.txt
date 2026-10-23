@@ -1,0 +1,21 @@
+[gagal] V-6 kelas_id menyediakan pencarian 375px
+[gagal] V-6 kamar_id menyediakan pencarian 375px
+[gagal] V-6 pembimbing_id menyediakan pencarian 375px
+[gagal] V-6 murobi_id menyediakan pencarian 375px
+[lulus] V-6 pencarian tanpa overflow 375px
+[gagal] V-5 setiap sumber bertaut 375px
+[gagal] V-6 kelas_id menyediakan pencarian 768px
+[gagal] V-6 kamar_id menyediakan pencarian 768px
+[gagal] V-6 pembimbing_id menyediakan pencarian 768px
+[gagal] V-6 murobi_id menyediakan pencarian 768px
+[lulus] V-6 pencarian tanpa overflow 768px
+[gagal] V-5 setiap sumber bertaut 768px
+[gagal] V-6 kelas_id menyediakan pencarian 1280px
+[gagal] V-6 kamar_id menyediakan pencarian 1280px
+[gagal] V-6 pembimbing_id menyediakan pencarian 1280px
+[gagal] V-6 murobi_id menyediakan pencarian 1280px
+[lulus] V-6 pencarian tanpa overflow 1280px
+[gagal] V-5 setiap sumber bertaut 1280px
+[lulus] V-6 tanpa JS: pilihan bernama tetap tersedia, pencarian tambahan tersembunyi
+[lulus] Probe tanpa galat JavaScript
+Ringkasan: 5 lulus, 15 gagal

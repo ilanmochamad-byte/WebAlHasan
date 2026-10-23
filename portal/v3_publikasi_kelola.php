@@ -42,7 +42,7 @@ try{
 }catch(V3Exception $e){if($e->status===403)Denial::render('Publikasi tidak dapat diakses.','Periksa cakupan penugasan aktif.');http_response_code($e->status);$error=$error!==''?$error:$e->getMessage();}
 
 $sumberLabel=static fn(string $t):string=>['pelanggaran'=>'Pelanggaran','kasus'=>'Kasus konseling','sesi'=>'Sesi konseling'][$t]??'Sumber';
-$sumberUrl=static fn(string $t,int $sid):?string=>$t==='pelanggaran'?app_url('/portal/v3_pelanggaran_detail.php?id='.$sid):($t==='kasus'?app_url('/portal/v3_konseling_detail.php?id='.$sid):null);
+$sumberUrl=static fn(string $t,int $sid,?int $kasusId=null):?string=>match($t){'pelanggaran'=>app_url('/portal/v3_pelanggaran_detail.php?id='.$sid),'kasus'=>app_url('/portal/v3_konseling_detail.php?id='.$sid),'sesi'=>$kasusId!==null?app_url('/portal/v3_konseling_detail.php?id='.$kasusId.'#sesi-'.$sid):null,default=>null};
 $waliNama=[];foreach(($options['wali']??[]) as $w){$waliNama[(int)$w['id']]=$w['nama'];}
 $judul=$list!==null?'Publikasi ke orang tua':($managed!==null?'Informasi pembinaan · '.$managed['santri_nama'].' · '.ah_tanggal($managed['publikasi']['diterbitkan_pada'],false):'Siapkan publikasi'.($options!==null?' · '.$options['santri_nama']:''));
 ah_page_open(['title'=>$judul,'heading'=>$list!==null?'Pembinaan santri':$judul,'user'=>$user,
@@ -65,7 +65,7 @@ if($list!==null):
             <?php foreach($list['rows'] as $row): ?><tr>
                 <td><span class="ah-cell-wrap"><a class="ah-row-link" href="<?= ah_e(app_url('/portal/v3_publikasi_kelola.php?id='.(int)$row['id'])) ?>"><?= ah_e($row['santri_nama']) ?></a><span class="ah-cell-sub">Terbit <?= ah_e(ah_tanggal($row['diterbitkan_pada'],false)) ?></span></span></td>
                 <td><?= ah_e($row['wali_nama']) ?></td>
-                <td><span class="ah-cell-wrap"><?= ah_e($sumberLabel($row['sumber_type'])) ?><span class="ah-cell-sub"><?= ah_e(trim(($row['sumber_kategori']??'').' '.ah_tanggal($row['sumber_waktu'],false))) ?></span></span></td>
+                <td><span class="ah-cell-wrap"><?php $urlSumber=$sumberUrl($row['sumber_type'],$row['sumber_id'],$row['sumber_kasus_id']); ?><?php if($urlSumber!==null): ?><a href="<?= ah_e($urlSumber) ?>"><?= ah_e($sumberLabel($row['sumber_type'])) ?></a><?php else: ?><?= ah_e($sumberLabel($row['sumber_type'])) ?><?php endif ?><span class="ah-cell-sub"><?= ah_e(trim(($row['sumber_kategori']??'').' '.ah_tanggal($row['sumber_waktu'],false))) ?></span></span></td>
                 <td><?= ah_status($row['status']) ?></td>
                 <td class="ah-col-secondary"><?= $row['dibaca_pada']===null?ah_status('Belum dibaca'):ah_e(ah_waktu((string)$row['dibaca_pada'])) ?></td>
             </tr><?php endforeach ?>
@@ -92,7 +92,7 @@ if($managed!==null):$p=$managed['publikasi']; ?>
         <section class="ah-card ah-no-print" aria-labelledby="ah-tindakan-publikasi">
             <div class="ah-card__head"><span id="ah-tindakan-publikasi">Tindakan</span></div>
             <div class="ah-card__body"><div class="ah-acts">
-                <?php if(($u=$sumberUrl($type,$sourceId))!==null): ?><a class="btn btn-outline-secondary" href="<?= ah_e($u) ?>">Buka sumber (<?= ah_e(mb_strtolower($sumberLabel($type))) ?>)</a><?php endif ?>
+                <?php if(($u=$sumberUrl($type,$sourceId,$managed['sumber_kasus_id']??$options['sumber_kasus_id']??null))!==null): ?><a class="btn btn-outline-secondary" href="<?= ah_e($u) ?>">Buka sumber (<?= ah_e(mb_strtolower($sumberLabel($type))) ?>)</a><?php endif ?>
                 <?php if($p['status']==='Terbit'): ?>
                     <?php ah_action_dialog_open('tarik-publikasi','Tarik publikasi','Tarik publikasi ini?','outline-danger',$errorAksi==='tarik'&&$error!==''); ?>
                         <form method="post"><?= ah_csrf() ?><input type="hidden" name="aksi" value="tarik"><input type="hidden" name="version" value="<?= (int)$p['version'] ?>"><input type="hidden" name="idempotency_key" value="<?= ah_e('withdraw-'.bin2hex(random_bytes(12))) ?>">
@@ -149,7 +149,7 @@ if($preview!==null):
             <div class="col-12"><label class="form-label" for="ringkasan"><?= $koreksi?'':'2 · ' ?>Ringkasan untuk orang tua <span class="text-danger">*</span></label><textarea class="form-control" id="ringkasan" name="ringkasan" rows="4" maxlength="5000" required placeholder="Bahasa yang mudah dipahami, tanpa detail rahasia"><?= ah_e($isi['ringkasan']??($managed['publikasi']['ringkasan']??'')) ?></textarea></div>
             <div class="col-12"><label class="form-label" for="tindak-lanjut">Tindak lanjut di rumah <span class="text-danger">*</span></label><textarea class="form-control" id="tindak-lanjut" name="tindak_lanjut" rows="3" maxlength="5000" required><?= ah_e($isi['tindak_lanjut']??($managed['publikasi']['tindak_lanjut']??'')) ?></textarea></div>
             <p class="col-12 small text-muted mb-0">Wali melihat judul "Informasi pembinaan · tanggal", nama anak, dan nama pembimbing pengirim (<?= ah_e($options['pengirim']) ?>). Jenis sumber dan catatan internal tidak ditampilkan.</p>
-            <div class="col-12 d-flex flex-wrap gap-2 ah-sticky-sm"><?php if(($u=$sumberUrl($type,$sourceId))!==null): ?><a class="btn btn-outline-secondary" href="<?= ah_e($u) ?>">Kembali ke sumber</a><?php endif ?><button class="btn btn-primary" type="submit"><?= $pratinjauUlang?'Buat pratinjau ulang':'Lihat pratinjau' ?></button></div>
+            <div class="col-12 d-flex flex-wrap gap-2 ah-sticky-sm"><?php if(($u=$sumberUrl($type,$sourceId,$managed['sumber_kasus_id']??$options['sumber_kasus_id']??null))!==null): ?><a class="btn btn-outline-secondary" href="<?= ah_e($u) ?>">Kembali ke sumber</a><?php endif ?><button class="btn btn-primary" type="submit"><?= $pratinjauUlang?'Buat pratinjau ulang':'Lihat pratinjau' ?></button></div>
         </form>
     </div>
 </section>

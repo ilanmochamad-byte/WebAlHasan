@@ -17,6 +17,7 @@ final class PublikasiService
     {
         $source=$this->source($user,$type,$id);
         return ['sumber_type'=>$type,'sumber_id'=>$id,'sumber_version'=>(int)$source['version'],'wali'=>$this->wali((int)$source['santri_id']),
+            'sumber_kasus_id'=>isset($source['kasus_id'])?(int)$source['kasus_id']:null,
             'santri_nama'=>(string)($this->repo->sql->one('SELECT nama_santri FROM santri WHERE id=?',[(int)$source['santri_id']])['nama_santri']??''),
             'pengirim'=>$this->repo->sourceSender($type,$id)??'Pesantren Al Hasan',
             'publikasi'=>$this->repo->sql->all('SELECT id,wali_id,version,diterbitkan_pada,ditarik_pada,dibaca_pada FROM v3_publikasi WHERE '.$this->column($type).'=? ORDER BY id DESC LIMIT 100',[$id])];
@@ -140,6 +141,7 @@ final class PublikasiService
         $result=$this->repo->managePage(isset($caps['v3.koreksi']),(int)$user['id'],$filters);
         $result['rows']=array_map(static fn(array $r):array=>['id'=>(int)$r['id'],'santri_id'=>(int)$r['santri_id'],'santri_nama'=>(string)$r['nama_santri'],'wali_nama'=>(string)$r['wali_nama'],
             'sumber_type'=>$r['pelanggaran_id']!==null?'pelanggaran':($r['sesi_id']!==null?'sesi':'kasus'),'sumber_id'=>(int)($r['pelanggaran_id']??$r['sesi_id']??$r['kasus_id']),
+            'sumber_kasus_id'=>$r['sumber_kasus_id']===null?null:(int)$r['sumber_kasus_id'],
             'sumber_waktu'=>(string)($r['waktu_kejadian']??$r['sesi_jadwal']??$r['dibuka_pada']??''),'sumber_kategori'=>$r['kategori_snapshot']===null?null:(string)$r['kategori_snapshot'],
             'status'=>$r['ditarik_pada']===null?'Terbit':'Ditarik','diterbitkan_pada'=>(string)$r['diterbitkan_pada'],'dibaca_pada'=>$r['dibaca_pada'],'version'=>(int)$r['version']],$result['rows']);
         return $result;
@@ -160,6 +162,7 @@ final class PublikasiService
         if(isset($this->caps->v3Capabilities($user)['v3.koreksi']))$this->auditRequired('Dilihat.admin',$id,null,['version'=>(int)$row['version']],(int)$user['id']);
         $nama=$this->repo->sql->one('SELECT s.nama_santri,w.nama wali_nama FROM santri s JOIN wali w ON w.id=? WHERE s.id=?',[(int)$row['wali_id'],(int)$row['santri_id']]);
         return ['publikasi'=>$this->dto($row),'sumber_type'=>$type,'sumber_id'=>$sourceId,'sumber_version'=>(int)$source['version'],'riwayat'=>$this->repo->history($id,true),
+            'sumber_kasus_id'=>isset($source['kasus_id'])?(int)$source['kasus_id']:null,
             'santri_nama'=>(string)($nama['nama_santri']??''),'wali_nama'=>(string)($nama['wali_nama']??'')];
     }
 

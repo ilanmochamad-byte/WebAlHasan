@@ -1,6 +1,6 @@
 # Redesain website Tahap 5 — pembinaan (23 Oktober 2026)
 
-Status: **diimplementasikan Claude, menunggu audit independen Codex.** Belum merge/deploy/migrasi produksi. Tahap 6 belum dimulai.
+Status: **lulus audit independen Codex setelah dua koreksi terarah (23 Oktober 2026).** Laporan dan batas uji: [`AUDIT-CODEX.md`](AUDIT-CODEX.md). Belum merge/deploy/migrasi produksi. Tahap 6 belum dimulai.
 
 - Branch `claude/redesain-web-tahap-5` dibuat dari `origin/main` `492fdd3`, yang sudah menggabungkan audit Tahap 4 `2520c48` (isi pohon identik). Tidak ada worktree.
 - Sumber: `AGENTS.md`, `rencana.md`, `keputusan.md`, `cetak-biru.html` (V-1 s.d. V-7, M-4, peta menu, baris Tahap 5 "Urutan tahap pengerjaan", temuan keputusan Z), `tahap-4/AUDIT-CODEX.md`.
@@ -51,7 +51,7 @@ Komponen bersama baru: `ah_tingkat()`, `ah_stepper()` (`app/Ui/functions.php`); 
 9. **V-3 papan** memuat 25 kasus terbaru per kolom dan menampilkan 6; angka kolom dari hitungan penuh. Kasus Dibatalkan tidak punya kolom; tautannya ke Daftar.
 10. **V-4 isian bersyarat** menonaktifkan isian tersembunyi sehingga tidak terkirim; layanan memakai nilai tersimpan untuk isian yang tidak dikirim (aturan K5/K6 lama). Tanpa JavaScript semua isian tampil berlabel kapan dipakai — perilaku sama dengan sebelumnya.
 11. **V-5 wizard** Penerima dan Isi berada pada satu formulir (bernomor 1 dan 2); Pratinjau langkah 3. Tidak ada status draf (aturan sekarang).
-12. **V-6 Periode bawaan "Semester ini"** untuk staf; orang tua dan laporan ambang bawaan "Semua waktu" (ambang tidak menerima periode). Ringkasan: Catatan & Total poin tanpa yang dibatalkan; Kasus berjalan = Dibuka/Dalam pendampingan; Santri ≥ ambang = semester aktif dan hanya ikut saringan santri/kelas/kamar. Saringan status dan tindak lanjut tidak memengaruhi ringkasan.
+12. **V-6 Periode bawaan "Semester ini"** untuk staf; orang tua dan laporan ambang bawaan "Semua waktu" (ambang tidak menerima periode). Ringkasan: Catatan & Total poin tanpa yang dibatalkan; Kasus berjalan = Dibuka/Dalam pendampingan; Santri ≥ ambang = semester aktif dan hanya ikut saringan santri/kelas/kamar. Saringan status tidak memengaruhi ringkasan. Saringan tindak lanjut memengaruhi Catatan dan Total poin, sedangkan Kasus berjalan tidak memakai saringan itu. Ringkasan bukan jumlah identik dengan baris status yang dipilih.
 13. **V-6 Kelas/Kamar** di tabel = penempatan **tahun ajaran aktif** santri (kolom tampilan), bukan snapshot saat kejadian. CSV dan respons REST `/v3/laporan` **tidak berubah bentuk** (masih memuat kolom ID untuk pengolahan lanjutan); yang dihapus adalah *isian* ID.
 14. **V-6 pembimbing/murobi** sebagai pilihan hanya untuk admin; bagi pembimbing/murobi cakupannya sudah dibatasi penugasan. Alamat lama dengan `santri_id`/`kelas_id` tetap berlaku (catatan "dibatasi pada satu santri" + tautan menghapus).
 15. **Murobi tab Laporan.** Peta menu cetak biru menulis Pelanggaran · Konseling untuk "Pembinaan binaan", tetapi V-6 menyebut murobi sebagai pengguna laporan; tab Laporan ditambahkan agar halaman yang sudah boleh dibaca murobi punya jalan masuk.
@@ -85,9 +85,13 @@ Lingkungan: PHP 8.4, Node 26, MariaDB 12 lokal, Chromium Playwright. DB: `tests/
 - Tidak diulang: suite migrasi V3 (`v3_phase*_migration`), uji browser lama V3 (`uji-v3-fase*.mjs`, sudah tidak sesuai kerangka sejak Tahap 1–3), integrasi V1/V2/V4 yang tidak menyentuh pembinaan, banding status baseline per alamat.
 - Kinerja papan/laporan pada data besar tidak diukur selain `v3_phase5_performance` (6/0). Tidak ada smoke cPanel/produksi.
 
+## Hasil audit Codex
+
+Audit atas `5a332c1` lulus setelah pencarian pilihan V-6 dan tautan sumber V-5 dilengkapi. Sumber sesi tertaut ke kasus pemilik dengan jangkar sesi; `sumber_kasus_id` hanya metadata staf, bukan kolom DTO orang tua. Probe server Z/sumber sesi **33/0**, probe UI **53/0**, statis **96/0**, HTTP **106/0**, browser Tahap 5 **115/0**, regresi browser sembilan akun **107/0**, dan integrasi publikasi V3 Fase 4 **65/0**. Bukti independen, penilaian 16 penafsiran, hasil regresi dan batas audit di [`AUDIT-CODEX.md`](AUDIT-CODEX.md). Bukti implementator di atas tetap dipertahankan terpisah.
+
 ## Handoff ke auditor (Codex)
 
-Mohon audit Tahap 5 terhadap V-1 s.d. V-7, M-4, keputusan F dan **Z** (perubahan data orang tua — uji server wajib), kriteria selesai di atas, dan butir "Penafsiran dan batas cakupan". Jalankan dari root repo:
+Handoff awal implementator (sudah diaudit; hasil pada `AUDIT-CODEX.md`): audit Tahap 5 terhadap V-1 s.d. V-7, M-4, keputusan F dan **Z** (perubahan data orang tua — uji server wajib), kriteria selesai di atas, dan butir "Penafsiran dan batas cakupan". Jalankan dari root repo:
 
 ```bash
 bash tests/redesain_web_tahap5_db.sh

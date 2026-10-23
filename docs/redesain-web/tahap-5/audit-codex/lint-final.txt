@@ -1,0 +1,30 @@
+No syntax errors detected in admin/admin_v3_katalog.php
+No syntax errors detected in app/Ui/Navigation.php
+No syntax errors detected in app/Ui/Status.php
+No syntax errors detected in app/Ui/functions.php
+No syntax errors detected in app/V3/KatalogService.php
+No syntax errors detected in app/V3/KonselingRepository.php
+No syntax errors detected in app/V3/KonselingService.php
+No syntax errors detected in app/V3/LaporanService.php
+No syntax errors detected in app/V3/PelanggaranRepository.php
+No syntax errors detected in app/V3/PelanggaranService.php
+No syntax errors detected in app/V3/PublikasiRepository.php
+No syntax errors detected in app/V3/PublikasiService.php
+No syntax errors detected in portal/partials/v3_publikasi_konten.php
+No syntax errors detected in portal/v3_konseling.php
+No syntax errors detected in portal/v3_konseling_cetak.php
+No syntax errors detected in portal/v3_konseling_detail.php
+No syntax errors detected in portal/v3_laporan.php
+No syntax errors detected in portal/v3_pelanggaran.php
+No syntax errors detected in portal/v3_pelanggaran_detail.php
+No syntax errors detected in portal/v3_publikasi.php
+No syntax errors detected in portal/v3_publikasi_kelola.php
+No syntax errors detected in tests/redesain_web_tahap2_audit.php
+No syntax errors detected in tests/redesain_web_tahap2_http.php
+No syntax errors detected in tests/redesain_web_tahap5_http.php
+No syntax errors detected in tests/redesain_web_tahap5_seed.php
+No syntax errors detected in tests/redesain_web_tahap5_static.php
+No syntax errors detected in tests/v3_phase4_integration.php
+No syntax errors detected in tests/redesain_web_tahap5_audit.php
+assets/ui/alhasan.js: 0
+tests/browser/uji-redesain-web-tahap5-audit.mjs: 0

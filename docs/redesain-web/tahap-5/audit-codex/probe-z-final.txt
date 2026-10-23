@@ -1,0 +1,35 @@
+[lulus] Fixture Tahap 5 tersedia: {"a1Tsb":2,"a1Bls":3,"a2":4,"c1":5,"internal":1,"rahasia":2,"pubKasus":1,"pubPel":2}
+[lulus] REST token nyata dan allowlist Z tepat
+[lulus] Pengirim sumber pelanggaran tepat, tanpa kolom internal
+[lulus] Pengirim sumber kasus tepat, tanpa kolom internal
+[lulus] Sumber sesi memakai pembimbing kasus, isi snapshot dan allowlist identik
+[lulus] Sumber sesi di web tanpa isi internal
+[lulus] V-5 sumber sesi bertaut ke kasus dan sesi yang tepat pada daftar/kelola
+[lulus] V-5 tujuan sumber sesi memiliki jangkar yang terbaca sesuai hak
+[lulus] Nama pengirim dinamis mengikuti master; DTO tetap tepat
+[lulus] Nama pengirim di-escape pada web
+[lulus] relasi wali dicabut: detail web dan token REST lama 403
+[lulus] relasi wali dicabut: daftar REST kosong atau 403 tanpa nama/snapshot
+[lulus] relasi wali dicabut: laporan html tanpa isi publikasi
+[lulus] relasi wali dicabut: laporan csv tanpa isi publikasi
+[lulus] relasi wali dicabut: laporan cetak tanpa isi publikasi
+[lulus] relasi wali dipulihkan: snapshot dan pengirim identik
+[lulus] master wali dicabut: detail web dan token REST lama 403
+[lulus] master wali dicabut: daftar REST kosong atau 403 tanpa nama/snapshot
+[lulus] master wali dicabut: laporan html tanpa isi publikasi
+[lulus] master wali dicabut: laporan csv tanpa isi publikasi
+[lulus] master wali dicabut: laporan cetak tanpa isi publikasi
+[lulus] master wali dipulihkan: snapshot dan pengirim identik
+[lulus] master santri dicabut: detail web dan token REST lama 403
+[lulus] master santri dicabut: daftar REST kosong atau 403 tanpa nama/snapshot
+[lulus] master santri dicabut: laporan html tanpa isi publikasi
+[lulus] master santri dicabut: laporan csv tanpa isi publikasi
+[lulus] master santri dicabut: laporan cetak tanpa isi publikasi
+[lulus] master santri dipulihkan: snapshot dan pengirim identik
+[lulus] Wali lain mengganti ID pada REST tetap 403
+[lulus] Perubahan isi internal tidak masuk snapshot orang tua
+[lulus] Publikasi ditarik mempertahankan redaksi aman dan hanya kolom Z
+[lulus] Token probe telah dicabut setelah pengujian
+[lulus] Probe HTTP tanpa galat PHP
+
+Ringkasan: 33 lulus, 0 gagal

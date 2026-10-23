@@ -1021,7 +1021,7 @@
                 if (match) { shown++; }
             });
             var status = doc.getElementById(input.getAttribute('aria-describedby') || '');
-            if (status) { status.textContent = term === '' ? '' : shown + ' santri cocok.'; }
+            if (status) { status.textContent = term === '' ? '' : shown + ' ' + (input.getAttribute('data-ah-option-kind') || 'santri') + ' cocok.'; }
             if (shown === 1 && term !== '') {
                 var only = options.filter(function (option) { return !option.hidden; })[0];
                 if (select.value !== only.value) { select.value = only.value; select.dispatchEvent(new Event('change')); }
