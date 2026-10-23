@@ -94,7 +94,7 @@ final class BerandaService
             $jumlah = (int) notification_admin_service()->kegagalan($user, ['per_page' => 1])['pagination']['total'];
             $row = $this->one("SELECT SUM(updated_at < NOW() - INTERVAL ? HOUR) AS lama FROM notifikasi_outbox WHERE status = 'Failed'", 'i', [self::BATAS_TERTUNDA_JAM]);
             return [$jumlah, (int) $row['lama'] > 0];
-        }, 'Notifikasi gagal terkirim', 'Periksa', '/admin/admin_notifikasi.php#pengiriman-gagal');
+        }, 'Notifikasi gagal terkirim', 'Periksa', '/admin/admin_notifikasi.php?tab=gagal#pengiriman-gagal');
 
         // Filter `tertunda=1` IzinRepository: Diajukan lebih dari 24 jam.
         $this->kartu($kartu, 'izin_tertunda', function () use ($user): array {

@@ -63,7 +63,8 @@ $check(count($cards) === 8, 'Fixture menampilkan seluruh delapan prioritas admin
 $psb = $admin->req($cards['psb_baru']);
 $px = $dom($psb['body']);
 $statuses = [];
-foreach ($px->query('//table[@id="tabelSantri"]//tbody/tr/td[6]') as $cell) $statuses[] = trim($cell->textContent);
+// Redesain web Tahap 3 (K-5): id tabel daftar-pendaftar.
+foreach ($px->query('//table[@id="daftar-pendaftar"]//tbody/tr/td[6]') as $cell) $statuses[] = trim($cell->textContent);
 // Status pendaftar berada pada kolom keenam tabel lama.
 $check($statuses !== [] && array_filter($statuses, static fn ($s) => $s !== 'Baru') === [],
     'B-1: kartu pendaftar baru hanya menampilkan pendaftar Baru', ['url'=>$cards['psb_baru'], 'status'=>$statuses]);

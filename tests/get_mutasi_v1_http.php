@@ -143,11 +143,13 @@ try {
         $ok($r['status'] === 200 && !$hasLink && str_contains($r['body'], 'method="post"')
             && str_contains($r['body'], 'name="_csrf"'), 'Halaman ' . $page . ' memakai formulir POST + CSRF, tanpa tautan bermutasi');
     }
-    $r = $request('admin', '/admin/admin_data.php');
-    $ok(str_contains($r['body'], 'form="formStatusTerima' . $psb['terima'] . '"')
+    // Redesain web Tahap 3 (K-5/K-6): keputusan pindah ke panel detail (?id=).
+    $r = $request('admin', '/admin/admin_data.php?id=' . $psb['terima']);
+    $m = $request('admin', '/admin/admin_data.php?id=' . $psb['migrasi']);
+    $ok(str_contains($r['body'], 'id="formStatusTerima' . $psb['terima'] . '"')
         && str_contains($r['body'], 'id="formStatusTolak' . $psb['terima'] . '"')
-        && str_contains($r['body'], 'name="act" value="migrasi"'), 'admin_data menampilkan tombol terima/tolak/migrasi sebagai POST');
-    $r = $request('admin', '/admin/admin_pembayaran_psb.php?status=Belum+Lunas');
+        && str_contains($m['body'], 'name="act" value="migrasi"'), 'admin_data menampilkan tombol terima/tolak/migrasi sebagai POST');
+    $r = $request('admin', '/admin/admin_pembayaran_psb.php?status=Belum+Lunas&id=' . $bayar['terima']);
     $ok($r['status'] === 200 && str_contains($r['body'], 'name="act" value="lunas"'), 'Filter GET pembayaran PSB tetap tersedia');
     $ok($csrf !== '', 'Token CSRF admin tersedia');
 
@@ -220,14 +222,17 @@ try {
         && $row('SELECT * FROM psb_pendaftar WHERE id=' . $psb['jaga']) === $jagaBefore, 'Hanya pendaftar target terhapus');
 
     $r = $request('admin', '/admin/proses_psb_admin.php', 'POST', ['_csrf' => $csrf, 'act' => 'status', 'id' => $psb['terima'], 'val' => 'Diterima']);
-    $ok($r['status'] === 200 && $row('SELECT status FROM psb_pendaftar WHERE id=' . $psb['terima'])['status'] === 'Diterima'
+    $ok($r['status'] === 302 && $row('SELECT status FROM psb_pendaftar WHERE id=' . $psb['terima'])['status'] === 'Diterima'
         && $row('SELECT status FROM psb_pendaftar WHERE id=' . $psb['jaga'])['status'] === 'Baru', 'POST status sah hanya mengubah pendaftar target');
     $request('admin', '/admin/proses_psb_admin.php', 'POST', ['_csrf' => $csrf, 'act' => 'status', 'id' => $psb['terima'], 'val' => 'Ditolak']);
     $ok($row('SELECT status FROM psb_pendaftar WHERE id=' . $psb['terima'])['status'] === 'Ditolak', 'POST tolak sah tersimpan');
 
     $santriTotal = $count('SELECT COUNT(*) n FROM santri');
     $r = $request('admin', '/admin/proses_psb_admin.php', 'POST', ['_csrf' => $csrf, 'act' => 'migrasi', 'id' => $psb['migrasi']]);
-    $ok($r['status'] === 200 && str_contains($r['body'], 'Migrasi Sukses')
+    // Tahap 3: hasil tampil sebagai pesan di halaman tujuan (PRG), bukan alert().
+    preg_match('/^Location:\s*(\S+)/mi', $r['headers'], $loc);
+    $hasil = $request('admin', '/admin/' . ($loc[1] ?? 'admin_data.php'));
+    $ok($r['status'] === 302 && str_contains($hasil['body'], 'Migrasi berhasil')
         && $row('SELECT status FROM psb_pendaftar WHERE id=' . $psb['migrasi'])['status'] === 'Dimigrasi'
         && $count('SELECT COUNT(*) n FROM santri') === $santriTotal + 1
         && $count("SELECT COUNT(*) n FROM santri WHERE nama_santri='Synthetic " . $tag . " MIGRASI' AND nis LIKE '" . date('y') . "01%'") === 1,
@@ -236,7 +241,7 @@ try {
     $jagaBayar = $row('SELECT * FROM psb_pembayaran WHERE id=' . $bayar['jaga']);
     $r = $request('admin', '/admin/admin_pembayaran_psb.php', 'POST', ['_csrf' => $csrf, 'act' => 'lunas', 'id' => $bayar['terima']]);
     $lunas = $row('SELECT status_pembayaran, waktu_lunas FROM psb_pembayaran WHERE id=' . $bayar['terima']);
-    $ok($r['status'] === 200 && $lunas['status_pembayaran'] === 'Lunas' && $lunas['waktu_lunas'] !== null
+    $ok($r['status'] === 302 && $lunas['status_pembayaran'] === 'Lunas' && $lunas['waktu_lunas'] !== null
         && $row('SELECT * FROM psb_pembayaran WHERE id=' . $bayar['jaga']) === $jagaBayar, 'POST lunas sah hanya mengubah tagihan target');
     $request('admin', '/admin/admin_pembayaran_psb.php', 'POST', ['_csrf' => $csrf, 'act' => 'batal', 'id' => $bayar['terima']]);
     $batal = $row('SELECT status_pembayaran, waktu_lunas FROM psb_pembayaran WHERE id=' . $bayar['terima']);

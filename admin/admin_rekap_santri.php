@@ -1,206 +1,118 @@
 <?php
+
+declare(strict_types=1);
+
+use App\Ui\Chart;
+
 require_once __DIR__ . '/_guard.php';
 
-// Ambil Tahun Ajaran Aktif
-$q_tahun = mysqli_query($koneksi, "SELECT id, tahun, semester FROM tahun_ajaran WHERE status='Aktif' LIMIT 1");
-$tahun_aktif = mysqli_fetch_array($q_tahun);
-$id_tahun = $tahun_aktif ? $tahun_aktif['id'] : 0;
-?>
+/**
+ * Data santri › Rekap jumlah (redesain website Tahap 3, K-8).
+ *
+ * Jumlah santri aktif per kelas pada tahun ajaran aktif, laki-laki dan
+ * perempuan, dengan baris total tebal dan grafik pendamping. Kelas yang hanya
+ * berbeda akhiran PA/PI digabung seperti halaman lama. Unduhan Excel dibuat
+ * di server (CSS DataTables dan SheetJS lama dibuang).
+ */
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <title>Rekapitulasi Santri - Admin</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-    <style>
-        .table-rekap th { text-transform: uppercase; letter-spacing: 1px; }
-        .col-angka { font-size: 15px; font-weight: bold; }
-        .bg-putra { background-color: #e0f7fa !important; }
-        .bg-putri { background-color: #fce4ec !important; }
-        .bg-jumlah { background-color: #fff3cd !important; color: #198754 !important;}
-    </style>
-</head>
-<body class="bg-light">
-
-<header class="navbar navbar-dark sticky-top bg-success flex-md-nowrap p-0 shadow d-md-none">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Menu Admin</a>
-    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</header>
-
-<div class="container-fluid">
-    <div class="row">
-        <?php include 'sidebar.php'; ?>
-
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-4">
-                <div>
-                    <h2 class="h2 mb-1 fw-bold text-success">Rekapitulasi Jumlah Santri</h2>
-                    <span class="badge bg-primary fs-6 shadow-sm">
-                        <i class="fas fa-calendar-alt me-1"></i> Tahun Ajaran Aktif: <?php echo $tahun_aktif ? $tahun_aktif['tahun'].' ('.$tahun_aktif['semester'].')' : 'Belum Diatur'; ?>
-                    </span>
-                </div>
-                <button type="button" onclick="exportExcel()" class="btn btn-warning shadow-sm fw-bold mt-2 mt-md-0">
-                    <i class="fas fa-file-excel me-2"></i> Download Excel
-                </button>
-            </div>
-
-            <?php if($id_tahun == 0): ?>
-                <div class="alert alert-danger shadow-sm rounded-4">
-                    <i class="fas fa-exclamation-triangle me-2"></i> Tahun Ajaran Aktif belum diatur. Silakan atur di menu Tahun Ajaran terlebih dahulu agar data dapat dihitung.
-                </div>
-            <?php else: ?>
-
-            <div class="card shadow-sm border-0 rounded-4 overflow-hidden mb-5">
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table id="tabelRekapSantri" class="table table-bordered table-hover align-middle text-center mb-0 table-rekap">
-                            <thead class="table-success align-middle">
-                                <tr>
-                                    <th width="5%" class="py-3">No</th>
-                                    <th class="text-start">Kelas</th>
-                                    <th width="15%" class="bg-info bg-opacity-25 border-info text-dark"><i class="fas fa-male me-1"></i> Laki-Laki (L)</th>
-                                    <th width="15%" class="bg-danger bg-opacity-25 border-danger text-dark"><i class="fas fa-female me-1"></i> Perempuan (P)</th>
-                                    <th width="20%" class="bg-warning bg-opacity-25 border-warning text-dark"><i class="fas fa-users me-1"></i> Jumlah Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $no = 1;
-                                $grand_l = 0;
-                                $grand_p = 0;
-                                $grand_total = 0;
-
-                                // QUERY AWAL DARI TABEL KELAS
-                                $query = "
-                                    SELECT 
-                                        k.nama_kelas,
-                                        SUM(CASE WHEN s.jenis_kelamin = 'L' THEN 1 ELSE 0 END) as total_l,
-                                        SUM(CASE WHEN s.jenis_kelamin = 'P' THEN 1 ELSE 0 END) as total_p,
-                                        COUNT(s.id) as total_kelas
-                                    FROM kelas k
-                                    LEFT JOIN plotting_kelas pk ON k.id = pk.id_kelas AND pk.id_tahun = '$id_tahun' AND pk.status = 'Aktif'
-                                    LEFT JOIN santri s ON pk.id_santri = s.id
-                                    GROUP BY k.id, k.nama_kelas, k.jenjang
-                                    ORDER BY k.jenjang ASC, k.nama_kelas ASC
-                                ";
-                                $exec = mysqli_query($koneksi, $query);
-
-                                // Variabel penampung array untuk menggabungkan kelas
-                                $rekap_kelas = [];
-
-                                while($d = mysqli_fetch_array($exec)){
-                                    $nama_asli = $d['nama_kelas'];
-                                    
-                                    // LOGIKA AJAIB: Hapus spasi beserta kata "PA" atau "PI" jika berada di paling akhir nama kelas
-                                    // Contoh: "1 IBTIDA PA" menjadi "1 IBTIDA"
-                                    $nama_gabung = preg_replace('/\s+(PA|PI)$/i', '', $nama_asli);
-
-                                    // Jika nama kelas ini belum ada di array penampung, buat kerangkanya
-                                    if(!isset($rekap_kelas[$nama_gabung])) {
-                                        $rekap_kelas[$nama_gabung] = ['l' => 0, 'p' => 0, 'tot' => 0];
-                                    }
-                                    
-                                    // Jumlahkan angka ke dalam kerangka array tersebut
-                                    $rekap_kelas[$nama_gabung]['l'] += $d['total_l'] ? $d['total_l'] : 0;
-                                    $rekap_kelas[$nama_gabung]['p'] += $d['total_p'] ? $d['total_p'] : 0;
-                                    $rekap_kelas[$nama_gabung]['tot'] += $d['total_kelas'] ? $d['total_kelas'] : 0;
-                                }
-
-                                // Cetak tabel berdasarkan array yang sudah digabungkan secara rapi
-                                foreach($rekap_kelas as $nama_kelas => $data){
-                                    $l = $data['l'];
-                                    $p = $data['p'];
-                                    $tot = $data['tot'];
-
-                                    $grand_l += $l;
-                                    $grand_p += $p;
-                                    $grand_total += $tot;
-                                ?>
-                                <tr>
-                                    <td class="fw-bold"><?php echo $no++; ?></td>
-                                    <td class="text-start fw-bold text-secondary"><?php echo $nama_kelas; ?></td>
-                                    <td class="col-angka bg-putra text-primary"><?php echo $l > 0 ? $l : '-'; ?></td>
-                                    <td class="col-angka bg-putri text-danger"><?php echo $p > 0 ? $p : '-'; ?></td>
-                                    <td class="col-angka bg-jumlah fs-5"><?php echo $tot > 0 ? $tot : '-'; ?></td>
-                                </tr>
-                                <?php } ?>
-
-                                <?php 
-                                // QUERY TAMBAHAN: SANTRI YANG BELUM MENDAPATKAN KELAS
-                                $q_belum = mysqli_query($koneksi, "
-                                    SELECT 
-                                        SUM(CASE WHEN jenis_kelamin = 'L' THEN 1 ELSE 0 END) as total_l,
-                                        SUM(CASE WHEN jenis_kelamin = 'P' THEN 1 ELSE 0 END) as total_p,
-                                        COUNT(id) as total_semua
-                                    FROM santri 
-                                    WHERE is_active = 1 AND archived_at IS NULL AND id NOT IN (SELECT id_santri FROM plotting_kelas WHERE id_tahun = '$id_tahun' AND status = 'Aktif')
-                                ");
-                                $d_belum = mysqli_fetch_array($q_belum);
-                                $blm_l = $d_belum['total_l'] ? $d_belum['total_l'] : 0;
-                                $blm_p = $d_belum['total_p'] ? $d_belum['total_p'] : 0;
-                                $blm_tot = $d_belum['total_semua'] ? $d_belum['total_semua'] : 0;
-
-                                // Tambahkan ke Grand Total keseluruhan database santri aktif
-                                $grand_l += $blm_l;
-                                $grand_p += $blm_p;
-                                $grand_total += $blm_tot;
-
-                                if($blm_tot > 0):
-                                ?>
-                                <tr class="table-warning">
-                                    <td class="fw-bold">-</td>
-                                    <td class="text-start fw-bold text-danger fst-italic">
-                                        <i class="fas fa-exclamation-circle me-1"></i> BELUM DITEMPATKAN DI KELAS MANAPUN
-                                    </td>
-                                    <td class="col-angka text-primary"><?php echo $blm_l > 0 ? $blm_l : '-'; ?></td>
-                                    <td class="col-angka text-danger"><?php echo $blm_p > 0 ? $blm_p : '-'; ?></td>
-                                    <td class="col-angka text-dark fs-5"><?php echo $blm_tot > 0 ? $blm_tot : '-'; ?></td>
-                                </tr>
-                                <?php endif; ?>
-
-                            </tbody>
-                            <tfoot class="table-dark fs-5">
-                                <tr>
-                                    <th colspan="2" class="text-end pe-4 py-3">GRAND TOTAL SANTRI AKTIF</th>
-                                    <th class="col-angka text-info"><?php echo number_format($grand_l,0,',','.'); ?></th>
-                                    <th class="col-angka text-warning"><?php echo number_format($grand_p,0,',','.'); ?></th>
-                                    <th class="col-angka text-success bg-white fs-4"><?php echo number_format($grand_total,0,',','.'); ?></th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <?php endif; ?>
-
-        </main>
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script>
-    // Fitur Export Langsung dari Tabel HTML ke Excel
-    function exportExcel() {
-        var table = document.getElementById("tabelRekapSantri");
-        var wb = XLSX.utils.table_to_book(table, {sheet: "Rekapitulasi Santri"});
-        
-        // Generate Nama File dengan Tanggal
-        var date = new Date();
-        var dStr = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
-        var fileName = "Rekap_Jumlah_Santri_AlHasan_" + dStr + ".xlsx";
-        
-        XLSX.writeFile(wb, fileName);
+$tahun = beranda_service()->tahunAktif();
+$idTahun = (int) ($tahun['id'] ?? 0);
+$rekap = [];
+$jenjang = [];
+$belum = ['l' => 0, 'p' => 0, 'tot' => 0];
+if ($idTahun > 0) {
+    $stmt = $koneksi->prepare("SELECT k.nama_kelas, COALESCE(NULLIF(k.jenjang, ''), 'Tanpa jenjang') AS jenjang,
+            SUM(CASE WHEN s.jenis_kelamin = 'L' THEN 1 ELSE 0 END) AS total_l,
+            SUM(CASE WHEN s.jenis_kelamin = 'P' THEN 1 ELSE 0 END) AS total_p,
+            COUNT(s.id) AS total_kelas
+        FROM kelas k
+        LEFT JOIN plotting_kelas pk ON k.id = pk.id_kelas AND pk.id_tahun = ? AND pk.status = 'Aktif'
+        LEFT JOIN santri s ON pk.id_santri = s.id
+        GROUP BY k.id, k.nama_kelas, k.jenjang
+        ORDER BY k.jenjang ASC, k.nama_kelas ASC");
+    $stmt->bind_param('i', $idTahun);
+    $stmt->execute();
+    foreach ($stmt->get_result()->fetch_all(MYSQLI_ASSOC) as $d) {
+        // "1 IBTIDA PA" dan "1 IBTIDA PI" digabung menjadi "1 IBTIDA".
+        $nama = preg_replace('/\s+(PA|PI)$/i', '', (string) $d['nama_kelas']);
+        $rekap[$nama] ??= ['l' => 0, 'p' => 0, 'tot' => 0];
+        $rekap[$nama]['l'] += (int) $d['total_l'];
+        $rekap[$nama]['p'] += (int) $d['total_p'];
+        $rekap[$nama]['tot'] += (int) $d['total_kelas'];
+        $jenjang[(string) $d['jenjang']] = ($jenjang[(string) $d['jenjang']] ?? 0) + (int) $d['total_kelas'];
     }
-</script>
+    $stmt->close();
+    $stmt = $koneksi->prepare("SELECT SUM(jenis_kelamin = 'L') AS l, SUM(jenis_kelamin = 'P') AS p, COUNT(id) AS tot
+        FROM santri WHERE is_active = 1 AND archived_at IS NULL
+          AND id NOT IN (SELECT id_santri FROM plotting_kelas WHERE id_tahun = ? AND status = 'Aktif')");
+    $stmt->bind_param('i', $idTahun);
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc() ?: [];
+    $stmt->close();
+    $belum = ['l' => (int) ($row['l'] ?? 0), 'p' => (int) ($row['p'] ?? 0), 'tot' => (int) ($row['tot'] ?? 0)];
+}
+$total = ['l' => $belum['l'], 'p' => $belum['p'], 'tot' => $belum['tot']];
+foreach ($rekap as $data) {
+    $total['l'] += $data['l'];
+    $total['p'] += $data['p'];
+    $total['tot'] += $data['tot'];
+}
+if ($belum['tot'] > 0) {
+    $jenjang['Belum berkelas'] = $belum['tot'];
+}
 
-</body>
-</html>
+if (isset($_GET['unduh']) && $idTahun > 0) {
+    $baris = [['NO', 'KELAS', 'LAKI-LAKI', 'PEREMPUAN', 'JUMLAH']];
+    $no = 1;
+    foreach ($rekap as $nama => $data) {
+        $baris[] = [$no++, $nama, $data['l'], $data['p'], $data['tot']];
+    }
+    if ($belum['tot'] > 0) {
+        $baris[] = ['-', 'Belum ditempatkan di kelas', $belum['l'], $belum['p'], $belum['tot']];
+    }
+    $baris[] = ['', 'TOTAL SANTRI AKTIF', $total['l'], $total['p'], $total['tot']];
+    ah_xlsx_download('Rekap_Jumlah_Santri_AlHasan_' . date('Y-m-d') . '.xlsx', $baris);
+}
+
+$angka = static fn (int $nilai): string => $nilai > 0 ? number_format($nilai, 0, ',', '.') : '–';
+ah_page_open([
+    'title' => 'Rekap jumlah santri',
+    'user' => $currentUser,
+    'active' => 'santri',
+    'description' => $tahun !== null ? 'Tahun ajaran aktif ' . $tahun['tahun'] . ' ' . $tahun['semester'] . '. Santri dihitung dari penempatan kelas berstatus aktif.' : null,
+    'actions' => $idTahun > 0 ? '<a class="btn btn-outline-secondary" href="' . ah_e(app_url('/admin/admin_rekap_santri.php?unduh=1')) . '">Unduh Excel</a>' : '',
+]);
+if ($idTahun === 0):
+    ah_note('danger', 'Tahun ajaran aktif belum diatur. Atur di Pengaturan › Tahun ajaran agar jumlah santri dapat dihitung.', ' <a href="' . ah_e(app_url('/admin/admin_tahun.php')) . '">Buka tahun ajaran</a>');
+else:
+    ?>
+    <div class="ah-chart-grid">
+        <section class="ah-card" aria-labelledby="judul-rekap-santri">
+            <div class="ah-card__head"><h2 class="h6 mb-0" id="judul-rekap-santri">Jumlah per kelas</h2></div>
+            <div class="ah-table-wrap">
+                <table class="ah-table" id="tabelRekapSantri">
+                    <caption class="ah-visually-hidden">Jumlah santri aktif per kelas, laki-laki dan perempuan</caption>
+                    <thead><tr><th scope="col">Kelas</th><th scope="col">Laki-laki</th><th scope="col">Perempuan</th><th scope="col">Jumlah</th></tr></thead>
+                    <tbody>
+                    <?php foreach ($rekap as $nama => $data): ?>
+                        <tr><th scope="row"><?= ah_e($nama) ?></th><td><?= $angka($data['l']) ?></td><td><?= $angka($data['p']) ?></td><td><b><?= $angka($data['tot']) ?></b></td></tr>
+                    <?php endforeach; ?>
+                    <?php if ($belum['tot'] > 0): ?>
+                        <tr><th scope="row"><?= ah_badge('Perlu penempatan', 'warn') ?> Belum ditempatkan di kelas</th><td><?= $angka($belum['l']) ?></td><td><?= $angka($belum['p']) ?></td><td><b><a href="<?= ah_e(app_url('/admin/admin_penempatan_santri.php?status=tanpa_kelas')) ?>"><?= $angka($belum['tot']) ?></a></b></td></tr>
+                    <?php endif; ?>
+                    <?php if ($rekap === [] && $belum['tot'] === 0): ?>
+                        <tr><td colspan="4"><?= ah_empty('Belum ada kelas atau santri aktif', 'Tambahkan kelas dan tempatkan santri pada semester aktif.') ?></td></tr>
+                    <?php endif; ?>
+                    </tbody>
+                    <tfoot><tr><th scope="row">Total santri aktif</th><th><?= number_format($total['l'], 0, ',', '.') ?></th><th><?= number_format($total['p'], 0, ',', '.') ?></th><th><?= number_format($total['tot'], 0, ',', '.') ?></th></tr></tfoot>
+                </table>
+            </div>
+        </section>
+        <div class="ah-editor__side">
+            <section class="ah-card ah-card__body"><?= Chart::bar('Santri per jenjang', $jenjang, 'Belum ada santri aktif.') ?></section>
+            <section class="ah-card ah-card__body"><?= Chart::donut('Rasio laki-laki dan perempuan', ['Laki-laki' => $total['l'], 'Perempuan' => $total['p']], 'Belum ada santri aktif.') ?></section>
+        </div>
+    </div>
+    <?php
+endif;
+ah_page_close();

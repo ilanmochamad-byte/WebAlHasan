@@ -216,6 +216,36 @@ final class SettingsRepository
     }
 
     /**
+     * Riwayat perubahan kanal berhalaman (redesain Tahap 3, tab Riwayat N-2).
+     *
+     * @return array{rows:array<int, array<string, mixed>>, total:int}
+     */
+    public function auditTrailPage(int $page, int $perPage = 20): array
+    {
+        $perPage = max(1, min(100, $perPage));
+        $total = (int) ($this->db->query('SELECT COUNT(*) AS n FROM notifikasi_pengaturan_audit')?->fetch_assoc()['n'] ?? 0);
+        $page = max(1, min($page, max(1, (int) ceil($total / $perPage))));
+        $offset = ($page - 1) * $perPage;
+        $statement = $this->db->prepare(
+            'SELECT a.id, a.aksi, a.kanal, a.nilai_sebelum, a.nilai_sesudah, a.hasil, a.pesan,
+                    a.aktor_user_id, a.created_at, u.name AS aktor_nama
+               FROM notifikasi_pengaturan_audit a
+               LEFT JOIN users u ON u.id = a.aktor_user_id
+              ORDER BY a.id DESC
+              LIMIT ? OFFSET ?'
+        );
+        $rows = [];
+        if ($statement !== false) {
+            $statement->bind_param('ii', $perPage, $offset);
+            $statement->execute();
+            $rows = $statement->get_result()?->fetch_all(MYSQLI_ASSOC) ?? [];
+            $statement->close();
+        }
+
+        return ['rows' => $rows, 'total' => $total, 'page' => $page, 'per_page' => $perPage];
+    }
+
+    /**
      * @param array<int, mixed> $params
      */
     private function exec(string $sql, string $types, array $params): bool

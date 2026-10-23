@@ -34,7 +34,9 @@ foreach ($callers as $file => $needles) {
     $src = $read($file);
     $hasLink = false;
     foreach ($needles as $needle) $hasLink = $hasLink || str_contains($src, $needle);
-    $ok(!$hasLink && str_contains($src, 'Csrf::input()'), $file . ' memakai formulir POST + Csrf::input(), tanpa tautan bermutasi');
+    // Redesain Tahap 3: tindakan baris boleh memakai menu ⋯ bersama (ah_menu),
+    // yang membuat formulir POST dengan Csrf::input() untuk setiap butir 'action'.
+    $ok(!$hasLink && (str_contains($src, 'Csrf::input()') || (str_contains($src, 'ah_menu(') && str_contains($src, "'action' =>"))), $file . ' memakai formulir POST + Csrf::input(), tanpa tautan bermutasi');
 }
 
 echo "Ringkasan: {$passed} lulus, {$failed} gagal\n";

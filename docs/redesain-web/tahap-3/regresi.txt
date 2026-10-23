@@ -1,0 +1,66 @@
+# Regresi redesain website Tahap 3 — 23 Oktober 2026
+# Format: kode_keluar|uji|lulus|gagal|baris terakhir. v3_phase2/3_static exit 77 = gate khusus DB V3, sama dengan baseline (tidak diklaim lulus).
+# Statis, lint, smoke HTTP, integrasi: DB sandbox .env (*_test). Server uji dijalankan masing-masing suite.
+# v2-fase4-web pertama 45/1 (WN-7c mencari 'Audit perubahan kanal' di tab Kanal); asersi diarahkan ke tab Riwayat lalu diulang 46/0.
+
+== statis
+0|statis-alumni_static|180|0|SELURUH PEMERIKSAAN STATIS ALUMNI LULUS.
+0|statis-get_mutasi_v1_static|28|0|Ringkasan: 28 lulus, 0 gagal
+0|statis-kredensial_static|105|0|SELURUH PEMERIKSAAN STATIS PESAN KREDENSIAL LULUS.
+0|statis-penempatan_static|138|0|SELURUH PEMERIKSAAN STATIS PENEMPATAN LULUS.
+0|statis-penugasan_static|282|0|Total gagal: 0
+0|statis-perapihan_static|131|0|SELURUH PEMERIKSAAN STATIS PERAPIHAN LULUS.
+0|statis-phase1_static|76|0|[lulus] Token CSRF salah ditolak
+0|statis-phase2_static|46|0|[lulus] Tanggal tidak valid ditolak
+0|statis-phase3_static|35|0|[lulus] Rentang lintas tengah malam tidak ditebak oleh parser
+0|statis-phase4_static|38|0|[lulus] Backup SQL mengecualikan generated column dan menulis daftar kolom eksplisit
+0|statis-phase5_static|44|0|[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/acceptance-checklist.md
+0|statis-redesain_web_tahap1_static|69|0|Semua pemeriksaan lulus.
+0|statis-redesain_web_tahap2_static|121|0|Semua pemeriksaan lulus (121).
+0|statis-redesain_web_tahap3_static|145|0|Ringkasan: 145 lulus, 0 gagal
+0|statis-v2_phase1_static|126|0|[lulus] php -l lulus untuk bin/v2_phase1_verify.php
+0|statis-v2_phase2_static|174|0|[lulus] php -l lulus untuk admin/pertemuan_pengajian.php
+0|statis-v2_phase3_static|147|0|SELURUH PEMERIKSAAN STATIS FASE 3 LULUS.
+0|statis-v2_phase4_static|288|0|SELURUH PEMERIKSAAN STATIS FASE 4 LULUS.
+0|statis-v2_phase5_static|290|0|SELURUH PEMERIKSAAN STATIS FASE 5 LULUS.
+0|statis-v3_phase1_static|15|0|[lulus] Mutasi V3 hanya hadir bersama paket Fase 2
+77|statis-v3_phase2_static|0|0|
+77|statis-v3_phase3_static|0|0|
+0|statis-v3_phase4_static|18|0|[lulus] Layar publikasi tidak melog atau menyimpan isi ke penyimpanan/clipboard
+== lint
+php -l: 457 berkas, 0 gagal
+node --check alhasan.js: lulus
+git diff --check: bersih
+== smoke HTTP
+0|perapihan-web|56|0|SELURUH SMOKE TEST WEB PERAPIHAN LULUS.
+0|alumni-web|61|0|SELURUH SMOKE TEST WEB ALUMNI LULUS.
+0|kredensial-web|51|0|SELURUH SMOKE TEST WEB PESAN KREDENSIAL LULUS.
+0|penempatan-web|47|0|SELURUH SMOKE TEST WEB PENEMPATAN LULUS.
+0|penugasan-web|85|0|Total gagal: 0
+0|v2-fase2-web|36|0|[bersih] Fixture smoke test dihapus.
+0|v2-fase4-web|46|0|(diulang setelah WN-7c membaca tab Riwayat) SELURUH 46 LULUS
+0|v2-fase5-web|79|0|SELURUH SMOKE TEST WEB FASE 5 LULUS.
+0|v2-fase4-api|92|0|[bersih] Fixture kontrak Fase 4 dihapus.
+0|v2-navigasi-murobi|40|0|[bersih] Fixture uji navigasi dihapus.
+== integrasi
+0|v2-fase2-int|94|0|[bersih] Fixture uji Fase 2 dihapus.
+0|v2-fase4-int|122|0|[bersih] Fixture uji Fase 4 dihapus dan pengaturan kanal dipulihkan.
+0|perapihan-int|53|0|SELURUH PENGUJIAN INTEGRASI PERAPIHAN LULUS.
+0|penugasan-int|161|0|Total gagal: 0
+
+== perbaikan mutasi V1 + cleanup (salinan sumber di luar Git, DB salinan Tahap 3 + tests/cleanup_legacy_fixture.php)
+0|get_mutasi_v1_http|89|0|Ringkasan: 89 lulus, 0 gagal
+0|get_mutasi_v1_audit|84|0|Independent Codex audit: 84 passed, 0 failed.
+0|browser uji-get-mutasi-v1|35|0|Browser GET mutation audit: 35 passed, 0 failed.
+1|cleanup_legacy_http (tanpa backfill V2)|153|3|3 kegagalan sama persis pada baseline 429f9ef dengan DB yang sama (riwayat izin warisan belum di-backfill)
+0|cleanup_legacy_http (sesudah bin/v2_phase1_backfill.php)|156|0|Hasil cleanup HTTP/preservasi: 156 lulus, 0 gagal.
+
+== redesain Tahap 1–2 (DB salinan)
+0|redesain_web_tahap2_static|121|0|Semua pemeriksaan lulus (121).
+0|redesain_web_tahap2_http|191|0|Ringkasan: 191 lulus, 0 gagal
+0|redesain_web_tahap2_audit|29|0|Ringkasan: 29 lulus, 0 gagal
+0|browser uji-redesain-web-tahap2 (DB Tahap 2)|89|0|Ringkasan: 89 lulus, 0 gagal
+0|browser uji-redesain-web-tahap1 (DB Tahap 3, sembilan akun × 3 lebar)|91|0|tanpa satu pun catatan 'belum memakai Layout'
+0|browser uji-redesain-web-tahap1 (DB sandbox .env)|91|0|91 lulus, 0 gagal. Tangkapan l — catatan 503 V4 sandbox sama dengan baseline Tahap 2
+0|browser uji-perapihan (DB sandbox .env)|56|0|Total pemeriksaan: 56, gagal: 0
+0|banding baseline 429f9ef vs branch (DB Tahap 3)|-|-|80 alamat dibandingkan; status berbeda tanpa keputusan: 0; halaman Layout melebar: 0

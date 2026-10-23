@@ -1,635 +1,359 @@
 <?php
+
+declare(strict_types=1);
+
+use App\Http\Csrf;
+use App\Psb\PsbAdmin;
+use App\Psb\PsbException;
+
 require_once __DIR__ . '/_guard.php';
 
-// PROSES TAMBAH MANUAL
-if(isset($_POST['tambah_manual'])){
-    $nama = mysqli_real_escape_string($koneksi, $_POST['nama']);
-    $nisn = mysqli_real_escape_string($koneksi, $_POST['nisn']);
-    $nik = mysqli_real_escape_string($koneksi, $_POST['nik']);
-    $jk = $_POST['jk'];
-    $tmp_lahir = mysqli_real_escape_string($koneksi, $_POST['tmp_lahir']);
-    $tgl_lahir = $_POST['tgl_lahir'];
-    $alamat = mysqli_real_escape_string($koneksi, $_POST['alamat']);
-    $desa = mysqli_real_escape_string($koneksi, $_POST['desa']);
-    $kec = mysqli_real_escape_string($koneksi, $_POST['kecamatan']);
-    $kab = mysqli_real_escape_string($koneksi, $_POST['kab_kota']);
-    $prov = mysqli_real_escape_string($koneksi, $_POST['provinsi']);
-    $ayah = mysqli_real_escape_string($koneksi, $_POST['ayah']);
-    $ibu = mysqli_real_escape_string($koneksi, $_POST['ibu']);
-    $hp = mysqli_real_escape_string($koneksi, $_POST['no_hp_wali']);
-    $asal = mysqli_real_escape_string($koneksi, $_POST['sekolah_asal']);
-    $jenjang = $_POST['jenjang_tujuan'];
+/**
+ * PSB › Pendaftar (redesain website Tahap 3, K-5).
+ *
+ * Chip status sekaligus ringkasan angka, saringan, daftar berhalaman 20
+ * baris, dan satu panel per pendaftar (biodata, berkas, riwayat, keputusan)
+ * menggantikan modal per baris. Tambah manual dan impor Excel memakai panel
+ * yang sama; impor diperiksa di server lebih dahulu tanpa menyimpan, lalu
+ * disimpan setelah dikonfirmasi (pengganti kotak alert peramban dan muat ulang).
+ *
+ * Pratinjau gambar berkas sengaja BELUM dipasang (keputusan AG: menunggu
+ * tahap perbaikan keamanan PSB); panel hanya menautkan berkas seperti dulu.
+ * Status, migrasi, dan hapus tetap diproses `proses_psb_admin.php` dan
+ * `hapus_siswa.php` (POST + CSRF).
+ */
 
-    if(empty($nisn) || $nisn == '-') {
-        $nisn = 'TMP' . date('ymd') . rand(1000, 9999);
+$psb = new PsbAdmin($koneksi);
+$self = app_url('/admin/admin_data.php');
+$bucket = '_psb_tambah';
+$imporMaks = 1000;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $aksi = (string) ($_POST['aksi'] ?? (isset($_POST['tambah_manual']) ? 'tambah' : ''));
+    if ($aksi === 'tambah') {
+        try {
+            $baru = $psb->tambah($_POST);
+            ah_old_clear($bucket);
+            ah_flash_set('success', 'Pendaftar ditambahkan dengan nomor ' . $baru['no'] . '.');
+            ah_redirect($self . '?id=' . $baru['id']);
+        } catch (PsbException $exception) {
+            ah_old_keep($_POST, array_keys(PsbAdmin::FORM), $bucket);
+            $_SESSION[$bucket . '_errors'] = $exception->errors();
+            ah_flash_set('danger', $exception->getMessage() . ($exception->errors() === [] ? '' : ' Periksa isian bertanda merah.'));
+            ah_redirect($self . '?action=create');
+        }
     }
-
-    $no_pendaftaran = "PSB" . date('Y') . rand(1000, 9999);
-
-    $query = "INSERT INTO psb_pendaftar (
-        no_pendaftaran, nama_lengkap, nisn, nik, jenis_kelamin, tempat_lahir, tgl_lahir,
-        alamat_jalan, desa, kecamatan, kab_kota, provinsi,
-        nama_ayah, nama_ibu, no_hp_wali, sekolah_asal, jenjang_tujuan, status
-    ) VALUES (
-        '$no_pendaftaran', '$nama', '$nisn', '$nik', '$jk', '$tmp_lahir', '$tgl_lahir',
-        '$alamat', '$desa', '$kec', '$kab', '$prov',
-        '$ayah', '$ibu', '$hp', '$asal', '$jenjang', 'Baru'
-    )";
-
-    if(mysqli_query($koneksi, $query)){
-        echo "<script>alert('Pendaftar berhasil ditambahkan secara manual!'); window.location='admin_data.php';</script>";
-    } else {
-        echo "<script>alert('Gagal Menambahkan: Cek apakah NISN tersebut sudah digunakan.'); window.location='admin_data.php';</script>";
+    if ($aksi === 'impor_periksa') {
+        $berkas = $_FILES['berkas'] ?? null;
+        $nama = is_array($berkas) ? (string) ($berkas['name'] ?? '') : '';
+        if (!is_array($berkas) || ($berkas['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || !is_uploaded_file((string) $berkas['tmp_name'])) {
+            ah_flash_set('danger', 'Pilih berkas Excel (.xlsx) lebih dahulu.');
+            ah_redirect($self . '?action=impor');
+        }
+        if (strtolower(pathinfo($nama, PATHINFO_EXTENSION)) !== 'xlsx' || (int) $berkas['size'] > 5 * 1024 * 1024) {
+            ah_flash_set('danger', 'Berkas harus .xlsx dan paling besar 5 MB.');
+            ah_redirect($self . '?action=impor');
+        }
+        require_once __DIR__ . '/SimpleXLSX.php';
+        $xlsx = \Shuchkin\SimpleXLSX::parse((string) $berkas['tmp_name']);
+        if (!$xlsx) {
+            ah_flash_set('danger', 'Berkas tidak dapat dibaca. Pastikan formatnya .xlsx sesuai panduan kolom.');
+            ah_redirect($self . '?action=impor');
+        }
+        $sheet = $xlsx->rows();
+        if (count($sheet) - 1 > $imporMaks) {
+            ah_flash_set('danger', 'Berkas berisi lebih dari ' . $imporMaks . ' baris. Pecah menjadi beberapa berkas.');
+            ah_redirect($self . '?action=impor');
+        }
+        $hasil = $psb->periksaImpor($sheet);
+        $_SESSION['_psb_impor'] = ['token' => bin2hex(random_bytes(16)), 'nama' => mb_substr(basename($nama), 0, 120), 'dibuat' => time()] + $hasil;
+        ah_redirect($self . '?action=impor&langkah=periksa');
     }
+    if ($aksi === 'impor_simpan' || $aksi === 'impor_batal') {
+        $impor = $_SESSION['_psb_impor'] ?? null;
+        unset($_SESSION['_psb_impor']);
+        if ($aksi === 'impor_batal') {
+            ah_redirect($self . '?action=impor');
+        }
+        if (!is_array($impor) || !hash_equals((string) $impor['token'], (string) ($_POST['token'] ?? '')) || time() - (int) $impor['dibuat'] > 3600) {
+            ah_flash_set('warning', 'Hasil pemeriksaan sudah tidak berlaku atau sudah disimpan. Pilih berkas lagi.');
+            ah_redirect($self . '?action=impor');
+        }
+        $simpan = $psb->simpanImpor($impor['siap']);
+        $catatan = array_merge($impor['lewat'], $simpan['gagal']);
+        ah_flash_set(
+            $catatan === [] ? 'success' : 'warning',
+            'Impor selesai: ' . $simpan['berhasil'] . ' pendaftar ditambahkan · ' . count($catatan) . ' baris dilewati.',
+            $catatan === [] ? null : '<ul class="mb-0 mt-1 small">' . implode('', array_map(static fn (array $b): string => '<li>Baris ' . (int) $b['baris'] . ' (' . ah_e($b['nama']) . '): ' . ah_e($b['alasan']) . '</li>', array_slice($catatan, 0, 20))) . '</ul>'
+        );
+        ah_redirect($self . '?status=Baru');
+    }
+    http_response_code(422);
+    ah_flash_set('danger', 'Tindakan tidak dikenal.');
+    ah_redirect($self);
 }
+
+$filter = PsbAdmin::filter($_GET);
+$halaman = max(1, (int) ($_GET['page'] ?? 1));
+$action = in_array($_GET['action'] ?? '', ['create', 'impor'], true) ? (string) $_GET['action'] : '';
+$id = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) ?: 0;
+$bagian = in_array($_GET['bagian'] ?? '', ['berkas', 'riwayat'], true) ? (string) $_GET['bagian'] : 'biodata';
+$dipilih = $id > 0 ? $psb->find($id) : null;
+$counts = $psb->statusCounts($filter);
+$daftar = $psb->page($filter, $halaman);
+$saringan = array_filter($filter, static fn (string $v): bool => $v !== '');
+$kembali = http_build_query($saringan + ($daftar['page'] > 1 ? ['page' => $daftar['page']] : []));
+$listUrl = $self . ($kembali !== '' ? '?' . $kembali : '');
+$detailUrl = static fn (int $pid, array $extra = []): string => $self . '?' . http_build_query($saringan + ($daftar['page'] > 1 ? ['page' => $daftar['page']] : []) + ['id' => $pid] + $extra);
+$tahun = beranda_service()->tahunAktif();
+if ($id > 0 && $dipilih === null) {
+    http_response_code(404);
+}
+
+ah_page_open([
+    'title' => 'Pendaftar PSB',
+    'heading' => 'Pendaftar PSB' . ($tahun !== null ? ' ' . $tahun['tahun'] : ''),
+    'user' => $currentUser,
+    'active' => 'psb.pendaftar',
+    'breadcrumbs' => [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => 'PSB'], ['label' => 'Pendaftar']],
+    'actions' => '<a class="btn btn-outline-secondary" href="' . ah_e($self . '?action=impor') . '">Impor Excel</a>'
+        . '<a class="btn btn-outline-secondary" href="' . ah_e(app_url('/admin/export_psb.php') . ($kembali !== '' ? '?' . $kembali : '')) . '">Ekspor</a>'
+        . '<a class="btn btn-primary" href="' . ah_e($self . '?action=create') . '">Tambah pendaftar</a>',
+]);
+if ($id > 0 && $dipilih === null) {
+    ah_note('danger', 'Pendaftar tidak ditemukan. Mungkin sudah dihapus; pilih dari daftar.');
+}
+
+// Chip status mempertahankan saringan lain dan kembali ke halaman 1.
+$tanpaStatus = array_diff_key($saringan, ['status' => 1]);
+$chips = [];
+foreach (['Semua' => '', 'Baru' => 'Baru', 'Diterima' => 'Diterima', 'Cadangan' => 'Cadangan', 'Ditolak' => 'Ditolak', 'Dimigrasi' => 'Dimigrasi'] as $label => $nilai) {
+    $query = http_build_query($tanpaStatus + ($nilai === '' ? [] : ['status' => $nilai]));
+    $chips[] = ['label' => $label, 'count' => $counts[$label], 'active' => $filter['status'] === $nilai, 'url' => $self . ($query !== '' ? '?' . $query : '')];
+}
+echo ah_chips($chips, 'Saring menurut status');
+
+// ----------------------------------------------------------------- Panel
+if ($action === 'create'):
+    ah_panel_open(['title' => 'Tambah pendaftar', 'close_url' => $listUrl, 'description' => 'Isian bertanda * wajib. NISN kosong diberi nomor sementara seperti sebelumnya.']);
+    $isian = static function (string $field, string $type = 'text', array $attr = []) use ($bucket): string {
+        [$label, $wajib] = PsbAdmin::FORM[$field];
+        $extra = '';
+        foreach ($attr as $k => $v) { $extra .= ' ' . $k . '="' . ah_e($v) . '"'; }
+        return '<div class="mb-2"><label class="form-label" for="psb-' . $field . '">' . ah_e($label) . ($wajib ? ' <span aria-hidden="true">*</span>' : '') . '</label>'
+            . '<input class="form-control" id="psb-' . $field . '" name="' . $field . '" type="' . $type . '" maxlength="' . (int) PsbAdmin::FORM[$field][2] . '"'
+            . ($wajib ? ' required' : '') . $extra . ' value="' . ah_e(ah_old($field, null, $bucket)) . '">' . ah_field_error($field, $bucket) . '</div>';
+    };
+    ?>
+    <?= ah_error_summary($bucket) ?>
+    <form method="post" action="<?= ah_e($self) ?>">
+        <?= Csrf::input() ?>
+        <input type="hidden" name="aksi" value="tambah">
+        <fieldset class="mb-3"><legend class="h6">Identitas santri</legend>
+            <?= $isian('nama') ?><?= $isian('nisn', 'text', ['inputmode' => 'numeric']) ?><?= $isian('nik', 'text', ['inputmode' => 'numeric']) ?>
+            <div class="mb-2"><label class="form-label" for="psb-jk">Jenis kelamin <span aria-hidden="true">*</span></label>
+                <select class="form-select" id="psb-jk" name="jk" required>
+                    <option value="L"<?= ah_old('jk', null, $bucket) !== 'P' ? ' selected' : '' ?>>Laki-laki</option>
+                    <option value="P"<?= ah_old('jk', null, $bucket) === 'P' ? ' selected' : '' ?>>Perempuan</option>
+                </select><?= ah_field_error('jk', $bucket) ?></div>
+            <?= $isian('tmp_lahir') ?><?= $isian('tgl_lahir', 'date') ?>
+        </fieldset>
+        <fieldset class="mb-3"><legend class="h6">Asal &amp; tujuan sekolah</legend>
+            <?= $isian('sekolah_asal') ?>
+            <div class="mb-2"><label class="form-label" for="psb-jenjang">Unit tujuan <span aria-hidden="true">*</span></label>
+                <select class="form-select" id="psb-jenjang" name="jenjang_tujuan" required>
+                    <?php foreach (PsbAdmin::UNIT as $unit): ?><option<?= ah_old('jenjang_tujuan', null, $bucket) === $unit ? ' selected' : '' ?>><?= ah_e($unit) ?></option><?php endforeach; ?>
+                </select><?= ah_field_error('jenjang_tujuan', $bucket) ?></div>
+        </fieldset>
+        <fieldset class="mb-3"><legend class="h6">Alamat domisili</legend>
+            <?= $isian('alamat') ?><?= $isian('desa') ?><?= $isian('kecamatan') ?><?= $isian('kab_kota') ?><?= $isian('provinsi') ?>
+        </fieldset>
+        <fieldset class="mb-3"><legend class="h6">Orang tua/wali</legend>
+            <?= $isian('ayah') ?><?= $isian('ibu') ?><?= $isian('no_hp_wali', 'tel', ['inputmode' => 'tel', 'placeholder' => '08…']) ?>
+        </fieldset>
+        <div class="ah-panel__foot">
+            <a class="btn btn-outline-secondary" href="<?= ah_e($listUrl) ?>">Batal</a>
+            <button class="btn btn-primary" type="submit">Simpan pendaftar</button>
+        </div>
+    </form>
+    <?php
+    ah_panel_close();
+    ah_old_clear($bucket);
+
+elseif ($action === 'impor'):
+    $impor = $_SESSION['_psb_impor'] ?? null;
+    $periksa = ($_GET['langkah'] ?? '') === 'periksa' && is_array($impor);
+    ah_panel_open(['title' => 'Impor pendaftar dari Excel', 'close_url' => $listUrl]);
+    ?>
+    <ol class="ah-steps">
+        <li<?= $periksa ? ' class="is-done"' : ' aria-current="step"' ?>>Pilih berkas</li>
+        <li<?= $periksa ? ' aria-current="step"' : '' ?>>Periksa</li>
+        <li>Simpan</li>
+    </ol>
+    <?php if (!$periksa): ?>
+        <p class="small">Baris 1 (judul kolom) dilewati. Kolom dibaca dari kiri ke kanan:</p>
+        <ul class="small">
+            <li><b>A</b> nama lengkap (wajib), <b>B</b> NISN, <b>C</b> NIK, <b>D</b> L/P</li>
+            <li><b>E–K</b> tempat lahir, tanggal lahir, alamat, desa, kecamatan, kab/kota, provinsi</li>
+            <li><b>L–P</b> nama ayah, nama ibu, no. HP wali, asal sekolah, jenjang tujuan</li>
+        </ul>
+        <form method="post" action="<?= ah_e($self) ?>" enctype="multipart/form-data">
+            <?= Csrf::input() ?>
+            <input type="hidden" name="aksi" value="impor_periksa">
+            <label class="ah-drop" data-ah-drop>
+                <span>Tarik berkas ke sini atau pilih berkas</span>
+                <input type="file" name="berkas" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
+                <span class="ah-drop__hint">.xlsx · paling besar 5 MB · paling banyak <?= $imporMaks ?> baris</span>
+            </label>
+            <p class="small text-muted mt-2">Berkas diperiksa lebih dahulu. Belum ada data yang disimpan sampai Anda menekan Simpan.</p>
+            <div class="ah-panel__foot">
+                <a class="btn btn-outline-secondary" href="<?= ah_e($listUrl) ?>">Batal</a>
+                <button class="btn btn-primary" type="submit">Periksa berkas</button>
+            </div>
+        </form>
+    <?php else: ?>
+        <p><b><?= ah_e($impor['nama']) ?></b></p>
+        <?= ah_stats([
+            ['label' => 'Siap ditambahkan', 'value' => (string) count($impor['siap'])],
+            ['label' => 'Dilewati', 'value' => (string) count($impor['lewat']), 'warn' => $impor['lewat'] !== []],
+        ], 'Hasil pemeriksaan impor') ?>
+        <?php if ($impor['lewat'] !== []): ?>
+            <h3 class="h6">Baris yang dilewati</h3>
+            <ul class="ah-list-plain small mb-3">
+                <?php foreach (array_slice($impor['lewat'], 0, 50) as $b): ?><li><span>Baris <?= (int) $b['baris'] ?> · <?= ah_e($b['nama']) ?></span><span><?= ah_e($b['alasan']) ?></span></li><?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+        <?php if ($impor['siap'] !== []): ?>
+            <h3 class="h6">Contoh baris yang akan ditambahkan</h3>
+            <ul class="ah-list-plain small mb-3">
+                <?php foreach (array_slice($impor['siap'], 0, 10) as $b): ?><li><span><?= ah_e($b['nama']) ?></span><span><?= ah_e($b['jenjang_tujuan']) ?> · <?= ah_e($b['jk']) ?></span></li><?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+        <div class="ah-panel__foot">
+            <form method="post" action="<?= ah_e($self) ?>"><?= Csrf::input() ?><input type="hidden" name="aksi" value="impor_batal"><button class="btn btn-outline-secondary" type="submit">Pilih berkas lain</button></form>
+            <?php if ($impor['siap'] !== []): ?>
+                <form method="post" action="<?= ah_e($self) ?>"><?= Csrf::input() ?><input type="hidden" name="aksi" value="impor_simpan"><input type="hidden" name="token" value="<?= ah_e($impor['token']) ?>">
+                    <button class="btn btn-primary" type="submit">Simpan <?= count($impor['siap']) ?> pendaftar</button></form>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+    <?php
+    ah_panel_close();
+
+elseif ($dipilih !== null):
+    $d = $dipilih;
+    $pid = (int) $d['id'];
+    $berkasAda = count(array_filter(array_keys(PsbAdmin::BERKAS), static fn (string $c): bool => (string) ($d[$c] ?? '') !== ''));
+    $tutup = $listUrl;
+    $hidden = static fn (string $act, string $val = ''): string => Csrf::input()
+        . '<input type="hidden" name="act" value="' . ah_e($act) . '"><input type="hidden" name="id" value="' . $pid . '">'
+        . ($val !== '' ? '<input type="hidden" name="val" value="' . ah_e($val) . '">' : '')
+        . '<input type="hidden" name="kembali" value="' . ah_e($kembali) . '">';
+    $hp = preg_replace('/\D+/', '', (string) $d['no_hp_wali']);
+    ah_panel_open(['title' => $d['no_pendaftaran'] . ' · ' . $d['nama_lengkap'], 'close_url' => $tutup, 'description' => 'Status: ' . $d['status']]);
+    echo '<ul class="ah-tabs" aria-label="Bagian detail pendaftar">'
+        . '<li><a href="' . ah_e($detailUrl($pid)) . '"' . ($bagian === 'biodata' ? ' aria-current="page"' : '') . '><span>Biodata</span></a></li>'
+        . '<li><a href="' . ah_e($detailUrl($pid, ['bagian' => 'berkas'])) . '"' . ($bagian === 'berkas' ? ' aria-current="page"' : '') . '><span>Berkas ' . $berkasAda . '/6</span></a></li>'
+        . '<li><a href="' . ah_e($detailUrl($pid, ['bagian' => 'riwayat'])) . '"' . ($bagian === 'riwayat' ? ' aria-current="page"' : '') . '><span>Riwayat</span></a></li></ul>';
+    if ($bagian === 'biodata'):
+        $tgl = strtotime((string) $d['tgl_lahir']);
+        ?>
+        <dl class="ah-kv">
+            <dt>Status</dt><dd><?= ah_status((string) $d['status']) ?></dd>
+            <dt>Unit tujuan</dt><dd><?= ah_e($d['jenjang_tujuan']) ?></dd>
+            <dt>NISN · NIK</dt><dd><?= ah_e($d['nisn']) ?> · <?= ah_e($d['nik']) ?></dd>
+            <dt>Tempat, tanggal lahir</dt><dd><?= ah_e($d['tempat_lahir']) ?>, <?= $tgl ? ah_e(\App\Ui\Layout::date($tgl)) : ah_e($d['tgl_lahir']) ?></dd>
+            <dt>Jenis kelamin</dt><dd><?= $d['jenis_kelamin'] === 'P' ? 'Perempuan' : 'Laki-laki' ?></dd>
+            <dt>Asal sekolah</dt><dd><?= ah_e($d['sekolah_asal'] ?: '—') ?></dd>
+            <dt>Alamat</dt><dd><?= ah_e(trim($d['alamat_jalan'] . ', Ds. ' . $d['desa'] . ', Kec. ' . $d['kecamatan'] . ', ' . $d['kab_kota'] . ', ' . $d['provinsi'], ', ')) ?></dd>
+            <dt>Orang tua</dt><dd><?= ah_e($d['nama_ayah'] ?: '—') ?> · <?= ah_e($d['nama_ibu'] ?: '—') ?></dd>
+            <dt>WhatsApp wali</dt><dd><?php if ($hp !== ''): ?><a href="<?= ah_e('https://wa.me/' . (str_starts_with($hp, '0') ? '62' . substr($hp, 1) : $hp)) ?>" target="_blank" rel="noopener"><?= ah_e($d['no_hp_wali']) ?></a><?php else: ?>—<?php endif; ?></dd>
+        </dl>
+    <?php elseif ($bagian === 'berkas'): ?>
+        <p class="small text-muted">Pratinjau gambar berkas dipasang setelah tahap perbaikan keamanan PSB. Sementara ini berkas dibuka di tab baru.</p>
+        <ul class="ah-list-plain">
+            <?php foreach (PsbAdmin::BERKAS as $kolom => $label): ?>
+                <li><span><?= ah_e($label) ?></span>
+                    <?php if ((string) ($d[$kolom] ?? '') !== ''): ?>
+                        <a class="btn btn-sm btn-outline-primary" href="<?= ah_e(app_url('/berkas_psb/' . rawurlencode(basename((string) $d[$kolom])))) ?>" target="_blank" rel="noopener">Lihat <span class="ah-visually-hidden"><?= ah_e($label) ?></span></a>
+                    <?php else: ?>
+                        <?= ah_badge($kolom === 'file_prestasi' ? 'Tidak ada' : 'Belum ada', $kolom === 'file_prestasi' ? 'muted' : 'warn') ?>
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else:
+        $bayar = $psb->pembayaran((string) $d['no_pendaftaran']); ?>
+        <ul class="ah-list-plain">
+            <li><span>Mendaftar</span><b><?= $d['tgl_daftar'] ? ah_e(date('d-m-Y H.i', strtotime((string) $d['tgl_daftar']))) : '—' ?></b></li>
+            <li><span>Status sekarang</span><?= ah_status((string) $d['status']) ?></li>
+            <?php if ($bayar !== null): ?>
+                <li><span>Tagihan <?= ah_e($bayar['kategori_biaya']) ?></span><b>Rp <?= number_format((int) $bayar['total_keseluruhan'], 0, ',', '.') ?></b></li>
+                <li><span>Pembayaran</span><span><?= ah_status((string) $bayar['status_pembayaran']) ?><?= $bayar['waktu_lunas'] ? ' ' . ah_e(date('d-m-Y H.i', strtotime((string) $bayar['waktu_lunas']))) : '' ?></span></li>
+                <li><span></span><a href="<?= ah_e(app_url('/admin/admin_pembayaran_psb.php?id=' . (int) $bayar['id'])) ?>">Buka rincian pembayaran</a></li>
+            <?php else: ?>
+                <li><span>Pembayaran</span><span class="ah-meta">Belum ada tagihan</span></li>
+            <?php endif; ?>
+        </ul>
+        <p class="small text-muted mt-2">Perubahan status lama tidak dicatat per tanggal; yang tampil adalah keadaan sekarang.</p>
+    <?php endif; ?>
+
+    <div class="ah-panel__foot ah-decision">
+        <?php if (in_array($d['status'], ['Baru', 'Cadangan'], true)): ?>
+            <form id="formStatusTolak<?= $pid ?>" method="post" action="proses_psb_admin.php" data-confirm="Status <?= ah_e($d['nama_lengkap']) ?> menjadi Ditolak." data-confirm-title="Tolak pendaftar ini?" data-confirm-ok="Tolak" data-confirm-tone="danger"><?= $hidden('status', 'Ditolak') ?><button class="btn btn-outline-danger" type="submit">Tolak</button></form>
+            <?php if ($d['status'] === 'Baru'): ?>
+                <form method="post" action="proses_psb_admin.php"><?= $hidden('status', 'Cadangan') ?><button class="btn btn-outline-secondary" type="submit">Cadangan</button></form>
+            <?php endif; ?>
+            <form id="formStatusTerima<?= $pid ?>" method="post" action="proses_psb_admin.php"><?= $hidden('status', 'Diterima') ?><button class="btn btn-primary" type="submit">Terima</button></form>
+        <?php elseif ($d['status'] === 'Diterima'): ?>
+            <form method="post" action="proses_psb_admin.php" data-confirm="Data <?= ah_e($d['nama_lengkap']) ?> disalin ke data santri dengan NIS baru, lalu status pendaftar menjadi Dimigrasi." data-confirm-title="Migrasi ke data santri?" data-confirm-ok="Migrasi"><?= $hidden('migrasi') ?><button class="btn btn-primary" type="submit">Migrasi ke data santri</button></form>
+        <?php endif; ?>
+        <?= ah_menu([
+            ['label' => 'Cetak bukti pendaftaran', 'url' => app_url('/cetak_bukti.php?noreg=' . rawurlencode((string) $d['no_pendaftaran'])), 'icon' => 'fa-print'],
+            ['label' => 'Hapus pendaftar', 'icon' => 'fa-trash', 'danger' => true, 'action' => 'hapus_siswa.php', 'fields' => ['id' => $pid, 'kembali' => $kembali],
+                'confirm' => ['title' => 'Hapus ' . $d['nama_lengkap'] . '?', 'text' => 'Data pendaftaran dihapus permanen dan tidak dapat dikembalikan.', 'ok' => 'Hapus permanen',
+                    'match' => (string) $d['nama_lengkap'], 'match_label' => 'Ketik nama']],
+        ], 'Tindakan lain untuk ' . $d['nama_lengkap'], false) ?>
+    </div>
+    <?php
+    ah_panel_close();
+endif;
+
+// --------------------------------------------------------------- Daftar
+ah_filter_open(count(array_diff_key($saringan, ['status' => 1])), ['status' => $filter['status']]);
 ?>
-
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <title>Tindak Lanjut PSB - Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-</head>
-<body>
-
-<header class="navbar navbar-dark sticky-top bg-success flex-md-nowrap p-0 shadow d-md-none">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Menu Admin</a>
-    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</header>
-
-<div class="container-fluid">
-    <div class="row">
-        <?php include 'sidebar.php'; ?>
-
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <h2 class="h2 mb-4">Validasi & Tindak Lanjut PSB</h2>
-
-            <div class="row g-3 mb-4">
-                <?php
-                $tot_baru = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE status='Baru'"));
-                // Menghitung yang masih berstatus Diterima di PPDB maupun yang sudah dialihkan ke Master Santri
-                $tot_terima = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE status='Diterima' OR status='Dimigrasi'"));
-                $tot_tolak = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE status='Ditolak'"));
-                    // $tot_baru = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE status='Baru'"));
-                    // $tot_terima = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE status='Diterima'"));
-                    // $tot_tolak = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE status='Ditolak'"));
-                ?>
-                <div class="col-md-4">
-                    <div class="card shadow-sm border-0 border-start border-primary border-5">
-                        <div class="card-body">
-                            <h6 class="text-muted">Pendaftar Baru (Belum Diproses)</h6>
-                            <h3 class="fw-bold text-primary mb-0"><?php echo $tot_baru; ?></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card shadow-sm border-0 border-start border-success border-5">
-                        <div class="card-body">
-                            <h6 class="text-muted">Diterima</h6>
-                            <h3 class="fw-bold text-success mb-0"><?php echo $tot_terima; ?></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card shadow-sm border-0 border-start border-danger border-5">
-                        <div class="card-body">
-                            <h6 class="text-muted">Ditolak / Cadangan</h6>
-                            <h3 class="fw-bold text-danger mb-0"><?php echo $tot_tolak; ?></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card shadow-sm border-0 mb-4 bg-light">
-                <div class="card-body">
-                    <form method="GET" class="row g-2">
-                        <div class="col-md-2">
-                            <select name="status" class="form-select form-select-sm" aria-label="Status pendaftar">
-                                <option value="">Semua status</option>
-                                <?php foreach (['Baru', 'Diterima', 'Cadangan', 'Ditolak'] as $opsiStatus): ?>
-                                <option value="<?= $opsiStatus ?>" <?= ($_GET['status'] ?? '') === $opsiStatus ? 'selected' : '' ?>><?= $opsiStatus ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <select name="jk" class="form-select form-select-sm">
-                                <option value="">Semua JK</option>
-                                <option value="L" <?php if(isset($_GET['jk']) && $_GET['jk']=='L') echo 'selected'; ?>>Laki-laki</option>
-                                <option value="P" <?php if(isset($_GET['jk']) && $_GET['jk']=='P') echo 'selected'; ?>>Perempuan</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select name="jenjang" class="form-select form-select-sm">
-                                <option value="">Semua Pilihan Unit</option>
-                                <option value="SMKN 2 Ciamis" <?php if(isset($_GET['jenjang']) && $_GET['jenjang']=='SMKN 2 Ciamis') echo 'selected'; ?>>SMKN 2 Ciamis</option>
-                                <option value="SMKN 1 Ciamis" <?php if(isset($_GET['jenjang']) && $_GET['jenjang']=='SMKN 1 Ciamis') echo 'selected'; ?>>SMKN 1 Ciamis</option>
-                                <option value="SMAN 2 Ciamis" <?php if(isset($_GET['jenjang']) && $_GET['jenjang']=='SMAN 2 Ciamis') echo 'selected'; ?>>SMAN 2 Ciamis</option>
-                                <option value="SMAN 1 Ciamis" <?php if(isset($_GET['jenjang']) && $_GET['jenjang']=='SMAN 1 Ciamis') echo 'selected'; ?>>SMAN 1 Ciamis</option>
-                                <option value="MAN 2 Ciamis" <?php if(isset($_GET['jenjang']) && $_GET['jenjang']=='MAN 2 Ciamis') echo 'selected'; ?>>MAN 2 Ciamis</option>
-                                <option value="SMK Terpadu Al Hasan" <?php if(isset($_GET['jenjang']) && $_GET['jenjang']=='SMK Terpadu Al Hasan') echo 'selected'; ?>>SMK Terpadu Al Hasan</option>
-                                <option value="SMP Terpadu Al Hasan" <?php if(isset($_GET['jenjang']) && $_GET['jenjang']=='SMP Terpadu Al Hasan') echo 'selected'; ?>>SMP Terpadu Al Hasan</option>
-                                <option value="RA Terpadu Al Hasan" <?php if(isset($_GET['jenjang']) && $_GET['jenjang']=='RA Terpadu Al Hasan') echo 'selected'; ?>>RA Terpadu Al Hasan</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <input type="text" name="kecamatan" class="form-control form-control-sm" placeholder="Filter Kecamatan..." value="<?php echo isset($_GET['kecamatan'])?$_GET['kecamatan']:''; ?>">
-                        </div>
-                        <div class="col-md-3">
-                            <div class="input-group input-group-sm">
-                                <input type="text" name="cari" class="form-control" placeholder="Cari Nama/No Daftar..." value="<?php echo isset($_GET['cari'])?$_GET['cari']:''; ?>">
-                                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Cari</button>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <a href="admin_data.php" class="btn btn-secondary btn-sm w-100"><i class="fas fa-sync"></i></a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="mb-3 d-flex flex-wrap gap-2">
-                <button type="button" class="btn btn-success shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#modalInputManual">
-                    <i class="fas fa-edit me-2"></i> Input Manual
-                </button>
-                <button type="button" class="btn btn-primary shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#modalImportPSB">
-                    <i class="fas fa-file-import me-2"></i> Import Excel
-                </button>
-                
-                <button type="button" id="btnExportData" onclick="exportDataExcel()" class="btn btn-warning shadow-sm fw-bold text-dark ms-auto">
-                    <i class="fas fa-file-excel me-2"></i> Export Excel Sesuai Filter
-                </button>
-            </div>
-
-            <div class="card shadow border-0 mb-5">
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 fw-bold text-success"><i class="fas fa-tasks me-2"></i>Daftar Calon Santri Baru</h6>
-                </div>
-                <div class="card-body p-3">
-                    <div class="table-responsive">
-                        <table id="tabelSantri" class="table table-hover table-striped table-bordered align-middle">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>No</th>
-                                    <th>No. Daftar & Nama</th>
-                                    <th>Pilihan Unit</th>
-                                    <th>Asal Sekolah</th>
-                                    <th>Kontak Wali</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center" width="200">Tindak Lanjut</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $no = 1;
-                                // PERBAIKAN: Secara default sembunyikan pendaftar yang sudah dimigrasi ke data master santri
-                                $where = "WHERE status != 'Dimigrasi'";
-                                
-                                // Saringan status (kartu Beranda "Pendaftar PSB baru", Tahap 2):
-                                // hanya nilai dari daftar tetap yang masuk ke SQL.
-                                $statusPsb = in_array($_GET['status'] ?? '', ['Baru', 'Diterima', 'Cadangan', 'Ditolak'], true) ? (string) $_GET['status'] : '';
-                                if ($statusPsb !== '') $where .= " AND status = '" . $statusPsb . "'";
-                                if(!empty($_GET['jk'])) $where .= " AND jenis_kelamin = '$_GET[jk]'";
-                                if(!empty($_GET['jenjang'])) $where .= " AND jenjang_tujuan = '$_GET[jenjang]'";
-                                if(!empty($_GET['kecamatan'])) $where .= " AND kecamatan LIKE '%$_GET[kecamatan]%'";
-                                if(!empty($_GET['cari'])) $where .= " AND (nama_lengkap LIKE '%$_GET[cari]%' OR no_pendaftaran LIKE '%$_GET[cari]%')";
-
-                                $data_pendaftar = [];
-                                $data = mysqli_query($koneksi, "SELECT * FROM psb_pendaftar $where ORDER BY id DESC");
-                                // $no = 1;
-                                // $where = "WHERE 1=1";
-                                // if(!empty($_GET['jk'])) $where .= " AND jenis_kelamin = '$_GET[jk]'";
-                                // if(!empty($_GET['jenjang'])) $where .= " AND jenjang_tujuan = '$_GET[jenjang]'";
-                                // if(!empty($_GET['kecamatan'])) $where .= " AND kecamatan LIKE '%$_GET[kecamatan]%'";
-                                // if(!empty($_GET['cari'])) $where .= " AND (nama_lengkap LIKE '%$_GET[cari]%' OR no_pendaftaran LIKE '%$_GET[cari]%')";
-
-                                // $data_pendaftar = [];
-                                // $data = mysqli_query($koneksi, "SELECT * FROM psb_pendaftar $where ORDER BY id DESC");
-                                
-                                while($d = mysqli_fetch_array($data)){
-                                    $data_pendaftar[] = $d;
-                                ?>
-                                <tr>
-                                    <td><?php echo $no++; ?></td>
-                                    <td>
-                                        <div class="fw-bold text-dark"><?php echo $d['nama_lengkap']; ?></div>
-                                        <small class="text-success fw-bold"><?php echo $d['no_pendaftaran']; ?></small>
-                                    </td>
-                                    <td><span class="badge bg-secondary"><?php echo $d['jenjang_tujuan']; ?></span></td>
-                                    <td><?php echo $d['sekolah_asal']; ?></td>
-                                    <td>
-                                        <a href="https://wa.me/<?php echo '62'.substr($d['no_hp_wali'], 1); ?>" target="_blank" class="text-success fw-bold text-decoration-none">
-                                            <i class="fab fa-whatsapp"></i> <?php echo $d['no_hp_wali']; ?>
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        <?php if($d['status'] == 'Baru'){ ?>
-                                            <span class="badge bg-primary rounded-pill">Baru</span>
-                                        <?php } else if($d['status'] == 'Diterima'){ ?>
-                                            <span class="badge bg-success rounded-pill">DITERIMA</span>
-                                        <?php } else if($d['status'] == 'Ditolak'){ ?>
-                                            <span class="badge bg-danger rounded-pill">Ditolak</span>
-                                        <?php } else { ?>
-                                            <span class="badge bg-warning text-dark rounded-pill">Cadangan</span>
-                                        <?php } ?>
-                                    </td>
-                                    <td class="text-center">
-                                        
-                                        <div class="btn-group btn-group-sm mb-1 w-100">
-                                            <button class="btn btn-info text-white fw-bold" data-bs-toggle="modal" data-bs-target="#modalDetail<?php echo $d['id']; ?>" title="Lihat Detail">
-                                                <i class="fas fa-eye"></i> Detail
-                                            </button>
-
-                                            <?php if($d['status'] == 'Baru' || $d['status'] == 'Cadangan'){ ?>
-                                                <button type="submit" form="formStatusTerima<?php echo (int) $d['id']; ?>" class="btn btn-success" title="Terima Santri"><i class="fas fa-check"></i></button>
-                                                <button type="submit" form="formStatusTolak<?php echo (int) $d['id']; ?>" class="btn btn-danger"><i class="fas fa-times"></i></button>
-                                            <?php } ?>
-                                        </div>
-
-                                        <?php if($d['status'] == 'Baru' || $d['status'] == 'Cadangan'){ ?>
-                                            <form id="formStatusTerima<?php echo (int) $d['id']; ?>" method="post" action="proses_psb_admin.php" class="d-none">
-                                                <?= \App\Http\Csrf::input() ?>
-                                                <input type="hidden" name="act" value="status">
-                                                <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
-                                                <input type="hidden" name="val" value="Diterima">
-                                            </form>
-                                            <form id="formStatusTolak<?php echo (int) $d['id']; ?>" method="post" action="proses_psb_admin.php" class="d-none" onsubmit="return confirm('Yakin ingin menolak pendaftar ini?')">
-                                                <?= \App\Http\Csrf::input() ?>
-                                                <input type="hidden" name="act" value="status">
-                                                <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
-                                                <input type="hidden" name="val" value="Ditolak">
-                                            </form>
-                                        <?php } ?>
-
-                                        <?php if($d['status'] == 'Diterima'){ ?>
-                                            <form method="post" action="proses_psb_admin.php" class="m-0" onsubmit="return confirm('Ini akan memindahkan data santri ke Master Data secara otomatis. Lanjutkan?')">
-                                                <?= \App\Http\Csrf::input() ?>
-                                                <input type="hidden" name="act" value="migrasi">
-                                                <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
-                                                <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold mb-1">
-                                                    <i class="fas fa-share-square me-1"></i> Migrasi Master
-                                                </button>
-                                            </form>
-                                        <?php } ?>
-
-                                        <div class="mt-1 d-flex gap-1 justify-content-center">
-                                            <a href="../cetak_bukti.php?noreg=<?php echo $d['no_pendaftaran']; ?>" target="_blank" class="btn btn-outline-secondary btn-sm w-50" title="Cetak Bukti"><i class="fas fa-print"></i> Cetak</a>
-                                            <form method="post" action="hapus_siswa.php" class="w-50 m-0" onsubmit="return confirm('Hapus data pendaftaran ini permanen?')">
-                                                <?= \App\Http\Csrf::input() ?>
-                                                <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
-                                                <button type="submit" class="btn btn-outline-danger btn-sm w-100"><i class="fas fa-trash"></i> Hapus</button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
+    <div class="ah-filter__wide"><label class="form-label" for="psb-cari">Cari</label>
+        <input class="form-control" type="search" id="psb-cari" name="cari" maxlength="100" value="<?= ah_e($filter['cari']) ?>" placeholder="Nama, no. daftar, atau NISN"></div>
+    <div><label class="form-label" for="psb-f-jenjang">Unit tujuan</label>
+        <select class="form-select" id="psb-f-jenjang" name="jenjang"><option value="">Semua unit</option>
+            <?php foreach (PsbAdmin::UNIT as $unit): ?><option<?= $filter['jenjang'] === $unit ? ' selected' : '' ?>><?= ah_e($unit) ?></option><?php endforeach; ?>
+        </select></div>
+    <div><label class="form-label" for="psb-f-jk">L/P</label>
+        <select class="form-select" id="psb-f-jk" name="jk"><option value="">Semua</option><option value="L"<?= $filter['jk'] === 'L' ? ' selected' : '' ?>>Laki-laki</option><option value="P"<?= $filter['jk'] === 'P' ? ' selected' : '' ?>>Perempuan</option></select></div>
+    <div><label class="form-label" for="psb-f-kec">Kecamatan</label>
+        <input class="form-control" id="psb-f-kec" name="kecamatan" maxlength="50" value="<?= ah_e($filter['kecamatan']) ?>"></div>
+<?php ah_filter_close(['status' => $filter['status']]); ?>
+<div class="ah-card ah-table-wrap">
+    <table class="ah-table ah-table--cards" id="daftar-pendaftar">
+        <caption class="ah-visually-hidden">Pendaftar PSB, <?= (int) $daftar['total'] ?> data</caption>
+        <thead><tr><th scope="col">No. daftar</th><th scope="col">Nama</th><th scope="col">Unit tujuan</th><th scope="col" class="ah-col-secondary">Asal sekolah</th><th scope="col">Berkas</th><th scope="col">Status</th></tr></thead>
+        <tbody>
+        <?php foreach ($daftar['rows'] as $row): ?>
+            <tr<?= (int) $row['id'] === $id ? ' class="is-selected"' : '' ?>>
+                <td><?= ah_e($row['no_pendaftaran']) ?></td>
+                <td><a class="ah-row-link" href="<?= ah_e($detailUrl((int) $row['id'])) ?>"><?= ah_e($row['nama_lengkap']) ?></a></td>
+                <td><?= ah_e($row['jenjang_tujuan']) ?></td>
+                <td class="ah-col-secondary"><?= ah_e($row['sekolah_asal'] ?: '—') ?></td>
+                <td><?= (int) $row['berkas'] ?>/6</td>
+                <td><?= ah_status((string) $row['status']) ?></td>
+            </tr>
+        <?php endforeach; ?>
+        <?php if ($daftar['rows'] === []): ?>
+            <tr><td colspan="6" data-label=""><?= ah_empty('Tidak ada pendaftar yang cocok', $saringan === [] ? 'Pendaftar baru akan tampil di sini.' : 'Bersihkan saringan atau pilih chip status lain.') ?></td></tr>
+        <?php endif; ?>
+        </tbody>
+    </table>
 </div>
-
-<div class="modal fade" id="modalInputManual" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="fas fa-edit me-2"></i> Input Pendaftaran Manual</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form method="POST">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <h6 class="fw-bold border-bottom pb-2">1. Identitas Santri</h6>
-                            <div class="mb-2"><label class="small fw-bold">Nama Lengkap</label><input type="text" name="nama" class="form-control" required></div>
-                            <div class="row">
-                                <div class="col-6 mb-2"><label class="small fw-bold">NISN</label><input type="text" name="nisn" class="form-control" placeholder="Kosongkan jika tidak ada"></div>
-                                <div class="col-6 mb-2"><label class="small fw-bold">NIK</label><input type="text" name="nik" class="form-control" placeholder="No KTP/KK"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 mb-2"><label class="small fw-bold">Tempat Lahir</label><input type="text" name="tmp_lahir" class="form-control"></div>
-                                <div class="col-6 mb-2"><label class="small fw-bold">Tgl Lahir</label><input type="date" name="tgl_lahir" class="form-control" required></div>
-                            </div>
-                            <div class="mb-3"><label class="small fw-bold">Jenis Kelamin</label><select name="jk" class="form-select"><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
-
-                            <h6 class="fw-bold border-bottom pb-2">2. Asal & Tujuan Sekolah</h6>
-                            <div class="mb-2"><label class="small fw-bold">Asal Sekolah</label><input type="text" name="sekolah_asal" class="form-control"></div>
-                            <div class="mb-2">
-                                <label class="small fw-bold">Pilihan Unit Sekolah</label>
-                                <select name="jenjang_tujuan" class="form-select" required>
-                                    <option value="SMKN 2 Ciamis">SMKN 2 Ciamis</option>
-                                    <option value="SMKN 1 Ciamis">SMKN 1 Ciamis</option>
-                                    <option value="SMAN 2 Ciamis">SMAN 2 Ciamis</option>
-                                    <option value="SMAN 1 Ciamis">SMAN 1 Ciamis</option>
-                                    <option value="MAN 2 Ciamis">MAN 2 Ciamis</option>
-                                    <option value="SMK Terpadu Al Hasan">SMK Terpadu Al Hasan</option>
-                                    <option value="SMP Terpadu Al Hasan">SMP Terpadu Al Hasan</option>
-                                    <option value="RA Terpadu Al Hasan">RA Terpadu Al Hasan</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="fw-bold border-bottom pb-2">3. Alamat Domisili</h6>
-                            <div class="mb-2"><label class="small fw-bold">Jalan / Dusun</label><input type="text" name="alamat" class="form-control"></div>
-                            <div class="row">
-                                <div class="col-6 mb-2"><label class="small fw-bold">Desa</label><input type="text" name="desa" class="form-control"></div>
-                                <div class="col-6 mb-2"><label class="small fw-bold">Kecamatan</label><input type="text" name="kecamatan" class="form-control"></div>
-                                <div class="col-6 mb-2"><label class="small fw-bold">Kab/Kota</label><input type="text" name="kab_kota" class="form-control"></div>
-                                <div class="col-6 mb-2"><label class="small fw-bold">Provinsi</label><input type="text" name="provinsi" class="form-control"></div>
-                            </div>
-
-                            <h6 class="fw-bold border-bottom pb-2 mt-2">4. Data Orang Tua Wali</h6>
-                            <div class="row">
-                                <div class="col-6 mb-2"><label class="small fw-bold">Nama Ayah</label><input type="text" name="ayah" class="form-control"></div>
-                                <div class="col-6 mb-2"><label class="small fw-bold">Nama Ibu</label><input type="text" name="ibu" class="form-control"></div>
-                                <div class="col-12 mb-2"><label class="small fw-bold">No WhatsApp Wali (Aktif)</label><input type="text" name="no_hp_wali" class="form-control"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4 text-end">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" name="tambah_manual" class="btn btn-success px-4 fw-bold">Simpan Pendaftar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<?php foreach($data_pendaftar as $d): ?>
-<div class="modal fade" id="modalDetail<?php echo $d['id']; ?>" tabindex="-1">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header bg-info text-white">
-                <h5 class="modal-title fw-bold"><i class="fas fa-id-card me-2"></i> Detail Calon Santri: <?php echo $d['nama_lengkap']; ?></h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body p-4">
-                
-                <div class="row g-4">
-                    <div class="col-lg-7 border-end">
-                        <h6 class="fw-bold text-success border-bottom pb-2 mb-3">Biodata Pendaftar</h6>
-                        <table class="table table-sm table-borderless">
-                            <tr><td width="35%" class="text-muted">No. Pendaftaran</td><td class="fw-bold">: <?php echo $d['no_pendaftaran']; ?></td></tr>
-                            <tr><td class="text-muted">Tanggal Daftar</td><td>: <?php echo isset($d['tgl_daftar']) ? date('d-m-Y H:i', strtotime($d['tgl_daftar'])) : '-'; ?></td></tr>
-                            <tr><td class="text-muted">NIK</td><td>: <?php echo $d['nik']; ?></td></tr>
-                            <tr><td class="text-muted">NISN</td><td>: <?php echo $d['nisn']; ?></td></tr>
-                            <tr><td class="text-muted">Nama Lengkap</td><td class="fw-bold text-uppercase">: <?php echo $d['nama_lengkap']; ?></td></tr>
-                            <tr><td class="text-muted">Tempat, Tgl Lahir</td><td>: <?php echo $d['tempat_lahir'].', '.date('d-m-Y', strtotime($d['tgl_lahir'])); ?></td></tr>
-                            <tr><td class="text-muted">Jenis Kelamin</td><td>: <?php echo ($d['jenis_kelamin']=='L') ? 'Laki-laki' : 'Perempuan'; ?></td></tr>
-                            <tr><td class="text-muted">Alamat Lengkap</td><td>: <?php echo $d['alamat_jalan']; ?></td></tr>
-                            <tr><td class="text-muted">Wilayah</td><td>: Ds. <?php echo $d['desa']; ?>, Kec. <?php echo $d['kecamatan']; ?>, <?php echo $d['kab_kota']; ?>, <?php echo $d['provinsi']; ?></td></tr>
-                            <tr><td class="text-muted">Asal Sekolah</td><td>: <?php echo $d['sekolah_asal']; ?></td></tr>
-                            <tr><td class="text-muted">Jenjang Tujuan</td><td class="fw-bold text-primary">: <?php echo $d['jenjang_tujuan']; ?></td></tr>
-                        </table>
-
-                        <h6 class="fw-bold text-success border-bottom pb-2 mt-4 mb-3">Data Orang Tua Wali</h6>
-                        <table class="table table-sm table-borderless">
-                            <tr><td width="35%" class="text-muted">Nama Ayah</td><td>: <?php echo $d['nama_ayah']; ?></td></tr>
-                            <tr><td class="text-muted">Nama Ibu</td><td>: <?php echo $d['nama_ibu']; ?></td></tr>
-                            <tr><td class="text-muted">No. WhatsApp Wali</td><td class="fw-bold">: <a href="https://wa.me/<?php echo '62'.substr($d['no_hp_wali'], 1); ?>" target="_blank" class="text-success"><i class="fab fa-whatsapp"></i> <?php echo $d['no_hp_wali']; ?></a></td></tr>
-                        </table>
-                    </div>
-
-                    <div class="col-lg-5">
-                        <h6 class="fw-bold text-success border-bottom pb-2 mb-3">Dokumen Berkas Pendaftar</h6>
-                        <div class="alert alert-light border small mb-3">
-                            <i class="fas fa-info-circle me-1"></i> Klik tombol <b>Lihat</b> untuk memeriksa berkas yang telah diunggah oleh pendaftar.
-                        </div>
-
-                        <div class="d-grid gap-2">
-                            <div class="d-flex justify-content-between align-items-center p-2 border rounded">
-                                <span class="small fw-bold"><i class="fas fa-id-card text-secondary me-2"></i> KTP Orang Tua</span>
-                                <?php if($d['file_ktp']): ?>
-                                    <a href="../berkas_psb/<?php echo $d['file_ktp']; ?>" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3">Lihat KTP</a>
-                                <?php else: ?>
-                                    <span class="badge bg-danger rounded-pill">Belum Ada</span>
-                                <?php endif; ?>
-                            </div>
-                            
-                            <div class="d-flex justify-content-between align-items-center p-2 border rounded">
-                                <span class="small fw-bold"><i class="fas fa-users text-secondary me-2"></i> Kartu Keluarga</span>
-                                <?php if($d['file_kk']): ?>
-                                    <a href="../berkas_psb/<?php echo $d['file_kk']; ?>" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3">Lihat KK</a>
-                                <?php else: ?>
-                                    <span class="badge bg-danger rounded-pill">Belum Ada</span>
-                                <?php endif; ?>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center p-2 border rounded">
-                                <span class="small fw-bold"><i class="fas fa-baby text-secondary me-2"></i> Akta Kelahiran</span>
-                                <?php if($d['file_akta']): ?>
-                                    <a href="../berkas_psb/<?php echo $d['file_akta']; ?>" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3">Lihat Akta</a>
-                                <?php else: ?>
-                                    <span class="badge bg-danger rounded-pill">Belum Ada</span>
-                                <?php endif; ?>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center p-2 border rounded">
-                                <span class="small fw-bold"><i class="fas fa-graduation-cap text-secondary me-2"></i> Ijazah / SKL</span>
-                                <?php if($d['file_ijazah']): ?>
-                                    <a href="../berkas_psb/<?php echo $d['file_ijazah']; ?>" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3">Lihat Ijazah</a>
-                                <?php else: ?>
-                                    <span class="badge bg-danger rounded-pill">Belum Ada</span>
-                                <?php endif; ?>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center p-2 border rounded">
-                                <span class="small fw-bold"><i class="fas fa-file-alt text-secondary me-2"></i> Rapor / Nilai</span>
-                                <?php if($d['file_nilai']): ?>
-                                    <a href="../berkas_psb/<?php echo $d['file_nilai']; ?>" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3">Lihat Nilai</a>
-                                <?php else: ?>
-                                    <span class="badge bg-danger rounded-pill">Belum Ada</span>
-                                <?php endif; ?>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center p-2 border rounded">
-                                <span class="small fw-bold"><i class="fas fa-trophy text-secondary me-2"></i> Sertifikat Prestasi</span>
-                                <?php if($d['file_prestasi']): ?>
-                                    <a href="../berkas_psb/<?php echo $d['file_prestasi']; ?>" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3">Lihat Sertifikat</a>
-                                <?php else: ?>
-                                    <span class="badge bg-secondary rounded-pill">Kosong</span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                
-            </div>
-            <div class="modal-footer bg-light">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup Detail</button>
-            </div>
-        </div>
-    </div>
-</div>
-<?php endforeach; ?>
-
-<div class="modal fade" id="modalImportPSB" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title"><i class="fas fa-file-excel me-2"></i> Import Data Pendaftar Fisik</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="formImportPSB">
-                <div class="modal-body">
-                    <div class="alert alert-info small">
-                        <i class="fas fa-info-circle me-1"></i> <strong>PANDUAN SUSUNAN KOLOM EXCEL:</strong><br>
-                        Sistem akan membaca Excel dari kiri ke kanan. Pastikan susunan kolomnya persis seperti ini:<br><br>
-                        <b>Kolom A:</b> Nama Lengkap (Wajib)<br>
-                        <b>Kolom B:</b> NISN<br>
-                        <b>Kolom C:</b> NIK<br>
-                        <b>Kolom D:</b> JK (L/P)<br>
-                        <b>Kolom E s.d K:</b> Tempat Lahir, Tgl Lahir, Alamat, Desa, Kec, Kab/Kota, Prov<br>
-                        <b>Kolom L s.d Q:</b> Nama Ayah, Nama Ibu, No HP Wali, Sekolah Asal, Jenjang Tujuan<br>
-                        <br><i>*Baris ke-1 (Judul Kolom) akan diabaikan secara otomatis. Nomor Pendaftaran akan dibuatkan otomatis oleh sistem.</i>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Pilih File Data Pendaftar (.xlsx)</label>
-                        <input type="file" id="file_excel_psb" class="form-control form-control-lg" accept=".xlsx" required>
-                    </div>
-                </div>
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" id="btnProsesImportPSB" class="btn btn-primary fw-bold">Upload & Mulai Proses</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        // KONFIGURASI DATATABLES DENGAN PAGINATION PENUH
-        $('#tabelSantri').DataTable({
-            "lengthMenu": [[25, 50, 100, -1], [25, 50, 100, "Semua"]],
-            "pageLength": 25,
-            "language": {
-                "lengthMenu": "Tampilkan _MENU_ data",
-                "zeroRecords": "Tidak ada data pendaftar ditemukan.",
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ pendaftar",
-                "infoEmpty": "Data kosong",
-                "infoFiltered": "(filter dari _MAX_ data)",
-                "search": "Cari Cepat:",
-                "paginate": { "first": "Awal", "last": "Akhir", "next": "Maju", "previous": "Mundur" }
-            }
-        });
-    });
-
-    // ===============================================
-    // FUNGSI EKSPOR EXCEL CLIENT-SIDE MENGGUNAKAN SHEETJS
-    // ===============================================
-    function exportDataExcel() {
-        const btn = document.getElementById('btnExportData');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Merakit File...';
-        btn.disabled = true;
-
-        // Ambil parameter filter dari URL
-        const urlParams = new URLSearchParams(window.location.search);
-        
-        fetch('export_psb.php?' + urlParams.toString())
-        .then(res => res.json())
-        .then(data => {
-            if(data.length === 0) {
-                alert('Tidak ada data yang cocok dengan filter untuk diekspor.');
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-                return;
-            }
-            
-            // Konversi dari JSON ke Worksheet Excel
-            const ws = XLSX.utils.json_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Data Calon Santri");
-            
-            // Penamaan File Dinamis dengan Tanggal
-            const date = new Date();
-            const fileName = "Data_PSB_AlHasan_" + date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + ".xlsx";
-            
-            // Unduh file secara otomatis
-            XLSX.writeFile(wb, fileName);
-            
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        })
-        .catch(err => {
-            alert('Gagal mengekspor data: ' + err);
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        });
-    }
-
-    // ===============================================
-    // FUNGSI IMPORT EXCEL CLIENT-SIDE MENGGUNAKAN SHEETJS
-    // ===============================================
-    document.getElementById('formImportPSB').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const fileInput = document.getElementById('file_excel_psb');
-        const file = fileInput.files[0];
-        if (!file) return;
-
-        const btnProses = document.getElementById('btnProsesImportPSB');
-        btnProses.disabled = true;
-        btnProses.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Membaca & Memasukkan Data...';
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const firstSheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[firstSheetName];
-                
-                const jsonRows = XLSX.utils.sheet_to_json(worksheet, { 
-                    header: 1, 
-                    defval: "", 
-                    raw: false, 
-                    dateNF: 'yyyy-mm-dd' 
-                });
-                
-                const formData = new FormData();
-                formData.append('_csrf', window.ALHASAN_CSRF);
-                formData.append('payload', JSON.stringify(jsonRows));
-
-                fetch('proses_import_psb.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.text())
-                .then(result => {
-                    alert(result);
-                    window.location.reload();
-                })
-                .catch(error => {
-                    alert('Error Koneksi: ' + error);
-                    btnProses.disabled = false;
-                    btnProses.innerHTML = 'Upload & Mulai Proses';
-                });
-            } catch (err) {
-                alert("Gagal membaca file. Pastikan format file sesuai.");
-                btnProses.disabled = false;
-                btnProses.innerHTML = 'Upload & Mulai Proses';
-            }
-        };
-        reader.readAsArrayBuffer(file);
-    });
-</script>
-
-</body>
-</html>
+<?php
+ah_pagination((int) $daftar['total'], (int) $daftar['page'], PsbAdmin::PER_PAGE);
+ah_page_close();

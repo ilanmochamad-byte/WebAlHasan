@@ -1,120 +1,178 @@
 <?php
+
+declare(strict_types=1);
+
+use App\Database\PageQuery;
+use App\Http\Csrf;
+use App\Konten\Unggahan;
+
 require_once __DIR__ . '/_guard.php';
 
-// Proses Upload & Hapus (Tetap sama seperti logika file Anda)
-if(isset($_POST['upload_foto'])){
-    $judul = $_POST['judul'];
-    $ket   = $_POST['keterangan'];
-    $filename = $_FILES['foto']['name'];
-    $rand = rand();
-    $new_name = $rand.'_'.$filename;
-    
-    if($filename != ""){
-        move_uploaded_file($_FILES['foto']['tmp_name'], '../gambar_galeri/'.$new_name);
-        mysqli_query($koneksi, "INSERT INTO galeri (judul, keterangan, gambar) VALUES ('$judul','$ket','$new_name')");
-        echo "<script>alert('Foto Berhasil Diupload'); window.location='admin_galeri.php';</script>";
+/**
+ * Konten website › Galeri (redesain website Tahap 3, W-3).
+ *
+ * Kisi foto terbaru lebih dulu, tanpa album (keputusan AI). Beberapa foto
+ * dapat diunggah sekaligus; setiap foto tetap satu baris galeri (tanpa
+ * perubahan database). Klik foto membuka panel untuk mengubah judul dan
+ * keterangan atau menghapus. Hapus hanya POST dan nama berkas dari DB.
+ */
+
+$self = app_url('/admin/admin_galeri.php');
+$folder = APP_ROOT . '/gambar_galeri';
+
+// --- UNGGAH (satu atau beberapa foto) ---
+if (isset($_POST['upload_foto'])) {
+    $berkas = Unggahan::daftar('foto');
+    $judul = trim((string) ($_POST['judul'] ?? ''));
+    $ket = trim((string) ($_POST['keterangan'] ?? ''));
+    $berhasil = 0;
+    $gagal = [];
+    if ($berkas === []) {
+        $gagal[] = 'Pilih minimal satu foto.';
     }
+    foreach ($berkas as $foto) {
+        try {
+            $nama = Unggahan::simpan($foto, $folder, Unggahan::GAMBAR, Unggahan::MAKS_GAMBAR, true);
+            $judulFoto = $judul !== '' && count($berkas) === 1 ? mb_substr($judul, 0, 255) : Unggahan::judulDari($foto['name']);
+            $stmt = mysqli_prepare($koneksi, "INSERT INTO galeri (judul, keterangan, gambar) VALUES (?, ?, ?)");
+            mysqli_stmt_bind_param($stmt, 'sss', $judulFoto, $ket, $nama);
+            if (mysqli_stmt_execute($stmt)) {
+                $berhasil++;
+            } else {
+                $gagal[] = $foto['name'] . ': tidak dapat disimpan.';
+            }
+        } catch (RuntimeException $exception) {
+            $gagal[] = $exception->getMessage();
+        }
+    }
+    ah_flash_set($gagal === [] ? 'success' : ($berhasil > 0 ? 'warning' : 'danger'),
+        $berhasil . ' foto diunggah' . ($gagal === [] ? '. Judul dan keterangan dapat diubah dengan mengeklik foto.' : ' · ' . count($gagal) . ' gagal.'),
+        $gagal === [] ? null : '<ul class="mb-0 mt-1 small">' . implode('', array_map(static fn (string $p): string => '<li>' . ah_e($p) . '</li>', $gagal)) . '</ul>');
+    header('Location: admin_galeri.php');
+    exit;
 }
+
+// --- UBAH JUDUL & KETERANGAN ---
+if (isset($_POST['ubah'])) {
+    $id = (int) $_POST['ubah'];
+    $judul = mb_substr(trim((string) ($_POST['judul'] ?? '')), 0, 255);
+    $ket = trim((string) ($_POST['keterangan'] ?? ''));
+    if ($judul === '') {
+        ah_flash_set('danger', 'Judul foto wajib diisi.');
+    } else {
+        $stmt = mysqli_prepare($koneksi, "UPDATE galeri SET judul=?, keterangan=? WHERE id=?");
+        mysqli_stmt_bind_param($stmt, 'ssi', $judul, $ket, $id);
+        mysqli_stmt_execute($stmt);
+        ah_flash_set('success', 'Judul dan keterangan foto disimpan.');
+    }
+    header('Location: admin_galeri.php?id=' . $id);
+    exit;
+}
+
 // Proses Hapus (hanya POST; nama berkas diambil dari baris galeri, bukan dari permintaan)
-if(isset($_GET['hapus'])){
+if (isset($_GET['hapus'])) {
     admin_require_post();
 }
-if(isset($_POST['hapus'])){
+if (isset($_POST['hapus'])) {
     $id = (int) $_POST['hapus'];
     $stmt = mysqli_prepare($koneksi, "SELECT gambar FROM galeri WHERE id=?");
     mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
     $row = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
     $nama_berkas = basename((string) ($row['gambar'] ?? ''));
-    if($nama_berkas !== '' && is_file('../gambar_galeri/'.$nama_berkas)){
-        unlink('../gambar_galeri/'.$nama_berkas);
+    if ($nama_berkas !== '' && is_file('../gambar_galeri/' . $nama_berkas)) {
+        unlink('../gambar_galeri/' . $nama_berkas);
     }
     $stmt = mysqli_prepare($koneksi, "DELETE FROM galeri WHERE id=?");
     mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
-    echo "<script>window.location='admin_galeri.php';</script>";
+    ah_flash_set(mysqli_stmt_affected_rows($stmt) > 0 ? 'success' : 'info', mysqli_stmt_affected_rows($stmt) > 0 ? 'Foto dihapus dari galeri.' : 'Foto tidak ditemukan; tidak ada yang dihapus.');
+    header('Location: admin_galeri.php');
+    exit;
 }
-?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Galeri</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
+$daftar = PageQuery::fetch($koneksi, 'SELECT id, judul, keterangan, gambar, tanggal FROM galeri', [], 'tanggal DESC, id DESC', max(1, (int) ($_GET['page'] ?? 1)), '', [], 24);
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) ?: 0;
+$dipilih = null;
+if ($id > 0) {
+    $stmt = $koneksi->prepare('SELECT * FROM galeri WHERE id = ?');
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $dipilih = $stmt->get_result()->fetch_assoc() ?: null;
+    $stmt->close();
+}
+$listUrl = $self . ($daftar['page'] > 1 ? '?page=' . (int) $daftar['page'] : '');
+$src = static fn (string $nama): string => app_url('/gambar_galeri/' . rawurlencode($nama));
 
-<header class="navbar navbar-dark sticky-top bg-success flex-md-nowrap p-0 shadow d-md-none">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Menu Admin</a>
-    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</header>
+ah_page_open([
+    'title' => 'Galeri',
+    'heading' => 'Konten website',
+    'user' => $currentUser,
+    'active' => 'konten',
+    'description' => 'Foto langsung tampil di galeri situs, terbaru lebih dulu.',
+    'actions' => '<a class="btn btn-outline-secondary" href="' . ah_e(app_url('/galeri.php')) . '" target="_blank" rel="noopener">Lihat situs ↗</a>'
+        . '<a class="btn btn-primary" href="#unggah-foto">Unggah foto</a>',
+]);
+if ($id > 0 && $dipilih === null) {
+    ah_note('danger', 'Foto tidak ditemukan; pilih dari kisi.');
+}
 
-<div class="container-fluid">
-    <div class="row">
-        <?php include 'sidebar.php'; ?>
-
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <h2 class="h2 mb-4">Kelola Galeri Foto</h2>
-            
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card shadow mb-4">
-                        <div class="card-header bg-primary text-white">Upload Foto Baru</div>
-                        <div class="card-body">
-                            <form method="POST" enctype="multipart/form-data">
-                                <div class="mb-3">
-                                    <label>Judul Foto</label>
-                                    <input type="text" name="judul" class="form-control" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label>Keterangan</label>
-                                    <textarea name="keterangan" class="form-control"></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label>File Foto</label>
-                                    <input type="file" name="foto" class="form-control" required>
-                                </div>
-                                <button type="submit" name="upload_foto" class="btn btn-success w-100">Upload</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-8">
-                    <div class="card shadow">
-                        <div class="card-header">Data Galeri</div>
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                thead><tr><th>Gambar</th><th>Info</th><th>Aksi</th></tr></thead>
-                                <tbody>
-                                    <?php
-                                    $data = mysqli_query($koneksi, "SELECT * FROM galeri ORDER BY id DESC");
-                                    while($d = mysqli_fetch_array($data)){
-                                    ?>
-                                    <tr>
-                                        <td><img src="../gambar_galeri/<?php echo $d['gambar']; ?>" width="80"></td>
-                                        <td><b><?php echo $d['judul']; ?></b><br><small><?php echo $d['keterangan']; ?></small></td>
-                                        <td>
-                                            <form method="post" action="admin_galeri.php" class="m-0" onsubmit="return confirm('Hapus?')">
-                                                <?= \App\Http\Csrf::input() ?>
-                                                <input type="hidden" name="hapus" value="<?php echo (int) $d['id']; ?>">
-                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+if ($dipilih !== null):
+    ah_panel_open(['title' => 'Ubah foto', 'close_url' => $listUrl]);
+    ?>
+    <img class="ah-editor__cover" src="<?= ah_e($src((string) $dipilih['gambar'])) ?>" alt="<?= ah_e($dipilih['judul']) ?>">
+    <form method="post" action="admin_galeri.php">
+        <?= Csrf::input() ?>
+        <input type="hidden" name="ubah" value="<?= (int) $dipilih['id'] ?>">
+        <div class="mb-2"><label class="form-label" for="galeri-judul">Judul <span aria-hidden="true">*</span></label>
+            <input class="form-control" id="galeri-judul" name="judul" maxlength="255" required value="<?= ah_e($dipilih['judul']) ?>"></div>
+        <div class="mb-2"><label class="form-label" for="galeri-ket">Keterangan</label>
+            <textarea class="form-control" id="galeri-ket" name="keterangan" rows="3"><?= ah_e($dipilih['keterangan'] ?? '') ?></textarea></div>
+        <div class="ah-panel__foot">
+            <a class="btn btn-outline-secondary" href="<?= ah_e($listUrl) ?>">Batal</a>
+            <button class="btn btn-primary" type="submit">Simpan</button>
+        </div>
+    </form>
+    <div class="ah-danger-zone mt-3">
+        <p class="small mb-2">Foto dihapus dari galeri situs dan berkasnya dihapus permanen.</p>
+        <form method="post" action="admin_galeri.php" data-confirm="Foto &quot;<?= ah_e($dipilih['judul']) ?>&quot; hilang dari galeri situs dan tidak dapat dikembalikan." data-confirm-title="Hapus foto ini?" data-confirm-ok="Hapus foto" data-confirm-tone="danger">
+            <?= Csrf::input() ?>
+            <input type="hidden" name="hapus" value="<?= (int) $dipilih['id'] ?>">
+            <button class="btn btn-outline-danger" type="submit">Hapus foto</button>
+        </form>
     </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <?php
+    ah_panel_close();
+endif;
+?>
+<form method="post" action="admin_galeri.php" enctype="multipart/form-data" class="ah-card ah-card__body" id="unggah-foto" aria-labelledby="judul-unggah">
+    <h2 class="h6" id="judul-unggah">Unggah foto</h2>
+    <?= Csrf::input() ?>
+    <label class="ah-drop" data-ah-drop>
+        <span>Tarik beberapa foto ke sini atau pilih berkas</span>
+        <input type="file" name="foto[]" accept="image/jpeg,image/png,image/webp,image/gif" multiple required>
+        <span class="ah-drop__hint">JPG, PNG, WEBP, atau GIF · paling besar 5 MB per foto. Judul diambil dari nama berkas dan dapat diubah sesudahnya.</span>
+    </label>
+    <details class="mt-2"><summary class="small">Judul dan keterangan (opsional)</summary>
+        <div class="row g-2 mt-1">
+            <div class="col-md-5"><label class="form-label" for="unggah-judul">Judul (bila satu foto)</label><input class="form-control" id="unggah-judul" name="judul" maxlength="255"></div>
+            <div class="col-md-7"><label class="form-label" for="unggah-ket">Keterangan (untuk semua foto)</label><input class="form-control" id="unggah-ket" name="keterangan"></div>
+        </div>
+    </details>
+    <div class="ah-actions mt-2"><button class="btn btn-primary" type="submit" name="upload_foto" value="1">Unggah</button></div>
+</form>
+<?php if ($daftar['rows'] === []): ?>
+    <div class="ah-card ah-card__body"><?= ah_empty('Belum ada foto', 'Unggah foto kegiatan; foto langsung tampil di galeri situs.') ?></div>
+<?php else: ?>
+    <ul class="ah-media" aria-label="Foto galeri, <?= (int) $daftar['total'] ?> foto">
+        <?php foreach ($daftar['rows'] as $row): ?>
+            <li><a href="<?= ah_e($self . '?' . http_build_query(($daftar['page'] > 1 ? ['page' => $daftar['page']] : []) + ['id' => (int) $row['id']])) ?>"<?= (int) $row['id'] === $id ? ' aria-current="true"' : '' ?>>
+                <img src="<?= ah_e($src((string) $row['gambar'])) ?>" alt="" loading="lazy">
+                <span class="ah-media__cap"><b><?= ah_e($row['judul']) ?></b><small><?= $row['tanggal'] ? ah_e(\App\Ui\Layout::date((int) strtotime((string) $row['tanggal']))) : '' ?><?= (string) ($row['keterangan'] ?? '') !== '' ? ' · ' . ah_e(mb_strimwidth((string) $row['keterangan'], 0, 60, '…')) : '' ?></small></span>
+            </a></li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+<?php
+ah_pagination((int) $daftar['total'], (int) $daftar['page'], 24);
+ah_page_close();

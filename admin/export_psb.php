@@ -1,57 +1,24 @@
 <?php
+
+declare(strict_types=1);
+
+use App\Psb\PsbAdmin;
+
 require_once __DIR__ . '/_guard.php';
 
-$where = "WHERE 1=1";
+/**
+ * Ekspor pendaftar PSB ke Excel sesuai saringan daftar (redesain Tahap 3).
+ *
+ * Berkas .xlsx dibuat di server (sebelumnya JSON yang dirakit SheetJS di
+ * peramban dan kotak alert peramban saat kosong). Kolom sama dengan ekspor lama. Saringan
+ * dibaca `PsbAdmin::filter()` dan diikat sebagai parameter query.
+ */
 
-// Saringan status yang sama dengan admin_data.php (daftar tetap, Tahap 2).
-$statusPsb = in_array($_GET['status'] ?? '', ['Baru', 'Diterima', 'Cadangan', 'Ditolak'], true) ? (string) $_GET['status'] : '';
-if ($statusPsb !== '') {
-    $where .= " AND status = '" . $statusPsb . "'";
+$filter = PsbAdmin::filter($_GET);
+$baris = (new PsbAdmin($koneksi))->exportRows($filter);
+if (count($baris) === 1) {
+    $query = http_build_query(array_filter($filter, static fn (string $v): bool => $v !== ''));
+    ah_flash_set('info', 'Tidak ada pendaftar yang cocok dengan saringan untuk diekspor.');
+    ah_redirect(app_url('/admin/admin_data.php') . ($query !== '' ? '?' . $query : ''));
 }
-
-if(!empty($_GET['jk'])) {
-    $jk = mysqli_real_escape_string($koneksi, $_GET['jk']);
-    $where .= " AND jenis_kelamin = '$jk'";
-}
-if(!empty($_GET['jenjang'])) {
-    $jenjang = mysqli_real_escape_string($koneksi, $_GET['jenjang']);
-    $where .= " AND jenjang_tujuan = '$jenjang'";
-}
-if(!empty($_GET['kecamatan'])) {
-    $kec = mysqli_real_escape_string($koneksi, $_GET['kecamatan']);
-    $where .= " AND kecamatan LIKE '%$kec%'";
-}
-
-$query = mysqli_query($koneksi, "SELECT * FROM psb_pendaftar $where ORDER BY id DESC");
-
-$data_excel = [];
-$no = 1;
-while($d = mysqli_fetch_array($query)){
-    $data_excel[] = [
-        'NO' => $no++,
-        'NO PENDAFTARAN' => $d['no_pendaftaran'],
-        'NAMA LENGKAP' => $d['nama_lengkap'],
-        'NISN' => (string)$d['nisn'],
-        'NIK' => (string)$d['nik'],
-        'JK' => $d['jenis_kelamin'],
-        'TEMPAT LAHIR' => $d['tempat_lahir'],
-        'TGL LAHIR' => $d['tgl_lahir'],
-        'ALAMAT JALAN' => $d['alamat_jalan'],
-        'DESA' => $d['desa'],
-        'KECAMATAN' => $d['kecamatan'],
-        'KAB/KOTA' => $d['kab_kota'],
-        'PROVINSI' => $d['provinsi'],
-        'NAMA AYAH' => $d['nama_ayah'],
-        'NAMA IBU' => $d['nama_ibu'],
-        'NO HP WALI' => (string)$d['no_hp_wali'],
-        'ASAL SEKOLAH' => $d['sekolah_asal'],
-        'JENJANG TUJUAN' => $d['jenjang_tujuan'],
-        'STATUS' => $d['status']
-    ];
-}
-
-// Kirimkan output sebagai JSON murni
-header('Content-Type: application/json');
-echo json_encode($data_excel);
-exit;
-?>
+ah_xlsx_download('Data_PSB_AlHasan_' . date('Y-m-d') . '.xlsx', $baris);

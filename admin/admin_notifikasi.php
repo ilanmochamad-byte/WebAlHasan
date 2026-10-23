@@ -2,16 +2,20 @@
 
 declare(strict_types=1);
 
+use App\Http\Csrf;
 use App\Notification\NotificationChannel;
 use App\Notification\NotificationException;
 
 require_once __DIR__ . '/_guard.php';
 
 /**
- * Panel kanal notifikasi (V2 Fase 4).
+ * Kanal notifikasi (V2 Fase 4; redesain website Tahap 3, N-2).
  *
- * Menyediakan: status in-app/push/WhatsApp, pemeriksaan konfigurasi, tombol
- * pesan uji, sakelar kanal, daftar pengiriman gagal, dan percobaan ulang aman.
+ * Tab Kanal · Pengiriman gagal · Riwayat di dalam kerangka bersama. Satu
+ * tombol utama per kanal; tindakan lain di menu ⋯. Kartu WhatsApp tampil
+ * "Ditangguhkan" tanpa Nyalakan, Kirim uji, atau Jalankan worker (keputusan
+ * AL); penguncian yang sama berlaku di `NotificationAdminService`, sehingga
+ * API pun tidak dapat menyalakannya. Mematikan Push meminta konfirmasi.
  *
  * Halaman ini tidak pernah menampilkan credential, token perangkat, atau nomor
  * tujuan. Yang ditampilkan hanyalah NAMA environment yang dibutuhkan, status
@@ -26,341 +30,297 @@ $meta = [
     'ip' => isset($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : null,
     'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? (string) $_SERVER['HTTP_USER_AGENT'] : null,
 ];
+$tab = in_array($_GET['tab'] ?? '', ['gagal', 'riwayat'], true) ? (string) $_GET['tab'] : 'kanal';
 
-function notif_e(mixed $value): string
+/**
+ * @param array<string, mixed> $hasil
+ * @return array<int, string>
+ */
+function notif_detail(array $hasil): array
 {
-    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+    return array_values(array_filter([
+        ...(array) ($hasil['detail'] ?? []),
+        ...(array) ($hasil['catatan'] ?? []),
+        isset($hasil['worker']) && is_array($hasil['worker'])
+            ? 'Worker: diproses ' . (int) $hasil['worker']['diproses']
+                . ', terkirim ' . (int) $hasil['worker']['terkirim']
+                . ', gagal ' . (int) $hasil['worker']['gagal']
+                . ((string) ($hasil['worker']['alasan'] ?? '') === '' ? '' : ' — ' . (string) $hasil['worker']['alasan'])
+            : null,
+        isset($hasil['diproses'])
+            ? 'Worker: diproses ' . (int) $hasil['diproses']
+                . ', terkirim ' . (int) $hasil['terkirim']
+                . ', gagal ' . (int) $hasil['gagal']
+            : null,
+    ], static fn ($baris): bool => is_string($baris) && $baris !== ''));
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $aksi = (string) ($_POST['aksi'] ?? '');
     $kanal = (string) ($_POST['kanal'] ?? '');
+    $ujiCoba = ((string) ($_POST['uji_coba'] ?? '0')) === '1';
+    $kembali = in_array($_POST['kembali'] ?? '', ['gagal', 'riwayat'], true) ? '?tab=' . $_POST['kembali'] : '';
     try {
-        $hasil = match ($aksi) {
-            'periksa' => $service->periksaKonfigurasi($currentUser, $kanal, $meta),
-            'sakelar' => $service->ubahSakelar($currentUser, $kanal, ((string) ($_POST['aktif'] ?? '0')) === '1', $meta),
-            'pesan_uji' => $service->kirimPesanUji($currentUser, $kanal, $meta),
-            'coba_ulang' => $service->cobaUlang($currentUser, (int) ($_POST['outbox_id'] ?? 0), $meta),
-            'worker' => $service->jalankanWorker($currentUser, $kanal, ((string) ($_POST['uji_coba'] ?? '0')) === '1'),
-            default => throw NotificationException::invalid('Aksi tidak dikenal.'),
-        };
-        $_SESSION['notif_flash'] = [
-            'jenis' => ($hasil['status'] ?? 'Lulus') === 'Gagal' ? 'warning' : 'success',
-            'pesan' => (string) ($hasil['pesan'] ?? 'Perintah dijalankan.'),
-            'detail' => array_values(array_filter([
-                ...(array) ($hasil['detail'] ?? []),
-                ...(array) ($hasil['catatan'] ?? []),
-                isset($hasil['worker']) && is_array($hasil['worker'])
-                    ? 'Worker: diproses ' . (int) $hasil['worker']['diproses']
-                        . ', terkirim ' . (int) $hasil['worker']['terkirim']
-                        . ', gagal ' . (int) $hasil['worker']['gagal']
-                        . ((string) ($hasil['worker']['alasan'] ?? '') === '' ? '' : ' — ' . (string) $hasil['worker']['alasan'])
-                    : null,
-                isset($hasil['diproses'])
-                    ? 'Worker: diproses ' . (int) $hasil['diproses']
-                        . ', terkirim ' . (int) $hasil['terkirim']
-                        . ', gagal ' . (int) $hasil['gagal']
-                    : null,
-            ])),
-        ];
+        // Keputusan AL: kanal ditangguhkan tidak dijalankan worker-nya dari
+        // panel ini. Penolakan menyalakan dan pesan uji ada di layanan.
+        if ($aksi === 'worker' && NotificationChannel::ditangguhkan($kanal)) {
+            throw NotificationException::conflict(NotificationChannel::label($kanal) . ' ditangguhkan; worker tidak dijalankan dari panel.');
+        }
+        if ($aksi === 'coba_ulang_massal') {
+            // Tanpa JavaScript: daftar terpilih diproses berurutan, satu per
+            // satu, dengan aturan yang sama seperti "Coba ulang" per baris.
+            // Proses massal ber-JavaScript mengirim satu `outbox_id` per permintaan.
+            $pilihan = isset($_POST['outbox_ids']) ? (array) $_POST['outbox_ids'] : [(int) ($_POST['outbox_id'] ?? 0)];
+            $ids = array_slice(array_values(array_unique(array_filter(array_map('intval', $pilihan), static fn (int $id): bool => $id > 0))), 0, 100);
+            if ($ids === []) {
+                throw NotificationException::invalid('Pilih pengiriman gagal lebih dahulu.');
+            }
+            $berhasil = 0;
+            $gagal = [];
+            foreach ($ids as $id) {
+                try {
+                    if ($service->cobaUlang($currentUser, $id, $meta)['diantrekan_ulang']) {
+                        $berhasil++;
+                    } else {
+                        $gagal[] = 'Baris ' . $id . ': tidak dapat diantrekan ulang.';
+                    }
+                } catch (NotificationException $exception) {
+                    $gagal[] = 'Baris ' . $id . ': ' . $exception->getMessage();
+                }
+            }
+            $hasil = ['status' => $gagal === [] ? 'Lulus' : 'Gagal', 'pesan' => count($ids) === 1 && $gagal !== []
+                ? $gagal[0] : $berhasil . ' diantrekan ulang · ' . count($gagal) . ' gagal.', 'detail' => count($ids) === 1 ? [] : $gagal];
+        } else {
+            $hasil = match ($aksi) {
+                'periksa' => $service->periksaKonfigurasi($currentUser, $kanal, $meta),
+                'sakelar' => $service->ubahSakelar($currentUser, $kanal, ((string) ($_POST['aktif'] ?? '0')) === '1', $meta),
+                'pesan_uji' => $service->kirimPesanUji($currentUser, $kanal, $meta),
+                'coba_ulang' => $service->cobaUlang($currentUser, (int) ($_POST['outbox_id'] ?? 0), $meta),
+                'worker' => $service->jalankanWorker($currentUser, $kanal, $ujiCoba),
+                default => throw NotificationException::invalid('Aksi tidak dikenal.'),
+            };
+        }
+        if (ah_wants_json()) {
+            ah_json(['ok' => ($hasil['status'] ?? 'Lulus') !== 'Gagal' && ($hasil['diantrekan_ulang'] ?? true) !== false,
+                'message' => (string) ($hasil['pesan'] ?? 'Perintah dijalankan.')]);
+        }
+        $detail = notif_detail($hasil);
+        ah_flash_set(
+            ($hasil['status'] ?? 'Lulus') === 'Gagal' ? 'warning' : 'success',
+            (string) ($hasil['pesan'] ?? 'Perintah dijalankan.'),
+            $detail === [] ? null : '<ul class="mb-0 mt-1 small">' . implode('', array_map(static fn (string $baris): string => '<li>' . ah_e($baris) . '</li>', $detail)) . '</ul>'
+        );
     } catch (NotificationException $exception) {
-        $_SESSION['notif_flash'] = ['jenis' => 'danger', 'pesan' => $exception->getMessage(), 'detail' => []];
+        if (ah_wants_json()) {
+            ah_json(['ok' => false, 'message' => $exception->getMessage()], 422);
+        }
+        ah_flash_set('danger', $exception->getMessage());
     }
 
-    header('Location: ' . app_url('/admin/admin_notifikasi.php'));
+    header('Location: ' . app_url('/admin/admin_notifikasi.php' . $kembali));
     exit;
 }
 
-$flash = $_SESSION['notif_flash'] ?? null;
-unset($_SESSION['notif_flash']);
-
 $status = $service->status($currentUser);
+$kanalGagal = (string) ($_GET['kanal'] ?? '');
 $kegagalan = $service->kegagalan($currentUser, [
-    'kanal' => (string) ($_GET['kanal'] ?? ''),
-    'page' => (int) ($_GET['page'] ?? 1),
+    'kanal' => $tab === 'gagal' ? $kanalGagal : '',
+    'page' => $tab === 'gagal' ? (int) ($_GET['page'] ?? 1) : 1,
     'per_page' => 20,
 ]);
-$auditKanal = $service->auditKanal($currentUser, 25);
-$csrf = \App\Http\Csrf::input();
+$jumlahGagal = (int) $kegagalan['pagination']['total'];
+if ($tab === 'gagal' && $kanalGagal !== '') {
+    $jumlahGagal = (int) $service->kegagalan($currentUser, ['page' => 1, 'per_page' => 1])['pagination']['total'];
+}
+$riwayat = $tab === 'riwayat' ? $service->riwayatKanal($currentUser, (int) ($_GET['page'] ?? 1)) : null;
+$alamat = app_url('/admin/admin_notifikasi.php');
+
+ah_page_open([
+    'title' => 'Kanal notifikasi',
+    'user' => $currentUser,
+    'active' => 'kanal',
+    'description' => 'Status kanal, pengiriman yang gagal, dan audit perubahan kanal. Terakhir diperbarui: ' . ($status['diperbarui_pada'] ?? '-') . '.',
+    'breadcrumbs' => [['label' => 'Pengaturan'], ['label' => 'Kanal notifikasi']],
+    'actions' => '<a class="btn btn-outline-secondary" href="' . ah_e(app_url('/portal/notifikasi.php')) . '">Pusat notifikasi saya</a>',
+    'tabs' => [
+        ['label' => 'Kanal', 'url' => $alamat, 'active' => $tab === 'kanal'],
+        ['label' => 'Pengiriman gagal', 'url' => $alamat . '?tab=gagal', 'active' => $tab === 'gagal', 'badge' => $jumlahGagal > 0 ? (string) $jumlahGagal : ''],
+        ['label' => 'Riwayat', 'url' => $alamat . '?tab=riwayat', 'active' => $tab === 'riwayat'],
+    ],
+]);
+
+/**
+ * Formulir satu tindakan kanal.
+ *
+ * @param array<string, string> $fields
+ * @param array<string, string> $confirm
+ */
+function notif_form(string $label, array $fields, string $class, array $confirm = [], bool $disabled = false): string
+{
+    $attributes = '';
+    foreach (['text' => 'data-confirm', 'title' => 'data-confirm-title', 'ok' => 'data-confirm-ok', 'tone' => 'data-confirm-tone'] as $key => $attribute) {
+        if (isset($confirm[$key])) {
+            $attributes .= ' ' . $attribute . '="' . ah_e($confirm[$key]) . '"';
+        }
+    }
+    $hidden = Csrf::input();
+    foreach ($fields as $name => $value) {
+        $hidden .= '<input type="hidden" name="' . ah_e($name) . '" value="' . ah_e($value) . '">';
+    }
+
+    return '<form method="post" action="' . ah_e(app_url('/admin/admin_notifikasi.php')) . '"' . $attributes . '>' . $hidden
+        . '<button class="' . ah_e($class) . '" type="submit"' . ($disabled ? ' disabled' : '') . '>' . ah_e($label) . '</button></form>';
+}
+
+function notif_menu_item(string $label, array $fields, array $extra = []): array
+{
+    return ['label' => $label, 'action' => app_url('/admin/admin_notifikasi.php'), 'fields' => $fields] + $extra;
+}
 ?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kanal Notifikasi - Admin Al Hasan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body class="bg-light">
-<div class="container-fluid"><div class="row">
-    <?php require __DIR__ . '/sidebar.php'; ?>
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-        <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4">
-            <div>
-                <h1 class="h3 mb-1">Kanal Notifikasi</h1>
-                <p class="text-muted mb-0">
-                    Status kanal, pemeriksaan konfigurasi, sakelar, dan pengiriman yang gagal.
-                    Terakhir diperbarui: <?= notif_e($status['diperbarui_pada'] ?? '-') ?>.
-                </p>
+
+<?php if ($tab === 'kanal'): ?>
+<div class="ah-channels">
+    <?php foreach ($status['kanal'] as $kanal): ?>
+        <?php
+        $kode = (string) $kanal['kanal'];
+        $ditangguhkan = !empty($kanal['ditangguhkan']);
+        $siap = (bool) ($kanal['kesiapan']['siap'] ?? false);
+        $label = $ditangguhkan ? 'Ditangguhkan' : (!$kanal['dapat_dimatikan'] ? 'Selalu aktif' : ($kanal['aktif'] ? 'Aktif' : 'Nonaktif'));
+        $menu = [notif_menu_item('Periksa konfigurasi', ['aksi' => 'periksa', 'kanal' => $kode], ['icon' => 'fa-stethoscope'])];
+        if (in_array($kode, NotificationChannel::EKSTERNAL, true) && !$ditangguhkan) {
+            $menu[] = notif_menu_item('Jalankan worker sekali', ['aksi' => 'worker', 'kanal' => $kode], ['icon' => 'fa-play']);
+            $menu[] = notif_menu_item('Uji coba (tanpa kirim)', ['aksi' => 'worker', 'kanal' => $kode, 'uji_coba' => '1'], ['icon' => 'fa-vial']);
+        }
+        if ($kanal['dapat_dimatikan'] && $kanal['aktif']) {
+            $menu[] = notif_menu_item('Matikan kanal', ['aksi' => 'sakelar', 'kanal' => $kode, 'aktif' => '0'], [
+                'icon' => 'fa-power-off', 'danger' => true,
+                'confirm' => ['title' => 'Matikan ' . $kanal['label'] . '?', 'text' => 'Antrean yang belum terkirim dibatalkan. Notifikasi dalam aplikasi tetap berjalan.', 'ok' => 'Matikan kanal'],
+            ]);
+        }
+        ?>
+        <section class="ah-channel<?= $ditangguhkan ? ' ah-channel--paused' : '' ?>" aria-labelledby="kanal-<?= ah_e(strtolower($kode)) ?>">
+            <div class="ah-channel__head">
+                <h2 id="kanal-<?= ah_e(strtolower($kode)) ?>"><?= ah_e($kanal['label']) ?></h2>
+                <?= ah_status($label) ?>
             </div>
-            <a class="btn btn-outline-secondary" href="<?= notif_e(app_url('/portal/notifikasi.php')) ?>">Pusat notifikasi saya</a>
-        </div>
-
-        <?php if (is_array($flash)): ?>
-            <div class="alert alert-<?= notif_e($flash['jenis']) ?>" role="alert">
-                <div><?= notif_e($flash['pesan']) ?></div>
-                <?php if ($flash['detail'] !== []): ?>
-                    <ul class="mb-0 mt-2 small">
-                        <?php foreach ($flash['detail'] as $baris): ?>
-                            <li><?= notif_e($baris) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
-            </div>
-        <?php endif; ?>
-
-        <div class="alert alert-secondary small" role="note">
-            <strong>Catatan keamanan.</strong> Halaman ini tidak pernah menampilkan credential, token perangkat,
-            atau nomor tujuan. Secret penyedia berada di environment server dan tidak disimpan pada basis data,
-            audit, maupun log.
-        </div>
-
-        <div class="row g-3 mb-4">
-            <?php foreach ($status['kanal'] as $kanal): ?>
-                <div class="col-lg-4">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h2 class="h5 mb-0"><?= notif_e($kanal['label']) ?></h2>
-                                <span class="badge text-bg-<?= $kanal['aktif'] ? 'success' : 'secondary' ?>">
-                                    <?= $kanal['aktif'] ? 'Aktif' : 'Nonaktif' ?>
-                                </span>
-                            </div>
-                            <p class="text-muted small"><?= notif_e($kanal['keterangan']) ?></p>
-
-                            <div class="mb-2">
-                                <span class="badge text-bg-<?= ($kanal['kesiapan']['siap'] ?? false) ? 'success' : 'warning' ?>">
-                                    <?= ($kanal['kesiapan']['siap'] ?? false) ? 'Konfigurasi siap' : 'Konfigurasi belum siap' ?>
-                                </span>
-                                <div class="small text-muted mt-1"><?= notif_e($kanal['kesiapan']['pesan'] ?? '') ?></div>
-                                <?php if (($kanal['kesiapan']['detail'] ?? []) !== []): ?>
-                                    <ul class="small text-muted mt-1 mb-0">
-                                        <?php foreach ($kanal['kesiapan']['detail'] as $baris): ?>
-                                            <li><?= notif_e($baris) ?></li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                <?php endif; ?>
-                            </div>
-
-                            <?php if (isset($kanal['pemeriksaan'])): ?>
-                                <div class="small mb-2">
-                                    Pemeriksaan terakhir:
-                                    <span class="badge text-bg-<?= match ((string) $kanal['pemeriksaan']['status']) {
-                                        'Lulus' => 'success',
-                                        'Gagal' => 'danger',
-                                        default => 'secondary',
-                                    } ?>"><?= notif_e($kanal['pemeriksaan']['status']) ?></span>
-                                    <?php if (($kanal['pemeriksaan']['pada'] ?? null) !== null): ?>
-                                        <span class="text-muted"><?= notif_e($kanal['pemeriksaan']['pada']) ?></span>
-                                    <?php endif; ?>
-                                    <?php if (($kanal['pemeriksaan']['pesan'] ?? null) !== null): ?>
-                                        <div class="text-muted"><?= notif_e($kanal['pemeriksaan']['pesan']) ?></div>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endif; ?>
-
-                            <?php if (isset($kanal['penyedia'])): ?>
-                                <div class="small mb-2">
-                                    Penyedia: <code><?= notif_e($kanal['penyedia']['nama']) ?></code>
-                                    <?php if (!$kanal['penyedia']['mengirim_nyata']): ?>
-                                        <span class="badge text-bg-warning">Adapter uji — bukan pengiriman nyata</span>
-                                    <?php endif; ?>
-                                    <details class="mt-1">
-                                        <summary class="text-muted">Environment yang dibutuhkan (nama saja)</summary>
-                                        <ul class="mb-0">
-                                            <?php foreach ($kanal['penyedia']['environment_dibutuhkan'] as $env): ?>
-                                                <li><code><?= notif_e($env) ?></code></li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </details>
-                                </div>
-                            <?php endif; ?>
-
-                            <?php if (isset($kanal['perangkat'])): ?>
-                                <div class="small text-muted mb-2">
-                                    Perangkat terdaftar: <?= (int) $kanal['perangkat']['total'] ?>
-                                    (aktif <?= (int) $kanal['perangkat']['aktif'] ?>,
-                                    dicabut <?= (int) $kanal['perangkat']['dicabut'] ?>)
-                                </div>
-                            <?php endif; ?>
-
-                            <div class="small text-muted mb-3">
-                                Antrean: menunggu <?= (int) ($kanal['antrean']['Queued'] ?? 0) ?>,
-                                terkirim <?= (int) ($kanal['antrean']['Sent'] ?? 0) ?>,
-                                gagal <?= (int) ($kanal['antrean']['Failed'] ?? 0) ?>
-                                (permanen <?= (int) ($kanal['antrean']['gagal_permanen'] ?? 0) ?>)
-                            </div>
-
-                            <div class="mt-auto d-flex flex-wrap gap-2">
-                                <form method="post" class="mb-0">
-                                    <?= $csrf ?>
-                                    <input type="hidden" name="aksi" value="periksa">
-                                    <input type="hidden" name="kanal" value="<?= notif_e($kanal['kanal']) ?>">
-                                    <button class="btn btn-sm btn-outline-primary">Periksa konfigurasi</button>
-                                </form>
-
-                                <?php if ($kanal['dapat_dimatikan']): ?>
-                                    <form method="post" class="mb-0">
-                                        <?= $csrf ?>
-                                        <input type="hidden" name="aksi" value="sakelar">
-                                        <input type="hidden" name="kanal" value="<?= notif_e($kanal['kanal']) ?>">
-                                        <input type="hidden" name="aktif" value="<?= $kanal['aktif'] ? '0' : '1' ?>">
-                                        <button class="btn btn-sm btn-<?= $kanal['aktif'] ? 'outline-danger' : 'success' ?>">
-                                            <?= $kanal['aktif'] ? 'Matikan kanal' : 'Nyalakan kanal' ?>
-                                        </button>
-                                    </form>
-                                <?php else: ?>
-                                    <button class="btn btn-sm btn-outline-secondary" disabled
-                                            title="Notifikasi dalam aplikasi adalah sumber status utama dan tidak dapat dimatikan.">
-                                        Selalu aktif
-                                    </button>
-                                <?php endif; ?>
-
-                                <form method="post" class="mb-0">
-                                    <?= $csrf ?>
-                                    <input type="hidden" name="aksi" value="pesan_uji">
-                                    <input type="hidden" name="kanal" value="<?= notif_e($kanal['kanal']) ?>">
-                                    <button class="btn btn-sm btn-outline-success" <?= $kanal['aktif'] ? '' : 'disabled' ?>>
-                                        Kirim pesan uji
-                                    </button>
-                                </form>
-
-                                <?php if (in_array($kanal['kanal'], NotificationChannel::EKSTERNAL, true)): ?>
-                                    <form method="post" class="mb-0">
-                                        <?= $csrf ?>
-                                        <input type="hidden" name="aksi" value="worker">
-                                        <input type="hidden" name="kanal" value="<?= notif_e($kanal['kanal']) ?>">
-                                        <button class="btn btn-sm btn-outline-secondary">Jalankan worker sekali</button>
-                                    </form>
-                                    <form method="post" class="mb-0">
-                                        <?= $csrf ?>
-                                        <input type="hidden" name="aksi" value="worker">
-                                        <input type="hidden" name="kanal" value="<?= notif_e($kanal['kanal']) ?>">
-                                        <input type="hidden" name="uji_coba" value="1">
-                                        <button class="btn btn-sm btn-outline-secondary">Uji coba (tanpa kirim)</button>
-                                    </form>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-
-        <div class="card border-0 shadow-sm mb-4" id="pengiriman-gagal">
-            <div class="card-header bg-white d-flex flex-wrap justify-content-between align-items-center gap-2">
-                <h2 class="h5 mb-0">Pengiriman gagal</h2>
-                <form method="get" class="d-flex gap-2 mb-0">
-                    <select class="form-select form-select-sm" name="kanal" onchange="this.form.submit()">
-                        <option value="">Semua kanal</option>
-                        <?php foreach (NotificationChannel::EKSTERNAL as $pilihan): ?>
-                            <option value="<?= notif_e($pilihan) ?>" <?= ((string) ($_GET['kanal'] ?? '')) === $pilihan ? 'selected' : '' ?>>
-                                <?= notif_e(NotificationChannel::label($pilihan)) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                    <noscript><button class="btn btn-sm btn-outline-secondary">Filter</button></noscript>
-                </form>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-sm align-middle mb-0">
-                    <thead><tr>
-                        <th>#</th><th>Peristiwa</th><th>Kanal</th><th>Penerima</th>
-                        <th>Percobaan</th><th>Galat aman</th><th>Berikutnya</th><th></th>
-                    </tr></thead>
-                    <tbody>
-                    <?php foreach ($kegagalan['items'] as $baris): ?>
-                        <tr>
-                            <td><?= (int) $baris['id'] ?></td>
-                            <td class="small">
-                                <?= notif_e($baris['event_label']) ?>
-                                <?php if ($baris['pengajuan_id'] !== null): ?>
-                                    <div class="text-muted">Pengajuan #<?= (int) $baris['pengajuan_id'] ?></div>
-                                <?php endif; ?>
-                            </td>
-                            <td><span class="badge text-bg-light border"><?= notif_e($baris['kanal']) ?></span></td>
-                            <td class="small"><?= notif_e($baris['penerima_nama'] ?? ('User #' . (int) $baris['penerima_user_id'])) ?></td>
-                            <td class="small">
-                                <?= (int) $baris['percobaan'] ?>/<?= (int) $baris['maksimum_percobaan'] ?>
-                                <?php if ($baris['gagal_permanen']): ?>
-                                    <span class="badge text-bg-danger">Permanen</span>
-                                <?php endif; ?>
-                            </td>
-                            <td class="small">
-                                <code><?= notif_e($baris['error_kode'] ?? '-') ?></code>
-                                <div class="text-muted"><?= notif_e($baris['error_aman'] ?? '-') ?></div>
-                            </td>
-                            <td class="small"><?= notif_e($baris['percobaan_berikutnya_pada'] ?? '-') ?></td>
-                            <td class="text-end">
-                                <form method="post" class="mb-0">
-                                    <?= $csrf ?>
-                                    <input type="hidden" name="aksi" value="coba_ulang">
-                                    <input type="hidden" name="outbox_id" value="<?= (int) $baris['id'] ?>">
-                                    <button class="btn btn-sm btn-outline-primary">Coba ulang</button>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                    <?php if ($kegagalan['items'] === []): ?>
-                        <tr><td colspan="8" class="text-center text-muted py-4">
-                            Tidak ada pengiriman gagal. Notifikasi dalam aplikasi tetap tersedia apa pun keadaan kanal lain.
-                        </td></tr>
-                    <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-            <?php if ((int) $kegagalan['pagination']['total_pages'] > 1): ?>
-                <div class="card-footer bg-white small text-muted">
-                    Halaman <?= (int) $kegagalan['pagination']['current_page'] ?>
-                    dari <?= (int) $kegagalan['pagination']['total_pages'] ?>
-                    (<?= (int) $kegagalan['pagination']['total'] ?> baris gagal).
-                </div>
+            <p class="ah-channel__meta"><?= ah_e($kanal['keterangan']) ?></p>
+            <p class="ah-channel__meta"><?= $siap ? 'Konfigurasi siap' : 'Konfigurasi belum siap' ?> · <?= ah_e($kanal['kesiapan']['pesan'] ?? '') ?></p>
+            <?php if (isset($kanal['pemeriksaan'])): ?>
+                <p class="ah-channel__meta">Pemeriksaan terakhir: <?= ah_e($kanal['pemeriksaan']['status']) ?><?= ($kanal['pemeriksaan']['pada'] ?? null) !== null ? ' · ' . ah_e($kanal['pemeriksaan']['pada']) : '' ?><?= ($kanal['pemeriksaan']['pesan'] ?? null) !== null ? ' — ' . ah_e($kanal['pemeriksaan']['pesan']) : '' ?></p>
             <?php endif; ?>
-        </div>
-
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white"><h2 class="h5 mb-0">Audit perubahan kanal</h2></div>
-            <div class="table-responsive">
-                <table class="table table-sm align-middle mb-0">
-                    <thead><tr><th>Waktu</th><th>Aksi</th><th>Kanal</th><th>Perubahan</th><th>Hasil</th><th>Oleh</th></tr></thead>
-                    <tbody>
-                    <?php foreach ($auditKanal['items'] as $baris): ?>
-                        <tr>
-                            <td class="small"><?= notif_e($baris['created_at']) ?></td>
-                            <td class="small"><?= notif_e($baris['aksi']) ?></td>
-                            <td class="small"><?= notif_e($baris['kanal'] ?? '-') ?></td>
-                            <td class="small">
-                                <?= notif_e($baris['nilai_sebelum'] ?? '-') ?> &rarr; <?= notif_e($baris['nilai_sesudah'] ?? '-') ?>
-                            </td>
-                            <td class="small">
-                                <?= notif_e($baris['hasil'] ?? '-') ?>
-                                <?php if (($baris['pesan'] ?? null) !== null): ?>
-                                    <div class="text-muted"><?= notif_e($baris['pesan']) ?></div>
-                                <?php endif; ?>
-                            </td>
-                            <td class="small"><?= notif_e($baris['aktor_nama'] ?? '-') ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                    <?php if ($auditKanal['items'] === []): ?>
-                        <tr><td colspan="6" class="text-center text-muted py-4">Belum ada perubahan kanal yang tercatat.</td></tr>
-                    <?php endif; ?>
-                    </tbody>
-                </table>
+            <?php if (isset($kanal['perangkat'])): ?>
+                <p class="ah-channel__meta">Perangkat terdaftar <?= (int) $kanal['perangkat']['total'] ?> (aktif <?= (int) $kanal['perangkat']['aktif'] ?>, dicabut <?= (int) $kanal['perangkat']['dicabut'] ?>)</p>
+            <?php endif; ?>
+            <p class="ah-channel__meta">Antrean: menunggu <?= (int) ($kanal['antrean']['Queued'] ?? 0) ?> · terkirim <?= (int) ($kanal['antrean']['Sent'] ?? 0) ?> · gagal <?= (int) ($kanal['antrean']['Failed'] ?? 0) ?> (permanen <?= (int) ($kanal['antrean']['gagal_permanen'] ?? 0) ?>)</p>
+            <?php if (($kanal['kesiapan']['detail'] ?? []) !== [] || isset($kanal['penyedia'])): ?>
+                <details class="ah-channel__env">
+                    <summary>Environment yang dibutuhkan (nama saja)</summary>
+                    <ul class="mb-0 mt-1">
+                        <?php foreach ((array) ($kanal['kesiapan']['detail'] ?? []) as $baris): ?><li><?= ah_e($baris) ?></li><?php endforeach; ?>
+                        <?php if (isset($kanal['penyedia'])): ?>
+                            <li>Penyedia: <code><?= ah_e($kanal['penyedia']['nama']) ?></code><?= !$kanal['penyedia']['mengirim_nyata'] ? ' — adapter uji, bukan pengiriman nyata' : '' ?></li>
+                            <?php foreach ($kanal['penyedia']['environment_dibutuhkan'] as $env): ?><li><code><?= ah_e($env) ?></code></li><?php endforeach; ?>
+                        <?php endif; ?>
+                    </ul>
+                </details>
+            <?php endif; ?>
+            <div class="ah-channel__foot">
+                <?php if ($ditangguhkan): ?>
+                    <p class="ah-channel__meta mb-0">Tidak ada tombol Nyalakan sampai pesantren memutuskan kanal ini dipakai.</p>
+                <?php elseif (!$kanal['dapat_dimatikan']): ?>
+                    <?= notif_form('Kirim pesan uji', ['aksi' => 'pesan_uji', 'kanal' => $kode], 'btn btn-primary') ?>
+                    <button class="btn btn-outline-secondary" type="button" disabled title="Notifikasi dalam aplikasi adalah sumber status utama dan tidak dapat dimatikan.">Selalu aktif</button>
+                <?php elseif ($kanal['aktif']): ?>
+                    <?= notif_form('Kirim pesan uji', ['aksi' => 'pesan_uji', 'kanal' => $kode], 'btn btn-primary') ?>
+                <?php else: ?>
+                    <?= notif_form('Nyalakan kanal', ['aksi' => 'sakelar', 'kanal' => $kode, 'aktif' => '1'], 'btn btn-primary', [], !$siap) ?>
+                <?php endif; ?>
+                <?= ah_menu($menu, 'Tindakan lain ' . $kanal['label'], false) ?>
             </div>
+        </section>
+    <?php endforeach; ?>
+</div>
+<?php ah_note('info', 'Catatan keamanan: halaman ini tidak pernah menampilkan credential, token perangkat, atau nomor tujuan. Secret penyedia berada di environment server dan tidak disimpan pada basis data, audit, maupun log.'); ?>
+
+<?php elseif ($tab === 'gagal'): ?>
+<section id="pengiriman-gagal" aria-labelledby="judul-gagal">
+    <h2 class="h5" id="judul-gagal">Pengiriman gagal</h2>
+    <?php ah_filter_open($kanalGagal !== '' ? 1 : 0, ['tab' => 'gagal']); ?>
+        <div><label class="form-label" for="gagal-kanal">Kanal</label>
+            <select class="form-select" id="gagal-kanal" name="kanal">
+                <option value="">Semua kanal</option>
+                <?php foreach (NotificationChannel::EKSTERNAL as $pilihan): ?>
+                    <option value="<?= ah_e($pilihan) ?>"<?= $kanalGagal === $pilihan ? ' selected' : '' ?>><?= ah_e(NotificationChannel::label($pilihan)) ?></option>
+                <?php endforeach; ?>
+            </select></div>
+    <?php ah_filter_close(['tab' => 'gagal']); ?>
+    <div id="hasil-massal"></div>
+    <?php if ($kegagalan['items'] === []): ?>
+        <div class="ah-card ah-card__body"><?= ah_empty('Tidak ada pengiriman gagal', 'Notifikasi dalam aplikasi tetap tersedia apa pun keadaan kanal lain.') ?></div>
+    <?php else: ?>
+    <form method="post" action="<?= ah_e($alamat) ?>" data-ah-bulk="Mencoba ulang pengiriman gagal" data-ah-bulk-field="outbox_id" data-ah-bulk-target="hasil-massal" data-ah-selection="pengiriman">
+        <?= Csrf::input() ?>
+        <input type="hidden" name="aksi" value="coba_ulang_massal">
+        <input type="hidden" name="kembali" value="gagal">
+        <div class="ah-card ah-table-wrap">
+            <table class="ah-table ah-table--cards">
+                <caption class="ah-visually-hidden">Pengiriman gagal, <?= (int) $kegagalan['pagination']['total'] ?> baris</caption>
+                <thead><tr><th scope="col"><input class="form-check-input" type="checkbox" data-ah-select-all aria-label="Pilih semua pada halaman ini"></th><th scope="col">Peristiwa</th><th scope="col">Kanal</th><th scope="col">Penerima</th><th scope="col">Percobaan</th><th scope="col" class="ah-col-secondary">Galat aman</th><th scope="col">Tindakan</th></tr></thead>
+                <tbody>
+                <?php foreach ($kegagalan['items'] as $baris): ?>
+                    <tr>
+                        <td><input class="form-check-input" type="checkbox" name="outbox_ids[]" value="<?= (int) $baris['id'] ?>" data-ah-select data-ah-label="<?= ah_e($baris['event_label'] . ' · ' . ($baris['penerima_nama'] ?? 'Akun #' . (int) $baris['penerima_user_id'])) ?>" aria-label="Pilih <?= ah_e($baris['event_label']) ?>"></td>
+                        <td><?= ah_e($baris['event_label']) ?><?php if ($baris['pengajuan_id'] !== null): ?><span class="ah-cell-sub">Pengajuan izin #<?= (int) $baris['pengajuan_id'] ?></span><?php endif; ?></td>
+                        <td><?= ah_e(NotificationChannel::label((string) $baris['kanal'])) ?></td>
+                        <td><?= ah_e($baris['penerima_nama'] ?? ('Akun #' . (int) $baris['penerima_user_id'])) ?></td>
+                        <td><?= (int) $baris['percobaan'] ?>/<?= (int) $baris['maksimum_percobaan'] ?><?= $baris['gagal_permanen'] ? ' ' . ah_badge('Permanen', 'danger') : '' ?></td>
+                        <td class="ah-col-secondary"><code><?= ah_e($baris['error_kode'] ?? '-') ?></code><span class="ah-cell-sub"><?= ah_e($baris['error_aman'] ?? '-') ?></span></td>
+                        <td><button class="btn btn-sm btn-outline-primary" type="submit" form="coba-ulang-<?= (int) $baris['id'] ?>">Coba ulang</button></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
-    </main>
-</div></div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        <?= ah_selection_bar('<button class="btn btn-primary btn-sm" type="submit">Coba ulang yang dipilih</button>') ?>
+        <noscript><p class="mt-2"><button class="btn btn-outline-primary" type="submit">Coba ulang yang dipilih</button></p></noscript>
+    </form>
+    <?php foreach ($kegagalan['items'] as $baris): ?>
+        <form id="coba-ulang-<?= (int) $baris['id'] ?>" method="post" action="<?= ah_e($alamat) ?>" hidden>
+            <?= Csrf::input() ?>
+            <input type="hidden" name="aksi" value="coba_ulang">
+            <input type="hidden" name="outbox_id" value="<?= (int) $baris['id'] ?>">
+            <input type="hidden" name="kembali" value="gagal">
+        </form>
+    <?php endforeach; ?>
+    <?php ah_pagination((int) $kegagalan['pagination']['total'], (int) $kegagalan['pagination']['current_page'], 20); ?>
+    <?php endif; ?>
+</section>
+
+<?php else: ?>
+<section aria-labelledby="judul-riwayat">
+    <h2 class="h5" id="judul-riwayat">Audit perubahan kanal</h2>
+    <div class="ah-card ah-table-wrap">
+        <table class="ah-table ah-table--cards">
+            <caption class="ah-visually-hidden">Audit perubahan kanal, <?= (int) $riwayat['total'] ?> catatan</caption>
+            <thead><tr><th scope="col">Waktu</th><th scope="col">Aksi</th><th scope="col">Kanal</th><th scope="col">Perubahan</th><th scope="col">Hasil</th><th scope="col">Oleh</th></tr></thead>
+            <tbody>
+            <?php foreach ($riwayat['rows'] as $baris): ?>
+                <tr>
+                    <td><?= ah_e($baris['created_at']) ?></td>
+                    <td><?= ah_e($baris['aksi']) ?></td>
+                    <td><?= ah_e($baris['kanal'] ?? '-') ?></td>
+                    <td><?= ah_e($baris['nilai_sebelum'] ?? '-') ?> → <?= ah_e($baris['nilai_sesudah'] ?? '-') ?></td>
+                    <td><?= ah_e($baris['hasil'] ?? '-') ?><?php if (($baris['pesan'] ?? null) !== null): ?><span class="ah-cell-sub"><?= ah_e($baris['pesan']) ?></span><?php endif; ?></td>
+                    <td><?= ah_e($baris['aktor_nama'] ?? '-') ?></td>
+                </tr>
+            <?php endforeach; ?>
+            <?php if ($riwayat['rows'] === []): ?>
+                <tr><td colspan="6" data-label=""><?= ah_empty('Belum ada perubahan kanal', 'Pemeriksaan, sakelar, pesan uji, dan percobaan ulang tercatat di sini.') ?></td></tr>
+            <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php ah_pagination((int) $riwayat['total'], (int) $riwayat['page'], (int) $riwayat['per_page']); ?>
+</section>
+<?php endif; ?>
+<?php ah_page_close(); ?>

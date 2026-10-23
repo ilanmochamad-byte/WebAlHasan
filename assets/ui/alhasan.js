@@ -260,6 +260,11 @@
             + '<textarea class="form-control" id="ah-dialog-reason" rows="3" maxlength="500"></textarea>'
             + '<span class="ah-field-error" id="ah-dialog-reason-error" hidden>Alasan wajib diisi.</span>'
             + '</div>'
+            + '<div class="ah-dialog__match" hidden>'
+            + '<label class="form-label" for="ah-dialog-match"></label>'
+            + '<input class="form-control" id="ah-dialog-match" type="text" autocomplete="off" spellcheck="false">'
+            + '<span class="ah-field-error" id="ah-dialog-match-error" hidden>Ketikan belum sama.</span>'
+            + '</div>'
             + '<div class="ah-dialog__actions">'
             + '<button class="btn btn-outline-secondary" value="batal" formnovalidate data-ah-cancel>Batal</button>'
             + '<button class="btn btn-primary" value="ok" data-ah-ok>Lanjutkan</button>'
@@ -299,9 +304,28 @@
         reason.removeAttribute('aria-invalid');
         reasonError.hidden = true;
         box.querySelector('label[for="ah-dialog-reason"]').textContent = options.reasonLabel || '';
+        // Tindakan yang tidak dapat dibatalkan dapat meminta pengguna mengetik
+        // nama objeknya (mis. hapus pendaftar). Server tetap memeriksa haknya.
+        var matchWrap = box.querySelector('.ah-dialog__match');
+        var match = box.querySelector('#ah-dialog-match');
+        var matchError = box.querySelector('#ah-dialog-match-error');
+        matchWrap.hidden = !options.match;
+        match.value = '';
+        match.removeAttribute('aria-invalid');
+        matchError.hidden = true;
+        box.querySelector('label[for="ah-dialog-match"]').textContent = options.match
+            ? (options.matchLabel || 'Ketik') + ' "' + options.match + '" untuk melanjutkan' : '';
 
         return new Promise(function (resolve) {
             function onOk(event) {
+                if (!matchWrap.hidden && match.value.trim().toLowerCase() !== String(options.match).trim().toLowerCase()) {
+                    event.preventDefault();
+                    matchError.hidden = false;
+                    match.setAttribute('aria-invalid', 'true');
+                    match.setAttribute('aria-describedby', 'ah-dialog-match-error');
+                    match.focus();
+                    return;
+                }
                 if (!reasonWrap.hidden && reason.value.trim() === '') {
                     event.preventDefault();
                     reasonError.hidden = false;
@@ -327,7 +351,7 @@
             box.addEventListener('close', onClose);
             box.returnValue = '';
             box.showModal();
-            (reasonWrap.hidden ? cancel : reason).focus();
+            (!matchWrap.hidden ? match : (reasonWrap.hidden ? cancel : reason)).focus();
         });
     };
 
@@ -415,6 +439,8 @@
         form.addEventListener('submit', function (event) {
             // Konfirmasi yang dibatalkan tidak boleh mengunci formulir.
             if (event.defaultPrevented) { return; }
+            // Formulir massal diproses satu per satu oleh AlHasan.bulk.
+            if (form.hasAttribute('data-ah-bulk')) { return; }
             var submitter = event.submitter;
             if (form.dataset.confirm && form.dataset.ahConfirmed !== '1') {
                 event.preventDefault();
@@ -423,7 +449,9 @@
                     text: form.dataset.confirm,
                     ok: form.dataset.confirmOk,
                     tone: form.dataset.confirmTone,
-                    reasonLabel: form.dataset.confirmReasonLabel
+                    reasonLabel: form.dataset.confirmReasonLabel,
+                    match: form.dataset.confirmMatch,
+                    matchLabel: form.dataset.confirmMatchLabel
                 }).then(function (result) {
                     if (!result.ok) {
                         if (submitter && submitter.focus) { submitter.focus(); }
@@ -825,6 +853,86 @@
         }
         input.addEventListener('input', check);
         check();
+    });
+
+    /* --- Redesain Tahap 3: saringan, zona unggah, proses massal formulir -- */
+    // Saringan terlipat di HP kecuali ada saringan aktif; tanpa JavaScript
+    // selalu terbuka (atribut open dari server).
+    if (window.matchMedia && window.matchMedia('(max-width: 575.98px)').matches) {
+        qsa('details[data-ah-filter]').forEach(function (filter) {
+            if (!filter.hasAttribute('data-ah-filter-active')) { filter.removeAttribute('open'); }
+        });
+    }
+
+    // Zona unggah: berkas dapat ditarik ke kotak; nama berkas terpilih
+    // ditampilkan. Pemeriksaan jenis dan ukuran tetap di server.
+    qsa('[data-ah-drop]').forEach(function (zone) {
+        var input = zone.querySelector('input[type="file"]');
+        if (!input) { return; }
+        var list = el('ul', 'ah-drop__list');
+        list.setAttribute('aria-live', 'polite');
+        zone.appendChild(list);
+        function render() {
+            list.innerHTML = '';
+            Array.prototype.forEach.call(input.files || [], function (file) {
+                list.appendChild(el('li', null, file.name + ' · ' + Math.max(1, Math.round(file.size / 1024)) + ' KB'));
+            });
+        }
+        ['dragenter', 'dragover'].forEach(function (name) {
+            zone.addEventListener(name, function (event) { event.preventDefault(); zone.classList.add('is-over'); });
+        });
+        ['dragleave', 'dragend'].forEach(function (name) {
+            zone.addEventListener(name, function () { zone.classList.remove('is-over'); });
+        });
+        zone.addEventListener('drop', function (event) {
+            event.preventDefault();
+            zone.classList.remove('is-over');
+            if (event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length) {
+                try { input.files = event.dataTransfer.files; } catch (e) { return; }
+                input.dispatchEvent(new Event('change', {bubbles: true}));
+            }
+        });
+        input.addEventListener('change', render);
+    });
+
+    // Formulir tindakan massal: dengan JavaScript setiap data yang dipilih
+    // dikirim SATU PER SATU lewat AlHasan.bulk (bilah kemajuan, daftar gagal,
+    // ulangi). Tanpa JavaScript formulir terkirim biasa dan server memproses
+    // daftar yang sama berurutan.
+    qsa('form[data-ah-bulk]').forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (event.defaultPrevented) { return; }
+            var boxes = qsa('input[type="checkbox"][data-ah-select]:checked', form);
+            if (!boxes.length) {
+                event.preventDefault();
+                AlHasan.toast('Pilih data lebih dahulu.', 'warn');
+                return;
+            }
+            event.preventDefault();
+            var field = form.getAttribute('data-ah-bulk-field') || 'id';
+            var fixed = {};
+            qsa('input[type="hidden"]', form).forEach(function (input) {
+                if (input.name && input.name !== '_csrf') { fixed[input.name] = input.value; }
+            });
+            var holder = doc.getElementById(form.getAttribute('data-ah-bulk-target') || '') || el('div');
+            if (!holder.parentNode) { form.parentNode.insertBefore(holder, form); }
+            AlHasan.bulk({
+                container: holder,
+                title: form.getAttribute('data-ah-bulk'),
+                items: boxes.map(function (box) { return {id: box.value, label: box.getAttribute('data-ah-label') || box.value}; }),
+                run: function (item) {
+                    var data = Object.assign({}, fixed);
+                    data[field] = item.id;
+                    return AlHasan.post(form.action, data);
+                },
+                onDone: function () {
+                    var reload = el('a', 'btn btn-outline-primary', 'Muat ulang daftar');
+                    reload.href = window.location.href;
+                    var actions = holder.querySelector('.ah-bulk__actions');
+                    if (actions) { actions.appendChild(reload); }
+                }
+            });
+        });
     });
 
     if (window.jQuery) {

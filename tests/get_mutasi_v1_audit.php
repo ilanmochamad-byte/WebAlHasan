@@ -91,7 +91,8 @@ try {
     $ok($snapshot() === $before, 'All tables including users/audit/tokens preserved after refused requests');
     $r = $request('a', '/admin/proses_psb_admin.php?act=migrasi&id=0&val=Ditolak', 'POST',
         ['act' => 'status', 'id' => $id, 'val' => 'Cadangan'], ['X-CSRF-Token: ' . $csrf]);
-    $ok($r['status'] === 200 && $scalar('SELECT status FROM psb_pendaftar WHERE id=' . $id) === 'Cadangan',
+    // Redesain web Tahap 3: keputusan dialihkan (PRG) dengan pesan, bukan 200 + skrip.
+    $ok($r['status'] === 302 && $scalar('SELECT status FROM psb_pendaftar WHERE id=' . $id) === 'Cadangan',
         'Header CSRF accepted; status/id/val come from POST; Cadangan remains valid');
     $request('a', '/admin/proses_psb_admin.php', 'POST', ['_csrf' => $csrf, 'act' => 'status', 'id' => $id, 'val' => 'Diterima']);
     $after = $snapshot();

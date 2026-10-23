@@ -764,7 +764,6 @@ $berkasLint = array_merge($berkasFase4, [
     $root . '/app/Izin/IzinWorkflowService.php',
     $root . '/api/v1/index.php',
     $root . '/portal/_ui.php',
-    $root . '/admin/sidebar.php',
     $root . '/tests/v2_phase4_static.php',
 ]);
 foreach (array_unique($berkasLint) as $path) {

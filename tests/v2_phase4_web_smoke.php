@@ -367,11 +367,14 @@ try {
     }
     $panel = $klien['admin']->request('/admin/admin_notifikasi.php');
     $assert($panel['status'] === 200, 'WN-7b Admin dapat membuka panel kanal');
+    // Redesain web Tahap 3 (N-2): judul kalimat "Kanal notifikasi"; audit
+    // perubahan kanal kini berada di tab Riwayat panel yang sama.
+    $riwayat = $klien['admin']->request('/admin/admin_notifikasi.php?tab=riwayat');
     foreach ([
-        'Kanal Notifikasi', 'Periksa konfigurasi', 'Kirim pesan uji',
+        'Kanal notifikasi', 'Periksa konfigurasi', 'Kirim pesan uji',
         'Pengiriman gagal', 'Audit perubahan kanal',
     ] as $bagian) {
-        $assert(str_contains($panel['body'], $bagian), 'WN-7c Panel memuat bagian "' . $bagian . '"');
+        $assert(str_contains($panel['body'] . $riwayat['body'], $bagian), 'WN-7c Panel memuat bagian "' . $bagian . '"');
     }
 
     $csrfAdmin = $klien['admin']->csrf('/admin/admin_notifikasi.php');

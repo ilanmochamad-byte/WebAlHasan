@@ -387,7 +387,8 @@ $angkaStat = static function (string $html, string $label): ?int {
 $k = $kartuAdmin($semua, 'psb_baru');
 $x = $dom($admin->req($k['url'])['body']);
 $status = [];
-foreach ($x->query('//table[@id="tabelSantri"]//tbody/tr/td[6]') as $sel) {
+// Redesain web Tahap 3 (K-5): tabel daftar pendaftar ber-id daftar-pendaftar.
+foreach ($x->query('//table[@id="daftar-pendaftar"]//tbody/tr/td[6]') as $sel) {
     $status[] = trim($sel->textContent);
 }
 $assert($status !== [] && count($status) === $k['jumlah'] && array_filter($status, static fn ($v) => strcasecmp($v, 'Baru') !== 0) === [], 'F-4 PSB baru: tujuan hanya berisi ' . $k['jumlah'] . ' pendaftar Baru (' . implode(',', $status) . ')');
@@ -417,7 +418,7 @@ $pengurusKonseling = $klien('sbx_pengurus_a')->req('/portal/v3_konseling.php')['
 $assert(str_contains($pengurusKonseling, 'name="rekomendasi_ids[]"') && str_contains($pengurusKonseling, 'id="rekomendasi"'), 'F-4 rekomendasi: pembimbing dapat memilih rekomendasi untuk ditindaklanjuti di halaman yang sama');
 
 $k = $kartuAdmin($semua, 'notifikasi_gagal');
-$assert($k['jumlah'] === (int) $sql("SELECT COUNT(*) n FROM notifikasi_outbox WHERE status='Failed'")[0]['n'] && str_contains($admin->req('/admin/admin_notifikasi.php')['body'], 'id="pengiriman-gagal"'), 'F-4 notifikasi gagal: kartu = daftar Pengiriman gagal (anchor tersedia)');
+$assert($k['jumlah'] === (int) $sql("SELECT COUNT(*) n FROM notifikasi_outbox WHERE status='Failed'")[0]['n'] && str_contains($admin->req('/admin/admin_notifikasi.php?tab=gagal')['body'], 'id="pengiriman-gagal"'), 'F-4 notifikasi gagal: kartu = daftar Pengiriman gagal (anchor tersedia)');
 
 $k = $kartuAdmin($semua, 'bahan_perbaikan');
 $hTujuan = $admin->req(parse_url($k['url'], PHP_URL_PATH) . '?' . parse_url($k['url'], PHP_URL_QUERY))['body'];
