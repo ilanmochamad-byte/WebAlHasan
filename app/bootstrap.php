@@ -203,6 +203,16 @@ function penempatan_service(): PenempatanService
 }
 
 /**
+ * Profil santri 360° admin (D-2) dan profil santri binaan pembimbing/murobi
+ * (D-10, keputusan AB) — redesain website Tahap 6. Hanya membaca.
+ */
+function profil_santri_service(): \App\MasterData\ProfilSantriService
+{
+    static $service;
+    return $service ??= new \App\MasterData\ProfilSantriService(app_db());
+}
+
+/**
  * Kelulusan/mutasi santri dan arsip alumni (keputusan pengguna 6 September 2026).
  *
  * Satu-satunya pintu masuk perubahan data alumni. Halaman admin tidak lagi

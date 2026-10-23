@@ -18,9 +18,37 @@ final class MasterDataRepository
         return $this->db;
     }
 
-    public function classesPage(string $q, int $page): array
+    public function classesPage(string $q, int $page, string $state = 'all'): array
     {
-        return \App\Database\PageQuery::fetch($this->db, 'SELECT * FROM kelas', [], 'jenjang, nama_kelas, id', $page, $q, ['nama_kelas', 'jenjang']);
+        // M-2 (Tahap 6): jumlah anggota semester aktif ikut dihitung.
+        $where = match ($state) {
+            'active' => ' WHERE k.is_active = 1 AND k.archived_at IS NULL',
+            'inactive' => ' WHERE k.is_active = 0 AND k.archived_at IS NULL',
+            'archived' => ' WHERE k.archived_at IS NOT NULL',
+            default => '',
+        };
+        $sql = "SELECT k.*, (SELECT COUNT(*) FROM plotting_kelas pk JOIN tahun_ajaran ta ON ta.id = pk.id_tahun AND ta.status = 'Aktif' AND ta.archived_at IS NULL
+                              WHERE pk.id_kelas = k.id AND pk.status = 'Aktif') anggota FROM kelas k" . $where;
+        return \App\Database\PageQuery::fetch($this->db, $sql, [], 'jenjang, nama_kelas, id', $page, $q, ['nama_kelas', 'jenjang']);
+    }
+
+    /** @return array{active:int, inactive:int, archived:int} */
+    public function classStateCounts(): array
+    {
+        $row = $this->one('SELECT SUM(is_active = 1 AND archived_at IS NULL) active, SUM(is_active = 0 AND archived_at IS NULL) inactive, SUM(archived_at IS NOT NULL) archived FROM kelas');
+        return ['active' => (int) ($row['active'] ?? 0), 'inactive' => (int) ($row['inactive'] ?? 0), 'archived' => (int) ($row['archived'] ?? 0)];
+    }
+
+    /** Keputusan AE: kolom asrama ada setelah migrasi 023. */
+    public function asramaTersedia(): bool
+    {
+        return \App\Database\Schema::hasColumn($this->db, 'kamar', 'asrama');
+    }
+
+    /** Keputusan AD: tabel penanda "bukan ganda" ada setelah migrasi 023. */
+    public function bukanGandaTersedia(): bool
+    {
+        return \App\Database\Schema::hasTable($this->db, 'wali_bukan_ganda');
     }
 
     public function yearsPage(string $q, int $page): array
@@ -34,10 +62,48 @@ final class MasterDataRepository
         return \App\Database\PageQuery::fetch($this->db, $sql, [], 'archived_at IS NOT NULL, tahun DESC, nama_guru, id', $page, $q, ['nama_guru', 'tahun', 'semester', 'target_name']);
     }
 
-    public function roomsPage(string $q, int $page, int $yearId): array
+    /**
+     * @param string $asrama '' (semua), 'Putra', 'Putri', atau 'belum'
+     *        (kamar lama yang asramanya belum ditentukan admin)
+     */
+    public function roomsPage(string $q, int $page, int $yearId, string $asrama = '', int $perPage = 20): array
     {
-        $sql = 'SELECT km.*, (SELECT COUNT(*) FROM plotting_kamar pk WHERE pk.id_kamar = km.id AND pk.id_tahun = ?) terisi FROM kamar km';
-        return \App\Database\PageQuery::fetch($this->db, $sql, [$yearId], 'nama_kamar, id', $page, $q, ['nama_kamar']);
+        // Jumlah penghuni per jenis kelamin membantu admin melengkapi asrama
+        // kamar lama dan menampilkan penghuni yang tidak sesuai (keputusan AE).
+        $sql = "SELECT km.*,
+                       (SELECT COUNT(*) FROM plotting_kamar pk WHERE pk.id_kamar = km.id AND pk.id_tahun = ?) terisi,
+                       (SELECT COUNT(*) FROM plotting_kamar pk JOIN santri s ON s.id = pk.id_santri WHERE pk.id_kamar = km.id AND pk.id_tahun = ? AND s.jenis_kelamin = 'L') penghuni_l,
+                       (SELECT COUNT(*) FROM plotting_kamar pk JOIN santri s ON s.id = pk.id_santri WHERE pk.id_kamar = km.id AND pk.id_tahun = ? AND s.jenis_kelamin = 'P') penghuni_p
+                  FROM kamar km";
+        $params = [$yearId, $yearId, $yearId];
+        if ($this->asramaTersedia()) {
+            if (in_array($asrama, ['Putra', 'Putri'], true)) {
+                $sql .= ' WHERE km.asrama = ?';
+                $params[] = $asrama;
+            } elseif ($asrama === 'belum') {
+                $sql .= ' WHERE km.asrama IS NULL';
+            }
+        }
+        return \App\Database\PageQuery::fetch($this->db, $sql, $params, 'nama_kamar, id', $page, $q, ['nama_kamar'], $perPage);
+    }
+
+    /**
+     * Ringkasan kamar semester aktif (M-2): jumlah kamar, kapasitas, terisi,
+     * kamar penuh/hampir penuh (terisi >= 90% kapasitas), dan jumlah per asrama.
+     *
+     * @return array{kamar:int, kapasitas:int, terisi:int, hampir_penuh:int, putra:int, putri:int, belum:int}
+     */
+    public function roomSummary(int $yearId): array
+    {
+        $asrama = $this->asramaTersedia();
+        $row = $this->one(
+            'SELECT COUNT(*) kamar, COALESCE(SUM(km.kapasitas), 0) kapasitas, COALESCE(SUM(t.terisi), 0) terisi,
+                    COALESCE(SUM(km.kapasitas > 0 AND t.terisi * 10 >= km.kapasitas * 9), 0) hampir_penuh'
+            . ($asrama ? ", COALESCE(SUM(km.asrama = 'Putra'), 0) putra, COALESCE(SUM(km.asrama = 'Putri'), 0) putri, COALESCE(SUM(km.asrama IS NULL), 0) belum" : ', 0 putra, 0 putri, COUNT(*) belum')
+            . ' FROM kamar km LEFT JOIN (SELECT id_kamar, COUNT(*) terisi FROM plotting_kamar WHERE id_tahun = ? GROUP BY id_kamar) t ON t.id_kamar = km.id',
+            [$yearId]
+        );
+        return array_map('intval', $row ?? []) + ['kamar' => 0, 'kapasitas' => 0, 'terisi' => 0, 'hampir_penuh' => 0, 'putra' => 0, 'putri' => 0, 'belum' => 0];
     }
 
     public function roomOccupantsPage(int $roomId, int $yearId, string $q, int $page): array
@@ -132,6 +198,43 @@ final class MasterDataRepository
 
     public function santriList(array $filters, int $page, int $perPage): array
     {
+        [$where, $params] = $this->santriWhere($filters);
+        $join = $this->santriJoin();
+        $total = $this->scalar('SELECT COUNT(DISTINCT s.id) jumlah ' . $join . $where, $params);
+        $params[] = $perPage;
+        $params[] = ($page - 1) * $perPage;
+        $rows = $this->all('SELECT s.*, k.nama_kelas, ta.tahun, ta.semester, km.nama_kamar ' . $join . $where . ' ORDER BY s.nama_santri, s.id LIMIT ? OFFSET ?', $params);
+        return compact('rows', 'total');
+    }
+
+    /**
+     * Jumlah santri per status dengan saringan yang sama kecuali status
+     * (chip D-1: Aktif · Nonaktif · Arsip).
+     *
+     * @return array{active:int, inactive:int, archived:int}
+     */
+    public function santriStateCounts(array $filters): array
+    {
+        $filters['state'] = 'all';
+        [$where, $params] = $this->santriWhere($filters);
+        $row = $this->one('SELECT COUNT(DISTINCT CASE WHEN s.is_active = 1 AND s.archived_at IS NULL THEN s.id END) active,
+                                  COUNT(DISTINCT CASE WHEN s.is_active = 0 AND s.archived_at IS NULL THEN s.id END) inactive,
+                                  COUNT(DISTINCT CASE WHEN s.archived_at IS NOT NULL THEN s.id END) archived ' . $this->santriJoin() . $where, $params);
+        return ['active' => (int) ($row['active'] ?? 0), 'inactive' => (int) ($row['inactive'] ?? 0), 'archived' => (int) ($row['archived'] ?? 0)];
+    }
+
+    private function santriJoin(): string
+    {
+        $tahun = "(SELECT id FROM tahun_ajaran WHERE status = 'Aktif' AND archived_at IS NULL LIMIT 1)";
+        return " FROM santri s LEFT JOIN plotting_kelas pk ON pk.id_santri = s.id AND pk.status = 'Aktif' AND pk.id_tahun = {$tahun}"
+            . ' LEFT JOIN kelas k ON k.id = pk.id_kelas LEFT JOIN tahun_ajaran ta ON ta.id = pk.id_tahun'
+            . " LEFT JOIN plotting_kamar pm ON pm.id = (SELECT MIN(p2.id) FROM plotting_kamar p2 WHERE p2.id_santri = s.id AND p2.id_tahun = {$tahun})"
+            . ' LEFT JOIN kamar km ON km.id = pm.id_kamar ';
+    }
+
+    /** @return array{0:string, 1:array<int, mixed>} */
+    private function santriWhere(array $filters): array
+    {
         [$where, $params] = $this->masterWhere($filters, ['nama_santri', 'nis', 'sekolah_saat_ini'], 's');
         if (!empty($filters['gender']) && in_array($filters['gender'], ['L', 'P'], true)) {
             $where .= ($where === '' ? ' WHERE ' : ' AND ') . 's.jenis_kelamin = ?';
@@ -141,12 +244,11 @@ final class MasterDataRepository
             $where .= ($where === '' ? ' WHERE ' : ' AND ') . 'pk.id_kelas = ?';
             $params[] = (int) $filters['kelas_id'];
         }
-        $join = " FROM santri s LEFT JOIN plotting_kelas pk ON pk.id_santri = s.id AND pk.status = 'Aktif' AND pk.id_tahun = (SELECT id FROM tahun_ajaran WHERE status = 'Aktif' AND archived_at IS NULL LIMIT 1) LEFT JOIN kelas k ON k.id = pk.id_kelas LEFT JOIN tahun_ajaran ta ON ta.id = pk.id_tahun ";
-        $total = $this->scalar('SELECT COUNT(DISTINCT s.id) jumlah ' . $join . $where, $params);
-        $params[] = $perPage;
-        $params[] = ($page - 1) * $perPage;
-        $rows = $this->all('SELECT s.*, k.nama_kelas, ta.tahun, ta.semester ' . $join . $where . ' ORDER BY s.nama_santri, s.id LIMIT ? OFFSET ?', $params);
-        return compact('rows', 'total');
+        if (!empty($filters['kamar_id'])) {
+            $where .= ($where === '' ? ' WHERE ' : ' AND ') . "EXISTS (SELECT 1 FROM plotting_kamar p3 WHERE p3.id_santri = s.id AND p3.id_kamar = ? AND p3.id_tahun = (SELECT id FROM tahun_ajaran WHERE status = 'Aktif' AND archived_at IS NULL LIMIT 1))";
+            $params[] = (int) $filters['kamar_id'];
+        }
+        return [$where, $params];
     }
 
     public function santriFind(int $id): ?array
@@ -183,6 +285,26 @@ final class MasterDataRepository
         $params[] = ($page - 1) * $perPage;
         $rows = $this->all("SELECT w.*, (SELECT COUNT(*) FROM santri_wali sw WHERE sw.wali_id = w.id AND sw.archived_at IS NULL) jumlah_santri, (SELECT GROUP_CONCAT(CONCAT(s.nama_santri, ' (', sw.hubungan, ')') ORDER BY s.nama_santri SEPARATOR ', ') FROM santri_wali sw JOIN santri s ON s.id = sw.santri_id WHERE sw.wali_id = w.id AND sw.archived_at IS NULL) santri FROM wali w " . $where . ' ORDER BY w.nama, w.id LIMIT ? OFFSET ?', $params);
         return compact('rows', 'total');
+    }
+
+    /**
+     * Jumlah per status untuk chip daftar (D-6, M-1), dengan pencarian yang
+     * sama dengan daftarnya.
+     *
+     * @param 'wali'|'guru'|'pengurus' $table
+     * @return array{active:int, inactive:int, archived:int}
+     */
+    public function stateCounts(string $table, string $q): array
+    {
+        $kolom = match ($table) {
+            'wali' => ['nama', 'no_hp'],
+            'guru' => ['nama_guru', 'nip', 'no_hp'],
+            'pengurus' => ['nama', 'nomor_identitas', 'jabatan', 'no_hp'],
+            default => throw new MasterDataException('Data master tidak dikenal.'),
+        };
+        [$where, $params] = $this->masterWhere(['q' => $q, 'state' => 'all'], $kolom);
+        $row = $this->one('SELECT COALESCE(SUM(is_active = 1 AND archived_at IS NULL), 0) active, COALESCE(SUM(is_active = 0 AND archived_at IS NULL), 0) inactive, COALESCE(SUM(archived_at IS NOT NULL), 0) archived FROM ' . $table . $where, $params);
+        return ['active' => (int) ($row['active'] ?? 0), 'inactive' => (int) ($row['inactive'] ?? 0), 'archived' => (int) ($row['archived'] ?? 0)];
     }
 
     public function waliFind(int $id): ?array
@@ -226,8 +348,50 @@ final class MasterDataRepository
         $total = $this->scalar('SELECT COUNT(*) jumlah FROM pengurus ' . $where, $params);
         $params[] = $perPage;
         $params[] = ($page - 1) * $perPage;
-        $rows = $this->all('SELECT * FROM pengurus ' . $where . ' ORDER BY nama, id LIMIT ? OFFSET ?', $params);
+        // M-1 (Tahap 6): kamar/kelas binaan dari penugasan pembimbing aktif.
+        $rows = $this->all("SELECT p.*, (SELECT GROUP_CONCAT(DISTINCT COALESCE(km.nama_kamar, kl.nama_kelas) ORDER BY COALESCE(km.nama_kamar, kl.nama_kelas) SEPARATOR ', ')
+                                  FROM pembimbing_assignments pa
+                                  JOIN tahun_ajaran ta ON ta.id = pa.tahun_ajaran_id AND ta.status = 'Aktif' AND ta.archived_at IS NULL
+                                  LEFT JOIN kamar km ON km.id = pa.kamar_id LEFT JOIN kelas kl ON kl.id = pa.kelas_id
+                                 WHERE pa.pengurus_id = p.id AND pa.is_active = 1 AND pa.archived_at IS NULL
+                                   AND pa.tanggal_mulai <= CURDATE() AND (pa.tanggal_selesai IS NULL OR pa.tanggal_selesai >= CURDATE())) binaan
+                             FROM pengurus p " . $where . ' ORDER BY p.nama, p.id LIMIT ? OFFSET ?', $params);
         return compact('rows', 'total');
+    }
+
+    /**
+     * Akun login yang terhubung ke data master (M-1: panel orang).
+     *
+     * @param 'guru_id'|'pengurus_id'|'wali_id' $column
+     * @return array<int, array<string, mixed>>
+     */
+    public function linkedAccounts(string $column, int $id): array
+    {
+        if (!in_array($column, ['guru_id', 'pengurus_id', 'wali_id'], true)) {
+            throw new MasterDataException('Jenis data master tidak dikenal.');
+        }
+        return $this->all("SELECT u.id, u.username, u.name, u.is_active, u.last_login_at,
+                                  (SELECT GROUP_CONCAT(r.name ORDER BY r.name SEPARATOR ', ') FROM user_roles ur JOIN roles r ON r.id = ur.role_id WHERE ur.user_id = u.id) peran
+                             FROM users u WHERE u.{$column} = ? ORDER BY u.is_active DESC, u.id", [$id]);
+    }
+
+    /**
+     * NIS yang sudah ada di basis data (D-4: pemeriksaan impor tanpa menyimpan).
+     *
+     * @param array<int, string> $nis
+     * @return array<string, true>
+     */
+    public function existingNis(array $nis): array
+    {
+        $nis = array_values(array_unique(array_filter($nis, static fn (string $v): bool => $v !== '')));
+        $ada = [];
+        foreach (array_chunk($nis, 500) as $chunk) {
+            $placeholders = implode(',', array_fill(0, count($chunk), '?'));
+            foreach ($this->all("SELECT nis FROM santri WHERE nis IN ({$placeholders})", $chunk) as $row) {
+                $ada[strtoupper((string) $row['nis'])] = true;
+            }
+        }
+        return $ada;
     }
 
     public function pengurusFind(int $id): ?array
@@ -364,16 +528,29 @@ final class MasterDataRepository
 
     public function kamarSave(array $data, ?int $id): int
     {
+        // `asrama` hanya ditulis bila kolomnya ada dan pemanggil mengirimnya.
+        $asrama = array_key_exists('asrama', $data) && $this->asramaTersedia();
         if ($id === null) {
-            return $this->insert('INSERT INTO kamar (nama_kamar, kapasitas) VALUES (?, ?)', [$data['nama_kamar'], $data['kapasitas']]);
+            return $asrama
+                ? $this->insert('INSERT INTO kamar (nama_kamar, kapasitas, asrama) VALUES (?, ?, ?)', [$data['nama_kamar'], $data['kapasitas'], $data['asrama']])
+                : $this->insert('INSERT INTO kamar (nama_kamar, kapasitas) VALUES (?, ?)', [$data['nama_kamar'], $data['kapasitas']]);
         }
-        $this->execute('UPDATE kamar SET nama_kamar = ?, kapasitas = ? WHERE id = ?', [$data['nama_kamar'], $data['kapasitas'], $id]);
+        if ($asrama) {
+            $this->execute('UPDATE kamar SET nama_kamar = ?, kapasitas = ?, asrama = ? WHERE id = ?', [$data['nama_kamar'], $data['kapasitas'], $data['asrama'], $id]);
+        } else {
+            $this->execute('UPDATE kamar SET nama_kamar = ?, kapasitas = ? WHERE id = ?', [$data['nama_kamar'], $data['kapasitas'], $id]);
+        }
         return $id;
     }
 
     public function guruOptions(): array
     {
         return $this->all('SELECT id, nip, nama_guru FROM guru WHERE is_active = 1 AND archived_at IS NULL ORDER BY nama_guru');
+    }
+
+    public function santriAllOptions(): array
+    {
+        return $this->all('SELECT id, nis, nama_santri FROM santri ORDER BY nama_santri, id');
     }
 
     public function santriOptions(): array
@@ -389,16 +566,8 @@ final class MasterDataRepository
 
     public function exportSantri(array $filters): array
     {
-        [$where, $params] = $this->masterWhere($filters, ['nama_santri', 'nis', 'sekolah_saat_ini'], 's');
-        if (!empty($filters['gender']) && in_array($filters['gender'], ['L', 'P'], true)) {
-            $where .= ($where === '' ? ' WHERE ' : ' AND ') . 's.jenis_kelamin = ?';
-            $params[] = $filters['gender'];
-        }
-        if (!empty($filters['kelas_id'])) {
-            $where .= ($where === '' ? ' WHERE ' : ' AND ') . 'pk.id_kelas = ?';
-            $params[] = (int) $filters['kelas_id'];
-        }
-        return $this->all("SELECT DISTINCT s.id, s.nis, s.nama_santri, s.jenis_kelamin, s.tempat_lahir, s.tgl_lahir, s.alamat, s.desa, s.kecamatan, s.kab_kota, s.provinsi, s.asal_sekolah, s.sekolah_saat_ini, s.is_active, s.archived_at, k.nama_kelas FROM santri s LEFT JOIN plotting_kelas pk ON pk.id_santri = s.id AND pk.status = 'Aktif' AND pk.id_tahun = (SELECT id FROM tahun_ajaran WHERE status = 'Aktif' AND archived_at IS NULL LIMIT 1) LEFT JOIN kelas k ON k.id = pk.id_kelas " . $where . ' ORDER BY s.nama_santri, s.id', $params);
+        [$where, $params] = $this->santriWhere($filters);
+        return $this->all('SELECT DISTINCT s.id, s.nis, s.nama_santri, s.jenis_kelamin, s.tempat_lahir, s.tgl_lahir, s.alamat, s.desa, s.kecamatan, s.kab_kota, s.provinsi, s.asal_sekolah, s.sekolah_saat_ini, s.is_active, s.archived_at, k.nama_kelas, km.nama_kamar ' . $this->santriJoin() . $where . ' ORDER BY s.nama_santri, s.id', $params);
     }
 
     // -----------------------------------------------------------------------
@@ -690,6 +859,108 @@ final class MasterDataRepository
             default => throw new MasterDataException('Bagian rekonsiliasi tidak dikenal.'),
         };
         return \App\Database\PageQuery::fetch($this->db, $sql, [], $order, $page, $q, $columns);
+    }
+
+    // -----------------------------------------------------------------------
+    // Rekonsiliasi per pasangan (redesain Tahap 6, D-7, keputusan AD).
+    //
+    // Kelompok kandidat lama (nama/HP sama) dipecah menjadi PASANGAN wali agar
+    // admin meninjau satu pasangan per layar. Pasangan yang ditandai "bukan
+    // ganda" (tanda aktif di `wali_bukan_ganda`) tidak muncul lagi. Tetap
+    // hanya petunjuk: tidak ada penggabungan otomatis.
+    // -----------------------------------------------------------------------
+
+    private function duplicatePairsSql(): string
+    {
+        $aktif = 'archived_at IS NULL AND merged_into_wali_id IS NULL';
+        $kecuali = $this->bukanGandaTersedia()
+            ? ' WHERE NOT EXISTS (SELECT 1 FROM wali_bukan_ganda x WHERE x.wali_a_id = p.wali_a_id AND x.wali_b_id = p.wali_b_id AND x.dibatalkan_pada IS NULL)'
+            : '';
+
+        return "SELECT p.wali_a_id, p.wali_b_id, GROUP_CONCAT(DISTINCT p.jenis ORDER BY p.jenis) jenis, MIN(p.kunci) kunci, MIN(p.nama_a) nama_a, MIN(p.nama_b) nama_b
+                  FROM (
+                        SELECT a.id wali_a_id, b.id wali_b_id, 'nama' jenis, a.k kunci, a.nama nama_a, b.nama nama_b
+                          FROM (SELECT id, nama, LOWER(TRIM(nama)) k FROM wali WHERE {$aktif} AND TRIM(nama) <> '') a
+                          JOIN (SELECT id, nama, LOWER(TRIM(nama)) k FROM wali WHERE {$aktif} AND TRIM(nama) <> '') b ON b.k = a.k AND b.id > a.id
+                        UNION ALL
+                        SELECT a.id, b.id, 'no_hp', a.no_hp, a.nama, b.nama
+                          FROM (SELECT id, nama, no_hp FROM wali WHERE {$aktif} AND no_hp IS NOT NULL AND TRIM(no_hp) <> '') a
+                          JOIN (SELECT id, nama, no_hp FROM wali WHERE {$aktif} AND no_hp IS NOT NULL AND TRIM(no_hp) <> '') b ON b.no_hp = a.no_hp AND b.id > a.id
+                  ) p{$kecuali}
+                 GROUP BY p.wali_a_id, p.wali_b_id";
+    }
+
+    /** Satu pasangan per halaman; pencarian pada nama/HP kunci. */
+    public function duplicatePairsPage(string $q, int $page, int $perPage = 1): array
+    {
+        return \App\Database\PageQuery::fetch($this->db, $this->duplicatePairsSql(), [], 'wali_a_id, wali_b_id', $page, $q, ['kunci', 'nama_a', 'nama_b'], $perPage);
+    }
+
+    public function duplicatePairCount(): int
+    {
+        return $this->scalar('SELECT COUNT(*) jumlah FROM (' . $this->duplicatePairsSql() . ') t');
+    }
+
+    /** Masih menjadi kandidat (nama atau HP sama, keduanya aktif dan belum digabung)? */
+    public function isDuplicatePair(int $a, int $b): bool
+    {
+        return $this->one(
+            "SELECT 1 ada FROM wali a JOIN wali b ON b.id = ?
+              WHERE a.id = ? AND a.archived_at IS NULL AND a.merged_into_wali_id IS NULL
+                AND b.archived_at IS NULL AND b.merged_into_wali_id IS NULL
+                AND ((TRIM(a.nama) <> '' AND LOWER(TRIM(a.nama)) = LOWER(TRIM(b.nama)))
+                  OR (a.no_hp IS NOT NULL AND TRIM(a.no_hp) <> '' AND a.no_hp = b.no_hp))",
+            [$b, $a]
+        ) !== null;
+    }
+
+    /** @return array<string, mixed>|null tanda aktif */
+    public function notDuplicateActive(int $a, int $b, bool $forUpdate = false): ?array
+    {
+        return $this->one('SELECT * FROM wali_bukan_ganda WHERE wali_a_id = ? AND wali_b_id = ? AND dibatalkan_pada IS NULL' . ($forUpdate ? ' FOR UPDATE' : ''), [$a, $b]);
+    }
+
+    /** @return array<string, mixed>|null */
+    public function notDuplicateFind(int $id, bool $forUpdate = false): ?array
+    {
+        return $this->one('SELECT * FROM wali_bukan_ganda WHERE id = ?' . ($forUpdate ? ' FOR UPDATE' : ''), [$id]);
+    }
+
+    public function notDuplicateCreate(int $a, int $b, string $alasan, int $actorId): int
+    {
+        return $this->insert('INSERT INTO wali_bukan_ganda (wali_a_id, wali_b_id, alasan, ditandai_oleh) VALUES (?, ?, ?, ?)', [$a, $b, $alasan, $actorId > 0 ? $actorId : null]);
+    }
+
+    public function notDuplicateCancel(int $id, string $alasan, int $actorId): void
+    {
+        $this->execute('UPDATE wali_bukan_ganda SET dibatalkan_pada = NOW(), dibatalkan_oleh = ?, alasan_batal = ? WHERE id = ? AND dibatalkan_pada IS NULL', [$actorId > 0 ? $actorId : null, $alasan, $id]);
+    }
+
+    /** Daftar tanda aktif (chip "Ditandai bukan ganda"). */
+    public function notDuplicatePage(string $q, int $page): array
+    {
+        $sql = 'SELECT x.id, x.wali_a_id, x.wali_b_id, x.alasan, x.ditandai_pada, a.nama nama_a, a.no_hp hp_a, b.nama nama_b, b.no_hp hp_b, u.name ditandai_oleh_nama
+                  FROM wali_bukan_ganda x JOIN wali a ON a.id = x.wali_a_id JOIN wali b ON b.id = x.wali_b_id
+                  LEFT JOIN users u ON u.id = x.ditandai_oleh
+                 WHERE x.dibatalkan_pada IS NULL';
+        return \App\Database\PageQuery::fetch($this->db, $sql, [], 'ditandai_pada DESC, id DESC', $page, $q, ['nama_a', 'nama_b', 'hp_a', 'hp_b']);
+    }
+
+    public function notDuplicateCount(): int
+    {
+        return $this->bukanGandaTersedia() ? $this->scalar('SELECT COUNT(*) jumlah FROM wali_bukan_ganda WHERE dibatalkan_pada IS NULL') : 0;
+    }
+
+    /** Jumlah baris tiap bagian rekonsiliasi lama (untuk chip dan tombol D-6). */
+    public function reconciliationCount(string $section): int
+    {
+        $sql = match ($section) {
+            'tanpa_relasi' => $this->waliWithoutRelationsSql(),
+            'relasi_belum_lengkap' => $this->santriWithIncompleteWaliSql(),
+            'konflik_kolom_lama' => $this->santriLegacyConflictsSql(),
+            default => throw new MasterDataException('Bagian rekonsiliasi tidak dikenal.'),
+        };
+        return $this->scalar('SELECT COUNT(*) jumlah FROM (' . $sql . ') t');
     }
 
     private function masterWhere(array $filters, array $searchColumns, string $alias = ''): array

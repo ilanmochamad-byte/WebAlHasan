@@ -1,0 +1,6 @@
+v3_phase2_static: exit 77;
+v3_phase3_static: exit 77;
+v3_phase2_integration: exit 77;
+v3_phase3_integration: exit 77;
+v3_phase4_integration: exit 77;
+v3_phase5_access: exit 77;

@@ -7,6 +7,13 @@ use App\Izin\IzinException;
 require_once __DIR__ . '/_guard.php';
 require_once __DIR__ . '/_master_ui.php';
 
+// Redesain Tahap 6 (G-1): halaman lama dialihkan ke Pengaturan › Penugasan.
+// Permintaan POST lama tetap diproses di bawah untuk kompatibilitas.
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: ' . app_url('/admin/admin_penugasan.php?jenis=pembimbing'), true, 301);
+    exit;
+}
+
 $service = pembimbing_service();
 $master = master_data_service();
 

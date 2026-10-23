@@ -130,6 +130,34 @@ final class PenempatanService
     }
 
     /**
+     * Satu baris daftar penempatan untuk panel "Ubah penempatan" (D-5).
+     *
+     * @return array<string, mixed>|null
+     */
+    public function rowFor(int $santriId, int $yearId): ?array
+    {
+        if ($santriId < 1) {
+            return null;
+        }
+        $filters = $this->normalizeFilters([]);
+        $filters['santri_id'] = $santriId;
+
+        return $this->repository->listPage($filters, $yearId, 1, 10)['rows'][0] ?? null;
+    }
+
+    /**
+     * Santri terpilih untuk langkah "pilih tujuan" (D-5). Hanya membaca; ID
+     * divalidasi seperti `preview()`.
+     *
+     * @param array<int, mixed> $santriIds
+     * @return array<int, array<string, mixed>>
+     */
+    public function previewSantri(array $santriIds): array
+    {
+        return $this->repository->santriByIds($this->normalizeIds($santriIds));
+    }
+
+    /**
      * @param array<string, mixed> $filters
      * @return array<string, mixed>
      */
@@ -228,7 +256,14 @@ final class PenempatanService
             if ($rencana['masalah'] !== []) {
                 throw new MasterDataException(implode(' ', $rencana['masalah']), $rencana['masalah']);
             }
+            // Keputusan AE: dihitung ulang dari keadaan terkunci, bukan dari
+            // tinjauan. Tanpa konfirmasi + alasan, tidak ada yang tersimpan.
+            $alasanAsrama = '';
+            if ($rencana['peringatan'] !== []) {
+                $alasanAsrama = $this->normalizeAsramaConfirmation($options, $rencana['peringatan']);
+            }
 
+            $rencana['alasan_asrama'] = $alasanAsrama;
             $hasil = $rencana['jenis'] === 'kelas'
                 ? $this->terapkanKelas($rencana, $year, $actorId, $alasan)
                 : $this->terapkanKamar($rencana, $year, $actorId, $alasan);
@@ -307,6 +342,7 @@ final class PenempatanService
         $yearId = (int) $year['id'];
         $adalahKamar = in_array($aksi, [self::AKSI_KAMAR_TETAPKAN, self::AKSI_KAMAR_KELUARKAN], true);
         $masalah = [];
+        $peringatan = [];
         $baris = [];
 
         // Tanggal mulai hanya relevan untuk kelas; kosong berarti hari ini.
@@ -362,6 +398,15 @@ final class PenempatanService
                 if ($perubahan === 'masuk' || $perubahan === 'pindah') {
                     $tambahan++;
                 }
+                // Keputusan AE: jenis kelamin santri tidak sesuai asrama kamar
+                // tujuan → peringatan per santri; diterapkan hanya dengan
+                // konfirmasi beralasan (diperiksa `apply()`).
+                $tidakSesuai = in_array($perubahan, ['masuk', 'pindah'], true)
+                    && self::asramaTidakSesuai((string) ($santri[$id]['jenis_kelamin'] ?? ''), $target['asrama'] ?? null);
+                if ($tidakSesuai) {
+                    $peringatan[] = ($santri[$id]['nama_santri'] ?? ('Santri #' . $id)) . ' (' . ($santri[$id]['jenis_kelamin'] ?? '?') . ') akan ditempatkan di '
+                        . $target['nama'] . ' (asrama ' . mb_strtolower((string) $target['asrama']) . ').';
+                }
                 $baris[] = [
                     'santri_id' => $id,
                     'nis' => (string) ($santri[$id]['nis'] ?? ''),
@@ -372,6 +417,7 @@ final class PenempatanService
                     'sesudah_id' => $aksi === self::AKSI_KAMAR_KELUARKAN ? null : ($target === null ? null : (int) $target['id']),
                     'sesudah' => $aksi === self::AKSI_KAMAR_KELUARKAN ? null : ($target['nama'] ?? null),
                     'perubahan' => $perubahan,
+                    'asrama_tidak_sesuai' => $tidakSesuai,
                 ];
             }
 
@@ -401,6 +447,7 @@ final class PenempatanService
                 'mode' => count($ids) > 1 ? 'massal' : 'individu',
                 'target' => $target, 'tahun' => $year, 'baris' => $baris,
                 'kapasitas' => $kapasitas, 'masalah' => $masalah,
+                'peringatan' => $peringatan,
                 'tanggal_mulai' => $tanggal,
             ];
         }
@@ -427,8 +474,18 @@ final class PenempatanService
             'mode' => count($ids) > 1 ? 'massal' : 'individu',
             'target' => $target, 'tahun' => $year, 'baris' => $baris,
             'kapasitas' => null, 'masalah' => $masalah,
+            'peringatan' => [],
             'tanggal_mulai' => $tanggal,
         ];
+    }
+
+    /**
+     * Keputusan AE: L tidak sesuai asrama Putri, P tidak sesuai asrama Putra.
+     * Kamar yang asramanya belum ditentukan tidak memunculkan peringatan.
+     */
+    public static function asramaTidakSesuai(string $jenisKelamin, ?string $asrama): bool
+    {
+        return ($jenisKelamin === 'L' && $asrama === 'Putri') || ($jenisKelamin === 'P' && $asrama === 'Putra');
     }
 
     private function klasifikasi(?int $sebelum, ?int $sesudah, bool $keluar): string
@@ -534,6 +591,11 @@ final class PenempatanService
             'jumlah_santri' => $rencana['jumlah'],
             'alasan' => $alasan === '' ? null : $alasan,
         ];
+        if (!empty($baris['asrama_tidak_sesuai'])) {
+            $sesudah['asrama_tidak_sesuai'] = true;
+            $sesudah['asrama_kamar'] = $rencana['target']['asrama'] ?? null;
+            $sesudah['alasan_asrama'] = (string) ($rencana['alasan_asrama'] ?? '');
+        }
         if ($tanggal !== null) {
             $sesudah['tanggal'] = $tanggal;
         }
@@ -566,6 +628,8 @@ final class PenempatanService
                 'tidak_berubah' => $hasil['tidak_berubah'],
                 'santri_id' => array_map(static fn (array $b): int => (int) $b['santri_id'], $rencana['baris']),
                 'alasan' => $alasan === '' ? null : $alasan,
+                'asrama_tidak_sesuai' => array_values(array_map(static fn (array $b): int => (int) $b['santri_id'], array_filter($rencana['baris'], static fn (array $b): bool => !empty($b['asrama_tidak_sesuai'])))),
+                'alasan_asrama' => ($rencana['alasan_asrama'] ?? '') === '' ? null : $rencana['alasan_asrama'],
             ],
             $actorId
         );
@@ -628,6 +692,23 @@ final class PenempatanService
     }
 
     /**
+     * @param array<string, mixed> $options
+     * @param array<int, string> $peringatan
+     */
+    private function normalizeAsramaConfirmation(array $options, array $peringatan): string
+    {
+        $alasan = mb_substr(Normalizer::text($options['alasan_asrama'] ?? ''), 0, 500);
+        if ((string) ($options['konfirmasi_asrama'] ?? '') !== '1' || mb_strlen($alasan) < 5) {
+            throw new MasterDataException(
+                'Penempatan tidak sesuai asrama kamar: ' . implode(' ', $peringatan)
+                . ' Centang "Saya mengerti" dan isi alasan (minimal 5 karakter) untuk tetap menempatkan, atau hapus santri itu dari pilihan.'
+            );
+        }
+
+        return $alasan;
+    }
+
+    /**
      * @return array<string, mixed>
      */
     private function requireYear(): array
@@ -668,7 +749,8 @@ final class PenempatanService
             throw new MasterDataException('Kamar tujuan tidak ditemukan atau kapasitasnya belum diatur.');
         }
 
-        return ['id' => (int) $kamar['id'], 'nama' => (string) $kamar['nama_kamar'], 'kapasitas' => (int) $kamar['kapasitas']];
+        return ['id' => (int) $kamar['id'], 'nama' => (string) $kamar['nama_kamar'], 'kapasitas' => (int) $kamar['kapasitas'],
+            'asrama' => in_array($kamar['asrama'] ?? null, ['Putra', 'Putri'], true) ? (string) $kamar['asrama'] : null];
     }
 
     private function positiveId(mixed $value, string $label): int

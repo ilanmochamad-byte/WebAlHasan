@@ -1,0 +1,12 @@
+[lulus] KP-1a Dua admin mengisi tempat terakhir bersamaan: tepat satu berhasil [1]
+[lulus] KP-1b Kamar berkapasitas 1 tetap terisi satu orang [1]
+[lulus] KP-1c Permintaan yang kalah mendapat pesan yang dapat dimengerti admin [Kapasitas kamar KP Kamar 1 B3B57F tidak mencukupi: terisi 1 dari 1, sisa 0 tempat, sedangkan yang perlu ditambahkan 1 santri. Tidak ada satu pun santri yang dipindahkan.]
+[lulus] KP-2a Lima admin memperebutkan dua tempat: tepat dua berhasil [2]
+[lulus] KP-2b Kamar tidak pernah melebihi kapasitas [2 dari 2]
+[lulus] KP-3 Santri yang sama ditempatkan ke dua kamar bersamaan tetap memiliki satu kamar [1 baris]
+[lulus] KP-3 Sedikitnya satu permintaan berhasil (tidak keduanya gagal diam-diam)
+[lulus] KP-4 Santri tetap hanya memiliki satu penempatan kelas berstatus Aktif [1]
+[lulus] KP-4 Sedikitnya satu penempatan kelas bersamaan berhasil
+[lulus] KP-5 Tidak ada pesan yang membocorkan query atau detail internal basis data
+
+SELURUH PENGUJIAN PERMINTAAN BERSAMAAN PENEMPATAN LULUS.

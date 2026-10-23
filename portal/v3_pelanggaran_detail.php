@@ -78,7 +78,7 @@ echo ah_seg([
         <section class="ah-card" aria-labelledby="ah-catatan">
             <div class="ah-card__head"><span id="ah-catatan">Catatan</span><?= ah_status($row['status']) ?></div>
             <div class="ah-card__body"><dl class="ah-info-list">
-                <div><dt>Santri</dt><dd><?= ah_e($row['santri_nama']) ?> · <?= ah_e($row['semester'].' '.$row['tahun']) ?></dd></div>
+                <div><dt>Santri</dt><dd><a href="<?= ah_e(app_url('/portal/santri_binaan.php?id='.(int)$row['santri_id'])) ?>"><?= ah_e($row['santri_nama']) ?></a> · <?= ah_e($row['semester'].' '.$row['tahun']) ?></dd></div>
                 <div><dt>Jenis</dt><dd><?= ah_e($judul) ?><?= ($row['jenis']??null)!==null?' · '.ah_e($row['kategori']):'' ?> <?= ah_tingkat($row['tingkat']) ?></dd></div>
                 <div><dt>Poin</dt><dd><?= (int)$row['poin'] ?></dd></div>
                 <div><dt>Waktu &amp; tempat</dt><dd><?= ah_e(ah_waktu($row['waktu_kejadian']).' · '.($row['tempat']??'Tempat tidak dicatat')) ?></dd></div>

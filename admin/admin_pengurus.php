@@ -3,15 +3,152 @@
 declare(strict_types=1);
 
 use App\MasterData\MasterDataException;
+
+/**
+ * Data pesantren › Asatidz & pengurus › tab Pengurus (redesain website
+ * Tahap 6, M-1).
+ *
+ * Kolom: nomor identitas, nama, HP, jabatan, kamar/kelas binaan (dari
+ * penugasan pembimbing aktif), status. Tambah/ubah/detail di panel samping;
+ * status di ⋯ dengan dialog yang seragam. Pengurus tidak dibuatkan akun di
+ * sini; panel detail menautkan ke Akun & hak akses dengan pengurus terpilih.
+ */
+
 require_once __DIR__ . '/_guard.php';
 require_once __DIR__ . '/_master_ui.php';
-$service=master_data_service();
-if($_SERVER['REQUEST_METHOD']==='POST'){try{$action=(string)($_POST['action']??'');$id=(int)($_POST['id']??0);if($action==='save'){$service->savePengurus($_POST,$id?:null);master_flash('success','Data pengurus berhasil disimpan. Pengurus tidak dibuatkan akun login.');}else{$service->setPengurusState($id,$action);master_flash('success','Status pengurus berhasil diperbarui.');}}catch(MasterDataException $e){master_flash('danger',$e->getMessage());if($action==='save'){ah_validation_keep($_POST,['nama', 'nomor_identitas', 'no_hp', 'jabatan'],$e,'_pengurus_old');master_redirect('admin_pengurus.php?action='.($id?'edit&id='.$id:'create'));}}master_redirect('admin_pengurus.php');}
-$page=max(1,(int)($_GET['page']??1));$filters=['q'=>$_GET['q']??'','state'=>$_GET['state']??'active'];$result=$service->pengurusList($filters,$page);$selected=isset($_GET['id'])?$service->pengurus((int)$_GET['id']):null;$mode=(string)($_GET['action']??'');master_header('Master Data Pengurus', ['show_heading' => false]);
-?>
-<div class="ah-page-head"><div><h1 class="h3">Master Data Pengurus</h1><p class="text-muted mb-0">Akun pengurus dikelola terpisah melalui Akun &amp; Hak Akses.</p></div><a class="btn btn-success align-self-center" href="?action=create">Tambah Pengurus</a></div>
-<?php if($mode==='create'||($mode==='edit'&&$selected)):$r=array_replace($selected??[], $_SESSION['_pengurus_old']??[]); ?><div class="card border-0 shadow-sm mb-4"><div class="card-body"><form method="post" class="row g-3"><?= master_csrf() ?><input type="hidden" name="action" value="save"><?php if($selected): ?><input type="hidden" name="id" value="<?= (int)$selected['id'] ?>"><?php endif; ?><div class="col-md-4"><label class="form-label" for="nama">Nama</label><input class="form-control" id="nama" name="nama" required value="<?= master_e($r['nama']??'') ?>"><?= ah_field_error('nama','_pengurus_old') ?></div><div class="col-md-3"><label class="form-label" for="nomor_identitas">Nomor identitas</label><input class="form-control" id="nomor_identitas" name="nomor_identitas" value="<?= master_e($r['nomor_identitas']??'') ?>"><?= ah_field_error('nomor_identitas','_pengurus_old') ?></div><div class="col-md-2"><label class="form-label" for="no_hp">Nomor HP</label><input class="form-control" id="no_hp" name="no_hp" value="<?= master_e($r['no_hp']??'') ?>"><?= ah_field_error('no_hp','_pengurus_old') ?></div><div class="col-md-3"><label class="form-label" for="jabatan">Jabatan</label><input class="form-control" id="jabatan" name="jabatan" required value="<?= master_e($r['jabatan']??'') ?>"><?= ah_field_error('jabatan','_pengurus_old') ?></div><div><button class="btn btn-success">Simpan</button> <a class="btn btn-light" href="admin_pengurus.php">Batal</a></div></form></div></div><?php endif; ?>
-<?php if($mode==='detail'&&$selected): ?><div class="card border-0 shadow-sm mb-4"><div class="card-header bg-white d-flex justify-content-between"><strong>Detail Pengurus #<?= (int)$selected['id'] ?></strong><a href="?action=edit&amp;id=<?= (int)$selected['id'] ?>">Ubah</a></div><div class="card-body row g-3"><div class="col-md-4"><small class="text-muted d-block">Nama</small><?= master_e($selected['nama']) ?></div><div class="col-md-3"><small class="text-muted d-block">Identitas</small><?= master_e($selected['nomor_identitas']?:'-') ?></div><div class="col-md-2"><small class="text-muted d-block">Nomor HP</small><?= master_e($selected['no_hp']?:'-') ?></div><div class="col-md-3"><small class="text-muted d-block">Jabatan</small><?= master_e($selected['jabatan']) ?></div></div></div><?php endif; ?>
-<form method="get" class="card card-body border-0 shadow-sm mb-3"><div class="row g-2"><div class="col-md-6"><label class="form-label" for="q">Pencarian pengurus</label><input class="form-control" id="q" name="q" value="<?= master_e($filters['q']) ?>" placeholder="Cari nama, identitas, jabatan, atau HP"></div><div class="col-md-3"><label class="form-label" for="state">Status pengurus</label><select class="form-select" id="state" name="state"><?php foreach(['active'=>'Aktif','inactive'=>'Nonaktif','archived'=>'Arsip','all'=>'Semua'] as $v=>$l): ?><option value="<?= $v ?>" <?= $filters['state']===$v?'selected':'' ?>><?= $l ?></option><?php endforeach; ?></select></div><div class="col-md-3"><button class="btn btn-primary">Terapkan</button></div></div></form>
-<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th scope="col">ID</th><th scope="col">Nama</th><th scope="col">Identitas</th><th scope="col">HP</th><th scope="col">Jabatan</th><th scope="col">Status</th><th scope="col">Aksi</th></tr></thead><tbody><?php foreach($result['rows'] as $r): ?><tr><td><?= (int)$r['id'] ?></td><td><?= master_e($r['nama']) ?></td><td><?= master_e($r['nomor_identitas']?:'-') ?></td><td><?= master_e($r['no_hp']?:'-') ?></td><td><?= master_e($r['jabatan']) ?></td><td><?= $r['archived_at']?'Arsip':((int)$r['is_active']===1?'Aktif':'Nonaktif') ?></td><td><div class="d-flex gap-1"><a class="btn btn-sm btn-outline-primary" href="?action=detail&amp;id=<?= (int)$r['id'] ?>">Detail</a><a class="btn btn-sm btn-outline-warning" href="?action=edit&amp;id=<?= (int)$r['id'] ?>">Ubah</a><form data-confirm="Ubah status pengurus ini? Status aktif memengaruhi kelayakan penugasan pembimbing; akun dan riwayat lama tidak dihapus." method="post"><?= master_csrf() ?><input type="hidden" name="id" value="<?= (int)$r['id'] ?>"><button class="btn btn-sm btn-outline-secondary" name="action" value="<?= (int)$r['is_active']===1?'deactivate':'activate' ?>"><?= (int)$r['is_active']===1?'Nonaktifkan':'Aktifkan' ?></button></form><form data-confirm="Ubah status pengurus ini? Status aktif memengaruhi kelayakan penugasan pembimbing; akun dan riwayat lama tidak dihapus." method="post"><?= master_csrf() ?><input type="hidden" name="id" value="<?= (int)$r['id'] ?>"><button class="btn btn-sm btn-outline-danger" name="action" value="<?= $r['archived_at']?'restore':'archive' ?>"><?= $r['archived_at']?'Pulihkan':'Arsipkan' ?></button></form></div></td></tr><?php endforeach; ?><?php if ($result['rows'] === []): ?><tr><td colspan="7"><?= ah_empty('Tidak ada pengurus sesuai filter', 'Ubah pencarian/status atau tambahkan pengurus.') ?></td></tr><?php endif; ?></tbody></table></div></div>
-<?php master_pagination((int)$result['total'],$page,20);ah_old_clear('_pengurus_old');master_footer(); ?>
+
+$service = master_data_service();
+$halaman = 'admin_pengurus.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = (string) ($_POST['action'] ?? '');
+    $id = (int) ($_POST['id'] ?? 0);
+    try {
+        if ($action === 'save') {
+            $savedId = $service->savePengurus($_POST, $id ?: null);
+            ah_old_clear('_pengurus_old');
+            master_flash('success', 'Data ' . ($service->pengurus($savedId)['nama'] ?? 'pengurus') . ' tersimpan. Pengurus tidak dibuatkan akun login otomatis.');
+            master_redirect($halaman . '?action=detail&id=' . $savedId);
+        }
+        $service->setPengurusState($id, $action);
+        master_flash('success', 'Status ' . ($service->pengurus($id)['nama'] ?? 'pengurus') . ' diperbarui. Akun dan riwayat lama tidak dihapus.');
+    } catch (MasterDataException $exception) {
+        master_flash('danger', $exception->getMessage());
+        if ($action === 'save') {
+            ah_validation_keep($_POST, ['nama', 'nomor_identitas', 'no_hp', 'jabatan'], $exception, '_pengurus_old');
+            master_redirect($halaman . '?action=' . ($id ? 'edit&id=' . $id : 'create'));
+        }
+    }
+    master_redirect($halaman);
+}
+
+$page = max(1, (int) ($_GET['page'] ?? 1));
+$filters = [
+    'q' => is_string($_GET['q'] ?? null) ? $_GET['q'] : '',
+    'state' => in_array($_GET['state'] ?? 'active', ['active', 'inactive', 'archived', 'all'], true) ? (string) ($_GET['state'] ?? 'active') : 'active',
+];
+$result = $service->pengurusList($filters, $page);
+$jumlah = $service->stateCounts('pengurus', $filters['q']);
+$selected = isset($_GET['id']) ? $service->pengurus((int) $_GET['id']) : null;
+$mode = (string) ($_GET['action'] ?? '');
+$tutup = $halaman . (($q = ah_query(['action' => null, 'id' => null])) === '' ? '' : '?' . $q);
+
+master_header('Asatidz & pengurus', [
+    'active' => 'asatidz',
+    'description' => 'Orang yang mengajar dan mengurus santri.',
+    'breadcrumbs' => [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => 'Data pesantren'], ['label' => 'Asatidz & pengurus']],
+    'actions' => '<a class="btn btn-outline-secondary" href="export_master.php?entity=pengurus&amp;' . master_e(http_build_query($filters)) . '"><i class="fas fa-file-csv" aria-hidden="true"></i> Ekspor CSV</a>'
+        . '<a class="btn btn-primary" href="?action=create"><i class="fas fa-plus" aria-hidden="true"></i> Tambah pengurus</a>',
+]);
+
+if ($mode === 'create' || ($mode === 'edit' && $selected)):
+    $r = array_replace($selected ?? [], is_array($_SESSION['_pengurus_old'] ?? null) ? $_SESSION['_pengurus_old'] : []);
+    ah_panel_open(['title' => $selected ? 'Ubah ' . $selected['nama'] : 'Tambah pengurus', 'close_url' => $selected ? $halaman . '?action=detail&id=' . (int) $selected['id'] : $tutup]);
+    echo ah_error_summary('_pengurus_old'); ?>
+    <form method="post">
+        <?= master_csrf() ?>
+        <input type="hidden" name="action" value="save">
+        <?php if ($selected): ?><input type="hidden" name="id" value="<?= (int) $selected['id'] ?>"><?php endif; ?>
+        <div class="mb-3"><label class="form-label" for="nama">Nama <span class="text-danger" aria-hidden="true">*</span></label>
+            <input class="form-control" id="nama" name="nama" maxlength="100" required value="<?= master_e($r['nama'] ?? '') ?>"><?= ah_field_error('nama', '_pengurus_old') ?></div>
+        <div class="mb-3"><label class="form-label" for="nomor_identitas">Nomor identitas</label>
+            <input class="form-control" id="nomor_identitas" name="nomor_identitas" maxlength="50" value="<?= master_e($r['nomor_identitas'] ?? '') ?>"><?= ah_field_error('nomor_identitas', '_pengurus_old') ?></div>
+        <div class="mb-3"><label class="form-label" for="no_hp">Nomor HP</label>
+            <input class="form-control" id="no_hp" name="no_hp" inputmode="tel" maxlength="20" value="<?= master_e($r['no_hp'] ?? '') ?>"><?= ah_field_error('no_hp', '_pengurus_old') ?></div>
+        <div class="mb-3"><label class="form-label" for="jabatan">Jabatan <span class="text-danger" aria-hidden="true">*</span></label>
+            <input class="form-control" id="jabatan" name="jabatan" maxlength="100" required value="<?= master_e($r['jabatan'] ?? '') ?>"><?= ah_field_error('jabatan', '_pengurus_old') ?></div>
+        <div class="ah-actbar mb-0"><a class="btn btn-outline-secondary" href="<?= master_e($selected ? $halaman . '?action=detail&id=' . (int) $selected['id'] : $tutup) ?>">Batal</a>
+            <button class="btn btn-primary" type="submit">Simpan</button></div>
+    </form>
+    <?php ah_panel_close();
+    ah_old_clear('_pengurus_old');
+elseif ($mode === 'detail' && $selected):
+    $pid = (int) $selected['id'];
+    $akun = $service->linkedAccounts('pengurus_id', $pid);
+    $binaan = '';
+    foreach ($result['rows'] as $baris) {
+        if ((int) $baris['id'] === $pid) { $binaan = (string) ($baris['binaan'] ?? ''); }
+    }
+    ah_panel_open(['title' => (string) $selected['nama'], 'close_url' => $tutup, 'description' => (string) $selected['jabatan']]); ?>
+    <dl class="ah-kv">
+        <div><dt>Nomor identitas</dt><dd><?= master_e($selected['nomor_identitas'] ?: '—') ?></dd></div>
+        <div><dt>Nomor HP</dt><dd><?= master_e($selected['no_hp'] ?: '—') ?></dd></div>
+        <div><dt>Status</dt><dd><?= ah_state_badge($selected) ?></dd></div>
+        <div><dt>Akun login</dt><dd><?php if ($akun === []): ?>Belum ada · <a class="btn btn-sm btn-outline-primary" href="admin_akun.php?pengurus_id=<?= $pid ?>#ah-buat-pengurus">Buat akun</a>
+            <?php else: foreach ($akun as $a): ?>@<?= master_e($a['username']) ?> · <?= master_e($a['peran'] ?: 'tanpa peran') ?><?= (int) $a['is_active'] === 1 ? '' : ' (nonaktif)' ?><br><?php endforeach; endif; ?></dd></div>
+    </dl>
+    <h3 class="h6 mt-3">Penugasan</h3>
+    <ul class="ah-mini-list mb-3">
+        <li><a href="admin_penugasan.php?jenis=pembimbing&amp;q=<?= master_e(rawurlencode((string) $selected['nama'])) ?>"><span>Pembimbing</span><b><?= $binaan !== '' ? master_e($binaan) : 'Lihat' ?></b></a></li>
+        <li><a href="admin_penugasan.php?jenis=pendidikan&amp;q=<?= master_e(rawurlencode((string) $selected['nama'])) ?>"><span>Bagian Pendidikan</span><b>Lihat</b></a></li>
+    </ul>
+    <div class="d-flex flex-wrap gap-2"><a class="btn btn-outline-primary" href="?action=edit&amp;id=<?= $pid ?>"><i class="fas fa-pen" aria-hidden="true"></i> Ubah</a></div>
+    <?php ah_panel_close();
+endif;
+
+$chip = static fn (string $state): string => '?' . ah_query(['state' => $state, 'page' => null, 'action' => null, 'id' => null]);
+echo ah_chips([
+    ['label' => 'Aktif', 'url' => $chip('active'), 'active' => $filters['state'] === 'active', 'count' => $jumlah['active']],
+    ['label' => 'Nonaktif', 'url' => $chip('inactive'), 'active' => $filters['state'] === 'inactive', 'count' => $jumlah['inactive']],
+    ['label' => 'Arsip', 'url' => $chip('archived'), 'active' => $filters['state'] === 'archived', 'count' => $jumlah['archived']],
+], 'Status pengurus');
+ah_filter_open($filters['q'] !== '' ? 1 : 0, ['state' => $filters['state']]); ?>
+    <div class="ah-filter__wide"><label class="form-label" for="pengurus-q">Cari nama, identitas, jabatan, atau HP</label>
+        <input class="form-control" type="search" id="pengurus-q" name="q" maxlength="100" value="<?= master_e($filters['q']) ?>"></div>
+<?php ah_filter_close(['state' => $filters['state']]); ?>
+<div class="ah-card ah-table-wrap">
+    <table class="ah-table ah-table--cards" id="daftar-pengurus">
+        <caption class="ah-visually-hidden">Daftar pengurus, <?= (int) $result['total'] ?> data</caption>
+        <thead><tr><th scope="col">Nomor identitas</th><th scope="col">Nama</th><th scope="col">HP</th><th scope="col">Jabatan</th><th scope="col">Kamar/kelas binaan</th><th scope="col">Status</th><th scope="col"><span class="ah-visually-hidden">Tindakan</span></th></tr></thead>
+        <tbody>
+        <?php foreach ($result['rows'] as $row): $pid = (int) $row['id']; ?>
+            <tr<?= $row['archived_at'] !== null ? ' class="ah-row-muted"' : '' ?>>
+                <td><?= master_e($row['nomor_identitas'] ?: '—') ?></td>
+                <td><a class="ah-row-link" href="?<?= master_e(ah_query(['action' => 'detail', 'id' => $pid])) ?>"><?= master_e($row['nama']) ?></a></td>
+                <td><?= master_e($row['no_hp'] ?: '—') ?></td>
+                <td><?= master_e($row['jabatan']) ?></td>
+                <td><span class="ah-cell-wrap"><?= master_e($row['binaan'] ?: '—') ?></span></td>
+                <td><?= ah_state_badge($row) ?></td>
+                <td data-label=""><?= ah_menu(array_values(array_filter([
+                    ['label' => 'Lihat', 'url' => '?' . ah_query(['action' => 'detail', 'id' => $pid]), 'icon' => 'fa-eye'],
+                    ['label' => 'Ubah', 'url' => '?' . ah_query(['action' => 'edit', 'id' => $pid]), 'icon' => 'fa-pen'],
+                    $row['archived_at'] === null ? ((int) $row['is_active'] === 1
+                        ? ['label' => 'Nonaktifkan', 'icon' => 'fa-user-slash', 'action' => $halaman, 'fields' => ['id' => $pid, 'action' => 'deactivate'],
+                            'confirm' => ['title' => 'Nonaktifkan ' . $row['nama'] . '?', 'text' => 'Status aktif memengaruhi kelayakan penugasan pembimbing. Akun dan riwayat lama tidak dihapus.', 'ok' => 'Nonaktifkan']]
+                        : ['label' => 'Aktifkan', 'icon' => 'fa-user-check', 'action' => $halaman, 'fields' => ['id' => $pid, 'action' => 'activate'],
+                            'confirm' => ['title' => 'Aktifkan ' . $row['nama'] . '?', 'text' => 'Kembali dapat dipilih untuk penugasan.', 'ok' => 'Aktifkan']]) : null,
+                    $row['archived_at'] === null
+                        ? ['label' => 'Arsipkan', 'icon' => 'fa-box-archive', 'danger' => true, 'action' => $halaman, 'fields' => ['id' => $pid, 'action' => 'archive'],
+                            'confirm' => ['title' => 'Arsipkan ' . $row['nama'] . '?', 'text' => 'Berhenti muncul pada daftar aktif. Akun, penugasan, dan riwayat lama TIDAK dihapus.', 'ok' => 'Arsipkan']]
+                        : ['label' => 'Pulihkan', 'icon' => 'fa-rotate-left', 'action' => $halaman, 'fields' => ['id' => $pid, 'action' => 'restore'],
+                            'confirm' => ['title' => 'Pulihkan ' . $row['nama'] . '?', 'text' => 'Kembali ke daftar aktif.', 'ok' => 'Pulihkan']],
+                ])), 'Tindakan untuk ' . $row['nama']) ?></td>
+            </tr>
+        <?php endforeach; ?>
+        <?php if ($result['rows'] === []): ?>
+            <tr><td colspan="7" data-label=""><?= ah_empty('Tidak ada pengurus yang cocok', 'Ubah pencarian atau status, atau tambahkan pengurus.', '<a class="btn btn-sm btn-primary" href="?action=create">Tambah pengurus</a>') ?></td></tr>
+        <?php endif; ?>
+        </tbody>
+    </table>
+</div>
+<?php master_pagination((int) $result['total'], $page, 20); master_footer(); ?>

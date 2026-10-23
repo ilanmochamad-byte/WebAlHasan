@@ -123,8 +123,9 @@ $assert(
 $assert(str_contains($halaman, "require_once __DIR__ . '/_master_ui.php'"), 'PS-4 halaman memakai adaptor kerangka bersama');
 $assert(str_contains($halaman, 'master_header(') && str_contains($halaman, 'master_footer()'), 'PS-4 halaman memakai master_header dan master_footer');
 $assert(str_contains($halaman, "'breadcrumbs' =>"), 'PS-4 breadcrumb halaman diatur eksplisit');
-$assert(str_contains($halaman, "'active' => 'master.penempatan'"), 'PS-4 menu aktif ditandai dengan kunci baru');
-foreach (['ah-card', 'ah-table', 'ah-actions', 'ah_badge(', 'ah-stat'] as $komponen) {
+// Redesain Tahap 2/6: kunci menu mengikuti peta menu baru (Data santri).
+$assert(str_contains($halaman, "'active' => 'santri'"), 'PS-4 menu aktif ditandai dengan kunci peta menu');
+foreach (['ah-card', 'ah-table', 'ah_menu(', 'ah_badge(', 'ah_stats('] as $komponen) {
     $assert(str_contains($halaman, $komponen), 'PS-4 halaman memakai komponen bersama: ' . $komponen);
 }
 
@@ -276,12 +277,13 @@ foreach ([
 $assert(str_contains($halaman, 'master_pagination('), 'PS-12 daftar memakai pagination server');
 $assert(str_contains($halaman, 'listPage('), 'PS-12 data diambil per halaman, bukan seluruh santri sekaligus');
 $assert(substr_count($halaman, 'ah_empty(') >= 2, 'PS-12 tersedia keadaan kosong dan keadaan "tidak ada hasil pencarian"');
-$assert(str_contains($halaman, 'data-jumlah-terpilih'), 'PS-12 jumlah santri terpilih ditampilkan');
+$assert(str_contains($halaman, 'ah_selection_bar(') && str_contains($halaman, 'data-ah-selection="santri"'), 'PS-12 jumlah santri terpilih ditampilkan (bilah pilihan bersama)');
 $assert(str_contains($halaman, 'sisa '), 'PS-12 sisa tempat kamar ditampilkan pada pilihan kamar');
-$assert(str_contains($halaman, 'Konfirmasi perubahan penempatan'), 'PS-12 tersedia layar konfirmasi sebelum perubahan diterapkan');
+$assert(str_contains($halaman, 'Tinjau perubahan penempatan') && str_contains($halaman, "value=\"terapkan\""), 'PS-12 tersedia layar tinjauan sebelum perubahan diterapkan');
 $assert(str_contains($halaman, 'santri pada halaman lain tidak pernah ikut terpilih'), 'PS-12 perilaku pilihan lintas halaman dijelaskan kepada admin');
 $assert(
-    substr_count($halaman, 'aria-label="Tempatkan <?= master_e($row[\'nama_santri\']) ?> ke') === 2,
+    // Redesain Tahap 6: pilihan cepat per baris diganti kotak centang + panel "Ubah penempatan".
+    str_contains($halaman, 'aria-label="Pilih <?= master_e($row[\'nama_santri\']) ?>"'),
     'PS-12 setiap pilihan pada baris tabel memiliki nama aksesibel yang menyebut santrinya'
 );
 $assert(
@@ -293,7 +295,9 @@ $assert(str_contains($halaman, 'aria-label="Pilih semua santri pada halaman ini"
 // ============================================================== PS-13
 $posisiScript = strpos($halaman, '<script>');
 $skrip = $posisiScript === false ? '' : substr($halaman, $posisiScript);
-$assert($skrip !== '', 'PS-13 halaman memuat blok skrip bantu tampilan');
+// Redesain Tahap 6: bantu tampilan memakai skrip bersama (assets/ui/alhasan.js),
+// halaman tidak lagi memuat blok skrip sendiri — yang penting tetap: tanpa AJAX.
+$assert($skrip === '' || !str_contains($skrip, 'fetch('), 'PS-13 halaman tanpa blok skrip mutasi sendiri');
 foreach (['fetch(', 'XMLHttpRequest', '$.ajax'] as $panggilan) {
     $assert(!str_contains($skrip, $panggilan), 'PS-13 tidak ada mutasi lewat AJAX tanpa formulir ber-CSRF: ' . $panggilan);
 }
@@ -305,7 +309,7 @@ $assert(str_contains($source('admin/admin_master_santri.php'), 'admin_penempatan
 $assert(str_contains($source('admin/admin_kelas.php'), 'admin_penempatan_santri.php?kelas_id='), 'PS-14 Data Kelas menautkan penempatan dengan filter kelas');
 $kamarPage = $source('admin/admin_kamar.php');
 $assert(str_contains($kamarPage, 'admin_penempatan_santri.php?kamar_id='), 'PS-14 Data Kamar menautkan penempatan dengan filter kamar');
-$assert(str_contains($kamarPage, 'Kelola penempatan kamar ini'), 'PS-14 daftar penghuni kamar menyediakan tindakan menuju penempatan');
+$assert(str_contains($kamarPage, 'Tempatkan santri') && str_contains($kamarPage, 'Kelola penghuni'), 'PS-14 panel penghuni kamar menyediakan tindakan menuju penempatan');
 $assert(str_contains($source('admin/admin_dashboard.php'), 'admin_penempatan_santri.php'), 'PS-14 aksi cepat dasbor menunjuk halaman penempatan baru');
 
 // ============================================================== PS-15

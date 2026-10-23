@@ -1114,6 +1114,13 @@
         sync();
     });
 
+    /* --- Redesain Tahap 6 ------------------------------------------------ */
+    // Pilihan yang langsung membuka alamatnya (G-1: jenis penugasan di HP).
+    // Tanpa JavaScript tombol "Buka" di sebelahnya tetap mengirim formulir.
+    qsa('select[data-ah-autosubmit]').forEach(function (select) {
+        select.addEventListener('change', function () { if (select.form) { select.form.submit(); } });
+    });
+
     // Pratinjau poin (V-1): jenis menampilkan tingkat dan poin; total poin
     // santri setelah catatan ini dihitung dari angka yang dikirim server.
     qsa('[data-ah-poin-preview]').forEach(function (hint) {

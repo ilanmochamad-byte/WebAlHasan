@@ -16,6 +16,8 @@ tests/browser/tangkapan-redesain-web-tahap1/
 tests/browser/tangkapan-redesain-web-tahap3/
 tests/browser/tangkapan-redesain-web-tahap4/
 tests/browser/tangkapan-redesain-web-tahap5/
+tests/browser/tangkapan-redesain-web-tahap2/
+tests/browser/tangkapan-redesain-web-tahap6/
 
 # Dependensi lokal Playwright untuk uji browser opsional
 tests/browser/node_modules/

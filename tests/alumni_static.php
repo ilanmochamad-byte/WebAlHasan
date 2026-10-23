@@ -326,8 +326,10 @@ foreach ([
 $assert(str_contains($halamanAlumni, 'master_pagination('), 'AS-14 daftar alumni memakai pagination bersama');
 $assert(substr_count($halamanAlumni, 'ah_empty(') >= 2, 'AS-14 keadaan kosong dibedakan antara "tanpa data" dan "tidak cocok filter"');
 $assert(str_contains($halamanAlumni, 'ah-table-wrap'), 'AS-14 tabel dibungkus pembungkus responsif bersama');
-$assert(str_contains($halamanAlumni, 'ah-stats'), 'AS-14 ringkasan keadaan arsip ditampilkan');
-$assert(str_contains($halamanAlumni, 'Diproses oleh'), 'AS-14 daftar menunjukkan siapa yang memproses');
+// Redesain Tahap 6 (D-9): ringkasan angka diganti saringan status catatan +
+// peringatan data warisan; "Diproses oleh" pindah ke panel "Jejak proses".
+$assert(str_contains($halamanAlumni, 'name="state"') && str_contains($halamanAlumni, "\$ringkasan['tanpa_santri']"), 'AS-14 keadaan arsip dapat disaring dan data warisan diperingatkan');
+$assert(str_contains($halamanAlumni, 'Jejak proses') && str_contains($halamanAlumni, "dibuat_oleh"), 'AS-14 detail menunjukkan siapa yang memproses');
 $assert(str_contains($halamanAlumni, 'Kamar terakhir'), 'AS-14 detail menunjukkan kelas dan kamar terakhir');
 
 // ============================================================== AS-15
@@ -420,8 +422,9 @@ $assert(
     'AS-18 tindakan itu hanya tampil untuk santri yang masih aktif'
 );
 $assert(
-    str_contains($masterSantri, 'admin_kelulusan_santri.php">Kelulusan / mutasi keluar'),
-    'AS-18 alur massal dapat dibuka dari tindakan halaman Data Santri'
+    // Redesain Tahap 6: alur massal dibuka dari tab "Kelulusan & alumni" (D-9 "Proses kelulusan").
+    str_contains($source('admin/admin_alumni.php'), 'href="admin_kelulusan_santri.php"'),
+    'AS-18 alur massal dapat dibuka dari halaman Kelulusan & alumni'
 );
 
 // ============================================================== AS-19

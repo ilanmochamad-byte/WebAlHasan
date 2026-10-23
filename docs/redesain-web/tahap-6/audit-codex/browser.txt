@@ -1,0 +1,117 @@
+[lulus] T6-A D-1 375px: rapi di kerangka bersama
+[lulus] T6-A D-2-biodata 375px: rapi di kerangka bersama
+[lulus] T6-A D-2-tempat 375px: rapi di kerangka bersama
+[lulus] T6-A D-2-pembinaan 375px: rapi di kerangka bersama
+[lulus] T6-A D-3 375px: rapi di kerangka bersama
+[lulus] T6-A D-4 375px: rapi di kerangka bersama
+[lulus] T6-A D-5 375px: rapi di kerangka bersama
+[lulus] T6-A D-5-panel 375px: rapi di kerangka bersama
+[lulus] T6-A D-6 375px: rapi di kerangka bersama
+[lulus] T6-A D-6-panel 375px: rapi di kerangka bersama
+[lulus] T6-A D-7 375px: rapi di kerangka bersama
+[lulus] T6-A D-7-relasi 375px: rapi di kerangka bersama
+[lulus] T6-A D-8 375px: rapi di kerangka bersama
+[lulus] T6-A D-9 375px: rapi di kerangka bersama
+[lulus] T6-A M-1-guru 375px: rapi di kerangka bersama
+[lulus] T6-A M-1-panel 375px: rapi di kerangka bersama
+[lulus] T6-A M-1-pengurus 375px: rapi di kerangka bersama
+[lulus] T6-A M-2-kelas 375px: rapi di kerangka bersama
+[lulus] T6-A M-2-kamar 375px: rapi di kerangka bersama
+[lulus] T6-A M-2-kamar-panel 375px: rapi di kerangka bersama
+[lulus] T6-A M-2-kamar-form 375px: rapi di kerangka bersama
+[lulus] T6-A M-3 375px: rapi di kerangka bersama
+[lulus] T6-A G-1 375px: rapi di kerangka bersama
+[lulus] T6-A G-1-mendatang 375px: rapi di kerangka bersama
+[lulus] T6-A G-1-tambah 375px: rapi di kerangka bersama
+[lulus] T6-A D-1 768px: rapi di kerangka bersama
+[lulus] T6-A D-2-biodata 768px: rapi di kerangka bersama
+[lulus] T6-A D-2-tempat 768px: rapi di kerangka bersama
+[lulus] T6-A D-2-pembinaan 768px: rapi di kerangka bersama
+[lulus] T6-A D-3 768px: rapi di kerangka bersama
+[lulus] T6-A D-4 768px: rapi di kerangka bersama
+[lulus] T6-A D-5 768px: rapi di kerangka bersama
+[lulus] T6-A D-5-panel 768px: rapi di kerangka bersama
+[lulus] T6-A D-6 768px: rapi di kerangka bersama
+[lulus] T6-A D-6-panel 768px: rapi di kerangka bersama
+[lulus] T6-A D-7 768px: rapi di kerangka bersama
+[lulus] T6-A D-7-relasi 768px: rapi di kerangka bersama
+[lulus] T6-A D-8 768px: rapi di kerangka bersama
+[lulus] T6-A D-9 768px: rapi di kerangka bersama
+[lulus] T6-A M-1-guru 768px: rapi di kerangka bersama
+[lulus] T6-A M-1-panel 768px: rapi di kerangka bersama
+[lulus] T6-A M-1-pengurus 768px: rapi di kerangka bersama
+[lulus] T6-A M-2-kelas 768px: rapi di kerangka bersama
+[lulus] T6-A M-2-kamar 768px: rapi di kerangka bersama
+[lulus] T6-A M-2-kamar-panel 768px: rapi di kerangka bersama
+[lulus] T6-A M-2-kamar-form 768px: rapi di kerangka bersama
+[lulus] T6-A M-3 768px: rapi di kerangka bersama
+[lulus] T6-A G-1 768px: rapi di kerangka bersama
+[lulus] T6-A G-1-mendatang 768px: rapi di kerangka bersama
+[lulus] T6-A G-1-tambah 768px: rapi di kerangka bersama
+[lulus] T6-A D-1 1280px: rapi di kerangka bersama
+[lulus] T6-A D-2-biodata 1280px: rapi di kerangka bersama
+[lulus] T6-A D-2-tempat 1280px: rapi di kerangka bersama
+[lulus] T6-A D-2-pembinaan 1280px: rapi di kerangka bersama
+[lulus] T6-A D-3 1280px: rapi di kerangka bersama
+[lulus] T6-A D-4 1280px: rapi di kerangka bersama
+[lulus] T6-A D-5 1280px: rapi di kerangka bersama
+[lulus] T6-A D-5-panel 1280px: rapi di kerangka bersama
+[lulus] T6-A D-6 1280px: rapi di kerangka bersama
+[lulus] T6-A D-6-panel 1280px: rapi di kerangka bersama
+[lulus] T6-A D-7 1280px: rapi di kerangka bersama
+[lulus] T6-A D-7-relasi 1280px: rapi di kerangka bersama
+[lulus] T6-A D-8 1280px: rapi di kerangka bersama
+[lulus] T6-A D-9 1280px: rapi di kerangka bersama
+[lulus] T6-A M-1-guru 1280px: rapi di kerangka bersama
+[lulus] T6-A M-1-panel 1280px: rapi di kerangka bersama
+[lulus] T6-A M-1-pengurus 1280px: rapi di kerangka bersama
+[lulus] T6-A M-2-kelas 1280px: rapi di kerangka bersama
+[lulus] T6-A M-2-kamar 1280px: rapi di kerangka bersama
+[lulus] T6-A M-2-kamar-panel 1280px: rapi di kerangka bersama
+[lulus] T6-A M-2-kamar-form 1280px: rapi di kerangka bersama
+[lulus] T6-A M-3 1280px: rapi di kerangka bersama
+[lulus] T6-A G-1 1280px: rapi di kerangka bersama
+[lulus] T6-A G-1-mendatang 1280px: rapi di kerangka bersama
+[lulus] T6-A G-1-tambah 1280px: rapi di kerangka bersama
+[lulus] T6-A D-10-daftar 375px: rapi di kerangka bersama
+[lulus] T6-A D-10-ringkasan 375px: rapi di kerangka bersama
+[lulus] T6-A D-10-izin 375px: rapi di kerangka bersama
+[lulus] T6-A D-10-pembinaan 375px: rapi di kerangka bersama
+[lulus] T6-A D-10-daftar 768px: rapi di kerangka bersama
+[lulus] T6-A D-10-ringkasan 768px: rapi di kerangka bersama
+[lulus] T6-A D-10-izin 768px: rapi di kerangka bersama
+[lulus] T6-A D-10-pembinaan 768px: rapi di kerangka bersama
+[lulus] T6-A D-10-daftar 1280px: rapi di kerangka bersama
+[lulus] T6-A D-10-ringkasan 1280px: rapi di kerangka bersama
+[lulus] T6-A D-10-izin 1280px: rapi di kerangka bersama
+[lulus] T6-A D-10-pembinaan 1280px: rapi di kerangka bersama
+[lulus] T6-A D-10-murobi 375px: rapi di kerangka bersama
+[lulus] T6-A D-10-murobi 768px: rapi di kerangka bersama
+[lulus] T6-A D-10-murobi 1280px: rapi di kerangka bersama
+[lulus] T6-B bilah pilihan tersembunyi sebelum ada centang
+[lulus] T6-B bilah bawah muncul: "1 santri dipilih"
+[lulus] T6-B langkah tujuan menyebut santri terpilih
+[lulus] T6-B tinjauan memperingatkan asrama tidak sesuai per santri
+[lulus] T6-B tinjauan di HP tanpa geser horizontal
+[lulus] T6-B penempatan dengan konfirmasi + alasan tersimpan (pesan hasil, kamar baru di daftar)
+[lulus] T6-C satu pasangan berdampingan per layar
+[lulus] T6-C Lewati melompat ke pasangan berikutnya tanpa menyimpan
+[lulus] T6-C "Bukan ganda" membuka dialog beralasan
+[lulus] T6-C pasangan bertanda hilang dari kemungkinan ganda
+[lulus] T6-C chip "Ditandai bukan ganda" memuat alasan
+[lulus] T6-D langkah 1 Unggah berkas
+[lulus] T6-D Periksa: 3 baris, 1 siap, 2 bermasalah
+[lulus] T6-D baris bermasalah dijelaskan
+[lulus] T6-D langkah 2 Periksa data; tombol "Impor 1 santri"
+[lulus] T6-D Impor menyimpan hanya baris siap
+[lulus] T6-E Beranda → profil santri binaan, tab terbatas, hanya-baca
+[lulus] T6-E tab Pembinaan di HP tanpa geser horizontal
+[lulus] T6-E santri di luar cakupan: halaman akses ditolak
+[lulus] T6-F HP: jenis penugasan berupa pilihan di atas
+[lulus] T6-F memilih jenis langsung membuka daftarnya
+[lulus] T6-F ⋯ Akhiri membuka dialog tanggal selesai + alasan
+[lulus] T6-F desktop: menu jenis di kiri dengan kelompok modul mendatang
+[lulus] T6-G tanpa galat JavaScript
+[lulus] T6-G tanpa confirm()/alert() bawaan peramban
+
+Ringkasan: 115 lulus, 0 gagal

@@ -41,6 +41,7 @@ $definisi = $tabMapel ? null : PenugasanJenis::definisi($jenis);
 
 /** Filter daftar yang dipertahankan pada pengalihan. */
 $filterKeys = ['q', 'tahun_ajaran_id', 'status', 'kelas_id', 'kamar_id', 'mata_pelajaran_id', 'jenjang', 'gelombang', 'page'];
+// Panel: tambah, ubah, kelola (akhiri/nonaktifkan/arsip) — redesain Tahap 6, G-1.
 $kembaliKe = static function (array $ganti = []) use ($jenis, $filterKeys): string {
     $query = ['jenis' => $jenis];
     foreach ($filterKeys as $key) {
@@ -72,27 +73,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     throw new PenugasanException('Aksi tidak dikenal.');
                 }
                 $baru = $service->buat($jenis, $_POST, $aktorId);
-                master_flash('success', 'Penugasan ' . $definisi['label'] . ' #' . $baru . ' tersimpan. Penugasan ini TIDAK membuat akun; capability efektif mengikuti akun, role dasar, dan masa berlaku.');
+                master_flash('success', 'Penugasan ' . $definisi['label'] . ' tersimpan. Penugasan tidak membuat akun; hak baru berlaku bila akun aktif, berperan sesuai, dan masa berlaku sedang berjalan.');
                 break;
 
             case 'ubah':
                 $service->ubah($jenis, $id, $_POST, $aktorId);
-                master_flash('success', 'Penugasan #' . $id . ' diperbarui. Perubahan cakupan dan masa berlaku tercatat pada audit.');
+                master_flash('success', 'Penugasan diperbarui. Perubahan cakupan dan masa berlaku tercatat pada audit.');
                 break;
 
             case 'akhiri':
                 $service->akhiri($jenis, $id, (string) ($_POST['tanggal_selesai'] ?? ''), (string) ($_POST['alasan'] ?? ''), $aktorId);
-                master_flash('success', 'Penugasan #' . $id . ' diakhiri secara historis. Riwayatnya tetap tersimpan; capability berakhir setelah tanggal selesai.');
+                master_flash('success', 'Penugasan diakhiri. Riwayatnya tetap tersimpan; hak berakhir setelah tanggal selesai.');
                 break;
 
             case 'nonaktifkan':
                 $service->nonaktifkan($jenis, $id, (string) ($_POST['alasan'] ?? ''), $aktorId);
-                master_flash('success', 'Penugasan #' . $id . ' dinonaktifkan. Capability dicabut pada pemeriksaan server berikutnya; akun dan role dasar tidak berubah.');
+                master_flash('success', 'Penugasan dinonaktifkan. Hak dicabut pada pemeriksaan server berikutnya; akun dan peran dasar tidak berubah.');
                 break;
 
             case 'aktifkan':
                 $service->aktifkan($jenis, $id, (string) ($_POST['alasan'] ?? ''), $aktorId);
-                master_flash('success', 'Penugasan #' . $id . ' diaktifkan kembali.');
+                master_flash('success', 'Penugasan diaktifkan kembali.');
+                break;
+
+            case 'arsipkan':
+            case 'pulihkan':
+                // G-1: arsip/pulihkan penugasan murobi/pembimbing (sebelumnya
+                // hanya di halaman lama yang kini dialihkan ke sini).
+                $service->statusLama($jenis, $id, $action === 'arsipkan' ? 'archive' : 'restore', $aktorId, (string) ($_POST['alasan'] ?? ''));
+                master_flash('success', 'Penugasan ' . ($action === 'arsipkan' ? 'diarsipkan' : 'dipulihkan') . '. Riwayatnya tetap tersimpan.');
                 break;
 
             case 'mapel_simpan':
@@ -120,6 +129,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($action === 'ubah' && $id > 0) {
                 $tujuan = $kembaliKe(['edit' => $id]);
             }
+            if ($action === 'buat') {
+                $tujuan = $kembaliKe(['tambah' => 1]);
+            }
             if ($action === 'mapel_simpan') {
                 $tujuan = 'admin_penugasan.php?jenis=mata_pelajaran' . ($id > 0 ? '&edit=' . $id : '');
             }
@@ -132,27 +144,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // ---------------------------------------------------------------------------
-// Tab dan kerangka
+// Tab Mata pelajaran (pindah ke Penilaian & rapor; tampilannya M-5, Tahap 7)
 // ---------------------------------------------------------------------------
-$tabs = [];
-foreach (PenugasanJenis::semua() as $kunci => $def) {
-    $tabs[] = ['label' => $def['label'], 'url' => 'admin_penugasan.php?jenis=' . $kunci, 'active' => !$tabMapel && $jenis === $kunci];
+if ($tabMapel) {
+    master_header('Mata pelajaran', [
+        'active' => 'rapor',
+        'description' => 'Master mata pelajaran untuk penugasan guru mata pelajaran.',
+        'breadcrumbs' => [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => 'Penilaian & rapor'], ['label' => 'Mata pelajaran']],
+    ]);
 }
-$tabs[] = ['label' => 'Mata Pelajaran', 'url' => 'admin_penugasan.php?jenis=mata_pelajaran', 'active' => $tabMapel];
-
-master_header('Pusat Penugasan', [
-    'description' => 'Satu pusat untuk seluruh penugasan fungsional. Penugasan bukan role login: ia menghasilkan capability '
-        . 'yang dihitung server dari akun aktif, role dasar, relasi master, masa berlaku, tahun ajaran, dan cakupan.',
-    'active' => 'master.penugasan',
-    'tabs' => $tabs,
-    'breadcrumbs' => [
-        ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
-        ['label' => 'Penugasan'],
-        ['label' => 'Pusat Penugasan'],
-    ],
-    'actions' => '<a class="btn btn-outline-secondary" href="' . ah_e(app_url('/admin/admin_akun.php')) . '">Akun &amp; Hak Akses</a>',
-]);
-
 $old = static fn (string $field, ?string $default = null): string => ah_old($field, $default === null ? null : [$field => $default], $bucket);
 $err = static fn (string $field): string => ah_field_error($field, $bucket);
 $adaOld = isset($_SESSION[$bucket]);
@@ -241,7 +241,7 @@ if ($tabMapel) {
 }
 
 // ===========================================================================
-// Tab penugasan
+// G-1 Pusat penugasan: menu jenis + daftar + panel
 // ===========================================================================
 $filters = [
     'q' => App\Database\PageQuery::term($_GET['q'] ?? ''),
@@ -258,295 +258,285 @@ $daftar = $service->daftar($jenis, $filters, $page);
 $opsi = $service->opsi($jenis);
 $editId = (int) ($_GET['edit'] ?? 0);
 $edit = $editId > 0 ? $service->detail($jenis, $editId) : null;
-if ($editId > 0 && $edit === null) {
-    ah_note('warning', 'Penugasan yang diminta tidak ditemukan pada jenis ini.');
-}
+$kelolaId = (int) ($_GET['kelola'] ?? 0);
+$kelola = $kelolaId > 0 ? $service->detail($jenis, $kelolaId) : null;
+$tambah = isset($_GET['tambah']);
+$aksiPanel = is_string($_GET['aksi'] ?? null) ? $_GET['aksi'] : '';
 $statusTone = static fn (string $status): string => match ($status) {
     PenugasanService::STATUS_AKTIF => 'ok',
     PenugasanService::STATUS_AKAN_DATANG => 'info',
     PenugasanService::STATUS_BERAKHIR => 'muted',
     default => 'warn',
 };
-$labelTahun = static fn (array $t): string => $t['tahun'] . ' ' . $t['semester'] . ($t['status'] === 'Aktif' ? ' — Aktif' : '');
-
-ah_note(
-    'info',
-    $definisi['label'] . ' adalah penugasan, bukan role. ' . $definisi['keterangan'],
-    '<ul class="small mb-0 mt-2">'
-        . '<li>Menghasilkan capability: ' . implode(', ', array_map(static fn (string $c): string => '<code>' . ah_e($c) . '</code>', $definisi['capabilities'])) . ' (kesiapan PRD ' . ah_e($definisi['prd']) . ').</li>'
-        . '<li>Capability efektif hanya bila ' . ah_e($definisi['label_subjek']) . ' mempunyai <strong>akun aktif ber-role <code>' . ah_e($definisi['role_dasar']) . '</code></strong>, '
-        . 'penugasan aktif pada tanggal berjalan, dan tahun ajaran ' . ($definisi['wajib_tahun_aktif'] ? 'berstatus <strong>Aktif</strong>' : 'belum diarsipkan') . '.</li>'
-        . '<li>Penugasan tidak pernah dihapus: <strong>akhiri</strong> (tanggal selesai) atau <strong>nonaktifkan</strong>. Berakhirnya penugasan tidak menonaktifkan akun dan tidak mencabut role dasar.</li>'
-        . ($definisi['lama'] ? '<li>Halaman lama <a href="' . ah_e(app_url('/admin/admin_' . $jenis . '.php')) . '">admin_' . ah_e($jenis) . '.php</a> tetap tersedia untuk arsip/pulihkan.</li>' : '')
-        . '</ul>'
-);
-?>
-
-<form method="get" class="ah-card ah-no-print">
-    <input type="hidden" name="jenis" value="<?= ah_e($jenis) ?>">
-    <div class="ah-card__body">
-        <fieldset class="ah-fieldset mb-0">
-            <legend>Cari dan saring</legend>
-            <div class="row g-2 align-items-end">
-                <div class="col-md-4"><label class="form-label" for="q">Nama <?= ah_e($definisi['label_subjek']) ?> / username / cakupan</label>
-                    <input class="form-control" type="search" id="q" name="q" maxlength="100" value="<?= ah_e($filters['q']) ?>"></div>
-                <div class="col-md-3"><label class="form-label" for="f_tahun">Tahun ajaran</label>
-                    <select class="form-select" id="f_tahun" name="tahun_ajaran_id"><option value="">Semua</option>
-                        <?php foreach ($opsi['tahun'] as $t): ?><option value="<?= (int) $t['id'] ?>" <?= $filters['tahun_ajaran_id'] === (int) $t['id'] ? 'selected' : '' ?>><?= ah_e($labelTahun($t)) ?></option><?php endforeach; ?>
-                    </select></div>
-                <div class="col-md-2"><label class="form-label" for="f_status">Status</label>
-                    <select class="form-select" id="f_status" name="status">
-                        <?php foreach (['' => 'Semua', 'aktif' => 'Aktif', 'akan_datang' => 'Akan Datang', 'berakhir' => 'Berakhir', 'nonaktif' => 'Dinonaktifkan'] as $v => $l): ?>
-                            <option value="<?= ah_e($v) ?>" <?= $filters['status'] === $v ? 'selected' : '' ?>><?= ah_e($l) ?></option>
-                        <?php endforeach; ?>
-                    </select></div>
-                <?php if ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_TARGET): ?>
-                    <div class="col-md-3"><label class="form-label" for="f_kamar">Kamar</label>
-                        <select class="form-select" id="f_kamar" name="kamar_id"><option value="">Semua</option>
-                            <?php foreach ($opsi['kamar'] as $k): ?><option value="<?= (int) $k['id'] ?>" <?= $filters['kamar_id'] === (int) $k['id'] ? 'selected' : '' ?>><?= ah_e($k['nama_kamar']) ?></option><?php endforeach; ?>
-                        </select></div>
-                <?php endif; ?>
-                <?php if (in_array($definisi['cakupan'], [PenugasanJenis::CAKUPAN_TARGET, PenugasanJenis::CAKUPAN_MAPEL_KELAS], true)): ?>
-                    <div class="col-md-3"><label class="form-label" for="f_kelas">Kelas</label>
-                        <select class="form-select" id="f_kelas" name="kelas_id"><option value="">Semua</option>
-                            <?php foreach ($opsi['kelas'] as $k): ?><option value="<?= (int) $k['id'] ?>" <?= $filters['kelas_id'] === (int) $k['id'] ? 'selected' : '' ?>><?= ah_e($k['nama_kelas'] . ' (' . $k['jenjang'] . ')') ?></option><?php endforeach; ?>
-                        </select></div>
-                <?php endif; ?>
-                <?php if ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_MAPEL_KELAS): ?>
-                    <div class="col-md-3"><label class="form-label" for="f_mapel">Mata pelajaran</label>
-                        <select class="form-select" id="f_mapel" name="mata_pelajaran_id"><option value="">Semua</option>
-                            <?php foreach ($opsi['mata_pelajaran'] as $m): ?><option value="<?= (int) $m['id'] ?>" <?= $filters['mata_pelajaran_id'] === (int) $m['id'] ? 'selected' : '' ?>><?= ah_e($m['nama']) ?></option><?php endforeach; ?>
-                        </select></div>
-                <?php endif; ?>
-                <?php if ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_JENJANG): ?>
-                    <div class="col-md-3"><label class="form-label" for="f_jenjang">Unit/jenjang</label>
-                        <select class="form-select" id="f_jenjang" name="jenjang"><option value="">Semua</option>
-                            <?php foreach ($opsi['jenjang'] as $j): ?><option value="<?= ah_e($j) ?>" <?= $filters['jenjang'] === $j ? 'selected' : '' ?>><?= ah_e($j) ?></option><?php endforeach; ?>
-                        </select></div>
-                <?php endif; ?>
-                <?php if ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_GELOMBANG): ?>
-                    <div class="col-md-3"><label class="form-label" for="f_gelombang">Gelombang</label>
-                        <input class="form-control" id="f_gelombang" name="gelombang" maxlength="50" value="<?= ah_e($filters['gelombang']) ?>"></div>
-                <?php endif; ?>
-                <div class="col-md-3 d-flex flex-wrap gap-2">
-                    <button class="btn btn-primary" type="submit">Terapkan</button>
-                    <a class="btn btn-outline-secondary" href="admin_penugasan.php?jenis=<?= ah_e($jenis) ?>">Bersihkan</a></div>
-            </div>
-        </fieldset>
-    </div>
-</form>
-
-<?php
-// ---------------------------------------------------------------------------
-// Formulir buat / ubah
-// ---------------------------------------------------------------------------
-$modeUbah = $edit !== null;
-$nilai = static function (string $field, mixed $default = '') use ($adaOld, $old, $edit): string {
-    if ($adaOld) {
-        return $old($field, (string) $default);
-    }
-
-    return (string) ($edit[$field] ?? $default);
-};
-$subjekKolom = $definisi['subjek_kolom'];
-?>
-<section class="ah-card" aria-labelledby="ah-form-penugasan">
-    <div class="ah-card__head"><span id="ah-form-penugasan"><?= $modeUbah ? 'Ubah penugasan #' . (int) $edit['id'] : 'Tambah penugasan ' . ah_e($definisi['label']) ?></span>
-        <?php if ($modeUbah): ?><a class="btn btn-sm btn-outline-secondary" href="<?= ah_e($kembaliKe(['edit' => null])) ?>">Batal ubah</a><?php endif; ?></div>
-    <div class="ah-card__body">
-        <?php if ($opsi['subjek'] === []): ?>
-            <p class="text-muted mb-0">Belum ada <?= ah_e($definisi['label_subjek']) ?> aktif. Tambahkan data <?= ah_e($definisi['label_subjek']) ?> terlebih dahulu.</p>
-        <?php elseif ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_MAPEL_KELAS && $opsi['mata_pelajaran'] === []): ?>
-            <p class="text-muted mb-0">Belum ada mata pelajaran aktif. <a href="admin_penugasan.php?jenis=mata_pelajaran">Tambahkan mata pelajaran</a> terlebih dahulu.</p>
-        <?php else: ?>
-        <form method="post" class="row g-3" data-confirm="<?= $modeUbah ? 'Simpan perubahan penugasan? Cakupan dan masa berlaku baru berlaku pada pemeriksaan server berikutnya dan tercatat pada audit.' : 'Simpan penugasan ' . ah_e($definisi['label']) . '? Penugasan tidak membuat akun; capability efektif mengikuti akun, role dasar, dan masa berlaku.' ?>">
-            <?= master_csrf() ?>
-            <input type="hidden" name="jenis" value="<?= ah_e($jenis) ?>">
-            <input type="hidden" name="action" value="<?= $modeUbah ? 'ubah' : 'buat' ?>">
-            <?php if ($modeUbah): ?><input type="hidden" name="id" value="<?= (int) $edit['id'] ?>"><?php endif; ?>
-
-            <div class="col-md-4"><label class="form-label" for="<?= ah_e($subjekKolom) ?>"><?= ah_e($definisi['label_subjek']) ?></label>
-                <?php if ($modeUbah): ?>
-                    <input class="form-control" id="<?= ah_e($subjekKolom) ?>" value="<?= ah_e($edit['subjek_nama'] . ($edit['subjek_keterangan'] ? ' — ' . $edit['subjek_keterangan'] : '')) ?>" disabled>
-                    <div class="form-text">Ganti orang berarti penugasan baru; akhiri penugasan ini lalu buat yang baru.</div>
-                <?php else: ?>
-                    <select class="form-select" id="<?= ah_e($subjekKolom) ?>" name="<?= ah_e($subjekKolom) ?>" required>
-                        <option value="">Pilih <?= ah_e($definisi['label_subjek']) ?> aktif</option>
-                        <?php foreach ($opsi['subjek'] as $s): ?>
-                            <option value="<?= (int) $s['id'] ?>" <?= $nilai($subjekKolom) === (string) $s['id'] ? 'selected' : '' ?>><?= ah_e($s['nama'] . ($s['keterangan'] ? ' — ' . $s['keterangan'] : '')) ?></option>
-                        <?php endforeach; ?>
-                    </select><?= $err($subjekKolom) ?>
-                <?php endif; ?>
-            </div>
-
-            <div class="col-md-3"><label class="form-label" for="tahun_ajaran_id">Tahun ajaran<?= $definisi['cakupan'] === PenugasanJenis::CAKUPAN_GELOMBANG ? ' penerimaan' : '' ?></label>
-                <?php if ($modeUbah): ?>
-                    <input class="form-control" id="tahun_ajaran_id" value="<?= ah_e($edit['tahun'] . ' ' . $edit['semester']) ?>" disabled>
-                <?php else: ?>
-                    <select class="form-select" id="tahun_ajaran_id" name="tahun_ajaran_id" required>
-                        <?php foreach ($opsi['tahun'] as $t): ?>
-                            <option value="<?= (int) $t['id'] ?>" <?= $adaOld ? ($nilai('tahun_ajaran_id') === (string) $t['id'] ? 'selected' : '') : ($t['status'] === 'Aktif' ? 'selected' : '') ?>><?= ah_e($labelTahun($t)) ?></option>
-                        <?php endforeach; ?>
-                    </select><?= $err('tahun_ajaran_id') ?>
-                    <?php if (!$definisi['wajib_tahun_aktif']): ?><div class="form-text">PSB boleh memakai tahun ajaran yang belum aktif.</div><?php endif; ?>
-                <?php endif; ?>
-            </div>
-
-            <?php if ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_TARGET): ?>
-                <div class="col-md-2"><label class="form-label" for="target_type">Jenis kelompok</label>
-                    <select class="form-select" id="target_type" name="target_type">
-                        <?php foreach (['Kamar', 'Kelas'] as $tt): ?><option value="<?= $tt ?>" <?= $nilai('target_type', 'Kamar') === $tt ? 'selected' : '' ?>><?= $tt ?></option><?php endforeach; ?>
-                    </select><?= $err('target_type') ?></div>
-                <div class="col-md-3 target-kamar"><label class="form-label" for="kamar_id">Kamar binaan</label>
-                    <select class="form-select" id="kamar_id" name="kamar_id"><option value="">Pilih kamar</option>
-                        <?php foreach ($opsi['kamar'] as $k): ?><option value="<?= (int) $k['id'] ?>" <?= $nilai('kamar_id') === (string) $k['id'] ? 'selected' : '' ?>><?= ah_e($k['nama_kamar']) ?></option><?php endforeach; ?>
-                    </select><?= $err('kamar_id') ?></div>
-                <div class="col-md-3 target-kelas"><label class="form-label" for="kelas_id">Kelas binaan</label>
-                    <select class="form-select" id="kelas_id" name="kelas_id"><option value="">Pilih kelas</option>
-                        <?php foreach ($opsi['kelas'] as $k): ?><option value="<?= (int) $k['id'] ?>" <?= $nilai('kelas_id') === (string) $k['id'] ? 'selected' : '' ?>><?= ah_e($k['nama_kelas'] . ' (' . $k['jenjang'] . ')') ?></option><?php endforeach; ?>
-                    </select><?= $err('kelas_id') ?></div>
-            <?php elseif ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_MAPEL_KELAS): ?>
-                <div class="col-md-3"><label class="form-label" for="mata_pelajaran_id">Mata pelajaran</label>
-                    <select class="form-select" id="mata_pelajaran_id" name="mata_pelajaran_id" required><option value="">Pilih mata pelajaran</option>
-                        <?php foreach ($opsi['mata_pelajaran'] as $m): ?><option value="<?= (int) $m['id'] ?>" <?= $nilai('mata_pelajaran_id') === (string) $m['id'] ? 'selected' : '' ?>><?= ah_e(($m['kode'] ? $m['kode'] . ' — ' : '') . $m['nama']) ?></option><?php endforeach; ?>
-                    </select><?= $err('mata_pelajaran_id') ?></div>
-                <div class="col-md-3"><label class="form-label" for="kelas_id">Kelas</label>
-                    <select class="form-select" id="kelas_id" name="kelas_id" required><option value="">Pilih kelas</option>
-                        <?php foreach ($opsi['kelas'] as $k): ?><option value="<?= (int) $k['id'] ?>" <?= $nilai('kelas_id') === (string) $k['id'] ? 'selected' : '' ?>><?= ah_e($k['nama_kelas'] . ' (' . $k['jenjang'] . ')') ?></option><?php endforeach; ?>
-                    </select><?= $err('kelas_id') ?>
-                    <div class="form-text">Semester mengikuti tahun ajaran yang dipilih.</div></div>
-            <?php elseif ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_JENJANG): ?>
-                <div class="col-md-3"><label class="form-label" for="jenjang">Unit/jenjang <span class="text-muted fw-normal">(opsional)</span></label>
-                    <select class="form-select" id="jenjang" name="jenjang"><option value="">Seluruh unit</option>
-                        <?php foreach ($opsi['jenjang'] as $j): ?><option value="<?= ah_e($j) ?>" <?= $nilai('jenjang') === $j ? 'selected' : '' ?>><?= ah_e($j) ?></option><?php endforeach; ?>
-                    </select><?= $err('jenjang') ?></div>
-            <?php else: ?>
-                <div class="col-md-3"><label class="form-label" for="gelombang">Gelombang <span class="text-muted fw-normal">(opsional)</span></label>
-                    <input class="form-control" id="gelombang" name="gelombang" maxlength="50" placeholder="Kosong = seluruh gelombang" value="<?= ah_e($nilai('gelombang')) ?>"><?= $err('gelombang') ?></div>
-            <?php endif; ?>
-
-            <div class="col-md-3"><label class="form-label" for="tanggal_mulai">Tanggal mulai</label>
-                <input class="form-control" type="date" id="tanggal_mulai" name="tanggal_mulai" required value="<?= ah_e($nilai('tanggal_mulai', $modeUbah ? '' : date('Y-m-d'))) ?>"><?= $err('tanggal_mulai') ?></div>
-            <div class="col-md-3"><label class="form-label" for="tanggal_selesai">Tanggal selesai <span class="text-muted fw-normal">(opsional)</span></label>
-                <input class="form-control" type="date" id="tanggal_selesai" name="tanggal_selesai" value="<?= ah_e($nilai('tanggal_selesai')) ?>"><?= $err('tanggal_selesai') ?></div>
-            <div class="col-md-6"><label class="form-label" for="catatan">Catatan <span class="text-muted fw-normal">(opsional)</span></label>
-                <input class="form-control" id="catatan" name="catatan" maxlength="500" value="<?= ah_e($nilai('catatan')) ?>"><?= $err('catatan') ?></div>
-            <?php if ($modeUbah): ?>
-                <div class="col-md-6"><label class="form-label" for="alasan">Alasan perubahan <span class="text-danger">(wajib)</span></label>
-                    <input class="form-control" id="alasan" name="alasan" minlength="5" maxlength="500" required value="<?= ah_e($adaOld ? $old('alasan') : '') ?>"><?= $err('alasan') ?></div>
-            <?php endif; ?>
-            <div class="col-12"><button class="btn btn-primary"><?= $modeUbah ? 'Simpan perubahan' : 'Simpan penugasan' ?></button></div>
-        </form>
-        <?php endif; ?>
-    </div>
-</section>
-
-<?php
-// ---------------------------------------------------------------------------
-// Daftar
-// ---------------------------------------------------------------------------
+$labelTahun = static fn (array $t): string => $t['semester'] . ' ' . $t['tahun'] . ($t['status'] === 'Aktif' ? ' (aktif)' : '');
+$masa = static fn (string $mulai, ?string $selesai): string => $selesai ? ah_rentang($mulai, $selesai, false) : 'Mulai ' . ah_tanggal($mulai, false);
 $efektifCache = [];
 $efektif = static function (int $subjekId) use (&$efektifCache, $service, $jenis): array {
     return $efektifCache[$subjekId] ??= $service->capabilityEfektif($jenis, $subjekId);
 };
-?>
-<section class="ah-card" aria-labelledby="ah-daftar-penugasan">
-    <div class="ah-card__head"><span id="ah-daftar-penugasan">Daftar penugasan <?= ah_e($definisi['label']) ?></span>
-        <span class="text-muted small"><?= count($daftar['rows']) ?> dari <?= (int) $daftar['total'] ?></span></div>
-    <?php if ($daftar['rows'] === []): ?>
-        <div class="ah-card__body"><?= ($filters['q'] !== '' || $filters['status'] !== '' || $filters['tahun_ajaran_id'] > 0)
-            ? ah_empty('Tidak ada penugasan sesuai filter', 'Ubah kata kunci, tahun ajaran, status, atau cakupan.')
-            : ah_empty('Belum ada penugasan ' . $definisi['label'], 'Tambahkan penugasan pada formulir di atas.') ?></div>
-    <?php else: ?>
-        <div class="ah-table-wrap"><table class="ah-table">
-            <caption class="ah-visually-hidden">Daftar penugasan <?= ah_e($definisi['label']) ?> beserta masa berlaku, cakupan, status, dan capability efektif</caption>
-            <thead><tr>
-                <th scope="col"><?= ah_e($definisi['label_subjek']) ?></th><th scope="col">Tahun ajaran</th><th scope="col">Cakupan</th>
-                <th scope="col">Masa berlaku</th><th scope="col">Status</th><th scope="col">Capability efektif akun</th><th scope="col">Tindakan</th>
-            </tr></thead>
-            <tbody>
-            <?php foreach ($daftar['rows'] as $r):
-                $rid = (int) $r['id'];
-                $status = (string) $r['status_label'];
-                $ef = $efektif((int) $r['subjek_id']);
-                $hidup = (int) $r['is_active'] === 1 && empty($r['archived_at']);
-                ?>
-                <tr>
-                    <td><strong><?= master_e($r['subjek_nama']) ?></strong>
-                        <?php if (!empty($r['subjek_keterangan'])): ?><span class="ah-cell-sub"><?= master_e($r['subjek_keterangan']) ?></span><?php endif; ?>
-                        <?php if ((int) $r['subjek_aktif'] !== 1 || !empty($r['subjek_arsip'])): ?><?= ah_badge('Data master nonaktif', 'danger') ?><?php endif; ?>
-                        <span class="ah-cell-sub">#<?= $rid ?><?= $r['created_by_nama'] ? ' · oleh ' . master_e($r['created_by_nama']) : '' ?></span></td>
-                    <td><?= master_e($r['tahun'] . ' ' . $r['semester']) ?>
-                        <?php if ($r['tahun_status'] !== 'Aktif'): ?><span class="ah-cell-sub"><?= ah_badge($definisi['wajib_tahun_aktif'] ? 'Tahun tidak aktif' : 'Tahun belum aktif', 'muted') ?></span><?php endif; ?></td>
-                    <td><?= master_e($r['cakupan_teks']) ?>
-                        <?php if (isset($r['kelas_aktif']) && $r['kelas_id'] !== null && ((int) $r['kelas_aktif'] !== 1 || !empty($r['kelas_arsip']))): ?><span class="ah-cell-sub"><?= ah_badge('Kelas nonaktif', 'warn') ?></span><?php endif; ?>
-                        <?php if (isset($r['mapel_aktif']) && ((int) $r['mapel_aktif'] !== 1 || !empty($r['mapel_arsip']))): ?><span class="ah-cell-sub"><?= ah_badge('Mata pelajaran nonaktif', 'warn') ?></span><?php endif; ?></td>
-                    <td class="small"><?= master_e($r['masa_berlaku']) ?>
-                        <?php if (!empty($r['diakhiri_pada'])): ?><span class="ah-cell-sub">Diakhiri <?= master_e($r['diakhiri_oleh_nama'] ? 'oleh ' . $r['diakhiri_oleh_nama'] : '') ?>: <?= master_e($r['alasan_pengakhiran'] ?? '') ?></span><?php endif; ?>
-                        <?php if (!empty($r['catatan'])): ?><span class="ah-cell-sub">Catatan: <?= master_e($r['catatan']) ?></span><?php endif; ?></td>
-                    <td><?= ah_badge($status, $statusTone($status)) ?></td>
-                    <td class="small">
-                        <?php if ($ef['akun'] === null): ?>
-                            <?= ah_badge('Belum punya akun', 'warn') ?>
-                            <span class="ah-cell-sub"><?= master_e($ef['pesan']) ?></span>
-                        <?php else: ?>
-                            <span class="ah-cell-sub">@<?= master_e($ef['akun']['username']) ?> · role: <?= master_e($ef['akun']['roles'] === [] ? 'tanpa role' : implode(', ', $ef['akun']['roles'])) ?></span>
-                            <?php if ($ef['capabilities'] === []): ?>
-                                <?= ah_badge('Belum efektif', 'muted') ?>
-                                <?php if ($ef['pesan'] !== null): ?><span class="ah-cell-sub"><?= master_e($ef['pesan']) ?></span><?php endif; ?>
-                            <?php else: ?>
-                                <span class="d-flex flex-wrap gap-1 mt-1"><?php foreach ($ef['capabilities'] as $cap): ?><?= ah_badge($cap, 'ok') ?><?php endforeach; ?></span>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    </td>
-                    <td><div class="ah-actions flex-column align-items-start">
-                        <?php if (empty($r['archived_at'])): ?>
-                            <a class="btn btn-sm btn-outline-primary" href="<?= ah_e($kembaliKe(['edit' => $rid])) ?>#ah-form-penugasan">Ubah</a>
-                        <?php endif; ?>
-                        <?php if ($hidup && $status !== PenugasanService::STATUS_BERAKHIR): ?>
-                            <details><summary class="btn btn-sm btn-outline-secondary">Akhiri…</summary>
-                                <form method="post" class="mt-2 d-grid gap-1" style="min-width:14rem" data-confirm="Akhiri penugasan #<?= $rid ?>? Riwayat tetap tersimpan; capability berakhir setelah tanggal selesai.">
-                                    <?= master_csrf() ?><input type="hidden" name="jenis" value="<?= ah_e($jenis) ?>"><input type="hidden" name="action" value="akhiri"><input type="hidden" name="id" value="<?= $rid ?>">
-                                    <label class="form-label small mb-0" for="akhiri_tgl_<?= $rid ?>">Tanggal selesai</label>
-                                    <input class="form-control form-control-sm" type="date" id="akhiri_tgl_<?= $rid ?>" name="tanggal_selesai" required value="<?= ah_e(max(date('Y-m-d'), (string) $r['tanggal_mulai'])) ?>">
-                                    <label class="form-label small mb-0" for="akhiri_alasan_<?= $rid ?>">Alasan</label>
-                                    <input class="form-control form-control-sm" id="akhiri_alasan_<?= $rid ?>" name="alasan" minlength="5" maxlength="500" required>
-                                    <button class="btn btn-sm btn-secondary">Akhiri penugasan</button>
-                                </form></details>
-                        <?php endif; ?>
-                        <?php if (empty($r['archived_at'])): ?>
-                            <details><summary class="btn btn-sm <?= $hidup ? 'btn-outline-danger' : 'btn-outline-success' ?>"><?= $hidup ? 'Nonaktifkan…' : 'Aktifkan…' ?></summary>
-                                <form method="post" class="mt-2 d-grid gap-1" style="min-width:14rem" data-confirm="<?= $hidup ? 'Nonaktifkan penugasan #' . $rid . '? Capability dicabut pada pemeriksaan server berikutnya; akun dan role dasar tidak berubah.' : 'Aktifkan kembali penugasan #' . $rid . '? Pemeriksaan tumpang tindih dijalankan ulang.' ?>">
-                                    <?= master_csrf() ?><input type="hidden" name="jenis" value="<?= ah_e($jenis) ?>"><input type="hidden" name="action" value="<?= $hidup ? 'nonaktifkan' : 'aktifkan' ?>"><input type="hidden" name="id" value="<?= $rid ?>">
-                                    <label class="form-label small mb-0" for="status_alasan_<?= $rid ?>">Alasan</label>
-                                    <input class="form-control form-control-sm" id="status_alasan_<?= $rid ?>" name="alasan" minlength="5" maxlength="500" required>
-                                    <button class="btn btn-sm <?= $hidup ? 'btn-danger' : 'btn-success' ?>"><?= $hidup ? 'Nonaktifkan' : 'Aktifkan' ?></button>
-                                </form></details>
-                        <?php else: ?>
-                            <span class="text-muted small">Diarsipkan; kelola dari halaman lama.</span>
-                        <?php endif; ?>
-                    </div></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table></div>
-    <?php endif; ?>
-</section>
-<?php if ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_TARGET): ?>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    var type = document.getElementById('target_type');
-    if (!type) { return; }
-    var sync = function () {
-        document.querySelectorAll('.target-kamar').forEach(function (el) { el.classList.toggle('d-none', type.value !== 'Kamar'); });
-        document.querySelectorAll('.target-kelas').forEach(function (el) { el.classList.toggle('d-none', type.value !== 'Kelas'); });
+$mendatang = in_array($jenis, PenugasanJenis::MENDATANG, true);
+$kosongFilter = array_fill_keys(array_keys($filters), '') + ['status' => 'aktif'];
+$jumlahAktif = [];
+foreach (PenugasanJenis::semua() as $kunci => $def) {
+    $jumlahAktif[$kunci] = (int) $service->daftar($kunci, ['q' => '', 'tahun_ajaran_id' => 0, 'status' => 'aktif', 'kelas_id' => 0, 'kamar_id' => 0, 'mata_pelajaran_id' => 0, 'jenjang' => '', 'gelombang' => ''], 1)['total'];
+}
+$tutup = $kembaliKe(['edit' => null, 'kelola' => null, 'tambah' => null, 'aksi' => null]);
+
+master_header('Penugasan', [
+    'active' => 'penugasan',
+    'description' => 'Penugasan bukan peran login: hak yang didapat dihitung server dari akun aktif, peran dasar, masa berlaku, tahun ajaran, dan cakupan.',
+    'breadcrumbs' => [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => 'Pengaturan'], ['label' => 'Penugasan'], ['label' => $definisi['label']]],
+    'actions' => '<a class="btn btn-primary" href="' . ah_e($kembaliKe(['tambah' => 1, 'edit' => null, 'kelola' => null])) . '"><i class="fas fa-plus" aria-hidden="true"></i> Tambah penugasan</a>',
+]);
+
+// --- Panel tambah/ubah ------------------------------------------------------
+if ($tambah || $edit !== null):
+    $modeUbah = $edit !== null;
+    $nilai = static function (string $field, mixed $default = '') use ($adaOld, $old, $edit): string {
+        if ($adaOld) {
+            return $old($field, (string) $default);
+        }
+        return (string) ($edit[$field] ?? $default);
     };
-    type.addEventListener('change', sync);
-    sync();
-});
-</script>
-<?php endif; ?>
+    $subjekKolom = $definisi['subjek_kolom'];
+    ah_panel_open(['title' => $modeUbah ? 'Ubah penugasan ' . $definisi['label'] : 'Tambah penugasan ' . $definisi['label'], 'close_url' => $tutup,
+        'description' => $modeUbah ? $edit['subjek_nama'] . ' · ' . $edit['cakupan_teks'] : PenugasanJenis::penjelasan($jenis)]);
+    echo ah_error_summary($bucket);
+    if ($opsi['subjek'] === []): ?>
+        <p class="text-muted mb-0">Belum ada <?= ah_e(mb_strtolower($definisi['label_subjek'])) ?> aktif. Tambahkan datanya di Data pesantren › Asatidz &amp; pengurus terlebih dahulu.</p>
+    <?php elseif ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_MAPEL_KELAS && $opsi['mata_pelajaran'] === []): ?>
+        <p class="text-muted mb-0">Belum ada mata pelajaran aktif. <a href="admin_penugasan.php?jenis=mata_pelajaran">Tambahkan mata pelajaran</a> terlebih dahulu.</p>
+    <?php else: ?>
+    <form method="post" data-confirm="<?= $modeUbah ? 'Simpan perubahan penugasan? Cakupan dan masa berlaku baru berlaku pada pemeriksaan server berikutnya dan tercatat pada audit.' : 'Simpan penugasan ' . ah_e($definisi['label']) . '? Penugasan tidak membuat akun.' ?>">
+        <?= master_csrf() ?>
+        <input type="hidden" name="jenis" value="<?= ah_e($jenis) ?>">
+        <input type="hidden" name="action" value="<?= $modeUbah ? 'ubah' : 'buat' ?>">
+        <?php if ($modeUbah): ?><input type="hidden" name="id" value="<?= (int) $edit['id'] ?>"><?php endif; ?>
+        <div class="mb-3"><label class="form-label" for="<?= ah_e($subjekKolom) ?>"><?= ah_e($definisi['label_subjek']) ?></label>
+            <?php if ($modeUbah): ?>
+                <input class="form-control" id="<?= ah_e($subjekKolom) ?>" value="<?= ah_e($edit['subjek_nama'] . ($edit['subjek_keterangan'] ? ' — ' . $edit['subjek_keterangan'] : '')) ?>" disabled>
+                <div class="form-text">Ganti orang berarti penugasan baru: akhiri penugasan ini lalu buat yang baru.</div>
+            <?php else: ?>
+                <select class="form-select" id="<?= ah_e($subjekKolom) ?>" name="<?= ah_e($subjekKolom) ?>" required>
+                    <option value="">Pilih <?= ah_e(mb_strtolower($definisi['label_subjek'])) ?> aktif</option>
+                    <?php foreach ($opsi['subjek'] as $s): ?><option value="<?= (int) $s['id'] ?>" <?= $nilai($subjekKolom) === (string) $s['id'] ? 'selected' : '' ?>><?= ah_e($s['nama'] . ($s['keterangan'] ? ' — ' . $s['keterangan'] : '')) ?></option><?php endforeach; ?>
+                </select><?= $err($subjekKolom) ?>
+            <?php endif; ?></div>
+        <div class="mb-3"><label class="form-label" for="tahun_ajaran_id">Tahun ajaran<?= $definisi['cakupan'] === PenugasanJenis::CAKUPAN_GELOMBANG ? ' penerimaan' : '' ?></label>
+            <?php if ($modeUbah): ?>
+                <input class="form-control" id="tahun_ajaran_id" value="<?= ah_e($edit['semester'] . ' ' . $edit['tahun']) ?>" disabled>
+            <?php else: ?>
+                <select class="form-select" id="tahun_ajaran_id" name="tahun_ajaran_id" required>
+                    <?php foreach ($opsi['tahun'] as $t): ?><option value="<?= (int) $t['id'] ?>" <?= $adaOld ? ($nilai('tahun_ajaran_id') === (string) $t['id'] ? 'selected' : '') : ($t['status'] === 'Aktif' ? 'selected' : '') ?>><?= ah_e($labelTahun($t)) ?></option><?php endforeach; ?>
+                </select><?= $err('tahun_ajaran_id') ?>
+            <?php endif; ?></div>
+        <?php if ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_TARGET): ?>
+            <div class="mb-3"><label class="form-label" for="target_type">Kelompok binaan</label>
+                <select class="form-select" id="target_type" name="target_type">
+                    <?php foreach (['Kamar' => 'Kamar/kobong', 'Kelas' => 'Kelas'] as $tt => $ttl): ?><option value="<?= $tt ?>" <?= $nilai('target_type', 'Kamar') === $tt ? 'selected' : '' ?>><?= $ttl ?></option><?php endforeach; ?>
+                </select><?= $err('target_type') ?></div>
+            <div class="mb-3" data-ah-when="target_type" data-ah-when-value="Kamar"><label class="form-label" for="kamar_id">Kamar binaan</label>
+                <select class="form-select" id="kamar_id" name="kamar_id"><option value="">Pilih kamar</option>
+                    <?php foreach ($opsi['kamar'] as $k): ?><option value="<?= (int) $k['id'] ?>" <?= $nilai('kamar_id') === (string) $k['id'] ? 'selected' : '' ?>><?= ah_e($k['nama_kamar']) ?></option><?php endforeach; ?>
+                </select><?= $err('kamar_id') ?><div class="form-text">Dipakai bila kelompok binaan Kamar.</div></div>
+            <div class="mb-3" data-ah-when="target_type" data-ah-when-value="Kelas"><label class="form-label" for="kelas_id">Kelas binaan</label>
+                <select class="form-select" id="kelas_id" name="kelas_id"><option value="">Pilih kelas</option>
+                    <?php foreach ($opsi['kelas'] as $k): ?><option value="<?= (int) $k['id'] ?>" <?= $nilai('kelas_id') === (string) $k['id'] ? 'selected' : '' ?>><?= ah_e($k['nama_kelas'] . ' (' . $k['jenjang'] . ')') ?></option><?php endforeach; ?>
+                </select><?= $err('kelas_id') ?><div class="form-text">Dipakai bila kelompok binaan Kelas.</div></div>
+        <?php elseif ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_MAPEL_KELAS): ?>
+            <div class="mb-3"><label class="form-label" for="mata_pelajaran_id">Mata pelajaran</label>
+                <select class="form-select" id="mata_pelajaran_id" name="mata_pelajaran_id" required><option value="">Pilih mata pelajaran</option>
+                    <?php foreach ($opsi['mata_pelajaran'] as $m): ?><option value="<?= (int) $m['id'] ?>" <?= $nilai('mata_pelajaran_id') === (string) $m['id'] ? 'selected' : '' ?>><?= ah_e(($m['kode'] ? $m['kode'] . ' — ' : '') . $m['nama']) ?></option><?php endforeach; ?>
+                </select><?= $err('mata_pelajaran_id') ?></div>
+            <div class="mb-3"><label class="form-label" for="kelas_id">Kelas</label>
+                <select class="form-select" id="kelas_id" name="kelas_id" required><option value="">Pilih kelas</option>
+                    <?php foreach ($opsi['kelas'] as $k): ?><option value="<?= (int) $k['id'] ?>" <?= $nilai('kelas_id') === (string) $k['id'] ? 'selected' : '' ?>><?= ah_e($k['nama_kelas'] . ' (' . $k['jenjang'] . ')') ?></option><?php endforeach; ?>
+                </select><?= $err('kelas_id') ?></div>
+        <?php elseif ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_JENJANG): ?>
+            <div class="mb-3"><label class="form-label" for="jenjang">Unit/jenjang <span class="text-muted fw-normal">(opsional)</span></label>
+                <select class="form-select" id="jenjang" name="jenjang"><option value="">Seluruh unit</option>
+                    <?php foreach ($opsi['jenjang'] as $j): ?><option value="<?= ah_e($j) ?>" <?= $nilai('jenjang') === $j ? 'selected' : '' ?>><?= ah_e($j) ?></option><?php endforeach; ?>
+                </select><?= $err('jenjang') ?></div>
+        <?php else: ?>
+            <div class="mb-3"><label class="form-label" for="gelombang">Gelombang <span class="text-muted fw-normal">(opsional)</span></label>
+                <input class="form-control" id="gelombang" name="gelombang" maxlength="50" placeholder="Kosong = seluruh gelombang" value="<?= ah_e($nilai('gelombang')) ?>"><?= $err('gelombang') ?></div>
+        <?php endif; ?>
+        <div class="row g-2 mb-3">
+            <div class="col-sm-6"><label class="form-label" for="tanggal_mulai">Tanggal mulai</label>
+                <input class="form-control" type="date" id="tanggal_mulai" name="tanggal_mulai" required value="<?= ah_e($nilai('tanggal_mulai', $modeUbah ? '' : date('Y-m-d'))) ?>"><?= $err('tanggal_mulai') ?></div>
+            <div class="col-sm-6"><label class="form-label" for="tanggal_selesai">Tanggal selesai <span class="text-muted fw-normal">(opsional)</span></label>
+                <input class="form-control" type="date" id="tanggal_selesai" name="tanggal_selesai" value="<?= ah_e($nilai('tanggal_selesai')) ?>"><?= $err('tanggal_selesai') ?></div>
+        </div>
+        <div class="mb-3"><label class="form-label" for="catatan">Catatan <span class="text-muted fw-normal">(opsional)</span></label>
+            <input class="form-control" id="catatan" name="catatan" maxlength="500" value="<?= ah_e($nilai('catatan')) ?>"><?= $err('catatan') ?></div>
+        <?php if ($modeUbah): ?>
+            <div class="mb-3"><label class="form-label" for="alasan">Alasan perubahan <span class="text-danger" aria-hidden="true">*</span></label>
+                <input class="form-control" id="alasan" name="alasan" minlength="5" maxlength="500" required value="<?= ah_e($adaOld ? $old('alasan') : '') ?>"><?= $err('alasan') ?></div>
+        <?php endif; ?>
+        <div class="ah-actbar mb-0"><a class="btn btn-outline-secondary" href="<?= ah_e($tutup) ?>">Batal</a><button class="btn btn-primary" type="submit"><?= $modeUbah ? 'Simpan perubahan' : 'Simpan penugasan' ?></button></div>
+    </form>
+    <?php endif;
+    ah_panel_close();
+endif;
+
+// --- Panel kelola: akhiri, nonaktifkan/aktifkan, arsip/pulihkan ---------------
+if ($kelola !== null):
+    $rid = (int) $kelola['id'];
+    $status = (string) $kelola['status_label'];
+    $hidup = (int) $kelola['is_active'] === 1 && empty($kelola['archived_at']);
+    $ef = $service->capabilityEfektif($jenis, (int) $kelola['subjek_id']);
+    ah_panel_open(['title' => $kelola['subjek_nama'] . ' · ' . $definisi['label'], 'close_url' => $tutup, 'description' => $kelola['cakupan_teks']]); ?>
+    <dl class="ah-kv mb-3">
+        <div><dt>Semester</dt><dd><?= master_e($kelola['semester'] . ' ' . $kelola['tahun']) ?></dd></div>
+        <div><dt>Masa berlaku</dt><dd><?= master_e($masa((string) $kelola['tanggal_mulai'], $kelola['tanggal_selesai'] ?: null)) ?></dd></div>
+        <div><dt>Status</dt><dd><?= ah_badge($status, $statusTone($status)) ?><?= !empty($kelola['archived_at']) ? ' ' . ah_badge('Arsip', 'muted') : '' ?></dd></div>
+        <div><dt>Akun</dt><dd><?= $ef['akun'] === null ? 'Belum punya akun' : '@' . master_e($ef['akun']['username']) ?></dd></div>
+    </dl>
+    <?php if ($ef['pesan'] !== null): ?><p class="small text-muted"><?= master_e($ef['pesan']) ?></p><?php endif; ?>
+    <?php if (!empty($kelola['diakhiri_pada'])): ?><p class="small">Diakhiri<?= $kelola['diakhiri_oleh_nama'] ? ' oleh ' . master_e($kelola['diakhiri_oleh_nama']) : '' ?>: <?= master_e($kelola['alasan_pengakhiran'] ?? '') ?></p><?php endif; ?>
+    <div class="d-flex flex-wrap gap-2">
+        <?php if (empty($kelola['archived_at'])): ?>
+            <a class="btn btn-outline-primary" href="<?= ah_e($kembaliKe(['edit' => $rid, 'kelola' => null])) ?>"><i class="fas fa-pen" aria-hidden="true"></i> Ubah</a>
+        <?php endif; ?>
+        <?php if ($hidup && $status !== PenugasanService::STATUS_BERAKHIR): ?>
+            <?php ah_action_dialog_open('aksi-akhiri', 'Akhiri penugasan', 'Akhiri penugasan ini?', 'outline-secondary', $aksiPanel === 'akhiri'); ?>
+                <form method="post"><?= master_csrf() ?><input type="hidden" name="jenis" value="<?= ah_e($jenis) ?>"><input type="hidden" name="action" value="akhiri"><input type="hidden" name="id" value="<?= $rid ?>">
+                    <p class="small text-muted">Riwayat tetap tersimpan; hak berakhir setelah tanggal selesai. Akun dan peran dasar tidak berubah.</p>
+                    <label class="form-label" for="akhiri_tgl">Tanggal selesai</label>
+                    <input class="form-control mb-2" type="date" id="akhiri_tgl" name="tanggal_selesai" required value="<?= ah_e(max(date('Y-m-d'), (string) $kelola['tanggal_mulai'])) ?>">
+                    <label class="form-label" for="akhiri_alasan">Alasan <span class="text-danger" aria-hidden="true">*</span></label>
+                    <input class="form-control mb-2" id="akhiri_alasan" name="alasan" minlength="5" maxlength="500" required>
+                    <div class="ah-dialog__actions"><button class="btn btn-secondary" type="submit">Akhiri penugasan</button></div>
+                </form>
+            <?php ah_action_dialog_close(); ?>
+        <?php endif; ?>
+        <?php if (empty($kelola['archived_at'])): ?>
+            <?php ah_action_dialog_open('aksi-status', $hidup ? 'Nonaktifkan' : 'Aktifkan', $hidup ? 'Nonaktifkan penugasan ini?' : 'Aktifkan kembali penugasan ini?', $hidup ? 'outline-danger' : 'outline-success', $aksiPanel === 'status'); ?>
+                <form method="post"><?= master_csrf() ?><input type="hidden" name="jenis" value="<?= ah_e($jenis) ?>"><input type="hidden" name="action" value="<?= $hidup ? 'nonaktifkan' : 'aktifkan' ?>"><input type="hidden" name="id" value="<?= $rid ?>">
+                    <p class="small text-muted"><?= $hidup ? 'Hak dicabut pada pemeriksaan server berikutnya; akun dan peran dasar tidak berubah.' : 'Pemeriksaan tumpang tindih dijalankan ulang.' ?></p>
+                    <label class="form-label" for="status_alasan">Alasan <span class="text-danger" aria-hidden="true">*</span></label>
+                    <input class="form-control mb-2" id="status_alasan" name="alasan" minlength="5" maxlength="500" required>
+                    <div class="ah-dialog__actions"><button class="btn <?= $hidup ? 'btn-danger' : 'btn-success' ?>" type="submit"><?= $hidup ? 'Nonaktifkan' : 'Aktifkan' ?></button></div>
+                </form>
+            <?php ah_action_dialog_close(); ?>
+        <?php endif; ?>
+        <?php if ($definisi['lama']): $arsip = !empty($kelola['archived_at']); ?>
+            <?php ah_action_dialog_open('aksi-arsip', $arsip ? 'Pulihkan dari arsip' : 'Arsipkan', $arsip ? 'Pulihkan penugasan ini?' : 'Arsipkan penugasan ini?', $arsip ? 'outline-primary' : 'outline-danger', $aksiPanel === 'arsip'); ?>
+                <form method="post"><?= master_csrf() ?><input type="hidden" name="jenis" value="<?= ah_e($jenis) ?>"><input type="hidden" name="action" value="<?= $arsip ? 'pulihkan' : 'arsipkan' ?>"><input type="hidden" name="id" value="<?= $rid ?>">
+                    <label class="form-label" for="arsip_alasan">Alasan <span class="text-danger" aria-hidden="true">*</span></label>
+                    <input class="form-control mb-2" id="arsip_alasan" name="alasan" minlength="5" maxlength="500" required>
+                    <div class="ah-dialog__actions"><button class="btn <?= $arsip ? 'btn-primary' : 'btn-danger' ?>" type="submit"><?= $arsip ? 'Pulihkan' : 'Arsipkan' ?></button></div>
+                </form>
+            <?php ah_action_dialog_close(); ?>
+        <?php endif; ?>
+    </div>
+    <?php ah_panel_close();
+endif;
+?>
+<div class="ah-jenis">
+    <nav aria-label="Jenis penugasan">
+        <form method="get" class="ah-jenis__select ah-card ah-card__body mb-0">
+            <label class="form-label" for="pilih-jenis">Jenis penugasan</label>
+            <div class="d-flex gap-2"><select class="form-select" id="pilih-jenis" name="jenis" data-ah-autosubmit>
+                <?php foreach (PenugasanJenis::semua() as $kunci => $def): ?>
+                    <option value="<?= ah_e($kunci) ?>" <?= $kunci === $jenis ? 'selected' : '' ?>><?= ah_e($def['label'] . ' (' . $jumlahAktif[$kunci] . ')' . (in_array($kunci, PenugasanJenis::MENDATANG, true) ? ' — modul mendatang' : '')) ?></option>
+                <?php endforeach; ?>
+            </select><button class="btn btn-outline-secondary" type="submit">Buka</button></div>
+        </form>
+        <ul class="ah-jenis__menu">
+            <?php foreach (PenugasanJenis::semua() as $kunci => $def):
+                if ($kunci === PenugasanJenis::MENDATANG[0]): ?><li class="ah-jenis__group" aria-hidden="true">Disiapkan untuk modul mendatang</li><?php endif; ?>
+                <li><a href="admin_penugasan.php?jenis=<?= ah_e($kunci) ?>"<?= $kunci === $jenis ? ' aria-current="page"' : '' ?><?= in_array($kunci, PenugasanJenis::MENDATANG, true) ? ' class="is-future"' : '' ?>>
+                    <span><?= ah_e($def['label']) ?><?= in_array($kunci, PenugasanJenis::MENDATANG, true) ? '<span class="ah-visually-hidden"> (modul mendatang)</span>' : '' ?></span>
+                    <span class="ah-chips__count" aria-label="<?= $jumlahAktif[$kunci] ?> aktif"><?= $jumlahAktif[$kunci] ?></span></a></li>
+            <?php endforeach; ?>
+        </ul>
+    </nav>
+    <div>
+        <?php ah_note($mendatang ? 'warning' : 'info', PenugasanJenis::penjelasan($jenis)); ?>
+        <?php
+        $saringan = (int) ($filters['q'] !== '') + (int) ($filters['tahun_ajaran_id'] > 0) + (int) ($filters['status'] !== '') + (int) ($filters['kamar_id'] > 0) + (int) ($filters['kelas_id'] > 0) + (int) ($filters['mata_pelajaran_id'] > 0) + (int) ($filters['jenjang'] !== '') + (int) ($filters['gelombang'] !== '');
+        ah_filter_open($saringan, ['jenis' => $jenis]); ?>
+            <div class="ah-filter__wide"><label class="form-label" for="q">Cari <?= ah_e(mb_strtolower($definisi['label_subjek'])) ?> atau cakupan</label>
+                <input class="form-control" type="search" id="q" name="q" maxlength="100" value="<?= ah_e($filters['q']) ?>"></div>
+            <div><label class="form-label" for="f_tahun">Tahun ajaran</label>
+                <select class="form-select" id="f_tahun" name="tahun_ajaran_id"><option value="">Semua</option>
+                    <?php foreach ($opsi['tahun'] as $t): ?><option value="<?= (int) $t['id'] ?>" <?= $filters['tahun_ajaran_id'] === (int) $t['id'] ? 'selected' : '' ?>><?= ah_e($labelTahun($t)) ?></option><?php endforeach; ?>
+                </select></div>
+            <div><label class="form-label" for="f_status">Status</label>
+                <select class="form-select" id="f_status" name="status">
+                    <?php foreach (['' => 'Semua', 'aktif' => 'Aktif', 'akan_datang' => 'Akan datang', 'berakhir' => 'Selesai', 'nonaktif' => 'Dinonaktifkan'] as $v => $l): ?><option value="<?= ah_e($v) ?>" <?= $filters['status'] === $v ? 'selected' : '' ?>><?= ah_e($l) ?></option><?php endforeach; ?>
+                </select></div>
+            <?php if ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_TARGET || $definisi['cakupan'] === PenugasanJenis::CAKUPAN_MAPEL_KELAS || $definisi['cakupan'] === PenugasanJenis::CAKUPAN_JENJANG || $definisi['cakupan'] === PenugasanJenis::CAKUPAN_GELOMBANG): ?>
+            <details class="ah-filter__more"<?= $filters['kamar_id'] > 0 || $filters['kelas_id'] > 0 || $filters['mata_pelajaran_id'] > 0 || $filters['jenjang'] !== '' || $filters['gelombang'] !== '' ? ' open' : '' ?>><summary>Filter lanjutan</summary><div class="ah-filter__more-body">
+                <?php if ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_TARGET): ?>
+                    <div><label class="form-label" for="f_kamar">Kamar</label><select class="form-select" id="f_kamar" name="kamar_id"><option value="">Semua</option>
+                        <?php foreach ($opsi['kamar'] as $k): ?><option value="<?= (int) $k['id'] ?>" <?= $filters['kamar_id'] === (int) $k['id'] ? 'selected' : '' ?>><?= ah_e($k['nama_kamar']) ?></option><?php endforeach; ?></select></div>
+                <?php endif; ?>
+                <?php if (in_array($definisi['cakupan'], [PenugasanJenis::CAKUPAN_TARGET, PenugasanJenis::CAKUPAN_MAPEL_KELAS], true)): ?>
+                    <div><label class="form-label" for="f_kelas">Kelas</label><select class="form-select" id="f_kelas" name="kelas_id"><option value="">Semua</option>
+                        <?php foreach ($opsi['kelas'] as $k): ?><option value="<?= (int) $k['id'] ?>" <?= $filters['kelas_id'] === (int) $k['id'] ? 'selected' : '' ?>><?= ah_e($k['nama_kelas']) ?></option><?php endforeach; ?></select></div>
+                <?php endif; ?>
+                <?php if ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_MAPEL_KELAS): ?>
+                    <div><label class="form-label" for="f_mapel">Mata pelajaran</label><select class="form-select" id="f_mapel" name="mata_pelajaran_id"><option value="">Semua</option>
+                        <?php foreach ($opsi['mata_pelajaran'] as $m): ?><option value="<?= (int) $m['id'] ?>" <?= $filters['mata_pelajaran_id'] === (int) $m['id'] ? 'selected' : '' ?>><?= ah_e($m['nama']) ?></option><?php endforeach; ?></select></div>
+                <?php endif; ?>
+                <?php if ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_JENJANG): ?>
+                    <div><label class="form-label" for="f_jenjang">Unit/jenjang</label><select class="form-select" id="f_jenjang" name="jenjang"><option value="">Semua</option>
+                        <?php foreach ($opsi['jenjang'] as $j): ?><option value="<?= ah_e($j) ?>" <?= $filters['jenjang'] === $j ? 'selected' : '' ?>><?= ah_e($j) ?></option><?php endforeach; ?></select></div>
+                <?php endif; ?>
+                <?php if ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_GELOMBANG): ?>
+                    <div><label class="form-label" for="f_gelombang">Gelombang</label><input class="form-control" id="f_gelombang" name="gelombang" maxlength="50" value="<?= ah_e($filters['gelombang']) ?>"></div>
+                <?php endif; ?>
+            </div></details>
+            <?php endif; ?>
+        <?php ah_filter_close(['jenis' => $jenis]); ?>
+
+        <div class="ah-card ah-table-wrap">
+            <table class="ah-table ah-table--cards" id="daftar-penugasan">
+                <caption class="ah-visually-hidden">Penugasan <?= ah_e($definisi['label']) ?>, <?= (int) $daftar['total'] ?> data</caption>
+                <thead><tr><th scope="col"><?= ah_e($definisi['label_subjek']) ?></th><th scope="col">Cakupan</th><th scope="col">Masa berlaku</th><th scope="col" class="ah-col-opt">Hak yang didapat</th><th scope="col">Status</th><th scope="col"><span class="ah-visually-hidden">Tindakan</span></th></tr></thead>
+                <tbody>
+                <?php foreach ($daftar['rows'] as $r):
+                    $rid = (int) $r['id'];
+                    $status = (string) $r['status_label'];
+                    $hidup = (int) $r['is_active'] === 1 && empty($r['archived_at']); ?>
+                    <tr<?= !empty($r['archived_at']) ? ' class="ah-row-muted"' : '' ?>>
+                        <td><span class="ah-cell-wrap"><a class="ah-row-link" href="<?= ah_e($kembaliKe(['kelola' => $rid, 'edit' => null, 'tambah' => null])) ?>"><?= master_e($r['subjek_nama']) ?></a>
+                            <?php if ((int) $r['subjek_aktif'] !== 1 || !empty($r['subjek_arsip'])): ?><span class="ah-cell-sub"><?= ah_badge('Data orang nonaktif', 'danger') ?></span><?php endif; ?></span></td>
+                        <td><span class="ah-cell-wrap"><?= master_e($r['cakupan_teks']) ?><span class="ah-cell-sub"><?= master_e($r['semester'] . ' ' . $r['tahun']) ?></span></span></td>
+                        <td><?= master_e($masa((string) $r['tanggal_mulai'], $r['tanggal_selesai'] ?: null)) ?></td>
+                        <td class="ah-col-opt"><span class="ah-hak"><?php
+                            $ef = $efektif((int) $r['subjek_id']);
+                            if ($mendatang || $status !== PenugasanService::STATUS_AKTIF) {
+                                echo ah_badge($mendatang ? 'Belum ada — menunggu modul baru' : 'Tidak berlaku saat ini', 'muted');
+                            } elseif ($ef['akun'] === null) {
+                                echo ah_badge('Belum punya akun', 'warn');
+                            } elseif ($ef['capabilities'] === []) {
+                                echo ah_badge('Belum berlaku', 'muted');
+                            } else {
+                                foreach (PenugasanJenis::hakLabel($jenis) as $hak) { echo ah_badge($hak, 'ok'); }
+                            } ?></span></td>
+                        <td><?= ah_badge($status === PenugasanService::STATUS_BERAKHIR ? 'Selesai' : $status, $statusTone($status)) ?><?= !empty($r['archived_at']) ? ' ' . ah_badge('Arsip', 'muted') : '' ?></td>
+                        <td data-label=""><?= ah_menu(array_values(array_filter([
+                            ['label' => 'Lihat', 'url' => $kembaliKe(['kelola' => $rid, 'edit' => null, 'tambah' => null]), 'icon' => 'fa-eye'],
+                            empty($r['archived_at']) ? ['label' => 'Ubah', 'url' => $kembaliKe(['edit' => $rid, 'kelola' => null, 'tambah' => null]), 'icon' => 'fa-pen'] : null,
+                            $hidup && $status !== PenugasanService::STATUS_BERAKHIR ? ['label' => 'Akhiri penugasan…', 'url' => $kembaliKe(['kelola' => $rid, 'aksi' => 'akhiri', 'edit' => null, 'tambah' => null]) . '#aksi-akhiri', 'icon' => 'fa-flag-checkered'] : null,
+                            empty($r['archived_at']) ? ['label' => $hidup ? 'Nonaktifkan…' : 'Aktifkan…', 'url' => $kembaliKe(['kelola' => $rid, 'aksi' => 'status', 'edit' => null, 'tambah' => null]) . '#aksi-status', 'icon' => $hidup ? 'fa-ban' : 'fa-check', 'danger' => $hidup] : null,
+                        ])), 'Tindakan untuk penugasan ' . $r['subjek_nama']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                <?php if ($daftar['rows'] === []): ?>
+                    <tr><td colspan="6" data-label=""><?= $saringan > 0
+                        ? ah_empty('Tidak ada penugasan yang cocok', 'Ubah kata kunci, tahun ajaran, status, atau cakupan.')
+                        : ah_empty('Belum ada penugasan ' . $definisi['label'], 'Tambahkan penugasan lewat tombol di kepala halaman.') ?></td></tr>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php master_pagination((int) $daftar['total'], (int) $daftar['page'], 20); ?>
+    </div>
+</div>
 <?php
-master_pagination((int) $daftar['total'], (int) $daftar['page'], 20);
 ah_old_clear($bucket);
 master_footer();

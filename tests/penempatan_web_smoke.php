@@ -221,9 +221,10 @@ try {
 
     $halaman = $klien->request('/admin/admin_penempatan_santri.php?q=PW' . $suffix);
     $assert($halaman['status'] === 200, 'PW-2b halaman penempatan terbuka untuk admin [' . $halaman['status'] . ']');
-    $assert(str_contains($halaman['body'], 'Penempatan Kelas &amp; Kamar') || str_contains($halaman['body'], 'Penempatan Kelas & Kamar'), 'PW-2c judul halaman tampil');
+    // Redesain Tahap 6 (D-5): judul modul "Data santri", tab "Penempatan".
+    $assert(str_contains($halaman['body'], '<h1') && str_contains($halaman['body'], 'Data santri') && str_contains($halaman['body'], 'Penempatan semester aktif'), 'PW-2c judul halaman tampil');
     $assert(preg_match('#<a href="[^"]*admin_penempatan_santri\.php" aria-current="page">#', $halaman['body']) === 1, 'PW-2d menu Master Data → Penempatan Kelas & Kamar ditandai aktif');
-    $assert(str_contains($halaman['body'], 'Master Data') && str_contains($halaman['body'], 'ah-crumbs'), 'PW-2e breadcrumb tampil');
+    $assert(str_contains($halaman['body'], 'Data santri') && str_contains($halaman['body'], 'ah-crumbs'), 'PW-2e breadcrumb tampil');
     $assert(substr_count($halaman['body'], 'Santri Web 1 ' . $suffix) >= 1, 'PW-2f pencarian NIS menyaring daftar santri');
     $assert(str_contains($halaman['body'], 'Belum ada kamar'), 'PW-2g santri tanpa kamar ditandai jelas');
 
@@ -281,8 +282,8 @@ try {
         '_csrf' => $csrfHalaman, 'action' => 'tempatkan_kamar', 'tahap' => 'tinjau',
         'santri_ids' => [$santri[1], $santri[2]], 'kamar_id' => $kamarWeb,
     ]);
-    $assert($tinjau['status'] === 200 && str_contains($tinjau['body'], 'Konfirmasi perubahan penempatan'), 'PW-7a tinjauan tampil sebelum perubahan diterapkan [' . $tinjau['status'] . ']');
-    $assert(str_contains($tinjau['body'], '2 santri terpilih'), 'PW-7b tinjauan menyebut jumlah santri terpilih');
+    $assert($tinjau['status'] === 200 && str_contains($tinjau['body'], 'Tinjau perubahan penempatan'), 'PW-7a tinjauan tampil sebelum perubahan diterapkan [' . $tinjau['status'] . ']');
+    $assert(str_contains($tinjau['body'], '>2 santri</span>'), 'PW-7b tinjauan menyebut jumlah santri terpilih');
     $assert(str_contains($tinjau['body'], 'Kapasitas cukup'), 'PW-7c tinjauan menampilkan status kapasitas kamar');
     $assert(
         $angka("SELECT COUNT(*) n FROM plotting_kamar WHERE id_kamar = {$kamarWeb} AND id_tahun = {$yearId}") === 0,
@@ -348,7 +349,7 @@ try {
         && !str_contains($dariKelas['body'], 'Santri Web 2 ' . $suffix),
         'PW-10b filter kelas dari Data Kelas hanya menampilkan anggota kelas itu'
     );
-    $halamanKamar = $klien->request('/admin/admin_kamar.php');
+    $halamanKamar = $klien->request('/admin/admin_kamar.php?tampilan=tabel');
     $assert(str_contains($halamanKamar['body'], 'admin_penempatan_santri.php?kamar_id='), 'PW-10c Data Kamar menautkan penempatan berfilter');
     $halamanKelas = $klien->request('/admin/admin_kelas.php');
     $assert(str_contains($halamanKelas['body'], 'admin_penempatan_santri.php?kelas_id='), 'PW-10d Data Kelas menautkan penempatan berfilter');

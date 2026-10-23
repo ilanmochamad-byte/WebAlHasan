@@ -408,7 +408,7 @@ master_header('Akun & Hak Akses', [
                     <select class="form-select" id="guru_id" name="guru_id" required>
                         <option value="">Pilih guru</option>
                         <?php foreach ($guruTersedia as $guru): ?>
-                            <option value="<?= (int) $guru['id'] ?>" <?= ah_old('guru_id',null,'_account_guru') === (string)$guru['id'] ? 'selected' : '' ?>><?= master_e($guru['nama_guru'] . ($guru['nip'] ? ' — ' . $guru['nip'] : '')) ?></option>
+                            <option value="<?= (int) $guru['id'] ?>" <?= ah_old('guru_id',null,'_account_guru') === (string)$guru['id'] || (int) ($_GET['guru_id'] ?? 0) === (int) $guru['id'] ? 'selected' : '' ?>><?= master_e($guru['nama_guru'] . ($guru['nip'] ? ' — ' . $guru['nip'] : '')) ?></option>
                         <?php endforeach; ?>
                     </select><?= ah_field_error('guru_id','_account_guru') ?></div>
                 <div class="col-md-3"><label class="form-label" for="guru_name">Nama akun</label>
@@ -439,7 +439,7 @@ master_header('Akun & Hak Akses', [
                     <select class="form-select" id="pengurus_master" name="pengurus_id" required>
                         <option value="">Pilih pengurus</option>
                         <?php foreach ($pengurusTersedia as $opsi): ?>
-                            <option value="<?= (int) $opsi['id'] ?>" <?= ah_old('pengurus_id',null,'_account_pengurus') === (string)$opsi['id'] ? 'selected' : '' ?>><?= master_e($opsi['nama'] . ' — ' . $opsi['jabatan']) ?></option>
+                            <option value="<?= (int) $opsi['id'] ?>" <?= ah_old('pengurus_id',null,'_account_pengurus') === (string)$opsi['id'] || (int) ($_GET['pengurus_id'] ?? 0) === (int) $opsi['id'] ? 'selected' : '' ?>><?= master_e($opsi['nama'] . ' — ' . $opsi['jabatan']) ?></option>
                         <?php endforeach; ?>
                     </select><?= ah_field_error('pengurus_id','_account_pengurus') ?></div>
                 <div class="col-md-3"><label class="form-label" for="pengurus_name">Nama akun</label>
@@ -468,7 +468,7 @@ master_header('Akun & Hak Akses', [
                     <select class="form-select" id="wali_master" name="wali_id" required>
                         <option value="">Pilih wali</option>
                         <?php foreach ($waliTersedia as $opsi): ?>
-                            <option value="<?= (int) $opsi['id'] ?>" <?= ah_old('wali_id',null,'_account_orang_tua') === (string)$opsi['id'] ? 'selected' : '' ?>><?= master_e($opsi['nama'] . ' — ' . (int) $opsi['jumlah_santri'] . ' santri') ?></option>
+                            <option value="<?= (int) $opsi['id'] ?>" <?= ah_old('wali_id',null,'_account_orang_tua') === (string)$opsi['id'] || (int) ($_GET['wali_id'] ?? 0) === (int) $opsi['id'] ? 'selected' : '' ?>><?= master_e($opsi['nama'] . ' — ' . (int) $opsi['jumlah_santri'] . ' santri') ?></option>
                         <?php endforeach; ?>
                     </select><?= ah_field_error('wali_id','_account_orang_tua') ?></div>
                 <div class="col-md-3"><label class="form-label" for="ortu_name">Nama akun</label>

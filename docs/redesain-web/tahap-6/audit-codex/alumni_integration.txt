@@ -1,0 +1,84 @@
+[lulus] AL-0 tahun ajaran aktif tersedia untuk pengujian
+[lulus] AL-1 kelulusan individual menyimpan referensi santri dan keterangan keluar
+[lulus] AL-1 snapshot identitas, alamat, orang tua, dan foto tersimpan
+[lulus] AL-1 unit, kelas, dan kamar terakhir tersimpan sebagai snapshot
+[lulus] AL-1 pelaku, waktu, dan catatan proses tercatat
+[lulus] AL-1 audit memuat pelaku, nilai sebelum/sesudah, dan tindakan yang dilakukan
+[lulus] AL-5 penempatan kelas aktif ditutup setelah kelulusan
+[lulus] AL-5 baris kelas menjadi Selesai dengan tanggal keluar, bukan dihapus
+[lulus] AL-6 penempatan kamar semester berjalan dilepas sehingga tempatnya tersedia
+[lulus] AL-6 kamar sebelumnya tercatat pada audit dan pada snapshot alumni
+[lulus] AL-7 baris santri sumber TIDAK dihapus
+[lulus] AL-7 santri sumber berstatus arsip/nonaktif
+[lulus] AL-7 santri alumni tidak lagi muncul pada daftar santri aktif
+[lulus] AL-7 santri alumni tetap dapat ditemukan lewat filter arsip
+[lulus] AL-8 tidak ada baris riwayat kelas yang dihapus
+[lulus] AL-8 riwayat kelas tahun ajaran sebelumnya tetap utuh
+[lulus] AL-8 penempatan kamar tahun ajaran sebelumnya TIDAK disentuh
+[lulus] AL-9 relasi wali santri tidak dihapus dan tidak diarsipkan
+[lulus] AL-9 identitas wali tetap aktif
+[lulus] AL-9 akun wali tidak dinonaktifkan otomatis
+[lulus] AL-2 status Pindah individual tersimpan dan kamar ikut dilepas
+[lulus] AL-3 status Berhenti individual tersimpan; catatan kosong disimpan sebagai NULL
+[lulus] AL-10 memproses santri yang sudah menjadi alumni ditolak [Santri Santri Alumni A E72AE2 tidak aktif atau sudah diarsipkan sehingga tidak dapat diproses lagi.]
+[lulus] AL-10 tidak ada catatan alumni ganda yang tercipta
+[lulus] AL-11 kunci unik basis data menolak catatan alumni aktif kedua untuk santri yang sama
+[lulus] AL-11 kunci unik basis data menolak NIS alumni aktif yang sama
+[lulus] AL-4 daftar santri aktif satu kelas hanya memuat yang belum diproses
+[lulus] AL-4 pemrosesan massal satu kelas membuat catatan alumni untuk seluruh santrinya
+[lulus] AL-4 seluruh santri massal berstatus arsip
+[lulus] AL-4 kelas aktif seluruh santri massal ditutup
+[lulus] AL-4 audit ringkasan massal mencatat jumlah santri dan alasannya
+[lulus] AL-4 audit bertambah pada pemrosesan massal
+[lulus] AL-4 kelas menjadi kosong dari santri aktif setelah diproses
+[lulus] AL-20 status keluar di luar daftar sah ditolak [Status keluar harus salah satu dari: Lulus, Pindah, Berhenti.]
+[lulus] AL-20 tanggal keluar berformat salah ditolak [Tanggal keluar harus berformat YYYY-MM-DD dan merupakan tanggal yang benar.]
+[lulus] AL-20 tahun angkatan tidak wajar ditolak [Tahun angkatan harus berupa "2026" atau "2025/2026".]
+[lulus] AL-20 tingkat di luar daftar sah ditolak [Tingkat terakhir harus salah satu dari: Ibtida, Tsanawi.]
+[lulus] AL-20 proses tanpa santri terpilih ditolak [Pilih minimal satu santri terlebih dahulu.]
+[lulus] AL-20 ID santri tidak valid ditolak [Daftar santri memuat ID yang tidak valid. Muat ulang halaman lalu pilih ulang santri.]
+[lulus] AL-20 operasi massal melebihi batas ditolak [Satu proses massal dibatasi 200 santri. Bagi menjadi beberapa tahap.]
+[lulus] AL-20 seluruh penolakan validasi tidak mengubah data apa pun
+[lulus] AL-13 kegagalan penutupan kelas menggagalkan proses [Perubahan data alumni gagal disimpan.]
+[lulus] AL-13 rollback penuh: alumni, status santri, kelas, dan kamar tidak berubah
+[lulus] AL-12 kegagalan penyimpanan alumni menggagalkan proses [Perubahan data alumni gagal disimpan.]
+[lulus] AL-12 rollback penuh: santri tetap aktif dan penempatannya utuh
+[lulus] AL-19 kegagalan pencatatan audit menggagalkan proses [Proses dibatalkan karena catatan audit tidak dapat disimpan. Tidak ada perubahan yang tersimpan.]
+[lulus] AL-19 rollback penuh saat audit tidak dapat disimpan
+[lulus] AL-14 mengarsipkan tanpa alasan ditolak [Alasan wajib diisi (minimal 5 karakter) ketika mengarsipkan catatan alumni. Alasan ikut tercatat pada audit.]
+[lulus] AL-14 alasan terlalu pendek ditolak [Alasan wajib diisi (minimal 5 karakter) ketika mengarsipkan catatan alumni. Alasan ikut tercatat pada audit.]
+[lulus] AL-14 arsip menyimpan alasan dan TIDAK menghapus baris maupun foto
+[lulus] AL-14 mengarsipkan catatan alumni tidak mengubah status santri sumber
+[lulus] AL-14 audit arsip memuat nilai sebelum, sesudah, dan alasannya
+[lulus] AL-14 catatan arsip hilang dari daftar aktif tetapi tetap dapat ditemukan
+[lulus] AL-14 memulihkan tanpa alasan ditolak [Alasan wajib diisi (minimal 5 karakter) ketika memulihkan catatan alumni. Alasan ikut tercatat pada audit.]
+[lulus] AL-14 pemulihan mengembalikan catatan ke status aktif
+[lulus] AL-14 pemulihan catatan alumni TIDAK ikut mengaktifkan kembali santri
+[lulus] AL-15 pembatalan tanpa alasan memadai ditolak [Alasan wajib diisi (minimal 5 karakter) ketika membatalkan kelulusan atau mutasi. Alasan ikut tercatat pada audit.]
+[lulus] AL-15 catatan alumni diarsipkan dengan jenis pembatalan
+[lulus] AL-15 santri sumber diaktifkan kembali
+[lulus] AL-15 pembatalan TIDAK membuat penempatan kelas atau kamar baru secara otomatis
+[lulus] AL-15 pembatalan mencatat audit untuk catatan alumni DAN untuk santri
+[lulus] AL-15 hasil pembatalan menyebut santri yang diaktifkan kembali
+[lulus] AL-15 membatalkan catatan yang sudah diarsipkan ditolak [Catatan alumni ini sudah diarsipkan sehingga tidak ada kelulusan aktif yang dapat dibatalkan.]
+[lulus] AL-15 santri yang kelulusannya dibatalkan dapat diproses ulang tanpa menghapus catatan lama
+[lulus] AL-17 catatan alumni warisan tetap terbaca lengkap dengan foto dan snapshot identitasnya
+[lulus] AL-17 filter tahun, tingkat, dan status lama tetap berfungsi
+[lulus] AL-17 data warisan dapat disaring sebagai "belum terhubung"
+[lulus] AL-17 ringkasan melaporkan jumlah data warisan yang perlu diperiksa admin
+[lulus] AL-17 catatan warisan dapat dihubungkan ke santri sumber atas konfirmasi admin
+[lulus] AL-17 pemasangan referensi santri tercatat pada audit
+[lulus] AL-17 menghubungkan catatan warisan TIDAK mengubah status santri
+[lulus] AL-17 catatan yang sudah terhubung tidak dapat dipasangkan ulang [Catatan alumni ini sudah terhubung ke santri #1686.]
+[lulus] AL-16 nilai filter berbahaya diperlakukan sebagai teks pencarian biasa, bukan SQL
+[lulus] AL-16 nilai pilihan di luar daftar sah dibuang, bukan diteruskan ke SQL
+[lulus] AL-16 nilai berbahaya tersimpan apa adanya di basis data (escaping adalah tugas lapisan tampilan)
+[lulus] AL-16 helper escaping halaman mengubahnya menjadi teks yang aman ditampilkan
+[lulus] AL-18 regresi penempatan kelas dan kamar tetap berfungsi setelah migrasi 011
+[lulus] AL-18 regresi halaman penempatan tetap menemukan santri aktif
+[lulus] AL-18 regresi daftar santri aktif hanya memuat dua santri yang belum diproses (F dan G)
+[lulus] AL-18 regresi modul wali dan akun tetap utuh sepanjang seluruh pengujian
+
+SELURUH PENGUJIAN INTEGRASI ALUMNI LULUS.
+Query alumni gagal (1644): uji gagal tutup kelas
+Query alumni gagal (1644): uji gagal simpan alumni

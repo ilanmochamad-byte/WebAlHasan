@@ -266,21 +266,24 @@ try {
     foreach (['murobi', 'pembimbing', 'guru_mapel', 'pendidikan', 'bendahara_bulanan', 'panitia_psb', 'bendahara_psb', 'mata_pelajaran'] as $tab) {
         $halaman = $admin->request('/admin/admin_penugasan.php?jenis=' . $tab);
         $assert(
-            $halaman['status'] === 200 && str_contains($halaman['body'], '<h1>Pusat Penugasan</h1>') && !str_contains($halaman['body'], 'Fatal error') && !str_contains($halaman['body'], 'Warning:'),
+            // Redesain Tahap 6 (G-1): judul "Penugasan"; tab mata pelajaran pindah ke Penilaian & rapor (M-5).
+            $halaman['status'] === 200 && str_contains($halaman['body'], $tab === 'mata_pelajaran' ? '<h1>Mata pelajaran</h1>' : '<h1>Penugasan</h1>') && !str_contains($halaman['body'], 'Fatal error') && !str_contains($halaman['body'], 'Warning:'),
             'FW-1b admin membuka tab ' . $tab . ' [' . $halaman['status'] . ']'
         );
     }
     $beranda = $admin->request('/admin/admin_penugasan.php?jenis=tidak_ada');
-    $assert($beranda['status'] === 200 && str_contains($beranda['body'], 'Murobi adalah penugasan, bukan role'), 'FW-1c jenis tak dikenal jatuh ke tab murobi, bukan galat');
-    $assert(str_contains($beranda['body'], 'href="/admin/admin_penugasan.php"') && str_contains($beranda['body'], 'Pusat Penugasan</span>'), 'FW-1d sidebar admin memuat menu Pusat Penugasan');
+    $assert($beranda['status'] === 200 && str_contains($beranda['body'], 'Murobi adalah guru yang ditugaskan'), 'FW-1c jenis tak dikenal jatuh ke tab murobi, bukan galat');
+    $assert(str_contains($beranda['body'], 'href="/admin/admin_penugasan.php"') && str_contains($beranda['body'], '<span>Penugasan</span>'), 'FW-1d sidebar admin memuat menu Penugasan');
     // Redesain website Tahap 2 (keputusan C): halaman murobi/pembimbing lama
     // bukan lagi butir menu, tetapi tetap terbuka di bawah menu Penugasan
     // sampai dialihkan di Tahap 6 (G-1).
     $lamaMurobi = $admin->request('/admin/admin_murobi.php');
     $lamaPembimbing = $admin->request('/admin/admin_pembimbing.php');
     $menuPenugasan = '#<a href="[^"]*admin_penugasan\.php" aria-current="page">#';
-    $assert($lamaMurobi['status'] === 200 && $lamaPembimbing['status'] === 200
-        && preg_match($menuPenugasan, $lamaMurobi['body']) === 1 && preg_match($menuPenugasan, $lamaPembimbing['body']) === 1, 'FW-1e halaman murobi dan pembimbing lama tetap terbuka di bawah menu Penugasan');
+    // Tahap 6 (G-1): GET halaman lama kini dialihkan ke Penugasan per jenis.
+    unset($menuPenugasan);
+    $assert($lamaMurobi['status'] === 301 && str_contains((string) $lamaMurobi['location'], 'admin_penugasan.php?jenis=murobi')
+        && $lamaPembimbing['status'] === 301 && str_contains((string) $lamaPembimbing['location'], 'admin_penugasan.php?jenis=pembimbing'), 'FW-1e halaman murobi dan pembimbing lama dialihkan ke Penugasan');
 
     // ------------------------------------------------------------- FW-2
     foreach (['guru' => 'fw.guru.' . $kecil, 'pengurus' => 'fw.pengurus.' . $kecil, 'orang tua' => 'fw.ortu.' . $kecil] as $label => $username) {
@@ -325,12 +328,13 @@ try {
     $gmId = $terakhir('guru_mapel_assignments');
     $assert($r['status'] === 302 && $angka('SELECT COUNT(*) n FROM guru_mapel_assignments WHERE id = ' . $gmId . ' AND guru_id = ' . $guru . ' AND created_by = ' . $adminId) === 1, 'FW-5b penugasan guru mapel tersimpan lewat formulir');
     $daftarGm = $admin->request('/admin/admin_penugasan.php?jenis=guru_mapel&q=' . rawurlencode('Guru Web ' . $suffix));
-    $assert(str_contains($daftarGm['body'], 'ah-badge--ok">Aktif') && str_contains($daftarGm['body'], 'nilai.input') && str_contains($daftarGm['body'], '@fw.guru.' . $kecil), 'FW-5c daftar menampilkan status Aktif dan capability efektif akun guru');
-    $assert(str_contains($daftarGm['body'], 'Kelas Web ' . $suffix) && str_contains($daftarGm['body'], $hari(0) . ' — seterusnya'), 'FW-5d daftar menampilkan cakupan dan masa berlaku');
+    // Tahap 6 (G-1): "Hak yang didapat" dalam kata biasa; akun tampil di panel kelola.
+    $assert(str_contains($daftarGm['body'], 'ah-badge--ok">Aktif') && str_contains($daftarGm['body'], 'Mengisi nilai mata pelajarannya'), 'FW-5c daftar menampilkan status Aktif dan capability efektif akun guru');
+    $assert(str_contains($daftarGm['body'], 'Kelas Web ' . $suffix) && str_contains($daftarGm['body'], 'Mulai '), 'FW-5d daftar menampilkan cakupan dan masa berlaku');
 
     $r = $buat('guru_mapel', ['guru_id' => (string) $guru2, 'mata_pelajaran_id' => (string) $mapelId, 'kelas_id' => (string) $kelas, 'tahun_ajaran_id' => (string) $tahunAktif, 'tanggal_mulai' => $hari(0)]);
     $daftarGm2 = $admin->request('/admin/admin_penugasan.php?jenis=guru_mapel&q=' . rawurlencode('Guru Web Dua ' . $suffix));
-    $assert($r['status'] === 302 && str_contains($daftarGm2['body'], 'Belum punya akun') && str_contains($daftarGm2['body'], 'belum mempunyai akun'), 'FW-5e guru tanpa akun: penugasan tersimpan dengan pesan yang jelas');
+    $assert($r['status'] === 302 && str_contains($daftarGm2['body'], 'Belum punya akun'), 'FW-5e guru tanpa akun: penugasan tersimpan dengan pesan yang jelas');
 
     $r = $buat('pendidikan', ['pengurus_id' => (string) $pengurus, 'tahun_ajaran_id' => (string) $tahunAktif, 'jenjang' => $jenjang, 'tanggal_mulai' => $hari(0)]);
     $pendidikanId = $terakhir('pendidikan_assignments');
@@ -349,9 +353,9 @@ try {
     $pembimbingId = $terakhir('pembimbing_assignments');
     $assert($r['status'] === 302 && $angka('SELECT COUNT(*) n FROM pembimbing_assignments WHERE id = ' . $pembimbingId . ' AND pengurus_id = ' . $pengurus) === 1, 'FW-5k penugasan pembimbing tersimpan dari pusat');
     $daftarPsb = $admin->request('/admin/admin_penugasan.php?jenis=panitia_psb&q=' . rawurlencode('Pengurus Web ' . $suffix));
-    $assert(str_contains($daftarPsb['body'], 'Gelombang 1') && str_contains($daftarPsb['body'], 'psb.pendaftar') && !str_contains($daftarPsb['body'], 'psb_keuangan.tagihan'), 'FW-5l tab panitia PSB hanya menampilkan capability panitia, bukan keuangan');
+    $assert(str_contains($daftarPsb['body'], 'Gelombang 1') && str_contains($daftarPsb['body'], 'Disiapkan untuk modul mendatang') && !str_contains($daftarPsb['body'], 'psb_keuangan.tagihan') && !str_contains($daftarPsb['body'], 'Pembayaran PSB'), 'FW-5l tab panitia PSB hanya menampilkan capability panitia, bukan keuangan');
     $daftarFilter = $admin->request('/admin/admin_penugasan.php?jenis=pendidikan&status=nonaktif&q=' . rawurlencode('Pengurus Web ' . $suffix));
-    $assert(str_contains($daftarFilter['body'], 'Tidak ada penugasan sesuai filter'), 'FW-5m filter status Dinonaktifkan mengembalikan kosong sebelum ada yang dinonaktifkan');
+    $assert(str_contains($daftarFilter['body'], 'Tidak ada penugasan yang cocok'), 'FW-5m filter status Dinonaktifkan mengembalikan kosong sebelum ada yang dinonaktifkan');
 
     // ------------------------------------------------------------- FW-6
     $sebelumGm = $angka('SELECT COUNT(*) n FROM guru_mapel_assignments');
@@ -361,7 +365,7 @@ try {
     $r = $buat('pendidikan', ['pengurus_id' => (string) $pengurus, 'tahun_ajaran_id' => (string) $tahunAktif, 'jenjang' => $jenjang, 'tanggal_mulai' => $hari(0)]);
     $assert($r['status'] === 302 && $angka('SELECT COUNT(*) n FROM pendidikan_assignments WHERE pengurus_id = ' . $pengurus) === 1, 'FW-6b penugasan identik ditolak lewat formulir');
     $r = $buat('guru_mapel', ['guru_id' => (string) $guru, 'mata_pelajaran_id' => (string) $mapelId, 'kelas_id' => (string) $kelas, 'tahun_ajaran_id' => (string) $tahunAktif, 'tanggal_mulai' => $hari(5), 'tanggal_selesai' => $hari(1)]);
-    $setelahTanggal = $admin->request('/admin/admin_penugasan.php?jenis=guru_mapel');
+    $setelahTanggal = $admin->request((string) $r['location']);
     $assert(str_contains($setelahTanggal['body'], 'mendahului tanggal mulai') && str_contains($setelahTanggal['body'], 'ah-field-error'), 'FW-6c tanggal selesai mendahului tanggal mulai ditolak dengan pesan pada kolom');
 
     // ------------------------------------------------------------- FW-7
@@ -370,7 +374,7 @@ try {
     $assert($r['status'] === 302 && $barisUbah['jenjang'] === null && $barisUbah['tanggal_selesai'] === $hari(30) && $barisUbah['catatan'] === 'diperluas' && (int) $barisUbah['updated_by'] === $adminId, 'FW-7a ubah cakupan dan masa berlaku tercermin di data');
     $r = $admin->request('/admin/admin_penugasan.php', ['_csrf' => $csrf, 'jenis' => 'pendidikan', 'action' => 'ubah', 'id' => (string) $pendidikanId, 'jenjang' => '', 'tanggal_mulai' => $hari(0), 'alasan' => 'x']);
     $editUlang = $admin->request('/admin/admin_penugasan.php?jenis=pendidikan&edit=' . $pendidikanId);
-    $assert($r['status'] === 302 && str_contains((string) $r['location'], 'edit=' . $pendidikanId) && str_contains($editUlang['body'], 'Ubah penugasan #' . $pendidikanId), 'FW-7b ubah tanpa alasan ditolak dan kembali ke formulir ubah');
+    $assert($r['status'] === 302 && str_contains((string) $r['location'], 'edit=' . $pendidikanId) && str_contains($editUlang['body'], 'Ubah penugasan Bagian Pendidikan') && str_contains($editUlang['body'], 'name="id" value="' . $pendidikanId . '"'), 'FW-7b ubah tanpa alasan ditolak dan kembali ke formulir ubah');
     $r = $admin->request('/admin/admin_penugasan.php', ['_csrf' => $csrf, 'jenis' => 'panitia_psb', 'action' => 'akhiri', 'id' => (string) $psbId, 'tanggal_selesai' => $hari(0), 'alasan' => 'Diakhiri lewat web']);
     $barisAkhir = $satu('SELECT tanggal_selesai, diakhiri_oleh, alasan_pengakhiran FROM panitia_psb_assignments WHERE id = ' . $psbId);
     $assert($r['status'] === 302 && $barisAkhir['tanggal_selesai'] === $hari(0) && (int) $barisAkhir['diakhiri_oleh'] === $adminId && $barisAkhir['alasan_pengakhiran'] === 'Diakhiri lewat web', 'FW-7c akhiri lewat formulir mencatat tanggal, pelaku, dan alasan');
@@ -399,9 +403,9 @@ try {
     // ------------------------------------------------------------- FW-8
     foreach (['admin_murobi.php', 'admin_pembimbing.php'] as $lama) {
         $halamanLama = $admin->request('/admin/' . $lama);
-        $assert($halamanLama['status'] === 200 && str_contains($halamanLama['body'], 'admin_penugasan.php?jenis='), 'FW-8a ' . $lama . ' tetap terbuka dan menaut ke Pusat Penugasan');
+        $assert($halamanLama['status'] === 301 && str_contains((string) $halamanLama['location'], 'admin_penugasan.php?jenis='), 'FW-8a ' . $lama . ' dialihkan ke Penugasan (POST lama tetap diproses)');
     }
-    $csrfLama = $admin->csrf('/admin/admin_murobi.php');
+    $csrfLama = $admin->csrf('/admin/admin_penugasan.php?jenis=murobi');
     $r = $admin->request('/admin/admin_murobi.php', ['_csrf' => $csrfLama, 'action' => 'save', 'guru_id' => (string) $guru2, 'tahun_ajaran_id' => (string) $tahunAktif, 'target_type' => 'Kamar', 'kamar_id' => (string) $kamar, 'tanggal_mulai' => $hari(0), 'tanggal_selesai' => '']);
     $assert($r['status'] === 302 && $angka('SELECT COUNT(*) n FROM murobi_assignments WHERE guru_id = ' . $guru2 . ' AND kamar_id = ' . $kamar) === 1, 'FW-8b formulir lama admin_murobi.php masih menyimpan penugasan');
     $daftarMurobiLama = $admin->request('/admin/admin_penugasan.php?jenis=murobi&q=' . rawurlencode('Guru Web Dua ' . $suffix));

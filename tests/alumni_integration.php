@@ -605,7 +605,7 @@ try {
     $assert($ringkasanAkhir['tanpa_santri'] >= 1, 'AL-17 ringkasan melaporkan jumlah data warisan yang perlu diperiksa admin');
 
     // Memasangkan catatan warisan ke santri sumber HANYA atas perintah admin.
-    $service->hubungkanSantri($alumniWarisan, $santri['G'], $adminId);
+    $service->hubungkanSantri($alumniWarisan, $santri['G'], $adminId, 'Identitas cocok dengan arsip sumber');
     $assert(
         (int) ($satu('SELECT santri_id FROM alumni WHERE id = ' . $alumniWarisan)['santri_id'] ?? 0) === $santri['G'],
         'AL-17 catatan warisan dapat dihubungkan ke santri sumber atas konfirmasi admin'
@@ -619,7 +619,7 @@ try {
         'AL-17 menghubungkan catatan warisan TIDAK mengubah status santri'
     );
     $tolak(
-        static fn () => $service->hubungkanSantri($alumniWarisan, $santri['F'], $adminId),
+        static fn () => $service->hubungkanSantri($alumniWarisan, $santri['F'], $adminId, 'Percobaan memasangkan ulang catatan'),
         'AL-17 catatan yang sudah terhubung tidak dapat dipasangkan ulang'
     );
 

@@ -55,6 +55,7 @@ $year = $service->activeYear();
 $yearId = $year === null ? 0 : (int) $year['id'];
 
 $tinjauan = null;
+$keterangan = null;
 $galat = null;
 
 /** Sumber pemilihan santri: 'santri' (individual) atau 'kelas' (massal). */
@@ -77,11 +78,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     try {
-        if (!in_array($tahap, ['tinjau', 'terapkan'], true)) {
+        if (!in_array($tahap, ['keterangan', 'tinjau', 'terapkan'], true)) {
             throw new MasterDataException('Tahap proses tidak dikenal.');
         }
 
-        if ($tahap === 'tinjau') {
+        if ($tahap === 'keterangan') {
+            // D-8 langkah 2: hanya santri yang dicentang pada langkah 1.
+            $terpilih = array_values(array_filter(
+                $yearId > 0 ? $service->kandidat(array_map('intval', $santriIds), $yearId) : [],
+                static fn (array $row): bool => $row['layak'] === true
+            ));
+            if ($terpilih === []) {
+                throw new MasterDataException('Pilih minimal satu santri yang dapat diproses.');
+            }
+            $keterangan = ['santri' => $terpilih, 'sumber' => $sumber, 'santri_id' => $santriId, 'kelas_id' => $kelasId];
+        } elseif ($tahap === 'tinjau') {
             $tinjauan = $service->tinjau($santriIds, $opsi);
             $tinjauan['token'] = ah_form_token('alumni_proses');
             $tinjauan['sumber'] = $sumber;
@@ -155,18 +166,19 @@ $nilai = static function (string $field, string $default) use ($tinjauan): strin
     return $default;
 };
 
-master_header('Kelulusan & Mutasi Keluar', [
+master_header('Kelulusan & mutasi keluar', [
     'description' => 'Memindahkan santri aktif menjadi alumni — satu per satu atau sekelas sekaligus. '
-        . 'Baris santri tidak pernah dihapus: statusnya menjadi arsip dan seluruh riwayatnya tetap tersimpan.',
-    'active' => 'alumni.kelulusan',
+        . 'Baris santri tidak dihapus: statusnya menjadi arsip dan riwayatnya tetap tersimpan.',
+    'active' => 'santri',
+    'heading' => 'Data santri',
     'breadcrumbs' => [
-        ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
-        ['label' => 'Data Alumni', 'url' => app_url('/admin/admin_alumni.php')],
-        ['label' => 'Kelulusan & Mutasi Keluar'],
+        ['label' => 'Data santri', 'url' => app_url('/admin/admin_master_santri.php')],
+        ['label' => 'Kelulusan & alumni', 'url' => app_url('/admin/admin_alumni.php')],
+        ['label' => 'Proses kelulusan'],
     ],
-    'actions' => '<a class="btn btn-outline-secondary" href="admin_alumni.php">Arsip Alumni</a>'
-        . '<a class="btn btn-outline-secondary" href="admin_master_santri.php">Data Santri</a>',
 ]);
+$kembaliPilih = $halaman . ($santriId > 0 ? '?santri_id=' . $santriId : ($kelasId > 0 ? '?kelas_id=' . $kelasId : ''));
+echo ah_stepper(['Pilih santri', 'Keterangan keluar', 'Tinjau & proses'], $tinjauan !== null ? 2 : ($keterangan !== null ? 1 : 0), 'Langkah kelulusan');
 
 if ($galat !== null) {
     ah_note('danger', $galat);
@@ -267,175 +279,111 @@ if ($year === null) {
 </section>
 <?php endif; ?>
 
-<?php if ($tinjauan === null): ?>
-
-<section class="ah-card" aria-labelledby="ah-pilih-sumber">
-    <div class="ah-card__head"><h2 class="h6 mb-0" id="ah-pilih-sumber">Pilih santri yang akan diproses</h2></div>
-    <div class="ah-card__body">
-        <p class="text-muted">
-            Pemrosesan individual dimulai dari tombol <strong>“Luluskan / Mutasi keluar”</strong> pada baris santri di
-            halaman Data Santri. Pemrosesan massal dimulai dengan memilih kelas aktif di bawah ini.
-        </p>
-        <form method="get" action="<?= master_e($halaman) ?>" class="row g-2 align-items-end">
-            <div class="col-md-6">
-                <label class="form-label" for="kelas_id">Kelas pada semester aktif</label>
-                <select class="form-select" id="kelas_id" name="kelas_id" <?= $kelasOptions === [] ? 'disabled' : '' ?>>
-                    <option value="">— pilih kelas —</option>
-                    <?php foreach ($kelasOptions as $kelas): ?>
-                        <option value="<?= (int) $kelas['id'] ?>" <?= $kelasId === (int) $kelas['id'] ? 'selected' : '' ?>>
-                            <?= master_e($kelas['nama_kelas'] . ' (' . $kelas['jenjang'] . ') — ' . (int) $kelas['jumlah_aktif'] . ' santri aktif') ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col-md-6 d-flex flex-wrap gap-2">
-                <button class="btn btn-primary" type="submit" <?= $kelasOptions === [] ? 'disabled' : '' ?>>Tampilkan santri kelas ini</button>
-                <a class="btn btn-outline-secondary" href="<?= master_e($halaman) ?>">Bersihkan</a>
-            </div>
-        </form>
-        <?php if ($kelasOptions === []): ?>
-            <p class="text-muted mt-3 mb-0">Belum ada kelas yang dapat dipilih pada semester aktif.</p>
-        <?php endif; ?>
-    </div>
-</section>
-
-<?php if ($sumber !== '' && $kandidat === []): ?>
-    <section class="ah-card"><div class="ah-card__body">
-        <?= ah_empty(
-            'Tidak ada santri yang dapat diproses',
-            $sumber === 'kelas'
-                ? 'Kelas ini tidak memiliki santri aktif pada semester berjalan, atau kelasnya tidak ditemukan.'
-                : 'Santri yang diminta tidak ditemukan pada master data.',
-            '<a class="btn btn-sm btn-outline-secondary" href="admin_master_santri.php">Buka Data Santri</a>'
-        ) ?>
-    </div></section>
-<?php elseif ($kandidat !== []): ?>
-
-<?php if ($ditolak !== []): ?>
-<section class="ah-card" aria-labelledby="ah-dikecualikan">
-    <div class="ah-card__head"><h2 class="h6 mb-0" id="ah-dikecualikan">Dikecualikan dari proses (<?= count($ditolak) ?>)</h2></div>
-    <div class="ah-card__body">
-        <p class="text-muted">Santri berikut <strong>tidak</strong> ikut diproses. Ia tidak dihitung dan tidak menghasilkan catatan alumni ganda.</p>
-        <div class="ah-table-wrap"><table class="ah-table">
-            <caption class="ah-visually-hidden">Santri yang dikecualikan beserta alasannya</caption>
-            <thead><tr><th scope="col">NIS</th><th scope="col">Nama santri</th><th scope="col">Alasan dikecualikan</th><th scope="col">Catatan alumni</th></tr></thead>
-            <tbody>
-            <?php foreach ($ditolak as $row): ?>
-                <tr>
-                    <td><?= master_e($row['nis']) ?></td>
-                    <td class="fw-semibold"><?= master_e($row['nama_santri']) ?></td>
-                    <td><?= master_e($row['halangan']) ?></td>
-                    <td><?= $row['alumni_id'] === null
-                        ? '<span class="text-muted">-</span>'
-                        : '<a href="admin_alumni.php?action=detail&amp;id=' . (int) $row['alumni_id'] . '">Lihat catatan #' . (int) $row['alumni_id'] . '</a>' ?></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table></div>
-    </div>
-</section>
-<?php endif; ?>
-
-<?php if ($layak === []): ?>
-    <section class="ah-card"><div class="ah-card__body">
-        <?= ah_empty(
-            'Seluruh santri sudah diproses sebelumnya',
-            'Tidak ada santri yang masih layak diluluskan atau dimutasikan dari pilihan ini. '
-            . 'Catatan alumni yang sudah ada tidak diproses ulang.',
-            '<a class="btn btn-sm btn-outline-secondary" href="admin_alumni.php">Buka arsip alumni</a>'
-        ) ?>
-    </div></section>
-<?php else: ?>
-
+<?php if ($tinjauan === null && $keterangan !== null): ?>
 <form method="post">
     <?= master_csrf() ?>
     <input type="hidden" name="tahap" value="tinjau">
-    <input type="hidden" name="sumber" value="<?= master_e($sumber) ?>">
-    <input type="hidden" name="santri_id" value="<?= (int) $santriId ?>">
-    <input type="hidden" name="kelas_id" value="<?= (int) $kelasId ?>">
-    <?php foreach ($layak as $row): ?>
-        <input type="hidden" name="santri_ids[]" value="<?= (int) $row['santri_id'] ?>">
-    <?php endforeach; ?>
-
-    <section class="ah-card" aria-labelledby="ah-daftar-proses">
-        <div class="ah-card__head"><h2 class="h6 mb-0" id="ah-daftar-proses">
-            <?= $sumber === 'kelas' && $kelasTerpilih !== null
-                ? 'Santri kelas ' . master_e((string) $kelasTerpilih['nama_kelas'])
-                : 'Santri yang akan diproses' ?></h2>
-            <span class="text-muted small"><?= count($layak) ?> santri akan diproses</span></div>
-        <div class="ah-table-wrap"><table class="ah-table">
-            <caption class="ah-visually-hidden">Ringkasan santri, kelas aktif, dan kamar aktif sebelum konfirmasi</caption>
-            <thead><tr>
-                <th scope="col">NIS</th><th scope="col">Nama santri</th><th scope="col">L/P</th>
-                <th scope="col">Unit sekolah</th><th scope="col">Kelas aktif</th><th scope="col">Kamar aktif</th>
-            </tr></thead>
-            <tbody>
-            <?php foreach ($layak as $row): ?>
-                <tr>
-                    <td><?= master_e($row['nis']) ?></td>
-                    <td class="fw-semibold"><?= master_e($row['nama_santri']) ?></td>
-                    <td><?= master_e($row['jenis_kelamin']) ?></td>
-                    <td><?= master_e($row['unit_terakhir'] ?: '-') ?></td>
-                    <td><?= $row['kelas_aktif'] === null ? ah_badge('Tanpa kelas', 'warn') : master_e($row['kelas_aktif']) ?></td>
-                    <td><?= $row['kamar_aktif'] === null ? ah_badge('Tanpa kamar', 'warn') : master_e($row['kamar_aktif']) ?></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table></div>
-    </section>
-
+    <input type="hidden" name="sumber" value="<?= master_e((string) $keterangan['sumber']) ?>">
+    <input type="hidden" name="santri_id" value="<?= (int) $keterangan['santri_id'] ?>">
+    <input type="hidden" name="kelas_id" value="<?= (int) $keterangan['kelas_id'] ?>">
+    <?php foreach ($keterangan['santri'] as $row): ?><input type="hidden" name="santri_ids[]" value="<?= (int) $row['santri_id'] ?>"><?php endforeach; ?>
     <section class="ah-card" aria-labelledby="ah-form-keluar">
-        <div class="ah-card__head"><h2 class="h6 mb-0" id="ah-form-keluar">Keterangan keluar</h2></div>
+        <div class="ah-card__head"><h2 class="h6 mb-0" id="ah-form-keluar">Keterangan keluar</h2>
+            <span class="text-muted small"><?= count($keterangan['santri']) ?> santri</span></div>
         <div class="ah-card__body">
-            <fieldset class="ah-fieldset">
-                <legend>Data yang disimpan pada catatan alumni</legend>
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <label class="form-label" for="status_keluar">Status keluar</label>
-                        <select class="form-select" id="status_keluar" name="status_keluar" required>
-                            <?php foreach (AlumniService::STATUS as $status): ?>
-                                <option value="<?= master_e($status) ?>" <?= $nilai('status_keluar', 'Lulus') === $status ? 'selected' : '' ?>><?= master_e($status) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label" for="tgl_keluar">Tanggal keluar</label>
-                        <input class="form-control" type="date" id="tgl_keluar" name="tgl_keluar" required
-                               value="<?= master_e($nilai('tgl_keluar', date('Y-m-d'))) ?>">
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label" for="tahun_angkatan">Tahun angkatan / tahun keluar</label>
-                        <input class="form-control" id="tahun_angkatan" name="tahun_angkatan" maxlength="10" required
-                               placeholder="2026 atau 2025/2026"
-                               value="<?= master_e($nilai('tahun_angkatan', (string) ($year['tahun'] ?? date('Y')))) ?>"
-                               aria-describedby="bantuan_tahun">
-                        <div class="form-text" id="bantuan_tahun">Format “2026” atau “2025/2026”.</div>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label" for="tingkat">Tingkat terakhir</label>
-                        <select class="form-select" id="tingkat" name="tingkat" required>
-                            <?php foreach (AlumniService::TINGKAT as $tingkat): ?>
-                                <option value="<?= master_e($tingkat) ?>" <?= $nilai('tingkat', 'Ibtida') === $tingkat ? 'selected' : '' ?>><?= master_e($tingkat) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label" for="catatan">Catatan <span class="text-muted fw-normal">(opsional)</span></label>
-                        <textarea class="form-control" id="catatan" name="catatan" rows="2" maxlength="500"
-                                  aria-describedby="bantuan_catatan"><?= master_e($nilai('catatan', '')) ?></textarea>
-                        <div class="form-text" id="bantuan_catatan">Catatan ikut tersimpan pada catatan alumni dan pada audit.</div>
-                    </div>
-                </div>
-            </fieldset>
-            <div class="ah-actions">
-                <button class="btn btn-primary" type="submit">Tinjau sebelum memproses</button>
-                <a class="btn btn-outline-secondary" href="admin_master_santri.php">Batal</a>
+            <p class="small text-muted"><?= ah_e(implode(', ', array_slice(array_column($keterangan['santri'], 'nama_santri'), 0, 8))) ?><?= count($keterangan['santri']) > 8 ? ' dan ' . (count($keterangan['santri']) - 8) . ' lainnya' : '' ?>.</p>
+            <div class="row g-3">
+                <div class="col-md-3"><label class="form-label" for="status_keluar">Status keluar</label>
+                    <select class="form-select" id="status_keluar" name="status_keluar" required>
+                        <?php foreach (AlumniService::STATUS as $status): ?><option value="<?= master_e($status) ?>" <?= $nilai('status_keluar', 'Lulus') === $status ? 'selected' : '' ?>><?= master_e($status) ?></option><?php endforeach; ?>
+                    </select></div>
+                <div class="col-md-3"><label class="form-label" for="tgl_keluar">Tanggal keluar</label>
+                    <input class="form-control" type="date" id="tgl_keluar" name="tgl_keluar" required value="<?= master_e($nilai('tgl_keluar', date('Y-m-d'))) ?>"></div>
+                <div class="col-md-3"><label class="form-label" for="tahun_angkatan">Tahun angkatan / keluar</label>
+                    <input class="form-control" id="tahun_angkatan" name="tahun_angkatan" maxlength="10" required placeholder="2026 atau 2025/2026" aria-describedby="bantuan_tahun"
+                           value="<?= master_e($nilai('tahun_angkatan', (string) ($year['tahun'] ?? date('Y')))) ?>">
+                    <div class="form-text" id="bantuan_tahun">Format “2026” atau “2025/2026”.</div></div>
+                <div class="col-md-3"><label class="form-label" for="tingkat">Tingkat terakhir</label>
+                    <select class="form-select" id="tingkat" name="tingkat" required>
+                        <?php foreach (AlumniService::TINGKAT as $tingkat): ?><option value="<?= master_e($tingkat) ?>" <?= $nilai('tingkat', 'Ibtida') === $tingkat ? 'selected' : '' ?>><?= master_e($tingkat) ?></option><?php endforeach; ?>
+                    </select></div>
+                <div class="col-12"><label class="form-label" for="catatan">Catatan <span class="text-muted fw-normal">(opsional)</span></label>
+                    <textarea class="form-control" id="catatan" name="catatan" rows="2" maxlength="500" aria-describedby="bantuan_catatan"><?= master_e($nilai('catatan', '')) ?></textarea>
+                    <div class="form-text" id="bantuan_catatan">Catatan ikut tersimpan pada catatan alumni dan pada audit.</div></div>
             </div>
         </div>
     </section>
+    <div class="ah-actbar"><a class="btn btn-outline-secondary" href="<?= master_e($kembaliPilih) ?>">Kembali</a>
+        <button class="btn btn-primary" type="submit">Tinjau sebelum memproses</button></div>
 </form>
+<?php elseif ($tinjauan === null): ?>
 
-<?php endif; ?>
+<?php ah_filter_open($kelasId > 0 ? 1 : 0, [], $halaman); ?>
+    <div class="ah-filter__wide"><label class="form-label" for="kelas_id">Kelas pada semester aktif</label>
+        <select class="form-select" id="kelas_id" name="kelas_id" <?= $kelasOptions === [] ? 'disabled' : '' ?>>
+            <option value="">— pilih kelas —</option>
+            <?php foreach ($kelasOptions as $kelas): ?>
+                <option value="<?= (int) $kelas['id'] ?>" <?= $kelasId === (int) $kelas['id'] ? 'selected' : '' ?>><?= master_e($kelas['nama_kelas'] . ' (' . $kelas['jenjang'] . ') — ' . (int) $kelas['jumlah_aktif'] . ' santri aktif') ?></option>
+            <?php endforeach; ?>
+        </select></div>
+<?php ah_filter_close(); ?>
+
+<?php if ($sumber === ''): ?>
+    <section class="ah-card"><div class="ah-card__body">
+        <?= ah_empty('Pilih santri yang akan diproses', 'Pilih satu kelas untuk memproses sekelas sekaligus, atau buka ⋯ › Luluskan / mutasi keluar pada santri di Data santri.', '<a class="btn btn-sm btn-outline-secondary" href="admin_master_santri.php">Buka Data santri</a>') ?>
+    </div></section>
+<?php elseif ($kandidat === []): ?>
+    <section class="ah-card"><div class="ah-card__body">
+        <?= ah_empty('Tidak ada santri yang dapat diproses', $sumber === 'kelas'
+            ? 'Kelas ini tidak memiliki santri aktif pada semester berjalan, atau kelasnya tidak ditemukan.'
+            : 'Santri yang diminta tidak ditemukan.') ?>
+    </div></section>
+<?php else: ?>
+    <?php if ($ditolak !== []): ?>
+        <?php ah_note('warning', count($ditolak) . ' santri dikecualikan dan tidak ikut diproses.', '<ul class="small mb-0 mt-2"><li>' . implode('</li><li>', array_map(
+            static fn (array $row): string => master_e($row['nama_santri'] . ': ' . $row['halangan']) . ($row['alumni_id'] !== null ? ' — <a href="admin_alumni.php?action=detail&amp;id=' . (int) $row['alumni_id'] . '">lihat catatan alumni</a>' : ''),
+            $ditolak
+        )) . '</li></ul>'); ?>
+    <?php endif; ?>
+    <?php if ($layak === []): ?>
+        <section class="ah-card"><div class="ah-card__body">
+            <?= ah_empty('Seluruh santri sudah diproses sebelumnya', 'Tidak ada santri yang masih dapat diluluskan atau dimutasikan dari pilihan ini.', '<a class="btn btn-sm btn-outline-secondary" href="admin_alumni.php">Buka data alumni</a>') ?>
+        </div></section>
+    <?php else: ?>
+    <form method="post" data-ah-selection="santri">
+        <?= master_csrf() ?>
+        <input type="hidden" name="tahap" value="keterangan">
+        <input type="hidden" name="sumber" value="<?= master_e($sumber) ?>">
+        <input type="hidden" name="santri_id" value="<?= (int) $santriId ?>">
+        <input type="hidden" name="kelas_id" value="<?= (int) $kelasId ?>">
+        <div class="ah-card ah-table-wrap">
+            <table class="ah-table ah-table--cards">
+                <caption class="ah-visually-hidden">Santri yang dapat diproses, kelas dan kamar aktif</caption>
+                <thead><tr>
+                    <th scope="col"><input class="form-check-input" type="checkbox" data-ah-select-all checked aria-label="Pilih semua santri"></th>
+                    <th scope="col">NIS</th><th scope="col">Nama</th><th scope="col">L/P</th><th scope="col">Unit</th><th scope="col">Kelas</th><th scope="col" class="ah-col-opt">Kamar</th>
+                </tr></thead>
+                <tbody>
+                <?php foreach ($layak as $row): ?>
+                    <tr>
+                        <td data-label="Pilih"><input class="form-check-input" type="checkbox" name="santri_ids[]" value="<?= (int) $row['santri_id'] ?>" data-ah-select checked aria-label="Pilih <?= master_e($row['nama_santri']) ?>"></td>
+                        <td><?= master_e($row['nis']) ?></td>
+                        <td><?= master_e($row['nama_santri']) ?></td>
+                        <td><?= master_e($row['jenis_kelamin']) ?></td>
+                        <td><?= master_e($row['unit_terakhir'] ?: '—') ?></td>
+                        <td><?= $row['kelas_aktif'] === null ? ah_badge('Tanpa kelas', 'warn') : master_e($row['kelas_aktif']) ?></td>
+                        <td class="ah-col-opt"><?= $row['kamar_aktif'] === null ? ah_badge('Tanpa kamar', 'warn') : master_e($row['kamar_aktif']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="ah-actbar ah-actbar--sticky">
+            <span class="ah-actbar__text"><?= count($layak) ?> santri dapat diproses; hapus centang untuk mengecualikan.</span>
+            <button class="btn btn-primary" type="submit">Lanjut ke keterangan</button>
+        </div>
+    </form>
+    <?php endif; ?>
 <?php endif; ?>
 <?php endif; ?>
 

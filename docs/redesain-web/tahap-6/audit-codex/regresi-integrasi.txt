@@ -1,0 +1,6 @@
+penempatan_integration: exit 0;  | SELURUH PENGUJIAN INTEGRASI PENEMPATAN LULUS.
+penempatan_concurrency: exit 0;  | SELURUH PENGUJIAN PERMINTAAN BERSAMAAN PENEMPATAN LULUS.
+alumni_integration: exit 0; Query alumni gagal (1644): uji gagal tutup kelas | Query alumni gagal (1644): uji gagal simpan alumni
+perapihan_integration: exit 0;  | SELURUH PENGUJIAN INTEGRASI PERAPIHAN LULUS.
+penugasan_integration: exit 0;  | Total gagal: 0
+phase2_integration: exit 0; [lulus] Jumlah ekspor santri sama dengan hasil filter UI | [lulus] Audit menyimpan pelaku dan waktu tanpa nilai rahasia
