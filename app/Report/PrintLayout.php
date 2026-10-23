@@ -182,6 +182,14 @@ final class PrintLayout
     public const MINIMAL_BARIS_PER_LEMBAR = 1;
 
     /**
+     * Tinggi blok tanda tangan "Bagian Pendidikan" pada lembar terakhir
+     * (keputusan AS, redesain website Tahap 4): jabatan, ruang tanda tangan,
+     * dan garis nama kosong. Dilebihkan agar blok tidak pernah terdorong ke
+     * halaman fisik berikutnya sendirian.
+     */
+    public const TINGGI_TANDA_TANGAN_MM = 26.0;
+
+    /**
      * Memperkirakan jumlah baris teks yang dibutuhkan satu sel.
      *
      * Pemisah `<br>` dihitung sebagai baris baru yang pasti. Sisanya dihitung
@@ -313,7 +321,8 @@ final class PrintLayout
         array $barisSel,
         array $lebarKolomPersen,
         ?float $kepalaPertamaMm = null,
-        ?float $kepalaLanjutanMm = null
+        ?float $kepalaLanjutanMm = null,
+        float $cadanganAkhirMm = 0.0
     ): array {
         if ($barisSel === []) {
             return [[]];
@@ -373,7 +382,59 @@ final class PrintLayout
             $lembar[] = $sekarang;
         }
 
+        // Blok akhir (tanda tangan) harus muat pada lembar TERAKHIR di kedua
+        // orientasi. Bila tidak, baris terakhir dipindah ke lembar baru
+        // bersama blok itu, sehingga tanda tangan tidak pernah berdiri
+        // sendirian di halaman baru dan nomor halaman tetap dihitung server.
+        if ($cadanganAkhirMm > 0.0) {
+            $akhir = count($lembar) - 1;
+            [$batasLanskap, $batasPotret] = $anggaran($akhir === 0);
+            $lanskap = 0.0;
+            $potret = 0.0;
+            foreach ($lembar[$akhir] as $indeks) {
+                $lanskap += $tinggiLanskap[$indeks];
+                $potret += $tinggiPotret[$indeks];
+            }
+            if (($lanskap + $cadanganAkhirMm > $batasLanskap || $potret + $cadanganAkhirMm > $batasPotret)
+                && count($lembar[$akhir]) > self::MINIMAL_BARIS_PER_LEMBAR) {
+                $pindah = array_pop($lembar[$akhir]);
+                $lembar[] = [$pindah];
+            }
+        }
+
         return $lembar;
+    }
+
+    /** Identitas dokumen cetak bersama (X-1). */
+    public const IDENTITAS = 'Pesantren Al Hasan';
+
+    /**
+     * Kop dokumen cetak yang sama untuk seluruh dokumen internal (X-1):
+     * identitas pesantren, judul dokumen, dan keterangan opsional.
+     */
+    public static function kop(string $judul, string $keterangan = ''): string
+    {
+        return '<header class="identity">'
+            . '<h1>' . self::e(self::IDENTITAS) . '</h1>'
+            . '<h2>' . self::e($judul) . '</h2>'
+            . ($keterangan === '' ? '' : '<div class="muted">' . self::e($keterangan) . '</div>')
+            . '</header>';
+    }
+
+    /**
+     * Kolom tanda tangan di kanan bawah lembar terakhir (keputusan AS):
+     * jabatan "Bagian Pendidikan", ruang tanda tangan, dan garis kosong untuk
+     * nama yang diisi manual setelah dicetak. Tingginya dianggarkan lewat
+     * `TINGGI_TANDA_TANGAN_MM` pada `pecahLembarKolom()`.
+     */
+    public static function tandaTangan(string $jabatan = 'Bagian Pendidikan'): string
+    {
+        return '<div class="ttd" aria-label="Tanda tangan ' . self::e($jabatan) . '">'
+            . '<div class="ttd-kolom">'
+            . '<div class="ttd-jabatan">' . self::e($jabatan) . '</div>'
+            . '<div class="ttd-ruang"></div>'
+            . '<div class="ttd-garis"></div>'
+            . '</div></div>';
     }
 
     /**
@@ -471,6 +532,14 @@ final class PrintLayout
             . 'tr,td,th{break-inside:avoid;page-break-inside:avoid}'
             . '.empty{text-align:center;padding:18px}'
             . '.tanda-tangan{margin-top:10px;font-size:7.5pt;color:#59665e}'
+            // Tanda tangan Bagian Pendidikan (keputusan AS): kanan bawah,
+            // satu blok yang tidak boleh terbelah antarhalaman.
+            . '.ttd{display:flex;justify-content:flex-end;margin-top:4mm;break-inside:avoid;page-break-inside:avoid}'
+            . '.ttd-kolom{width:60mm;text-align:center;font-size:8pt;line-height:1.3}'
+            . '.ttd-jabatan{font-weight:700}'
+            . '.ttd-ruang{height:14mm}'
+            . '.ttd-garis{border-bottom:1px solid #17231c;height:1px}'
+            . '.kode-laporan{font-family:monospace;letter-spacing:.04em}'
             // Lembar = satu halaman fisik. Pemisahnya eksplisit, bukan hasil
             // tebakan mesin cetak, sehingga nomor halaman selalu cocok.
             . '.lembar{break-after:page;page-break-after:always}'

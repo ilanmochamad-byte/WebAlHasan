@@ -183,7 +183,8 @@ $harapan = [
     'sbx_guru_mapel' => ['menu' => ['Beranda', 'Nilai semester'], 'grup' => ['Mengajar'], 'bar' => ['Beranda', 'Nilai', 'Notifikasi', 'Menu']],
     'sbx_pengurus_a' => ['menu' => ['Beranda', 'Perizinan', 'Sikap semester', 'Pembinaan'], 'grup' => ['Santri binaan'], 'bar' => ['Beranda', 'Perizinan', 'Binaan', 'Notifikasi', 'Menu']],
     'sbx_pengurus_biasa' => ['menu' => ['Beranda', 'Perizinan'], 'grup' => ['Santri binaan'], 'bar' => ['Beranda', 'Perizinan', 'Notifikasi', 'Menu']],
-    'sbx_pendidikan' => ['menu' => ['Beranda', 'Penilaian & rapor', 'Nilai pengganti'], 'grup' => ['Akademik'], 'bar' => ['Beranda', 'Rapor', 'Notifikasi', 'Menu']],
+    // Tahap 4 (keputusan H): grup Laporan › Laporan absensi pengajian.
+    'sbx_pendidikan' => ['menu' => ['Beranda', 'Penilaian & rapor', 'Nilai pengganti', 'Laporan absensi pengajian'], 'grup' => ['Akademik', 'Laporan'], 'bar' => ['Beranda', 'Rapor', 'Notifikasi', 'Menu']],
     'sbx_ortu_a' => ['menu' => ['Beranda', 'Izin anak', 'Rapor', 'Informasi pembinaan', 'Notifikasi'], 'grup' => [], 'bar' => ['Beranda', 'Izin', 'Rapor', 'Info', 'Notifikasi']],
 ];
 $beranda = [];
@@ -397,7 +398,7 @@ $k = $kartuAdmin($semua, 'izin_tertunda');
 $hTujuan = $admin->req(parse_url($k['url'], PHP_URL_PATH) . '?' . parse_url($k['url'], PHP_URL_QUERY))['body'];
 $harap = (int) $sql("SELECT COUNT(*) n FROM izin_pengajuan WHERE status='Diajukan' AND COALESCE(diajukan_pada, created_at) < NOW() - INTERVAL 24 HOUR")[0]['n'];
 $baru = (int) $sql("SELECT COUNT(*) n FROM izin_pengajuan WHERE status='Diajukan' AND COALESCE(diajukan_pada, created_at) >= NOW() - INTERVAL 24 HOUR")[0]['n'];
-$assert($k['jumlah'] === $harap && str_contains($hTujuan, '— ' . $harap . ' pengajuan.') && str_contains($hTujuan, 'id="tertunda" name="tertunda" value="1" checked'), "F-4 izin > 1 hari: kartu {$k['jumlah']} = daftar tujuan {$harap} (Diajukan < 24 jam yang dikecualikan: {$baru})");
+$assert($k['jumlah'] === $harap && str_contains($hTujuan, '— ' . $harap . ' pengajuan') && str_contains($hTujuan, 'id="tertunda" name="tertunda" value="1" checked'), "F-4 izin > 1 hari: kartu {$k['jumlah']} = daftar tujuan {$harap} (Diajukan < 24 jam yang dikecualikan: {$baru})");
 
 $k = $kartuAdmin($semua, 'santri_tanpa_tempat');
 $harap = (int) $sql("SELECT COUNT(*) n FROM santri s WHERE s.is_active = 1 AND s.archived_at IS NULL AND (

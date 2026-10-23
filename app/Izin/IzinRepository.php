@@ -326,6 +326,63 @@ final class IzinRepository
     }
 
     /**
+     * Jumlah pengajuan seorang santri pada satu tahun ajaran/semester
+     * (keputusan Q). Pengajuan yang dibatalkan tidak dihitung.
+     *
+     * @return array{total:int, disetujui:int}
+     */
+    public function santriSemesterCount(int $santriId, int $tahunAjaranId): array
+    {
+        $row = $this->one(
+            "SELECT COUNT(*) AS total, COALESCE(SUM(p.status = 'Disetujui'), 0) AS disetujui
+               FROM izin_pengajuan p
+              WHERE p.santri_id = ? AND p.tahun_ajaran_id = ? AND p.status <> 'Dibatalkan'",
+            [$santriId, $tahunAjaranId]
+        );
+
+        return ['total' => (int) ($row['total'] ?? 0), 'disetujui' => (int) ($row['disetujui'] ?? 0)];
+    }
+
+    /** Murobi pernah menerima pengajuan santri ini (cakupan baca riwayat santri). */
+    public function murobiHasSantri(int $guruId, int $santriId): bool
+    {
+        return $this->one(
+            'SELECT 1 AS ada FROM izin_pengajuan WHERE murobi_guru_id = ? AND santri_id = ? LIMIT 1',
+            [$guruId, $santriId]
+        ) !== null;
+    }
+
+    /**
+     * Izin yang DISETUJUI dan mencakup satu tanggal, per santri (keputusan S:
+     * label "Sedang izin" di pertemuan pengajian). Hanya nomor dan rentang
+     * yang dibaca; alasan dan keputusan tidak ikut.
+     *
+     * @param array<int, int> $santriIds
+     * @return array<int, array{id:int, tgl_izin:string, tgl_kembali:string}>
+     */
+    public function approvedCovering(array $santriIds, string $date): array
+    {
+        $santriIds = array_values(array_unique(array_filter(array_map('intval', $santriIds), static fn (int $id): bool => $id > 0)));
+        if ($santriIds === []) {
+            return [];
+        }
+        $rows = $this->all(
+            "SELECT p.id, p.santri_id, p.tgl_izin, p.tgl_kembali
+               FROM izin_pengajuan p
+              WHERE p.status = 'Disetujui' AND p.tgl_izin <= ? AND p.tgl_kembali >= ?
+                AND p.santri_id IN (" . implode(',', array_fill(0, count($santriIds), '?')) . ")
+              ORDER BY p.id DESC",
+            array_merge([$date, $date], $santriIds)
+        );
+        $hasil = [];
+        foreach ($rows as $row) {
+            $hasil[(int) $row['santri_id']] ??= ['id' => (int) $row['id'], 'tgl_izin' => (string) $row['tgl_izin'], 'tgl_kembali' => (string) $row['tgl_kembali']];
+        }
+
+        return $hasil;
+    }
+
+    /**
      * @return array{total:int, legacy:int, per_status:array<string,int>}
      */
     public function summary(array $scope): array
@@ -360,6 +417,7 @@ final class IzinRepository
                        pg.nama AS pengurus_nama, g.nama_guru AS murobi_nama,
                        ta.tahun AS tahun_ajaran, ta.semester AS semester,
                        k.hasil AS keputusan_hasil, k.kapasitas AS keputusan_kapasitas, k.diputus_pada,
+                       k.alasan AS keputusan_alasan, uk.name AS keputusan_oleh,
                        up.name AS penetap_nama, ub.name AS pembatal_nama
                   FROM izin_pengajuan p
                   JOIN santri s ON s.id = p.santri_id
@@ -367,6 +425,7 @@ final class IzinRepository
                   LEFT JOIN guru g ON g.id = p.murobi_guru_id
                   LEFT JOIN tahun_ajaran ta ON ta.id = p.tahun_ajaran_id
                   LEFT JOIN izin_keputusan k ON k.pengajuan_id = p.id
+                  LEFT JOIN users uk ON uk.id = k.diputus_oleh_user_id
                   LEFT JOIN users up ON up.id = p.murobi_ditetapkan_oleh_user_id
                   LEFT JOIN users ub ON ub.id = p.dibatalkan_oleh_user_id ";
     }
@@ -443,6 +502,14 @@ final class IzinRepository
         // diajukan lebih dari 24 jam lalu. Dipakai bersama `status`.
         if (($filters['tertunda'] ?? '') === '1') {
             $parts[] = 'COALESCE(p.diajukan_pada, p.created_at) < NOW() - INTERVAL 24 HOUR';
+        }
+
+        // Izin anak (I-7, keputusan O): Aktif = belum diputus, atau disetujui
+        // dan tanggal kembali belum lewat. Riwayat = sisanya.
+        if (($filters['aktif'] ?? '') === '1') {
+            $parts[] = "(p.status IN ('Diajukan', 'Perlu Penetapan Admin') OR (p.status = 'Disetujui' AND p.tgl_kembali >= CURDATE()))";
+        } elseif (($filters['aktif'] ?? '') === '0') {
+            $parts[] = "NOT (p.status IN ('Diajukan', 'Perlu Penetapan Admin') OR (p.status = 'Disetujui' AND p.tgl_kembali >= CURDATE()))";
         }
 
         // Antrean = pengajuan yang menunggu tindakan pengguna pada cakupannya.

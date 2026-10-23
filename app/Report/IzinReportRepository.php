@@ -155,6 +155,48 @@ final class IzinReportRepository
     }
 
     /**
+     * Jumlah pengajuan per pekan (Senin–Ahad, keputusan T) dan per kelas untuk
+     * grafik laporan web (I-6). Kriteria dan cakupan dari `conditions()` yang
+     * SAMA dengan ringkasan, detail, cetak, dan CSV, sehingga jumlah semua
+     * batang selalu sama dengan total ringkasan.
+     *
+     * @return array{per_pekan:array<string,int>, per_kelas:array<string,int>}
+     */
+    public function chartData(IzinReportFilter $filter): array
+    {
+        [$where, $params] = $this->conditions($filter);
+        $kolom = match ($filter->basisTanggal) {
+            'pengajuan' => 'DATE(p.diajukan_pada)',
+            'keputusan' => 'DATE(k.diputus_pada)',
+            default => 'p.tgl_izin',
+        };
+        $pekan = $this->all(
+            'SELECT DATE_SUB(' . $kolom . ', INTERVAL WEEKDAY(' . $kolom . ') DAY) AS senin, COUNT(*) AS jumlah '
+            . $this->fromClause() . $where . ' GROUP BY senin ORDER BY senin',
+            $params
+        );
+        $kelas = $this->all(
+            "SELECT COALESCE((SELECT kl.nama_kelas FROM plotting_kelas pl
+                                JOIN kelas kl ON kl.id = pl.id_kelas
+                               WHERE pl.id_santri = p.santri_id AND pl.status = 'Aktif'
+                                 AND pl.id_tahun = COALESCE(p.tahun_ajaran_id, (SELECT ty.id FROM tahun_ajaran ty WHERE ty.status = 'Aktif' AND ty.archived_at IS NULL ORDER BY ty.id DESC LIMIT 1))
+                               ORDER BY pl.id LIMIT 1), 'Tanpa kelas') AS kelas, COUNT(*) AS jumlah "
+            . $this->fromClause() . $where . ' GROUP BY kelas ORDER BY jumlah DESC, kelas',
+            $params
+        );
+        $perPekan = [];
+        foreach ($pekan as $row) {
+            $perPekan[(string) ($row['senin'] ?? '')] = (int) $row['jumlah'];
+        }
+        $perKelas = [];
+        foreach ($kelas as $row) {
+            $perKelas[(string) $row['kelas']] = (int) $row['jumlah'];
+        }
+
+        return ['per_pekan' => $perPekan, 'per_kelas' => $perKelas];
+    }
+
+    /**
      * SELURUH baris sesuai filter — dipakai CSV dan cetak.
      *
      * PRD Fase 5: CSV memuat seluruh hasil filter, bukan hanya halaman yang

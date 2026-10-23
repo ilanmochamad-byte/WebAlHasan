@@ -64,7 +64,8 @@ $assert(str_contains($guru, '$c->showPengajian()') && str_contains($source('app/
 $pengurus = $bagian($nav, 'private static function pengurus(', 'private static function pendidikan(');
 $assert(str_contains($pengurus, '$c->own(PenugasanJenis::CAP_SIKAP_INPUT)') && str_contains($pengurus, "isset(\$c->v3['v3.pelanggaran.kelola'])"), 'J: Sikap semester dan Pembinaan hanya bagi pembimbing');
 $pendidikan = $bagian($nav, 'private static function pendidikan(', 'private static function orangTua(');
-$assert(!str_contains($pendidikan, 'admin_laporan_absensi.php') && str_contains($pendidikan, 'keputusan H'), 'H: menu laporan absensi Bagian Pendidikan ditunda ke Tahap 4 bersama hak aksesnya');
+// Tahap 4 memasang keputusan H bersama perubahan penjaganya.
+$assert(str_contains($pendidikan, 'admin_laporan_absensi.php') && str_contains($pendidikan, 'Keputusan H') && str_contains($source('admin/_laporan_guard.php'), 'CAP_RAPOR_VERIFIKASI'), 'H: menu laporan absensi Bagian Pendidikan dipasang di Tahap 4 bersama hak aksesnya');
 $assert(!str_contains($source('admin/_laporan_guard.php'), 'pendidikan'), 'H: penjaga laporan tidak diubah di Tahap 2');
 $ortu = $bagian($nav, 'private static function orangTua(', 'private static function beranda(');
 $assert(str_contains($ortu, '$items[] = $notifikasi;'), 'K: notifikasi orang tua juga tampil sebagai menu');

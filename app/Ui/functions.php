@@ -591,3 +591,133 @@ function ah_field_error(string $field, string $bucket): string
     static $number = 0;
     return '<span class="ah-field-error" id="ah-error-' . ++$number . '" data-error-for="' . ah_e($field) . '">' . ah_e($message) . '</span>';
 }
+
+// ---------------------------------------------------------------------------
+// Redesain website Tahap 4: tanggal, rentang, hari, periode, segmen.
+// ---------------------------------------------------------------------------
+
+if (!function_exists('ah_hari')) {
+    /**
+     * Nama hari untuk tampilan. Nilai "Minggu" di basis data ditulis "Ahad"
+     * (keputusan T); nilai yang disimpan tidak berubah.
+     */
+    function ah_hari(?string $hari): string
+    {
+        $hari = (string) $hari;
+
+        return $hari === 'Minggu' ? 'Ahad' : $hari;
+    }
+}
+
+if (!function_exists('ah_tanggal')) {
+    /**
+     * Tanggal Y-m-d (atau Y-m-d H:i:s) menjadi "Ahad 12 Okt 2026".
+     * Nilai yang tidak dapat dibaca dikembalikan apa adanya.
+     */
+    function ah_tanggal(?string $tanggal, bool $hari = true, bool $tahun = true): string
+    {
+        $time = $tanggal === null || $tanggal === '' ? false : strtotime($tanggal);
+        if ($time === false) {
+            return (string) $tanggal;
+        }
+
+        return ($hari ? Layout::dayName($time) . ' ' : '') . Layout::date($time, $tahun);
+    }
+
+    /**
+     * Rentang tanggal ringkas: "Ahad 12 – Selasa 14 Okt 2026"; satu hari
+     * cukup ditulis sekali.
+     */
+    function ah_rentang(?string $dari, ?string $sampai, bool $hari = true): string
+    {
+        $a = $dari === null || $dari === '' ? false : strtotime($dari);
+        $b = $sampai === null || $sampai === '' ? false : strtotime($sampai);
+        if ($a === false || $b === false) {
+            return trim((string) $dari . ' – ' . (string) $sampai, ' –');
+        }
+        if (date('Y-m-d', $a) === date('Y-m-d', $b)) {
+            return ah_tanggal(date('Y-m-d', $a), $hari);
+        }
+        $kiri = ($hari ? Layout::dayName($a) . ' ' : '') . (int) date('j', $a);
+        if (date('Y-m', $a) !== date('Y-m', $b)) {
+            $kiri = ($hari ? Layout::dayName($a) . ' ' : '') . Layout::date($a, date('Y', $a) !== date('Y', $b));
+        }
+
+        return $kiri . ' – ' . ah_tanggal(date('Y-m-d', $b), $hari);
+    }
+
+    /** Waktu Y-m-d H:i:s menjadi "12 Okt 2026 08.10". */
+    function ah_waktu(?string $waktu): string
+    {
+        $time = $waktu === null || $waktu === '' ? false : strtotime($waktu);
+
+        return $time === false ? (string) $waktu : Layout::date($time) . ' ' . date('H.i', $time);
+    }
+}
+
+if (!function_exists('ah_seg')) {
+    /**
+     * Kontrol segmen berupa tautan (mis. Mingguan/Daftar, Santri/Guru/Gabungan).
+     * Tetap berfungsi tanpa JavaScript.
+     *
+     * @param array<int, array{label:string, url:string, active?:bool}> $items
+     */
+    function ah_seg(array $items, string $label): string
+    {
+        $html = '<nav class="ah-seg ah-no-print" aria-label="' . ah_e($label) . '">';
+        foreach ($items as $item) {
+            $html .= '<a href="' . ah_e($item['url']) . '"' . (!empty($item['active']) ? ' aria-current="page"' : '') . '>' . ah_e($item['label']) . '</a>';
+        }
+
+        return $html . '</nav>';
+    }
+}
+
+if (!function_exists('ah_timeline')) {
+    /**
+     * Linimasa riwayat (I-5): butir terlama di atas.
+     *
+     * @param array<int, array{waktu:string, pelaku:string, judul:string, isi?:string, tone?:string}> $items
+     */
+    function ah_timeline(array $items, string $label = 'Riwayat'): string
+    {
+        if ($items === []) {
+            return '<p class="text-muted mb-0">Belum ada riwayat.</p>';
+        }
+        $html = '<ol class="ah-tl" aria-label="' . ah_e($label) . '">';
+        foreach ($items as $item) {
+            $html .= '<li class="ah-tl__item' . (!empty($item['tone']) ? ' ah-tl__item--' . ah_e($item['tone']) : '') . '">'
+                . '<span class="ah-tl__meta">' . ah_e($item['waktu']) . ' · ' . ah_e($item['pelaku']) . '</span>'
+                . '<b class="ah-tl__title">' . ah_e($item['judul']) . '</b>'
+                . (!empty($item['isi']) ? '<span class="ah-tl__text">' . nl2br(ah_e($item['isi'])) . '</span>' : '')
+                . '</li>';
+        }
+
+        return $html . '</ol>';
+    }
+}
+
+if (!function_exists('ah_action_dialog_open')) {
+    /**
+     * Tindakan yang membuka formulir dalam dialog (I-5, J-1).
+     *
+     * Tanpa JavaScript berupa <details> yang terbuka di tempat; dengan
+     * JavaScript formulirnya tampil di dialog modal. Setelah validasi server
+     * gagal, panggil dengan $open = true agar isian dan pesan langsung terlihat.
+     * Formulir di dalamnya tetap POST biasa yang diperiksa server.
+     */
+    function ah_action_dialog_open(string $id, string $label, string $title, string $tone = 'outline-primary', bool $open = false, ?string $icon = null): void
+    {
+        echo '<details class="ah-act" id="' . ah_e($id) . '" data-ah-dialog' . ($open ? ' open' : '') . '>'
+            . '<summary class="btn btn-' . ah_e($tone) . '">'
+            . ($icon !== null ? '<i class="fas ' . ah_e($icon) . '" aria-hidden="true"></i> ' : '')
+            . ah_e($label) . '</summary>'
+            . '<div class="ah-act__body" role="group" aria-labelledby="' . ah_e($id) . '-judul">'
+            . '<h2 class="ah-act__title" id="' . ah_e($id) . '-judul">' . ah_e($title) . '</h2>';
+    }
+
+    function ah_action_dialog_close(): void
+    {
+        echo '</div></details>';
+    }
+}

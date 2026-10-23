@@ -142,6 +142,53 @@ final class IzinService
     }
 
     /**
+     * Jumlah izin seorang santri pada semester aktif (keputusan Q), untuk
+     * membantu pengurus mengajukan dan murobi memutuskan.
+     *
+     * Hanya untuk santri dalam cakupan akun: pengurus = santri binaan aktif,
+     * murobi = santri yang pengajuannya pernah diarahkan kepadanya, orang
+     * tua = anak yang terhubung, admin = semua. Di luar cakupan → 403.
+     *
+     * @param array{id:int, roles:array<int,string>, guru_id:int|null} $user
+     * @return array{total:int, disetujui:int, semester:string}
+     */
+    public function santriSemesterCount(array $user, int $santriId, ?string $preferred = null): array
+    {
+        $scope = $this->scopeFor($user, $preferred);
+        $boleh = match ($scope['mode']) {
+            Capabilities::ADMIN => $this->repository->santriBasic($santriId) !== null,
+            Capabilities::PENGURUS => $scope['pengurus_id'] !== null
+                && $this->repository->pembimbingAssignmentFor((int) $scope['pengurus_id'], $santriId, date('Y-m-d')) !== null,
+            Capabilities::MUROBI => $scope['guru_id'] !== null && $this->repository->murobiHasSantri((int) $scope['guru_id'], $santriId),
+            Capabilities::ORANG_TUA => in_array($santriId, array_map('intval', array_column($this->repository->santriForWali((int) $scope['wali_id']), 'id')), true),
+            default => false,
+        };
+        if (!$boleh) {
+            throw IzinException::forbidden();
+        }
+        $tahun = $this->repository->activeYear();
+        if ($tahun === null) {
+            return ['total' => 0, 'disetujui' => 0, 'semester' => 'Tidak ada semester aktif'];
+        }
+
+        return $this->repository->santriSemesterCount($santriId, (int) $tahun['id'])
+            + ['semester' => (string) $tahun['tahun'] . ' ' . (string) $tahun['semester']];
+    }
+
+    /**
+     * Label "Sedang izin" untuk peserta pertemuan pengajian (keputusan S).
+     * Hanya nomor dan rentang izin yang disetujui; status kehadiran tidak
+     * diisi otomatis.
+     *
+     * @param array<int, int> $santriIds
+     * @return array<int, array{id:int, tgl_izin:string, tgl_kembali:string}>
+     */
+    public function approvedCovering(array $santriIds, string $date): array
+    {
+        return $this->repository->approvedCovering($santriIds, $date);
+    }
+
+    /**
      * Menambahkan label tampilan tanpa mengubah nilai bisnis yang tersimpan.
      *
      * @param array<string, mixed> $row

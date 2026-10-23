@@ -101,7 +101,7 @@ final class ReportService
 
     public function options(array $user): array
     {
-        $teacherId = in_array('admin', $user['roles'] ?? [], true) ? null : (int) ($user['guru_id'] ?? 0);
+        $teacherId = ReportFilter::bacaSemua($user) ? null : (int) ($user['guru_id'] ?? 0);
         if ($teacherId !== null && $teacherId < 1) {
             throw new ApiException('FORBIDDEN', 'Akun tidak memiliki akses laporan.', 403);
         }
@@ -147,7 +147,7 @@ final class ReportService
         if ($meeting === null) {
             throw new ApiException('NOT_FOUND', 'Pertemuan tidak ditemukan.', 404);
         }
-        if (!in_array('admin', $user['roles'] ?? [], true)) {
+        if (!ReportFilter::bacaSemua($user)) {
             $guruId = (int) ($user['guru_id'] ?? 0);
             if (!in_array('guru', $user['roles'] ?? [], true) || $guruId < 1 || (int) $meeting['id_guru'] !== $guruId) {
                 throw new ApiException('FORBIDDEN', 'Anda tidak berhak membuka laporan pertemuan ini.', 403);

@@ -72,7 +72,14 @@ final class IzinPrintRenderer
         // 2. Pecah menjadi lembar. `PrintLayout` menganggarkan tinggi untuk A4
         //    lanskap DAN potret sekaligus, sehingga jumlah lembar di sini sama
         //    dengan jumlah halaman fisik PDF pada orientasi mana pun.
-        $lembar = PrintLayout::pecahLembarKolom($barisSel, self::LEBAR_KOLOM);
+        $lembar = PrintLayout::pecahLembarKolom(
+            $barisSel,
+            self::LEBAR_KOLOM,
+            null,
+            null,
+            PrintLayout::TINGGI_TANDA_TANGAN_MM
+        );
+        $kode = strtoupper(substr((string) ($report['kriteria'] ?? ''), 0, 10));
         $totalHalaman = count($lembar);
 
         $catatanBatas = '';
@@ -94,7 +101,7 @@ final class IzinPrintRenderer
                 . PrintLayout::footerHalaman(
                     $halaman,
                     $totalHalaman,
-                    self::IDENTITAS . ' — ' . self::JUDUL
+                    self::IDENTITAS . ' — ' . self::JUDUL . ($kode !== '' ? ' · Kode laporan ' . $kode : '')
                 )
                 . '</section>';
         }
@@ -226,11 +233,7 @@ final class IzinPrintRenderer
                 . PrintLayout::e((string) $jumlah) . '</strong></span>';
         }
 
-        return '<header class="identity">'
-            . '<h1>' . PrintLayout::e(self::IDENTITAS) . '</h1>'
-            . '<h2>' . PrintLayout::e(self::JUDUL) . '</h2>'
-            . '<div class="muted">' . PrintLayout::e($report['cakupan_label']) . '</div>'
-            . '</header>'
+        return PrintLayout::kop(self::JUDUL, (string) $report['cakupan_label'])
             . '<section class="meta">'
             . '<div><strong>Dibuat oleh:</strong> ' . PrintLayout::e($report['dibuat_oleh']) . '</div>'
             . '<div><strong>Waktu pembuatan:</strong> ' . PrintLayout::e($report['dibuat_pada']) . '</div>'
@@ -264,10 +267,16 @@ final class IzinPrintRenderer
             . '</div>';
     }
 
+    /**
+     * Penutup lembar terakhir: keterangan sumber dan kolom tanda tangan
+     * Bagian Pendidikan dengan nama kosong (keputusan AS). Tingginya
+     * dianggarkan pada `PrintLayout::pecahLembarKolom()`.
+     */
     private static function tandaTangan(): string
     {
         return '<footer class="tanda-tangan">'
             . '<div>Dicetak dari Sistem Perizinan Santri ' . PrintLayout::e(self::IDENTITAS) . '.</div>'
+            . PrintLayout::tandaTangan('Bagian Pendidikan')
             . '</footer>';
     }
 }

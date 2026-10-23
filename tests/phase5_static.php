@@ -29,7 +29,9 @@ $assert(str_contains($repository, 'UNION ALL') && str_contains($repository, 'COU
 $assert(str_contains($repository, '$statement->execute($params)') && !preg_match('/\$_(?:GET|POST|REQUEST)/', $repository), 'Query laporan memakai parameter terikat dan repository tidak membaca input global');
 $assert(!preg_match('/\b(?:INSERT|UPDATE|DELETE|REPLACE)\b\s+(?:INTO|FROM|[a-z_])/i', preg_replace('/explainPage|updated_at/i', '', $repository)), 'Repository laporan tidak menulis atau menghapus data absensi');
 $assert(str_contains($filter, '$this->teacherId !== null && $this->teacherId !== $guruId') && str_contains($filter, '$guruId'), 'Filter guru dipaksa ke guru dari token/session pada sisi server');
-$assert(str_contains($service, "in_array('admin'") && str_contains($service, "(int) \$meeting['id_guru'] !== \$guruId"), 'Detail pertemuan memeriksa role dan kepemilikan di server');
+// Redesain web Tahap 4 (keputusan H): pembaca seluruh jadwal = admin atau
+// penanda web Bagian Pendidikan, lewat satu pemeriksaan ReportFilter::bacaSemua.
+$assert((str_contains($service, "in_array('admin'") || str_contains($service, 'ReportFilter::bacaSemua($user)')) && str_contains($service, "(int) \$meeting['id_guru'] !== \$guruId"), 'Detail pertemuan memeriksa role dan kepemilikan di server');
 
 foreach (['date_from', 'date_to', 'academic_year_id', 'teacher_id', 'class_id', 'schedule_id', 'status'] as $required) {
     $assert(str_contains($admin, 'name="' . $required . '"'), 'UI admin menyediakan filter ' . $required);

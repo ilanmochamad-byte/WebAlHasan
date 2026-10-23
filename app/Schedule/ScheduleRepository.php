@@ -285,6 +285,8 @@ final class ScheduleRepository
         if ($state === 'active') { $parts[] = 'j.is_active = 1'; $parts[] = 'j.archived_at IS NULL'; }
         elseif ($state === 'inactive') { $parts[] = 'j.is_active = 0'; $parts[] = 'j.archived_at IS NULL'; }
         elseif ($state === 'archived') { $parts[] = 'j.archived_at IS NOT NULL'; }
+        // Tampilan mingguan (redesain Tahap 4, J-1): aktif dan nonaktif, tanpa arsip.
+        elseif ($state === 'all_unarchived') { $parts[] = 'j.archived_at IS NULL'; }
         return [$parts ? 'WHERE ' . implode(' AND ', $parts) : '', $params];
     }
 

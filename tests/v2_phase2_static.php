@@ -267,7 +267,11 @@ $assert(
 );
 $assert(
     substr_count($source('portal/izin_buat.php'), 'idempotency_key') >= 1
-    && substr_count($source('portal/izin_detail.php'), 'portal_idempotency_key()') >= 4,
+    // Redesain Tahap 4: keempat formulir detail memakai satu pembuat isian
+    // tersembunyi ($hidden) yang menyisipkan kunci idempotensi baru.
+    && (substr_count($source('portal/izin_detail.php'), 'portal_idempotency_key()') >= 4
+        || (str_contains($source('portal/izin_detail.php'), "name=\"idempotency_key\" value=\"' . portal_e(portal_idempotency_key())")
+            && substr_count($source('portal/izin_detail.php'), '<?= $hidden(') >= 4)),
     'Setiap formulir mutasi membawa kunci idempotensi'
 );
 $assert(

@@ -327,9 +327,13 @@ $absensiSafari = $periksaHtml(
 $assert($absensiSatu['lembar'] === 1, 'A22 Absensi 3 baris muat dalam satu lembar');
 $assert($absensiKosong['lembar'] === 1, 'A23 Absensi kosong tetap satu lembar bernomor');
 $assert($absensiBanyak['lembar'] > 1, 'A24 Absensi 400 baris terpecah menjadi ' . $absensiBanyak['lembar'] . ' lembar');
+// Redesain web Tahap 4 (keputusan AS): lembar terakhir kini memuat kolom
+// tanda tangan Bagian Pendidikan yang tingginya ikut dianggarkan. Lembar
+// lanjutan tetap paling banyak 13 baris (cadangan Safari), dan tanda tangan
+// tidak pernah berdiri sendirian: baris terakhir ikut pindah bersamanya.
 $assert(
-    $absensiSafari['lembar'] === 3,
-    'A24b Absensi produksi 36 baris tetap tiga lembar logis setelah cadangan Safari'
+    $absensiSafari['lembar'] === 4,
+    'A24b Absensi produksi 36 baris: tiga lembar data + lembar akhir bertanda tangan setelah cadangan Safari'
 );
 $bagianLembarSafari = explode('<section class="lembar">', $absensiSafari['html']);
 array_shift($bagianLembarSafari);
@@ -338,8 +342,10 @@ $jumlahBarisSafari = array_map(
     $bagianLembarSafari
 );
 $assert(
-    $jumlahBarisSafari === [10, 13, 13],
-    'A24c Paginator Safari membagi 36 baris menjadi 10/13/13, bukan 10/14/12 yang mendorong footer'
+    $jumlahBarisSafari === [10, 13, 12, 1]
+        && substr_count($absensiSafari['html'], 'class="ttd"') === 1
+        && str_contains((string) end($bagianLembarSafari), 'class="ttd"'),
+    'A24c Paginator Safari membagi 36 baris menjadi 10/13/12/1 (lanjutan tidak lebih dari 13 baris; tanda tangan hanya di lembar terakhir, bersama satu baris)'
         . ($jumlahBarisSafari === [] ? '' : ' (aktual ' . implode('/', $jumlahBarisSafari) . ')')
 );
 $assert(

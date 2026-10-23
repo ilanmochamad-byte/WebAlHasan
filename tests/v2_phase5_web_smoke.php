@@ -227,14 +227,14 @@ try {
         $r = $klien[$alias]->request('/portal/laporan.php?' . $rentang);
         $halamanPeran[$alias] = $r['body'];
         $assert($r['status'] === 200, 'WL-2a Halaman laporan terbuka untuk ' . $alias . ' [' . $r['status'] . ']');
-        $assert(str_contains($r['body'], 'Laporan Perizinan'), 'WL-2b Judul laporan tampil untuk ' . $alias);
+        $assert(stripos($r['body'], 'Laporan Perizinan') !== false, 'WL-2b Judul laporan tampil untuk ' . $alias);
         $assert(str_contains($r['body'], $label), 'WL-2c Label cakupan benar untuk ' . $alias);
         $assert(
-            str_contains($r['body'], 'Median durasi keputusan'),
+            str_contains($r['body'], 'Median durasi keputusan') || str_contains($r['body'], 'Median waktu putus'),
             'WL-2d Ringkasan median durasi tampil untuk ' . $alias
         );
         $assert(
-            str_contains($r['body'], 'Total pengajuan'),
+            str_contains($r['body'], 'Total pengajuan') || str_contains($r['body'], '<p class="ah-stat__label">Total</p>'),
             'WL-2e Ringkasan total tampil untuk ' . $alias
         );
         $assert(
@@ -244,9 +244,15 @@ try {
     }
 
     // Navigasi portal memuat tautan laporan untuk seluruh peran perizinan.
+    // Redesain web Tahap 4 (I-7, keputusan O): menu "Izin anak" orang tua
+    // bertab Aktif/Riwayat; tautan laporan ada di halaman Izin anak itu.
     foreach (array_keys($labelCakupan) as $alias) {
+        $halamanNav = $halamanPeran[$alias];
+        if (!str_contains($halamanNav, '/portal/laporan.php')) {
+            $halamanNav = $klien[$alias]->request('/portal/izin.php')['body'];
+        }
         $assert(
-            str_contains($halamanPeran[$alias], '/portal/laporan.php'),
+            str_contains($halamanNav, '/portal/laporan.php'),
             'WL-2g Navigasi ' . $alias . ' memuat tautan laporan'
         );
     }

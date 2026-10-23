@@ -87,9 +87,12 @@ final class PrintRenderer
             $barisSel,
             self::LEBAR_KOLOM,
             self::TINGGI_KEPALA_PERTAMA_MM,
-            self::TINGGI_KEPALA_LANJUTAN_MM
+            self::TINGGI_KEPALA_LANJUTAN_MM,
+            PrintLayout::TINGGI_TANDA_TANGAN_MM
         );
         $totalHalaman = count($lembar);
+        // Kode laporan: sidik filter yang dicetak (X-1), sama untuk filter sama.
+        $kode = strtoupper(substr(hash('sha256', (string) json_encode($report['filters'] ?? [])), 0, 10));
 
         $isi = '';
         foreach ($lembar as $nomor => $indeksBaris) {
@@ -99,10 +102,12 @@ final class PrintRenderer
                     ? self::kepalaLengkap($report, $reportType)
                     : self::kepalaLanjutan($report, $reportType, $halaman, $totalHalaman))
                 . self::tabel($barisSel, $indeksBaris)
+                // Keputusan AS: tanda tangan Bagian Pendidikan di lembar terakhir.
+                . ($halaman === $totalHalaman ? PrintLayout::tandaTangan('Bagian Pendidikan') : '')
                 . PrintLayout::footerHalaman(
                     $halaman,
                     $totalHalaman,
-                    self::IDENTITAS . ' — ' . $reportType
+                    self::IDENTITAS . ' — ' . $reportType . ' · Kode laporan ' . $kode
                 )
                 . '</section>';
         }
@@ -193,10 +198,7 @@ final class PrintRenderer
                 . PrintLayout::e($status[$nama] ?? 0) . '</strong></span>';
         }
 
-        return '<header class="identity">'
-            . '<h1>' . PrintLayout::e(self::IDENTITAS) . '</h1>'
-            . '<h2>' . PrintLayout::e($reportType) . '</h2>'
-            . '</header>'
+        return PrintLayout::kop($reportType)
             . '<section class="meta">'
             . '<div><strong>Dibuat:</strong> ' . PrintLayout::e($report['generated_at'] ?? '') . '</div>'
             . '<div><strong>Pembuat:</strong> ' . PrintLayout::e($report['created_by'] ?? '') . '</div>'
