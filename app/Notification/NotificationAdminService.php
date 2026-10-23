@@ -517,6 +517,13 @@ final class NotificationAdminService
         if ((string) $row['status'] !== 'Failed') {
             throw NotificationException::conflict('Hanya baris berstatus Failed yang dapat dicoba ulang.');
         }
+        // Keputusan AL: kanal Ditangguhkan tidak diantrekan ulang, walaupun
+        // sakelar lama di basis data masih menyala. Baris tetap Failed.
+        if (NotificationChannel::ditangguhkan((string) $row['kanal'])) {
+            throw NotificationException::conflict(
+                NotificationChannel::label((string) $row['kanal']) . ' ditangguhkan; pengiriman gagal tidak diantrekan ulang.'
+            );
+        }
 
         $pengaturan = $this->settings->current();
         $kanal = (string) $row['kanal'];
@@ -566,6 +573,13 @@ final class NotificationAdminService
         $this->requireAdmin($user);
         if (!in_array($kanal, NotificationChannel::EKSTERNAL, true)) {
             throw NotificationException::invalid('Hanya kanal push dan WhatsApp yang diproses worker.');
+        }
+        // Keputusan AL: putaran yang mengirim ditolak untuk kanal Ditangguhkan
+        // (panel dan API). Uji coba tanpa kirim tetap tersedia.
+        if (!$dryRun && NotificationChannel::ditangguhkan($kanal)) {
+            throw NotificationException::conflict(
+                NotificationChannel::label($kanal) . ' ditangguhkan; worker tidak dijalankan. Uji coba tanpa kirim tetap tersedia.'
+            );
         }
 
         return $this->dispatcher->run($kanal, 25, $dryRun);

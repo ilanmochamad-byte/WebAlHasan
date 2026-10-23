@@ -240,8 +240,11 @@ $assert(
     str_contains($pengajian, "?tab=jadwal") && str_contains($pengajian, "?tab=pertemuan"),
     'Satu menu Pengajian dengan tab Jadwal dan Pertemuan'
 );
+// Redesain web Tahap 4: tab Jadwal · Pertemuan · Kehadiran kini tab modul
+// dari peta menu (`Navigation::pengajian`), dirender kerangka bersama.
 $assert(
-    str_contains($pengajian, "'tabs' =>"),
+    str_contains($pengajian, "'tabs' =>")
+        || str_contains($source('app/Ui/Navigation.php'), "self::tab('Pertemuan', '/admin/admin_pengajian.php?tab=pertemuan'"),
     'Tab dirender lewat kerangka bersama'
 );
 $assert(

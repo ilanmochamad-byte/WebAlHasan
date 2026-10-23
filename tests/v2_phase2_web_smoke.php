@@ -350,7 +350,7 @@ try {
     $klienMurobi->login('web.m1.' . $lower, $sandi);
     $halamanDetail = '/portal/izin_detail.php?id=' . $pengajuanId . '&mode=murobi';
     $detail = $klienMurobi->request($halamanDetail);
-    $assert($detail['status'] === 200 && str_contains($detail['body'], 'Keputusan murobi'), 'WEB-14 Murobi yang ditugaskan melihat panel keputusan');
+    $assert($detail['status'] === 200 && (str_contains($detail['body'], 'Keputusan murobi') || (str_contains($detail['body'], 'id="aksi-putuskan"') && str_contains($detail['body'], 'name="hasil"'))), 'WEB-14 Murobi yang ditugaskan melihat panel keputusan');
     $antreanMurobi = $klienMurobi->request('/portal/izin_antrean.php?mode=murobi');
     $assert($antreanMurobi['status'] === 200 && str_contains($antreanMurobi['body'], '#' . $pengajuanId), 'WEB-15 Pengajuan muncul pada antrean murobi');
 
@@ -418,7 +418,7 @@ try {
     $created['izin'][] = (int) $pengajuanAdmin['id'];
     $detailAdmin = '/portal/izin_detail.php?id=' . (int) $pengajuanAdmin['id'] . '&mode=admin';
     $halamanAdmin = $klienAdmin->request($detailAdmin);
-    $assert($halamanAdmin['status'] === 200 && str_contains($halamanAdmin['body'], 'Keputusan Admin Pengganti'), 'WEB-22 Admin melihat panel keputusan Admin Pengganti');
+    $assert($halamanAdmin['status'] === 200 && (str_contains($halamanAdmin['body'], 'Keputusan Admin Pengganti') || (str_contains($halamanAdmin['body'], 'Putuskan sebagai admin pengganti') && str_contains($halamanAdmin['body'], 'name="alasan_penggantian"'))), 'WEB-22 Admin melihat panel keputusan Admin Pengganti');
     $formAdmin = [
         '_csrf' => $klienAdmin->csrf($detailAdmin),
         'aksi' => 'putuskan',

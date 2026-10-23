@@ -35,6 +35,24 @@ final class ReportFilter
      */
     public const DEFAULT_SCOPE_API = self::SCOPE_GABUNGAN;
 
+    /**
+     * Penanda akun web yang boleh membaca laporan SELURUH jadwal tanpa menjadi
+     * admin: Bagian Pendidikan (keputusan H, redesain website Tahap 4).
+     *
+     * Hanya dipasang `admin/_laporan_guard.php` setelah memeriksa penugasan
+     * Pendidikan aktif milik akun. Data akun dari basis data dan token API
+     * tidak memiliki kunci ini, sehingga cakupan REST API tidak berubah.
+     * Penanda ini hanya membuka BACAAN laporan; tidak ada jalur tulis jadwal,
+     * pertemuan, atau absensi yang memeriksanya.
+     */
+    public const BACA_SEMUA_JADWAL = '_laporan_baca_semua_jadwal';
+
+    /** Akun admin atau pembaca seluruh jadwal (lihat `BACA_SEMUA_JADWAL`). */
+    public static function bacaSemua(array $user): bool
+    {
+        return in_array('admin', $user['roles'] ?? [], true) || ($user[self::BACA_SEMUA_JADWAL] ?? false) === true;
+    }
+
     public function __construct(
         public readonly string $dateFrom,
         public readonly string $dateTo,
@@ -119,7 +137,7 @@ final class ReportFilter
 
     public function forUser(array $user): self
     {
-        if (in_array('admin', $user['roles'] ?? [], true)) {
+        if (self::bacaSemua($user)) {
             return $this;
         }
         $guruId = isset($user['guru_id']) ? (int) $user['guru_id'] : 0;

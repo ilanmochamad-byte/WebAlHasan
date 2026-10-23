@@ -1,0 +1,65 @@
+=== A. Lembar server ===
+[lulus] izin-0: 1 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] izin-1: 1 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] izin-3: 1 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] izin-5: 2 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] izin-8: 2 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] izin-12: 3 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] izin-20: 4 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] izin-40: 6 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] izin-panjang-6: 4 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] absensi-0: 1 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] absensi-3: 1 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] absensi-10: 2 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] absensi-20: 2 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] absensi-36: 4 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+[lulus] absensi-60: 6 lembar, tanda tangan sekali di lembar terakhir bersama baris data, nomor 1..n
+
+=== B. PDF Chromium (css, lanskap, potret) ===
+[lulus] izin-0 css: 1 halaman PDF = 1 lembar server
+[lulus] izin-0 lanskap: 1 halaman PDF = 1 lembar server
+[lulus] izin-0 potret: 1 halaman PDF = 1 lembar server
+[lulus] izin-1 css: 1 halaman PDF = 1 lembar server
+[lulus] izin-1 lanskap: 1 halaman PDF = 1 lembar server
+[lulus] izin-1 potret: 1 halaman PDF = 1 lembar server
+[lulus] izin-3 css: 1 halaman PDF = 1 lembar server
+[lulus] izin-3 lanskap: 1 halaman PDF = 1 lembar server
+[lulus] izin-3 potret: 1 halaman PDF = 1 lembar server
+[lulus] izin-5 css: 2 halaman PDF = 2 lembar server
+[lulus] izin-5 lanskap: 2 halaman PDF = 2 lembar server
+[lulus] izin-5 potret: 2 halaman PDF = 2 lembar server
+[lulus] izin-8 css: 2 halaman PDF = 2 lembar server
+[lulus] izin-8 lanskap: 2 halaman PDF = 2 lembar server
+[lulus] izin-8 potret: 2 halaman PDF = 2 lembar server
+[lulus] izin-12 css: 3 halaman PDF = 3 lembar server
+[lulus] izin-12 lanskap: 3 halaman PDF = 3 lembar server
+[lulus] izin-12 potret: 3 halaman PDF = 3 lembar server
+[lulus] izin-20 css: 4 halaman PDF = 4 lembar server
+[lulus] izin-20 lanskap: 4 halaman PDF = 4 lembar server
+[lulus] izin-20 potret: 4 halaman PDF = 4 lembar server
+[lulus] izin-40 css: 6 halaman PDF = 6 lembar server
+[lulus] izin-40 lanskap: 6 halaman PDF = 6 lembar server
+[lulus] izin-40 potret: 6 halaman PDF = 6 lembar server
+[lulus] izin-panjang-6 css: 4 halaman PDF = 4 lembar server
+[lulus] izin-panjang-6 lanskap: 4 halaman PDF = 4 lembar server
+[lulus] izin-panjang-6 potret: 4 halaman PDF = 4 lembar server
+[lulus] absensi-0 css: 1 halaman PDF = 1 lembar server
+[lulus] absensi-0 lanskap: 1 halaman PDF = 1 lembar server
+[lulus] absensi-0 potret: 1 halaman PDF = 1 lembar server
+[lulus] absensi-3 css: 1 halaman PDF = 1 lembar server
+[lulus] absensi-3 lanskap: 1 halaman PDF = 1 lembar server
+[lulus] absensi-3 potret: 1 halaman PDF = 1 lembar server
+[lulus] absensi-10 css: 2 halaman PDF = 2 lembar server
+[lulus] absensi-10 lanskap: 2 halaman PDF = 2 lembar server
+[lulus] absensi-10 potret: 2 halaman PDF = 2 lembar server
+[lulus] absensi-20 css: 2 halaman PDF = 2 lembar server
+[lulus] absensi-20 lanskap: 2 halaman PDF = 2 lembar server
+[lulus] absensi-20 potret: 2 halaman PDF = 2 lembar server
+[lulus] absensi-36 css: 4 halaman PDF = 4 lembar server
+[lulus] absensi-36 lanskap: 4 halaman PDF = 4 lembar server
+[lulus] absensi-36 potret: 4 halaman PDF = 4 lembar server
+[lulus] absensi-60 css: 6 halaman PDF = 6 lembar server
+[lulus] absensi-60 lanskap: 6 halaman PDF = 6 lembar server
+[lulus] absensi-60 potret: 6 halaman PDF = 6 lembar server
+
+Ringkasan: 60 lulus, 0 gagal

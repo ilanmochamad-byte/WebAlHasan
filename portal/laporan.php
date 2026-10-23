@@ -7,11 +7,18 @@ use App\Auth\Capabilities;
 use App\Izin\IzinException;
 use App\Izin\IzinRepository;
 use App\Report\IzinReportFilter;
+use App\Ui\Chart;
+use App\Ui\Periode;
 
 require_once __DIR__ . '/_ui.php';
 
 /**
- * Laporan perizinan V2 — halaman web berbasis cakupan.
+ * Laporan perizinan V2 — halaman web berbasis cakupan (redesain Tahap 4, I-6).
+ *
+ * Empat saringan utama (Periode, Status, Kelas, Kamar); sembilan lainnya di
+ * Filter lanjutan. Periode berupa pilihan cepat yang diterjemahkan menjadi
+ * tanggal SEBELUM masukan diteruskan ke layanan laporan, sehingga ringkasan,
+ * grafik, detail, cetak, dan CSV tetap memakai satu filter yang sama.
  *
  * Halaman ini TIDAK membangun query-nya sendiri. Seluruh pembacaan melewati
  * `izin_report_service()`, yang menghitung ulang cakupan dari akun yang sedang
@@ -20,280 +27,198 @@ require_once __DIR__ . '/_ui.php';
  */
 
 $requestedMode = portal_requested_mode($currentUser, $userCapabilities);
+$semesterAktif = izin_repository()->activeYear();
+[$masukan, $periode] = Periode::terapkan($_GET, $semesterAktif, 'bulan');
 
 try {
-    $laporan = izin_report_service()->report($currentUser, $_GET, $requestedMode);
-    $pilihan = izin_report_service()->options($currentUser, $_GET, $requestedMode);
+    $laporan = izin_report_service()->report($currentUser, $masukan, $requestedMode);
+    $pilihan = izin_report_service()->options($currentUser, $masukan, $requestedMode);
+    $grafik = izin_report_service()->charts($currentUser, $masukan, $requestedMode);
 } catch (ApiException | IzinException $exception) {
     http_response_code($exception->status());
-    portal_header('Laporan Perizinan', $userCapabilities, $requestedMode ?? '', $currentUser);
-    echo '<div class="alert alert-danger"><strong>Laporan tidak dapat ditampilkan.</strong><br>'
-        . portal_e($exception->getMessage()) . '</div>';
-    echo '<a class="btn btn-outline-secondary" href="' . portal_e(app_url('/portal/laporan.php')) . '">Bersihkan filter</a>';
+    portal_header('Laporan perizinan', $userCapabilities, $requestedMode ?? '', $currentUser, ['active' => 'izin']);
+    ah_note('danger', 'Laporan tidak dapat ditampilkan. ' . $exception->getMessage(),
+        '<p class="mb-0 mt-2"><a href="' . portal_e(app_url('/portal/laporan.php')) . '">Bersihkan filter</a> lalu coba lagi.</p>');
     portal_footer();
     exit;
 }
 
 $scope = $laporan['cakupan'];
+$mode = (string) $scope['mode'];
 $filter = $laporan['filter'];
 $ringkasan = $laporan['ringkasan'];
 $durasi = $laporan['durasi'];
-$adminSaja = $scope['mode'] === Capabilities::ADMIN;
+$bolehPelaku = $mode === Capabilities::ADMIN || $mode === Capabilities::ORANG_TUA;
 
 /** Nilai filter aktif untuk atribut form, sudah dinormalkan server. */
 $nilai = static fn (string $key): string => $filter[$key] === null ? '' : (string) $filter[$key];
+$pilih = static fn (string $key, mixed $value): string => (string) $filter[$key] === (string) $value ? ' selected' : '';
 
 /** Tautan cetak/CSV memakai kriteria yang SAMA (tanpa page/per_page). */
 $tautanEkspor = static fn (string $file): string => app_url('/portal/' . $file)
-    . '?' . $laporan['query'] . '&mode=' . rawurlencode((string) $scope['mode']);
+    . '?' . $laporan['query'] . '&mode=' . rawurlencode($mode);
 
-portal_header('Laporan Perizinan', $userCapabilities, (string) $scope['mode'], $currentUser, ['show_heading' => false]);
+portal_header('Laporan perizinan', $userCapabilities, $mode, $currentUser, [
+    'active' => $mode === Capabilities::ORANG_TUA ? 'izin_anak' : ($mode === Capabilities::MUROBI ? 'antrean' : 'izin'),
+    'description' => $laporan['cakupan_label'] . ' · ' . ah_rentang((string) $filter['date_from'], (string) $filter['date_to'], false),
+    'actions' => '<a class="btn btn-outline-primary" href="' . portal_e($tautanEkspor('laporan_csv.php')) . '"><i class="fas fa-file-csv" aria-hidden="true"></i> Unduh CSV</a>'
+        . '<a class="btn btn-primary" target="_blank" rel="noopener" href="' . portal_e($tautanEkspor('laporan_cetak.php')) . '"><i class="fas fa-print" aria-hidden="true"></i> Cetak / PDF</a>',
+    'breadcrumbs' => [
+        ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
+        ['label' => 'Perizinan', 'url' => app_url('/portal/izin_ringkasan.php')],
+        ['label' => 'Laporan'],
+    ],
+]);
+portal_flash_render();
+portal_mode_switcher($userCapabilities, $mode, app_url('/portal/laporan.php'));
+
+$lanjutan = 0;
+foreach (['santri_id', 'pengurus_id', 'murobi_guru_id', 'durasi_min_jam', 'durasi_maks_jam', 'kanal', 'sumber', 'tahun_ajaran_id', 'q'] as $kunci) {
+    $lanjutan += (int) ($nilai($kunci) !== '');
+}
+$lanjutan += (int) ($filter['basis_tanggal'] !== 'izin') + (int) ($periode === 'rentang');
+$utama = (int) ($filter['status'] !== null) + (int) ($filter['kelas_id'] !== null) + (int) ($filter['kamar_id'] !== null) + (int) ($periode !== 'bulan');
+ah_filter_open($utama + $lanjutan, ['mode' => $mode]);
 ?>
-<div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4">
-    <div>
-        <h1 class="h3 mb-1">Laporan Perizinan</h1>
-        <p class="text-muted mb-0"><?= portal_e($laporan['cakupan_label']) ?></p>
-    </div>
-    <div class="d-flex gap-2">
-        <a class="btn btn-outline-secondary" target="_blank" rel="noopener"
-           href="<?= portal_e($tautanEkspor('laporan_cetak.php')) ?>">Cetak / PDF</a>
-        <a class="btn btn-success" href="<?= portal_e($tautanEkspor('laporan_csv.php')) ?>">Unduh CSV</a>
-    </div>
-</div>
-
-<?php portal_flash_render(); ?>
-<?php portal_mode_switcher($userCapabilities, (string) $scope['mode'], app_url('/portal/laporan.php')); ?>
-
-<form method="get" class="card border-0 shadow-sm mb-4"><div class="card-body row g-3">
-    <input type="hidden" name="mode" value="<?= portal_e($scope['mode']) ?>">
-
-    <div class="col-md-2">
-        <label class="form-label" for="basis_tanggal">Basis tanggal</label>
-        <select class="form-select" id="basis_tanggal" name="basis_tanggal">
-            <?php foreach (IzinReportFilter::BASIS_TANGGAL as $basis): ?>
-                <option value="<?= portal_e($basis) ?>" <?= $filter['basis_tanggal'] === $basis ? 'selected' : '' ?>>
-                    <?= portal_e(match ($basis) {
-                        'pengajuan' => 'Tanggal pengajuan',
-                        'keputusan' => 'Tanggal keputusan',
-                        default => 'Rentang izin',
-                    }) ?>
-                </option>
+    <div><label class="form-label" for="periode">Periode</label>
+        <select class="form-select" id="periode" name="periode">
+            <?php foreach (Periode::PILIHAN as $kode => $label): ?>
+                <option value="<?= portal_e($kode) ?>"<?= $periode === $kode ? ' selected' : '' ?>><?= portal_e($label) ?></option>
             <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <label class="form-label" for="date_from">Dari tanggal</label>
-        <input class="form-control" type="date" id="date_from" name="date_from" value="<?= portal_e($nilai('date_from')) ?>">
-    </div>
-    <div class="col-md-2">
-        <label class="form-label" for="date_to">Sampai tanggal</label>
-        <input class="form-control" type="date" id="date_to" name="date_to" value="<?= portal_e($nilai('date_to')) ?>">
-    </div>
-    <div class="col-md-2">
-        <label class="form-label" for="status">Status</label>
-        <select class="form-select" id="status" name="status">
-            <option value="">Semua status</option>
+        </select></div>
+    <div><label class="form-label" for="status">Status</label>
+        <select class="form-select" id="status" name="status"><option value="">Semua status</option>
             <?php foreach (IzinRepository::STATUSES as $status): ?>
-                <option value="<?= portal_e($status) ?>" <?= $filter['status'] === $status ? 'selected' : '' ?>><?= portal_e($status) ?></option>
+                <option value="<?= portal_e($status) ?>"<?= $pilih('status', $status) ?>><?= portal_e($status === 'Perlu Penetapan Admin' ? 'Perlu penetapan' : $status) ?></option>
             <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <label class="form-label" for="santri_id">Santri</label>
-        <select class="form-select" id="santri_id" name="santri_id">
-            <option value="">Semua santri</option>
-            <?php foreach ($pilihan['santri'] as $item): ?>
-                <option value="<?= (int) $item['id'] ?>" <?= (int) $filter['santri_id'] === (int) $item['id'] ? 'selected' : '' ?>>
-                    <?= portal_e($item['nama'] . ' (' . $item['nis'] . ')') ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <label class="form-label" for="tahun_ajaran_id">Tahun ajaran</label>
-        <select class="form-select" id="tahun_ajaran_id" name="tahun_ajaran_id">
-            <option value="">Semua tahun ajaran</option>
-            <?php foreach ($pilihan['tahun_ajaran'] as $item): ?>
-                <option value="<?= (int) $item['id'] ?>" <?= (int) $filter['tahun_ajaran_id'] === (int) $item['id'] ? 'selected' : '' ?>>
-                    <?= portal_e($item['tahun'] . ' - ' . $item['semester']) ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-
-    <?php // Filter pengurus dan murobi hanya berguna bagi cakupan yang benar-benar
-          // dapat melihat lebih dari satu. Server tetap menolak nilai di luar
-          // cakupan dengan 403 walau kolom ini dipalsukan. ?>
-    <?php if ($adminSaja || $scope['mode'] === Capabilities::ORANG_TUA): ?>
-        <div class="col-md-2">
-            <label class="form-label" for="pengurus_id">Pengurus</label>
-            <select class="form-select" id="pengurus_id" name="pengurus_id">
-                <option value="">Semua pengurus</option>
-                <?php foreach ($pilihan['pengurus'] as $item): ?>
-                    <option value="<?= (int) $item['id'] ?>" <?= (int) $filter['pengurus_id'] === (int) $item['id'] ? 'selected' : '' ?>>
-                        <?= portal_e($item['nama']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <label class="form-label" for="murobi_guru_id">Murobi</label>
-            <select class="form-select" id="murobi_guru_id" name="murobi_guru_id">
-                <option value="">Semua murobi</option>
-                <?php foreach ($pilihan['murobi'] as $item): ?>
-                    <option value="<?= (int) $item['id'] ?>" <?= (int) $filter['murobi_guru_id'] === (int) $item['id'] ? 'selected' : '' ?>>
-                        <?= portal_e($item['nama']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-    <?php endif; ?>
-
-    <div class="col-md-2">
-        <label class="form-label" for="kamar_id">Kamar</label>
-        <select class="form-select" id="kamar_id" name="kamar_id">
-            <option value="">Semua kamar</option>
-            <?php foreach ($pilihan['kamar'] as $item): ?>
-                <option value="<?= (int) $item['id'] ?>" <?= (int) $filter['kamar_id'] === (int) $item['id'] ? 'selected' : '' ?>>
-                    <?= portal_e($item['nama']) ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <label class="form-label" for="kelas_id">Kelas</label>
-        <select class="form-select" id="kelas_id" name="kelas_id">
-            <option value="">Semua kelas</option>
+        </select></div>
+    <div><label class="form-label" for="kelas_id">Kelas</label>
+        <select class="form-select" id="kelas_id" name="kelas_id"><option value="">Semua kelas</option>
             <?php foreach ($pilihan['kelas'] as $item): ?>
-                <option value="<?= (int) $item['id'] ?>" <?= (int) $filter['kelas_id'] === (int) $item['id'] ? 'selected' : '' ?>>
-                    <?= portal_e($item['nama'] . ' (' . $item['jenjang'] . ')') ?>
-                </option>
+                <option value="<?= (int) $item['id'] ?>"<?= $pilih('kelas_id', $item['id']) ?>><?= portal_e($item['nama'] . ' (' . $item['jenjang'] . ')') ?></option>
             <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <label class="form-label" for="durasi_min_jam">Durasi min. (jam)</label>
-        <input class="form-control" type="number" min="0" id="durasi_min_jam" name="durasi_min_jam" value="<?= portal_e($nilai('durasi_min_jam')) ?>">
-    </div>
-    <div class="col-md-2">
-        <label class="form-label" for="durasi_maks_jam">Durasi maks. (jam)</label>
-        <input class="form-control" type="number" min="0" id="durasi_maks_jam" name="durasi_maks_jam" value="<?= portal_e($nilai('durasi_maks_jam')) ?>">
-    </div>
-    <div class="col-md-2">
-        <label class="form-label" for="kanal">Kanal notifikasi</label>
-        <select class="form-select" id="kanal" name="kanal">
-            <option value="">Semua kanal</option>
-            <?php foreach (IzinReportFilter::KANAL as $kanal): ?>
-                <option value="<?= portal_e($kanal) ?>" <?= $filter['kanal'] === $kanal ? 'selected' : '' ?>><?= portal_e($kanal) ?></option>
+        </select></div>
+    <div><label class="form-label" for="kamar_id">Kamar</label>
+        <select class="form-select" id="kamar_id" name="kamar_id"><option value="">Semua kamar</option>
+            <?php foreach ($pilihan['kamar'] as $item): ?>
+                <option value="<?= (int) $item['id'] ?>"<?= $pilih('kamar_id', $item['id']) ?>><?= portal_e($item['nama']) ?></option>
             <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <label class="form-label" for="sumber">Sumber data</label>
-        <select class="form-select" id="sumber" name="sumber">
-            <option value="">Semua sumber</option>
-            <option value="legacy" <?= $filter['sumber'] === 'legacy' ? 'selected' : '' ?>>Data warisan</option>
-            <option value="v2" <?= $filter['sumber'] === 'v2' ? 'selected' : '' ?>>V2</option>
-        </select>
-    </div>
-    <div class="col-md-3">
-        <label class="form-label" for="q">Pencarian</label>
-        <input class="form-control" id="q" name="q" value="<?= portal_e($nilai('q')) ?>" placeholder="Nama santri, NIS, atau alasan">
-    </div>
-    <div class="col-md-3 d-flex align-items-end gap-2">
-        <button class="btn btn-success">Terapkan filter</button>
-        <a class="btn btn-outline-secondary" href="<?= portal_e(app_url('/portal/laporan.php') . '?mode=' . rawurlencode((string) $scope['mode'])) ?>">Bersihkan</a>
-    </div>
-</div></form>
-
-<?php // Ringkasan dan detail di bawah berasal dari SATU filter yang sama.
-      // `kriteria` adalah sidik jari filter tersebut; ia juga tercetak pada
-      // halaman cetak dan dipakai pengujian untuk membuktikan konsistensi. ?>
-<div class="row g-3 mb-4">
-    <div class="col-6 col-lg-2">
-        <div class="card border-0 shadow-sm h-100"><div class="card-body">
-            <div class="text-muted small">Total pengajuan</div>
-            <div class="h4 mb-0"><?= (int) $ringkasan['total'] ?></div>
-        </div></div>
-    </div>
-    <?php foreach ($ringkasan['per_status'] as $status => $jumlah): ?>
-        <div class="col-6 col-lg-2">
-            <div class="card border-0 shadow-sm h-100"><div class="card-body">
-                <div class="text-muted small"><?= portal_e($status) ?></div>
-                <div class="h4 mb-0"><?= (int) $jumlah ?></div>
-            </div></div>
+        </select></div>
+    <details class="ah-filter__more"<?= $lanjutan > 0 ? ' open' : '' ?>>
+        <summary>Filter lanjutan<?= $lanjutan > 0 ? ' (' . $lanjutan . ')' : '' ?></summary>
+        <div class="ah-filter__more-body">
+            <div><label class="form-label" for="date_from">Dari tanggal</label>
+                <input class="form-control" type="date" id="date_from" name="date_from" value="<?= portal_e($nilai('date_from')) ?>" aria-describedby="rentang-bantu"></div>
+            <div><label class="form-label" for="date_to">Sampai tanggal</label>
+                <input class="form-control" type="date" id="date_to" name="date_to" value="<?= portal_e($nilai('date_to')) ?>" aria-describedby="rentang-bantu"></div>
+            <p class="small text-muted mb-0 ah-filter__note" id="rentang-bantu">Tanggal dipakai bila Periode = Rentang sendiri.</p>
+            <div><label class="form-label" for="basis_tanggal">Basis tanggal</label>
+                <select class="form-select" id="basis_tanggal" name="basis_tanggal">
+                    <?php foreach (IzinReportFilter::BASIS_TANGGAL as $basis): ?>
+                        <option value="<?= portal_e($basis) ?>"<?= $pilih('basis_tanggal', $basis) ?>><?= portal_e(match ($basis) { 'pengajuan' => 'Tanggal pengajuan', 'keputusan' => 'Tanggal keputusan', default => 'Rentang izin' }) ?></option>
+                    <?php endforeach; ?>
+                </select></div>
+            <div><label class="form-label" for="santri_id">Santri</label>
+                <select class="form-select" id="santri_id" name="santri_id"><option value="">Semua santri</option>
+                    <?php foreach ($pilihan['santri'] as $item): ?>
+                        <option value="<?= (int) $item['id'] ?>"<?= $pilih('santri_id', $item['id']) ?>><?= portal_e($item['nama'] . ' (' . $item['nis'] . ')') ?></option>
+                    <?php endforeach; ?>
+                </select></div>
+            <?php // Filter pengurus dan murobi hanya berguna bagi cakupan yang dapat melihat
+                  // lebih dari satu. Server tetap menolak nilai di luar cakupan dengan 403. ?>
+            <?php if ($bolehPelaku): ?>
+                <div><label class="form-label" for="pengurus_id">Pengurus</label>
+                    <select class="form-select" id="pengurus_id" name="pengurus_id"><option value="">Semua pengurus</option>
+                        <?php foreach ($pilihan['pengurus'] as $item): ?>
+                            <option value="<?= (int) $item['id'] ?>"<?= $pilih('pengurus_id', $item['id']) ?>><?= portal_e($item['nama']) ?></option>
+                        <?php endforeach; ?>
+                    </select></div>
+                <div><label class="form-label" for="murobi_guru_id">Murobi</label>
+                    <select class="form-select" id="murobi_guru_id" name="murobi_guru_id"><option value="">Semua murobi</option>
+                        <?php foreach ($pilihan['murobi'] as $item): ?>
+                            <option value="<?= (int) $item['id'] ?>"<?= $pilih('murobi_guru_id', $item['id']) ?>><?= portal_e($item['nama']) ?></option>
+                        <?php endforeach; ?>
+                    </select></div>
+            <?php endif; ?>
+            <div><label class="form-label" for="durasi_min_jam">Durasi putus min. (jam)</label>
+                <input class="form-control" type="number" min="0" id="durasi_min_jam" name="durasi_min_jam" value="<?= portal_e($nilai('durasi_min_jam')) ?>"></div>
+            <div><label class="form-label" for="durasi_maks_jam">Durasi putus maks. (jam)</label>
+                <input class="form-control" type="number" min="0" id="durasi_maks_jam" name="durasi_maks_jam" value="<?= portal_e($nilai('durasi_maks_jam')) ?>"></div>
+            <div><label class="form-label" for="kanal">Kanal notifikasi</label>
+                <select class="form-select" id="kanal" name="kanal"><option value="">Semua kanal</option>
+                    <?php foreach (IzinReportFilter::KANAL as $kanal): ?>
+                        <option value="<?= portal_e($kanal) ?>"<?= $pilih('kanal', $kanal) ?>><?= portal_e($kanal) ?></option>
+                    <?php endforeach; ?>
+                </select></div>
+            <div><label class="form-label" for="sumber">Asal data</label>
+                <select class="form-select" id="sumber" name="sumber"><option value="">Semua</option>
+                    <option value="v2"<?= $pilih('sumber', 'v2') ?>>Sistem baru</option>
+                    <option value="legacy"<?= $pilih('sumber', 'legacy') ?>>Arsip sistem lama</option>
+                </select></div>
+            <div><label class="form-label" for="tahun_ajaran_id">Tahun ajaran</label>
+                <select class="form-select" id="tahun_ajaran_id" name="tahun_ajaran_id"><option value="">Semua tahun ajaran</option>
+                    <?php foreach ($pilihan['tahun_ajaran'] as $item): ?>
+                        <option value="<?= (int) $item['id'] ?>"<?= $pilih('tahun_ajaran_id', $item['id']) ?>><?= portal_e($item['tahun'] . ' ' . $item['semester']) ?></option>
+                    <?php endforeach; ?>
+                </select></div>
+            <div class="ah-filter__wide"><label class="form-label" for="q">Cari</label>
+                <input class="form-control" type="search" id="q" name="q" maxlength="100" value="<?= portal_e($nilai('q')) ?>" placeholder="Nama santri, NIS, atau alasan"></div>
         </div>
-    <?php endforeach; ?>
+    </details>
+<?php ah_filter_close(['mode' => $mode]); ?>
+
+<?= ah_stats([
+    ['label' => 'Total', 'value' => (string) (int) $ringkasan['total'], 'hint' => Periode::label($periode)],
+    ['label' => 'Disetujui', 'value' => (string) (int) $ringkasan['per_status']['Disetujui']],
+    ['label' => 'Ditolak', 'value' => (string) (int) $ringkasan['per_status']['Ditolak']],
+    ['label' => 'Median waktu putus', 'value' => (string) $durasi['median_label'], 'hint' => 'dari ' . (int) $durasi['jumlah'] . ' keputusan'],
+    ['label' => 'Terlama', 'value' => (string) $durasi['maks_label']],
+], 'Ringkasan laporan perizinan') ?>
+
+<?php
+$pekan = [];
+foreach ($grafik['per_pekan'] as $senin => $jumlah) {
+    $pekan['Pekan ' . ($senin !== '' ? ah_tanggal($senin, false, false) : '—')] = $jumlah;
+}
+?>
+<div class="ah-split ah-split--even">
+    <section class="ah-card"><div class="ah-card__body"><?= Chart::bar('Pengajuan per pekan', $pekan, 'Tidak ada pengajuan pada periode ini.') ?></div></section>
+    <section class="ah-card"><div class="ah-card__body"><?= Chart::bar('Pengajuan per kelas', $grafik['per_kelas'], 'Tidak ada pengajuan pada periode ini.') ?></div></section>
 </div>
 
-<div class="row g-3 mb-4">
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100"><div class="card-body">
-            <div class="text-muted small">Median durasi keputusan</div>
-            <div class="h5 mb-1"><?= portal_e($durasi['median_label']) ?></div>
-            <div class="text-muted small">Dihitung dari <?= (int) $durasi['jumlah'] ?> keputusan yang memiliki waktu pengajuan dan waktu keputusan.</div>
-        </div></div>
-    </div>
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100"><div class="card-body">
-            <div class="text-muted small">Durasi tercepat / terlama</div>
-            <div class="h6 mb-1"><?= portal_e($durasi['min_label']) ?> &middot; <?= portal_e($durasi['maks_label']) ?></div>
-            <div class="text-muted small">Rata-rata: <?= portal_e($durasi['rata_label']) ?></div>
-        </div></div>
-    </div>
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100"><div class="card-body">
-            <div class="text-muted small">Data warisan dalam hasil</div>
-            <div class="h5 mb-1"><?= (int) $ringkasan['legacy'] ?></div>
-            <div class="text-muted small font-monospace">Kriteria: <?= portal_e(substr((string) $laporan['kriteria'], 0, 16)) ?></div>
-        </div></div>
-    </div>
-</div>
-
-<div class="card border-0 shadow-sm">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
+<section class="ah-card" aria-labelledby="ah-laporan-rincian">
+    <div class="ah-card__head"><span id="ah-laporan-rincian">Rincian pengajuan</span>
+        <span class="text-muted small"><?= count($laporan['items']) ?> dari <?= (int) $ringkasan['total'] ?></span></div>
+    <?php if ($laporan['items'] === []): ?>
+        <div class="ah-card__body"><?= ah_empty('Tidak ada pengajuan sesuai saringan', 'Ubah periode atau saringan lain di atas.') ?></div>
+    <?php else: ?>
+        <div class="ah-table-wrap"><table class="ah-table ah-table--cards">
+            <caption class="ah-visually-hidden">Rincian pengajuan izin sesuai saringan laporan</caption>
             <thead><tr>
-                <th>ID</th><th>Santri</th><th>Kamar / Kelas</th><th>Rentang izin</th>
-                <th>Pengurus</th><th>Murobi</th><th>Status</th><th>Keputusan</th>
-                <th>Durasi</th><th>Kanal</th><th></th>
+                <th scope="col">#</th><th scope="col">Santri</th><th scope="col" class="ah-col-secondary">Kamar / kelas</th>
+                <th scope="col">Rentang</th><th scope="col">Murobi</th><th scope="col">Status</th><th scope="col" class="ah-col-secondary">Durasi putus</th>
             </tr></thead>
             <tbody>
             <?php foreach ($laporan['items'] as $row): ?>
                 <tr>
-                    <td>#<?= (int) $row['id'] ?><br><span class="badge text-bg-light border"><?= portal_e($row['sumber_label']) ?></span></td>
-                    <td><?= portal_e($row['nama_santri']) ?><br><span class="text-muted small"><?= portal_e($row['nis']) ?></span></td>
-                    <td class="small"><?= portal_e($row['kamar_kelas_label']) ?></td>
-                    <td class="small"><?= portal_e($row['tgl_izin']) ?><br>&rarr; <?= portal_e($row['tgl_kembali']) ?></td>
-                    <td class="small"><?= portal_e($row['pengurus_label']) ?></td>
-                    <td class="small"><?= portal_e($row['murobi_label']) ?></td>
-                    <td><?= portal_status_badge((string) $row['status']) ?></td>
-                    <td class="small">
-                        <?= portal_e($row['keputusan_label']) ?>
-                        <?php if (($row['keputusan_kapasitas'] ?? null) !== null): ?>
-                            <br><span class="text-muted"><?= portal_e($row['keputusan_kapasitas']) ?></span>
-                        <?php endif; ?>
-                    </td>
-                    <td class="small"><?= portal_e($row['durasi_label']) ?></td>
-                    <td class="small"><?= portal_e($row['kanal_notifikasi'] ?? '-') ?></td>
-                    <td class="text-end">
-                        <a class="btn btn-sm btn-outline-primary"
-                           href="<?= portal_e(app_url('/portal/izin_detail.php') . '?id=' . (int) $row['id'] . '&mode=' . rawurlencode((string) $scope['mode'])) ?>">Detail</a>
-                    </td>
+                    <td><a class="ah-row-link" href="<?= portal_e(portal_detail_url((int) $row['id'], $mode)) ?>">#<?= (int) $row['id'] ?></a>
+                        <?php if (!empty($row['is_legacy'])): ?><span class="ah-cell-sub">Arsip sistem lama</span><?php endif; ?></td>
+                    <td><?= portal_e($row['nama_santri']) ?><span class="ah-cell-sub"><?= portal_e($row['nis']) ?></span></td>
+                    <td class="ah-col-secondary"><?= portal_e($row['kamar_kelas_label']) ?></td>
+                    <td><?= portal_e(ah_rentang((string) $row['tgl_izin'], (string) $row['tgl_kembali'], false)) ?></td>
+                    <td><?= portal_e(portal_label((string) $row['murobi_label'])) ?></td>
+                    <td><?= portal_status((string) $row['status']) ?></td>
+                    <td class="ah-col-secondary"><?= portal_e($row['durasi_label']) ?></td>
                 </tr>
             <?php endforeach; ?>
-            <?php if ($laporan['items'] === []): ?>
-                <tr><td colspan="11" class="text-center text-muted py-5">
-                    Tidak ada pengajuan yang cocok dengan filter dalam cakupan Anda.
-                </td></tr>
-            <?php endif; ?>
             </tbody>
-        </table>
-    </div>
-</div>
+        </table></div>
+    <?php endif; ?>
+</section>
 <?php portal_pagination(
     (int) $laporan['pagination']['total'],
     (int) $laporan['pagination']['current_page'],
     (int) $laporan['pagination']['per_page']
 ); ?>
+<p class="small text-muted ah-no-print">Cetak dan CSV memakai saringan yang sama; ringkasan saringan dan kode laporan <span class="font-monospace"><?= portal_e(strtoupper(substr((string) $laporan['kriteria'], 0, 10))) ?></span> tercetak di dokumen.</p>
 <?php portal_footer(); ?>

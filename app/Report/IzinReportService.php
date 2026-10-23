@@ -96,6 +96,20 @@ final class IzinReportService
     }
 
     /**
+     * Data grafik laporan web (I-6): pengajuan per pekan dan per kelas.
+     *
+     * Terpisah dari `report()` agar bentuk respons REST API tidak berubah.
+     *
+     * @param array{id:int, roles:array<int,string>, guru_id:int|null} $user
+     * @param array<string, mixed> $input
+     * @return array{per_pekan:array<string,int>, per_kelas:array<string,int>}
+     */
+    public function charts(array $user, array $input, ?string $preferred = null): array
+    {
+        return $this->repository->chartData($this->filterFor($user, $input, $preferred));
+    }
+
+    /**
      * Dokumen lengkap (SELURUH baris sesuai filter) untuk cetak, PDF, dan CSV.
      *
      * Sengaja memakai `allRows()`, bukan `page()`: PRD Fase 5 mensyaratkan

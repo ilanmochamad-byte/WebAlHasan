@@ -724,6 +724,35 @@ final class IzinWorkflowService
     }
 
     /**
+     * Pratinjau tujuan pengajuan untuk satu santri (I-4, panel "Akan
+     * diteruskan ke"). Membaca kandidat routing yang SAMA dengan `create()`
+     * tanpa menulis apa pun. Santri di luar cakupan pengaju ditolak 403,
+     * persis seperti saat pengajuan dikirim.
+     *
+     * @param array{id:int, roles:array<int,string>, guru_id:int|null} $user
+     * @return array{santri:array<string,mixed>, murobi:array<int,string>, perlu_admin:bool}
+     */
+    public function routingPreview(array $user, int $santriId, ?string $preferred = null): array
+    {
+        $scope = $this->requireCreatorScope($user, $preferred);
+        $santri = $this->read->santriBasic($santriId);
+        if ($santri === null || (int) $santri['is_active'] !== 1 || $santri['archived_at'] !== null) {
+            throw IzinException::forbidden();
+        }
+        if ($scope['mode'] === Capabilities::PENGURUS
+            && $this->read->pembimbingAssignmentFor((int) $scope['pengurus_id'], $santriId, $this->today()) === null) {
+            throw IzinException::forbidden('Santri ini berada di luar cakupan penugasan pembimbing Anda.');
+        }
+        $kandidat = $this->router->candidates($santriId, $this->today());
+
+        return [
+            'santri' => ['id' => (int) $santri['id'], 'nis' => (string) $santri['nis'], 'nama' => (string) $santri['nama_santri']],
+            'murobi' => array_map(static fn (array $row): string => (string) $row['nama_guru'], $kandidat),
+            'perlu_admin' => count($kandidat) !== 1,
+        ];
+    }
+
+    /**
      * @return array<int, array<string, mixed>>
      */
     public function eligibleMurobi(): array

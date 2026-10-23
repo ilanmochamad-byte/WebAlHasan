@@ -7,8 +7,31 @@ use App\Izin\IzinException;
 
 require_once __DIR__ . '/_ui.php';
 
+/**
+ * Detail izin (redesain website Tahap 4, I-5; tampilan orang tua I-7).
+ *
+ * Kolom kanan hanya menampilkan tindakan yang boleh untuk akun dan status
+ * ini; setiap tombol membuka dialog berisi isian yang dibutuhkan saja
+ * (pengganti sampai empat formulir bertumpuk). Riwayat status dan koreksi
+ * digabung dalam satu linimasa. "Versi data" dan "Kandidat routing" hanya
+ * di ⋯ › Info teknis untuk admin.
+ *
+ * Tombol HANYA cermin dari hak yang dihitung server. Menampilkan atau
+ * menyembunyikannya tidak pernah menjadi kontrol akses: setiap POST diperiksa
+ * ulang oleh IzinWorkflowService (PRD 5.2), termasuk versi data.
+ */
+
 $requestedMode = portal_requested_mode($currentUser, $userCapabilities);
 $id = (int) ($_GET['id'] ?? 0);
+if ($id < 1) {
+    // Tanpa nomor pengajuan yang sah tidak ada detail yang dibuka (sebelumnya
+    // pengajuan pertama dalam cakupan ikut tampil).
+    http_response_code(404);
+    portal_header('Pengajuan tidak ditemukan', $userCapabilities, $userCapabilities[0] ?? '', $currentUser);
+    ah_note('warning', 'Nomor pengajuan tidak valid.', '<p class="mb-0 mt-2"><a href="' . portal_e(app_url('/portal/izin.php')) . '">Kembali ke daftar</a></p>');
+    portal_footer();
+    exit;
+}
 
 try {
     $detail = izin_service()->detail($currentUser, $id, $requestedMode);
@@ -17,307 +40,278 @@ try {
     // pengajuan milik pengurus, murobi, atau orang tua lain.
     http_response_code($exception->status());
     portal_header('Akses ditolak', $userCapabilities, $userCapabilities[0] ?? '', $currentUser);
-    echo '<div class="alert alert-danger"><strong>' . (int) $exception->status() . '</strong> — ' . portal_e($exception->getMessage()) . '</div>';
-    echo '<a class="btn btn-outline-secondary" href="' . portal_e(app_url('/portal/izin.php')) . '">Kembali ke daftar</a>';
+    ah_note('danger', (int) $exception->status() . ' — ' . $exception->getMessage(),
+        '<p class="mb-0 mt-2"><a href="' . portal_e(app_url('/portal/izin.php')) . '">Kembali ke daftar</a></p>');
     portal_footer();
     exit;
 }
 
 $scope = $detail['scope'];
+$mode = (string) $scope['mode'];
 $izin = $detail['pengajuan'];
 $keputusan = $detail['keputusan'];
-
-// Tombol di bawah HANYA cermin dari hak yang dihitung server. Menampilkan atau
-// menyembunyikannya tidak pernah menjadi kontrol akses: setiap POST diperiksa
-// ulang oleh IzinWorkflowService (PRD 5.2).
+$ortu = $mode === Capabilities::ORANG_TUA;
 $aksi = izin_workflow_service()->actionsFor($izin, $scope);
 $kandidatMurobi = ($aksi['tetapkan_murobi'] ?? false) ? izin_workflow_service()->eligibleMurobi() : [];
 $versi = (int) $izin['version'];
+$iz = (int) $izin['id'];
+$bucket = static fn (string $aksiForm): string => '_portal_' . $iz . '_' . $aksiForm;
+$adaGalat = static fn (string $aksiForm): bool => !empty($_SESSION[$bucket($aksiForm) . '_errors']) || !empty($_SESSION[$bucket($aksiForm)]);
+$infoTeknis = $mode === Capabilities::ADMIN && ($_GET['info'] ?? '') === 'teknis';
 
-portal_header('Detail Izin #' . (int) $izin['id'], $userCapabilities, $scope['mode'], $currentUser, ['show_heading' => false]);
+$hidden = static function (string $aksiForm) use ($mode, $iz, $versi): string {
+    return portal_csrf()
+        . '<input type="hidden" name="aksi" value="' . portal_e($aksiForm) . '">'
+        . '<input type="hidden" name="mode" value="' . portal_e($mode) . '">'
+        . '<input type="hidden" name="pengajuan_id" value="' . $iz . '">'
+        . '<input type="hidden" name="version" value="' . $versi . '">'
+        . '<input type="hidden" name="idempotency_key" value="' . portal_e(portal_idempotency_key()) . '">';
+};
+
+// Linimasa: riwayat status + koreksi, terlama di atas.
+$linimasa = [];
+foreach ($detail['riwayat'] as $entry) {
+    $isi = [];
+    if ($entry['status_sesudah'] !== null) {
+        $isi[] = ($entry['status_sebelum'] ?? '—') . ' → ' . $entry['status_sesudah'];
+    }
+    if ($entry['alasan'] !== null && $entry['alasan'] !== '') {
+        $isi[] = (string) $entry['alasan'];
+    }
+    $linimasa[] = ['t' => (string) $entry['created_at'], 'waktu' => ah_waktu((string) $entry['created_at']),
+        'pelaku' => portal_label((string) ($entry['pelaku_nama'] ?? ($izin['is_legacy'] ? 'Data warisan' : 'Sistem'))),
+        'judul' => portal_peristiwa_label((string) $entry['peristiwa']), 'isi' => implode("\n", $isi),
+        'tone' => (string) $entry['status_sesudah'] === 'Ditolak' ? 'danger' : ((string) $entry['status_sesudah'] === 'Perlu Penetapan Admin' ? 'warn' : '')];
+}
+foreach ($detail['koreksi'] as $koreksi) {
+    $linimasa[] = ['t' => (string) $koreksi['dikoreksi_pada'], 'waktu' => ah_waktu((string) $koreksi['dikoreksi_pada']),
+        'pelaku' => portal_label((string) ($koreksi['pelaku_nama'] ?? 'Data warisan')),
+        'judul' => 'Koreksi keputusan: ' . $koreksi['hasil_sebelum'] . ' → ' . $koreksi['hasil_sesudah'],
+        'isi' => 'Alasan koreksi: ' . $koreksi['alasan_koreksi'] . "\nAlasan keputusan sebelumnya: " . mb_strimwidth((string) $koreksi['alasan_sebelum'], 0, 200, '…'),
+        'tone' => 'warn'];
+}
+usort($linimasa, static fn (array $a, array $b): int => strcmp($a['t'], $b['t']));
+
+// Tindakan utama untuk bilah bawah HP.
+$utama = match (true) {
+    $aksi['putuskan_murobi'] => ['aksi-putuskan', 'Putuskan'],
+    $aksi['tetapkan_murobi'] && $izin['status'] === 'Perlu Penetapan Admin' => ['aksi-tetapkan', 'Tetapkan murobi'],
+    $aksi['putuskan_admin'] => ['aksi-putuskan', 'Putuskan sebagai admin pengganti'],
+    $aksi['batalkan'] => ['aksi-batalkan', 'Batalkan pengajuan'],
+    $aksi['koreksi'] => ['aksi-koreksi', 'Koreksi keputusan'],
+    default => null,
+};
+
+$tindakanHead = '<button class="btn btn-outline-secondary" type="button" data-ah-print hidden><i class="fas fa-print" aria-hidden="true"></i> Cetak</button>';
+if ($mode === Capabilities::ADMIN) {
+    $tindakanHead .= ah_menu([
+        ['label' => $infoTeknis ? 'Sembunyikan info teknis' : 'Info teknis', 'icon' => 'fa-circle-info', 'url' => portal_detail_url($iz, $mode, $infoTeknis ? [] : ['info' => 'teknis'])],
+    ], 'Tindakan lain', false);
+}
+
+portal_header('Izin #' . $iz . ' · ' . $izin['nama_santri'], $userCapabilities, $mode, $currentUser, [
+    'active' => $ortu ? 'izin_anak' : ($mode === Capabilities::MUROBI ? 'antrean' : 'izin'),
+    'description' => mb_strimwidth((string) $izin['alasan'], 0, 60, '…') . ' · ' . ah_rentang((string) $izin['tgl_izin'], (string) $izin['tgl_kembali']),
+    'actions' => $tindakanHead,
+    'breadcrumbs' => $ortu
+        ? [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => 'Izin anak', 'url' => app_url('/portal/izin.php')], ['label' => '#' . $iz]]
+        : [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => 'Perizinan', 'url' => app_url('/portal/izin_ringkasan.php')],
+            ['label' => 'Pengajuan', 'url' => app_url('/portal/izin.php') . '?mode=' . rawurlencode($mode)], ['label' => '#' . $iz]],
+]);
 portal_flash_render();
+
+if ($izin['is_legacy']) {
+    ah_note('warning', 'Arsip sistem lama. Sistem sebelumnya tidak mencatat pengurus pengaju, murobi tujuan, maupun pemberi keputusan, sehingga kolom pelaku sengaja dikosongkan.');
+}
 ?>
-<div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4">
-    <div>
-        <h1 class="h3 mb-1">Detail Izin #<?= (int) $izin['id'] ?></h1>
-        <p class="text-muted mb-0"><?= portal_e($scope['label']) ?></p>
-    </div>
-    <a class="btn btn-outline-secondary" href="<?= portal_e(app_url('/portal/izin.php') . '?mode=' . rawurlencode($scope['mode'])) ?>">Kembali ke daftar</a>
-</div>
-
-<?php if ($izin['is_legacy']): ?>
-    <div class="alert alert-warning">
-        <strong>Data warisan.</strong> Pengajuan ini berasal dari tabel <code>perizinan</code> V1 dengan ID
-        <?= (int) $izin['legacy_perizinan_id'] ?>. Sistem lama tidak mencatat pengurus pengaju, murobi tujuan,
-        maupun pemberi keputusan, sehingga kolom pelaku sengaja dikosongkan dan tidak diisi akun pengganti.
-    </div>
-<?php endif; ?>
-
-<div class="row g-3">
-    <div class="col-lg-7">
-        <div class="card border-0 shadow-sm mb-3">
-            <div class="card-header bg-white"><strong>Rincian pengajuan</strong></div>
-            <div class="card-body">
-                <dl class="row mb-0">
-                    <dt class="col-sm-4">Santri</dt><dd class="col-sm-8"><?= portal_e($izin['nama_santri']) ?> (<?= portal_e($izin['nis']) ?>)</dd>
-                    <dt class="col-sm-4">Tanggal izin</dt><dd class="col-sm-8"><?= portal_e($izin['tgl_izin']) ?></dd>
-                    <dt class="col-sm-4">Tanggal kembali</dt><dd class="col-sm-8"><?= portal_e($izin['tgl_kembali']) ?></dd>
-                    <dt class="col-sm-4">Alasan</dt><dd class="col-sm-8"><?= nl2br(portal_e($izin['alasan'])) ?></dd>
-                    <dt class="col-sm-4">Catatan pengurus</dt><dd class="col-sm-8"><?= $izin['catatan_pengurus'] === null ? '<span class="text-muted">—</span>' : nl2br(portal_e($izin['catatan_pengurus'])) ?></dd>
-                    <dt class="col-sm-4">Status</dt><dd class="col-sm-8"><?= portal_status_badge((string) $izin['status']) ?></dd>
-                    <dt class="col-sm-4">Pengurus pengaju</dt><dd class="col-sm-8"><?= portal_e($izin['pengurus_label']) ?></dd>
-                    <dt class="col-sm-4">Murobi tujuan</dt><dd class="col-sm-8"><?= portal_e($izin['murobi_label']) ?></dd>
-                    <dt class="col-sm-4">Tahun ajaran</dt><dd class="col-sm-8"><?= $izin['tahun_ajaran'] === null ? '<span class="text-muted">Data warisan</span>' : portal_e($izin['tahun_ajaran'] . ' ' . $izin['semester']) ?></dd>
-                    <dt class="col-sm-4">Diajukan pada</dt><dd class="col-sm-8"><?= portal_e($izin['diajukan_pada'] ?? 'Data warisan') ?></dd>
-                    <dt class="col-sm-4">Routing</dt><dd class="col-sm-8">
-                        <?= $izin['routing_catatan'] === null
-                            ? '<span class="text-muted">' . ($izin['is_legacy'] ? 'Data warisan' : 'Belum dijalankan') . '</span>'
-                            : portal_e($izin['routing_catatan']) ?>
-                        <?php if ($izin['routing_pada'] !== null): ?>
-                            <br><span class="text-muted small">Kandidat: <?= (int) $izin['routing_kandidat'] ?> — <?= portal_e($izin['routing_pada']) ?></span>
+<div class="ah-split">
+    <div class="ah-split__col">
+        <section class="ah-card" aria-labelledby="ah-rincian">
+            <div class="ah-card__head"><span id="ah-rincian">Rincian</span><?= portal_status((string) $izin['status']) ?></div>
+            <div class="ah-card__body">
+                <dl class="ah-info-list">
+                    <div><dt>Santri</dt><dd><?= portal_e($izin['nama_santri']) ?> · <?= portal_e($izin['nis']) ?></dd></div>
+                    <div><dt>Rentang izin</dt><dd><?= portal_e(ah_rentang((string) $izin['tgl_izin'], (string) $izin['tgl_kembali'])) ?></dd></div>
+                    <div><dt>Alasan</dt><dd><?= nl2br(portal_e($izin['alasan'])) ?></dd></div>
+                    <?php if ($izin['catatan_pengurus'] !== null && $izin['catatan_pengurus'] !== ''): ?>
+                        <div><dt>Catatan untuk murobi</dt><dd><?= nl2br(portal_e($izin['catatan_pengurus'])) ?></dd></div>
+                    <?php endif; ?>
+                    <div><dt>Pengurus</dt><dd><?= portal_e(portal_label((string) $izin['pengurus_label'])) ?></dd></div>
+                    <div><dt>Murobi</dt><dd><?= portal_e(portal_label((string) $izin['murobi_label'])) ?></dd></div>
+                    <?php if (!$ortu): ?>
+                        <div><dt>Semester</dt><dd><?= $izin['tahun_ajaran'] === null ? 'Arsip sistem lama' : portal_e($izin['tahun_ajaran'] . ' ' . $izin['semester']) ?></dd></div>
+                        <?php if ($izin['routing_catatan'] !== null): ?>
+                            <div><dt>Penerusan</dt><dd><?= portal_e($izin['routing_catatan']) ?></dd></div>
                         <?php endif; ?>
-                    </dd>
-                    <?php if ($izin['murobi_ditetapkan_pada'] !== null): ?>
-                        <dt class="col-sm-4">Penetapan murobi</dt><dd class="col-sm-8">
-                            <?= portal_e(($izin['penetap_nama'] ?? 'Admin') . ' — ' . $izin['murobi_ditetapkan_pada']) ?>
-                        </dd>
                     <?php endif; ?>
                     <?php if ($izin['dibatalkan_pada'] !== null): ?>
-                        <dt class="col-sm-4">Pembatalan</dt><dd class="col-sm-8">
-                            <?= portal_e(($izin['pembatal_nama'] ?? 'Data warisan') . ' — ' . $izin['dibatalkan_pada']) ?>
-                            <br><span class="text-muted small"><?= portal_e((string) $izin['alasan_pembatalan']) ?></span>
-                        </dd>
+                        <div><dt>Pembatalan</dt><dd><?= portal_e(portal_label((string) ($izin['pembatal_nama'] ?? 'Data warisan')) . ' · ' . ah_waktu((string) $izin['dibatalkan_pada'])) ?><span class="ah-cell-sub"><?= portal_e((string) $izin['alasan_pembatalan']) ?></span></dd></div>
                     <?php endif; ?>
-                    <dt class="col-sm-4">Versi data</dt><dd class="col-sm-8"><span class="text-muted small">v<?= $versi ?></span></dd>
                 </dl>
             </div>
-        </div>
+        </section>
 
-        <?php if ($aksi['putuskan_murobi'] || $aksi['putuskan_admin']): ?>
-            <div class="card border-0 shadow-sm mb-3">
-                <div class="card-header bg-white">
-                    <strong><?= $aksi['putuskan_murobi'] ? 'Keputusan murobi' : 'Keputusan Admin Pengganti' ?></strong>
-                </div>
-                <div class="card-body">
-                    <?php if (!$aksi['putuskan_murobi']): ?>
-                        <p class="text-muted small">
-                            Admin memutus sebagai <strong>Admin Pengganti</strong>. Alasan penggantian wajib diisi dan
-                            disimpan bersama keputusan serta audit.
-                        </p>
-                    <?php endif; ?>
-                    <form data-confirm="Simpan keputusan izin ini? Keputusan berlaku bagi pengajuan dan dicatat beserta pelaku serta alasan." method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
-                        <?= portal_csrf() ?>
-                        <input type="hidden" name="aksi" value="putuskan">
-                        <input type="hidden" name="mode" value="<?= portal_e($scope['mode']) ?>">
-                        <input type="hidden" name="pengajuan_id" value="<?= (int) $izin['id'] ?>">
-                        <input type="hidden" name="version" value="<?= $versi ?>">
-                        <input type="hidden" name="idempotency_key" value="<?= portal_e(portal_idempotency_key()) ?>">
-                        <div class="mb-3">
-                            <label class="form-label" for="hasil">Hasil</label>
-                            <select class="form-select" id="hasil" name="hasil" required>
-                                <option value="Disetujui" <?= ah_old('hasil',['hasil'=>'Disetujui'],'_portal_' . (int)$izin['id'] . '_putuskan') === 'Disetujui' ? 'selected' : '' ?>>Disetujui</option>
-                                <option value="Ditolak" <?= ah_old('hasil',['hasil'=>'Disetujui'],'_portal_' . (int)$izin['id'] . '_putuskan') === 'Ditolak' ? 'selected' : '' ?>>Ditolak</option>
-                            </select><?= ah_field_error('hasil','_portal_' . (int)$izin['id'] . '_putuskan') ?>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="alasan_keputusan">Alasan keputusan</label>
-                            <textarea class="form-control" id="alasan_keputusan" name="alasan" rows="2" required minlength="3" maxlength="2000"><?= portal_e(ah_old('alasan',null,'_portal_' . (int)$izin['id'] . '_putuskan')) ?></textarea><?= ah_field_error('alasan','_portal_' . (int)$izin['id'] . '_putuskan') ?>
-                        </div>
-                        <?php if (!$aksi['putuskan_murobi']): ?>
-                            <div class="mb-3">
-                                <label class="form-label" for="alasan_penggantian">Alasan penggantian murobi <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="alasan_penggantian" name="alasan_penggantian" rows="2" required minlength="3" maxlength="1000"
-                                          placeholder="Contoh: murobi berhalangan dan izin dibutuhkan hari ini"><?= portal_e(ah_old('alasan_penggantian',null,'_portal_' . (int)$izin['id'] . '_putuskan')) ?></textarea><?= ah_field_error('alasan_penggantian','_portal_' . (int)$izin['id'] . '_putuskan') ?>
-                            </div>
-                        <?php endif; ?>
-                        <button class="btn btn-success">Simpan keputusan</button>
-                    </form>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <?php if ($aksi['tetapkan_murobi']): ?>
-            <div class="card border-0 shadow-sm mb-3">
-                <div class="card-header bg-white"><strong>Tetapkan / ganti murobi</strong></div>
-                <div class="card-body">
-                    <?php if ($kandidatMurobi === []): ?>
-                        <p class="text-muted mb-0">
-                            Belum ada guru dengan penugasan murobi aktif pada tahun ajaran aktif.
-                            Buat penugasan murobi lebih dulu pada menu master data.
-                        </p>
-                    <?php else: ?>
-                        <form data-confirm="Ganti murobi tujuan? Antrean keputusan berpindah ke murobi yang dipilih; riwayat penetapan tetap tersimpan." method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
-                            <?= portal_csrf() ?>
-                            <input type="hidden" name="aksi" value="tetapkan">
-                            <input type="hidden" name="mode" value="<?= portal_e($scope['mode']) ?>">
-                            <input type="hidden" name="pengajuan_id" value="<?= (int) $izin['id'] ?>">
-                            <input type="hidden" name="version" value="<?= $versi ?>">
-                            <input type="hidden" name="idempotency_key" value="<?= portal_e(portal_idempotency_key()) ?>">
-                            <div class="mb-3">
-                                <label class="form-label" for="murobi_guru_id">Murobi tujuan</label>
-                                <select class="form-select" id="murobi_guru_id" name="murobi_guru_id" required>
-                                    <option value="">— Pilih murobi —</option>
-                                    <?php foreach ($kandidatMurobi as $kandidat): ?>
-                                        <option value="<?= (int) $kandidat['guru_id'] ?>" <?= (int) ah_old('murobi_guru_id', $izin, '_portal_' . (int)$izin['id'] . '_tetapkan') === (int) $kandidat['guru_id'] ? 'selected' : '' ?>>
-                                            <?= portal_e($kandidat['nama_guru']) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select><?= ah_field_error('murobi_guru_id','_portal_' . (int)$izin['id'] . '_tetapkan') ?>
-                                <div class="form-text">Hanya guru dengan penugasan murobi aktif yang dapat ditetapkan.</div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="alasan_penetapan">Alasan penetapan <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="alasan_penetapan" name="alasan" rows="2" required minlength="3" maxlength="1000"><?= portal_e(ah_old('alasan',null,'_portal_' . (int)$izin['id'] . '_tetapkan')) ?></textarea><?= ah_field_error('alasan','_portal_' . (int)$izin['id'] . '_tetapkan') ?>
-                            </div>
-                            <button class="btn btn-primary">Tetapkan murobi</button>
-                        </form>
-                    <?php endif; ?>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <?php if ($aksi['batalkan']): ?>
-            <div class="card border-0 shadow-sm mb-3">
-                <div class="card-header bg-white"><strong>Batalkan pengajuan</strong></div>
-                <div class="card-body">
-                    <p class="text-muted small">Pembatalan hanya mungkin sebelum ada keputusan dan tidak menghapus riwayat.</p>
-                    <form data-confirm="Batalkan pengajuan ini? Pengajuan berhenti diproses; riwayat pengajuan tetap tersimpan." method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
-                        <?= portal_csrf() ?>
-                        <input type="hidden" name="aksi" value="batalkan">
-                        <input type="hidden" name="mode" value="<?= portal_e($scope['mode']) ?>">
-                        <input type="hidden" name="pengajuan_id" value="<?= (int) $izin['id'] ?>">
-                        <input type="hidden" name="version" value="<?= $versi ?>">
-                        <input type="hidden" name="idempotency_key" value="<?= portal_e(portal_idempotency_key()) ?>">
-                        <div class="mb-3">
-                            <label class="form-label" for="alasan_pembatalan">Alasan pembatalan <span class="text-danger">*</span></label>
-                            <textarea class="form-control" id="alasan_pembatalan" name="alasan" rows="2" required minlength="3" maxlength="1000"><?= portal_e(ah_old('alasan',null,'_portal_' . (int)$izin['id'] . '_batalkan')) ?></textarea><?= ah_field_error('alasan','_portal_' . (int)$izin['id'] . '_batalkan') ?>
-                        </div>
-                        <button class="btn btn-outline-danger">Batalkan pengajuan</button>
-                    </form>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <?php if ($aksi['koreksi']): ?>
-            <div class="card border-0 shadow-sm mb-3">
-                <div class="card-header bg-white"><strong>Koreksi keputusan (admin)</strong></div>
-                <div class="card-body">
-                    <p class="text-muted small">
-                        Koreksi menyimpan nilai sebelum dan sesudah beserta alasannya sebagai peristiwa baru.
-                        Keputusan dan riwayat sebelumnya tidak dihapus.
-                    </p>
-                    <form data-confirm="Simpan koreksi keputusan? Status terkini berubah dan peristiwa koreksi dicatat; keputusan serta riwayat sebelumnya tidak dihapus." method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
-                        <?= portal_csrf() ?>
-                        <input type="hidden" name="aksi" value="koreksi">
-                        <input type="hidden" name="mode" value="<?= portal_e($scope['mode']) ?>">
-                        <input type="hidden" name="pengajuan_id" value="<?= (int) $izin['id'] ?>">
-                        <input type="hidden" name="version" value="<?= $versi ?>">
-                        <input type="hidden" name="idempotency_key" value="<?= portal_e(portal_idempotency_key()) ?>">
-                        <div class="mb-3">
-                            <label class="form-label" for="hasil_koreksi">Hasil setelah koreksi</label>
-                            <select class="form-select" id="hasil_koreksi" name="hasil" required>
-                                <option value="Disetujui" <?= ah_old('hasil',['hasil'=>$izin['status']],'_portal_' . (int)$izin['id'] . '_koreksi') === 'Disetujui' ? 'selected' : '' ?>>Disetujui</option>
-                                <option value="Ditolak" <?= ah_old('hasil',['hasil'=>$izin['status']],'_portal_' . (int)$izin['id'] . '_koreksi') === 'Ditolak' ? 'selected' : '' ?>>Ditolak</option>
-                            </select><?= ah_field_error('hasil','_portal_' . (int)$izin['id'] . '_koreksi') ?>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="alasan_hasil_koreksi">Alasan keputusan setelah koreksi</label>
-                            <textarea class="form-control" id="alasan_hasil_koreksi" name="alasan" rows="2" required minlength="3" maxlength="2000"><?= portal_e(ah_old('alasan',null,'_portal_' . (int)$izin['id'] . '_koreksi')) ?></textarea><?= ah_field_error('alasan','_portal_' . (int)$izin['id'] . '_koreksi') ?>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="alasan_koreksi">Alasan koreksi <span class="text-danger">*</span></label>
-                            <textarea class="form-control" id="alasan_koreksi" name="alasan_koreksi" rows="2" required minlength="3" maxlength="1000"><?= portal_e(ah_old('alasan_koreksi',null,'_portal_' . (int)$izin['id'] . '_koreksi')) ?></textarea><?= ah_field_error('alasan_koreksi','_portal_' . (int)$izin['id'] . '_koreksi') ?>
-                        </div>
-                        <button class="btn btn-warning">Simpan koreksi</button>
-                    </form>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <?php if ($scope['mode'] === Capabilities::ORANG_TUA): ?>
-            <div class="alert alert-secondary small">
-                Akun orang tua bersifat baca-saja: tidak tersedia tombol pengajuan, keputusan, pembatalan, atau koreksi.
-            </div>
-        <?php endif; ?>
-
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white"><strong>Keputusan</strong></div>
-            <div class="card-body">
+        <section class="ah-card" aria-labelledby="ah-keputusan">
+            <div class="ah-card__head"><span id="ah-keputusan">Keputusan</span><?= $keputusan === null ? '' : portal_status((string) $keputusan['hasil']) ?></div>
+            <div class="ah-card__body">
                 <?php if ($keputusan === null): ?>
-                    <p class="text-muted mb-0">
-                        <?= $izin['is_legacy']
-                            ? 'Data warisan: sistem lama hanya menyimpan status akhir tanpa alasan atau pemberi keputusan.'
-                            : 'Belum ada keputusan untuk pengajuan ini.' ?>
-                    </p>
+                    <p class="text-muted mb-0"><?= $izin['is_legacy']
+                        ? 'Arsip sistem lama hanya menyimpan status akhir tanpa alasan atau pemberi keputusan.'
+                        : ($izin['status'] === 'Dibatalkan' ? 'Pengajuan dibatalkan sebelum diputus.' : 'Belum ada keputusan. Murobi memutuskan setelah pengajuan diterimanya.') ?></p>
                 <?php else: ?>
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4">Hasil</dt><dd class="col-sm-8"><?= portal_e($keputusan['hasil']) ?></dd>
-                        <dt class="col-sm-4">Alasan keputusan</dt><dd class="col-sm-8"><?= nl2br(portal_e($keputusan['alasan'])) ?></dd>
-                        <dt class="col-sm-4">Kapasitas</dt><dd class="col-sm-8"><?= portal_e($keputusan['kapasitas']) ?></dd>
-                        <dt class="col-sm-4">Pemberi keputusan</dt><dd class="col-sm-8"><?= portal_e($keputusan['pemberi_keputusan'] ?? 'Data warisan') ?></dd>
-                        <dt class="col-sm-4">Waktu</dt><dd class="col-sm-8"><?= portal_e($keputusan['diputus_pada']) ?></dd>
-                        <?php if (($keputusan['kapasitas'] ?? '') === 'Admin Pengganti' && ($keputusan['alasan_penggantian'] ?? null) !== null): ?>
-                            <dt class="col-sm-4">Alasan penggantian</dt><dd class="col-sm-8"><?= nl2br(portal_e((string) $keputusan['alasan_penggantian'])) ?></dd>
+                    <dl class="ah-info-list">
+                        <div><dt>Diputus oleh</dt><dd><?= portal_e(portal_label((string) ($keputusan['pemberi_keputusan'] ?? 'Data warisan'))) ?><?= $ortu ? '' : ' · ' . portal_e($keputusan['kapasitas']) ?></dd></div>
+                        <div><dt>Waktu</dt><dd><?= portal_e(ah_waktu((string) $keputusan['diputus_pada'])) ?></dd></div>
+                        <div><dt>Alasan keputusan</dt><dd><?= nl2br(portal_e($keputusan['alasan'])) ?></dd></div>
+                        <?php if (!$ortu && ($keputusan['kapasitas'] ?? '') === 'Admin Pengganti' && ($keputusan['alasan_penggantian'] ?? null) !== null): ?>
+                            <div><dt>Alasan penggantian</dt><dd><?= nl2br(portal_e((string) $keputusan['alasan_penggantian'])) ?></dd></div>
                         <?php endif; ?>
                     </dl>
                 <?php endif; ?>
             </div>
-        </div>
+        </section>
 
-        <?php if ($detail['koreksi'] !== []): ?>
-            <div class="card border-0 shadow-sm mt-3">
-                <div class="card-header bg-white"><strong>Koreksi keputusan</strong></div>
-                <div class="table-responsive">
-                    <table class="table table-sm mb-0">
-                        <thead><tr><th>Waktu</th><th>Perubahan</th><th>Alasan koreksi</th><th>Pelaku</th></tr></thead>
-                        <tbody>
-                        <?php foreach ($detail['koreksi'] as $koreksi): ?>
-                            <tr>
-                                <td class="small"><?= portal_e($koreksi['dikoreksi_pada']) ?></td>
-                                <td class="small">
-                                    <?= portal_e($koreksi['hasil_sebelum'] . ' → ' . $koreksi['hasil_sesudah']) ?>
-                                    <br><span class="text-muted">Alasan sebelum: <?= portal_e(mb_strimwidth((string) $koreksi['alasan_sebelum'], 0, 80, '…')) ?></span>
-                                </td>
-                                <td class="small"><?= portal_e($koreksi['alasan_koreksi']) ?></td>
-                                <td class="small"><?= portal_e($koreksi['pelaku_nama'] ?? 'Data warisan') ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
+        <section class="ah-card" aria-labelledby="ah-riwayat">
+            <div class="ah-card__head"><span id="ah-riwayat">Riwayat</span></div>
+            <div class="ah-card__body"><?= ah_timeline(array_map(static fn (array $i): array => array_diff_key($i, ['t' => true]), $linimasa), 'Riwayat status dan koreksi') ?></div>
+        </section>
+    </div>
+
+    <div class="ah-split__col">
+        <?php if ($ortu): ?>
+            <section class="ah-card"><div class="ah-card__body">
+                <p class="mb-0 small text-muted">Halaman ini hanya-baca. Hubungi pengurus santri bila ada pertanyaan tentang izin ini.</p>
+            </div></section>
+        <?php else: ?>
+        <section class="ah-card ah-no-print" aria-labelledby="ah-tindakan">
+            <div class="ah-card__head"><span id="ah-tindakan">Tindakan</span></div>
+            <div class="ah-card__body">
+                <div class="ah-acts">
+                <?php if ($aksi['putuskan_murobi'] || $aksi['putuskan_admin']): $b = $bucket('putuskan'); ?>
+                    <?php ah_action_dialog_open('aksi-putuskan', $aksi['putuskan_murobi'] ? 'Putuskan' : 'Putuskan sebagai admin pengganti',
+                        'Putuskan izin #' . $iz, $aksi['putuskan_murobi'] ? 'primary' : 'outline-primary', $adaGalat('putuskan')); ?>
+                        <form method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
+                            <?= $hidden('putuskan') ?>
+                            <?php if (!$aksi['putuskan_murobi']): ?>
+                                <p class="small text-muted">Admin memutus sebagai <b>Admin Pengganti</b>. Alasan penggantian wajib dan disimpan bersama keputusan serta audit.</p>
+                            <?php endif; ?>
+                            <label class="form-label" for="hasil">Hasil</label>
+                            <select class="form-select mb-3" id="hasil" name="hasil" required>
+                                <?php foreach (['Disetujui', 'Ditolak'] as $h): ?>
+                                    <option value="<?= $h ?>"<?= ah_old('hasil', ['hasil' => 'Disetujui'], $b) === $h ? ' selected' : '' ?>><?= $h ?></option>
+                                <?php endforeach; ?>
+                            </select><?= ah_field_error('hasil', $b) ?>
+                            <label class="form-label" for="alasan_keputusan">Alasan keputusan <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="alasan_keputusan" name="alasan" rows="3" required minlength="3" maxlength="2000"><?= portal_e(ah_old('alasan', null, $b)) ?></textarea><?= ah_field_error('alasan', $b) ?>
+                            <?php if (!$aksi['putuskan_murobi']): ?>
+                                <label class="form-label mt-3" for="alasan_penggantian">Alasan penggantian murobi <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="alasan_penggantian" name="alasan_penggantian" rows="2" required minlength="3" maxlength="1000" placeholder="Contoh: murobi berhalangan dan izin dibutuhkan hari ini"><?= portal_e(ah_old('alasan_penggantian', null, $b)) ?></textarea><?= ah_field_error('alasan_penggantian', $b) ?>
+                            <?php endif; ?>
+                            <div class="ah-act__actions">
+                                <button class="btn btn-outline-secondary" type="button" data-ah-dialog-close>Batal</button>
+                                <button class="btn btn-primary" type="submit">Simpan keputusan</button>
+                            </div>
+                        </form>
+                    <?php ah_action_dialog_close(); ?>
+                <?php endif; ?>
+
+                <?php if ($aksi['tetapkan_murobi']): $b = $bucket('tetapkan'); ?>
+                    <?php ah_action_dialog_open('aksi-tetapkan', 'Tetapkan murobi', 'Tetapkan murobi untuk izin #' . $iz,
+                        $izin['status'] === 'Perlu Penetapan Admin' ? 'primary' : 'outline-primary', $adaGalat('tetapkan') || ($_GET['buka'] ?? '') === 'tetapkan'); ?>
+                        <?php if ($kandidatMurobi === []): ?>
+                            <p class="text-muted mb-0">Belum ada guru dengan penugasan murobi aktif pada tahun ajaran aktif. Buat penugasan murobi lebih dahulu di menu Penugasan.</p>
+                            <div class="ah-act__actions"><button class="btn btn-outline-secondary" type="button" data-ah-dialog-close>Tutup</button></div>
+                        <?php else: ?>
+                            <form method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
+                                <?= $hidden('tetapkan') ?>
+                                <p class="small text-muted">Antrean keputusan berpindah ke murobi yang dipilih; riwayat penetapan tetap tersimpan.</p>
+                                <label class="form-label" for="murobi_guru_id">Murobi tujuan <span class="text-danger">*</span></label>
+                                <select class="form-select mb-3" id="murobi_guru_id" name="murobi_guru_id" required>
+                                    <option value="">— Pilih murobi —</option>
+                                    <?php foreach ($kandidatMurobi as $kandidat): ?>
+                                        <option value="<?= (int) $kandidat['guru_id'] ?>"<?= (int) ah_old('murobi_guru_id', $izin, $b) === (int) $kandidat['guru_id'] ? ' selected' : '' ?>><?= portal_e($kandidat['nama_guru']) ?></option>
+                                    <?php endforeach; ?>
+                                </select><?= ah_field_error('murobi_guru_id', $b) ?>
+                                <label class="form-label" for="alasan_penetapan">Alasan penetapan <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="alasan_penetapan" name="alasan" rows="2" required minlength="3" maxlength="1000"><?= portal_e(ah_old('alasan', null, $b)) ?></textarea><?= ah_field_error('alasan', $b) ?>
+                                <div class="ah-act__actions">
+                                    <button class="btn btn-outline-secondary" type="button" data-ah-dialog-close>Batal</button>
+                                    <button class="btn btn-primary" type="submit">Tetapkan murobi</button>
+                                </div>
+                            </form>
+                        <?php endif; ?>
+                    <?php ah_action_dialog_close(); ?>
+                <?php endif; ?>
+
+                <?php if ($aksi['koreksi']): $b = $bucket('koreksi'); ?>
+                    <?php ah_action_dialog_open('aksi-koreksi', 'Koreksi keputusan', 'Koreksi keputusan izin #' . $iz, 'outline-primary', $adaGalat('koreksi')); ?>
+                        <form method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
+                            <?= $hidden('koreksi') ?>
+                            <p class="small text-muted">Koreksi menyimpan nilai sebelum dan sesudah beserta alasannya sebagai peristiwa baru. Keputusan dan riwayat sebelumnya tidak dihapus.</p>
+                            <label class="form-label" for="hasil_koreksi">Hasil setelah koreksi</label>
+                            <select class="form-select mb-3" id="hasil_koreksi" name="hasil" required>
+                                <?php foreach (['Disetujui', 'Ditolak'] as $h): ?>
+                                    <option value="<?= $h ?>"<?= ah_old('hasil', ['hasil' => $izin['status']], $b) === $h ? ' selected' : '' ?>><?= $h ?></option>
+                                <?php endforeach; ?>
+                            </select><?= ah_field_error('hasil', $b) ?>
+                            <label class="form-label" for="alasan_hasil_koreksi">Alasan keputusan setelah koreksi <span class="text-danger">*</span></label>
+                            <textarea class="form-control mb-3" id="alasan_hasil_koreksi" name="alasan" rows="2" required minlength="3" maxlength="2000"><?= portal_e(ah_old('alasan', null, $b)) ?></textarea><?= ah_field_error('alasan', $b) ?>
+                            <label class="form-label" for="alasan_koreksi">Alasan koreksi <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="alasan_koreksi" name="alasan_koreksi" rows="2" required minlength="3" maxlength="1000"><?= portal_e(ah_old('alasan_koreksi', null, $b)) ?></textarea><?= ah_field_error('alasan_koreksi', $b) ?>
+                            <div class="ah-act__actions">
+                                <button class="btn btn-outline-secondary" type="button" data-ah-dialog-close>Batal</button>
+                                <button class="btn btn-warning" type="submit">Simpan koreksi</button>
+                            </div>
+                        </form>
+                    <?php ah_action_dialog_close(); ?>
+                <?php endif; ?>
+
+                <?php if ($aksi['batalkan']): $b = $bucket('batalkan'); ?>
+                    <?php ah_action_dialog_open('aksi-batalkan', 'Batalkan pengajuan', 'Batalkan izin #' . $iz . '?', 'outline-danger', $adaGalat('batalkan')); ?>
+                        <form method="post" action="<?= portal_e(app_url('/portal/izin_aksi.php')) ?>">
+                            <?= $hidden('batalkan') ?>
+                            <p class="small text-muted">Pengajuan berhenti diproses. Pembatalan hanya mungkin sebelum ada keputusan dan tidak menghapus riwayat.</p>
+                            <label class="form-label" for="alasan_pembatalan">Alasan pembatalan <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="alasan_pembatalan" name="alasan" rows="2" required minlength="3" maxlength="1000"><?= portal_e(ah_old('alasan', null, $b)) ?></textarea><?= ah_field_error('alasan', $b) ?>
+                            <div class="ah-act__actions">
+                                <button class="btn btn-outline-secondary" type="button" data-ah-dialog-close>Kembali</button>
+                                <button class="btn btn-danger" type="submit">Batalkan pengajuan</button>
+                            </div>
+                        </form>
+                    <?php ah_action_dialog_close(); ?>
+                <?php endif; ?>
                 </div>
+                <?php if ($utama === null): ?>
+                    <p class="small text-muted mb-0">Tidak ada tindakan yang dapat Anda lakukan pada pengajuan berstatus <?= portal_e(strtolower((string) $izin['status'])) ?>.</p>
+                <?php elseif ($mode === Capabilities::ADMIN && !$aksi['koreksi']): ?>
+                    <p class="small text-muted mb-0 mt-2">Koreksi keputusan tersedia setelah ada keputusan.</p>
+                <?php endif; ?>
             </div>
+        </section>
+        <?php endif; ?>
+
+        <?php if ($infoTeknis): ?>
+            <section class="ah-card" aria-labelledby="ah-teknis">
+                <div class="ah-card__head"><span id="ah-teknis">Info teknis</span></div>
+                <div class="ah-card__body">
+                    <dl class="ah-info-list">
+                        <div><dt>Versi data</dt><dd>v<?= $versi ?></dd></div>
+                        <div><dt>Asal data</dt><dd><?= portal_e(portal_sumber_label($izin)) ?><?= $izin['is_legacy'] ? ' · ID lama ' . (int) $izin['legacy_perizinan_id'] : '' ?></dd></div>
+                        <div><dt>Kandidat routing</dt><dd><?= $izin['routing_pada'] === null ? 'Belum dijalankan' : (int) $izin['routing_kandidat'] . ' kandidat · ' . portal_e(ah_waktu((string) $izin['routing_pada'])) ?></dd></div>
+                        <?php if ($izin['murobi_ditetapkan_pada'] !== null): ?>
+                            <div><dt>Penetapan murobi</dt><dd><?= portal_e(($izin['penetap_nama'] ?? 'Admin') . ' · ' . ah_waktu((string) $izin['murobi_ditetapkan_pada'])) ?></dd></div>
+                        <?php endif; ?>
+                        <div><dt>Diajukan pada</dt><dd><?= portal_e((string) ($izin['diajukan_pada'] ?? 'Arsip sistem lama')) ?></dd></div>
+                    </dl>
+                </div>
+            </section>
         <?php endif; ?>
     </div>
-
-    <div class="col-lg-5">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white"><strong>Riwayat status</strong></div>
-            <div class="table-responsive">
-                <table class="table table-sm mb-0">
-                    <thead><tr><th>Waktu</th><th>Peristiwa</th><th>Pelaku</th></tr></thead>
-                    <tbody>
-                    <?php foreach ($detail['riwayat'] as $entry): ?>
-                        <tr>
-                            <td class="small"><?= portal_e($entry['created_at']) ?></td>
-                            <td class="small">
-                                <?= portal_e($entry['peristiwa']) ?>
-                                <?php if ($entry['status_sesudah'] !== null): ?>
-                                    <br><span class="text-muted"><?= portal_e(($entry['status_sebelum'] ?? '—') . ' → ' . $entry['status_sesudah']) ?></span>
-                                <?php endif; ?>
-                                <?php if ($entry['alasan'] !== null): ?>
-                                    <br><span class="text-muted"><?= portal_e($entry['alasan']) ?></span>
-                                <?php endif; ?>
-                            </td>
-                            <td class="small"><?= portal_e($entry['pelaku_nama'] ?? 'Data warisan') ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                    <?php if ($detail['riwayat'] === []): ?>
-                        <tr><td colspan="3" class="text-center text-muted py-4">Belum ada riwayat.</td></tr>
-                    <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 </div>
-<?php foreach (['putuskan','tetapkan','batalkan','koreksi'] as $formAction) { ah_old_clear('_portal_' . (int)$izin['id'] . '_' . $formAction); } portal_footer(); ?>
+
+<?php if ($utama !== null && !$ortu): ?>
+    <div class="ah-actbar ah-only-sm ah-no-print">
+        <a class="btn btn-primary" href="#<?= portal_e($utama[0]) ?>" data-ah-open-dialog="<?= portal_e($utama[0]) ?>"><?= portal_e($utama[1]) ?></a>
+    </div>
+<?php endif; ?>
+<?php foreach (['putuskan', 'tetapkan', 'batalkan', 'koreksi'] as $formAction) { ah_old_clear($bucket($formAction)); } portal_footer(); ?>

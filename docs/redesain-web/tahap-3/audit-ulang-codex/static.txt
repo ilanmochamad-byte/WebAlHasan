@@ -1,0 +1,154 @@
+[lulus] S3-1 php -l admin/admin_notifikasi.php
+[lulus] S3-1 php -l admin/admin_dashboard.php
+[lulus] S3-1 php -l admin/admin_pelanggaran.php
+[lulus] S3-1 php -l admin/admin_data.php
+[lulus] S3-1 php -l admin/admin_pembayaran_psb.php
+[lulus] S3-1 php -l admin/admin_rekap_keuangan.php
+[lulus] S3-1 php -l admin/admin_rekap_santri.php
+[lulus] S3-1 php -l admin/admin_berita.php
+[lulus] S3-1 php -l admin/_berita_form.php
+[lulus] S3-1 php -l admin/admin_galeri.php
+[lulus] S3-1 php -l admin/admin_download.php
+[lulus] S3-1 php -l app/Ui/Chart.php
+[lulus] S3-1 php -l app/Beranda/RingkasanAdministrasi.php
+[lulus] S3-1 php -l app/Psb/PsbAdmin.php
+[lulus] S3-1 php -l app/Psb/PsbPembayaran.php
+[lulus] S3-1 php -l app/Psb/PsbException.php
+[lulus] S3-1 php -l app/Konten/Unggahan.php
+[lulus] S3-1 php -l admin/proses_psb_admin.php
+[lulus] S3-1 php -l admin/hapus_siswa.php
+[lulus] S3-1 php -l admin/export_psb.php
+[lulus] S3-1 php -l admin/export_pembayaran.php
+[lulus] S3-1 php -l admin/proses_berita.php
+[lulus] S3-1 php -l admin/tambah_berita.php
+[lulus] S3-1 php -l admin/edit_berita.php
+[lulus] S3-1 php -l app/Ui/functions.php
+[lulus] S3-1 php -l app/Ui/Navigation.php
+[lulus] S3-1 php -l app/V3/KatalogService.php
+[lulus] S3-1 php -l app/Notification/NotificationChannel.php
+[lulus] S3-1 php -l app/Notification/NotificationAdminService.php
+[lulus] S3-1 php -l app/Notification/SettingsRepository.php
+[lulus] S3-1 php -l app/Beranda/BerandaService.php
+[lulus] S3-1 php -l tests/redesain_web_tahap3_seed.php
+[lulus] S3-1 php -l tests/redesain_web_tahap3_http.php
+[lulus] S3-1 node --check assets/ui/alhasan.js
+[lulus] S3-2 admin/sidebar.php sudah dihapus
+[lulus] S3-2 tidak ada kode yang memuat sidebar.php
+[lulus] S3-2 kompatibilitas Navigation::activeKey untuk sidebar lama ikut dihapus
+[lulus] S3-3 tidak ada alert() di admin, portal, app, dan aset bersama
+[lulus] S3-4 N-2 admin/admin_notifikasi.php membuka kerangka bersama
+[lulus] S3-4 N-2 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 N-2 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 N-4 admin/admin_dashboard.php membuka kerangka bersama
+[lulus] S3-4 N-4 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 N-4 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 N-5 admin/admin_pelanggaran.php membuka kerangka bersama
+[lulus] S3-4 N-5 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 N-5 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 K-5 admin/admin_data.php membuka kerangka bersama
+[lulus] S3-4 K-5 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 K-5 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 K-6 admin/admin_pembayaran_psb.php membuka kerangka bersama
+[lulus] S3-4 K-6 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 K-6 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 K-7 admin/admin_rekap_keuangan.php membuka kerangka bersama
+[lulus] S3-4 K-7 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 K-7 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 K-8 admin/admin_rekap_santri.php membuka kerangka bersama
+[lulus] S3-4 K-8 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 K-8 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 W-1 admin/admin_berita.php membuka kerangka bersama
+[lulus] S3-4 W-1 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 W-1 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 W-2 admin/_berita_form.php membuka kerangka bersama
+[lulus] S3-4 W-2 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 W-2 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 W-3 admin/admin_galeri.php membuka kerangka bersama
+[lulus] S3-4 W-3 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 W-3 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 W-4 admin/admin_download.php membuka kerangka bersama
+[lulus] S3-4 W-4 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 W-4 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 W-2 admin/tambah_berita.php memakai penyunting bersama di kerangka admin
+[lulus] S3-4 W-2 admin/edit_berita.php memakai penyunting bersama di kerangka admin
+[lulus] S3-5 N-2 daftar berhalaman (ah_pagination()
+[lulus] S3-5 N-5 daftar berhalaman (master_pagination()
+[lulus] S3-5 K-5 daftar berhalaman (ah_pagination()
+[lulus] S3-5 K-6 daftar berhalaman (ah_pagination()
+[lulus] S3-5 W-1 daftar berhalaman (ah_pagination()
+[lulus] S3-5 W-3 daftar berhalaman (ah_pagination()
+[lulus] S3-5 W-4 daftar berhalaman (ah_pagination()
+[lulus] S3-5 K-5/K-6 20 baris per halaman
+[lulus] S3-5 N-2 riwayat kanal berhalaman
+[lulus] S3-5 N-5 pencarian santri dan saringan tahun (parameter terikat)
+[lulus] S3-6 AL WhatsApp terdaftar sebagai kanal ditangguhkan
+[lulus] S3-6 AL layanan menolak menyalakan kanal ditangguhkan (panel dan API)
+[lulus] S3-6 AL layanan menolak pesan uji kanal ditangguhkan
+[lulus] S3-6 AL panel tidak menjalankan worker kanal ditangguhkan
+[lulus] S3-6 AL kartu ditangguhkan tanpa Nyalakan/Kirim uji/worker
+[lulus] S3-6 F-1 dispatcher/cron berhenti sebelum klaim untuk kanal ditangguhkan (bawaan produksi)
+[lulus] S3-6 F-1 layanan menolak worker yang mengirim untuk kanal ditangguhkan
+[lulus] S3-6 F-1 layanan menolak percobaan ulang kanal ditangguhkan sebelum mengantrekan
+[lulus] S3-6 F-1 dispatcher produksi tidak mengosongkan daftar kanal ditangguhkan
+[lulus] S3-6 F-1 baris kanal ditangguhkan tanpa Coba ulang di panel
+[lulus] S3-6 N-2 mematikan kanal memakai konfirmasi
+[lulus] S3-6 N-2 coba ulang per baris dan massal
+[lulus] S3-7 admin/admin_data.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/admin_pembayaran_psb.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/admin_rekap_keuangan.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/admin_rekap_santri.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/admin_berita.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/admin_galeri.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/admin_download.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/proses_psb_admin.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/proses_berita.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/export_psb.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/export_pembayaran.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/edit_berita.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 app/Psb/PsbAdmin.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 app/Psb/PsbPembayaran.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 app/Beranda/RingkasanAdministrasi.php tanpa SQL rakitan dari permintaan
+[lulus] S3-8 N-2 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 N-4 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 N-5 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 K-5 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 K-6 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 K-7 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 K-8 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 W-1 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 W-2 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 W-3 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 W-4 tanpa keluaran kolom basis data mentah
+[lulus] S3-9 AG panel pendaftar tanpa pratinjau gambar berkas
+[lulus] S3-9 AH berita tanpa status dan kategori
+[lulus] S3-9 AI galeri tanpa album
+[lulus] S3-9 W-3 unggah beberapa foto sekaligus
+[lulus] S3-10 grafik dirender server tanpa pustaka luar
+[lulus] S3-10 setiap jenis grafik punya keadaan kosong
+[lulus] S3-10 warna grafik dari token, tanpa aset eksternal baru
+[lulus] S3-10 gaya komponen .ah-filter
+[lulus] S3-10 gaya komponen .ah-media
+[lulus] S3-10 gaya komponen .ah-drop
+[lulus] S3-10 gaya komponen .ah-matrix
+[lulus] S3-10 gaya komponen .ah-fold
+[lulus] S3-10 gaya komponen .ah-channels
+[lulus] S3-10 gaya komponen .ah-editor
+[lulus] S3-10 gaya komponen .ah-steps
+[lulus] S3-10 perilaku saringan HP, zona unggah, proses massal formulir, dan ketik-untuk-konfirmasi
+[lulus] S3-10 ekspor Excel di server menulis teks mentah (bukan rumus)
+[lulus] S3-10 menu ⋯ mendukung ketik nama untuk konfirmasi
+[lulus] S3-11 jenis berkas unggahan dibatasi, gambar diperiksa isinya
+[lulus] S3-11 admin/admin_galeri.php menyimpan unggahan lewat pemeriksa bersama
+[lulus] S3-11 admin/admin_download.php menyimpan unggahan lewat pemeriksa bersama
+[lulus] S3-11 admin/proses_berita.php menyimpan unggahan lewat pemeriksa bersama
+[lulus] S3-11 nama gambar lama berita diambil dari basis data
+[lulus] S3-12 K-5 status dan pola NIS migrasi tetap
+[lulus] S3-12 K-5 hasil tindakan tampil sebagai pesan
+[lulus] S3-12 K-5 impor diperiksa dulu lalu disimpan dengan token sekali pakai
+[lulus] S3-12 K-6 alasan batal lunas dicatat di audit
+[lulus] S3-12 F-2 alasan batal lunas divalidasi server sebelum UPDATE
+[lulus] S3-12 F-2 alasan dapat diisi tanpa JavaScript
+[lulus] S3-13 kartu notifikasi gagal membuka tab Pengiriman gagal
+[lulus] S3-13 K-8 dan N-4 tetap sebagai tab menu barunya
+
+Ringkasan: 152 lulus, 0 gagal

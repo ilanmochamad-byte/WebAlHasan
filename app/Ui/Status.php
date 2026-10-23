@@ -43,6 +43,9 @@ final class Status
         'dibuka' => 'info',
         'berlangsung' => 'info',
         'belum dibaca' => 'info',
+        // Kehadiran pengajian (Tahap 4, J-2/J-5).
+        'izin' => 'info',
+        'sakit' => 'info',
         // Kuning
         'menunggu' => 'warn',
         'perlu perbaikan' => 'warn',
@@ -56,6 +59,7 @@ final class Status
         'ditolak' => 'danger',
         'ditarik' => 'danger',
         'gagal' => 'danger',
+        'alpa' => 'danger',
         'berhenti' => 'danger',
         // Abu
         'draf' => 'muted',

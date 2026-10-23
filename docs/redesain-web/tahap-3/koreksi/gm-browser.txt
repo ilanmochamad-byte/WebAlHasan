@@ -1,0 +1,36 @@
+[lulus] 1440: tombol Tolak di panel adalah formulir POST ber-CSRF
+[lulus] 1440: tombol Terima/Tolak bersasaran sentuh ≥ 44px
+[lulus] 1440: Batal pada dialog Tolak tidak mengirim POST
+[lulus] 375: tombol Tolak di panel adalah formulir POST ber-CSRF
+[lulus] 375: tombol Terima/Tolak bersasaran sentuh ≥ 44px
+[lulus] 375: Batal pada dialog Tolak tidak mengirim POST
+[lulus] proses_psb_admin.php: klik nyata mengirim POST, CSRF, target
+[lulus] proses_psb_admin.php: kembali ke admin_data.php
+[lulus] Status Ditolak tampil di panel dan pesan setelah klik
+[lulus] proses_psb_admin.php: klik nyata mengirim POST, CSRF, target
+[lulus] proses_psb_admin.php: kembali ke admin_data.php
+[lulus] Status Diterima tampil setelah klik
+[lulus] proses_psb_admin.php: klik nyata mengirim POST, CSRF, target
+[lulus] proses_psb_admin.php: kembali ke admin_data.php
+[lulus] Tombol migrasi hilang dan pesan NIS tampil setelah migrasi
+[lulus] Hapus pendaftar menolak ketikan nama yang salah
+[lulus] hapus_siswa.php: klik nyata mengirim POST, CSRF, target
+[lulus] hapus_siswa.php: kembali ke admin_data.php
+[lulus] Pendaftar terhapus hilang dari daftar
+[lulus] admin_pembayaran_psb.php: klik nyata mengirim POST, CSRF, target
+[lulus] admin_pembayaran_psb.php: kembali ke admin_pembayaran_psb.php
+[lulus] Tandai lunas mengganti tombol menjadi Batal lunas (menu ⋯)
+[lulus] admin_pembayaran_psb.php: klik nyata mengirim POST, CSRF, target
+[lulus] admin_pembayaran_psb.php: kembali ke admin_pembayaran_psb.php
+[lulus] Batal lunas mengirim alasan dan memulihkan Tandai lunas
+[lulus] proses_berita.php: klik nyata mengirim POST, CSRF, target
+[lulus] proses_berita.php: kembali ke admin_berita.php
+[lulus] berita: baris terhapus hilang dari daftar
+[lulus] admin_galeri.php: klik nyata mengirim POST, CSRF, target
+[lulus] admin_galeri.php: kembali ke admin_galeri.php
+[lulus] galeri: foto terhapus hilang dari kisi
+[lulus] admin_download.php: klik nyata mengirim POST, CSRF, target
+[lulus] admin_download.php: kembali ke admin_download.php
+[lulus] download: baris terhapus hilang dari daftar
+[lulus] Tidak ada confirm()/alert() bawaan peramban
+Browser GET mutation audit: 35 passed, 0 failed.

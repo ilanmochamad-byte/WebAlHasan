@@ -1,0 +1,78 @@
+[lulus] T3-A N-2-kanal 375px: rapi di kerangka bersama
+[lulus] T3-A N-2-gagal 375px: rapi di kerangka bersama
+[lulus] T3-A N-2-riwayat 375px: rapi di kerangka bersama
+[lulus] T3-A N-4-psb 375px: rapi di kerangka bersama
+[lulus] T3-A N-4-santri 375px: rapi di kerangka bersama
+[lulus] T3-A N-4-kegiatan 375px: rapi di kerangka bersama
+[lulus] T3-A N-5 375px: rapi di kerangka bersama
+[lulus] T3-A K-5 375px: rapi di kerangka bersama
+[lulus] T3-A K-5-panel 375px: rapi di kerangka bersama
+[lulus] T3-A K-5-tambah 375px: rapi di kerangka bersama
+[lulus] T3-A K-5-impor 375px: rapi di kerangka bersama
+[lulus] T3-A K-6 375px: rapi di kerangka bersama
+[lulus] T3-A K-6-panel 375px: rapi di kerangka bersama
+[lulus] T3-A K-7 375px: rapi di kerangka bersama
+[lulus] T3-A K-8 375px: rapi di kerangka bersama
+[lulus] T3-A W-1 375px: rapi di kerangka bersama
+[lulus] T3-A W-2 375px: rapi di kerangka bersama
+[lulus] T3-A W-3 375px: rapi di kerangka bersama
+[lulus] T3-A W-4 375px: rapi di kerangka bersama
+[lulus] T3-A W-4-unggah 375px: rapi di kerangka bersama
+[lulus] T3-A N-2-kanal 768px: rapi di kerangka bersama
+[lulus] T3-A N-2-gagal 768px: rapi di kerangka bersama
+[lulus] T3-A N-2-riwayat 768px: rapi di kerangka bersama
+[lulus] T3-A N-4-psb 768px: rapi di kerangka bersama
+[lulus] T3-A N-4-santri 768px: rapi di kerangka bersama
+[lulus] T3-A N-4-kegiatan 768px: rapi di kerangka bersama
+[lulus] T3-A N-5 768px: rapi di kerangka bersama
+[lulus] T3-A K-5 768px: rapi di kerangka bersama
+[lulus] T3-A K-5-panel 768px: rapi di kerangka bersama
+[lulus] T3-A K-5-tambah 768px: rapi di kerangka bersama
+[lulus] T3-A K-5-impor 768px: rapi di kerangka bersama
+[lulus] T3-A K-6 768px: rapi di kerangka bersama
+[lulus] T3-A K-6-panel 768px: rapi di kerangka bersama
+[lulus] T3-A K-7 768px: rapi di kerangka bersama
+[lulus] T3-A K-8 768px: rapi di kerangka bersama
+[lulus] T3-A W-1 768px: rapi di kerangka bersama
+[lulus] T3-A W-2 768px: rapi di kerangka bersama
+[lulus] T3-A W-3 768px: rapi di kerangka bersama
+[lulus] T3-A W-4 768px: rapi di kerangka bersama
+[lulus] T3-A W-4-unggah 768px: rapi di kerangka bersama
+[lulus] T3-A N-2-kanal 1280px: rapi di kerangka bersama
+[lulus] T3-A N-2-gagal 1280px: rapi di kerangka bersama
+[lulus] T3-A N-2-riwayat 1280px: rapi di kerangka bersama
+[lulus] T3-A N-4-psb 1280px: rapi di kerangka bersama
+[lulus] T3-A N-4-santri 1280px: rapi di kerangka bersama
+[lulus] T3-A N-4-kegiatan 1280px: rapi di kerangka bersama
+[lulus] T3-A N-5 1280px: rapi di kerangka bersama
+[lulus] T3-A K-5 1280px: rapi di kerangka bersama
+[lulus] T3-A K-5-panel 1280px: rapi di kerangka bersama
+[lulus] T3-A K-5-tambah 1280px: rapi di kerangka bersama
+[lulus] T3-A K-5-impor 1280px: rapi di kerangka bersama
+[lulus] T3-A K-6 1280px: rapi di kerangka bersama
+[lulus] T3-A K-6-panel 1280px: rapi di kerangka bersama
+[lulus] T3-A K-7 1280px: rapi di kerangka bersama
+[lulus] T3-A K-8 1280px: rapi di kerangka bersama
+[lulus] T3-A W-1 1280px: rapi di kerangka bersama
+[lulus] T3-A W-2 1280px: rapi di kerangka bersama
+[lulus] T3-A W-3 1280px: rapi di kerangka bersama
+[lulus] T3-A W-4 1280px: rapi di kerangka bersama
+[lulus] T3-A W-4-unggah 1280px: rapi di kerangka bersama
+[lulus] T3-B Tolak membuka dialog merah yang menyebut tindakannya
+[lulus] T3-B Batal tidak mengirim POST
+[lulus] T3-B Hapus pendaftar meminta ketik nama; kosong tidak mengirim
+[lulus] T3-C Tandai lunas lewat dialog, hasil sebagai pesan
+[lulus] T3-C Batal lunas mewajibkan alasan
+[lulus] T3-C Batal lunas dengan alasan tersimpan
+[lulus] T3-D kartu WhatsApp Ditangguhkan tanpa tombol Nyalakan
+[lulus] T3-D bilah pilihan menyebut 2 dipilih
+[lulus] T3-D coba ulang massal satu per satu dengan kemajuan (0 berhasil · 2 gagal)
+[lulus] T3-D yang gagal didaftar beserta alasannya
+[lulus] T3-E zona unggah menampilkan dua berkas terpilih
+[lulus] T3-E Pratinjau berita menampilkan judul dan isi seperti di situs
+[lulus] T3-F desktop: matriks dengan kolom komponen lengket
+[lulus] T3-F HP: lipatan per unit (SMP, SMK, Lainnya)
+[lulus] T3-G tanpa galat JavaScript
+[lulus] T3-G tanpa confirm()/alert() bawaan peramban
+
+Ringkasan: 76 lulus, 0 gagal

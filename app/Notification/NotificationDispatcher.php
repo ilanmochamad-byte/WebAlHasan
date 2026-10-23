@@ -24,6 +24,10 @@ use Throwable;
  *  - **Tidak pernah mengirim saat kanal mati.** Sakelar dibaca ulang setiap
  *    putaran; ketika kanal dimatikan, baris dilepas tanpa dihitung sebagai
  *    percobaan dan TIDAK ada satu pun permintaan ke penyedia.
+ *  - **Tidak pernah mengirim kanal Ditangguhkan** (keputusan AL, redesain web
+ *    Tahap 3): walaupun sakelar lama di basis data masih menyala, putaran
+ *    non-dry-run berhenti sebelum klaim maupun koneksi apa pun. Cron dan panel
+ *    memakai dispatcher yang sama.
  *  - **Tidak pernah mencetak rahasia.** Token perangkat dibuka hanya di memori,
  *    nomor WhatsApp ditampilkan tersamar, dan seluruh galat melewati
  *    `SafeError` sebelum disimpan atau dicetak.
@@ -43,7 +47,15 @@ final class NotificationDispatcher
         private PushClient $expo,
         private WhatsAppProvider $whatsapp,
         private SettingsRepository $settings,
-        private WorkerLock $lock
+        private WorkerLock $lock,
+        /**
+         * Kanal yang tidak boleh dikirim. Bawaan kebijakan produksi
+         * `NotificationChannel::DITANGGUHKAN`; hanya uji mekanisme adapter yang
+         * memberi daftar lain secara eksplisit.
+         *
+         * @var array<int, string>
+         */
+        private array $ditangguhkan = NotificationChannel::DITANGGUHKAN
     ) {
     }
 
@@ -68,6 +80,13 @@ final class NotificationDispatcher
 
         if (!in_array($kanal, NotificationChannel::EKSTERNAL, true)) {
             $hasil['alasan'] = 'Kanal ' . $kanal . ' tidak diproses worker.';
+
+            return $hasil;
+        }
+
+        if (!$dryRun && in_array($kanal, $this->ditangguhkan, true)) {
+            // Berhenti SEBELUM membaca sakelar, klaim, maupun koneksi apa pun.
+            $hasil['alasan'] = 'Kanal ' . NotificationChannel::label($kanal) . ' ditangguhkan. Tidak ada baris yang diklaim maupun dikirim.';
 
             return $hasil;
         }

@@ -6,13 +6,13 @@ use App\Auth\Capabilities;
 use App\Izin\IzinException;
 
 /**
- * Ringkasan modul perizinan.
+ * Perizinan › Ringkasan (redesain website Tahap 4, I-1).
  *
- * Sebelum paket perapihan V1–V2 isi halaman ini berada di `portal/index.php`.
- * Alamat itu kini menjadi SATU PINTU MASUK dan beranda seluruh sistem
- * (koreksi ke-7), sehingga ringkasan perizinan pindah ke berkas tersendiri.
- * Cakupan, mode, filter, dan seluruh aturan otorisasinya tidak berubah:
- * halaman ini tetap dijaga `portal/_guard.php` lewat `_ui.php`.
+ * Kartu angka per status menjadi pintu ke tab Pengajuan dengan status itu;
+ * catatan panjang di atas halaman diganti kartu "Alur izin". Cakupan, mode,
+ * dan aturan otorisasi tidak berubah: halaman tetap dijaga
+ * `portal/_guard.php` lewat `_ui.php`, dan seluruh angka dihitung server
+ * dari cakupan akun (`izin_service()`).
  */
 
 require_once __DIR__ . '/_ui.php';
@@ -21,8 +21,6 @@ $requestedMode = portal_requested_mode($currentUser, $userCapabilities);
 
 try {
     $overview = izin_service()->list($currentUser, [], 1, 5, $requestedMode);
-    $santri = izin_service()->santriInScope($currentUser, $requestedMode);
-    $antrean = izin_service()->queueCount($currentUser, $requestedMode);
 } catch (IzinException $exception) {
     http_response_code($exception->status());
     exit(portal_e($exception->getMessage()));
@@ -30,111 +28,74 @@ try {
 
 $scope = $overview['scope'];
 $summary = $overview['summary'];
-$mode = rawurlencode($scope['mode']);
+$mode = (string) $scope['mode'];
+$ortu = $mode === Capabilities::ORANG_TUA;
+$daftar = static fn (array $query = []): string => app_url('/portal/izin.php') . '?' . http_build_query(array_merge(['mode' => $mode], $query));
 
-$aksi = '<a class="btn btn-outline-primary" href="' . portal_e(app_url('/portal/izin_antrean.php') . '?mode=' . $mode) . '">'
-    . 'Antrean <span class="ah-badge ah-badge--muted">' . (int) $antrean . '</span></a>';
-if (in_array($scope['mode'], [Capabilities::PENGURUS, Capabilities::ADMIN], true)) {
-    $aksi .= '<a class="btn btn-primary" href="' . portal_e(app_url('/portal/izin_buat.php') . '?mode=' . $mode) . '">Buat pengajuan</a>';
-}
-$aksi .= '<a class="btn btn-outline-secondary" href="' . portal_e(app_url('/portal/izin.php') . '?mode=' . $mode) . '">Daftar lengkap</a>';
-
-portal_header('Ringkasan Perizinan', $userCapabilities, $scope['mode'], $currentUser, [
+portal_header('Perizinan santri', $userCapabilities, $mode, $currentUser, [
     'description' => $scope['label'],
-    'actions' => $aksi,
-    'active' => 'izin.ringkasan',
+    'actions' => portal_ajukan_button($mode),
+    'active' => 'izin',
     'breadcrumbs' => [
         ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
         ['label' => 'Perizinan'],
-        ['label' => 'Ringkasan'],
     ],
 ]);
+portal_flash_render();
+portal_mode_switcher($userCapabilities, $mode, app_url('/portal/izin_ringkasan.php'));
+
+$kartu = [['label' => 'Total pengajuan', 'value' => (string) (int) $summary['total'], 'hint' => 'dalam cakupan Anda', 'url' => $daftar()]];
+foreach (['Diajukan', 'Perlu Penetapan Admin', 'Disetujui', 'Ditolak'] as $status) {
+    $kartu[] = [
+        'label' => $status === 'Perlu Penetapan Admin' ? 'Perlu penetapan' : $status,
+        'value' => (string) (int) ($summary['per_status'][$status] ?? 0),
+        'url' => $daftar(['status' => $status]),
+        'warn' => $status === 'Perlu Penetapan Admin' && (int) ($summary['per_status'][$status] ?? 0) > 0,
+    ];
+}
+echo ah_stats($kartu, 'Jumlah pengajuan per status');
 ?>
-<?php portal_flash_render(); ?>
-<?php portal_mode_switcher($userCapabilities, $scope['mode'], app_url('/portal/izin_ringkasan.php')); ?>
-
-<?php ah_note('info', $scope['mode'] === Capabilities::ORANG_TUA
-    ? 'Akun orang tua bersifat baca-saja: Anda dapat melihat status dan riwayat izin santri yang terhubung, tetapi tidak dapat membuat, mengubah, menyetujui, atau menolak pengajuan.'
-    : 'Alur perizinan: pengajuan oleh pengurus, routing otomatis ke murobi, penetapan admin bila routing tidak tunggal, keputusan, pembatalan, dan koreksi. Setiap perubahan tercatat pada riwayat dan audit.',
-    '<p class="small mb-0 mt-2">Data izin sebelum V2 ditandai <span class="ah-badge ah-badge--muted">Data warisan</span> karena sistem lama tidak mencatat pelakunya.</p>'
-); ?>
-
-<div class="ah-stats">
-    <div class="ah-stat">
-        <p class="ah-stat__label">Total</p>
-        <p class="ah-stat__value"><?= (int) $summary['total'] ?></p>
-        <p class="ah-stat__hint">pengajuan dalam cakupan Anda</p>
-    </div>
-    <?php foreach ($summary['per_status'] as $status => $count): ?>
-        <div class="ah-stat">
-            <p class="ah-stat__label"><?= portal_e($status) ?></p>
-            <p class="ah-stat__value"><?= (int) $count ?></p>
+<div class="ah-split">
+    <section class="ah-card" aria-labelledby="ah-terbaru">
+        <div class="ah-card__head"><span id="ah-terbaru">Pengajuan terbaru</span>
+            <a class="btn btn-sm btn-outline-primary" href="<?= portal_e($daftar()) ?>">Semua</a>
         </div>
-    <?php endforeach; ?>
-</div>
-
-<div class="row g-3">
-    <div class="col-lg-7">
-        <section class="ah-card h-100 mb-0" aria-labelledby="ah-terbaru">
-            <div class="ah-card__head"><span id="ah-terbaru">Pengajuan terbaru</span>
-                <a class="btn btn-sm btn-outline-primary" href="<?= portal_e(app_url('/portal/izin.php') . '?mode=' . $mode) ?>">Lihat semua</a>
-            </div>
-            <?php if ($overview['rows'] === []): ?>
-                <div class="ah-card__body"><?= ah_empty(
-                    'Belum ada pengajuan',
-                    'Belum ada pengajuan izin dalam cakupan Anda.',
-                    in_array($scope['mode'], [Capabilities::PENGURUS, Capabilities::ADMIN], true)
-                        ? '<a class="btn btn-sm btn-primary" href="' . portal_e(app_url('/portal/izin_buat.php') . '?mode=' . $mode) . '">Buat pengajuan pertama</a>'
-                        : null
-                ) ?></div>
-            <?php else: ?>
-                <div class="ah-table-wrap"><table class="ah-table">
-                    <caption class="ah-visually-hidden">Lima pengajuan izin terbaru dalam cakupan Anda</caption>
-                    <thead><tr>
-                        <th scope="col">ID</th><th scope="col">Santri</th><th scope="col">Rentang</th>
-                        <th scope="col">Status</th><th scope="col">Sumber</th>
-                    </tr></thead>
-                    <tbody>
-                    <?php foreach ($overview['rows'] as $row): ?>
-                        <tr>
-                            <td><a href="<?= portal_e(app_url('/portal/izin_detail.php') . '?id=' . (int) $row['id'] . '&mode=' . $mode) ?>">#<?= (int) $row['id'] ?></a></td>
-                            <td><?= portal_e($row['nama_santri']) ?><span class="ah-cell-sub"><?= portal_e($row['nis']) ?></span></td>
-                            <td><?= portal_e($row['tgl_izin']) ?> → <?= portal_e($row['tgl_kembali']) ?></td>
-                            <td><?= portal_status_badge((string) $row['status']) ?></td>
-                            <td><?= ah_badge((string) $row['sumber_label'], 'muted') ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table></div>
+        <?php if ($overview['rows'] === []): ?>
+            <div class="ah-card__body"><?= ah_empty(
+                'Belum ada pengajuan',
+                $ortu ? 'Belum ada pengajuan izin untuk anak yang terhubung dengan akun ini.' : 'Belum ada pengajuan izin dalam cakupan Anda.',
+                portal_ajukan_button($mode, 'btn btn-sm btn-primary') ?: null
+            ) ?></div>
+        <?php else: ?>
+            <div class="ah-table-wrap"><table class="ah-table ah-table--cards">
+                <caption class="ah-visually-hidden">Lima pengajuan izin terbaru dalam cakupan Anda</caption>
+                <thead><tr><th scope="col">#</th><th scope="col">Santri</th><th scope="col">Rentang</th><th scope="col">Status</th></tr></thead>
+                <tbody>
+                <?php foreach ($overview['rows'] as $row): ?>
+                    <tr>
+                        <td><a class="ah-row-link" href="<?= portal_e(portal_detail_url((int) $row['id'], $mode)) ?>">#<?= (int) $row['id'] ?></a></td>
+                        <td><?= portal_e($row['nama_santri']) ?><span class="ah-cell-sub"><?= portal_e($row['nis']) ?></span></td>
+                        <td><?= portal_e(ah_rentang((string) $row['tgl_izin'], (string) $row['tgl_kembali'])) ?></td>
+                        <td><?= portal_status((string) $row['status']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table></div>
+        <?php endif; ?>
+    </section>
+    <section class="ah-card" aria-labelledby="ah-alur">
+        <div class="ah-card__head"><span id="ah-alur">Alur izin</span></div>
+        <div class="ah-card__body">
+            <ol class="ah-vsteps">
+                <li>Pengurus mengajukan izin santri binaannya.</li>
+                <li>Sistem meneruskan ke murobi kamar atau kelas santri. Bila murobinya tidak tepat satu, admin menetapkan murobi.</li>
+                <li>Murobi menyetujui atau menolak dengan alasan.</li>
+                <li>Pengurus dan wali santri menerima notifikasi keputusan.</li>
+            </ol>
+            <?php if ($ortu): ?>
+                <p class="small text-muted mb-0 mt-3">Akun orang tua hanya membaca status dan riwayat izin anak; tidak ada tombol yang mengubah data.</p>
             <?php endif; ?>
-        </section>
-    </div>
-    <div class="col-lg-5">
-        <section class="ah-card h-100 mb-0" aria-labelledby="ah-santri">
-            <div class="ah-card__head"><span id="ah-santri"><?= $scope['mode'] === Capabilities::ORANG_TUA ? 'Santri yang terhubung dengan Anda' : 'Santri dalam cakupan Anda' ?></span></div>
-            <div class="ah-card__body">
-                <?php if ($scope['mode'] === Capabilities::ADMIN): ?>
-                    <p class="text-muted mb-0">Admin melihat seluruh santri melalui menu master data.</p>
-                <?php elseif ($scope['mode'] === Capabilities::MUROBI): ?>
-                    <p class="text-muted mb-0">Murobi melihat santri melalui pengajuan yang diarahkan kepadanya.</p>
-                <?php elseif ($santri === []): ?>
-                    <p class="text-muted mb-0">
-                        <?= $scope['mode'] === Capabilities::PENGURUS
-                            ? 'Belum ada penugasan pembimbing aktif untuk akun ini. Hubungi admin.'
-                            : 'Belum ada santri dengan relasi wali aktif untuk akun ini.' ?>
-                    </p>
-                <?php else: ?>
-                    <ul class="list-unstyled mb-0">
-                        <?php foreach ($santri as $item): ?>
-                            <li class="d-flex justify-content-between align-items-center gap-2 py-2 border-bottom">
-                                <span><?= portal_e($item['nama_santri']) ?> <span class="text-muted small">(<?= portal_e($item['nis']) ?>)</span></span>
-                                <span class="text-muted small"><?= portal_e($item['target_name'] ?? $item['hubungan'] ?? '') ?></span>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
-            </div>
-        </section>
-    </div>
+        </div>
+    </section>
 </div>
 <?php portal_footer(); ?>

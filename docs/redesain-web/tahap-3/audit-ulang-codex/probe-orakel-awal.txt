@@ -1,0 +1,15 @@
+[lulus] F-1 dispatcher bawaan menahan sakelar lama aktif/Lulus tanpa send
+[lulus] F-1 seluruh outbox, percobaan, lock, dan audit kanal utuh setelah dispatcher
+[lulus] F-1 facade REST menerjemahkan penolakan worker menjadi 409
+[lulus] F-1 facade REST menerjemahkan penolakan retry menjadi 409
+[lulus] F-1 penolakan facade REST mempertahankan seluruh keadaan antrean/lock/audit kanal
+[lulus] F-1 facade REST tetap menyediakan dry-run tanpa send
+[lulus] F-1 dry-run tidak mengklaim atau mengubah outbox
+[lulus] F-1 non-admin tetap ditolak 403 sebelum kebijakan kanal
+[gagal] F-1 regresi positif: facade REST mengantrekan ulang baris Push yang sama tanpa duplikat
+[lulus] F-1 regresi positif: retry Push tetap mencatat audit kanal
+[lulus] F-1 seluruh fixture layanan dipulihkan lewat rollback
+[lulus] F-1 entry point CLI/cron berhenti dengan Ditangguhkan dan exit 0
+[lulus] F-1 CLI/cron tidak mengubah outbox, percobaan, lock, atau audit kanal
+
+Ringkasan: 12 lulus, 1 gagal

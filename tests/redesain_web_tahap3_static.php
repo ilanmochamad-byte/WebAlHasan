@@ -118,6 +118,15 @@ $cek(preg_match('/if \(\$aktif && NotificationChannel::ditangguhkan\(\$kanal\)\)
 $cek(preg_match('/function kirimPesanUji[\s\S]*?NotificationChannel::ditangguhkan\(\$kanal\)[\s\S]*?conflict/', $layanan) === 1, 'S3-6 AL layanan menolak pesan uji kanal ditangguhkan');
 $cek(str_contains($panel, "\$aksi === 'worker' && NotificationChannel::ditangguhkan(\$kanal)"), 'S3-6 AL panel tidak menjalankan worker kanal ditangguhkan');
 $cek(str_contains($panel, 'if ($ditangguhkan):') && str_contains($panel, "!\$ditangguhkan) {\n            \$menu[] = notif_menu_item('Jalankan worker sekali'"), 'S3-6 AL kartu ditangguhkan tanpa Nyalakan/Kirim uji/worker');
+// Koreksi audit F-1: penangguhan juga berlaku pada jalur yang mengirim.
+$dispatcherSrc = $kode($baca('app/Notification/NotificationDispatcher.php'));
+$cek(str_contains($dispatcherSrc, 'private array $ditangguhkan = NotificationChannel::DITANGGUHKAN')
+    && preg_match('/if \(!\$dryRun && in_array\(\$kanal, \$this->ditangguhkan, true\)\)\s*\{[^}]*return \$hasil;/s', $dispatcherSrc) === 1
+    && strpos($dispatcherSrc, 'in_array($kanal, $this->ditangguhkan, true)') < strpos($dispatcherSrc, '$this->outbox->claim('), 'S3-6 F-1 dispatcher/cron berhenti sebelum klaim untuk kanal ditangguhkan (bawaan produksi)');
+$cek(preg_match('/function jalankanWorker[\s\S]*?if \(!\$dryRun && NotificationChannel::ditangguhkan\(\$kanal\)\)[\s\S]*?conflict[\s\S]*?dispatcher->run/', $layanan) === 1, 'S3-6 F-1 layanan menolak worker yang mengirim untuk kanal ditangguhkan');
+$cek(preg_match('/function cobaUlang[\s\S]*?NotificationChannel::ditangguhkan\(\(string\) \$row\[\'kanal\'\]\)[\s\S]*?conflict[\s\S]*?->requeue\(/', $layanan) === 1, 'S3-6 F-1 layanan menolak percobaan ulang kanal ditangguhkan sebelum mengantrekan');
+$cek(!preg_match("/NotificationDispatcher\([^;]*\[\]\s*\)/", $kode($baca('app/bootstrap.php'))), 'S3-6 F-1 dispatcher produksi tidak mengosongkan daftar kanal ditangguhkan');
+$cek(str_contains($panel, "\$tertahan = NotificationChannel::ditangguhkan((string) \$baris['kanal'])"), 'S3-6 F-1 baris kanal ditangguhkan tanpa Coba ulang di panel');
 $cek(str_contains($panel, "'Matikan kanal'") && str_contains($panel, "'confirm' => ['title' => 'Matikan '"), 'S3-6 N-2 mematikan kanal memakai konfirmasi');
 $cek(str_contains($panel, 'data-ah-bulk=') && str_contains($panel, "coba_ulang_massal"), 'S3-6 N-2 coba ulang per baris dan massal');
 
@@ -187,7 +196,11 @@ $proses = $kode($baca('admin/proses_psb_admin.php'));
 $cek(str_contains($proses, "in_array(\$status, ['Diterima', 'Ditolak', 'Cadangan'], true)") && str_contains($proses, "date('y') . (\$d['jenjang_tujuan'] === 'SMP Terpadu Al Hasan' ? '01' : '02')"), 'S3-12 K-5 status dan pola NIS migrasi tetap');
 $cek(str_contains($proses, 'ah_flash_set(') && str_contains($kode($baca('admin/hapus_siswa.php')), 'ah_flash_set('), 'S3-12 K-5 hasil tindakan tampil sebagai pesan');
 $cek(str_contains($data, "periksaImpor(") && str_contains($data, "'impor_simpan'") && str_contains($data, 'hash_equals('), 'S3-12 K-5 impor diperiksa dulu lalu disimpan dengan token sekali pakai');
-$cek(str_contains($kode($baca('admin/admin_pembayaran_psb.php')), "audit_logger()->log('psb.pembayaran.batal_lunas'"), 'S3-12 K-6 alasan batal lunas dicatat di audit');
+$bayarSrc = $kode($baca('admin/admin_pembayaran_psb.php'));
+$cek(str_contains($bayarSrc, "audit_logger()->log('psb.pembayaran.batal_lunas'"), 'S3-12 K-6 alasan batal lunas dicatat di audit');
+$cek(strpos($bayarSrc, "if (\$act === 'batal' && (\$alasan === ''") !== false
+    && strpos($bayarSrc, "if (\$act === 'batal' && (\$alasan === ''") < strpos($bayarSrc, "UPDATE psb_pembayaran SET status_pembayaran='Belum Lunas'"), 'S3-12 F-2 alasan batal lunas divalidasi server sebelum UPDATE');
+$cek(str_contains($bayarSrc, 'id="form-batal-lunas"') && str_contains($bayarSrc, '<noscript>') && str_contains($bayarSrc, "'batal' => 1"), 'S3-12 F-2 alasan dapat diisi tanpa JavaScript');
 
 // S3-13 tautan Beranda dan peta menu
 $cek(str_contains($baca('app/Beranda/BerandaService.php'), "'/admin/admin_notifikasi.php?tab=gagal#pengiriman-gagal'"), 'S3-13 kartu notifikasi gagal membuka tab Pengiriman gagal');

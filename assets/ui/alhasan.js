@@ -935,6 +935,166 @@
         });
     });
 
+    /* --- Redesain Tahap 4: dialog formulir, alasan cepat, pemilih santri -- */
+    // Tindakan yang membawa formulir (I-5, J-1): <details data-ah-dialog>.
+    // Tanpa JavaScript formulir terbuka di tempat; dengan JavaScript ia
+    // dipindah ke <dialog> modal dan dikembalikan saat ditutup, sehingga
+    // isian dan validasi HTML tetap milik formulir yang sama.
+    qsa('details[data-ah-dialog]').forEach(function (details) {
+        var summary = details.querySelector('summary');
+        var body = details.querySelector('.ah-act__body');
+        if (!summary || !body || typeof HTMLDialogElement === 'undefined' || !HTMLDialogElement.prototype.showModal) { return; }
+        var box = null;
+        function open() {
+            if (!box) {
+                box = el('dialog', 'ah-dialog ah-dialog--form');
+                var title = body.querySelector('.ah-act__title');
+                if (title && title.id) { box.setAttribute('aria-labelledby', title.id); }
+                doc.body.appendChild(box);
+                box.addEventListener('close', function () {
+                    details.appendChild(body);
+                    details.open = false;
+                    summary.focus();
+                });
+                box.addEventListener('click', function (event) {
+                    if (event.target === box) { box.close(); }
+                });
+            }
+            box.appendChild(body);
+            box.showModal();
+            var first = body.querySelector('[aria-invalid="true"], textarea, select, input:not([type="hidden"])');
+            if (first) { first.focus(); }
+        }
+        summary.addEventListener('click', function (event) {
+            event.preventDefault();
+            open();
+        });
+        qsa('[data-ah-dialog-close]', body).forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                if (box && box.open) { box.close(); }
+            });
+        });
+        // Setelah validasi server gagal, formulirnya langsung dibuka lagi.
+        if (details.open) { details.open = false; open(); }
+    });
+    // Tautan pemicu tindakan dari tempat lain (bilah bawah HP).
+    qsa('[data-ah-open-dialog]').forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            var target = doc.getElementById(link.getAttribute('data-ah-open-dialog'));
+            var summary = target && target.querySelector('summary');
+            if (summary) { event.preventDefault(); summary.click(); }
+        });
+    });
+
+    // Alasan cepat (keputusan M): hanya mengisi AWAL teks alasan, yang tetap
+    // dapat diubah. Tidak ada isian atau kolom database tambahan.
+    qsa('[data-ah-prefix]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var target = doc.getElementById(button.getAttribute('data-ah-prefix-target'));
+            if (!target) { return; }
+            var prefixes = qsa('[data-ah-prefix]', button.parentNode).map(function (b) { return b.getAttribute('data-ah-prefix'); });
+            var value = target.value;
+            prefixes.forEach(function (prefix) {
+                if (value.indexOf(prefix) === 0) { value = value.slice(prefix.length); }
+            });
+            target.value = button.getAttribute('data-ah-prefix') + value.replace(/^\s+/, '');
+            qsa('[data-ah-prefix]', button.parentNode).forEach(function (b) { b.setAttribute('aria-pressed', b === button ? 'true' : 'false'); });
+            target.focus();
+            target.setSelectionRange(target.value.length, target.value.length);
+        });
+    });
+
+    // Kotak pilih yang dapat dicari: isian teks menyaring <option>.
+    qsa('input[data-ah-option-filter]').forEach(function (input) {
+        var select = doc.getElementById(input.getAttribute('data-ah-option-filter'));
+        if (!select) { return; }
+        input.hidden = false;
+        var options = qsa('option', select).filter(function (option) { return option.value !== ''; });
+        input.addEventListener('input', function () {
+            var term = normal(input.value);
+            var shown = 0;
+            options.forEach(function (option) {
+                var match = term === '' || normal(option.textContent).indexOf(term) !== -1;
+                option.hidden = !match;
+                option.disabled = !match && !option.selected;
+                if (match) { shown++; }
+            });
+            var status = doc.getElementById(input.getAttribute('aria-describedby') || '');
+            if (status) { status.textContent = term === '' ? '' : shown + ' santri cocok.'; }
+            if (shown === 1 && term !== '') {
+                var only = options.filter(function (option) { return !option.hidden; })[0];
+                if (select.value !== only.value) { select.value = only.value; select.dispatchEvent(new Event('change')); }
+            }
+        });
+    });
+
+    // Panel "Akan diteruskan ke" (I-4): murobi tujuan, durasi, jumlah izin
+    // semester ini. Dibaca dari server yang memeriksa cakupan akun.
+    qsa('[data-ah-izin-info]').forEach(function (panel) {
+        var form = doc.getElementById(panel.getAttribute('data-ah-izin-info'));
+        if (!form) { return; }
+        var select = form.querySelector('select[name="santri_id"]');
+        var from = form.querySelector('input[name="tgl_izin"]');
+        var to = form.querySelector('input[name="tgl_kembali"]');
+        function set(key, text) {
+            var target = panel.querySelector('[data-ah-info="' + key + '"]');
+            if (target) { target.textContent = text; }
+        }
+        function durasi() {
+            if (!from || !to || !from.value || !to.value) { set('durasi', '—'); return; }
+            var a = new Date(from.value + 'T00:00:00');
+            var b = new Date(to.value + 'T00:00:00');
+            var days = Math.round((b - a) / 86400000) + 1;
+            set('durasi', days > 0 ? days + ' hari' : 'Tanggal kembali mendahului tanggal izin');
+        }
+        function santri() {
+            if (!select || !select.value) {
+                set('murobi', 'Pilih santri lebih dahulu');
+                set('jumlah', '—');
+                return;
+            }
+            set('murobi', 'Memuat…');
+            var url = panel.getAttribute('data-ah-izin-url') + (panel.getAttribute('data-ah-izin-url').indexOf('?') === -1 ? '?' : '&')
+                + 'santri_id=' + encodeURIComponent(select.value);
+            fetch(url, {credentials: 'same-origin', headers: {'Accept': 'application/json'}})
+                .then(function (response) { return response.json().then(function (json) { return {ok: response.ok, json: json}; }); })
+                .then(function (result) {
+                    if (!result.ok || !result.json || result.json.ok === false) { throw new Error((result.json && result.json.message) || 'Gagal'); }
+                    set('murobi', result.json.murobi);
+                    set('jumlah', result.json.jumlah);
+                })
+                .catch(function () {
+                    set('murobi', 'Belum dapat dibaca; server tetap menentukan saat dikirim');
+                    set('jumlah', '—');
+                });
+        }
+        if (select) { select.addEventListener('change', santri); }
+        if (from) { from.addEventListener('change', durasi); }
+        if (to) { to.addEventListener('change', durasi); }
+        durasi();
+        if (select && select.value && panel.getAttribute('data-ah-izin-loaded') !== '1') { santri(); }
+    });
+
+    // Penyaring daftar di halaman (J-2: cari santri peserta).
+    qsa('input[data-ah-list-filter]').forEach(function (input) {
+        var list = doc.getElementById(input.getAttribute('data-ah-list-filter'));
+        if (!list) { return; }
+        input.closest('[hidden]') && (input.closest('[hidden]').hidden = false);
+        input.addEventListener('input', function () {
+            var term = normal(input.value);
+            qsa('[data-ah-filter-text]', list).forEach(function (item) {
+                item.hidden = term !== '' && normal(item.getAttribute('data-ah-filter-text')).indexOf(term) === -1;
+            });
+        });
+    });
+
+    // Tombol cetak halaman (I-5, J-5).
+    qsa('[data-ah-print]').forEach(function (button) {
+        button.hidden = false;
+        button.addEventListener('click', function () { window.print(); });
+    });
+
     if (window.jQuery) {
         window.jQuery.ajaxSetup({headers: {'X-CSRF-Token': window.ALHASAN_CSRF}});
     }

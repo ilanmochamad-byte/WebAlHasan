@@ -778,6 +778,26 @@ try {
     $barisWa = $scalar("SELECT COUNT(*) FROM notifikasi_outbox WHERE pengajuan_id = ? AND kanal = 'WhatsApp'", [$pengajuanWa]);
     $assert($barisWa >= 1, 'KN-7e WhatsApp nyala: baris WhatsApp diantrekan untuk penerima bernomor');
 
+    // Redesain web Tahap 3 (keputusan AL, koreksi audit F-1): WhatsApp
+    // Ditangguhkan. Dispatcher bawaan TIDAK mengirim walaupun sakelar menyala.
+    $mataMataAl = new PenyediaMataMata(true);
+    $dispatcherKebijakan = new NotificationDispatcher(
+        $db,
+        $outbox,
+        $devices,
+        $protector,
+        new KlienPushTiruan(static fn (array $m): array => ['ok' => true, 'tickets' => [], 'kode' => 'OK', 'pesan' => '', 'permanen' => false]),
+        $mataMataAl,
+        $settings,
+        new WorkerLock($db)
+    );
+    $hasilAl = $dispatcherKebijakan->run(NotificationChannel::WHATSAPP, 20);
+    $assert($hasilAl['dijalankan'] === false && $mataMataAl->panggilanSend === 0
+        && $scalar("SELECT COUNT(*) FROM notifikasi_outbox WHERE pengajuan_id = ? AND kanal = 'WhatsApp' AND status = 'Queued'", [$pengajuanWa]) === $barisWa,
+        'KN-7al Dispatcher bawaan tidak mengirim WhatsApp Ditangguhkan walau sakelar menyala; antrean tetap');
+
+    // Mekanisme adapter (kirim, gagal, backoff, dedup) tetap diuji dengan
+    // dispatcher yang SECARA EKSPLISIT tidak menangguhkan kanal apa pun.
     $dispatcherFake = static fn (WhatsAppProvider $provider): NotificationDispatcher => new NotificationDispatcher(
         $db,
         $outbox,
@@ -786,7 +806,8 @@ try {
         new KlienPushTiruan(static fn (array $m): array => ['ok' => true, 'tickets' => [], 'kode' => 'OK', 'pesan' => '', 'permanen' => false]),
         $provider,
         $settings,
-        new WorkerLock($db)
+        new WorkerLock($db),
+        []
     );
 
     $hasilKirim = $dispatcherFake($fakeOk)->run(NotificationChannel::WHATSAPP, 20);
@@ -853,8 +874,19 @@ try {
     )?->fetch_assoc();
     $idPermanen = (int) ($barisPermanen['id'] ?? 0);
     $totalSebelumRetry = $scalar('SELECT COUNT(*) FROM notifikasi_outbox');
-    $hasilRetry = $adminService->cobaUlang($adminUser, $idPermanen, $meta);
-    $assert($hasilRetry['diantrekan_ulang'] === true, 'KN-7p Admin dapat mengantrekan ulang baris gagal');
+    // Keputusan AL: layanan admin menolak mengantrekan ulang WhatsApp
+    // Ditangguhkan; baris tetap Failed. Mekanisme "baris yang sama" diuji pada
+    // repositori yang dipakai layanan untuk kanal yang tidak ditangguhkan.
+    $kodeRetry = 0;
+    try {
+        $adminService->cobaUlang($adminUser, $idPermanen, $meta);
+    } catch (NotificationException $exception) {
+        $kodeRetry = $exception->status();
+    }
+    $assert($kodeRetry === 409 && $scalar("SELECT COUNT(*) FROM notifikasi_outbox WHERE id = ? AND status = 'Failed'", [$idPermanen]) === 1,
+        'KN-7al2 Percobaan ulang WhatsApp Ditangguhkan ditolak 409; baris tetap Failed');
+    $hasilRetry = ['diantrekan_ulang' => notification_repository()->requeue($idPermanen)];
+    $assert($hasilRetry['diantrekan_ulang'] === true, 'KN-7p Baris gagal dapat diantrekan ulang (mekanisme repositori)');
     $assert(
         $scalar('SELECT COUNT(*) FROM notifikasi_outbox') === $totalSebelumRetry,
         'KN-7q Percobaan ulang tidak menambah baris outbox baru'

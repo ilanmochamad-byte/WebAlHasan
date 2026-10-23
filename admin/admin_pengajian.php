@@ -156,32 +156,43 @@ foreach ($years as $year) {
 }
 
 $filters = [
-    'q' => (string) ($_GET['q'] ?? ''),
+    'q' => is_string($_GET['q'] ?? null) ? mb_substr(trim((string) $_GET['q']), 0, 100) : '',
     'year_id' => $_GET['year_id'] ?? ($activeYear['id'] ?? ''),
     // Guru tidak dapat melihat jadwal guru lain: nilai filter dipaksa di server.
     'teacher_id' => $bolehKelolaJadwal ? ($_GET['teacher_id'] ?? '') : $guruId,
     'class_id' => $_GET['class_id'] ?? '',
-    'day' => (string) ($_GET['day'] ?? ''),
-    'state' => (string) ($_GET['state'] ?? 'active'),
+    'day' => in_array($_GET['day'] ?? '', $service->days(), true) ? (string) $_GET['day'] : '',
+    'state' => in_array($_GET['state'] ?? '', ['active', 'inactive', 'archived', 'all'], true) ? (string) $_GET['state'] : 'active',
     'page' => max(1, (int) ($_GET['page'] ?? 1)),
 ];
 
 $result = ['rows' => [], 'total' => 0];
+$mingguan = [];
 $selected = null;
 $mode = (string) ($_GET['action'] ?? '');
+$tampilan = ($_GET['tampilan'] ?? '') === 'daftar' ? 'daftar' : 'mingguan';
 $scheduleOptions = [];
 $meetings = [];
+$meetingResult = ['rows' => [], 'total' => 0, 'page' => 1];
 $selectedMeeting = null;
+$kehadiran = null;
+$labelIzin = [];
 $selectedScheduleId = (int) ($_GET['schedule_id'] ?? 0);
+$meetingQuery = '';
 $galat = null;
 
 if ($tab === 'jadwal') {
     if (!$bolehKelolaJadwal && $guruId < 1) {
         // Akun guru tanpa relasi data guru tidak boleh melihat jadwal siapa pun.
-        $result = ['rows' => [], 'total' => 0];
         $galat = 'Akun Anda ber-role guru tetapi belum terhubung ke data guru mana pun, sehingga belum ada jadwal yang dapat ditampilkan. Hubungi admin.';
     } else {
-        $result = $service->list($filters, $filters['page']);
+        if ($tampilan === 'daftar') {
+            $result = $service->list($filters, $filters['page']);
+        } else {
+            // Tampilan mingguan memuat seluruh jadwal semester terpilih
+            // (aktif dan nonaktif, tanpa arsip) dengan cakupan yang sama.
+            $mingguan = $service->list(['year_id' => $filters['year_id'], 'teacher_id' => $filters['teacher_id'], 'class_id' => $filters['class_id'], 'state' => 'all_unarchived'], 1, 500)['rows'];
+        }
         if (isset($_GET['id'])) {
             $kandidat = $service->find((int) $_GET['id']);
             // Guru hanya boleh membuka detail jadwal miliknya sendiri.
@@ -207,50 +218,63 @@ if ($tab === 'jadwal') {
     } catch (ScheduleException $exception) {
         Denial::render('Pertemuan ini bukan pertemuan Anda.', $exception->getMessage());
     }
+    if ($selectedMeeting !== null) {
+        // Keputusan R: kehadiran dicatat lewat aplikasi; web hanya membaca.
+        // Pembacaan memakai layanan laporan yang memeriksa kepemilikan lagi.
+        try {
+            $kehadiran = report_service()->meeting((int) $selectedMeeting['id'], $currentUser);
+        } catch (App\Api\ApiException) {
+            $kehadiran = null;
+        }
+        // Keputusan S: santri yang izinnya disetujui pada tanggal pertemuan
+        // hanya diberi label; status kehadiran tidak diisi otomatis.
+        $labelIzin = izin_service()->approvedCovering(
+            array_map(static fn (array $p): int => (int) $p['santri_id'], $selectedMeeting['participants']),
+            (string) $selectedMeeting['tanggal_pertemuan']
+        );
+    }
 }
 
 // ---------------------------------------------------------------------------
 // Tampilan
 // ---------------------------------------------------------------------------
-$konteks = ah_query(['tab' => null, 'action' => null, 'id' => null, 'page' => null]);
-$tabs = [
-    [
-        'label' => 'Jadwal',
-        'url' => app_url('/admin/admin_pengajian.php') . '?tab=jadwal' . ($konteks === '' ? '' : '&' . $konteks),
-        'active' => $tab === 'jadwal',
-    ],
-    [
-        'label' => 'Pertemuan',
-        'url' => app_url('/admin/admin_pengajian.php') . '?tab=pertemuan'
-            . ($selectedScheduleId > 0 ? '&schedule_id=' . $selectedScheduleId : ''),
-        'active' => $tab === 'pertemuan',
-    ],
-];
-
+$heading = 'Pengajian';
+$deskripsi = $bolehKelolaJadwal
+    ? 'Jadwal adalah pola mingguan; pertemuan adalah pelaksanaannya pada tanggal tertentu.'
+    : 'Jadwal mengajar Anda dan pertemuan yang Anda buka. Pengelolaan jadwal adalah kewenangan admin.';
 $aksi = '';
-if ($tab === 'jadwal' && $bolehKelolaJadwal) {
-    $aksi = '<a class="btn btn-primary" href="' . ah_e(app_url('/admin/admin_pengajian.php?tab=jadwal&action=create')) . '">Tambah jadwal</a>';
+$crumbs = [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => 'Pengajian', 'url' => app_url('/admin/admin_pengajian.php')]];
+if ($tab === 'jadwal') {
+    $crumbs[] = ['label' => 'Jadwal'];
+    if ($bolehKelolaJadwal) {
+        $aksi = '<a class="btn btn-primary" href="?' . ah_e(ah_query(['tab' => 'jadwal', 'action' => 'create', 'id' => null])) . '"><i class="fas fa-plus" aria-hidden="true"></i> Tambah jadwal</a>';
+    }
+} elseif ($selectedMeeting !== null) {
+    $heading = $selectedMeeting['fan_ilmu'] . ' · ' . $selectedMeeting['nama_kelas'];
+    $jadwalPertemuan = $service->find((int) $selectedMeeting['jadwal_id']);
+    $deskripsi = ah_tanggal((string) $selectedMeeting['tanggal_pertemuan']) . ' · ' . ($jadwalPertemuan['waktu_sholat'] ?? substr((string) $selectedMeeting['waktu_mulai'], 0, 5))
+        . ' · ' . $selectedMeeting['tempat'] . ' · ' . $selectedMeeting['nama_guru'];
+    $crumbs[] = ['label' => 'Pertemuan', 'url' => app_url('/admin/admin_pengajian.php?tab=pertemuan')];
+    $crumbs[] = ['label' => $selectedMeeting['fan_ilmu'] . ' · ' . ah_tanggal((string) $selectedMeeting['tanggal_pertemuan'], false, false)];
+} else {
+    $crumbs[] = ['label' => 'Pertemuan'];
+    if ($scheduleOptions !== []) {
+        $aksi = '<a class="btn btn-primary" href="?' . ah_e(ah_query(['tab' => 'pertemuan', 'action' => 'create', 'id' => null])) . '"><i class="fas fa-plus" aria-hidden="true"></i> Buka pertemuan</a>';
+    }
 }
 if ($bolehAntreanIzin) {
     $aksi .= '<a class="btn btn-outline-primary" href="'
-        . ah_e(app_url('/portal/izin_antrean.php?mode=' . Capabilities::MUROBI)) . '">Antrean perizinan</a>';
+        . ah_e(app_url('/portal/izin_antrean.php?mode=' . Capabilities::MUROBI)) . '">Antrean izin</a>';
 }
 
 ah_page_open([
-    'title' => 'Pengajian',
-    'heading' => 'Pengajian',
-    'description' => $bolehKelolaJadwal
-        ? 'Jadwal adalah pola mingguan; pertemuan adalah pelaksanaannya pada tanggal tertentu. Keduanya tersimpan terpisah dan tetap saling tertaut.'
-        : 'Jadwal mengajar Anda dan pertemuan yang Anda buka. Pengelolaan jadwal adalah kewenangan admin.',
+    'title' => $heading,
+    'heading' => $heading,
+    'description' => $deskripsi,
     'user' => $currentUser,
     'active' => 'pengajian',
-    'tabs' => $tabs,
     'actions' => $aksi,
-    'breadcrumbs' => [
-        ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
-        ['label' => 'Pengajian'],
-        ['label' => $tab === 'jadwal' ? 'Jadwal' : 'Pertemuan'],
-    ],
+    'breadcrumbs' => $crumbs,
 ]);
 
 if ($galat !== null) {

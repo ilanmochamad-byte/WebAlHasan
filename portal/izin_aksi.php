@@ -58,8 +58,12 @@ $version = isset($_POST['version']) && $_POST['version'] !== '' ? (int) $_POST['
 $meta = portal_request_meta();
 $workflow = izin_workflow_service();
 
-$kembali = static function (int $id) use ($mode): never {
-    $target = app_url('/portal/izin_detail.php') . '?id=' . $id
+// Keputusan dari layar antrean (I-3, keputusan N) kembali ke antrean dengan
+// detail yang sama tetap terbuka; tujuan lain tidak diterima.
+$keAntrean = ($_POST['kembali'] ?? '') === 'antrean';
+$kembali = static function (int $id) use ($mode, $keAntrean, $aksi): never {
+    $halaman = $keAntrean && $aksi === 'putuskan' ? '/portal/izin_antrean.php' : '/portal/izin_detail.php';
+    $target = app_url($halaman) . '?id=' . $id
         . ($mode === null ? '' : '&mode=' . rawurlencode($mode));
     header('Location: ' . $target, true, 303);
     exit;
@@ -106,7 +110,8 @@ try {
                 'sukses',
                 ($hasil['idempotent_replay'] ?? false)
                     ? 'Keputusan sudah tercatat sebelumnya; permintaan ulang tidak membuat keputusan kedua.'
-                    : 'Keputusan ' . (string) $hasil['status'] . ' tersimpan sebagai ' . (string) $hasil['kapasitas'] . '.'
+                    : 'Izin #' . $pengajuanId . ' ' . strtolower((string) $hasil['status']) . ' (' . (string) $hasil['kapasitas'] . ').'
+                        . ' Pengurus dan wali santri menerima notifikasi keputusan sesuai kanal yang aktif.'
             );
             $kembali($pengajuanId);
 
@@ -163,6 +168,9 @@ try {
         . portal_e($exception->getMessage()) . '</div>';
     echo '<div class="d-flex gap-2">';
     if ($aksi === 'buat' && in_array($exception->status(), [409,422], true)) { echo '<a class="btn btn-primary" href="' . portal_e(app_url('/portal/izin_buat.php') . '?mode=' . rawurlencode($mode ?? 'admin') . '&santri_id=' . (int)($_POST['santri_id']??0) . '&page=' . max(1,(int)($_POST['return_page']??1)) . '&q=' . rawurlencode(is_string($_POST['return_q']??null) ? mb_substr($_POST['return_q'],0,200) : '')) . '">Perbaiki isian pengajuan</a>'; }
+    if ($pengajuanId > 0 && $keAntrean) {
+        echo '<a class="btn btn-primary" href="' . portal_e(app_url('/portal/izin_antrean.php') . '?id=' . $pengajuanId . ($mode === null ? '' : '&mode=' . rawurlencode($mode))) . '">Kembali ke antrean</a>';
+    }
     if ($pengajuanId > 0) {
         echo '<a class="btn btn-outline-primary" href="' . portal_e(app_url('/portal/izin_detail.php') . '?id=' . $pengajuanId) . '">Buka detail pengajuan</a>';
     }

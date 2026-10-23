@@ -41,7 +41,7 @@ final class Navigation
         Peran::ADMIN => [2, ['izin', 'santri']],
         Peran::GURU => [2, ['pengajian', 'nilai', 'antrean', 'sikap_binaan']],
         Peran::PENGURUS => [2, ['izin', 'sikap', 'pembinaan']],
-        Peran::PENDIDIKAN => [1, ['rapor', 'pengganti']],
+        Peran::PENDIDIKAN => [1, ['rapor', 'pengganti', 'absensi']],
         Peran::ORANG_TUA => [3, ['izin_anak', 'rapor_wali', 'info']],
     ];
 
@@ -227,11 +227,19 @@ final class Navigation
             $akademik[] = self::item('pengganti', 'Nilai pengganti', '/portal/nilai_semester.php?pengganti=1', 'fa-pen-to-square', ['nilai_semester.php?pengganti=1'], [], 'Pengganti');
         }
 
-        // Menu "Laporan absensi pengajian" (keputusan H) menyertai perubahan
-        // penjaga laporan di Tahap 4, karena menambah hak akses.
+        // Keputusan H (Tahap 4): laporan kehadiran seluruh jadwal, hanya-baca.
+        // Hak bacanya ditegakkan `admin/_laporan_guard.php` dan cakupan
+        // laporan (`ReportFilter::forUser`), bukan oleh menu ini.
+        $laporan = [];
+        if ($c->own(PenugasanJenis::CAP_RAPOR_VERIFIKASI)) {
+            $laporan[] = self::item('absensi', 'Laporan absensi pengajian', '/admin/admin_laporan_absensi.php', 'fa-clipboard-check',
+                ['admin_laporan_absensi.php', 'laporan_absensi_detail.php', 'laporan_absensi_cetak.php', 'export_laporan_absensi.php'], [], 'Absensi');
+        }
+
         return [
             ['label' => '', 'items' => [self::beranda()]],
             ['label' => 'Akademik', 'items' => array_values($akademik)],
+            ['label' => 'Laporan', 'items' => $laporan],
         ];
     }
 
@@ -243,10 +251,12 @@ final class Navigation
     {
         $items = [self::beranda()];
         if ($c->izin(Capabilities::ORANG_TUA)) {
-            $items[] = self::item('izin_anak', 'Izin anak', '/portal/izin.php', 'fa-file-shield', [], [
-                self::tab('Daftar izin', '/portal/izin.php', ['izin.php', 'izin_detail.php', 'izin_antrean.php']),
-                self::tab('Ringkasan', '/portal/izin_ringkasan.php', ['izin_ringkasan.php']),
-                self::tab('Laporan', '/portal/laporan.php', ['laporan.php', 'laporan_cetak.php', 'laporan_csv.php']),
+            // I-7 (keputusan O): tab Aktif dan Riwayat. Ringkasan dan laporan
+            // lama tetap dapat dibuka dan ditempatkan di bawah menu ini.
+            $items[] = self::item('izin_anak', 'Izin anak', '/portal/izin.php', 'fa-file-shield',
+                ['izin_ringkasan.php', 'laporan.php', 'laporan_cetak.php', 'laporan_csv.php', 'izin_antrean.php'], [
+                self::tab('Aktif', '/portal/izin.php', ['izin.php', 'izin_detail.php']),
+                self::tab('Riwayat', '/portal/izin.php?tab=riwayat', ['izin.php?tab=riwayat']),
             ], 'Izin');
         }
         if ($c->raporWali()) {
@@ -288,8 +298,10 @@ final class Navigation
     /** @return array<string, mixed> */
     private static function pengajian(): array
     {
+        // Tab J-1 s.d. J-5 (cetak biru): Jadwal · Pertemuan · Kehadiran.
         return self::item('pengajian', 'Pengajian', '/admin/admin_pengajian.php', 'fa-book-open', [], [
-            self::tab('Jadwal & pertemuan', '/admin/admin_pengajian.php', ['admin_pengajian.php', 'admin_jadwal_ngaji.php', 'pertemuan_pengajian.php']),
+            self::tab('Jadwal', '/admin/admin_pengajian.php', ['admin_pengajian.php', 'admin_jadwal_ngaji.php']),
+            self::tab('Pertemuan', '/admin/admin_pengajian.php?tab=pertemuan', ['admin_pengajian.php?tab=pertemuan', 'pertemuan_pengajian.php']),
             self::tab('Kehadiran', '/admin/admin_laporan_absensi.php', ['admin_laporan_absensi.php', 'laporan_absensi_detail.php', 'laporan_absensi_cetak.php', 'export_laporan_absensi.php']),
         ], 'Pengajian');
     }

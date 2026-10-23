@@ -268,14 +268,15 @@ function notif_menu_item(string $label, array $fields, array $extra = []): array
                 <thead><tr><th scope="col"><input class="form-check-input" type="checkbox" data-ah-select-all aria-label="Pilih semua pada halaman ini"></th><th scope="col">Peristiwa</th><th scope="col">Kanal</th><th scope="col">Penerima</th><th scope="col">Percobaan</th><th scope="col" class="ah-col-secondary">Galat aman</th><th scope="col">Tindakan</th></tr></thead>
                 <tbody>
                 <?php foreach ($kegagalan['items'] as $baris): ?>
+                    <?php $tertahan = NotificationChannel::ditangguhkan((string) $baris['kanal']); ?>
                     <tr>
-                        <td><input class="form-check-input" type="checkbox" name="outbox_ids[]" value="<?= (int) $baris['id'] ?>" data-ah-select data-ah-label="<?= ah_e($baris['event_label'] . ' · ' . ($baris['penerima_nama'] ?? 'Akun #' . (int) $baris['penerima_user_id'])) ?>" aria-label="Pilih <?= ah_e($baris['event_label']) ?>"></td>
+                        <td><?php if (!$tertahan): ?><input class="form-check-input" type="checkbox" name="outbox_ids[]" value="<?= (int) $baris['id'] ?>" data-ah-select data-ah-label="<?= ah_e($baris['event_label'] . ' · ' . ($baris['penerima_nama'] ?? 'Akun #' . (int) $baris['penerima_user_id'])) ?>" aria-label="Pilih <?= ah_e($baris['event_label']) ?>"><?php endif; ?></td>
                         <td><?= ah_e($baris['event_label']) ?><?php if ($baris['pengajuan_id'] !== null): ?><span class="ah-cell-sub">Pengajuan izin #<?= (int) $baris['pengajuan_id'] ?></span><?php endif; ?></td>
                         <td><?= ah_e(NotificationChannel::label((string) $baris['kanal'])) ?></td>
                         <td><?= ah_e($baris['penerima_nama'] ?? ('Akun #' . (int) $baris['penerima_user_id'])) ?></td>
                         <td><?= (int) $baris['percobaan'] ?>/<?= (int) $baris['maksimum_percobaan'] ?><?= $baris['gagal_permanen'] ? ' ' . ah_badge('Permanen', 'danger') : '' ?></td>
                         <td class="ah-col-secondary"><code><?= ah_e($baris['error_kode'] ?? '-') ?></code><span class="ah-cell-sub"><?= ah_e($baris['error_aman'] ?? '-') ?></span></td>
-                        <td><button class="btn btn-sm btn-outline-primary" type="submit" form="coba-ulang-<?= (int) $baris['id'] ?>">Coba ulang</button></td>
+                        <td><?php if ($tertahan): ?><?= ah_status('Ditangguhkan') ?><?php else: ?><button class="btn btn-sm btn-outline-primary" type="submit" form="coba-ulang-<?= (int) $baris['id'] ?>">Coba ulang</button><?php endif; ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -284,7 +285,7 @@ function notif_menu_item(string $label, array $fields, array $extra = []): array
         <?= ah_selection_bar('<button class="btn btn-primary btn-sm" type="submit">Coba ulang yang dipilih</button>') ?>
         <noscript><p class="mt-2"><button class="btn btn-outline-primary" type="submit">Coba ulang yang dipilih</button></p></noscript>
     </form>
-    <?php foreach ($kegagalan['items'] as $baris): ?>
+    <?php foreach (array_filter($kegagalan['items'], static fn (array $b): bool => !NotificationChannel::ditangguhkan((string) $b['kanal'])) as $baris): ?>
         <form id="coba-ulang-<?= (int) $baris['id'] ?>" method="post" action="<?= ah_e($alamat) ?>" hidden>
             <?= Csrf::input() ?>
             <input type="hidden" name="aksi" value="coba_ulang">

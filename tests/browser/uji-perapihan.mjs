@@ -179,12 +179,14 @@ try {
     }
 
     // ---------------------------------------------------------------- B-4
+    // Redesain web Tahap 4: Jadwal · Pertemuan · Kehadiran kini tab modul
+    // (kerangka bersama); penyajian laporan berupa segmen, bukan pilihan.
     await page.goto(`${BASE}/admin/admin_pengajian.php?tab=jadwal`, { waitUntil: 'domcontentloaded' });
-    const tabAktifJadwal = await page.locator('.ah-tabs:not(.ah-tabs--module) a[aria-current="page"]').textContent();
+    const tabAktifJadwal = await page.locator('.ah-tabs a[aria-current="page"]').first().textContent();
     catat(`B-4a [${layar.nama}] Tab Jadwal ditandai aktif`, (tabAktifJadwal ?? '').includes('Jadwal'), tabAktifJadwal ?? '');
-    await page.click('.ah-tabs:not(.ah-tabs--module) a:has-text("Pertemuan")');
+    await page.locator('.ah-tabs a:has-text("Pertemuan")').first().click();
     await page.waitForLoadState('domcontentloaded');
-    const tabAktifPertemuan = await page.locator('.ah-tabs:not(.ah-tabs--module) a[aria-current="page"]').textContent();
+    const tabAktifPertemuan = await page.locator('.ah-tabs a[aria-current="page"]').first().textContent();
     catat(
       `B-4b [${layar.nama}] Berpindah ke tab Pertemuan tanpa keluar dari modul`,
       (tabAktifPertemuan ?? '').includes('Pertemuan') && page.url().includes('admin_pengajian.php'),
@@ -195,11 +197,12 @@ try {
 
     // ---------------------------------------------------------------- B-5
     await page.goto(`${BASE}/admin/admin_laporan_absensi.php`, { waitUntil: 'domcontentloaded' });
-    const penyajianAwal = await page.locator('#subject_scope').inputValue();
+    const penyajian = async () => ((await page.locator('.ah-seg a[aria-current="page"]').textContent()) ?? '').trim().toLowerCase();
+    const penyajianAwal = await penyajian();
     catat(`B-5a [${layar.nama}] Penyajian awal laporan adalah Santri`, penyajianAwal === 'santri', penyajianAwal);
-    await page.click('.ah-tabs:not(.ah-tabs--module) a:has-text("Gabungan")');
+    await page.click('.ah-seg a:has-text("Gabungan")');
     await page.waitForLoadState('domcontentloaded');
-    const penyajianGabungan = await page.locator('#subject_scope').inputValue();
+    const penyajianGabungan = await penyajian();
     catat(`B-5b [${layar.nama}] Tab Gabungan mengubah penyajian`, penyajianGabungan === 'gabungan', penyajianGabungan);
     catat(`B-5c [${layar.nama}] Laporan tidak melebar`, !(await halamanMelebar(page)));
     await bidik(page, `${layar.nama}-laporan-gabungan`);

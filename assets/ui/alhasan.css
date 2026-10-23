@@ -1640,3 +1640,176 @@ body.ah-masuk { min-height: 100dvh; background: var(--ah-green-050); }
     .ah-matrix th[scope="row"] { position: static; }
 }
 .ah-list-plain .ah-cell-sub { display: block; color: var(--ah-ink-muted); font-size: .8rem; font-weight: 400; }
+
+/* ==========================================================================
+   Redesain Tahap 4 — perizinan, pengajian, cetak (I-1 s.d. I-7, J-1 s.d. J-6)
+   ========================================================================== */
+
+/* Tata letak dua kolom: isi utama + kolom samping. HP menumpuk. */
+.ah-split { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); align-items: start; margin-bottom: 1rem; }
+.ah-split > * { min-width: 0; }
+.ah-split .ah-card { margin-bottom: 0; }
+.ah-split__col { display: grid; gap: 1rem; min-width: 0; }
+@media (min-width: 992px) {
+    .ah-split { grid-template-columns: minmax(0, 1.6fr) minmax(16rem, 1fr); }
+    .ah-split--even { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+/* Daftar + detail berdampingan (I-3): mulai tablet. */
+@media (min-width: 768px) {
+    .ah-split--list { grid-template-columns: minmax(15rem, 1fr) minmax(0, 1.3fr); }
+}
+@media (max-width: 767.98px) {
+    /* HP: bila detail dibuka, daftar disembunyikan; tombol Kembali tersedia. */
+    .ah-split--list.has-detail > .ah-split__list { display: none; }
+}
+.ah-only-split-sm { display: none; }
+@media (max-width: 767.98px) { .ah-only-split-sm { display: inline-flex; } }
+
+/* Segmen (Mingguan/Daftar, Santri/Guru/Gabungan). */
+.ah-seg { display: inline-flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--ah-line-strong); border-radius: 999px; padding: 3px; background: var(--ah-surface); margin-bottom: 1rem; max-width: 100%; }
+.ah-seg a { display: inline-flex; align-items: center; min-height: calc(var(--ah-touch) - 6px); padding: .25rem .95rem; border-radius: 999px; color: var(--ah-ink-soft); text-decoration: none; font-weight: 600; font-size: .9rem; }
+.ah-seg a:hover { color: var(--ah-green-800); background: var(--ah-green-050); }
+.ah-seg a[aria-current="page"] { background: var(--ah-green-700); color: #fff; }
+
+/* Linimasa riwayat. */
+.ah-tl { list-style: none; margin: 0; padding: 0 0 0 1.1rem; border-left: 2px solid var(--ah-line); }
+.ah-tl__item { position: relative; display: flex; flex-direction: column; gap: .1rem; padding: 0 0 .9rem .35rem; overflow-wrap: anywhere; }
+.ah-tl__item::before { content: ""; position: absolute; left: -1.62rem; top: .3rem; width: .8rem; height: .8rem; border-radius: 50%; background: var(--ah-surface); border: 2px solid var(--ah-green-600); }
+.ah-tl__item--warn::before { border-color: var(--ah-warn); }
+.ah-tl__item--danger::before { border-color: var(--ah-danger); }
+.ah-tl__item:last-child { padding-bottom: 0; }
+.ah-tl__meta { font-size: .8rem; color: var(--ah-ink-muted); }
+.ah-tl__title { font-weight: 600; }
+.ah-tl__text { color: var(--ah-ink-soft); font-size: .92rem; }
+
+/* Langkah alur vertikal (I-1). */
+.ah-vsteps { list-style: none; margin: 0; padding: 0; counter-reset: ah-vstep; display: grid; gap: .55rem; }
+.ah-vsteps li { counter-increment: ah-vstep; display: flex; align-items: flex-start; gap: .6rem; }
+.ah-vsteps li::before { content: counter(ah-vstep); flex: 0 0 auto; display: inline-grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--ah-green-100); color: var(--ah-green-900); font-weight: 700; font-size: .85rem; }
+
+/* Tindakan dengan formulir dialog (details[data-ah-dialog]). */
+.ah-acts { display: grid; gap: .55rem; }
+.ah-act > summary { list-style: none; display: flex; align-items: center; justify-content: center; gap: .4rem; width: 100%; min-height: var(--ah-touch); }
+.ah-act > summary::-webkit-details-marker { display: none; }
+.ah-act[open] > summary { margin-bottom: .6rem; }
+.ah-act__body { border: 1px solid var(--ah-line); border-radius: var(--ah-radius-sm); padding: .85rem; background: var(--ah-canvas); }
+.ah-act__title { font-size: 1.05rem; font-weight: 700; margin: 0 0 .6rem; }
+.ah-dialog--form { width: min(560px, calc(100vw - 2rem)); }
+.ah-dialog--form .ah-act__body { border: 0; background: transparent; padding: 1.25rem 1.25rem 1rem; }
+.ah-act__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; margin-top: .85rem; }
+.ah-act__actions .btn { min-height: var(--ah-touch); }
+
+/* Pita mode admin (I-4). */
+.ah-ribbon { display: flex; gap: .6rem; align-items: flex-start; background: var(--ah-warn-bg); color: var(--ah-warn); border: 1px solid #f0d49a; border-radius: var(--ah-radius-sm); padding: .6rem .85rem; margin-bottom: 1rem; font-size: .92rem; }
+
+/* Alasan cepat (I-4): hanya tampil bila JavaScript aktif. */
+.ah-quick { display: none; flex-wrap: wrap; gap: .4rem; margin-bottom: .5rem; }
+.ah-js .ah-quick { display: flex; }
+.ah-quick .btn { min-height: var(--ah-touch); border-radius: 999px; }
+
+/* Daftar antrean (I-3) dan kartu izin orang tua (I-7). */
+.ah-qlist { list-style: none; margin: 0; padding: 0; }
+.ah-qlist li + li { border-top: 1px solid var(--ah-line); }
+.ah-qlist a { display: flex; justify-content: space-between; align-items: flex-start; gap: .75rem; padding: .7rem .9rem; min-height: var(--ah-touch); color: inherit; text-decoration: none; }
+.ah-qlist a:hover { background: var(--ah-green-050); }
+.ah-qlist a[aria-current="true"] { background: var(--ah-green-050); box-shadow: inset 4px 0 0 var(--ah-green-700); }
+.ah-qlist a.is-late { box-shadow: inset 4px 0 0 var(--ah-warn); }
+.ah-qlist a.is-late[aria-current="true"] { background: var(--ah-warn-bg); }
+.ah-qlist__main { display: flex; flex-direction: column; min-width: 0; }
+.ah-qlist__main b { font-weight: 600; overflow-wrap: anywhere; }
+.ah-qlist__main small { color: var(--ah-ink-muted); }
+.ah-qlist .ah-badge { flex: 0 0 auto; }
+.ah-cards { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); margin-bottom: 1rem; }
+.ah-icard { display: flex; flex-direction: column; gap: .35rem; background: var(--ah-surface); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); padding: .9rem 1rem; color: inherit; text-decoration: none; min-width: 0; }
+a.ah-icard:hover { border-color: var(--ah-green-600); box-shadow: 0 0 0 2px var(--ah-green-100); }
+.ah-icard__head { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; font-weight: 700; }
+.ah-icard__text { overflow-wrap: anywhere; }
+.ah-icard__meta { color: var(--ah-ink-muted); font-size: .88rem; overflow-wrap: anywhere; }
+
+/* Panel info "Akan diteruskan ke" (I-4). */
+.ah-info-list { margin: 0; display: grid; gap: .6rem; }
+.ah-info-list dt { font-size: .78rem; color: var(--ah-ink-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.ah-info-list dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+/* Jadwal mingguan (J-1): baris waktu × kolom hari. */
+.ah-week-wrap { overflow-x: auto; margin-bottom: 1rem; }
+.ah-week { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; background: var(--ah-surface); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); }
+.ah-week th, .ah-week td { border-bottom: 1px solid var(--ah-line); border-right: 1px solid var(--ah-line); padding: .4rem; vertical-align: top; }
+.ah-week thead th { background: var(--ah-green-050); font-size: .8rem; text-align: center; color: var(--ah-ink-soft); }
+.ah-week thead th.is-today { color: var(--ah-green-900); box-shadow: inset 0 -3px 0 var(--ah-green-700); }
+.ah-week th[scope="row"] { width: 7.5rem; font-size: .82rem; color: var(--ah-ink-soft); background: var(--ah-canvas); }
+.ah-week tr > :last-child { border-right: 0; }
+.ah-week tbody tr:last-child > * { border-bottom: 0; }
+.ah-block { display: flex; flex-direction: column; gap: .05rem; padding: .35rem .45rem; margin-bottom: .3rem; border-radius: 6px; background: var(--ah-green-050); border-left: 3px solid var(--ah-green-700); color: inherit; text-decoration: none; font-size: .78rem; overflow-wrap: anywhere; }
+.ah-block:hover { background: var(--ah-green-100); }
+.ah-block b { font-weight: 700; font-size: .82rem; }
+.ah-block--warn { background: var(--ah-warn-bg); border-left-color: var(--ah-warn); }
+.ah-block--off { background: var(--ah-canvas); border-left-color: var(--ah-line-strong); color: var(--ah-ink-muted); }
+.ah-daypick { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .75rem; }
+.ah-daypick a { display: inline-flex; align-items: center; justify-content: center; min-width: 3.2rem; min-height: var(--ah-touch); padding: .2rem .6rem; border: 1px solid var(--ah-line-strong); border-radius: 999px; color: var(--ah-ink-soft); text-decoration: none; font-weight: 600; background: var(--ah-surface); }
+.ah-daypick a[aria-current="page"] { background: var(--ah-green-700); border-color: var(--ah-green-700); color: #fff; }
+.ah-week--grid { display: none; }
+.ah-week--day { display: block; }
+@media (min-width: 992px) {
+    .ah-week--grid { display: block; }
+    .ah-week--day { display: none; }
+}
+
+/* Kartu peserta pertemuan (J-2). */
+.ah-people { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.ah-people li { display: flex; justify-content: space-between; align-items: center; gap: .75rem; padding: .55rem .9rem; border-top: 1px solid var(--ah-line); min-height: var(--ah-touch); }
+.ah-people li:first-child { border-top: 0; }
+.ah-people__main { display: flex; flex-direction: column; min-width: 0; }
+.ah-people__main b { font-weight: 600; overflow-wrap: anywhere; }
+.ah-people__main small { color: var(--ah-ink-muted); }
+.ah-people [hidden] { display: none !important; }
+.ah-sumline { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; padding: .7rem .9rem; border-bottom: 1px solid var(--ah-line); font-size: .92rem; }
+.ah-stepper { margin-bottom: 1rem; }
+
+/* Bilah tindakan bawah (J-2, I-3, I-4). Di HP menempel di atas bilah bawah. */
+.ah-actbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .6rem; background: var(--ah-surface); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); padding: .7rem .9rem; margin-bottom: 1rem; }
+.ah-actbar form { margin: 0; }
+.ah-actbar .btn { min-height: var(--ah-touch); }
+@media (max-width: 575.98px) {
+    .ah-actbar { position: sticky; bottom: calc(var(--ah-bottombar-h) + env(safe-area-inset-bottom, 0px)); z-index: 6; border-radius: 0; margin: 0 -.85rem 1rem; box-shadow: 0 -4px 12px rgba(16, 32, 24, .08); }
+    .ah-actbar > :last-child { flex: 1 1 100%; }
+    .ah-actbar .btn { flex: 1 1 0; justify-content: center; }
+    .ah-actbar__btns { display: flex; gap: .5rem; flex: 1 1 100%; }
+}
+.ah-actbar__btns { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+/* Bilah persentase bertumpuk per jadwal (J-4). */
+.ah-stack { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+.ah-stack li { display: grid; gap: .25rem; }
+.ah-stack__label { display: flex; justify-content: space-between; gap: .5rem; font-size: .85rem; }
+.ah-stack__label span:last-child { color: var(--ah-ink-muted); white-space: nowrap; }
+.ah-stack__bar { display: flex; height: .8rem; border-radius: 999px; overflow: hidden; background: var(--ah-canvas); }
+.ah-stack__bar > span { display: block; height: 100%; }
+.ah-stack__key { display: flex; flex-wrap: wrap; gap: .35rem .9rem; list-style: none; margin: .6rem 0 0; padding: 0; font-size: .8rem; color: var(--ah-ink-soft); }
+.ah-stack__key i { display: inline-block; width: .7rem; height: .7rem; border-radius: 3px; margin-right: .3rem; vertical-align: middle; }
+.ah-k-hadir { background: var(--ah-green-600); }
+.ah-k-terlambat { background: #c98a1b; }
+.ah-k-izin { background: var(--ah-info); }
+.ah-k-sakit { background: #7a63b8; }
+.ah-k-alpa { background: var(--ah-danger); }
+
+@media print {
+    .ah-seg, .ah-actbar, .ah-acts, .ah-quick, .ah-daypick { display: none !important; }
+    .ah-split { display: block; }
+    .ah-week--grid { display: block !important; }
+    .ah-week--day { display: none !important; }
+}
+
+/* Filter lanjutan di dalam bilah saring (I-2, I-6, J-4). */
+.ah-filter__more { flex: 1 1 100%; order: 10; border-top: 1px dashed var(--ah-line); padding-top: .4rem; }
+.ah-filter__more > summary { cursor: pointer; color: var(--ah-green-700); font-weight: 600; min-height: var(--ah-touch); display: inline-flex; align-items: center; }
+.ah-filter__more-body { display: flex; flex-wrap: wrap; align-items: flex-end; gap: .6rem; padding-top: .4rem; }
+.ah-filter__more-body > div { flex: 1 1 11rem; min-width: 0; }
+.ah-filter__more-body > .ah-filter__wide { flex: 2 1 16rem; }
+.ah-filter__more-body > p { flex: 1 1 100%; }
+.ah-filter__form > .ah-filter__actions { order: 20; }
+@media (max-width: 575.98px) { .ah-filter__more-body > div { flex: 1 1 100%; } }
+
+/* Bilah tindakan yang hanya ada di HP (I-5). */
+.ah-actbar.ah-only-sm { display: none; }
+@media (max-width: 575.98px) { .ah-actbar.ah-only-sm { display: flex; } }

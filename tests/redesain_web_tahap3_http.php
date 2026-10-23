@@ -263,8 +263,39 @@ $assert(str_contains($r2['body'], 'total ' . (int) $satu("SELECT COUNT(*) FROM n
 $satuGagal = (int) $satu("SELECT id FROM notifikasi_outbox WHERE status='Failed' AND kanal='WhatsApp' ORDER BY id DESC LIMIT 1");
 $j = $admin->req('/admin/admin_notifikasi.php', ['_csrf' => $csrf, 'aksi' => 'coba_ulang_massal', 'kembali' => 'gagal', 'outbox_id' => (string) $satuGagal], ['Accept: application/json']);
 $json = json_decode($j['body'], true);
-$assert(is_array($json) && ($json['ok'] ?? null) === false && str_contains((string) $json['message'], 'sedang mati') && $satu("SELECT status FROM notifikasi_outbox WHERE id=$satuGagal") === 'Failed',
-    'N-2 proses massal (JSON) menolak coba ulang kanal mati dengan alasan, baris tetap Failed');
+$assert(is_array($json) && ($json['ok'] ?? null) === false && str_contains((string) $json['message'], 'ditangguhkan') && $satu("SELECT status FROM notifikasi_outbox WHERE id=$satuGagal") === 'Failed',
+    'N-2 proses massal (JSON) menolak coba ulang WhatsApp Ditangguhkan dengan alasan, baris tetap Failed');
+$assert(preg_match('#<tr>(?:(?!</tr>).)*<td>WhatsApp</td>(?:(?!</tr>).)*>Ditangguhkan<#s', $r['body']) === 1 && !preg_match('#<tr>(?:(?!</tr>).)*WhatsApp(?:(?!</tr>).)*name="outbox_ids\[\]"#s', $r['body']) && !preg_match('#<tr>(?:(?!</tr>).)*WhatsApp(?:(?!</tr>).)*>Coba ulang<#s', $r['body']),
+    'F-1 baris WhatsApp di Pengiriman gagal tanpa kotak pilih dan tanpa Coba ulang');
+
+// Koreksi audit F-1: sakelar WhatsApp LAMA yang masih menyala (dari sebelum
+// keputusan AL) tidak boleh dipakai worker, percobaan ulang, maupun cron.
+$waLama = (int) $satu("SELECT id FROM notifikasi_outbox WHERE status='Failed' AND kanal='WhatsApp' ORDER BY id LIMIT 1");
+$db = app_db();
+$db->begin_transaction();
+try {
+    $settings->recordWhatsappCheck('Lulus', 'Sintetis F-1', 'fake', $adminId);
+    $settings->setWhatsappEnabled(true, $adminId, 'fake');
+    $db->query("UPDATE notifikasi_outbox SET status='Queued', tersedia_pada=NOW(), gagal_permanen=0 WHERE kanal='WhatsApp' AND status='Failed' AND id<>$waLama");
+    $antre = (int) $satu("SELECT COUNT(*) FROM notifikasi_outbox WHERE kanal='WhatsApp' AND status='Queued'");
+    $palsu = new \App\Notification\WhatsApp\FakeProvider('ok', false);
+    $dispatcher = new \App\Notification\NotificationDispatcher($db, notification_outbox_repository(), push_device_repository(), push_token_protector(),
+        new \App\Notification\Push\ExpoPushClient('', 5), $palsu, $settings, new \App\Notification\WorkerLock($db));
+    $cron = $dispatcher->run('WhatsApp', 50);
+    $assert($cron['dijalankan'] === false && str_contains((string) $cron['alasan'], 'ditangguhkan') && count($palsu->terkirim()) === 0
+        && (int) $satu("SELECT COUNT(*) FROM notifikasi_outbox WHERE kanal='WhatsApp' AND status='Queued'") === $antre, "F-1 dispatcher/cron: sakelar lama aktif, $antre antrean, nol send, antrean utuh");
+    $uji = $dispatcher->run('WhatsApp', 50, true);
+    $assert(count($palsu->terkirim()) === 0 && (int) $satu("SELECT COUNT(*) FROM notifikasi_outbox WHERE kanal='WhatsApp' AND status='Queued'") === $antre, 'F-1 uji coba tanpa kirim tetap tersedia dan tidak mengubah antrean');
+    $kode = static function (callable $f): int { try { $f(); return 0; } catch (\App\Notification\NotificationException $e) { return $e->status(); } };
+    $assert($kode(static fn () => notification_admin_service()->jalankanWorker($userAdmin, 'WhatsApp', false)) === 409, 'F-1 layanan (panel/API) menolak worker WhatsApp yang mengirim (409)');
+    $sebelum = $sql("SELECT status, percobaan FROM notifikasi_outbox WHERE id=$waLama");
+    $assert($kode(static fn () => notification_admin_service()->cobaUlang($userAdmin, $waLama, ['ip' => null, 'user_agent' => null])) === 409
+        && $sql("SELECT status, percobaan FROM notifikasi_outbox WHERE id=$waLama") === $sebelum, 'F-1 percobaan ulang WhatsApp ditolak 409; status dan percobaan tetap');
+    $assert(notification_admin_service()->jalankanWorker($userAdmin, 'Push', true)['kanal'] === 'Push', 'F-1 regresi: worker Push uji coba tetap berjalan lewat layanan');
+} finally {
+    $db->rollback();
+}
+$assert($settings->current()['whatsapp_enabled'] === false, 'F-1 fixture sakelar lama dipulihkan (rollback)');
 $r = $admin->req('/admin/admin_notifikasi.php?tab=riwayat');
 $auditTotal = (int) $satu('SELECT COUNT(*) FROM notifikasi_pengaturan_audit');
 $assert(str_contains($r['body'], 'Audit perubahan kanal') && str_contains($r['body'], 'total ' . $auditTotal . ' data'), "N-2 riwayat berhalaman ($auditTotal catatan)");
@@ -400,6 +431,17 @@ $c = $admin->csrf('/admin/admin_pembayaran_psb.php');
 $r = $admin->req('/admin/admin_pembayaran_psb.php', ['_csrf' => $c, 'act' => 'lunas', 'id' => (string) $tagihan, 'kembali' => 'status=Belum+Lunas']);
 $assert($r['status'] === 302 && $satu("SELECT status_pembayaran FROM psb_pembayaran WHERE id=$tagihan") === 'Lunas' && str_contains($teks($admin->follow($r)['body']), 'ditandai lunas'), 'K-6 tandai lunas → pesan, tersimpan');
 $audit = (int) $satu("SELECT COUNT(*) FROM audit_logs WHERE action='psb.pembayaran.batal_lunas' AND entity_id=$tagihan");
+// Koreksi audit F-2: alasan wajib di server, diperiksa sebelum status berubah.
+$waktuLunas = $satu("SELECT waktu_lunas FROM psb_pembayaran WHERE id=$tagihan");
+foreach ([[], ['alasan' => '   '], ['alasan' => str_repeat('x', 501)]] as $post) {
+    $r = $admin->req('/admin/admin_pembayaran_psb.php', ['_csrf' => $c, 'act' => 'batal', 'id' => (string) $tagihan, 'kembali' => 'status=Lunas'] + $post);
+    $hal = $admin->follow($r);
+    $assert($r['status'] === 302 && str_contains((string) $r['location'], 'batal=1') && $satu("SELECT status_pembayaran FROM psb_pembayaran WHERE id=$tagihan") === 'Lunas'
+        && $satu("SELECT waktu_lunas FROM psb_pembayaran WHERE id=$tagihan") === $waktuLunas
+        && (int) $satu("SELECT COUNT(*) FROM audit_logs WHERE action='psb.pembayaran.batal_lunas' AND entity_id=$tagihan") === $audit
+        && str_contains($teks($hal['body']), 'Status lunas tidak berubah') && str_contains($hal['body'], 'id="form-batal-lunas"') && str_contains($hal['body'], 'name="alasan"'),
+        'F-2 batal lunas ' . ($post === [] ? 'tanpa alasan' : (strlen($post['alasan']) > 500 ? 'alasan > 500' : 'alasan spasi')) . ' ditolak sebelum UPDATE; status/waktu/audit tetap; formulir alasan tanpa JavaScript dibuka');
+}
 $r = $admin->req('/admin/admin_pembayaran_psb.php', ['_csrf' => $c, 'act' => 'batal', 'id' => (string) $tagihan, 'alasan' => 'Salah input sintetis']);
 $assert($satu("SELECT status_pembayaran FROM psb_pembayaran WHERE id=$tagihan") === 'Belum Lunas' && (int) $satu("SELECT COUNT(*) FROM audit_logs WHERE action='psb.pembayaran.batal_lunas' AND entity_id=$tagihan") === $audit + 1
     && str_contains((string) $satu("SELECT after_json FROM audit_logs WHERE action='psb.pembayaran.batal_lunas' AND entity_id=$tagihan ORDER BY id DESC LIMIT 1"), 'Salah input sintetis'), 'K-6 batal lunas dengan alasan tercatat di audit');

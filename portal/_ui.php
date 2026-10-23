@@ -198,3 +198,103 @@ function portal_has_capability(array $capabilities, string $capability): bool
 {
     return in_array($capability, $capabilities, true) && in_array($capability, Capabilities::ALL, true);
 }
+
+// ---------------------------------------------------------------------------
+// Redesain website Tahap 4 (I-1 s.d. I-7)
+// ---------------------------------------------------------------------------
+
+/**
+ * Asal data untuk tampilan: "Sistem baru" atau "Arsip sistem lama", tanpa
+ * label versi (I-2). Nilai di basis data dan kontrak API tidak berubah.
+ *
+ * @param array<string, mixed> $row
+ */
+function portal_sumber_label(array $row): string
+{
+    return !empty($row['is_legacy']) ? 'Arsip sistem lama' : 'Sistem baru';
+}
+
+/** Label pelaku lama "Data warisan" ditulis "Sistem lama" di layar baru. */
+function portal_label(?string $text): string
+{
+    return $text === 'Data warisan' ? 'Sistem lama' : (string) $text;
+}
+
+/**
+ * Tombol "Ajukan izin" untuk cakupan pengurus/admin (I-1, I-2, Beranda).
+ */
+function portal_ajukan_button(string $mode, string $class = 'btn btn-primary'): string
+{
+    if (!in_array($mode, [Capabilities::PENGURUS, Capabilities::ADMIN], true)) {
+        return '';
+    }
+
+    return '<a class="' . portal_e($class) . '" href="' . portal_e(app_url('/portal/izin_buat.php') . '?mode=' . rawurlencode($mode)) . '">'
+        . '<i class="fas fa-plus" aria-hidden="true"></i> Ajukan izin</a>';
+}
+
+/** Alamat detail izin dengan cakupan yang sama. */
+function portal_detail_url(int $id, string $mode, array $extra = []): string
+{
+    return app_url('/portal/izin_detail.php') . '?' . http_build_query(array_merge(['id' => $id, 'mode' => $mode], $extra));
+}
+
+/**
+ * Pengajuan yang menunggu lebih dari 1 hari (keputusan P).
+ *
+ * @param array<string, mixed> $row
+ */
+function portal_izin_tertunda(array $row): bool
+{
+    if (!in_array((string) ($row['status'] ?? ''), ['Diajukan', 'Perlu Penetapan Admin'], true)) {
+        return false;
+    }
+    $waktu = strtotime((string) ($row['diajukan_pada'] ?? $row['created_at'] ?? ''));
+
+    return $waktu !== false && $waktu < time() - 86400;
+}
+
+/** Lama menunggu yang manusiawi: "3 jam", "2 hari". */
+function portal_lama(?string $sejak): string
+{
+    $waktu = $sejak === null ? false : strtotime($sejak);
+    if ($waktu === false) {
+        return '—';
+    }
+    $detik = max(0, time() - $waktu);
+    if ($detik < 3600) {
+        return max(1, (int) floor($detik / 60)) . ' menit';
+    }
+    if ($detik < 86400) {
+        return (int) floor($detik / 3600) . ' jam';
+    }
+
+    return (int) floor($detik / 86400) . ' hari';
+}
+
+/**
+ * Status pengajuan untuk tampilan. "Perlu Penetapan Admin" ditulis singkat
+ * "Perlu penetapan"; warna dan nilai yang disimpan tidak berubah.
+ */
+function portal_status(string $status): string
+{
+    return ah_status($status, $status === 'Perlu Penetapan Admin' ? 'Perlu penetapan' : null);
+}
+
+/**
+ * Nama peristiwa riwayat untuk manusia; kode yang disimpan tidak berubah.
+ */
+function portal_peristiwa_label(string $kode): string
+{
+    return match ($kode) {
+        'pengajuan_dibuat' => 'Mengajukan izin',
+        'routing_otomatis' => 'Diteruskan ke murobi',
+        'routing_perlu_admin' => 'Menunggu penetapan murobi oleh admin',
+        'murobi_ditetapkan' => 'Admin menetapkan murobi',
+        'murobi_ditetapkan_ulang' => 'Admin mengganti murobi',
+        'keputusan' => 'Memutuskan izin',
+        'pembatalan' => 'Membatalkan pengajuan',
+        'keputusan_dikoreksi' => 'Mengoreksi keputusan',
+        default => ucfirst(str_replace('_', ' ', $kode)),
+    };
+}

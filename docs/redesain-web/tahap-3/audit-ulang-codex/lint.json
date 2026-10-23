@@ -1,0 +1,57 @@
+[
+  {
+    "file": "admin/admin_notifikasi.php",
+    "exit": 0,
+    "output": "No syntax errors detected in admin/admin_notifikasi.php"
+  },
+  {
+    "file": "admin/admin_pembayaran_psb.php",
+    "exit": 0,
+    "output": "No syntax errors detected in admin/admin_pembayaran_psb.php"
+  },
+  {
+    "file": "app/Notification/NotificationAdminService.php",
+    "exit": 0,
+    "output": "No syntax errors detected in app/Notification/NotificationAdminService.php"
+  },
+  {
+    "file": "app/Notification/NotificationChannel.php",
+    "exit": 0,
+    "output": "No syntax errors detected in app/Notification/NotificationChannel.php"
+  },
+  {
+    "file": "app/Notification/NotificationDispatcher.php",
+    "exit": 0,
+    "output": "No syntax errors detected in app/Notification/NotificationDispatcher.php"
+  },
+  {
+    "file": "tests/get_mutasi_v1_http.php",
+    "exit": 0,
+    "output": "No syntax errors detected in tests/get_mutasi_v1_http.php"
+  },
+  {
+    "file": "tests/redesain_web_tahap3_http.php",
+    "exit": 0,
+    "output": "No syntax errors detected in tests/redesain_web_tahap3_http.php"
+  },
+  {
+    "file": "tests/redesain_web_tahap3_static.php",
+    "exit": 0,
+    "output": "No syntax errors detected in tests/redesain_web_tahap3_static.php"
+  },
+  {
+    "file": "tests/v2_phase4_concurrency_worker.php",
+    "exit": 0,
+    "output": "No syntax errors detected in tests/v2_phase4_concurrency_worker.php"
+  },
+  {
+    "file": "tests/v2_phase4_integration.php",
+    "exit": 0,
+    "output": "No syntax errors detected in tests/v2_phase4_integration.php"
+  },
+  {
+    "file": "tests/redesain_web_tahap3_audit_ulang.php",
+    "exit": 0,
+    "output": "No syntax errors detected in tests/redesain_web_tahap3_audit_ulang.php"
+  }
+]

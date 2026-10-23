@@ -243,9 +243,17 @@ try {
     $lunas = $row('SELECT status_pembayaran, waktu_lunas FROM psb_pembayaran WHERE id=' . $bayar['terima']);
     $ok($r['status'] === 302 && $lunas['status_pembayaran'] === 'Lunas' && $lunas['waktu_lunas'] !== null
         && $row('SELECT * FROM psb_pembayaran WHERE id=' . $bayar['jaga']) === $jagaBayar, 'POST lunas sah hanya mengubah tagihan target');
-    $request('admin', '/admin/admin_pembayaran_psb.php', 'POST', ['_csrf' => $csrf, 'act' => 'batal', 'id' => $bayar['terima']]);
+    // Redesain web Tahap 3, koreksi audit F-2: batal lunas wajib beralasan di
+    // server. Tanpa alasan (atau hanya spasi) ditolak sebelum UPDATE; permintaan
+    // sah kini menyertakan alasan.
+    foreach ([[], ['alasan' => '   ']] as $tanpaAlasan) {
+        $request('admin', '/admin/admin_pembayaran_psb.php', 'POST', ['_csrf' => $csrf, 'act' => 'batal', 'id' => $bayar['terima']] + $tanpaAlasan);
+        $ok($row('SELECT status_pembayaran, waktu_lunas FROM psb_pembayaran WHERE id=' . $bayar['terima']) === $lunas,
+            'POST batal lunas tanpa alasan ditolak; status dan waktu lunas tetap');
+    }
+    $request('admin', '/admin/admin_pembayaran_psb.php', 'POST', ['_csrf' => $csrf, 'act' => 'batal', 'id' => $bayar['terima'], 'alasan' => 'Sintetis GM']);
     $batal = $row('SELECT status_pembayaran, waktu_lunas FROM psb_pembayaran WHERE id=' . $bayar['terima']);
-    $ok($batal['status_pembayaran'] === 'Belum Lunas' && $batal['waktu_lunas'] === null, 'POST batal lunas sah tersimpan');
+    $ok($batal['status_pembayaran'] === 'Belum Lunas' && $batal['waktu_lunas'] === null, 'POST batal lunas sah (beralasan) tersimpan');
 
     foreach (['berita' => ['/admin/proses_berita.php?act=hapus', 'id'], 'galeri' => ['/admin/admin_galeri.php', 'hapus'],
         'download' => ['/admin/admin_download.php', 'hapus']] as $table => [$path, $field]) {

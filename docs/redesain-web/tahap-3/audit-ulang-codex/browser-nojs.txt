@@ -1,0 +1,20 @@
+[lulus] F-2 375: tautan batal lunas terlihat tanpa JavaScript
+[lulus] F-2 375: formulir POST dengan textarea wajib tersedia
+[lulus] F-2 375: formulir memakai POST dan CSRF
+[lulus] F-2 375: alasan kosong ditahan validasi HTML tanpa POST
+[lulus] F-2 375: alasan dapat diisi tanpa JavaScript
+[lulus] F-2 375: halaman formulir tidak melebar
+[lulus] F-2 768: tautan batal lunas terlihat tanpa JavaScript
+[lulus] F-2 768: formulir POST dengan textarea wajib tersedia
+[lulus] F-2 768: formulir memakai POST dan CSRF
+[lulus] F-2 768: alasan kosong ditahan validasi HTML tanpa POST
+[lulus] F-2 768: alasan dapat diisi tanpa JavaScript
+[lulus] F-2 768: halaman formulir tidak melebar
+[lulus] F-2 1280: tautan batal lunas terlihat tanpa JavaScript
+[lulus] F-2 1280: formulir POST dengan textarea wajib tersedia
+[lulus] F-2 1280: formulir memakai POST dan CSRF
+[lulus] F-2 1280: alasan kosong ditahan validasi HTML tanpa POST
+[lulus] F-2 1280: alasan dapat diisi tanpa JavaScript
+[lulus] F-2 1280: halaman formulir tidak melebar
+
+Ringkasan: 18 lulus, 0 gagal
