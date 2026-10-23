@@ -427,20 +427,17 @@ $assert($k['jumlah'] === (int) $sql("SELECT COUNT(*) n FROM notifikasi_outbox WH
 $k = $kartuAdmin($semua, 'bahan_perbaikan');
 $hTujuan = $admin->req(parse_url($k['url'], PHP_URL_PATH) . '?' . parse_url($k['url'], PHP_URL_QUERY))['body'];
 $x = $dom($hTujuan);
-$santriTujuan = $x->query('//section[@data-santri]')->length;
-$perluTujuan = 0;
-foreach ($x->query('//section[@data-santri]//article[contains(@class,"bahan-card")]/h3') as $judul) {
-    if (str_contains($judul->textContent, 'Perlu Perbaikan')) {
-        $perluTujuan++;
-    }
-}
+// Redesain Tahap 7 (R-5): tujuan kini matriks santri × bahan; sel "Perlu perbaikan" bersimbol peringatan.
+$santriTujuan = $x->query('//table[contains(@class,"ah-matrix")]/tbody/tr')->length;
+$perluTujuan = $x->query('//table[contains(@class,"ah-matrix")]//a[contains(@class,"ah-sel--warn")]')->length;
 $assert($k['jumlah'] === 2 && $perluTujuan === 2 && $santriTujuan === 2 && str_contains($hTujuan, 'data-ah-saringan="Dikembalikan"'), "F-4 bahan perlu perbaikan: tujuan hanya santri dengan bahan Perlu Perbaikan ({$santriTujuan} santri, {$perluTujuan} bahan = kartu {$k['jumlah']})");
 
 $pengurus = $klien('sbx_pengurus_a');
 $hp = $pengurus->req('/portal/index.php')['body'];
 $nSikap = $angkaStat($hp, 'Sikap belum diisi');
 $x = $dom($pengurus->req('/portal/sikap_semester.php?status=belum')['body']);
-$tautan = $x->query('//details//a[contains(@href,"santri_id=")]')->length;
+// Redesain Tahap 7 (R-4): tujuan kini kisi; satu baris per santri.
+$tautan = $x->query('//table[contains(@class,"ah-kisi")]/tbody/tr')->length;
 $assert($nSikap === 1 && $tautan === $nSikap && str_contains($hp, 'href="/portal/sikap_semester.php?status=belum"'), "F-4 sikap belum diisi: angka {$nSikap} = daftar tujuan {$tautan}");
 $nAmbang = $angkaStat($hp, 'Santri mencapai ambang');
 $hl = $pengurus->req('/portal/v3_laporan.php?jenis=ambang')['body'];
@@ -452,7 +449,7 @@ $murobiC = $klien('sbx_murobi_c');
 $hm = $murobiC->req('/portal/index.php')['body'];
 $kSikap = $kartuAdmin($hm, 'murobi_sikap');
 $x = $dom($murobiC->req('/portal/sikap_semester.php?mode=murobi&status=perlu_diketahui')['body']);
-$tautan = $x->query('//details//a[contains(@href,"santri_id=")]')->length;
+$tautan = $x->query('//table[contains(@class,"ah-kisi")]/tbody/tr')->length;
 $assert($kSikap !== null && $kSikap['jumlah'] === 2 && $tautan === 2, 'F-4 sikap binaan perlu diketahui: kartu murobi = daftar tujuan (' . $tautan . ')');
 
 // F-2: Beranda Guru akun admin+guru hanya menghitung penugasan sendiri.

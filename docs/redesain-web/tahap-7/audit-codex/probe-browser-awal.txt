@@ -1,0 +1,61 @@
+[gagal] F-1 nilai: alasan koreksi kosong tidak memblokir serahkan 375px JS=true
+[gagal] F-1 nilai: klik Serahkan benar-benar POST 375px JS=true
+[lulus] F-1 koreksi: alasan kosong ditahan di dialog 375px JS=true
+[lulus] F-1 koreksi: dengan alasan berhasil 375px JS=true
+[gagal] F-1 nilai: alasan koreksi kosong tidak memblokir serahkan 768px JS=true
+[gagal] F-1 nilai: klik Serahkan benar-benar POST 768px JS=true
+[lulus] F-1 koreksi: alasan kosong ditahan di dialog 768px JS=true
+[lulus] F-1 koreksi: dengan alasan berhasil 768px JS=true
+[gagal] F-1 nilai: alasan koreksi kosong tidak memblokir serahkan 1280px JS=true
+[gagal] F-1 nilai: klik Serahkan benar-benar POST 1280px JS=true
+[lulus] F-1 koreksi: alasan kosong ditahan di dialog 1280px JS=true
+[lulus] F-1 koreksi: dengan alasan berhasil 1280px JS=true
+[gagal] F-1 nilai: alasan koreksi kosong tidak memblokir serahkan 375px JS=false
+[gagal] F-1 nilai: klik Serahkan benar-benar POST 375px JS=false
+[gagal] F-1 koreksi: tanpa JS tetap ditolak server 375px JS=false
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.fill: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('#alasan-koreksi')[22m
+[2m    - locator resolved to <textarea required="" name="alasan" maxlength="1000" form="panel-nilai" id="alasan-koreksi" class="form-control"></textarea>[22m
+[2m    - fill("Koreksi capaian sintetis auditor")[22m
+[2m  - attempting fill action[22m
+[2m    2 × waiting for element to be visible, enabled and editable[22m
+[2m      - element is not visible[22m
+[2m    - retrying fill action[22m
+[2m    - waiting 20ms[22m
+[2m  - element was detached from the DOM, retrying[22m
+[2m    - locator resolved to <textarea required="" name="alasan" maxlength="1000" form="panel-nilai" id="alasan-koreksi" class="form-control"></textarea>[22m
+[2m    - fill("Koreksi capaian sintetis auditor")[22m
+[2m  - attempting fill action[22m
+[2m    2 × waiting for element to be visible, enabled and editable[22m
+[2m      - element is not visible[22m
+[2m    - retrying fill action[22m
+[2m    - waiting 20ms[22m
+
+    at /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/browser/uji-redesain-web-tahap7-audit.mjs:57:43 {
+  log: [
+    "  - waiting for locator('#alasan-koreksi')",
+    '    - locator resolved to <textarea required="" name="alasan" maxlength="1000" form="panel-nilai" id="alasan-koreksi" class="form-control"></textarea>',
+    '    - fill("Koreksi capaian sintetis auditor")',
+    '  - attempting fill action',
+    '    2 × waiting for element to be visible, enabled and editable',
+    '      - element is not visible',
+    '    - retrying fill action',
+    '    - waiting 20ms',
+    '  - element was detached from the DOM, retrying',
+    '    - locator resolved to <textarea required="" name="alasan" maxlength="1000" form="panel-nilai" id="alasan-koreksi" class="form-control"></textarea>',
+    '    - fill("Koreksi capaian sintetis auditor")',
+    '  - attempting fill action',
+    '    2 × waiting for element to be visible, enabled and editable',
+    '      - element is not visible',
+    '    - retrying fill action',
+    '    - waiting 20ms'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.7.0

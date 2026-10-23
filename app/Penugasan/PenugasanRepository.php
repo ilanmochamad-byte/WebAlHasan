@@ -376,6 +376,44 @@ final class PenugasanRepository
         return PageQuery::fetch($this->db, $sql, [], 'archived_at IS NOT NULL, is_active DESC, nama', $page, PageQuery::term($q), ['nama', 'kode', 'kategori']);
     }
 
+    /**
+     * Daftar mapel M-5 (redesain Tahap 7): saringan status dan kategori, serta
+     * jumlah guru pengampu = guru berbeda dengan penugasan guru mapel yang
+     * berlaku hari ini pada semester aktif.
+     *
+     * @return array{rows: array<int, array<string, mixed>>, total: int, page: int, perPage: int}
+     */
+    public function mataPelajaranSaring(string $q, string $kategori, string $status, int $page): array
+    {
+        $where = match ($status) {
+            'inactive' => 'mp.archived_at IS NULL AND mp.is_active = 0',
+            'archived' => 'mp.archived_at IS NOT NULL',
+            'all' => '1 = 1',
+            default => 'mp.archived_at IS NULL AND mp.is_active = 1',
+        };
+        $params = [];
+        if ($kategori !== '') {
+            $where .= ' AND mp.kategori = ?';
+            $params[] = $kategori;
+        }
+        $sql = 'SELECT mp.*, (SELECT COUNT(DISTINCT a.guru_id) FROM guru_mapel_assignments a JOIN tahun_ajaran t ON t.id = a.tahun_ajaran_id AND t.status = \'Aktif\'
+                    WHERE a.mata_pelajaran_id = mp.id AND a.is_active = 1
+                    AND a.tanggal_mulai <= CURDATE() AND (a.tanggal_selesai IS NULL OR a.tanggal_selesai >= CURDATE())) AS guru_pengampu
+                FROM mata_pelajaran mp WHERE ' . $where;
+
+        return PageQuery::fetch($this->db, $sql, $params, 'archived_at IS NOT NULL, is_active DESC, nama', max(1, $page), PageQuery::term($q), ['nama', 'kode', 'kategori']);
+    }
+
+    /** @return array{active:int, inactive:int, archived:int, kategori:array<int, string>} */
+    public function mataPelajaranRingkas(): array
+    {
+        $row = $this->one('SELECT SUM(archived_at IS NULL AND is_active = 1) a, SUM(archived_at IS NULL AND is_active = 0) n, SUM(archived_at IS NOT NULL) r FROM mata_pelajaran') ?? [];
+        $kategori = array_map(static fn (array $k): string => (string) $k['kategori'],
+            $this->all("SELECT DISTINCT kategori FROM mata_pelajaran WHERE kategori IS NOT NULL AND kategori <> '' ORDER BY kategori"));
+
+        return ['active' => (int) ($row['a'] ?? 0), 'inactive' => (int) ($row['n'] ?? 0), 'archived' => (int) ($row['r'] ?? 0), 'kategori' => $kategori];
+    }
+
     public function mataPelajaranFind(int $id): ?array
     {
         return $this->one('SELECT * FROM mata_pelajaran WHERE id = ? LIMIT 1', [$id]);

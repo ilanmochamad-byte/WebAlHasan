@@ -110,6 +110,8 @@ Hasilnya 17 menu dalam 7 grup: Beranda · Kegiatan santri (Perizinan, Pengajian,
 
 Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Codex**, delapan tahap berurutan seperti di `rencana.md` dan `AGENTS.md`. Tahap 7 menunggu rapor Ganjil 2026/2027 terbit; Tahap 8 menunggu tahap perbaikan keamanan PSB.
 
+**Perubahan 23 Oktober 2026 (Human Developer):** Tahap 7 boleh dikerjakan dan diaudit sebelum rapor Ganjil 2026/2027 terbit; **merge ke `main` dan deploy ditahan sampai rapor itu terbit**, sehingga guru tetap tidak berganti alur di tengah masa pengisian nilai.
+
 ## Masih menunggu keputusan
 
 1. Peran untuk tahap perbaikan keamanan PSB (workstream terpisah, syarat Tahap 8).
@@ -117,3 +119,12 @@ Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Code
 3. Isi resmi halaman Profil, tahun berdiri, nomor WhatsApp/telepon resmi, logo dan foto, serta angka statistik Beranda situs.
 4. Komponen biaya PSB untuk MI dan RA.
 5. Tahap perbaikan keamanan atas temuan yang disampaikan langsung kepada Human Developer (tidak dirinci di repositori publik).
+
+## Keputusan Tahap 7 (23 Oktober 2026, sesudah implementasi)
+
+| # | Keputusan |
+| --- | --- |
+| AT | "Salin dari semester lalu" (R-1) hanya untuk admin; Bagian Pendidikan tidak diberi hak baca rencana semester lalu. |
+| AU | Aturan rencana disesuaikan agar efektif dan efisien: mapel tanpa nilai dapat diubah/dihapus walau mapel lain sudah bernilai; target mapel bernilai terkunci dan mapel itu tidak dapat dihapus; guru pengampunya tetap dapat diganti; penanda tangan dan tempat rencana bernilai tetap lewat penggantian beralasan admin (R-7); "Tandai siap" tidak dibuat. **[aturan layanan]** `RencanaService::save()`. |
+| AV | Orang tua melihat versi rapor yang sudah diganti hanya sebagai nomor, tanggal terbit, dan tanda "Sudah diganti", tanpa isi atau berkas. |
+| AW | Setiap perubahan isian nilai/sikap yang sudah tersimpan tetap koreksi beralasan (aturan layanan V4 yang ada); kisi meminta alasan koreksi. |

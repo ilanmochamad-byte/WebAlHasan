@@ -77,6 +77,10 @@ final class Status
         'ditangguhkan' => 'muted',
         'dibaca' => 'muted',
         'belum terbit' => 'muted',
+        // Rapor (Tahap 7, R-6/R-8).
+        'diganti' => 'muted',
+        'sudah diganti' => 'muted',
+        'siap terbit' => 'info',
         'belum waktunya' => 'muted',
     ];
 

@@ -98,7 +98,8 @@ preg_match('/<tr data-rekomendasi="\d+">.*?href="\?([^"#]*rekomendasi=\d+)[^"]*"
 $check(isset($tautRek[1]) && preg_match('/name="rekomendasi_ids\[\]" value="\d+" checked/', $pembimbing->req('/portal/v3_konseling.php?' . html_entity_decode($tautRek[1]))['body']) === 1,
     'V3: pembimbing tetap dapat memilih rekomendasi untuk tindak lanjut');
 $perbaikan = $dom($admin->req($cards['bahan_perbaikan'])['body']);
-$materialCount = $perbaikan->query('//article[contains(@class,"bahan-card")]')->length;
+// Redesain Tahap 7 (R-5): bahan perlu perbaikan kini sel matriks bertanda peringatan.
+$materialCount = $perbaikan->query('//table[contains(@class,"ah-matrix")]//a[contains(@class,"ah-sel--warn")]')->length;
 $expectedMaterials = (int)str_replace('.', '', $x->evaluate('string(//*[@data-ah-kartu="bahan_perbaikan"]/*[contains(@class,"ah-task__num")])'));
 $check($materialCount === $expectedMaterials, 'F-4: daftar perbaikan hanya memuat bahan yang dihitung kartu', ['daftar'=>$materialCount,'kartu'=>$expectedMaterials]);
 $ganda = new AuditT2Client($base); $ganda->login('sbx_ganda');

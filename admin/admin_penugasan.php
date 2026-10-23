@@ -11,7 +11,9 @@ use App\Penugasan\PenugasanService;
  *
  * Satu halaman admin untuk seluruh penugasan fungsional: murobi, pembimbing,
  * guru mata pelajaran, Bagian Pendidikan, bendahara pembiayaan bulanan,
- * panitia PSB, dan bendahara PSB — ditambah master minimum mata pelajaran.
+ * panitia PSB, dan bendahara PSB. Master mata pelajaran pindah ke
+ * `admin_mata_pelajaran.php` (M-5, redesain Tahap 7); POST lamanya tetap
+ * diterima di sini.
  *
  * Yang dipegang halaman ini:
  *   - penugasan BUKAN role login; ia menghasilkan capability yang dihitung
@@ -107,13 +109,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'mapel_simpan':
                 $mapelId = $service->simpanMataPelajaran($_POST, $id > 0 ? $id : null, $aktorId);
                 master_flash('success', 'Mata pelajaran #' . $mapelId . ' tersimpan.');
-                $tujuan = 'admin_penugasan.php?jenis=mata_pelajaran';
+                $tujuan = 'admin_mata_pelajaran.php';
                 break;
 
             case 'mapel_status':
                 $service->setMataPelajaranState($id, (string) ($_POST['status_action'] ?? ''), $aktorId);
                 master_flash('success', 'Status mata pelajaran diperbarui tanpa menghapus riwayat.');
-                $tujuan = 'admin_penugasan.php?jenis=mata_pelajaran';
+                $tujuan = 'admin_mata_pelajaran.php';
                 break;
 
             default:
@@ -133,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $tujuan = $kembaliKe(['tambah' => 1]);
             }
             if ($action === 'mapel_simpan') {
-                $tujuan = 'admin_penugasan.php?jenis=mata_pelajaran' . ($id > 0 ? '&edit=' . $id : '');
+                $tujuan = 'admin_mata_pelajaran.php?action=' . ($id > 0 ? 'edit&id=' . $id : 'create');
             }
         }
         master_flash('danger', $exception->getMessage());
@@ -144,101 +146,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // ---------------------------------------------------------------------------
-// Tab Mata pelajaran (pindah ke Penilaian & rapor; tampilannya M-5, Tahap 7)
+// Tab Mata pelajaran pindah ke Penilaian & rapor › Mata pelajaran (M-5,
+// redesain Tahap 7). GET dialihkan permanen; POST lama di atas tetap diproses.
 // ---------------------------------------------------------------------------
 if ($tabMapel) {
-    master_header('Mata pelajaran', [
-        'active' => 'rapor',
-        'description' => 'Master mata pelajaran untuk penugasan guru mata pelajaran.',
-        'breadcrumbs' => [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => 'Penilaian & rapor'], ['label' => 'Mata pelajaran']],
-    ]);
+    $lanjut = array_filter(['q' => (string) ($_GET['q'] ?? ''), 'action' => isset($_GET['edit']) ? 'edit' : null, 'id' => isset($_GET['edit']) ? (int) $_GET['edit'] : null]);
+    header('Location: ' . app_url('/admin/admin_mata_pelajaran.php') . ($lanjut === [] ? '' : '?' . http_build_query($lanjut)), true, 301);
+    exit;
 }
 $old = static fn (string $field, ?string $default = null): string => ah_old($field, $default === null ? null : [$field => $default], $bucket);
 $err = static fn (string $field): string => ah_field_error($field, $bucket);
 $adaOld = isset($_SESSION[$bucket]);
-
-// ===========================================================================
-// Tab master mata pelajaran (minimum untuk penugasan guru)
-// ===========================================================================
-if ($tabMapel) {
-    $q = App\Database\PageQuery::term($_GET['q'] ?? '');
-    $page = max(1, (int) ($_GET['page'] ?? 1));
-    $daftarMapel = $service->mataPelajaranDaftar($q, $page);
-    $editId = (int) ($_GET['edit'] ?? 0);
-    $edit = $editId > 0 ? $service->mataPelajaran($editId) : null;
-    if ($editId > 0 && $edit === null) {
-        ah_note('warning', 'Mata pelajaran yang diminta tidak ditemukan.');
-    }
-    ah_note(
-        'info',
-        'Master mata pelajaran minimum. Dipakai hanya untuk penugasan guru mata pelajaran (kesiapan PRD V4).',
-        '<p class="small mb-0 mt-2">Formulir nilai, nilai semester, finalisasi, dan rapor <strong>belum</strong> dibangun pada tahap ini. '
-            . 'Tabel warisan <code>mapel</code> tidak disentuh.</p>'
-    );
-    ?>
-    <section class="ah-card" aria-labelledby="ah-form-mapel">
-        <div class="ah-card__head"><span id="ah-form-mapel"><?= $edit ? 'Ubah mata pelajaran' : 'Tambah mata pelajaran' ?></span></div>
-        <div class="ah-card__body">
-            <form method="post" class="row g-3">
-                <?= master_csrf() ?>
-                <input type="hidden" name="jenis" value="mata_pelajaran">
-                <input type="hidden" name="action" value="mapel_simpan">
-                <?php if ($edit): ?><input type="hidden" name="id" value="<?= (int) $edit['id'] ?>"><?php endif; ?>
-                <div class="col-md-3"><label class="form-label" for="kode">Kode <span class="text-muted fw-normal">(opsional)</span></label>
-                    <input class="form-control" id="kode" name="kode" maxlength="20" value="<?= ah_e($adaOld ? $old('kode') : (string) ($edit['kode'] ?? '')) ?>"><?= $err('kode') ?></div>
-                <div class="col-md-4"><label class="form-label" for="nama">Nama mata pelajaran</label>
-                    <input class="form-control" id="nama" name="nama" maxlength="100" required value="<?= ah_e($adaOld ? $old('nama') : (string) ($edit['nama'] ?? '')) ?>"><?= $err('nama') ?></div>
-                <div class="col-md-3"><label class="form-label" for="kategori">Kategori <span class="text-muted fw-normal">(opsional)</span></label>
-                    <input class="form-control" id="kategori" name="kategori" maxlength="30" value="<?= ah_e($adaOld ? $old('kategori') : (string) ($edit['kategori'] ?? '')) ?>"><?= $err('kategori') ?></div>
-                <div class="col-md-2 d-flex align-items-end"><button class="btn btn-primary w-100">Simpan</button></div>
-                <?php if ($edit): ?><div class="col-12"><a class="btn btn-sm btn-outline-secondary" href="admin_penugasan.php?jenis=mata_pelajaran">Batal ubah</a></div><?php endif; ?>
-            </form>
-        </div>
-    </section>
-
-    <?php ah_list_search($q, 'Cari nama, kode, atau kategori', ['jenis' => 'mata_pelajaran']); ?>
-    <section class="ah-card" aria-labelledby="ah-daftar-mapel">
-        <div class="ah-card__head"><span id="ah-daftar-mapel">Daftar mata pelajaran</span>
-            <span class="text-muted small"><?= count($daftarMapel['rows']) ?> dari <?= (int) $daftarMapel['total'] ?></span></div>
-        <?php if ($daftarMapel['rows'] === []): ?>
-            <div class="ah-card__body"><?= $q !== '' ? ah_empty('Tidak ada hasil', 'Coba kata lain atau bersihkan pencarian.') : ah_empty('Belum ada mata pelajaran', 'Tambahkan mata pelajaran pada formulir di atas sebelum menugaskan guru pengampu.') ?></div>
-        <?php else: ?>
-            <div class="ah-table-wrap"><table class="ah-table">
-                <caption class="ah-visually-hidden">Daftar mata pelajaran</caption>
-                <thead><tr><th scope="col">Kode</th><th scope="col">Nama</th><th scope="col">Kategori</th><th scope="col">Penugasan</th><th scope="col">Status</th><th scope="col">Aksi</th></tr></thead>
-                <tbody>
-                <?php foreach ($daftarMapel['rows'] as $mp): ?>
-                    <tr>
-                        <td><?= master_e($mp['kode'] ?? '—') ?></td>
-                        <td><?= master_e($mp['nama']) ?></td>
-                        <td><?= master_e($mp['kategori'] ?? '—') ?></td>
-                        <td><?= (int) $mp['jumlah_penugasan'] ?> penugasan</td>
-                        <td><?= ah_state_badge($mp) ?></td>
-                        <td><div class="ah-actions">
-                            <a class="btn btn-sm btn-outline-primary" href="admin_penugasan.php?jenis=mata_pelajaran&amp;edit=<?= (int) $mp['id'] ?>">Ubah</a>
-                            <?php if (empty($mp['archived_at'])): ?>
-                            <form method="post" data-confirm="Ubah status mata pelajaran ini? Penugasan guru yang memakainya tidak dihapus, tetapi capability nilai tidak efektif selama mata pelajaran nonaktif.">
-                                <?= master_csrf() ?><input type="hidden" name="jenis" value="mata_pelajaran"><input type="hidden" name="action" value="mapel_status"><input type="hidden" name="id" value="<?= (int) $mp['id'] ?>">
-                                <button class="btn btn-sm btn-outline-secondary" name="status_action" value="<?= (int) $mp['is_active'] === 1 ? 'deactivate' : 'activate' ?>"><?= (int) $mp['is_active'] === 1 ? 'Nonaktifkan' : 'Aktifkan' ?></button>
-                            </form>
-                            <?php endif; ?>
-                            <form method="post" data-confirm="Ubah status arsip mata pelajaran ini? Riwayat penugasan tetap tersimpan.">
-                                <?= master_csrf() ?><input type="hidden" name="jenis" value="mata_pelajaran"><input type="hidden" name="action" value="mapel_status"><input type="hidden" name="id" value="<?= (int) $mp['id'] ?>">
-                                <button class="btn btn-sm btn-outline-danger" name="status_action" value="<?= $mp['archived_at'] ? 'restore' : 'archive' ?>"><?= $mp['archived_at'] ? 'Pulihkan' : 'Arsipkan' ?></button>
-                            </form>
-                        </div></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table></div>
-        <?php endif; ?>
-    </section>
-    <?php
-    master_pagination((int) $daftarMapel['total'], (int) $daftarMapel['page'], 20);
-    ah_old_clear($bucket);
-    master_footer();
-    exit;
-}
 
 // ===========================================================================
 // G-1 Pusat penugasan: menu jenis + daftar + panel
@@ -305,7 +223,7 @@ if ($tambah || $edit !== null):
     if ($opsi['subjek'] === []): ?>
         <p class="text-muted mb-0">Belum ada <?= ah_e(mb_strtolower($definisi['label_subjek'])) ?> aktif. Tambahkan datanya di Data pesantren › Asatidz &amp; pengurus terlebih dahulu.</p>
     <?php elseif ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_MAPEL_KELAS && $opsi['mata_pelajaran'] === []): ?>
-        <p class="text-muted mb-0">Belum ada mata pelajaran aktif. <a href="admin_penugasan.php?jenis=mata_pelajaran">Tambahkan mata pelajaran</a> terlebih dahulu.</p>
+        <p class="text-muted mb-0">Belum ada mata pelajaran aktif. <a href="admin_mata_pelajaran.php?action=create">Tambahkan mata pelajaran</a> terlebih dahulu.</p>
     <?php else: ?>
     <form method="post" data-confirm="<?= $modeUbah ? 'Simpan perubahan penugasan? Cakupan dan masa berlaku baru berlaku pada pemeriksaan server berikutnya dan tercatat pada audit.' : 'Simpan penugasan ' . ah_e($definisi['label']) . '? Penugasan tidak membuat akun.' ?>">
         <?= master_csrf() ?>

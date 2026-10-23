@@ -265,9 +265,14 @@ try {
     $assert($admin->masuk('fw.admin.' . $kecil, $sandi) === 302, 'FW-11a login web admin berhasil');
     foreach (['murobi', 'pembimbing', 'guru_mapel', 'pendidikan', 'bendahara_bulanan', 'panitia_psb', 'bendahara_psb', 'mata_pelajaran'] as $tab) {
         $halaman = $admin->request('/admin/admin_penugasan.php?jenis=' . $tab);
+        if ($tab === 'mata_pelajaran') {
+            // Redesain Tahap 7 (M-5): tab lama dialihkan 301 ke Penilaian & rapor › Mata pelajaran.
+            $assert($halaman['status'] === 301 && str_contains((string) $halaman['location'], '/admin/admin_mata_pelajaran.php'), 'FW-1b tab mata pelajaran lama dialihkan ke M-5 [' . $halaman['status'] . ']');
+            $halaman = $admin->request('/admin/admin_mata_pelajaran.php');
+        }
         $assert(
-            // Redesain Tahap 6 (G-1): judul "Penugasan"; tab mata pelajaran pindah ke Penilaian & rapor (M-5).
-            $halaman['status'] === 200 && str_contains($halaman['body'], $tab === 'mata_pelajaran' ? '<h1>Mata pelajaran</h1>' : '<h1>Penugasan</h1>') && !str_contains($halaman['body'], 'Fatal error') && !str_contains($halaman['body'], 'Warning:'),
+            // Redesain Tahap 6 (G-1): judul "Penugasan"; M-5 berjudul halaman "Penilaian & rapor" (tab Mata pelajaran).
+            $halaman['status'] === 200 && str_contains($halaman['body'], $tab === 'mata_pelajaran' ? '<title>Mata pelajaran' : '<h1>Penugasan</h1>') && !str_contains($halaman['body'], 'Fatal error') && !str_contains($halaman['body'], 'Warning:'),
             'FW-1b admin membuka tab ' . $tab . ' [' . $halaman['status'] . ']'
         );
     }
@@ -302,21 +307,22 @@ try {
     }
 
     // ------------------------------------------------------------- FW-3 / FW-4
-    $csrf = $admin->csrf('/admin/admin_penugasan.php?jenis=mata_pelajaran');
+    $csrf = $admin->csrf('/admin/admin_mata_pelajaran.php');
     $sebelumMapel = $angka('SELECT COUNT(*) n FROM mata_pelajaran');
     $tanpaToken = $admin->request('/admin/admin_penugasan.php', ['jenis' => 'mata_pelajaran', 'action' => 'mapel_simpan', 'nama' => 'Tanpa Token ' . $suffix]);
     $assert($tanpaToken['status'] === 419 && $angka('SELECT COUNT(*) n FROM mata_pelajaran') === $sebelumMapel, 'FW-3a POST tanpa token CSRF ditolak 419 tanpa perubahan');
     $tokenPalsu = $admin->request('/admin/admin_penugasan.php', ['_csrf' => 'palsu', 'jenis' => 'mata_pelajaran', 'action' => 'mapel_simpan', 'nama' => 'Token Palsu ' . $suffix]);
     $assert($tokenPalsu['status'] === 419 && $angka('SELECT COUNT(*) n FROM mata_pelajaran') === $sebelumMapel, 'FW-3b POST dengan token CSRF palsu ditolak 419 tanpa perubahan');
     $lewatGet = $admin->request('/admin/admin_penugasan.php?jenis=mata_pelajaran&action=mapel_simpan&nama=LewatGET' . $suffix . '&_csrf=' . rawurlencode($csrf));
-    $assert($lewatGet['status'] === 200 && $angka('SELECT COUNT(*) n FROM mata_pelajaran') === $sebelumMapel, 'FW-4 parameter aksi lewat GET tidak memutasi data');
+    // Tahap 7: GET alamat lama dialihkan (301) tanpa memproses parameter aksi.
+    $assert(in_array($lewatGet['status'], [200, 301], true) && $angka('SELECT COUNT(*) n FROM mata_pelajaran') === $sebelumMapel, 'FW-4 parameter aksi lewat GET tidak memutasi data');
 
     // ------------------------------------------------------------- FW-5 / FW-12
     $namaXss = 'Fiqih <script>alert(1)</script> ' . $suffix;
     $simpanMapel = $admin->request('/admin/admin_penugasan.php', ['_csrf' => $csrf, 'jenis' => 'mata_pelajaran', 'action' => 'mapel_simpan', 'nama' => $namaXss, 'kode' => 'FW' . $suffix, 'kategori' => 'Agama']);
     $mapelId = (int) ($satu('SELECT id FROM mata_pelajaran WHERE kode = \'FW' . $suffix . '\'')['id'] ?? 0);
     $assert($simpanMapel['status'] === 302 && $mapelId > 0, 'FW-5a mata pelajaran tersimpan lewat formulir');
-    $daftarMapel = $admin->request('/admin/admin_penugasan.php?jenis=mata_pelajaran&q=' . rawurlencode($suffix));
+    $daftarMapel = $admin->request('/admin/admin_mata_pelajaran.php?q=' . rawurlencode($suffix));
     $assert(!str_contains($daftarMapel['body'], '<script>alert(1)</script>') && str_contains($daftarMapel['body'], '&lt;script&gt;alert(1)&lt;/script&gt;'), 'FW-12 nama mata pelajaran berisi tag HTML di-escape');
 
     $buat = static function (string $jenis, array $isian) use ($admin, $csrf): array {

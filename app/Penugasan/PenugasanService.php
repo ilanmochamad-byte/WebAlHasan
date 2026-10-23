@@ -371,6 +371,18 @@ final class PenugasanService
         return $this->repository->mataPelajaranPage($q, max(1, $page));
     }
 
+    /** Daftar M-5 Mata pelajaran (redesain Tahap 7). */
+    public function mataPelajaranSaring(string $q, string $kategori, string $status, int $page): array
+    {
+        return $this->repository->mataPelajaranSaring($q, $kategori, $status, $page);
+    }
+
+    /** @return array{active:int, inactive:int, archived:int, kategori:array<int, string>} */
+    public function mataPelajaranRingkas(): array
+    {
+        return $this->repository->mataPelajaranRingkas();
+    }
+
     public function mataPelajaran(int $id): ?array
     {
         return $this->repository->mataPelajaranFind($id);
