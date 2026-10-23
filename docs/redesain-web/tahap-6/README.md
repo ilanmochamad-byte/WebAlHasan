@@ -1,6 +1,6 @@
 # Redesain website Tahap 6 — data pesantren & penugasan (23 Oktober 2026)
 
-Status: **diimplementasikan Claude, menunggu audit independen Codex.** Belum merge/deploy/migrasi produksi. Tahap 7 belum dimulai (syaratnya juga menunggu rapor Ganjil 2026/2027 terbit).
+Status: **lulus audit independen Codex setelah dua koreksi terarah (23 Oktober 2026).** Laporan dan batas uji: [`AUDIT-CODEX.md`](AUDIT-CODEX.md). Belum merge/deploy/migrasi produksi. Tahap 7 belum dimulai (syaratnya juga menunggu rapor Ganjil 2026/2027 terbit).
 
 - Branch `claude/redesain-web-tahap-6` dibuat dari `origin/main` `c8d934b` (sudah menggabungkan audit Tahap 5 `6b04d27`). Tidak ada worktree.
 - Sumber: `AGENTS.md`, `rencana.md`, `keputusan.md`, `cetak-biru.html` (D-1 s.d. D-10, M-1 s.d. M-3, G-1, baris Tahap 6 "Urutan tahap pengerjaan", temuan AB/AC/AD/AE), `tahap-5/AUDIT-CODEX.md`.
@@ -59,7 +59,7 @@ Komponen bersama baru: CSS `.ah-profile-head`, `.ah-formnav`, `.ah-compare`, `.a
 3. **D-10 tab Sikap** menampilkan status dan waktu; isian sikap tetap dibaca di halaman Sikap semester sesuai hak masing-masing.
 4. **Bukan ganda per pasangan.** Kandidat lama berbentuk kelompok (nama/HP sama) dipecah menjadi pasangan wali; tanda hanya untuk pasangan yang masih kandidat. Kontrak `reconciliationReport()`/`reconciliationPage('duplikat')` lama tidak diubah. Penggabungan pasangan bertanda tetap mungkin lewat POST (keputusan admin eksplisit).
 5. **Jumlah pada tombol Rekonsiliasi wali** = kemungkinan ganda (pasangan) + relasi belum lengkap + konflik data lama + wali tanpa santri.
-6. **Dialog penimpaan data lama (D-3)** muncul setelah server mendeteksi perbedaan; bila ayah dan ibu sama-sama berbeda, dialog muncul berurutan (satu per hubungan) karena layanan berhenti pada perbedaan pertama.
+6. **Dialog penimpaan data lama (D-3)** muncul setelah server mendeteksi perbedaan. Koreksi auditor F-1: bila ayah dan ibu sama-sama berbeda, satu dialog menampilkan nilai lama dan calon keduanya, lalu satu konfirmasi menyimpan secara atomik. Konfirmasi tidak dipulihkan otomatis di sesi; alur berurutan semula terbukti berputar dan telah diganti.
 7. **Asrama (AE):** kamar baru wajib asrama bila kolomnya ada; ubah kamar tanpa isian `asrama` (pemanggil lama) tidak mengosongkan nilainya. Kamar "Belum ditentukan" tidak memicu peringatan. "Penuh/hampir penuh" = terisi ≥ 90% kapasitas. Peringatan juga berlaku untuk jalur cepat lama `tahap=langsung` dan pindah kamar.
 8. **Impor (AC):** pembacaan Excel tetap di peramban (SheetJS) seperti sebelumnya; tanpa JavaScript impor tidak tersedia (dinyatakan di halaman). Batas 1.000 baris per berkas. Jalur POST lama tanpa `mode` tetap ada dan kini sama dengan `mode=impor` (memeriksa lalu menyimpan yang siap) dengan jawaban teks lama.
 9. **Asatidz "Buat akun"** menautkan ke halaman Akun & hak akses dengan orang terpilih (pra-pilih `?guru_id=`/`?pengurus_id=`/`?wali_id=`); wizard akun N-1 tidak termasuk tahap ini.

@@ -1,0 +1,6 @@
+v3_phase2_static: exit 1; [lulus] Dokumen PRD V3 tidak dapat diunduh dari web | [lulus] Diagnostik yatim warisan tetap exit nonzero
+v3_phase3_static: exit 1; [lulus] Migrasi 017 aditif tanpa DROP atau DELETE | [lulus] Rollback 017 hanya melepas tabel revisi yang masih kosong
+v3_phase2_integration: exit 0; [lulus] Bukti dapat dilampirkan lewat koreksi tanpa mengubah isi | [lulus] Koreksi tanpa perubahan isi tetap terrekonsiliasi
+v3_phase3_integration: exit 0; [lulus] Kegagalan outbox menggulung pembukaan kasus (503) | [lulus] Tidak ada kasus atau audit parsial setelah outbox gagal
+v3_phase4_integration: exit 0; [lulus] Terbit ulang isi asli sesudah koreksi membuat snapshot yang sesuai respons | [lulus] Klik ganda sesudah terbit ulang tetap tidak menggandakan
+v3_phase5_access: exit 0; [lulus] Options tetap tersedia bagi petugas berhak: sbx_pengurus_a | [lulus] Options tetap tersedia bagi petugas berhak: sbx_murobi_a

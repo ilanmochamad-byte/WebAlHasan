@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 master_redirect($halaman . '?action=detail&id=' . $alumniId);
 
             case 'hubungkan':
-                $service->hubungkanSantri($alumniId, (int) ($_POST['santri_id'] ?? 0), (int) $currentUser['id']);
+                $service->hubungkanSantri($alumniId, (int) ($_POST['santri_id'] ?? 0), (int) $currentUser['id'], $alasan);
                 master_flash('success', $namaAlumni() . ' dihubungkan ke santri sumbernya.');
                 master_redirect($halaman . '?action=detail&id=' . $alumniId);
 
@@ -259,6 +259,8 @@ if ($mode !== '' && $dipilih !== null):
                         <select class="form-select mb-2" id="santri_hubung" name="santri_id" required><option value="">Pilih santri</option>
                             <?php foreach (master_data_service()->santriListAll() as $s): ?><option value="<?= (int) $s['id'] ?>" <?= strcasecmp((string) $s['nis'], (string) $dipilih['nis']) === 0 ? 'selected' : '' ?>><?= master_e($s['nama_santri'] . ' — NIS ' . $s['nis']) ?></option><?php endforeach; ?>
                         </select>
+                        <label class="form-label" for="alasan_hubung">Alasan <span class="text-danger" aria-hidden="true">*</span></label>
+                        <input class="form-control mb-2" id="alasan_hubung" name="alasan" maxlength="500" required minlength="5">
                         <div class="ah-dialog__actions"><button class="btn btn-primary" type="submit">Hubungkan</button></div>
                     </form>
                 <?php ah_action_dialog_close(); ?>

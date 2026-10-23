@@ -1,0 +1,14 @@
+redesain_web_tahap1_static: exit 0;  | Semua pemeriksaan lulus.
+redesain_web_tahap2_static: exit 0;  | Semua pemeriksaan lulus (121).
+redesain_web_tahap3_static: exit 0;  | Ringkasan: 152 lulus, 0 gagal
+redesain_web_tahap4_static: exit 1; Ringkasan: 95 lulus, 1 gagal |   - Tanpa perubahan skema/migrasi (database/ tidak berubah sejak Tahap 3)
+redesain_web_tahap5_static: exit 0;  | Ringkasan: 96 lulus, 0 gagal
+alumni_static: exit 0;  | SELURUH PEMERIKSAAN STATIS ALUMNI LULUS.
+penempatan_static: exit 0;  | SELURUH PEMERIKSAAN STATIS PENEMPATAN LULUS.
+penugasan_static: exit 0;  | Total gagal: 0
+perapihan_static: exit 0;  | SELURUH PEMERIKSAAN STATIS PERAPIHAN LULUS.
+phase2_static: exit 0; [lulus] Nomor HP dinormalisasi ke format lokal | [lulus] Tanggal tidak valid ditolak
+v3_phase1_static: exit 0; [lulus] Warisan hanya baca | [lulus] Mutasi V3 hanya hadir bersama paket Fase 2
+v3_phase2_static: exit 77;
+v3_phase3_static: exit 77;
+v3_phase4_static: exit 0; [lulus] Payload V3 divalidasi dan tujuan sebelum login ditunda | [lulus] Layar publikasi tidak melog atau menyimpan isi ke penyimpanan/clipboard

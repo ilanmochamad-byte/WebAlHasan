@@ -42,6 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         if ($action === 'save') {
+            // D-3: satu dialog dapat mengonfirmasi kedua konflik sekaligus.
+            // Persetujuan hanya berasal dari tombol dialog pada POST ini;
+            // tidak dipulihkan otomatis dari sesi/isian sebelumnya.
+            if (($_POST['konfirmasi_timpa_semua'] ?? '') === '1') {
+                $_POST['konfirmasi_timpa'] = ['Ayah' => '1', 'Ibu' => '1'];
+            }
             if (array_intersect(['nama_ayah', 'no_hp_ayah', 'nama_ibu', 'no_hp_ibu'], array_keys($_POST)) !== []) {
                 throw new MasterDataException('Kolom lama hanya dapat diperbarui melalui pemilihan wali dan konfirmasi penggantian.');
             }
@@ -77,7 +83,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ah_validation_keep($oldInput, $oldFields, $exception, '_santri_old');
         // D-3: perbedaan dengan kolom lama dikonfirmasi lewat dialog.
         if (preg_match('/kolom lama (Ayah|Ibu) berbeda dengan identitas wali/u', $exception->getMessage(), $cocok) === 1) {
-            $_SESSION['_santri_timpa'] = $cocok[1];
+            // Layanan menyimpan secara atomik dan berhenti pada konflik
+            // pertama. Kumpulkan semua konflik untuk dialog, agar konfirmasi
+            // Ayah tidak hilang saat transaksi berikutnya menemukan Ibu.
+            $lama = $id ? $service->santri($id) : [];
+            $konflik = [];
+            foreach (['Ayah', 'Ibu'] as $hubungan) {
+                $spec = $_POST['wali'][$hubungan] ?? [];
+                $calon = match ($spec['mode'] ?? '') {
+                    'pilih' => $service->wali((int) ($spec['wali_id'] ?? 0)),
+                    'baru' => ['nama' => App\MasterData\Normalizer::text($spec['nama'] ?? ''), 'no_hp' => App\MasterData\Normalizer::phone($spec['no_hp'] ?? '')],
+                    default => null,
+                };
+                if ($calon === null) { continue; }
+                $akhiran = $hubungan === 'Ayah' ? 'ayah' : 'ibu';
+                $namaLama = (string) ($lama['nama_' . $akhiran] ?? '');
+                $hpLama = (string) ($lama['no_hp_' . $akhiran] ?? '');
+                $namaBaru = trim((string) $calon['nama']);
+                $hpBaru = (string) ($calon['no_hp'] ?? '');
+                if (($namaLama !== '' && $namaLama !== $namaBaru) || ($hpLama !== '' && $hpLama !== $hpBaru)) {
+                    $konflik[$hubungan] = ['lama' => trim($namaLama . ' · ' . $hpLama, ' ·'), 'baru' => trim($namaBaru . ' · ' . $hpBaru, ' ·')];
+                }
+            }
+            $_SESSION['_santri_timpa'] = $konflik;
         } else {
             unset($_SESSION['_santri_timpa']);
             master_flash('danger', $exception->getMessage());
@@ -152,7 +180,7 @@ if ($mode === 'create' || $mode === 'edit') {
         }
         return null;
     };
-    $timpa = is_string($_SESSION['_santri_timpa'] ?? null) ? $_SESSION['_santri_timpa'] : null;
+    $timpa = is_array($_SESSION['_santri_timpa'] ?? null) ? $_SESSION['_santri_timpa'] : [];
     unset($_SESSION['_santri_timpa']);
 
     master_header($selected ? 'Ubah santri' : 'Tambah santri', [
@@ -163,12 +191,15 @@ if ($mode === 'create' || $mode === 'edit') {
     echo ah_error_summary('_santri_old');
     $bagian = ['identitas' => 'Identitas', 'alamat' => 'Alamat', 'sekolah' => 'Sekolah', 'wali' => 'Orang tua/wali'];
     ?>
-    <?php if ($timpa !== null): ?>
-        <?php ah_action_dialog_open('dialog-timpa', 'Konfirmasi penggantian data ' . mb_strtolower($timpa), 'Ganti data ' . mb_strtolower($timpa) . ' pada kolom lama?', 'outline-danger', true, 'fa-triangle-exclamation'); ?>
-            <p class="mb-2">Nama atau nomor HP <?= ah_e(mb_strtolower($timpa)) ?> yang tersimpan di data lama santri ini berbeda dengan identitas wali yang Anda pilih.</p>
+    <?php if ($timpa !== []): $labelTimpa = mb_strtolower(implode(' dan ', array_keys($timpa))); ?>
+        <?php ah_action_dialog_open('dialog-timpa', 'Konfirmasi penggantian data ' . $labelTimpa, 'Ganti data ' . $labelTimpa . ' pada kolom lama?', 'outline-danger', true, 'fa-triangle-exclamation'); ?>
+            <p class="mb-2">Nama atau nomor HP <?= ah_e($labelTimpa) ?> yang tersimpan di data lama santri ini berbeda dengan identitas wali yang Anda pilih.</p>
+            <dl class="ah-info-list"><?php foreach ($timpa as $hubungan => $nilai): ?>
+                <dt><?= ah_e($hubungan) ?></dt><dd><?= ah_e($nilai['lama'] ?: 'Belum tercatat') ?> → <?= ah_e($nilai['baru']) ?></dd>
+            <?php endforeach; ?></dl>
             <p class="small text-muted">Bila Anda yakin wali terpilih benar, data lama diganti dengan identitas wali itu. Nilai sebelum dan sesudah dicatat pada audit.</p>
             <div class="ah-dialog__actions">
-                <button class="btn btn-danger" type="submit" form="form-santri" name="konfirmasi_timpa[<?= ah_e($timpa) ?>]" value="1">Ganti dan simpan</button>
+                <button class="btn btn-danger" type="submit" form="form-santri" name="<?= count($timpa) > 1 ? 'konfirmasi_timpa_semua' : 'konfirmasi_timpa[' . ah_e((string) array_key_first($timpa)) . ']' ?>" value="1">Ganti dan simpan</button>
             </div>
         <?php ah_action_dialog_close(); ?>
     <?php endif; ?>

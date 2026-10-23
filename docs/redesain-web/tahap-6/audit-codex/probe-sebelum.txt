@@ -1,0 +1,25 @@
+[lulus] D-3 kedua konflik: permintaan awal tidak menimpa data
+[lulus] D-3 kedua konflik: dialog muncul
+[gagal] D-3 kedua konflik: konfirmasi UI selesai tanpa berputar Ayah/Ibu
+[gagal] D-3 kedua perubahan meninggalkan tepat dua audit mirror
+[lulus] AB sbx_pengurus_a baseline 200
+[lulus] AB sbx_pengurus_a master nonaktif: empat tab 403 dan hilang dari daftar pada sesi lama
+[lulus] AB sbx_pengurus_a master arsip: empat tab 403 dan hilang dari daftar pada sesi lama
+[lulus] AB sbx_pengurus_a penugasan arsip: empat tab 403 dan hilang dari daftar pada sesi lama
+[lulus] AB sbx_pengurus_a penugasan belum mulai: empat tab 403 dan hilang dari daftar pada sesi lama
+[lulus] AB sbx_pengurus_a semester nonaktif: empat tab 403 dan hilang dari daftar pada sesi lama
+[lulus] AB sbx_pengurus_a santri arsip: empat tab 403 dan hilang dari daftar pada sesi lama
+[lulus] AB sbx_pengurus_a dipulihkan 200
+[lulus] AB sbx_murobi_a baseline 200
+[lulus] AB sbx_murobi_a master nonaktif: empat tab 403 dan hilang dari daftar pada sesi lama
+[lulus] AB sbx_murobi_a master arsip: empat tab 403 dan hilang dari daftar pada sesi lama
+[lulus] AB sbx_murobi_a penugasan arsip: empat tab 403 dan hilang dari daftar pada sesi lama
+[lulus] AB sbx_murobi_a penugasan belum mulai: empat tab 403 dan hilang dari daftar pada sesi lama
+[lulus] AB sbx_murobi_a semester nonaktif: empat tab 403 dan hilang dari daftar pada sesi lama
+[lulus] AB sbx_murobi_a santri arsip: empat tab 403 dan hilang dari daftar pada sesi lama
+[lulus] AB sbx_murobi_a dipulihkan 200
+[lulus] AE tinjauan awal sesuai asrama
+[lulus] AE perubahan asrama setelah tinjau ditolak tanpa konfirmasi dan tanpa penempatan
+[lulus] AE perubahan asrama boleh setelah konfirmasi beralasan
+[lulus] AC periksa tidak menulis santri, wali, relasi maupun audit
+Ringkasan: 22 lulus, 2 gagal

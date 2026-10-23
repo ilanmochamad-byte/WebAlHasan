@@ -1,0 +1,64 @@
+[lulus] PN-0 tahun ajaran aktif tersedia untuk pengujian
+[lulus] PN-1 satu santri ditempatkan ke kelas pada semester aktif
+[lulus] PN-1 tanggal mulai penempatan kelas tersimpan
+[lulus] PN-2 penempatan kelas lama diselesaikan dengan tanggal selesai
+[lulus] PN-2 penempatan kelas baru menjadi aktif
+[lulus] PN-2 riwayat kelas lama tidak dihapus
+[lulus] PN-3 mengeluarkan dari kelas tanpa alasan ditolak [Alasan wajib diisi ketika mengeluarkan santri dari kelas atau kamar.]
+[lulus] PN-3 penempatan kelas aktif berakhir
+[lulus] PN-3 baris riwayat kelas tetap ada setelah dikeluarkan
+[lulus] PN-4 satu santri ditempatkan ke kamar
+[lulus] PN-5 penempatan ke kamar yang sama idempoten: tidak ada baris baru
+[lulus] PN-6 ID penempatan kamar dipertahankan saat pindah (bukan hapus lalu sisip)
+[lulus] PN-6 kamar berubah ke tujuan baru
+[lulus] PN-6 audit perpindahan kamar memuat nilai sebelum, sesudah, dan pelakunya
+[lulus] PN-6 audit bertambah pada perpindahan kamar
+[lulus] PN-7 mengeluarkan dari kamar tanpa alasan ditolak [Alasan wajib diisi ketika mengeluarkan santri dari kelas atau kamar.]
+[lulus] PN-7 santri keluar dari kamar pada semester aktif
+[lulus] PN-7 audit pengeluaran memuat kamar sebelumnya dan alasan admin
+[lulus] PN-8 tiga santri ditempatkan sekaligus ke satu kamar
+[lulus] PN-8 audit ringkasan massal mencatat jumlah santri dan jumlah yang diterapkan
+[lulus] PN-8 penempatan kelas massal berhasil untuk dua santri
+[lulus] PN-9 operasi massal ditolak karena sisa kapasitas kamar tidak cukup [Kapasitas kamar PN Kamar Sempit EF7639 tidak mencukupi: terisi 1 dari 2, sisa 1 tempat, sedangkan yang perlu ditambahkan 2 santri. Tidak ada satu pun santri yang dipindahkan.]
+[lulus] PN-9 penolakan kapasitas tidak memindahkan satu santri pun
+[lulus] PN-9 santri yang sudah berada di kamar tujuan tidak dihitung sebagai tambahan kapasitas
+[lulus] PN-10 operasi massal gagal karena santri terakhir tidak aktif [Santri Santri Penempatan C EF7639 tidak aktif atau sudah diarsipkan sehingga tidak dapat ditempatkan.]
+[lulus] PN-10 kegagalan santri terakhir tidak meninggalkan perubahan santri sebelumnya
+[lulus] PN-11 santri yang diarsipkan ditolak [Santri Santri Penempatan D EF7639 tidak aktif atau sudah diarsipkan sehingga tidak dapat ditempatkan.]
+[lulus] PN-11 kelas yang diarsipkan ditolak sebagai tujuan [Kelas tujuan tidak ditemukan, tidak aktif, atau sudah diarsipkan.]
+[lulus] PN-11 kamar yang tidak ada ditolak sebagai tujuan [Kamar tujuan tidak ditemukan atau kapasitasnya belum diatur.]
+[lulus] PN-11 ID kamar bukan bilangan bulat positif ditolak [Pilih kamar tujuan terlebih dahulu.]
+[lulus] PN-11 tanpa tahun ajaran aktif seluruh penempatan ditolak [Belum ada tahun ajaran aktif. Aktifkan satu semester pada halaman Tahun Ajaran terlebih dahulu.]
+[lulus] PN-12 penempatan kamar tahun ajaran sebelumnya tidak ikut terhapus
+[lulus] PN-13 snapshot peserta pertemuan tidak berubah saat kelas santri berubah
+[lulus] PN-13 kelas pada snapshot tetap kelas saat pertemuan dibuka
+[lulus] PN-14 murobi kamar menjadi kandidat setelah santri ditempatkan di kamarnya
+[lulus] PN-14 setelah pindah kamar, murobi kamar lama tidak lagi menjadi kandidat
+[lulus] PN-15 audit baris memuat santri, tahun ajaran, mode, jumlah, dan alasan
+[lulus] PN-15 audit tidak memuat password atau token
+[lulus] PN-16 kegagalan audit menghentikan operasi penempatan [Penempatan dibatalkan karena catatan audit tidak dapat disimpan. Tidak ada perubahan yang tersimpan.]
+[lulus] PN-16 kegagalan audit membatalkan perubahan penempatan (transaksi sama)
+[lulus] PN-17 pengiriman ulang tiga kali tidak menghasilkan relasi kamar ganda
+[lulus] PN-17 pengiriman ulang kelas tidak menghasilkan dua penempatan aktif
+[lulus] PN-18 konflik data warisan (dua kamar untuk satu santri) ditolak, bukan diperbaiki otomatis [Konflik data: Santri Penempatan B EF7639 memiliki 2 penempatan kamar pada tahun ajaran ini. Jalankan "php bin/penempatan_preflight.php" lalu selesaikan konflik itu lebih dahulu; sistem tidak memperbaiki data produksi secara otomatis.]
+[lulus] PN-18 data yang berkonflik tidak diubah oleh sistem
+[lulus] PN-18 preflight melaporkan konflik duplikasi kamar
+[lulus] PN-19 daftar santri kosong ditolak [Pilih minimal satu santri terlebih dahulu.]
+[lulus] PN-19 ID santri bukan bilangan bulat positif ditolak [Daftar santri memuat ID yang tidak valid. Muat ulang halaman lalu pilih ulang santri.]
+[lulus] PN-19 tindakan yang tidak dikenal ditolak [Tindakan penempatan tidak dikenal.]
+[lulus] PN-19 operasi massal di atas batas ditolak sebelum menyentuh basis data [Satu operasi massal dibatasi 200 santri. Bagi menjadi beberapa tahap.]
+[lulus] PN-19 ID santri ganda pada satu permintaan hanya menghasilkan satu penempatan
+[lulus] PN-19 daftar penempatan menemukan santri uji lewat pencarian NIS
+[lulus] PN-19 filter "belum mempunyai kamar" hanya menampilkan santri tanpa kamar
+[lulus] PN-19 tinjauan menampilkan kapasitas kamar dan jumlah santri terpilih
+[lulus] PN-20 santri arsip tetap TIDAK dapat ditempatkan [Santri Santri Penempatan C EF7639 tidak aktif atau sudah diarsipkan sehingga tidak dapat ditempatkan.]
+[lulus] PN-20 filter "nonaktif/arsip tetapi masih berkamar" menemukan santri itu
+[lulus] PN-20 santri arsip dapat dikeluarkan sehingga tempatnya kembali tersedia
+[lulus] PN-20 ringkasan memuat hitungan santri nonaktif yang masih berkamar
+[lulus] PN-21 filter kamar menemukan santri berkonflik dari sisi kamar kedua
+[lulus] PN-22 tindakan massal yang tidak mengubah apa pun tidak meninggalkan jejak audit
+[lulus] PN-23 perpindahan kamar tidak menyentuh baris tahun ajaran lain
+[lulus] PN-24 tanggal tidak valid pada tindakan kamar diabaikan, bukan memblokir
+[lulus] PN-24 tanggal tidak valid pada tindakan KELAS tetap ditolak [Tanggal mulai harus berformat YYYY-MM-DD dan merupakan tanggal yang benar.]
+
+SELURUH PENGUJIAN INTEGRASI PENEMPATAN LULUS.

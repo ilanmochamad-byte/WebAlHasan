@@ -594,9 +594,10 @@ final class AlumniService
      * Hanya untuk data lama yang `santri_id`-nya masih kosong. Sistem TIDAK
      * PERNAH menebak pasangan ini sendiri dari kesamaan nama.
      */
-    public function hubungkanSantri(int $alumniId, int $santriId, int $actorId): void
+    public function hubungkanSantri(int $alumniId, int $santriId, int $actorId, string $alasan = ''): void
     {
-        $this->transaksi(function () use ($alumniId, $santriId, $actorId): bool {
+        $alasan = $this->alasanWajib($alasan, 'menghubungkan catatan alumni ke santri');
+        $this->transaksi(function () use ($alumniId, $santriId, $actorId, $alasan): bool {
             $sebelum = $this->mustLock($alumniId);
             if ($sebelum['santri_id'] !== null) {
                 throw new MasterDataException('Catatan alumni ini sudah terhubung ke santri #' . (int) $sebelum['santri_id'] . '.');
@@ -624,6 +625,7 @@ final class AlumniService
                     'santri_id' => $santriId,
                     'nis_santri' => (string) $santri['nis'],
                     'nama_santri_terkini' => (string) $santri['nama_santri'],
+                    'alasan' => $alasan,
                 ],
                 $actorId
             );
