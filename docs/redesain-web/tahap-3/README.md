@@ -1,6 +1,6 @@
 # Redesain website Tahap 3 — halaman lama ke kerangka baru (23 Oktober 2026)
 
-Status: **diimplementasikan Claude, menunggu audit Codex.** Belum di-merge, belum dideploy, tanpa migrasi database. Tahap 4 belum dimulai.
+Status terbaru: **BELUM LULUS audit independen Codex 23 Oktober 2026** atas implementasi Claude `e626313`; dua temuan P2 pada penangguhan worker/retry WhatsApp dan validasi alasan batal lunas di server. Lihat [`AUDIT-CODEX.md`](AUDIT-CODEX.md) dan bukti independen `audit-codex/`. Menunggu koreksi Claude dan audit ulang. Catatan implementasi serta hasil pengujian Claude di bawah dipertahankan sebagai riwayat handoff. Belum di-merge, belum dideploy, tanpa migrasi database. Tahap 4 belum dimulai.
 
 - Branch `claude/redesain-web-tahap-3` dibuat dari `429f9ef` (ujung `claude/redesain-web-tahap-2` yang lulus audit ulang Codex). `origin/main` `bc67e2e` baru memuat Tahap 2 sampai `964e21f` (tanpa koreksi `e9b5b8c` dan audit ulang `429f9ef`), sehingga Tahap 3 dibuat dari commit audit itu, sama seperti pola Tahap 2. Tidak ada worktree.
 - Sumber: `AGENTS.md`, `rencana.md`, `keputusan.md`, `cetak-biru.html` (N-2, N-4, N-5, K-5 s.d. K-8, W-1 s.d. W-4, baris Tahap 3 di "Urutan tahap pengerjaan"), `tahap-2/AUDIT-ULANG-CODEX.md`.

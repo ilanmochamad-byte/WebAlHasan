@@ -1,0 +1,180 @@
+[
+  {
+    "suite": "tests/alumni_static.php",
+    "exit": 0,
+    "tail": [
+      "",
+      "SELURUH PEMERIKSAAN STATIS ALUMNI LULUS."
+    ]
+  },
+  {
+    "suite": "tests/get_mutasi_v1_static.php",
+    "exit": 0,
+    "tail": [
+      "[lulus] admin_download.php memakai formulir POST + Csrf::input(), tanpa tautan bermutasi",
+      "Ringkasan: 28 lulus, 0 gagal"
+    ]
+  },
+  {
+    "suite": "tests/kredensial_static.php",
+    "exit": 0,
+    "tail": [
+      "",
+      "SELURUH PEMERIKSAAN STATIS PESAN KREDENSIAL LULUS."
+    ]
+  },
+  {
+    "suite": "tests/penempatan_static.php",
+    "exit": 0,
+    "tail": [
+      "",
+      "SELURUH PEMERIKSAAN STATIS PENEMPATAN LULUS."
+    ]
+  },
+  {
+    "suite": "tests/penugasan_static.php",
+    "exit": 0,
+    "tail": [
+      "",
+      "Total gagal: 0"
+    ]
+  },
+  {
+    "suite": "tests/perapihan_static.php",
+    "exit": 0,
+    "tail": [
+      "",
+      "SELURUH PEMERIKSAAN STATIS PERAPIHAN LULUS."
+    ]
+  },
+  {
+    "suite": "tests/phase1_static.php",
+    "exit": 0,
+    "tail": [
+      "[lulus] Token CSRF valid dapat dibuat dan diverifikasi",
+      "[lulus] Token CSRF salah ditolak"
+    ]
+  },
+  {
+    "suite": "tests/phase2_static.php",
+    "exit": 0,
+    "tail": [
+      "[lulus] Nomor HP dinormalisasi ke format lokal",
+      "[lulus] Tanggal tidak valid ditolak"
+    ]
+  },
+  {
+    "suite": "tests/phase3_static.php",
+    "exit": 0,
+    "tail": [
+      "[lulus] Format ambigu ditolak parser dan harus dilaporkan",
+      "[lulus] Rentang lintas tengah malam tidak ditebak oleh parser"
+    ]
+  },
+  {
+    "suite": "tests/phase4_static.php",
+    "exit": 0,
+    "tail": [
+      "[lulus] Secret token dan TTL dikonfigurasi melalui environment",
+      "[lulus] Backup SQL mengecualikan generated column dan menulis daftar kolom eksplisit"
+    ]
+  },
+  {
+    "suite": "tests/phase5_static.php",
+    "exit": 0,
+    "tail": [
+      "[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/csv-format.md",
+      "[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/acceptance-checklist.md"
+    ]
+  },
+  {
+    "suite": "tests/redesain_web_tahap1_static.php",
+    "exit": 0,
+    "tail": [
+      "",
+      "Semua pemeriksaan lulus."
+    ]
+  },
+  {
+    "suite": "tests/redesain_web_tahap2_static.php",
+    "exit": 0,
+    "tail": [
+      "",
+      "Semua pemeriksaan lulus (121)."
+    ]
+  },
+  {
+    "suite": "tests/redesain_web_tahap3_static.php",
+    "exit": 0,
+    "tail": [
+      "",
+      "Ringkasan: 145 lulus, 0 gagal"
+    ]
+  },
+  {
+    "suite": "tests/v2_phase1_static.php",
+    "exit": 0,
+    "tail": [
+      "[lulus] php -l lulus untuk bin/v2_phase1_backfill.php",
+      "[lulus] php -l lulus untuk bin/v2_phase1_verify.php"
+    ]
+  },
+  {
+    "suite": "tests/v2_phase2_static.php",
+    "exit": 0,
+    "tail": [
+      "[lulus] php -l lulus untuk admin/ubah_password.php",
+      "[lulus] php -l lulus untuk admin/pertemuan_pengajian.php"
+    ]
+  },
+  {
+    "suite": "tests/v2_phase3_static.php",
+    "exit": 0,
+    "tail": [
+      "",
+      "SELURUH PEMERIKSAAN STATIS FASE 3 LULUS."
+    ]
+  },
+  {
+    "suite": "tests/v2_phase4_static.php",
+    "exit": 0,
+    "tail": [
+      "",
+      "SELURUH PEMERIKSAAN STATIS FASE 4 LULUS."
+    ]
+  },
+  {
+    "suite": "tests/v2_phase5_static.php",
+    "exit": 0,
+    "tail": [
+      "",
+      "SELURUH PEMERIKSAAN STATIS FASE 5 LULUS."
+    ]
+  },
+  {
+    "suite": "tests/v3_phase1_static.php",
+    "exit": 0,
+    "tail": [
+      "[lulus] Warisan hanya baca",
+      "[lulus] Mutasi V3 hanya hadir bersama paket Fase 2"
+    ]
+  },
+  {
+    "suite": "tests/v3_phase2_static.php",
+    "exit": 77,
+    "tail": []
+  },
+  {
+    "suite": "tests/v3_phase3_static.php",
+    "exit": 77,
+    "tail": []
+  },
+  {
+    "suite": "tests/v3_phase4_static.php",
+    "exit": 0,
+    "tail": [
+      "[lulus] Payload V3 divalidasi dan tujuan sebelum login ditunda",
+      "[lulus] Layar publikasi tidak melog atau menyimpan isi ke penyimpanan/clipboard"
+    ]
+  }
+]
