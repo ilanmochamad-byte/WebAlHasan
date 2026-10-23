@@ -191,7 +191,13 @@ if ($tab === 'jadwal') {
         } else {
             // Tampilan mingguan memuat seluruh jadwal semester terpilih
             // (aktif dan nonaktif, tanpa arsip) dengan cakupan yang sama.
-            $mingguan = $service->list(['year_id' => $filters['year_id'], 'teacher_id' => $filters['teacher_id'], 'class_id' => $filters['class_id'], 'state' => 'all_unarchived'], 1, 500)['rows'];
+            // Layanan membatasi satu halaman ke 100 baris. Kisi tidak memiliki
+            // pagination, jadi baca semua halaman dalam cakupan yang sama.
+            $halamanMingguan = 1;
+            do {
+                $bagianMingguan = $service->list(['year_id' => $filters['year_id'], 'teacher_id' => $filters['teacher_id'], 'class_id' => $filters['class_id'], 'state' => 'all_unarchived'], $halamanMingguan++, 100);
+                array_push($mingguan, ...$bagianMingguan['rows']);
+            } while ($bagianMingguan['rows'] !== [] && count($mingguan) < $bagianMingguan['total']);
         }
         if (isset($_GET['id'])) {
             $kandidat = $service->find((int) $_GET['id']);

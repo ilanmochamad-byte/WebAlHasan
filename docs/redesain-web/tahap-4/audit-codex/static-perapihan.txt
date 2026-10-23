@@ -1,0 +1,150 @@
+=== 1. Pusat Akun & Hak Akses ===
+[lulus] Repository akun menyediakan penambahan dan pencabutan role per satu relasi
+[lulus] Jalur lama yang menghapus SELURUH role sebelum menetapkan satu role sudah dihapus
+[lulus] Pencabutan role hanya menyentuh satu baris relasi, bukan seluruh role akun
+[lulus] Role guru/pengurus/orang tua menuntut relasi master yang valid di server
+[lulus] Pemberian role admin menuntut konfirmasi khusus
+[lulus] Perlindungan admin terakhir memakai penguncian baris di dalam transaksi (tahan permintaan bersamaan)
+[lulus] Admin tidak dapat menghilangkan aksesnya sendiri karena kesalahan
+[lulus] Setiap perubahan hak akses tercatat pada audit
+[lulus] Murobi ditampilkan sebagai kemampuan berdasarkan penugasan aktif, bukan role
+[lulus] Tidak ada lagi dropdown role tunggal yang memaksa akun menjadi satu kategori
+[lulus] Halaman akun lama meneruskan POST ke pusat akun (guard admin dan CSRF tetap berjalan)
+[lulus] Reset password, pencabutan perangkat, dan kewajiban ganti password awal dipertahankan
+
+=== 2. Data santri dan wali ===
+[lulus] saveSantri menerima spesifikasi wali yang eksplisit
+[lulus] Pembuatan wali otomatis per santri baru sudah dihapus
+[lulus] Santri, wali baru, dan relasinya disimpan dalam satu transaksi
+[lulus] Formulir santri dilindungi token sekali pakai terhadap pengiriman ulang
+[lulus] Formulir santri menyediakan pemilihan wali terdaftar dan pembuatan wali baru
+[lulus] Pembuatan atau pemilihan wali dinyatakan tidak membuat akun login
+[lulus] Jalur master data tidak pernah membuat akun login
+[lulus] Nilai kolom lama yang bertentangan hanya ditimpa setelah konfirmasi, dengan audit sebelum/sesudah
+[lulus] Kolom lama tidak dikosongkan hanya karena formulir tidak lagi mengirimkannya
+[lulus] Perubahan identitas wali bersama menampilkan santri terdampak dan menuntut konfirmasi
+[lulus] Penggabungan identitas dilakukan satu pasang, dapat diblokir, dan mempertahankan baris sumber
+[lulus] Rekonsiliasi tidak pernah menghapus wali atau relasinya (ID lama dipertahankan)
+[lulus] Halaman rekonsiliasi menegaskan tidak ada penggabungan massal
+[lulus] Laporan kandidat duplikasi, konflik, dan hubungan belum lengkap tersedia
+[lulus] Detail santri menampilkan hubungan wali aktual, bukan hanya teks kolom lama
+
+=== 3. Data guru dan penugasan ===
+[lulus] Pilihan tugas lama Guru/Pembimbing/Keduanya dihapus dari formulir dan validasi
+[lulus] Tidak ada dropdown pengganti pada formulir guru
+[lulus] Label halaman guru menjadi Data Guru
+[lulus] Menu memakai label Asatidz untuk data guru
+[lulus] Menyimpan guru tidak menyentuh kolom status lama (data historis dipertahankan)
+[lulus] Penugasan dihitung dari jadwal dan penugasan murobi, bukan dari label tugas
+[lulus] Status aktif/nonaktif guru dipertahankan
+[lulus] Keterangan murobi diperbarui mengikuti aturan V2 dan menyebut guru tanpa jadwal
+
+=== 4. Modul Pengajian terpadu ===
+[lulus] Satu menu Pengajian dengan tab Jadwal dan Pertemuan
+[lulus] Tab dirender lewat kerangka bersama
+[lulus] Konteks dan filter terbawa saat berpindah tab dan saat membuka pertemuan sebuah jadwal
+[lulus] Guru tidak memperoleh hak pengelolaan jadwal admin (ditolak di server)
+[lulus] Filter guru dipaksa di server sehingga guru tidak melihat jadwal guru lain
+[lulus] admin_jadwal_ngaji.php tetap berfungsi: GET dialihkan, POST diteruskan penuh
+[lulus] pertemuan_pengajian.php tetap berfungsi: GET dialihkan, POST diteruskan penuh
+[lulus] Modul pengajian tidak menghapus pertemuan, peserta, atau absensi
+
+=== 5. Pemisahan laporan kehadiran ===
+[lulus] Tersedia tiga penyajian: santri, guru, gabungan
+[lulus] Default kontrak API lama TIDAK berubah (tetap gabungan)
+[lulus] Halaman web memakai penyajian Santri sebagai tampilan awal secara eksplisit
+[lulus] Pemisahan dilakukan pada satu tempat di repository laporan
+[lulus] Ringkasan, ringkasan per jadwal, halaman, ekspor, dan EXPLAIN memakai definisi filter yang sama
+[lulus] CSV dan cetak memakai penyajian awal yang sama dengan layar
+[lulus] Tombol ekspor dan cetak membawa penyajian yang sedang aktif
+[lulus] Penyajian ikut tercetak pada daftar filter aktif
+[lulus] Absensi guru tidak dihapus oleh pemisahan penyajian
+[lulus] Guru tetap tampil sebagai pengampu pada laporan santri
+
+=== 6. Desain dan navigasi bersama ===
+[lulus] Berkas desain bersama tersedia: assets/ui/alhasan.css
+[lulus] Warna, jarak, dan sudut memakai token bersama
+[lulus] Halaman cetak membuang kerangka navigasi
+[lulus] Preferensi pengurangan animasi dihormati
+[lulus] Fokus keyboard selalu terlihat
+[lulus] Tabel lebar menggulir di dalam wadahnya sendiri
+[lulus] Ukuran sentuh minimum ditetapkan untuk ponsel
+[lulus] Tidak ada aset eksternal baru pada berkas desain
+[lulus] Komponen navigasi bebas dari guard khusus admin sehingga aman lintas peran
+[lulus] sidebar.php lama sudah pensiun; navigasi hanya dari kerangka bersama
+[lulus] Tersedia tautan lompat ke konten utama
+[lulus] Menu aktif dan breadcrumb tersedia
+[lulus] Menu ponsel dapat dibuka/ditutup dengan status yang terbaca pembaca layar
+[lulus] Isian pengguna dipertahankan saat validasi gagal
+[lulus] Tersedia keadaan kosong yang menjelaskan langkah berikutnya
+[lulus] _master_ui.php memakai kerangka bersama, bukan menggambar layout sendiri
+[lulus] _ui.php memakai kerangka bersama, bukan menggambar layout sendiri
+[lulus] Halaman cetak tidak memuat kerangka bersidebar
+
+=== 7. Satu pintu masuk /portal/ ===
+[lulus] Pengguna anonim yang membuka /portal/ mendapat halaman Masuk Sistem Al Hasan
+[lulus] Tidak ada sistem login kedua: formulir memakai penangan autentikasi yang sudah ada
+[lulus] Beranda umum tidak memakai pemeriksaan kemampuan perizinan
+[lulus] Password sementara wajib diselesaikan sebelum fungsi operasional
+[lulus] Akun tanpa role atau relasi valid mendapat penjelasan tanpa akses tambahan
+[lulus] Logout mengakhiri sesi dan kembali ke pintu masuk yang sama
+[lulus] Alamat lama /admin/admin_login.php mengarahkan ke pintu masuk baru
+[lulus] Sesi kedaluwarsa mengarah ke pintu masuk yang sama
+[lulus] Pemulihan tujuan hanya menerima alamat internal dan menolak tujuan eksternal atau berulang
+[lulus] Pembatasan percobaan masuk dan CSRF tetap berlaku pada penangan login
+[lulus] Regenerasi sesi saat login dipertahankan
+[lulus] Pembatasan percobaan masuk memakai audit yang sudah ada dan tidak mengunci semua orang bila gagal dihitung
+[lulus] Endpoint autentikasi API tidak ikut diubah oleh penyatuan pintu masuk web
+
+=== 8. Migrasi 010 ===
+[lulus] Migrasi 010 memiliki rollback berpasangan
+[lulus] Migrasi 010 sepenuhnya aditif: tidak menghapus atau mengubah data
+[lulus] Migrasi 010 berpenjaga INFORMATION_SCHEMA sehingga aman dijalankan ulang
+[lulus] Nomor HP tidak dijadikan kunci unik (boleh dipakai bersama)
+[lulus] Rollback melepas kolom penanda dan menjelaskan jejak yang tetap tersimpan pada audit
+
+=== 9. Lint PHP berkas baru/diubah ===
+[lulus] php -l lulus untuk app/Ui/Layout.php
+[lulus] php -l lulus untuk app/Ui/Navigation.php
+[lulus] php -l lulus untuk app/Ui/Denial.php
+[lulus] php -l lulus untuk app/Ui/functions.php
+[lulus] php -l lulus untuk app/Http/SafeRedirect.php
+[lulus] php -l lulus untuk app/Auth/LoginThrottle.php
+[lulus] php -l lulus untuk app/Auth/LandingRouter.php
+[lulus] php -l lulus untuk app/Auth/Authorization.php
+[lulus] php -l lulus untuk app/Auth/PortalGuard.php
+[lulus] php -l lulus untuk app/bootstrap.php
+[lulus] php -l lulus untuk app/Account/AccountRepository.php
+[lulus] php -l lulus untuk app/Account/AccountService.php
+[lulus] php -l lulus untuk app/MasterData/MasterDataRepository.php
+[lulus] php -l lulus untuk app/MasterData/MasterDataService.php
+[lulus] php -l lulus untuk app/Report/ReportFilter.php
+[lulus] php -l lulus untuk app/Report/ReportRepository.php
+[lulus] php -l lulus untuk app/Report/ReportService.php
+[lulus] php -l lulus untuk admin/_master_ui.php
+[lulus] php -l lulus untuk admin/admin_akun.php
+[lulus] php -l lulus untuk admin/admin_akun_perizinan.php
+[lulus] php -l lulus untuk admin/admin_guru.php
+[lulus] php -l lulus untuk admin/admin_murobi.php
+[lulus] php -l lulus untuk admin/admin_master_santri.php
+[lulus] php -l lulus untuk admin/admin_wali.php
+[lulus] php -l lulus untuk admin/admin_wali_rekonsiliasi.php
+[lulus] php -l lulus untuk admin/get_wali_json.php
+[lulus] php -l lulus untuk admin/_santri_wali_field.php
+[lulus] php -l lulus untuk admin/admin_pengajian.php
+[lulus] php -l lulus untuk admin/_pengajian_jadwal.php
+[lulus] php -l lulus untuk admin/_pengajian_pertemuan.php
+[lulus] php -l lulus untuk admin/admin_jadwal_ngaji.php
+[lulus] php -l lulus untuk admin/pertemuan_pengajian.php
+[lulus] php -l lulus untuk admin/admin_laporan_absensi.php
+[lulus] php -l lulus untuk admin/export_laporan_absensi.php
+[lulus] php -l lulus untuk admin/laporan_absensi_cetak.php
+[lulus] php -l lulus untuk admin/admin_login.php
+[lulus] php -l lulus untuk admin/cek_login.php
+[lulus] php -l lulus untuk admin/logout.php
+[lulus] php -l lulus untuk admin/ubah_password.php
+[lulus] php -l lulus untuk portal/_ui.php
+[lulus] php -l lulus untuk portal/index.php
+[lulus] php -l lulus untuk portal/izin_ringkasan.php
+
+SELURUH PEMERIKSAAN STATIS PERAPIHAN LULUS.

@@ -1,0 +1,67 @@
+[
+  {
+    "suite": "static-perapihan",
+    "exit": 0
+  },
+  {
+    "suite": "static-phase3",
+    "exit": 0
+  },
+  {
+    "suite": "static-phase5",
+    "exit": 0
+  },
+  {
+    "suite": "static-v2-phase2",
+    "exit": 0
+  },
+  {
+    "suite": "static-v2-phase5",
+    "exit": 0
+  },
+  {
+    "suite": "static-tahap2",
+    "exit": 0
+  },
+  {
+    "suite": "static-tahap3",
+    "exit": 0
+  },
+  {
+    "suite": "web-v2-phase2",
+    "exit": 0
+  },
+  {
+    "suite": "web-v2-phase5",
+    "exit": 0
+  },
+  {
+    "suite": "api-v2-phase5",
+    "exit": 0
+  },
+  {
+    "suite": "integration-phase3",
+    "exit": 0
+  },
+  {
+    "suite": "integration-phase5",
+    "exit": 0
+  },
+  {
+    "suite": "integration-v2-phase2",
+    "exit": 0
+  },
+  {
+    "suite": "integration-v2-phase5",
+    "exit": 1
+  },
+  {
+    "suite": "cetak-regresi",
+    "exit": 0
+  },
+  {
+    "suite": "integration-v2-phase5-kontrol",
+    "exit": 0,
+    "note": "Suite asli; 26 antrean eksternal fixture bawaan ditunda sementara pada salinan regresi, tersedia_pada dipulihkan. Lihat AUDIT-CODEX.md; kegagalan sebelumnya tetap dicatat."
+  }
+]
