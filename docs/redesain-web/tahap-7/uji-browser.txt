@@ -1,0 +1,92 @@
+[lulus] T7-A R-1 375px: rapi di kerangka bersama
+[lulus] T7-A R-3 375px: rapi di kerangka bersama
+[lulus] T7-A R-5 375px: rapi di kerangka bersama
+[lulus] T7-A R-5-panel 375px: rapi di kerangka bersama
+[lulus] T7-A R-6 375px: rapi di kerangka bersama
+[lulus] T7-A R-6-panel 375px: rapi di kerangka bersama
+[lulus] T7-A R-1 768px: rapi di kerangka bersama
+[lulus] T7-A R-3 768px: rapi di kerangka bersama
+[lulus] T7-A R-5 768px: rapi di kerangka bersama
+[lulus] T7-A R-5-panel 768px: rapi di kerangka bersama
+[lulus] T7-A R-6 768px: rapi di kerangka bersama
+[lulus] T7-A R-6-panel 768px: rapi di kerangka bersama
+[lulus] T7-A R-1 1280px: rapi di kerangka bersama
+[lulus] T7-A R-3 1280px: rapi di kerangka bersama
+[lulus] T7-A R-5 1280px: rapi di kerangka bersama
+[lulus] T7-A R-5-panel 1280px: rapi di kerangka bersama
+[lulus] T7-A R-6 1280px: rapi di kerangka bersama
+[lulus] T7-A R-6-panel 1280px: rapi di kerangka bersama
+[lulus] T7-A R-1-salin 375px: rapi di kerangka bersama
+[lulus] T7-A R-7 375px: rapi di kerangka bersama
+[lulus] T7-A R-7-tambah 375px: rapi di kerangka bersama
+[lulus] T7-A M-5 375px: rapi di kerangka bersama
+[lulus] T7-A M-5-panel 375px: rapi di kerangka bersama
+[lulus] T7-A R-1-salin 768px: rapi di kerangka bersama
+[lulus] T7-A R-7 768px: rapi di kerangka bersama
+[lulus] T7-A R-7-tambah 768px: rapi di kerangka bersama
+[lulus] T7-A M-5 768px: rapi di kerangka bersama
+[lulus] T7-A M-5-panel 768px: rapi di kerangka bersama
+[lulus] T7-A R-1-salin 1280px: rapi di kerangka bersama
+[lulus] T7-A R-7 1280px: rapi di kerangka bersama
+[lulus] T7-A R-7-tambah 1280px: rapi di kerangka bersama
+[lulus] T7-A M-5 1280px: rapi di kerangka bersama
+[lulus] T7-A M-5-panel 1280px: rapi di kerangka bersama
+[lulus] T7-A R-2 375px: rapi di kerangka bersama
+[lulus] T7-A R-2-panel 375px: rapi di kerangka bersama
+[lulus] T7-A R-2 768px: rapi di kerangka bersama
+[lulus] T7-A R-2-panel 768px: rapi di kerangka bersama
+[lulus] T7-A R-2 1280px: rapi di kerangka bersama
+[lulus] T7-A R-2-panel 1280px: rapi di kerangka bersama
+[lulus] T7-A R-4 375px: rapi di kerangka bersama
+[lulus] T7-A R-4-panel 375px: rapi di kerangka bersama
+[lulus] T7-A R-4 768px: rapi di kerangka bersama
+[lulus] T7-A R-4-panel 768px: rapi di kerangka bersama
+[lulus] T7-A R-4 1280px: rapi di kerangka bersama
+[lulus] T7-A R-4-panel 1280px: rapi di kerangka bersama
+[lulus] T7-A R-4-murobi 375px: rapi di kerangka bersama
+[lulus] T7-A R-4-murobi 768px: rapi di kerangka bersama
+[lulus] T7-A R-4-murobi 1280px: rapi di kerangka bersama
+[lulus] T7-A R-8 375px: rapi di kerangka bersama
+[lulus] T7-A R-8-versi-lama 375px: rapi di kerangka bersama
+[lulus] T7-A R-8 768px: rapi di kerangka bersama
+[lulus] T7-A R-8-versi-lama 768px: rapi di kerangka bersama
+[lulus] T7-A R-8 1280px: rapi di kerangka bersama
+[lulus] T7-A R-8-versi-lama 1280px: rapi di kerangka bersama
+[lulus] T7-B kisi menampilkan 30 santri di satu layar
+[lulus] T7-B nilai akhir dihitung langsung (40/30/30, half-up)
+[lulus] T7-B bilah bawah: "Ada perubahan belum disimpan"
+[lulus] T7-B perubahan ditandai (peringatan saat meninggalkan halaman)
+[lulus] T7-B isian baru tidak meminta alasan koreksi
+[lulus] T7-B Simpan draf menyimpan santri yang berubah saja
+[lulus] T7-B mengubah nilai tersimpan memunculkan alasan koreksi wajib
+[lulus] T7-B tanpa alasan: tidak terkirim, fokus ke alasan
+[lulus] T7-B koreksi beralasan tersimpan
+[lulus] T7-B panel santri: riwayat revisi dengan nama pelaku dan alasan
+[lulus] T7-C bilah kemajuan tampil
+[lulus] T7-C semua yang lengkap diserahkan satu per satu
+[lulus] T7-D HP: satu santri per kartu, "1 dari 30"
+[lulus] T7-D Berikutnya pindah ke santri kedua
+[lulus] T7-E centang semua memunculkan bilah "Tandai diketahui"
+[lulus] T7-E sikap ditandai diketahui satu per satu
+[lulus] T7-F matriks 30 santri dengan legenda
+[lulus] T7-F klik sel membuka panel detail bahan
+[lulus] T7-F "Verifikasi semua yang diserahkan" per bahan dengan bilah kemajuan
+[lulus] T7-G centang memunculkan bilah "1 santri dipilih"
+[lulus] T7-G "Terbitkan yang siap": PDF dibuat satu santri per permintaan
+[lulus] T7-G chip "Terbit" memuat rapor yang baru terbit
+[lulus] T7-H Pendidikan tanpa cakupan semester lalu: tombol salin tidak tampil
+[lulus] T7-H salin mengisi formulir tanpa menyimpan
+[lulus] T7-H guru semester lalu yang nonaktif ditandai untuk diganti
+[lulus] T7-H mapel semester lalu terisi
+[lulus] T7-H pilihan guru tersaring sesuai mapel
+[lulus] T7-H "Tambah mapel" menambah baris
+[lulus] T7-H pratinjau tanda tangan termuat lewat jalur berpenjaga
+[lulus] T7-H rencana hasil salinan tersimpan lewat layanan
+[lulus] T7-I hanya versi terbaru tampil dengan catatan "menggantikan versi 1"
+[lulus] T7-I versi lama bertanda "Sudah diganti" tanpa isi
+[lulus] T7-J tanpa JavaScript: kisi tersimpan
+[lulus] T7-J tanpa JavaScript: "Serahkan yang lengkap" diproses server berurutan
+[lulus] T7-K tanpa galat JavaScript
+[lulus] T7-K tanpa confirm()/alert() bawaan peramban
+
+Ringkasan: 90 lulus, 0 gagal

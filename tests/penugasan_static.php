@@ -224,12 +224,22 @@ $assert(
     preg_match('/case \'(hapus|delete)\'/', $halaman) !== 1 && !str_contains($halaman, '?hapus=') && preg_match('/value="(hapus|delete)"/', $halaman) !== 1,
     'FS-7 halaman tidak menyediakan aksi penghapusan permanen'
 );
-$assert(substr_count($halaman, 'master_csrf()') >= 6, 'FS-7 setiap formulir mutasi menyertakan token CSRF');
+// Redesain Tahap 7 (M-5): formulir mata pelajaran pindah ke admin_mata_pelajaran.php;
+// hitungan mencakup kedua halaman agar maksud uji (CSRF di setiap formulir) tetap.
+$halamanMapel = (string) file_get_contents($root . '/admin/admin_mata_pelajaran.php');
+// Ubah status mapel kini lewat menu ⋯ (`ah_menu`, yang menyisipkan Csrf::input()).
+$assert(
+    substr_count($halaman, 'master_csrf()') >= 4
+    && substr_count($halaman, '<form method="post"') <= substr_count($halaman, 'master_csrf()')
+    && substr_count($halamanMapel, '<form method="post"') === substr_count($halamanMapel, 'master_csrf()')
+    && str_contains($halamanMapel, "'fields' => ['id' => \$mid, 'action' => 'mapel_status'"),
+    'FS-7 setiap formulir mutasi menyertakan token CSRF'
+);
 $assert(
     preg_match('/<\?=\s*\$r\[[^\]]+\]\s*\?>/', $halaman) !== 1 && preg_match('/<\?=\s*\$mp\[[^\]]+\]\s*\?>/', $halaman) !== 1,
     'FS-7 tidak ada nilai baris yang dicetak tanpa escape'
 );
-$assert(substr_count($halaman, 'master_e(') + substr_count($halaman, 'ah_e(') >= 60, 'FS-7 keluaran data di-escape (master_e/ah_e)');
+$assert(substr_count($halaman . $halamanMapel, 'master_e(') + substr_count($halaman . $halamanMapel, 'ah_e(') >= 60, 'FS-7 keluaran data di-escape (master_e/ah_e)');
 $assert(str_contains($halaman, 'data-confirm=') && str_contains($halaman, 'name="alasan"'), 'FS-7 tindakan berdampak meminta konfirmasi dan alasan');
 
 // ============================================================== FS-8

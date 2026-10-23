@@ -1,0 +1,67 @@
+# Regresi redesain website Tahap 7 — 23 Oktober 2026
+# Format: kode_keluar|uji|lulus|gagal|baris terakhir. Semua dijalankan pada kode akhir Tahap 7.
+# DB: suite Tahap 2–6 memakai DB salinan masing-masing (dibangun ulang sebelum setiap suite);
+# suite penugasan memakai salinan sandbox .env ber-migrasi lengkap test_regresi_t7_test.
+# Asersi lama yang disesuaikan tercantum di README (Pengujian yang disesuaikan); angka di bawah sesudah penyesuaian.
+
+== statis
+0|redesain_web_tahap1_static|69|0|Semua pemeriksaan lulus.
+0|redesain_web_tahap2_static|121|0|Semua pemeriksaan lulus (121).
+0|redesain_web_tahap3_static|152|0|Ringkasan: 152 lulus, 0 gagal
+1|redesain_web_tahap4_static|95|1|  - Tanpa perubahan skema/migrasi (database/ tidak berubah sejak Tahap 3)
+0|redesain_web_tahap5_static|96|0|Ringkasan: 96 lulus, 0 gagal
+1|redesain_web_tahap6_static|140|1|Ringkasan: 140 lulus, 1 gagal
+0|alumni_static|180|0|SELURUH PEMERIKSAAN STATIS ALUMNI LULUS.
+0|get_mutasi_v1_static|28|0|Ringkasan: 28 lulus, 0 gagal
+0|kredensial_static|105|0|SELURUH PEMERIKSAAN STATIS PESAN KREDENSIAL LULUS.
+0|penempatan_static|138|0|SELURUH PEMERIKSAAN STATIS PENEMPATAN LULUS.
+0|penugasan_static|283|0|Total gagal: 0
+0|perapihan_static|131|0|SELURUH PEMERIKSAAN STATIS PERAPIHAN LULUS.
+0|phase1_static|77|0|[lulus] Token CSRF salah ditolak
+0|phase2_static|46|0|[lulus] Tanggal tidak valid ditolak
+0|phase3_static|35|0|[lulus] Rentang lintas tengah malam tidak ditebak oleh parser
+0|phase4_static|38|0|[lulus] Backup SQL mengecualikan generated column dan menulis daftar kolom eksplisit
+0|phase5_static|44|0|[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/acceptance-checklist.md
+0|v2_phase1_static|126|0|[lulus] php -l lulus untuk bin/v2_phase1_verify.php
+0|v2_phase2_static|174|0|[lulus] php -l lulus untuk admin/pertemuan_pengajian.php
+0|v2_phase3_static|147|0|SELURUH PEMERIKSAAN STATIS FASE 3 LULUS.
+0|v2_phase4_static|288|0|SELURUH PEMERIKSAAN STATIS FASE 4 LULUS.
+0|v2_phase5_static|293|0|SELURUH PEMERIKSAAN STATIS FASE 5 LULUS.
+# Dua kegagalan oracle historis di atas (bukan regresi perilaku):
+#  - redesain_web_tahap4_static 95/1 "database/ tidak berubah sejak Tahap 3": sudah tercatat sejak audit Tahap 6 (migrasi 023).
+#  - redesain_web_tahap6_static 140/1 "Navigation dan app/Auth tidak diubah Tahap 6" (dibandingkan origin/main):
+#    Tahap 7 mengubah tujuan tab Mata pelajaran ke M-5; app/Auth tetap identik.
+
+== lint
+php -l: 483 berkas (git ls-files + berkas baru Tahap 7), 0 gagal
+node --check rapor.js, alhasan.js, uji-redesain-web-tahap7.mjs: lulus
+git diff --check: bersih
+
+== penugasan (DB test_regresi_t7_test)
+0|penugasan_integration|161|0|Total gagal: 0
+0|penugasan_web_smoke|86|0|Total gagal: 0 (FW-1b/FW-3/FW-4/FW-12 disesuaikan ke M-5)
+0|penugasan_concurrency|52|0|Total gagal: 0
+
+== redesain Tahap 2–6 (DB salinan, server masing-masing)
+0|php tests/redesain_web_tahap2_http.php|Ringkasan: 191 lulus, 0 gagal (3 asersi F-4 disesuaikan ke kisi/matriks)
+0|php tests/redesain_web_tahap2_audit.php|Ringkasan: 29 lulus, 0 gagal (1 asersi F-4 disesuaikan)
+0|php tests/redesain_web_tahap3_http.php|Ringkasan: 167 lulus, 0 gagal
+0|php tests/redesain_web_tahap3_audit.php|Ringkasan: 13 lulus, 0 gagal
+0|php tests/redesain_web_tahap3_audit_ulang.php|Ringkasan: 13 lulus, 0 gagal
+0|php tests/redesain_web_tahap4_http.php|Ringkasan: 132 lulus, 0 gagal
+0|php tests/redesain_web_tahap4_audit.php|Ringkasan: 34 lulus, 0 gagal
+0|php tests/redesain_web_tahap5_http.php|Ringkasan: 106 lulus, 0 gagal
+0|php tests/redesain_web_tahap5_audit.php|Ringkasan: 33 lulus, 0 gagal
+0|php tests/redesain_web_tahap6_http.php|Ringkasan: 132 lulus, 0 gagal
+0|php tests/redesain_web_tahap6_audit.php|Ringkasan: 29 lulus, 0 gagal
+0|browser tahap1 (DB t5)|91 lulus, 0 gagal
+0|browser tahap2 (DB t2)|Ringkasan: 89 lulus, 0 gagal
+0|browser tahap3 (DB t3)|Ringkasan: 76 lulus, 0 gagal
+0|browser tahap4 (DB t4)|Ringkasan: 121 lulus, 0 gagal
+0|browser tahap5 (DB t5)|Ringkasan: 115 lulus, 0 gagal
+0|browser tahap6 (DB t6)|Ringkasan: 115 lulus, 0 gagal
+
+== tidak dijalankan
+-|tests/browser/uji-v4-*.mjs|menguji markup halaman V4 sebelum redesain (diganti R-1 … R-8); layanan V4 identik dengan baseline
+-|v3_* dan v4_phase*|layanan, REST, dan basis data yang diuji suite ini tidak berubah (statis S7-2)
+-|integrasi/smoke penempatan, alumni, perapihan, kredensial, V2|kode yang diuji tidak disentuh Tahap 7

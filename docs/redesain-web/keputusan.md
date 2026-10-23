@@ -110,6 +110,8 @@ Hasilnya 17 menu dalam 7 grup: Beranda · Kegiatan santri (Perizinan, Pengajian,
 
 Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Codex**, delapan tahap berurutan seperti di `rencana.md` dan `AGENTS.md`. Tahap 7 menunggu rapor Ganjil 2026/2027 terbit; Tahap 8 menunggu tahap perbaikan keamanan PSB.
 
+**Perubahan 23 Oktober 2026 (Human Developer):** Tahap 7 boleh dikerjakan dan diaudit sebelum rapor Ganjil 2026/2027 terbit; **merge ke `main` dan deploy ditahan sampai rapor itu terbit**, sehingga guru tetap tidak berganti alur di tengah masa pengisian nilai.
+
 ## Masih menunggu keputusan
 
 1. Peran untuk tahap perbaikan keamanan PSB (workstream terpisah, syarat Tahap 8).
@@ -117,3 +119,5 @@ Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Code
 3. Isi resmi halaman Profil, tahun berdiri, nomor WhatsApp/telepon resmi, logo dan foto, serta angka statistik Beranda situs.
 4. Komponen biaya PSB untuk MI dan RA.
 5. Tahap perbaikan keamanan atas temuan yang disampaikan langsung kepada Human Developer (tidak dirinci di repositori publik).
+6. Tahap 7 R-1 "Salin dari semester lalu" (keputusan X, memakai pembacaan rencana yang ada): penugasan Bagian Pendidikan hanya berlaku pada semester aktif, sehingga dalam praktik hanya admin yang dapat menyalin. Perlukah Bagian Pendidikan membaca rencana kelas yang sama pada semester sebelumnya (perluasan hak baca kecil)?
+7. Tahap 7 R-1 "Tandai siap" dan hapus mapel rencana lewat ⋯: kolom status rencana belum dipakai aturan apa pun dan layanan menolak penghapusan mapel tersimpan; keduanya perubahan aturan V4, bukan tampilan. Perlu keputusan sebelum dibuat.

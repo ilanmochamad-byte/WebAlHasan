@@ -356,7 +356,8 @@ final class Navigation
             if ($c->feature(PenugasanJenis::CAP_SIKAP_INPUT)) {
                 $tabs[] = self::tab('Sikap semester', '/portal/sikap_semester.php', ['sikap_semester.php']);
             }
-            $tabs[] = self::tab('Mata pelajaran', '/admin/admin_penugasan.php?jenis=mata_pelajaran', ['admin_penugasan.php?jenis=mata_pelajaran']);
+            // M-5 (Tahap 7): halaman sendiri; alamat tab lama dialihkan ke sini.
+            $tabs[] = self::tab('Mata pelajaran', '/admin/admin_mata_pelajaran.php', ['admin_mata_pelajaran.php', 'admin_penugasan.php?jenis=mata_pelajaran']);
         }
         if ($tabs === []) {
             return null;
