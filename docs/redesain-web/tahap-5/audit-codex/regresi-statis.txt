@@ -1,0 +1,576 @@
+== redesain_web_tahap1_static exit 0
+=== S-1. Kamus status ===
+[lulus] Status ok: Selesai, Disetujui, Lunas, Terbit, Diterbitkan, Terverifikasi, Diterima
+[lulus] Status info: Diajukan, Baru, Diserahkan
+[lulus] Status warn: Menunggu, Perlu Perbaikan, Perlu Penetapan Admin, Belum Lunas, Menunggu keputusan Anda, Dikembalikan
+[lulus] Status danger: Ditolak, Ditarik, Gagal
+[lulus] Status muted: Draf, Arsip, Dibatalkan
+[lulus] Status tak dikenal memakai cadangan yang dipilih pemanggil
+[lulus] Lencana kelima status izin identik dengan pemetaan portal_status_badge lama
+[lulus] portal_status_badge memakai kamus bersama
+[lulus] Label status di-escape
+
+=== S-2. Bilah bawah HP ===
+[lulus] Paling banyak 5 butir dengan Beranda pertama
+[lulus] Urutan peta admin: Beranda, Perizinan, Santri, Notifikasi, Menu: Beranda, Perizinan, Santri, Notifikasi, Menu
+[lulus] Halaman modul (izin) menyorot butir Perizinan
+[lulus] Peta orang tua: lima menu tanpa butir Menu
+[lulus] Akun dengan satu menu tetap mendapat Beranda
+[lulus] Navigation::find mencari butir menurut kunci
+
+=== S-3. Menu ⋯ ===
+[lulus] Menu memakai <details>/<summary> (jalan tanpa JavaScript)
+[lulus] Tindakan berbahaya dipisah dan diletakkan paling bawah
+[lulus] Tindakan bermutasi berupa formulir POST dengan CSRF
+[lulus] Konfirmasi: judul di-escape, nada bahaya, alasan wajib
+[lulus] Tautan di-escape dan tombol ⋯ punya nama yang terbaca
+[lulus] Tanpa tindakan bahaya tidak ada pemisah
+
+=== S-4. Panel samping, pilihan massal, galat ===
+[lulus] Panel menutup ke alamat daftar lewat tautan biasa (tanpa JS) dan Esc (JS)
+[lulus] Panel berlabel judul dan membungkus isi
+[lulus] Bilah pilihan tersembunyi sampai ada yang dipilih dan dapat dibatalkan
+[lulus] Tanpa galat tidak ada ringkasan
+[lulus] Ringkasan galat menyebut jumlah isian
+
+=== S-5. Kerangka Layout ===
+[lulus] Layout memuat rel ikon tablet
+[lulus] Layout memuat bilah bawah HP
+[lulus] Layout memuat wadah toast
+[lulus] Layout memuat kepala laci (nama & peran)
+[lulus] Layout memuat Keluar di laci
+[lulus] Layout memuat grup sidebar dapat dilipat
+[lulus] Layout memuat judul halaman di topbar HP
+[lulus] Layout memuat lonceng notifikasi
+[lulus] Layout memuat menu profil
+[lulus] ID lama (#ah-nav-toggle tombol, #ah-sidebar, #ah-konten) dipertahankan
+[lulus] Penanda tanpa-JS/JS untuk panel samping
+[lulus] Perilaku dimuat dari alhasan.js setelah token CSRF disetel
+[lulus] Daftar "Kemampuan aktif" di atas sidebar dihapus (pindah ke menu profil/laci)
+[lulus] Pesan hasil tindakan ditandai untuk toast
+
+=== S-6. CSS ===
+[lulus] Ukuran cetak biru: sidebar 240px, rel 46px, panel 420px
+[lulus] Batas ukuran Bootstrap: <576, 576–991, ≥992, ≥1400
+[lulus] Desktop lebar dibatasi 1320px
+[lulus] Cetak membuang rel, bilah bawah, dan toast
+[lulus] Sasaran sentuh 44px
+[lulus] Tanpa aset eksternal baru di CSS
+
+=== S-7. JavaScript ===
+[lulus] alhasan.js memuat AlHasan.toast
+[lulus] alhasan.js memuat AlHasan.confirm
+[lulus] alhasan.js memuat AlHasan.bulk
+[lulus] alhasan.js memuat AlHasan.post
+[lulus] alhasan.js memuat AlHasan.selected
+[lulus] alhasan.js memuat 'Menyimpan…'
+[lulus] alhasan.js memuat pageshow
+[lulus] alhasan.js memuat showModal
+[lulus] confirm() bawaan hanya cadangan peramban tanpa <dialog>
+[lulus] Proses massal berurutan satu per satu (tanpa Promise.all)
+[lulus] POST dari halaman membawa CSRF
+[lulus] Sintaks alhasan.js valid (node --check)
+
+=== S-8. Galeri uji ===
+[lulus] Alamat /__uji/ tidak dirujuk kode produksi
+[lulus] Galeri uji tetap mewajibkan admin dan CSRF
+[lulus] Folder tests ditolak oleh router/konfigurasi produksi
+
+=== S-9. Lint ===
+[lulus] php -l app/Ui/Layout.php
+[lulus] php -l app/Ui/Navigation.php
+[lulus] php -l app/Ui/Status.php
+[lulus] php -l app/Ui/functions.php
+[lulus] php -l portal/_ui.php
+[lulus] php -l portal/notifikasi.php
+[lulus] php -l tests/fixtures/redesain_web_komponen.php
+[lulus] php -l tests/redesain_web_tahap1_router.php
+
+Semua pemeriksaan lulus.
+
+== redesain_web_tahap2_static exit 0
+=== S2-1. Peta menu per peran ===
+[lulus] Admin: 17 menu dalam urutan keputusan A–E: Beranda · Perizinan · Pengajian · Pembinaan · Penilaian & rapor · Data santri · Asatidz & pengurus · Kelas & kobong · Pendaftar · Pembayaran · Rekap keuangan · Konten website · Tahun ajaran · Penugasan · Akun & hak akses · Kanal notifikasi · Data sistem lama
+[lulus] Admin: 7 grup (Beranda + 6 grup bernama)
+[lulus] Tanpa label versi pada menu dan tab
+[lulus] F: staf "Publikasi ke orang tua", orang tua "Informasi pembinaan"
+[lulus] G: murobi mendapat tiga menu di grup Murobi
+[lulus] Guru mapel tanpa jadwal tidak melihat Pengajian
+[lulus] J: Sikap semester dan Pembinaan hanya bagi pembimbing
+[lulus] H: menu laporan absensi Bagian Pendidikan dipasang di Tahap 4 bersama hak aksesnya
+[lulus] H: penjaga laporan tidak diubah di Tahap 2
+[lulus] K: notifikasi orang tua juga tampil sebagai menu
+[lulus] Alamat lama ditempatkan di bawah menu barunya
+[lulus] Peta menu bukan kontrol akses (tanpa guard)
+
+=== S2-2. Peran aktif di sesi ===
+[lulus] Pilihan peran diikat ke id akun
+[lulus] Peran di luar hak akun ditolak
+[lulus] Peran aktif tanpa perubahan database (AR)
+[lulus] portal/peran.php: masuk, POST + CSRF, tujuan kembali disaring
+[lulus] Masuk ulang kembali ke peran bawaan
+
+=== S2-3. Cakupan perizinan dari peran sesi ===
+[lulus] izin.php memakai cakupan peran sesi
+[lulus] izin_antrean.php memakai cakupan peran sesi
+[lulus] izin_ringkasan.php memakai cakupan peran sesi
+[lulus] izin_buat.php memakai cakupan peran sesi
+[lulus] izin_detail.php memakai cakupan peran sesi
+[lulus] laporan.php memakai cakupan peran sesi
+[lulus] laporan_cetak.php memakai cakupan peran sesi
+[lulus] laporan_csv.php memakai cakupan peran sesi
+[lulus] Deretan tombol mode per halaman dihapus
+
+=== S2-4. Notifikasi untuk semua akun ===
+[lulus] AK: penjaga perizinan diganti penjaga akun masuk
+[lulus] Mutasi ber-CSRF; penerima tidak pernah diambil dari parameter
+[lulus] Kategori dari daftar tetap; query tetap mewajibkan penerima
+
+=== S2-5. Akses ditolak ===
+[lulus] sikap_semester.php: teks polos 403 diganti halaman akses ditolak
+[lulus] verifikasi_semester.php: teks polos 403 diganti halaman akses ditolak
+[lulus] rapor_penanda.php: teks polos 403 diganti halaman akses ditolak
+[lulus] rapor_semester.php: teks polos 403 diganti halaman akses ditolak
+[lulus] nilai_semester.php: teks polos 403 diganti halaman akses ditolak
+[lulus] rencana_nilai.php: teks polos 403 diganti halaman akses ditolak
+[lulus] Denial di dalam kerangka, tetap 403, menyebut siapa yang memberi akses
+
+=== S2-6. Kerangka ===
+[lulus] Layout memuat data pencarian menu
+[lulus] Layout memuat kotak cari sebagai combobox
+[lulus] Layout memuat pil peran topbar
+[lulus] Layout memuat pemilih peran di laci
+[lulus] Layout memuat pratinjau lonceng
+[lulus] Layout memuat tab modul dari peta menu
+[lulus] Layout memuat butir Menu bilah bawah
+[lulus] Layout memuat kerangka polos
+[lulus] A-4: Keluar berupa formulir POST dengan dialog, bukan tautan
+[lulus] Lonceng memuat 5 notifikasi terbaru
+[lulus] F-1: kerangka tidak mengganti peran aktif
+[lulus] F-1: gerbang peran di requireWebUser dengan pilihan Buka sebagai
+[lulus] F-1: ?mode= lama menawarkan pilihan, tidak mengganti peran
+
+=== S2-7. Beranda ===
+[lulus] BerandaService hanya membaca
+[lulus] BerandaService memakai prepared statement
+[lulus] L/P: 4 tempat, batas tertunda 1 hari
+[lulus] L + AA: urutan delapan kartu prioritas
+[lulus] F-2: Beranda Guru dan Bagian Pendidikan memakai cakupan penugasan sendiri
+[lulus] F-3: status bahan efektif dari sidik sumber, bukan status tersimpan
+[lulus] F-4: tujuan kartu tersaring '/admin/admin_data.php?status=Baru'
+[lulus] F-4: tujuan kartu tersaring '/portal/izin.php?status=Diajukan&tertunda=1'
+[lulus] F-4: tujuan kartu tersaring '/portal/verifikasi_semester.php?status=Dikembalikan'
+[lulus] F-4: tujuan kartu tersaring '/admin/admin_penempatan_santri.php?status=tanpa_tempat'
+[lulus] F-4: tujuan kartu tersaring '/portal/v3_konseling.php#rekomendasi'
+[lulus] F-4: tujuan kartu tersaring '/portal/sikap_semester.php?status=belum'
+[lulus] F-4: tujuan kartu tersaring '/portal/v3_laporan.php?jenis=ambang'
+[lulus] Beranda tidak memuat guard perizinan
+[lulus] Beranda per peran B-1 s.d. B-5
+[lulus] B-5: pilihan anak dibatasi anak yang terhubung
+
+=== S2-8. Masuk, kata sandi, keluar ===
+[lulus] A-1 memuat: Nama pengguna atau kata sandi salah.
+[lulus] A-1 memuat: Sesi Anda berakhir. Silakan masuk lagi.
+[lulus] A-1 memuat: Anda sudah keluar.
+[lulus] A-1 memuat: Terlalu banyak percobaan. Coba lagi beberapa saat lagi.
+[lulus] A-1 memuat: Akun ini belum punya hak akses. Hubungi admin.
+[lulus] A-1 memuat: data-ah-reveal="password"
+[lulus] A-1 memuat: ah-masuk__id
+[lulus] A-3: kerangka (polos saat wajib), daftar centang, syarat tetap di server
+[lulus] A-4: keluar hanya lewat POST ber-CSRF; GET konfirmasi di kerangka
+
+=== S2-9. CSS dan JavaScript ===
+[lulus] CSS komponen Tahap 2 tanpa aset eksternal
+[lulus] alhasan.js memuat getElementById('ah-menu-data')
+[lulus] alhasan.js memuat aria-activedescendant
+[lulus] alhasan.js memuat data-ah-reveal
+[lulus] alhasan.js memuat data-ah-password
+[lulus] alhasan.js memuat [data-ah-drawer]
+[lulus] alhasan.js memuat [data-ah-find]
+[lulus] Pencarian menu tanpa permintaan jaringan (AQ)
+[lulus] Sintaks alhasan.js valid
+
+=== S2-10. Fixture ===
+[lulus] Fixture hanya untuk DB uji test_*_test dari sandbox *_test
+
+=== S2-11. Lint ===
+[lulus] php -l app/Auth/Capabilities.php
+[lulus] php -l app/V3/LaporanService.php
+[lulus] php -l app/V4/SikapService.php
+[lulus] php -l app/Izin/IzinRepository.php
+[lulus] php -l app/MasterData/PenempatanService.php
+[lulus] php -l app/MasterData/PenempatanRepository.php
+[lulus] php -l portal/verifikasi_semester.php
+[lulus] php -l portal/sikap_semester.php
+[lulus] php -l portal/v3_konseling.php
+[lulus] php -l portal/v3_laporan.php
+[lulus] php -l portal/izin.php
+[lulus] php -l admin/admin_data.php
+[lulus] php -l admin/export_psb.php
+[lulus] php -l admin/admin_notifikasi.php
+[lulus] php -l admin/admin_penempatan_santri.php
+[lulus] php -l app/Ui/Navigation.php
+[lulus] php -l app/Ui/NavigationContext.php
+[lulus] php -l app/Ui/Peran.php
+[lulus] php -l app/Ui/Layout.php
+[lulus] php -l app/Ui/Denial.php
+[lulus] php -l app/Ui/Status.php
+[lulus] php -l app/Beranda/BerandaService.php
+[lulus] php -l app/Notification/NotificationRepository.php
+[lulus] php -l app/Notification/NotificationCenterService.php
+[lulus] php -l app/Auth/Authorization.php
+[lulus] php -l app/Auth/PortalGuard.php
+[lulus] php -l app/bootstrap.php
+[lulus] php -l portal/index.php
+[lulus] php -l portal/peran.php
+[lulus] php -l portal/notifikasi.php
+[lulus] php -l portal/_guard.php
+[lulus] php -l portal/_ui.php
+[lulus] php -l admin/ubah_password.php
+[lulus] php -l admin/logout.php
+[lulus] php -l admin/cek_login.php
+[lulus] php -l tests/redesain_web_tahap2_seed.php
+[lulus] php -l tests/redesain_web_tahap2_http.php
+
+Semua pemeriksaan lulus (121).
+
+== redesain_web_tahap3_static exit 0
+[lulus] S3-1 php -l admin/admin_notifikasi.php
+[lulus] S3-1 php -l admin/admin_dashboard.php
+[lulus] S3-1 php -l admin/admin_pelanggaran.php
+[lulus] S3-1 php -l admin/admin_data.php
+[lulus] S3-1 php -l admin/admin_pembayaran_psb.php
+[lulus] S3-1 php -l admin/admin_rekap_keuangan.php
+[lulus] S3-1 php -l admin/admin_rekap_santri.php
+[lulus] S3-1 php -l admin/admin_berita.php
+[lulus] S3-1 php -l admin/_berita_form.php
+[lulus] S3-1 php -l admin/admin_galeri.php
+[lulus] S3-1 php -l admin/admin_download.php
+[lulus] S3-1 php -l app/Ui/Chart.php
+[lulus] S3-1 php -l app/Beranda/RingkasanAdministrasi.php
+[lulus] S3-1 php -l app/Psb/PsbAdmin.php
+[lulus] S3-1 php -l app/Psb/PsbPembayaran.php
+[lulus] S3-1 php -l app/Psb/PsbException.php
+[lulus] S3-1 php -l app/Konten/Unggahan.php
+[lulus] S3-1 php -l admin/proses_psb_admin.php
+[lulus] S3-1 php -l admin/hapus_siswa.php
+[lulus] S3-1 php -l admin/export_psb.php
+[lulus] S3-1 php -l admin/export_pembayaran.php
+[lulus] S3-1 php -l admin/proses_berita.php
+[lulus] S3-1 php -l admin/tambah_berita.php
+[lulus] S3-1 php -l admin/edit_berita.php
+[lulus] S3-1 php -l app/Ui/functions.php
+[lulus] S3-1 php -l app/Ui/Navigation.php
+[lulus] S3-1 php -l app/V3/KatalogService.php
+[lulus] S3-1 php -l app/Notification/NotificationChannel.php
+[lulus] S3-1 php -l app/Notification/NotificationAdminService.php
+[lulus] S3-1 php -l app/Notification/SettingsRepository.php
+[lulus] S3-1 php -l app/Beranda/BerandaService.php
+[lulus] S3-1 php -l tests/redesain_web_tahap3_seed.php
+[lulus] S3-1 php -l tests/redesain_web_tahap3_http.php
+[lulus] S3-1 node --check assets/ui/alhasan.js
+[lulus] S3-2 admin/sidebar.php sudah dihapus
+[lulus] S3-2 tidak ada kode yang memuat sidebar.php
+[lulus] S3-2 kompatibilitas Navigation::activeKey untuk sidebar lama ikut dihapus
+[lulus] S3-3 tidak ada alert() di admin, portal, app, dan aset bersama
+[lulus] S3-4 N-2 admin/admin_notifikasi.php membuka kerangka bersama
+[lulus] S3-4 N-2 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 N-2 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 N-4 admin/admin_dashboard.php membuka kerangka bersama
+[lulus] S3-4 N-4 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 N-4 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 N-5 admin/admin_pelanggaran.php membuka kerangka bersama
+[lulus] S3-4 N-5 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 N-5 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 K-5 admin/admin_data.php membuka kerangka bersama
+[lulus] S3-4 K-5 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 K-5 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 K-6 admin/admin_pembayaran_psb.php membuka kerangka bersama
+[lulus] S3-4 K-6 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 K-6 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 K-7 admin/admin_rekap_keuangan.php membuka kerangka bersama
+[lulus] S3-4 K-7 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 K-7 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 K-8 admin/admin_rekap_santri.php membuka kerangka bersama
+[lulus] S3-4 K-8 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 K-8 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 W-1 admin/admin_berita.php membuka kerangka bersama
+[lulus] S3-4 W-1 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 W-1 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 W-2 admin/_berita_form.php membuka kerangka bersama
+[lulus] S3-4 W-2 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 W-2 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 W-3 admin/admin_galeri.php membuka kerangka bersama
+[lulus] S3-4 W-3 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 W-3 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 W-4 admin/admin_download.php membuka kerangka bersama
+[lulus] S3-4 W-4 tanpa kerangka HTML/navbar sendiri
+[lulus] S3-4 W-4 tanpa DataTables, SheetJS, Chart.js, handler inline, atau warna inline
+[lulus] S3-4 W-2 admin/tambah_berita.php memakai penyunting bersama di kerangka admin
+[lulus] S3-4 W-2 admin/edit_berita.php memakai penyunting bersama di kerangka admin
+[lulus] S3-5 N-2 daftar berhalaman (ah_pagination()
+[lulus] S3-5 N-5 daftar berhalaman (master_pagination()
+[lulus] S3-5 K-5 daftar berhalaman (ah_pagination()
+[lulus] S3-5 K-6 daftar berhalaman (ah_pagination()
+[lulus] S3-5 W-1 daftar berhalaman (ah_pagination()
+[lulus] S3-5 W-3 daftar berhalaman (ah_pagination()
+[lulus] S3-5 W-4 daftar berhalaman (ah_pagination()
+[lulus] S3-5 K-5/K-6 20 baris per halaman
+[lulus] S3-5 N-2 riwayat kanal berhalaman
+[lulus] S3-5 N-5 pencarian santri dan saringan tahun (parameter terikat)
+[lulus] S3-6 AL WhatsApp terdaftar sebagai kanal ditangguhkan
+[lulus] S3-6 AL layanan menolak menyalakan kanal ditangguhkan (panel dan API)
+[lulus] S3-6 AL layanan menolak pesan uji kanal ditangguhkan
+[lulus] S3-6 AL panel tidak menjalankan worker kanal ditangguhkan
+[lulus] S3-6 AL kartu ditangguhkan tanpa Nyalakan/Kirim uji/worker
+[lulus] S3-6 F-1 dispatcher/cron berhenti sebelum klaim untuk kanal ditangguhkan (bawaan produksi)
+[lulus] S3-6 F-1 layanan menolak worker yang mengirim untuk kanal ditangguhkan
+[lulus] S3-6 F-1 layanan menolak percobaan ulang kanal ditangguhkan sebelum mengantrekan
+[lulus] S3-6 F-1 dispatcher produksi tidak mengosongkan daftar kanal ditangguhkan
+[lulus] S3-6 F-1 baris kanal ditangguhkan tanpa Coba ulang di panel
+[lulus] S3-6 N-2 mematikan kanal memakai konfirmasi
+[lulus] S3-6 N-2 coba ulang per baris dan massal
+[lulus] S3-7 admin/admin_data.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/admin_pembayaran_psb.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/admin_rekap_keuangan.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/admin_rekap_santri.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/admin_berita.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/admin_galeri.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/admin_download.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/proses_psb_admin.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/proses_berita.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/export_psb.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/export_pembayaran.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 admin/edit_berita.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 app/Psb/PsbAdmin.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 app/Psb/PsbPembayaran.php tanpa SQL rakitan dari permintaan
+[lulus] S3-7 app/Beranda/RingkasanAdministrasi.php tanpa SQL rakitan dari permintaan
+[lulus] S3-8 N-2 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 N-4 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 N-5 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 K-5 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 K-6 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 K-7 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 K-8 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 W-1 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 W-2 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 W-3 tanpa keluaran kolom basis data mentah
+[lulus] S3-8 W-4 tanpa keluaran kolom basis data mentah
+[lulus] S3-9 AG panel pendaftar tanpa pratinjau gambar berkas
+[lulus] S3-9 AH berita tanpa status dan kategori
+[lulus] S3-9 AI galeri tanpa album
+[lulus] S3-9 W-3 unggah beberapa foto sekaligus
+[lulus] S3-10 grafik dirender server tanpa pustaka luar
+[lulus] S3-10 setiap jenis grafik punya keadaan kosong
+[lulus] S3-10 warna grafik dari token, tanpa aset eksternal baru
+[lulus] S3-10 gaya komponen .ah-filter
+[lulus] S3-10 gaya komponen .ah-media
+[lulus] S3-10 gaya komponen .ah-drop
+[lulus] S3-10 gaya komponen .ah-matrix
+[lulus] S3-10 gaya komponen .ah-fold
+[lulus] S3-10 gaya komponen .ah-channels
+[lulus] S3-10 gaya komponen .ah-editor
+[lulus] S3-10 gaya komponen .ah-steps
+[lulus] S3-10 perilaku saringan HP, zona unggah, proses massal formulir, dan ketik-untuk-konfirmasi
+[lulus] S3-10 ekspor Excel di server menulis teks mentah (bukan rumus)
+[lulus] S3-10 menu ⋯ mendukung ketik nama untuk konfirmasi
+[lulus] S3-11 jenis berkas unggahan dibatasi, gambar diperiksa isinya
+[lulus] S3-11 admin/admin_galeri.php menyimpan unggahan lewat pemeriksa bersama
+[lulus] S3-11 admin/admin_download.php menyimpan unggahan lewat pemeriksa bersama
+[lulus] S3-11 admin/proses_berita.php menyimpan unggahan lewat pemeriksa bersama
+[lulus] S3-11 nama gambar lama berita diambil dari basis data
+[lulus] S3-12 K-5 status dan pola NIS migrasi tetap
+[lulus] S3-12 K-5 hasil tindakan tampil sebagai pesan
+[lulus] S3-12 K-5 impor diperiksa dulu lalu disimpan dengan token sekali pakai
+[lulus] S3-12 K-6 alasan batal lunas dicatat di audit
+[lulus] S3-12 F-2 alasan batal lunas divalidasi server sebelum UPDATE
+[lulus] S3-12 F-2 alasan dapat diisi tanpa JavaScript
+[lulus] S3-13 kartu notifikasi gagal membuka tab Pengiriman gagal
+[lulus] S3-13 K-8 dan N-4 tetap sebagai tab menu barunya
+
+Ringkasan: 152 lulus, 0 gagal
+
+== redesain_web_tahap4_static exit 0
+=== S4-1. Sintaks ===
+[lulus] php -l portal/_ui.php
+[lulus] php -l portal/izin.php
+[lulus] php -l portal/izin_ringkasan.php
+[lulus] php -l portal/izin_antrean.php
+[lulus] php -l portal/izin_buat.php
+[lulus] php -l portal/izin_detail.php
+[lulus] php -l portal/izin_aksi.php
+[lulus] php -l portal/laporan.php
+[lulus] php -l portal/v3_konseling_cetak.php
+[lulus] php -l admin/admin_pengajian.php
+[lulus] php -l admin/_pengajian_jadwal.php
+[lulus] php -l admin/_pengajian_pertemuan.php
+[lulus] php -l admin/admin_laporan_absensi.php
+[lulus] php -l admin/laporan_absensi_detail.php
+[lulus] php -l admin/_laporan_guard.php
+[lulus] php -l app/Ui/functions.php
+[lulus] php -l app/Ui/Periode.php
+[lulus] php -l app/Ui/Navigation.php
+[lulus] php -l app/Ui/Status.php
+[lulus] php -l app/Izin/IzinRepository.php
+[lulus] php -l app/Izin/IzinService.php
+[lulus] php -l app/Izin/IzinWorkflowService.php
+[lulus] php -l app/Report/ReportFilter.php
+[lulus] php -l app/Report/ReportService.php
+[lulus] php -l app/Report/PrintLayout.php
+[lulus] php -l app/Report/PrintRenderer.php
+[lulus] php -l app/Report/IzinPrintRenderer.php
+[lulus] php -l app/Report/IzinReportRepository.php
+[lulus] php -l app/Report/IzinReportService.php
+[lulus] php -l app/Schedule/ScheduleRepository.php
+[lulus] php -l tests/redesain_web_tahap4_seed.php
+[lulus] php -l tests/redesain_web_tahap4_http.php
+[lulus] php -l tests/redesain_web_tahap4_cetak.php
+[lulus] node --check assets/ui/alhasan.js
+[lulus] node --check tests/browser/uji-redesain-web-tahap4.mjs
+
+=== S4-2. Tanpa dialog bawaan, tanpa label versi ===
+[lulus] portal/_ui.php tanpa confirm()/alert()
+[lulus] portal/izin.php tanpa confirm()/alert()
+[lulus] portal/izin_ringkasan.php tanpa confirm()/alert()
+[lulus] portal/izin_antrean.php tanpa confirm()/alert()
+[lulus] portal/izin_buat.php tanpa confirm()/alert()
+[lulus] portal/izin_detail.php tanpa confirm()/alert()
+[lulus] portal/izin_aksi.php tanpa confirm()/alert()
+[lulus] portal/laporan.php tanpa confirm()/alert()
+[lulus] portal/v3_konseling_cetak.php tanpa confirm()/alert()
+[lulus] admin/admin_pengajian.php tanpa confirm()/alert()
+[lulus] admin/_pengajian_jadwal.php tanpa confirm()/alert()
+[lulus] admin/_pengajian_pertemuan.php tanpa confirm()/alert()
+[lulus] admin/admin_laporan_absensi.php tanpa confirm()/alert()
+[lulus] admin/laporan_absensi_detail.php tanpa confirm()/alert()
+[lulus] admin/_laporan_guard.php tanpa confirm()/alert()
+[lulus] portal/izin.php tanpa label "V2"/"Data warisan" di layar
+[lulus] portal/izin_ringkasan.php tanpa label "V2"/"Data warisan" di layar
+[lulus] portal/izin_antrean.php tanpa label "V2"/"Data warisan" di layar
+[lulus] portal/izin_detail.php tanpa label "V2"/"Data warisan" di layar
+[lulus] portal/laporan.php tanpa label "V2"/"Data warisan" di layar
+
+=== S4-3. Keputusan H: batas perubahan hak akses ===
+[lulus] Guard laporan: Bagian Pendidikan = pengurus + penugasan Pendidikan milik sendiri
+[lulus] Guard laporan tetap hanya-baca (GET/HEAD)
+[lulus] Penanda baca-semua hanya dipasang di admin/_laporan_guard.php (admin/_laporan_guard.php)
+[lulus] REST API tidak memasang penanda (kontrak tidak melebar)
+[lulus] Cakupan laporan (filter, pilihan, detail pertemuan) memakai satu pemeriksaan bacaSemua
+[lulus] Modul jadwal/pertemuan tetap admin/guru; Bagian Pendidikan tidak masuk
+[lulus] Menu "Laporan absensi pengajian" di grup Laporan, hanya untuk penugasan Pendidikan sendiri
+
+=== S4-4. Peta menu & tab ===
+[lulus] Pengajian: tab Jadwal · Pertemuan · Kehadiran
+[lulus] Izin anak (O): tab Aktif · Riwayat
+[lulus] Modul Pengajian tidak lagi membuat tab halaman sendiri (tab modul dari peta menu)
+
+=== S4-5. Keputusan perizinan (M, N, O, Q) ===
+[lulus] M: alasan cepat Pulang/Berobat/Acara keluarga/Lainnya mengisi awal teks
+[lulus] Tanpa perubahan skema/migrasi (database/ tidak berubah sejak Tahap 3)
+[lulus] N: keputusan dari antrean kembali ke antrean; tujuan lain tidak diterima
+[lulus] N: tombol "Berikutnya", tanpa pindah otomatis
+[lulus] O/Q/S: filter Aktif/Riwayat, jumlah semester, dan label izin dibaca di repositori
+[lulus] Q: jumlah izin semester ini memeriksa cakupan akun di server
+[lulus] I-4: pratinjau tujuan memakai routing dan cakupan yang sama dengan pengajuan
+
+=== S4-6. Pengajian (R, S, T) ===
+[lulus] R: tidak ada isian kehadiran di web
+[lulus] S: label "Sedang izin" dari izin disetujui; status tidak diisi
+[lulus] T: hari ditampilkan lewat ah_hari() ("Minggu" → "Ahad")
+[lulus] T: Ahad dan pekan dimulai Senin
+
+=== S4-7. Cetak (X-1, AS) ===
+[lulus] PrintLayout: tanda tangan dan anggaran tinggi lembar terakhir
+[lulus] app/Report/IzinPrintRenderer.php: kop bersama, tanda tangan Bagian Pendidikan dianggarkan, kode laporan
+[lulus] app/Report/PrintRenderer.php: kop bersama, tanda tangan Bagian Pendidikan dianggarkan, kode laporan
+[lulus] Penomoran tetap dihitung server (CSS cetak tanpa counter(page))
+
+=== S4-8. Komponen bersama ===
+[lulus] alhasan.js: details[data-ah-dialog]
+[lulus] alhasan.js: [data-ah-prefix]
+[lulus] alhasan.js: input[data-ah-option-filter]
+[lulus] alhasan.js: [data-ah-izin-info]
+[lulus] alhasan.js: input[data-ah-list-filter]
+[lulus] alhasan.js: [data-ah-print]
+[lulus] alhasan.css: .ah-split
+[lulus] alhasan.css: .ah-seg
+[lulus] alhasan.css: .ah-tl
+[lulus] alhasan.css: .ah-week
+[lulus] alhasan.css: .ah-actbar
+[lulus] alhasan.css: .ah-qlist
+[lulus] alhasan.css: .ah-icard
+[lulus] alhasan.css: .ah-stack
+[lulus] alhasan.css: .ah-filter__more
+[lulus] alhasan.css: .ah-ribbon
+
+Ringkasan: 96 lulus, 0 gagal
+
+== v3_phase1_static exit 0
+[lulus] PHP lint admin/admin_v3_katalog.php
+[lulus] PHP lint admin/admin_pelanggaran.php
+[lulus] PHP lint app/V3/KatalogService.php
+[lulus] PHP lint app/V3/KatalogRepository.php
+[lulus] PHP lint app/V3/V3Exception.php
+[lulus] PHP lint app/Auth/Capabilities.php
+[lulus] PHP lint api/v1/index.php
+[lulus] PHP lint bin/v3_verify.php
+[lulus] Migrasi hanya menambah struktur tanpa mengganti/backfill lama
+[lulus] Tidak ada hard delete KatalogRepository.php
+[lulus] Tidak ada hard delete KatalogService.php
+[lulus] Tidak ada hard delete V3Exception.php
+[lulus] Guard dan CSRF web
+[lulus] Warisan hanya baca
+[lulus] Mutasi V3 hanya hadir bersama paket Fase 2
+
+== v3_phase2_static exit 77
+
+== v3_phase3_static exit 77
+
+== v3_phase4_static exit 0
+[lulus] PHP lint app/V3/PublikasiService.php
+[lulus] PHP lint app/V3/PublikasiRepository.php
+[lulus] PHP lint portal/v3_publikasi.php
+[lulus] PHP lint portal/v3_publikasi_kelola.php
+[lulus] PHP lint portal/partials/v3_publikasi_konten.php
+[lulus] PHP lint bin/v3_phase4_preflight.php
+[lulus] PHP lint bin/v3_phase4_verify.php
+[lulus] Penjaga SQL menemukan metode parentFrom
+[lulus] SQL orang tua tidak mengambil isi kasus/sesi/pelanggaran
+[lulus] SQL pembacaan dibatasi pengguna dan relasi aktif
+[lulus] Memakai allowlist dan resolver wali yang ada
+[lulus] Rollback tidak menghapus data atau tabel bisnis
+[lulus] Tidak ada mutasi publikasi lewat GET
+[lulus] Penjaga GET mendeteksi contoh yang salah
+[lulus] Layar deep-link berada di Stack autentikasi
+[lulus] Detail memuat ulang API dan menghapus konten lama
+[lulus] Payload V3 divalidasi dan tujuan sebelum login ditunda
+[lulus] Layar publikasi tidak melog atau menyimpan isi ke penyimpanan/clipboard
+
+No syntax errors detected in admin/admin_v3_katalog.php
+No syntax errors detected in app/Ui/Navigation.php
+No syntax errors detected in app/Ui/Status.php
+No syntax errors detected in app/Ui/functions.php
+No syntax errors detected in app/V3/KatalogService.php
+No syntax errors detected in app/V3/KonselingRepository.php
+No syntax errors detected in app/V3/KonselingService.php
+No syntax errors detected in app/V3/LaporanService.php
+No syntax errors detected in app/V3/PelanggaranRepository.php
+No syntax errors detected in app/V3/PelanggaranService.php
+No syntax errors detected in app/V3/PublikasiRepository.php
+No syntax errors detected in app/V3/PublikasiService.php
+No syntax errors detected in portal/partials/v3_publikasi_konten.php
+No syntax errors detected in portal/v3_konseling.php
+No syntax errors detected in portal/v3_konseling_cetak.php
+No syntax errors detected in portal/v3_konseling_detail.php
+No syntax errors detected in portal/v3_laporan.php
+No syntax errors detected in portal/v3_pelanggaran.php
+No syntax errors detected in portal/v3_pelanggaran_detail.php
+No syntax errors detected in portal/v3_publikasi.php
+No syntax errors detected in portal/v3_publikasi_kelola.php
+No syntax errors detected in tests/redesain_web_tahap2_audit.php
+No syntax errors detected in tests/redesain_web_tahap2_http.php
+No syntax errors detected in tests/redesain_web_tahap5_http.php
+No syntax errors detected in tests/redesain_web_tahap5_seed.php
+No syntax errors detected in tests/redesain_web_tahap5_static.php
+No syntax errors detected in tests/v3_phase4_integration.php
+No syntax errors detected in tests/redesain_web_tahap5_audit.php

@@ -1,0 +1,54 @@
+[lulus] V-6 kelas_id menyediakan pencarian 375px
+[lulus] V-6 kelas_id menyaring pilihan tanpa menghilangkan pilihan Semua 375px
+[lulus] V-6 kelas_id membersihkan pencarian 375px
+[lulus] V-6 kamar_id menyediakan pencarian 375px
+[lulus] V-6 kamar_id menyaring pilihan tanpa menghilangkan pilihan Semua 375px
+[lulus] V-6 kamar_id membersihkan pencarian 375px
+[lulus] V-6 pembimbing_id menyediakan pencarian 375px
+[lulus] V-6 pembimbing_id menyaring pilihan tanpa menghilangkan pilihan Semua 375px
+[lulus] V-6 pembimbing_id membersihkan pencarian 375px
+[lulus] V-6 murobi_id menyediakan pencarian 375px
+[lulus] V-6 murobi_id menyaring pilihan tanpa menghilangkan pilihan Semua 375px
+[lulus] V-6 murobi_id membersihkan pencarian 375px
+[lulus] V-6 pencarian tanpa overflow 375px
+[lulus] V-5 setiap sumber bertaut 375px
+[lulus] V-5 tautan sumber terbuka sesuai cakupan 375px
+[lulus] V-5 tautan sumber terbuka sesuai cakupan 375px
+[lulus] V-5 tautan sumber terbuka sesuai cakupan 375px
+[lulus] V-6 kelas_id menyediakan pencarian 768px
+[lulus] V-6 kelas_id menyaring pilihan tanpa menghilangkan pilihan Semua 768px
+[lulus] V-6 kelas_id membersihkan pencarian 768px
+[lulus] V-6 kamar_id menyediakan pencarian 768px
+[lulus] V-6 kamar_id menyaring pilihan tanpa menghilangkan pilihan Semua 768px
+[lulus] V-6 kamar_id membersihkan pencarian 768px
+[lulus] V-6 pembimbing_id menyediakan pencarian 768px
+[lulus] V-6 pembimbing_id menyaring pilihan tanpa menghilangkan pilihan Semua 768px
+[lulus] V-6 pembimbing_id membersihkan pencarian 768px
+[lulus] V-6 murobi_id menyediakan pencarian 768px
+[lulus] V-6 murobi_id menyaring pilihan tanpa menghilangkan pilihan Semua 768px
+[lulus] V-6 murobi_id membersihkan pencarian 768px
+[lulus] V-6 pencarian tanpa overflow 768px
+[lulus] V-5 setiap sumber bertaut 768px
+[lulus] V-5 tautan sumber terbuka sesuai cakupan 768px
+[lulus] V-5 tautan sumber terbuka sesuai cakupan 768px
+[lulus] V-5 tautan sumber terbuka sesuai cakupan 768px
+[lulus] V-6 kelas_id menyediakan pencarian 1280px
+[lulus] V-6 kelas_id menyaring pilihan tanpa menghilangkan pilihan Semua 1280px
+[lulus] V-6 kelas_id membersihkan pencarian 1280px
+[lulus] V-6 kamar_id menyediakan pencarian 1280px
+[lulus] V-6 kamar_id menyaring pilihan tanpa menghilangkan pilihan Semua 1280px
+[lulus] V-6 kamar_id membersihkan pencarian 1280px
+[lulus] V-6 pembimbing_id menyediakan pencarian 1280px
+[lulus] V-6 pembimbing_id menyaring pilihan tanpa menghilangkan pilihan Semua 1280px
+[lulus] V-6 pembimbing_id membersihkan pencarian 1280px
+[lulus] V-6 murobi_id menyediakan pencarian 1280px
+[lulus] V-6 murobi_id menyaring pilihan tanpa menghilangkan pilihan Semua 1280px
+[lulus] V-6 murobi_id membersihkan pencarian 1280px
+[lulus] V-6 pencarian tanpa overflow 1280px
+[lulus] V-5 setiap sumber bertaut 1280px
+[lulus] V-5 tautan sumber terbuka sesuai cakupan 1280px
+[lulus] V-5 tautan sumber terbuka sesuai cakupan 1280px
+[lulus] V-5 tautan sumber terbuka sesuai cakupan 1280px
+[lulus] V-6 tanpa JS: pilihan bernama tetap tersedia, pencarian tambahan tersembunyi
+[lulus] Probe tanpa galat JavaScript
+Ringkasan: 53 lulus, 0 gagal

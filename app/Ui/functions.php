@@ -721,3 +721,40 @@ if (!function_exists('ah_action_dialog_open')) {
         echo '</div></details>';
     }
 }
+
+if (!function_exists('ah_tingkat')) {
+    /**
+     * Label tingkat pelanggaran (V-1, V-2): Ringan biru, Sedang kuning,
+     * Berat merah. Teks selalu ikut; warna hanya penguat.
+     */
+    function ah_tingkat(?string $tingkat): string
+    {
+        $tingkat = (string) $tingkat;
+
+        return ah_badge($tingkat === '' ? '—' : $tingkat, match ($tingkat) {
+            'Berat' => 'danger',
+            'Sedang' => 'warn',
+            'Ringan' => 'info',
+            default => 'muted',
+        });
+    }
+}
+
+if (!function_exists('ah_stepper')) {
+    /**
+     * Langkah wizard (V-3 buka kasus, V-5 siapkan publikasi). Hanya penanda
+     * posisi; setiap langkah tetap formulir server biasa.
+     *
+     * @param array<int, string> $langkah
+     */
+    function ah_stepper(array $langkah, int $aktif, string $label = 'Langkah'): string
+    {
+        $html = '<ol class="ah-steps" aria-label="' . ah_e($label) . '">';
+        foreach (array_values($langkah) as $i => $teks) {
+            $keadaan = $i < $aktif ? ' class="is-done"' : ($i === $aktif ? ' class="is-current" aria-current="step"' : '');
+            $html .= '<li' . $keadaan . '><span>' . ah_e($teks) . '</span></li>';
+        }
+
+        return $html . '</ol>';
+    }
+}

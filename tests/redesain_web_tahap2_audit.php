@@ -93,7 +93,9 @@ try {
     $check($e->status === 403,'V3: Admin murni tetap ditolak membuka kasus tanpa penugasan pembimbing',$e->status);
 }
 $pembimbing = new AuditT2Client($base); $pembimbing->login('sbx_pengurus_a');
-$check(str_contains($pembimbing->req('/portal/v3_konseling.php')['body'], 'name="rekomendasi_ids[]"'),
+// Tahap 5 (V-3): formulir buka kasus pindah ke wizard panel; baris rekomendasi membuka langkah 2.
+preg_match('/<tr data-rekomendasi="\d+">.*?href="\?([^"#]*rekomendasi=\d+)[^"]*"/s', $pembimbing->req('/portal/v3_konseling.php')['body'], $tautRek);
+$check(isset($tautRek[1]) && preg_match('/name="rekomendasi_ids\[\]" value="\d+" checked/', $pembimbing->req('/portal/v3_konseling.php?' . html_entity_decode($tautRek[1]))['body']) === 1,
     'V3: pembimbing tetap dapat memilih rekomendasi untuk tindak lanjut');
 $perbaikan = $dom($admin->req($cards['bahan_perbaikan'])['body']);
 $materialCount = $perbaikan->query('//article[contains(@class,"bahan-card")]')->length;

@@ -94,7 +94,13 @@ final class KatalogService
     public function history(string $kind,int $id,array $user): array
     {
         $this->requireAdmin($user);$this->repo->table($kind);
-        return $this->repo->rows('SELECT action,before_json,after_json,created_at,actor_user_id FROM audit_logs WHERE entity_type=? AND entity_id=? ORDER BY id DESC LIMIT 50',['v3_'.$kind,$id]);
+        return $this->repo->rows('SELECT a.action,a.before_json,a.after_json,a.created_at,a.actor_user_id,u.name AS actor_nama FROM audit_logs a LEFT JOIN users u ON u.id=a.actor_user_id WHERE a.entity_type=? AND a.entity_id=? ORDER BY a.id DESC LIMIT 50',['v3_'.$kind,$id]);
+    }
+    /** Perubahan terbaru satu jenis data untuk kartu "Riwayat perubahan" (M-4, redesain Tahap 5). */
+    public function recent(string $kind,array $user,int $limit=8): array
+    {
+        $this->requireAdmin($user);$this->repo->table($kind);$limit=max(1,min(50,$limit));
+        return $this->repo->rows('SELECT a.entity_id,a.action,a.before_json,a.after_json,a.created_at,u.name AS actor_nama FROM audit_logs a LEFT JOIN users u ON u.id=a.actor_user_id WHERE a.entity_type=? ORDER BY a.id DESC LIMIT '.$limit,['v3_'.$kind]);
     }
     public function active(string $kind,array $filters,array $user): array
     {

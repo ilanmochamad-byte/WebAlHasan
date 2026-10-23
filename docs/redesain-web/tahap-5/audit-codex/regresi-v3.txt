@@ -1,0 +1,290 @@
+== v3_phase2_integration exit 0
+[lulus] Ambang tahun nonaktif memberi sinyal operator yang terlihat
+[lulus] Validasi gagal membersihkan lampiran pending (422)
+[lulus] Tidak ada lampiran yatim saat validasi gagal
+[lulus] Pembimbing mencatat pelanggaran dalam cakupan
+[lulus] Snapshot poin katalog tersimpan bersama catatan
+[lulus] Ledger awal tersimpan tepat satu
+[lulus] Ambang menghasilkan tepat satu rekomendasi
+[lulus] Rekomendasi unik per ambang dan subjek
+[lulus] Rekomendasi tidak membuat konseling atau perubahan akademik otomatis
+[lulus] Lampiran privat dicatat dengan metadata aman
+[lulus] Admin murni mengawasi seluruh catatan tanpa menyamar sebagai pembimbing
+[lulus] Idempotency key sama me-replay respons tanpa dampak kedua
+[lulus] Retry hanya menghasilkan satu pelanggaran
+[lulus] Fingerprint bisnis menolak duplikasi dengan key berbeda (409)
+[lulus] Pembimbing tidak dapat mencatat santri di luar cakupan (403)
+[lulus] Pengurus lain tidak dapat mencatat santri A (403)
+[lulus] Perubahan poin default tidak mengubah poin catatan lama
+[lulus] Akumulasi sama dengan penjumlahan ledger dan agregat terrekonsiliasi
+[lulus] Serializer detail tidak mengembalikan baris database mentah
+[lulus] Koreksi membuat revisi dan mempertahankan snapshot bila katalog sama
+[lulus] Koreksi tidak menimpa nilai historis
+[lulus] Pembalik koreksi dan ledger revisi tetap terrekonsiliasi
+[lulus] Koreksi membuat satu ledger pembalik
+[lulus] Optimistic version menolak koreksi versi lama (409)
+[lulus] T-2: admin merangkap pembimbing bersumber keduanya
+[lulus] Koreksi akun ganda tercatat sebagai admin beralasan
+[lulus] Murobi terkait menandai mengetahui tepat satu kali
+[lulus] Murobi lain ditolak (403)
+[lulus] Orang tua ditolak dari tanda mengetahui (403)
+[lulus] Pengurus di luar cakupan ditolak dari tanda mengetahui (403)
+[lulus] Pembimbing dan murobi terkait membaca daftar
+[lulus] Daftar pembimbing lain tidak membocorkan santri A
+[lulus] Daftar murobi lain tidak membocorkan santri A
+[lulus] Orang tua tidak membaca data internal Fase 2 (403)
+[lulus] Murobi lain ditolak dari detail (403)
+[lulus] Orang tua ditolak dari detail (403)
+[lulus] Pengurus lain ditolak dari detail (403)
+[lulus] Lampiran privat ditolak lintas cakupan (403)
+[lulus] Pembatalan mengubah status tanpa menghapus catatan
+[lulus] Pembatalan membuat pembalik poin, bukan mengedit total
+[lulus] Rekonsiliasi setelah koreksi berulang dan pembatalan berselisih nol
+[lulus] Pembatalan tidak menggandakan rekomendasi
+[lulus] Payload outbox/push hanya generik tanpa nama, kategori, uraian, poin, nomor, atau catatan rahasia
+[lulus] Santri tanpa penempatan tetap di luar cakupan
+[lulus] Pencatatan santri tanpa penempatan ditolak (403)
+[lulus] Kegagalan audit menggulung seluruh transaksi (503)
+[lulus] Tidak ada catatan parsial setelah audit gagal
+[lulus] Tidak ada hard delete catatan bisnis
+[lulus] Catatan yang digantikan revisi melepas fingerprint
+[lulus] Koreksi boleh mengembalikan isi ke nilai catatan yang sudah digantikan
+[lulus] Pembatalan tidak menimpa alasan koreksi
+[lulus] Alasan pembatalan tersimpan pada kolomnya sendiri
+[lulus] Catatan yang dibatalkan melepas fingerprint
+[lulus] Serializer detail memisahkan alasan koreksi dan pembatalan
+[lulus] Kejadian identik boleh dicatat ulang setelah pembatalan
+[lulus] Ambang tercapai memberi satu rekomendasi yang berlaku
+[lulus] Pembatalan menandai rekomendasi yang totalnya sudah tidak berlaku
+[lulus] Rekomendasi basi terbaca sebagai tidak berlaku
+[lulus] Total kembali ke rentang memulihkan rekomendasi tanpa membuat baris kedua
+[lulus] Rekomendasi tetap tepat satu per ambang setelah batal dan pulih
+[lulus] Rekomendasi yang dipulihkan berlaku kembali
+[lulus] Seluruh catatan koreksi audit tetap tersimpan
+[lulus] Koreksi tanpa perubahan isi tetap membentuk revisi beralasan
+[lulus] Revisi tanpa perubahan isi mempertahankan uraian sumber
+[lulus] Fingerprint berpindah dari catatan sumber ke revisinya
+[lulus] Bukti dapat dilampirkan lewat koreksi tanpa mengubah isi
+[lulus] Koreksi tanpa perubahan isi tetap terrekonsiliasi
+
+== v3_phase3_integration exit 0
+[lulus] Fixture menghasilkan rekomendasi yang masih berlaku
+[lulus] Pembimbing membuka kasus dalam cakupan
+[lulus] Satu kasus menautkan beberapa pelanggaran santri yang sama
+[lulus] Rekomendasi berlaku ditautkan manual ke kasus
+[lulus] Tautan tingkat kasus yang sama tidak dapat digandakan (409)
+[lulus] Retry kasus me-replay satu dampak bisnis
+[lulus] Pembimbing tidak membuat kasus di luar cakupan (403)
+[lulus] Rekomendasi yang sudah ditindaklanjuti tidak dapat ditautkan ulang (409)
+[lulus] Dua sesi tersimpan sebagai baris berbeda dalam satu kasus
+[lulus] Satu pelanggaran ditindaklanjuti pada tingkat kasus dan beberapa sesi
+[lulus] Detail pelanggaran menampilkan seluruh sesi tindak lanjut tanpa menggandakan pelanggaran
+[lulus] Sesi dapat diselesaikan dengan ringkasan dan hasil internal
+[lulus] Retry transisi sesi terminal me-replay dampak pertama
+[lulus] Versi lama sesi ditolak tanpa menimpa perubahan baru (409)
+[lulus] Koreksi sesi selesai membuat revisi beralasan
+[lulus] Koreksi sesi tidak menimpa isi historis
+[lulus] Sumber sesi tidak dapat memiliki revisi kedua (409)
+[lulus] Penjadwalan ulang membentuk revisi dengan alasan terpisah tanpa realisasi
+[lulus] Transisi dari sesi terminal ditolak (422)
+[lulus] Transisi tidak sah tidak menulis perubahan parsial
+[lulus] Murobi terkait membaca isi kasus Internal (keputusan Human Developer)
+[lulus] Murobi terkait membaca isi sesi pada kasus Internal
+[lulus] Murobi terkait memberi catatan kasus pada kolom sumber terpisah
+[lulus] Murobi lain ditolak dari detail kasus (403)
+[lulus] Pembimbing lain ditolak dari detail kasus (403)
+[lulus] Orang tua ditolak dari endpoint internal kasus (403)
+[lulus] Murobi lain tidak dapat memberi catatan (403)
+[lulus] Daftar pembimbing lain tidak membocorkan kasus
+[lulus] Murobi terkait melihat kasus pada daftar cakupannya
+[lulus] DTO orang tua allowlist tidak pernah membawa field internal
+[lulus] Pembukaan detail sensitif oleh admin tercatat sebagai audit akses
+[lulus] Admin mengoreksi kasus hanya melalui alasan wajib
+[lulus] Audit membedakan koreksi administratif
+[lulus] Koreksi kasus tersimpan sebagai revisi berbaris dengan nilai sebelum/sesudah
+[lulus] Detail kasus menampilkan riwayat revisi
+[lulus] Kasus Rahasia tidak dapat dibuka murobi terkait (403)
+[lulus] Murobi tidak dapat memberi tanda mengetahui pada kasus Rahasia (403)
+[lulus] Kasus Rahasia tidak muncul pada daftar murobi
+[lulus] Detail pelanggaran menyembunyikan kasus Rahasia dari murobi tetapi tidak dari pembimbing pemilik
+[lulus] Transisi status kasus yang tidak sah ditolak (422)
+[lulus] Transisi kasus tidak sah tidak mengubah versi
+[lulus] Kasus ditutup hanya dengan ringkasan hasil
+[lulus] Retry penutupan kasus me-replay dampak pertama
+[lulus] Penutupan mempertahankan seluruh sesi dan revisi
+[lulus] Penutupan mempertahankan seluruh tautan pelanggaran
+[lulus] Penutupan Selesai menutup sesi terjadwal sebagai Dibatalkan beralasan sistem
+[lulus] Penutupan otomatis sesi tercatat audit
+[lulus] Kegagalan audit menggulung kasus dan outbox (503)
+[lulus] Tidak ada kasus atau outbox parsial setelah audit gagal
+[lulus] Outbox konseling hanya memuat pesan generik tanpa rincian sensitif
+[lulus] K1 jadwal ulang sesi pada kasus Selesai ditolak (422)
+[lulus] K1 penyelesaian sesi pada kasus Selesai ditolak (422)
+[lulus] K1 kasus tertutup tidak memperoleh sesi atau status sesi baru
+[lulus] K1 replay transisi sebelum penutupan tetap dijawab dari idempotensi
+[lulus] K2 fixture menghasilkan rekomendasi baru
+[lulus] K2 pembatalan kasus melepas rekomendasi tanpa menghapus barisnya
+[lulus] K2 rekomendasi yang dilepas kembali ke antrean manual
+[lulus] K2 audit pembatalan mencatat rekomendasi yang dilepas
+[lulus] K2 rekomendasi dapat ditautkan manual ke kasus yang sudah berjalan
+[lulus] K2 penautan manual tidak mengubah ledger dan tidak membuat sesi otomatis
+[lulus] K2 rekomendasi yang sudah tertaut tidak dapat ditautkan dua kali (409)
+[lulus] K3 catatan pelanggaran terkini tetap menampilkan kasus yang menindaklanjuti revisi sebelumnya
+[lulus] K3 revisi pelanggaran tidak ditautkan ulang ke kasus yang sama (409)
+[lulus] K3 detail kasus menandai pelanggaran tertaut yang sudah direvisi tanpa menggandakannya
+[lulus] K5 penyelesaian lewat formulir web mempertahankan rencana tindak lanjut tersimpan
+[lulus] K5 sesi batal lewat formulir web tanpa realisasi dan rencananya tetap utuh
+[lulus] K6 koreksi tidak dapat mengosongkan ringkasan dan hasil sesi selesai (422)
+[lulus] K6 koreksi yang ditolak tidak menulis revisi atau menaikkan versi
+[lulus] K6 revisi sesi terjadwal tidak memperoleh waktu realisasi
+[lulus] K7 dua perubahan status kasus menghasilkan dua notifikasi murobi
+[lulus] K7 jadwal ulang lalu tidak hadir pada sesi yang sama menghasilkan dua notifikasi
+[lulus] K9 detail dan timeline dalam satu halaman admin hanya diaudit sekali
+[lulus] K9 timeline yang dibuka tersendiri oleh admin tetap diaudit
+[lulus] Lintas cakupan: pembimbing lain ditolak pada koreksi kasus (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada status kasus (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada tautan (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada sesi baru (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada status sesi (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada koreksi sesi (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada catatan murobi kasus (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada catatan murobi sesi (403)
+[lulus] Lintas cakupan: pembimbing lain ditolak pada timeline (403)
+[lulus] Lintas cakupan: orang tua ditolak pada koreksi kasus (403)
+[lulus] Lintas cakupan: orang tua ditolak pada status kasus (403)
+[lulus] Lintas cakupan: orang tua ditolak pada tautan (403)
+[lulus] Lintas cakupan: orang tua ditolak pada sesi baru (403)
+[lulus] Lintas cakupan: orang tua ditolak pada status sesi (403)
+[lulus] Lintas cakupan: orang tua ditolak pada koreksi sesi (403)
+[lulus] Lintas cakupan: orang tua ditolak pada catatan murobi kasus (403)
+[lulus] Lintas cakupan: orang tua ditolak pada catatan murobi sesi (403)
+[lulus] Lintas cakupan: orang tua ditolak pada timeline (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada koreksi kasus (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada status kasus (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada tautan (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada sesi baru (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada status sesi (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada koreksi sesi (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada catatan murobi kasus (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada catatan murobi sesi (403)
+[lulus] Lintas cakupan: murobi lain ditolak pada timeline (403)
+[lulus] Admin murni hanya mengoreksi: ditolak pada status kasus (403)
+[lulus] Admin murni hanya mengoreksi: ditolak pada tautan (403)
+[lulus] Admin murni hanya mengoreksi: ditolak pada sesi baru (403)
+[lulus] Admin murni hanya mengoreksi: ditolak pada status sesi (403)
+[lulus] Seluruh percobaan lintas cakupan tidak menulis sesi, tautan, versi, atau catatan murobi
+[lulus] Kasus Rahasia tidak menghasilkan notifikasi murobi
+[lulus] Pembimbing dalam cakupan yang bukan pemilik tidak dapat membuka kasus Rahasia (403)
+[lulus] Pembimbing bukan pemilik ditolak pada koreksi kasus kasus Rahasia (403)
+[lulus] Pembimbing bukan pemilik ditolak pada status kasus kasus Rahasia (403)
+[lulus] Pembimbing bukan pemilik ditolak pada sesi baru kasus Rahasia (403)
+[lulus] Pembimbing bukan pemilik ditolak pada tautan kasus Rahasia (403)
+[lulus] Kasus Rahasia milik pembimbing lain tidak muncul pada daftar maupun detail pelanggaran
+[lulus] Admin tetap dapat membuka kasus Rahasia untuk pengawasan
+[lulus] Pembimbing pemilik membaca kasus Rahasia miliknya
+[lulus] Koreksi pemilik ke Internal membuat revisi dan membuka kasus kepada murobi terkait
+[lulus] Koreksi kasus versi lama ditolak (409)
+[lulus] Koreksi yang ditolak tidak menulis revisi kedua
+[lulus] Database menolak revisi kasus ganda dari versi yang sama
+[lulus] Pembatalan kasus menutup sesi terjadwal sebagai Dibatalkan beralasan sistem
+[lulus] Kegagalan outbox menggulung pembukaan kasus (503)
+[lulus] Tidak ada kasus atau audit parsial setelah outbox gagal
+
+== v3_phase5_integration exit 0
+[lulus] Retry satu kasus
+[lulus] Dua sesi tersimpan berbeda
+[lulus] Kasus selesai tanpa menghapus sesi
+[lulus] Versi lama ditolak
+[lulus] Murobi terkait mengetahui kasus yang sama
+[lulus] Kasus lintas cakupan ditolak
+[lulus] Kasus lintas cakupan ditolak
+[lulus] Kasus lintas cakupan ditolak
+[lulus] Laporan pelanggaran sesuai akses tanpa isi rahasia
+[lulus] Laporan kasus sesuai akses tanpa isi rahasia
+[lulus] Laporan pelanggaran sesuai akses tanpa isi rahasia
+[lulus] Laporan kasus sesuai akses tanpa isi rahasia
+[lulus] Laporan pelanggaran sesuai akses tanpa isi rahasia
+[lulus] Laporan kasus sesuai akses tanpa isi rahasia
+[lulus] Laporan lintas cakupan kosong
+[lulus] Laporan lintas cakupan kosong
+[lulus] Laporan wali snapshot tanpa internal
+[lulus] Laporan wali lain kosong
+[lulus] Wali menebak jenis internal ditolak
+[lulus] Filter internal wali ditolak
+[lulus] SQL injection angka ditolak
+[lulus] SQL injection teks terikat parameter
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Tanggal tidak sah ditolak
+[lulus] Options mobile katalog berhalaman
+[lulus] Halaman akhir kosong tetap mengizinkan kembali ke pilihan sebelumnya
+[lulus] Options halaman tidak sah ditolak
+[lulus] Filter pembimbing dan murobi mengikuti penugasan aktif
+[lulus] Filter periode/tingkat/poin menghasilkan data dalam cakupan
+[lulus] Halaman laporan tidak sah ditolak
+[lulus] Purge dry-run tidak menghapus draf
+[lulus] Purge gagal audit menggulung batch
+[lulus] Draf tetap ada setelah rollback
+[lulus] Purge hanya draf, snapshot/riwayat tetap
+[lulus] Purge batas batch
+[lulus] Purge bukan admin ditolak
+[lulus] Audit V3 baru hanya metadata/hash tanpa isi konseling
+[lulus] Audit kategori/katalog tetap memuat uraian sebelum/sesudah
+Publikasi fixture F5 ID=409
+
+== v3_phase5_access exit 0
+[lulus] Options internal menolak wali tanpa katalog
+[lulus] Options internal menolak wali tanpa katalog
+[lulus] Options tetap tersedia bagi petugas berhak: sbx_admin
+[lulus] Options tetap tersedia bagi petugas berhak: sbx_pengurus_a
+[lulus] Options tetap tersedia bagi petugas berhak: sbx_murobi_a
+
+== v3_phase4_channels exit 0
+[lulus] Push OFF: nol send dan nol request receipt
+[lulus] WhatsApp OFF: nol request provider
+[lulus] OFF saat terbit: hanya InApp, tanpa antrean provider
+[lulus] Fake kegagalan sementara dicatat dengan retry
+[lulus] Retry worker memakai baris yang sama, tidak mengirim ulang baris Sent
+[lulus] Payload push hanya penunjuk publikasi dan pesan generik
+[lulus] Receipt diproses melalui fake; bukan bukti perangkat fisik
+[lulus] Worker tidak mengirim sesudah relasi wali dicabut
+[lulus] Seluruh suite: WhatsApp tetap nol request
+
+== v3_phase4_concurrency exit 0
+[lulus] Publikasi konkuren tepat satu per wali, putaran 0
+[lulus] Kedua retry selesai dengan hasil konsisten
+[lulus] Outbox InApp konkuren tepat satu
+[lulus] Publikasi konkuren tepat satu per wali, putaran 1
+[lulus] Kedua retry selesai dengan hasil konsisten
+[lulus] Outbox InApp konkuren tepat satu
+[lulus] Konkurensi terbit/kerahasiaan mempertahankan invariant 2
+[lulus] Salah satu operasi ditolak dengan konflik/kerahasiaan
+[lulus] Konkurensi terbit/kerahasiaan mempertahankan invariant 3
+[lulus] Salah satu operasi ditolak dengan konflik/kerahasiaan
+
+== v3_phase2_concurrency exit 0
+[lulus] Dua proses dengan idempotency sama: satu create dan satu replay
+[lulus] Konkurensi create hanya memberi satu dampak ledger
+[lulus] Dua koreksi versi lama: satu berhasil dan satu konflik 409
+[lulus] Optimistic concurrency menghasilkan tepat satu revisi
+[lulus] Agregat tetap sama dengan ledger sesudah balapan koreksi
+[lulus] Kunci santri/tahun A tidak menjadi gerbang global bagi subjek B
+
+== v3_phase5_performance exit 0
+[lulus] Daftar 1.000 data berhalaman
+[lulus] Waktu daftar lokal di bawah 2 detik
+[lulus] 40 halaman tanpa duplikasi atau kehilangan data
+[lulus] Ekspor memuat semua 1.000 baris
+[lulus] 10.001 baris ditolak tanpa ekspor parsial
+{
+    "fixture_count": 1000,
+    "list_seconds": 0.006288051605224609,
+    "database": "MariaDB lokal; bukan staging\/cPanel",
+    "pagination_ids": 1000
+}
+[lulus] Fixture performa dibersihkan tepat sesuai run
+

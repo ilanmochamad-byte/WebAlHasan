@@ -1,0 +1,117 @@
+[lulus] T5-A V-1-admin 375px: rapi di kerangka bersama
+[lulus] T5-A V-2-admin 375px: rapi di kerangka bersama
+[lulus] T5-A V-3-admin 375px: rapi di kerangka bersama
+[lulus] T5-A V-3-daftar 375px: rapi di kerangka bersama
+[lulus] T5-A V-4-admin-rahasia 375px: rapi di kerangka bersama
+[lulus] T5-A V-5-daftar 375px: rapi di kerangka bersama
+[lulus] T5-A V-5-kelola 375px: rapi di kerangka bersama
+[lulus] T5-A V-6-admin 375px: rapi di kerangka bersama
+[lulus] T5-A M-4 375px: rapi di kerangka bersama
+[lulus] T5-A M-4-ambang-ubah 375px: rapi di kerangka bersama
+[lulus] T5-A V-1-admin 768px: rapi di kerangka bersama
+[lulus] T5-A V-2-admin 768px: rapi di kerangka bersama
+[lulus] T5-A V-3-admin 768px: rapi di kerangka bersama
+[lulus] T5-A V-3-daftar 768px: rapi di kerangka bersama
+[lulus] T5-A V-4-admin-rahasia 768px: rapi di kerangka bersama
+[lulus] T5-A V-5-daftar 768px: rapi di kerangka bersama
+[lulus] T5-A V-5-kelola 768px: rapi di kerangka bersama
+[lulus] T5-A V-6-admin 768px: rapi di kerangka bersama
+[lulus] T5-A M-4 768px: rapi di kerangka bersama
+[lulus] T5-A M-4-ambang-ubah 768px: rapi di kerangka bersama
+[lulus] T5-A V-1-admin 1280px: rapi di kerangka bersama
+[lulus] T5-A V-2-admin 1280px: rapi di kerangka bersama
+[lulus] T5-A V-3-admin 1280px: rapi di kerangka bersama
+[lulus] T5-A V-3-daftar 1280px: rapi di kerangka bersama
+[lulus] T5-A V-4-admin-rahasia 1280px: rapi di kerangka bersama
+[lulus] T5-A V-5-daftar 1280px: rapi di kerangka bersama
+[lulus] T5-A V-5-kelola 1280px: rapi di kerangka bersama
+[lulus] T5-A V-6-admin 1280px: rapi di kerangka bersama
+[lulus] T5-A M-4 1280px: rapi di kerangka bersama
+[lulus] T5-A M-4-ambang-ubah 1280px: rapi di kerangka bersama
+[lulus] T5-A V-1-pengurus 375px: rapi di kerangka bersama
+[lulus] T5-A V-1-catat 375px: rapi di kerangka bersama
+[lulus] T5-A V-2-rahasia 375px: rapi di kerangka bersama
+[lulus] T5-A V-2-poin 375px: rapi di kerangka bersama
+[lulus] T5-A V-3-pengurus 375px: rapi di kerangka bersama
+[lulus] T5-A V-3-wizard-2 375px: rapi di kerangka bersama
+[lulus] T5-A V-4-pengurus 375px: rapi di kerangka bersama
+[lulus] T5-A V-4-riwayat 375px: rapi di kerangka bersama
+[lulus] T5-A V-5-siapkan 375px: rapi di kerangka bersama
+[lulus] T5-A V-6-pengurus 375px: rapi di kerangka bersama
+[lulus] T5-A V-1-pengurus 768px: rapi di kerangka bersama
+[lulus] T5-A V-1-catat 768px: rapi di kerangka bersama
+[lulus] T5-A V-2-rahasia 768px: rapi di kerangka bersama
+[lulus] T5-A V-2-poin 768px: rapi di kerangka bersama
+[lulus] T5-A V-3-pengurus 768px: rapi di kerangka bersama
+[lulus] T5-A V-3-wizard-2 768px: rapi di kerangka bersama
+[lulus] T5-A V-4-pengurus 768px: rapi di kerangka bersama
+[lulus] T5-A V-4-riwayat 768px: rapi di kerangka bersama
+[lulus] T5-A V-5-siapkan 768px: rapi di kerangka bersama
+[lulus] T5-A V-6-pengurus 768px: rapi di kerangka bersama
+[lulus] T5-A V-1-pengurus 1280px: rapi di kerangka bersama
+[lulus] T5-A V-1-catat 1280px: rapi di kerangka bersama
+[lulus] T5-A V-2-rahasia 1280px: rapi di kerangka bersama
+[lulus] T5-A V-2-poin 1280px: rapi di kerangka bersama
+[lulus] T5-A V-3-pengurus 1280px: rapi di kerangka bersama
+[lulus] T5-A V-3-wizard-2 1280px: rapi di kerangka bersama
+[lulus] T5-A V-4-pengurus 1280px: rapi di kerangka bersama
+[lulus] T5-A V-4-riwayat 1280px: rapi di kerangka bersama
+[lulus] T5-A V-5-siapkan 1280px: rapi di kerangka bersama
+[lulus] T5-A V-6-pengurus 1280px: rapi di kerangka bersama
+[lulus] T5-A V-1-murobi 375px: rapi di kerangka bersama
+[lulus] T5-A V-2-murobi 375px: rapi di kerangka bersama
+[lulus] T5-A V-3-murobi 375px: rapi di kerangka bersama
+[lulus] T5-A V-4-murobi 375px: rapi di kerangka bersama
+[lulus] T5-A V-6-murobi 375px: rapi di kerangka bersama
+[lulus] T5-A V-1-murobi 768px: rapi di kerangka bersama
+[lulus] T5-A V-2-murobi 768px: rapi di kerangka bersama
+[lulus] T5-A V-3-murobi 768px: rapi di kerangka bersama
+[lulus] T5-A V-4-murobi 768px: rapi di kerangka bersama
+[lulus] T5-A V-6-murobi 768px: rapi di kerangka bersama
+[lulus] T5-A V-1-murobi 1280px: rapi di kerangka bersama
+[lulus] T5-A V-2-murobi 1280px: rapi di kerangka bersama
+[lulus] T5-A V-3-murobi 1280px: rapi di kerangka bersama
+[lulus] T5-A V-4-murobi 1280px: rapi di kerangka bersama
+[lulus] T5-A V-6-murobi 1280px: rapi di kerangka bersama
+[lulus] T5-A V-7-daftar 375px: rapi di kerangka bersama
+[lulus] T5-A V-7-detail 375px: rapi di kerangka bersama
+[lulus] T5-A V-6-ortu 375px: rapi di kerangka bersama
+[lulus] T5-A V-7-daftar 768px: rapi di kerangka bersama
+[lulus] T5-A V-7-detail 768px: rapi di kerangka bersama
+[lulus] T5-A V-6-ortu 768px: rapi di kerangka bersama
+[lulus] T5-A V-7-daftar 1280px: rapi di kerangka bersama
+[lulus] T5-A V-7-detail 1280px: rapi di kerangka bersama
+[lulus] T5-A V-6-ortu 1280px: rapi di kerangka bersama
+[lulus] T5-B pilihan jenis menampilkan tingkat, poin, dan total setelah catatan
+[lulus] T5-B formulir catat di HP tanpa geser horizontal
+[lulus] T5-B detail tampil dengan jenis, santri, dan total poin baru
+[lulus] T5-B detail di HP tanpa geser horizontal
+[lulus] T5-C pelanggaran bertaut kasus Rahasia: publikasi nonaktif dengan sebab
+[lulus] T5-C uraian bertag tetap di-escape
+[lulus] T5-C Batalkan catatan membuka dialog berisi akibatnya
+[lulus] T5-C Kembali menutup dialog tanpa mengirim
+[lulus] T5-C pembatalan beralasan tersimpan
+[lulus] T5-D kasus Rahasia tampil bagi admin dan pembimbing pemilik
+[lulus] T5-D kasus Rahasia tidak tampil dan tidak terhitung bagi pembimbing lain dan murobi
+[lulus] T5-D tanpa petunjuk adanya kasus tersembunyi
+[lulus] T5-D wizard langkah 1: pilih santri
+[lulus] T5-D wizard langkah 2 memuat pelanggaran santri itu saja
+[lulus] T5-D kasus terbuka dari HP tanpa geser horizontal
+[lulus] T5-E hasil Selesai: hanya waktu, ringkasan, hasil, tindak lanjut
+[lulus] T5-E hasil Dijadwalkan ulang: hanya jadwal baru dan alasan
+[lulus] T5-E hasil Dibatalkan: hanya alasan
+[lulus] T5-E jadwal ulang tersimpan dengan alasan
+[lulus] T5-F wizard Penerima → Isi → Pratinjau
+[lulus] T5-F pratinjau seperti dilihat wali, dengan batas waktu dan pengirim
+[lulus] T5-F publikasi terbit dan halaman kelola terbuka
+[lulus] T5-G daftar: judul bertanggal, nama anak, pengirim
+[lulus] T5-G jenis sumber tidak ditampilkan
+[lulus] T5-G tanda baca tersimpan
+[lulus] T5-G detail di HP tanpa geser horizontal
+[lulus] T5-H saringan kelas/kamar/pembimbing/murobi berupa pilihan bernama
+[lulus] T5-H saringan kamar bernama menyaring baris
+[lulus] T5-H ringkasan angka tampil
+[lulus] T5-I tanpa galat JavaScript
+[lulus] T5-I tanpa confirm()/alert() bawaan peramban
+
+Ringkasan: 115 lulus, 0 gagal

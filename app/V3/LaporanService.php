@@ -21,6 +21,82 @@ final class LaporanService
 
     public function read(array $user,array $filters,bool $export=false):array
     {
+        [$kind,$from,$fields,$columns,$params,$a]=$this->build($user,$filters);
+        if(isset($filters['page'])&&!preg_match('/^[1-9][0-9]{0,6}$/D',(string)$filters['page']))throw new V3Exception('Halaman tidak valid.');
+        $page=max(1,min(1000000,(int)($filters['page']??1)));$size=$export?self::EXPORT_LIMIT:25;
+        // Snapshot repeatable read mengikat count dan halaman/ekspor pada keadaan yang sama.
+        $this->repo->execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ');
+        return $this->repo->transaction(function()use($from,$fields,$columns,$params,$a,$page,$size,$export,$kind){
+            $total=(int)$this->repo->one('SELECT COUNT(*) n'.$from,$params)['n'];
+            if($export&&$total>self::EXPORT_LIMIT)throw new V3Exception('Ekspor melebihi 10.000 baris. Persempit filter; tidak ada berkas parsial yang dibuat.',422);
+            $rows=$this->repo->all('SELECT '.$fields.$from." ORDER BY $a.id DESC LIMIT ? OFFSET ?",[...$params,$size,$export?0:($page-1)*$size]);
+            return ['jenis'=>$kind,'columns'=>$columns,'rows'=>$rows,'total'=>$total,'page'=>$page,'per_page'=>$size,'export_limit'=>self::EXPORT_LIMIT];
+        });
+    }
+
+    /**
+     * Ringkasan angka laporan web (V-6, redesain Tahap 5): catatan dan total
+     * poin pelanggaran (tanpa yang dibatalkan), kasus yang masih berjalan, dan
+     * santri mencapai ambang. Setiap angka dihitung lewat `build()` yang sama
+     * dengan daftar, sehingga cakupan penugasan dan penyaring kerahasiaan kasus
+     * berlaku sama. Saringan yang tidak berlaku untuk suatu jenis tidak ikut.
+     *
+     * @return array{catatan:int,total_poin:int,kasus_berjalan:int,ambang:int}|null
+     */
+    public function ringkasan(array $user,array $filters):?array
+    {
+        if(!in_array('pelanggaran',$this->kinds($user),true))return null;
+        $umum=array_intersect_key($filters,array_flip(['mulai','sampai','santri_id','kelas_id','kamar_id','pembimbing_id','murobi_id','kategori','tingkat','q']));
+        [, $from,, , $params]=$this->build($user,['jenis'=>'pelanggaran','aktif'=>'1']+$umum+array_intersect_key($filters,array_flip(['poin_min','poin_max','tindak_lanjut'])));
+        $p=$this->repo->one('SELECT COUNT(*) n,COALESCE(SUM(p.poin_snapshot),0) poin'.$from,$params);
+        [, $from,, , $params]=$this->build($user,['jenis'=>'kasus']+$umum);
+        $k=$this->repo->one("SELECT COUNT(*) n".$from." AND k.status IN ('Dibuka','Dalam Pendampingan')",$params);
+        [, $from,, , $params]=$this->build($user,['jenis'=>'ambang']+array_intersect_key($filters,array_flip(['santri_id','kelas_id','kamar_id','q'])));
+        $r=$this->repo->one('SELECT COUNT(*) n'.$from,$params);
+        return ['catatan'=>(int)$p['n'],'total_poin'=>(int)$p['poin'],'kasus_berjalan'=>(int)$k['n'],'ambang'=>(int)$r['n']];
+    }
+
+    /**
+     * Pilihan bernama untuk saringan web (V-6): kelas, kamar, kategori, dan
+     * — hanya bagi pengawas (admin) — pembimbing dan murobi. Nilai yang
+     * dikirim tetap divalidasi `build()` dan dibatasi cakupan akun.
+     *
+     * @return array{kelas:array<int,array{id:int,nama:string}>,kamar:array<int,array{id:int,nama:string}>,kategori:array<int,string>,pembimbing:array<int,array{id:int,nama:string}>,murobi:array<int,array{id:int,nama:string}>}
+     */
+    public function filterOptions(array $user):array
+    {
+        if(array_diff($this->kinds($user),['publikasi'])===[])return ['kelas'=>[],'kamar'=>[],'kategori'=>[],'pembimbing'=>[],'murobi'=>[]];
+        $c=$this->caps->v3Capabilities($user);$admin=isset($c['v3.pengawasan']);
+        $pair=static fn(array $rows):array=>array_map(static fn(array $r):array=>['id'=>(int)$r['id'],'nama'=>(string)$r['nama']],$rows);
+        return [
+            'kelas'=>$pair($this->repo->all('SELECT id,nama_kelas nama FROM kelas WHERE archived_at IS NULL ORDER BY nama_kelas,id')),
+            'kamar'=>$pair($this->repo->all('SELECT id,nama_kamar nama FROM kamar ORDER BY nama_kamar,id')),
+            'kategori'=>array_map(static fn(array $r):string=>(string)$r['nama'],$this->repo->all('SELECT DISTINCT nama FROM v3_kategori WHERE archived_at IS NULL ORDER BY nama')),
+            'pembimbing'=>$admin?$pair($this->repo->all("SELECT DISTINCT p.id,p.nama FROM pengurus p JOIN pembimbing_assignments pa ON pa.pengurus_id=p.id AND pa.archived_at IS NULL WHERE p.archived_at IS NULL ORDER BY p.nama,p.id")):[],
+            'murobi'=>$admin?$pair($this->repo->all("SELECT DISTINCT g.id,g.nama_guru nama FROM guru g JOIN murobi_assignments ma ON ma.guru_id=g.id AND ma.archived_at IS NULL WHERE g.archived_at IS NULL ORDER BY g.nama_guru,g.id")):[],
+        ];
+    }
+
+    /**
+     * Kelas dan kamar tahun ajaran aktif bagi santri yang SUDAH terbaca pada
+     * halaman laporan (kolom tampilan V-6). Tidak menambah baris laporan.
+     *
+     * @param array<int,int> $santriIds
+     * @return array<int,array{kelas:?string,kamar:?string}>
+     */
+    public function penempatan(array $santriIds):array
+    {
+        $ids=array_values(array_unique(array_filter(array_map('intval',$santriIds))));if($ids===[])return [];
+        $in=implode(',',array_fill(0,count($ids),'?'));$out=[];
+        foreach($this->repo->all("SELECT s.id,(SELECT k.nama_kelas FROM plotting_kelas pk JOIN kelas k ON k.id=pk.id_kelas JOIN tahun_ajaran t ON t.id=pk.id_tahun AND t.status='Aktif' WHERE pk.id_santri=s.id AND pk.status='Aktif' LIMIT 1) kelas,
+                (SELECT km.nama_kamar FROM plotting_kamar pm JOIN kamar km ON km.id=pm.id_kamar JOIN tahun_ajaran t ON t.id=pm.id_tahun AND t.status='Aktif' WHERE pm.id_santri=s.id LIMIT 1) kamar
+              FROM santri s WHERE s.id IN ($in)",$ids) as $row)$out[(int)$row['id']]=['kelas'=>$row['kelas'],'kamar'=>$row['kamar']];
+        return $out;
+    }
+
+    /** @return array{0:string,1:string,2:string,3:array<string,string>,4:array<int,mixed>,5:string} */
+    private function build(array $user,array $filters):array
+    {
         $kinds=$this->kinds($user);
         if($kinds===[])throw new V3Exception('Laporan tidak dapat diakses.',403);
         foreach($filters as $value)if(!is_scalar($value)&&$value!==null)throw new V3Exception('Filter tidak valid.');
@@ -117,17 +193,11 @@ final class LaporanService
                 $params[]=$v;
             }
         }
+        // `q` (redesain Tahap 5, V-6): cari nama santri, pengganti isian "ID santri".
+        $q=trim((string)($filters['q']??''));
+        if($q!==''){if(mb_strlen($q)>100)throw new V3Exception('Filter teks terlalu panjang.');$where[]='s.nama_santri LIKE ?';$params[]='%'.addcslashes($q,'%_\\').'%';}
         $from.=($kind==='publikasi'?' AND ':' WHERE ').($where===[]?'1=1':implode(' AND ',$where));
-        if(isset($filters['page'])&&!preg_match('/^[1-9][0-9]{0,6}$/D',(string)$filters['page']))throw new V3Exception('Halaman tidak valid.');
-        $page=max(1,min(1000000,(int)($filters['page']??1)));$size=$export?self::EXPORT_LIMIT:25;
-        // Snapshot repeatable read mengikat count dan halaman/ekspor pada keadaan yang sama.
-        $this->repo->execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ');
-        return $this->repo->transaction(function()use($from,$fields,$columns,$params,$a,$page,$size,$export,$kind){
-            $total=(int)$this->repo->one('SELECT COUNT(*) n'.$from,$params)['n'];
-            if($export&&$total>self::EXPORT_LIMIT)throw new V3Exception('Ekspor melebihi 10.000 baris. Persempit filter; tidak ada berkas parsial yang dibuat.',422);
-            $rows=$this->repo->all('SELECT '.$fields.$from." ORDER BY $a.id DESC LIMIT ? OFFSET ?",[...$params,$size,$export?0:($page-1)*$size]);
-            return ['jenis'=>$kind,'columns'=>$columns,'rows'=>$rows,'total'=>$total,'page'=>$page,'per_page'=>$size,'export_limit'=>self::EXPORT_LIMIT];
-        });
+        return [$kind,$from,$fields,$columns,$params,$a];
     }
 
     public static function csvCell(mixed $value):string

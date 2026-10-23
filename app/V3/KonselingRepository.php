@@ -172,17 +172,41 @@ final class KonselingRepository
 
     public function page(int $userId,string $mode,array $filters):array
     {
-        foreach(['page','santri_id','tahun_ajaran_id','status'] as $key)if(isset($filters[$key])&&!is_scalar($filters[$key]))throw new V3Exception('Filter tidak valid.');
-        $page=max(1,min(1000000,(int)($filters['page']??1)));$size=25;$status=(string)($filters['status']??'');
-        if(!in_array($status,['','Dibuka','Dalam Pendampingan','Selesai','Dibatalkan'],true))throw new V3Exception('Status filter tidak valid.');
-        foreach(['santri_id','tahun_ajaran_id'] as $key)if(($filters[$key]??'')!==''&&!preg_match('/^[1-9][0-9]*$/D',(string)$filters[$key]))throw new V3Exception('Filter angka tidak valid.');
-        [$scope,$scopeParams]=$this->scopeSql($mode,$userId,'k');[$privacy,$privacyParams]=$this->privacySql($mode,$userId);$where=['k.archived_at IS NULL','('.$scope.')','('.$privacy.')'];$params=[...$scopeParams,...$privacyParams];
-        if($status!==''){$where[]='k.status=?';$params[]=$status;}
-        foreach(['santri_id','tahun_ajaran_id'] as $key)if(($filters[$key]??'')!==''){$where[]='k.'.$key.'=?';$params[]=(int)$filters[$key];}
+        $page=max(1,min(1000000,(int)($filters['page']??1)));$size=25;
+        [$where,$params]=$this->pageWhere($userId,$mode,$filters,true);
         $from=' FROM v3_konseling_kasus k JOIN santri s ON s.id=k.santri_id JOIN tahun_ajaran ta ON ta.id=k.tahun_ajaran_id WHERE '.implode(' AND ',$where);
         $total=(int)($this->one('SELECT COUNT(*) n'.$from,$params)['n']??0);
         $rows=$this->all('SELECT k.id,k.santri_id,k.tahun_ajaran_id,k.kerahasiaan,k.status,k.dibuka_pada,k.ditutup_pada,k.version,k.updated_at,s.nama_santri,ta.tahun,ta.semester,(SELECT COUNT(*) FROM v3_konseling_sesi ss WHERE ss.kasus_id=k.id AND ss.archived_at IS NULL AND NOT EXISTS (SELECT 1 FROM v3_konseling_sesi nx WHERE nx.revisi_dari_id=ss.id)) AS jumlah_sesi'.$from.' ORDER BY k.id DESC LIMIT ? OFFSET ?',[...$params,$size,($page-1)*$size]);
         return ['rows'=>$rows,'total'=>$total,'page'=>$page,'per_page'=>$size];
+    }
+
+    /**
+     * Jumlah kasus per status (papan V-3, redesain Tahap 5). Cakupan dan
+     * penyaring kerahasiaan sama dengan `page()`, sehingga kasus Rahasia yang
+     * tidak boleh diketahui tidak ikut terhitung.
+     *
+     * @return array<string,int>
+     */
+    public function statusCounts(int $userId,string $mode,array $filters):array
+    {
+        [$where,$params]=$this->pageWhere($userId,$mode,$filters,false);$counts=['Dibuka'=>0,'Dalam Pendampingan'=>0,'Selesai'=>0,'Dibatalkan'=>0];
+        foreach($this->all('SELECT k.status,COUNT(*) n FROM v3_konseling_kasus k JOIN santri s ON s.id=k.santri_id WHERE '.implode(' AND ',$where).' GROUP BY k.status',$params) as $row)if(isset($counts[(string)$row['status']]))$counts[(string)$row['status']]=(int)$row['n'];
+        return $counts;
+    }
+
+    /** @return array{0:array<int,string>,1:array<int,mixed>} `q` mencari nama santri (V-3). */
+    private function pageWhere(int $userId,string $mode,array $filters,bool $withStatus):array
+    {
+        foreach(['page','santri_id','tahun_ajaran_id','status','q'] as $key)if(isset($filters[$key])&&!is_scalar($filters[$key]))throw new V3Exception('Filter tidak valid.');
+        $status=(string)($filters['status']??'');
+        if(!in_array($status,['','Dibuka','Dalam Pendampingan','Selesai','Dibatalkan'],true))throw new V3Exception('Status filter tidak valid.');
+        foreach(['santri_id','tahun_ajaran_id'] as $key)if(($filters[$key]??'')!==''&&!preg_match('/^[1-9][0-9]*$/D',(string)$filters[$key]))throw new V3Exception('Filter angka tidak valid.');
+        [$scope,$scopeParams]=$this->scopeSql($mode,$userId,'k');[$privacy,$privacyParams]=$this->privacySql($mode,$userId);$where=['k.archived_at IS NULL','('.$scope.')','('.$privacy.')'];$params=[...$scopeParams,...$privacyParams];
+        if($withStatus&&$status!==''){$where[]='k.status=?';$params[]=$status;}
+        foreach(['santri_id','tahun_ajaran_id'] as $key)if(($filters[$key]??'')!==''){$where[]='k.'.$key.'=?';$params[]=(int)$filters[$key];}
+        $q=trim((string)($filters['q']??''));
+        if($q!==''){if(mb_strlen($q)>100)throw new V3Exception('Pencarian terlalu panjang.');$where[]='s.nama_santri LIKE ?';$params[]='%'.addcslashes($q,'%_\\').'%';}
+        return [$where,$params];
     }
 
     public function violationForLink(int $id,int $santriId,int $tahunId,bool $lock=false):?array
@@ -417,6 +441,13 @@ final class KonselingRepository
     public function caseRevisions(int $caseId):array
     {
         return $this->all('SELECT id,versi_sebelum,tujuan_sebelum,tujuan_sesudah,kerahasiaan_sebelum,kerahasiaan_sesudah,alasan,kapasitas,created_by,created_at FROM v3_konseling_kasus_revisi WHERE kasus_id=? ORDER BY versi_sebelum,id',[$caseId]);
+    }
+
+    /** Cakupan penugasan aktif untuk kueri gabungan lain (daftar publikasi V-5); alias wajib berkolom santri_id dan tahun_ajaran_id. */
+    public function scopeFor(string $mode,int $userId,string $alias):array
+    {
+        if(!in_array($mode,['admin','pembimbing','murobi'],true)||!preg_match('/^[a-z]{1,3}$/D',$alias))throw new V3Exception('Cakupan tidak valid.',403);
+        return $this->scopeSql($mode,$userId,$alias);
     }
 
     private function scopeSql(string $mode,int $userId,string $alias):array

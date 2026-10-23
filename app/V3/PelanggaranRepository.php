@@ -215,12 +215,13 @@ final class PelanggaranRepository
     public function violation(int $id, bool $lock = false): ?array
     {
         return $this->one(
-            'SELECT p.*,s.nama_santri,ta.tahun,ta.semester,k.kode AS katalog_kode,
+            'SELECT p.*,s.nama_santri,ta.tahun,ta.semester,k.kode AS katalog_kode,k.nama AS katalog_nama,pg.nama AS pembimbing_nama,
                     (SELECT c.id FROM v3_pelanggaran c WHERE c.revisi_dari_id=p.id LIMIT 1) AS digantikan_oleh_id
                FROM v3_pelanggaran p
                JOIN santri s ON s.id=p.santri_id
                JOIN tahun_ajaran ta ON ta.id=p.tahun_ajaran_id
                LEFT JOIN v3_katalog k ON k.id=p.katalog_id
+               LEFT JOIN pengurus pg ON pg.id=p.pembimbing_id
               WHERE p.id=?' . ($lock ? ' FOR UPDATE' : ''),
             [$id]
         );
@@ -230,12 +231,13 @@ final class PelanggaranRepository
     {
         [$scope, $params] = $this->scopeSql($mode, $userId, 'p');
         return $this->one(
-            'SELECT p.*,s.nama_santri,ta.tahun,ta.semester,k.kode AS katalog_kode,
+            'SELECT p.*,s.nama_santri,ta.tahun,ta.semester,k.kode AS katalog_kode,k.nama AS katalog_nama,pg.nama AS pembimbing_nama,
                     (SELECT c.id FROM v3_pelanggaran c WHERE c.revisi_dari_id=p.id LIMIT 1) AS digantikan_oleh_id
                FROM v3_pelanggaran p
                JOIN santri s ON s.id=p.santri_id
                JOIN tahun_ajaran ta ON ta.id=p.tahun_ajaran_id
                LEFT JOIN v3_katalog k ON k.id=p.katalog_id
+               LEFT JOIN pengurus pg ON pg.id=p.pembimbing_id
               WHERE p.id=? AND (' . $scope . ')',
             [$id, ...$params]
         );
@@ -244,13 +246,51 @@ final class PelanggaranRepository
     /** @return array{rows:array<int,array<string,mixed>>,total:int,page:int,per_page:int} */
     public function page(int $userId, string $mode, array $filters): array
     {
-        foreach (['page','santri_id','tahun_ajaran_id','status'] as $key) {
+        $page = max(1, min(1000000, (int) ($filters['page'] ?? 1)));
+        $size = 25;
+        [$where, $params] = $this->pageWhere($userId, $mode, $filters, true);
+        $from = ' FROM v3_pelanggaran p JOIN santri s ON s.id=p.santri_id JOIN tahun_ajaran ta ON ta.id=p.tahun_ajaran_id
+                  LEFT JOIN v3_katalog kj ON kj.id=p.katalog_id WHERE ' . implode(' AND ', $where);
+        $total = (int) ($this->one('SELECT COUNT(*) AS n'.$from, $params)['n'] ?? 0);
+        $rows = $this->all(
+            'SELECT p.id,p.santri_id,p.tahun_ajaran_id,p.waktu_kejadian,p.tempat,p.kategori_snapshot,
+                    p.tingkat_snapshot,p.poin_snapshot,p.status,p.version,p.created_at,
+                    s.nama_santri,ta.tahun,ta.semester,kj.nama AS katalog_nama'.$from.' ORDER BY p.id DESC LIMIT ? OFFSET ?',
+            [...$params, $size, ($page - 1) * $size]
+        );
+        return ['rows'=>$rows,'total'=>$total,'page'=>$page,'per_page'=>$size];
+    }
+
+    /**
+     * Jumlah catatan terkini per status dengan cakupan dan saringan yang sama
+     * dengan `page()` kecuali status itu sendiri (chip V-1, redesain Tahap 5).
+     *
+     * @return array<string,int>
+     */
+    public function statusCounts(int $userId, string $mode, array $filters): array
+    {
+        [$where, $params] = $this->pageWhere($userId, $mode, $filters, false);
+        $counts = ['Dicatat'=>0,'Ditindaklanjuti'=>0,'Selesai'=>0,'Dibatalkan'=>0];
+        foreach ($this->all('SELECT p.status,COUNT(*) AS n FROM v3_pelanggaran p JOIN santri s ON s.id=p.santri_id WHERE '
+            . implode(' AND ', $where) . ' GROUP BY p.status', $params) as $row) {
+            if (isset($counts[(string) $row['status']])) { $counts[(string) $row['status']] = (int) $row['n']; }
+        }
+        return $counts;
+    }
+
+    /**
+     * Klausa daftar pelanggaran. `q` mencari nama santri; `mulai`/`sampai`
+     * membatasi waktu kejadian (redesain Tahap 5, V-1). Semua nilai terikat.
+     *
+     * @return array{0:array<int,string>,1:array<int,mixed>}
+     */
+    private function pageWhere(int $userId, string $mode, array $filters, bool $withStatus): array
+    {
+        foreach (['page','santri_id','tahun_ajaran_id','status','q','mulai','sampai'] as $key) {
             if (isset($filters[$key]) && !is_scalar($filters[$key])) {
                 throw new V3Exception('Filter tidak valid.');
             }
         }
-        $page = max(1, min(1000000, (int) ($filters['page'] ?? 1)));
-        $size = 25;
         $status = (string) ($filters['status'] ?? '');
         if (!in_array($status, ['', 'Dicatat', 'Ditindaklanjuti', 'Selesai', 'Dibatalkan'], true)) {
             throw new V3Exception('Status filter tidak valid.');
@@ -263,19 +303,25 @@ final class PelanggaranRepository
         [$scope, $scopeParams] = $this->scopeSql($mode, $userId, 'p');
         $where = ['p.archived_at IS NULL', 'NOT EXISTS (SELECT 1 FROM v3_pelanggaran nx WHERE nx.revisi_dari_id=p.id)', '(' . $scope . ')'];
         $params = $scopeParams;
-        if ($status !== '') { $where[] = 'p.status=?'; $params[] = $status; }
+        if ($withStatus && $status !== '') { $where[] = 'p.status=?'; $params[] = $status; }
         foreach (['santri_id','tahun_ajaran_id'] as $key) {
             if (($filters[$key] ?? '') !== '') { $where[] = 'p.'.$key.'=?'; $params[] = (int) $filters[$key]; }
         }
-        $from = ' FROM v3_pelanggaran p JOIN santri s ON s.id=p.santri_id JOIN tahun_ajaran ta ON ta.id=p.tahun_ajaran_id WHERE ' . implode(' AND ', $where);
-        $total = (int) ($this->one('SELECT COUNT(*) AS n'.$from, $params)['n'] ?? 0);
-        $rows = $this->all(
-            'SELECT p.id,p.santri_id,p.tahun_ajaran_id,p.waktu_kejadian,p.tempat,p.kategori_snapshot,
-                    p.tingkat_snapshot,p.poin_snapshot,p.status,p.version,p.created_at,
-                    s.nama_santri,ta.tahun,ta.semester'.$from.' ORDER BY p.id DESC LIMIT ? OFFSET ?',
-            [...$params, $size, ($page - 1) * $size]
-        );
-        return ['rows'=>$rows,'total'=>$total,'page'=>$page,'per_page'=>$size];
+        $q = trim((string) ($filters['q'] ?? ''));
+        if ($q !== '') {
+            if (mb_strlen($q) > 100) { throw new V3Exception('Pencarian terlalu panjang.'); }
+            $where[] = 's.nama_santri LIKE ?';
+            $params[] = '%' . addcslashes($q, '%_\\') . '%';
+        }
+        foreach (['mulai' => '>=', 'sampai' => '<'] as $key => $op) {
+            $value = (string) ($filters[$key] ?? '');
+            if ($value === '') { continue; }
+            $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value);
+            if (!$date || $date->format('Y-m-d') !== $value) { throw new V3Exception('Periode tidak valid.'); }
+            $where[] = 'p.waktu_kejadian' . $op . '?';
+            $params[] = $key === 'mulai' ? $value : $date->modify('+1 day')->format('Y-m-d');
+        }
+        return [$where, $params];
     }
 
     /**
@@ -376,6 +422,25 @@ final class PelanggaranRepository
                 AND a.nilai_minimum<=? AND (a.nilai_maksimum IS NULL OR a.nilai_maksimum>=?)
               ORDER BY a.nilai_minimum DESC,a.id",
             [$tahunId,$total,$total]
+        );
+    }
+
+    /**
+     * Seluruh ambang aktif satu tahun ajaran, urut dari nilai terendah. Hanya
+     * dibaca untuk menampilkan posisi total poin santri (V-2, redesain Tahap 5).
+     *
+     * @return array<int,array<string,mixed>>
+     */
+    public function thresholdsForYear(int $tahunId): array
+    {
+        return $this->all(
+            "SELECT a.id,a.label,a.nilai_minimum,a.nilai_maksimum
+               FROM v3_ambang a JOIN tahun_ajaran ta ON ta.id=a.tahun_ajaran_id
+              WHERE a.tahun_ajaran_id=? AND ta.archived_at IS NULL
+                AND a.is_active=1 AND a.archived_at IS NULL
+                AND a.tanggal_mulai<=CURDATE() AND (a.tanggal_selesai IS NULL OR a.tanggal_selesai>=CURDATE())
+              ORDER BY a.nilai_minimum,a.id",
+            [$tahunId]
         );
     }
 
