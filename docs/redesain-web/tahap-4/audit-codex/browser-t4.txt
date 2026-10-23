@@ -1,0 +1,123 @@
+[lulus] T4-A I-1 375px: rapi di kerangka bersama
+[lulus] T4-A I-2 375px: rapi di kerangka bersama
+[lulus] T4-A I-3-admin 375px: rapi di kerangka bersama
+[lulus] T4-A I-4-admin 375px: rapi di kerangka bersama
+[lulus] T4-A I-5-admin 375px: rapi di kerangka bersama
+[lulus] T4-A I-5-teknis 375px: rapi di kerangka bersama
+[lulus] T4-A I-6 375px: rapi di kerangka bersama
+[lulus] T4-A J-1-mingguan 375px: rapi di kerangka bersama
+[lulus] T4-A J-1-daftar 375px: rapi di kerangka bersama
+[lulus] T4-A J-1-tambah 375px: rapi di kerangka bersama
+[lulus] T4-A J-3 375px: rapi di kerangka bersama
+[lulus] T4-A J-3-buka 375px: rapi di kerangka bersama
+[lulus] T4-A J-2 375px: rapi di kerangka bersama
+[lulus] T4-A J-4 375px: rapi di kerangka bersama
+[lulus] T4-A J-5 375px: rapi di kerangka bersama
+[lulus] T4-A I-1 768px: rapi di kerangka bersama
+[lulus] T4-A I-2 768px: rapi di kerangka bersama
+[lulus] T4-A I-3-admin 768px: rapi di kerangka bersama
+[lulus] T4-A I-4-admin 768px: rapi di kerangka bersama
+[lulus] T4-A I-5-admin 768px: rapi di kerangka bersama
+[lulus] T4-A I-5-teknis 768px: rapi di kerangka bersama
+[lulus] T4-A I-6 768px: rapi di kerangka bersama
+[lulus] T4-A J-1-mingguan 768px: rapi di kerangka bersama
+[lulus] T4-A J-1-daftar 768px: rapi di kerangka bersama
+[lulus] T4-A J-1-tambah 768px: rapi di kerangka bersama
+[lulus] T4-A J-3 768px: rapi di kerangka bersama
+[lulus] T4-A J-3-buka 768px: rapi di kerangka bersama
+[lulus] T4-A J-2 768px: rapi di kerangka bersama
+[lulus] T4-A J-4 768px: rapi di kerangka bersama
+[lulus] T4-A J-5 768px: rapi di kerangka bersama
+[lulus] T4-A I-1 1280px: rapi di kerangka bersama
+[lulus] T4-A I-2 1280px: rapi di kerangka bersama
+[lulus] T4-A I-3-admin 1280px: rapi di kerangka bersama
+[lulus] T4-A I-4-admin 1280px: rapi di kerangka bersama
+[lulus] T4-A I-5-admin 1280px: rapi di kerangka bersama
+[lulus] T4-A I-5-teknis 1280px: rapi di kerangka bersama
+[lulus] T4-A I-6 1280px: rapi di kerangka bersama
+[lulus] T4-A J-1-mingguan 1280px: rapi di kerangka bersama
+[lulus] T4-A J-1-daftar 1280px: rapi di kerangka bersama
+[lulus] T4-A J-1-tambah 1280px: rapi di kerangka bersama
+[lulus] T4-A J-3 1280px: rapi di kerangka bersama
+[lulus] T4-A J-3-buka 1280px: rapi di kerangka bersama
+[lulus] T4-A J-2 1280px: rapi di kerangka bersama
+[lulus] T4-A J-4 1280px: rapi di kerangka bersama
+[lulus] T4-A J-5 1280px: rapi di kerangka bersama
+[lulus] T4-A I-1-pengurus 375px: rapi di kerangka bersama
+[lulus] T4-A I-2-pengurus 375px: rapi di kerangka bersama
+[lulus] T4-A I-4 375px: rapi di kerangka bersama
+[lulus] T4-A I-6-pengurus 375px: rapi di kerangka bersama
+[lulus] T4-A I-1-pengurus 768px: rapi di kerangka bersama
+[lulus] T4-A I-2-pengurus 768px: rapi di kerangka bersama
+[lulus] T4-A I-4 768px: rapi di kerangka bersama
+[lulus] T4-A I-6-pengurus 768px: rapi di kerangka bersama
+[lulus] T4-A I-1-pengurus 1280px: rapi di kerangka bersama
+[lulus] T4-A I-2-pengurus 1280px: rapi di kerangka bersama
+[lulus] T4-A I-4 1280px: rapi di kerangka bersama
+[lulus] T4-A I-6-pengurus 1280px: rapi di kerangka bersama
+[lulus] T4-A I-3 375px: rapi di kerangka bersama
+[lulus] T4-A I-3-detail 375px: rapi di kerangka bersama
+[lulus] T4-A I-3 768px: rapi di kerangka bersama
+[lulus] T4-A I-3-detail 768px: rapi di kerangka bersama
+[lulus] T4-A I-3 1280px: rapi di kerangka bersama
+[lulus] T4-A I-3-detail 1280px: rapi di kerangka bersama
+[lulus] T4-A I-7-aktif 375px: rapi di kerangka bersama
+[lulus] T4-A I-7-riwayat 375px: rapi di kerangka bersama
+[lulus] T4-A I-7-aktif 768px: rapi di kerangka bersama
+[lulus] T4-A I-7-riwayat 768px: rapi di kerangka bersama
+[lulus] T4-A I-7-aktif 1280px: rapi di kerangka bersama
+[lulus] T4-A I-7-riwayat 1280px: rapi di kerangka bersama
+[lulus] T4-A J-6 375px: rapi di kerangka bersama
+[lulus] T4-A J-5-pendidikan 375px: rapi di kerangka bersama
+[lulus] T4-A J-6 768px: rapi di kerangka bersama
+[lulus] T4-A J-5-pendidikan 768px: rapi di kerangka bersama
+[lulus] T4-A J-6 1280px: rapi di kerangka bersama
+[lulus] T4-A J-5-pendidikan 1280px: rapi di kerangka bersama
+[lulus] T4-A J-1-guru 375px: rapi di kerangka bersama
+[lulus] T4-A J-2-guru 375px: rapi di kerangka bersama
+[lulus] T4-A J-1-guru 768px: rapi di kerangka bersama
+[lulus] T4-A J-2-guru 768px: rapi di kerangka bersama
+[lulus] T4-A J-1-guru 1280px: rapi di kerangka bersama
+[lulus] T4-A J-2-guru 1280px: rapi di kerangka bersama
+[lulus] T4-B kotak saring santri tampil dengan JavaScript
+[lulus] T4-B panel tujuan terisi dari server (Lebih dari satu murobi (SBX Murobi A, SBX Murobi C); admin akan menetapkan. · 25 pengajuan, 19 disetujui (2026/2027 Ganjil))
+[lulus] T4-B durasi dihitung saat tanggal dipilih
+[lulus] T4-B alasan cepat hanya mengganti awalan teks (M)
+[lulus] T4-B formulir di HP tanpa geser horizontal
+[lulus] T4-B tombol Kirim ≥ 44 px
+[lulus] T4-B pengajuan tersimpan dan detail tampil di HP tanpa geser
+[lulus] T4-C admin melihat tindakan sesuai status (Putuskan sebagai admin pengganti, Tetapkan murobi, Batalkan pengajuan)
+[lulus] T4-C formulir tersembunyi sampai tombol ditekan (bukan formulir bertumpuk)
+[lulus] T4-C Tetapkan murobi membuka dialog berisi isian yang dibutuhkan
+[lulus] T4-C Batal menutup dialog tanpa POST
+[lulus] T4-C alasan pembatalan wajib sebelum terkirim
+[lulus] T4-C menu ⋯ admin tersedia
+[lulus] T4-C info teknis tampil untuk admin
+[lulus] T4-C orang tua melihat kartu izin
+[lulus] T4-C detail orang tua hanya-baca dengan linimasa
+[lulus] T4-C info teknis tidak untuk orang tua
+[lulus] T4-D HP: detail menggantikan daftar, ada tombol kembali
+[lulus] T4-D pengajuan menunggu > 1 hari ditandai
+[lulus] T4-D setelah memutuskan, detail yang sama tetap terbuka dengan pesan hasil (N)
+[lulus] T4-D tombol "Berikutnya" menuju pengajuan lain, tidak pindah otomatis
+[lulus] T4-E kisi mingguan Senin…Ahad (Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Ahad)
+[lulus] T4-E tidak ada label "Minggu"; blok jadwal tampil
+[lulus] T4-E tab modul Jadwal · Pertemuan · Kehadiran (Jadwal|Pertemuan|Kehadiran)
+[lulus] T4-E klik blok membuka detail di panel samping
+[lulus] T4-E HP: pilih hari (Sen…Aha) lalu daftar per waktu
+[lulus] T4-F kehadiran hanya-baca, tanpa isian status (R)
+[lulus] T4-F label "Sedang izin" pada santri yang izinnya disetujui (S)
+[lulus] T4-F langkah Draf → Dibuka → Selesai menandai Dibuka
+[lulus] T4-F cari santri menyaring daftar peserta
+[lulus] T4-F Selesaikan meminta konfirmasi; Batal tidak mengirim
+[lulus] T4-G menu "Laporan absensi pengajian" untuk Bagian Pendidikan
+[lulus] T4-G laporan seluruh jadwal (2 guru pada saringan, sama dengan admin), tanpa tab Jadwal/Pertemuan
+[lulus] T4-G ringkasan per jadwal terisi untuk semester ini
+[lulus] T4-H cetak perizinan: satu tanda tangan Bagian Pendidikan di lembar terakhir, nomor halaman, kode laporan
+[lulus] T4-H tanda tangan berada di lembar terakhir
+[lulus] T4-H cetak kehadiran bertanda tangan Bagian Pendidikan
+[lulus] T4-H bilah tombol cetak tidak ikut tercetak
+[lulus] T4-I tanpa galat JavaScript
+[lulus] T4-I tanpa confirm()/alert() bawaan peramban
+
+Ringkasan: 121 lulus, 0 gagal

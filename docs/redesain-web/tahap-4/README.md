@@ -1,7 +1,8 @@
 # Redesain website Tahap 4 — perizinan, pengajian & cetak (23 Oktober 2026)
 
-Status: **diimplementasikan Claude, menunggu audit independen Codex.** Belum merge/deploy/migrasi produksi. Tahap 5 belum dimulai.
+Status: **lulus audit independen Codex setelah koreksi terarah J-1 (23 Oktober 2026).** Belum merge/deploy/migrasi produksi. Tahap 5 belum dimulai.
 
+- Audit dan bukti independen: [`AUDIT-CODEX.md`](AUDIT-CODEX.md). Auditor menutup pemotongan kisi mingguan pada 100 jadwal; uji akhir statis 96/0, HTTP 132/0, PDF 60/0, browser Tahap 4 121/0, Tahap 1 91/0, dan probe akses H/preservasi/101 jadwal 34/0. Kegagalan receipt fixture dan batas nonblokir dicatat terbuka dalam laporan audit.
 - Branch `claude/redesain-web-tahap-4` dibuat dari `11ed4ba` (ujung `claude/redesain-web-tahap-3` yang lulus audit ulang Codex). `origin/main` `24f10f9` baru menggabungkan Tahap 3 sampai `e626313`, tanpa koreksi `549c7e6` dan audit ulang `11ed4ba`, sehingga Tahap 4 dibuat dari commit audit itu — pola yang sama dengan Tahap 2 dan 3. Tidak ada worktree.
 - Sumber: `AGENTS.md`, `rencana.md`, `keputusan.md`, `cetak-biru.html` (I-1 s.d. I-7, J-1 s.d. J-6, X-1, peta menu, baris Tahap 4 "Urutan tahap pengerjaan"), `tahap-3/AUDIT-ULANG-CODEX.md`.
 - Cakupan keputusan: **H** (hak akses), M, N, O, Q, R, S, T, AS.

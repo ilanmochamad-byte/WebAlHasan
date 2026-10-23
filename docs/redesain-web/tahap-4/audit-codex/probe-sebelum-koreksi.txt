@@ -1,0 +1,35 @@
+[lulus] Login akun Pendidikan sintetis
+[lulus] H positif Pendidikan: /admin/admin_laporan_absensi.php?periode=semester&subject_scope=gabungan
+[lulus] H positif Pendidikan: /admin/export_laporan_absensi.php?date_from=2026-07-01&date_to=2026-12-31
+[lulus] H positif Pendidikan: /admin/laporan_absensi_cetak.php?date_from=2026-07-01&date_to=2026-12-31
+[lulus] H positif Pendidikan: /admin/laporan_absensi_detail.php?id=720
+[lulus] Login REST sungguhan Pendidikan
+[lulus] REST tanpa perluasan hak: /reports
+[lulus] REST tanpa perluasan hak: /reports/filters
+[lulus] REST tanpa perluasan hak: /reports/print
+[lulus] REST tanpa perluasan hak: /reports/meetings/720
+[lulus] H hanya-baca POST: /admin/admin_laporan_absensi.php?periode=semester&subject_scope=gabungan
+[lulus] H hanya-baca POST: /admin/export_laporan_absensi.php?date_from=2026-07-01&date_to=2026-12-31
+[lulus] H hanya-baca POST: /admin/laporan_absensi_cetak.php?date_from=2026-07-01&date_to=2026-12-31
+[lulus] H hanya-baca POST: /admin/laporan_absensi_detail.php?id=720
+[lulus] H seluruh jadwal walau jenjang terbatas: /admin/admin_laporan_absensi.php?periode=semester&subject_scope=gabungan
+[lulus] H seluruh jadwal walau jenjang terbatas: /admin/export_laporan_absensi.php?date_from=2026-07-01&date_to=2026-12-31
+[lulus] H seluruh jadwal walau jenjang terbatas: /admin/laporan_absensi_cetak.php?date_from=2026-07-01&date_to=2026-12-31
+[lulus] H seluruh jadwal walau jenjang terbatas: /admin/laporan_absensi_detail.php?id=720
+[lulus] Hak dicabut request berikut pada daftar/CSV/cetak/detail: is_active=0
+[lulus] Hak dicabut request berikut pada daftar/CSV/cetak/detail: tanggal_selesai=CURDATE()-INTERVAL 1 DAY
+[lulus] Hak dicabut request berikut pada daftar/CSV/cetak/detail: tanggal_mulai=CURDATE()+INTERVAL 1 DAY
+[lulus] H menolak pengurus is_active=0 (403/403/403/403)
+[lulus] H menolak pengurus archived_at=NOW() (403/403/403/403)
+[lulus] H menolak tahun_ajaran status='Non-Aktif' (403/403/403/403)
+[lulus] H menolak tahun_ajaran archived_at=NOW() (403/403/403/403)
+[lulus] Pendidikan+Guru sebagai Guru hanya jadwal sendiri (0), bukan seluruh jadwal
+[lulus] Pendidikan+Guru sebagai Guru menolak detail guru lain
+[lulus] Peralihan eksplisit ke Pendidikan membuka detail seluruh jadwal
+[lulus] Pendidikan+Guru sebagai Pendidikan tidak menyelesaikan pertemuan lewat POST web
+[lulus] Sesi Pendidikan lama tidak mempertahankan hak sesudah penugasan dicabut (akun juga Guru)
+[lulus] Jadwal/pertemuan/peserta/absensi/izin/keputusan tetap identik setelah baca dan POST ditolak
+[gagal] J-1 mingguan menampilkan semua 101 jadwal sintetis melewati batas 100 (terlihat 96)
+[gagal] J-1 seluruh jadwal dalam saringan guru juga terbaca melewati 100
+[lulus] Fixture 101 jadwal dibersihkan; seluruh tabel bisnis kembali identik
+Ringkasan: 32 lulus, 2 gagal

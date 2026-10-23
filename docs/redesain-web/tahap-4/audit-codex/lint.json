@@ -1,0 +1,217 @@
+[
+  {
+    "path": "admin/_laporan_guard.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "admin/_pengajian_jadwal.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "admin/_pengajian_pertemuan.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "admin/admin_laporan_absensi.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "admin/admin_pengajian.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "admin/laporan_absensi_detail.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Izin/IzinRepository.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Izin/IzinService.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Izin/IzinWorkflowService.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Report/IzinPrintRenderer.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Report/IzinReportRepository.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Report/IzinReportService.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Report/PrintLayout.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Report/PrintRenderer.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Report/ReportFilter.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Report/ReportService.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Schedule/ScheduleRepository.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Ui/Navigation.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Ui/Periode.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Ui/Status.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "app/Ui/functions.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "portal/_ui.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "portal/izin.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "portal/izin_aksi.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "portal/izin_antrean.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "portal/izin_buat.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "portal/izin_detail.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "portal/izin_ringkasan.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "portal/laporan.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "portal/v3_konseling_cetak.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/perapihan_static.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/phase5_static.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/redesain_web_tahap2_http.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/redesain_web_tahap2_static.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/redesain_web_tahap4_cetak.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/redesain_web_tahap4_http.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/redesain_web_tahap4_seed.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/redesain_web_tahap4_static.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/v2_phase2_static.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/v2_phase2_web_smoke.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/v2_phase5_cetak_pdf.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/v2_phase5_web_smoke.php",
+    "exit": 0,
+    "output": null
+  },
+  {
+    "path": "tests/redesain_web_tahap4_audit.php",
+    "exit": 0,
+    "output": null
+  }
+]
