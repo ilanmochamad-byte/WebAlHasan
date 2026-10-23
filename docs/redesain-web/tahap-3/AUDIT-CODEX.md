@@ -1,5 +1,7 @@
 # Audit independen Codex — Tahap 3
 
+Catatan riwayat audit pertama. **Status akhir: lulus audit ulang atas `549c7e6`**, lihat [`AUDIT-ULANG-CODEX.md`](AUDIT-ULANG-CODEX.md). Temuan dan hasil awal di bawah dipertahankan utuh.
+
 Tanggal: **23 Oktober 2026 (Asia/Jakarta)**. Putusan: **BELUM LULUS**, dua temuan **P2** (F-1 dan F-2). Tahap 4 tidak dimulai. Tidak ada perubahan kode aplikasi, merge, deploy, migrasi produksi, atau perubahan mobile pada giliran audit ini.
 
 ## Acuan dan batas pemeriksaan
