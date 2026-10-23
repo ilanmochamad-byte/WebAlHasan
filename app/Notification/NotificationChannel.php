@@ -26,8 +26,10 @@ final class NotificationChannel
      * Kanal yang DITANGGUHKAN (keputusan AL, 22 Oktober 2026): tidak dapat
      * dinyalakan dan tidak dapat dikirimi pesan uji dari mana pun — panel web
      * maupun API — sampai Human Developer memutuskan kanal ini dipakai.
-     * Mematikan, pemeriksaan konfigurasi (tanpa mengirim), dan uji coba
-     * worker tanpa kirim tetap tersedia.
+     * Worker yang mengirim, percobaan ulang, dan putaran dispatcher/cron juga
+     * ditolak walaupun sakelar lama di basis data masih menyala. Mematikan,
+     * pemeriksaan konfigurasi (tanpa mengirim), dan uji coba worker tanpa
+     * kirim tetap tersedia.
      */
     public const DITANGGUHKAN = [self::WHATSAPP];
 

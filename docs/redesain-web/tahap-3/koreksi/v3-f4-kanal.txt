@@ -1,0 +1,9 @@
+[lulus] Push OFF: nol send dan nol request receipt
+[lulus] WhatsApp OFF: nol request provider
+[lulus] OFF saat terbit: hanya InApp, tanpa antrean provider
+[lulus] Fake kegagalan sementara dicatat dengan retry
+[lulus] Retry worker memakai baris yang sama, tidak mengirim ulang baris Sent
+[lulus] Payload push hanya penunjuk publikasi dan pesan generik
+[lulus] Receipt diproses melalui fake; bukan bukti perangkat fisik
+[lulus] Worker tidak mengirim sesudah relasi wali dicabut
+[lulus] Seluruh suite: WhatsApp tetap nol request

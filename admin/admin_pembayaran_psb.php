@@ -13,6 +13,8 @@ require_once __DIR__ . '/_guard.php';
  *
  * Ringkasan, chip status, saringan, daftar berhalaman, dan panel rincian
  * (pengganti modal per baris). "Tandai lunas" memakai dialog; "Batal lunas"
+ * mewajibkan alasan yang diperiksa server SEBELUM status berubah (koreksi
+ * audit F-2); tanpa JavaScript alasan diisi di formulir panel `?batal=1`.
  * ada di menu ⋯ dengan alasan yang dicatat di audit. Status sesuai enum:
  * Belum Lunas / Lunas. Ekspor Excel dibuat di server.
  */
@@ -27,6 +29,17 @@ $act = $_POST['act'] ?? '';
 
 if ($act === 'lunas' || $act === 'batal') {
     $id = (int) ($_POST['id'] ?? 0);
+    parse_str((string) ($_POST['kembali'] ?? ''), $query);
+    $query = array_filter(PsbPembayaran::filter(is_array($query) ? $query : []), static fn (string $v): bool => $v !== '');
+    $alasan = trim((string) ($_POST['alasan'] ?? ''));
+    // Koreksi audit F-2: batal lunas wajib beralasan, diperiksa sebelum UPDATE
+    // sehingga status, waktu lunas, dan audit tidak berubah bila ditolak.
+    if ($act === 'batal' && ($alasan === '' || mb_strlen($alasan) > 500)) {
+        ah_flash_set('danger', $alasan === '' ? 'Alasan pembatalan wajib diisi. Status lunas tidak berubah.'
+            : 'Alasan pembatalan paling banyak 500 karakter. Status lunas tidak berubah.');
+        header('Location: admin_pembayaran_psb.php?' . http_build_query($query + ['id' => $id, 'batal' => 1]));
+        exit;
+    }
     $sebelum = $bayar->find($id);
     if ($act === 'lunas') {
         $stmt = mysqli_prepare($koneksi, "UPDATE psb_pembayaran SET status_pembayaran='Lunas', waktu_lunas=NOW() WHERE id=?");
@@ -40,14 +53,11 @@ if ($act === 'lunas' || $act === 'batal') {
     } elseif ($act === 'lunas') {
         ah_flash_set('success', 'Pembayaran ' . $sebelum['nama_lengkap'] . ' ditandai lunas.');
     } else {
-        $alasan = mb_substr(trim((string) ($_POST['alasan'] ?? '')), 0, 500);
         audit_logger()->log('psb.pembayaran.batal_lunas', 'psb_pembayaran', $id,
             ['status_pembayaran' => $sebelum['status_pembayaran'], 'waktu_lunas' => $sebelum['waktu_lunas']],
-            ['status_pembayaran' => 'Belum Lunas', 'alasan' => $alasan === '' ? null : $alasan], (int) $currentUser['id']);
+            ['status_pembayaran' => 'Belum Lunas', 'alasan' => $alasan], (int) $currentUser['id']);
         ah_flash_set('success', 'Status lunas ' . $sebelum['nama_lengkap'] . ' dibatalkan.');
     }
-    parse_str((string) ($_POST['kembali'] ?? ''), $query);
-    $query = array_filter(PsbPembayaran::filter(is_array($query) ? $query : []), static fn (string $v): bool => $v !== '');
     header('Location: admin_pembayaran_psb.php?' . http_build_query($query + ['id' => $id]));
     exit;
 }
@@ -126,7 +136,17 @@ if ($dipilih !== null):
         <a class="btn btn-outline-secondary" href="<?= ah_e(app_url('/cetak_biaya_psb.php?noreg=' . rawurlencode((string) $d['no_pendaftaran']))) ?>" target="_blank" rel="noopener">Cetak kwitansi</a>
         <?php if ($d['status_pembayaran'] === 'Belum Lunas'): ?>
             <form method="post" action="admin_pembayaran_psb.php" data-confirm="Tagihan <?= ah_e($d['nama_lengkap']) ?> sebesar <?= ah_e($rupiah((int) $d['total_keseluruhan'])) ?> ditandai lunas sekarang." data-confirm-title="Tandai lunas?" data-confirm-ok="Tandai lunas"><?= $hidden('lunas') ?><button class="btn btn-primary" type="submit">Tandai lunas</button></form>
+        <?php elseif (isset($_GET['batal'])): ?>
+            <form method="post" action="admin_pembayaran_psb.php" class="w-100" id="form-batal-lunas">
+                <?= Csrf::input() ?>
+                <input type="hidden" name="act" value="batal"><input type="hidden" name="id" value="<?= $pid ?>"><input type="hidden" name="kembali" value="<?= ah_e($kembali) ?>">
+                <label class="form-label" for="alasan-batal">Alasan pembatalan <span aria-hidden="true">*</span></label>
+                <textarea class="form-control mb-2" id="alasan-batal" name="alasan" rows="3" maxlength="500" required></textarea>
+                <p class="small text-muted">Status kembali Belum Lunas dan waktu lunas dihapus. Alasan dicatat di audit.</p>
+                <div class="ah-actions"><a class="btn btn-outline-secondary" href="<?= ah_e($self . '?' . http_build_query(array_filter(['id' => $pid] + $saringan))) ?>">Batal</a><button class="btn btn-danger" type="submit">Batalkan status lunas</button></div>
+            </form>
         <?php else: ?>
+            <noscript><a class="btn btn-outline-danger" href="<?= ah_e($self . '?' . http_build_query($saringan + ['id' => $pid, 'batal' => 1])) ?>">Batal lunas</a></noscript>
             <?= ah_menu([
                 ['label' => 'Batal lunas', 'icon' => 'fa-rotate-left', 'danger' => true, 'action' => 'admin_pembayaran_psb.php',
                     'fields' => ['act' => 'batal', 'id' => $pid, 'kembali' => $kembali],

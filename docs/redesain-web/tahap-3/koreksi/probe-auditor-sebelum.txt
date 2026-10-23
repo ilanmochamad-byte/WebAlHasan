@@ -1,0 +1,15 @@
+[lulus] Fixture merepresentasikan sakelar WhatsApp lama yang aktif
+[lulus] Kartu tetap menyatakan Ditangguhkan pada sakelar lama aktif
+[lulus] AL sakelar baru ditolak 409
+[lulus] AL pesan uji ditolak 409
+[lulus] Dry-run kompatibel tanpa pemanggilan send
+[gagal] AL worker layanan/API non-dry-run menolak kanal Ditangguhkan tanpa send/mutasi | {"ditolak_409":false,"panggilan_send_fake":1,"status":"Sent"}
+[gagal] AL percobaan ulang menolak WhatsApp Ditangguhkan meski sakelar lama aktif | {"ditolak_409":false,"status":"Queued"}
+[lulus] AL sakelar lama tetap dapat dimatikan
+[lulus] HTTP login fixture admin
+[gagal] K-6 tanpa alasan: pembatalan ditolak tanpa mengubah status/waktu lunas | {"http":302,"status_akhir":"Belum Lunas"}
+[gagal] K-6 alasan spasi: pembatalan ditolak tanpa mengubah status/waktu lunas | {"http":302,"status_akhir":"Belum Lunas"}
+[lulus] K-6 pembatalan dengan alasan sah menyimpan status dan audit
+[lulus] K-6 tanpa CSRF tetap ditolak 419
+
+Ringkasan: 9 lulus, 4 gagal

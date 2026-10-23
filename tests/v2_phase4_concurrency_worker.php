@@ -54,7 +54,22 @@ if ($startAt > 0) {
 }
 
 try {
-    $hasil = notification_dispatcher()->run(
+    // Uji ini memeriksa MEKANISME klaim atomik dengan adapter uji. Sejak
+    // redesain web Tahap 3 (keputusan AL) dispatcher bawaan menangguhkan
+    // WhatsApp, jadi dispatcher di sini dibuat sama dengan bootstrap tetapi
+    // dengan daftar kanal ditangguhkan kosong secara eksplisit.
+    $dispatcher = new \App\Notification\NotificationDispatcher(
+        app_db(),
+        notification_outbox_repository(),
+        push_device_repository(),
+        push_token_protector(),
+        new \App\Notification\Push\ExpoPushClient('', 5),
+        whatsapp_provider(),
+        notification_settings_repository(),
+        new \App\Notification\WorkerLock(app_db()),
+        []
+    );
+    $hasil = $dispatcher->run(
         NotificationChannel::WHATSAPP,
         max(1, (int) ($options['batas'] ?? 25))
     );
