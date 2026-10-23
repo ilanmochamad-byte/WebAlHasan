@@ -17,6 +17,8 @@ final class PublikasiService
     {
         $source=$this->source($user,$type,$id);
         return ['sumber_type'=>$type,'sumber_id'=>$id,'sumber_version'=>(int)$source['version'],'wali'=>$this->wali((int)$source['santri_id']),
+            'santri_nama'=>(string)($this->repo->sql->one('SELECT nama_santri FROM santri WHERE id=?',[(int)$source['santri_id']])['nama_santri']??''),
+            'pengirim'=>$this->repo->sourceSender($type,$id)??'Pesantren Al Hasan',
             'publikasi'=>$this->repo->sql->all('SELECT id,wali_id,version,diterbitkan_pada,ditarik_pada,dibaca_pada FROM v3_publikasi WHERE '.$this->column($type).'=? ORDER BY id DESC LIMIT 100',[$id])];
     }
 
@@ -114,13 +116,33 @@ final class PublikasiService
     public function page(array $user,array $filters):array
     {
         $this->parentAccess($user);$page=isset($filters['page'])?$this->integer($filters['page']):1;$page=min(1000000,$page);
-        $result=$this->repo->parentPage((int)$user['id'],$page);$result['rows']=array_map(fn($row)=>$this->dto($row),$result['rows']);return $result;
+        // Saringan V-7: anak tertentu dan "Belum dibaca"; keduanya hanya mempersempit baris milik wali sendiri.
+        $santri=isset($filters['santri_id'])&&$filters['santri_id']!==''?$this->integer($filters['santri_id']):null;
+        $belum=($filters['baca']??'')==='belum';
+        $result=$this->repo->parentPage((int)$user['id'],$page,$santri,$belum);$result['rows']=$this->parentRows($result['rows']);return $result;
     }
     public function show(array $user,int $id):array
     {
         $this->parentAccess($user);$row=$this->repo->parentDetail((int)$user['id'],$id);
         if(!in_array((int)$user['id'],$this->recipients->waliSantri((int)$row['santri_id']),true))throw new V3Exception('Publikasi tidak dapat diakses.',403);
-        return ['publikasi'=>$this->dto($row),'riwayat'=>$this->repo->history($id,false)];
+        return ['publikasi'=>$this->parentRows([$row])[0],'riwayat'=>$this->repo->history($id,false)];
+    }
+    /**
+     * Daftar publikasi bagi pengelola (V-5): pembimbing dalam cakupan aktifnya,
+     * admin seluruhnya. Hanya metadata daftar; isi dibuka lewat `manage()`.
+     */
+    public function managePage(array $user,array $filters):array
+    {
+        $caps=$this->caps->v3Capabilities($user);
+        if(!isset($caps['v3.koreksi'])&&!isset($caps['v3.pelanggaran.kelola'])&&!isset($caps['v3.konseling.kelola']))throw new V3Exception('Tidak memiliki hak publikasi.',403);
+        foreach(['page','status','q'] as $key)if(isset($filters[$key])&&!is_scalar($filters[$key]))throw new V3Exception('Filter tidak valid.');
+        if(isset($filters['page'])&&$filters['page']!=='')$this->integer($filters['page']);
+        $result=$this->repo->managePage(isset($caps['v3.koreksi']),(int)$user['id'],$filters);
+        $result['rows']=array_map(static fn(array $r):array=>['id'=>(int)$r['id'],'santri_id'=>(int)$r['santri_id'],'santri_nama'=>(string)$r['nama_santri'],'wali_nama'=>(string)$r['wali_nama'],
+            'sumber_type'=>$r['pelanggaran_id']!==null?'pelanggaran':($r['sesi_id']!==null?'sesi':'kasus'),'sumber_id'=>(int)($r['pelanggaran_id']??$r['sesi_id']??$r['kasus_id']),
+            'sumber_waktu'=>(string)($r['waktu_kejadian']??$r['sesi_jadwal']??$r['dibuka_pada']??''),'sumber_kategori'=>$r['kategori_snapshot']===null?null:(string)$r['kategori_snapshot'],
+            'status'=>$r['ditarik_pada']===null?'Terbit':'Ditarik','diterbitkan_pada'=>(string)$r['diterbitkan_pada'],'dibaca_pada'=>$r['dibaca_pada'],'version'=>(int)$r['version']],$result['rows']);
+        return $result;
     }
     public function markRead(array $user,int $id,array $input):array
     {
@@ -136,7 +158,9 @@ final class PublikasiService
     {
         $row=$this->repo->publication($id);[$type,$sourceId]=$this->publicationSource($row);$source=$this->source($user,$type,$sourceId,false);
         if(isset($this->caps->v3Capabilities($user)['v3.koreksi']))$this->auditRequired('Dilihat.admin',$id,null,['version'=>(int)$row['version']],(int)$user['id']);
-        return ['publikasi'=>$this->dto($row),'sumber_type'=>$type,'sumber_id'=>$sourceId,'sumber_version'=>(int)$source['version'],'riwayat'=>$this->repo->history($id,true)];
+        $nama=$this->repo->sql->one('SELECT s.nama_santri,w.nama wali_nama FROM santri s JOIN wali w ON w.id=? WHERE s.id=?',[(int)$row['wali_id'],(int)$row['santri_id']]);
+        return ['publikasi'=>$this->dto($row),'sumber_type'=>$type,'sumber_id'=>$sourceId,'sumber_version'=>(int)$source['version'],'riwayat'=>$this->repo->history($id,true),
+            'santri_nama'=>(string)($nama['nama_santri']??''),'wali_nama'=>(string)($nama['wali_nama']??'')];
     }
 
     private function source(array $user,string $type,int $id,bool $checkPrivacy=true):array
@@ -177,6 +201,12 @@ final class PublikasiService
     }
     private function auditRequired(string $action,int $id,?array $before,array $after,int $actor):void {if(!$this->audit->log('v3.publikasi.'.strtolower($action),'v3_publikasi',$id,$before,$after,$actor))throw new V3Exception('Audit wajib tidak dapat disimpan.',503);}
     private function parentAccess(array $user):void {if(!isset($this->caps->v3Capabilities($user)['v3.publikasi.baca']))throw new V3Exception('Tidak memiliki akses publikasi.',403);}
+    /** DTO orang tua + satu kolom pengirim (keputusan Z); tanpa nama, "Pesantren Al Hasan". */
+    private function parentRows(array $rows):array
+    {
+        $names=$this->repo->senderNames(array_map(static fn(array $r):int=>(int)$r['id'],$rows));
+        return array_map(fn(array $row):array=>$this->dto($row)+['pengirim'=>$names[(int)$row['id']]??'Pesantren Al Hasan'],$rows);
+    }
     private function dto(array $row):array {if($row['ditarik_pada']!==null){$row['ringkasan']='Informasi ini telah ditarik.';$row['tindak_lanjut']=null;}return $this->konseling->parentSerializer($row)+['version'=>(int)$row['version'],'status'=>$row['ditarik_pada']===null?'Terbit':'Ditarik'];}
     private function content(array $row):array {return array_intersect_key($this->konseling->parentSerializer($row),array_flip(['santri_id','ringkasan','tindak_lanjut']));}
     private function publicationSource(array $row):array {foreach(['kasus','sesi','pelanggaran'] as $type)if($row[$this->column($type)]!==null)return [$type,(int)$row[$this->column($type)]];throw new V3Exception('Sumber tidak valid.');}

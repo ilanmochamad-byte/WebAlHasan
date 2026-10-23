@@ -184,9 +184,11 @@ final class Navigation
             $murobi[] = self::item('sikap_binaan', 'Sikap binaan', '/portal/sikap_semester.php?mode=murobi', 'fa-heart', ['sikap_semester.php?mode=murobi'], [], 'Sikap');
         }
         if (isset($c->v3['v3.binaan.baca'])) {
+            // V-6 (Tahap 5): murobi juga membaca laporan pembinaan binaannya.
             $murobi[] = self::item('pembinaan_binaan', 'Pembinaan binaan', '/portal/v3_pelanggaran.php', 'fa-scale-balanced', [], [
                 self::tab('Pelanggaran', '/portal/v3_pelanggaran.php', ['v3_pelanggaran.php', 'v3_pelanggaran_detail.php', 'v3_lampiran.php']),
                 self::tab('Konseling', '/portal/v3_konseling.php', ['v3_konseling.php', 'v3_konseling_detail.php', 'v3_konseling_cetak.php']),
+                self::tab('Laporan', '/portal/v3_laporan.php', ['v3_laporan.php']),
             ], 'Pembinaan');
         }
 
@@ -264,9 +266,10 @@ final class Navigation
         }
         if (isset($c->v3['v3.publikasi.baca'])) {
             // Keputusan F: orang tua melihat "Informasi pembinaan".
-            $items[] = self::item('info', 'Informasi pembinaan', '/portal/v3_publikasi.php', 'fa-envelope-open-text', [], [
-                self::tab('Informasi', '/portal/v3_publikasi.php', ['v3_publikasi.php']),
-                self::tab('Laporan pembinaan', '/portal/v3_laporan.php', ['v3_laporan.php']),
+            // V-7 (Tahap 5): tab Belum dibaca · Semua; rekap cetak/CSV tetap di bawah menu ini.
+            $items[] = self::item('info', 'Informasi pembinaan', '/portal/v3_publikasi.php', 'fa-envelope-open-text', ['v3_laporan.php'], [
+                self::tab('Belum dibaca', '/portal/v3_publikasi.php?baca=belum', ['v3_publikasi.php?baca=belum']),
+                self::tab('Semua', '/portal/v3_publikasi.php', ['v3_publikasi.php']),
             ], 'Info');
         }
         // Keputusan K: notifikasi orang tua juga tampil sebagai menu.

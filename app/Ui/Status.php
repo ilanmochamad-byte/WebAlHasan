@@ -43,6 +43,13 @@ final class Status
         'dibuka' => 'info',
         'berlangsung' => 'info',
         'belum dibaca' => 'info',
+        // Pembinaan (Tahap 5, V-1 s.d. V-5).
+        'dicatat' => 'info',
+        'ditindaklanjuti' => 'info',
+        'dalam pendampingan' => 'info',
+        'dijadwalkan' => 'info',
+        'dijadwalkan ulang' => 'warn',
+        'tidak hadir' => 'warn',
         // Kehadiran pengajian (Tahap 4, J-2/J-5).
         'izin' => 'info',
         'sakit' => 'info',

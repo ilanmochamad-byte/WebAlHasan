@@ -23,7 +23,8 @@ $reject(fn()=>$s->publish($a,array_replace($pubInput,['konfirmasi'=>false])),422
 $published=$s->publish($a,$pubInput);$id=$published['data']['publikasi_ids'][0];$row=$s->show($pa,$id)['publikasi'];
 $content=array_intersect_key($row,array_flip(['santri_id','ringkasan','tindak_lanjut']));
 $check($preview['konten']===$published['data']['konten']&&$preview['konten']===$content,'Pratinjau = hasil terbit = snapshot orang tua');
-$check(!str_contains(json_encode($row),'PRIVATE-F4')&&array_keys($row)===['id','santri_id','ringkasan','tindak_lanjut','diterbitkan_pada','ditarik_pada','dibaca_pada','version','status'],'Allowlist tidak memuat isi internal atau petugas');
+// Redesain web Tahap 5 (keputusan Z): orang tua hanya bertambah satu kunci "pengirim" berisi nama pembimbing.
+$check(!str_contains(json_encode($row),'PRIVATE-F4')&&array_keys($row)===['id','santri_id','ringkasan','tindak_lanjut','diterbitkan_pada','ditarik_pada','dibaca_pada','version','status','pengirim']&&is_string($row['pengirim'])&&!array_key_exists('pembimbing_id',$row),'Allowlist tidak memuat isi internal; petugas hanya sebagai nama pengirim (keputusan Z)');
 $before=$counts();$check($s->publish($a,$pubInput)['replayed'],'Retry mengembalikan hasil pertama');$p2=$s->preview($a,$input);$again=$s->publish($a,['pratinjau_token'=>$p2['pratinjau_token'],'konfirmasi'=>true,'idempotency_key'=>$key()]);$check($again['data']['publikasi_ids']===[$id]&&$counts()[0]===$before[0]&&$counts()[3]===$before[3],'Key dan pratinjau berbeda tetap tidak menggandakan bisnis/notifikasi');
 $reject(fn()=>$s->show($pb,$id),403,'IDOR wali B ditolak');
 $r->execute('UPDATE santri_wali SET archived_at=NOW() WHERE santri_id=? AND wali_id=?',[$sid,(int)$pa['wali_id']]);

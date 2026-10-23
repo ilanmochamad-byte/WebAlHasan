@@ -1095,6 +1095,48 @@
         button.addEventListener('click', function () { window.print(); });
     });
 
+    /* --- Redesain Tahap 5: pembinaan ------------------------------------ */
+    // Isian yang hanya relevan untuk pilihan tertentu (V-4: hasil sesi).
+    // <div data-ah-when="nama_select" data-ah-when-value="Selesai|Tidak Hadir">.
+    // Tanpa JavaScript semua isian tampil dengan keterangan kapan dipakai;
+    // server tetap memvalidasi isian yang wajib untuk setiap hasil.
+    qsa('[data-ah-when]').forEach(function (block) {
+        var form = block.closest('form');
+        var select = form && form.querySelector('[name="' + block.getAttribute('data-ah-when') + '"]');
+        if (!select) { return; }
+        var values = block.getAttribute('data-ah-when-value').split('|');
+        function sync() {
+            var show = values.indexOf(select.value) !== -1;
+            block.hidden = !show;
+            qsa('input, textarea, select', block).forEach(function (field) { field.disabled = !show; });
+        }
+        select.addEventListener('change', sync);
+        sync();
+    });
+
+    // Pratinjau poin (V-1): jenis menampilkan tingkat dan poin; total poin
+    // santri setelah catatan ini dihitung dari angka yang dikirim server.
+    qsa('[data-ah-poin-preview]').forEach(function (hint) {
+        var form = hint.closest('form');
+        var santri = form && form.querySelector('select[name="santri_scope"]');
+        var jenis = form && form.querySelector('select[name="katalog_id"]');
+        if (!santri || !jenis) { return; }
+        function sync() {
+            var s = santri.options[santri.selectedIndex];
+            var j = jenis.options[jenis.selectedIndex];
+            var poin = j && j.value ? parseInt(j.getAttribute('data-poin') || '0', 10) : null;
+            var total = s && s.value ? parseInt(s.getAttribute('data-total') || '0', 10) : null;
+            if (poin === null) { hint.textContent = 'Pilih jenis untuk melihat tingkat dan poinnya.'; return; }
+            var text = (j.getAttribute('data-tingkat') || '') + ' · ' + poin + ' poin.';
+            if (total !== null) { text += ' Total poin santri setelah catatan ini: ' + (total + poin) + '.'; }
+            hint.textContent = text;
+        }
+        santri.addEventListener('change', sync);
+        jenis.addEventListener('change', sync);
+        hint.hidden = false;
+        sync();
+    });
+
     if (window.jQuery) {
         window.jQuery.ajaxSetup({headers: {'X-CSRF-Token': window.ALHASAN_CSRF}});
     }

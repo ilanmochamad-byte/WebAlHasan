@@ -1,0 +1,67 @@
+# Regresi redesain website Tahap 5 — 23 Oktober 2026
+# Format: kode_keluar|uji|lulus|gagal|baris terakhir. Suite V3 memakai DB sandbox V3 webalhasan_v3_phase1_test (V3_RUN_TESTS=1).
+# Suite Tahap 1–4 memakai DB salinan masing-masing (dibangun ulang sebelum setiap suite pengubah data). Smoke web/kontrak memakai DB sandbox .env (*_test).
+# Asersi lama yang disesuaikan tercantum di README (Pengujian yang disesuaikan); angka di bawah adalah jalankan sesudah penyesuaian.
+
+== V3 (baseline sebelum perubahan: phase2_static 68/1 dan phase3_static 102/1 pada label navigasi lama — sama persis sesudah Tahap 5)
+0|v3_phase1_static|15|0|
+1|v3_phase2_static|68|1|[gagal] Menu web membedakan V3 dan data warisan
+1|v3_phase3_static|102|1|[gagal] Navigasi konseling mengikuti capability V3
+0|v3_phase4_static|18|0|
+0|v3_phase2_integration|67|0|
+0|v3_phase3_integration|121|0|
+0|v3_phase4_integration|65|0|
+0|v3_phase5_integration|43|0|
+0|v3_phase5_access|5|0|
+0|v3_phase4_channels|9|0|
+0|v3_phase4_concurrency|10|0|
+0|v3_phase2_concurrency|6|0|
+0|v3_phase5_performance|6|0|
+
+== statis
+0|redesain_web_tahap1_static|Semua pemeriksaan lulus.
+0|redesain_web_tahap2_static|Semua pemeriksaan lulus (121).
+0|redesain_web_tahap3_static|Ringkasan: 152 lulus, 0 gagal
+0|redesain_web_tahap4_static|Ringkasan: 96 lulus, 0 gagal
+0|alumni_static|180|0|SELURUH PEMERIKSAAN STATIS ALUMNI LULUS.
+0|get_mutasi_v1_static|28|0|Ringkasan: 28 lulus, 0 gagal
+0|kredensial_static|105|0|SELURUH PEMERIKSAAN STATIS PESAN KREDENSIAL LULUS.
+0|penempatan_static|138|0|SELURUH PEMERIKSAAN STATIS PENEMPATAN LULUS.
+0|penugasan_static|282|0|Total gagal: 0
+0|perapihan_static|131|0|SELURUH PEMERIKSAAN STATIS PERAPIHAN LULUS.
+0|phase1_static|76|0|[lulus] Token CSRF salah ditolak
+0|phase2_static|46|0|[lulus] Tanggal tidak valid ditolak
+0|phase3_static|35|0|[lulus] Rentang lintas tengah malam tidak ditebak oleh parser
+0|phase4_static|38|0|[lulus] Backup SQL mengecualikan generated column dan menulis daftar kolom eksplisit
+0|phase5_static|44|0|[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/acceptance-checklist.md
+0|v2_phase1_static|126|0|[lulus] php -l lulus untuk bin/v2_phase1_verify.php
+0|v2_phase2_static|174|0|[lulus] php -l lulus untuk admin/pertemuan_pengajian.php
+0|v2_phase3_static|147|0|SELURUH PEMERIKSAAN STATIS FASE 3 LULUS.
+0|v2_phase4_static|288|0|SELURUH PEMERIKSAAN STATIS FASE 4 LULUS.
+0|v2_phase5_static|290|0|SELURUH PEMERIKSAAN STATIS FASE 5 LULUS.
+
+== lint
+php -l: 468 berkas (git ls-files + berkas Tahap 5 baru), 0 gagal
+node --check alhasan.js, uji-redesain-web-tahap5.mjs: lulus
+git diff --check: bersih
+
+== smoke web & kontrak (DB sandbox .env)
+0|penugasan_web_smoke|85|0|Total gagal: 0
+0|perapihan_web_smoke|56|0|SELURUH SMOKE TEST WEB PERAPIHAN LULUS.
+0|v2_phase2_navigasi_murobi|40|0|[bersih] Fixture uji navigasi dihapus.
+0|v2_phase5_api_contract|150|0|SELURUH PENGUJIAN KONTRAK API FASE 5 LULUS.
+0|v2_phase5_web_smoke|79|0|SELURUH SMOKE TEST WEB FASE 5 LULUS.
+
+== redesain Tahap 1–4 (DB salinan)
+0|redesain_web_tahap2_http (DB Tahap 2)|Ringkasan: 191 lulus, 0 gagal
+0|redesain_web_tahap2_audit (probe Codex, DB Tahap 2)|Ringkasan: 29 lulus, 0 gagal
+0|redesain_web_tahap3_http (DB Tahap 3)|Ringkasan: 167 lulus, 0 gagal
+0|redesain_web_tahap3_audit (probe asli Codex)|Ringkasan: 13 lulus, 0 gagal
+0|redesain_web_tahap3_audit_ulang (probe audit ulang Codex)|Ringkasan: 13 lulus, 0 gagal
+0|redesain_web_tahap4_http (DB Tahap 4)|Ringkasan: 132 lulus, 0 gagal
+0|redesain_web_tahap4_audit (probe Codex, H + 101 jadwal)|Ringkasan: 34 lulus, 0 gagal
+0|browser uji-redesain-web-tahap2 (DB Tahap 2)|Ringkasan: 89 lulus, 0 gagal
+0|browser uji-redesain-web-tahap3 (DB Tahap 3)|Ringkasan: 76 lulus, 0 gagal
+0|browser uji-redesain-web-tahap4 (DB Tahap 4)|Ringkasan: 121 lulus, 0 gagal
+0|browser uji-redesain-web-tahap1 (DB Tahap 5, sembilan akun × 3 lebar)|91 lulus, 0 gagal
+0|browser uji-perapihan (DB sandbox .env)|Total pemeriksaan: 56, gagal: 0

@@ -1813,3 +1813,53 @@ a.ah-icard:hover { border-color: var(--ah-green-600); box-shadow: 0 0 0 2px var(
 /* Bilah tindakan yang hanya ada di HP (I-5). */
 .ah-actbar.ah-only-sm { display: none; }
 @media (max-width: 575.98px) { .ah-actbar.ah-only-sm { display: flex; } }
+
+/* ==========================================================================
+   Redesain Tahap 5 — pembinaan (V-1 s.d. V-7, M-4)
+   ========================================================================== */
+
+/* Langkah wizard (V-3 buka kasus, V-5 siapkan publikasi). */
+.ah-steps { list-style: none; display: flex; flex-wrap: wrap; gap: .35rem .9rem; margin: 0 0 1rem; padding: 0; counter-reset: ah-step; font-size: .88rem; }
+.ah-steps li { counter-increment: ah-step; display: inline-flex; align-items: center; gap: .4rem; color: var(--ah-ink-muted); }
+.ah-steps li::before { content: counter(ah-step); display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; border: 1px solid var(--ah-line-strong); background: var(--ah-surface); font-weight: 700; font-size: .8rem; }
+.ah-steps li.is-current { color: var(--ah-green-900); font-weight: 700; }
+.ah-steps li.is-current::before { background: var(--ah-green-700); border-color: var(--ah-green-700); color: #fff; }
+.ah-steps li.is-done::before { content: "✓"; background: var(--ah-green-100); border-color: var(--ah-green-100); color: var(--ah-green-900); }
+
+/* Papan kasus per status (V-3). Tidak ada seret-lepas: status berubah lewat
+   dialog beralasan di halaman detail. */
+.ah-board { display: grid; gap: .75rem; grid-template-columns: minmax(0, 1fr); margin-bottom: 1rem; }
+@media (min-width: 768px) { .ah-board { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.ah-board__col { background: var(--ah-canvas); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); padding: .6rem; min-width: 0; }
+.ah-board__head { display: flex; justify-content: space-between; align-items: center; gap: .5rem; font-weight: 700; font-size: .9rem; margin: 0 0 .5rem; padding: 0 .2rem; }
+.ah-board__list { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.ah-board__more { display: inline-flex; min-height: var(--ah-touch); align-items: center; padding: 0 .2rem; font-size: .88rem; }
+
+/* Total poin terhadap ambang (V-2). */
+.ah-meter { display: grid; gap: .3rem; }
+.ah-meter__bar { height: .7rem; border-radius: 999px; background: var(--ah-canvas); border: 1px solid var(--ah-line); overflow: hidden; }
+.ah-meter__bar > span { display: block; height: 100%; background: var(--ah-green-600); }
+.ah-meter__bar--warn > span { background: var(--ah-warn); }
+.ah-meter__label { display: flex; justify-content: space-between; gap: .5rem; font-size: .85rem; color: var(--ah-ink-soft); }
+.ah-big { font-size: 1.6rem; font-weight: 800; line-height: 1.1; color: var(--ah-ink); }
+.ah-big small { font-size: .85rem; font-weight: 400; color: var(--ah-ink-muted); }
+
+/* Isi publikasi (V-5 pratinjau, V-7 orang tua). */
+.ah-pub { display: grid; gap: .6rem; overflow-wrap: anywhere; }
+.ah-pub h3 { font-size: .95rem; font-weight: 700; margin: .4rem 0 0; }
+.ah-pub p { margin: 0; white-space: pre-wrap; }
+.ah-pub-list a.is-unread b::after { content: ""; display: inline-block; width: .5rem; height: .5rem; margin-left: .4rem; border-radius: 50%; background: var(--ah-info); vertical-align: middle; }
+
+/* Isian yang hanya relevan untuk pilihan tertentu (V-4 hasil sesi). */
+.ah-js [data-ah-when][hidden] { display: none !important; }
+.ah-check-list { display: grid; gap: .4rem; margin: 0; padding: 0; border: 0; }
+.ah-check-list label { display: flex; gap: .55rem; align-items: flex-start; border: 1px solid var(--ah-line); border-radius: var(--ah-radius-sm); padding: .55rem .7rem; min-height: var(--ah-touch); background: var(--ah-surface); overflow-wrap: anywhere; }
+.ah-check-list input { margin-top: .2rem; flex: 0 0 auto; }
+.ah-poin-hint { font-size: .88rem; color: var(--ah-ink-soft); }
+
+@media print {
+    .ah-steps, .ah-board__more { display: none !important; }
+}
+/* Isi sel bertingkat (teks + keterangan kecil) tetap satu blok saat tabel menjadi kartu. */
+.ah-cell-wrap { display: inline-block; min-width: 0; }
+@media (max-width: 575.98px) { .ah-table--cards .ah-cell-wrap { display: block; text-align: right; overflow-wrap: anywhere; } }

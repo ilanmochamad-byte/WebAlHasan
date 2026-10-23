@@ -216,6 +216,12 @@ final class KonselingService
         $mode=$this->readMode($user);$result=$this->repo->page($this->actorId($user),$mode,$filters);$result['rows']=array_map(fn(array $row):array=>$this->serializeCase($row,false),$result['rows']);return $result;
     }
 
+    /** @return array<string,int> Jumlah kasus terlihat per status untuk papan V-3; kasus Rahasia di luar hak tidak terhitung. */
+    public function statusCounts(array $user,array $filters):array
+    {
+        return $this->repo->statusCounts($this->actorId($user),$this->readMode($user),$filters);
+    }
+
     public function show(array $user,int $id):array
     {
         $mode=$this->readMode($user);$actorId=$this->actorId($user);$row=$this->repo->visibleCase($id,$actorId,$mode);if($row===null)throw new V3Exception('Kasus berada di luar cakupan pengguna.',403);

@@ -217,6 +217,17 @@ final class PelanggaranService
         return $result;
     }
 
+    /**
+     * Jumlah per status untuk chip daftar (V-1). Cakupan dan saringan sama
+     * dengan `page()`; status yang sedang dipilih tidak ikut menyaring.
+     *
+     * @return array<string,int>
+     */
+    public function statusCounts(array $user,array $filters):array
+    {
+        return $this->repo->statusCounts($this->actorId($user),$this->readMode($user),$filters);
+    }
+
     public function show(array $user,int $id):array
     {
         $mode=$this->readMode($user);$row=$this->repo->visibleViolation($id,$this->actorId($user),$mode);
@@ -237,6 +248,8 @@ final class PelanggaranService
             // Tindak lanjut dibaca pada seluruh rantai revisi agar koreksi tidak memutus tampilannya; kasus Rahasia mengikuti hak pembaca.
             'konseling'=>array_map([$this,'serializeCounselingLink'],$this->repo->counselingForViolations(array_column($history,'id'),$mode,$this->actorId($user))),
             'peringatan_konfigurasi'=>$this->repo->configurationWarnings(),
+            // Rentang ambang aktif tahun ajaran catatan, untuk posisi total poin (V-2).
+            'ambang'=>array_map(static fn(array $a):array=>['label'=>(string)$a['label'],'nilai_minimum'=>(int)$a['nilai_minimum'],'nilai_maksimum'=>$a['nilai_maksimum']===null?null:(int)$a['nilai_maksimum']],$this->repo->thresholdsForYear((int)$row['tahun_ajaran_id'])),
         ];
     }
 
@@ -255,9 +268,11 @@ final class PelanggaranService
         $page=isset($filters['page'])?max(1,min(1000000,(int)$filters['page'])):null;
         $students=isset($caps['v3.pelanggaran.kelola'])?$this->repo->studentOptions($this->actorId($user),$page):[];
         return [
-            'santri'=>array_map(static fn(array $row):array=>[
+            'santri'=>array_map(fn(array $row):array=>[
                 'santri_id'=>(int)$row['santri_id'],'tahun_ajaran_id'=>(int)$row['tahun_ajaran_id'],
                 'nama'=>(string)$row['nama_santri'],'tahun'=>(string)$row['tahun'],'semester'=>(string)$row['semester'],
+                // Total poin semester sekarang, untuk pratinjau "total setelah catatan ini" (V-1).
+                'total_poin'=>(int)($this->repo->aggregate((int)$row['santri_id'],(int)$row['tahun_ajaran_id'])['total_poin']??0),
             ],$students),
             'katalog'=>array_map(static fn(array $row):array=>[
                 'id'=>(int)$row['id'],'kode'=>(string)$row['kode'],'nama'=>(string)$row['nama'],
@@ -393,8 +408,9 @@ final class PelanggaranService
             'waktu_kejadian'=>(string)$row['waktu_kejadian'],'tempat'=>$row['tempat']===null?null:(string)$row['tempat'],
             'kategori'=>(string)$row['kategori_snapshot'],'tingkat'=>(string)$row['tingkat_snapshot'],'poin'=>(int)$row['poin_snapshot'],
             'status'=>(string)$row['status'],'version'=>(int)$row['version'],'created_at'=>(string)($row['created_at']??''),
+            'jenis'=>isset($row['katalog_nama'])?(string)$row['katalog_nama']:null,
         ];
-        if($detail){$result+=['uraian'=>(string)$row['uraian'],'saksi'=>$row['saksi']===null?null:(string)$row['saksi'],'katalog_id'=>$row['katalog_id']===null?null:(int)$row['katalog_id'],'katalog_kode'=>$row['katalog_kode']??null,'revisi_dari_id'=>$row['revisi_dari_id']===null?null:(int)$row['revisi_dari_id'],'digantikan_oleh_id'=>$row['digantikan_oleh_id']===null?null:(int)$row['digantikan_oleh_id'],'alasan_revisi'=>$row['alasan_revisi']===null?null:(string)$row['alasan_revisi'],'alasan_pembatalan'=>($row['alasan_pembatalan']??null)===null?null:(string)$row['alasan_pembatalan']];}
+        if($detail){$result+=['uraian'=>(string)$row['uraian'],'saksi'=>$row['saksi']===null?null:(string)$row['saksi'],'katalog_id'=>$row['katalog_id']===null?null:(int)$row['katalog_id'],'katalog_kode'=>$row['katalog_kode']??null,'revisi_dari_id'=>$row['revisi_dari_id']===null?null:(int)$row['revisi_dari_id'],'digantikan_oleh_id'=>$row['digantikan_oleh_id']===null?null:(int)$row['digantikan_oleh_id'],'alasan_revisi'=>$row['alasan_revisi']===null?null:(string)$row['alasan_revisi'],'alasan_pembatalan'=>($row['alasan_pembatalan']??null)===null?null:(string)$row['alasan_pembatalan'],'pencatat'=>isset($row['pembimbing_nama'])?(string)$row['pembimbing_nama']:null];}
         return $result;
     }
 

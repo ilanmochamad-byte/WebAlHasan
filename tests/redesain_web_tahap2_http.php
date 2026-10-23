@@ -416,7 +416,10 @@ $x = $dom($admin->req('/portal/v3_konseling.php')['body']);
 $baris = $x->query('//section[@id="rekomendasi"]//tr[@data-rekomendasi]')->length;
 $assert($k['url'] === '/portal/v3_konseling.php#rekomendasi' && $baris === $k['jumlah'] && $baris === (int) $hitung['c'], "F-4 rekomendasi: tujuan memuat daftar rekomendasi belum ditindaklanjuti ({$baris} baris = kartu {$k['jumlah']})");
 $pengurusKonseling = $klien('sbx_pengurus_a')->req('/portal/v3_konseling.php')['body'];
-$assert(str_contains($pengurusKonseling, 'name="rekomendasi_ids[]"') && str_contains($pengurusKonseling, 'id="rekomendasi"'), 'F-4 rekomendasi: pembimbing dapat memilih rekomendasi untuk ditindaklanjuti di halaman yang sama');
+// Tahap 5 (V-3): formulir buka kasus pindah ke wizard panel; baris rekomendasi membuka langkah 2 dengan rekomendasi tercentang.
+preg_match('/<tr data-rekomendasi="\d+">.*?href="\?([^"#]*rekomendasi=\d+)[^"]*"/s', $pengurusKonseling, $tautRek);
+$wizardRek = isset($tautRek[1]) ? $klien('sbx_pengurus_a')->req('/portal/v3_konseling.php?' . html_entity_decode($tautRek[1]))['body'] : '';
+$assert(str_contains($pengurusKonseling, 'id="rekomendasi"') && preg_match('/name="rekomendasi_ids\[\]" value="\d+" checked/', $wizardRek) === 1, 'F-4 rekomendasi: pembimbing dapat menindaklanjuti rekomendasi dari halaman yang sama (wizard buka kasus)');
 
 $k = $kartuAdmin($semua, 'notifikasi_gagal');
 $assert($k['jumlah'] === (int) $sql("SELECT COUNT(*) n FROM notifikasi_outbox WHERE status='Failed'")[0]['n'] && str_contains($admin->req('/admin/admin_notifikasi.php?tab=gagal')['body'], 'id="pengiriman-gagal"'), 'F-4 notifikasi gagal: kartu = daftar Pengiriman gagal (anchor tersedia)');
@@ -441,10 +444,10 @@ $tautan = $x->query('//details//a[contains(@href,"santri_id=")]')->length;
 $assert($nSikap === 1 && $tautan === $nSikap && str_contains($hp, 'href="/portal/sikap_semester.php?status=belum"'), "F-4 sikap belum diisi: angka {$nSikap} = daftar tujuan {$tautan}");
 $nAmbang = $angkaStat($hp, 'Santri mencapai ambang');
 $hl = $pengurus->req('/portal/v3_laporan.php?jenis=ambang')['body'];
-$assert($nAmbang === 1 && str_contains($hl, $nAmbang . ' baris sesuai filter · ambang') && str_contains($hl, '<th>Total poin</th>') && str_contains($hp, 'href="/portal/v3_laporan.php?jenis=ambang"'), "F-4 santri mencapai ambang: angka {$nAmbang} = laporan santri per total poin");
+$assert($nAmbang === 1 && str_contains($hl, $nAmbang . ' baris sesuai saringan') && str_contains($hl, '>Santri mencapai ambang<') && str_contains($hl, '>Total poin</th>') && str_contains($hp, 'href="/portal/v3_laporan.php?jenis=ambang"'), "F-4 santri mencapai ambang: angka {$nAmbang} = laporan santri per total poin");
 $nLanggar = $angkaStat($hp, 'Pelanggaran bulan ini');
 $hl = $pengurus->req('/portal/v3_laporan.php?jenis=pelanggaran&mulai=' . date('Y-m-01') . '&aktif=1')['body'];
-$assert($nLanggar === 1 && str_contains($hl, $nLanggar . ' baris sesuai filter · pelanggaran'), "F-4 pelanggaran bulan ini: angka {$nLanggar} = laporan bulan ini tanpa yang dibatalkan");
+$assert($nLanggar === 1 && str_contains($hl, $nLanggar . ' baris sesuai saringan') && str_contains($hl, 'Tanpa catatan yang dibatalkan.'), "F-4 pelanggaran bulan ini: angka {$nLanggar} = laporan bulan ini tanpa yang dibatalkan");
 $murobiC = $klien('sbx_murobi_c');
 $hm = $murobiC->req('/portal/index.php')['body'];
 $kSikap = $kartuAdmin($hm, 'murobi_sikap');

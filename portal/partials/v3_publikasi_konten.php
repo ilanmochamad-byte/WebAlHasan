@@ -1,6 +1,7 @@
 <?php if(!isset($konten)){http_response_code(404);exit;} ?>
-<div class="v3-publikasi-konten" style="overflow-wrap:anywhere">
-<p class="text-muted">Santri #<?= (int)$konten['santri_id'] ?></p>
-<h3 class="h6">Ringkasan untuk orang tua</h3><p style="white-space:pre-wrap"><?= ah_e($konten['ringkasan']) ?></p>
-<h3 class="h6">Tindak lanjut</h3><p style="white-space:pre-wrap"><?= ah_e($konten['tindak_lanjut']??'—') ?></p>
+<?php /* Isi publikasi yang dilihat wali (V-5 pratinjau, V-7). Nama santri dan pengirim diberikan pemanggil; tanpa nomor ID. */ ?>
+<div class="ah-pub v3-publikasi-konten">
+<?php if(($kontenMeta??[])!==[]): ?><dl class="ah-info-list"><?php foreach($kontenMeta as $kontenLabel=>$kontenNilai): ?><div><dt><?= ah_e($kontenLabel) ?></dt><dd><?= ah_e($kontenNilai) ?></dd></div><?php endforeach ?></dl><?php endif ?>
+<h3>Ringkasan</h3><p><?= ah_e($konten['ringkasan']) ?></p>
+<h3>Tindak lanjut di rumah</h3><p><?= ah_e($konten['tindak_lanjut']??'—') ?></p>
 </div>
