@@ -539,7 +539,6 @@ $phpFiles = [
     'portal/izin.php',
     'portal/izin_detail.php',
     'admin/admin_izin.php',
-    'admin/sidebar.php',
     'admin/cek_login.php',
     'admin/admin_login.php',
     'admin/ubah_password.php',

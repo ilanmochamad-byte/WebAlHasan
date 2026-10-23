@@ -1,377 +1,176 @@
 <?php
+
+declare(strict_types=1);
+
+use App\Http\Csrf;
+use App\Psb\PsbAdmin;
+use App\Psb\PsbPembayaran;
+
 require_once __DIR__ . '/_guard.php';
 
+/**
+ * PSB › Pembayaran (redesain website Tahap 3, K-6).
+ *
+ * Ringkasan, chip status, saringan, daftar berhalaman, dan panel rincian
+ * (pengganti modal per baris). "Tandai lunas" memakai dialog; "Batal lunas"
+ * ada di menu ⋯ dengan alasan yang dicatat di audit. Status sesuai enum:
+ * Belum Lunas / Lunas. Ekspor Excel dibuat di server.
+ */
+
 // Aksi ubah status hanya lewat POST; GET ?act= lama ditolak tanpa mutasi.
-if(isset($_GET['act'])){
+if (isset($_GET['act'])) {
     admin_require_post();
 }
+$bayar = new PsbPembayaran($koneksi);
+$self = app_url('/admin/admin_pembayaran_psb.php');
 $act = $_POST['act'] ?? '';
 
-// PROSES APPROVAL LUNAS
-if($act == 'lunas'){
+if ($act === 'lunas' || $act === 'batal') {
     $id = (int) ($_POST['id'] ?? 0);
-    mysqli_query($koneksi, "UPDATE psb_pembayaran SET status_pembayaran='Lunas', waktu_lunas=NOW() WHERE id='$id'");
-    echo "<script>alert('Pembayaran divalidasi: LUNAS!'); window.location='admin_pembayaran_psb.php';</script>";
-    exit;
-}
-
-// PROSES BATAL LUNAS
-if($act == 'batal'){
-    $id = (int) ($_POST['id'] ?? 0);
-    mysqli_query($koneksi, "UPDATE psb_pembayaran SET status_pembayaran='Belum Lunas', waktu_lunas=NULL WHERE id='$id'");
-    echo "<script>window.location='admin_pembayaran_psb.php';</script>";
-    exit;
-}
-?>
-
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <title>Validasi Pembayaran PSB - Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-</head>
-<body class="bg-light">
-
-<header class="navbar navbar-dark sticky-top bg-success flex-md-nowrap p-0 shadow d-md-none">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Menu Bendahara</a>
-    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</header>
-
-<div class="container-fluid">
-    <div class="row">
-        <?php include 'sidebar.php'; ?>
-
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <h2 class="h2 mb-4">Validasi Pembayaran Santri Baru</h2>
-
-            <div class="row g-3 mb-4">
-<?php 
-    // Menggunakan JOIN agar hanya menghitung tagihan dari pendaftar yang datanya masih ada di tabel PSB
-    $q_uang = mysqli_query($koneksi, "SELECT SUM(pb.total_keseluruhan) as uang_masuk FROM psb_pembayaran pb JOIN psb_pendaftar p ON pb.no_pendaftaran = p.no_pendaftaran WHERE pb.status_pembayaran='Lunas'");
-    $uang = mysqli_fetch_assoc($q_uang);
-    $tot_uang = $uang['uang_masuk'] ? $uang['uang_masuk'] : 0;
-    
-    $tot_lunas = mysqli_num_rows(mysqli_query($koneksi, "SELECT pb.id FROM psb_pembayaran pb JOIN psb_pendaftar p ON pb.no_pendaftaran = p.no_pendaftaran WHERE pb.status_pembayaran='Lunas'"));
-    
-    $tot_belum = mysqli_num_rows(mysqli_query($koneksi, "SELECT pb.id FROM psb_pembayaran pb JOIN psb_pendaftar p ON pb.no_pendaftaran = p.no_pendaftaran WHERE pb.status_pembayaran='Belum Lunas'"));
-?>
-                <div class="col-md-4">
-                    <div class="card shadow-sm border-0 border-start border-danger border-5">
-                        <div class="card-body">
-                            <h6 class="text-muted">Menunggu Pembayaran</h6>
-                            <h3 class="fw-bold text-danger mb-0"><?php echo $tot_belum; ?> <small class="fs-6 text-muted">Kwitansi</small></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card shadow-sm border-0 border-start border-success border-5">
-                        <div class="card-body">
-                            <h6 class="text-muted">Lunas (Selesai Validasi)</h6>
-                            <h3 class="fw-bold text-success mb-0"><?php echo $tot_lunas; ?> <small class="fs-6 text-muted">Santri</small></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card shadow-sm border-0 border-start border-primary border-5 bg-primary text-white">
-                        <div class="card-body">
-                            <h6 class="text-white-50">Total Kas Masuk (Lunas)</h6>
-                            <h3 class="fw-bold mb-0">Rp <?php echo number_format($tot_uang,0,',','.'); ?></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card shadow-sm border-0 mb-4 bg-white">
-                <div class="card-body">
-                    <form method="GET" class="row g-2">
-                        <div class="col-md-2">
-                            <select name="status" class="form-select form-select-sm">
-                                <option value="">Semua Status</option>
-                                <option value="Belum Lunas" <?php if(isset($_GET['status']) && $_GET['status']=='Belum Lunas') echo 'selected'; ?>>Belum Lunas</option>
-                                <option value="Lunas" <?php if(isset($_GET['status']) && $_GET['status']=='Lunas') echo 'selected'; ?>>Lunas</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select name="jenjang" class="form-select form-select-sm">
-                                <option value="">Semua Pilihan Unit</option>
-                                <option value="SMP Terpadu Al Hasan" <?php if(isset($_GET['jenjang']) && $_GET['jenjang']=='SMP Terpadu Al Hasan') echo 'selected'; ?>>SMP Terpadu Al Hasan</option>
-                                <option value="SMK Terpadu Al Hasan" <?php if(isset($_GET['jenjang']) && $_GET['jenjang']=='SMK Terpadu Al Hasan') echo 'selected'; ?>>SMK Terpadu Al Hasan</option>
-                                <option value="RA Terpadu Al Hasan" <?php if(isset($_GET['jenjang']) && $_GET['jenjang']=='RA Terpadu Al Hasan') echo 'selected'; ?>>RA Terpadu Al Hasan</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <select name="jk" class="form-select form-select-sm">
-                                <option value="">Semua JK</option>
-                                <option value="L" <?php if(isset($_GET['jk']) && $_GET['jk']=='L') echo 'selected'; ?>>Laki-laki</option>
-                                <option value="P" <?php if(isset($_GET['jk']) && $_GET['jk']=='P') echo 'selected'; ?>>Perempuan</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group input-group-sm">
-                                <button class="btn btn-primary w-50 fw-bold" type="submit"><i class="fas fa-filter"></i> Filter</button>
-                                <a href="admin_pembayaran_psb.php" class="btn btn-secondary w-50"><i class="fas fa-sync"></i> Reset</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="mb-3 text-end">
-                <button type="button" id="btnExportKeuangan" onclick="exportKeuanganExcel()" class="btn btn-warning shadow-sm fw-bold text-dark">
-                    <i class="fas fa-file-excel me-2"></i> Export Laporan Keuangan
-                </button>
-            </div>
-
-            <div class="card shadow border-0 mb-5">
-                <div class="card-body p-3">
-                    <div class="table-responsive">
-                        <table id="tabelTagihan" class="table table-hover align-middle mb-0" style="font-size: 0.9rem;">
-                            <thead class="table-dark text-uppercase small">
-                                <tr>
-                                    <th width="5%">No</th>
-                                    <th>Pendaftar</th>
-                                    <th>Unit & Kategori</th>
-                                    <th>Total Tagihan</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center">Aksi / Kwitansi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $no = 1;
-                                $where = "WHERE 1=1";
-                                if(!empty($_GET['jk'])) $where .= " AND p.jenis_kelamin = '$_GET[jk]'";
-                                if(!empty($_GET['jenjang'])) $where .= " AND p.jenjang_tujuan = '$_GET[jenjang]'";
-                                if(!empty($_GET['status'])) $where .= " AND pb.status_pembayaran = '$_GET[status]'";
-
-                                $query = "SELECT pb.*, p.nama_lengkap, p.jenis_kelamin, p.jenjang_tujuan 
-                                          FROM psb_pembayaran pb 
-                                          JOIN psb_pendaftar p ON pb.no_pendaftaran = p.no_pendaftaran 
-                                          $where ORDER BY pb.status_pembayaran ASC, pb.id DESC";
-                                $data = mysqli_query($koneksi, $query);
-                                
-                                while($d = mysqli_fetch_array($data)){
-                                ?>
-                                <tr>
-                                    <td class="text-center fw-bold"><?php echo $no++; ?></td>
-                                    <td>
-                                        <div class="fw-bold text-dark fs-6"><?php echo $d['nama_lengkap']; ?></div>
-                                        <div class="small text-muted"><span class="badge bg-secondary"><?php echo $d['no_pendaftaran']; ?></span> • <?php echo ($d['jenis_kelamin']=='L')?'Laki-laki':'Perempuan'; ?></div>
-                                    </td>
-                                    <td>
-                                        <div class="fw-bold text-primary"><?php echo $d['jenjang_tujuan']; ?></div>
-                                        <div class="small text-muted"><?php echo $d['kategori_biaya']; ?></div>
-                                    </td>
-                                    <td>
-                                        <div class="fw-bold text-success fs-6">Rp <?php echo number_format($d['total_keseluruhan'],0,',','.'); ?></div>
-                                        <div class="small mt-1">
-                                            <?php if($d['metode_pembayaran'] == 'Transfer'): ?>
-                                                <span class="badge bg-info text-dark"><i class="fas fa-university me-1"></i> Transfer</span>
-                                            <?php else: ?>
-                                                <span class="badge bg-secondary"><i class="fas fa-money-bill-wave me-1"></i> Cash</span>
-                                            <?php endif; ?>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <?php if($d['status_pembayaran'] == 'Belum Lunas'): ?>
-                                            <span class="badge bg-danger rounded-pill px-3 py-2"><i class="fas fa-clock me-1"></i> Belum Lunas</span>
-                                        <?php else: ?>
-                                            <span class="badge bg-success rounded-pill px-3 py-2"><i class="fas fa-check-circle me-1"></i> LUNAS</span><br>
-                                            <small class="text-muted" style="font-size: 10px;"><?php echo date('d/m/Y H:i', strtotime($d['waktu_lunas'])); ?></small>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm btn-info text-white fw-bold shadow-sm mb-1 w-100" data-bs-toggle="modal" data-bs-target="#modalDetail<?php echo $d['id']; ?>">
-                                            <i class="fas fa-list me-1"></i> Rincian Biaya
-                                        </button>
-
-                                        <?php if($d['status_pembayaran'] == 'Belum Lunas'): ?>
-                                            <form method="post" action="admin_pembayaran_psb.php" class="m-0" onsubmit="return confirm('Validasi pembayaran menjadi LUNAS?')">
-                                                <?= \App\Http\Csrf::input() ?>
-                                                <input type="hidden" name="act" value="lunas">
-                                                <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
-                                                <button type="submit" class="btn btn-sm btn-success fw-bold shadow-sm mb-1 w-100">
-                                                    <i class="fas fa-check me-1"></i> Approve (Lunas)
-                                                </button>
-                                            </form>
-                                        <?php else: ?>
-                                            <form method="post" action="admin_pembayaran_psb.php" class="m-0" onsubmit="return confirm('Batalkan status lunas?')">
-                                                <?= \App\Http\Csrf::input() ?>
-                                                <input type="hidden" name="act" value="batal">
-                                                <input type="hidden" name="id" value="<?php echo (int) $d['id']; ?>">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger mb-1 w-100">
-                                                    <i class="fas fa-times me-1"></i> Batal Lunas
-                                                </button>
-                                            </form>
-                                        <?php endif; ?>
-                                        <a href="../cetak_biaya_psb.php?noreg=<?php echo $d['no_pendaftaran']; ?>" target="_blank" class="btn btn-sm btn-dark w-100">
-                                            <i class="fas fa-print me-1"></i> Cetak Kwitansi
-                                        </a>
-                                    </td>
-                                </tr>
-
-                                <div class="modal fade" id="modalDetail<?php echo $d['id']; ?>" tabindex="-1">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-info text-white border-0">
-                                                <h5 class="modal-title fw-bold"><i class="fas fa-search-dollar me-2"></i> Rincian Pembayaran Santri</h5>
-                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body p-4 bg-light">
-                                                
-                                                <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded shadow-sm mb-4 border-start border-info border-4">
-                                                    <div>
-                                                        <h5 class="fw-bold mb-1 text-dark"><?php echo $d['nama_lengkap']; ?></h5>
-                                                        <span class="text-muted small"><?php echo $d['jenjang_tujuan']; ?> • <?php echo ($d['jenis_kelamin']=='L')?'Laki-laki':'Perempuan'; ?></span>
-                                                    </div>
-                                                    <div class="text-end">
-                                                        <span class="badge bg-secondary mb-1 fs-6"><?php echo $d['no_pendaftaran']; ?></span><br>
-                                                        <span class="small fw-bold text-primary"><?php echo $d['kategori_biaya']; ?></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row g-3">
-                                                    <div class="col-md-6">
-                                                        <div class="card h-100 border-0 shadow-sm">
-                                                            <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
-                                                                <h6 class="fw-bold text-primary mb-0"><i class="fas fa-hand-holding-usd me-2"></i> A. Biaya Pilihan</h6>
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <ul class="list-group list-group-flush small">
-                                                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                                                        Syahriyyah (Bulanan)
-                                                                        <span class="fw-bold">Rp <?php echo number_format($d['syahriyyah'],0,',','.'); ?></span>
-                                                                    </li>
-                                                                    <?php if($d['infaq'] > 0): ?>
-                                                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                                                        Infaq Bangunan
-                                                                        <span class="fw-bold">Rp <?php echo number_format($d['infaq'],0,',','.'); ?></span>
-                                                                    </li>
-                                                                    <?php endif; ?>
-                                                                    <?php if($d['seragam_psas'] > 0): ?>
-                                                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                                                        Seragam PSAS
-                                                                        <span class="fw-bold">Rp <?php echo number_format($d['seragam_psas'],0,',','.'); ?></span>
-                                                                    </li>
-                                                                    <?php endif; ?>
-                                                                    <?php if($d['seragam_pramuka'] > 0): ?>
-                                                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                                                        Seragam Pramuka
-                                                                        <span class="fw-bold">Rp <?php echo number_format($d['seragam_pramuka'],0,',','.'); ?></span>
-                                                                    </li>
-                                                                    <?php endif; ?>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <div class="card h-100 border-0 shadow-sm">
-                                                            <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
-                                                                <h6 class="fw-bold text-danger mb-0"><i class="fas fa-clipboard-check me-2"></i> B. Biaya Wajib Terbayar</h6>
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <ul class="list-group list-group-flush small">
-                                                                    <?php 
-                                                                    $rw = json_decode($d['rincian_wajib'], true);
-                                                                    if(!empty($rw)){
-                                                                        foreach($rw as $item => $harga): 
-                                                                    ?>
-                                                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 text-muted">
-                                                                        <?php echo $item; ?>
-                                                                        <span class="fw-bold text-dark">Rp <?php echo number_format($harga,0,',','.'); ?></span>
-                                                                    </li>
-                                                                    <?php 
-                                                                        endforeach; 
-                                                                    } else {
-                                                                        echo "<li class='list-group-item px-0 text-center text-danger fst-italic border-0 pt-3'>Belum ada item wajib yang dicentang.</li>";
-                                                                    }
-                                                                    ?>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <?php $bg_alert = ($d['metode_pembayaran'] == 'Transfer') ? 'alert-info border-info' : 'alert-secondary border-secondary'; ?>
-                                                <div class="alert <?php echo $bg_alert; ?> mt-3 mb-0 d-flex flex-wrap justify-content-between align-items-center shadow-sm">
-                                                    <div>
-                                                        <div class="small text-muted mb-1 text-uppercase fw-bold" style="letter-spacing: 1px;">Metode Pembayaran</div>
-                                                        <div class="fs-5 fw-bold text-dark">
-                                                            <i class="fas <?php echo ($d['metode_pembayaran'] == 'Transfer') ? 'fa-university' : 'fa-money-bill-wave'; ?> me-2"></i><?php echo strtoupper($d['metode_pembayaran']); ?>
-                                                        </div>
-                                                    </div>
-                                                    <div class="text-end mt-2 mt-md-0">
-                                                        <div class="small text-muted mb-1 text-uppercase fw-bold" style="letter-spacing: 1px;">Grand Total</div>
-                                                        <h3 class="fw-bold text-success mb-0">Rp <?php echo number_format($d['total_keseluruhan'],0,',','.'); ?></h3>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="modal-footer border-0">
-                                                <button type="button" class="btn btn-secondary fw-bold px-4" data-bs-dismiss="modal">Tutup</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        $('#tabelTagihan').DataTable({
-            "lengthMenu": [[25, 50, 100, -1], [25, 50, 100, "Semua"]],
-            "language": { "search": "Pencarian Cepat:" }
-        });
-    });
-
-    function exportKeuanganExcel() {
-        const btn = document.getElementById('btnExportKeuangan');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Merakit File...';
-        btn.disabled = true;
-
-        const urlParams = new URLSearchParams(window.location.search);
-        
-        fetch('export_pembayaran.php?' + urlParams.toString())
-        .then(res => res.json())
-        .then(data => {
-            if(data.length === 0) {
-                alert('Tidak ada data yang cocok dengan filter untuk diekspor.');
-                btn.innerHTML = originalText;
-                btn.disabled = false; return;
-            }
-            const ws = XLSX.utils.json_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Laporan Keuangan PSB");
-            
-            const date = new Date();
-            const fileName = "Keuangan_PSB_AlHasan_" + date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + ".xlsx";
-            XLSX.writeFile(wb, fileName);
-            
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        })
-        .catch(err => { alert('Gagal mengekspor data: ' + err); btn.innerHTML = originalText; btn.disabled = false; });
+    $sebelum = $bayar->find($id);
+    if ($act === 'lunas') {
+        $stmt = mysqli_prepare($koneksi, "UPDATE psb_pembayaran SET status_pembayaran='Lunas', waktu_lunas=NOW() WHERE id=?");
+    } else {
+        $stmt = mysqli_prepare($koneksi, "UPDATE psb_pembayaran SET status_pembayaran='Belum Lunas', waktu_lunas=NULL WHERE id=?");
     }
-</script>
-</body>
-</html>
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+    mysqli_stmt_execute($stmt);
+    if ($sebelum === null) {
+        ah_flash_set('info', 'Tagihan tidak ditemukan; tidak ada yang berubah.');
+    } elseif ($act === 'lunas') {
+        ah_flash_set('success', 'Pembayaran ' . $sebelum['nama_lengkap'] . ' ditandai lunas.');
+    } else {
+        $alasan = mb_substr(trim((string) ($_POST['alasan'] ?? '')), 0, 500);
+        audit_logger()->log('psb.pembayaran.batal_lunas', 'psb_pembayaran', $id,
+            ['status_pembayaran' => $sebelum['status_pembayaran'], 'waktu_lunas' => $sebelum['waktu_lunas']],
+            ['status_pembayaran' => 'Belum Lunas', 'alasan' => $alasan === '' ? null : $alasan], (int) $currentUser['id']);
+        ah_flash_set('success', 'Status lunas ' . $sebelum['nama_lengkap'] . ' dibatalkan.');
+    }
+    parse_str((string) ($_POST['kembali'] ?? ''), $query);
+    $query = array_filter(PsbPembayaran::filter(is_array($query) ? $query : []), static fn (string $v): bool => $v !== '');
+    header('Location: admin_pembayaran_psb.php?' . http_build_query($query + ['id' => $id]));
+    exit;
+}
+
+$filter = PsbPembayaran::filter($_GET);
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) ?: 0;
+$dipilih = $id > 0 ? $bayar->find($id) : null;
+$daftar = $bayar->page($filter, max(1, (int) ($_GET['page'] ?? 1)));
+$counts = $bayar->statusCounts($filter);
+$ringkas = $bayar->ringkasan();
+$saringan = array_filter($filter, static fn (string $v): bool => $v !== '');
+$kembali = http_build_query($saringan + ($daftar['page'] > 1 ? ['page' => $daftar['page']] : []));
+$listUrl = $self . ($kembali !== '' ? '?' . $kembali : '');
+$rupiah = static fn (int $nilai): string => 'Rp ' . number_format($nilai, 0, ',', '.');
+$tahun = beranda_service()->tahunAktif();
+if ($id > 0 && $dipilih === null) {
+    http_response_code(404);
+}
+
+ah_page_open([
+    'title' => 'Pembayaran PSB',
+    'heading' => 'Pembayaran PSB' . ($tahun !== null ? ' ' . $tahun['tahun'] : ''),
+    'user' => $currentUser,
+    'active' => 'psb.pembayaran',
+    'breadcrumbs' => [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => 'PSB'], ['label' => 'Pembayaran']],
+    'actions' => '<a class="btn btn-outline-secondary" href="' . ah_e(app_url('/admin/export_pembayaran.php') . ($kembali !== '' ? '?' . $kembali : '')) . '">Ekspor Excel</a>',
+]);
+if ($id > 0 && $dipilih === null) {
+    ah_note('danger', 'Tagihan tidak ditemukan; pilih dari daftar.');
+}
+echo ah_stats([
+    ['label' => 'Belum lunas', 'value' => number_format($ringkas['belum'], 0, ',', '.'), 'url' => $self . '?status=' . rawurlencode('Belum Lunas'), 'warn' => $ringkas['belum'] > 0],
+    ['label' => 'Lunas', 'value' => number_format($ringkas['lunas'], 0, ',', '.'), 'url' => $self . '?status=Lunas'],
+    ['label' => 'Kas masuk', 'value' => $rupiah($ringkas['kas']), 'url' => app_url('/admin/admin_rekap_keuangan.php')],
+], 'Ringkasan pembayaran PSB');
+$tanpaStatus = array_diff_key($saringan, ['status' => 1]);
+$chips = [];
+foreach (['Belum lunas' => 'Belum Lunas', 'Lunas' => 'Lunas', 'Semua' => ''] as $label => $nilai) {
+    $query = http_build_query($tanpaStatus + ($nilai === '' ? [] : ['status' => $nilai]));
+    $chips[] = ['label' => $label, 'count' => $counts[$nilai === '' ? 'Semua' : $nilai], 'active' => $filter['status'] === $nilai, 'url' => $self . ($query !== '' ? '?' . $query : '')];
+}
+echo ah_chips($chips, 'Saring menurut status pembayaran');
+
+if ($dipilih !== null):
+    $d = $dipilih;
+    $pid = (int) $d['id'];
+    $wajib = PsbPembayaran::rincianWajib($d['rincian_wajib']);
+    $hidden = static fn (string $act): string => Csrf::input()
+        . '<input type="hidden" name="act" value="' . ah_e($act) . '"><input type="hidden" name="id" value="' . $pid . '">'
+        . '<input type="hidden" name="kembali" value="' . ah_e($kembali) . '">';
+    ah_panel_open(['title' => 'Rincian · ' . $d['nama_lengkap'], 'close_url' => $listUrl,
+        'description' => $d['no_pendaftaran'] . ' · ' . $d['jenjang_tujuan'] . ' · ' . ($d['jenis_kelamin'] === 'P' ? 'Perempuan' : 'Laki-laki')]);
+    ?>
+    <dl class="ah-kv">
+        <dt>Status</dt><dd><?= ah_status((string) $d['status_pembayaran']) ?><?= $d['waktu_lunas'] ? ' <span class="ah-meta">' . ah_e(date('d-m-Y H.i', strtotime((string) $d['waktu_lunas']))) . '</span>' : '' ?></dd>
+        <dt>Kategori biaya</dt><dd><?= ah_e($d['kategori_biaya']) ?></dd>
+        <dt>Metode</dt><dd><?= ah_e($d['metode_pembayaran']) ?></dd>
+    </dl>
+    <h3 class="h6 mt-3">A. Biaya pilihan</h3>
+    <ul class="ah-list-plain">
+        <li><span>Syahriyyah (bulanan)</span><b><?= $rupiah((int) $d['syahriyyah']) ?></b></li>
+        <?php foreach (['infaq' => 'Infaq bangunan', 'seragam_psas' => 'Seragam PSAS', 'seragam_pramuka' => 'Seragam Pramuka'] as $kolom => $label): ?>
+            <?php if ((int) $d[$kolom] > 0): ?><li><span><?= ah_e($label) ?></span><b><?= $rupiah((int) $d[$kolom]) ?></b></li><?php endif; ?>
+        <?php endforeach; ?>
+    </ul>
+    <h3 class="h6 mt-3">B. Biaya wajib terbayar</h3>
+    <?php if ($wajib === []): ?>
+        <p class="ah-meta">Belum ada komponen wajib yang dicentang pendaftar.</p>
+    <?php else: ?>
+        <ul class="ah-list-plain">
+            <?php foreach ($wajib as $nama => $harga): ?><li><span><?= ah_e($nama) ?></span><b><?= $rupiah($harga) ?></b></li><?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    <ul class="ah-list-plain mt-2"><li><span><b>Total tagihan</b></span><b><?= $rupiah((int) $d['total_keseluruhan']) ?></b></li></ul>
+    <div class="ah-panel__foot ah-decision">
+        <a class="btn btn-outline-secondary" href="<?= ah_e(app_url('/cetak_biaya_psb.php?noreg=' . rawurlencode((string) $d['no_pendaftaran']))) ?>" target="_blank" rel="noopener">Cetak kwitansi</a>
+        <?php if ($d['status_pembayaran'] === 'Belum Lunas'): ?>
+            <form method="post" action="admin_pembayaran_psb.php" data-confirm="Tagihan <?= ah_e($d['nama_lengkap']) ?> sebesar <?= ah_e($rupiah((int) $d['total_keseluruhan'])) ?> ditandai lunas sekarang." data-confirm-title="Tandai lunas?" data-confirm-ok="Tandai lunas"><?= $hidden('lunas') ?><button class="btn btn-primary" type="submit">Tandai lunas</button></form>
+        <?php else: ?>
+            <?= ah_menu([
+                ['label' => 'Batal lunas', 'icon' => 'fa-rotate-left', 'danger' => true, 'action' => 'admin_pembayaran_psb.php',
+                    'fields' => ['act' => 'batal', 'id' => $pid, 'kembali' => $kembali],
+                    'confirm' => ['title' => 'Batalkan status lunas ' . $d['nama_lengkap'] . '?', 'text' => 'Status kembali Belum Lunas dan waktu lunas dihapus. Alasan dicatat di audit.',
+                        'ok' => 'Batal lunas', 'reason' => 'alasan', 'reason_label' => 'Alasan pembatalan']],
+            ], 'Tindakan lain untuk ' . $d['nama_lengkap'], false) ?>
+        <?php endif; ?>
+    </div>
+    <?php
+    ah_panel_close();
+endif;
+
+ah_filter_open(count(array_diff_key($saringan, ['status' => 1])), ['status' => $filter['status']]);
+?>
+    <div class="ah-filter__wide"><label class="form-label" for="bayar-cari">Cari</label>
+        <input class="form-control" type="search" id="bayar-cari" name="cari" maxlength="100" value="<?= ah_e($filter['cari']) ?>" placeholder="Nama atau no. daftar"></div>
+    <div><label class="form-label" for="bayar-jenjang">Unit tujuan</label>
+        <select class="form-select" id="bayar-jenjang" name="jenjang"><option value="">Semua unit</option>
+            <?php foreach (PsbAdmin::UNIT as $unit): ?><option<?= $filter['jenjang'] === $unit ? ' selected' : '' ?>><?= ah_e($unit) ?></option><?php endforeach; ?>
+        </select></div>
+    <div><label class="form-label" for="bayar-jk">L/P</label>
+        <select class="form-select" id="bayar-jk" name="jk"><option value="">Semua</option><option value="L"<?= $filter['jk'] === 'L' ? ' selected' : '' ?>>Laki-laki</option><option value="P"<?= $filter['jk'] === 'P' ? ' selected' : '' ?>>Perempuan</option></select></div>
+<?php ah_filter_close(['status' => $filter['status']]); ?>
+<div class="ah-card ah-table-wrap">
+    <table class="ah-table ah-table--cards" id="daftar-pembayaran">
+        <caption class="ah-visually-hidden">Tagihan PSB, <?= (int) $daftar['total'] ?> data</caption>
+        <thead><tr><th scope="col">Pendaftar</th><th scope="col">Unit</th><th scope="col" class="ah-col-secondary">Metode</th><th scope="col">Total tagihan</th><th scope="col">Status</th><th scope="col"><span class="ah-visually-hidden">Tindakan</span></th></tr></thead>
+        <tbody>
+        <?php foreach ($daftar['rows'] as $row): ?>
+            <tr<?= (int) $row['id'] === $id ? ' class="is-selected"' : '' ?>>
+                <td><b><?= ah_e($row['nama_lengkap']) ?></b><span class="ah-cell-sub"><?= ah_e($row['no_pendaftaran']) ?></span></td>
+                <td><?= ah_e($row['jenjang_tujuan']) ?><span class="ah-cell-sub"><?= ah_e($row['kategori_biaya']) ?></span></td>
+                <td class="ah-col-secondary"><?= ah_e($row['metode_pembayaran']) ?></td>
+                <td><?= $rupiah((int) $row['total_keseluruhan']) ?></td>
+                <td><?= ah_status((string) $row['status_pembayaran']) ?></td>
+                <td data-label=""><a class="btn btn-sm btn-outline-primary" href="<?= ah_e($self . '?' . http_build_query($saringan + ($daftar['page'] > 1 ? ['page' => $daftar['page']] : []) + ['id' => (int) $row['id']])) ?>">Rincian <span class="ah-visually-hidden"><?= ah_e($row['nama_lengkap']) ?></span></a></td>
+            </tr>
+        <?php endforeach; ?>
+        <?php if ($daftar['rows'] === []): ?>
+            <tr><td colspan="6" data-label=""><?= ah_empty('Tidak ada tagihan yang cocok', $saringan === [] ? 'Tagihan tampil setelah pendaftar memilih biaya.' : 'Bersihkan saringan atau pilih chip status lain.') ?></td></tr>
+        <?php endif; ?>
+        </tbody>
+    </table>
+</div>
+<?php
+ah_pagination((int) $daftar['total'], (int) $daftar['page'], PsbPembayaran::PER_PAGE);
+ah_page_close();

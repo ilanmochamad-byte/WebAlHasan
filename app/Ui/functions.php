@@ -159,6 +159,131 @@ if (!function_exists('ah_list_search')) {
     }
 }
 
+if (!function_exists('ah_stats')) {
+    /**
+     * Ringkasan angka (redesain Tahap 3). Butir bertautan menjadi filter.
+     *
+     * @param array<int, array{label:string, value:string, url?:?string, warn?:bool, hint?:string}> $items
+     */
+    function ah_stats(array $items, string $label = 'Ringkasan'): string
+    {
+        $html = '<section class="ah-stats" aria-label="' . ah_e($label) . '">';
+        foreach ($items as $item) {
+            $class = 'ah-stat' . (!empty($item['warn']) ? ' ah-stat--warn' : '');
+            $isi = '<p class="ah-stat__label">' . ah_e($item['label']) . '</p><p class="ah-stat__value">' . ah_e($item['value']) . '</p>'
+                . (!empty($item['hint']) ? '<p class="ah-stat__hint">' . ah_e($item['hint']) . '</p>' : '');
+            $html .= !empty($item['url'])
+                ? '<a class="' . $class . ' ah-stat--link" href="' . ah_e($item['url']) . '">' . $isi . '</a>'
+                : '<div class="' . $class . '">' . $isi . '</div>';
+        }
+
+        return $html . '</section>';
+    }
+}
+
+if (!function_exists('ah_chips')) {
+    /**
+     * Chip status = filter sekaligus ringkasan angka (K-5, K-6, N-2).
+     *
+     * @param array<int, array{label:string, url:string, active?:bool, count?:int|null}> $chips
+     */
+    function ah_chips(array $chips, string $label): string
+    {
+        $html = '<ul class="ah-tabs ah-chips" aria-label="' . ah_e($label) . '">';
+        foreach ($chips as $chip) {
+            $html .= '<li><a href="' . ah_e($chip['url']) . '"' . (!empty($chip['active']) ? ' aria-current="page"' : '') . '>'
+                . '<span>' . ah_e($chip['label']) . '</span>'
+                . (isset($chip['count']) ? ' <span class="ah-chips__count">' . number_format((int) $chip['count'], 0, ',', '.') . '</span>' : '')
+                . '</a></li>';
+        }
+
+        return $html . '</ul>';
+    }
+}
+
+if (!function_exists('ah_filter_open')) {
+    /**
+     * Saringan daftar. Di desktop/tablet tampil sebaris; di HP terlipat di
+     * balik tombol "Saring" kecuali ada saringan aktif. Tanpa JavaScript
+     * saringan selalu terbuka. Formulir GET, sehingga alamat dapat dibagikan.
+     *
+     * @param array<string, scalar> $hidden nilai tetap (mis. status chip)
+     */
+    function ah_filter_open(int $active = 0, array $hidden = [], string $action = ''): void
+    {
+        echo '<details class="ah-filter ah-no-print" open data-ah-filter' . ($active > 0 ? ' data-ah-filter-active' : '') . '>'
+            . '<summary class="btn btn-outline-secondary"><i class="fas fa-sliders" aria-hidden="true"></i> Saring'
+            . ($active > 0 ? ' <span class="ah-chips__count">' . $active . '</span>' : '') . '</summary>'
+            . '<form method="get" class="ah-filter__form"' . ($action !== '' ? ' action="' . ah_e($action) . '"' : '') . '>';
+        foreach ($hidden as $name => $value) {
+            if ($value !== '' && $value !== null) {
+                echo '<input type="hidden" name="' . ah_e($name) . '" value="' . ah_e($value) . '">';
+            }
+        }
+    }
+
+    /**
+     * @param array<string, scalar> $reset alamat "Bersihkan" mempertahankan nilai ini
+     */
+    function ah_filter_close(array $reset = []): void
+    {
+        echo '<div class="ah-filter__actions"><button class="btn btn-primary" type="submit">Terapkan</button>'
+            . '<a class="btn btn-outline-secondary" href="?' . ah_e(http_build_query(array_filter($reset, static fn ($v): bool => $v !== '' && $v !== null))) . '">Bersihkan</a></div>'
+            . '</form></details>';
+    }
+}
+
+if (!function_exists('ah_wants_json')) {
+    /** Permintaan dari `AlHasan.post` (proses massal) mengharapkan JSON. */
+    function ah_wants_json(): bool
+    {
+        return str_contains((string) ($_SERVER['HTTP_ACCEPT'] ?? ''), 'application/json');
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
+    function ah_json(array $payload, int $status = 200): never
+    {
+        http_response_code($status);
+        header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: no-store');
+        echo json_encode($payload, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+}
+
+if (!function_exists('ah_xlsx_download')) {
+    /**
+     * Unduhan Excel yang dibuat di server (pengganti ekspor SheetJS + kotak alert peramban).
+     * Baris pertama adalah judul kolom (tebal). Seluruh teks lain ditulis
+     * mentah (awalan \0 SimpleXLSXGen) sehingga isian pengguna tidak pernah
+     * dibaca sebagai rumus, tag gaya, atau angka; NISN/NIK/HP tetap utuh.
+     *
+     * @param array<int, array<int, scalar|null>> $rows
+     */
+    function ah_xlsx_download(string $fileName, array $rows): never
+    {
+        require_once APP_ROOT . '/admin/SimpleXLSXGen.php';
+        $safe = [];
+        foreach ($rows as $index => $row) {
+            $safe[] = array_map(static function ($cell) use ($index) {
+                if ($index === 0) {
+                    return '<b>' . str_replace(['<', '>'], '', (string) $cell) . '</b>';
+                }
+                if (is_int($cell) || is_float($cell)) {
+                    return $cell;
+                }
+
+                return "\0" . (string) $cell;
+            }, $row);
+        }
+        header('Cache-Control: no-store');
+        \Shuchkin\SimpleXLSXGen::fromArray($safe)->downloadAs($fileName);
+        exit;
+    }
+}
+
 if (!function_exists('ah_badge')) {
     /**
      * Lencana status. Teks selalu ikut, sehingga makna tidak bergantung warna.
@@ -242,7 +367,8 @@ if (!function_exists('ah_menu')) {
         $confirm = $item['confirm'] ?? null;
         if (is_array($confirm)) {
             $attributes .= ' data-confirm="' . ah_e($confirm['text'] ?? '') . '"';
-            foreach (['title' => 'data-confirm-title', 'ok' => 'data-confirm-ok', 'reason' => 'data-confirm-reason', 'reason_label' => 'data-confirm-reason-label'] as $key => $attribute) {
+            foreach (['title' => 'data-confirm-title', 'ok' => 'data-confirm-ok', 'reason' => 'data-confirm-reason', 'reason_label' => 'data-confirm-reason-label',
+                'match' => 'data-confirm-match', 'match_label' => 'data-confirm-match-label'] as $key => $attribute) {
                 if (!empty($confirm[$key])) {
                     $attributes .= ' ' . $attribute . '="' . ah_e($confirm[$key]) . '"';
                 }

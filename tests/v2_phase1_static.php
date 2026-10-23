@@ -351,7 +351,7 @@ $phpFiles = [
     'app/Izin/PembimbingRepository.php', 'app/Izin/PembimbingService.php',
     'app/Account/PerizinanAccountRepository.php', 'app/Account/PerizinanAccountService.php',
     'admin/admin_pembimbing.php', 'admin/admin_akun_perizinan.php', 'admin/cek_login.php',
-    'admin/admin_login.php', 'admin/logout.php', 'admin/sidebar.php',
+    'admin/admin_login.php', 'admin/logout.php',
     'portal/_guard.php', 'portal/_ui.php', 'portal/index.php', 'portal/izin.php', 'portal/izin_detail.php',
     'bin/v2_phase1_preflight.php', 'bin/v2_phase1_backfill.php', 'bin/v2_phase1_verify.php',
 ];

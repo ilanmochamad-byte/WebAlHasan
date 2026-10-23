@@ -6,7 +6,11 @@ namespace App\Beranda;
 
 use App\Auth\Capabilities;
 use App\Penugasan\PenugasanJenis;
+use App\V3\LaporanService;
+use App\V3\PelanggaranRepository;
+use App\V4\BahanRepository;
 use App\V4\NilaiService;
+use App\V4\SikapService;
 use App\V4\VerifikasiService;
 use mysqli;
 use RuntimeException;
@@ -50,24 +54,34 @@ final class BerandaService
      * Delapan kartu prioritas admin dalam urutan keputusan L + AA. Kartu
      * bernilai 0 atau yang gagal dihitung tidak ikut.
      *
+     * Setiap angka dihitung dengan predikat yang SAMA dengan daftar tujuan
+     * kartunya (layanan atau filter server yang sama), sehingga klik kartu
+     * selalu membuka tepat himpunan yang dihitung (B-1).
+     *
+     * @param array<string, mixed> $user akun admin yang membuka Beranda.
      * @return array<int, array{key:string, jumlah:int, judul:string, tombol:string, url:string, tertunda:bool}>
      */
-    public function prioritasAdmin(): array
+    public function prioritasAdmin(array $user): array
     {
         $tahun = $this->tahunAktifId();
         $kartu = [];
 
-        $this->kartu($kartu, 'izin_penetapan', function (): array {
-            $row = $this->one("SELECT COUNT(*) AS n, SUM(COALESCE(routing_pada, diajukan_pada, created_at) < NOW() - INTERVAL ? HOUR) AS lama
+        // Antrean admin = `Perlu Penetapan Admin` (IzinRepository, filter antrean).
+        $this->kartu($kartu, 'izin_penetapan', function () use ($user): array {
+            $jumlah = izin_service()->queueCount($user, Capabilities::ADMIN);
+            $row = $this->one("SELECT SUM(COALESCE(routing_pada, diajukan_pada, created_at) < NOW() - INTERVAL ? HOUR) AS lama
                                  FROM izin_pengajuan WHERE status = 'Perlu Penetapan Admin'", 'i', [self::BATAS_TERTUNDA_JAM]);
-            return [(int) $row['n'], (int) $row['lama'] > 0];
+            return [$jumlah, (int) $row['lama'] > 0];
         }, 'Izin menunggu penetapan murobi', 'Tetapkan', '/portal/izin_antrean.php');
 
+        // Tujuan memakai filter status yang sama (`admin_data.php?status=Baru`).
         $this->kartu($kartu, 'psb_baru', function (): array {
             $row = $this->one("SELECT COUNT(*) AS n, SUM(tgl_daftar < NOW() - INTERVAL ? HOUR) AS lama FROM psb_pendaftar WHERE status = 'Baru'", 'i', [self::BATAS_TERTUNDA_JAM]);
             return [(int) $row['n'], (int) $row['lama'] > 0];
-        }, 'Pendaftar PSB baru', 'Periksa', '/admin/admin_data.php');
+        }, 'Pendaftar PSB baru', 'Periksa', '/admin/admin_data.php?status=Baru');
 
+        // Sama dengan daftar `admin_pembayaran_psb.php?status=Belum Lunas`
+        // (pembayaran yang terhubung ke pendaftar).
         $this->kartu($kartu, 'psb_belum_lunas', function (): array {
             $row = $this->one("SELECT COUNT(*) AS n, SUM(pb.tanggal < NOW() - INTERVAL ? HOUR) AS lama
                                  FROM psb_pembayaran pb JOIN psb_pendaftar p ON p.no_pendaftaran = pb.no_pendaftaran
@@ -75,44 +89,54 @@ final class BerandaService
             return [(int) $row['n'], (int) $row['lama'] > 0];
         }, 'Pembayaran PSB belum lunas', 'Lihat', '/admin/admin_pembayaran_psb.php?status=' . rawurlencode('Belum Lunas'));
 
-        $this->kartu($kartu, 'notifikasi_gagal', function (): array {
-            $row = $this->one("SELECT COUNT(*) AS n, SUM(updated_at < NOW() - INTERVAL ? HOUR) AS lama FROM notifikasi_outbox WHERE status = 'Failed'", 'i', [self::BATAS_TERTUNDA_JAM]);
-            return [(int) $row['n'], (int) $row['lama'] > 0];
-        }, 'Notifikasi gagal terkirim', 'Periksa', '/admin/admin_notifikasi.php');
+        // Sama dengan daftar "Pengiriman gagal" (NotificationRepository::failures).
+        $this->kartu($kartu, 'notifikasi_gagal', function () use ($user): array {
+            $jumlah = (int) notification_admin_service()->kegagalan($user, ['per_page' => 1])['pagination']['total'];
+            $row = $this->one("SELECT SUM(updated_at < NOW() - INTERVAL ? HOUR) AS lama FROM notifikasi_outbox WHERE status = 'Failed'", 'i', [self::BATAS_TERTUNDA_JAM]);
+            return [$jumlah, (int) $row['lama'] > 0];
+        }, 'Notifikasi gagal terkirim', 'Periksa', '/admin/admin_notifikasi.php?tab=gagal#pengiriman-gagal');
 
-        $this->kartu($kartu, 'izin_tertunda', function (): array {
-            $row = $this->one("SELECT COUNT(*) AS n FROM izin_pengajuan
-                                WHERE status = 'Diajukan' AND COALESCE(diajukan_pada, created_at) < NOW() - INTERVAL ? HOUR", 'i', [self::BATAS_TERTUNDA_JAM]);
-            return [(int) $row['n'], true];
-        }, 'Izin belum diputus lebih dari 1 hari', 'Lihat', '/portal/izin.php?status=Diajukan');
+        // Filter `tertunda=1` IzinRepository: Diajukan lebih dari 24 jam.
+        $this->kartu($kartu, 'izin_tertunda', function () use ($user): array {
+            $jumlah = (int) izin_service()->list($user, ['status' => 'Diajukan', 'tertunda' => '1'], 1, 1, Capabilities::ADMIN)['total'];
+            return [$jumlah, true];
+        }, 'Izin belum diputus lebih dari 1 hari', 'Lihat', '/portal/izin.php?status=Diajukan&tertunda=1');
 
-        $this->kartu($kartu, 'bahan_perbaikan', function () use ($tahun): array {
-            $row = $this->one("SELECT COUNT(*) AS n, SUM(b.updated_at < NOW() - INTERVAL ? HOUR) AS lama
-                                 FROM v4_bahan b JOIN v4_rencana r ON r.id = b.rencana_id
-                                WHERE b.status = 'Dikembalikan' AND r.tahun_ajaran_id = ?", 'ii', [self::BATAS_TERTUNDA_JAM, $tahun]);
-            return [(int) $row['n'], (int) $row['lama'] > 0];
-        }, 'Bahan rapor perlu perbaikan', 'Lihat', '/portal/verifikasi_semester.php');
-
-        $tanpaKelas = 0;
-        $this->kartu($kartu, 'santri_tanpa_tempat', function () use ($tahun, &$tanpaKelas): array {
-            $row = $this->one("SELECT
-                    SUM(NOT EXISTS (SELECT 1 FROM plotting_kelas pk WHERE pk.id_santri = s.id AND pk.id_tahun = ? AND pk.status = 'Aktif')) AS tanpa_kelas,
-                    SUM(NOT EXISTS (SELECT 1 FROM plotting_kelas pk WHERE pk.id_santri = s.id AND pk.id_tahun = ? AND pk.status = 'Aktif')
-                        OR NOT EXISTS (SELECT 1 FROM plotting_kamar pm WHERE pm.id_santri = s.id AND pm.id_tahun = ?)) AS n
-                  FROM santri s WHERE s.is_active = 1 AND s.archived_at IS NULL", 'iii', [$tahun, $tahun, $tahun]);
-            $tanpaKelas = (int) $row['tanpa_kelas'];
-            return [(int) $row['n'], false];
-        }, 'Santri tanpa kelas atau kamar', 'Tempatkan', '/admin/admin_penempatan_santri.php?status=tanpa_kelas');
-        if (isset($kartu['santri_tanpa_tempat']) && $tanpaKelas === 0) {
-            $kartu['santri_tanpa_tempat']['url'] = app_url('/admin/admin_penempatan_santri.php?status=tanpa_kamar');
+        // Status EFEKTIF bahan (sumber berubah = perlu verifikasi ulang), sama
+        // dengan matriks kelengkapan; tujuan menyaring bahan Dikembalikan.
+        $perbaikanPerRencana = [];
+        $this->kartu($kartu, 'bahan_perbaikan', function () use ($tahun, &$perbaikanPerRencana): array {
+            $jumlah = 0;
+            $lama = false;
+            foreach ($this->rencanaAktif($tahun) as $rencana) {
+                $ringkas = $this->ringkasBahan((int) $rencana['id'], $tahun, (int) $rencana['kelas_id']);
+                if ($ringkas['perbaikan'] > 0) {
+                    $perbaikanPerRencana[] = (int) $rencana['id'];
+                }
+                $jumlah += $ringkas['perbaikan'];
+                $lama = $lama || $ringkas['perbaikan_lama'];
+            }
+            return [$jumlah, $lama];
+        }, 'Bahan rapor perlu perbaikan', 'Lihat', '/portal/verifikasi_semester.php?status=Dikembalikan');
+        if (isset($kartu['bahan_perbaikan']) && count($perbaikanPerRencana) === 1) {
+            $kartu['bahan_perbaikan']['url'] = app_url('/portal/verifikasi_semester.php?rencana_id=' . $perbaikanPerRencana[0] . '&status=Dikembalikan');
         }
 
-        $this->kartu($kartu, 'rekomendasi', function () use ($tahun): array {
-            $row = $this->one("SELECT COUNT(*) AS n, SUM(created_at < NOW() - INTERVAL ? HOUR) AS lama FROM v3_rekomendasi
-                                WHERE status IN ('Baru', 'Ditinjau') AND ditindaklanjuti_kasus_id IS NULL
-                                  AND tidak_berlaku_pada IS NULL AND archived_at IS NULL AND tahun_ajaran_id = ?", 'ii', [self::BATAS_TERTUNDA_JAM, $tahun]);
-            return [(int) $row['n'], (int) $row['lama'] > 0];
-        }, 'Rekomendasi pembinaan belum ditindaklanjuti', 'Tindak lanjuti', '/portal/v3_pelanggaran.php');
+        // Filter penempatan `tanpa_tempat` (tanpa kelas ATAU tanpa kamar).
+        $this->kartu($kartu, 'santri_tanpa_tempat', function () use ($tahun): array {
+            $jumlah = $tahun > 0 ? (int) penempatan_service()->listPage(['status' => 'tanpa_tempat'], $tahun, 1, 1)['total'] : 0;
+            return [$jumlah, false];
+        }, 'Santri tanpa kelas atau kamar', 'Tempatkan', '/admin/admin_penempatan_santri.php?status=tanpa_tempat');
+
+        // Daftar rekomendasi yang sama dengan halaman Konseling
+        // (KonselingRepository::pendingRecommendations).
+        $this->kartu($kartu, 'rekomendasi', function () use ($user): array {
+            $jumlah = count(v3_konseling_service()->options($user)['rekomendasi_belum_ditindaklanjuti']);
+            $row = $this->one("SELECT SUM(created_at < NOW() - INTERVAL ? HOUR) AS lama FROM v3_rekomendasi
+                                WHERE status = 'Baru' AND ditindaklanjuti_kasus_id IS NULL AND tidak_berlaku_pada IS NULL AND archived_at IS NULL",
+                'i', [self::BATAS_TERTUNDA_JAM]);
+            return [$jumlah, (int) $row['lama'] > 0];
+        }, 'Rekomendasi pembinaan belum ditindaklanjuti', 'Lihat', '/portal/v3_konseling.php#rekomendasi');
 
         return array_values($kartu);
     }
@@ -198,7 +222,9 @@ final class BerandaService
     // ------------------------------------------------------------------
 
     /**
-     * Kemajuan nilai per mapel–kelas semester aktif dari penugasan guru mapel.
+     * Kemajuan nilai per mapel–kelas semester aktif dari penugasan guru mapel
+     * MILIK AKUN SENDIRI (B-2). Hak pengawasan admin pada akun yang sama tidak
+     * ikut dihitung; pengawasan tetap tersedia di peran Admin.
      *
      * @param array<string, mixed> $user
      * @return array<int, array{label:string, terisi:int, total:int, url:string}>
@@ -208,7 +234,11 @@ final class BerandaService
         $tahun = $this->tahunAktifId();
         $hasil = [];
         foreach ((new NilaiService($this->db, $this->caps, audit_logger()))->options($user) as $row) {
-            if ((int) $row['tahun_ajaran_id'] !== $tahun) {
+            if ((int) $row['tahun_ajaran_id'] !== $tahun || !$this->caps->featureOwnAppliesTo($user, PenugasanJenis::CAP_NILAI_INPUT, [
+                'tahun_ajaran_id' => (int) $row['tahun_ajaran_id'],
+                'kelas_id' => (int) $row['kelas_id'],
+                'mata_pelajaran_id' => (int) $row['mata_pelajaran_id'],
+            ])) {
                 continue;
             }
             $total = (int) $this->one(
@@ -237,31 +267,18 @@ final class BerandaService
     }
 
     /**
-     * Sikap santri binaan murobi yang sudah dikirim pembimbing tetapi belum
-     * diketahui murobi, pada cakupan penugasan murobi sendiri.
+     * Sikap binaan yang sudah diserahkan pembimbing tetapi belum diketahui
+     * murobi. Dihitung dari daftar yang SAMA dengan tujuan kartunya
+     * (`sikap_semester.php?mode=murobi&status=perlu_diketahui`): pilihan
+     * `SikapService` pada cakupan penugasan murobi sendiri, lalu disaring.
      *
      * @param array<string, mixed> $user
      */
     public function sikapPerluDiketahui(array $user): int
     {
-        $santri = [];
-        foreach ($this->caps->featureScopes($user, PenugasanJenis::CAP_SIKAP_MUROBI) as $scope) {
-            $tahun = (int) $scope['tahun_ajaran_id'];
-            if (!empty($scope['kelas_id'])) {
-                $rows = $this->all("SELECT sk.santri_id FROM v4_sikap sk WHERE sk.tahun_ajaran_id = ? AND sk.kelas_id = ?
-                                     AND sk.status = 'Dikirim' AND sk.diketahui_murobi_user_id IS NULL", 'ii', [$tahun, (int) $scope['kelas_id']]);
-            } elseif (!empty($scope['kamar_id'])) {
-                $rows = $this->all("SELECT sk.santri_id FROM v4_sikap sk JOIN plotting_kamar pm ON pm.id_santri = sk.santri_id AND pm.id_tahun = sk.tahun_ajaran_id
-                                    WHERE sk.tahun_ajaran_id = ? AND pm.id_kamar = ? AND sk.status = 'Dikirim' AND sk.diketahui_murobi_user_id IS NULL", 'ii', [$tahun, (int) $scope['kamar_id']]);
-            } else {
-                continue;
-            }
-            foreach ($rows as $row) {
-                $santri[(int) $row['santri_id']] = true;
-            }
-        }
+        $service = new SikapService($this->db, audit_logger());
 
-        return count($santri);
+        return count($service->filterOptions($service->options($user, 'murobi'), 'perlu_diketahui'));
     }
 
     // ------------------------------------------------------------------
@@ -269,13 +286,13 @@ final class BerandaService
     // ------------------------------------------------------------------
 
     /**
-     * Angka ringkas pengurus pada cakupan binaannya.
+     * Angka ringkas pengurus pada cakupan binaannya. Setiap angka memakai
+     * layanan/filter yang sama dengan halaman tujuannya.
      *
      * @param array<string, mixed> $user
-     * @param array<int, int> $binaan id santri binaan (cakupan pembimbing).
      * @return array<int, array{label:string, nilai:string, url?:string, tertunda?:bool}>
      */
-    public function statistikPengurus(array $user, array $binaan, bool $sikap, bool $pembinaan): array
+    public function statistikPengurus(array $user, bool $sikap, bool $pembinaan): array
     {
         $stat = [];
         $hariIni = date('Y-m-d');
@@ -288,48 +305,25 @@ final class BerandaService
         )['total']), '/portal/izin.php?status=Disetujui&date_from=' . $hariIni . '&date_to=' . $hariIni);
         $this->stat($stat, 'Menunggu keputusan', fn (): string => $this->angka(izin_service()->queueCount($user, Capabilities::PENGURUS)), '/portal/izin_antrean.php');
 
-        $tahun = $this->tahunAktifId();
-        $ids = array_values(array_unique(array_map('intval', $binaan)));
         if ($sikap) {
-            $this->stat($stat, 'Sikap belum diisi', function () use ($ids, $tahun): string {
-                if ($ids === []) {
-                    return '0';
-                }
-                $in = implode(',', array_fill(0, count($ids), '?'));
-                $row = $this->one("SELECT COUNT(DISTINCT pk.id_santri) AS n FROM plotting_kelas pk
-                        JOIN v4_rencana r ON r.kelas_id = pk.id_kelas AND r.tahun_ajaran_id = pk.id_tahun
-                       WHERE pk.id_tahun = ? AND pk.status = 'Aktif' AND pk.id_santri IN ($in)
-                         AND NOT EXISTS (SELECT 1 FROM v4_sikap sk WHERE sk.santri_id = pk.id_santri AND sk.tahun_ajaran_id = pk.id_tahun
-                                         AND sk.status IN ('Dikirim', 'Terverifikasi'))",
-                    'i' . str_repeat('i', count($ids)), array_merge([$tahun], $ids));
-                return $this->angka((int) $row['n']);
-            }, '/portal/sikap_semester.php', true);
+            $this->stat($stat, 'Sikap belum diisi', function () use ($user): string {
+                $service = new SikapService($this->db, audit_logger());
+                return $this->angka(count($service->filterOptions($service->options($user, 'pembimbing'), 'belum')));
+            }, '/portal/sikap_semester.php?status=belum', true);
         }
         if ($pembinaan) {
-            $this->stat($stat, 'Pelanggaran bulan ini', function () use ($ids): string {
-                if ($ids === []) {
-                    return '0';
-                }
-                $in = implode(',', array_fill(0, count($ids), '?'));
-                $row = $this->one("SELECT COUNT(*) AS n FROM v3_pelanggaran
-                       WHERE santri_id IN ($in) AND status <> 'Dibatalkan' AND archived_at IS NULL
-                         AND waktu_kejadian >= DATE_FORMAT(CURDATE(), '%Y-%m-01')", str_repeat('i', count($ids)), $ids);
-                return $this->angka((int) $row['n']);
-            }, '/portal/v3_pelanggaran.php');
-            // Keputusan AA: santri binaan yang total poinnya masuk ambang aktif.
-            $this->stat($stat, 'Santri mencapai ambang', function () use ($ids, $tahun): string {
-                if ($ids === []) {
-                    return '0';
-                }
-                $in = implode(',', array_fill(0, count($ids), '?'));
-                $row = $this->one("SELECT COUNT(*) AS n FROM v3_poin_agregat pa
-                       WHERE pa.tahun_ajaran_id = ? AND pa.archived_at IS NULL AND pa.santri_id IN ($in)
-                         AND pa.total_poin >= (SELECT MIN(a.nilai_minimum) FROM v3_ambang a
-                                                WHERE a.tahun_ajaran_id = pa.tahun_ajaran_id AND a.is_active = 1 AND a.archived_at IS NULL
-                                                  AND a.tanggal_mulai <= CURDATE() AND (a.tanggal_selesai IS NULL OR a.tanggal_selesai >= CURDATE()))",
-                    'i' . str_repeat('i', count($ids)), array_merge([$tahun], $ids));
-                return $this->angka((int) $row['n']);
-            }, '/portal/v3_laporan.php', true);
+            $laporan = new LaporanService(new PelanggaranRepository($this->db), $this->caps);
+            $bulanIni = date('Y-m-01');
+            $this->stat($stat, 'Pelanggaran bulan ini', fn (): string => $this->angka((int) $laporan->read(
+                $user,
+                ['jenis' => 'pelanggaran', 'mulai' => $bulanIni, 'aktif' => '1']
+            )['total']), '/portal/v3_laporan.php?jenis=pelanggaran&mulai=' . $bulanIni . '&aktif=1');
+            // Keputusan AA: santri binaan yang total poinnya masuk ambang aktif;
+            // laporan "ambang" berisi himpunan santri yang sama.
+            $this->stat($stat, 'Santri mencapai ambang', fn (): string => $this->angka((int) $laporan->read(
+                $user,
+                ['jenis' => 'ambang']
+            )['total']), '/portal/v3_laporan.php?jenis=ambang', true);
         }
 
         return $stat;
@@ -340,7 +334,8 @@ final class BerandaService
     // ------------------------------------------------------------------
 
     /**
-     * Kemajuan semester aktif per kelas dalam cakupan Bagian Pendidikan.
+     * Kemajuan semester aktif per kelas dalam cakupan penugasan Bagian
+     * Pendidikan MILIK AKUN SENDIRI.
      *
      * @param array<string, mixed> $user
      * @return array<int, array<string, mixed>>
@@ -350,14 +345,17 @@ final class BerandaService
         $tahun = $this->tahunAktifId();
         $hasil = [];
         foreach ((new VerifikasiService($this->db, audit_logger()))->options($user) as $plan) {
-            if ((int) $plan['tahun_ajaran_id'] !== $tahun) {
+            if ((int) $plan['tahun_ajaran_id'] !== $tahun || !$this->caps->featureOwnAppliesTo($user, PenugasanJenis::CAP_RAPOR_VERIFIKASI, [
+                'tahun_ajaran_id' => (int) $plan['tahun_ajaran_id'],
+                'kelas_id' => (int) $plan['kelas_id'],
+            ])) {
                 continue;
             }
             $kelas = (int) $plan['kelas_id'];
             $rencana = (int) $plan['id'];
-            $santri = (int) $this->one("SELECT COUNT(DISTINCT pk.id_santri) AS n FROM plotting_kelas pk JOIN santri s ON s.id = pk.id_santri
-                    WHERE pk.id_kelas = ? AND pk.id_tahun = ? AND s.is_active = 1 AND s.archived_at IS NULL", 'ii', [$kelas, $tahun])['n'];
-            $mapel = (int) $this->one('SELECT COUNT(*) AS n FROM v4_rencana_mapel WHERE rencana_id = ? AND wajib = 1', 'i', [$rencana])['n'];
+            $bahan = $this->ringkasBahan($rencana, $tahun, $kelas);
+            $santri = $bahan['santri'];
+            $mapel = $bahan['mapel'];
             $nilai = (int) $this->one("SELECT COUNT(*) AS n FROM (
                     SELECT n.rencana_mapel_id, n.santri_id FROM v4_nilai n
                       JOIN v4_rencana_mapel rm ON rm.id = n.rencana_mapel_id AND rm.rencana_id = ? AND rm.wajib = 1
@@ -369,11 +367,9 @@ final class BerandaService
                     JOIN pertemuan_pengajian p ON p.id = pp.pertemuan_id AND p.status = 'Selesai'
                     LEFT JOIN absensi_santri a ON a.pertemuan_id = pp.pertemuan_id AND a.santri_id = pp.santri_id
                    WHERE pp.kelas_id_snapshot = ? AND pp.tahun_ajaran_id_snapshot = ? AND a.id IS NULL", 'ii', [$kelas, $tahun])['n'];
-            $bahan = $this->one("SELECT SUM(status = 'Terverifikasi') AS terverifikasi, SUM(status = 'Dikembalikan') AS perbaikan
-                    FROM v4_bahan WHERE rencana_id = ?", 'i', [$rencana]);
             $terbit = (int) $this->one("SELECT COUNT(*) AS n FROM v4_rapor r JOIN plotting_kelas pk ON pk.id_santri = r.santri_id AND pk.id_tahun = r.tahun_ajaran_id AND pk.id_kelas = ?
                     WHERE r.tahun_ajaran_id = ? AND r.status = 'Terbit'", 'ii', [$kelas, $tahun])['n'];
-            $harapan = $santri * ($mapel + 2);
+            $harapan = $bahan['harapan'];
             $hasil[] = [
                 'rencana_id' => $rencana,
                 'kelas' => (string) $plan['nama_kelas'],
@@ -381,16 +377,133 @@ final class BerandaService
                 'nilai_persen' => $santri * $mapel > 0 ? (int) round(100 * $nilai / ($santri * $mapel)) : null,
                 'sikap_persen' => $santri > 0 ? (int) round(100 * min($sikap, $santri) / $santri) : null,
                 'kehadiran_belum' => $hadirBelum,
-                'terverifikasi' => (int) ($bahan['terverifikasi'] ?? 0),
+                'terverifikasi' => $bahan['terverifikasi'],
                 'harapan' => $harapan,
-                'terverifikasi_persen' => $harapan > 0 ? (int) round(100 * (int) ($bahan['terverifikasi'] ?? 0) / $harapan) : null,
-                'perbaikan' => (int) ($bahan['perbaikan'] ?? 0),
+                'terverifikasi_persen' => $harapan > 0 ? (int) round(100 * $bahan['terverifikasi'] / $harapan) : null,
+                'perbaikan' => $bahan['perbaikan'],
                 'terbit' => $terbit,
                 'url' => app_url('/portal/verifikasi_semester.php?rencana_id=' . $rencana),
+                'url_perbaikan' => app_url('/portal/verifikasi_semester.php?rencana_id=' . $rencana . '&status=Dikembalikan'),
             ];
         }
 
         return $hasil;
+    }
+
+    /**
+     * Status EFEKTIF bahan rapor satu rencana kelas, dengan himpunan bahan dan
+     * aturan yang sama dengan matriks `VerifikasiService::read()`:
+     *
+     *   - santri: penempatan kelas pada semester rencana, santri aktif;
+     *   - bahan: setiap mapel wajib, sikap, dan kehadiran per santri;
+     *   - status: baris `v4_bahan` berlaku hanya bila sidik sumbernya masih
+     *     sama dengan sumber terkini (`BahanRepository::state()`); sumber yang
+     *     berubah sesudah diverifikasi kembali menjadi Draf (perlu verifikasi
+     *     ulang). Tanpa baris pemeriksaan, status awal sama dengan matriks.
+     *
+     * Sumber dibaca per rencana dengan prepared statement (tipe nilai sama
+     * dengan pembacaan matriks), bukan per santri, agar Beranda tetap ringan.
+     *
+     * @return array{santri:int, mapel:int, harapan:int, terverifikasi:int, perbaikan:int, perbaikan_lama:bool, perbaikan_santri:array<int, int>}
+     */
+    public function ringkasBahan(int $rencana, int $tahun, int $kelas): array
+    {
+        $santri = array_map('intval', array_column($this->all(
+            'SELECT DISTINCT s.id FROM santri s JOIN plotting_kelas pk ON pk.id_santri = s.id
+              WHERE pk.id_kelas = ? AND pk.id_tahun = ? AND s.is_active = 1 AND s.archived_at IS NULL',
+            'ii',
+            [$kelas, $tahun]
+        ), 'id'));
+        $mapel = array_map('intval', array_column($this->all(
+            'SELECT rm.id FROM v4_rencana_mapel rm JOIN mata_pelajaran mp ON mp.id = rm.mata_pelajaran_id
+              WHERE rm.rencana_id = ? AND rm.wajib = 1 ORDER BY rm.id',
+            'i',
+            [$rencana]
+        ), 'id'));
+        $hasil = ['santri' => count($santri), 'mapel' => count($mapel), 'harapan' => count($santri) * (count($mapel) + 2),
+            'terverifikasi' => 0, 'perbaikan' => 0, 'perbaikan_lama' => false, 'perbaikan_santri' => []];
+        if ($santri === []) {
+            return $hasil;
+        }
+        $inSantri = implode(',', array_fill(0, count($santri), '?'));
+
+        $nilai = [];
+        if ($mapel !== []) {
+            $inMapel = implode(',', array_fill(0, count($mapel), '?'));
+            foreach ($this->all(
+                "SELECT * FROM v4_nilai WHERE rencana_mapel_id IN ($inMapel) AND santri_id IN ($inSantri)
+                  ORDER BY rencana_mapel_id, santri_id, komponen, nomor_harian",
+                str_repeat('i', count($mapel) + count($santri)),
+                array_merge($mapel, $santri)
+            ) as $row) {
+                $nilai[(int) $row['rencana_mapel_id'] . '|' . (int) $row['santri_id']][] = $row;
+            }
+        }
+        $sikap = [];
+        foreach ($this->all("SELECT * FROM v4_sikap WHERE tahun_ajaran_id = ? AND santri_id IN ($inSantri)", 'i' . str_repeat('i', count($santri)), array_merge([$tahun], $santri)) as $row) {
+            $sikap[(int) $row['santri_id']][] = $row;
+        }
+        $hadir = [];
+        foreach ($this->all(
+            "SELECT pp.santri_id AS _santri, pp.pertemuan_id, p.tanggal_pertemuan, a.status
+               FROM pertemuan_peserta pp
+               JOIN pertemuan_pengajian p ON p.id = pp.pertemuan_id AND p.status = 'Selesai'
+               JOIN jadwal_ngaji j ON j.id = p.jadwal_id AND j.id_tahun = pp.tahun_ajaran_id_snapshot
+               LEFT JOIN absensi_santri a ON a.pertemuan_id = pp.pertemuan_id AND a.santri_id = pp.santri_id
+              WHERE pp.santri_id IN ($inSantri) AND pp.tahun_ajaran_id_snapshot = ?
+              ORDER BY pp.santri_id, pp.pertemuan_id",
+            str_repeat('i', count($santri)) . 'i',
+            array_merge($santri, [$tahun])
+        ) as $row) {
+            $sid = (int) $row['_santri'];
+            unset($row['_santri']);
+            $hadir[$sid][] = $row;
+        }
+        $periksa = [];
+        foreach ($this->all('SELECT * FROM v4_bahan WHERE rencana_id = ?', 'i', [$rencana]) as $row) {
+            $periksa[(int) $row['santri_id'] . '|' . $row['jenis'] . '|' . (int) $row['mapel_key']] = $row;
+        }
+        $batasLama = date('Y-m-d H:i:s', time() - self::BATAS_TERTUNDA_JAM * 3600);
+        $nilaiBahan = function (int $sid, string $jenis, int $key, array $sumber, string $awal) use ($periksa, &$hasil, $batasLama): void {
+            $row = $periksa[$sid . '|' . $jenis . '|' . $key] ?? null;
+            $status = $row === null ? $awal : ($row['sumber_hash'] === BahanRepository::fingerprint($sumber) ? (string) $row['status'] : 'Draf');
+            if ($status === 'Terverifikasi') {
+                $hasil['terverifikasi']++;
+            } elseif ($status === 'Dikembalikan') {
+                $hasil['perbaikan']++;
+                $hasil['perbaikan_santri'][$sid] = ($hasil['perbaikan_santri'][$sid] ?? 0) + 1;
+                if ($row !== null && (string) $row['updated_at'] < $batasLama) {
+                    $hasil['perbaikan_lama'] = true;
+                }
+            }
+        };
+        foreach ($santri as $sid) {
+            foreach ($mapel as $key) {
+                $sumber = $nilai[$key . '|' . $sid] ?? [];
+                $diserahkan = $sumber !== [] && count(array_filter($sumber, static fn (array $r): bool => $r['status'] === 'Dikirim')) === count($sumber);
+                $nilaiBahan($sid, 'nilai', $key, $sumber, $diserahkan ? 'Dikirim' : 'Draf');
+            }
+            $sumberSikap = $sikap[$sid] ?? [];
+            $nilaiBahan($sid, 'sikap', 0, $sumberSikap, (string) ($sumberSikap[0]['status'] ?? 'Draf'));
+            $nilaiBahan($sid, 'kehadiran', 0, $hadir[$sid] ?? [], 'Draf');
+        }
+
+        return $hasil;
+    }
+
+    /**
+     * Rencana kelas semester aktif yang dapat dibaca matriks (kelas aktif).
+     *
+     * @return array<int, array{id:int, kelas_id:int}>
+     */
+    public function rencanaAktif(int $tahun): array
+    {
+        return $this->all(
+            'SELECT r.id, r.kelas_id FROM v4_rencana r JOIN kelas k ON k.id = r.kelas_id AND k.is_active = 1 AND k.archived_at IS NULL
+              WHERE r.tahun_ajaran_id = ? ORDER BY r.id',
+            'i',
+            [$tahun]
+        );
     }
 
     // ------------------------------------------------------------------

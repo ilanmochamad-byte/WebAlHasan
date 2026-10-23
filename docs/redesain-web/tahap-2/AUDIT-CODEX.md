@@ -1,5 +1,7 @@
 # Audit independen Codex — redesain website Tahap 2
 
+> Status terkini: **LULUS setelah koreksi terarah pada audit ulang 23 Oktober 2026**. Lihat [AUDIT-ULANG-CODEX.md](AUDIT-ULANG-CODEX.md). Laporan di bawah adalah riwayat audit pertama atas `9a5d764`.
+
 Tanggal: **23 Oktober 2026 (Asia/Jakarta)**. Putusan: **BELUM LULUS**. Empat temuan P2 di bawah masih terbuka. Tahap 3 belum boleh dimulai. Tidak ada merge, deploy, migrasi produksi, atau perubahan mobile.
 
 ## Acuan dan metode

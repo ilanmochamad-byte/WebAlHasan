@@ -189,6 +189,15 @@ try {
     const menu = await page.locator('#ah-sidebar .ah-nav-sec a span').allInnerTexts();
     cek(menu.includes('Antrean izin') && !menu.includes('Data santri'), `T2-C setelah memilih Guru, menu menjadi menu guru (${menu.join(', ')})`);
     cek((await page.locator('.ah-peran__pill').innerText()).includes('Peran: Guru') && (await page.locator('.ah-note').first().innerText()).includes('Peran aktif: Guru'), 'T2-C pil dan pesan menyebut peran aktif');
+    // Koreksi audit F-1: halaman peran lain menawarkan pilihan, tidak berpindah sendiri.
+    const tolak = await page.goto(BASE + '/admin/admin_master_santri.php');
+    cek(tolak.status() === 403 && (await page.locator('.ah-peran__pill').innerText()).includes('Peran: Guru')
+      && await page.locator('[data-ah-buka-sebagai="admin"]').isVisible() && await melebar(page) <= 0, 'T2-C halaman Admin dari peran Guru: 403, peran tetap Guru, tombol Buka sebagai Admin');
+    await page.screenshot({ path: `${OUT}/buka-sebagai-1280.jpg`, type: 'jpeg', quality: 70 });
+    await Promise.all([page.waitForURL('**/admin/admin_master_santri.php'), page.locator('[data-ah-buka-sebagai="admin"]').click()]);
+    cek((await page.locator('.ah-peran__pill').innerText()).includes('Peran: Admin') && (await page.locator('#ah-sidebar [aria-current="page"]').first().innerText()).includes('Data santri'), 'T2-C "Buka sebagai Admin" membuka halaman semula di peran Admin');
+    await Promise.all([page.waitForURL('**/portal/index.php'), page.evaluate(() => { document.querySelector('.ah-peran').open = true; })
+      .then(() => page.locator('.ah-peran .ah-peran__item', { hasText: 'Guru' }).click())]);
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(BASE + '/portal/index.php');
     await page.locator('#ah-nav-toggle').click();

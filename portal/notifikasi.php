@@ -143,7 +143,9 @@ $belumDibaca = (int) ($data['jumlah_belum_dibaca'] ?? 0);
 
 ah_page_open([
     'title' => 'Notifikasi',
-    'description' => 'Pemberitahuan untuk akun Anda. Ketuk notifikasi untuk membuka halaman tujuannya.',
+    // Ringkasan jumlah belum dibaca tetap tertulis (kontrak V2 Fase 4 WN-3b).
+    'description' => 'Pemberitahuan untuk akun Anda. Ketuk notifikasi untuk membuka halaman tujuannya. '
+        . ($belumDibaca > 0 ? $belumDibaca . ' notifikasi belum dibaca.' : 'Semua sudah dibaca.'),
     'user' => $currentUser,
     'breadcrumbs' => [
         ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],

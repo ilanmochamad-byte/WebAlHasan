@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 use App\Izin\IzinException;
+use App\Auth\Capabilities;
+use App\Ui\Peran;
+use App\Ui\Denial;
 
 require_once __DIR__ . '/_ui.php';
 
@@ -25,7 +28,30 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $aksi = (string) ($_POST['aksi'] ?? '');
-$mode = isset($_POST['mode']) && $_POST['mode'] !== '' ? (string) $_POST['mode'] : null;
+$mode = portal_requested_mode($currentUser, $userCapabilities);
+// Endpoint ini dipakai bersama beberapa peran. Gerbang berbasis alamat saja
+// tidak cukup: aksi dan kapasitas POST juga harus sesuai peran yang dipilih.
+$modeDiizinkan = match ($aksi) {
+    'buat', 'batalkan' => [Capabilities::ADMIN, Capabilities::PENGURUS],
+    'putuskan' => [Capabilities::ADMIN, Capabilities::MUROBI],
+    'tetapkan', 'koreksi' => [Capabilities::ADMIN],
+    default => [],
+};
+if ($modeDiizinkan !== [] && !in_array($mode, $modeDiizinkan, true)) {
+    $pilihan = [];
+    foreach (array_intersect($modeDiizinkan, $userCapabilities) as $calon) {
+        $peran = Peran::fromIzinMode($calon);
+        if ($peran !== null && in_array($peran, Peran::available($currentUser), true)) {
+            $pilihan[] = $peran;
+        }
+    }
+    if ($pilihan !== []) {
+        // POST tidak diputar ulang sesudah memilih peran; pengguna meninjau
+        // kembali data dari Beranda sebelum mengirim tindakan baru.
+        Denial::otherRole((string) Peran::active($currentUser), $pilihan, null, null);
+    }
+    Denial::page('Tindakan perizinan', 'peran dengan kewenangan tindakan ini');
+}
 $pengajuanId = (int) ($_POST['pengajuan_id'] ?? 0);
 $key = isset($_POST['idempotency_key']) ? (string) $_POST['idempotency_key'] : null;
 $version = isset($_POST['version']) && $_POST['version'] !== '' ? (int) $_POST['version'] : null;

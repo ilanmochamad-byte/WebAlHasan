@@ -370,6 +370,9 @@ final class PenempatanRepository
             $parts[] = 'pkm.id IS NULL';
         } elseif ($status === 'tanpa_keduanya') {
             $parts[] = 'pk.id IS NULL AND pkm.id IS NULL';
+        } elseif ($status === 'tanpa_tempat') {
+            // Kartu Beranda admin "Santri tanpa kelas atau kamar" (Tahap 2).
+            $parts[] = '(pk.id IS NULL OR pkm.id IS NULL)';
         }
 
         return [' WHERE ' . implode(' AND ', $parts), $params];

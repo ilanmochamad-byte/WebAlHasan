@@ -1,0 +1,209 @@
+
+=== H2-A. Peta menu per peran ===
+[lulus] sbx_admin: Beranda 200
+[lulus] sbx_admin: menu = Beranda · Perizinan · Pengajian · Pembinaan · Penilaian & rapor · Data santri · Asatidz & pengurus · Kelas & kobong · Pendaftar · Pembayaran · Rekap keuangan · Konten website · Tahun ajaran · Penugasan · Akun & hak akses · Kanal notifikasi · Data sistem lama
+[lulus] sbx_admin: grup = Kegiatan santri · Akademik · Data pesantren · PSB · Website · Pengaturan
+[lulus] sbx_admin: bilah bawah = Beranda · Perizinan · Santri · Notifikasi · Menu
+[lulus] sbx_admin: tanpa label versi di menu
+[lulus] sbx_admin: lonceng notifikasi tampil (AK)
+[lulus] sbx_guru_biasa: Beranda 200
+[lulus] sbx_guru_biasa: menu = Beranda · Pengajian
+[lulus] sbx_guru_biasa: grup = Mengajar
+[lulus] sbx_guru_biasa: bilah bawah = Beranda · Pengajian · Notifikasi · Menu
+[lulus] sbx_guru_biasa: tanpa label versi di menu
+[lulus] sbx_guru_biasa: lonceng notifikasi tampil (AK)
+[lulus] sbx_murobi_a: Beranda 200
+[lulus] sbx_murobi_a: menu = Beranda · Pengajian · Antrean izin · Sikap binaan · Pembinaan binaan
+[lulus] sbx_murobi_a: grup = Mengajar · Murobi
+[lulus] sbx_murobi_a: bilah bawah = Beranda · Pengajian · Antrean · Notifikasi · Menu
+[lulus] sbx_murobi_a: tanpa label versi di menu
+[lulus] sbx_murobi_a: lonceng notifikasi tampil (AK)
+[lulus] sbx_guru_mapel: Beranda 200
+[lulus] sbx_guru_mapel: menu = Beranda · Nilai semester
+[lulus] sbx_guru_mapel: grup = Mengajar
+[lulus] sbx_guru_mapel: bilah bawah = Beranda · Nilai · Notifikasi · Menu
+[lulus] sbx_guru_mapel: tanpa label versi di menu
+[lulus] sbx_guru_mapel: lonceng notifikasi tampil (AK)
+[lulus] sbx_pengurus_a: Beranda 200
+[lulus] sbx_pengurus_a: menu = Beranda · Perizinan · Sikap semester · Pembinaan
+[lulus] sbx_pengurus_a: grup = Santri binaan
+[lulus] sbx_pengurus_a: bilah bawah = Beranda · Perizinan · Binaan · Notifikasi · Menu
+[lulus] sbx_pengurus_a: tanpa label versi di menu
+[lulus] sbx_pengurus_a: lonceng notifikasi tampil (AK)
+[lulus] sbx_pengurus_biasa: Beranda 200
+[lulus] sbx_pengurus_biasa: menu = Beranda · Perizinan
+[lulus] sbx_pengurus_biasa: grup = Santri binaan
+[lulus] sbx_pengurus_biasa: bilah bawah = Beranda · Perizinan · Notifikasi · Menu
+[lulus] sbx_pengurus_biasa: tanpa label versi di menu
+[lulus] sbx_pengurus_biasa: lonceng notifikasi tampil (AK)
+[lulus] sbx_pendidikan: Beranda 200
+[lulus] sbx_pendidikan: menu = Beranda · Penilaian & rapor · Nilai pengganti
+[lulus] sbx_pendidikan: grup = Akademik
+[lulus] sbx_pendidikan: bilah bawah = Beranda · Rapor · Notifikasi · Menu
+[lulus] sbx_pendidikan: tanpa label versi di menu
+[lulus] sbx_pendidikan: lonceng notifikasi tampil (AK)
+[lulus] sbx_ortu_a: Beranda 200
+[lulus] sbx_ortu_a: menu = Beranda · Izin anak · Rapor · Informasi pembinaan · Notifikasi
+[lulus] sbx_ortu_a: grup = (tanpa grup bernama)
+[lulus] sbx_ortu_a: bilah bawah = Beranda · Izin · Rapor · Info · Notifikasi
+[lulus] sbx_ortu_a: tanpa label versi di menu
+[lulus] sbx_ortu_a: lonceng notifikasi tampil (AK)
+[lulus] Admin: 17 menu dalam 7 grup (Beranda + 6 grup bernama)
+
+=== H2-B. Setiap menu/tab dan alamat lama ===
+[lulus] sbx_admin: 52 menu/tab terbuka dan menyorot tempatnya
+[lulus] sbx_guru_biasa: 6 menu/tab terbuka dan menyorot tempatnya
+[lulus] sbx_murobi_a: 14 menu/tab terbuka dan menyorot tempatnya
+[lulus] sbx_guru_mapel: 4 menu/tab terbuka dan menyorot tempatnya
+[lulus] sbx_pengurus_a: 14 menu/tab terbuka dan menyorot tempatnya
+[lulus] sbx_pengurus_biasa: 8 menu/tab terbuka dan menyorot tempatnya
+[lulus] sbx_pendidikan: 8 menu/tab terbuka dan menyorot tempatnya
+[lulus] sbx_ortu_a: 11 menu/tab terbuka dan menyorot tempatnya
+[lulus] Alamat lama /admin/admin_santri.php → Data santri › Penempatan (status 200, menu Data santri, tab Penempatan)
+[lulus] Alamat lama /admin/proses_mutasi_alumni.php → Data santri › Kelulusan & alumni (status 200, menu Data santri, tab Kelulusan & alumni)
+[lulus] Alamat lama /admin/admin_kelulusan_santri.php → Data santri › Kelulusan & alumni (status 200, menu Data santri, tab Kelulusan & alumni)
+[lulus] Alamat lama /admin/admin_wali_rekonsiliasi.php → Data santri › Orang tua/wali (status 200, menu Data santri, tab Orang tua/wali)
+[lulus] Alamat lama /admin/admin_murobi.php → Penugasan (status 200, menu Penugasan, tab -)
+[lulus] Alamat lama /admin/admin_pembimbing.php → Penugasan (status 200, menu Penugasan, tab -)
+[lulus] Alamat lama /admin/admin_izin.php → Perizinan (status 200, menu Perizinan, tab Pengajuan)
+[lulus] Alamat lama /portal/izin_buat.php → Perizinan › Pengajuan (status 200, menu Perizinan, tab Pengajuan)
+[lulus] Alamat lama /portal/izin_detail.php?id=16 → Perizinan › Pengajuan (status 200, menu Perizinan, tab Pengajuan)
+[lulus] Alamat lama /admin/admin_penugasan.php?jenis=mata_pelajaran → Penilaian & rapor › Mata pelajaran (status 200, menu Penilaian & rapor, tab Mata pelajaran)
+[lulus] admin_login.php lama mengalihkan ke pintu masuk satu
+[lulus] admin_izin.php lama tetap menolak mutasi (status 410)
+
+=== H2-C. Peran aktif di sesi ===
+[lulus] Akun admin + guru mendapat pilihan peran Admin dan Guru: admin,guru
+[lulus] Peran bawaan setelah masuk adalah Admin
+[lulus] GET pemilih peran ditolak 405
+[lulus] POST pemilih peran tanpa CSRF ditolak 419
+[lulus] Peran di luar hak akun (orang tua) ditolak; peran tetap Admin
+[lulus] Beralih ke Guru; halaman yang bukan milik peran Guru kembali ke Beranda
+[lulus] Peran Guru: menu dan Beranda guru, pesan peran aktif
+[lulus] Beranda peran Guru menampilkan jadwal, bukan kartu admin
+[lulus] Halaman asal milik peran baru dipertahankan setelah beralih
+[lulus] Perizinan memakai cakupan peran sesi (Murobi); deretan tombol mode dihapus
+[lulus] Halaman Admin dari peran Guru: 403 dengan pilihan eksplisit "Buka sebagai Admin"
+[lulus] Membuka halaman peran lain tidak mengganti peran sesi
+[lulus] POST ke halaman peran lain ditolak 403 sebelum halaman bekerja (tidak ada data baru)
+[lulus] "Buka sebagai Admin" (POST + CSRF) membuka halaman semula di peran Admin
+[lulus] Alamat lama ?mode=murobi dari peran Admin: pilihan Buka sebagai Guru atau Lanjutkan sebagai Admin
+[lulus] ?mode= lama tidak mengganti peran sesi diam-diam
+[lulus] ?mode= yang sama dengan peran aktif dibuka seperti biasa
+[lulus] ?mode=murobi pada peran Guru dibuka dengan cakupan Murobi
+[lulus] ?mode= di luar hak akun diabaikan server
+[lulus] Masuk ulang kembali ke peran bawaan (AR)
+[lulus] Peran tidak memberi hak: murobi tetap 403 di halaman admin setelah mencoba memilih Admin
+[lulus] Bagian Pendidikan yang juga pengurus mendapat dua peran
+[lulus] Peran Pengurus tanpa pembimbing hanya Beranda + Perizinan (keputusan J)
+[lulus] Tautan detail izin (mis. dari notifikasi) di peran Bagian Pendidikan menawarkan Buka sebagai Pengurus tanpa mengganti peran
+[lulus] Halaman bersama (notifikasi) tetap terbuka di peran aktif
+[lulus] Akun berperan tunggal tidak terpengaruh gerbang peran (?mode= di luar hak diabaikan)
+
+=== H2-D. Beranda per peran ===
+[lulus] B-1: empat kartu prioritas teratas sesuai urutan L: izin_penetapan,psb_baru,psb_belum_lunas,notifikasi_gagal
+[lulus] B-1: kelebihan disebut "+4 lainnya · Lihat semua"
+[lulus] B-1: "Lihat semua" menampilkan kedelapan kartu (L + AA)
+[lulus] B-1: kartu bertunda > 1 hari berwarna kuning (P)
+[lulus] B-1: angka kartu sama dengan basis data
+[lulus] B-1: kartu membuka daftar yang tersaring
+[lulus] B-1: memuat Santri aktif
+[lulus] B-1: memuat Izin aktif hari ini
+[lulus] B-1: memuat Pertemuan hari ini
+[lulus] B-1: memuat Hunian asrama
+[lulus] B-1: memuat Pengajian hari ini
+[lulus] B-1: memuat Pengajuan izin terbaru
+[lulus] B-1: tab Tugas saya | Ringkasan administrasi
+[lulus] B-1: semua 0 → "Tidak ada yang perlu ditindaklanjuti" tanpa kartu
+[lulus] B-2: murobi melihat jadwal hari ini (tombol sesuai status) dan bagian murobi
+[lulus] B-2: guru tanpa penugasan murobi tidak melihat bagian murobi
+[lulus] B-2: guru mapel melihat kemajuan nilai per mapel–kelas, tanpa jadwal pengajian
+[lulus] B-3: pengurus/pembimbing melihat Izin aktif
+[lulus] B-3: pengurus/pembimbing melihat Menunggu keputusan
+[lulus] B-3: pengurus/pembimbing melihat Sikap belum diisi
+[lulus] B-3: pengurus/pembimbing melihat Pelanggaran bulan ini
+[lulus] B-3: pengurus/pembimbing melihat Santri mencapai ambang
+[lulus] B-3: pengurus/pembimbing melihat Pengajuan izin saya
+[lulus] B-3: pengurus/pembimbing melihat Santri binaan
+[lulus] B-3: tombol Ajukan izin selalu di atas
+[lulus] B-3: angka ambang (AA) dan pelanggaran bulan ini dari cakupan binaan
+[lulus] B-3: pengurus bukan pembimbing tidak melihat angka sikap/pembinaan (J)
+[lulus] B-4: Bagian Pendidikan melihat kemajuan per kelas yang membuka kelengkapan
+[lulus] B-4: jumlah bahan perlu perbaikan sesuai data
+[lulus] B-5: orang tua memilih anak, kartu izin/rapor/info, tanpa tombol pengubah data
+[lulus] B-5: nama pembimbing belum ditampilkan ke orang tua (menunggu keputusan Z, Tahap 5)
+[lulus] B-5: ?anak= santri yang bukan anaknya diabaikan
+[lulus] B-5: anak kedua dapat dipilih
+
+=== H2-H. Tujuan kartu = himpunan yang dihitung; cakupan sendiri; status bahan efektif ===
+[lulus] F-4 PSB baru: tujuan hanya berisi 2 pendaftar Baru (Baru,Baru)
+[lulus] F-4 izin > 1 hari: kartu 250 = daftar tujuan 250 (Diajukan < 24 jam yang dikecualikan: 0)
+[lulus] F-4 tanpa kelas/kamar: kartu 202 = gabungan tanpa kelas (201) ATAU tanpa kamar (1); tujuan memakai saringan gabungan
+[lulus] F-4 tanpa kelas/kamar: saringan server penempatan menghasilkan himpunan yang sama
+[lulus] F-4 rekomendasi: tujuan memuat daftar rekomendasi belum ditindaklanjuti (1 baris = kartu 1)
+[lulus] F-4 rekomendasi: pembimbing dapat memilih rekomendasi untuk ditindaklanjuti di halaman yang sama
+[lulus] F-4 notifikasi gagal: kartu = daftar Pengiriman gagal (anchor tersedia)
+[lulus] F-4 bahan perlu perbaikan: tujuan hanya santri dengan bahan Perlu Perbaikan (2 santri, 2 bahan = kartu 2)
+[lulus] F-4 sikap belum diisi: angka 1 = daftar tujuan 1
+[lulus] F-4 santri mencapai ambang: angka 1 = laporan santri per total poin
+[lulus] F-4 pelanggaran bulan ini: angka 1 = laporan bulan ini tanpa yang dibatalkan
+[lulus] F-4 sikap binaan perlu diketahui: kartu murobi = daftar tujuan (2)
+[lulus] F-2: Beranda Guru akun admin+guru hanya memuat 1 tugas mapel miliknya (Fiqih · SBX Kelas 1)
+[lulus] F-2: pengawasan Admin pada layanan nilai tetap utuh (2 mapel)
+[lulus] F-3 fixture awal (1 sah, 1 sikap usang, 2 dikembalikan): ringkasan Beranda = matriks kelengkapan sama
+[lulus] F-3 semua tersimpan Terverifikasi dengan sidik campuran: ringkasan Beranda = matriks kelengkapan sama
+[lulus] F-3 nilai berubah sesudah verifikasi: ringkasan Beranda = matriks kelengkapan sama
+[lulus] F-3 sikap berubah sesudah verifikasi: ringkasan Beranda = matriks kelengkapan sama
+[lulus] F-3 kehadiran berubah (peserta pertemuan baru): ringkasan Beranda = matriks kelengkapan sama
+[lulus] F-3: Beranda Bagian Pendidikan menghitung 1 bahan sah dari 12 (8%), bahan sikap bersidik lama tidak dihitung
+
+=== H2-E. Notifikasi untuk semua akun ===
+[lulus] sbx_guru_mapel: pusat notifikasi terbuka (AK)
+[lulus] sbx_pendidikan: pusat notifikasi terbuka (AK)
+[lulus] sbx_guru_biasa: pusat notifikasi terbuka (AK)
+[lulus] sbx_admin: pusat notifikasi terbuka (AK)
+[lulus] sbx_ortu_a: pusat notifikasi terbuka (AK)
+[lulus] Daftar guru mapel tidak memuat notifikasi akun lain
+[lulus] Detail notifikasi milik orang lain ditolak tanpa isi
+[lulus] Buka notifikasi milik orang lain ditolak tanpa pengalihan dan tanpa isi
+[lulus] Tandai dibaca milik orang lain tidak mengubah basis data
+[lulus] Mutasi notifikasi tanpa CSRF ditolak 419
+[lulus] Tandai semua dibaca hanya menyentuh notifikasi milik sendiri
+[lulus] Buka notifikasi milik sendiri menandai dibaca lalu menuju tujuannya
+[lulus] Chip Rapor/Pembinaan menyaring menurut jenis peristiwa
+[lulus] Daftar dikelompokkan per hari
+[lulus] Kategori tak dikenal diabaikan (bukan masukan SQL)
+[lulus] Lonceng memuat pratinjau paling banyak 5 dan tautan Lihat semua
+[lulus] Tanpa sesi: notifikasi mengarah ke halaman masuk
+
+=== H2-F. Masuk, kata sandi, keluar, akses ditolak ===
+[lulus] A-1: dua panel, tombol tampilkan kata sandi
+[lulus] A-1: pesan gagal
+[lulus] A-1: pesan sesi
+[lulus] A-1: pesan logout
+[lulus] A-1: pesan terkunci
+[lulus] A-1: pesan tanpa_akses
+[lulus] A-1: kata sandi salah kembali dengan pesan gagal
+[lulus] A-3: kata sandi sementara diarahkan ke ganti kata sandi
+[lulus] A-3: saat wajib, menu disembunyikan, pesan tampil, Keluar tersedia
+[lulus] A-3: empat syarat sebagai daftar centang
+[lulus] A-3: server tetap memeriksa syarat kata sandi
+[lulus] A-3: tanpa kewajiban, halaman di dalam kerangka biasa
+[lulus] A-4: Keluar berupa POST ber-CSRF dengan dialog
+[lulus] A-4: tidak ada tautan GET untuk keluar di kerangka
+[lulus] A-4: GET logout hanya menampilkan konfirmasi; sesi tetap
+[lulus] A-4: POST logout tanpa CSRF ditolak
+[lulus] A-4: POST ber-CSRF mengakhiri sesi
+[lulus] A-5: sbx_guru_mapel /admin/admin_master_santri.php → 403 di kerangka: hanya untuk admin
+[lulus] A-5: sbx_guru_mapel /portal/izin.php → 403 di kerangka: Perizinan hanya untuk
+[lulus] A-5: sbx_ortu_a /portal/verifikasi_semester.php → 403 di kerangka: Kelengkapan semester hanya untuk Bagian Pendidikan
+[lulus] A-5: sbx_ortu_a /portal/rencana_nilai.php → 403 di kerangka: Rencana nilai hanya untuk Bagian Pendidikan
+[lulus] A-5: sbx_murobi_a /portal/rapor_semester.php → 403 di kerangka: Penerbitan rapor hanya untuk Bagian Pendidikan
+[lulus] A-5: sbx_pengurus_a /portal/rapor_penanda.php → 403 di kerangka: Penanda tangan rapor hanya untuk admin
+[lulus] A-5: sbx_guru_biasa /portal/sikap_semester.php → 403 di kerangka: Sikap semester hanya untuk
+[lulus] A-5: sbx_ortu_a /portal/nilai_semester.php → 403 di kerangka: Nilai semester hanya untuk
+
+=== H2-G. Log server ===
+[lulus] Tanpa galat/peringatan PHP dan tanpa kartu Beranda yang gagal dihitung
+
+Ringkasan: 191 lulus, 0 gagal

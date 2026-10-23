@@ -480,22 +480,6 @@ final class Navigation
     }
 
     /**
-     * Kunci menu aktif untuk skrip yang sedang berjalan (kompatibilitas
-     * `admin/sidebar.php`).
-     */
-    public static function activeKey(?string $script = null): string
-    {
-        $user = authorization()->currentUser();
-        if ($user === null) {
-            return '';
-        }
-        $context = ui_context($user);
-        $map = self::build($user, $context['capabilities'], $context['unread'], $context['v3_capabilities']);
-
-        return self::locate($map['groups'], $map['extras'], $script)['key'] ?? '';
-    }
-
-    /**
      * @param array<int, array{label:string, items:array<int, array<string, mixed>>}> $groups
      * @return array<string, mixed>|null
      */

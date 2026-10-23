@@ -397,6 +397,27 @@ final class Capabilities
         return $entri['sumber'] === self::SUMBER_KEDUANYA;
     }
 
+    /**
+     * Seperti `featureAppliesTo()`, tetapi HANYA cakupan penugasan milik akun
+     * sendiri — tanpa hak pengawasan admin. Dipakai proyeksi tugas pribadi
+     * (mis. Beranda Guru akun admin+guru) agar tidak memuat seluruh data
+     * pengawasan. Bukan pemeriksaan izin; layanan tetap memakai
+     * `featureAppliesTo()`.
+     *
+     * @param array{id:int, roles:array<int,string>, guru_id?:int|null} $user
+     * @param array<string, mixed> $konteks
+     */
+    public function featureOwnAppliesTo(array $user, string $capability, array $konteks): bool
+    {
+        foreach ($this->featureCapabilities($user)[$capability]['cakupan'] ?? [] as $cakupan) {
+            if ($this->scopeMatches($cakupan, $konteks)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /** @param array{id:int, roles:array<int,string>, guru_id?:int|null} $user */
     public function featureAppliesToKelas(array $user, string $capability, int $kelasId, ?int $tahunAjaranId = null): bool
     {

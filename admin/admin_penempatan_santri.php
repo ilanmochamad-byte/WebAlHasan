@@ -343,6 +343,7 @@ if ($filters['status'] === 'nonaktif_berkamar') {
                         <option value="tanpa_kelas" <?= $filters['status'] === 'tanpa_kelas' ? 'selected' : '' ?>>Belum mempunyai kelas</option>
                         <option value="tanpa_kamar" <?= $filters['status'] === 'tanpa_kamar' ? 'selected' : '' ?>>Belum mempunyai kamar</option>
                         <option value="tanpa_keduanya" <?= $filters['status'] === 'tanpa_keduanya' ? 'selected' : '' ?>>Belum mempunyai kelas dan kamar</option>
+                        <option value="tanpa_tempat" <?= $filters['status'] === 'tanpa_tempat' ? 'selected' : '' ?>>Belum mempunyai kelas atau kamar</option>
                         <option value="nonaktif_berkamar" <?= $filters['status'] === 'nonaktif_berkamar' ? 'selected' : '' ?>>Nonaktif/arsip tetapi masih berkamar</option>
                     </select></div>
                 <div class="col-md-4 d-flex flex-wrap gap-2">

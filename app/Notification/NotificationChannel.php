@@ -22,6 +22,20 @@ final class NotificationChannel
     /** Kanal yang diproses worker/cron (memanggil penyedia eksternal). */
     public const EKSTERNAL = [self::PUSH, self::WHATSAPP];
 
+    /**
+     * Kanal yang DITANGGUHKAN (keputusan AL, 22 Oktober 2026): tidak dapat
+     * dinyalakan dan tidak dapat dikirimi pesan uji dari mana pun — panel web
+     * maupun API — sampai Human Developer memutuskan kanal ini dipakai.
+     * Mematikan, pemeriksaan konfigurasi (tanpa mengirim), dan uji coba
+     * worker tanpa kirim tetap tersedia.
+     */
+    public const DITANGGUHKAN = [self::WHATSAPP];
+
+    public static function ditangguhkan(string $channel): bool
+    {
+        return in_array($channel, self::DITANGGUHKAN, true);
+    }
+
     public static function valid(string $channel): bool
     {
         return in_array($channel, self::ALL, true);

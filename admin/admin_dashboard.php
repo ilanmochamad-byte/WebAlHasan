@@ -1,314 +1,151 @@
 <?php
+
+declare(strict_types=1);
+
+use App\Beranda\RingkasanAdministrasi;
+use App\Ui\Chart;
+
 require_once __DIR__ . '/_guard.php';
 
-// --- 1. DATA SUMMARY CARDS ---
-$jml_psb = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar"));
-$jml_santri = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM santri")); 
-$jml_guru = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM guru"));
-$jml_berita = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM berita"));
+/**
+ * Beranda › Ringkasan administrasi (redesain website Tahap 3, N-4).
+ *
+ * Grafik dikelompokkan per tema — PSB, Santri & asrama, Kegiatan — di dalam
+ * kerangka bersama. Grafik dirender server tanpa pustaka (App\Ui\Chart),
+ * warnanya dari token, dan setiap grafik punya keadaan kosong. Semua data
+ * hanya dibaca (`RingkasanAdministrasi`, `report_service`).
+ */
 
-// --- 2. DATA CHART JENJANG PSB ---
-$smk = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE jenjang_tujuan LIKE '%SMK Terpadu Al Hasan%'"));
-$nonsmk = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE jenjang_tujuan LIKE '%MAN%' or jenjang_tujuan LIKE '%SMAN%' or jenjang_tujuan LIKE '%SMKN%'"));
-$smp = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE jenjang_tujuan LIKE '%SMP Terpadu Al Hasan%'"));
-$ra  = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE jenjang_tujuan LIKE '%RA Terpadu Al Hasan%'"));
+$tema = in_array($_GET['tema'] ?? '', ['santri', 'kegiatan'], true) ? (string) $_GET['tema'] : 'psb';
+$ringkasan = new RingkasanAdministrasi($koneksi);
+$tahun = beranda_service()->tahunAktif();
+$alamat = app_url('/admin/admin_dashboard.php');
+$angka = static fn (int $nilai): string => number_format($nilai, 0, ',', '.');
 
-// --- 3. DATA CHART STATUS PSB ---
-$psb_baru = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE status='Baru'"));
-$psb_terima = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE status='Diterima' OR status='Dimigrasi'"));
-$psb_cadangan = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE status='Cadangan'"));
-$psb_tolak = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM psb_pendaftar WHERE status='Ditolak'"));
+ah_page_open([
+    'title' => 'Ringkasan administrasi',
+    'heading' => "Assalamu'alaikum, " . (string) ($currentUser['name'] ?? ''),
+    'user' => $currentUser,
+    'active' => 'beranda',
+    'description' => 'Ringkasan per tema. Angka dihitung saat halaman dibuka.',
+    'actions' => '<a class="btn btn-outline-secondary" href="' . ah_e(app_url('/index.php')) . '" target="_blank" rel="noopener">Lihat situs ↗</a>',
+]);
+echo ah_chips([
+    ['label' => 'PSB', 'url' => $alamat, 'active' => $tema === 'psb'],
+    ['label' => 'Santri & asrama', 'url' => $alamat . '?tema=santri', 'active' => $tema === 'santri'],
+    ['label' => 'Kegiatan', 'url' => $alamat . '?tema=kegiatan', 'active' => $tema === 'kegiatan'],
+], 'Tema ringkasan');
 
-// --- 4. DATA CHART GENDER SANTRI (MASTER DATA) ---
-$santri_l = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM santri WHERE jenis_kelamin='L'"));
-$santri_p = mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM santri WHERE jenis_kelamin='P'"));
-
-// --- 5. DATA KAPASITAS KAMAR (LOGISTIK) ---
-$q_kapasitas = mysqli_query($koneksi, "SELECT SUM(kapasitas) as total FROM kamar");
-$tot_kapasitas = mysqli_fetch_assoc($q_kapasitas)['total'] ?? 0;
-
-$q_isi = mysqli_query($koneksi, "SELECT COUNT(id) as terisi FROM plotting_kamar");
-$tot_isi = mysqli_fetch_assoc($q_isi)['terisi'] ?? 0;
-
-$persen_kamar = ($tot_kapasitas > 0) ? round(($tot_isi / $tot_kapasitas) * 100) : 0;
-// Logika warna: Merah (>85%), Kuning (>60%), Hijau (Aman)
-$warna_kamar = $persen_kamar > 85 ? 'bg-danger' : ($persen_kamar > 60 ? 'bg-warning' : 'bg-success');
-
-// Ringkasan Fase 5 memakai query laporan read-only yang sama dengan halaman detail.
-$reportFrom = (string) ($_GET['report_from'] ?? date('Y-m-01'));
-$reportTo = (string) ($_GET['report_to'] ?? date('Y-m-d'));
-$attendanceDashboard = null;
-$attendanceDashboardError = null;
-try {
-    $attendanceDashboard = report_service()->dashboardSummary([
-        'date_from' => $reportFrom,
-        'date_to' => $reportTo,
-    ], $currentUser);
-} catch (\App\Api\ApiException $exception) {
-    $attendanceDashboardError = $exception->getMessage();
-}
-?>
-
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard Admin - Al Hasan</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { background-color: #f8f9fa; }
-        .card-custom { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .icon-bg { width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-    </style>
-</head>
-<body>
-
-<header class="navbar navbar-dark sticky-top bg-success flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fw-bold" href="#">PANEL ADMIN</a>
-    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="w-100"></div> 
-    <div class="navbar-nav">
-        <div class="nav-item text-nowrap">
-            <a class="nav-link px-3 text-white" href="logout.php"><i class="fas fa-sign-out-alt me-1"></i> Keluar</a>
+if ($tema === 'psb'):
+    $psb = $ringkasan->psb();
+    if ($psb === null):
+        ah_note('warning', 'Data PSB belum dapat dibaca. Coba muat ulang halaman.');
+    else:
+        echo ah_stats([
+            ['label' => 'Total pendaftar', 'value' => $angka($psb['total']), 'url' => app_url('/admin/admin_data.php')],
+            ['label' => 'Baru', 'value' => $angka($psb['status']['Baru']), 'url' => app_url('/admin/admin_data.php?status=Baru'), 'warn' => $psb['status']['Baru'] > 0],
+            ['label' => 'Pembayaran belum lunas', 'value' => $angka($psb['belum_lunas']), 'url' => app_url('/admin/admin_pembayaran_psb.php?status=' . rawurlencode('Belum Lunas'))],
+            ['label' => 'Kas masuk (lunas)', 'value' => 'Rp ' . $angka($psb['kas']), 'url' => app_url('/admin/admin_rekap_keuangan.php')],
+        ], 'Ringkasan PSB');
+        ?>
+        <div class="ah-chart-grid">
+            <section class="ah-card ah-card__body"><?= Chart::bar('Pendaftar per unit', $psb['unit'], 'Belum ada pendaftar.') ?></section>
+            <section class="ah-card ah-card__body"><?= Chart::donut('Status pendaftaran', $psb['status'], 'Belum ada pendaftar.') ?></section>
         </div>
-    </div>
-</header>
+        <?php
+    endif;
 
-<div class="container-fluid">
-    <div class="row">
-        
-        <?php include 'sidebar.php'; ?>
-
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-4 border-bottom">
-                <h1 class="h2 fw-bold text-dark">Dashboard Analitik</h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
-                    <div class="btn-group me-2">
-                        <a href="admin_data.php" class="btn btn-sm btn-outline-success"><i class="fas fa-user-check me-1"></i> Validasi PSB</a>
-                        <a href="../index.php" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fas fa-globe me-1"></i> Lihat Web Utama</a>
-                    </div>
-                </div>
-            </div>
-
-            <section class="card card-custom mb-4" aria-labelledby="ringkasan-absensi">
-                <div class="card-header bg-white border-0 pt-4 d-flex flex-wrap justify-content-between align-items-center gap-3">
-                    <div><h2 id="ringkasan-absensi" class="h5 fw-bold mb-1">Ringkasan Pertemuan & Absensi</h2><p class="text-muted small mb-0">Total berasal dari sumber laporan Fase 5 yang sama.</p></div>
-                    <form method="get" class="d-flex flex-wrap gap-2 align-items-end">
-                        <div><label class="form-label small mb-1" for="report_from">Dari</label><input class="form-control form-control-sm" id="report_from" name="report_from" type="date" value="<?= htmlspecialchars($reportFrom, ENT_QUOTES, 'UTF-8') ?>"></div>
-                        <div><label class="form-label small mb-1" for="report_to">Sampai</label><input class="form-control form-control-sm" id="report_to" name="report_to" type="date" value="<?= htmlspecialchars($reportTo, ENT_QUOTES, 'UTF-8') ?>"></div>
-                        <button class="btn btn-sm btn-success" type="submit">Tampilkan</button>
-                        <a class="btn btn-sm btn-outline-success" href="admin_laporan_absensi.php?date_from=<?= urlencode($reportFrom) ?>&amp;date_to=<?= urlencode($reportTo) ?>">Buka laporan</a>
-                    </form>
-                </div>
-                <div class="card-body">
-                    <?php if ($attendanceDashboardError !== null): ?><div class="alert alert-danger mb-0"><?= htmlspecialchars($attendanceDashboardError, ENT_QUOTES, 'UTF-8') ?></div>
-                    <?php elseif ($attendanceDashboard !== null): $attendanceSummary = $attendanceDashboard['summary']; ?>
-                    <div class="row g-3">
-                        <div class="col-6 col-lg"><div class="border rounded p-3 h-100"><div class="text-muted small">Pertemuan</div><div class="fs-3 fw-bold"><?= $attendanceSummary['meeting_count'] ?></div></div></div>
-                        <?php foreach ($attendanceSummary['statuses'] as $attendanceStatus => $attendanceCount): ?><div class="col-6 col-lg"><div class="border rounded p-3 h-100"><div class="text-muted small"><?= htmlspecialchars($attendanceStatus, ENT_QUOTES, 'UTF-8') ?></div><div class="fs-3 fw-bold"><?= $attendanceCount ?></div></div></div><?php endforeach; ?>
-                    </div>
-                    <?php endif; ?>
+elseif ($tema === 'santri'):
+    $santri = $ringkasan->santri((int) ($tahun['id'] ?? 0));
+    if ($tahun === null) {
+        ah_note('warning', 'Tahun ajaran aktif belum diatur; jenjang dan hunian dihitung setelah tahun ajaran aktif ditetapkan.');
+    }
+    if ($santri === null):
+        ah_note('warning', 'Data santri belum dapat dibaca. Coba muat ulang halaman.');
+    else:
+        $persen = $santri['kapasitas'] > 0 ? (int) round(100 * $santri['terisi'] / $santri['kapasitas']) : 0;
+        echo ah_stats([
+            ['label' => 'Santri aktif', 'value' => $angka($santri['aktif']), 'url' => app_url('/admin/admin_master_santri.php')],
+            ['label' => 'Laki-laki', 'value' => $angka($santri['l'])],
+            ['label' => 'Perempuan', 'value' => $angka($santri['p'])],
+            ['label' => 'Hunian asrama', 'value' => $santri['kapasitas'] > 0 ? $persen . '%' : '—', 'url' => app_url('/admin/admin_kamar.php'), 'warn' => $persen > 90],
+        ], 'Ringkasan santri dan asrama');
+        ?>
+        <div class="ah-chart-grid">
+            <section class="ah-card ah-card__body"><?= Chart::bar('Santri aktif per jenjang', $santri['jenjang'], 'Belum ada santri aktif.') ?></section>
+            <section class="ah-card ah-card__body"><?= Chart::donut('Rasio laki-laki dan perempuan', ['Laki-laki' => $santri['l'], 'Perempuan' => $santri['p']], 'Belum ada santri aktif.') ?></section>
+            <section class="ah-card ah-card__body" aria-labelledby="judul-hunian">
+                <h2 class="ah-chart__title" id="judul-hunian">Hunian asrama</h2>
+                <?php if ($santri['kapasitas'] <= 0): ?>
+                    <p class="ah-chart__empty">Kapasitas kamar belum diisi.</p>
+                <?php else: ?>
+                    <?= Chart::progress([['label' => 'Seluruh kamar', 'value' => $santri['terisi'], 'max' => $santri['kapasitas'], 'hint' => $santri['terisi'] . '/' . $santri['kapasitas'] . ' tempat']]) ?>
+                    <p class="ah-meta mt-2 mb-2">Penghuni putra <?= $angka($santri['terisi_l']) ?> · putri <?= $angka($santri['terisi_p']) ?>. Asrama putra/putri per kamar dicatat setelah kolom asrama tersedia.</p>
+                    <?php if ($santri['kamar_padat'] > 0) { ah_note('warning', $santri['kamar_padat'] . ' kamar terisi di atas 90%.'); } ?>
+                <?php endif; ?>
+                <div class="ah-actions mt-2">
+                    <a class="btn btn-sm btn-outline-primary" href="<?= ah_e(app_url('/admin/admin_penempatan_santri.php')) ?>">Penempatan kelas &amp; kamar</a>
+                    <a class="btn btn-sm btn-outline-secondary" href="<?= ah_e(app_url('/admin/admin_rekap_santri.php')) ?>">Rekap jumlah santri</a>
                 </div>
             </section>
+        </div>
+        <?php
+    endif;
 
-            <div class="row g-4 mb-4">
-                <div class="col-xl-3 col-md-6">
-                    <div class="card card-custom h-100">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="icon-bg bg-primary bg-opacity-10 me-3">
-                                <i class="fas fa-users fa-2x text-primary"></i>
-                            </div>
-                            <div>
-                                <h6 class="text-muted mb-1">Total Pendaftar</h6>
-                                <h3 class="fw-bold mb-0"><?php echo $jml_psb; ?></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card card-custom h-100">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="icon-bg bg-success bg-opacity-10 me-3">
-                                <i class="fas fa-user-graduate fa-2x text-success"></i>
-                            </div>
-                            <div>
-                                <h6 class="text-muted mb-1">Santri Aktif</h6>
-                                <h3 class="fw-bold mb-0"><?php echo $jml_santri; ?></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card card-custom h-100">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="icon-bg bg-warning bg-opacity-10 me-3">
-                                <i class="fas fa-chalkboard-teacher fa-2x text-warning"></i>
-                            </div>
-                            <div>
-                                <h6 class="text-muted mb-1">Guru & Staff</h6>
-                                <h3 class="fw-bold mb-0"><?php echo $jml_guru; ?></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card card-custom h-100">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="icon-bg bg-info bg-opacity-10 me-3">
-                                <i class="fas fa-newspaper fa-2x text-info"></i>
-                            </div>
-                            <div>
-                                <h6 class="text-muted mb-1">Total Berita</h6>
-                                <h3 class="fw-bold mb-0"><?php echo $jml_berita; ?></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-4 mb-4">
-                <div class="col-lg-8">
-                    <div class="card card-custom h-100">
-                        <div class="card-header bg-white border-0 pt-4 pb-0">
-                            <h6 class="fw-bold text-secondary text-uppercase">Distribusi Pendaftar per Unit Sekolah</h6>
-                        </div>
-                        <div class="card-body p-4">
-                            <canvas id="chartJenjang" style="max-height: 300px;"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card card-custom h-100">
-                        <div class="card-header bg-white border-0 pt-4 pb-0">
-                            <h6 class="fw-bold text-secondary text-uppercase">Status Pendaftaran (Pipeline)</h6>
-                        </div>
-                        <div class="card-body p-4 d-flex justify-content-center">
-                            <canvas id="chartStatus" style="max-height: 250px;"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="card card-custom h-100">
-                        <div class="card-header bg-white border-0 pt-4 pb-0">
-                            <h6 class="fw-bold text-secondary text-uppercase">Rasio Gender Santri Aktif</h6>
-                        </div>
-                        <div class="card-body p-4 d-flex justify-content-center">
-                            <canvas id="chartGender" style="max-height: 250px;"></canvas>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4">
-                    <div class="card card-custom h-100">
-                        <div class="card-header bg-white border-0 pt-4 pb-0">
-                            <h6 class="fw-bold text-secondary text-uppercase">Logistik Kamar Asrama</h6>
-                        </div>
-                        <div class="card-body p-4">
-                            <div class="text-center mb-4">
-                                <h1 class="display-3 fw-bold text-dark mb-0"><?php echo $persen_kamar; ?>%</h1>
-                                <span class="text-muted">Tingkat Keterisian Ranjang</span>
-                            </div>
-                            <div class="progress" style="height: 15px; border-radius: 10px;">
-                                <div class="progress-bar <?php echo $warna_kamar; ?>" role="progressbar" style="width: <?php echo $persen_kamar; ?>%;" aria-valuenow="<?php echo $persen_kamar; ?>" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <div class="d-flex justify-content-between mt-2 small text-muted fw-bold">
-                                <span>Terisi: <?php echo $tot_isi; ?></span>
-                                <span>Kapasitas: <?php echo $tot_kapasitas; ?></span>
-                            </div>
-                            
-                            <?php if($persen_kamar > 85) { ?>
-                                <div class="alert alert-danger mt-4 small py-2 mb-0">
-                                    <i class="fas fa-exclamation-triangle me-1"></i> Peringatan: Kapasitas asrama hampir penuh! Pertimbangkan penambahan ranjang/kamar.
-                                </div>
-                            <?php } ?>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="card card-custom h-100">
-                        <div class="card-header bg-white border-0 pt-4 pb-2">
-                            <h6 class="fw-bold text-secondary text-uppercase">Aksi Cepat</h6>
-                        </div>
-                        <div class="list-group list-group-flush border-top-0 px-3 pb-3">
-                            <a href="tambah_berita.php" class="list-group-item list-group-item-action border-0 rounded my-1 bg-light"><i class="fas fa-pen-alt me-2 text-primary"></i> Publikasi Berita Baru</a>
-                            <a href="admin_penempatan_santri.php" class="list-group-item list-group-item-action border-0 rounded my-1 bg-light"><i class="fas fa-bed me-2 text-success"></i> Penempatan Kelas &amp; Kamar</a>
-                            <a href="admin_pelanggaran.php" class="list-group-item list-group-item-action border-0 rounded my-1 bg-light"><i class="fas fa-clipboard-list me-2 text-danger"></i> Data Warisan Pelanggaran</a>
-                            <a href="admin_master_santri.php" class="list-group-item list-group-item-action border-0 rounded my-1 bg-light"><i class="fas fa-database me-2 text-warning"></i> Master Data Santri</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </main>
+else:
+    $reportFrom = (string) ($_GET['report_from'] ?? date('Y-m-01'));
+    $reportTo = (string) ($_GET['report_to'] ?? date('Y-m-d'));
+    $ringkasAbsensi = null;
+    $galatAbsensi = null;
+    try {
+        $ringkasAbsensi = report_service()->dashboardSummary(['date_from' => $reportFrom, 'date_to' => $reportTo], $currentUser)['summary'];
+    } catch (\App\Api\ApiException $exception) {
+        $galatAbsensi = $exception->getMessage();
+    }
+    $pekanan = RingkasanAdministrasi::kehadiranPekanan(static function (string $dari, string $sampai) use ($currentUser): ?array {
+        try {
+            return report_service()->dashboardSummary(['date_from' => $dari, 'date_to' => $sampai], $currentUser)['summary']['statuses'];
+        } catch (\Throwable $exception) {
+            return null;
+        }
+    });
+    $izin = $ringkasan->izinBulanIni();
+    $pelanggaran = $ringkasan->pelanggaranBulanIni();
+    ?>
+    <section class="ah-card" aria-labelledby="ringkasan-absensi">
+        <div class="ah-card__head flex-wrap gap-2">
+            <h2 class="h6 mb-0" id="ringkasan-absensi">Pertemuan &amp; kehadiran pengajian</h2>
+            <a class="btn btn-sm btn-outline-primary" href="<?= ah_e(app_url('/admin/admin_laporan_absensi.php?' . http_build_query(['date_from' => $reportFrom, 'date_to' => $reportTo]))) ?>">Buka laporan</a>
+        </div>
+        <div class="ah-card__body">
+            <?php ah_filter_open(0, ['tema' => 'kegiatan']); ?>
+                <div><label class="form-label" for="report_from">Dari</label><input class="form-control" id="report_from" name="report_from" type="date" value="<?= ah_e($reportFrom) ?>"></div>
+                <div><label class="form-label" for="report_to">Sampai</label><input class="form-control" id="report_to" name="report_to" type="date" value="<?= ah_e($reportTo) ?>"></div>
+            <?php ah_filter_close(['tema' => 'kegiatan']); ?>
+            <?php if ($galatAbsensi !== null): ?>
+                <?php ah_note('danger', $galatAbsensi); ?>
+            <?php elseif ($ringkasAbsensi !== null): ?>
+                <?= ah_stats(array_merge(
+                    [['label' => 'Pertemuan', 'value' => $angka((int) $ringkasAbsensi['meeting_count'])]],
+                    array_map(static fn (string $label, int $nilai): array => ['label' => $label, 'value' => number_format($nilai, 0, ',', '.')], array_keys($ringkasAbsensi['statuses']), $ringkasAbsensi['statuses'])
+                ), 'Ringkasan kehadiran pada rentang terpilih') ?>
+            <?php endif; ?>
+        </div>
+    </section>
+    <div class="ah-chart-grid">
+        <section class="ah-card ah-card__body"><?= Chart::line('Kehadiran pengajian 10 pekan (hadir + terlambat)', $pekanan, 'Belum ada catatan kehadiran dalam 10 pekan terakhir.') ?></section>
+        <section class="ah-card ah-card__body">
+            <?= $izin === null ? '<p class="ah-chart__empty">Data perizinan belum dapat dibaca.</p>' : Chart::bar('Izin bulan ini per status', $izin, 'Belum ada pengajuan izin bulan ini.') ?>
+            <div class="ah-actions mt-2"><a class="btn btn-sm btn-outline-primary" href="<?= ah_e(app_url('/portal/izin_ringkasan.php')) ?>">Buka perizinan</a></div>
+        </section>
+        <?php if ($pelanggaran !== null): ?>
+        <section class="ah-card ah-card__body">
+            <h2 class="ah-chart__title">Pembinaan</h2>
+            <?= ah_stats([['label' => 'Pelanggaran dicatat bulan ini', 'value' => $angka($pelanggaran), 'url' => app_url('/portal/v3_pelanggaran.php')]], 'Ringkasan pembinaan') ?>
+        </section>
+        <?php endif; ?>
     </div>
-</div>
+    <?php
+endif;
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // 1. Bar Chart: Pendaftar Per Jenjang
-    const ctxJenjang = document.getElementById('chartJenjang');
-    new Chart(ctxJenjang, {
-        type: 'bar',
-        data: {
-            labels: ['SMK Terpadu Al Hasan', 'Non SMK Terpadu Al Hasan', 'SMP Terpadu Al Hasan', 'RA Terpadu'],
-            datasets: [{
-                label: 'Jumlah Pendaftar',
-                data: [<?php echo $smk; ?>, <?php echo $nonsmk; ?>, <?php echo $smp; ?>, <?php echo $ra; ?>],
-                backgroundColor: ['#0d6efd', '#f7c10f', '#0dcaf0', '#ffc107'],
-                borderRadius: 6
-            }]
-        },
-        options: {
-            plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true, grid: { borderDash: [5, 5] } }, x: { grid: { display: false } } }
-        }
-    });
-
-    // 2. Doughnut Chart: Status Pipeline PSB
-    const ctxStatus = document.getElementById('chartStatus');
-    new Chart(ctxStatus, {
-        type: 'doughnut',
-        data: {
-            labels: ['Baru', 'Diterima', 'Cadangan', 'Ditolak'],
-            datasets: [{
-                data: [<?php echo $psb_baru; ?>, <?php echo $psb_terima; ?>, <?php echo $psb_cadangan; ?>, <?php echo $psb_tolak; ?>],
-                backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545'],
-                borderWidth: 2,
-                hoverOffset: 4
-            }]
-        },
-        options: {
-            cutout: '70%',
-            plugins: { legend: { position: 'bottom' } }
-        }
-    });
-
-    // 3. Pie Chart: Rasio Gender Santri Aktif
-    const ctxGender = document.getElementById('chartGender');
-    new Chart(ctxGender, {
-        type: 'pie',
-        data: {
-            labels: ['Laki-laki', 'Perempuan'],
-            datasets: [{
-                data: [<?php echo $santri_l; ?>, <?php echo $santri_p; ?>],
-                backgroundColor: ['#3b82f6', '#ec4899'],
-                borderWidth: 2
-            }]
-        },
-        options: {
-            plugins: { legend: { position: 'bottom' } }
-        }
-    });
-</script>
-
-</body>
-</html>
+ah_page_close();

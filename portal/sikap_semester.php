@@ -11,6 +11,9 @@ $plan=(int)($_POST['rencana_id']??$_GET['rencana_id']??0);$sid=(int)($_POST['san
 $current=null;$options=[];
 try{
     $options=$service->options($user,$mode);
+    // Saringan dari kartu Beranda (Tahap 2): himpunan sama dengan angkanya.
+    $saring=in_array($_GET['status']??'',['belum','perlu_diketahui'],true)?(string)$_GET['status']:'';
+    if($saring!=='')$options=$service->filterOptions($options,$saring);
     if($_SERVER['REQUEST_METHOD']==='POST'){
         Csrf::requireValid(is_string($_POST['_csrf']??null)?$_POST['_csrf']:null);
         $service->save($user,$_POST,$mode);
@@ -24,7 +27,7 @@ ah_page_open(['title'=>$mode==='murobi'?'Pemeriksaan Sikap Murobi':'Sikap Semest
 ?>
 <style>.sikap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1rem}.sikap-grid>*{min-width:0}textarea,select{max-width:100%;width:100%}.sikap-actions{display:flex;flex-wrap:wrap;gap:.75rem}.sikap-history{overflow-wrap:anywhere;border-bottom:1px solid #ddd;margin:1rem 0}</style>
 <?php if(isset($error)):?><p class="alert alert-danger" role="alert"><?= $e($error) ?> Data tersimpan terbaru ditampilkan; muat ulang sebelum mencoba kembali.</p><?php endif ?>
-<section class="card p-3 mb-3"><details <?= $current?'':'open' ?>><summary>Pilih santri dan semester</summary><?php if(!$options):?><p>Belum ada santri dalam penugasan aktif Anda.</p><?php endif ?>
+<section class="card p-3 mb-3"><details <?= $current?'':'open' ?>><summary>Pilih santri dan semester</summary><?php if(($saring??'')!==''):?><p class="small" data-ah-saringan="<?= $e($saring) ?>"><?= $e($saring==='belum'?'Hanya santri yang sikapnya belum diserahkan':'Hanya sikap yang sudah diserahkan dan belum diketahui murobi') ?> · <?= count($options) ?> santri · <a href="?mode=<?= $e($mode) ?>">Tampilkan semua</a></p><?php endif ?><?php if(!$options):?><p><?= ($saring??'')!==''?'Tidak ada santri yang sesuai saringan ini.':'Belum ada santri dalam penugasan aktif Anda.' ?></p><?php endif ?>
 <?php foreach($options as $o):?><p><a href="?mode=<?= $e($mode) ?>&amp;rencana_id=<?= (int)$o['rencana_id'] ?>&amp;santri_id=<?= (int)$o['santri_id'] ?>"><?= $e($o['nama_santri'].' · '.$o['nama_kelas'].' · '.$o['tahun'].' '.$o['semester']) ?></a></p><?php endforeach ?></details></section>
 <?php if($current):$row=$current['sikap']??[]; ?>
 <section class="card p-3"><h2 class="h5">Penilaian sikap</h2><p id="status-sikap"><?= $e($current['pemeriksaan']['status']) ?> · versi <?= (int)($row['version']??0) ?> · <?= empty($row['diketahui_murobi_user_id'])?'Belum diketahui murobi':'Diketahui / dikoreksi murobi #'.(int)$row['diketahui_murobi_user_id'] ?></p>

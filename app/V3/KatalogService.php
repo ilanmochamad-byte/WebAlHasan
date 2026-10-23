@@ -110,9 +110,21 @@ final class KatalogService
         $fields=$kind==='katalog'?['id','kode','nama','kategori_id','kategori_nama','tingkat','poin_default','uraian','tanggal_mulai','tanggal_selesai']:['id','tahun_ajaran_id','nilai_minimum','nilai_maksimum','label','rekomendasi','tanggal_mulai','tanggal_selesai'];
         $result['rows']=array_map(static fn($row)=>array_intersect_key($row,array_flip($fields)),$result['rows']);return $result;
     }
-    public function legacy(array $user,int $page): array
+    /**
+     * Arsip pelanggaran sistem lama, baca-saja (PRD V3 §5.2a). Pencarian nama
+     * santri dan saringan tahun kejadian (redesain Tahap 3, N-5) memakai
+     * parameter terikat; tidak ada mutasi.
+     */
+    public function legacy(array $user,int $page,string $q='',int $tahun=0): array
     {
         $this->requireAdmin($user);$page=max(1,min(1000000,$page));
-        return ['rows'=>$this->repo->rows('SELECT p.*,s.nama_santri FROM pelanggaran p LEFT JOIN santri s ON s.id=p.id_santri ORDER BY p.id DESC LIMIT 25 OFFSET ?',[($page-1)*25]),'total'=>(int)$this->repo->rows('SELECT COUNT(*) AS n FROM pelanggaran')[0]['n'],'page'=>$page,'per_page'=>25];
+        $q=mb_substr(trim($q),0,100);$where=[];$values=[];
+        if($q!==''){$where[]='s.nama_santri LIKE ?';$values[]='%'.$q.'%';}
+        if($tahun>=1900&&$tahun<=2100){$where[]='p.tgl_pelanggaran BETWEEN ? AND ?';$values[]=$tahun.'-01-01';$values[]=$tahun.'-12-31';}
+        $sql=' FROM pelanggaran p LEFT JOIN santri s ON s.id=p.id_santri'.($where===[]?'':' WHERE '.implode(' AND ',$where));
+        $total=(int)$this->repo->rows('SELECT COUNT(*) AS n'.$sql,$values)[0]['n'];
+        $page=min($page,max(1,(int)ceil($total/25)));
+        $years=array_map(static fn(array $r): int => (int)$r['y'],$this->repo->rows('SELECT DISTINCT YEAR(tgl_pelanggaran) AS y FROM pelanggaran WHERE tgl_pelanggaran IS NOT NULL ORDER BY y DESC'));
+        return ['rows'=>$this->repo->rows('SELECT p.*,s.nama_santri'.$sql.' ORDER BY p.id DESC LIMIT 25 OFFSET ?',[...$values,($page-1)*25]),'total'=>$total,'page'=>$page,'per_page'=>25,'years'=>array_values(array_filter($years))];
     }
 }

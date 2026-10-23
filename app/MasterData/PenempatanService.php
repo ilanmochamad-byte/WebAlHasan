@@ -141,7 +141,7 @@ final class PenempatanService
             'sekolah' => mb_substr(Normalizer::text($filters['sekolah'] ?? ''), 0, 50),
             'kelas_id' => max(0, (int) ($filters['kelas_id'] ?? 0)),
             'kamar_id' => max(0, (int) ($filters['kamar_id'] ?? 0)),
-            'status' => in_array($filters['status'] ?? '', ['tanpa_kelas', 'tanpa_kamar', 'tanpa_keduanya', 'nonaktif_berkamar'], true)
+            'status' => in_array($filters['status'] ?? '', ['tanpa_kelas', 'tanpa_kamar', 'tanpa_keduanya', 'tanpa_tempat', 'nonaktif_berkamar'], true)
                 ? (string) $filters['status'] : '',
         ];
     }

@@ -325,7 +325,6 @@ echo PHP_EOL . '=== 6. Desain dan navigasi bersama ===' . PHP_EOL;
 $css = $source('assets/ui/alhasan.css');
 $layout = $source('app/Ui/Layout.php');
 $navigation = $source('app/Ui/Navigation.php');
-$sidebar = $source('admin/sidebar.php');
 
 $assert($css !== '', 'Berkas desain bersama tersedia: assets/ui/alhasan.css');
 $assert(
@@ -363,9 +362,11 @@ $assert(
     && !str_contains($tanpaKomentar($navigation), 'requireWebUser'),
     'Komponen navigasi bebas dari guard khusus admin sehingga aman lintas peran'
 );
+// Redesain web Tahap 3: admin/sidebar.php pensiun; seluruh halaman memakai
+// App\Ui\Layout (diperiksa tests/redesain_web_tahap3_static.php).
 $assert(
-    !str_contains($sidebar, "require_once __DIR__ . '/_guard.php'"),
-    'sidebar.php tidak lagi menyeret guard khusus admin'
+    !is_file($root . '/admin/sidebar.php') && !str_contains($tanpaKomentar($navigation), 'sidebar.php'),
+    'sidebar.php lama sudah pensiun; navigasi hanya dari kerangka bersama'
 );
 $assert(
     str_contains($layout, 'ah-skip') && str_contains($layout, 'Lompat ke konten utama'),
@@ -493,7 +494,7 @@ $berkas = [
     'app/Account/AccountRepository.php', 'app/Account/AccountService.php',
     'app/MasterData/MasterDataRepository.php', 'app/MasterData/MasterDataService.php',
     'app/Report/ReportFilter.php', 'app/Report/ReportRepository.php', 'app/Report/ReportService.php',
-    'admin/_master_ui.php', 'admin/sidebar.php', 'admin/admin_akun.php', 'admin/admin_akun_perizinan.php',
+    'admin/_master_ui.php', 'admin/admin_akun.php', 'admin/admin_akun_perizinan.php',
     'admin/admin_guru.php', 'admin/admin_murobi.php', 'admin/admin_master_santri.php', 'admin/admin_wali.php',
     'admin/admin_wali_rekonsiliasi.php', 'admin/get_wali_json.php', 'admin/_santri_wali_field.php',
     'admin/admin_pengajian.php', 'admin/_pengajian_jadwal.php', 'admin/_pengajian_pertemuan.php',

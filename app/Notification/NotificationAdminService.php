@@ -64,6 +64,7 @@ final class NotificationAdminService
                     'kanal' => NotificationChannel::IN_APP,
                     'label' => NotificationChannel::label(NotificationChannel::IN_APP),
                     'aktif' => true,
+                    'ditangguhkan' => false,
                     'dapat_dimatikan' => false,
                     'keterangan' => 'Sumber status utama. Selalu aktif dan tidak bergantung pada penyedia eksternal.',
                     'kesiapan' => ['siap' => true, 'pesan' => 'Tidak memerlukan konfigurasi eksternal.', 'detail' => []],
@@ -73,6 +74,7 @@ final class NotificationAdminService
                     'kanal' => NotificationChannel::PUSH,
                     'label' => NotificationChannel::label(NotificationChannel::PUSH),
                     'aktif' => $pengaturan['push_enabled'],
+                    'ditangguhkan' => NotificationChannel::ditangguhkan(NotificationChannel::PUSH),
                     'dapat_dimatikan' => true,
                     'keterangan' => 'Memakai expo-notifications. Memerlukan development build dan perangkat nyata.',
                     'kesiapan' => [
@@ -94,8 +96,11 @@ final class NotificationAdminService
                     'kanal' => NotificationChannel::WHATSAPP,
                     'label' => NotificationChannel::label(NotificationChannel::WHATSAPP),
                     'aktif' => $pengaturan['whatsapp_enabled'],
+                    'ditangguhkan' => NotificationChannel::ditangguhkan(NotificationChannel::WHATSAPP),
                     'dapat_dimatikan' => true,
-                    'keterangan' => 'Opsional, default mati. Hanya dapat dinyalakan setelah pemeriksaan konfigurasi lulus.',
+                    'keterangan' => NotificationChannel::ditangguhkan(NotificationChannel::WHATSAPP)
+                        ? 'Ditangguhkan. Opsional dan belum diuji kirim nyata; tidak dapat dinyalakan sampai pesantren memutuskan kanal ini dipakai.'
+                        : 'Opsional, default mati. Hanya dapat dinyalakan setelah pemeriksaan konfigurasi lulus.',
                     'penyedia' => [
                         'nama' => $this->whatsapp->name(),
                         'mengirim_nyata' => $this->whatsapp->mengirimNyata(),
@@ -293,6 +298,12 @@ final class NotificationAdminService
             throw NotificationException::invalid('Kanal tidak dikenal.');
         }
 
+        if ($aktif && NotificationChannel::ditangguhkan($kanal)) {
+            throw NotificationException::conflict(
+                'WhatsApp ditangguhkan dan tidak dapat dinyalakan sampai pesantren memutuskan kanal ini dipakai.'
+            );
+        }
+
         if (!$aktif) {
             $this->settings->setWhatsappEnabled(false, $userId);
             $dibatalkan = $this->outbox->cancelQueued(
@@ -365,6 +376,12 @@ final class NotificationAdminService
         $userId = (int) $user['id'];
         if (!NotificationChannel::valid($kanal)) {
             throw NotificationException::invalid('Kanal tidak dikenal.');
+        }
+
+        if (NotificationChannel::ditangguhkan($kanal)) {
+            throw NotificationException::conflict(
+                NotificationChannel::label($kanal) . ' ditangguhkan; pesan uji tidak dikirim.'
+            );
         }
 
         $pengaturan = $this->settings->current();
@@ -563,6 +580,19 @@ final class NotificationAdminService
         $this->requireAdmin($user);
 
         return ['items' => $this->settings->auditTrail($limit)];
+    }
+
+    /**
+     * Riwayat perubahan kanal berhalaman untuk tab Riwayat (redesain Tahap 3).
+     *
+     * @param array<string, mixed> $user
+     * @return array{rows:array<int, array<string, mixed>>, total:int, page:int, per_page:int}
+     */
+    public function riwayatKanal(array $user, int $page, int $perPage = 20): array
+    {
+        $this->requireAdmin($user);
+
+        return $this->settings->auditTrailPage($page, $perPage);
     }
 
     /**

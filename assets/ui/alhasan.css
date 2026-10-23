@@ -1467,9 +1467,176 @@ body.ah-masuk { min-height: 100dvh; background: var(--ah-green-050); }
 }
 
 /* Tombol kecil bertinggi sentuh 44px: teks di tengah, bukan di atas. */
-.ah-card__head .btn-sm, .ah-card .ah-table .btn-sm, .ah-task__btn, .ah-schedule .btn, .ah-parent-card .btn, .ah-page-head__actions .btn {
+.ah-card__head .btn-sm, .ah-card .ah-table .btn-sm, .ah-denial .btn, .ah-task__btn, .ah-schedule .btn, .ah-parent-card .btn, .ah-page-head__actions .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: .35rem;
 }
+
+/* ==========================================================================
+ * Redesain website Tahap 3 (23 Oktober 2026): halaman lama ke kerangka baru.
+ * Grafik tanpa pustaka, saringan, chip berangka, kisi foto, zona unggah,
+ * matriks dengan kolom lengket, lipatan HP, kartu kanal, penyunting berita.
+ * ========================================================================== */
+
+:root {
+    /* Palet grafik dari token yang sama; selalu disertai angka tertulis. */
+    --ah-chart-1: var(--ah-green-700);
+    --ah-chart-2: var(--ah-info);
+    --ah-chart-3: #b7791f;
+    --ah-chart-4: #7a4fa0;
+    --ah-chart-5: var(--ah-danger);
+    --ah-chart-6: var(--ah-ink-muted);
+}
+
+.ah-chart { margin: 0; }
+.ah-chart__title { font-weight: 700; font-size: .95rem; margin-bottom: .75rem; }
+.ah-chart__empty { color: var(--ah-ink-muted); font-size: .9rem; margin: 0; padding: 1.25rem 0; text-align: center; border: 1px dashed var(--ah-line-strong); border-radius: var(--ah-radius-sm); }
+.ah-chart__bars, .ah-chart__legend { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+.ah-chart__bars li { display: grid; grid-template-columns: minmax(6rem, 34%) minmax(0, 1fr) auto; align-items: center; gap: .6rem; font-size: .88rem; }
+.ah-chart__label { overflow-wrap: anywhere; color: var(--ah-ink-soft); }
+.ah-chart__track { height: 12px; background: var(--ah-line); border-radius: 999px; overflow: hidden; }
+.ah-chart__fill { display: block; height: 100%; border-radius: 999px; }
+.ah-chart__num { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+.ah-chart__c1 { background: var(--ah-chart-1); }
+.ah-chart__c2 { background: var(--ah-chart-2); }
+.ah-chart__c3 { background: var(--ah-chart-3); }
+.ah-chart__c4 { background: var(--ah-chart-4); }
+.ah-chart__c5 { background: var(--ah-chart-5); }
+.ah-chart__c6 { background: var(--ah-chart-6); }
+.ah-chart__donut-wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
+.ah-chart__donut { flex: 0 0 auto; width: 132px; height: 132px; border-radius: 50%; display: grid; place-items: center; }
+.ah-chart__donut span { width: 84px; height: 84px; border-radius: 50%; background: var(--ah-surface); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 1.15rem; }
+.ah-chart__donut small { font-weight: 400; font-size: .72rem; color: var(--ah-ink-muted); }
+.ah-chart__legend { flex: 1 1 12rem; }
+.ah-chart__legend li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: .5rem; font-size: .88rem; }
+.ah-chart__key { width: 12px; height: 12px; border-radius: 3px; }
+.ah-chart__line { width: 100%; height: 130px; display: block; overflow: visible; }
+.ah-chart__line polyline { fill: none; stroke: var(--ah-chart-1); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+.ah-chart__line circle { fill: var(--ah-chart-1); }
+.ah-chart__axis { stroke: var(--ah-line-strong); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ah-chart__data { margin-top: .5rem; font-size: .85rem; }
+.ah-chart__data summary { cursor: pointer; color: var(--ah-green-700); min-height: var(--ah-touch); display: inline-flex; align-items: center; }
+.ah-chart-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); margin-bottom: 1.25rem; }
+.ah-chart-grid > .ah-card { margin-bottom: 0; }
+.ah-progress-list__item { display: grid; grid-template-columns: minmax(0, 1fr) 6.5rem auto; align-items: center; gap: .75rem; min-height: var(--ah-touch); padding: .35rem 0; }
+
+/* Chip berangka dan segmen tema. */
+.ah-chips__count { display: inline-block; min-width: 1.5rem; padding: 0 .4rem; border-radius: 999px; background: var(--ah-green-100); color: var(--ah-green-900); font-size: .78rem; font-weight: 700; text-align: center; }
+.ah-chips a[aria-current="page"] .ah-chips__count { background: rgba(255, 255, 255, .25); color: #fff; }
+
+/* Saringan: sebaris di layar lebar, terlipat di HP. */
+.ah-filter { margin-bottom: 1rem; }
+.ah-filter > summary { display: none; list-style: none; }
+.ah-filter > summary::-webkit-details-marker { display: none; }
+.ah-filter__form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: .6rem; background: var(--ah-surface); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); padding: .75rem .85rem; }
+.ah-filter__form > div { flex: 1 1 11rem; min-width: 0; }
+.ah-filter__form > .ah-filter__wide { flex: 2 1 16rem; }
+.ah-filter__form .form-label { font-size: .8rem; margin-bottom: .2rem; color: var(--ah-ink-muted); font-weight: 600; }
+.ah-filter__actions { display: flex; gap: .4rem; flex: 0 0 auto; }
+.ah-filter__actions .btn { min-height: var(--ah-touch); display: inline-flex; align-items: center; }
+@media (max-width: 575.98px) {
+    .ah-js .ah-filter > summary { display: inline-flex; align-items: center; gap: .4rem; min-height: var(--ah-touch); margin-bottom: .5rem; }
+    .ah-filter__form > div, .ah-filter__actions { flex: 1 1 100%; }
+    .ah-filter__actions .btn { flex: 1 1 0; justify-content: center; }
+}
+
+/* Daftar dengan baris yang membuka panel. */
+.ah-table tr.is-selected { background: var(--ah-green-050); box-shadow: inset 4px 0 0 var(--ah-green-700); }
+.ah-row-link { font-weight: 600; text-decoration: none; }
+.ah-row-link:hover { text-decoration: underline; }
+.ah-thumb { width: 64px; height: 44px; object-fit: cover; border-radius: 6px; border: 1px solid var(--ah-line); background: var(--ah-green-050); flex: 0 0 auto; }
+.ah-thumb--empty { display: inline-flex; align-items: center; justify-content: center; color: var(--ah-ink-muted); font-size: .7rem; }
+.ah-title-cell { display: flex; align-items: center; gap: .65rem; min-width: 0; }
+.ah-title-cell > span { min-width: 0; overflow-wrap: anywhere; }
+.ah-meta { color: var(--ah-ink-muted); font-size: .82rem; }
+.ah-list-plain { list-style: none; margin: 0; padding: 0; }
+.ah-list-plain li { display: flex; justify-content: space-between; gap: .75rem; padding: .45rem 0; border-bottom: 1px solid var(--ah-line); overflow-wrap: anywhere; }
+.ah-list-plain li:last-child { border-bottom: 0; }
+.ah-list-plain b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ah-panel .ah-kv { grid-template-columns: 1fr; gap: .1rem; }
+.ah-panel .ah-kv dd { font-size: .95rem; margin-bottom: .45rem; overflow-wrap: anywhere; }
+.ah-panel .ah-tabs { margin-bottom: .85rem; }
+.ah-decision { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.ah-decision form { margin: 0; }
+.ah-decision .btn { min-height: var(--ah-touch); }
+
+/* Kisi foto galeri (W-3) dan zona unggah. */
+.ah-media { display: grid; gap: .85rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr)); list-style: none; margin: 0 0 1rem; padding: 0; }
+.ah-media a { display: flex; flex-direction: column; background: var(--ah-surface); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); overflow: hidden; color: inherit; text-decoration: none; height: 100%; }
+.ah-media a:hover, .ah-media a[aria-current="true"] { border-color: var(--ah-green-600); box-shadow: 0 0 0 2px var(--ah-green-100); }
+.ah-media img, .ah-media__ph { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--ah-green-050); display: flex; align-items: center; justify-content: center; color: var(--ah-ink-muted); }
+.ah-media__cap { padding: .5rem .65rem; font-size: .85rem; display: flex; flex-direction: column; gap: .1rem; }
+.ah-media__cap b { font-weight: 600; overflow-wrap: anywhere; }
+.ah-media__cap small { color: var(--ah-ink-muted); }
+.ah-drop { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .35rem; padding: 1.25rem; border: 2px dashed var(--ah-line-strong); border-radius: var(--ah-radius); background: var(--ah-surface); text-align: center; color: var(--ah-ink-soft); min-height: 7rem; }
+.ah-drop.is-over { border-color: var(--ah-green-600); background: var(--ah-green-050); }
+.ah-drop input[type="file"] { max-width: 100%; }
+.ah-drop__hint { font-size: .82rem; color: var(--ah-ink-muted); margin: 0; }
+.ah-drop__list { list-style: none; margin: .35rem 0 0; padding: 0; font-size: .85rem; text-align: left; width: 100%; }
+.ah-drop__list li { overflow-wrap: anywhere; }
+
+/* Matriks rekap keuangan (K-7): kolom komponen lengket saat digeser. */
+.ah-matrix { border-collapse: separate; border-spacing: 0; width: 100%; font-variant-numeric: tabular-nums; }
+.ah-matrix th, .ah-matrix td { padding: .55rem .7rem; border-bottom: 1px solid var(--ah-line); border-right: 1px solid var(--ah-line); text-align: right; white-space: nowrap; background: var(--ah-surface); }
+.ah-matrix thead th { background: var(--ah-green-050); color: var(--ah-ink-soft); font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; text-align: center; }
+.ah-matrix th[scope="row"], .ah-matrix thead tr:first-child th:first-child { position: sticky; left: 0; z-index: 1; text-align: left; white-space: normal; min-width: 10rem; box-shadow: 1px 0 0 var(--ah-line-strong); }
+.ah-matrix th[scope="row"] { background: var(--ah-surface); font-weight: 600; }
+.ah-matrix tfoot th, .ah-matrix tfoot td, .ah-matrix .ah-matrix__total { font-weight: 700; background: var(--ah-green-050); }
+.ah-matrix tfoot th[scope="row"] { background: var(--ah-green-050); }
+.ah-fold { background: var(--ah-surface); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); margin-bottom: .6rem; }
+.ah-fold > summary { display: flex; justify-content: space-between; gap: .75rem; padding: .75rem .9rem; min-height: var(--ah-touch); cursor: pointer; font-weight: 700; }
+.ah-fold > summary b { font-variant-numeric: tabular-nums; }
+.ah-fold > .ah-list-plain { padding: 0 .9rem .5rem; }
+.ah-only-sm { display: none; }
+@media (max-width: 575.98px) {
+    .ah-only-sm { display: block; }
+    .ah-hide-sm { display: none !important; }
+}
+
+/* Kartu kanal notifikasi (N-2). */
+.ah-channels { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); margin-bottom: 1.25rem; }
+.ah-channel { display: flex; flex-direction: column; gap: .55rem; background: var(--ah-surface); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); padding: 1rem 1.1rem; }
+.ah-channel--paused { background: var(--ah-canvas); }
+.ah-channel__head { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; }
+.ah-channel__head h2 { font-size: 1.05rem; font-weight: 700; margin: 0; }
+.ah-channel__meta { color: var(--ah-ink-muted); font-size: .86rem; margin: 0; }
+.ah-channel__meta + .ah-channel__meta { margin-top: -.3rem; }
+.ah-channel__foot { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.ah-channel__foot form { margin: 0; }
+.ah-channel__foot .btn { min-height: var(--ah-touch); }
+.ah-channel details.ah-channel__env { font-size: .85rem; }
+.ah-channel details.ah-channel__env summary { color: var(--ah-green-700); cursor: pointer; }
+
+/* Penyunting berita (W-2): isi di kiri, simpan di kanan; HP menempel bawah. */
+.ah-editor { display: grid; gap: 1.25rem; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 992px) { .ah-editor { grid-template-columns: minmax(0, 2.2fr) minmax(16rem, 1fr); } }
+.ah-editor__side { display: grid; gap: 1rem; }
+.ah-editor__side .ah-card { margin-bottom: 0; }
+.ah-editor .note-editor { background: var(--ah-surface); }
+.ah-editor__cover { width: 100%; max-height: 180px; object-fit: cover; border-radius: var(--ah-radius-sm); border: 1px solid var(--ah-line); margin-bottom: .6rem; }
+@media (max-width: 575.98px) {
+    .ah-sticky-sm { position: sticky; bottom: calc(var(--ah-bottombar-h) + env(safe-area-inset-bottom, 0px)); z-index: 5; background: var(--ah-surface); border-top: 1px solid var(--ah-line); margin: 0 -1.1rem -1.1rem; padding: .75rem 1.1rem; }
+    .ah-sticky-sm .btn { flex: 1 1 0; justify-content: center; }
+}
+.ah-preview { max-width: 46rem; }
+.ah-preview__body img { max-width: 100%; height: auto; }
+
+/* Dialog: ketik nama untuk mengonfirmasi tindakan yang tidak dapat dibatalkan. */
+.ah-dialog__match { margin-top: .75rem; }
+.ah-dialog__match .form-label { font-size: .88rem; }
+
+/* Wizard impor (K-5). */
+.ah-steps { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 0 0 1rem; counter-reset: ah-step; font-size: .85rem; }
+.ah-steps li { counter-increment: ah-step; display: inline-flex; align-items: center; gap: .35rem; color: var(--ah-ink-muted); }
+.ah-steps li::before { content: counter(ah-step); display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; border: 1px solid var(--ah-line-strong); font-weight: 700; }
+.ah-steps li[aria-current="step"] { color: var(--ah-green-900); font-weight: 700; }
+.ah-steps li[aria-current="step"]::before { background: var(--ah-green-700); border-color: var(--ah-green-700); color: #fff; }
+.ah-steps li.is-done::before { content: "\2713"; background: var(--ah-green-100); border-color: var(--ah-green-100); color: var(--ah-green-900); }
+
+@media print {
+    .ah-filter, .ah-chips, .ah-decision, .ah-channel__foot { display: none !important; }
+    .ah-matrix th[scope="row"] { position: static; }
+}
+.ah-list-plain .ah-cell-sub { display: block; color: var(--ah-ink-muted); font-size: .8rem; font-weight: 400; }

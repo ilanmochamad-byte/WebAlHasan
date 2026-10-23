@@ -13,6 +13,7 @@ tests/browser/tangkapan-perapihan/
 tests/browser/tangkapan-kredensial/
 tests/browser/tangkapan-penempatan/
 tests/browser/tangkapan-redesain-web-tahap1/
+tests/browser/tangkapan-redesain-web-tahap3/
 
 # Dependensi lokal Playwright untuk uji browser opsional
 tests/browser/node_modules/

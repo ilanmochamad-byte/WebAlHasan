@@ -1,130 +1,138 @@
 <?php
+
+declare(strict_types=1);
+
+use App\Database\PageQuery;
+use App\Http\Csrf;
+use App\Konten\Unggahan;
+
 require_once __DIR__ . '/_guard.php';
 
-// Proses Upload File
-if(isset($_POST['upload_file'])){
-    $judul = $_POST['judul'];
-    $filename = $_FILES['file']['name'];
-    $rand = rand();
-    $new_name = $rand.'_'.$filename;
-    
-    // Validasi file (Opsional: bisa ditambah)
-    if($filename != ""){
-        move_uploaded_file($_FILES['file']['tmp_name'], 'file_download/'.$new_name);
-        mysqli_query($koneksi, "INSERT INTO download (judul, nama_file) VALUES ('$judul','$new_name')");
-        echo "<script>alert('File Berhasil Diupload'); window.location='admin_download.php';</script>";
+/**
+ * Konten website › Unduhan (redesain website Tahap 3, W-4).
+ *
+ * Daftar dokumen berhalaman (judul, jenis, ukuran, tanggal unggah) di dalam
+ * kerangka admin; unggah di panel (judul + berkas, jenis dibatasi); menu ⋯
+ * berisi Unduh dan Hapus (dialog). Hapus hanya POST dan nama berkas dari DB.
+ */
+
+$self = app_url('/admin/admin_download.php');
+
+// --- UNGGAH DOKUMEN ---
+if (isset($_POST['upload_file'])) {
+    $judul = mb_substr(trim((string) ($_POST['judul'] ?? '')), 0, 255);
+    $berkas = Unggahan::daftar('file')[0] ?? null;
+    try {
+        if ($judul === '') {
+            throw new RuntimeException('Judul dokumen wajib diisi.');
+        }
+        if ($berkas === null) {
+            throw new RuntimeException('Pilih berkas dokumen lebih dahulu.');
+        }
+        $nama = Unggahan::simpan($berkas, __DIR__ . '/file_download', Unggahan::DOKUMEN, Unggahan::MAKS_DOKUMEN);
+        $stmt = mysqli_prepare($koneksi, "INSERT INTO download (judul, nama_file) VALUES (?, ?)");
+        mysqli_stmt_bind_param($stmt, 'ss', $judul, $nama);
+        if (!mysqli_stmt_execute($stmt)) {
+            throw new RuntimeException('Dokumen tidak dapat disimpan. Coba lagi.');
+        }
+        ah_flash_set('success', 'Dokumen "' . $judul . '" diunggah dan tampil di halaman unduhan situs.');
+        header('Location: admin_download.php');
+    } catch (RuntimeException $exception) {
+        ah_old_keep($_POST, ['judul'], '_unduhan');
+        ah_flash_set('danger', 'Dokumen belum diunggah. ' . $exception->getMessage());
+        header('Location: admin_download.php?action=unggah');
     }
+    exit;
 }
 
 // Proses Hapus (hanya POST; nama berkas diambil dari baris download, bukan dari permintaan)
-if(isset($_GET['hapus'])){
+if (isset($_GET['hapus'])) {
     admin_require_post();
 }
-if(isset($_POST['hapus'])){
+if (isset($_POST['hapus'])) {
     $id = (int) $_POST['hapus'];
     $stmt = mysqli_prepare($koneksi, "SELECT nama_file FROM download WHERE id=?");
     mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
     $row = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
     $nama_berkas = basename((string) ($row['nama_file'] ?? ''));
-    if($nama_berkas !== '' && is_file('file_download/'.$nama_berkas)){
-        unlink('file_download/'.$nama_berkas);
+    if ($nama_berkas !== '' && is_file('file_download/' . $nama_berkas)) {
+        unlink('file_download/' . $nama_berkas);
     }
     $stmt = mysqli_prepare($koneksi, "DELETE FROM download WHERE id=?");
     mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
-    echo "<script>window.location='admin_download.php';</script>";
+    ah_flash_set(mysqli_stmt_affected_rows($stmt) > 0 ? 'success' : 'info', mysqli_stmt_affected_rows($stmt) > 0 ? 'Dokumen dihapus dari halaman unduhan.' : 'Dokumen tidak ditemukan; tidak ada yang dihapus.');
+    header('Location: admin_download.php');
+    exit;
 }
-?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Galeri</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
+$q = PageQuery::term($_GET['q'] ?? '');
+$daftar = PageQuery::fetch($koneksi, 'SELECT id, judul, nama_file, tanggal FROM download', [], 'id DESC', max(1, (int) ($_GET['page'] ?? 1)), $q, ['judul']);
+$unggah = ($_GET['action'] ?? '') === 'unggah';
+$listUrl = $self . ($q !== '' ? '?' . http_build_query(['q' => $q]) : '');
 
-<header class="navbar navbar-dark sticky-top bg-success flex-md-nowrap p-0 shadow d-md-none">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Menu Admin</a>
-    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</header>
+ah_page_open([
+    'title' => 'Unduhan',
+    'heading' => 'Konten website',
+    'user' => $currentUser,
+    'active' => 'konten',
+    'description' => 'Dokumen langsung tersedia di halaman unduhan situs.',
+    'actions' => '<a class="btn btn-outline-secondary" href="' . ah_e(app_url('/download.php')) . '" target="_blank" rel="noopener">Lihat situs ↗</a>'
+        . '<a class="btn btn-primary" href="' . ah_e($self . '?action=unggah') . '">Unggah dokumen</a>',
+]);
 
-<div class="container-fluid">
-    <div class="row">
-        <?php include 'sidebar.php'; ?>
-        
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-        <h2 class="h2 mb-4">Kelola File Download</h2>
-
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white">Upload File (PDF/Doc)</div>
-                    <div class="card-body">
-                        <form method="POST" enctype="multipart/form-data">
-                            <div class="mb-3">
-                                <label>Judul File / Dokumen</label>
-                                <input type="text" name="judul" class="form-control" placeholder="Misal: Brosur PSB 2026" required>
-                            </div>
-                            <div class="mb-3">
-                                <label>Pilih File</label>
-                                <input type="file" name="file" class="form-control" required>
-                            </div>
-                            <button type="submit" name="upload_file" class="btn btn-success w-100">Upload</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-8">
-                <div class="card shadow">
-                    <div class="card-header">Daftar File Download</div>
-                    <div class="card-body">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Judul Dokumen</th>
-                                    <th>Link</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $no = 1;
-                                $data = mysqli_query($koneksi, "SELECT * FROM download ORDER BY id DESC");
-                                while($d = mysqli_fetch_array($data)){
-                                ?>
-                                <tr>
-                                    <td><?php echo $no++; ?></td>
-                                    <td><?php echo $d['judul']; ?></td>
-                                    <td>
-                                        <a href="file_download/<?php echo $d['nama_file']; ?>" target="_blank" class="btn btn-sm btn-info text-white">Download</a>
-                                    </td>
-                                    <td>
-                                        <form method="post" action="admin_download.php" class="m-0" onsubmit="return confirm('Hapus?')">
-                                            <?= \App\Http\Csrf::input() ?>
-                                            <input type="hidden" name="hapus" value="<?php echo (int) $d['id']; ?>">
-                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+if ($unggah):
+    ah_panel_open(['title' => 'Unggah dokumen', 'close_url' => $listUrl, 'description' => 'Isian bertanda * wajib.']);
+    ?>
+    <form method="post" action="admin_download.php" enctype="multipart/form-data">
+        <?= Csrf::input() ?>
+        <div class="mb-3"><label class="form-label" for="unduhan-judul">Judul dokumen <span aria-hidden="true">*</span></label>
+            <input class="form-control" id="unduhan-judul" name="judul" maxlength="255" required placeholder="Misal: Brosur PSB 2026" value="<?= ah_e(ah_old('judul', null, '_unduhan')) ?>"></div>
+        <label class="ah-drop" data-ah-drop>
+            <span>Tarik berkas ke sini atau pilih berkas</span>
+            <input type="file" name="file" required accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt,.ods,.odp,.txt,.zip,.jpg,.jpeg,.png">
+            <span class="ah-drop__hint">PDF, dokumen Office/ODF, TXT, ZIP, JPG, PNG · paling besar 20 MB</span>
+        </label>
+        <div class="ah-panel__foot">
+            <a class="btn btn-outline-secondary" href="<?= ah_e($listUrl) ?>">Batal</a>
+            <button class="btn btn-primary" type="submit" name="upload_file" value="1">Unggah</button>
         </div>
-    </div>
-    </main>
-   </div>
+    </form>
+    <?php
+    ah_panel_close();
+    ah_old_clear('_unduhan');
+endif;
+ah_filter_open($q !== '' ? 1 : 0);
+?>
+    <div class="ah-filter__wide"><label class="form-label" for="unduhan-q">Cari judul</label>
+        <input class="form-control" type="search" id="unduhan-q" name="q" maxlength="100" value="<?= ah_e($q) ?>"></div>
+<?php ah_filter_close(); ?>
+<div class="ah-card ah-table-wrap">
+    <table class="ah-table ah-table--cards" id="daftar-unduhan">
+        <caption class="ah-visually-hidden">Dokumen unduhan, <?= (int) $daftar['total'] ?> data</caption>
+        <thead><tr><th scope="col">Judul dokumen</th><th scope="col">Jenis</th><th scope="col">Ukuran</th><th scope="col">Diunggah</th><th scope="col"><span class="ah-visually-hidden">Tindakan</span></th></tr></thead>
+        <tbody>
+        <?php foreach ($daftar['rows'] as $row): ?>
+            <?php $berkas = (string) $row['nama_file']; $path = __DIR__ . '/file_download/' . pathinfo(str_replace('\\', '/', $berkas), PATHINFO_BASENAME); ?>
+            <tr>
+                <td><b><?= ah_e($row['judul']) ?></b></td>
+                <td><?= ah_e(strtoupper(pathinfo($berkas, PATHINFO_EXTENSION)) ?: '—') ?></td>
+                <td><?= ah_e(Unggahan::ukuran($path)) ?></td>
+                <td><?= $row['tanggal'] ? ah_e(\App\Ui\Layout::date((int) strtotime((string) $row['tanggal']))) : '—' ?></td>
+                <td data-label=""><?= ah_menu([
+                    ['label' => 'Unduh', 'url' => 'file_download/' . rawurlencode($berkas), 'icon' => 'fa-download'],
+                    ['label' => 'Hapus', 'icon' => 'fa-trash', 'danger' => true, 'action' => 'admin_download.php', 'fields' => ['hapus' => (int) $row['id']],
+                        'confirm' => ['title' => 'Hapus dokumen "' . $row['judul'] . '"?', 'text' => 'Dokumen hilang dari halaman unduhan situs dan berkasnya dihapus permanen.', 'ok' => 'Hapus dokumen']],
+                ], 'Tindakan untuk ' . $row['judul']) ?></td>
+            </tr>
+        <?php endforeach; ?>
+        <?php if ($daftar['rows'] === []): ?>
+            <tr><td colspan="5" data-label=""><?= ah_empty($q !== '' ? 'Tidak ada dokumen yang cocok' : 'Belum ada dokumen', $q !== '' ? 'Bersihkan pencarian untuk melihat semua dokumen.' : 'Unggah brosur atau formulir agar dapat diunduh pengunjung situs.') ?></td></tr>
+        <?php endif; ?>
+        </tbody>
+    </table>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<?php
+ah_pagination((int) $daftar['total'], (int) $daftar['page'], (int) $daftar['perPage']);
+ah_page_close();

@@ -12,7 +12,9 @@ final class LaporanService
     public function kinds(array $user):array
     {
         $c=$this->caps->v3Capabilities($user);$k=[];
-        if(array_intersect(['v3.pengawasan','v3.pelanggaran.kelola','v3.binaan.baca'],array_keys($c))!==[])$k=['pelanggaran','kasus'];
+        // `ambang` (redesain web Tahap 2, keputusan AA): santri dalam cakupan
+        // yang total poin semester aktifnya mencapai ambang aktif.
+        if(array_intersect(['v3.pengawasan','v3.pelanggaran.kelola','v3.binaan.baca'],array_keys($c))!==[])$k=['pelanggaran','kasus','ambang'];
         if(isset($c['v3.publikasi.baca']))$k[]='publikasi';
         return $k;
     }
@@ -26,8 +28,16 @@ final class LaporanService
         if(!in_array($kind,$kinds,true))throw new V3Exception('Laporan tidak dapat diakses.',403);
         $id=(int)$user['id'];$c=$this->caps->v3Capabilities($user);
         $mode=isset($c['v3.pengawasan'])?'admin':(isset($c['v3.pelanggaran.kelola'])?'pembimbing':'murobi');
-        $a=$kind==='kasus'?'k':'p';$params=[];$where=[];
-        if($kind==='publikasi'){
+        $a=match($kind){'kasus'=>'k','ambang'=>'r',default=>'p'};$params=[];$where=[];
+        if($kind==='ambang'){
+            foreach(['mulai','sampai','status','kategori','tingkat','poin_min','poin_max','pembimbing_id','murobi_id','tindak_lanjut','aktif'] as $key)if(($filters[$key]??'')!=='')throw new V3Exception('Filter tersebut tidak tersedia untuk laporan ambang.');
+            [$scope,$params]=$this->repo->scopeSql($mode,$id,$a);
+            $ambang="SELECT MIN(am.nilai_minimum) FROM v3_ambang am WHERE am.tahun_ajaran_id=r.tahun_ajaran_id AND am.is_active=1 AND am.archived_at IS NULL AND am.tanggal_mulai<=CURDATE() AND (am.tanggal_selesai IS NULL OR am.tanggal_selesai>=CURDATE())";
+            $where=['r.archived_at IS NULL','('.$scope.')',"ta.status='Aktif'",'ta.archived_at IS NULL',"r.total_poin>=($ambang)"];
+            $from=' FROM v3_poin_agregat r JOIN santri s ON s.id=r.santri_id JOIN tahun_ajaran ta ON ta.id=r.tahun_ajaran_id';$date='r.direkonsiliasi_pada';
+            $fields="r.id,r.santri_id,s.nama_santri santri,CONCAT(ta.tahun,' ',ta.semester) periode,r.total_poin,(SELECT am.label FROM v3_ambang am WHERE am.tahun_ajaran_id=r.tahun_ajaran_id AND am.is_active=1 AND am.archived_at IS NULL AND am.tanggal_mulai<=CURDATE() AND (am.tanggal_selesai IS NULL OR am.tanggal_selesai>=CURDATE()) AND am.nilai_minimum<=r.total_poin ORDER BY am.nilai_minimum DESC,am.id DESC LIMIT 1) ambang";
+            $columns=['id'=>'ID','santri_id'=>'ID santri','santri'=>'Santri','periode'=>'Semester','total_poin'=>'Total poin','ambang'=>'Ambang tercapai'];
+        }elseif($kind==='publikasi'){
             $sql=new KonselingRepository(app_db());
             $from=(new PublikasiRepository($sql))->parentFrom();$params=[$id];
             $date='p.diterbitkan_pada';
@@ -62,6 +72,7 @@ final class LaporanService
         foreach(['santri_id','kelas_id','kamar_id','pembimbing_id','murobi_id','poin_min','poin_max'] as $key){
             $v=(string)($filters[$key]??'');if($v==='')continue;
             if(!preg_match('/^\d{1,10}$/D',$v)||(float)$v>2147483647)throw new V3Exception('Filter angka tidak valid.');
+            if($kind==='ambang'&&!in_array($key,['santri_id','kelas_id','kamar_id'],true))continue;
             if($key==='santri_id')$where[]="$a.santri_id=?";
             elseif($key==='pembimbing_id')$where[]="$a.pembimbing_id=?";
             elseif($key==='kelas_id')$where[]="EXISTS(SELECT 1 FROM plotting_kelas pk WHERE pk.id_santri=$a.santri_id AND pk.id_tahun=$a.tahun_ajaran_id AND pk.id_kelas=? AND pk.status='Aktif')";
@@ -74,6 +85,11 @@ final class LaporanService
                 $where[]=$kind==='pelanggaran'?"p.poin_snapshot$op?":"EXISTS(SELECT 1 FROM v3_konseling_tautan t JOIN v3_pelanggaran vp ON vp.id=t.pelanggaran_id WHERE t.kasus_id=k.id AND t.is_active=1 AND t.archived_at IS NULL AND vp.poin_snapshot$op?)";
             }
             $params[]=(int)$v;
+        }
+        // `aktif=1`: tanpa catatan yang dibatalkan (kartu "Pelanggaran bulan ini").
+        if(($filters['aktif']??'')!==''){
+            if((string)$filters['aktif']!=='1'||!in_array($kind,['pelanggaran','kasus'],true))throw new V3Exception('Filter aktif tidak valid.');
+            $where[]="$a.status<>'Dibatalkan'";
         }
         foreach(['kategori','tingkat','status','tindak_lanjut'] as $key){
             $v=trim((string)($filters[$key]??''));if($v==='')continue;
