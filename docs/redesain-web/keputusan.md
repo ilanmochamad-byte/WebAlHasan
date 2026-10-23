@@ -119,5 +119,12 @@ Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Code
 3. Isi resmi halaman Profil, tahun berdiri, nomor WhatsApp/telepon resmi, logo dan foto, serta angka statistik Beranda situs.
 4. Komponen biaya PSB untuk MI dan RA.
 5. Tahap perbaikan keamanan atas temuan yang disampaikan langsung kepada Human Developer (tidak dirinci di repositori publik).
-6. Tahap 7 R-1 "Salin dari semester lalu" (keputusan X, memakai pembacaan rencana yang ada): penugasan Bagian Pendidikan hanya berlaku pada semester aktif, sehingga dalam praktik hanya admin yang dapat menyalin. Perlukah Bagian Pendidikan membaca rencana kelas yang sama pada semester sebelumnya (perluasan hak baca kecil)?
-7. Tahap 7 R-1 "Tandai siap" dan hapus mapel rencana lewat ⋯: kolom status rencana belum dipakai aturan apa pun dan layanan menolak penghapusan mapel tersimpan; keduanya perubahan aturan V4, bukan tampilan. Perlu keputusan sebelum dibuat.
+
+## Keputusan Tahap 7 (23 Oktober 2026, sesudah implementasi)
+
+| # | Keputusan |
+| --- | --- |
+| AT | "Salin dari semester lalu" (R-1) hanya untuk admin; Bagian Pendidikan tidak diberi hak baca rencana semester lalu. |
+| AU | Aturan rencana disesuaikan agar efektif dan efisien: mapel tanpa nilai dapat diubah/dihapus walau mapel lain sudah bernilai; target mapel bernilai terkunci dan mapel itu tidak dapat dihapus; guru pengampunya tetap dapat diganti; penanda tangan dan tempat rencana bernilai tetap lewat penggantian beralasan admin (R-7); "Tandai siap" tidak dibuat. **[aturan layanan]** `RencanaService::save()`. |
+| AV | Orang tua melihat versi rapor yang sudah diganti hanya sebagai nomor, tanggal terbit, dan tanda "Sudah diganti", tanpa isi atau berkas. |
+| AW | Setiap perubahan isian nilai/sikap yang sudah tersimpan tetap koreksi beralasan (aturan layanan V4 yang ada); kisi meminta alasan koreksi. |

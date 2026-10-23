@@ -91,16 +91,31 @@ final class RencanaService {
         $pa=isset($input['pendidikan_aset_id'])&&$input['pendidikan_aset_id']!==''?(int)$input['pendidikan_aset_id']:null;
         $l=isset($input['pimpinan_penanda_id'])&&$input['pimpinan_penanda_id']!==''?(int)$input['pimpinan_penanda_id']:null;
         $la=isset($input['pimpinan_aset_id'])&&$input['pimpinan_aset_id']!==''?(int)$input['pimpinan_aset_id']:null;
-        $this->checkSigner($p,$pa,'Pendidikan');$this->checkSigner($l,$la,'Pimpinan');
         $tempat=trim((string)($input['tempat']??''));if (mb_strlen($tempat)>120) throw new V4Exception('Tempat terlalu panjang.');
         $this->db->begin_transaction();
         try {
             $old=$this->one('SELECT * FROM v4_rencana WHERE tahun_ajaran_id=? AND kelas_id=? FOR UPDATE','ii',[$tahun,$kelas]);
+            // Pasangan yang tidak diubah tidak diperiksa ulang (Tahap 7): rencana tetap dapat disimpan
+            // walau penanda lama kini nonaktif; penerbitan tetap mensyaratkan penanda yang sah.
+            if (!$old || [(int)$old['pendidikan_penanda_id'],(int)$old['pendidikan_aset_id']]!==[(int)$p,(int)$pa]) $this->checkSigner($p,$pa,'Pendidikan');
+            if (!$old || [(int)$old['pimpinan_penanda_id'],(int)$old['pimpinan_aset_id']]!==[(int)$l,(int)$la]) $this->checkSigner($l,$la,'Pimpinan');
+            $hapus=[];$bernilai=[];
             if ($old) {
                 $rencanaId=(int)$old['id'];
-                $existing=$this->rows('SELECT id,mata_pelajaran_id,target_ketuntasan FROM v4_rencana_mapel WHERE rencana_id=? FOR UPDATE','i',[$rencanaId]);
-                foreach($existing as $row) if (!isset($ids[(int)$row['mata_pelajaran_id']])) throw new V4Exception('Penghapusan mapel rencana belum didukung pada Fase 1.',409);
-                $before=['version'=>(int)$old['version'],'mapel'=>array_map(fn($r)=>['mata_pelajaran_id'=>(int)$r['mata_pelajaran_id'],'target_ketuntasan'=>(float)$r['target_ketuntasan']],$existing),'penanda_ids'=>[$old['pendidikan_penanda_id'],$old['pimpinan_penanda_id']],'aset_ids'=>[$old['pendidikan_aset_id'],$old['pimpinan_aset_id']]];
+                $existing=$this->rows('SELECT id,mata_pelajaran_id,target_ketuntasan,guru_mapel_assignment_id FROM v4_rencana_mapel WHERE rencana_id=? FOR UPDATE','i',[$rencanaId]);
+                // Keputusan Human Developer 23 Oktober 2026 (redesain Tahap 7): mapel yang belum
+                // punya nilai/bahan boleh diubah atau dihapus dari rencana walau mapel lain sudah
+                // bernilai. Pengisian nilai mengunci baris induk v4_rencana yang sama lebih dahulu,
+                // sehingga pemeriksaan di bawah tidak berlomba dengan nilai pertama.
+                foreach($this->rows("SELECT DISTINCT rm.id FROM v4_rencana_mapel rm WHERE rm.rencana_id=? AND (EXISTS(SELECT 1 FROM v4_nilai n WHERE n.rencana_mapel_id=rm.id) OR EXISTS(SELECT 1 FROM v4_bahan b WHERE b.rencana_id=rm.rencana_id AND b.jenis='nilai' AND b.mapel_key=rm.id))",'i',[$rencanaId]) as $r) $bernilai[(int)$r['id']]=true;
+                foreach($existing as $row) if (!isset($ids[(int)$row['mata_pelajaran_id']])) {
+                    if (isset($bernilai[(int)$row['id']])) throw new V4Exception('Mapel yang sudah memiliki nilai tidak dapat dihapus dari rencana.',409);
+                    $hapus[]=$row;
+                }
+                // Setelah ada nilai, penanda tangan dan tempat hanya diganti admin lewat changeSigners() beralasan.
+                if ($bernilai!==[] && ([(int)$old['pendidikan_penanda_id'],(int)$old['pendidikan_aset_id'],(int)$old['pimpinan_penanda_id'],(int)$old['pimpinan_aset_id'],(string)$old['tempat']]!==[(int)$p,(int)$pa,(int)$l,(int)$la,$tempat]))
+                    throw new V4Exception('Rencana sudah memiliki nilai; penanda tangan dan tempat diganti admin lewat penggantian beralasan.',409);
+                $before=['version'=>(int)$old['version'],'mapel'=>array_map(fn($r)=>['mata_pelajaran_id'=>(int)$r['mata_pelajaran_id'],'target_ketuntasan'=>(float)$r['target_ketuntasan'],'guru_mapel_assignment_id'=>$r['guru_mapel_assignment_id']===null?null:(int)$r['guru_mapel_assignment_id']],$existing),'penanda_ids'=>[$old['pendidikan_penanda_id'],$old['pimpinan_penanda_id']],'aset_ids'=>[$old['pendidikan_aset_id'],$old['pimpinan_aset_id']]];
                 $s=$this->db->prepare('UPDATE v4_rencana SET pendidikan_penanda_id=?,pendidikan_aset_id=?,pimpinan_penanda_id=?,pimpinan_aset_id=?,tempat=?,version=version+1,updated_by=? WHERE id=?');
                 $uid=(int)$user['id'];$s->bind_param('iiiisii',$p,$pa,$l,$la,$tempat,$uid,$rencanaId);$this->run($s);$s->close();
             } else {
@@ -109,17 +124,23 @@ final class RencanaService {
                 $s->bind_param('iiiiiisii',$tahun,$kelas,$p,$pa,$l,$la,$tempat,$uid,$uid);$this->run($s);$rencanaId=$this->db->insert_id;$s->close();
             }
             foreach($data as $row) {
-                $existing=$this->one('SELECT id FROM v4_rencana_mapel WHERE rencana_id=? AND mata_pelajaran_id=?','ii',[$rencanaId,$row['id']]);
+                $existing=$this->one('SELECT id,target_ketuntasan FROM v4_rencana_mapel WHERE rencana_id=? AND mata_pelajaran_id=?','ii',[$rencanaId,$row['id']]);
                 $assignment=$row['assignment'];$target=$row['target'];$id=$row['id'];
                 if($existing) {
-                    if($this->one('SELECT id FROM v4_nilai WHERE rencana_mapel_id=? LIMIT 1','i',[(int)$existing['id']])) throw new V4Exception('Rencana yang sudah memiliki nilai tidak dapat diubah.',409);
+                    // Target mapel bernilai terkunci (mengubah ketuntasan nilai yang sudah ada); guru pengampu boleh diganti.
+                    if(isset($bernilai[(int)$existing['id']])&&abs((float)$existing['target_ketuntasan']-(float)$target)>0.0001) throw new V4Exception('Target ketuntasan mapel yang sudah memiliki nilai tidak dapat diubah.',409);
                     $s=$this->db->prepare('UPDATE v4_rencana_mapel SET target_ketuntasan=?,guru_mapel_assignment_id=? WHERE id=?');$rid=(int)$existing['id'];$s->bind_param('dii',$target,$assignment,$rid);
                 } else {
                     $s=$this->db->prepare('INSERT INTO v4_rencana_mapel (rencana_id,mata_pelajaran_id,guru_mapel_assignment_id,target_ketuntasan) VALUES (?,?,?,?)');$s->bind_param('iiid',$rencanaId,$id,$assignment,$target);
                 }
                 $this->run($s);$s->close();
             }
-            $after=['tahun_ajaran_id'=>$tahun,'kelas_id'=>$kelas,'mapel'=>$data,'bobot'=>[40,30,30],'version'=>$old?(int)$old['version']+1:1,'penanda_ids'=>[$p,$l],'aset_ids'=>[$pa,$la]];
+            foreach($hapus as $row) {
+                $s=$this->db->prepare('DELETE FROM v4_rencana_mapel WHERE id=? AND NOT EXISTS(SELECT 1 FROM v4_nilai n WHERE n.rencana_mapel_id=?)');$rid=(int)$row['id'];$s->bind_param('ii',$rid,$rid);$this->run($s);
+                if($s->affected_rows!==1) throw new V4Exception('Mapel rencana berubah. Muat ulang.',409);
+                $s->close();
+            }
+            $after=['tahun_ajaran_id'=>$tahun,'kelas_id'=>$kelas,'mapel'=>$data,'mapel_dihapus'=>array_map(fn($r)=>(int)$r['mata_pelajaran_id'],$hapus),'bobot'=>[40,30,30],'version'=>$old?(int)$old['version']+1:1,'penanda_ids'=>[$p,$l],'aset_ids'=>[$pa,$la]];
             if (!$this->audit->log($old?'v4.rencana.ubah':'v4.rencana.buat','v4_rencana',$rencanaId,$before,$after,(int)$user['id'])) throw new V4Exception('Audit gagal; perubahan dibatalkan.',503);
             $this->db->commit();return $this->read($user,$tahun,$kelas);
         } catch(Throwable $e) { $this->db->rollback();if ($e instanceof V4Exception) throw $e; if ($e instanceof \mysqli_sql_exception && (int)$e->getCode()===1062) throw new V4Exception('Rencana atau mata pelajaran ganda.',409);throw $e; }

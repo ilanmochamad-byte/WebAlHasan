@@ -28,7 +28,6 @@
 [lulus] Tidak berubah: app/V4/SikapService.php
 [lulus] Tidak berubah: app/V4/VerifikasiService.php
 [lulus] Tidak berubah: app/V4/RaporService.php
-[lulus] Tidak berubah: app/V4/RencanaService.php
 [lulus] Tidak berubah: app/V4/BahanRepository.php
 [lulus] Tidak berubah: app/V4/SemesterScope.php
 [lulus] Tidak berubah: app/V4/V4Access.php
@@ -39,6 +38,9 @@
 [lulus] Tidak berubah: app/Penugasan/PenugasanJenis.php
 [lulus] REST (api/), migrasi/rollback (database/), dan bin/ tidak berubah
 [lulus] Penugasan: hanya penambahan baca (daftar M-5), tanpa baris lama dihapus
+[lulus] RencanaService: mapel bernilai terkunci (hapus/target), penanda & tempat tetap jalur admin
+[lulus] RencanaService: hapus hanya baris tanpa nilai, tercatat di audit
+[lulus] RencanaService: hapus di bawah kunci baris induk v4_rencana (sama dengan pengisian nilai)
 
 === S7-3. Pembaca tampilan hanya SELECT, sesudah layanan ===
 [lulus] RaporTampilan tanpa pernyataan tulis
@@ -81,7 +83,7 @@
 [lulus] W: tanpa impor Excel (unggah berkas) di portal/nilai_semester.php
 [lulus] W: tanpa impor Excel (unggah berkas) di portal/sikap_semester.php
 [lulus] X: salin memakai RencanaService::read semester lalu tanpa menyimpan
-[lulus] X: tombol salin hanya bila cakupan baca semester lalu berlaku
+[lulus] X: tombol salin hanya bila cakupan baca semester lalu berlaku (dalam praktik admin; keputusan 23 Okt 2026)
 [lulus] Y: versi terbaru + "Versi sebelumnya" + "Sudah diganti"
 [lulus] Y: orang tua tetap memakai jalur non-staf RaporService::show()
 
@@ -114,4 +116,4 @@
 [lulus] Tanpa isian ID yang diketik
 [lulus] Pratinjau rapor di halaman memakai judul bertingkat turun (satu h1)
 
-Ringkasan: 100 lulus, 0 gagal
+Ringkasan: 102 lulus, 0 gagal

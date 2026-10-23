@@ -365,8 +365,50 @@ $h = $pend->req($alamat . '&salin=1')['body'];
 $assert(str_contains($teks($h), 'di luar penugasan Anda') && !str_contains($h, 'Formulir diisi dari rencana'), 'R-1: salin oleh Pendidikan tanpa cakupan semester lalu ditolak layanan baca');
 $h = $adm->req($alamat . '&salin=1')['body'];
 $assert(str_contains($teks($h), 'Formulir diisi dari rencana') && str_contains($teks($h), 'SBX Guru Lama sudah nonaktif') && (int) $satu('SELECT COUNT(*) FROM v4_rencana WHERE kelas_id=' . $ids['kelas_baru'] . ' AND tahun_ajaran_id=' . $ids['tahun']) === 0, 'R-1: salin admin mengisi formulir tanpa menyimpan; guru nonaktif ditandai');
-$h = $adm->req('/portal/rencana_nilai.php?tahun_ajaran_id=' . $ids['tahun'] . '&kelas_id=' . $ids['kelas'])['body'];
-$assert(str_contains($teks($h), 'Terkunci · sudah ada nilai') && !str_contains($h, 'name="mata_pelajaran_id[]"'), 'R-1: rencana bernilai tampil terkunci (sesuai aturan layanan)');
+// Keputusan Human Developer 23 Okt 2026: hanya mapel bernilai yang terkunci.
+$alamatR1 = '/portal/rencana_nilai.php?tahun_ajaran_id=' . $ids['tahun'] . '&kelas_id=' . $ids['kelas'];
+$h = $pend->req($alamatR1)['body'];
+$assert(str_contains($teks($h), '3 mapel sudah bernilai') && substr_count($h, '<input type="hidden" name="mata_pelajaran_id[]"') === 3 && !str_contains($h, 'name="hapus_mapel[]"') && str_contains($h, 'name="pendidikan_pasangan" value="'), 'R-1: mapel bernilai terkunci (mapel/target tersembunyi, tanpa hapus); penanda tidak dapat diganti di sini');
+$q("INSERT INTO mata_pelajaran (kode, nama, kategori) VALUES ('SBX-T7-AKH', 'Akhlak Uji', 'Diniyah')");
+$akhlak = (int) $satu("SELECT id FROM mata_pelajaran WHERE kode='SBX-T7-AKH'");
+$rmIds = $q("SELECT mata_pelajaran_id, target_ketuntasan, guru_mapel_assignment_id FROM v4_rencana_mapel WHERE rencana_id=$rencana ORDER BY id");
+$rv = $q("SELECT * FROM v4_rencana WHERE id=$rencana")[0];
+$dasar = static function (array $baris, array $tambah = []) use ($ids, $rv): array {
+    $post = ['tahun_ajaran_id' => $ids['tahun'], 'kelas_id' => $ids['kelas'], 'tempat' => (string) $rv['tempat'],
+        'pendidikan_pasangan' => $rv['pendidikan_penanda_id'] . ':' . $rv['pendidikan_aset_id'], 'pimpinan_pasangan' => $rv['pimpinan_penanda_id'] . ':' . $rv['pimpinan_aset_id'],
+        'mata_pelajaran_id' => [], 'target_ketuntasan' => [], 'guru_mapel_assignment_id' => []];
+    foreach (array_merge($baris, $tambah) as $b) {
+        $post['mata_pelajaran_id'][] = $b['mata_pelajaran_id'];
+        $post['target_ketuntasan'][] = $b['target_ketuntasan'];
+        $post['guru_mapel_assignment_id'][] = (string) ($b['guru_mapel_assignment_id'] ?? '');
+    }
+    return $post;
+};
+$jumlahMapel = static fn (): int => (int) $satu("SELECT COUNT(*) FROM v4_rencana_mapel WHERE rencana_id=$rencana");
+$tokR = $pend->csrf($alamatR1);
+$pend->req('/portal/rencana_nilai.php', ['_csrf' => $tokR] + $dasar($rmIds, [['mata_pelajaran_id' => $akhlak, 'target_ketuntasan' => 72, 'guru_mapel_assignment_id' => '']]));
+$assert($akhlak > 0 && $jumlahMapel() === 4, 'R-1: mapel baru dapat ditambah walau mapel lain sudah bernilai');
+$ubahTarget = $rmIds;
+$ubahTarget[0]['target_ketuntasan'] = 50;
+$pend->req('/portal/rencana_nilai.php', ['_csrf' => $tokR] + $dasar($ubahTarget, [['mata_pelajaran_id' => $akhlak, 'target_ketuntasan' => 72, 'guru_mapel_assignment_id' => '']]));
+$assert((float) $satu("SELECT target_ketuntasan FROM v4_rencana_mapel WHERE rencana_id=$rencana AND mata_pelajaran_id=" . (int) $rmIds[0]['mata_pelajaran_id']) === (float) $rmIds[0]['target_ketuntasan'], 'R-1: target mapel bernilai tidak dapat diubah');
+$gantiGuru = $rmIds;
+$gantiGuru[0]['guru_mapel_assignment_id'] = '';
+$pend->req('/portal/rencana_nilai.php', ['_csrf' => $tokR] + $dasar($gantiGuru, [['mata_pelajaran_id' => $akhlak, 'target_ketuntasan' => 72, 'guru_mapel_assignment_id' => '']]));
+$assert($satu("SELECT guru_mapel_assignment_id FROM v4_rencana_mapel WHERE rencana_id=$rencana AND mata_pelajaran_id=" . (int) $rmIds[0]['mata_pelajaran_id']) === null, 'R-1: guru pengampu mapel bernilai tetap dapat diganti');
+$pend->req('/portal/rencana_nilai.php', ['_csrf' => $tokR] + $dasar($rmIds, [['mata_pelajaran_id' => $akhlak, 'target_ketuntasan' => 72, 'guru_mapel_assignment_id' => '']]));
+$h = $pend->req($alamatR1)['body'];
+$assert(substr_count($h, 'name="hapus_mapel[]"') === 1 && str_contains($h, 'name="hapus_mapel[]" value="' . $akhlak . '"'), 'R-1: hanya mapel tanpa nilai yang dapat dihapus');
+$pend->req('/portal/rencana_nilai.php', ['_csrf' => $tokR, 'hapus_mapel' => [(string) $akhlak]] + $dasar($rmIds, [['mata_pelajaran_id' => $akhlak, 'target_ketuntasan' => 72, 'guru_mapel_assignment_id' => '']]));
+$audit = (string) $satu("SELECT after_json FROM audit_logs WHERE action='v4.rencana.ubah' AND entity_id=$rencana ORDER BY id DESC LIMIT 1");
+$assert($jumlahMapel() === 3 && str_contains($audit, '"mapel_dihapus":[' . $akhlak . ']'), 'R-1: "Hapus dari rencana" menghapus mapel tanpa nilai dan tercatat di audit');
+$tanpaFiqih = array_values(array_filter($rmIds, static fn ($b) => (int) $b['mata_pelajaran_id'] !== (int) $ids['mapel']['fiqih']));
+$pend->req('/portal/rencana_nilai.php', ['_csrf' => $tokR] + $dasar($tanpaFiqih));
+$assert($jumlahMapel() === 3, 'R-1: mapel bernilai tidak dapat dihapus (layanan menolak)');
+$ganti = $dasar($rmIds);
+$ganti['tempat'] = 'Tempat Lain';
+$pend->req('/portal/rencana_nilai.php', ['_csrf' => $tokR] + $ganti);
+$assert($satu("SELECT tempat FROM v4_rencana WHERE id=$rencana") === $rv['tempat'], 'R-1: tempat/penanda rencana bernilai tidak dapat diganti lewat simpan biasa (jalur admin R-7)');
 $pd = $ids['penanda'];
 $tok = $adm->csrf('/portal/rapor_penanda.php');
 $v = (int) $satu("SELECT version FROM v4_rencana WHERE id=$rencana");

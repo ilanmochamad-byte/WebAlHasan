@@ -91,7 +91,7 @@
 === H7-E. R-6 penerbitan ===
 [lulus] R-6: 6 santri siap terbit dapat dicentang
 [lulus] Terbit satu santri per permintaan (JSON), 3 rapor terbit
-[lulus] Durasi terlama satu permintaan terbit 0.15 detik (< 20 detik; batas cPanel umumnya 30)
+[lulus] Durasi terlama satu permintaan terbit 0.12 detik (< 20 detik; batas cPanel umumnya 30)
 [lulus] Catatan umum draf sesi ikut terbit
 [lulus] Kunci idempotensi sama: diulang tanpa versi ganda
 [lulus] Sidik pratinjau palsu ditolak (409) tanpa rapor
@@ -105,7 +105,14 @@
 [lulus] R-1: Pendidikan (penugasan semester aktif saja) tidak ditawari salin
 [lulus] R-1: salin oleh Pendidikan tanpa cakupan semester lalu ditolak layanan baca
 [lulus] R-1: salin admin mengisi formulir tanpa menyimpan; guru nonaktif ditandai
-[lulus] R-1: rencana bernilai tampil terkunci (sesuai aturan layanan)
+[lulus] R-1: mapel bernilai terkunci (mapel/target tersembunyi, tanpa hapus); penanda tidak dapat diganti di sini
+[lulus] R-1: mapel baru dapat ditambah walau mapel lain sudah bernilai
+[lulus] R-1: target mapel bernilai tidak dapat diubah
+[lulus] R-1: guru pengampu mapel bernilai tetap dapat diganti
+[lulus] R-1: hanya mapel tanpa nilai yang dapat dihapus
+[lulus] R-1: "Hapus dari rencana" menghapus mapel tanpa nilai dan tercatat di audit
+[lulus] R-1: mapel bernilai tidak dapat dihapus (layanan menolak)
+[lulus] R-1: tempat/penanda rencana bernilai tidak dapat diganti lewat simpan biasa (jalur admin R-7)
 [lulus] R-7: ganti penanda tanpa alasan ditolak
 [lulus] R-7: perubahan beralasan tercatat sebagai kalimat dengan nama
 [lulus] R-7: Pendidikan tidak dapat menonaktifkan penanda (403)
@@ -130,4 +137,4 @@
 [lulus] Riwayat menyebut nama pelaku, bukan nomor ID
 [lulus] Server tanpa galat/peringatan PHP
 
-Ringkasan: 115 lulus, 0 gagal
+Ringkasan: 122 lulus, 0 gagal

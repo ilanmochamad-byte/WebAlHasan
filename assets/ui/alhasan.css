@@ -1950,6 +1950,8 @@ a.ah-icard:hover { border-color: var(--ah-green-600); box-shadow: 0 0 0 2px var(
 /* R-1: rencana. */
 .ah-plan-status { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
 .ah-plan-table .form-select, .ah-plan-table .form-control { min-width: 0; }
+.ah-hapus-mapel { display: flex; align-items: center; gap: .4rem; margin-top: .35rem; font-size: .85rem; color: var(--ah-ink-soft); min-height: 32px; }
+.ah-plan-table tr.is-hapus td { opacity: .55; text-decoration: line-through; }
 .ah-input-num { max-width: 7.5rem; font-variant-numeric: tabular-nums; }
 .ah-field-warn { color: var(--ah-warn); }
 .form-select.is-warn { border-color: var(--ah-warn); background-color: var(--ah-warn-bg); }

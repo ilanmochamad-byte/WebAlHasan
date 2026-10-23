@@ -289,6 +289,12 @@ try {
     cek(await page.locator('#ttd-pendidikan img').evaluate((img) => img.complete && img.naturalWidth > 0), 'T7-H pratinjau tanda tangan termuat lewat jalur berpenjaga');
     await Promise.all([page.waitForNavigation(), page.locator('.ah-actbar').getByRole('button', { name: 'Simpan rencana' }).click()]);
     cek((await page.content()).includes('Rencana semester tersimpan') && (await teksMain(page)).includes('Mata pelajaran wajib (3)'), 'T7-H rencana hasil salinan tersimpan lewat layanan');
+    // Keputusan 23 Okt 2026: mapel tanpa nilai dapat dihapus dari rencana.
+    const hapus = page.locator('tr:has(select[data-rapor-mapel] option[selected]:text("Tafsir")) input[data-rapor-hapus]');
+    await hapus.check();
+    cek(await page.locator('tr.is-hapus').count() === 1, 'T7-H "Hapus dari rencana" meredupkan baris');
+    await Promise.all([page.waitForNavigation(), page.locator('.ah-actbar').getByRole('button', { name: 'Simpan rencana' }).click()]);
+    cek((await teksMain(page)).includes('Mata pelajaran wajib (2)'), 'T7-H mapel tanpa nilai terhapus dari rencana');
     await context.close();
   }
 

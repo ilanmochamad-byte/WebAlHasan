@@ -262,6 +262,10 @@
             });
         });
     }
+    // Mapel yang dicentang "Hapus dari rencana" diredupkan agar jelas tidak ikut tersimpan.
+    qsa('input[data-rapor-hapus]').forEach(function (box) {
+        box.addEventListener('change', function () { box.closest('tr').classList.toggle('is-hapus', box.checked); });
+    });
     qsa('select[data-rapor-ttd]').forEach(function (select) {
         var box = doc.getElementById(select.getAttribute('data-rapor-ttd'));
         if (!box) { return; }

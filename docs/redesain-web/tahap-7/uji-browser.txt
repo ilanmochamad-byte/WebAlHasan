@@ -82,6 +82,8 @@
 [lulus] T7-H "Tambah mapel" menambah baris
 [lulus] T7-H pratinjau tanda tangan termuat lewat jalur berpenjaga
 [lulus] T7-H rencana hasil salinan tersimpan lewat layanan
+[lulus] T7-H "Hapus dari rencana" meredupkan baris
+[lulus] T7-H mapel tanpa nilai terhapus dari rencana
 [lulus] T7-I hanya versi terbaru tampil dengan catatan "menggantikan versi 1"
 [lulus] T7-I versi lama bertanda "Sudah diganti" tanpa isi
 [lulus] T7-J tanpa JavaScript: kisi tersimpan
@@ -89,4 +91,4 @@
 [lulus] T7-K tanpa galat JavaScript
 [lulus] T7-K tanpa confirm()/alert() bawaan peramban
 
-Ringkasan: 90 lulus, 0 gagal
+Ringkasan: 92 lulus, 0 gagal

@@ -46,7 +46,7 @@ exec('bash -n ' . escapeshellarg($root . '/tests/redesain_web_tahap7_db.sh') . '
 $assert($kode === 0, 'bash -n tests/redesain_web_tahap7_db.sh');
 
 echo PHP_EOL . '=== S7-2. Layanan V4, REST, dan basis data tidak berubah ===' . PHP_EOL;
-$v4 = ['app/V4/NilaiService.php', 'app/V4/SikapService.php', 'app/V4/VerifikasiService.php', 'app/V4/RaporService.php', 'app/V4/RencanaService.php', 'app/V4/BahanRepository.php',
+$v4 = ['app/V4/NilaiService.php', 'app/V4/SikapService.php', 'app/V4/VerifikasiService.php', 'app/V4/RaporService.php', 'app/V4/BahanRepository.php',
     'app/V4/SemesterScope.php', 'app/V4/V4Access.php', 'app/V4/RaporDocument.php', 'app/V4/RaporStorage.php', 'app/V4/VerifikasiPublik.php', 'app/Auth/Capabilities.php', 'app/Penugasan/PenugasanJenis.php'];
 $jalankan = static function (string $perintah) use ($root): array {
     exec('cd ' . escapeshellarg($root) . ' && ' . $perintah . ' 2>&1', $out, $kode);
@@ -63,6 +63,14 @@ $assert($kode === 0 && trim($daftar) === '', 'REST (api/), migrasi/rollback (dat
 $penRepo = $src('app/Penugasan/PenugasanRepository.php');
 [$kode, $diffRepo] = $jalankan('git diff -U0 ' . escapeshellarg($baseline) . ' -- app/Penugasan/PenugasanRepository.php app/Penugasan/PenugasanService.php');
 $assert(!preg_match('/^-(?!--)/m', $diffRepo) && !preg_match('/^\+.*\b(INSERT|UPDATE|DELETE)\b/m', $diffRepo), 'Penugasan: hanya penambahan baca (daftar M-5), tanpa baris lama dihapus');
+
+// Keputusan Human Developer 23 Oktober 2026: aturan rencana disesuaikan (satu-satunya perubahan layanan V4).
+$rencanaSvc = $src('app/V4/RencanaService.php');
+$assert(str_contains($rencanaSvc, "throw new V4Exception('Mapel yang sudah memiliki nilai tidak dapat dihapus dari rencana.',409);")
+    && str_contains($rencanaSvc, "throw new V4Exception('Target ketuntasan mapel yang sudah memiliki nilai tidak dapat diubah.',409);")
+    && str_contains($rencanaSvc, "throw new V4Exception('Rencana sudah memiliki nilai; penanda tangan dan tempat diganti admin lewat penggantian beralasan.',409);"), 'RencanaService: mapel bernilai terkunci (hapus/target), penanda & tempat tetap jalur admin');
+$assert(str_contains($rencanaSvc, "DELETE FROM v4_rencana_mapel WHERE id=? AND NOT EXISTS(SELECT 1 FROM v4_nilai n WHERE n.rencana_mapel_id=?)") && str_contains($rencanaSvc, "'mapel_dihapus'=>"), 'RencanaService: hapus hanya baris tanpa nilai, tercatat di audit');
+$assert($pos($rencanaSvc, "FROM v4_rencana WHERE tahun_ajaran_id=? AND kelas_id=? FOR UPDATE") < $pos($rencanaSvc, "DELETE FROM v4_rencana_mapel"), 'RencanaService: hapus di bawah kunci baris induk v4_rencana (sama dengan pengisian nilai)');
 
 echo PHP_EOL . '=== S7-3. Pembaca tampilan hanya SELECT, sesudah layanan ===' . PHP_EOL;
 $tampil = $src('app/V4/RaporTampilan.php');
@@ -117,7 +125,7 @@ foreach (['portal/nilai_semester.php', 'portal/sikap_semester.php'] as $f) {
 }
 $rencana = $src('portal/rencana_nilai.php');
 $assert(str_contains($rencana, '$sumber=$service->read($user,(int)$lalu[\'id\'],$kelas);') && !str_contains(substr($rencana, $pos($rencana, '// Keputusan X'), 900), '->save('), 'X: salin memakai RencanaService::read semester lalu tanpa menyimpan');
-$assert(str_contains($rencana, 'featureAppliesToKelas($user,\App\Penugasan\PenugasanJenis::CAP_RAPOR_RENCANA,$kelas,(int)$lalu[\'id\'])'), 'X: tombol salin hanya bila cakupan baca semester lalu berlaku');
+$assert(str_contains($rencana, 'featureAppliesToKelas($user,\App\Penugasan\PenugasanJenis::CAP_RAPOR_RENCANA,$kelas,(int)$lalu[\'id\'])'), 'X: tombol salin hanya bila cakupan baca semester lalu berlaku (dalam praktik admin; keputusan 23 Okt 2026)');
 $wali = $src('portal/rapor_wali.php');
 $assert(str_contains($wali, 'Versi sebelumnya') && str_contains($wali, "ah_badge('Sudah diganti'") && str_contains($wali, 'menggantikan versi'), 'Y: versi terbaru + "Versi sebelumnya" + "Sudah diganti"');
 $assert(!str_contains($wali, 'petugas=1') && !preg_match('/->show\([^)]*true\)/', $wali), 'Y: orang tua tetap memakai jalur non-staf RaporService::show()');

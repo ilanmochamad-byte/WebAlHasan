@@ -76,15 +76,16 @@ final class RaporTampilan
     }
 
     /**
-     * Mapel rencana yang sudah punya nilai. Layanan menolak menyimpan ulang
-     * rencana seperti itu, jadi formulir menampilkannya terkunci.
+     * Mapel rencana yang sudah punya nilai/bahan (aturan sama dengan
+     * `RencanaService::save()`): targetnya terkunci dan tidak dapat dihapus.
      *
      * @return array<int, bool> rencana_mapel_id => true
      */
     public function mapelBernilai(int $rencanaId): array
     {
         $out = [];
-        foreach ($this->rows('SELECT DISTINCT rm.id FROM v4_rencana_mapel rm JOIN v4_nilai n ON n.rencana_mapel_id = rm.id WHERE rm.rencana_id = ?', 'i', [$rencanaId]) as $r) {
+        foreach ($this->rows("SELECT DISTINCT rm.id FROM v4_rencana_mapel rm WHERE rm.rencana_id = ? AND (EXISTS (SELECT 1 FROM v4_nilai n WHERE n.rencana_mapel_id = rm.id)
+                OR EXISTS (SELECT 1 FROM v4_bahan b WHERE b.rencana_id = rm.rencana_id AND b.jenis = 'nilai' AND b.mapel_key = rm.id))", 'i', [$rencanaId]) as $r) {
             $out[(int) $r['id']] = true;
         }
         return $out;
