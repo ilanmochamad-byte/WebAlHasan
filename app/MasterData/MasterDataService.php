@@ -13,10 +13,16 @@ final class MasterDataService
     {
     }
 
-    public function classesPage(string $q, int $page): array { return $this->repository->classesPage($q, $page); }
+    public function classesPage(string $q, int $page, string $state = 'all'): array { return $this->repository->classesPage($q, $page, in_array($state, ['active', 'inactive', 'archived'], true) ? $state : 'all'); }
+    public function classStateCounts(): array { return $this->repository->classStateCounts(); }
+    public function asramaTersedia(): bool { return $this->repository->asramaTersedia(); }
+    public function bukanGandaTersedia(): bool { return $this->repository->bukanGandaTersedia(); }
+    public function roomSummary(int $yearId): array { return $this->repository->roomSummary($yearId); }
+    public function linkedAccounts(string $column, int $id): array { return $this->repository->linkedAccounts($column, $id); }
+    public function stateCounts(string $table, string $q): array { return $this->repository->stateCounts($table, mb_substr(Normalizer::text($q), 0, 100)); }
     public function yearsPage(string $q, int $page): array { return $this->repository->yearsPage($q, $page); }
     public function murobiPage(string $q, int $page): array { return $this->repository->murobiPage($q, $page); }
-    public function roomsPage(string $q, int $page, int $yearId): array { return $this->repository->roomsPage($q, $page, $yearId); }
+    public function roomsPage(string $q, int $page, int $yearId, string $asrama = '', int $perPage = 20): array { return $this->repository->roomsPage($q, $page, $yearId, in_array($asrama, ['Putra', 'Putri', 'belum'], true) ? $asrama : '', $perPage); }
     public function roomOccupantsPage(int $roomId, int $yearId, string $q, int $page): array { return $this->repository->roomOccupantsPage($roomId, $yearId, $q, $page); }
 
     public function guruList(array $filters, int $page, int $perPage = 20): array
@@ -96,6 +102,11 @@ final class MasterDataService
         return $this->repository->santriList($this->filters($filters), $this->page($page), $this->perPage($perPage));
     }
 
+    public function santriStateCounts(array $filters): array
+    {
+        return $this->repository->santriStateCounts($this->filters($filters));
+    }
+
     public function santri(int $id): ?array
     {
         return $this->repository->santriFind($id);
@@ -132,46 +143,8 @@ final class MasterDataService
     public function saveSantri(array $input, ?int $id = null): int
     {
         $current = $id === null ? null : $this->mustFind($this->repository->santriFind($id), 'Santri');
-        $data = [
-            'nis' => Normalizer::identifier($input['nis'] ?? ''),
-            'nama_santri' => Normalizer::text($input['nama_santri'] ?? ''),
-            'jenis_kelamin' => strtoupper(Normalizer::text($input['jenis_kelamin'] ?? '')),
-            'tempat_lahir' => Normalizer::text($input['tempat_lahir'] ?? ''),
-            'tgl_lahir' => Normalizer::date($input['tgl_lahir'] ?? '', true),
-            'alamat' => Normalizer::text($input['alamat'] ?? ''),
-            'desa' => Normalizer::text($input['desa'] ?? ''),
-            'kecamatan' => Normalizer::text($input['kecamatan'] ?? ''),
-            'kab_kota' => Normalizer::text($input['kab_kota'] ?? ''),
-            'provinsi' => Normalizer::text($input['provinsi'] ?? ''),
-            // Kolom lama hanya ikut ditulis bila pemanggil memang mengirimnya.
-            // Formulir santri tidak lagi mengirimnya, sehingga menyimpan santri
-            // tidak pernah mengosongkan nilai lama secara tidak sengaja.
-            'nama_ayah' => array_key_exists('nama_ayah', $input) ? Normalizer::text($input['nama_ayah']) : (string) ($current['nama_ayah'] ?? ''),
-            'no_hp_ayah' => array_key_exists('no_hp_ayah', $input) ? Normalizer::phone($input['no_hp_ayah']) : (string) ($current['no_hp_ayah'] ?? ''),
-            'nama_ibu' => array_key_exists('nama_ibu', $input) ? Normalizer::text($input['nama_ibu']) : (string) ($current['nama_ibu'] ?? ''),
-            'no_hp_ibu' => array_key_exists('no_hp_ibu', $input) ? Normalizer::phone($input['no_hp_ibu']) : (string) ($current['no_hp_ibu'] ?? ''),
-            'asal_sekolah' => Normalizer::text($input['asal_sekolah'] ?? ''),
-            'sekolah_saat_ini' => Normalizer::text($input['sekolah_saat_ini'] ?? ''),
-            'foto' => Normalizer::text($input['foto'] ?? ($current['foto'] ?? 'default.jpg')) ?: 'default.jpg',
-        ];
-        $errors = [];
-        $this->required($data['nis'], 'NIS wajib diisi.', $errors);
-        $this->identifier($data['nis'], 'NIS', true, $errors);
-        $this->maxLength($data['nis'], 20, 'NIS', $errors);
-        $this->required($data['nama_santri'], 'Nama santri wajib diisi.', $errors);
-        $this->maxLength($data['nama_santri'], 100, 'Nama santri', $errors);
-        if (!in_array($data['jenis_kelamin'], ['L', 'P'], true)) {
-            $errors[] = 'Jenis kelamin harus L atau P.';
-        }
-        if ($data['tgl_lahir'] === '') {
-            $errors[] = 'Tanggal lahir harus berformat YYYY-MM-DD dan merupakan tanggal valid.';
-        }
-        $this->phone($data['no_hp_ayah'], $errors, 'Nomor HP ayah');
-        $this->phone($data['no_hp_ibu'], $errors, 'Nomor HP ibu');
-        foreach (['tempat_lahir' => 50, 'desa' => 50, 'kecamatan' => 50, 'kab_kota' => 50, 'provinsi' => 50, 'nama_ayah' => 100, 'nama_ibu' => 100, 'asal_sekolah' => 100, 'sekolah_saat_ini' => 50, 'foto' => 255] as $field => $maximum) {
-            $this->maxLength($data[$field], $maximum, str_replace('_', ' ', ucfirst($field)), $errors);
-        }
-        $this->maxLength($data['alamat'], 2000, 'Alamat', $errors);
+        $data = $this->santriData($input, $current);
+        $errors = $this->santriErrors($data);
 
         $spesifikasi = $this->normalizeWaliSpec($input['wali'] ?? [], $errors);
         $this->reject($errors);
@@ -199,6 +172,182 @@ final class MasterDataService
             $db->rollback();
             throw $exception;
         }
+    }
+
+    /**
+     * Normalisasi isian santri. Dipakai `saveSantri()` dan pemeriksaan impor
+     * (D-4) sehingga aturan validasinya satu.
+     *
+     * @param array<string, mixed> $input
+     * @param array<string, mixed>|null $current
+     * @return array<string, string>
+     */
+    private function santriData(array $input, ?array $current): array
+    {
+        return [
+            'nis' => Normalizer::identifier($input['nis'] ?? ''),
+            'nama_santri' => Normalizer::text($input['nama_santri'] ?? ''),
+            'jenis_kelamin' => strtoupper(Normalizer::text($input['jenis_kelamin'] ?? '')),
+            'tempat_lahir' => Normalizer::text($input['tempat_lahir'] ?? ''),
+            'tgl_lahir' => Normalizer::date($input['tgl_lahir'] ?? '', true),
+            'alamat' => Normalizer::text($input['alamat'] ?? ''),
+            'desa' => Normalizer::text($input['desa'] ?? ''),
+            'kecamatan' => Normalizer::text($input['kecamatan'] ?? ''),
+            'kab_kota' => Normalizer::text($input['kab_kota'] ?? ''),
+            'provinsi' => Normalizer::text($input['provinsi'] ?? ''),
+            // Kolom lama hanya ikut ditulis bila pemanggil memang mengirimnya.
+            // Formulir santri tidak lagi mengirimnya, sehingga menyimpan santri
+            // tidak pernah mengosongkan nilai lama secara tidak sengaja.
+            'nama_ayah' => array_key_exists('nama_ayah', $input) ? Normalizer::text($input['nama_ayah']) : (string) ($current['nama_ayah'] ?? ''),
+            'no_hp_ayah' => array_key_exists('no_hp_ayah', $input) ? Normalizer::phone($input['no_hp_ayah']) : (string) ($current['no_hp_ayah'] ?? ''),
+            'nama_ibu' => array_key_exists('nama_ibu', $input) ? Normalizer::text($input['nama_ibu']) : (string) ($current['nama_ibu'] ?? ''),
+            'no_hp_ibu' => array_key_exists('no_hp_ibu', $input) ? Normalizer::phone($input['no_hp_ibu']) : (string) ($current['no_hp_ibu'] ?? ''),
+            'asal_sekolah' => Normalizer::text($input['asal_sekolah'] ?? ''),
+            'sekolah_saat_ini' => Normalizer::text($input['sekolah_saat_ini'] ?? ''),
+            'foto' => Normalizer::text($input['foto'] ?? ($current['foto'] ?? 'default.jpg')) ?: 'default.jpg',
+        ];
+    }
+
+    /**
+     * @param array<string, string> $data
+     * @return array<int, string>
+     */
+    private function santriErrors(array $data): array
+    {
+        $errors = [];
+        $this->required($data['nis'], 'NIS wajib diisi.', $errors);
+        $this->identifier($data['nis'], 'NIS', true, $errors);
+        $this->maxLength($data['nis'], 20, 'NIS', $errors);
+        $this->required($data['nama_santri'], 'Nama santri wajib diisi.', $errors);
+        $this->maxLength($data['nama_santri'], 100, 'Nama santri', $errors);
+        if (!in_array($data['jenis_kelamin'], ['L', 'P'], true)) {
+            $errors[] = 'Jenis kelamin harus L atau P.';
+        }
+        if ($data['tgl_lahir'] === '') {
+            $errors[] = 'Tanggal lahir harus berformat YYYY-MM-DD dan merupakan tanggal valid.';
+        }
+        $this->phone($data['no_hp_ayah'], $errors, 'Nomor HP ayah');
+        $this->phone($data['no_hp_ibu'], $errors, 'Nomor HP ibu');
+        foreach (['tempat_lahir' => 50, 'desa' => 50, 'kecamatan' => 50, 'kab_kota' => 50, 'provinsi' => 50, 'nama_ayah' => 100, 'nama_ibu' => 100, 'asal_sekolah' => 100, 'sekolah_saat_ini' => 50, 'foto' => 255] as $field => $maximum) {
+            $this->maxLength($data[$field], $maximum, str_replace('_', ' ', ucfirst($field)), $errors);
+        }
+        $this->maxLength($data['alamat'], 2000, 'Alamat', $errors);
+
+        return $errors;
+    }
+
+    /** Urutan kolom berkas impor santri (templat D-4 dan format lama). */
+    public const KOLOM_IMPOR = ['nis', 'nama_santri', 'jenis_kelamin', 'tempat_lahir', 'tgl_lahir', 'alamat', 'desa', 'kecamatan', 'kab_kota', 'provinsi', 'nama_ayah', 'no_hp_ayah', 'nama_ibu', 'no_hp_ibu', 'asal_sekolah', 'sekolah_saat_ini'];
+
+    /** Judul kolom templat impor, sejajar dengan `KOLOM_IMPOR`. */
+    public const JUDUL_IMPOR = ['NIS', 'Nama santri', 'L/P', 'Tempat lahir', 'Tanggal lahir (YYYY-MM-DD)', 'Alamat', 'Desa', 'Kecamatan', 'Kabupaten/kota', 'Provinsi', 'Nama ayah', 'HP ayah', 'Nama ibu', 'HP ibu', 'Sekolah asal', 'Sekolah saat ini'];
+
+    /** Batas baris satu berkas impor (melindungi batas waktu cPanel). */
+    public const BATAS_IMPOR = 1000;
+
+    /**
+     * D-4 (keputusan AC): memeriksa baris impor TANPA menyimpan apa pun.
+     *
+     * Aturan sama dengan `saveSantri()`, ditambah NIS yang sudah ada di basis
+     * data dan NIS ganda di dalam berkas. Baris judul (kolom pertama "NIS")
+     * dilewati; baris kosong diabaikan.
+     *
+     * @param array<int, mixed> $rows
+     * @return array{baris:int, siap:int, bermasalah:int, hasil:array<int, array{baris:int, nis:string, nama:string, siap:bool, masalah:array<int,string>}>}
+     */
+    public function periksaImpor(array $rows): array
+    {
+        if (count($rows) > self::BATAS_IMPOR + 1) {
+            throw new MasterDataException('Satu berkas impor dibatasi ' . self::BATAS_IMPOR . ' baris. Bagi berkas menjadi beberapa bagian.');
+        }
+        $calon = [];
+        foreach ($rows as $index => $row) {
+            $nomor = $index + 1;
+            if (!is_array($row)) {
+                $calon[] = ['baris' => $nomor, 'data' => null, 'masalah' => ['Format baris tidak valid.']];
+                continue;
+            }
+            $row = array_values($row);
+            if ($index === 0 && strtoupper(trim((string) ($row[0] ?? ''))) === 'NIS') {
+                continue;
+            }
+            if (implode('', array_map(static fn ($v): string => is_scalar($v) ? trim((string) $v) : '', $row)) === '') {
+                continue;
+            }
+            $input = ['foto' => 'default.jpg'];
+            foreach (self::KOLOM_IMPOR as $i => $kolom) {
+                $input[$kolom] = is_scalar($row[$i] ?? null) ? (string) $row[$i] : '';
+            }
+            $data = $this->santriData($input, null);
+            $calon[] = ['baris' => $nomor, 'data' => $data, 'input' => $input, 'masalah' => $this->santriErrors($data)];
+        }
+
+        $ada = $this->repository->existingNis(array_map(static fn (array $c): string => (string) ($c['data']['nis'] ?? ''), $calon));
+        $dilihat = [];
+        $hasil = [];
+        $siap = 0;
+        foreach ($calon as $c) {
+            $nis = (string) ($c['data']['nis'] ?? '');
+            $kunci = strtoupper($nis);
+            if ($nis !== '' && isset($ada[$kunci])) {
+                $c['masalah'][] = 'NIS ' . $nis . ' sudah terdaftar.';
+            }
+            if ($nis !== '' && isset($dilihat[$kunci])) {
+                $c['masalah'][] = 'NIS ' . $nis . ' ganda di dalam berkas (sama dengan baris ' . $dilihat[$kunci] . ').';
+            }
+            if ($nis !== '') {
+                $dilihat[$kunci] ??= $c['baris'];
+            }
+            $ok = $c['masalah'] === [];
+            $siap += $ok ? 1 : 0;
+            $hasil[] = [
+                'baris' => $c['baris'],
+                'nis' => $nis,
+                'nama' => (string) ($c['data']['nama_santri'] ?? ''),
+                'siap' => $ok,
+                'masalah' => array_values(array_unique($c['masalah'])),
+                'input' => $c['input'] ?? null,
+            ];
+        }
+
+        return ['baris' => count($hasil), 'siap' => $siap, 'bermasalah' => count($hasil) - $siap, 'hasil' => $hasil];
+    }
+
+    /**
+     * D-4: menyimpan baris impor yang siap. Setiap baris DIPERIKSA ULANG
+     * (data dapat berubah sejak pemeriksaan) lewat aturan yang sama, lalu
+     * disimpan satu per satu dengan `saveSantri()`. Baris bermasalah dilewati
+     * dan dilaporkan dengan cara yang sama seperti pemeriksaan.
+     *
+     * @param array<int, mixed> $rows
+     * @return array{baris:int, disimpan:int, bermasalah:int, hasil:array<int, array<string, mixed>>}
+     */
+    public function imporSantri(array $rows): array
+    {
+        $periksa = $this->periksaImpor($rows);
+        $disimpan = 0;
+        foreach ($periksa['hasil'] as &$baris) {
+            if (!$baris['siap']) {
+                continue;
+            }
+            try {
+                $baris['santri_id'] = $this->saveSantri((array) $baris['input']);
+                $disimpan++;
+            } catch (MasterDataException $exception) {
+                $baris['siap'] = false;
+                $baris['masalah'] = $exception->errors() !== [] ? $exception->errors() : [$exception->getMessage()];
+            } catch (Throwable) {
+                $baris['siap'] = false;
+                $baris['masalah'] = ['Gagal disimpan karena kesalahan basis data.'];
+            }
+        }
+        unset($baris);
+        foreach ($periksa['hasil'] as &$baris) {
+            unset($baris['input']);
+        }
+        unset($baris);
+
+        return ['baris' => $periksa['baris'], 'disimpan' => $disimpan, 'bermasalah' => $periksa['baris'] - $disimpan, 'hasil' => $periksa['hasil']];
     }
 
     /**
@@ -874,11 +1023,22 @@ final class MasterDataService
 
     public function guruOptions(): array { return $this->repository->guruOptions(); }
     public function santriOptions(): array { return $this->repository->santriOptions(); }
+    /** Semua santri termasuk nonaktif/arsip (D-9: hubungkan catatan alumni warisan). */
+    public function santriListAll(): array { return $this->repository->santriAllOptions(); }
     public function kamarOptions(): array { return $this->repository->kamarList(); }
 
     public function room(int $id): ?array { return $this->repository->kamarFind($id); }
 
-    /** A-11: perubahan kamar tervalidasi dan tercatat; tidak menyediakan penghapusan. */
+    /** Nilai asrama yang sah (keputusan AE). */
+    public const ASRAMA = ['Putra', 'Putri'];
+
+    /**
+     * A-11: perubahan kamar tervalidasi dan tercatat; tidak menyediakan penghapusan.
+     *
+     * Keputusan AE (Tahap 6): kamar baru WAJIB memilih asrama Putra/Putri bila
+     * kolomnya sudah ada (migrasi 023). Pada ubah, asrama hanya ditulis bila
+     * dikirim, sehingga pemanggil lama tidak mengosongkannya diam-diam.
+     */
     public function saveRoom(array $input, ?int $id = null): int
     {
         $name = is_scalar($input['nama_kamar'] ?? null) ? Normalizer::text($input['nama_kamar']) : '';
@@ -887,12 +1047,20 @@ final class MasterDataService
         $this->required($name, 'Nama kamar wajib diisi.', $errors);
         $this->maxLength($name, 50, 'Nama kamar', $errors);
         if ($capacity === false) { $errors[] = 'Kapasitas harus bilangan bulat positif.'; }
+        $data = ['nama_kamar' => $name, 'kapasitas' => $capacity];
+        if ($this->repository->asramaTersedia() && ($id === null || array_key_exists('asrama', $input))) {
+            $asrama = is_scalar($input['asrama'] ?? null) ? (string) $input['asrama'] : '';
+            if (!in_array($asrama, self::ASRAMA, true)) {
+                $errors[] = 'Pilih asrama kamar: Putra atau Putri.';
+            }
+            $data['asrama'] = $asrama;
+        }
         $this->reject($errors);
         $db = $this->repository->db();
         $db->begin_transaction();
         try {
             $before = $id === null ? null : $this->mustFind($this->repository->kamarFind($id, true), 'Kamar');
-            $id = $this->repository->kamarSave(['nama_kamar' => $name, 'kapasitas' => $capacity], $id);
+            $id = $this->repository->kamarSave($data, $id);
             if (!$this->audit->log($before === null ? 'master.create' : 'master.update', 'kamar', $id, $before, $this->repository->kamarFind($id))) {
                 throw new MasterDataException('Perubahan kamar dibatalkan karena audit tidak dapat disimpan.');
             }
@@ -903,8 +1071,153 @@ final class MasterDataService
             throw $exception;
         }
     }
+
+    // -----------------------------------------------------------------------
+    // Rekonsiliasi per pasangan dan tanda "bukan ganda" (Tahap 6, D-7, AD)
+    // -----------------------------------------------------------------------
+
+    /**
+     * Jumlah tiap bagian rekonsiliasi untuk chip D-7 dan tombol D-6.
+     *
+     * @return array{duplikat:int, relasi_belum_lengkap:int, konflik_kolom_lama:int, tanpa_relasi:int, bukan_ganda:int, total:int}
+     */
+    public function reconciliationSummary(): array
+    {
+        $hasil = ['duplikat' => $this->repository->duplicatePairCount()];
+        foreach (['relasi_belum_lengkap', 'konflik_kolom_lama', 'tanpa_relasi'] as $bagian) {
+            $hasil[$bagian] = $this->repository->reconciliationCount($bagian);
+        }
+        $hasil['bukan_ganda'] = $this->repository->notDuplicateCount();
+        $hasil['total'] = $hasil['duplikat'] + $hasil['relasi_belum_lengkap'] + $hasil['konflik_kolom_lama'] + $hasil['tanpa_relasi'];
+
+        return $hasil;
+    }
+
+    /**
+     * Satu pasangan kemungkinan ganda per halaman, lengkap untuk dibandingkan
+     * berdampingan: identitas, santri terhubung, dan akun login.
+     *
+     * @return array{pasangan:?array<string, mixed>, total:int, page:int}
+     */
+    public function duplicatePair(string $q, int $page): array
+    {
+        $hasil = $this->repository->duplicatePairsPage($q, max(1, $page));
+        $baris = $hasil['rows'][0] ?? null;
+        if ($baris === null) {
+            return ['pasangan' => null, 'total' => (int) $hasil['total'], 'page' => (int) $hasil['page']];
+        }
+        $anggota = [];
+        foreach ($this->repository->waliByIds([(int) $baris['wali_a_id'], (int) $baris['wali_b_id']]) as $wali) {
+            $wali['relations'] = array_values(array_filter($this->repository->waliRelations((int) $wali['id']), static fn (array $r): bool => $r['archived_at'] === null));
+            $wali['akun'] = $this->repository->waliAccount((int) $wali['id']);
+            $anggota[(int) $wali['id']] = $wali;
+        }
+        $a = $anggota[(int) $baris['wali_a_id']] ?? null;
+        $b = $anggota[(int) $baris['wali_b_id']] ?? null;
+
+        return [
+            'pasangan' => $a === null || $b === null ? null : [
+                'a' => $a,
+                'b' => $b,
+                'jenis' => explode(',', (string) $baris['jenis']),
+                'kunci' => (string) $baris['kunci'],
+                'diblokir' => $a['akun'] !== null && $b['akun'] !== null,
+            ],
+            'total' => (int) $hasil['total'],
+            'page' => (int) $hasil['page'],
+        ];
+    }
+
+    public function notDuplicatePage(string $q, int $page): array
+    {
+        return $this->repository->bukanGandaTersedia()
+            ? $this->repository->notDuplicatePage($q, max(1, $page))
+            : ['rows' => [], 'total' => 0, 'page' => 1, 'perPage' => 20];
+    }
+
+    /**
+     * Keputusan AD: menyimpan tanda bahwa dua identitas wali BUKAN orang yang
+     * sama. Hanya untuk pasangan yang memang masih kandidat (nama/HP sama);
+     * alasan wajib; pelaku dan alasan tercatat di tabel dan audit.
+     */
+    public function markNotDuplicate(int $waliA, int $waliB, string $alasan, int $actorId): int
+    {
+        [$a, $b] = $this->pasanganUrut($waliA, $waliB);
+        $alasan = $this->alasanPasangan($alasan);
+        if (!$this->repository->bukanGandaTersedia()) {
+            throw new MasterDataException('Tanda "bukan ganda" belum tersedia: migrasi basis data Tahap 6 belum dijalankan.');
+        }
+        $db = $this->repository->db();
+        $db->begin_transaction();
+        try {
+            $this->repository->waliLockPair($a, $b);
+            if (!$this->repository->isDuplicatePair($a, $b)) {
+                throw new MasterDataException('Pasangan ini bukan lagi kemungkinan ganda (nama dan nomor HP berbeda, atau salah satu sudah diarsipkan/digabungkan).');
+            }
+            if ($this->repository->notDuplicateActive($a, $b, true) !== null) {
+                throw new MasterDataException('Pasangan ini sudah ditandai bukan ganda.');
+            }
+            $id = $this->repository->notDuplicateCreate($a, $b, $alasan, $actorId);
+            if (!$this->audit->log('master.wali.bukan_ganda', 'wali_bukan_ganda', $id, null, ['wali_a_id' => $a, 'wali_b_id' => $b, 'alasan' => $alasan], $actorId)) {
+                throw new MasterDataException('Tanda dibatalkan karena audit tidak dapat disimpan.');
+            }
+            $db->commit();
+
+            return $id;
+        } catch (Throwable $exception) {
+            $db->rollback();
+            throw $exception;
+        }
+    }
+
+    /** Membatalkan tanda "bukan ganda"; baris tanda tidak dihapus. */
+    public function cancelNotDuplicate(int $markId, string $alasan, int $actorId): void
+    {
+        $alasan = $this->alasanPasangan($alasan);
+        if (!$this->repository->bukanGandaTersedia()) {
+            throw new MasterDataException('Tanda "bukan ganda" belum tersedia: migrasi basis data Tahap 6 belum dijalankan.');
+        }
+        $db = $this->repository->db();
+        $db->begin_transaction();
+        try {
+            $tanda = $this->repository->notDuplicateFind($markId, true);
+            if ($tanda === null || $tanda['dibatalkan_pada'] !== null) {
+                throw new MasterDataException('Tanda bukan ganda tidak ditemukan atau sudah dibatalkan.');
+            }
+            $this->repository->notDuplicateCancel($markId, $alasan, $actorId);
+            if (!$this->audit->log('master.wali.bukan_ganda_batal', 'wali_bukan_ganda', $markId, $tanda, ['alasan_batal' => $alasan], $actorId)) {
+                throw new MasterDataException('Pembatalan dibatalkan karena audit tidak dapat disimpan.');
+            }
+            $db->commit();
+        } catch (Throwable $exception) {
+            $db->rollback();
+            throw $exception;
+        }
+    }
+
+    /** @return array{0:int, 1:int} */
+    private function pasanganUrut(int $a, int $b): array
+    {
+        if ($a < 1 || $b < 1 || $a === $b) {
+            throw new MasterDataException('Pilih dua identitas wali yang berbeda.');
+        }
+
+        return $a < $b ? [$a, $b] : [$b, $a];
+    }
+
+    private function alasanPasangan(string $alasan): string
+    {
+        $alasan = Normalizer::text($alasan);
+        if (mb_strlen($alasan) < 5 || mb_strlen($alasan) > 500) {
+            throw new MasterDataException('Alasan wajib diisi, 5–500 karakter.');
+        }
+
+        return $alasan;
+    }
+
     public function exportGuru(array $filters): array { return $this->repository->exportGuru($this->filters($filters)); }
     public function exportSantri(array $filters): array { return $this->repository->exportSantri($this->filters($filters)); }
+    public function exportPengurus(array $filters): array { return $this->repository->pengurusList($this->filters($filters), 1, 100000)['rows']; }
 
     private function setState(string $entity, int $id, string $action, callable $find, callable $save): void
     {
@@ -926,6 +1239,7 @@ final class MasterDataService
             'state' => in_array(($filters['state'] ?? 'active'), ['active', 'inactive', 'archived', 'all'], true) ? $filters['state'] : 'active',
             'gender' => in_array(($filters['gender'] ?? ''), ['L', 'P'], true) ? $filters['gender'] : '',
             'kelas_id' => max(0, (int) ($filters['kelas_id'] ?? 0)),
+            'kamar_id' => max(0, (int) ($filters['kamar_id'] ?? 0)),
         ];
     }
 

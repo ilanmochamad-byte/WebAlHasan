@@ -25,7 +25,8 @@ try {
  $check($r['status']===419 && (int)$db->query('SELECT COUNT(*) n FROM kamar')->fetch_assoc()['n']===$count,'POST tanpa CSRF ditolak tanpa data baru');
  $r=$request('/admin/admin_kamar.php',$admin,['_csrf'=>$token,'tambah'=>'1','nama_kamar'=>$tag,'kapasitas'=>'0']);
  $check($r['status']===422,'Kapasitas nol ditolak');
- $r=$request('/admin/admin_kamar.php',$admin,['_csrf'=>$token,'tambah'=>'1','nama_kamar'=>$tag,'kapasitas'=>'20']);
+ // Redesain Tahap 6 (keputusan AE): kamar baru wajib memilih asrama bila migrasi 023 sudah dijalankan.
+ $r=$request('/admin/admin_kamar.php',$admin,['_csrf'=>$token,'tambah'=>'1','nama_kamar'=>$tag,'kapasitas'=>'20','asrama'=>'Putra']);
  $row=$db->query("SELECT * FROM kamar WHERE nama_kamar='$tag'")->fetch_assoc();$roomId=$row?(int)$row['id']:null;
  $check($r['status']===302 && $roomId!==null,'Tambah kamar sah tersimpan');
  if(!$roomId)throw new RuntimeException('Fixture kamar gagal dibuat');

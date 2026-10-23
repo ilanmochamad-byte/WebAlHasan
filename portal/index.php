@@ -455,7 +455,8 @@ if ($peran === Peran::GURU) {
         <?php if ($murobi !== []): $adaIsi = true; ?>
             <div class="col-lg-6">
                 <section class="ah-card mb-0 h-100" aria-labelledby="ah-sebagai-murobi">
-                    <div class="ah-card__head"><span id="ah-sebagai-murobi">Sebagai murobi</span></div>
+                    <div class="ah-card__head"><span id="ah-sebagai-murobi">Sebagai murobi</span>
+                        <a class="btn btn-sm btn-outline-primary" href="<?= ah_e(app_url('/portal/santri_binaan.php')) ?>">Santri binaan</a></div>
                     <div class="ah-card__body"><div class="ah-task-grid ah-task-grid--one">
                         <?php foreach ($murobi as $kartu): ?>
                             <?= beranda_kartu_tugas($kartu['jumlah'], $kartu['judul'], $kartu['tombol'], $kartu['url'], $kartu['jumlah'] > 0, $kartu['key']) ?>
@@ -525,7 +526,7 @@ if ($peran === Peran::PENGURUS) {
             <div class="col-lg-6">
                 <section class="ah-card mb-0 h-100" aria-labelledby="ah-santri-binaan">
                     <div class="ah-card__head"><span id="ah-santri-binaan">Santri binaan</span>
-                        <a class="btn btn-sm btn-outline-primary" href="<?= ah_e(app_url('/portal/izin_ringkasan.php')) ?>">Lihat semua</a></div>
+                        <a class="btn btn-sm btn-outline-primary" href="<?= ah_e(app_url('/portal/santri_binaan.php')) ?>">Lihat semua</a></div>
                     <div class="ah-card__body">
                         <?php if ($binaan === []): ?>
                             <p class="text-muted small mb-0">Belum ada santri binaan pada penugasan pembimbing aktif Anda.</p>
@@ -533,10 +534,10 @@ if ($peran === Peran::PENGURUS) {
                             <ul class="ah-mini-list">
                                 <?php $tampilBinaan = []; foreach ($binaan as $s) { $tampilBinaan[(int) $s['id']] ??= $s; } ?>
                                 <?php foreach (array_slice($tampilBinaan, 0, 6) as $s): ?>
-                                    <li><span class="ah-mini-list__row">
+                                    <li><a class="ah-mini-list__row" href="<?= ah_e(app_url('/portal/santri_binaan.php?id=' . (int) $s['id'])) ?>">
                                         <span class="ah-avatar ah-avatar--soft" aria-hidden="true"><?= ah_e(mb_strtoupper(mb_substr((string) $s['nama_santri'], 0, 1))) ?></span>
                                         <span class="ah-mini-list__main"><b><?= ah_e($s['nama_santri']) ?></b><small><?= ah_e(trim(($s['nis'] ?? '') . ' · ' . ($s['target_name'] ?? ''), ' ·')) ?></small></span>
-                                    </span></li>
+                                    </a></li>
                                 <?php endforeach; ?>
                             </ul>
                         <?php endif; ?>

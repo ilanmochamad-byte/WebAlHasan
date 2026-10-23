@@ -307,4 +307,37 @@ final class PenugasanJenis
     {
         return self::LABEL_CAPABILITY[$capability] ?? $capability;
     }
+
+    /** Jenis penugasan untuk modul yang belum dibangun (keputusan AF). */
+    public const MENDATANG = [self::BENDAHARA_BULANAN, self::PANITIA_PSB, self::BENDAHARA_PSB];
+
+    /**
+     * Hak yang didapat dari satu jenis penugasan, dalam kata biasa (G-1).
+     * Hanya untuk tampilan; capability tetap dihitung `Capabilities`.
+     *
+     * @return array<int, string>
+     */
+    public static function hakLabel(string $jenis): array
+    {
+        return match ($jenis) {
+            self::MUROBI => ['Memutus izin', 'Mengetahui sikap binaan', 'Membaca pembinaan binaan'],
+            self::PEMBIMBING => ['Mengajukan izin binaan', 'Mengisi sikap semester', 'Mencatat pembinaan binaan'],
+            self::GURU_MAPEL => ['Mengisi nilai mata pelajarannya'],
+            self::PENDIDIKAN => ['Memverifikasi kelengkapan rapor', 'Menyusun rencana nilai', 'Mengisi nilai pengganti', 'Membaca laporan absensi'],
+            self::BENDAHARA_BULANAN, self::PANITIA_PSB, self::BENDAHARA_PSB => ['Belum ada — menunggu modul baru'],
+            default => [],
+        };
+    }
+
+    /** Keterangan satu kalimat untuk kepala daftar G-1. */
+    public static function penjelasan(string $jenis): string
+    {
+        return match ($jenis) {
+            self::MUROBI => 'Murobi adalah guru yang ditugaskan memutus izin dan mengetahui sikap santri pada kamar/kelas binaan.',
+            self::PEMBIMBING => 'Pembimbing adalah pengurus yang mengajukan izin, mengisi sikap, dan mencatat pembinaan santri pada kamar/kelas binaan.',
+            self::GURU_MAPEL => 'Guru mata pelajaran mengisi nilai satu mata pelajaran pada satu kelas untuk satu semester.',
+            self::PENDIDIKAN => 'Bagian Pendidikan memeriksa kelengkapan bahan rapor dan membaca laporan absensi, opsional untuk satu unit.',
+            default => 'Penugasan ini belum memberi akses ke halaman apa pun sampai modul pembiayaan/PSB baru selesai. Data yang sudah ada tetap dapat dilihat dan dikelola.',
+        };
+    }
 }

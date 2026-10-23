@@ -130,7 +130,7 @@ if ($izin['is_legacy']) {
             <div class="ah-card__head"><span id="ah-rincian">Rincian</span><?= portal_status((string) $izin['status']) ?></div>
             <div class="ah-card__body">
                 <dl class="ah-info-list">
-                    <div><dt>Santri</dt><dd><?= portal_e($izin['nama_santri']) ?> · <?= portal_e($izin['nis']) ?></dd></div>
+                    <div><dt>Santri</dt><dd><?php if (in_array($mode, [Capabilities::PENGURUS, Capabilities::MUROBI, Capabilities::ADMIN], true)): ?><a href="<?= portal_e(app_url('/portal/santri_binaan.php?id=' . (int) $izin['santri_id'])) ?>"><?= portal_e($izin['nama_santri']) ?></a><?php else: ?><?= portal_e($izin['nama_santri']) ?><?php endif; ?> · <?= portal_e($izin['nis']) ?></dd></div>
                     <div><dt>Rentang izin</dt><dd><?= portal_e(ah_rentang((string) $izin['tgl_izin'], (string) $izin['tgl_kembali'])) ?></dd></div>
                     <div><dt>Alasan</dt><dd><?= nl2br(portal_e($izin['alasan'])) ?></dd></div>
                     <?php if ($izin['catatan_pengurus'] !== null && $izin['catatan_pengurus'] !== ''): ?>

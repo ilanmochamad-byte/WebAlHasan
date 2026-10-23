@@ -63,21 +63,20 @@ $konflikKolomLama = $hubungan !== 'Wali'
     <?php if ($relasi !== null): ?>
         <p class="mb-3">
             Saat ini terhubung ke <strong><?= ah_e($relasi['nama']) ?></strong>
-            <span class="text-muted">(ID <?= (int) $relasi['wali_id'] ?><?= $relasi['no_hp'] ? ' · ' . ah_e($relasi['no_hp']) : '' ?>)</span>
+            <?php if ($relasi['no_hp']): ?><span class="text-muted">(<?= ah_e($relasi['no_hp']) ?>)</span><?php endif; ?>
         </p>
     <?php else: ?>
         <p class="mb-3 text-muted">Belum ada wali terhubung untuk peran ini.</p>
     <?php endif; ?>
 
     <?php if ($hubungan !== 'Wali' && (string) $nilaiLamaHp !== ''): ?>
-        <p class="small">Nomor HP pada kolom lama: <strong><?= ah_e($nilaiLamaHp) ?></strong>.</p>
+        <p class="small">Nomor HP pada data lama: <strong><?= ah_e($nilaiLamaHp) ?></strong>.</p>
     <?php endif; ?>
 
     <?php if ($hubungan !== 'Wali' && $nilaiLama !== null && trim((string) $nilaiLama) !== ''): ?>
         <p class="mb-3 small">
-            Kolom lama <code><?= $hubungan === 'Ayah' ? 'nama_ayah' : 'nama_ibu' ?></code> berisi
-            <strong><?= ah_e($nilaiLama) ?></strong>. Kolom itu kini hanya cermin dari identitas wali di atas
-            dan tidak dapat diketik langsung.
+            Data lama <?= ah_e(mb_strtolower($hubungan)) ?> berisi <strong><?= ah_e($nilaiLama) ?></strong>.
+            Data itu kini hanya cermin dari identitas wali di atas dan tidak dapat diketik langsung.
         </p>
     <?php endif; ?>
 
@@ -125,7 +124,7 @@ $konflikKolomLama = $hubungan !== 'Wali'
                 <?php foreach ($opsiWali as $kandidat): ?>
                     <option value="<?= (int) $kandidat['id'] ?>" <?= $terpilihId === (int) $kandidat['id'] ? 'selected' : '' ?>>
                         <?= ah_e($kandidat['nama'] . ($kandidat['no_hp'] ? ' · ' . $kandidat['no_hp'] : '')
-                            . ' · ' . (int) $kandidat['jumlah_santri'] . ' santri · ID ' . (int) $kandidat['id']) ?>
+                            . ' · ' . (int) $kandidat['jumlah_santri'] . ' santri') ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -162,17 +161,7 @@ $konflikKolomLama = $hubungan !== 'Wali'
         </div>
     </div>
 
-    <?php if ($hubungan !== 'Wali'): ?>
-        <div class="mt-3" data-wali-panel="timpa" <?= $konflikKolomLama || in_array($modeLama, ['pilih', 'baru'], true) ? '' : 'hidden' ?>>
-            <div class="ah-danger-zone">
-                <label class="d-inline-flex align-items-start gap-2 mb-0">
-                    <input type="checkbox" name="konfirmasi_timpa[<?= ah_e($hubungan) ?>]" value="1" class="mt-1">
-                    <span>
-                        <strong>Ganti nama dan nomor HP pada kolom lama <?= ah_e($hubungan) ?>.</strong>
-                        Centang hanya bila identitas wali yang Anda pilih memang benar. Nilai sebelum dan sesudah dicatat pada audit.
-                    </span>
-                </label>
-            </div>
-        </div>
-    <?php endif; ?>
+    <?php /* Redesain Tahap 6 (D-3): penggantian nilai kolom lama tidak lagi
+             dicentang di formulir. Bila server mendeteksi perbedaan, halaman
+             menampilkan dialog konfirmasi yang mengirim konfirmasi_timpa. */ ?>
 </fieldset>

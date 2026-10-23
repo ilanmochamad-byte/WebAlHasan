@@ -185,7 +185,8 @@ $assert(
     'Laporan kandidat duplikasi, konflik, dan hubungan belum lengkap tersedia'
 );
 $assert(
-    str_contains($halamanSantri, 'Hubungan wali') && str_contains($halamanSantri, 'santriWali('),
+    // Redesain Tahap 6 (D-2): tab "Orang tua/wali" pada profil 360°.
+    str_contains($halamanSantri, "'wali' => 'Orang tua/wali'") && str_contains($halamanSantri, 'santriWali('),
     'Detail santri menampilkan hubungan wali aktual, bukan hanya teks kolom lama'
 );
 
@@ -203,8 +204,9 @@ $assert(
     'Tidak ada dropdown pengganti pada formulir guru'
 );
 $assert(
-    str_contains($halamanGuru, 'Data Guru') && !str_contains($halamanGuru, 'Guru &amp; Pembimbing'),
-    'Label halaman guru menjadi Data Guru'
+    // Redesain Tahap 6 (keputusan E, M-1): judul "Asatidz & pengurus".
+    str_contains($halamanGuru, "master_header('Asatidz & pengurus'") && !str_contains($halamanGuru, 'Guru &amp; Pembimbing'),
+    'Label halaman guru menjadi Asatidz & pengurus (tanpa "Guru & Pembimbing")'
 );
 // Redesain website Tahap 2 (keputusan E): data guru berada di menu
 // "Asatidz & pengurus" dengan tab "Asatidz".

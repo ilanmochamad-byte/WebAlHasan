@@ -76,7 +76,22 @@ final class PenempatanRepository
      */
     public function assignableRoom(int $id): ?array
     {
-        return $this->one('SELECT id, nama_kamar, kapasitas FROM kamar WHERE id = ? AND kapasitas >= 1', [$id]);
+        return $this->one('SELECT id, nama_kamar, kapasitas, ' . $this->asrama() . ' FROM kamar WHERE id = ? AND kapasitas >= 1', [$id]);
+    }
+
+    /**
+     * Kolom asrama kamar (keputusan AE, migrasi 023). Sebelum migrasi atau
+     * sesudah rollback, asrama dianggap belum ditentukan (NULL) sehingga
+     * tidak ada peringatan asrama.
+     */
+    public function asramaTersedia(): bool
+    {
+        return \App\Database\Schema::hasColumn($this->db, 'kamar', 'asrama');
+    }
+
+    private function asrama(string $alias = ''): string
+    {
+        return $this->asramaTersedia() ? ($alias === '' ? '' : $alias . '.') . 'asrama' : 'NULL AS asrama';
     }
 
     /** @return array<int, array<string, mixed>> */
@@ -89,7 +104,7 @@ final class PenempatanRepository
     public function roomOptions(int $yearId): array
     {
         return $this->all(
-            'SELECT km.id, km.nama_kamar, km.kapasitas,
+            'SELECT km.id, km.nama_kamar, km.kapasitas, ' . $this->asrama('km') . ',
                     (SELECT COUNT(*) FROM plotting_kamar pk WHERE pk.id_kamar = km.id AND pk.id_tahun = ?) AS terisi
                FROM kamar km ORDER BY km.nama_kamar, km.id',
             [$yearId]
@@ -150,7 +165,7 @@ final class PenempatanRepository
     public function lockRooms(array $ids): array
     {
         return $this->keyed(
-            $this->allIn('SELECT id, nama_kamar, kapasitas FROM kamar WHERE id IN (%s) ORDER BY id FOR UPDATE', $ids),
+            $this->allIn('SELECT id, nama_kamar, kapasitas, ' . $this->asrama() . ' FROM kamar WHERE id IN (%s) ORDER BY id FOR UPDATE', $ids),
             'id'
         );
     }
@@ -309,7 +324,7 @@ final class PenempatanRepository
         $rows = $this->all(
             'SELECT s.id, s.nis, s.nama_santri, s.jenis_kelamin, s.sekolah_saat_ini,'
             . ' pk.id AS plotting_kelas_id, pk.id_kelas, k.nama_kelas, k.jenjang,'
-            . ' pkm.id AS plotting_kamar_id, pkm.id_kamar, km.nama_kamar, km.kapasitas,'
+            . ' pkm.id AS plotting_kamar_id, pkm.id_kamar, km.nama_kamar, km.kapasitas, ' . $this->asrama('km') . ','
             . ' (SELECT COUNT(*) FROM plotting_kamar p3 WHERE p3.id_santri = s.id AND p3.id_tahun = ?) AS jumlah_kamar'
             . $from . ' ORDER BY s.nama_santri, s.id LIMIT ? OFFSET ?',
             [$yearId, ...$head, ...$params, $perPage, ($page - 1) * $perPage]
@@ -333,6 +348,11 @@ final class PenempatanRepository
             ? ['(s.is_active = 0 OR s.archived_at IS NOT NULL)', 'pkm.id IS NOT NULL']
             : ['s.is_active = 1', 's.archived_at IS NULL'];
         $params = [];
+
+        if ((int) ($filters['santri_id'] ?? 0) > 0) {
+            $parts[] = 's.id = ?';
+            $params[] = (int) $filters['santri_id'];
+        }
 
         $q = (string) ($filters['q'] ?? '');
         if ($q !== '') {

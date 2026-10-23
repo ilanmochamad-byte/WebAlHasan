@@ -29,7 +29,9 @@ $assert(str_contains($service, 'endActiveClass') && str_contains($repository, "s
 foreach (['admin/admin_guru.php', 'admin/admin_master_santri.php'] as $page) {
     $php = $source($page);
     foreach (['Pencarian', 'Detail', 'Tambah', 'Ubah', 'Nonaktifkan', 'Arsipkan'] as $feature) {
-        $assert(str_contains($php, $feature), basename($page) . ' menyediakan ' . $feature);
+        // Redesain Tahap 6: label pencarian ditulis "Cari …" dan "Lihat" membuka panel detail.
+        $ada = str_contains($php, $feature) || ($feature === 'Pencarian' && str_contains($php, 'type="search"')) || ($feature === 'Detail' && str_contains($php, "'action' => 'detail'"));
+        $assert($ada, basename($page) . ' menyediakan ' . $feature);
     }
     $assert(!preg_match('/DELETE\s+FROM\s+(guru|santri)/i', $php), basename($page) . ' tidak menghapus guru/santri permanen');
 }
@@ -39,7 +41,7 @@ foreach (['admin/admin_wali.php', 'admin/admin_pengurus.php', 'admin/admin_murob
 $assert(str_contains($source('admin/admin_wali.php'), 'attachWali') && str_contains($repository, 'waliAttach'), 'UI wali mendukung relasi ke banyak santri');
 $assert(str_contains($source('admin/admin_murobi.php'), 'approval izin'), 'UI murobi menjelaskan bahwa approval izin tidak diberikan');
 $assert(str_contains($source('admin/export_master.php'), 'fputcsv') && str_contains($source('admin/admin_guru.php'), 'export_master.php') && str_contains($source('admin/admin_master_santri.php'), 'export_master.php'), 'Guru dan santri dapat diekspor CSV sesuai filter');
-$assert(str_contains($source('admin/admin_master_santri.php'), 'Impor Format Santri Lama') && str_contains($source('admin/proses_import_santri.php'), 'RINCIAN BARIS GAGAL'), 'Impor lama memvalidasi dan melaporkan baris gagal secara terpisah');
+$assert(str_contains($source('admin/admin_master_santri.php'), "\$mode === 'impor'") && str_contains($source('admin/proses_import_santri.php'), 'RINCIAN BARIS GAGAL'), 'Impor lama memvalidasi dan melaporkan baris gagal secara terpisah');
 $accountService = $source('app/Account/AccountService.php');
 $assert(str_contains($accountService, 'strtolower') && str_contains($accountService, 'FILTER_VALIDATE_EMAIL') && str_contains($accountService, "str_starts_with(\$data['phone'], '+62')"), 'Username, email, dan nomor HP akun dinormalisasi dan divalidasi');
 $assert(!str_contains($source('admin/proses_mutasi_alumni.php'), 'DELETE FROM santri'), 'Mutasi alumni mengarsipkan santri dan tidak menghapus data sumber');

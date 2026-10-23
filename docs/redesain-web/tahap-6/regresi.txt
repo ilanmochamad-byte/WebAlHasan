@@ -1,0 +1,90 @@
+# Regresi redesain website Tahap 6 — 23 Oktober 2026
+# Format: kode_keluar|uji|lulus|gagal|baris terakhir. Semua dijalankan pada kode akhir Tahap 6.
+# Suite DB lama: salinan sandbox .env ber-migrasi lengkap (termasuk 023) test_regresi_t6_test. Suite Tahap 2–5: DB salinan masing-masing
+# (skrip DB berantai kini ikut menjalankan migrasi 023). Suite V3: DB sandbox V3 webalhasan_v3_phase1_test (V3_RUN_TESTS=1).
+# Asersi lama yang disesuaikan tercantum di README (Pengujian yang disesuaikan); angka di bawah adalah sesudah penyesuaian.
+
+== statis
+0|redesain_web_tahap1_static|69|0|Semua pemeriksaan lulus.
+0|redesain_web_tahap2_static|121|0|Semua pemeriksaan lulus (121).
+0|redesain_web_tahap3_static|152|0|Ringkasan: 152 lulus, 0 gagal
+0|redesain_web_tahap4_static|96|0|Ringkasan: 96 lulus, 0 gagal
+0|redesain_web_tahap5_static|96|0|Ringkasan: 96 lulus, 0 gagal
+0|alumni_static|180|0|SELURUH PEMERIKSAAN STATIS ALUMNI LULUS.
+0|get_mutasi_v1_static|28|0|Ringkasan: 28 lulus, 0 gagal
+0|kredensial_static|105|0|SELURUH PEMERIKSAAN STATIS PESAN KREDENSIAL LULUS.
+0|penempatan_static|138|0|SELURUH PEMERIKSAAN STATIS PENEMPATAN LULUS.
+0|penugasan_static|282|0|Total gagal: 0
+0|perapihan_static|131|0|SELURUH PEMERIKSAAN STATIS PERAPIHAN LULUS.
+0|phase1_static|76|0|[lulus] Token CSRF salah ditolak
+0|phase2_static|46|0|[lulus] Tanggal tidak valid ditolak
+0|phase3_static|35|0|[lulus] Rentang lintas tengah malam tidak ditebak oleh parser
+0|phase4_static|38|0|[lulus] Backup SQL mengecualikan generated column dan menulis daftar kolom eksplisit
+0|phase5_static|44|0|[lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/acceptance-checklist.md
+0|v2_phase1_static|126|0|[lulus] php -l lulus untuk bin/v2_phase1_verify.php
+0|v2_phase2_static|174|0|[lulus] php -l lulus untuk admin/pertemuan_pengajian.php
+0|v2_phase3_static|147|0|SELURUH PEMERIKSAAN STATIS FASE 3 LULUS.
+0|v2_phase4_static|288|0|SELURUH PEMERIKSAAN STATIS FASE 4 LULUS.
+0|v2_phase5_static|291|0|SELURUH PEMERIKSAAN STATIS FASE 5 LULUS.
+
+== V3 (baseline Tahap 5: phase2_static 68/1, phase3_static 102/1 pada label navigasi lama — identik)
+0|v3_phase1_static|15|0|
+1|v3_phase2_static|68|1|[gagal] Menu web membedakan V3 dan data warisan
+1|v3_phase3_static|102|1|[gagal] Navigasi konseling mengikuti capability V3 
+0|v3_phase4_static|18|0|
+0|v3_phase2_integration|67|0|
+0|v3_phase3_integration|121|0|
+0|v3_phase4_integration|65|0|
+0|v3_phase5_integration|43|0|
+0|v3_phase5_access|5|0|
+0|v3_phase4_channels|9|0|
+0|v3_phase4_concurrency|10|0|
+0|v3_phase2_concurrency|6|0|
+0|v3_phase5_performance|6|0|
+
+== lint
+php -l: 475 berkas (git ls-files + berkas baru Tahap 6), 0 gagal
+node --check alhasan.js, uji-redesain-web-tahap6.mjs: lulus
+git diff --check: bersih
+
+== integrasi & smoke (DB test_regresi_t6_test, sudah migrasi 023)
+0|penempatan_integration|62|0|SELURUH PENGUJIAN INTEGRASI PENEMPATAN LULUS.
+0|penempatan_concurrency|10|0|SELURUH PENGUJIAN PERMINTAAN BERSAMAAN PENEMPATAN LULUS.
+0|penempatan_web_smoke|47|0|SELURUH SMOKE TEST WEB PENEMPATAN LULUS. (5 asersi label disesuaikan)
+0|alumni_integration|80|0|SELURUH PENGUJIAN INTEGRASI ALUMNI LULUS.
+0|alumni_web_smoke|61|0|SELURUH SMOKE TEST WEB ALUMNI LULUS.
+0|perapihan_integration|53|0|SELURUH PENGUJIAN INTEGRASI PERAPIHAN LULUS.
+0|perapihan_web_smoke|56|0|SELURUH SMOKE TEST WEB PERAPIHAN LULUS.
+0|perapihan_audit_kamar|19|0|Total kamar: 19, gagal: 0 (kamar baru mengirim asrama)
+0|perapihan_audit_wali|16|0|
+0|perapihan_audit_merge|4|0|
+0|perapihan_audit_admin|13|0|
+0|perapihan_audit_http|23|0|
+0|perapihan_audit_account_log|36|0|
+0|penugasan_integration|161|0|Total gagal: 0
+0|penugasan_web_smoke|85|0|Total gagal: 0 (asersi label/pengalihan G-1 disesuaikan)
+0|phase2_integration|12|0|
+0|kredensial_integration|59|0|
+0|kredensial_web_smoke|51|0|
+0|v2_phase5_web_smoke|79|0|SELURUH SMOKE TEST WEB FASE 5 LULUS.
+0|v2_phase5_api_contract|150|0|SELURUH PENGUJIAN KONTRAK API FASE 5 LULUS.
+0|v2_phase2_navigasi_murobi|40|0|
+77|perapihan_audit_wali_long_list, _pagination, _form_feedback, _csv_limit|—|—|memerlukan manifest fixture audit lama; tidak dijalankan (juga tidak di regresi Tahap 5)
+
+== redesain Tahap 1–5 (DB salinan)
+0|redesain_web_tahap2_http (DB Tahap 2)|Ringkasan: 191 lulus, 0 gagal
+0|php tests/redesain_web_tahap3_http.php|Ringkasan: 167 lulus, 0 gagal
+0|php tests/redesain_web_tahap2_audit.php|Ringkasan: 29 lulus, 0 gagal
+0|php tests/redesain_web_tahap3_audit.php|Ringkasan: 13 lulus, 0 gagal
+0|php tests/redesain_web_tahap3_audit_ulang.php|Ringkasan: 13 lulus, 0 gagal
+0|php tests/redesain_web_tahap4_http.php|Ringkasan: 132 lulus, 0 gagal
+0|php tests/redesain_web_tahap4_audit.php|Ringkasan: 34 lulus, 0 gagal
+0|php tests/redesain_web_tahap5_http.php|Ringkasan: 106 lulus, 0 gagal
+0|php tests/redesain_web_tahap5_audit.php|Ringkasan: 33 lulus, 0 gagal
+0|browser tahap2 (DB t2)|Ringkasan: 89 lulus, 0 gagal
+0|browser tahap3 (DB t3)|Ringkasan: 76 lulus, 0 gagal
+0|browser tahap4 (DB t4)|Ringkasan: 121 lulus, 0 gagal
+0|browser tahap5 (DB t5)|Ringkasan: 115 lulus, 0 gagal
+0|browser tahap1 (DB t5)|91 lulus, 0 gagal. Tangkapan layar: /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/browser/tangkapan-redesain-web-tahap1
+0|browser uji-perapihan (DB test_regresi_t6_test)|Total pemeriksaan: 56, gagal: 0
+-|browser uji-penempatan.mjs (lama)|berhenti di BP-1a: menu Penempatan bukan butir sidebar sejak peta menu Tahap 2; tidak dihitung
