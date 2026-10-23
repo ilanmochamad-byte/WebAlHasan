@@ -1,0 +1,103 @@
+[lulus] Berkas Fase 3 tersedia: app/V3/KonselingRepository.php
+[lulus] Berkas Fase 3 tersedia: app/V3/KonselingService.php
+[lulus] Berkas Fase 3 tersedia: portal/v3_konseling.php
+[lulus] Berkas Fase 3 tersedia: portal/v3_konseling_detail.php
+[lulus] Berkas Fase 3 tersedia: portal/v3_konseling_cetak.php
+[lulus] Berkas Fase 3 tersedia: database/migrations/016_v3_fase3_konseling.sql
+[lulus] Berkas Fase 3 tersedia: database/rollbacks/016_v3_fase3_konseling.sql
+[lulus] Berkas Fase 3 tersedia: database/migrations/017_v3_fase3_kerahasiaan_dan_revisi.sql
+[lulus] Berkas Fase 3 tersedia: database/rollbacks/017_v3_fase3_kerahasiaan_dan_revisi.sql
+[lulus] Berkas Fase 3 tersedia: bin/v3_phase3_preflight.php
+[lulus] Berkas Fase 3 tersedia: bin/v3_phase3_verify.php
+[lulus] Berkas Fase 3 tersedia: bin/v3_phase3_run_tests.sh
+[lulus] Service menyediakan createCase(
+[lulus] Service menyediakan correctCase(
+[lulus] Service menyediakan transitionCase(
+[lulus] Service menyediakan addLinks(
+[lulus] Service menyediakan createSession(
+[lulus] Service menyediakan correctSession(
+[lulus] Service menyediakan transitionSession(
+[lulus] Service menyediakan acknowledge(
+[lulus] Service menyediakan page(
+[lulus] Service menyediakan show(
+[lulus] Service menyediakan timeline(
+[lulus] Service menyediakan parentSerializer(
+[lulus] Mutasi konseling memakai kunci subjek santri/tahun
+[lulus] Kunci operasional tidak memakai gerbang migrasi global
+[lulus] Kegagalan audit menggulung transaksi bisnis
+[lulus] Antrean rekomendasi menyaring rekomendasi tidak berlaku
+[lulus] Rekomendasi yang sudah ditindaklanjuti tidak kembali ke antrean
+[lulus] Satu sumber sesi hanya memiliki satu revisi langsung
+[lulus] Audit membedakan koreksi sesi admin dan pembimbing
+[lulus] Enum dan transisi status divalidasi server
+[lulus] Serializer memakai allowlist terpisah
+[lulus] DTO orang tua tidak memuat tujuan
+[lulus] DTO orang tua tidak memuat ringkasan_internal
+[lulus] DTO orang tua tidak memuat hasil
+[lulus] DTO orang tua tidak memuat catatan_murobi
+[lulus] DTO orang tua tidak memuat alasan_revisi
+[lulus] DTO orang tua tidak memuat pembimbing_id
+[lulus] Isi internal hanya untuk pembimbing/admin dan murobi pada kasus Internal
+[lulus] Rute API Fase 3 tersedia: /v3/konseling/options
+[lulus] Rute API Fase 3 tersedia: /v3/konseling/kasus
+[lulus] Rute API Fase 3 tersedia: /timeline
+[lulus] Rute API Fase 3 tersedia: /tautan
+[lulus] Rute API Fase 3 tersedia: /sesi
+[lulus] Rute API Fase 3 tersedia: /diketahui
+[lulus] Penjaga mutasi GET terbukti mendeteksi rute mutasi sintetis
+[lulus] Tidak ada mutasi konseling melalui GET
+[lulus] Kedua controller mutasi web mewajibkan CSRF
+[lulus] Form konseling memakai POST
+[lulus] Tampilan cetak internal tidak boleh dicache publik
+[gagal] Navigasi konseling mengikuti capability V3
+[lulus] Detail pelanggaran memuat seluruh tindak lanjut konseling tanpa menggandakan induk
+[lulus] Migrasi 016 memuat alasan_revisi_terakhir
+[lulus] Migrasi 016 memuat alasan_pembatalan
+[lulus] Migrasi 016 memuat alasan_penjadwalan_ulang
+[lulus] Migrasi 016 memuat sesi_satu_revisi
+[lulus] Migrasi 016 memuat ditindaklanjuti_kasus_id
+[lulus] Migrasi 016 memuat rekomendasi_kasus_fk
+[lulus] Migrasi 016 tidak memasang guard tautan yang menduplikasi tautan_unik 013
+[lulus] Migrasi 016 memberi penanda jujur pada kasus batal tanpa alasan
+[lulus] Migrasi 016 tidak menghapus catatan bisnis
+[lulus] Rollback 016 mempertahankan kolom keputusan alasan_revisi_terakhir
+[lulus] Rollback 016 mempertahankan kolom keputusan alasan_pembatalan
+[lulus] Rollback 016 mempertahankan kolom keputusan alasan_penjadwalan_ulang
+[lulus] Rollback 016 mempertahankan kolom keputusan ditindaklanjuti_kasus_id
+[lulus] Rollback 016 mempertahankan kolom keputusan ditindaklanjuti_pada
+[lulus] Rollback 016 tidak memutus tautan rekomendasi atau menghapus catatan
+[lulus] Verifier fondasi tidak mengharapkan unique tautan tambahan dari 016
+[lulus] Migrasi tetap tunggal 001_
+[lulus] Migrasi tetap tunggal 002_
+[lulus] Migrasi tetap tunggal 003_
+[lulus] Migrasi tetap tunggal 004_
+[lulus] Migrasi tetap tunggal 005_
+[lulus] Migrasi tetap tunggal 006_
+[lulus] Migrasi tetap tunggal 007_
+[lulus] Migrasi tetap tunggal 008_
+[lulus] Migrasi tetap tunggal 009_
+[lulus] Migrasi tetap tunggal 010_
+[lulus] Migrasi tetap tunggal 011_
+[lulus] Migrasi tetap tunggal 012_
+[lulus] Migrasi tetap tunggal 013_
+[lulus] Migrasi tetap tunggal 014_
+[lulus] Migrasi tetap tunggal 015_
+[lulus] Migrasi tetap tunggal 016_
+[lulus] Migrasi tetap tunggal 017_
+[lulus] Menu aplikasi belum diubah sebelum Fase 5
+[lulus] K1 transisi sesi memeriksa status kasus yang terkunci
+[lulus] K2 kasus batal melepas rekomendasi dan antrean hanya memuat rekomendasi Baru
+[lulus] K2 rekomendasi dapat ditautkan ke kasus yang sudah berjalan
+[lulus] K3 tautan dan tampilan tindak lanjut membaca rantai revisi pelanggaran sesuai hak pembaca
+[lulus] K5 field kosong formulir tidak menghapus rencana dan sesi batal tanpa realisasi
+[lulus] K6 koreksi sesi menjaga arti statusnya
+[lulus] K7 kunci deduplikasi status memuat versi hasil
+[lulus] K9 halaman detail dan cetak tidak mengaudit akses admin dua kali
+[lulus] K11 setiap label formulir halaman detail terhubung ke kontrolnya
+[lulus] K2 halaman detail menyediakan formulir tautan manual
+[lulus] Kerahasiaan disaring pada query daftar, detail kasus, dan tindak lanjut pelanggaran
+[lulus] Kasus Rahasia hanya untuk pembimbing pemilik dan tidak dibuka maupun diberitahukan kepada murobi
+[lulus] Penutupan kasus menutup sesi terjadwal secara beraudit
+[lulus] Koreksi kasus disimpan dan ditampilkan sebagai revisi berbaris
+[lulus] Migrasi 017 aditif tanpa DROP atau DELETE
+[lulus] Rollback 017 hanya melepas tabel revisi yang masih kosong

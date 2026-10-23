@@ -1,0 +1,69 @@
+[lulus] Berkas Fase 2 tersedia: app/V3/PelanggaranRepository.php
+[lulus] Berkas Fase 2 tersedia: app/V3/PelanggaranService.php
+[lulus] Berkas Fase 2 tersedia: app/V3/AttachmentStorage.php
+[lulus] Berkas Fase 2 tersedia: portal/v3_pelanggaran.php
+[lulus] Berkas Fase 2 tersedia: portal/v3_pelanggaran_detail.php
+[lulus] Berkas Fase 2 tersedia: portal/v3_lampiran.php
+[lulus] Berkas Fase 2 tersedia: database/migrations/014_v3_fase2_pelanggaran.sql
+[lulus] Berkas Fase 2 tersedia: database/rollbacks/014_v3_fase2_pelanggaran.sql
+[lulus] Berkas Fase 2 tersedia: database/migrations/015_v3_fase2_koreksi_dan_rekomendasi.sql
+[lulus] Berkas Fase 2 tersedia: database/rollbacks/015_v3_fase2_koreksi_dan_rekomendasi.sql
+[lulus] Berkas Fase 2 tersedia: bin/v3_rekonsiliasi_agregat.php
+[lulus] T-2 mempertahankan provenance capability fondasi
+[lulus] Kunci operasional memakai baris agregat santri/tahun
+[lulus] Mutasi operasional tidak memakai gerbang schema_migrations
+[lulus] Pembatalan dan koreksi memakai ledger pembalik
+[lulus] Deduplikasi idempotensi/rekomendasi ditegakkan database
+[lulus] Service menyediakan create(
+[lulus] Service menyediakan correct(
+[lulus] Service menyediakan cancel(
+[lulus] Service menyediakan acknowledge(
+[lulus] Service menyediakan page(
+[lulus] Service menyediakan show(
+[lulus] Service menyediakan history(
+[lulus] Audit membedakan koreksi admin dan pembimbing
+[lulus] Serializer baru memakai allowlist eksplisit
+[lulus] Service tidak mengembalikan baris database mentah
+[lulus] Rute mutasi V3 tersedia tanpa GET: $method === 'POST' && $path === '/v3/pelanggaran'
+[lulus] Rute mutasi V3 tersedia tanpa GET: $method === 'PATCH' && preg_match
+[lulus] Rute mutasi V3 tersedia tanpa GET: /pembatalan
+[lulus] Rute mutasi V3 tersedia tanpa GET: /diketahui
+[lulus] Tidak ada mutasi status melalui GET
+[lulus] Mutasi web mewajibkan CSRF
+[lulus] Form mutasi web memakai POST
+[lulus] Lampiran web dibatasi tipe aman
+[lulus] Halaman pelanggaran lama tetap berlabel Data warisan
+[lulus] Halaman warisan tidak membuka penghapusan
+[gagal] Menu web membedakan V3 dan data warisan
+[lulus] Menu aplikasi tetap bukan dari App\Ui\Navigation
+[lulus] Migrasi memberi satu kunci agregat per subjek
+[lulus] Migrasi menjamin satu rekomendasi per ambang
+[lulus] Migrasi mencegah dua revisi atas sumber yang sama
+[lulus] Migrasi lama tetap tunggal 001_
+[lulus] Migrasi lama tetap tunggal 002_
+[lulus] Migrasi lama tetap tunggal 003_
+[lulus] Migrasi lama tetap tunggal 004_
+[lulus] Migrasi lama tetap tunggal 005_
+[lulus] Migrasi lama tetap tunggal 006_
+[lulus] Migrasi lama tetap tunggal 007_
+[lulus] Migrasi lama tetap tunggal 008_
+[lulus] Migrasi lama tetap tunggal 009_
+[lulus] Migrasi lama tetap tunggal 010_
+[lulus] Migrasi lama tetap tunggal 011_
+[lulus] Migrasi lama tetap tunggal 012_
+[lulus] Migrasi lama tetap tunggal 013_
+[lulus] Migrasi lama tetap tunggal 014_
+[lulus] Migrasi 015 memisahkan alasan pembatalan
+[lulus] Migrasi 015 menyediakan penanda rekomendasi tidak berlaku
+[lulus] Migrasi 015 memulihkan agregat dari ledger
+[lulus] Migrasi 015 tidak menghapus catatan bisnis
+[lulus] Rollback 015 hanya melepas struktur miliknya
+[lulus] Catatan yang tidak berlaku melepas slot fingerprint
+[lulus] Pembatalan tidak lagi menulis ke alasan revisi
+[lulus] Repository menyelaraskan masa berlaku rekomendasi
+[lulus] Catatan sumber melepas fingerprint sebelum revisi ditulis
+[lulus] Mutasi create menyegarkan masa berlaku rekomendasi
+[lulus] Mutasi correct menyegarkan masa berlaku rekomendasi
+[lulus] Mutasi cancel menyegarkan masa berlaku rekomendasi
+[lulus] Dokumen PRD V3 tidak dapat diunduh dari web
+[lulus] Diagnostik yatim warisan tetap exit nonzero

@@ -282,7 +282,7 @@ ah_page_open(['title'=>$judul,'user'=>$user,'active'=>$pengganti?'pengganti':'ni
 </div>
 </form>
 <div id="rapor-bulk" class="ah-no-print"></div>
-<p class="small text-muted">Klik nama santri untuk catatan capaian per komponen, riwayat revisi, dan koreksi beralasan. Nilai yang sudah diserahkan terkunci di kisi.</p>
+<p class="small text-muted">Klik nama santri untuk catatan capaian per komponen, riwayat revisi, dan koreksi beralasan. Perubahan nilai tersimpan memerlukan alasan koreksi.</p>
 <?php endif ?>
 <?php if($panel): $p=$panel;$rows=$p['nilai'];$keys=[];$last=0;foreach($rows as $r){$keys[$r['komponen']]=true;$last=max($last,(int)$r['nomor_harian']);}
     $rows[]=['komponen'=>'Harian','nomor_harian'=>$last+1,'version'=>0,'nilai'=>'','catatan'=>'','status'=>null];
@@ -293,7 +293,7 @@ ah_page_open(['title'=>$judul,'user'=>$user,'active'=>$pengganti?'pengganti':'ni
     ah_panel_open(['title'=>$namaPanel,'description'=>$judul.' · '.($p['hasil']['nilai_tampil']===null?'Belum lengkap':'Nilai akhir '.$p['hasil']['nilai_tampil'].' · '.$p['hasil']['predikat']),'close_url'=>$self(['rencana_mapel_id'=>(int)$plan['id'],'kolom'=>$kolomMinta?:null])]); ?>
     <p>Status: <?= rapor_status_badge($p['pemeriksaan']['status']) ?><?= $p['pemeriksaan']['perlu_verifikasi_ulang']?' '.ah_badge('Sumber berubah · serahkan ulang','warn'):'' ?></p>
     <?php if($p['pemeriksaan']['alasan']): ?><?php ah_note('info','Catatan pemeriksaan: '.$p['pemeriksaan']['alasan']) ?><?php endif ?>
-    <form method="post" id="panel-nilai"><?= ah_csrf() ?><input type="hidden" name="pengganti" value="<?= $pengganti?'1':'0' ?>"><input type="hidden" name="rencana_mapel_id" value="<?= (int)$plan['id'] ?>"><input type="hidden" name="santri_id" value="<?= $santri ?>">
+    <form method="post" id="panel-nilai" data-rapor-panel-koreksi><?= ah_csrf() ?><input type="hidden" name="pengganti" value="<?= $pengganti?'1':'0' ?>"><input type="hidden" name="rencana_mapel_id" value="<?= (int)$plan['id'] ?>"><input type="hidden" name="santri_id" value="<?= $santri ?>">
     <?php foreach($rows as $i=>$r): $label=$r['komponen']==='Harian'?'Harian '.(int)$r['nomor_harian']:$r['komponen']; $baru=(int)$r['version']===0; ?>
         <fieldset class="ah-komponen"><legend class="h6"><?= $e($label) ?><?= $baru&&$r['komponen']==='Harian'&&$r['nomor_harian']>1?' <span class="text-muted small fw-normal">(baru, opsional)</span>':'' ?> <?= $r['status']?rapor_status_badge($r['status']):'' ?></legend>
             <input type="hidden" name="komponen[<?= $i ?>][komponen]" value="<?= $e($r['komponen']) ?>"><input type="hidden" name="komponen[<?= $i ?>][nomor_harian]" value="<?= (int)$r['nomor_harian'] ?>"><input type="hidden" name="komponen[<?= $i ?>][version]" value="<?= (int)$r['version'] ?>">
@@ -311,7 +311,7 @@ ah_page_open(['title'=>$judul,'user'=>$user,'active'=>$pengganti?'pengganti':'ni
         <?php ah_note('info',$diserahkanPanel?'Nilai sudah diserahkan. Untuk mengubahnya, ubah isian di atas lalu pilih "Koreksi" dan tulis alasannya; status kembali menjadi draf dan perlu diserahkan ulang.':'Isian baru tersimpan dengan "Simpan draf". Mengubah nilai atau catatan yang sudah tersimpan memakai "Koreksi" beralasan.') ?>
         <?php ah_action_dialog_open('koreksi-nilai','Koreksi…','Koreksi nilai '.$namaPanel,'outline-primary') ?>
             <label class="form-label" for="alasan-koreksi">Alasan koreksi <span class="text-danger">*</span></label>
-            <textarea class="form-control" id="alasan-koreksi" name="alasan" maxlength="1000" required form="panel-nilai"></textarea>
+            <textarea class="form-control" id="alasan-koreksi" name="alasan" maxlength="1000" form="panel-nilai"></textarea>
             <div class="ah-act__actions"><button class="btn btn-primary" name="action" value="koreksi" form="panel-nilai">Simpan koreksi</button></div>
         <?php ah_action_dialog_close() ?>
     <?php endif ?>

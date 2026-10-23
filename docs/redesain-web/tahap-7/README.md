@@ -1,6 +1,6 @@
 # Redesain website Tahap 7 — penilaian & rapor (23 Oktober 2026)
 
-Status: **diimplementasikan Claude, menunggu audit independen Codex.** Belum merge/deploy.
+Status: **lulus audit independen Codex setelah koreksi terarah F-1, 23 Oktober 2026.** Laporan: [`AUDIT-CODEX.md`](AUDIT-CODEX.md). Auditor memperbaiki validasi alasan yang memblokir tindakan panel; hasil akhir statis 102/0, HTTP 122/0, browser 92/0, probe server 30/0 dan probe panel 36/0. Belum merge/deploy; tetap menunggu rapor Ganjil 2026/2027 terbit dan keputusan Human Developer. Tahap 8 tidak dimulai.
 
 - **Keputusan Human Developer 23 Oktober 2026:** syarat mulai "rapor Ganjil 2026/2027 sudah terbit" diganti untuk pengerjaan. Tahap 7 dikerjakan dan diaudit sekarang di branch; **merge ke `main` dan deploy ditahan sampai rapor Ganjil 2026/2027 terbit**, agar guru tidak berganti alur di tengah masa pengisian nilai. Dicatat di `AGENTS.md`, `rencana.md`, `keputusan.md`.
 - Branch `claude/redesain-web-tahap-7` dari `origin/main` `86721a2` (sudah memuat audit Tahap 6 `82f7a2b`). Tidak ada worktree.
@@ -83,8 +83,8 @@ Lingkungan: PHP 8.4, Node 26, MariaDB 12 lokal, Chromium Playwright. DB: `tests/
 
 - Hanya Chromium. Safari/iOS, Firefox, perangkat fisik, pembaca layar, dan axe belum dijalankan.
 - Durasi penerbitan diukur di laptop lokal (PHP 8.4, MariaDB 12), bukan cPanel; batas 10 rapor per kiriman tanpa JavaScript adalah perkiraan konservatif.
-- Uji browser lama V4 (`tests/browser/uji-v4-*.mjs`) menguji markup halaman V4 sebelum redesain dan tidak dijalankan; perilaku bisnisnya diuji ulang oleh uji server Tahap 7 dan layanan V4 tidak berubah.
-- REST dan aplikasi mobile tidak diubah dan tidak diuji ulang (layanan dan `api/` identik dengan baseline).
+- Uji browser lama V4 (`tests/browser/uji-v4-*.mjs`) menguji markup halaman V4 sebelum redesain dan tidak dijalankan; alur terkait diuji ulang oleh uji server Tahap 7. Layanan V4 tidak berubah kecuali `RencanaService::save()` sesuai AU.
+- Kode REST dan aplikasi mobile tidak diubah. Perilaku REST `POST /v4/rencana` mengikuti perubahan layanan AU; implementator belum mengujinya ulang, dan auditor kemudian mengujinya melalui REST nyata (lihat `AUDIT-CODEX.md`). Aplikasi mobile tidak diuji ulang.
 - Tidak ada smoke cPanel, tidak ada migrasi produksi (Tahap 7 tanpa migrasi).
 
 ## Handoff ke auditor (Codex)

@@ -215,7 +215,7 @@ ah_page_open(['title'=>$judul,'user'=>$user,'active'=>$murobi?'sikap_binaan':'si
     <?php if(!$current['murobi_aktif']):?><?php ah_note('warning','Tidak ada murobi aktif yang sah. Minta admin memperbaiki penugasan.') ?><?php endif ?>
     <?php if($mode==='murobi'&&!$row):?><p>Pembimbing belum mengisi sikap.</p>
     <?php elseif($mode!=='pendidikan'):?>
-    <form method="post" id="panel-sikap"><?= ah_csrf() ?><input type="hidden" name="mode" value="<?= $e($mode) ?>"><input type="hidden" name="rencana_id" value="<?= $plan ?>"><input type="hidden" name="santri_id" value="<?= $sid ?>"><input type="hidden" name="version" value="<?= (int)($row['version']??0) ?>">
+    <form method="post" id="panel-sikap" data-rapor-panel-koreksi><?= ah_csrf() ?><input type="hidden" name="mode" value="<?= $e($mode) ?>"><input type="hidden" name="rencana_id" value="<?= $plan ?>"><input type="hidden" name="santri_id" value="<?= $sid ?>"><input type="hidden" name="version" value="<?= (int)($row['version']??0) ?>">
         <div class="ah-komponen__grid"><?php foreach($aspek as $key=>$label):?><label><?= $e($label) ?><select class="form-select" name="<?= $key ?>" required><option value="">Pilih predikat</option><?php foreach(SikapService::PREDIKAT as $pred):?><option <?= ($row[$key]??'')===$pred?'selected':'' ?>><?= $e($pred) ?></option><?php endforeach ?></select></label><?php endforeach ?></div>
         <label class="d-block mt-3">Catatan pembimbing<textarea class="form-control" name="catatan" maxlength="2000" rows="3"><?= $e($row['catatan']??'') ?></textarea></label>
         <div class="ah-act__actions mt-3">
@@ -226,7 +226,7 @@ ah_page_open(['title'=>$judul,'user'=>$user,'active'=>$murobi?'sikap_binaan':'si
             <?php ah_action_dialog_open('koreksi-sikap','Koreksi…','Koreksi sikap '.$namaPanel,'outline-primary') ?>
                 <p class="small">Ubah isian di panel lalu tulis alasannya. Sikap yang dikoreksi <?= $mode==='murobi'?'tercatat sebagai diketahui Anda':'kembali menjadi draf dan perlu diserahkan ulang' ?>.</p>
                 <label class="form-label" for="alasan-koreksi">Alasan koreksi <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="alasan-koreksi" name="alasan" maxlength="1000" required form="panel-sikap"></textarea>
+                <textarea class="form-control" id="alasan-koreksi" name="alasan" maxlength="1000" form="panel-sikap"></textarea>
                 <div class="ah-act__actions"><button class="btn btn-primary" name="action" value="koreksi" form="panel-sikap">Simpan koreksi</button></div>
             <?php ah_action_dialog_close() ?>
         <?php endif ?>

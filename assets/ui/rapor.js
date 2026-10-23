@@ -131,6 +131,22 @@
         sync();
     });
 
+    // Alasan di dialog terhubung ke formulir panel yang juga menyediakan
+    // Draf/Serahkan/Diketahui. `required` tanpa syarat memblokir tindakan
+    // tersebut walau dialog koreksi belum dibuka. Wajib hanya saat Koreksi;
+    // tanpa JavaScript kewajiban yang sama tetap diperiksa layanan server.
+    qsa('form[data-rapor-panel-koreksi]').forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            var button = event.submitter;
+            var reason = form.elements.namedItem('alasan');
+            if (button && button.value === 'koreksi' && reason && !reason.value.trim()) {
+                event.preventDefault();
+                reason.focus();
+                if (AlHasan.toast) { AlHasan.toast('Tulis alasan koreksi sebelum menyimpan perubahan.', 'warn'); }
+            }
+        }, true); // Validasi sebelum pengunci klik-ganda formulir bersama.
+    });
+
     /* --- HP: satu santri per kartu ---------------------------------------- */
     var mobile = window.matchMedia ? window.matchMedia('(max-width: 575.98px)') : null;
     qsa('table[data-rapor-pager]').forEach(function (table) {

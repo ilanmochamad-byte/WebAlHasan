@@ -1,0 +1,31 @@
+[lulus] REST login Pendidikan tersedia (token tidak dicetak)
+[lulus] AU REST tambah mapel tanpa nilai di rencana bernilai
+[lulus] AU REST target mapel tanpa nilai dapat diubah
+[lulus] AU REST target bernilai ditolak atomik, target lain dan versi tidak berubah
+[lulus] AU REST hapus mapel bernilai ditolak tanpa ikut menghapus mapel kosong
+[lulus] AU REST tempat bernilai wajib jalur admin
+[lulus] AU REST mengosongkan pasangan penanda bernilai ditolak
+[lulus] AU audit gagal menggulung penghapusan mapel kosong → 503
+[lulus] AU audit gagal mempertahankan seluruh mapel dan versi
+[lulus] AU REST hapus kedua mapel kosong berhasil
+[lulus] AU audit mencatat kedua mapel dihapus
+[lulus] AU snapshot dan hash PDF terbit tidak berubah
+[lulus] AU penanda lama nonaktif tidak menghalangi simpan mapel dengan pasangan tetap
+[lulus] TTD penanda dinonaktifkan langsung ditolak sesi Pendidikan lama
+[lulus] TTD admin tetap dapat memeriksa aset penanda nonaktif
+[lulus] TTD batas aktif/waktu diperiksa ulang: is_active=0
+[lulus] TTD batas aktif/waktu diperiksa ulang: berlaku_mulai=DATE_ADD(CURDATE(),INTERVAL 1 DAY)
+[lulus] TTD batas aktif/waktu diperiksa ulang: berlaku_selesai=DATE_SUB(CURDATE(),INTERVAL 1 DAY)
+[lulus] TTD pencabutan penugasan langsung berlaku pada sesi lama
+[lulus] AU pencabutan penugasan berlaku pada token REST lama
+[lulus] AV PDF versi diganti ditolak orang tua
+[lulus] AV PDF terbaru dapat diunduh orang tua
+[lulus] AV relasi dicabut menolak detail pada sesi wali lama
+[lulus] AV relasi dicabut menolak PDF pada sesi wali lama
+[lulus] AV relasi dicabut hilang dari chip dan daftar
+[lulus] Kriteria 30 santri: kisi kelas kosong memuat semua baris
+[lulus] Kriteria 30 santri: satu POST menyimpan seluruh 120 nilai
+[lulus] Kriteria 30 santri: tepat 120 revisi pertama
+[lulus] Kisi versi usang tidak menimpa koreksi santri terakhir
+[lulus] Kisi konflik memberi pesan kegagalan per santri
+Ringkasan: 30 lulus, 0 gagal
