@@ -638,3 +638,17 @@ function kesehatan_service(): \App\Kesehatan\KesehatanService
         audit_logger()
     );
 }
+
+/** Ringkasan kesehatan untuk wali (PRD V5 Fase 3): publikasi petugas dan proyeksi wali, web dan REST API. */
+function kesehatan_ringkasan_service(): \App\Kesehatan\RingkasanService
+{
+    return new \App\Kesehatan\RingkasanService(
+        new \App\Kesehatan\KesehatanRepository(app_db()),
+        new \App\Kesehatan\RingkasanRepository(app_db()),
+        kesehatan_service(),
+        audit_logger(),
+        notification_settings_repository(),
+        push_device_repository(),
+        notification_repository()
+    );
+}

@@ -136,6 +136,24 @@ try {
             $hasil = $kesehatan->hasilRujukan($user, (int) $m[1], (int) $m[2], $body, \App\Kesehatan\KesehatanService::KANAL_API);
             JsonResponse::success(['id' => $hasil['id'], 'versi' => $hasil['versi'], 'replayed' => $hasil['replayed']], $hasil['status']);
         }
+        // Fase 3: ringkasan wali. Petugas menyusun, mempratinjau, menerbitkan/mengganti, dan menarik;
+        // pembaca internal sesuai haknya; wali hanya proyeksi khusus dengan relasi aktif diperiksa per permintaan.
+        $ringkasan = kesehatan_ringkasan_service();
+        if ($method === 'GET' && $path === '/v5/kesehatan/wali/akses') JsonResponse::success($ringkasan->aksesWali($user));
+        if ($method === 'GET' && $path === '/v5/kesehatan/wali/ringkasan') JsonResponse::success($ringkasan->daftarWali($user, $_GET));
+        if ($method === 'GET' && preg_match('#^/v5/kesehatan/wali/ringkasan/(\d+)$#', $path, $m)) JsonResponse::success($ringkasan->detailWali($user, (int) $m[1], \App\Kesehatan\KesehatanService::KANAL_API));
+        if ($method === 'GET' && preg_match('#^/v5/kesehatan/kunjungan/(\d+)/ringkasan$#', $path, $m)) JsonResponse::success($ringkasan->internal($user, (int) $m[1]));
+        if ($method === 'POST' && preg_match('#^/v5/kesehatan/kunjungan/(\d+)/ringkasan/pratinjau$#', $path, $m)) JsonResponse::success($ringkasan->pratinjau($user, (int) $m[1], Request::json()));
+        if ($method === 'POST' && preg_match('#^/v5/kesehatan/kunjungan/(\d+)/ringkasan(/tarik)?$#', $path, $m)) {
+            $body = Request::json();
+            $body['idempotency_key'] ??= $_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? null;
+            $hasil = ($m[2] ?? '') === '/tarik'
+                ? $ringkasan->tarik($user, (int) $m[1], $body, \App\Kesehatan\KesehatanService::KANAL_API)
+                : $ringkasan->terbitkan($user, (int) $m[1], $body, \App\Kesehatan\KesehatanService::KANAL_API);
+            $status = $hasil['status'];
+            unset($hasil['status']);
+            JsonResponse::success($hasil, $status);
+        }
         throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
     }
 

@@ -143,6 +143,7 @@ final class NotificationCenterService
                 'pengajuan_id' => isset($data['pengajuan_id']) ? (int) $data['pengajuan_id'] : null,
                 'publikasi_id' => isset($data['publikasi_id']) ? (int) $data['publikasi_id'] : null,
                 'rapor_id' => isset($data['rapor_id']) ? (int) $data['rapor_id'] : null,
+                'ringkasan_id' => isset($data['ringkasan_id']) ? (int) $data['ringkasan_id'] : null,
             ],
         ];
     }
@@ -171,7 +172,7 @@ final class NotificationCenterService
     }
 
     /**
-     * Kategori jenis peristiwa (Perizinan, Rapor, Pembinaan) atau null.
+     * Kategori jenis peristiwa (Perizinan, Rapor, Pembinaan, Kesehatan) atau null.
      *
      * @param array<string, mixed> $query
      */

@@ -286,6 +286,11 @@ final class Navigation
                 self::tab('Semua', '/portal/v3_publikasi.php', ['v3_publikasi.php']),
             ], 'Info');
         }
+        if ($c->kesehatanWali()) {
+            // PRD V5 Fase 3: ringkasan kesehatan yang diterbitkan petugas klinik
+            // untuk anak dengan relasi wali aktif (hak dicek ulang di layanan).
+            $items[] = self::item('kesehatan_wali', 'Kesehatan anak', '/portal/kesehatan_wali.php', 'fa-kit-medical', ['kesehatan_wali.php'], [], 'Kesehatan');
+        }
         // Keputusan K: notifikasi orang tua juga tampil sebagai menu.
         $items[] = $notifikasi;
 
@@ -316,7 +321,7 @@ final class Navigation
     private static function kesehatan(): array
     {
         return self::item('kesehatan', 'Kesehatan', '/portal/kesehatan.php', 'fa-kit-medical',
-            ['kesehatan.php', 'kesehatan_buat.php', 'kesehatan_detail.php', 'kesehatan_koreksi.php', 'kesehatan_hasil_rujukan.php', 'kesehatan_riwayat.php'], [], 'Kesehatan');
+            ['kesehatan.php', 'kesehatan_buat.php', 'kesehatan_detail.php', 'kesehatan_koreksi.php', 'kesehatan_hasil_rujukan.php', 'kesehatan_riwayat.php', 'kesehatan_ringkasan.php'], [], 'Kesehatan');
     }
 
     /** @return array<string, mixed> */

@@ -33,6 +33,12 @@ try {
 }
 $a = $k['akses'];
 $riwayat = $a['riwayat_akses'] ? $kesehatan->riwayatAkses($currentUser, $id, $_GET['page'] ?? 1) : null;
+// PRD V5 Fase 3: status ringkasan wali (null bila migrasi 026 belum terpasang).
+try {
+    $infoRingkasan = kesehatan_ringkasan_service()->internal($currentUser, $id);
+} catch (KesehatanException) {
+    $infoRingkasan = null;
+}
 $teks = static fn (?string $isi): string => $isi === null || $isi === '' ? '<span class="text-muted">—</span>' : nl2br(ah_e($isi));
 $draf = $k['status'] === KesehatanService::STATUS_DRAF;
 
@@ -124,6 +130,20 @@ if (!$a['catat']): ?>
         </tr><?php endforeach; ?>
         </tbody></table></div><?php endif; ?>
 </section>
+<?php if ($infoRingkasan !== null): $rk = $infoRingkasan['ringkasan']; ?>
+<section class="ah-card" aria-labelledby="ah-ringkasan-wali">
+    <div class="ah-card__head"><h2 class="h6 mb-0" id="ah-ringkasan-wali">Ringkasan untuk wali</h2><?= $rk === null ? ah_status('Draf', 'Belum terbit') : ah_status($rk['status']) ?></div>
+    <div class="ah-card__body">
+        <p class="mb-2"><?= $rk === null ? 'Wali belum menerima informasi apa pun tentang kunjungan ini. Catatan klinik di atas tidak pernah tampil kepada wali.'
+            : ($rk['status'] === 'Terbit' ? 'Versi ' . (int) $rk['versi_berlaku'] . ' sedang dilihat wali. Koreksi catatan klinik tidak mengubah ringkasan ini.' : 'Ringkasan telah ditarik dari wali.') ?></p>
+        <a class="btn btn-sm btn-outline-primary" href="<?= ah_e(kesehatan_url('kesehatan_ringkasan.php', ['id' => $k['id']])) ?>"><?= match (true) {
+            $infoRingkasan['boleh_terbit'] && $rk === null => 'Susun ringkasan untuk wali',
+            $infoRingkasan['boleh_terbit'] => 'Kelola ringkasan untuk wali',
+            default => 'Lihat ringkasan untuk wali',
+        } ?></a>
+    </div>
+</section>
+<?php endif; ?>
 <?php if ($riwayat !== null): ?>
 <section class="ah-card" aria-labelledby="ah-riwayat-akses">
     <div class="ah-card__head"><h2 class="h6 mb-0" id="ah-riwayat-akses">Riwayat akses</h2><span class="text-muted small"><?= (int) $riwayat['total'] ?> pembukaan</span></div>
@@ -134,7 +154,7 @@ if (!$a['catat']): ?>
             <td data-label="Waktu"><?= ah_e(ah_waktu($ra['waktu'])) ?></td>
             <td data-label="Pengguna"><?= ah_e($ra['pengguna']['nama']) ?></td>
             <td data-label="Sebagai"><?= ah_e(kesehatan_sumber_label($ra['sumber'])) ?></td>
-            <td data-label="Bagian"><?= $ra['aksi'] === 'baca_versi' ? 'Riwayat versi' : 'Rincian' ?></td>
+            <td data-label="Bagian"><?= match ($ra['aksi']) { 'baca_versi' => 'Riwayat versi', 'baca_ringkasan' => 'Ringkasan wali', default => 'Rincian' } ?></td>
             <td data-label="Kanal"><?= $ra['kanal'] === 'api' ? 'Aplikasi/API' : 'Website' ?></td>
         </tr><?php endforeach; ?>
         </tbody></table></div><?php endif; ?>

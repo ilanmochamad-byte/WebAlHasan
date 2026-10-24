@@ -50,6 +50,7 @@ function kesehatan_sumber_label(string $sumber): string
         'admin_petugas' => 'Admin yang juga petugas',
         'pembimbing' => 'Pembimbing (binaan)',
         'murobi' => 'Murobi (binaan)',
+        'wali' => 'Wali santri (ringkasan)',
         default => $sumber,
     };
 }

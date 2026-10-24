@@ -18,7 +18,7 @@ use App\Ui\Layout;
  * menghasilkan 403, bukan notifikasi milik orang lain.
  *
  * Menyediakan: chip Semua/Belum dibaca/Sudah dibaca dan kategori dari jenis
- * peristiwa yang sudah tercatat (Perizinan, Rapor, Pembinaan), pengelompokan
+ * peristiwa yang sudah tercatat (Perizinan, Rapor, Pembinaan, Kesehatan), pengelompokan
  * per hari, buka-dan-tandai-dibaca, detail, tandai semua dibaca, pagination,
  * serta keadaan kosong dan galat.
  */
@@ -84,6 +84,10 @@ function notifikasi_tujuan(array $item): ?string
     }
     if (($tautan['tipe'] ?? '') === 'v3_publikasi' && (int) ($tautan['publikasi_id'] ?? 0) > 0) {
         return app_url('/portal/v3_publikasi.php?id=' . (int) $tautan['publikasi_id']);
+    }
+    // PRD V5 Fase 3: hanya penunjuk; halaman tujuan memeriksa ulang relasi wali aktif.
+    if (($tautan['tipe'] ?? '') === 'kesehatan_ringkasan' && (int) ($tautan['ringkasan_id'] ?? 0) > 0) {
+        return app_url('/portal/kesehatan_wali.php?id=' . (int) $tautan['ringkasan_id']);
     }
     if (($item['pengajuan_id'] ?? null) !== null) {
         return app_url('/portal/izin_detail.php?id=' . (int) $item['pengajuan_id']);
@@ -166,6 +170,7 @@ $chips = [
     ['label' => 'Perizinan', 'query' => ['jenis' => 'perizinan'], 'aktif' => $jenisAktif === 'perizinan'],
     ['label' => 'Rapor', 'query' => ['jenis' => 'rapor'], 'aktif' => $jenisAktif === 'rapor'],
     ['label' => 'Pembinaan', 'query' => ['jenis' => 'pembinaan'], 'aktif' => $jenisAktif === 'pembinaan'],
+    ['label' => 'Kesehatan', 'query' => ['jenis' => 'kesehatan'], 'aktif' => $jenisAktif === 'kesehatan'],
 ];
 ?>
 
@@ -198,6 +203,7 @@ $chips = [
                     <a class="btn btn-primary" href="<?= ah_e($tujuanDetail) ?>"><?= ah_e(match (true) {
                         ($detail['tautan']['tipe'] ?? '') === 'rapor' => 'Buka rapor semester',
                         ($detail['tautan']['tipe'] ?? '') === 'v3_publikasi' => 'Buka informasi pembinaan',
+                        ($detail['tautan']['tipe'] ?? '') === 'kesehatan_ringkasan' => 'Buka informasi kesehatan',
                         default => 'Buka detail izin',
                     }) ?></a>
                 <?php endif; ?>
