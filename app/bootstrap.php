@@ -639,6 +639,16 @@ function kesehatan_service(): \App\Kesehatan\KesehatanService
     );
 }
 
+/** Laporan layanan klinik (PRD V5 Fase 5) untuk web dan REST API; hak mengikuti `kesehatan_service()`. */
+function kesehatan_laporan_service(): \App\Kesehatan\LaporanService
+{
+    return new \App\Kesehatan\LaporanService(
+        kesehatan_service(),
+        new \App\Kesehatan\KesehatanRepository(app_db()),
+        new \App\Kesehatan\LaporanRepository(app_db())
+    );
+}
+
 /** Penugasan petugas kesehatan lewat REST API (PRD V5 Fase 4, admin): membungkus `penugasan_service()`. */
 function kesehatan_penugasan_api(): \App\Kesehatan\PenugasanKesehatanApi
 {

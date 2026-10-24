@@ -1,0 +1,103 @@
+[lulus] Fixture V5 Fase 1 tersedia
+
+=== I-1. Matriks hak (dihitung server) ===
+[lulus] sbx_v5_petugas: baca=false catat=false sumber=NULL
+[lulus] sbx_v5_petugas_b: baca=true catat=true sumber='petugas'
+[lulus] sbx_admin: baca=true catat=false sumber='admin'
+[lulus] sbx_v5_admin_petugas: baca=true catat=false sumber='admin_petugas'
+[lulus] sbx_pengurus_biasa: baca=false catat=false sumber=NULL
+[gagal] sbx_pengurus_a: baca=false catat=false sumber=NULL
+[lulus] sbx_guru_biasa: baca=false catat=false sumber=NULL
+[gagal] sbx_murobi_c: baca=false catat=false sumber=NULL
+[lulus] sbx_ortu_a: baca=false catat=false sumber=NULL
+[lulus] Tidak ada role login baru; jenis kesehatan berdasar role pengurus
+
+=== I-2. Admin menugaskan petugas kesehatan ===
+[lulus] Non-admin ditolak membuat penugasan kesehatan (403)
+[lulus] Admin membuat satu penugasan kesehatan aktif
+[lulus] Penugasan tercatat di audit (penugasan.buat, kesehatan_assignment)
+[lulus] Petugas kini memperoleh hak catat dari penugasan aktif
+[lulus] Penugasan ganda bertumpang tindih ditolak (409)
+[lulus] Pusat penugasan menampilkan capability efektif kesehatan.catat
+
+=== I-3. Petugas mencatat tepat satu kunjungan ===
+[lulus] Kunjungan tersimpan (201), tepat satu baris baru
+[lulus] Baris kunjungan: santri, status Tercatat, versi 1, petugas, penugasan, waktu
+[lulus] Snapshot versi 1 tersimpan
+[lulus] Audit metadata tanpa isi klinis
+[lulus] Petugas membaca ulang isi kunjungan yang sama
+[lulus] Pembacaan detail petugas tercatat (metadata)
+
+=== I-4. Idempotensi ===
+[lulus] Kunci + isi sama → kunjungan yang sama, tanpa baris baru (kanal berbeda tetap sama)
+[lulus] Kunci sama + isi berbeda → 409, tanpa baris baru
+[lulus] Kunjungan asli tidak berubah oleh permintaan 409
+[lulus] Kunci idempotensi berlaku per akun (petugas lain = kunjungan lain)
+
+=== I-5. Mutasi klinis ditolak ===
+[lulus] admin ditolak mencatat (403)
+[lulus] admin yang juga petugas ditolak mencatat (403)
+[lulus] pengurus tanpa penugasan ditolak mencatat (403)
+[lulus] pembimbing ditolak mencatat (403)
+[lulus] guru non-murobi ditolak mencatat (403)
+[lulus] murobi ditolak mencatat (403)
+[lulus] wali ditolak mencatat (403)
+[lulus] Akun petugas nonaktif ditolak mencatat (403)
+[lulus] Akun petugas nonaktif ditolak membaca (403)
+[lulus] Seluruh penolakan: 0 kunjungan dan 0 klaim idempotensi baru
+[lulus] sbx_pengurus_biasa ditolak membaca daftar dan detail (Fase 1)
+[gagal] sbx_pengurus_a ditolak membaca daftar dan detail (Fase 1)
+[lulus] sbx_guru_biasa ditolak membaca daftar dan detail (Fase 1)
+[gagal] sbx_murobi_c ditolak membaca daftar dan detail (Fase 1)
+[lulus] sbx_ortu_a ditolak membaca daftar dan detail (Fase 1)
+
+=== I-6. Admin membaca detail dan audit akses ===
+[lulus] Admin membaca rincian (hanya baca)
+[lulus] Akses admin tercatat sumber admin
+[lulus] Admin membaca riwayat akses (2 pembukaan: petugas, admin)
+[lulus] Petugas tidak membaca riwayat akses (403)
+[lulus] Kunjungan tidak ada → 404
+[lulus] Admin yang juga petugas: baca tercatat sebagai admin_petugas
+
+=== I-7. Validasi ===
+[lulus] Validasi: santri nonaktif → 422
+[lulus] Validasi: santri tidak ada → 422
+[lulus] Validasi: santri kosong → 422
+[lulus] Validasi: santri bukan angka → 422
+[lulus] Validasi: waktu masa depan → 422
+[lulus] Validasi: waktu tidak valid → 422
+[lulus] Validasi: waktu kosong → 422
+[lulus] Validasi: keluhan kosong → 422
+[lulus] Validasi: keluhan terlalu panjang → 422
+[lulus] Validasi: catatan terlalu panjang → 422
+[lulus] Validasi: keluhan bukan teks → 422
+[lulus] Validasi: kunci terlalu pendek → 422
+[lulus] Validasi: kunci karakter tak aman → 422
+[lulus] Validasi gagal: 0 kunjungan dan 0 klaim idempotensi tersisa
+
+=== I-8. Penugasan diakhiri saat sesi masih aktif ===
+[lulus] Petugas B mencatat sebelum pencabutan
+[lulus] Penugasan dinonaktifkan → tulis berikutnya 403 tanpa baris baru
+[lulus] Penugasan dinonaktifkan → baca daftar/detail juga ditutup
+[lulus] Penugasan diakhiri (selesai kemarin) → tulis 403 tanpa baris baru
+[lulus] Penolakan pencabutan tidak meninggalkan klaim idempotensi
+
+=== I-9. Konkurensi (proses terpisah) ===
+[lulus] 8 permintaan bersamaan kunci+isi sama → 1 kunjungan, 7 replay ([{"ok":true,"id":4,"status":200,"replayed":true},{"ok":true,"id":4,"status":201,"replayed":false},{"ok":true,"id":4,"status":200,"replayed":true},{"ok":true,"id":4,"status":200,"replayed":true},{"ok":true,"id":4,"status":200,"replayed":true},{"ok":true,"id":4,"status":200,"replayed":true},{"ok":true,"id":4,"status":200,"replayed":true},{"ok":true,"id":4,"status":200,"replayed":true}])
+[lulus] 6 permintaan bersamaan kunci sama isi berbeda → 1 kunjungan, 5 konflik 409
+[lulus] Tidak ada kunjungan ganda per (akun, kunci)
+
+=== I-10. Privasi daftar dan log umum ===
+[lulus] Daftar: satu baris per kunjungan, tanpa kolom/isi klinis
+[lulus] audit_logs memuat 0 isi klinis penanda uji
+[lulus] notifikasi_outbox memuat 0 isi klinis (Fase 1 tanpa notifikasi)
+[lulus] Log akses konsisten dengan santri kunjungannya
+
+=== I-11. Tabel lain tidak berubah ===
+[lulus] Jumlah baris seluruh tabel non-kesehatan tetap (85 tabel)
+
+Lulus: 71 · Gagal: 4
+  - sbx_pengurus_a: baca=false catat=false sumber=NULL
+  - sbx_murobi_c: baca=false catat=false sumber=NULL
+  - sbx_pengurus_a ditolak membaca daftar dan detail (Fase 1)
+  - sbx_murobi_c ditolak membaca daftar dan detail (Fase 1)

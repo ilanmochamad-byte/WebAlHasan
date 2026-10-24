@@ -1,0 +1,53 @@
+
+=== N-A. Gerbang API penugasan kesehatan ===
+[lulus] Tanpa token → 401
+[lulus] Admin: 200 dengan Cache-Control private, no-store
+[lulus] Admin: daftar = seluruh penugasan kesehatan (7) + opsi pengurus/tahun
+[lulus] DTO penugasan hanya kolom yang ditentukan (tanpa token/kata sandi/role mentah)
+[lulus] Respons tanpa kata sandi/token
+[lulus] Admin yang juga petugas: membaca sebagai admin
+[lulus] sbx_v5_petugas_f: daftar/buat/nonaktifkan → 403/403/403 (harap 403)
+[lulus] sbx_v5_pembimbing: daftar/buat/nonaktifkan → 403/403/403 (harap 403)
+[lulus] sbx_v5_murobi: daftar/buat/nonaktifkan → 403/403/403 (harap 403)
+[lulus] sbx_v5_wali_1: daftar/buat/nonaktifkan → 403/403/403 (harap 403)
+[lulus] sbx_pengurus_biasa: daftar/buat/nonaktifkan → 403/403/403 (harap 403)
+[lulus] sbx_guru_biasa: daftar/buat/nonaktifkan → 403/403/403 (harap 403)
+[lulus] Aksi tidak dikenal (hapus) → 404; tidak ada penghapusan
+
+=== N-B. Mutasi penugasan dari aplikasi ===
+[lulus] sbx_v5_petugas (pengurus) belum dapat mencatat
+[lulus] Tanpa tanggal mulai → 422 dengan rincian kolom
+[lulus] Admin membuat penugasan → 201, Aktif, hak efektif
+[lulus] Token pengurus yang sudah masuk langsung dapat mencatat
+[lulus] Kiriman ulang/tumpang tindih → 409 tanpa baris kedua
+[lulus] Petugas baru mencatat kunjungan → 201
+[lulus] Nonaktifkan tanpa alasan → 422
+[lulus] Nonaktifkan beralasan → Dinonaktifkan
+[lulus] Nonaktifkan dua kali → 409
+[lulus] Token lama sesudah penugasan dinonaktifkan → 403 tanpa baris
+[lulus] Aktifkan kembali beralasan → Aktif
+[lulus] Akhiri dengan tanggal sebelum mulai → 422
+[lulus] Akhiri beralasan hari ini → tanggal selesai + alasan tersimpan
+[lulus] Tidak ada baris penugasan yang dihapus
+[lulus] Audit penugasan berurutan termasuk penolakan: penugasan.buat,penugasan.nonaktifkan,penugasan.tolak_tumpang_tindih,penugasan.aktifkan,penugasan.akhiri
+
+=== N-C. Pemilih santri berkelas ===
+[lulus] Kelas + jumlah = penempatan aktif (41) dan tanpa kelas = sisa santri aktif (208)
+[lulus] Penyaring satu kelas hanya santri kelas itu, dengan kelasnya
+[lulus] Penyaring "tanpa" hanya santri belum ditempatkan
+[lulus] Baris pemilih berkunci lama + kelas; urut kelas dulu, belum ditempatkan paling akhir
+[lulus] sbx_admin: kelas pemilih/santri pemilih → 403/403 (harap 403)
+[lulus] sbx_v5_pembimbing: kelas pemilih/santri pemilih → 403/403 (harap 403)
+[lulus] sbx_v5_wali_1: kelas pemilih/santri pemilih → 403/403 (harap 403)
+[lulus] Web: <optgroup> per kelas sama urutan dengan API (SBX V5 Kelas X, Belum ditempatkan di kelas)
+[lulus] Web: opsi santri identik dengan API
+
+=== N-D. Kontrak lama dan log ===
+[lulus] Petugas /v5/kesehatan/akses tetap 200
+[lulus] Petugas /v5/kesehatan/kunjungan tetap 200
+[lulus] Petugas /v5/kesehatan/santri?q=V5S0201 tetap 200
+[lulus] Petugas /v5/kesehatan/wali/akses tetap 200
+[lulus] Log server tanpa galat PHP
+[lulus] Log server tanpa isi klinis atau kata sandi
+
+Hasil: 43 lulus, 0 gagal

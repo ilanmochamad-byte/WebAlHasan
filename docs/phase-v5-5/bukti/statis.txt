@@ -1,0 +1,69 @@
+=== U-1. Laporan hanya membaca, tanpa kolom klinis ===
+[lulus] LaporanRepository tanpa pernyataan tulis/DDL
+[lulus] LaporanRepository tidak menyebut kolom `keluhan`
+[lulus] LaporanRepository tidak menyebut kolom `catatan_klinis`
+[lulus] LaporanRepository tidak menyebut kolom `nama_obat`
+[lulus] LaporanRepository tidak menyebut kolom `petunjuk`
+[lulus] LaporanRepository tidak menyebut kolom `uraian`
+[lulus] LaporanRepository tidak menyebut kolom `tujuan`
+[lulus] LaporanRepository tidak menyebut kolom `tindakan`
+[lulus] LaporanRepository tidak menyebut kolom `tanggal_hasil`
+[lulus] LaporanRepository tidak menyebut kolom `ringkasan_versi`
+[lulus] LaporanRepository tidak menyebut kolom `no_hp`
+[lulus] LaporanRepository tidak menyebut kolom `data_json`
+[lulus] LaporanRepository tidak menyebut kolom `judul`
+[lulus] LaporanRepository tidak menyebut kolom `isi`
+[lulus] LaporanRepository tidak memilih kolom `hasil` rujukan
+[lulus] Alasan hanya diperiksa keberadaannya (IS NOT NULL), tidak dipilih sebagai teks
+[lulus] Rincian dihitung lewat IN/EXISTS, tidak JOIN yang menggandakan kunjungan
+
+=== U-2. Hak laporan ===
+[lulus] Hak dihitung ulang lewat KesehatanService::akses() setiap panggilan; tanpa baca → 403
+[lulus] Pembaca binaan memakai penyaring baris yang sama dengan daftar pada seluruh basis
+[lulus] Pengawasan hanya untuk riwayat_akses (admin)
+[lulus] Angka Draf disembunyikan bagi pembaca binaan
+[lulus] Laporan tidak menulis log akses/audit
+
+=== U-3. API dan halaman ===
+[lulus] API GET /v5/kesehatan/laporan di blok no-store
+[lulus] Tidak ada rute tulis laporan
+[lulus] Halaman memakai penjaga bersama (sesi, CSRF, no-store) dan layanan yang sama dengan API
+[lulus] Halaman laporan tanpa formulir POST
+[lulus] portal/kesehatan_laporan.php: seluruh ikon ada di Font Awesome 6.0.0
+[lulus] portal/kesehatan.php: seluruh ikon ada di Font Awesome 6.0.0
+[lulus] Daftar kunjungan menaut ke laporan
+
+=== U-4. Rilis ===
+[lulus] Fase 5 tidak menambah migrasi (026 terakhir)
+[lulus] Rollback 024_v5_fase1_kesehatan.sql: penjaga CHECK berjalan sebelum DROP tabel kesehatan
+[lulus] Rollback 025_v5_fase2_rincian_kesehatan.sql: penjaga CHECK berjalan sebelum DROP tabel kesehatan
+[lulus] Rollback 026_v5_fase3_ringkasan_wali.sql: penjaga CHECK berjalan sebelum DROP tabel kesehatan
+[lulus] Penjaga 026 juga menghitung notifikasi V5
+[lulus] bin/v5_preflight.php hanya CLI
+[lulus] bin/v5_verify.php hanya CLI
+[lulus] bin/v5_manifest.php hanya CLI
+[lulus] bin/v5_backup_restore_drill.php hanya CLI
+[lulus] bin/_v5_rilis.php hanya CLI
+[lulus] Latihan restore: opt-in, menolak produksi, hanya DB uji
+[lulus] Preflight --rilis memeriksa SHA migrasi DAN rollback
+[lulus] Verifier Fase 1 menghitung kunci asing lima tabel 024 saja
+
+=== U-5. Lint ===
+[lulus] php -l app/Kesehatan/LaporanService.php
+[lulus] php -l app/Kesehatan/LaporanRepository.php
+[lulus] php -l portal/kesehatan_laporan.php
+[lulus] php -l portal/kesehatan.php
+[lulus] php -l api/v1/index.php
+[lulus] php -l app/bootstrap.php
+[lulus] php -l bin/v5_preflight.php
+[lulus] php -l bin/v5_verify.php
+[lulus] php -l bin/v5_manifest.php
+[lulus] php -l bin/v5_backup_restore_drill.php
+[lulus] php -l bin/_v5_rilis.php
+[lulus] php -l bin/v5_phase1_verify.php
+[lulus] php -l tests/v5_phase5_seed.php
+[lulus] php -l tests/v5_phase5_integration.php
+[lulus] php -l tests/v5_phase5_http.php
+[lulus] php -l tests/v5_phase5_rilis.php
+
+Ringkasan: 58 lulus, 0 gagal

@@ -1,0 +1,62 @@
+[2026-10-24 21:33:34] Ringkasan antrean notifikasi
+  In-app  : selalu aktif | total 448, belum dibaca 423
+  Push    : nonaktif | menunggu 14, terkirim 0, gagal 17 (permanen 3)
+  WhatsApp: nonaktif | menunggu 8, terkirim 0, gagal 9 (permanen 1)
+  receipt : menunggu 0, terkirim 0, gagal 0, tidak tersedia 0, belum diperlukan 17
+[2026-10-24 21:33:34] Push: dilewati — Kanal Push sedang nonaktif. Tidak ada permintaan ke penyedia.
+[2026-10-24 21:33:34] WhatsApp: dilewati — Kanal WhatsApp sedang nonaktif. Tidak ada permintaan ke penyedia.
+[2026-10-24 21:33:34] Push: dilewati — Kanal Push sedang nonaktif. Tidak ada permintaan ke penyedia.
+=== Pemeriksaan kesiapan cron worker notifikasi ===
+Database   : test_codex_v5_f5_final_test
+Waktu      : 2026-10-24 21:33:34 WIB
+Ambang     : 15 menit
+
+--- 1. Pengaturan kanal ---
+[sehat] Notifikasi in-app aktif (sumber status utama)
+        Push     : nonaktif
+        WhatsApp : nonaktif (DITANGGUHKAN)
+[sehat] WhatsApp tetap OFF sesuai keputusan produk 26 Agustus 2026
+
+--- Push nonaktif: pemeriksaan antrean push dilewati ---
+Worker tidak akan memproses apa pun dan itu memang perilaku yang benar.
+
+--- 2. Kesiapan konfigurasi push ---
+[peringatan] PUSH_TOKEN_KEY belum siap: Environment PUSH_TOKEN_KEY belum diisi pada server.
+        Perangkat push aktif: 0
+
+--- 3. Antrean tertahan ---
+        Baris push menunggu lebih dari 15 menit: 0
+[sehat] Tidak ada baris push yang tertahan melewati ambang
+        Baris push tertua yang masih antre:
+
+--- 4. Jejak aktivitas worker ---
+        Percobaan pengiriman terakhir :
+        Pengiriman berhasil terakhir  : 2026-10-24 21:31:02
+        Sewa worker terakhir          : 2026-10-23 09:35:03
+[sehat] Worker pernah mengambil sewa (bukti worker benar-benar dijalankan)
+
+--- 5. Receipt akhir push ---
+        Belum Diperlukan : 17
+        Menunggu         : 0
+        Terkirim         : 0
+        Gagal            : 0
+        Tidak Tersedia   : 0
+[sehat] Tidak ada receipt yang tertahan lebih dari 6 jam
+
+--- 6. Baris cron cPanel yang disarankan ---
+Salin apa adanya ke cPanel > Cron Jobs (ganti AKUN dan jalur PHP bila berbeda).
+JANGAN dipasang pada produksi tanpa persetujuan pengguna.
+
+  # setiap menit — memproses antrean push
+  * * * * * /opt/homebrew/Cellar/php/8.4.14/bin/php /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/bin/notifikasi_worker.php --kanal=push >> ~/logs/notifikasi_worker.log 2>&1
+
+  # setiap 15 menit — mengambil receipt AKHIR dari Expo/FCM/APNs
+  */15 * * * * /opt/homebrew/Cellar/php/8.4.14/bin/php /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/bin/notifikasi_worker.php --receipts >> ~/logs/notifikasi_receipt.log 2>&1
+
+  # setiap jam — pemeriksaan kesehatan cron (kirim keluarannya ke admin)
+  0 * * * * /opt/homebrew/Cellar/php/8.4.14/bin/php /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/bin/v2_phase5_cron_check.php
+
+=== Hasil ===
+[peringatan] PUSH_TOKEN_KEY belum siap: Environment PUSH_TOKEN_KEY belum diisi pada server.
+Seluruh 5 pemeriksaan kesehatan cron lulus.
+Terdapat 1 peringatan yang tidak memblokir.

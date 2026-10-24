@@ -1,0 +1,15 @@
+# Kontrol mutasi (sementara, tidak di-commit): LaporanRepository::kunjungan() 'dengan_obat' diubah dari SUM(EXISTS obat aktif) menjadi SUM(jumlah baris obat aktif) — meniru penggandaan kunjungan berbanyak obat. DB test_v5_f5_mutasi_test baru. Suite tidak diubah. Berkas dikembalikan; git diff kosong sesudahnya.
+# Hasil: exit 1, 83 lulus / 12 gagal (kode final: 95/0, bukti/integrasi.txt)
+
+[gagal] Petugas: kunjungan 6 (5 Tercatat + 1 Draf), 8 pemberian obat, rujukan 4/2/2, TL 5/4/1/1, ringkasan 2/1/2, tertunda 3/4
+[gagal] Admin: angka identik dengan petugas
+[gagal] Admin yang juga petugas: angka identik
+[gagal] Kunjungan K1 dengan 3 obat dihitung SATU kunjungan "dengan obat" (tidak menggandakan)
+[gagal] Delapan angka laporan = kueri sumber yang ditulis terpisah ({"total":6,"draf":1,"santri":3,"dengan_obat":5,"pemberian":8,"rujukan_menunggu":2,"tl_terbuka":4,"terbit":2})
+[gagal] sbx_v5_petugas_f: total/dengan obat/tertunda laporan = daftar kunjungan dengan saringan sama (6/6)
+[gagal] sbx_admin: total/dengan obat/tertunda laporan = daftar kunjungan dengan saringan sama (6/6)
+[gagal] sbx_v5_pembimbing: total/dengan obat/tertunda laporan = daftar kunjungan dengan saringan sama (3/3)
+[gagal] sbx_v5_pembimbing_b: total/dengan obat/tertunda laporan = daftar kunjungan dengan saringan sama (1/1)
+[gagal] sbx_v5_murobi: total/dengan obat/tertunda laporan = daftar kunjungan dengan saringan sama (3/3)
+[gagal] sbx_v5_ganda: total/dengan obat/tertunda laporan = daftar kunjungan dengan saringan sama (4/4)
+[gagal] bin/v5_verify.php lulus sesudah konkurensi dan transaksi gagal (19 pemeriksaan lulus)

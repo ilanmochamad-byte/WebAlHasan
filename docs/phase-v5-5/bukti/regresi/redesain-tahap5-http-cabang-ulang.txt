@@ -1,0 +1,132 @@
+[lulus] Fixture Tahap 5 tersedia: {"a1Tsb":2,"a1Bls":3,"a2":4,"c1":5,"internal":1,"rahasia":2,"pubKasus":1,"pubPel":2}
+
+=== H5-A. Akses per peran ===
+[lulus] /portal/v3_pelanggaran.php → 200,200,200,200,403,403,403,403
+[lulus] /portal/v3_pelanggaran.php?action=create → 200,200,200,200,403,403,403,403
+[lulus] /portal/v3_pelanggaran_detail.php?id=3 → 200,200,200,200,403,403,403,403
+[lulus] /portal/v3_pelanggaran_detail.php?id=5 → 200,200,403,403,403,403,403,403
+[lulus] /portal/v3_konseling.php → 200,200,200,200,403,403,403,403
+[lulus] /portal/v3_konseling_detail.php?id=1 → 200,200,200,200,403,403,403,403
+[lulus] /portal/v3_konseling_detail.php?id=2 → 200,200,403,403,403,403,403,403
+[lulus] /portal/v3_konseling_cetak.php?id=2 → 200,200,403,403,403,403,403,403
+[lulus] /portal/v3_publikasi_kelola.php → 200,200,200,403,403,403,403,403
+[lulus] /portal/v3_publikasi_kelola.php?id=1 → 200,200,200,403,403,403,403,403
+[lulus] /portal/v3_laporan.php → 200,200,200,200,200,200,403,403
+[lulus] /portal/v3_laporan.php?jenis=kasus → 200,200,200,200,403,403,403,403
+[lulus] /portal/v3_publikasi.php → 403,403,403,403,200,200,403,403
+[lulus] /portal/v3_publikasi.php?id=1 → 403,403,403,403,200,403,403,403
+[lulus] /admin/admin_v3_katalog.php → 200,403,403,403,403,403,403,403
+[lulus] Admin: menu Pembinaan › tab Konseling
+[lulus] M-4 di bawah Pembinaan › Katalog & poin, kerangka bersama
+[lulus] Murobi: Pembinaan binaan › tab Laporan (V-6)
+[lulus] Orang tua: menu "Informasi pembinaan" › tab Belum dibaca (F)
+[lulus] Orang tua: rekap laporan tetap di bawah Informasi pembinaan
+[lulus] V-1 tanpa label versi/istilah teknis
+
+=== H5-B. Kasus Rahasia ===
+[lulus] sbx_admin papan: kasus Rahasia tampil dan angka kolom 2 = 2
+[lulus] sbx_admin daftar: kasus Rahasia tampil
+[lulus] sbx_admin laporan kasus: 2 baris
+[lulus] sbx_admin ringkasan "Kasus berjalan" = 2
+[lulus] sbx_admin detail pelanggaran A2: tindak lanjut Rahasia tampil
+[lulus] sbx_admin tidak pernah melihat tujuan kasus Rahasia di daftar
+[lulus] sbx_pengurus_a papan: kasus Rahasia tampil dan angka kolom 2 = 2
+[lulus] sbx_pengurus_a daftar: kasus Rahasia tampil
+[lulus] sbx_pengurus_a laporan kasus: 2 baris
+[lulus] sbx_pengurus_a ringkasan "Kasus berjalan" = 2
+[lulus] sbx_pengurus_a detail pelanggaran A2: tindak lanjut Rahasia tampil
+[lulus] sbx_pengurus_a tidak pernah melihat tujuan kasus Rahasia di daftar
+[lulus] sbx_pengurus_b papan: kasus Rahasia tidak tampil dan angka kolom 1 = 1
+[lulus] sbx_pengurus_b daftar: kasus Rahasia tidak tampil
+[lulus] sbx_pengurus_b laporan kasus: 1 baris
+[lulus] sbx_pengurus_b ringkasan "Kasus berjalan" = 1
+[lulus] sbx_pengurus_b detail pelanggaran A2: tindak lanjut Rahasia tidak tampil
+[lulus] sbx_pengurus_b tidak pernah melihat tujuan kasus Rahasia di daftar
+[lulus] sbx_murobi_a papan: kasus Rahasia tidak tampil dan angka kolom 1 = 1
+[lulus] sbx_murobi_a daftar: kasus Rahasia tidak tampil
+[lulus] sbx_murobi_a laporan kasus: 1 baris
+[lulus] sbx_murobi_a ringkasan "Kasus berjalan" = 1
+[lulus] sbx_murobi_a detail pelanggaran A2: tindak lanjut Rahasia tidak tampil
+[lulus] sbx_murobi_a tidak pernah melihat tujuan kasus Rahasia di daftar
+[lulus] V-2: publikasi pelanggaran bertaut kasus Rahasia nonaktif dengan sebab dari server
+[lulus] V-4: catatan Rahasia dan tombol publikasi nonaktif beralasan
+[lulus] Server menolak pratinjau publikasi kasus Rahasia (422, tanpa baris pratinjau)
+
+=== H5-C. Keputusan Z: informasi pembinaan orang tua ===
+[lulus] V-7 daftar: 3 baris berjudul bertanggal dengan nama anak dan pengirim
+[lulus] V-7: jenis sumber tidak ditampilkan di daftar
+[lulus] V-7 tanpa "Santri #id" dan tanpa isi internal
+[lulus] V-7 Belum dibaca: 1 = basis data
+[lulus] V-7 detail: pengirim, tombol baca, tanpa jenis sumber
+[lulus] Wali lain tidak dapat membuka informasi (403)
+[lulus] REST orang tua: hanya bertambah kunci "pengirim" = nama pembimbing
+[lulus] REST daftar orang tua tanpa isi internal atau ID pembimbing
+[gagal] Tanpa pembimbing: pengirim "Pesantren Al Hasan" (web dan REST)
+[lulus] Saringan anak lain tidak membuka baris apa pun
+
+=== H5-D. Tidak ada isian ID ===
+[lulus] sbx_admin /portal/v3_pelanggaran.php: tanpa isian ID
+[lulus] sbx_admin /portal/v3_pelanggaran_detail.php?id=3: tanpa isian ID
+[lulus] sbx_admin /portal/v3_konseling.php?tampil=daftar: tanpa isian ID
+[lulus] sbx_admin /portal/v3_konseling_detail.php?id=1: tanpa isian ID
+[lulus] sbx_admin /portal/v3_publikasi_kelola.php: tanpa isian ID
+[lulus] sbx_admin /portal/v3_laporan.php: tanpa isian ID
+[lulus] sbx_admin /portal/v3_laporan.php?jenis=kasus: tanpa isian ID
+[lulus] sbx_admin /portal/v3_laporan.php?jenis=ambang: tanpa isian ID
+[lulus] sbx_admin /admin/admin_v3_katalog.php?action=create: tanpa isian ID
+[lulus] sbx_admin /admin/admin_v3_katalog.php?jenis=ambang&action=create: tanpa isian ID
+[lulus] sbx_pengurus_a /portal/v3_pelanggaran.php?action=create: tanpa isian ID
+[lulus] sbx_pengurus_a /portal/v3_konseling.php?action=create: tanpa isian ID
+[lulus] sbx_pengurus_a /portal/v3_konseling.php?action=create&santri=1%7C1: tanpa isian ID
+[lulus] sbx_pengurus_a /portal/v3_publikasi_kelola.php?sumber_type=pelanggaran&sumber_id=2: tanpa isian ID
+[lulus] sbx_pengurus_a /portal/v3_laporan.php: tanpa isian ID
+[lulus] sbx_murobi_a /portal/v3_laporan.php: tanpa isian ID
+[lulus] sbx_ortu_a /portal/v3_laporan.php: tanpa isian ID
+[lulus] sbx_ortu_a /portal/v3_publikasi.php: tanpa isian ID
+[lulus] V-6: kelas, kamar, pembimbing, murobi berupa pilihan bernama (admin)
+[lulus] V-6: pilihan pembimbing/murobi hanya untuk admin
+[lulus] Alamat lama ber-santri_id tetap menyaring, dengan tautan "Tampilkan semua santri"
+
+=== H5-E. Laporan V-6 ===
+[gagal] Ringkasan admin = basis data (catatan 5, poin 45, kasus 2, ambang 2)
+[lulus] Saringan kamar bernama menyaring baris; kolom kamar bernama
+[lulus] Cari nama santri (q) menyaring laporan
+[lulus] Isi laporan tetap di-escape
+[gagal] CSV tidak berubah bentuk dan lengkap
+[lulus] Cetak laporan tanpa saringan, berjudul jenis
+[lulus] Nilai saringan tidak sah ditolak 422
+[lulus] Laporan ambang (tautan Beranda AA) tetap terbuka
+
+=== H5-F. V-1 pelanggaran ===
+[gagal] Chip status = basis data cakupan pengurus A (Dicatat 5)
+[lulus] Cari santri menyaring daftar
+[lulus] Periode rentang tanpa data menampilkan keadaan kosong
+[lulus] Panel catat: total poin santri dan poin jenis tersedia; jenis nonaktif tidak dapat dipilih
+[lulus] Catat tanpa CSRF ditolak (419)
+[gagal] Catat lewat panel tersimpan dan membuka detail
+[lulus] Murobi tidak mendapat tombol/panel catat
+[gagal] POST catat oleh murobi ditolak layanan (tanpa baris baru)
+
+=== H5-G. Wizard & publikasi sesuai cakupan ===
+[lulus] Wizard: santri di luar cakupan tidak membuka langkah 2
+[lulus] Wizard langkah 2: rekomendasi dari baris tercentang; hanya tautan santri itu
+[lulus] Daftar rekomendasi (tujuan kartu Beranda AA) = basis data
+[lulus] V-5 daftar admin: semua publikasi dengan nama penerima
+[lulus] V-5 pembimbing lain dalam cakupan kamar melihat publikasi santri binaan
+[lulus] V-5 kelola: isi, riwayat, tarik beralasan
+
+=== H5-H. M-4 Katalog & poin ===
+[lulus] Riwayat ambang berupa kalimat dengan pelaku, tanpa JSON mentah
+[lulus] Kartu riwayat terbaru menulis kalimat perubahan
+[lulus] Non-admin tidak dapat menyimpan katalog
+
+=== H5-I. Log server ===
+[lulus] Server tanpa galat/peringatan PHP
+
+Ringkasan: 100 lulus, 6 gagal
+  - Tanpa pembimbing: pengirim "Pesantren Al Hasan" (web dan REST)
+  - Ringkasan admin = basis data (catatan 5, poin 45, kasus 2, ambang 2)
+  - CSV tidak berubah bentuk dan lengkap
+  - Chip status = basis data cakupan pengurus A (Dicatat 5)
+  - Catat lewat panel tersimpan dan membuka detail
+  - POST catat oleh murobi ditolak layanan (tanpa baris baru)

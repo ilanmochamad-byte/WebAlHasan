@@ -1,0 +1,14 @@
+[lulus] Commit kunjungan di tengah laporan: angka kunjungan dan obat memakai snapshot yang sama
+[lulus] Commit di tengah laporan: jumlah per bulan/per kelas tetap sama dengan total
+[lulus] Permintaan laporan berikutnya melihat commit baru
+[lulus] Preflight menolak manifest rilis tanpa daftar migrasi/rollback
+[lulus] Preflight menolak manifest dengan satu rollback hilang
+[lulus] Preflight menghasilkan manifest privat lengkap
+[lulus] Verifier menolak manifest privat yang kehilangan seluruh sidik jari
+[lulus] Verifier menolak manifest privat yang kehilangan sidik jari relasi santri–wali
+[lulus] Verifier menerima manifest privat lengkap pada data utuh
+[lulus] Verifier menolak manifest yang kehilangan daftar tabel lama
+[lulus] Snapshot konsisten juga ketika isolation level bawaan READ COMMITTED
+[lulus] Transaksi baca laporan ditutup setelah sukses
+[lulus] Transaksi baca laporan ditutup juga ketika validasi gagal
+Ringkasan: 13 lulus, 0 gagal

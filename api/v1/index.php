@@ -113,6 +113,8 @@ try {
         if ($method === 'GET' && $path === '/v5/kesehatan/santri') JsonResponse::success($kesehatan->santriPilihan($user, $_GET['q'] ?? '', $_GET['kelas_id'] ?? null));
         if ($method === 'GET' && $path === '/v5/kesehatan/santri/kelas') JsonResponse::success($kesehatan->kelasPilihan($user));
         if ($method === 'GET' && $path === '/v5/kesehatan/kunjungan') JsonResponse::success($kesehatan->daftar($user, $_GET));
+        // Fase 5: laporan layanan klinik — agregat tanpa isi klinis, hak per baris sama dengan daftar.
+        if ($method === 'GET' && $path === '/v5/kesehatan/laporan') JsonResponse::success(kesehatan_laporan_service()->laporan($user, $_GET));
         if ($method === 'POST' && $path === '/v5/kesehatan/kunjungan') {
             $body = Request::json();
             $body['idempotency_key'] ??= $_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? null;

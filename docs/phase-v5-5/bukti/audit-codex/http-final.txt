@@ -1,0 +1,67 @@
+
+=== Q-A. API laporan ===
+[lulus] Tanpa token → 401
+[lulus] sbx_v5_petugas_f: 200 no-store, 6 kunjungan, isi = layanan
+[lulus] sbx_v5_petugas_f: JSON laporan tanpa penanda isi klinis
+[lulus] sbx_admin: 200 no-store, 6 kunjungan, isi = layanan
+[lulus] sbx_admin: JSON laporan tanpa penanda isi klinis
+[lulus] sbx_v5_pembimbing: 200 no-store, 3 kunjungan, isi = layanan
+[lulus] sbx_v5_pembimbing: JSON laporan tanpa penanda isi klinis
+[lulus] sbx_v5_pembimbing_b: 200 no-store, 1 kunjungan, isi = layanan
+[lulus] sbx_v5_pembimbing_b: JSON laporan tanpa penanda isi klinis
+[lulus] sbx_v5_murobi: 200 no-store, 3 kunjungan, isi = layanan
+[lulus] sbx_v5_murobi: JSON laporan tanpa penanda isi klinis
+[lulus] sbx_v5_ganda: 200 no-store, 4 kunjungan, isi = layanan
+[lulus] sbx_v5_ganda: JSON laporan tanpa penanda isi klinis
+[lulus] sbx_v5_murobi_kosong: 200 no-store, 0 kunjungan, isi = layanan
+[lulus] sbx_v5_murobi_kosong: JSON laporan tanpa penanda isi klinis
+[lulus] Pengawasan hanya admin; draf binaan null
+[lulus] sbx_v5_wali_1 → 403 tanpa nama santri
+[lulus] sbx_v5_wali_lain → 403 tanpa nama santri
+[lulus] sbx_pengurus_biasa → 403 tanpa nama santri
+[lulus] sbx_guru_biasa → 403 tanpa nama santri
+[lulus] Periode terbalik → 422 berpesan
+[lulus] Periode > 366 hari → 422
+
+=== Q-B. Halaman web ===
+[lulus] sbx_v5_petugas_f: kartu web = API (kunjungan 6, rujukan 4, TL terbuka 4)
+[lulus] sbx_v5_petugas_f: HTML laporan tanpa penanda isi klinis
+[lulus] sbx_admin: kartu web = API (kunjungan 6, rujukan 4, TL terbuka 4)
+[lulus] sbx_admin: HTML laporan tanpa penanda isi klinis
+[lulus] sbx_v5_pembimbing: kartu web = API (kunjungan 3, rujukan 1, TL terbuka 2)
+[lulus] sbx_v5_pembimbing: HTML laporan tanpa penanda isi klinis
+[lulus] sbx_v5_pembimbing_b: kartu web = API (kunjungan 1, rujukan 2, TL terbuka 0)
+[lulus] sbx_v5_pembimbing_b: HTML laporan tanpa penanda isi klinis
+[lulus] sbx_v5_murobi: kartu web = API (kunjungan 3, rujukan 1, TL terbuka 2)
+[lulus] sbx_v5_murobi: HTML laporan tanpa penanda isi klinis
+[lulus] sbx_v5_ganda: kartu web = API (kunjungan 4, rujukan 3, TL terbuka 2)
+[lulus] sbx_v5_ganda: HTML laporan tanpa penanda isi klinis
+[lulus] sbx_v5_murobi_kosong: kartu web = API (kunjungan 0, rujukan 0, TL terbuka 0)
+[lulus] sbx_v5_murobi_kosong: HTML laporan tanpa penanda isi klinis
+[lulus] Bagian "Pengawasan admin" hanya untuk admin
+[lulus] Kartu Draf tampil bagi petugas, tidak bagi pembimbing
+[lulus] Nama santri di luar cakupan tidak muncul pada laporan pembimbing
+[lulus] sbx_v5_wali_1: halaman laporan 403 tanpa data
+[lulus] sbx_pengurus_biasa: halaman laporan 403 tanpa data
+[lulus] sbx_guru_biasa: halaman laporan 403 tanpa data
+[lulus] Tanpa sesi → dialihkan ke masuk
+[lulus] Periode terbalik: pesan + periode bawaan
+[lulus] Saringan kelas Y: 2 kunjungan, pilihan tetap terpilih
+[lulus] Pencabutan penugasan: sesi web dan token API lama → 403
+[lulus] Dipulihkan → 200 lagi
+
+=== Q-C. Tautan angka ke daftar ===
+[lulus] sbx_v5_petugas_f: kartu Kunjungan menaut ke daftar dengan periode sama
+[lulus] sbx_v5_petugas_f: total daftar dari tautan = angka laporan (6)
+[lulus] sbx_v5_petugas_f: tautan Menunggu hasil → daftar 2 kunjungan (sumber)
+[lulus] sbx_v5_pembimbing: kartu Kunjungan menaut ke daftar dengan periode sama
+[lulus] sbx_v5_pembimbing: total daftar dari tautan = angka laporan (3)
+[lulus] sbx_v5_pembimbing: tautan Menunggu hasil → daftar 1 kunjungan (sumber)
+[lulus] Daftar kunjungan memuat tombol Laporan (juga bagi pembaca binaan)
+[lulus] Tautan detail pada laporan pembimbing hanya kunjungan santri cakupan (2)
+
+=== Q-D. Log server ===
+[lulus] Log server tanpa galat/peringatan PHP
+[lulus] Log server tanpa penanda isi klinis
+
+Ringkasan: 57 lulus, 0 gagal

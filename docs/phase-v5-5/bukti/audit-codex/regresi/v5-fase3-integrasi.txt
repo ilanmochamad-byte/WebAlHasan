@@ -1,0 +1,108 @@
+[lulus] Fixture V5 Fase 3 tersedia
+
+=== L-1. Sebelum terbit ===
+[lulus] Belum terbit: daftar kedua wali kosong
+[lulus] Belum terbit: ID tebakan (1, 2, 3, 99, 999999) → 403
+[lulus] Admin dan petugas bukan wali: daftar wali 403
+[lulus] Kunjungan Draf tidak dapat dipratinjau/diterbitkan (422)
+
+=== L-2. Hak menerbitkan ===
+[lulus] admin: pratinjau/terbit/tarik → 403
+[lulus] admin+petugas: pratinjau/terbit/tarik → 403
+[lulus] pembimbing: pratinjau/terbit/tarik → 403
+[lulus] murobi: pratinjau/terbit/tarik → 403
+[lulus] wali: pratinjau/terbit/tarik → 403
+[lulus] pengurus tanpa penugasan: pratinjau/terbit/tarik → 403
+[lulus] Seluruh percobaan tanpa hak: 0 perubahan (kepala, versi, peristiwa, outbox, klaim, audit)
+
+=== L-3. Validasi pratinjau dan konfirmasi ===
+[lulus] Pratinjau: proyeksi wali persis isian, 3 akun wali berhak, tanpa menulis apa pun
+[lulus] Pratinjau tidak membawa catatan klinis kunjungan
+[lulus] Tanpa konfirmasi eksplisit → 422
+[lulus] Isi berbeda dari pratinjau (hash tidak cocok) → 422
+[lulus] Ringkasan terlalu pendek → 422; versi kunjungan usang → 409
+[lulus] Validasi gagal: 0 perubahan
+
+=== L-4. Terbit (Push OFF, WhatsApp OFF) ===
+[lulus] Terbit: versi 1, 3 InApp, 0 Push
+[lulus] Tepat satu kepala, satu versi, satu peristiwa, tiga penerima
+[lulus] Outbox: 1 InApp per wali berakun (3), 0 Push, 0 WhatsApp
+[lulus] Penerima tepat wali_1, wali_2, wali_cabut; wali tanpa akun dan wali lain tidak
+[lulus] Ulang kunci + isi sama → replay, 0 baris baru (tanpa notifikasi ganda)
+[lulus] Klik kedua dengan kunci lain dari pratinjau yang sama → 409 (revisi berubah), 0 baris baru
+[lulus] Kunci sama + isi berbeda → 409 tanpa perubahan
+
+=== L-5. Tampilan wali dan internal ===
+[lulus] Wali kedua yang berelasi aktif juga menerima ringkasannya sendiri
+[lulus] Detail wali = proyeksi khusus (tanpa kolom klinis, nama petugas, alasan)
+[lulus] Daftar/detail wali tidak memuat keluhan, obat, atau rujukan internal
+[lulus] Pembukaan detail wali tercatat di log akses (metadata)
+[lulus] Wali lain: daftar kosong, detail → 403
+[lulus] Wali tanpa anak berelasi: kosong/403
+[lulus] Penyaring santri lain tidak memperluas cakupan wali
+[lulus] Admin: versi berlaku + riwayat, tanpa hak terbit
+[lulus] Pembimbing terkait: hanya versi berlaku, tanpa riwayat/alasan
+[lulus] Murobi di luar cakupan dan wali: tampilan internal → 403
+
+=== L-6. Konkurensi (proses terpisah) ===
+[lulus] 6 proses kunci+isi sama → 1 terbit + 5 replay; 1 versi; 3 InApp (tanpa ganda)
+[lulus] 6 proses kunci berbeda dari revisi sama → 1 sukses + 5 konflik 409; 1 versi, 1 peristiwa, 3 InApp
+[lulus] Klaim konflik ikut dibatalkan (tidak menggantung)
+
+=== L-7. Push ON + perangkat, retry, receipt ===
+[lulus] Push ON: 3 InApp, 1 Push (hanya wali berperangkat), 0 WhatsApp
+[lulus] Ringkasan dengan tindak lanjut untuk orang tua → peristiwa "perlu perhatian" (sekali per versi)
+[lulus] Kegagalan sementara provider tercatat sebagai Failed untuk retry
+[lulus] Retry memakai baris yang sama; baris Sent tidak dikirim ulang
+[lulus] Payload Push hanya penunjuk {tipe, ringkasan_id} dan kalimat generik
+[lulus] Receipt diproses lewat klien palsu (bukan bukti perangkat fisik)
+
+=== L-8. Push OFF dan WhatsApp OFF ===
+[lulus] Push OFF saat terbit: 0 baris Push walau wali punya perangkat
+[lulus] Push OFF: worker berhenti sebelum klaim, 0 permintaan ke provider
+[lulus] WhatsApp: tidak pernah diantrekan; kanal ditangguhkan → 0 permintaan provider
+[lulus] Seluruh suite: 0 baris WhatsApp V5
+
+=== L-9. Relasi dicabut, akun/santri nonaktif, versi diganti ===
+[lulus] Push diantrekan untuk wali_1 dan wali_cabut (berperangkat)
+[lulus] Sebelum dicabut: wali_cabut dapat membuka
+[lulus] Relasi dicabut sebelum worker: Push wali_cabut gagal permanen AKSES_BERUBAH tanpa request; wali_1 tetap terkirim
+[lulus] Sesi/token lama wali_cabut sesudah relasi dicabut: daftar kosong, detail web/API → 403
+[lulus] Notifikasi InApp lama tetap generik di pusat notifikasi (tujuan tetap diperiksa ulang)
+[lulus] Akun wali nonaktif → 403
+[lulus] Santri nonaktif → ringkasannya tertutup bagi wali
+[lulus] Santri nonaktif → pratinjau/terbit ringkasan ditolak 422
+[lulus] Versi diganti sebelum worker: Push versi lama tidak dikirim, versi baru dikirim sekali
+
+=== L-10. Koreksi klinis, penggantian, penarikan, terbit ulang ===
+[lulus] Koreksi klinis (versi 2) tidak mengubah teks ringkasan terbit atau versi sumbernya
+[lulus] Pratinjau dengan versi kunjungan lama sesudah koreksi → 409
+[lulus] Penggantian tanpa alasan → 422
+[lulus] Penggantian beralasan → versi 2; 1 InApp per wali yang MASIH berhak (2; wali_cabut tidak)
+[lulus] Versi 1 tetap tersimpan utuh berstatus Diganti
+[lulus] Wali melihat versi 2 (diperbarui), tanpa alasan internal
+[lulus] Petugas/admin menelusuri versi lama dan alasan penggantian
+[lulus] Tarik tanpa alasan → 422; dari revisi usang → 409; 0 perubahan
+[lulus] Tarik beralasan: wali melihat Ditarik tanpa isi; ulang kunci → replay
+[lulus] Penarikan tidak membuat notifikasi; versi 2 tersimpan berstatus Ditarik
+[lulus] Tarik kedua → 409
+[lulus] Formulir penggantian dari sebelum penarikan (revisi lama) → 409
+[lulus] Terbit ulang beralasan → versi 3 + notifikasi baru sekali per wali berhak
+
+=== L-11. Transaksi gagal dan penugasan dicabut ===
+[lulus] Kegagalan outbox → 503, 0 kepala/versi/peristiwa/penerima/outbox/klaim/audit
+[lulus] Kegagalan penerima → 503, 0 kepala/versi/peristiwa/penerima/outbox/klaim/audit
+[lulus] Kegagalan audit → 503, 0 kepala/versi/peristiwa/penerima/outbox/klaim/audit
+[lulus] Kunci yang sama dapat diulang sesudah kegagalan (klaim ikut batal) → terbit sekali
+[lulus] Penugasan dicabut sesudah pratinjau (sesi lama) → terbit 403 tanpa baris baru
+
+=== L-12. Privasi, verifier, modul lain ===
+[lulus] Baris outbox V5 (judul, isi, data, kunci, galat): 0 nama santri/telepon/keluhan/obat/rujukan/isi ringkasan
+[lulus] Payload Push yang dikirim ke provider palsu: 0 data terlarang
+[lulus] Daftar notifikasi wali (pusat notifikasi/API): 0 data terlarang, hanya penunjuk ringkasan_id
+[lulus] audit_logs ringkasan: 0 isi ringkasan, alasan, nama, atau telepon
+[lulus] Log akses dan klaim idempotensi ringkasan: hanya metadata/hash
+[lulus] Tabel modul lain (PSB, izin, V3, V4, master) tidak berubah jumlah barisnya
+[lulus] Verifier 026 lulus atas seluruh data suite (44 pemeriksaan)
+
+Lulus: 82 · Gagal: 0

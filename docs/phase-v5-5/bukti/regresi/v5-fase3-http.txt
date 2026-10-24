@@ -1,0 +1,88 @@
+[lulus] Fixture V5 Fase 3 tersedia dan belum ada ringkasan
+
+=== M-A. Hak halaman ===
+[lulus] sbx_v5_petugas_f: ringkasan petugas 200, kesehatan anak 403 (harap 200/403)
+[lulus] sbx_admin: ringkasan petugas 200, kesehatan anak 403 (harap 200/403)
+[lulus] sbx_v5_admin_petugas: ringkasan petugas 200, kesehatan anak 403 (harap 200/403)
+[lulus] sbx_v5_pembimbing: ringkasan petugas 200, kesehatan anak 403 (harap 200/403)
+[lulus] sbx_v5_murobi: ringkasan petugas 403, kesehatan anak 403 (harap 403/403)
+[lulus] sbx_v5_petugas: ringkasan petugas 403, kesehatan anak 403 (harap 403/403)
+[lulus] sbx_v5_wali_1: ringkasan petugas 403, kesehatan anak 200 (harap 403/200)
+[lulus] sbx_v5_wali_lain: ringkasan petugas 403, kesehatan anak 200 (harap 403/200)
+[lulus] Admin: halaman ringkasan hanya baca, tanpa formulir terbit
+[lulus] Pembimbing terkait: hanya baca, tanpa riwayat
+[lulus] Detail kunjungan petugas: bagian "Ringkasan untuk wali" dengan tautan susun
+[lulus] Menu wali memuat "Kesehatan anak"
+[lulus] Menu petugas tanpa "Kesehatan anak"
+
+=== M-B. Sebelum terbit ===
+[lulus] Halaman wali sebelum terbit: kosong
+[lulus] Web: ID tebakan 1 sebelum terbit → 403
+[lulus] Web: ID tebakan 2 sebelum terbit → 403
+[lulus] Web: ID tebakan 50 sebelum terbit → 403
+[lulus] API wali sebelum terbit: daftar kosong, ID tebakan 403
+[lulus] API akses wali: wali_1 punya satu anak; petugas bukan wali
+
+=== M-C. Alur web petugas ===
+[lulus] Formulir susun ringkasan kosong, tidak diisi dari catatan klinis
+[lulus] POST tanpa CSRF → 419
+[lulus] Pratinjau web: isi persis tampilan wali, tanpa catatan klinis, belum menulis apa pun
+[lulus] Terbit tanpa centang konfirmasi → 422 tanpa baris
+[lulus] Terbit web → alihkan; 3 InApp
+[lulus] Kirim ulang (klik ganda, kunci sama) → replay, tanpa versi/notifikasi ganda
+[lulus] Sesudah terbit: pesan replay, isi berlaku, dan riwayat tampil bagi petugas
+
+=== M-D. Wali web dan notifikasi ===
+[lulus] sbx_v5_wali_1: daftar + detail ringkasan sendiri, tanpa catatan klinis/nama petugas
+[lulus] sbx_v5_wali_2: daftar + detail ringkasan sendiri, tanpa catatan klinis/nama petugas
+[lulus] Wali lain: detail 403, tidak ada di daftar
+[lulus] Pusat notifikasi web: kategori Kesehatan, kalimat generik tanpa nama/isi
+[lulus] Ketukan notifikasi → halaman wali (hanya penunjuk)
+[lulus] Tujuan notifikasi memeriksa ulang dan terbuka bagi wali berhak
+[lulus] Notifikasi milik wali lain tidak dapat dibuka dengan ID tebakan
+
+=== M-E. Logout, tautan lama, relasi dicabut ===
+[lulus] Ketukan notifikasi tanpa sesi → diarahkan masuk
+[lulus] Tautan ringkasan tanpa sesi → masuk dulu (membawa tujuan), tanpa isi
+[lulus] Masuk sebagai wali lain lalu membuka tautan yang sama → 403
+[lulus] Sesudah logout, tautan lama meminta masuk lagi
+[lulus] Sebelum dicabut: wali_cabut membuka web/API
+[lulus] Relasi dicabut: sesi web & token lama → 403, daftar API kosong
+[lulus] Tautan notifikasi lama wali yang relasinya dicabut → tujuan 403
+
+=== M-F. API ===
+[lulus] API daftar wali: 1 ringkasan, penanda tindak lanjut, no-store
+[lulus] API detail wali: proyeksi tanpa klinis/petugas
+[lulus] API: wali lain 403; petugas bukan wali 403
+[lulus] API notifikasi wali: penunjuk ringkasan_id, tanpa nama santri
+[lulus] API internal petugas: kepala + riwayat
+[lulus] API internal pembimbing: versi berlaku saja
+[lulus] API pratinjau: hash, tanpa menulis
+[lulus] API admin: pratinjau/terbit → 403
+[lulus] API pembimbing: pratinjau/terbit → 403
+[lulus] API wali: pratinjau/terbit → 403
+[lulus] API terbit: 201 lalu replay 200 dengan kunci header sama; 2 InApp (wali_cabut sudah tidak berhak)
+[lulus] Respons tulis API tanpa isi ringkasan
+[lulus] API tarik: wali melihat Ditarik
+[lulus] API admin tarik → 403
+
+=== M-G. Penggantian dan penarikan web ===
+[lulus] Formulir penggantian: textarea diisi versi berlaku (bukan catatan klinis), wajib alasan
+[lulus] Penggantian tanpa alasan → 422
+[lulus] Penggantian web beralasan → versi 2
+[lulus] Wali melihat versi 2 saja (tanpa alasan internal)
+[lulus] Petugas menelusuri versi lama dan alasan
+[lulus] Tarik web tanpa alasan → 422
+[lulus] Tarik web beralasan → wali melihat "ditarik" tanpa isi
+[lulus] Notifikasi ringkasan ini: v1 (3) + v2 (2); penarikan tanpa notifikasi
+
+=== M-H. no-store dan log server ===
+[lulus] no-store: /portal/kesehatan_ringkasan.php?id=1
+[lulus] no-store: /portal/kesehatan_wali.php?id=1
+[lulus] no-store: /portal/kesehatan_wali.php
+[lulus] Log server: 0 galat PHP
+[lulus] Log server: 0 isi ringkasan/klinis, nama santri, atau telepon
+[lulus] Outbox V5 sesudah alur web/API: 0 data terlarang
+[lulus] Verifier 026 lulus sesudah alur HTTP
+
+Lulus: 70 · Gagal: 0

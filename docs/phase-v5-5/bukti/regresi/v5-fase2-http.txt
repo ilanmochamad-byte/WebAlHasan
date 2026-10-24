@@ -1,0 +1,105 @@
+[lulus] Fixture V5 Fase 2 tersedia dan belum ada kunjungan
+
+=== K-B. Formulir web: dua obat, satu rujukan, satu tindak lanjut ===
+[lulus] Formulir memuat 3 baris obat, 1 rujukan, 2 tindak lanjut, tombol draf, dan keterangan tanpa stok
+[lulus] POST tanpa CSRF → 419 tanpa baris
+[lulus] Simpan → alihkan ke detail
+[lulus] Klik ganda (kunci sama) → tetap 1 kunjungan, 2 obat, 1 rujukan, 1 tindak lanjut
+[lulus] Detail web: dua obat, satu rujukan menunggu, satu tindak lanjut
+[lulus] Petugas melihat tombol Koreksi, Catat hasil rujukan, Riwayat versi
+[lulus] Daftar web: SATU baris dengan penanda 2 obat & rujukan menunggu, tanpa isi klinis
+[lulus] Penyaring rujukan menunggu + tindak lanjut terbuka + tanggal menemukan kunjungan
+[lulus] Penyaring tanpa rujukan mengecualikan kunjungan
+[lulus] Riwayat per santri berjudul nama santri
+[lulus] Validasi obat → 422, isian dirender ulang dari POST, tanpa baris
+
+=== K-C. Hasil rujukan lewat web ===
+[lulus] Formulir hasil rujukan membawa versi 1
+[lulus] Hasil rujukan tersimpan → versi 2
+[lulus] Riwayat versi web: versi 2 dengan alasan dan status rujukan sebelum→sesudah, versi 1 pencatatan awal
+
+=== K-D. Koreksi web dan konflik dua petugas ===
+[lulus] Formulir koreksi memuat versi 2, baris obat lama dengan pilihan Hapus, dan alasan
+[lulus] Koreksi tanpa alasan → 422, versi tetap 2, isian dipertahankan dari POST
+[lulus] Petugas B: koreksi beralasan → versi 3, satu obat dibatalkan, tindak lanjut selesai
+[lulus] Petugas D dari versi 2 → 409 + "Muat versi terbaru"; koreksi B tidak tertimpa
+[lulus] Versi 2 tetap tersimpan utuh di riwayat
+
+=== K-E. Draf lewat web ===
+[lulus] Simpan sebagai draf → status Draf
+[lulus] Draf: pembimbing 403 detail, tidak ada di daftar
+[lulus] Detail draf: tombol Lanjutkan draf + keterangan
+[lulus] Formulir draf: tombol Tetapkan, alasan tidak wajib
+[lulus] Tetapkan tercatat tanpa alasan → tampil bagi pembimbing
+
+=== K-A. Hak setiap halaman (server) ===
+[lulus] /portal/kesehatan.php: seluruh 11 akun sesuai
+[lulus] /portal/kesehatan_buat.php: seluruh 11 akun sesuai
+[lulus] /portal/kesehatan_detail.php?id=1: seluruh 11 akun sesuai
+[lulus] /portal/kesehatan_detail.php?id=3: seluruh 11 akun sesuai
+[lulus] /portal/kesehatan_detail.php?id=99999999: seluruh 11 akun sesuai
+[lulus] /portal/kesehatan_koreksi.php?id=1: seluruh 11 akun sesuai
+[lulus] /portal/kesehatan_hasil_rujukan.php?id=1&rujukan=1: seluruh 11 akun sesuai
+[lulus] /portal/kesehatan_riwayat.php?id=1: seluruh 11 akun sesuai
+[lulus] sbx_admin: POST koreksi/hasil rujukan/catat web → 403
+[lulus] sbx_v5_admin_petugas: POST koreksi/hasil rujukan/catat web → 403
+[lulus] sbx_v5_pembimbing: POST koreksi/hasil rujukan/catat web → 403
+[lulus] sbx_v5_murobi: POST koreksi/hasil rujukan/catat web → 403
+[lulus] sbx_v5_ganda: POST koreksi/hasil rujukan/catat web → 403
+[lulus] POST web pembaca/admin: 0 kunjungan/versi baru
+
+=== K-F. API ===
+[lulus] POST API dengan dua obat → 201 {id, replayed}, tanpa isi klinis, no-store
+[lulus] Replay API → 200 replayed, obat tetap 2
+[lulus] GET detail API: dua obat (jumlah 2.5), satu rujukan menunggu
+[lulus] GET daftar API santri B: satu baris, penanda 2 obat, ringkasan, tanpa isi
+[lulus] Koreksi API tanpa alasan → 422
+[lulus] Koreksi API beralasan → 200 {id, versi 2, replayed false}
+[lulus] Replay koreksi API → versi 2 yang sama
+[lulus] Koreksi API dari versi lama → 409 CONFLICT
+[lulus] Hasil rujukan API → versi 3
+[lulus] Riwayat versi API petugas: 3 versi, alasan terbaca
+[lulus] Riwayat versi API admin 200
+[lulus] Riwayat versi/akses API sbx_v5_pembimbing_b → 403
+[lulus] Riwayat versi/akses API sbx_v5_murobi → 403
+[lulus] Riwayat versi/akses API sbx_v5_ganda → 403
+[lulus] API POST catat/koreksi/hasil sbx_admin → 403
+[lulus] API POST catat/koreksi/hasil sbx_v5_pembimbing_b → 403
+[lulus] API POST catat/koreksi/hasil sbx_v5_murobi → 403
+[lulus] API POST catat/koreksi/hasil sbx_v5_ganda → 403
+[lulus] API POST catat/koreksi/hasil sbx_guru_biasa → 403
+[lulus] API tulis pembaca/admin: 0 baris/versi baru
+
+=== K-G. Pembaca binaan web/API dan sesi lama ===
+[lulus] API daftar pembimbing B: hanya santri B, cakupan binaan
+[lulus] API detail pembimbing B: santri B 200; santri A, luar cakupan, dan ID tidak ada 403
+[lulus] API penyaring santri luar cakupan → kosong
+[lulus] API akses ganda: pembimbing_murobi, catat=false
+[lulus] Web pembimbing: rincian terbaca, tanpa tombol koreksi/riwayat/hasil
+[lulus] Menu Kesehatan tampil untuk sbx_v5_pembimbing
+[lulus] Menu Kesehatan tampil untuk sbx_v5_murobi
+[lulus] Menu Kesehatan tampil untuk sbx_v5_murobi_kosong
+[lulus] Menu Kesehatan tampil untuk sbx_v5_ganda
+[lulus] Menu Kesehatan tidak tampil untuk sbx_pengurus_biasa
+[lulus] Menu Kesehatan tidak tampil untuk sbx_guru_biasa
+[lulus] Daftar pembimbing tanpa penyaring/ringkasan draf
+[lulus] Kontrol: daftar petugas memuat ringkasan draf
+[lulus] Pencabutan penugasan: sesi web & token lama pembimbing B → 403
+[lulus] Santri B pindah ke Kamar A: pembimbing B tertutup (web/API), pembimbing A terbuka
+[lulus] Akun murobi dinonaktifkan: token lama ditolak
+[lulus] Akun murobi dinonaktifkan: sesi web lama tidak membuka detail
+
+=== K-H. Cache, log, dan audit ===
+[lulus] /portal/kesehatan.php: Cache-Control private, no-store
+[lulus] /portal/kesehatan_detail.php?id=1: Cache-Control private, no-store
+[lulus] /portal/kesehatan_riwayat.php?id=1: Cache-Control private, no-store
+[lulus] /portal/kesehatan_koreksi.php?id=1: Cache-Control private, no-store
+[lulus] API riwayat versi: no-store
+[lulus] Log server tanpa galat/peringatan PHP
+[lulus] Log server memuat 0 isi klinis/rincian
+[lulus] audit_logs memuat 0 isi klinis/rincian/alasan
+[lulus] Setiap versi koreksi tepat satu audit metadata
+[lulus] Pembacaan pembimbing/murobi tercatat di log akses (web dan API)
+[lulus] Verifier 025 lulus atas data HTTP
+
+Lulus: 87 · Gagal: 0
