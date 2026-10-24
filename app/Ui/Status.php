@@ -45,6 +45,7 @@ final class Status
         'belum dibaca' => 'info',
         // Pembinaan (Tahap 5, V-1 s.d. V-5).
         'dicatat' => 'info',
+        'tercatat' => 'info',
         'ditindaklanjuti' => 'info',
         'dalam pendampingan' => 'info',
         'dijadwalkan' => 'info',

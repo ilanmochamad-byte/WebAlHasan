@@ -33,6 +33,7 @@ final class PenugasanJenis
     public const PEMBIMBING = 'pembimbing';
     public const GURU_MAPEL = 'guru_mapel';
     public const PENDIDIKAN = 'pendidikan';
+    public const KESEHATAN = 'kesehatan';
     public const BENDAHARA_BULANAN = 'bendahara_bulanan';
     public const PANITIA_PSB = 'panitia_psb';
     public const BENDAHARA_PSB = 'bendahara_psb';
@@ -43,6 +44,7 @@ final class PenugasanJenis
         self::PEMBIMBING,
         self::GURU_MAPEL,
         self::PENDIDIKAN,
+        self::KESEHATAN,
         self::BENDAHARA_BULANAN,
         self::PANITIA_PSB,
         self::BENDAHARA_PSB,
@@ -56,6 +58,8 @@ final class PenugasanJenis
     public const CAKUPAN_JENJANG = 'jenjang';
     /** Bentuk cakupan: gelombang PSB opsional (NULL = seluruh gelombang). */
     public const CAKUPAN_GELOMBANG = 'gelombang';
+    /** Bentuk cakupan: seluruh santri aktif, tanpa kolom cakupan (PRD V5 §5.2). */
+    public const CAKUPAN_SELURUH = 'seluruh';
 
     // --- Capability fondasi. Nama disengaja berpola `<modul>.<tindakan>` -----
     // Kesiapan V3 (konseling & pelanggaran memakai cakupan binaan murobi/pembimbing).
@@ -73,7 +77,11 @@ final class PenugasanJenis
     public const CAP_RAPOR_CETAK = 'rapor.cetak';
     public const CAP_RAPOR_RENCANA = 'rapor.rencana';
     public const CAP_NILAI_PENGGANTI = 'nilai.input_pengganti';
-    // Kesiapan V5.
+    // Kesehatan santri (PRD V5 menurut penomoran 24 Oktober 2026). Satu-satunya
+    // hak tulis klinis; admin memperolehnya sebagai pengawasan (`sumber = admin`)
+    // dan layanan kesehatan HANYA mengizinkan baca untuk sumber itu.
+    public const CAP_KESEHATAN_CATAT = 'kesehatan.catat';
+    // Kesiapan pembiayaan bulanan (dirancang sebagai "V5" fondasi; kini V6).
     public const CAP_PEMBIAYAAN_BULANAN_TAGIHAN = 'pembiayaan_bulanan.tagihan';
     public const CAP_PEMBIAYAAN_BULANAN_PEMBAYARAN = 'pembiayaan_bulanan.pembayaran';
     public const CAP_PEMBIAYAAN_BULANAN_VERIFIKASI = 'pembiayaan_bulanan.verifikasi';
@@ -166,6 +174,23 @@ final class PenugasanJenis
             'prd' => 'V4',
             'keterangan' => 'Pengurus yang diangkat sebagai Bagian Pendidikan, opsional dibatasi satu unit/jenjang. Halaman rapor belum ada.',
         ],
+        self::KESEHATAN => [
+            'label' => 'Petugas Kesehatan',
+            'label_subjek' => 'Pengurus',
+            'tabel' => 'kesehatan_assignments',
+            'entitas' => 'kesehatan_assignment',
+            'subjek' => 'pengurus',
+            'subjek_kolom' => 'pengurus_id',
+            'role_dasar' => 'pengurus',
+            'cakupan' => self::CAKUPAN_SELURUH,
+            // Klinik melayani sepanjang tahun: masa berlaku mengikuti tanggal
+            // mulai/selesai dan status aktif, tidak gugur saat semester berganti.
+            'wajib_tahun_aktif' => false,
+            'lama' => false,
+            'capabilities' => [self::CAP_KESEHATAN_CATAT],
+            'prd' => 'V5',
+            'keterangan' => 'Pengurus petugas klinik/bagian kesehatan. Mencatat dan membaca kunjungan klinik seluruh santri aktif. Admin hanya membaca dan mengaudit, tidak mengubah isi klinis.',
+        ],
         self::BENDAHARA_BULANAN => [
             'label' => 'Bendahara Pembiayaan Bulanan',
             'label_subjek' => 'Pengurus',
@@ -224,6 +249,7 @@ final class PenugasanJenis
         self::CAP_RAPOR_FINALISASI => 'Finalisasi rapor',
         self::CAP_RAPOR_BUKA_KOREKSI => 'Buka koreksi rapor',
         self::CAP_RAPOR_CETAK => 'Cetak rapor',
+        self::CAP_KESEHATAN_CATAT => 'Catatan kesehatan santri',
         self::CAP_PEMBIAYAAN_BULANAN_TAGIHAN => 'Tagihan bulanan',
         self::CAP_PEMBIAYAAN_BULANAN_PEMBAYARAN => 'Pembayaran bulanan',
         self::CAP_PEMBIAYAAN_BULANAN_VERIFIKASI => 'Verifikasi pembayaran bulanan',
@@ -324,6 +350,7 @@ final class PenugasanJenis
             self::PEMBIMBING => ['Mengajukan izin binaan', 'Mengisi sikap semester', 'Mencatat pembinaan binaan'],
             self::GURU_MAPEL => ['Mengisi nilai mata pelajarannya'],
             self::PENDIDIKAN => ['Memverifikasi kelengkapan rapor', 'Menyusun rencana nilai', 'Mengisi nilai pengganti', 'Membaca laporan absensi'],
+            self::KESEHATAN => ['Mencatat kunjungan klinik', 'Membaca riwayat kesehatan santri'],
             self::BENDAHARA_BULANAN, self::PANITIA_PSB, self::BENDAHARA_PSB => ['Belum ada — menunggu modul baru'],
             default => [],
         };
@@ -337,6 +364,7 @@ final class PenugasanJenis
             self::PEMBIMBING => 'Pembimbing adalah pengurus yang mengajukan izin, mengisi sikap, dan mencatat pembinaan santri pada kamar/kelas binaan.',
             self::GURU_MAPEL => 'Guru mata pelajaran mengisi nilai satu mata pelajaran pada satu kelas untuk satu semester.',
             self::PENDIDIKAN => 'Bagian Pendidikan memeriksa kelengkapan bahan rapor dan membaca laporan absensi, opsional untuk satu unit.',
+            self::KESEHATAN => 'Petugas kesehatan adalah pengurus yang mencatat kunjungan klinik seluruh santri aktif. Penugasan berlaku sampai tanggal selesai atau dinonaktifkan, tidak gugur saat semester berganti.',
             default => 'Penugasan ini belum memberi akses ke halaman apa pun sampai modul pembiayaan/PSB baru selesai. Data yang sudah ada tetap dapat dilihat dan dikelola.',
         };
     }

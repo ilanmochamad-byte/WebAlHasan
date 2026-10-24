@@ -62,6 +62,24 @@ final class NavigationContext
         }
     }
 
+    /**
+     * Menu Kesehatan (PRD V5): hanya bila migrasi 024 terpasang. `$milikSendiri`
+     * = penugasan kesehatan akun ini (petugas); selain itu termasuk pengawasan
+     * admin.
+     */
+    public function kesehatan(bool $milikSendiri): bool
+    {
+        try {
+            if (!\App\Database\Schema::hasTable(app_db(), 'kesehatan_kunjungan')) {
+                return false;
+            }
+        } catch (Throwable) {
+            return false;
+        }
+
+        return $milikSendiri ? $this->own(PenugasanJenis::CAP_KESEHATAN_CATAT) : $this->feature(PenugasanJenis::CAP_KESEHATAN_CATAT);
+    }
+
     public function raporWali(): bool
     {
         try {

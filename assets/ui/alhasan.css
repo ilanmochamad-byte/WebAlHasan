@@ -1392,6 +1392,10 @@ body.ah .ah-kredensial__status {
 .ah-kv { display: grid; gap: .5rem 1.5rem; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin: 0; }
 .ah-kv dt { font-size: .78rem; color: var(--ah-ink-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
 .ah-kv dd { margin: 0; font-size: 1.05rem; font-weight: 600; }
+/* Teks panjang (catatan klinik V5): satu kolom, tidak tebal, tidak melebar. */
+.ah-kv--stack { grid-template-columns: 1fr; }
+.ah-kv--stack dd { font-size: 1rem; font-weight: 400; }
+.ah-break { overflow-wrap: anywhere; min-width: 0; }
 .ah-parent-grid { display: grid; gap: .85rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 .ah-parent-card { display: flex; flex-direction: column; gap: .35rem; padding: 1.1rem; background: var(--ah-surface); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); font-size: 1.05rem; }
 .ah-parent-card--hl { border-color: var(--ah-green-600); box-shadow: inset 4px 0 0 var(--ah-green-700); }

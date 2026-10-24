@@ -10,8 +10,8 @@ use App\Penugasan\PenugasanService;
  * Pusat Penugasan (fondasi PRD V3–V6, keputusan pengguna 7 September 2026).
  *
  * Satu halaman admin untuk seluruh penugasan fungsional: murobi, pembimbing,
- * guru mata pelajaran, Bagian Pendidikan, bendahara pembiayaan bulanan,
- * panitia PSB, dan bendahara PSB. Master mata pelajaran pindah ke
+ * guru mata pelajaran, Bagian Pendidikan, petugas kesehatan (PRD V5),
+ * bendahara pembiayaan bulanan, panitia PSB, dan bendahara PSB. Master mata pelajaran pindah ke
  * `admin_mata_pelajaran.php` (M-5, redesain Tahap 7); POST lamanya tetap
  * diterima di sini.
  *
@@ -69,6 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = (int) ($_POST['id'] ?? 0);
     $tujuan = $kembaliKe();
     try {
+        if (!$tabMapel && !$service->skemaTersedia($jenis)) {
+            throw new PenugasanException('Tabel penugasan ' . $definisi['label'] . ' belum dipasang. Jalankan migrasi basis data terbaru terlebih dahulu.');
+        }
         switch ($action) {
             case 'buat':
                 if ($tabMapel) {
@@ -220,7 +223,9 @@ if ($tambah || $edit !== null):
     ah_panel_open(['title' => $modeUbah ? 'Ubah penugasan ' . $definisi['label'] : 'Tambah penugasan ' . $definisi['label'], 'close_url' => $tutup,
         'description' => $modeUbah ? $edit['subjek_nama'] . ' · ' . $edit['cakupan_teks'] : PenugasanJenis::penjelasan($jenis)]);
     echo ah_error_summary($bucket);
-    if ($opsi['subjek'] === []): ?>
+    if (!$service->skemaTersedia($jenis)): ?>
+        <p class="text-muted mb-0">Tabel penugasan <?= ah_e($definisi['label']) ?> belum dipasang. Jalankan migrasi basis data terbaru terlebih dahulu.</p>
+    <?php elseif ($opsi['subjek'] === []): ?>
         <p class="text-muted mb-0">Belum ada <?= ah_e(mb_strtolower($definisi['label_subjek'])) ?> aktif. Tambahkan datanya di Data pesantren › Asatidz &amp; pengurus terlebih dahulu.</p>
     <?php elseif ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_MAPEL_KELAS && $opsi['mata_pelajaran'] === []): ?>
         <p class="text-muted mb-0">Belum ada mata pelajaran aktif. <a href="admin_mata_pelajaran.php?action=create">Tambahkan mata pelajaran</a> terlebih dahulu.</p>
@@ -275,9 +280,11 @@ if ($tambah || $edit !== null):
                 <select class="form-select" id="jenjang" name="jenjang"><option value="">Seluruh unit</option>
                     <?php foreach ($opsi['jenjang'] as $j): ?><option value="<?= ah_e($j) ?>" <?= $nilai('jenjang') === $j ? 'selected' : '' ?>><?= ah_e($j) ?></option><?php endforeach; ?>
                 </select><?= $err('jenjang') ?></div>
-        <?php else: ?>
+        <?php elseif ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_GELOMBANG): ?>
             <div class="mb-3"><label class="form-label" for="gelombang">Gelombang <span class="text-muted fw-normal">(opsional)</span></label>
                 <input class="form-control" id="gelombang" name="gelombang" maxlength="50" placeholder="Kosong = seluruh gelombang" value="<?= ah_e($nilai('gelombang')) ?>"><?= $err('gelombang') ?></div>
+        <?php else: ?>
+            <p class="form-text mb-3">Cakupan: seluruh santri aktif. Penugasan berlaku sampai tanggal selesai atau dinonaktifkan, tidak gugur saat semester berganti.</p>
         <?php endif; ?>
         <div class="row g-2 mb-3">
             <div class="col-sm-6"><label class="form-label" for="tanggal_mulai">Tanggal mulai</label>

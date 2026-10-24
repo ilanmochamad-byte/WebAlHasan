@@ -104,6 +104,26 @@ try {
         if ($method === 'POST' && $path === '/v4/rencana') JsonResponse::success($rencana->save($user, Request::json()));
     }
 
+    // V5 Fase 1 (kesehatan santri): aditif. Hak dihitung ulang layanan yang
+    // sama dengan halaman web; admin hanya membaca, tidak pernah mencatat.
+    if (str_starts_with($path, '/v5/kesehatan')) {
+        header('Cache-Control: private, no-store');
+        $kesehatan = kesehatan_service();
+        if ($method === 'GET' && $path === '/v5/kesehatan/akses') JsonResponse::success($kesehatan->akses($user));
+        if ($method === 'GET' && $path === '/v5/kesehatan/santri') JsonResponse::success($kesehatan->santriPilihan($user, $_GET['q'] ?? ''));
+        if ($method === 'GET' && $path === '/v5/kesehatan/kunjungan') JsonResponse::success($kesehatan->daftar($user, $_GET));
+        if ($method === 'POST' && $path === '/v5/kesehatan/kunjungan') {
+            $body = Request::json();
+            $body['idempotency_key'] ??= $_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? null;
+            $hasil = $kesehatan->buat($user, $body, \App\Kesehatan\KesehatanService::KANAL_API);
+            // Respons tanpa isi klinis; rincian dibaca lewat GET (tercatat di log akses).
+            JsonResponse::success(['id' => $hasil['id'], 'replayed' => $hasil['replayed']], $hasil['status']);
+        }
+        if ($method === 'GET' && preg_match('#^/v5/kesehatan/kunjungan/(\d+)$#', $path, $m)) JsonResponse::success($kesehatan->detail($user, (int) $m[1], \App\Kesehatan\KesehatanService::KANAL_API));
+        if ($method === 'GET' && preg_match('#^/v5/kesehatan/kunjungan/(\d+)/akses$#', $path, $m)) JsonResponse::success($kesehatan->riwayatAkses($user, (int) $m[1], $_GET['page'] ?? 1));
+        throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
+    }
+
     // V3 aditif; kontrak capability/mode/menu mobile lama tidak disentuh.
     if ($method === 'GET' && $path === '/v3/capabilities') {
         $v3 = (new \App\Auth\Capabilities(app_db()))->v3Capabilities($user);
@@ -431,6 +451,8 @@ try {
     }
 
     throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
+} catch (\App\Kesehatan\KesehatanException $exception) {
+    JsonResponse::error(match($exception->status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$exception->status);
 } catch (\App\V4\V4Exception $exception) {
     JsonResponse::error(match($exception->status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$exception->status);
 } catch (\App\V3\V3Exception $exception) {

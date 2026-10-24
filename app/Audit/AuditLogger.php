@@ -28,6 +28,12 @@ final class AuditLogger
                 $before = $before === null ? null : $this->v3Metadata($before);
                 $after = $after === null ? null : $this->v3Metadata($after);
             }
+            // Kesehatan santri (PRD V5): isi klinis tidak pernah masuk log umum,
+            // sekalipun pemanggil keliru mengirimkannya.
+            if (str_starts_with($action, 'kesehatan.')) {
+                $before = $before === null ? null : $this->tanpaIsiKlinis($before);
+                $after = $after === null ? null : $this->tanpaIsiKlinis($after);
+            }
             $actorUserId ??= isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
             $beforeJson = $before === null ? null : json_encode($before, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             $afterJson = $after === null ? null : json_encode($after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -49,6 +55,18 @@ final class AuditLogger
             error_log('Audit log gagal disimpan.');
             return false;
         }
+    }
+
+    private function tanpaIsiKlinis(array $data): array
+    {
+        $result = [];
+        foreach ($data as $key => $value) {
+            if (in_array($key, ['keluhan', 'catatan_klinis', 'tindakan', 'alasan', 'catatan'], true)) {
+                continue;
+            }
+            $result[$key] = is_array($value) ? $this->tanpaIsiKlinis($value) : $value;
+        }
+        return $result;
     }
 
     /** Riwayat isi tetap di tabel bisnis privat; audit V3 menyimpan jejak hash. */
