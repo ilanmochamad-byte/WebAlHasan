@@ -166,3 +166,12 @@ Status audit 24 Oktober 2026: **Tahap 8 lulus audit independen Codex setelah tig
 
 Rincian: `../phase-v5-1/README.md` (P-1).
 
+
+
+## Keputusan PRD V5 Fase 2 (24 Oktober 2026, sesudah implementasi)
+
+| # | Keputusan |
+|---|---|
+| BC | **Menu "Kesehatan" untuk pembimbing dan murobi dipertahankan**: pembimbing (peran Pengurus) di grup "Santri binaan", murobi (peran Guru) di grup "Murobi", hanya bila penugasan binaan aktifnya ada. Menu hanya-baca; hak baca tetap ditegakkan server per baris (kunjungan Tercatat santri dalam cakupan). Isi dan urutan menu lain pada peta peran F–K tidak berubah. Oracle historis Tahap 2 untuk menu `sbx_murobi_a` dan `sbx_pengurus_a` tidak diubah dan dicatat sebagai kegagalan yang diharapkan. |
+
+Rincian: `../phase-v5-2/README.md` (Q-1).

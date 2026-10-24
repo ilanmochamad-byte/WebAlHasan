@@ -62,22 +62,50 @@ final class NavigationContext
         }
     }
 
+    /** @var array<string, mixed>|false|null */
+    private array|false|null $aksesKesehatan = null;
+
     /**
-     * Menu Kesehatan (PRD V5): hanya bila migrasi 024 terpasang. `$milikSendiri`
-     * = penugasan kesehatan akun ini (petugas); selain itu termasuk pengawasan
-     * admin.
+     * Menu Kesehatan (PRD V5): hanya bila migrasi 024 dan 025 terpasang.
+     * `$milikSendiri` = penugasan kesehatan akun ini (petugas); selain itu
+     * termasuk pengawasan admin.
      */
     public function kesehatan(bool $milikSendiri): bool
     {
-        try {
-            if (!\App\Database\Schema::hasTable(app_db(), 'kesehatan_kunjungan')) {
-                return false;
-            }
-        } catch (Throwable) {
+        $akses = $this->aksesKesehatan();
+        if ($akses === false) {
             return false;
         }
 
         return $milikSendiri ? $this->own(PenugasanJenis::CAP_KESEHATAN_CATAT) : $this->feature(PenugasanJenis::CAP_KESEHATAN_CATAT);
+    }
+
+    /**
+     * Menu Kesehatan binaan (PRD V5 Fase 2): pembimbing (peran Pengurus) atau
+     * murobi (peran Guru) dengan penugasan aktif, hanya baca. Barisnya tetap
+     * disaring cakupan oleh `KesehatanService`.
+     *
+     * @param 'pembimbing'|'murobi' $jenis
+     */
+    public function kesehatanBinaan(string $jenis): bool
+    {
+        $akses = $this->aksesKesehatan();
+
+        return $akses !== false && $akses['cakupan'] === \App\Kesehatan\KesehatanService::CAKUPAN_BINAAN && ($akses['binaan'][$jenis] ?? false);
+    }
+
+    /** @return array<string, mixed>|false false = modul belum dipasang/galat */
+    private function aksesKesehatan(): array|false
+    {
+        if ($this->aksesKesehatan === null) {
+            try {
+                $this->aksesKesehatan = kesehatan_service()->akses($this->user);
+            } catch (Throwable) {
+                $this->aksesKesehatan = false;
+            }
+        }
+
+        return $this->aksesKesehatan;
     }
 
     public function raporWali(): bool

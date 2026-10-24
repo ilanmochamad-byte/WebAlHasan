@@ -104,8 +104,8 @@ try {
         if ($method === 'POST' && $path === '/v4/rencana') JsonResponse::success($rencana->save($user, Request::json()));
     }
 
-    // V5 Fase 1 (kesehatan santri): aditif. Hak dihitung ulang layanan yang
-    // sama dengan halaman web; admin hanya membaca, tidak pernah mencatat.
+    // V5 Fase 1–2 (kesehatan santri): aditif. Hak dihitung ulang layanan yang
+    // sama dengan halaman web; admin, pembimbing, dan murobi hanya membaca.
     if (str_starts_with($path, '/v5/kesehatan')) {
         header('Cache-Control: private, no-store');
         $kesehatan = kesehatan_service();
@@ -121,6 +121,21 @@ try {
         }
         if ($method === 'GET' && preg_match('#^/v5/kesehatan/kunjungan/(\d+)$#', $path, $m)) JsonResponse::success($kesehatan->detail($user, (int) $m[1], \App\Kesehatan\KesehatanService::KANAL_API));
         if ($method === 'GET' && preg_match('#^/v5/kesehatan/kunjungan/(\d+)/akses$#', $path, $m)) JsonResponse::success($kesehatan->riwayatAkses($user, (int) $m[1], $_GET['page'] ?? 1));
+        if ($method === 'GET' && preg_match('#^/v5/kesehatan/kunjungan/(\d+)/versi$#', $path, $m)) JsonResponse::success($kesehatan->riwayatVersi($user, (int) $m[1], \App\Kesehatan\KesehatanService::KANAL_API));
+        // Koreksi berversi (Fase 2): badan membawa `versi` yang dilihat, `alasan`, dan keadaan lengkap
+        // sesudah koreksi; respons tanpa isi klinis.
+        if ($method === 'POST' && preg_match('#^/v5/kesehatan/kunjungan/(\d+)/koreksi$#', $path, $m)) {
+            $body = Request::json();
+            $body['idempotency_key'] ??= $_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? null;
+            $hasil = $kesehatan->koreksi($user, (int) $m[1], $body, \App\Kesehatan\KesehatanService::KANAL_API);
+            JsonResponse::success(['id' => $hasil['id'], 'versi' => $hasil['versi'], 'replayed' => $hasil['replayed']], $hasil['status']);
+        }
+        if ($method === 'POST' && preg_match('#^/v5/kesehatan/kunjungan/(\d+)/rujukan/(\d+)/hasil$#', $path, $m)) {
+            $body = Request::json();
+            $body['idempotency_key'] ??= $_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? null;
+            $hasil = $kesehatan->hasilRujukan($user, (int) $m[1], (int) $m[2], $body, \App\Kesehatan\KesehatanService::KANAL_API);
+            JsonResponse::success(['id' => $hasil['id'], 'versi' => $hasil['versi'], 'replayed' => $hasil['replayed']], $hasil['status']);
+        }
         throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
     }
 

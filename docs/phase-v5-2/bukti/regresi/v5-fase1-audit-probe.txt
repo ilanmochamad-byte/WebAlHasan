@@ -1,0 +1,31 @@
+[lulus] Role masukan tidak mengganti role database
+=== A. Pencabutan pada objek pengguna lama ===
+[lulus] akun nonaktif: tulis ditolak, tidak ada kunjungan/versi/klaim/audit baru
+[lulus] akun nonaktif: baca juga dicabut
+[lulus] master nonaktif: tulis ditolak, tidak ada kunjungan/versi/klaim/audit baru
+[lulus] master nonaktif: baca juga dicabut
+[lulus] master diarsipkan: tulis ditolak, tidak ada kunjungan/versi/klaim/audit baru
+[lulus] master diarsipkan: baca juga dicabut
+[lulus] role pengurus dicabut: tulis ditolak, tidak ada kunjungan/versi/klaim/audit baru
+[lulus] role pengurus dicabut: baca juga dicabut
+[lulus] akun menjadi admin: tulis ditolak, tidak ada kunjungan/versi/klaim/audit baru
+[lulus] Promosi admin menyisakan baca/audit
+[lulus] tahun diarsipkan: tulis ditolak, tidak ada kunjungan/versi/klaim/audit baru
+[lulus] tahun diarsipkan: baca juga dicabut
+[lulus] penugasan belum mulai: tulis ditolak, tidak ada kunjungan/versi/klaim/audit baru
+[lulus] penugasan belum mulai: baca juga dicabut
+[lulus] Tahun tidak aktif tanpa arsip tetap memberi hak klinik (P-2)
+=== B. Kegagalan parsial dan privasi ===
+[lulus] Gagal snapshot: 503 dan seluruh transaksi dibatalkan
+[lulus] Retry sesudah kegagalan snapshot menerima kunci yang sama
+[lulus] Gagal audit: 503 dan seluruh transaksi dibatalkan
+[lulus] Retry sesudah kegagalan audit menerima kunci yang sama
+[lulus] Kegagalan log akses menutup rincian (503)
+[lulus] Detail kembali tersedia sesudah log akses pulih
+[lulus] Kegagalan/retry tidak menulis isi klinis ke audit umum
+=== C. Pencabutan bersamaan dengan penyimpanan ===
+[lulus] Pekerja benar-benar menunggu kunci pencabutan sebelum commit
+[lulus] Pekerja membaca pencabutan terbaru sesudah menunggu: 403
+[lulus] Balapan pencabutan: 0 kunjungan/versi/klaim/audit baru
+[lulus] Objek pengguna lama tetap ditolak sesudah balapan
+Lulus: 27 · Gagal: 0

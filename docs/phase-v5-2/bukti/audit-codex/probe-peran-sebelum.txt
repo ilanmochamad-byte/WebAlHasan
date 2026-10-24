@@ -1,0 +1,33 @@
+[lulus] Dua obat, dua rujukan, dua tindak lanjut tetap satu baris daftar
+[lulus] Detail majemuk dan jumlah desimal dipertahankan
+[lulus] Hasil rujukan kedua tidak mengubah rujukan pertama
+[lulus] Selesai tindak lanjut tanpa alasan ditolak atomik
+[lulus] Satu tindak lanjut selesai, yang lain tetap terbuka pada kunjungan sama
+[lulus] Riwayat sebelum/sesudah tindak lanjut utuh
+=== Kegagalan parsial koreksi ===
+[lulus] kesehatan_rujukan gagal: koreksi ditutup 503
+[lulus] kesehatan_rujukan gagal: isi, rincian, versi, snapshot, klaim, audit kembali utuh
+[lulus] kesehatan_versi_rincian gagal: koreksi ditutup 503
+[lulus] kesehatan_versi_rincian gagal: isi, rincian, versi, snapshot, klaim, audit kembali utuh
+[lulus] audit_logs gagal: koreksi ditutup 503
+[lulus] audit_logs gagal: isi, rincian, versi, snapshot, klaim, audit kembali utuh
+=== Pembacaan bersilangan koreksi ===
+[lulus] detail: pembaca benar-benar tertahan sesudah membaca kepala kunjungan
+[lulus] detail: respons pembaca berhasil
+[lulus] Detail memakai satu versi utuh meskipun koreksi masuk di tengah pembacaan
+[lulus] riwayat: pembaca benar-benar tertahan sesudah membaca kepala kunjungan
+[lulus] riwayat: respons pembaca berhasil
+[lulus] Kepala riwayat dan versi terbarunya konsisten saat koreksi bersamaan
+=== Log akses wajib dan pencabutan bersamaan koreksi ===
+[lulus] Log akses gagal: detail pembimbing ditutup
+[lulus] Log akses gagal: riwayat versi ditutup
+[lulus] Koreksi benar-benar menunggu kunci penugasan yang sedang dicabut
+[lulus] Sesudah commit pencabutan, koreksi tertahan ditolak 403
+[lulus] Pencabutan bersamaan: tidak ada perubahan kunjungan/rincian/versi/klaim/audit
+[lulus] Objek pengguna lama tetap ditolak sesudah pencabutan
+[lulus] Probe kegagalan dan koreksi tidak menyalin isi privat ke audit umum
+=== Perubahan peran menjadi admin saat koreksi menunggu ===
+[lulus] Koreksi menunggu kunci akun saat role admin sedang ditambahkan
+[gagal] Akun yang kini admin ditolak menulis klinis sesudah menunggu
+[gagal] Promosi admin bersamaan tidak menghasilkan versi/klaim/audit klinis
+Lulus: 26 · Gagal: 2
