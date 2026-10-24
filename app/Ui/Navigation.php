@@ -185,6 +185,10 @@ final class Navigation
         if ($c->own(PenugasanJenis::CAP_SIKAP_MUROBI)) {
             $murobi[] = self::item('sikap_binaan', 'Sikap binaan', '/portal/sikap_semester.php?mode=murobi', 'fa-heart', ['sikap_semester.php?mode=murobi'], [], 'Sikap');
         }
+        if ($c->kesehatanBinaan('murobi')) {
+            // PRD V5 Fase 2: murobi membaca catatan kesehatan santri binaannya (hanya baca).
+            $murobi[] = self::kesehatan();
+        }
         if (isset($c->v3['v3.binaan.baca'])) {
             // V-6 (Tahap 5): murobi juga membaca laporan pembinaan binaannya.
             $murobi[] = self::item('pembinaan_binaan', 'Pembinaan binaan', '/portal/v3_pelanggaran.php', 'fa-scale-balanced', [], [
@@ -219,6 +223,10 @@ final class Navigation
 
         // PRD V5: petugas kesehatan adalah pengurus dengan penugasan kesehatan aktif.
         $klinik = $c->kesehatan(true) ? [self::kesehatan()] : [];
+        if ($klinik === [] && $c->kesehatanBinaan('pembimbing')) {
+            // PRD V5 Fase 2: pembimbing membaca catatan kesehatan santri binaannya (hanya baca).
+            $items[] = self::kesehatan();
+        }
 
         return [
             ['label' => '', 'items' => [self::beranda()]],
@@ -307,7 +315,8 @@ final class Navigation
     /** @return array<string, mixed> */
     private static function kesehatan(): array
     {
-        return self::item('kesehatan', 'Kesehatan', '/portal/kesehatan.php', 'fa-kit-medical', ['kesehatan.php', 'kesehatan_buat.php', 'kesehatan_detail.php'], [], 'Kesehatan');
+        return self::item('kesehatan', 'Kesehatan', '/portal/kesehatan.php', 'fa-kit-medical',
+            ['kesehatan.php', 'kesehatan_buat.php', 'kesehatan_detail.php', 'kesehatan_koreksi.php', 'kesehatan_hasil_rujukan.php', 'kesehatan_riwayat.php'], [], 'Kesehatan');
     }
 
     /** @return array<string, mixed> */

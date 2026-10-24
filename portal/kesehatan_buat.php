@@ -8,10 +8,13 @@ use App\Kesehatan\KesehatanService;
 use App\Ui\Denial;
 
 /**
- * Catat kunjungan klinik (PRD V5 Fase 1).
+ * Catat kunjungan klinik (PRD V5 Fase 1–2).
  *
- * Hanya petugas kesehatan berpenugasan aktif. Admin dan akun lain ditolak di
- * server (`KesehatanService::buat()`), bukan hanya disembunyikan tombolnya.
+ * Hanya petugas kesehatan berpenugasan aktif. Admin, pembimbing, murobi, dan
+ * akun lain ditolak di server (`KesehatanService::buat()`), bukan hanya
+ * disembunyikan tombolnya. Fase 2 menambah obat yang diberikan, rujukan,
+ * tindak lanjut (`_kesehatan_form.php`), dan pilihan "Simpan sebagai draf":
+ * draf tidak tampil kepada pembimbing/murobi sampai ditetapkan tercatat.
  *
  * Kunci idempotensi dibuat saat formulir dirender dan dikirim tersembunyi:
  * klik ganda, muat ulang POST, atau retry jaringan memakai kunci yang sama dan
@@ -21,6 +24,7 @@ use App\Ui\Denial;
  */
 
 require_once __DIR__ . '/_kesehatan.php';
+require_once __DIR__ . '/_kesehatan_form.php';
 
 if (!$aksesKesehatan['catat']) {
     Denial::page('Catat kunjungan klinik', 'pengurus dengan penugasan kesehatan aktif',
@@ -34,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hasil = $kesehatan->buat($currentUser, $_POST, KesehatanService::KANAL_WEB);
         ah_flash_set('success', $hasil['replayed']
             ? 'Kunjungan ini sudah tersimpan sebelumnya. Tidak ada kunjungan ganda yang dibuat.'
-            : 'Kunjungan tercatat.');
+            : (($_POST['status'] ?? '') === 'Draf' ? 'Draf kunjungan tersimpan. Draf belum tampil kepada pembimbing/murobi.' : 'Kunjungan tercatat.'));
         ah_redirect(kesehatan_url('kesehatan_detail.php', ['id' => $hasil['id']]));
     } catch (KesehatanException $exception) {
         if ($exception->status === 403) {
@@ -103,15 +107,18 @@ if ($galat !== null) {
             <div class="mb-3">
                 <label class="form-label" for="catatan_klinis">Catatan klinis <span class="text-muted fw-normal">(opsional, internal)</span></label>
                 <textarea class="form-control" id="catatan_klinis" name="catatan_klinis" rows="4" maxlength="4000"><?= ah_e($nilai('catatan_klinis')) ?></textarea>
-                <p class="form-text mb-0">Hanya dibaca petugas kesehatan dan admin. Tidak tampil kepada orang tua.</p>
+                <p class="form-text mb-0">Hanya dibaca petugas kesehatan, admin, serta pembimbing/murobi santri terkait. Tidak tampil kepada orang tua.</p>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="tindakan">Tindakan yang dilakukan <span class="text-muted fw-normal">(opsional)</span></label>
                 <textarea class="form-control" id="tindakan" name="tindakan" rows="3" maxlength="2000"><?= ah_e($nilai('tindakan')) ?></textarea>
             </div>
+            <?php kesehatan_form_rincian(kesehatan_form_baris($isian['obat'] ?? []), kesehatan_form_baris($isian['rujukan'] ?? []), kesehatan_form_baris($isian['tindak_lanjut'] ?? []),
+                $isian === [] ? ['obat' => 3, 'rujukan' => 1, 'tindak_lanjut' => 2] : []); ?>
             <div class="ah-actbar mt-4 mb-0">
                 <a class="btn btn-outline-secondary" href="<?= ah_e(kesehatan_url('kesehatan.php')) ?>">Batal</a>
-                <button class="btn btn-primary" type="submit" data-busy-label="Menyimpan…">Simpan kunjungan</button>
+                <button class="btn btn-outline-primary" type="submit" name="status" value="Draf" data-busy-label="Menyimpan…">Simpan sebagai draf</button>
+                <button class="btn btn-primary" type="submit" name="status" value="Tercatat" data-busy-label="Menyimpan…">Simpan kunjungan</button>
             </div>
         </form>
         <?php endif; ?>
