@@ -85,14 +85,17 @@ Kegagalan berikut muncul karena Fase 1 **memang** menambah jenis penugasan, migr
 | `redesain_web_tahap6_static` (141/0 → 140/1) | "Navigation dan app/Auth tidak diubah Tahap 6" | Menu Kesehatan di `Navigation`. `app/Auth` tidak diubah. |
 | `redesain_web_tahap7_static` (102/0 → 100/2) | `PenugasanJenis` tidak berubah; `api/`, `database/`, `bin/` tidak berubah | Katalog, migrasi 024, rute API, skrip `bin/v5_*`. |
 | `redesain_web_tahap8_static` (80/0 → 79/1) | `api` tidak berubah dari baseline | Rute `/v5/kesehatan`. |
-| `redesain_web_tahap2_http` (191/0 → 190/1) | H2-A "admin 17 menu" | Menu admin **Kesehatan** (lihat P-1). |
+| `redesain_web_tahap2_http` (191/0 → 190/1) | H2-A "admin 17 menu" | Menu admin **Kesehatan**, dipertahankan oleh keputusan Human Developer BB (P-1). |
 | `redesain_web_tahap6_http` (132/0 → 125/7) | H6-A rollback mengasumsikan 023 migrasi terakhir | Rollback kini melepas 024 dahulu. Lulus 132/0 bila 024 di-rollback lebih dahulu (`bukti/regresi/redesain-tahap6-http-tanpa-024.txt`). |
 
 Kegagalan statis lain sama persis dengan baseline: `keamanan_psb_static` 82/1, `redesain_web_tahap3_static` 151/1, `redesain_web_tahap4_static` 95/1 (oracle historis yang sudah dicatat audit sebelumnya); `v3_phase2_static` dan `v3_phase3_static` keluar 77 (dilewati) di keduanya.
 
 ## Penafsiran yang perlu ditinjau auditor/Human Developer
 
-- **P-1 Menu admin Kesehatan.** PRD V5 mewajibkan UI admin; menu baru "Kesehatan" diletakkan di grup Kegiatan santri sehingga admin kini punya 18 menu (keputusan A–E menetapkan 17). Bila Human Developer menghendaki tanpa menu baru, alternatifnya tab di bawah menu lain; perubahan hanya di `Navigation::admin()`.
+P-1 sudah diputuskan Human Developer; P-2…P-10 tetap untuk ditinjau auditor.
+
+
+- **P-1 Menu admin Kesehatan — DIPUTUSKAN Human Developer 24 Oktober 2026 (keputusan BB).** Menu baru "Kesehatan" di grup Kegiatan santri **dipertahankan**; admin kini punya 18 menu (A–E semula 17). Oracle Tahap 2 "admin 17 menu" tetap tidak diubah dan dicatat sebagai kegagalan yang diharapkan.
 - **P-2 Masa berlaku penugasan.** Kolom `tahun_ajaran_id` dipertahankan agar sama dengan fondasi, tetapi `wajib_tahun_aktif = false`: penugasan kesehatan tidak gugur saat semester berganti; berlaku sampai tanggal selesai atau dinonaktifkan.
 - **P-3 Admin yang juga petugas.** Akun ber-role admin yang memegang penugasan kesehatan (`keduanya`) tetap **ditolak** mutasi klinis (tafsir ketat §5.1 "admin tidak mengubah isi klinis"); baca tercatat sebagai `admin_petugas`. Petugas klinik memakai akun pengurus tanpa role admin.
 - **P-4 Akhiri vs nonaktifkan.** Mengikuti semantik fondasi, "Akhiri" dengan tanggal selesai hari ini tetap memberi hak sampai akhir hari itu. Pencabutan seketika = "Nonaktifkan" atau tanggal selesai kemarin (keduanya diuji).

@@ -156,3 +156,13 @@ Prompt instruksi Tahap 8 memuat tiga butir pilihan (a)/(b) yang artinya tidak te
 Implementasi dan bukti: `tahap-8/README.md`.
 
 Status audit 24 Oktober 2026: **Tahap 8 lulus audit independen Codex setelah tiga koreksi terarah tampilan**, tanpa mengubah keputusan AY–BA atau aturan/hak akses keamanan PSB. Laporan, bukti pengujian independen, oracle historis dan batas: `tahap-8/AUDIT-CODEX.md`. Belum merge/deploy; langkah manual `.htaccess` keamanan PSB tetap wajib saat rilis oleh Human Developer.
+
+
+## Keputusan PRD V5 Fase 1 (24 Oktober 2026, sesudah implementasi)
+
+| # | Keputusan |
+|---|---|
+| BB | **Menu admin "Kesehatan" dipertahankan** di grup Kegiatan santri sebagai menu ke-18 peta admin. Keputusan ini menambah satu menu pada peta admin 17 menu (A–E) untuk PRD V5 (kesehatan santri); urutan dan isi 17 menu lainnya tidak berubah. Oracle historis Tahap 2 "admin 17 menu" tidak diubah dan dicatat sebagai kegagalan yang diharapkan. |
+
+Rincian: `../phase-v5-1/README.md` (P-1).
+
