@@ -255,7 +255,7 @@ final class Navigation
         if ($c->izin(Capabilities::ORANG_TUA)) {
             // I-7 (keputusan O): tab Aktif dan Riwayat. Ringkasan dan laporan
             // lama tetap dapat dibuka dan ditempatkan di bawah menu ini.
-            $items[] = self::item('izin_anak', 'Izin anak', '/portal/izin.php', 'fa-file-shield',
+            $items[] = self::item('izin_anak', 'Izin anak', '/portal/izin.php', 'fa-door-open',
                 ['izin_ringkasan.php', 'laporan.php', 'laporan_cetak.php', 'laporan_csv.php', 'izin_antrean.php'], [
                 self::tab('Aktif', '/portal/izin.php', ['izin.php', 'izin_detail.php']),
                 self::tab('Riwayat', '/portal/izin.php?tab=riwayat', ['izin.php?tab=riwayat']),
@@ -290,7 +290,7 @@ final class Navigation
     /** @return array<string, mixed> */
     private static function perizinan(): array
     {
-        return self::item('izin', 'Perizinan', '/portal/izin_ringkasan.php', 'fa-file-shield', ['admin_izin.php'], [
+        return self::item('izin', 'Perizinan', '/portal/izin_ringkasan.php', 'fa-door-open', ['admin_izin.php'], [
             self::tab('Ringkasan', '/portal/izin_ringkasan.php', ['izin_ringkasan.php']),
             self::tab('Pengajuan', '/portal/izin.php', ['izin.php', 'izin_detail.php', 'izin_buat.php', 'izin_aksi.php']),
             self::tab('Antrean', '/portal/izin_antrean.php', ['izin_antrean.php']),
