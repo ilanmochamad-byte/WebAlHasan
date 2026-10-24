@@ -31,7 +31,10 @@ Pembagian peran ditetapkan per workstream agar implementator dan auditor tidak t
 | Perbaikan keamanan mutasi V1 lewat GET (keputusan 19 Oktober 2026; branch `claude/fix-get-mutasi-v1`, `docs/perbaikan-get-mutasi-v1/`) | Claude | Codex |
 | Redesain tampilan website Tahap 1–8 (rencana dan penetapan peran 22 Oktober 2026; branch dokumen `claude/rencana-redesain-web`, `docs/redesain-web/`) | Claude | Codex |
 | Perbaikan keamanan PSB, prasyarat redesain website Tahap 8 (penetapan Human Developer 24 Oktober 2026; branch `claude/perbaikan-keamanan-psb`, `docs/keamanan-psb/`) | Claude | Codex |
-| PRD V5–V6 | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
+| PRD V5 Fase 1–5 — kesehatan santri (keputusan Human Developer 24 Oktober 2026) | Claude Code | Codex |
+| PRD V6–V8 (penomoran baru 24 Oktober 2026) | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
+
+**Keputusan Human Developer 24 Oktober 2026:** urutan resmi baru adalah V5 kesehatan santri, V6 keuangan santri (tagihan bulanan, tabungan, pengeluaran), V7 pengajuan izin orang tua melalui pembimbing kepada murobi, dan V8 pengembangan PSB/pembiayaannya. Ini menggantikan rujukan rencana masa depan lama yang menyebut V5 sebagai tagihan bulanan dan V6 sebagai PSB; riwayat commit/dokumen dan nama capability lama tidak diubah hanya karena penomoran. `PRD-V5.md` memuat rancangan kesehatan dan seluruh asumsi awalnya telah disetujui Human Developer. **Claude Code ditetapkan sebagai implementator dan Codex sebagai auditor untuk Fase 1–5 V5**, bergantian, satu fase per giliran. Peran V6–V8 belum ditetapkan. Ketersediaan PRD maupun prompt seluruh fase bukan izin memulai semua fase sekaligus.
 
 Ketentuan:
 
