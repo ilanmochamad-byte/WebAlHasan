@@ -263,6 +263,40 @@ Push hanya `{tipe, ringkasan_id}`. Klien wajib meminta
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v5-3/README.md`.
 
+## Kesehatan santri V5 Fase 4 — tambahan untuk aplikasi (24 Oktober 2026)
+
+Aditif; kontrak Fase 1–3 tidak berubah (baris pemilih santri hanya bertambah
+satu kunci). Seluruh respons `Cache-Control: private, no-store`.
+
+Pemilih santri petugas dikelompokkan per kelas penempatan aktif tahun ajaran
+aktif (permintaan Human Developer 24 Oktober 2026):
+
+- `GET /v5/kesehatan/santri?q=&kelas_id=` (petugas) → baris `{id, nis, nama, kelas: {id, nama} | null}`,
+  urut kelas lalu nama, santri belum ditempatkan paling akhir; `kelas_id` angka = satu kelas,
+  `tanpa` = belum ditempatkan, kosong = semua; paling banyak 100 baris + `total`.
+- `GET /v5/kesehatan/santri/kelas` (petugas) → `{kelas: [{id, nama, jumlah}], tanpa_kelas}`.
+
+Penugasan petugas kesehatan (admin saja; akun lain `403`). Lewat
+`PenugasanService` yang sama dengan Pusat Penugasan web (transaksi,
+tumpang tindih `409`, audit `penugasan.*`); tidak ada penghapusan.
+
+- `GET /v5/kesehatan/penugasan?status=aktif|akan_datang|berakhir|nonaktif&page=` →
+  `{rows: [{id, pengurus, tahun, tanggal_mulai, tanggal_selesai, aktif, status, catatan,
+  alasan_pengakhiran, akun: {username, aktif} | null, diperbarui_pada}], total, page, per_page,
+  opsi: {pengurus, tahun}}`.
+- `POST /v5/kesehatan/penugasan` `{pengurus_id, tahun_ajaran_id, tanggal_mulai, tanggal_selesai?, catatan?}`
+  → `201 {id, penugasan, hak}` (`hak` = penjelasan bila belum efektif, `null` bila efektif);
+  validasi `422` dengan `details` per kolom.
+- `POST /v5/kesehatan/penugasan/{id}/akhiri` `{tanggal_selesai, alasan}`,
+  `/nonaktifkan` `{alasan}`, `/aktifkan` `{alasan}` → `{penugasan}`; alasan wajib (`422`),
+  keadaan sudah sama `409`.
+
+Notifikasi kesehatan di aplikasi: data Push `{tipe: kesehatan_ringkasan, ringkasan_id}` dan
+tautan skema `alhasanapps://kesehatan/wali/{id}` hanya penunjuk; aplikasi selalu meminta
+`/v5/kesehatan/wali/ringkasan/{id}` setelah autentikasi.
+
+Rincian, penafsiran, dan batas uji: `docs/phase-v5-4/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh

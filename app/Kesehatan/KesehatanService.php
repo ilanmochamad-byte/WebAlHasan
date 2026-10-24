@@ -182,20 +182,39 @@ final class KesehatanService
     }
 
     /**
-     * Santri aktif yang dapat dipilih petugas.
+     * Santri aktif yang dapat dipilih petugas, beserta kelas penempatan aktif
+     * agar pemilih dapat dikelompokkan per kelas. `kelas_id` opsional:
+     * angka = satu kelas, `tanpa` = belum ditempatkan, kosong = semua.
      *
      * @param array<string, mixed> $user
-     * @return array{rows:array<int, array{id:int, nis:string, nama:string}>, total:int}
+     * @return array{rows:array<int, array{id:int, nis:string, nama:string, kelas:?array{id:int, nama:string}}>, total:int}
      */
-    public function santriPilihan(array $user, mixed $q): array
+    public function santriPilihan(array $user, mixed $q, mixed $kelas = null): array
     {
         $this->wajibCatat($user);
-        $hasil = $this->repo->santriPilihan(PageQuery::term($q));
+        $kelasId = $kelas === 'tanpa' ? 0 : ($this->idOpsional($kelas) ?: null);
+        $hasil = $this->repo->santriPilihan(PageQuery::term($q), 100, $kelasId);
 
         return [
-            'rows' => array_map(static fn (array $s): array => ['id' => (int) $s['id'], 'nis' => (string) $s['nis'], 'nama' => (string) $s['nama_santri']], $hasil['rows']),
+            'rows' => array_map(static fn (array $s): array => [
+                'id' => (int) $s['id'], 'nis' => (string) $s['nis'], 'nama' => (string) $s['nama_santri'],
+                'kelas' => $s['kelas_id'] === null ? null : ['id' => (int) $s['kelas_id'], 'nama' => (string) $s['nama_kelas']],
+            ], $hasil['rows']),
             'total' => (int) $hasil['total'],
         ];
+    }
+
+    /**
+     * Kelompok kelas untuk pemilih santri petugas (tahun ajaran aktif).
+     *
+     * @param array<string, mixed> $user
+     * @return array{kelas:array<int, array{id:int, nama:string, jumlah:int}>, tanpa_kelas:int}
+     */
+    public function kelasPilihan(array $user): array
+    {
+        $this->wajibCatat($user);
+
+        return $this->repo->kelasPilihan();
     }
 
     /**

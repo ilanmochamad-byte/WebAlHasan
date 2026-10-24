@@ -639,6 +639,12 @@ function kesehatan_service(): \App\Kesehatan\KesehatanService
     );
 }
 
+/** Penugasan petugas kesehatan lewat REST API (PRD V5 Fase 4, admin): membungkus `penugasan_service()`. */
+function kesehatan_penugasan_api(): \App\Kesehatan\PenugasanKesehatanApi
+{
+    return new \App\Kesehatan\PenugasanKesehatanApi(penugasan_service(), kesehatan_service());
+}
+
 /** Ringkasan kesehatan untuk wali (PRD V5 Fase 3): publikasi petugas dan proyeksi wali, web dan REST API. */
 function kesehatan_ringkasan_service(): \App\Kesehatan\RingkasanService
 {
