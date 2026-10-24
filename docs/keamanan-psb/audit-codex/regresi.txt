@@ -1,0 +1,46 @@
+Bukti regresi independen Codex, 24 Oktober 2026. Seluruh HTTP pada DB test_*_test sintetis.
+
+cleanup-before: Hasil cleanup HTTP/preservasi: 157 lulus, 0 gagal.
+cleanup-audit: Hasil audit Claude cleanup: 128 lulus, 0 gagal.
+getmutasi-http: Ringkasan: 91 lulus, 0 gagal
+getmutasi-audit: Independent Codex audit: 84 passed, 0 failed.
+cleanup-after: Hasil cleanup HTTP/preservasi: 157 lulus, 0 gagal.
+t3-http-final: Ringkasan: 167 lulus, 0 gagal
+browser-kerangka: 107 lulus, 0 gagal. Tangkapan layar: /private/tmp/kpsb-audit-codex-20261024/kerangka-tangkapan
+
+Statis:
+alumni_static: lulus
+get_mutasi_v1_static: lulus
+keamanan_psb_static: lulus
+kredensial_static: lulus
+penempatan_static: lulus
+penugasan_static: lulus
+perapihan_static: lulus
+phase1_static: lulus
+phase2_static: lulus
+phase3_static: lulus
+phase4_static: lulus
+phase5_static: lulus
+redesain_web_tahap1_static: lulus
+redesain_web_tahap2_static: lulus
+redesain_web_tahap3_static: lulus
+redesain_web_tahap4_static: baseline gagal: [gagal] Tanpa perubahan skema/migrasi (database/ tidak berubah sejak Tahap 3)
+redesain_web_tahap5_static: lulus
+redesain_web_tahap6_static: lulus
+redesain_web_tahap7_static: lulus
+v2_phase1_static: lulus
+v2_phase2_static: lulus
+v2_phase3_static: lulus
+v2_phase4_static: lulus
+v2_phase5_static: lulus
+v3_phase1_static: lulus
+v3_phase2_static: baseline gagal: [gagal] Menu web membedakan V3 dan data warisan
+v3_phase3_static: baseline gagal: [gagal] Navigasi konseling mengikuti capability V3
+v3_phase4_static: lulus
+
+Kontrol layanan biaya implementator pada probe CLI privat: 7 lulus, 5 gagal.
+Probe transaksi yang sama setelah koreksi: 12 lulus, 0 gagal.
+Probe awal akses HEAD disesuaikan karena Apache/FastCGI menghilangkan Content-Length pada HEAD; status, MIME dan isi kosong tetap diperiksa.
+Regresi Tahap 3 awal: 166/1 karena fixture browser baru menggeser baris escape dari halaman pertama.
+Run akhir: 167/0 setelah fixture PSB dipisahkan; kode dan oracle suite Tahap 3 tidak diubah.
+Dua statis V3 pertama exit 77 karena flag/nama konfigurasi; run berflag hanya membaca sumber dan membuktikan dua baseline navigasi yang telah tercatat.

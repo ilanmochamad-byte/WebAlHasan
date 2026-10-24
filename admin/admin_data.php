@@ -17,8 +17,9 @@ require_once __DIR__ . '/_guard.php';
  * yang sama; impor diperiksa di server lebih dahulu tanpa menyimpan, lalu
  * disimpan setelah dikonfirmasi (pengganti kotak alert peramban dan muat ulang).
  *
- * Pratinjau gambar berkas sengaja BELUM dipasang (keputusan AG: menunggu
- * tahap perbaikan keamanan PSB); panel hanya menautkan berkas seperti dulu.
+ * Pratinjau gambar berkas sengaja BELUM dipasang (keputusan AG, Tahap 8);
+ * sejak workstream keamanan PSB tautan berkas memakai jalur berpenjaga
+ * `lihat_berkas_psb.php`, bukan folder `berkas_psb/` langsung.
  * Status, migrasi, dan hapus tetap diproses `proses_psb_admin.php` dan
  * `hapus_siswa.php` (POST + CSRF).
  */
@@ -270,12 +271,12 @@ elseif ($dipilih !== null):
             <dt>WhatsApp wali</dt><dd><?php if ($hp !== ''): ?><a href="<?= ah_e('https://wa.me/' . (str_starts_with($hp, '0') ? '62' . substr($hp, 1) : $hp)) ?>" target="_blank" rel="noopener"><?= ah_e($d['no_hp_wali']) ?></a><?php else: ?>—<?php endif; ?></dd>
         </dl>
     <?php elseif ($bagian === 'berkas'): ?>
-        <p class="small text-muted">Pratinjau gambar berkas dipasang setelah tahap perbaikan keamanan PSB. Sementara ini berkas dibuka di tab baru.</p>
+        <p class="small text-muted">Pratinjau gambar berkas dipasang setelah tahap perbaikan keamanan PSB. Sementara ini berkas dibuka di tab baru lewat jalur yang memeriksa hak akses.</p>
         <ul class="ah-list-plain">
             <?php foreach (PsbAdmin::BERKAS as $kolom => $label): ?>
                 <li><span><?= ah_e($label) ?></span>
                     <?php if ((string) ($d[$kolom] ?? '') !== ''): ?>
-                        <a class="btn btn-sm btn-outline-primary" href="<?= ah_e(app_url('/berkas_psb/' . rawurlencode(basename((string) $d[$kolom])))) ?>" target="_blank" rel="noopener">Lihat <span class="ah-visually-hidden"><?= ah_e($label) ?></span></a>
+                        <a class="btn btn-sm btn-outline-primary" href="<?= ah_e(app_url('/lihat_berkas_psb.php?' . http_build_query(['id' => $pid, 'jenis' => $kolom]))) ?>" target="_blank" rel="noopener">Lihat <span class="ah-visually-hidden"><?= ah_e($label) ?></span></a>
                     <?php else: ?>
                         <?= ah_badge($kolom === 'file_prestasi' ? 'Tidak ada' : 'Belum ada', $kolom === 'file_prestasi' ? 'muted' : 'warn') ?>
                     <?php endif; ?>

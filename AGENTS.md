@@ -30,6 +30,7 @@ Pembagian peran ditetapkan per workstream agar implementator dan auditor tidak t
 | Cleanup fitur lama V1–V4 tahap pertama (keputusan 19 Oktober 2026; lulus audit Claude Code 19 Oktober 2026, `docs/cleanup-legacy-v1-v4/AUDIT-CLAUDE.md`) | Codex | Claude Code |
 | Perbaikan keamanan mutasi V1 lewat GET (keputusan 19 Oktober 2026; branch `claude/fix-get-mutasi-v1`, `docs/perbaikan-get-mutasi-v1/`) | Claude | Codex |
 | Redesain tampilan website Tahap 1–8 (rencana dan penetapan peran 22 Oktober 2026; branch dokumen `claude/rencana-redesain-web`, `docs/redesain-web/`) | Claude | Codex |
+| Perbaikan keamanan PSB, prasyarat redesain website Tahap 8 (penetapan Human Developer 24 Oktober 2026; branch `claude/perbaikan-keamanan-psb`, `docs/keamanan-psb/`) | Claude | Codex |
 | PRD V5–V6 | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
 
 Ketentuan:
@@ -150,3 +151,13 @@ Human Developer akan menggunakan format berikut untuk memicu pergantian agen AI.
 - Pelaksana merge/deploy adalah Human Developer. Pada saat keputusan dicatat, merge dan deploy belum dikonfirmasi terlaksana; auditor hanya memperbarui dokumen keputusan. Batas audit lokal dan pemeriksaan cPanel yang belum dijalankan tetap dicatat jujur.
 - Status 24 Oktober 2026: PR #73 sudah di-merge ke `main` (`7f7a002`, 23 Oktober 2026 18.05 WIB) dan memuat kode hasil audit `a04c6e8`; catatan keputusan AX (`eab04e8`) masuk ke `main` lewat PR #74 (`5b9e002`). Deploy cPanel belum dikonfirmasi; pemeriksaan produksi tetap menjadi tanggung jawab Human Developer.
 - Keputusan ini khusus Tahap 7. Tahap 8 belum dimulai; syarat keamanan PSB, bahan resmi, biaya MI/RA, dan instruksi pengerjaannya tetap berlaku.
+
+
+## Keputusan Human Developer — Perbaikan keamanan PSB (24 Oktober 2026)
+
+- Workstream terpisah, prasyarat redesain website Tahap 8. **Implementator Claude, auditor Codex**, bergantian dan tidak bersamaan. Branch `claude/perbaikan-keamanan-psb` dari `origin/main` `a116e0f` (sudah memuat audit Tahap 7 `a04c6e8` dan catatan AX), tanpa worktree.
+- Cakupan: alur PSB publik, masuk dan sesi Portal Pendaftar, data pendaftar, unggah/unduh berkas, serta tindakan administrasi dan pembayaran PSB. Login tetap NISN + No. HP wali (AP), perlindungannya diperbaiki. Jalur berkas berpenjaga `lihat_berkas_psb.php` disiapkan untuk pratinjau Tahap 8 tanpa redesain.
+- Batas: data historis, aturan penerimaan, komponen pembayaran, dan alamat lama dipertahankan; biaya MI/RA tidak ditetapkan, pembiayaan tidak dipindah ke portal (P-7), mobile dan modul rapor tidak diubah; tanpa migrasi database. Tidak merge, deploy, migrasi produksi, atau memulai Tahap 8.
+- Rincian temuan tidak ditulis di repositori publik. Ringkasan cakupan, perubahan, bukti uji, batas, langkah rilis manual (`.htaccess`), pemulihan, dan handoff di `docs/keamanan-psb/README.md`. Enam berkas pendaftar yang sudah terlacak di `berkas_psb/` sejak sebelum workstream ini tidak dihapus; penghapusannya (termasuk riwayat Git) tetap keputusan Human Developer.
+
+- Audit independen Codex (24 Oktober 2026) atas seluruh implementasi `c6014e1` di atas `a116e0f`: **lulus setelah dua koreksi terarah pada konsistensi rincian biaya saat pelunasan bersamaan dan pembaruan kategori tagihan belum lunas**. Statis PSB 82/0, HTTP akhir 96/0, browser PSB 42/0 pada 375/768/1280px, probe akses 32/0 dan transaksi 12/0; kontrol layanan sebelum koreksi 7/5. Regresi GET-mutasi 91/0 + 84/0, preservasi cleanup 157/0 sebelum/sesudah, audit cleanup 128/0, HTTP Tahap 3 167/0, browser kerangka sembilan akun 107/0. Tiga kegagalan statis historis tetap dicatat; tidak melonggarkan oracle. Bukti, penafsiran dan batas di `docs/keamanan-psb/AUDIT-CODEX.md`. Langkah manual `.htaccess` README tetap wajib saat deploy; hosting belum diperiksa. Tidak merge/deploy/migrasi produksi atau memulai Tahap 8; bahan resmi, biaya MI/RA dan instruksi Human Developer tetap diperlukan.

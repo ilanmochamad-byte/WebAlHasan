@@ -1,0 +1,33 @@
+[lulus] Sesi sah dapat digunakan
+[lulus] Sesi lewat umur maksimum berakhir dan identitas dibersihkan
+[lulus] Hak bukti baru berlaku
+[lulus] Hak bukti lewat umur maksimum berakhir
+[lulus] Sidik sesi tidak sah ditolak
+[lulus] Token sesi lain tidak dapat dipakai untuk masuk
+[lulus] Login HTTP independen berhasil
+[lulus] Cookie hasil masuk memakai HttpOnly dan SameSite
+[lulus] Token pendaftar tidak memberi hak biaya pada sesi lain
+[lulus] Perubahan identitas menutup akses sesi lama pada permukaan 1
+[lulus] Perubahan identitas menutup akses sesi lama pada permukaan 2
+[lulus] Perubahan identitas menutup akses sesi lama pada permukaan 3
+[lulus] Perubahan identitas menutup akses sesi lama pada permukaan 4
+[lulus] Sesi dicabut tidak menyimpan rincian biaya
+[lulus] Sesi admin independen berhasil
+[lulus] Admin sah membuka bukti
+[lulus] Kewajiban ganti sandi menutup data PSB pada permukaan 1
+[lulus] Kewajiban ganti sandi menutup data PSB pada permukaan 2
+[lulus] Kewajiban ganti sandi menutup data PSB pada permukaan 3
+[lulus] Pencabutan peran admin berlaku pada sesi yang sama
+[lulus] Penonaktifan admin berlaku pada sesi yang sama
+[lulus] Berkas lama sah tetap terbaca oleh pemilik
+[lulus] HEAD mengembalikan metadata tanpa isi
+[lulus] Berkas berupa tautan simbolik ditolak
+[lulus] Jalur langsung folder privat tetap ditolak pada variasi 1
+[lulus] Jalur langsung folder privat tetap ditolak pada variasi 2
+[lulus] Jalur langsung folder privat tetap ditolak pada variasi 3
+[lulus] Jalur langsung folder privat tetap ditolak pada variasi 4
+[lulus] Metode nonbaca berkas ditolak: PUT
+[lulus] Metode nonbaca berkas ditolak: PATCH
+[lulus] Metode nonbaca berkas ditolak: DELETE
+[lulus] Metode nonbaca berkas ditolak: OPTIONS
+Hasil: 32 lulus, 0 gagal

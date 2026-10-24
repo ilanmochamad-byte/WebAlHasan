@@ -1,16 +1,33 @@
 <?php
-include 'koneksi.php';
+use App\Psb\PendaftarSesi;
+use App\Psb\PsbAkses;
 
-if(!isset($_GET['noreg'])){
+require_once __DIR__ . '/koneksi.php';
+
+// Workstream keamanan PSB: kwitansi hanya untuk admin atau pendaftar pemilik
+// yang sedang masuk portal; nomor diikat sebagai parameter dan isi di-escape.
+if(!isset($_GET['noreg']) || !is_string($_GET['noreg'])){
     echo "Nomor Registrasi Tidak Ditemukan!";
     exit;
 }
 
-$noreg = mysqli_real_escape_string($koneksi, $_GET['noreg']);
+$akses = new PsbAkses($koneksi, new PendaftarSesi($koneksi));
+$pendaftarKwitansi = $akses->cari($_GET['noreg']);
+if ($pendaftarKwitansi === null) {
+    PsbAkses::tolak($akses->admin() ? 404 : 403);
+}
+if (!$akses->boleh($pendaftarKwitansi)) {
+    PsbAkses::tolak(403);
+}
+header('Cache-Control: private, no-store');
 
-$query = mysqli_query($koneksi, "SELECT p.*, pb.* FROM psb_pembayaran pb 
+$noreg = (string) $pendaftarKwitansi['no_pendaftaran'];
+$stmtKwitansi = mysqli_prepare($koneksi, "SELECT p.*, pb.* FROM psb_pembayaran pb 
                                  JOIN psb_pendaftar p ON pb.no_pendaftaran = p.no_pendaftaran 
-                                 WHERE pb.no_pendaftaran='$noreg'");
+                                 WHERE pb.no_pendaftaran=?");
+mysqli_stmt_bind_param($stmtKwitansi, 's', $noreg);
+mysqli_stmt_execute($stmtKwitansi);
+$query = mysqli_stmt_get_result($stmtKwitansi);
 
 if(mysqli_num_rows($query) == 0){
     echo "Data Rincian Biaya belum diisi. Silakan isi terlebih dahulu di halaman sebelumnya.";
@@ -32,9 +49,9 @@ if($d['seragam_pramuka'] > 0) $pilihan_arr[] = ['nama' => $no_p++.'. Seragam Pra
 
 $wajib_arr = [];
 $no_w = 1;
-if(!empty($rincian_wajib)){
+if(is_array($rincian_wajib) && $rincian_wajib !== []){
     foreach($rincian_wajib as $item => $harga){
-        $wajib_arr[] = ['nama' => $no_w++.'. '.$item, 'nominal' => $harga];
+        $wajib_arr[] = ['nama' => $no_w++.'. '.ah_e($item), 'nominal' => (int) $harga];
     }
 }
 // Cari jumlah baris terbanyak antara list Kiri dan list Kanan
@@ -44,7 +61,7 @@ $max_rows = max(count($pilihan_arr), count($wajib_arr));
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Kwitansi Biaya Awal PSB - <?php echo $d['nama_lengkap']; ?></title>
+    <title>Kwitansi Biaya Awal PSB - <?php echo ah_e($d['nama_lengkap']); ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* RESET & BASE SETUP */
@@ -160,16 +177,16 @@ $max_rows = max(count($pilihan_arr), count($wajib_arr));
 
     <table class="info-table">
         <tr>
-            <td class="label">No. Pendaftaran</td><td class="separator">:</td><td class="value text-success"><?php echo $d['no_pendaftaran']; ?></td>
-            <td class="label">Kategori Biaya</td><td class="separator">:</td><td class="value"><?php echo $d['kategori_biaya']; ?></td>
+            <td class="label">No. Pendaftaran</td><td class="separator">:</td><td class="value text-success"><?php echo ah_e($d['no_pendaftaran']); ?></td>
+            <td class="label">Kategori Biaya</td><td class="separator">:</td><td class="value"><?php echo ah_e($d['kategori_biaya']); ?></td>
         </tr>
         <tr>
-            <td class="label">Nama Lengkap</td><td class="separator">:</td><td class="value"><?php echo strtoupper($d['nama_lengkap']); ?></td>
-            <td class="label">Unit Sekolah</td><td class="separator">:</td><td class="value"><?php echo $d['jenjang_tujuan']; ?></td>
+            <td class="label">Nama Lengkap</td><td class="separator">:</td><td class="value"><?php echo ah_e(strtoupper((string) $d['nama_lengkap'])); ?></td>
+            <td class="label">Unit Sekolah</td><td class="separator">:</td><td class="value"><?php echo ah_e($d['jenjang_tujuan']); ?></td>
         </tr>
         <tr>
             <td class="label">Jenis Kelamin</td><td class="separator">:</td><td class="value"><?php echo ($d['jenis_kelamin']=='L')?'Laki-laki':'Perempuan'; ?></td>
-            <td class="label">Metode Bayar</td><td class="separator">:</td><td class="value text-primary"><?php echo strtoupper($d['metode_pembayaran']); ?></td>
+            <td class="label">Metode Bayar</td><td class="separator">:</td><td class="value text-primary"><?php echo ah_e(strtoupper((string) $d['metode_pembayaran'])); ?></td>
         </tr>
     </table>
 

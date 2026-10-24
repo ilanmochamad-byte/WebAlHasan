@@ -1,4 +1,16 @@
-<?php include 'header.php'; ?>
+<?php
+require_once __DIR__ . '/koneksi.php';
+
+// Workstream keamanan PSB: sesi dimulai sebelum keluaran (token CSRF formulir)
+// dan pesan hasil tidak lagi menampilkan teks dari alamat apa adanya.
+$statusDaftar = is_string($_GET['status'] ?? null) ? $_GET['status'] : '';
+$noregDaftar = is_string($_GET['noreg'] ?? null) ? $_GET['noreg'] : '';
+$buktiDaftar = $_SESSION['_psb_bukti'] ?? null;
+$bolehCetakDaftar = is_array($buktiDaftar) && hash_equals((string) ($buktiDaftar['no'] ?? ''), $noregDaftar);
+$galatDaftar = $statusDaftar === 'gagal' && is_array($_SESSION['_psb_daftar_galat'] ?? null) ? $_SESSION['_psb_daftar_galat'] : [];
+unset($_SESSION['_psb_daftar_galat']);
+
+include 'header.php'; ?>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
@@ -22,26 +34,32 @@
                 <div class="card-body p-5">
                     
             <?php 
-                if(isset($_GET['status'])) {
-                if($_GET['status'] == 'sukses') {
-                $noreg = $_GET['noreg'];
+                if($statusDaftar == 'sukses' && preg_match('/^PSB-\d{4}-\d{4}$/', $noregDaftar)) {
+                $noreg = ah_e($noregDaftar);
+                $tautanBukti = $bolehCetakDaftar
+                    ? "<a href='cetak_bukti.php?noreg=" . ah_e(rawurlencode($noregDaftar)) . "' target='_blank' class='btn btn-light fw-bold border border-success text-success'>
+                    <i class='fas fa-print'></i> CETAK BUKTI PENDAFTARAN
+                </a>"
+                    : "<a href='login_pendaftar.php' class='btn btn-light fw-bold border border-success text-success'><i class='fas fa-sign-in-alt'></i> MASUK PORTAL PENDAFTAR UNTUK MENCETAK BUKTI</a>";
             echo "<div class='alert alert-success text-center'>
                 <h4 class='alert-heading'><i class='fas fa-check-circle'></i> Pendaftaran Berhasil!</h4>
                 <p>Data Anda telah tersimpan. Nomor Pendaftaran Anda: <strong class='fs-4'>$noreg</strong></p>
                 <hr>
                 <p class='mb-3'>Silakan unduh atau cetak bukti pendaftaran di bawah ini untuk dibawa ke sekretariat.</p>
                 
-                <a href='cetak_bukti.php?noreg=$noreg' target='_blank' class='btn btn-light fw-bold border border-success text-success'>
-                    <i class='fas fa-print'></i> CETAK BUKTI PENDAFTARAN
-                </a>
+                $tautanBukti
               </div>";
-            } else if($_GET['status'] == 'gagal') {
-                echo "<div class='alert alert-danger'><i class='fas fa-exclamation-circle'></i> Pendaftaran Gagal! NISN mungkin sudah terdaftar.</div>";
-            }
+            } else if($statusDaftar == 'gagal') {
+                echo "<div class='alert alert-danger'><i class='fas fa-exclamation-circle'></i> Pendaftaran Gagal! "
+                    . ($galatDaftar === [] ? 'NISN mungkin sudah terdaftar.' : ah_e(implode(' ', array_map('strval', $galatDaftar))))
+                    . "</div>";
+            } else if($statusDaftar == 'token') {
+                echo "<div class='alert alert-warning'><i class='fas fa-exclamation-circle'></i> Halaman formulir sudah kedaluwarsa sehingga data belum tersimpan. Silakan isi dan kirim ulang.</div>";
             }
             ?>
 
                     <form action="proses_psb.php" method="POST">
+                        <?php echo App\Http\Csrf::input(); ?>
                         <h5 class="text-success fw-bold mb-3"><i class="fas fa-user-graduate me-2"></i>Data Calon Santri</h5>
                         <div class="row g-3 mb-4">
                             <div class="col-md-12">

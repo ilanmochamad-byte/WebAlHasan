@@ -114,11 +114,11 @@ Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Code
 
 ## Masih menunggu keputusan
 
-1. Peran untuk tahap perbaikan keamanan PSB (workstream terpisah, syarat Tahap 8).
+1. ~~Peran untuk tahap perbaikan keamanan PSB~~ — **ditetapkan Human Developer 24 Oktober 2026: implementator Claude, auditor Codex** (`docs/keamanan-psb/`). Workstream ini lulus audit Codex setelah koreksi terarah 24 Oktober 2026 (`../keamanan-psb/AUDIT-CODEX.md`); syarat bahan resmi, biaya MI/RA dan instruksi Tahap 8 tetap berlaku.
 2. Pemindahan rincian pembiayaan PSB ke dalam portal pendaftar yang harus masuk (P-7).
 3. Isi resmi halaman Profil, tahun berdiri, nomor WhatsApp/telepon resmi, logo dan foto, serta angka statistik Beranda situs.
 4. Komponen biaya PSB untuk MI dan RA.
-5. Tahap perbaikan keamanan atas temuan yang disampaikan langsung kepada Human Developer (tidak dirinci di repositori publik).
+5. Tahap perbaikan keamanan atas temuan yang disampaikan langsung kepada Human Developer (tidak dirinci di repositori publik). Temuan PSB ditangani workstream keamanan PSB (24 Oktober 2026); temuan di luar PSB tetap menunggu.
 
 ## Keputusan Tahap 7 (23 Oktober 2026, sesudah implementasi)
 
@@ -137,3 +137,7 @@ Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Code
 | AX | Human Developer menyatakan pengisian rapor belum dilakukan dan belum ada data isian nilai atau rapor. **Syarat menunggu rapor Ganjil 2026/2027 terbit untuk merge/deploy Tahap 7 dicabut.** Tahap 7 telah lulus audit Codex pada `a04c6e8`; Human Developer akan melakukan merge branch `claude/redesain-web-tahap-7` ke `main` melalui GitHub, lalu deploy ke website produksi melalui cPanel sebelum pengisian dimulai. |
 
 Status pelaksanaan: **merge terlaksana, deploy belum dikonfirmasi.** PR #73 sudah di-merge ke `main` (`7f7a002`, 23 Oktober 2026 18.05 WIB) dan memuat kode hasil audit `a04c6e8`; catatan keputusan AX (`eab04e8`) masuk ke `main` lewat PR #74 (`5b9e002`). Deploy cPanel belum dikonfirmasi. Keterangan belum adanya data berasal dari Human Developer; auditor tidak memeriksa database produksi atau menyatakan smoke cPanel sudah lulus. Keputusan AX menggantikan penundaan 23 Oktober 2026 dan tidak mengubah cakupan, prasyarat, atau penetapan peran Tahap 8/keamanan PSB.
+
+## Status audit keamanan PSB — 24 Oktober 2026
+
+Implementasi Claude `c6014e1` pada `claude/perbaikan-keamanan-psb` dari `a116e0f` **lulus audit independen Codex setelah dua koreksi terarah layanan biaya**. Bukti dan batas di `../keamanan-psb/AUDIT-CODEX.md`; langkah manual `.htaccess` pada README tetap wajib ketika deploy. Belum merge/deploy atau migrasi produksi. Keputusan AG, AJ, AN, AP dan penundaan pemindahan P-7 tetap; Tahap 8 belum dimulai dan tetap menunggu bahan resmi, biaya MI/RA serta instruksi Human Developer.

@@ -19,9 +19,16 @@ tests/browser/tangkapan-redesain-web-tahap5/
 tests/browser/tangkapan-redesain-web-tahap2/
 tests/browser/tangkapan-redesain-web-tahap6/
 tests/browser/tangkapan-redesain-web-tahap7/
+tests/browser/tangkapan-keamanan-psb/
 
 # Dependensi lokal Playwright untuk uji browser opsional
 tests/browser/node_modules/
 
 # Dependensi PDF/QR dipasang dari composer.lock
 /vendor/
+
+# Berkas pendaftar PSB tidak boleh masuk repositori (workstream keamanan
+# PSB; unggahan baru disimpan di storage/private/psb/). Berkas yang SUDAH
+# terlacak menunggu keputusan Human Developer dan tidak dihapus di sini.
+berkas_psb/*
+!berkas_psb/.htaccess
