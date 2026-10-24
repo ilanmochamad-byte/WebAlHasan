@@ -130,14 +130,21 @@ if ($lap->ringkasanSiap()) {
 echo PHP_EOL . '=== 3. Identitas santri–wali ===' . PHP_EOL;
 if ($manifestPath !== null) {
     $manifest = json_decode((string) file_get_contents($manifestPath), true);
-    if (!is_array($manifest) || !isset($manifest['sidik_jari']) || !is_array($manifest['sidik_jari'])) {
-        echo '[belum diperiksa] Manifest tanpa sidik_jari (bukan dari bin/v5_preflight.php).' . PHP_EOL;
-    } else {
-        $kini = v5_sidik_jari($db);
-        foreach ($manifest['sidik_jari'] as $tabel => $sebelum) {
-            $periksa(($kini[$tabel] ?? null) === $sebelum, "Sidik jari $tabel tetap ({$sebelum['baris']} baris)");
-        }
+    $kini = v5_sidik_jari($db);
+    $sidik = is_array($manifest) && is_array($manifest['sidik_jari'] ?? null) ? $manifest['sidik_jari'] : [];
+    $keys = array_keys($sidik);
+    sort($keys);
+    $periksa($keys === ['santri', 'santri_wali', 'wali'], 'Manifest memuat tepat seluruh sidik jari wajib');
+    foreach ($kini as $tabel => $sekarang) {
+        $periksa(($sidik[$tabel] ?? null) === $sekarang, "Sidik jari $tabel tetap ({$sekarang['baris']} baris)");
     }
+    $tables = array_column($db->query("SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_TYPE = 'BASE TABLE'
+        AND TABLE_NAME NOT LIKE 'kesehatan\\_%' AND TABLE_NAME NOT IN ('schema_migrations', 'audit_logs') ORDER BY TABLE_NAME")->fetch_all(MYSQLI_NUM), 0);
+    $counts = is_array($manifest) && is_array($manifest['legacy_counts'] ?? null) ? $manifest['legacy_counts'] : [];
+    $keys = array_keys($counts);
+    sort($keys);
+    sort($tables);
+    $periksa($keys === $tables, 'Manifest memuat seluruh tabel lama (tanpa daftar kosong/terpotong)');
 } else {
     echo '[belum diperiksa] Sidik jari santri/wali: berikan manifest bin/v5_preflight.php.' . PHP_EOL;
 }

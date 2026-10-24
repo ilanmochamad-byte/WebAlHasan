@@ -1,0 +1,64 @@
+== Statis ==
+statis-alumni_static exit=0 180/0
+statis-get_mutasi_v1_static exit=0 28/0
+statis-keamanan_psb_static exit=1 82/1
+statis-kredensial_static exit=0 105/0
+statis-navigasi_ikon_static exit=0 35/0
+statis-penempatan_static exit=0 138/0
+statis-penugasan_static exit=1 281/2
+statis-perapihan_static exit=0 131/0
+statis-phase1_static exit=0 77/0
+statis-phase2_static exit=0 46/0
+statis-phase3_static exit=0 35/0
+statis-phase4_static exit=0 38/0
+statis-phase5_static exit=0 44/0
+statis-redesain_web_tahap1_static exit=0 69/0
+statis-redesain_web_tahap2_static exit=0 121/0
+statis-redesain_web_tahap3_static exit=1 151/1
+statis-redesain_web_tahap4_static exit=1 95/1
+statis-redesain_web_tahap5_static exit=0 96/0
+statis-redesain_web_tahap6_static exit=0 141/0
+statis-redesain_web_tahap7_static exit=1 100/2
+statis-redesain_web_tahap8_static exit=1 78/2
+statis-v2_phase1_static exit=0 126/0
+statis-v2_phase2_static exit=0 174/0
+statis-v2_phase3_static exit=0 147/0
+statis-v2_phase4_static exit=1 287/1
+statis-v2_phase5_static exit=0 304/0
+statis-v3_phase1_static exit=0 15/0
+statis-v3_phase2_static exit=77 0/0
+statis-v3_phase3_static exit=77 0/0
+statis-v3_phase4_static exit=0 18/0
+statis-v5_phase1_static exit=1 44/4
+statis-v5_phase2_static exit=1 62/1
+statis-v5_phase3_static exit=1 70/1
+statis-v5_phase5_static exit=0 58/0
+== V5 Fase 5 ==
+v5-fase5-integrasi exit=0 95/0
+v5-fase5-http exit=0 57/0
+v5-fase5-rilis exit=0 22/0
+== V5 Fase 1–4 ==
+v5-fase1-integrasi exit=1 71/4
+v5-fase1-http exit=1 79/3
+v5-fase2-integrasi exit=0 134/0
+v5-fase2-http exit=0 87/0
+v5-fase2-audit-probe exit=0 28/0
+v5-fase2-migrasi exit=1 23/6
+v5-fase3-integrasi exit=0 82/0
+v5-fase3-http exit=0 70/0
+v5-fase3-audit-probe exit=0 26/0
+v5-fase3-migrasi exit=0 26/0
+v5-fase4-http exit=0 43/0
+== Fondasi, V2 ==
+penugasan-integrasi exit=0 161/0
+v2-fase4-integrasi exit=0 124/0
+v2-fase5-integrasi exit=0 143/0
+v2-fase5-integrasi-kontrol exit=0 143/0
+== Redesain web (HTTP) ==
+redesain-tahap2-http exit=1 187/4
+redesain-tahap3-http exit=1 166/1
+redesain-tahap5-http exit=0 106/0
+redesain-tahap7-http exit=0 122/0
+redesain-tahap6-rollback exit=0 14/0
+redesain-tahap6-http-tanpa-024-026 exit=0 132/0
+SELESAI

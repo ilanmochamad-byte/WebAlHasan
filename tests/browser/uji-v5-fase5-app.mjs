@@ -87,6 +87,13 @@ try {
     await tombol(p, 'Laporan layanan klinik').click();
     await p.getByText('Laporan layanan klinik', { exact: true }).waitFor();
     await p.getByRole('radio', { name: 'Bulan lalu' }).click();
+    // Total bulan ini dan bulan lalu dapat kebetulan sama. Tunggu periode
+    // respons tampil, bukan angka total lama yang kebetulan cocok.
+    const tanggal = d => new Date(`${d}T12:00:00`).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    await p.waitForFunction(([d, s]) => {
+      const t = document.body.innerText;
+      return t.includes(d) && t.includes(s);
+    }, [tanggal(bulanLalu.dari), tanggal(bulanLalu.sampai)]);
     await p.getByText(`${angka(harap.kunjungan.total)} (${angka(harap.kunjungan.santri)} santri)`).first().waitFor({ timeout: 15000 }).catch(() => {});
     const t = await teks(p);
     const k = harap.kunjungan, r = harap.rujukan, tl = harap.tindak_lanjut;

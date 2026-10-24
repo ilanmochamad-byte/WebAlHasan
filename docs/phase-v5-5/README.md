@@ -1,5 +1,7 @@
 # PRD V5 Fase 5 — Laporan, Regresi, dan Kesiapan Rilis
 
+**Status audit terbaru (24 Oktober 2026): BELUM LULUS seluruh kriteria wajib Fase 5/V5.** Tiga temuan ditutup setelah koreksi dan uji lokal. iOS terbaru, perangkat fisik, Push nyata/cold start non-dev dan cPanel tetap terbuka. Ikon mobile yang diminta Human Developer diganti menjadi tas medis. Lihat [AUDIT-CODEX.md](AUDIT-CODEX.md) untuk hasil auditor, kegagalan izin routine dan batas lengkap. Bukti implementator di bawah dipertahankan sebagai riwayat sebelum audit.
+
 **Status (24 Oktober 2026):** diimplementasikan Claude Code, **menunggu audit independen Codex**. Belum merge, belum deploy, belum migrasi produksi, tidak ada rilis aplikasi. Seluruh bukti di bawah berasal dari salinan DB lokal berfixture sintetis, Chromium, dan Expo **web**. Bukti tidak mencakup hosting cPanel, perangkat fisik, build native baru, maupun Push nyata, sehingga **produksi tidak dinyatakan lulus**.
 
 | Butir | Nilai |

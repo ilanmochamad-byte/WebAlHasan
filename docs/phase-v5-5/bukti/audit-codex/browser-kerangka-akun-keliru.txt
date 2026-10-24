@@ -1,0 +1,46 @@
+[lulus] T1-A sbx_admin: menu sidebar terbaca (23 alamat)
+[lulus] T1-A sbx_admin 375px: 23 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_admin 768px: 23 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_admin 1280px: 23 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_guru_biasa: menu sidebar terbaca (2 alamat)
+[lulus] T1-A sbx_guru_biasa 375px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_guru_biasa 768px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_guru_biasa 1280px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_murobi_a: menu sidebar terbaca (6 alamat)
+[lulus] T1-A sbx_murobi_a 375px: 6 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_murobi_a 768px: 6 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_murobi_a 1280px: 6 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pengurus_a: menu sidebar terbaca (5 alamat)
+[lulus] T1-A sbx_pengurus_a 375px: 5 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pengurus_a 768px: 5 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pengurus_a 1280px: 5 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_ortu_a: menu sidebar terbaca (6 alamat)
+[lulus] T1-A sbx_ortu_a 375px: 6 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_ortu_a 768px: 6 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_ortu_a 1280px: 6 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pengurus_biasa: menu sidebar terbaca (2 alamat)
+[lulus] T1-A sbx_pengurus_biasa 375px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pengurus_biasa 768px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pengurus_biasa 1280px: 2 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pendidikan: menu sidebar terbaca (4 alamat)
+[lulus] T1-A sbx_pendidikan 375px: 4 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pendidikan 768px: 4 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[lulus] T1-A sbx_pendidikan 1280px: 4 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+[gagal] T1-A sbx_bendahara: menu sidebar terbaca (0 alamat)
+[lulus] T1-A sbx_bendahara 375px: 0 halaman Layout tanpa geser horizontal, satu h1, navigasi sesuai ukuran
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL
+Call log:
+[2m  - navigating to "http://127.0.0.1:8998undefined", waiting until "load"[22m
+
+    at /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/browser/uji-redesain-web-tahap1.mjs:142:18 {
+  log: [
+    '  - navigating to "http://127.0.0.1:8998undefined", waiting until "load"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.7.0

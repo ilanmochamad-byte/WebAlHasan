@@ -1,0 +1,9 @@
+[lulus] Preflight menghasilkan manifest sumber
+[lulus] Backup runbook mariadb-dump --single-transaction --routines --triggers berhasil
+[gagal] Restore klien mariadb berhasil; hash backup tetap
+[lulus] Isi seluruh tabel V1–V5 pulihan = sumber dan sumber tidak berubah
+[lulus] Trigger sintetis ikut pulih
+[gagal] Routine sintetis ikut pulih
+[lulus] Verifier + manifest sumber lulus pada pulihan perintah runbook
+[lulus] Rollback DB pulihan berisi ditolak; isi seluruh tabel tetap
+Ringkasan: 6 lulus, 2 gagal

@@ -48,6 +48,11 @@ final class LaporanService
      */
     public function laporan(array $user, array $input): array
     {
+        return $this->repo->snapshot(fn (): array => $this->susun($user, $input));
+    }
+
+    private function susun(array $user, array $input): array
+    {
         $akses = $this->kesehatan->akses($user);
         if (!$akses['baca']) {
             throw new KesehatanException('Laporan kesehatan hanya untuk petugas kesehatan berpenugasan aktif, admin, serta pembimbing/murobi santri terkait.', 403);

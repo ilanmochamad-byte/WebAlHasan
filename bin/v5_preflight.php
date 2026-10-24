@@ -86,8 +86,27 @@ $periksa($sesudah === 0, 'Tidak ada migrasi sesudah 026 yang tercatat (rilis ini
 
 if ($rilis !== null) {
     $m = json_decode((string) @file_get_contents($rilis), true);
-    $periksa(is_array($m) && isset($m['migrations']) && is_array($m['migrations']), 'Manifest rilis terbaca: ' . $rilis);
-    foreach (is_array($m) ? array_merge($m['migrations'] ?? [], $m['rollbacks'] ?? []) : [] as $berkas) {
+    $valid = is_array($m) && isset($m['migrations'], $m['rollbacks']) && is_array($m['migrations']) && is_array($m['rollbacks']);
+    $periksa($valid, 'Manifest rilis terbaca: ' . $rilis);
+    // Hash yang cocok tidak membuktikan kelengkapan: daftar kosong/terpotong
+    // harus ditolak sebelum satu pun hasil dapat disebut terverifikasi.
+    $wajib = [
+        'migrations' => array_map(static fn (string $f): string => 'database/migrations/' . basename($f), glob(APP_ROOT . '/database/migrations/*.sql') ?: []),
+        'rollbacks' => array_map(static fn (string $f): string => 'database/rollbacks/' . $f, $v5),
+    ];
+    foreach ($wajib as $jenis => $files) {
+        $entries = $valid ? $m[$jenis] : [];
+        $paths = array_map(static fn (mixed $entry): mixed => is_array($entry) ? ($entry['file'] ?? null) : null, $entries);
+        sort($files);
+        sort($paths);
+        $periksa($paths === $files, 'Daftar lengkap dan unik manifest rilis: ' . $jenis);
+    }
+    foreach ($valid ? array_merge($m['migrations'] ?? [], $m['rollbacks'] ?? []) : [] as $berkas) {
+        if (!is_array($berkas) || !is_string($berkas['file'] ?? null) || !in_array($berkas['file'], array_merge(...array_values($wajib)), true)
+            || !is_string($berkas['sha256'] ?? null)) {
+            $periksa(false, 'Entri manifest rilis tidak valid');
+            continue;
+        }
         $jalur = APP_ROOT . '/' . (string) ($berkas['file'] ?? '');
         $periksa(is_file($jalur) && hash_equals((string) ($berkas['sha256'] ?? ''), (string) hash_file('sha256', $jalur)), 'SHA-256 sesuai manifest rilis: ' . ($berkas['file'] ?? '?'));
     }

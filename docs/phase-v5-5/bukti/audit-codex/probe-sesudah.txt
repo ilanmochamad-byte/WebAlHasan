@@ -1,0 +1,10 @@
+[lulus] Commit kunjungan di tengah laporan: angka kunjungan dan obat memakai snapshot yang sama
+[lulus] Commit di tengah laporan: jumlah per bulan/per kelas tetap sama dengan total
+[lulus] Permintaan laporan berikutnya melihat commit baru
+[lulus] Preflight menolak manifest rilis tanpa daftar migrasi/rollback
+[lulus] Preflight menolak manifest dengan satu rollback hilang
+[lulus] Preflight menghasilkan manifest privat lengkap
+[lulus] Verifier menolak manifest privat yang kehilangan seluruh sidik jari
+[lulus] Verifier menolak manifest privat yang kehilangan sidik jari relasi santri–wali
+[gagal] Verifier menerima manifest privat lengkap pada data utuh
+Ringkasan: 8 lulus, 1 gagal

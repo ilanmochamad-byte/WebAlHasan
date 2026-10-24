@@ -1,0 +1,16 @@
+[lulus] sbx_admin: angka kunjungan/obat native = API September
+[lulus] sbx_admin: pengawasan sesuai hak, tanpa isi klinis
+[lulus] sbx_admin: FLAG_SECURE aktif pada laporan
+[lulus] sbx_v5_petugas_f: angka kunjungan/obat native = API September
+[lulus] sbx_v5_petugas_f: pengawasan sesuai hak, tanpa isi klinis
+[lulus] sbx_v5_petugas_f: FLAG_SECURE aktif pada laporan
+[lulus] sbx_v5_pembimbing: angka kunjungan/obat native = API September
+[lulus] sbx_v5_pembimbing: pengawasan sesuai hak, tanpa isi klinis
+[lulus] sbx_v5_pembimbing: FLAG_SECURE aktif pada laporan
+[lulus] Pembimbing dicabut: laporan hilang setelah aktif kembali
+[lulus] sbx_v5_murobi: angka kunjungan/obat native = API September
+[lulus] sbx_v5_murobi: pengawasan sesuai hak, tanpa isi klinis
+[lulus] sbx_v5_murobi: FLAG_SECURE aktif pada laporan
+[lulus] sbx_v5_wali_1: URI laporan ditolak tanpa data
+[lulus] sbx_pengurus_biasa: URI laporan ditolak tanpa data
+Hasil: 15 lulus, 0 gagal

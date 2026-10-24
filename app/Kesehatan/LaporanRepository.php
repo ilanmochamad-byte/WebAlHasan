@@ -7,6 +7,7 @@ namespace App\Kesehatan;
 use App\Database\Schema;
 use mysqli;
 use mysqli_stmt;
+use Throwable;
 
 /**
  * Agregat laporan layanan klinik (PRD V5 Fase 5). Hanya SELECT, parameter
@@ -28,6 +29,27 @@ final class LaporanRepository
 
     public function __construct(private mysqli $db)
     {
+    }
+
+    /** Semua bagian satu laporan membaca keadaan commit yang sama. */
+    public function snapshot(callable $work): array
+    {
+        // Jangan bergantung pada isolation level bawaan hosting (READ COMMITTED
+        // akan memberi snapshot berbeda untuk setiap SELECT).
+        $this->db->query('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ');
+        if (!$this->db->begin_transaction(MYSQLI_TRANS_START_READ_ONLY | MYSQLI_TRANS_START_WITH_CONSISTENT_SNAPSHOT)) {
+            throw new KesehatanException('Laporan kesehatan tidak tersedia.', 503);
+        }
+        try {
+            $result = $work();
+            if (!$this->db->commit()) {
+                throw new KesehatanException('Laporan kesehatan tidak dapat disusun.', 503);
+            }
+            return $result;
+        } catch (Throwable $exception) {
+            $this->db->rollback();
+            throw $exception;
+        }
     }
 
     /** Tabel ringkasan wali (migrasi 026) terpasang. */
