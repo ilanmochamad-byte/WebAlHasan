@@ -4,7 +4,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from adbui import *
 WEB=os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
 PKG='com.ilanmochamad.alhasanApps'
-def sql(q): return subprocess.run(['php', WEB+'/tests/v5_phase4_sql.php', q], capture_output=True, text=True, env={'DB_NAME':'test_v5_f4_app_test','PATH':'/opt/homebrew/bin:/usr/bin:/bin'}).stdout.strip()
+DB=os.environ.get('DB_NAME', 'test_v5_f4_app_test')
+if not re.fullmatch(r'test_.*_test', DB): raise RuntimeError('Hanya DB test_*_test')
+def sql(q): return subprocess.run(['php', WEB+'/tests/v5_phase4_sql.php', q], check=True, capture_output=True, text=True, env={**os.environ, 'DB_NAME':DB}).stdout.strip()
 T = sys.argv[1]
 OUT = os.environ.get('OUT_DIR', '/tmp/v5f4-android')
 kid, rid = open(f'{OUT}/ids.txt').read().split()

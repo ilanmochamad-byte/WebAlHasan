@@ -1,0 +1,6 @@
+iOS Simulator iPhone 17 Pro iOS 26.2, Xcode 27.1 (27A9275), Swift 6.4.
+1. Default precompiled pods: BUILD FAILED; ExpoModulesCore built with Swift 6.3.1 incompatible with compiler 6.4.
+2. EXPO_USE_PRECOMPILED_MODULES=0 pod install; source build: BUILD FAILED; ExpoModulesJSI swiftinterface cannot find type __ObjC::expo.
+3. JSI --clean framework rebuild: succeeded in 14s; source build reaches app linker, BUILD FAILED: missing facebook::react typeinfo/vtable (Props, YogaStylableProps, BaseViewProps, DebugStringConvertible).
+No new iOS binary installed. Old dev client loads login via Metro; Maestro attempts fail before health runtime verification (keyboard/login navigation). Native health runtime with latest source/dependency is NOT PASSED.
+Full diagnostic logs kept locally under /tmp/audit-v5-f4-codex/ios-*.txt; no version upgrade or tracked native config workaround committed.

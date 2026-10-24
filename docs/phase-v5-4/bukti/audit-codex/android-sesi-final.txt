@@ -1,0 +1,14 @@
+[lulus] Petugas masih pada layar ringkasan sebelum uji sesi
+[lulus] Token kedaluwarsa → kembali ke depan menampilkan layar masuk tanpa isi kesehatan
+[lulus] Tautan ringkasan tanpa sesi → tetap layar masuk, tanpa isi
+[lulus] Sesudah masuk sebagai wali berhak, ringkasan dari tautan terbuka (server memeriksa relasi)
+[lulus] Layar wali tanpa keluhan/catatan klinis/obat
+[lulus] Tautan dari latar tidak menumpuk dua layar ringkasan yang sama (Kembali keluar dari ringkasan)
+[lulus] Tautan saat aplikasi di depan membuka ringkasan
+[lulus] Relasi dicabut → ringkasan ditolak sesudah kembali dari latar, isi lama hilang
+[lulus] Wali lain membawa tautan yang sama → ditolak tanpa isi
+[lulus] Data aplikasi di perangkat (88 berkas) tanpa isi kesehatan/nama santri: []
+[lulus] Baris log JS aplikasi (ReactNativeJS): 36
+[lulus] logcat (106546 baris) tanpa isi kesehatan, nama santri, kata sandi
+[lulus] logcat tanpa token bearer/token push
+GAGAL 0

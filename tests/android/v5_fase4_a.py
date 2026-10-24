@@ -3,7 +3,9 @@ import os, subprocess, time, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from adbui import *
 WEB=os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
-def sql(q): return subprocess.run(['php', WEB+'/tests/v5_phase4_sql.php', q], capture_output=True, text=True, env={'DB_NAME':'test_v5_f4_app_test','PATH':'/opt/homebrew/bin:/usr/bin:/bin'}).stdout.strip()
+DB=os.environ.get('DB_NAME', 'test_v5_f4_app_test')
+if not re.fullmatch(r'test_.*_test', DB): raise RuntimeError('Hanya DB test_*_test')
+def sql(q): return subprocess.run(['php', WEB+'/tests/v5_phase4_sql.php', q], check=True, capture_output=True, text=True, env={**os.environ, 'DB_NAME':DB}).stdout.strip()
 T = sys.argv[1]
 OUT = os.environ.get('OUT_DIR', '/tmp/v5f4-android')
 os.makedirs(OUT, exist_ok=True)
@@ -11,7 +13,11 @@ def masuk(u):
     isi('Masukkan username', u); isi('Masukkan password', 'Sandbox#123'); tap('Masuk', exact=True); time.sleep(4)
 hasil=[]
 def ok(v,l): print(('[lulus] ' if v else '[gagal] ')+l, flush=True); hasil.append(v)
-if find('Masukkan username')[0]: masuk('sbx_v5_petugas_f')
+for _ in range(20):
+    if find('Masukkan username')[0]:
+        masuk('sbx_v5_petugas_f'); break
+    if find('Kesehatan', exact=True)[0]: break
+    time.sleep(1)
 tap('Kesehatan', exact=True)
 tap('Catat kunjungan', exact=True)
 isi('Cari nama atau NIS santri aktif', 'V5S0201')

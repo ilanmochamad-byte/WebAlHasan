@@ -10,6 +10,10 @@
 | Migrasi | Tidak ada. API hanya bertambah rute; satu kunci aditif pada baris pemilih santri |
 | Lingkungan uji | PHP 8.4.14, MariaDB 12.3.2 lokal, Node v26.7.0, Chromium Playwright, Expo SDK 57 (web dev server), Android Emulator `Medium_Phone` (Android 16, `sdk_gphone16k_arm64`), iOS Simulator iPhone 17 Pro (iOS 26.2). Seluruh DB `test_*_test` dengan fixture sintetis. **Tidak ada perangkat fisik dan tidak ada Push nyata.** |
 
+## Hasil audit independen Codex (24 Oktober 2026)
+
+**BELUM LULUS seluruh kriteria Fase 4.** Auditor mengoreksi versi/revisi asal draf yang sebelumnya diganti otomatis saat kembali dari latar (dapat menimpa perubahan petugas lain), serta menambah perlindungan native khusus navigator kesehatan untuk menutup cuplikan pengalih aplikasi Android. Eksekusi auditor dan hasil implementator di bawah dibedakan. Build Android baru diuji; build/runtime iOS terbaru, ketukan Push provider dan cold start non-dev belum terbukti. Bukti, kontrol sebelum/sesudah, hitungan, penafsiran dan handoff ada di [AUDIT-CODEX.md](AUDIT-CODEX.md). Fase 5 tidak diizinkan.
+
 ## Baseline mobile (diverifikasi sebelum perubahan)
 
 - `origin/main` mobile `7ac224e` = merge PR #13 yang memuat implementasi V4 Fase 5 (`c969374`, `dc943ed`) **tetapi tidak memuat commit audit V4 `ee6621a`** (koreksi deep-link ganda + tipe `Snapshot.rata_rata`), yang di-push ke `origin/codex/prd-v4-fase-5` 45 menit sesudah merge.
