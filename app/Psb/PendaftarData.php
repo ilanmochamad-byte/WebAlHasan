@@ -85,6 +85,17 @@ final class PendaftarData
     }
 
     /**
+     * Periksa kiriman pendaftaran baru tanpa menyimpan (redesain Tahap 8:
+     * agar galat persetujuan privasi tampil bersama galat isian lain).
+     *
+     * @param array<string, mixed> $post
+     */
+    public function periksaPendaftaran(array $post): void
+    {
+        $this->periksa($post, true);
+    }
+
+    /**
      * Ubah biodata milik pendaftar yang sedang masuk.
      *
      * @param array<string, mixed> $post
@@ -92,7 +103,7 @@ final class PendaftarData
      */
     public function ubah(int $id, array $post): array
     {
-        $data = $this->periksa($post, false);
+        $data = $this->periksa($post, false, $this->jenjangTersimpan($id));
         $set = 'nama_lengkap = ?, nik = ?, tempat_lahir = ?, tgl_lahir = ?, jenis_kelamin = ?, jenjang_tujuan = ?, alamat_jalan = ?, nama_ayah = ?, nama_ibu = ?, no_hp_wali = ?, sekolah_asal = ?';
         $nilai = [$data['nama_lengkap'], $data['nik'], $data['tempat_lahir'], $data['tgl_lahir'], $data['jenis_kelamin'], $data['jenjang_tujuan'],
             $data['alamat_jalan'], $data['nama_ayah'], $data['nama_ibu'], $data['no_hp_wali'], $data['sekolah_asal']];
@@ -128,7 +139,7 @@ final class PendaftarData
      * @param array<string, mixed> $post
      * @return array<string, string>
      */
-    private function periksa(array $post, bool $baru): array
+    private function periksa(array $post, bool $baru, ?string $jenjangLama = null): array
     {
         $teks = static fn (mixed $v): string => is_scalar($v) ? trim((string) $v) : '';
         $data = [];
@@ -159,8 +170,10 @@ final class PendaftarData
         if (!isset($galat['jenis_kelamin']) && !in_array($data['jenis_kelamin'], ['L', 'P'], true)) {
             $galat['jenis_kelamin'] = 'Jenis kelamin tidak dikenal.';
         }
-        if (!isset($galat['jenjang_tujuan']) && !in_array($data['jenjang_tujuan'], PsbAdmin::UNIT, true)) {
-            $galat['jenjang_tujuan'] = 'Jenjang tujuan tidak dikenal.';
+        // Redesain Tahap 8: RA dan MI belum dibuka untuk pendaftaran baru atau
+        // perpindahan jenjang; jenjang tersimpan tetap boleh dipertahankan.
+        if (!isset($galat['jenjang_tujuan']) && ($pesan = Jenjang::galat($data['jenjang_tujuan'], $baru ? null : $jenjangLama)) !== null) {
+            $galat['jenjang_tujuan'] = $pesan;
         }
         if (!isset($galat['tgl_lahir']) && (!PsbAdmin::tanggal($data['tgl_lahir']) || $data['tgl_lahir'] > date('Y-m-d'))) {
             $galat['tgl_lahir'] = 'Tanggal lahir tidak valid.';
@@ -173,6 +186,17 @@ final class PendaftarData
         }
 
         return $data;
+    }
+
+    private function jenjangTersimpan(int $id): ?string
+    {
+        $stmt = $this->db->prepare('SELECT jenjang_tujuan FROM psb_pendaftar WHERE id = ?');
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        return is_array($row) ? (string) $row['jenjang_tujuan'] : null;
     }
 
     private function nisnTerpakai(string $nisn): bool

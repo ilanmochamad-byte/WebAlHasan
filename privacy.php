@@ -4,7 +4,7 @@
 // App Store Connect. Diakses melalui https://alhasan.co.id/privacy
 // (lihat aturan rewrite pada .htaccess) maupun /privacy.php secara langsung.
 
-$page_title = 'Kebijakan Privasi — Pondok Pesantren Al Hasan Ciamis';
+$situs = ['judul' => 'Kebijakan privasi', 'deskripsi' => 'Kebijakan privasi aplikasi alhasanApps dan situs alhasan.co.id.'];
 $tanggal_berlaku_id = '1 September 2026';
 $tanggal_berlaku_en = '1 September 2026';
 $kontak_email = 'alhasanpesantren@gmail.com';
@@ -14,19 +14,25 @@ include 'header.php';
 ?>
 
 <style>
-.privacy-wrap { max-width: 900px; }
-.privacy-wrap h1 { font-weight: 700; }
-.privacy-wrap h2 { font-size: 1.35rem; font-weight: 600; margin-top: 2.25rem; scroll-margin-top: 90px; }
-.privacy-wrap h3 { font-size: 1.05rem; font-weight: 600; margin-top: 1.5rem; }
+/* Redesain Tahap 8 (U-9): warna dari token bersama; daftar isi menempel di kiri pada desktop. */
+.privacy-wrap h1 { font-weight: 800; }
+.privacy-wrap h2 { font-size: 1.35rem; font-weight: 700; margin-top: 2.25rem; scroll-margin-top: 90px; }
+.privacy-wrap h3 { font-size: 1.05rem; font-weight: 700; margin-top: 1.5rem; }
 .privacy-wrap p, .privacy-wrap li { line-height: 1.75; }
 .privacy-wrap table { font-size: .94rem; }
-.privacy-meta { font-size: .95rem; color: #6c757d; }
-.privacy-callout { background: #f4f9f5; border-left: 4px solid #1B7A43; border-radius: .5rem; padding: 1.1rem 1.25rem; }
+.privacy-meta { font-size: .95rem; color: var(--ah-ink-muted); }
+.privacy-callout { background: var(--ah-green-050); border-left: 4px solid var(--ah-green-700); border-radius: .5rem; padding: 1.1rem 1.25rem; }
+.privacy-toc { background: var(--ah-surface); border: 1px solid var(--ah-line); border-radius: var(--ah-radius); padding: 1rem 1.1rem; }
 .privacy-toc a { text-decoration: none; }
-.lang-switch .btn { border-radius: 2rem; }
+.lang-switch .btn { border-radius: 2rem; min-height: var(--ah-touch); }
+@media (min-width: 992px) {
+  .privacy-wrap section[lang] { display: grid; grid-template-columns: 250px minmax(0, 1fr); column-gap: 2.5rem; align-items: start; }
+  .privacy-wrap section[lang] > * { grid-column: 2; }
+  .privacy-wrap section[lang] > .privacy-toc { grid-column: 1; grid-row: 1 / span 200; position: sticky; top: calc(var(--s-top-h) + 1rem); max-height: calc(100vh - var(--s-top-h) - 2rem); overflow-y: auto; }
+}
 </style>
 
-<main class="container privacy-wrap my-5 pt-4">
+<div class="s-wrap privacy-wrap py-4">
 
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
     <div class="lang-switch btn-group" role="group" aria-label="Pilih bahasa">
@@ -479,7 +485,7 @@ include 'header.php';
     </p>
   </section>
 
-</main>
+</div>
 
 <script>
 (function () {

@@ -1,0 +1,55 @@
+# Regresi redesain website Tahap 8 (24 Oktober 2026)
+
+## Uji keamanan PSB (DB test_redesain_t8_test, Apache + php-fpm)
+[gagal] S4 pratinjau (AG) tetap belum dipasang
+Hasil: 82 lulus, 1 gagal
+[lulus] I2a tanpa persetujuan Kebijakan Privasi ditolak tanpa menyimpan (Tahap 8, AO)
+Hasil: 97 lulus, 0 gagal
+Hasil: 42 lulus, 0 gagal
+
+## Statis lama (tests/*_static.php)
+exit 0  alumni_static.php  
+exit 0  get_mutasi_v1_static.php  
+exit 1  keamanan_psb_static.php  [gagal] S4 pratinjau (AG) tetap belum dipasang 
+exit 0  kredensial_static.php  
+exit 0  penempatan_static.php  
+exit 0  penugasan_static.php  
+exit 0  perapihan_static.php  
+exit 0  phase1_static.php  
+exit 0  phase2_static.php  
+exit 0  phase3_static.php  
+exit 0  phase4_static.php  
+exit 0  phase5_static.php  
+exit 0  redesain_web_tahap1_static.php  
+exit 0  redesain_web_tahap2_static.php  
+exit 1  redesain_web_tahap3_static.php  [gagal] S3-9 AG panel pendaftar tanpa pratinjau gambar berkas 
+exit 1  redesain_web_tahap4_static.php  [gagal] Tanpa perubahan skema/migrasi (database/ tidak berubah sejak Tahap 3) 
+exit 0  redesain_web_tahap5_static.php  
+exit 0  redesain_web_tahap6_static.php  
+exit 0  redesain_web_tahap7_static.php  
+exit 0  redesain_web_tahap8_static.php  
+exit 0  v2_phase1_static.php  
+exit 0  v2_phase2_static.php  
+exit 0  v2_phase3_static.php  
+exit 0  v2_phase4_static.php  
+exit 0  v2_phase5_static.php  
+exit 0  v3_phase1_static.php  
+exit 1  v3_phase2_static.php  [gagal] Menu web membedakan V3 dan data warisan  (dijalankan dengan V3_RUN_TESTS=1 DB_NAME=webalhasan_v3_phase1_test; baseline lama)
+exit 1  v3_phase3_static.php  [gagal] Navigasi konseling mengikuti capability V3  (idem; baseline lama)
+exit 0  v3_phase4_static.php  
+
+## HTTP Tahap 3 (php -S bawaan suite, DB test_t8_regresi_t3_test)
+[gagal] AG panel berkas tanpa pratinjau gambar
+Ringkasan: 166 lulus, 1 gagal
+
+## Browser Tahap 3 (php -S, DB test_t8_regresi_t3_test)
+Ringkasan: 76 lulus, 0 gagal
+
+## GET-mutasi V1 dan cleanup (Apache + php-fpm, DB test_t8_gm_test, IZIN_LEGACY_ENABLED=true)
+Ringkasan: 91 lulus, 0 gagal
+Independent Codex audit: 84 passed, 0 failed.
+Hasil cleanup HTTP/preservasi: 157 lulus, 0 gagal.
+Hasil audit Claude cleanup: 128 lulus, 0 gagal.
+
+## Log galat PHP server uji
+kosong

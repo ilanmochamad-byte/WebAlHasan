@@ -115,9 +115,9 @@ Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Code
 ## Masih menunggu keputusan
 
 1. ~~Peran untuk tahap perbaikan keamanan PSB~~ — **ditetapkan Human Developer 24 Oktober 2026: implementator Claude, auditor Codex** (`docs/keamanan-psb/`). Workstream ini lulus audit Codex setelah koreksi terarah 24 Oktober 2026 (`../keamanan-psb/AUDIT-CODEX.md`); syarat bahan resmi, biaya MI/RA dan instruksi Tahap 8 tetap berlaku.
-2. Pemindahan rincian pembiayaan PSB ke dalam portal pendaftar yang harus masuk (P-7).
-3. Isi resmi halaman Profil, tahun berdiri, nomor WhatsApp/telepon resmi, logo dan foto, serta angka statistik Beranda situs.
-4. Komponen biaya PSB untuk MI dan RA.
+2. ~~Pemindahan rincian pembiayaan PSB ke dalam portal pendaftar yang harus masuk (P-7).~~ — diputuskan 24 Oktober 2026 (BA).
+3. ~~Isi resmi halaman Profil, tahun berdiri, nomor WhatsApp/telepon resmi, logo dan foto, serta angka statistik Beranda situs.~~ — diputuskan dikosongkan dan diisi manual (AY); isinya sendiri tetap menunggu pesantren.
+4. Komponen biaya PSB untuk MI dan RA — belum ditetapkan; sampai ditetapkan MI/RA belum dibuka (AZ).
 5. Tahap perbaikan keamanan atas temuan yang disampaikan langsung kepada Human Developer (tidak dirinci di repositori publik). Temuan PSB ditangani workstream keamanan PSB (24 Oktober 2026); temuan di luar PSB tetap menunggu.
 
 ## Keputusan Tahap 7 (23 Oktober 2026, sesudah implementasi)
@@ -141,3 +141,16 @@ Status pelaksanaan: **merge terlaksana, deploy belum dikonfirmasi.** PR #73 suda
 ## Status audit keamanan PSB — 24 Oktober 2026
 
 Implementasi Claude `c6014e1` pada `claude/perbaikan-keamanan-psb` dari `a116e0f` **lulus audit independen Codex setelah dua koreksi terarah layanan biaya**. Bukti dan batas di `../keamanan-psb/AUDIT-CODEX.md`; langkah manual `.htaccess` pada README tetap wajib ketika deploy. Belum merge/deploy atau migrasi produksi. Keputusan AG, AJ, AN, AP dan penundaan pemindahan P-7 tetap; Tahap 8 belum dimulai dan tetap menunggu bahan resmi, biaya MI/RA serta instruksi Human Developer.
+
+
+## Keputusan Tahap 8 (24 Oktober 2026, sebelum implementasi)
+
+Prompt instruksi Tahap 8 memuat tiga butir pilihan (a)/(b) yang artinya tidak tercatat di repositori; Claude menanyakan ulang dan Human Developer menjawab:
+
+| # | Keputusan |
+|---|---|
+| AY | Bahan resmi situs **dikosongkan dan diisi manual** oleh Human Developer. Semua isi resmi dibaca dari `app/Situs/isi-situs.php`; isian kosong tidak ditampilkan, tanpa teks/nomor/foto contoh. |
+| AZ | **MI dan RA belum dibuka**: tampil di pengelompokan jenjang "Unit Al Hasan" tetapi belum dapat dipilih sampai biayanya ditetapkan; ditegakkan server. |
+| BA | **Pembiayaan PSB tetap di `biaya_psb.php`** (sudah dilindungi perbaikan keamanan PSB), tampilannya didesain ulang, dan dibuka dari menu "Pembiayaan" Portal Pendaftar. Alasan Human Developer: tidak mengulang pekerjaan keamanan yang sudah lulus audit. |
+
+Implementasi dan bukti: `tahap-8/README.md`.

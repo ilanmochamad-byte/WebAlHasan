@@ -8,6 +8,9 @@
 // masuk Portal Pendaftar (NISN + No. HP), unggah KTP, membuka berkas sendiri
 // lewat jalur berpenjaga; simpan rincian biaya ke kwitansi; keluar lewat POST;
 // admin membuka berkas pendaftar dari panel. Halaman tidak bergeser horizontal.
+// Redesain Tahap 8: hanya pencari elemen yang disesuaikan dengan tampilan baru
+// (formulir 4 langkah, unggah per dokumen, kwitansi di tab yang sama, dialog
+// keluar); jumlah dan isi pemeriksaan tetap.
 // Permintaan ke luar 127.0.0.1 diblokir; Bootstrap dari node_modules dan API
 // wilayah dari fixture kecil; flatpickr/AOS diganti stub kosong. Data sintetis (NISN acak 98xxxxxxxx).
 import { chromium } from 'playwright';
@@ -75,8 +78,10 @@ try {
     await page.fill('input[name=nik]', '320700000000' + String(width).padStart(4, '0'));
     await page.fill('input[name=tempat_lahir]', 'Ciamis');
     await page.fill('#inputTanggal', '2013-02-03');
-    await page.selectOption('select[name=jenis_kelamin]', 'L');
+    await page.check('input[name=jenis_kelamin][value=L]');
     await page.selectOption('select[name=jenjang_tujuan]', 'SMP Terpadu Al Hasan');
+    await page.fill('input[name=sekolah_asal]', 'SD Uji');
+    await page.getByRole('button', { name: 'Lanjut ke Alamat' }).click();
     await page.waitForSelector('#provinsi option[value="32"]', { state: 'attached' });
     await page.selectOption('#provinsi', '32');
     await page.waitForSelector('#kabupaten option[value="3207"]', { state: 'attached' });
@@ -86,16 +91,19 @@ try {
     await page.waitForSelector('#desa option[value="3207010001"]', { state: 'attached' });
     await page.selectOption('#desa', '3207010001');
     await page.fill('textarea[name=alamat_jalan]', 'Jl. Uji Browser');
-    await page.fill('input[name=sekolah_asal]', 'SD Uji');
+    await page.getByRole('button', { name: 'Lanjut ke Orang tua' }).click();
     await page.fill('input[name=nama_ayah]', 'Ayah Browser');
     await page.fill('input[name=nama_ibu]', 'Ibu Browser');
     await page.fill('input[name=no_hp_wali]', hp);
+    await page.fill('input[name=no_hp_wali_ulang]', hp);
+    await page.getByRole('button', { name: 'Lanjut ke Periksa & kirim' }).click();
+    await page.check('input[name=setuju_privasi]');
     cek(await page.locator('form[action="proses_psb.php"] input[name=_csrf]').count() === 1 && await tanpaGeser(page), width + ': formulir PSB ber-CSRF tanpa geser horizontal');
     await Promise.all([page.waitForURL(/status=sukses/), page.click('button[name=daftar]')]);
     const noreg = new URL(page.url()).searchParams.get('noreg');
-    cek(/^PSB-\d{4}-\d{4}$/.test(noreg ?? '') && await page.getByText('Pendaftaran Berhasil!').isVisible(), width + ': pendaftaran tersimpan ' + noreg);
+    cek(/^PSB-\d{4}-\d{4}$/.test(noreg ?? '') && await page.getByRole('heading', { name: 'Pendaftaran berhasil' }).isVisible(), width + ': pendaftaran tersimpan ' + noreg);
     await page.screenshot({ path: new URL(`daftar-sukses-${width}.png`, shots).pathname, fullPage: false });
-    const [bukti] = await Promise.all([ctx.waitForEvent('page'), page.getByRole('link', { name: /CETAK BUKTI PENDAFTARAN/ }).click()]);
+    const [bukti] = await Promise.all([ctx.waitForEvent('page'), page.getByRole('link', { name: /Cetak bukti pendaftaran/ }).click()]);
     await bukti.waitForLoadState();
     cek((await bukti.content()).includes(nisn), width + ': peramban pendaftar mencetak buktinya');
     await bukti.close();
@@ -104,14 +112,14 @@ try {
     await page.goto(base + '/login_pendaftar.php');
     await page.fill('input[name=nisn]', nisn);
     await page.fill('input[name=hp]', hp);
-    await Promise.all([page.waitForURL(/portal_pendaftar\.php/), page.getByRole('button', { name: 'MASUK KE PORTAL' }).click()]);
+    await Promise.all([page.waitForURL(/portal_pendaftar\.php/), page.getByRole('button', { name: 'Masuk', exact: true }).click()]);
     cek(await page.getByText('Pendaftar Browser ' + width).first().isVisible() && await tanpaGeser(page), width + ': masuk portal tanpa geser horizontal');
     await page.screenshot({ path: new URL(`portal-${width}.png`, shots).pathname, fullPage: false });
-    await page.click('#berkas-tab');
+    await page.locator(`[data-s-bagian="berkas"]:visible`).first().click();
     await page.setInputFiles('input[name=file_ktp]', { name: 'ktp.png', mimeType: 'image/png', buffer: png });
-    await Promise.all([page.waitForURL(/portal_pendaftar\.php/), page.getByRole('button', { name: /UNGGAH & SIMPAN BERKAS/ }).click()]);
+    await Promise.all([page.waitForURL(/portal_pendaftar\.php/), page.locator('#berkas-file_ktp button[type=submit]').click()]);
     await page.waitForLoadState('load');
-    cek(pesan.some(m => m.includes('Berkas berhasil diperbarui: KTP orang tua')), width + ': unggah KTP berhasil dengan pesan');
+    cek((await page.locator('#berkas').innerText()).includes('Berkas berhasil diperbarui: KTP orang tua') && pesan.length === 0, width + ': unggah KTP berhasil dengan pesan');
     const berkas = await ctx.request.get(base + '/lihat_berkas_psb.php?jenis=file_ktp');
     cek(berkas.status() === 200 && berkas.headers()['content-type'] === 'image/png' && (await berkas.body()).subarray(0, 4).equals(png.subarray(0, 4)), width + ': berkas sendiri terbuka lewat jalur berpenjaga');
     await page.goto(base + '/lihat_berkas_psb.php?jenis=file_ktp');
@@ -119,20 +127,19 @@ try {
 
     // Biaya
     await page.goto(base + '/portal_pendaftar.php');
-    await page.getByRole('link', { name: /Rincian & Pembayaran/ }).click();
+    await page.getByRole('link', { name: /Rincian & pembayaran/ }).click();
     await page.waitForURL(/biaya_psb\.php/);
-    cek(await page.getByText('Konfirmasi & Atur Pembiayaan').isVisible() && await tanpaGeser(page), width + ': rincian biaya milik sendiri tanpa geser horizontal');
+    cek(await page.getByRole('heading', { name: 'Pembiayaan daftar ulang' }).isVisible() && await tanpaGeser(page), width + ': rincian biaya milik sendiri tanpa geser horizontal');
     await page.uncheck('input[name="wajib[]"][value="Lemari"]');
     const harapan = (await page.locator('#txtTotalBayar').innerText()).trim();
-    const [kwitansi] = await Promise.all([ctx.waitForEvent('page'), page.getByRole('button', { name: /Simpan & Cetak Kwitansi/ }).click()]);
-    await kwitansi.waitForLoadState();
-    const isiKwitansi = await kwitansi.content();
-    cek(kwitansi.url().includes('cetak_biaya_psb.php?noreg=' + noreg) && isiKwitansi.includes(harapan.replace('Rp ', '')) && !isiKwitansi.includes('Lemari'), width + ': kwitansi sesuai pilihan (' + harapan + ')');
-    await kwitansi.close();
+    await Promise.all([page.waitForURL(/cetak_biaya_psb\.php/), page.getByRole('button', { name: /Simpan & cetak kwitansi/ }).click()]);
+    const isiKwitansi = await page.content();
+    cek(page.url().includes('cetak_biaya_psb.php?noreg=' + noreg) && isiKwitansi.includes(harapan.replace('Rp ', '')) && !isiKwitansi.includes('Lemari'), width + ': kwitansi sesuai pilihan (' + harapan + ')');
 
     // Keluar
     await page.goto(base + '/portal_pendaftar.php');
-    await Promise.all([page.waitForURL(/pesan=keluar/), page.getByRole('button', { name: /Keluar Portal/ }).click()]);
+    await page.getByRole('button', { name: /Keluar Portal/ }).click();
+    await Promise.all([page.waitForURL(/pesan=keluar/), page.getByRole('button', { name: 'Ya, keluar' }).click()]);
     cek(await page.getByText('Anda sudah keluar').isVisible() && (await ctx.request.get(base + '/lihat_berkas_psb.php?jenis=file_ktp')).status() === 401, width + ': keluar lewat POST mengakhiri akses berkas');
     await ctx.close();
 
