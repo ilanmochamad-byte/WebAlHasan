@@ -1,22 +1,32 @@
 <?php
+/*
+ * Pembiayaan daftar ulang PSB (P-7) — redesain website Tahap 8.
+ *
+ * Keputusan Human Developer 24 Oktober 2026 (butir 3): halaman tetap di
+ * alamat ini (sudah dilindungi workstream keamanan PSB), tampilannya
+ * didesain ulang, dan dibuka dari menu "Pembiayaan" Portal Pendaftar.
+ * Pendaftar yang masuk melihatnya di dalam kerangka portal; admin memakai
+ * kotak cari di kerangka situs; selain itu hanya ajakan masuk.
+ *
+ * Aturan biaya tetap (AJ): pendaftar mencentang komponen wajib yang dibayar
+ * dan mengisi nominal pilihan; kategori, harga, dan total dihitung ulang di
+ * server dari katalog `App\Psb\BiayaPsb`. Simpan lewat POST ber-CSRF, lalu
+ * kwitansi dibuka di tab yang sama (303), tanpa target _blank.
+ */
 use App\Http\Csrf;
 use App\Psb\BiayaPsb;
 use App\Psb\PendaftarSesi;
 use App\Psb\PsbAkses;
 use App\Psb\PsbException;
+use App\Situs\Kerangka;
 
 require_once __DIR__ . '/koneksi.php';
 
-// Workstream keamanan PSB: rincian biaya hanya untuk admin atau pendaftar
-// pemilik yang sedang masuk Portal Pendaftar (sebelumnya cukup mengetahui
-// No. Pendaftaran/NIK). Simpan lewat POST ber-CSRF; kategori, harga komponen
-// wajib, dan total dihitung ulang di server dari katalog yang sama
-// (`App\Psb\BiayaPsb`). Halaman tetap di alamat ini (P-7 belum diputuskan).
 $akses = new PsbAkses($koneksi, new PendaftarSesi($koneksi));
 $pesanBiaya = null;
 
-// --- LOGIKA SIMPAN KE DATABASE ---
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan_cetak'])){
+// --- SIMPAN ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan_cetak'])) {
     if (!Csrf::validate($_POST['_csrf'] ?? null)) {
         $pesanBiaya = 'Halaman sudah kedaluwarsa. Rincian belum tersimpan; muat ulang halaman lalu simpan lagi.';
     } else {
@@ -26,7 +36,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan_cetak'])){
         }
         try {
             BiayaPsb::simpan($koneksi, (string) $target['no_pendaftaran'], BiayaPsb::dariKiriman($target, $_POST));
-            // Formulir dikirim ke tab baru: tab ini langsung membuka kwitansi.
             header('Location: cetak_biaya_psb.php?noreg=' . rawurlencode((string) $target['no_pendaftaran']), true, 303);
             exit;
         } catch (PsbException $exception) {
@@ -37,298 +46,177 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan_cetak'])){
 
 // --- DATA YANG BOLEH DITAMPILKAN ---
 $cari = is_string($_GET['cari'] ?? null) ? trim($_GET['cari']) : null;
-$d = null;
+$pendaftar = null;
 $tidakDitemukan = false;
 $bukanMilik = false;
 $pendaftarMasuk = $akses->pendaftar();
-if ($akses->admin()) {
+$admin = $akses->admin();
+if ($admin) {
     if ($cari !== null && $cari !== '') {
-        $d = $akses->cari($cari, true);
-        $tidakDitemukan = $d === null;
+        $pendaftar = $akses->cari($cari, true);
+        $tidakDitemukan = $pendaftar === null;
     }
 } elseif ($pendaftarMasuk !== null) {
     // Pendaftar hanya melihat rincian miliknya sendiri.
     if ($cari === null || $cari === '' || $cari === (string) $pendaftarMasuk['no_pendaftaran'] || $cari === (string) $pendaftarMasuk['nik']) {
-        $d = $pendaftarMasuk;
+        $pendaftar = $pendaftarMasuk;
     } else {
         $bukanMilik = true;
     }
 }
 
+$e = static fn (mixed $v): string => Kerangka::e($v);
+$rp = static fn (int|string $n): string => 'Rp ' . number_format((int) $n, 0, ',', '.');
+
+$katalog = null;
+$tersimpan = null;
+if ($pendaftar !== null) {
+    $katalog = BiayaPsb::katalog($pendaftar);
+    $stmt = $koneksi->prepare('SELECT * FROM psb_pembayaran WHERE no_pendaftaran = ?');
+    $no = (string) $pendaftar['no_pendaftaran'];
+    $stmt->bind_param('s', $no);
+    $stmt->execute();
+    $tersimpan = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+}
+
+$catatan = static function () use ($pesanBiaya, $bukanMilik, $tidakDitemukan, $e): void {
+    if ($pesanBiaya !== null) {
+        echo '<div class="ah-note ah-note--danger" role="alert"><div><strong class="ah-note__title">Belum tersimpan</strong><span>' . $e($pesanBiaya) . '</span></div></div>';
+    }
+    if ($bukanMilik) {
+        echo '<div class="ah-note ah-note--warn" role="alert"><div><span>Anda hanya dapat membuka rincian biaya pendaftaran Anda sendiri.</span></div></div>';
+    }
+    if ($tidakDitemukan) {
+        echo '<div class="ah-note ah-note--danger" role="alert"><div><span>Data pendaftar tidak ditemukan. Periksa kembali nomor pendaftaran atau NIK.</span></div></div>';
+    }
+};
+
+/** Formulir rincian biaya untuk satu pendaftar. */
+$formulir = static function (array $d, array $katalog, ?array $simpan) use ($e, $rp): void {
+    $lunas = $simpan !== null && $simpan['status_pembayaran'] === 'Lunas';
+    $s = (int) ($simpan['syahriyyah'] ?? $katalog['syahriyyah']);
+    $i = (int) ($simpan['infaq'] ?? $katalog['infaq']);
+    $psas = (int) ($simpan['seragam_psas'] ?? $katalog['psas']);
+    $pramuka = (int) ($simpan['seragam_pramuka'] ?? $katalog['pramuka']);
+    $metode = (string) ($simpan['metode_pembayaran'] ?? 'Cash');
+    $wajibTersimpan = $simpan === null ? null : (json_decode((string) $simpan['rincian_wajib'], true) ?: []);
+    $nominal = static function (string $nama, string $label, int $nilai, string $id, bool $kunci) use ($e): string {
+        return '<div class="s-field"><label class="s-label" for="' . $id . '">' . $e($label) . '</label><div class="s-rupiah"><span aria-hidden="true">Rp</span>'
+            . '<input class="s-input" id="' . $id . '" name="' . $e($nama) . '" type="text" inputmode="numeric" pattern="[0-9]{1,9}" maxlength="9" required value="' . $nilai . '" data-s-nominal' . ($kunci ? ' readonly' : '') . '></div></div>';
+    };
+    ?>
+    <dl class="s-dl s-panel mb-3">
+        <dt>Nama</dt><dd><?= $e($d['nama_lengkap']) ?></dd>
+        <dt>No. pendaftaran</dt><dd class="s-mono"><?= $e($d['no_pendaftaran']) ?></dd>
+        <dt>Jenjang</dt><dd><?= $e($d['jenjang_tujuan']) ?> · <?= $d['jenis_kelamin'] === 'L' ? 'Laki-laki' : 'Perempuan' ?></dd>
+        <dt>Asal sekolah</dt><dd><?= $e($d['sekolah_asal']) ?></dd>
+        <dt>Kategori biaya</dt><dd><?= $e($katalog['kategori']) ?></dd>
+        <?php if ($simpan !== null): ?><dt>Pembayaran</dt><dd><span class="ah-badge ah-badge--<?= $lunas ? 'ok' : 'warn' ?>"><?= $lunas ? 'Lunas' : 'Belum lunas' ?></span></dd><?php endif; ?>
+    </dl>
+    <?php if ($lunas): ?>
+        <div class="ah-note ah-note--ok" role="status"><div><strong class="ah-note__title">Sudah lunas</strong><span>Pembayaran sudah ditandai lunas oleh bendahara. Rincian tidak dapat diubah lagi; hubungi panitia PSB bila perlu koreksi.</span></div></div>
+    <?php endif; ?>
+    <form method="POST" data-s-biaya>
+        <?php echo Csrf::input(); ?>
+        <input type="hidden" name="no_pendaftaran" value="<?= $e($d['no_pendaftaran']) ?>">
+        <div class="s-split" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))">
+            <div>
+                <section class="s-panel" aria-labelledby="judul-wajib">
+                    <div class="s-panel__head"><h2 id="judul-wajib">Biaya wajib</h2><small class="s-muted">Centang yang dibayar sekarang</small></div>
+                    <table class="s-biaya">
+                        <tbody>
+                        <?php foreach ($katalog['wajib'] as $item => $harga): $cek = $wajibTersimpan === null || isset($wajibTersimpan[$item]); $idCek = 'w-' . substr(md5($item), 0, 10); ?>
+                            <tr>
+                                <td><label for="<?= $idCek ?>"><input type="checkbox" id="<?= $idCek ?>" name="wajib[]" value="<?= $e($item) ?>" data-harga="<?= (int) $harga ?>"<?= $cek ? ' checked' : '' ?><?= $lunas ? ' disabled' : '' ?>> <?= $e($item) ?></label></td>
+                                <td><?= $rp($harga) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                        <tfoot><tr><td>Total wajib dipilih</td><td id="txtTotalWajib"><?= $rp(array_sum(array_intersect_key($katalog['wajib'], $wajibTersimpan ?? $katalog['wajib']))) ?></td></tr></tfoot>
+                    </table>
+                </section>
+                <section class="s-panel" aria-labelledby="judul-pilihan">
+                    <div class="s-panel__head"><h2 id="judul-pilihan">Biaya pilihan</h2><small class="s-muted">Boleh diatur atau diangsur; isi 0 bila ditangguhkan</small></div>
+                    <div class="s-form s-form--2">
+                        <?= $nominal('syahriyyah', 'Syahriyyah (bulanan)', $s, 'inpSyahriyyah', $lunas) ?>
+                        <?= $nominal('infaq', 'Infaq bangunan', $i, 'inpInfaq', $lunas) ?>
+                        <?php if ($katalog['seragam']): ?>
+                            <?= $nominal('seragam_psas', 'Seragam PSAS', $psas, 'inpPSAS', $lunas) ?>
+                            <?= $nominal('seragam_pramuka', 'Seragam Pramuka', $pramuka, 'inpPramuka', $lunas) ?>
+                        <?php else: ?>
+                            <input type="hidden" name="seragam_psas" value="0"><input type="hidden" name="seragam_pramuka" value="0">
+                        <?php endif; ?>
+                    </div>
+                </section>
+            </div>
+            <div>
+                <section class="s-panel" aria-labelledby="judul-cara">
+                    <h2 id="judul-cara" class="h6 fw-bold">Cara bayar</h2>
+                    <div class="s-radios mb-3" role="radiogroup" aria-labelledby="judul-cara">
+                        <label><input type="radio" name="metode_pembayaran" value="Cash"<?= $metode !== 'Transfer' ? ' checked' : '' ?><?= $lunas ? ' disabled' : '' ?>> Tunai di kantor</label>
+                        <label><input type="radio" name="metode_pembayaran" value="Transfer"<?= $metode === 'Transfer' ? ' checked' : '' ?><?= $lunas ? ' disabled' : '' ?>> Transfer bank</label>
+                    </div>
+                    <div id="infoTransfer">
+                        <ul class="s-rek">
+                            <li><span><b>BSI</b> <span class="s-mono">1046-322-987</span><small>a.n. Yayasan Pendidikan Ponpes Al Hasan</small></span><button class="s-btn s-btn--sm s-js-only" type="button" data-s-salin="1046322987" data-s-salin-pesan="Nomor rekening BSI disalin.">Salin<span class="s-vh"> nomor rekening BSI</span></button></li>
+                            <li><span><b>BRI</b> <span class="s-mono">0104-01001-218567</span><small>a.n. Yayasan Pendidikan Pondok Pesantren Al Hasan</small></span><button class="s-btn s-btn--sm s-js-only" type="button" data-s-salin="010401001218567" data-s-salin-pesan="Nomor rekening BRI disalin.">Salin<span class="s-vh"> nomor rekening BRI</span></button></li>
+                        </ul>
+                        <p class="s-hint mt-2 mb-0">Bawa bukti transfer dan kwitansi ke ruang bendahara untuk divalidasi.</p>
+                    </div>
+                    <p class="s-hint mb-0" id="infoTunai">Bayar di ruang bendahara pesantren dengan membawa kwitansi.</p>
+                </section>
+                <div class="s-total s-total--tempel mt-3">
+                    <span>Total dibayar<br><b data-s-total id="txtTotalBayar"><?= $rp($s + $i + ($katalog['seragam'] ? $psas + $pramuka : 0) + array_sum(array_intersect_key($katalog['wajib'], $wajibTersimpan ?? $katalog['wajib']))) ?></b></span>
+                    <?php if ($lunas): ?>
+                        <a class="s-btn s-btn--pri" href="cetak_biaya_psb.php?noreg=<?= $e(rawurlencode((string) $d['no_pendaftaran'])) ?>">Cetak kwitansi</a>
+                    <?php else: ?>
+                        <button class="s-btn s-btn--pri" type="submit" name="simpan_cetak" value="1" data-s-memproses="Menyimpan…">Simpan &amp; cetak kwitansi</button>
+                    <?php endif; ?>
+                </div>
+                <p class="s-hint mt-2">Total dihitung ulang oleh server dari komponen yang dipilih.</p>
+            </div>
+        </div>
+    </form>
+    <?php
+};
+
+if ($pendaftarMasuk !== null && !$admin) {
+    // Pendaftar: di dalam kerangka Portal Pendaftar (menu Pembiayaan).
+    Kerangka::bukaPortal($pendaftarMasuk, 'biaya', 'Pembiayaan');
+    echo '<section class="s-portal-sec" aria-labelledby="judul-biaya"><h1 id="judul-biaya">Pembiayaan daftar ulang</h1>';
+    echo '<p class="s-sub">Kategori: ' . ($katalog !== null ? $e($katalog['kategori']) : '—') . '</p>';
+    $catatan();
+    if ($pendaftar !== null) {
+        $formulir($pendaftar, $katalog, $tersimpan);
+    }
+    echo '</section>';
+    Kerangka::tutupPortal();
+    exit;
+}
+
+$situs = ['judul' => 'Rincian pembiayaan PSB', 'robots' => 'noindex, nofollow'];
 include 'header.php';
 ?>
-
-<div class='container py-5 mt-5'>
-    <div class="row justify-content-center mb-4">
-        <div class="col-lg-8 text-center" data-aos="fade-down">
-            <h2 class="fw-bold text-success">Rincian Pembiayaan Santri Baru</h2>
-            <p class="text-muted">Masukkan Nomor Pendaftaran atau NIK Santri untuk melihat dan mengatur rincian biaya pendaftaran.</p>
+<div class="s-wrap py-4">
+    <header class="s-head" style="padding-top:0">
+        <h1>Rincian pembiayaan santri baru</h1>
+        <p><?= $admin ? 'Cari pendaftar dengan nomor pendaftaran atau NIK untuk melihat dan mengatur rinciannya.' : 'Rincian pembiayaan dibuka dari Portal Pendaftar.' ?></p>
+    </header>
+    <?php $catatan(); ?>
+    <?php if ($admin): ?>
+        <form class="s-cari s-panel" method="GET" role="search">
+            <label class="s-vh" for="cari-biaya">Nomor pendaftaran atau NIK</label>
+            <input class="s-input" id="cari-biaya" type="text" name="cari" placeholder="No. pendaftaran / NIK" value="<?= $e($cari ?? '') ?>" required>
+            <button class="s-btn s-btn--pri" type="submit" data-s-tanpa-kunci>Cari</button>
+        </form>
+        <?php if ($pendaftar !== null) { $formulir($pendaftar, $katalog, $tersimpan); } ?>
+    <?php else: ?>
+        <div class="s-kosong">
+            <b>Masuk lebih dahulu</b>
+            Rincian pembiayaan hanya dapat dibuka oleh pendaftar setelah masuk Portal Pendaftar, atau oleh panitia.
+            <div class="s-acts"><a class="s-btn s-btn--pri" href="login_pendaftar.php">Masuk Portal Pendaftar</a></div>
         </div>
-    </div>
-
-    <?php if ($pesanBiaya !== null) { ?>
-        <div class="row justify-content-center"><div class="col-lg-10"><div class="alert alert-danger" role="alert"><?php echo ah_e($pesanBiaya); ?></div></div></div>
-    <?php } ?>
-
-    <?php if ($akses->admin()) { ?>
-    <div class="row justify-content-center mb-5" data-aos="fade-up">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-success border-2 border-top-0 border-bottom-0 border-end-0">
-                <div class="card-body p-4">
-                    <form method="GET">
-                        <label class="fw-bold mb-2">Cari Data Pendaftar</label>
-                        <div class="input-group">
-                            <input type="text" name="cari" class="form-control form-control-lg" placeholder="No. Pendaftaran / NIK" value="<?php echo ah_e($cari ?? ''); ?>" required>
-                            <button type="submit" class="btn btn-success px-4 fw-bold"><i class="fas fa-search me-1"></i> Cari</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <?php } elseif ($pendaftarMasuk === null) { ?>
-    <div class="row justify-content-center mb-5" data-aos="fade-up">
-        <div class="col-md-6">
-            <div class="alert alert-info text-center shadow-sm">
-                <i class="fas fa-lock fa-2x mb-3 d-block"></i>
-                Rincian pembiayaan hanya dapat dibuka oleh pendaftar setelah masuk Portal Pendaftar, atau oleh panitia.
-                <div class="mt-3"><a href="login_pendaftar.php" class="btn btn-success fw-bold rounded-pill px-4">Masuk Portal Pendaftar</a></div>
-            </div>
-        </div>
-    </div>
-    <?php } ?>
-
-    <?php 
-    if($bukanMilik){
-        echo "<div class='container'><div class='alert alert-warning text-center shadow-sm'>Anda hanya dapat membuka rincian biaya pendaftaran Anda sendiri.</div></div>";
-    }
-    if($d !== null || $tidakDitemukan){
-        
-        if($d !== null){
-            $no_pendaftaran = $d['no_pendaftaran'];
-            
-            $unit = $d['jenjang_tujuan'];
-            $jk = $d['jenis_kelamin'];
-            $jk_teks = ($jk == 'L') ? 'Laki-laki' : 'Perempuan';
-
-            // Katalog biaya yang sama dengan sebelumnya, kini satu sumber di server.
-            $katalog = BiayaPsb::katalog($d);
-            $kategori_biaya = $katalog['kategori'];
-            $s_default = $katalog['syahriyyah']; $i_default = $katalog['infaq'];
-            $psas_default = $katalog['psas']; $pramuka_default = $katalog['pramuka'];
-            $m_default = 'Cash';
-            $wajib_items = $katalog['wajib'];
-
-            $stmtCek = mysqli_prepare($koneksi, "SELECT * FROM psb_pembayaran WHERE no_pendaftaran=?");
-            mysqli_stmt_bind_param($stmtCek, 's', $no_pendaftaran);
-            mysqli_stmt_execute($stmtCek);
-            $q_cek = mysqli_stmt_get_result($stmtCek);
-            $lunas = false;
-            if(mysqli_num_rows($q_cek) > 0){
-                $d_saved = mysqli_fetch_assoc($q_cek);
-                $lunas = $d_saved['status_pembayaran'] === 'Lunas';
-                $s_default = $d_saved['syahriyyah'];
-                $i_default = $d_saved['infaq'];
-                $psas_default = $d_saved['seragam_psas'];
-                $pramuka_default = $d_saved['seragam_pramuka'];
-                $m_default = $d_saved['metode_pembayaran'];
-            }
-    ?>
-    <div class="row justify-content-center" data-aos="fade-up">
-        <div class="col-lg-10">
-            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
-                <div class="card-header bg-success text-white p-4">
-                    <h5 class="mb-0 fw-bold"><i class="fas fa-file-invoice-dollar me-2"></i> Konfirmasi & Atur Pembiayaan</h5>
-                </div>
-                <div class="card-body p-4 p-md-5">
-                    
-                    <div class="row mb-4 bg-light p-3 rounded-3 border">
-                        <div class="col-md-6">
-                            <table class="table table-sm table-borderless mb-0">
-                                <tr><td width="40%" class="text-muted">Nama Pendaftar</td><td class="fw-bold">: <?php echo ah_e($d['nama_lengkap']); ?></td></tr>
-                                <tr><td class="text-muted">No. Pendaftaran</td><td class="fw-bold text-success">: <?php echo ah_e($d['no_pendaftaran']); ?></td></tr>
-                                <tr><td class="text-muted">Jenis Kelamin</td><td class="fw-bold">: <?php echo $jk_teks; ?></td></tr>
-                            </table>
-                        </div>
-                        <div class="col-md-6 border-start">
-                            <table class="table table-sm table-borderless mb-0">
-                                <tr><td width="40%" class="text-muted">Tujuan Unit</td><td class="fw-bold text-primary">: <?php echo ah_e($d['jenjang_tujuan']); ?></td></tr>
-                                <tr><td class="text-muted">Asal Sekolah</td><td class="fw-bold">: <?php echo ah_e($d['sekolah_asal']); ?></td></tr>
-                                <tr><td class="text-muted">Kategori Biaya</td><td class="fw-bold text-danger">: <?php echo ah_e($kategori_biaya); ?></td></tr>
-                            </table>
-                        </div>
-                    </div>
-
-                    <form method="POST" target="_blank" onsubmit="setTimeout(function(){ window.location.href='biaya_psb.php'; }, 1000);">
-                        <?php echo Csrf::input(); ?>
-                        <input type="hidden" name="no_pendaftaran" value="<?php echo ah_e($no_pendaftaran); ?>">
-                        <input type="hidden" name="kategori_biaya" value="<?php echo ah_e($kategori_biaya); ?>">
-                        
-                        <input type="hidden" name="total_wajib" id="inpTotalWajib" value="0">
-                        <input type="hidden" name="rincian_wajib_json" id="inpRincianWajib" value="{}">
-
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <h5 class="fw-bold border-bottom pb-2 text-primary">Biaya Pilihan (Bisa Diatur/Angsur)</h5>
-                                <p class="small text-muted mb-3">Nominal di bawah ini dapat disesuaikan (ketik ulang menjadi Rp 0 jika ingin ditangguhkan).</p>
-                                
-                                <div class="mb-3">
-                                    <label class="fw-bold">Syahriyyah (Bulanan)</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light">Rp</span>
-                                        <input type="number" name="syahriyyah" id="inpSyahriyyah" class="form-control form-control-lg text-end fw-bold text-primary calc-biaya" value="<?php echo ah_e($s_default); ?>" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="fw-bold">Infaq Bangunan</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light">Rp</span>
-                                        <input type="number" name="infaq" id="inpInfaq" class="form-control form-control-lg text-end fw-bold text-primary calc-biaya" value="<?php echo ah_e($i_default); ?>" required>
-                                    </div>
-                                </div>
-
-                                <?php if($unit == 'SMP Terpadu Al Hasan' || $unit == 'SMK Terpadu Al Hasan'): ?>
-                                    <div class="mb-3">
-                                        <label class="fw-bold">Seragam PSAS</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-light">Rp</span>
-                                            <input type="number" name="seragam_psas" id="inpPSAS" class="form-control form-control-lg text-end fw-bold text-primary calc-biaya" value="<?php echo ah_e($psas_default); ?>" required>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="fw-bold">Seragam Pramuka</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-light">Rp</span>
-                                            <input type="number" name="seragam_pramuka" id="inpPramuka" class="form-control form-control-lg text-end fw-bold text-primary calc-biaya" value="<?php echo ah_e($pramuka_default); ?>" required>
-                                        </div>
-                                    </div>
-                                <?php else: ?>
-                                    <input type="hidden" name="seragam_psas" id="inpPSAS" value="0">
-                                    <input type="hidden" name="seragam_pramuka" id="inpPramuka" value="0">
-                                <?php endif; ?>
-
-                                <h5 class="fw-bold border-bottom pb-2 mt-4 text-dark">Metode Pembayaran</h5>
-                                <div class="mb-3">
-                                    <select name="metode_pembayaran" id="pilihMetode" class="form-select form-select-lg fw-bold" required onchange="toggleTransferInfo()">
-                                        <option value="Cash" <?php echo ($m_default == 'Cash') ? 'selected' : ''; ?>>Tunai (Cash / Bayar di Tempat)</option>
-                                        <option value="Transfer" <?php echo ($m_default == 'Transfer') ? 'selected' : ''; ?>>Transfer Bank</option>
-                                    </select>
-                                    
-                                    <div id="infoTransfer" class="alert alert-info mt-3" style="display: <?php echo ($m_default == 'Transfer') ? 'block' : 'none'; ?>;">
-                                        <i class="fas fa-info-circle me-1"></i> <b>Informasi Transfer:</b><br>
-                                        Silakan transfer nominal ke salah satu rekening berikut:<br>
-                                        - <b>BSI:</b> 1046-322-987<br>a.n Yayasan Pendidikan Ponpes Al Hasan<br>
-                                        - <b>BRI:</b> 0104-01001-218567<br>a.n Yayasan Pendidikan Pondok Pesantren Al Hasan<br>
-                                        <small class="text-danger mt-1 d-block">*Harap bawa bukti transfer / cetak kwitansi ini ke ruang bendahara untuk di-validasi.</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 border-start">
-                                <h5 class="fw-bold border-bottom pb-2 text-danger">Biaya Wajib (Centang yang akan dibayar)</h5>
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-striped align-middle">
-                                        <?php 
-                                        $is_new = !isset($d_saved);
-                                        $saved_wajib = $is_new ? [] : json_decode($d_saved['rincian_wajib'], true);
-                                        
-                                        foreach($wajib_items as $item => $harga): 
-                                            // Centang otomatis jika ini pendaftar baru, atau jika item ini ada di database pembayaran sebelumnya
-                                            $isChecked = ($is_new || isset($saved_wajib[$item])) ? 'checked' : '';
-                                        ?>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check mb-0">
-                                                    <input class="form-check-input calc-wajib border-danger" type="checkbox" name="wajib[]" value="<?php echo ah_e($item); ?>" data-harga="<?php echo $harga; ?>" id="chk_<?php echo md5($item); ?>" <?php echo $isChecked; ?> style="cursor: pointer; transform: scale(1.2); margin-top: 0.3em;">
-                                                    <label class="form-check-label ms-2 fw-bold" for="chk_<?php echo md5($item); ?>" style="cursor: pointer;"><?php echo ah_e($item); ?></label>
-                                                </div>
-                                            </td>
-                                            <td class="text-end fw-bold">Rp <?php echo number_format($harga,0,',','.'); ?></td>
-                                        </tr>
-                                        <?php endforeach; ?>
-                                        <tr class="table-danger">
-                                            <td class="fw-bold">TOTAL WAJIB DIBAYAR</td>
-                                            <td class="text-end fw-bold fs-6" id="txtTotalWajib">Rp 0</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr class="my-4">
-
-                        <div class="row align-items-center bg-light p-3 rounded-4 border border-success">
-                            <div class="col-md-6">
-                                <h4 class="mb-0 text-muted">Total Yang Harus Dibayar:</h4>
-                                <small class="text-success">*Bawalah cetakan kwitansi ke ruang bendahara.</small>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <h2 class="mb-0 fw-bold text-success" id="txtTotalBayar">Rp 0</h2>
-                            </div>
-                        </div>
-
-                        <div class="text-center mt-5">
-                            <?php if ($lunas) { ?>
-                                <div class="alert alert-success">Pembayaran sudah ditandai <b>lunas</b> oleh bendahara. Rincian tidak dapat diubah lagi; hubungi panitia PSB bila perlu koreksi.</div>
-                                <a href="cetak_biaya_psb.php?noreg=<?php echo ah_e(rawurlencode((string) $no_pendaftaran)); ?>" target="_blank" class="btn btn-success btn-lg px-5 fw-bold shadow-lg rounded-pill"><i class="fas fa-print me-2"></i> Cetak Kwitansi</a>
-                            <?php } else { ?>
-                            <button type="submit" name="simpan_cetak" class="btn btn-success btn-lg px-5 fw-bold shadow-lg rounded-pill">
-                                <i class="fas fa-print me-2"></i> Simpan & Cetak Kwitansi
-                            </button>
-                            <?php } ?>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        function hitungTotal() {
-            let s = parseInt(document.getElementById('inpSyahriyyah').value) || 0;
-            let i = parseInt(document.getElementById('inpInfaq').value) || 0;
-            let p = parseInt(document.getElementById('inpPSAS') ? document.getElementById('inpPSAS').value : 0) || 0;
-            let pr = parseInt(document.getElementById('inpPramuka') ? document.getElementById('inpPramuka').value : 0) || 0;
-            
-            // Hitung Biaya Wajib dari Checkbox
-            let totWajib = 0;
-            let rincianWajib = {};
-            document.querySelectorAll('.calc-wajib:checked').forEach(cb => {
-                let harga = parseInt(cb.getAttribute('data-harga')) || 0;
-                totWajib += harga;
-                rincianWajib[cb.value] = harga;
-            });
-
-            // Update UI dan Hidden Inputs
-            document.getElementById('txtTotalWajib').innerText = 'Rp ' + totWajib.toLocaleString('id-ID');
-            document.getElementById('inpTotalWajib').value = totWajib;
-            document.getElementById('inpRincianWajib').value = JSON.stringify(rincianWajib);
-
-            // Hitung Grand Total
-            let grandTotal = s + i + p + pr + totWajib;
-            document.getElementById('txtTotalBayar').innerText = 'Rp ' + grandTotal.toLocaleString('id-ID');
-        }
-
-        function toggleTransferInfo() {
-            let metode = document.getElementById('pilihMetode').value;
-            document.getElementById('infoTransfer').style.display = (metode === 'Transfer') ? 'block' : 'none';
-        }
-
-        // Jalankan trigger saat input diketik atau checkbox di-klik
-        document.querySelectorAll('.calc-biaya, .calc-wajib').forEach(item => {
-            item.addEventListener('input', hitungTotal);
-            item.addEventListener('change', hitungTotal);
-        });
-        
-        window.onload = hitungTotal;
-    </script>
-    <?php 
-        } else {
-            echo "<div class='container'><div class='alert alert-danger text-center shadow-sm'><i class='fas fa-exclamation-triangle fa-2x mb-3 d-block'></i> Data Pendaftar tidak ditemukan. Periksa kembali Nomor Pendaftaran/NIK.</div></div>";
-        }
-    }
-    ?>
+    <?php endif; ?>
 </div>
-
 <?php include 'footer.php'; ?>

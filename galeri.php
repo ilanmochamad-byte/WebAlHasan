@@ -1,155 +1,62 @@
 <?php
+/*
+ * Galeri kegiatan (U-6) — redesain website Tahap 8.
+ *
+ * Tanpa album (keputusan AI). Urut dari foto terbaru, 24 foto per muatan
+ * dengan "Muat lagi" (tautan biasa, berjalan tanpa JavaScript). Keterangan
+ * selalu terlihat di bawah foto; klik foto membuka penampil layar penuh.
+ */
 require_once __DIR__ . '/koneksi.php';
+
+use App\Situs\Kerangka;
+
+const GALERI_PER_MUAT = 24;
+
+$e = static fn (mixed $v): string => Kerangka::e($v);
+$jumlah = (int) filter_var($_GET['jumlah'] ?? GALERI_PER_MUAT, FILTER_VALIDATE_INT, ['options' => ['default' => GALERI_PER_MUAT, 'min_range' => GALERI_PER_MUAT, 'max_range' => 960]]);
+$jumlah = (int) (ceil($jumlah / GALERI_PER_MUAT) * GALERI_PER_MUAT);
+
+$total = (int) $koneksi->query('SELECT COUNT(*) FROM galeri')->fetch_row()[0];
+$stmt = $koneksi->prepare('SELECT id, judul, keterangan, gambar, tanggal FROM galeri ORDER BY tanggal DESC, id DESC LIMIT ?');
+$stmt->bind_param('i', $jumlah);
+$stmt->execute();
+$foto = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+$situs = ['judul' => 'Galeri kegiatan', 'aktif' => 'galeri', 'deskripsi' => 'Foto kegiatan Pesantren Al Hasan Ciamis.'];
 include 'header.php';
 ?>
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet" />
-
-<style>
-    /* Header Section */
-    .gallery-header {
-        background: linear-gradient(135deg, var(--primary-color), #0a3d25);
-        padding: 100px 0 60px;
-        color: white;
-        border-radius: 0 0 50px 50px;
-        margin-bottom: 40px;
-    }
-
-    /* Masonry Grid Item */
-    .grid-item {
-        width: 33.333%; /* Default 3 kolom di desktop */
-        padding: 10px;
-    }
-    @media (max-width: 992px) { .grid-item { width: 50%; } } /* 2 kolom di tablet */
-    @media (max-width: 576px) { .grid-item { width: 100%; } } /* 1 kolom di HP */
-
-    /* Card Foto Modern */
-    .photo-card {
-        position: relative;
-        overflow: hidden;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        cursor: pointer;
-    }
-    
-    /* Gambar */
-    .photo-card img {
-        width: 100%;
-        height: auto;
-        display: block;
-        transition: transform 0.5s ease;
-    }
-
-    /* Overlay Gradient saat Hover */
-    .photo-overlay {
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
-        opacity: 0;
-        transition: opacity 0.4s ease;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        padding: 20px;
-        color: white;
-        z-index: 2;
-    }
-    
-    /* Teks dalam Overlay */
-    .photo-info {
-        transform: translateY(20px);
-        transition: transform 0.4s ease;
-    }
-
-    /* Efek Hover */
-    .photo-card:hover img {
-        transform: scale(1.08); /* Zoom in halus */
-    }
-    .photo-card:hover .photo-overlay {
-        opacity: 1; /* Munculkan overlay */
-    }
-    .photo-card:hover .photo-info {
-        transform: translateY(0); /* Teks naik ke atas */
-    }
-
-    /* Judul dan Keterangan */
-    .photo-title { font-weight: 700; margin-bottom: 5px; font-size: 1.1rem; }
-    .photo-desc { font-size: 0.85rem; opacity: 0.8; margin-bottom: 0; }
-</style>
-
-
-<section class="gallery-header text-center">
-    <div class="container" data-aos="fade-down">
-        <h1 class="fw-bold display-5">Galeri Pesantren</h1>
-        <p class="lead opacity-75 w-75 mx-auto mb-0">Melihat lebih dekat aktivitas harian, fasilitas, dan momen-momen berharga di Pondok Pesantren Al Hasan Ciamis.</p>
-    </div>
-</section>
-
-<section class="pb-5">
-    <div class="container">
-        <div class="row grid">
-            <?php
-            // Mengambil data terbaru
-            $data = mysqli_query($koneksi, "SELECT * FROM galeri ORDER BY id DESC");
-            
-            // Cek ada data atau tidak
-            if(mysqli_num_rows($data) > 0){
-                while($d = mysqli_fetch_array($data)){
-            ?>
-            
-            <div class="grid-item" data-aos="fade-up">
-                <a href="gambar_galeri/<?php echo $d['gambar']; ?>" data-lightbox="galeri-utama" data-title="<strong><?php echo $d['judul']; ?></strong><br><?php echo $d['keterangan']; ?>">
-                    <div class="photo-card">
-                        <img src="gambar_galeri/<?php echo $d['gambar']; ?>" alt="<?php echo $d['judul']; ?>" loading="lazy">
-                        
-                        <div class="photo-overlay">
-                            <div class="photo-info">
-                                <h5 class="photo-title"><?php echo $d['judul']; ?></h5>
-                                <?php if(!empty($d['keterangan'])) { ?>
-                                    <p class="photo-desc"><i class="far fa-comment-alt me-1"></i> <?php echo substr($d['keterangan'], 0, 80) . (strlen($d['keterangan']) > 80 ? '...' : ''); ?></p>
-                                <?php } ?>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            
-            <?php 
-                } // End While
-            } else {
-                // Jika Galeri Kosong
-                echo '<div class="col-12 text-center py-5 text-muted">Belum ada foto yang diunggah di galeri.</div>';
-            }
-            ?>
-            
-        </div> </div>
-</section>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-
-<script>
-    // Inisialisasi Masonry setelah semua gambar selesai diload
-    $(document).ready(function() {
-        var $grid = $('.grid').masonry({
-            itemSelector: '.grid-item',
-            percentPosition: true
-        });
-        
-        // layout Masonry again after all images have loaded
-        $grid.imagesLoaded().progress( function() {
-            $grid.masonry('layout');
-        });
-    });
-
-    // Config Lightbox agar menampilkan caption HTML
-    lightbox.option({
-      'resizeDuration': 200,
-      'wrapAround': true,
-      'showImageNumberLabel': false
-    })
-</script>
-
+<div class="s-wrap">
+    <header class="s-head">
+        <ol class="s-crumbs"><li><a href="<?= $e(app_url('/index.php')) ?>">Beranda</a></li><li aria-current="page">Galeri</li></ol>
+        <h1>Galeri kegiatan</h1>
+        <p>Aktivitas harian, fasilitas, dan momen di Pesantren Al Hasan.</p>
+    </header>
+    <?php if ($foto === []): ?>
+        <div class="s-kosong"><b>Belum ada foto</b>Foto kegiatan akan tampil di sini setelah diunggah pesantren.</div>
+    <?php else: ?>
+        <ul class="s-media">
+            <?php foreach ($foto as $i => $f): $src = Kerangka::gambarKonten('gambar_galeri', $f['gambar']); if ($src === null) { continue; } ?>
+                <li id="foto-<?= $i + 1 ?>">
+                    <figure>
+                        <a href="<?= $e($src) ?>" data-s-galeri data-s-judul="<?= $e($f['judul']) ?>" data-s-ket="<?= $e($f['keterangan'] ?? '') ?>">
+                            <img src="<?= $e($src) ?>" alt="<?= $e($f['judul']) ?>" loading="lazy">
+                        </a>
+                        <figcaption>
+                            <b><?= $e($f['judul']) ?></b>
+                            <?php if (trim((string) ($f['keterangan'] ?? '')) !== ''): ?><span><?= $e($f['keterangan']) ?></span><?php endif; ?>
+                            <?php if (!empty($f['tanggal'])): ?><small><?= $e(Kerangka::tanggal($f['tanggal'])) ?></small><?php endif; ?>
+                        </figcaption>
+                    </figure>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <div class="s-pager">
+            <span>Menampilkan <?= min($jumlah, $total) ?> dari <?= $total ?> foto</span>
+            <?php if ($total > $jumlah): ?>
+                <a class="s-btn" href="<?= $e(app_url('/galeri.php?jumlah=' . ($jumlah + GALERI_PER_MUAT))) ?>#foto-<?= $jumlah + 1 ?>">Muat lagi</a>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+</div>
 <?php include 'footer.php'; ?>

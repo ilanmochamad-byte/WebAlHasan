@@ -1,0 +1,123 @@
+[lulus] 375: U-1-beranda / tampil tanpa geser horizontal
+[lulus] 375: tombol Daftar PSB menempel di bawah layar HP (U-1)
+[lulus] 375: menu ≡ membuka layar penuh dan menutup dengan Escape
+[lulus] 375: U-2-profil /profil?bagian=struktur-yayasan tampil tanpa geser horizontal
+[lulus] 375: U-3-pendidikan /pendidikan tampil tanpa geser horizontal
+[lulus] 375: U-4-kabar /berita.php tampil tanpa geser horizontal
+[lulus] 375: U-5-detail /detail.php?id=17 tampil tanpa geser horizontal
+[lulus] 375: U-6-galeri /galeri.php tampil tanpa geser horizontal
+[lulus] 375: penampil galeri layar penuh, geser berikutnya, tutup Escape (U-6)
+[lulus] 375: U-7-jadwal /jadwal_ngaji.php tampil tanpa geser horizontal
+[lulus] 375: segmen waktu jadwal (U-7)
+[lulus] 375: U-8-unduhan /download.php tampil tanpa geser horizontal
+[lulus] 375: U-9-privasi /privacy tampil tanpa geser horizontal
+[lulus] 375: U-10-cek-rapor /verifikasi_rapor.php tampil tanpa geser horizontal
+[lulus] 375: cek keaslian rapor berjalan dalam CSP ketat tanpa galat konsol (U-10)
+[lulus] 375: P-1-langkah1 /psb.php tampil tanpa geser horizontal
+[lulus] 375: langkah 1 tidak lanjut bila isian wajib kosong
+[lulus] 375: RA dan MI tampil tetapi belum dapat dipilih
+[lulus] 375: wilayah gagal dimuat -> Coba lagi / Ketik manual
+[lulus] 375: No. HP wali yang diketik ulang berbeda menahan langkah
+[lulus] 375: langkah 4 merangkum semua isian
+[lulus] 375: tombol Ubah kembali ke langkah calon santri
+[lulus] 375: kirim ditahan sampai Kebijakan Privasi dicentang (AO)
+[lulus] 375: P-2-berhasil /psb.php?status=sukses&noreg=PSB-2026-7962 tampil tanpa geser horizontal
+[lulus] 375: P-3-masuk /login_pendaftar.php tampil tanpa geser horizontal
+[lulus] 375: No. HP wali dapat ditampilkan (P-3)
+[lulus] 375: P-4-status /portal_pendaftar.php tampil tanpa geser horizontal
+[lulus] 375: menu portal bilah bawah
+[lulus] 375: bagian Data diri tampil sebagai tab
+[lulus] 375: ganti No. HP wali meminta konfirmasi (P-5)
+[lulus] 375: berkas > 2 MB ditolak di baris itu sebelum dikirim
+[lulus] 375: unggah satu dokumen tetap di bagian Berkas (P-6)
+[lulus] 375: P-7-pembiayaan /biaya_psb.php tampil tanpa geser horizontal
+[lulus] 375: total biaya langsung diperbarui; rekening + salin saat Transfer (P-7)
+[lulus] 375: P-8-kwitansi /cetak_biaya_psb.php?noreg=PSB-2026-7962 tampil tanpa geser horizontal
+[lulus] 375: kwitansi tercetak tanpa bilah atas, kop X-1
+[lulus] 375: P-8-bukti /cetak_bukti.php?noreg=PSB-2026-7962 tampil tanpa geser horizontal
+[lulus] 375: keluar portal lewat dialog konfirmasi
+[lulus] 375: tanpa JavaScript keempat langkah tampil, wilayah diketik
+[lulus] 375: pendaftaran tanpa JavaScript berhasil
+[lulus] 375: pratinjau berkas KK tampil di panel Pendaftar lewat jalur berpenjaga (AG)
+[lulus] 768: U-1-beranda / tampil tanpa geser horizontal
+[lulus] 768: U-2-profil /profil?bagian=struktur-yayasan tampil tanpa geser horizontal
+[lulus] 768: U-3-pendidikan /pendidikan tampil tanpa geser horizontal
+[lulus] 768: U-4-kabar /berita.php tampil tanpa geser horizontal
+[lulus] 768: U-5-detail /detail.php?id=17 tampil tanpa geser horizontal
+[lulus] 768: U-6-galeri /galeri.php tampil tanpa geser horizontal
+[lulus] 768: penampil galeri layar penuh, geser berikutnya, tutup Escape (U-6)
+[lulus] 768: U-7-jadwal /jadwal_ngaji.php tampil tanpa geser horizontal
+[lulus] 768: segmen waktu jadwal (U-7)
+[lulus] 768: U-8-unduhan /download.php tampil tanpa geser horizontal
+[lulus] 768: U-9-privasi /privacy tampil tanpa geser horizontal
+[lulus] 768: U-10-cek-rapor /verifikasi_rapor.php tampil tanpa geser horizontal
+[lulus] 768: cek keaslian rapor berjalan dalam CSP ketat tanpa galat konsol (U-10)
+[lulus] 768: P-1-langkah1 /psb.php tampil tanpa geser horizontal
+[lulus] 768: langkah 1 tidak lanjut bila isian wajib kosong
+[lulus] 768: RA dan MI tampil tetapi belum dapat dipilih
+[lulus] 768: wilayah gagal dimuat -> Coba lagi / Ketik manual
+[lulus] 768: No. HP wali yang diketik ulang berbeda menahan langkah
+[lulus] 768: langkah 4 merangkum semua isian
+[lulus] 768: tombol Ubah kembali ke langkah calon santri
+[lulus] 768: kirim ditahan sampai Kebijakan Privasi dicentang (AO)
+[lulus] 768: P-2-berhasil /psb.php?status=sukses&noreg=PSB-2026-2717 tampil tanpa geser horizontal
+[lulus] 768: P-3-masuk /login_pendaftar.php tampil tanpa geser horizontal
+[lulus] 768: No. HP wali dapat ditampilkan (P-3)
+[lulus] 768: P-4-status /portal_pendaftar.php tampil tanpa geser horizontal
+[lulus] 768: menu portal samping
+[lulus] 768: bagian Data diri tampil sebagai tab
+[lulus] 768: ganti No. HP wali meminta konfirmasi (P-5)
+[lulus] 768: berkas > 2 MB ditolak di baris itu sebelum dikirim
+[lulus] 768: unggah satu dokumen tetap di bagian Berkas (P-6)
+[lulus] 768: P-7-pembiayaan /biaya_psb.php tampil tanpa geser horizontal
+[lulus] 768: total biaya langsung diperbarui; rekening + salin saat Transfer (P-7)
+[lulus] 768: P-8-kwitansi /cetak_biaya_psb.php?noreg=PSB-2026-2717 tampil tanpa geser horizontal
+[lulus] 768: kwitansi tercetak tanpa bilah atas, kop X-1
+[lulus] 768: P-8-bukti /cetak_bukti.php?noreg=PSB-2026-2717 tampil tanpa geser horizontal
+[lulus] 768: keluar portal lewat dialog konfirmasi
+[lulus] 768: tanpa JavaScript keempat langkah tampil, wilayah diketik
+[lulus] 768: pendaftaran tanpa JavaScript berhasil
+[lulus] 768: pratinjau berkas KK tampil di panel Pendaftar lewat jalur berpenjaga (AG)
+[lulus] 1280: U-1-beranda / tampil tanpa geser horizontal
+[lulus] 1280: menu Profil membuka 6 bagian
+[lulus] 1280: "Masuk" di navbar berisi Masuk Sistem dan Portal Pendaftar (AM)
+[lulus] 1280: U-2-profil /profil?bagian=struktur-yayasan tampil tanpa geser horizontal
+[lulus] 1280: U-3-pendidikan /pendidikan tampil tanpa geser horizontal
+[lulus] 1280: U-4-kabar /berita.php tampil tanpa geser horizontal
+[lulus] 1280: U-5-detail /detail.php?id=17 tampil tanpa geser horizontal
+[lulus] 1280: U-6-galeri /galeri.php tampil tanpa geser horizontal
+[lulus] 1280: penampil galeri layar penuh, geser berikutnya, tutup Escape (U-6)
+[lulus] 1280: U-7-jadwal /jadwal_ngaji.php tampil tanpa geser horizontal
+[lulus] 1280: segmen waktu jadwal (U-7)
+[lulus] 1280: U-8-unduhan /download.php tampil tanpa geser horizontal
+[lulus] 1280: U-9-privasi /privacy tampil tanpa geser horizontal
+[lulus] 1280: U-10-cek-rapor /verifikasi_rapor.php tampil tanpa geser horizontal
+[lulus] 1280: cek keaslian rapor berjalan dalam CSP ketat tanpa galat konsol (U-10)
+[lulus] 1280: P-1-langkah1 /psb.php tampil tanpa geser horizontal
+[lulus] 1280: langkah 1 tidak lanjut bila isian wajib kosong
+[lulus] 1280: RA dan MI tampil tetapi belum dapat dipilih
+[lulus] 1280: wilayah gagal dimuat -> Coba lagi / Ketik manual
+[lulus] 1280: No. HP wali yang diketik ulang berbeda menahan langkah
+[lulus] 1280: langkah 4 merangkum semua isian
+[lulus] 1280: tombol Ubah kembali ke langkah calon santri
+[lulus] 1280: kirim ditahan sampai Kebijakan Privasi dicentang (AO)
+[lulus] 1280: P-2-berhasil /psb.php?status=sukses&noreg=PSB-2026-9462 tampil tanpa geser horizontal
+[lulus] 1280: P-3-masuk /login_pendaftar.php tampil tanpa geser horizontal
+[lulus] 1280: No. HP wali dapat ditampilkan (P-3)
+[lulus] 1280: P-4-status /portal_pendaftar.php tampil tanpa geser horizontal
+[lulus] 1280: menu portal samping
+[lulus] 1280: bagian Data diri tampil sebagai tab
+[lulus] 1280: ganti No. HP wali meminta konfirmasi (P-5)
+[lulus] 1280: berkas > 2 MB ditolak di baris itu sebelum dikirim
+[lulus] 1280: unggah satu dokumen tetap di bagian Berkas (P-6)
+[lulus] 1280: P-7-pembiayaan /biaya_psb.php tampil tanpa geser horizontal
+[lulus] 1280: total biaya langsung diperbarui; rekening + salin saat Transfer (P-7)
+[lulus] 1280: P-8-kwitansi /cetak_biaya_psb.php?noreg=PSB-2026-9462 tampil tanpa geser horizontal
+[lulus] 1280: kwitansi tercetak tanpa bilah atas, kop X-1
+[lulus] 1280: P-8-bukti /cetak_bukti.php?noreg=PSB-2026-9462 tampil tanpa geser horizontal
+[lulus] 1280: keluar portal lewat dialog konfirmasi
+[lulus] 1280: tanpa JavaScript keempat langkah tampil, wilayah diketik
+[lulus] 1280: pendaftaran tanpa JavaScript berhasil
+[lulus] 1280: pratinjau berkas KK tampil di panel Pendaftar lewat jalur berpenjaga (AG)
+
+Hasil: 121 lulus, 0 gagal

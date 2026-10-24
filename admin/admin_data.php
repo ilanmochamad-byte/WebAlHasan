@@ -17,9 +17,9 @@ require_once __DIR__ . '/_guard.php';
  * yang sama; impor diperiksa di server lebih dahulu tanpa menyimpan, lalu
  * disimpan setelah dikonfirmasi (pengganti kotak alert peramban dan muat ulang).
  *
- * Pratinjau gambar berkas sengaja BELUM dipasang (keputusan AG, Tahap 8);
- * sejak workstream keamanan PSB tautan berkas memakai jalur berpenjaga
- * `lihat_berkas_psb.php`, bukan folder `berkas_psb/` langsung.
+ * Pratinjau berkas (keputusan AG) dipasang pada redesain Tahap 8: gambar mini
+ * dan tautan memakai jalur berpenjaga `lihat_berkas_psb.php` (hak admin
+ * diperiksa setiap permintaan), bukan folder `berkas_psb/` langsung.
  * Status, migrasi, dan hapus tetap diproses `proses_psb_admin.php` dan
  * `hapus_siswa.php` (POST + CSRF).
  */
@@ -271,14 +271,25 @@ elseif ($dipilih !== null):
             <dt>WhatsApp wali</dt><dd><?php if ($hp !== ''): ?><a href="<?= ah_e('https://wa.me/' . (str_starts_with($hp, '0') ? '62' . substr($hp, 1) : $hp)) ?>" target="_blank" rel="noopener"><?= ah_e($d['no_hp_wali']) ?></a><?php else: ?>—<?php endif; ?></dd>
         </dl>
     <?php elseif ($bagian === 'berkas'): ?>
-        <p class="small text-muted">Pratinjau gambar berkas dipasang setelah tahap perbaikan keamanan PSB. Sementara ini berkas dibuka di tab baru lewat jalur yang memeriksa hak akses.</p>
-        <ul class="ah-list-plain">
-            <?php foreach (PsbAdmin::BERKAS as $kolom => $label): ?>
-                <li><span><?= ah_e($label) ?></span>
-                    <?php if ((string) ($d[$kolom] ?? '') !== ''): ?>
-                        <a class="btn btn-sm btn-outline-primary" href="<?= ah_e(app_url('/lihat_berkas_psb.php?' . http_build_query(['id' => $pid, 'jenis' => $kolom]))) ?>" target="_blank" rel="noopener">Lihat <span class="ah-visually-hidden"><?= ah_e($label) ?></span></a>
+        <p class="small text-muted">Pratinjau dibuka lewat jalur yang memeriksa hak akses admin. Klik berkas untuk membukanya di tab baru.</p>
+        <ul class="ah-media">
+            <?php foreach (PsbAdmin::BERKAS as $kolom => $label):
+                $namaBerkas = (string) ($d[$kolom] ?? '');
+                $ext = strtolower(pathinfo($namaBerkas, PATHINFO_EXTENSION));
+                $urlBerkas = app_url('/lihat_berkas_psb.php?' . http_build_query(['id' => $pid, 'jenis' => $kolom])); ?>
+                <li>
+                    <?php if ($namaBerkas !== ''): ?>
+                        <a href="<?= ah_e($urlBerkas) ?>" target="_blank" rel="noopener">
+                            <?php if (in_array($ext, ['jpg', 'jpeg', 'png'], true)): ?>
+                                <img src="<?= ah_e($urlBerkas) ?>" alt="Pratinjau <?= ah_e($label) ?>" loading="lazy">
+                            <?php else: ?>
+                                <span class="ah-media__ph" aria-hidden="true"><?= ah_e($ext === 'pdf' ? 'PDF' : 'Berkas') ?></span>
+                            <?php endif; ?>
+                            <span class="ah-media__cap"><b><?= ah_e($label) ?></b><small>Lihat<span class="ah-visually-hidden"> <?= ah_e($label) ?> (tab baru)</span></small></span>
+                        </a>
                     <?php else: ?>
-                        <?= ah_badge($kolom === 'file_prestasi' ? 'Tidak ada' : 'Belum ada', $kolom === 'file_prestasi' ? 'muted' : 'warn') ?>
+                        <span class="ah-media__ph" style="border:1px dashed var(--ah-line-strong);border-radius:var(--ah-radius)"><?= ah_badge($kolom === 'file_prestasi' ? 'Tidak ada' : 'Belum ada', $kolom === 'file_prestasi' ? 'muted' : 'warn') ?></span>
+                        <span class="ah-media__cap"><b><?= ah_e($label) ?></b></span>
                     <?php endif; ?>
                 </li>
             <?php endforeach; ?>

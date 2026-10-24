@@ -1,531 +1,320 @@
 <?php
+/*
+ * Portal Pendaftar (P-4 status, P-5 data diri, P-6 berkas) — redesain website
+ * Tahap 8. Pembiayaan (P-7) tetap di `biaya_psb.php` dan dibuka dari menu
+ * Pembiayaan portal (keputusan Human Developer 24 Oktober 2026, butir 3).
+ *
+ * Satu halaman dengan tiga bagian (#status, #data, #berkas). Dengan
+ * JavaScript bagian tampil sebagai tab; tanpa JavaScript semua bagian tampil
+ * berurutan. Data diri dibaca dulu, diubah per bagian. Berkas diunggah satu
+ * per satu dengan tombolnya sendiri.
+ *
+ * Workstream keamanan PSB tetap: sesi pendaftar diperiksa ulang setiap
+ * permintaan (pendaftar dihapus atau NISN/No. HP berubah dari sesi lain ->
+ * keluar), dan biodata hanya dapat diubah untuk baris milik sendiri lewat
+ * POST ber-CSRF (`PendaftarData::ubah`). Setiap formulir ubah mengirim
+ * seluruh isian biodata seperti formulir lama.
+ */
 use App\Http\Csrf;
+use App\Psb\Jenjang;
 use App\Psb\PendaftarData;
 use App\Psb\PendaftarSesi;
+use App\Psb\PsbAdmin;
 use App\Psb\PsbException;
+use App\Situs\Kerangka;
 
 require_once __DIR__ . '/koneksi.php';
 
-// Workstream keamanan PSB: sesi pendaftar diperiksa ulang setiap permintaan
-// (pendaftar dihapus atau NISN/No. HP berubah dari sesi lain -> keluar), dan
-// biodata hanya dapat diubah untuk baris milik sendiri lewat POST ber-CSRF.
 $sesiPendaftar = new PendaftarSesi($koneksi);
 $d = $sesiPendaftar->wajib('login_pendaftar.php');
 $id_user = (int) $d['id'];
+
+/** Isian biodata per bagian ubah (P-5). */
+$bagianIsian = [
+    'calon' => ['nama_lengkap', 'nik', 'tempat_lahir', 'tgl_lahir', 'jenis_kelamin', 'jenjang_tujuan', 'sekolah_asal'],
+    'alamat' => ['alamat_jalan', 'provinsi', 'kab_kota', 'kecamatan', 'desa'],
+    'ortu' => ['nama_ayah', 'nama_ibu', 'no_hp_wali'],
+];
 
 // ==========================================
 // PROSES UPDATE DATA DIRI
 // ==========================================
 $pesanPortal = null;
+$galatUbah = [];
+$bagianUbah = null;
+$kiriman = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_data'])) {
+    $bagianUbah = is_string($_POST['bagian_ubah'] ?? null) && isset($bagianIsian[$_POST['bagian_ubah']]) ? $_POST['bagian_ubah'] : 'calon';
     if (!Csrf::validate($_POST['_csrf'] ?? null)) {
-        $pesanPortal = 'Halaman sudah kedaluwarsa. Data belum tersimpan; muat ulang halaman lalu simpan lagi.';
+        $pesanPortal = ['danger', 'Halaman sudah kedaluwarsa. Data belum tersimpan; muat ulang halaman lalu simpan lagi.', 'data'];
     } else {
         try {
             $d = (new PendaftarData($koneksi))->ubah($id_user, $_POST);
             $sesiPendaftar->perbarui($d);
-            $_SESSION['_psb_portal_pesan'] = 'Data Diri berhasil diperbarui!';
-            header('Location: portal_pendaftar.php');
+            $_SESSION['_psb_portal_pesan'] = 'Data diri berhasil diperbarui.';
+            $_SESSION['_psb_portal_bagian'] = 'data';
+            header('Location: portal_pendaftar.php#data');
             exit;
         } catch (PsbException $exception) {
-            $pesanPortal = $exception->getMessage() . ($exception->errors() === [] ? '' : ' ' . implode(' ', $exception->errors()));
+            $galatUbah = $exception->errors();
+            $kiriman = array_map(static fn (mixed $v): string => is_scalar($v) ? (string) $v : '', $_POST);
+            // Buka bagian yang memuat galat pertama (isian tersembunyi bisa berisi data lama tidak sah).
+            foreach ($bagianIsian as $kunci => $isian) {
+                if (array_intersect($isian, array_keys($galatUbah)) !== []) {
+                    $bagianUbah = $kunci;
+                    break;
+                }
+            }
+            $pesanPortal = ['danger', $exception->getMessage() . ($galatUbah === [] ? '' : ' ' . implode(' ', $galatUbah)), 'data'];
         }
     }
 }
 if ($pesanPortal === null && isset($_SESSION['_psb_portal_pesan'])) {
-    $pesanPortal = (string) $_SESSION['_psb_portal_pesan'];
-    unset($_SESSION['_psb_portal_pesan']);
+    $teks = (string) $_SESSION['_psb_portal_pesan'];
+    $bagianPesan = (string) ($_SESSION['_psb_portal_bagian'] ?? 'status');
+    $pesanPortal = [str_contains($teks, 'Belum tersimpan') || str_contains($teks, 'kedaluwarsa') || str_contains($teks, 'terlalu besar') || str_starts_with($teks, 'Pilih') ? 'warn' : 'ok', $teks, $bagianPesan];
 }
-
-include 'header.php';
-if ($pesanPortal !== null) {
-    // Pesan tetap berupa kotak alert seperti sebelumnya; teks di-encode JSON.
-    echo '<script>alert(' . json_encode($pesanPortal, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) . ');</script>';
-}
+$hasilBerkas = is_array($_SESSION['_psb_berkas_hasil'] ?? null) ? $_SESSION['_psb_berkas_hasil'] : [];
+unset($_SESSION['_psb_portal_pesan'], $_SESSION['_psb_portal_bagian'], $_SESSION['_psb_berkas_hasil']);
 
 // ==========================================
-// LOGIKA PROGRESS BAR (VISUAL ALUR)
+// STATUS DAN TAHAPAN
 // ==========================================
-// Cek berkas wajib (KTP ortu, KK, Akta)
-$berkas_lengkap = (!empty($d['file_ktp']) && !empty($d['file_kk']) && !empty($d['file_akta']));
-$status_psb = $d['status']; // 'Baru', 'Diterima', 'Cadangan', 'Ditolak'
+$wajib = ['file_kk' => 'Kartu Keluarga', 'file_akta' => 'Akta kelahiran', 'file_ktp' => 'KTP orang tua'];
+$opsional = ['file_ijazah' => ['Ijazah / SKL', 'Boleh menyusul'], 'file_nilai' => ['Rapor / nilai akhir', ''], 'file_prestasi' => ['Sertifikat prestasi', '']];
+$kurang = array_values(array_filter($wajib, static fn (string $l, string $k): bool => empty($d[$k]), ARRAY_FILTER_USE_BOTH));
+$berkas_lengkap = $kurang === [];
+$status_psb = (string) $d['status'];
+$tahap = [
+    ['Isi data', 'is-selesai'],
+    ['Unggah berkas', $berkas_lengkap ? 'is-selesai' : 'kini'],
+    ['Verifikasi', in_array($status_psb, ['Diterima', 'Ditolak', 'Cadangan', 'Dimigrasi'], true) ? 'is-selesai' : ($berkas_lengkap ? 'kini' : '')],
+    ['Hasil seleksi', match ($status_psb) { 'Diterima', 'Dimigrasi' => 'is-selesai', 'Ditolak' => 'is-gagal', 'Cadangan' => 'kini', default => '' }],
+    ['Daftar ulang', $status_psb === 'Dimigrasi' ? 'is-selesai' : ($status_psb === 'Diterima' ? 'kini' : '')],
+];
+$daftarKurang = static function (array $label): string {
+    return count($label) === 1 ? $label[0] : implode(', ', array_slice($label, 0, -1)) . ' dan ' . end($label);
+};
+[$badgeJenis, $badgeTeks, $langkahTeks, $langkahTombol] = match (true) {
+    $status_psb === 'Ditolak' => ['danger', 'Tidak diterima', 'Mohon maaf, Anda dinyatakan tidak lulus seleksi. Hubungi panitia PSB bila ada pertanyaan.', null],
+    $status_psb === 'Cadangan' => ['warn', 'Cadangan', 'Status Anda Cadangan. Harap menunggu informasi lebih lanjut dari panitia.', null],
+    $status_psb === 'Dimigrasi' => ['ok', 'Sudah daftar ulang', 'Data Anda sudah dipindahkan ke data santri pesantren.', null],
+    $status_psb === 'Diterima' => ['ok', 'Diterima', 'Selamat! Anda dinyatakan diterima. Lanjutkan dengan rincian pembiayaan daftar ulang.', ['Buka pembiayaan', app_url('/biaya_psb.php')]],
+    !$berkas_lengkap => ['warn', 'Belum lengkap', 'Unggah ' . count($kurang) . ' berkas wajib lagi: ' . $daftarKurang($kurang) . '.', ['Unggah berkas', '#berkas']],
+    default => ['info', 'Diperiksa', 'Data dan berkas Anda sedang diperiksa panitia. Hasil seleksi akan tampil di halaman ini.', null],
+};
 
-$step1 = "completed"; // Step 1: Selalu selesai
-$step2 = $berkas_lengkap ? "completed" : "active";
+$e = static fn (mixed $v): string => Kerangka::e($v);
+$nilai = static fn (string $k): string => array_key_exists($k, $kiriman) ? $kiriman[$k] : (string) ($d[$k] ?? '');
+$galat = static fn (string $k): string => isset($galatUbah[$k]) ? '<small class="s-error">' . Kerangka::e($galatUbah[$k]) . '</small>' : '';
+$tgl = strtotime((string) $d['tgl_lahir']);
+$nilaiTampil = static fn (mixed $v): string => trim((string) $v) === '' ? '—' : Kerangka::e($v);
 
-$step3 = "";
-if($status_psb == 'Diterima' || $status_psb == 'Ditolak' || $status_psb == 'Cadangan'){
-    $step3 = "completed";
-} elseif ($berkas_lengkap && $status_psb == 'Baru') {
-    $step3 = "active";
-}
-
-$step4 = "";
-if($status_psb == 'Diterima'){
-    $step4 = "completed";
-} elseif ($status_psb == 'Ditolak'){
-    $step4 = "failed";
-} elseif ($status_psb == 'Cadangan'){
-    $step4 = "active"; 
-}
-
-$step5 = "";
-if($status_psb == 'Diterima'){
-    $step5 = "active";
-}
-?>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<style>
-    /* CSS Kustom Untuk Tab Modern */
-    .custom-tabs { background-color: #f1f3f5; border-radius: 50px; padding: 6px; margin-bottom: 25px; }
-    .custom-tabs .nav-link { border-radius: 50px; color: #6c757d; font-weight: 600; padding: 12px 25px; border: none; transition: all 0.3s ease; }
-    .custom-tabs .nav-link:hover:not(.active) { background-color: #e9ecef; color: #495057; }
-    .custom-tabs .nav-link.active { background-color: #198754; color: #ffffff !important; box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3); }
-    
-    .upload-card { border: 2px dashed #ced4da; border-radius: 15px; padding: 25px 15px; text-align: center; background-color: #ffffff; transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
-    .upload-card:hover { border-color: #198754; background-color: #f8fff9; }
-    .upload-icon { font-size: 2.5rem; color: #adb5bd; margin-bottom: 15px; transition: color 0.3s; }
-    .upload-card:hover .upload-icon { color: #198754; }
-    
-    .section-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; color: #198754; font-weight: 700; margin-top: 1.5rem; margin-bottom: 1rem; border-bottom: 2px solid #e9ecef; padding-bottom: 0.5rem; }
-
-    /* CSS PROGRESS BAR (STEPPER) */
-    .stepper-wrapper { display: flex; justify-content: space-between; align-items: flex-start; position: relative; margin-bottom: 20px; padding: 0 10px; }
-    .stepper-item { flex: 1; text-align: center; position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
-    
-    /* Garis Penghubung Kiri & Kanan */
-    .stepper-item::before, .stepper-item::after { content: ''; position: absolute; top: 18px; width: 100%; height: 4px; background: #dee2e6; z-index: -1; }
-    .stepper-item::before { left: -50%; }
-    .stepper-item::after { left: 50%; }
-    .stepper-item:first-child::before { display: none; }
-    .stepper-item:last-child::after { display: none; }
-
-    /* Status Selesai (Hijau) */
-    .stepper-item.completed::before, .stepper-item.completed::after { background: #198754; }
-    /* Status Aktif / Sedang Berjalan (Hijau di Kiri, Abu di Kanan) */
-    .stepper-item.active::before { background: #198754; }
-    .stepper-item.active::after { background: #dee2e6; }
-    
-    /* Bulatan Angka */
-    .step-counter { width: 40px; height: 40px; border-radius: 50%; background: #dee2e6; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1rem; margin-bottom: 8px; transition: 0.3s; }
-    .stepper-item.completed .step-counter { background: #198754; }
-    .stepper-item.active .step-counter { background: #ffc107; color: #000; box-shadow: 0 0 0 5px rgba(255,193,7,0.3); }
-    .stepper-item.failed .step-counter { background: #dc3545; box-shadow: 0 0 0 5px rgba(220,53,69,0.3); }
-    
-    /* Teks Label */
-    .step-name { font-size: 0.75rem; font-weight: 700; color: #adb5bd; line-height: 1.2; }
-    .stepper-item.completed .step-name { color: #198754; }
-    .stepper-item.active .step-name { color: #b38600; }
-    .stepper-item.failed .step-name { color: #dc3545; }
-    
-    @media (max-width: 768px) { .step-name { font-size: 0.65rem; } .step-counter { width: 30px; height: 30px; font-size: 0.85rem; top: 5px; } .stepper-item::before, .stepper-item::after { top: 13px; } }
-</style>
-
-<div class="container py-5 mt-5">
-    <div class="row">
-        <div class="col-lg-4 mb-4">
-            <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 100px; z-index: 1;">
-                <div class="card-body p-4 text-center">
-                    <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
-                        <i class="fas fa-user-graduate fa-3x text-success"></i>
-                    </div>
-                    <h5 class="fw-bold mb-1"><?php echo ah_e($d['nama_lengkap']); ?></h5>
-                    <span class="badge bg-light text-success border border-success mb-3 px-3 py-2 rounded-pill"><?php echo ah_e($d['no_pendaftaran']); ?></span>
-                    <hr class="text-muted">
-                    <div class="text-start small">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Status Akun</span>
-                            <span class="fw-bold text-primary"><i class="fas fa-check-circle"></i> Terdaftar</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Jenjang Pilihan</span>
-                            <span class="fw-bold text-dark"><?php echo ah_e($d['jenjang_tujuan']); ?></span>
-                        </div>
-                    </div>
-                    
-                    <a href="cetak_bukti.php?noreg=<?php echo ah_e(rawurlencode((string) $d['no_pendaftaran'])); ?>" target="_blank" class="btn btn-warning w-100 mt-4 fw-bold shadow-sm rounded-pill py-2">
-                        <i class="fas fa-print me-2"></i> Cetak Bukti Pendaftaran
-                    </a>
-                    
-                    <a href="biaya_psb.php?cari=<?php echo ah_e(rawurlencode((string) $d['no_pendaftaran'])); ?>" class="btn btn-primary w-100 mt-3 fw-bold shadow-sm rounded-pill py-2">
-                        <i class="fas fa-file-invoice-dollar me-2"></i> Rincian & Pembayaran
-                    </a>
-
-                    <form action="logout_pendaftar.php" method="POST">
-                        <?php echo Csrf::input(); ?>
-                        <button type="submit" class="btn btn-outline-danger w-100 mt-3 fw-bold rounded-pill py-2">
-                            <i class="fas fa-sign-out-alt me-2"></i> Keluar Portal
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-8">
-            
-            <div class="card border-0 shadow-sm rounded-4 mb-4">
-                <div class="card-body p-4 text-center">
-                    <h6 class="fw-bold text-success mb-4"><i class="fas fa-route me-2"></i>Status & Tahapan Pendaftaran</h6>
-                    
-                    <div class="stepper-wrapper">
-                        <div class="stepper-item <?php echo $step1; ?>">
-                            <div class="step-counter"><i class="fas fa-pen"></i></div>
-                            <div class="step-name">Isi Data</div>
-                        </div>
-                        <div class="stepper-item <?php echo $step2; ?>">
-                            <div class="step-counter"><i class="fas fa-folder-open"></i></div>
-                            <div class="step-name">Upload<br>Berkas</div>
-                        </div>
-                        <div class="stepper-item <?php echo $step3; ?>">
-                            <div class="step-counter"><i class="fas fa-search"></i></div>
-                            <div class="step-name">Proses<br>Verifikasi</div>
-                        </div>
-                        <div class="stepper-item <?php echo $step4; ?>">
-                            <div class="step-counter">
-                                <?php echo ($step4 == 'failed') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-clipboard-check"></i>'; ?>
-                            </div>
-                            <div class="step-name">Hasil<br>Seleksi</div>
-                        </div>
-                        <div class="stepper-item <?php echo $step5; ?>">
-                            <div class="step-counter"><i class="fas fa-handshake"></i></div>
-                            <div class="step-name">Daftar<br>Ulang</div>
-                        </div>
-                    </div>
-                    
-                    <?php if($status_psb == 'Cadangan'){ ?>
-                        <div class="alert alert-warning mt-3 mb-0 small"><strong>Info:</strong> Status Anda saat ini <b>Cadangan</b>. Harap menunggu informasi lebih lanjut.</div>
-                    <?php } elseif($status_psb == 'Ditolak'){ ?>
-                        <div class="alert alert-danger mt-3 mb-0 small"><strong>Info:</strong> Mohon maaf, Anda dinyatakan <b>Tidak Lulus Seleksi</b>.</div>
-                    <?php } elseif($status_psb == 'Diterima'){ ?>
-                        <div class="alert alert-success mt-3 mb-0 small"><strong>Selamat!</strong> Anda dinyatakan <b>Diterima</b>. Silakan ikuti instruksi Daftar Ulang di pesantren.</div>
-                    <?php } elseif($status_psb == 'Baru' && !$berkas_lengkap){ ?>
-                        <div class="alert alert-info mt-3 mb-0 small"><strong>Tindakan:</strong> Silakan lengkapi dokumen di tab <b>Upload Berkas</b> agar data Anda bisa diverifikasi panitia.</div>
-                    <?php } else { ?>
-                        <div class="alert alert-primary mt-3 mb-0 small"><i class="fas fa-spinner fa-spin me-1"></i> Data dan berkas Anda sedang <b>diperiksa oleh panitia</b>. Harap bersabar.</div>
-                    <?php } ?>
-                </div>
-            </div>
-
-            <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-body p-4 p-md-5">
-                    
-                    <ul class="nav nav-pills nav-fill custom-tabs" id="portalTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="data-tab" data-bs-toggle="tab" data-bs-target="#tab-data" type="button" role="tab">
-                                <i class="fas fa-user-edit me-2"></i> Biodata Pendaftar
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="berkas-tab" data-bs-toggle="tab" data-bs-target="#tab-berkas" type="button" role="tab">
-                                <i class="fas fa-folder-open me-2"></i> Dokumen & Berkas
-                            </button>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content" id="portalTabsContent">
-                        
-                        <div class="tab-pane fade show active" id="tab-data" role="tabpanel">
-                            
-                            <form action="" method="POST">
-                                <?php echo Csrf::input(); ?>
-                                <div class="section-title"><i class="fas fa-id-card me-2"></i>Identitas Diri</div>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold text-muted">NISN (Username Login)</label>
-                                        <input type="text" class="form-control bg-light text-muted" value="<?php echo ah_e($d['nisn']); ?>" readonly>
-                                        <small class="text-danger" style="font-size: 11px;"><i class="fas fa-lock me-1"></i>NISN tidak dapat diubah secara mandiri.</small>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">NIK KTP/KK</label>
-                                        <input type="number" name="nik" class="form-control" value="<?php echo ah_e($d['nik']); ?>" required>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label class="form-label small fw-bold">Nama Lengkap (Sesuai Ijazah)</label>
-                                        <input type="text" name="nama_lengkap" class="form-control" value="<?php echo ah_e($d['nama_lengkap']); ?>" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Tempat Lahir</label>
-                                        <input type="text" name="tempat_lahir" class="form-control" value="<?php echo ah_e($d['tempat_lahir']); ?>" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Tanggal Lahir</label>
-                                        <input type="text" name="tgl_lahir" id="inputTanggal" class="form-control bg-white" value="<?php echo ah_e($d['tgl_lahir']); ?>" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Jenis Kelamin</label>
-                                        <select name="jenis_kelamin" class="form-select" required>
-                                            <option value="L" <?php echo ($d['jenis_kelamin']=='L')?'selected':''; ?>>Laki-laki</option>
-                                            <option value="P" <?php echo ($d['jenis_kelamin']=='P')?'selected':''; ?>>Perempuan</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Jenjang Tujuan</label>
-                                        <select name="jenjang_tujuan" class="form-select" required>
-                                            <option value="RA Terpadu Al Hasan" <?php echo ($d['jenjang_tujuan']=='RA Terpadu Al Hasan')?'selected':''; ?>>RA Terpadu Al Hasan</option>
-                                            <option value="SMP Terpadu Al Hasan" <?php echo ($d['jenjang_tujuan']=='SMP Terpadu Al Hasan')?'selected':''; ?>>SMP Terpadu Al Hasan</option>
-                                            <option value="SMK Terpadu Al Hasan" <?php echo ($d['jenjang_tujuan']=='SMK Terpadu Al Hasan')?'selected':''; ?>>SMK Terpadu Al Hasan</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="section-title mt-4"><i class="fas fa-map-marker-alt me-2"></i>Domisili & Asal Sekolah</div>
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <div class="p-3 bg-light rounded-3 border mb-2 d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <p class="mb-0 small fw-bold text-secondary">Wilayah Terdaftar Saat Ini:</p>
-                                                <p class="mb-0 fw-bold text-dark">Ds. <?php echo ah_e($d['desa']); ?>, Kec. <?php echo ah_e($d['kecamatan']); ?>, <?php echo ah_e($d['kab_kota']); ?>, <?php echo ah_e($d['provinsi']); ?></p>
-                                            </div>
-                                        </div>
-                                        <div class="form-check form-switch mb-3">
-                                            <input class="form-check-input border-success" type="checkbox" id="toggleWilayah" onchange="showEditWilayah()">
-                                            <label class="form-check-label small fw-bold text-success" for="toggleWilayah">Pindah / Ubah Wilayah Provinsi & Kabupaten.</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 m-0 p-0" id="editWilayahBox" style="display: none;">
-                                        <div class="row g-2 px-2 pb-3">
-                                            <div class="col-md-6">
-                                                <select id="provinsi" class="form-select form-select-sm">
-                                                    <option value="">Pilih Provinsi Baru...</option>
-                                                </select>
-                                                <input type="hidden" name="nama_provinsi" id="nama_provinsi">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <select id="kabupaten" class="form-select form-select-sm" disabled>
-                                                    <option value="">Pilih Kabupaten...</option>
-                                                </select>
-                                                <input type="hidden" name="nama_kabupaten" id="nama_kabupaten">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <select id="kecamatan" class="form-select form-select-sm" disabled>
-                                                    <option value="">Pilih Kecamatan...</option>
-                                                </select>
-                                                <input type="hidden" name="nama_kecamatan" id="nama_kecamatan">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <select id="desa" class="form-select form-select-sm" disabled>
-                                                    <option value="">Pilih Desa...</option>
-                                                </select>
-                                                <input type="hidden" name="nama_desa" id="nama_desa">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-12">
-                                        <label class="form-label small fw-bold">Detail Jalan / Gg / RT / RW</label>
-                                        <textarea name="alamat_jalan" class="form-control" rows="2" required><?php echo ah_e($d['alamat_jalan']); ?></textarea>
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label small fw-bold">Asal Sekolah</label>
-                                        <input type="text" name="sekolah_asal" class="form-control" value="<?php echo ah_e($d['sekolah_asal']); ?>" required>
-                                    </div>
-                                </div>
-
-                                <div class="section-title mt-4"><i class="fas fa-users me-2"></i>Data Orang Tua Wali</div>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Nama Ayah</label>
-                                        <input type="text" name="nama_ayah" class="form-control" value="<?php echo ah_e($d['nama_ayah']); ?>" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-bold">Nama Ibu</label>
-                                        <input type="text" name="nama_ibu" class="form-control" value="<?php echo ah_e($d['nama_ibu']); ?>" required>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label class="form-label small fw-bold">No WhatsApp Wali (Password Login)</label>
-                                        <input type="number" name="no_hp_wali" class="form-control" value="<?php echo ah_e($d['no_hp_wali']); ?>" required>
-                                        <small class="text-danger" style="font-size: 11px;"><i class="fas fa-exclamation-circle me-1"></i>Jika diubah, password untuk login ke portal ini akan ikut berubah menjadi nomor yang baru.</small>
-                                    </div>
-                                </div>
-
-                                <div class="mt-5 pt-3 border-top">
-                                    <button type="submit" name="update_data" class="btn btn-success w-100 fw-bold py-3 rounded-pill shadow-sm">
-                                        <i class="fas fa-save me-2"></i> SIMPAN PERUBAHAN BIODATA
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        
-                        <div class="tab-pane fade" id="tab-berkas" role="tabpanel">
-                            
-                            <div class="alert alert-info border-0 rounded-4 small mb-4">
-                                <i class="fas fa-info-circle me-1"></i> Format file yang diperbolehkan: <strong>JPG, PNG, PDF</strong> (Maks 2MB).<br>
-                                <span class="text-muted">Mengunggah file baru pada slot yang sama akan otomatis menggantikan dokumen lama Anda.</span>
-                            </div>
-
-                            <form action="proses_upload_berkas.php" method="POST" enctype="multipart/form-data">
-                                <?php echo Csrf::input(); ?>
-                                <div class="row g-4">
-                                    
-                                    <div class="col-md-6">
-                                        <div class="upload-card">
-                                            <i class="fas fa-id-card upload-icon"></i>
-                                            <h6 class="fw-bold mb-2">KTP Orang Tua</h6>
-                                            <?php if($d['file_ktp']): ?>
-                                                <div class="mb-3"><span class="badge bg-success rounded-pill px-3"><i class="fas fa-check-circle me-1"></i> Terupload</span></div>
-                                            <?php else: ?>
-                                                <div class="mb-3"><span class="badge bg-danger rounded-pill px-3"><i class="fas fa-times-circle me-1"></i> Belum Ada</span></div>
-                                            <?php endif; ?>
-                                            <input type="file" name="file_ktp" class="form-control form-control-sm">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="upload-card">
-                                            <i class="fas fa-users upload-icon"></i>
-                                            <h6 class="fw-bold mb-2">Kartu Keluarga (KK)</h6>
-                                            <?php if($d['file_kk']): ?>
-                                                <div class="mb-3"><span class="badge bg-success rounded-pill px-3"><i class="fas fa-check-circle me-1"></i> Terupload</span></div>
-                                            <?php else: ?>
-                                                <div class="mb-3"><span class="badge bg-danger rounded-pill px-3"><i class="fas fa-times-circle me-1"></i> Belum Ada</span></div>
-                                            <?php endif; ?>
-                                            <input type="file" name="file_kk" class="form-control form-control-sm">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="upload-card">
-                                            <i class="fas fa-baby upload-icon"></i>
-                                            <h6 class="fw-bold mb-2">Akta Kelahiran</h6>
-                                            <?php if($d['file_akta']): ?>
-                                                <div class="mb-3"><span class="badge bg-success rounded-pill px-3"><i class="fas fa-check-circle me-1"></i> Terupload</span></div>
-                                            <?php else: ?>
-                                                <div class="mb-3"><span class="badge bg-danger rounded-pill px-3"><i class="fas fa-times-circle me-1"></i> Belum Ada</span></div>
-                                            <?php endif; ?>
-                                            <input type="file" name="file_akta" class="form-control form-control-sm">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="upload-card">
-                                            <i class="fas fa-graduation-cap upload-icon"></i>
-                                            <h6 class="fw-bold mb-2">Ijazah / SKL</h6>
-                                            <?php if($d['file_ijazah']): ?>
-                                                <div class="mb-3"><span class="badge bg-success rounded-pill px-3"><i class="fas fa-check-circle me-1"></i> Terupload</span></div>
-                                            <?php else: ?>
-                                                <div class="mb-3"><span class="badge bg-danger rounded-pill px-3"><i class="fas fa-times-circle me-1"></i> Belum Ada</span></div>
-                                            <?php endif; ?>
-                                            <input type="file" name="file_ijazah" class="form-control form-control-sm">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="upload-card">
-                                            <i class="fas fa-file-alt upload-icon"></i>
-                                            <h6 class="fw-bold mb-2">Rapor / Nilai Akhir</h6>
-                                            <?php if($d['file_nilai']): ?>
-                                                <div class="mb-3"><span class="badge bg-success rounded-pill px-3"><i class="fas fa-check-circle me-1"></i> Terupload</span></div>
-                                            <?php else: ?>
-                                                <div class="mb-3"><span class="badge bg-danger rounded-pill px-3"><i class="fas fa-times-circle me-1"></i> Belum Ada</span></div>
-                                            <?php endif; ?>
-                                            <input type="file" name="file_nilai" class="form-control form-control-sm">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="upload-card">
-                                            <i class="fas fa-trophy upload-icon"></i>
-                                            <h6 class="fw-bold mb-2">Sertifikat Prestasi</h6>
-                                            <?php if($d['file_prestasi']): ?>
-                                                <div class="mb-3"><span class="badge bg-success rounded-pill px-3"><i class="fas fa-check-circle me-1"></i> Terupload</span></div>
-                                            <?php else: ?>
-                                                <div class="mb-3"><span class="badge bg-secondary rounded-pill px-3">Opsional</span></div>
-                                            <?php endif; ?>
-                                            <input type="file" name="file_prestasi" class="form-control form-control-sm">
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="mt-5 pt-3 border-top">
-                                    <button type="submit" name="upload" class="btn btn-success w-100 fw-bold py-3 rounded-pill shadow-sm">
-                                        <i class="fas fa-cloud-upload-alt me-2"></i> UNGGAH & SIMPAN BERKAS
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<?php include 'footer.php'; ?>
-
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        flatpickr("#inputTanggal", { altInput: true, altFormat: "d-m-Y", dateFormat: "Y-m-d", locale: "id", maxDate: "today" });
-    });
-
-    function showEditWilayah() {
-        let box = document.getElementById('editWilayahBox');
-        let prov = document.getElementById('provinsi');
-        if(document.getElementById('toggleWilayah').checked) {
-            box.style.display = 'block'; prov.setAttribute('required', 'required');
-            if(prov.options.length <= 1) {
-                prov.innerHTML = '<option>Loading...</option>';
-                fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`).then(res => res.json()).then(provinces => {
-                    let options = '<option value="">Pilih Provinsi Baru...</option>';
-                    provinces.forEach(p => options += `<option value="${p.id}" data-name="${p.name}">${p.name}</option>`);
-                    prov.innerHTML = options;
-                });
-            }
-        } else {
-            box.style.display = 'none'; prov.removeAttribute('required');
-            document.getElementById('nama_provinsi').value = "";
+/** Isian tersembunyi untuk biodata di luar bagian yang sedang diubah. */
+$tersembunyi = static function (string $bagian) use ($bagianIsian, $d, $e): string {
+    $html = '';
+    foreach (['nama_lengkap', 'nik', 'tempat_lahir', 'tgl_lahir', 'jenis_kelamin', 'jenjang_tujuan', 'sekolah_asal', 'alamat_jalan', 'nama_ayah', 'nama_ibu', 'no_hp_wali'] as $k) {
+        if (!in_array($k, $bagianIsian[$bagian], true)) {
+            $html .= '<input type="hidden" name="' . $e($k) . '" value="' . $e($d[$k] ?? '') . '">';
         }
     }
 
-    document.getElementById('provinsi').addEventListener('change', function() {
-        document.getElementById('nama_provinsi').value = this.options[this.selectedIndex].getAttribute('data-name');
-        let id_prov = this.value; let kab = document.getElementById('kabupaten');
-        document.getElementById('kecamatan').innerHTML = '<option value="">Pilih Kecamatan...</option>'; document.getElementById('kecamatan').disabled = true;
-        document.getElementById('desa').innerHTML = '<option value="">Pilih Desa...</option>'; document.getElementById('desa').disabled = true;
-        if(id_prov){
-            kab.disabled = false; kab.innerHTML = '<option>Loading...</option>';
-            fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id_prov}.json`).then(res => res.json()).then(regencies => {
-                let options = '<option value="">Pilih Kabupaten / Kota...</option>';
-                regencies.forEach(r => options += `<option value="${r.id}" data-name="${r.name}">${r.name}</option>`);
-                kab.innerHTML = options;
-            });
-        }
-    });
+    return $html;
+};
+$kepalaForm = static fn (string $bagian): string => '<input type="hidden" name="update_data" value="1"><input type="hidden" name="bagian_ubah" value="' . $bagian . '">';
+$pesanDi = static function (string $bagian) use ($pesanPortal, $e): string {
+    if ($pesanPortal === null || $pesanPortal[2] !== $bagian) {
+        return '';
+    }
+    [$jenis, $teks] = $pesanPortal;
+    $judul = ['ok' => 'Berhasil', 'warn' => 'Perhatian', 'danger' => 'Belum tersimpan'][$jenis] ?? 'Informasi';
 
-    document.getElementById('kabupaten').addEventListener('change', function() {
-        document.getElementById('nama_kabupaten').value = this.options[this.selectedIndex].getAttribute('data-name');
-        let id_kab = this.value; let kec = document.getElementById('kecamatan');
-        document.getElementById('desa').innerHTML = '<option value="">Pilih Desa...</option>'; document.getElementById('desa').disabled = true;
-        if(id_kab){
-            kec.disabled = false; kec.innerHTML = '<option>Loading...</option>';
-            fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${id_kab}.json`).then(res => res.json()).then(districts => {
-                let options = '<option value="">Pilih Kecamatan...</option>';
-                districts.forEach(d => options += `<option value="${d.id}" data-name="${d.name}">${d.name}</option>`);
-                kec.innerHTML = options;
-            });
-        }
-    });
+    return '<div class="ah-note ah-note--' . $jenis . '" role="' . ($jenis === 'danger' ? 'alert' : 'status') . '" data-s-toast="' . $jenis . '" data-s-toast-teks="' . $e($teks) . '">'
+        . '<div><strong class="ah-note__title">' . $judul . '</strong><span>' . $e($teks) . '</span></div></div>';
+};
+$bagianAwal = $bagianUbah !== null ? 'data' : ($pesanPortal[2] ?? 'status');
 
-    document.getElementById('kecamatan').addEventListener('change', function() {
-        document.getElementById('nama_kecamatan').value = this.options[this.selectedIndex].getAttribute('data-name');
-        let id_kec = this.value; let desa = document.getElementById('desa');
-        if(id_kec){
-            desa.disabled = false; desa.innerHTML = '<option>Loading...</option>';
-            fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${id_kec}.json`).then(res => res.json()).then(villages => {
-                let options = '<option value="">Pilih Desa / Kelurahan...</option>';
-                villages.forEach(v => options += `<option value="${v.id}" data-name="${v.name}">${v.name}</option>`);
-                desa.innerHTML = options;
-            });
-        }
-    });
+Kerangka::bukaPortal($d, 'status', 'Status pendaftaran', true);
+?>
+<div data-s-bagian-awal="<?= $e($bagianAwal) ?>" hidden></div>
 
-    document.getElementById('desa').addEventListener('change', function() {
-        document.getElementById('nama_desa').value = this.options[this.selectedIndex].getAttribute('data-name');
-    });
-</script>
+<section class="s-portal-sec" id="status" aria-labelledby="judul-status">
+    <h1 id="judul-status">Status pendaftaran</h1>
+    <p class="s-sub"><span class="s-mono"><?= $e($d['no_pendaftaran']) ?></span> · <?= $e($d['jenjang_tujuan']) ?></p>
+    <?= $pesanDi('status') ?>
+    <ol class="s-stepper s-stepper--tegak" aria-label="Tahapan pendaftaran">
+        <?php foreach ($tahap as [$label, $keadaan]): ?>
+            <li<?= $keadaan === 'kini' ? ' aria-current="step"' : ($keadaan !== '' ? ' class="' . $keadaan . '"' : '') ?>><span><?= $e($label) ?><?= $keadaan === 'is-selesai' ? '<span class="s-vh"> (selesai)</span>' : ($keadaan === 'kini' ? '<span class="s-vh"> (tahap sekarang)</span>' : ($keadaan === 'is-gagal' ? '<span class="s-vh"> (tidak lulus)</span>' : '')) ?></span></li>
+        <?php endforeach; ?>
+    </ol>
+    <section class="s-panel" aria-labelledby="judul-langkah">
+        <div class="s-panel__head"><h2 id="judul-langkah">Langkah berikutnya</h2><span class="ah-badge ah-badge--<?= $e($badgeJenis) ?>"><?= $e($badgeTeks) ?></span></div>
+        <p class="<?= $langkahTombol === null ? 'mb-0' : '' ?>"><?= $e($langkahTeks) ?></p>
+        <?php if ($langkahTombol !== null): ?>
+            <a class="s-btn s-btn--pri" href="<?= $e($langkahTombol[1]) ?>"<?= str_starts_with($langkahTombol[1], '#') ? ' data-s-bagian-ke' : '' ?>><?= $e($langkahTombol[0]) ?></a>
+        <?php endif; ?>
+    </section>
+    <div class="s-split" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));margin-top:1rem">
+        <section class="s-panel" aria-labelledby="judul-ringkasan">
+            <h2 id="judul-ringkasan" class="h6 fw-bold">Ringkasan</h2>
+            <dl class="s-dl">
+                <dt>Nama</dt><dd><?= $e($d['nama_lengkap']) ?></dd>
+                <dt>Jenjang</dt><dd><?= $e($d['jenjang_tujuan']) ?></dd>
+                <dt>Didaftar</dt><dd><?= $e(Kerangka::tanggal((string) ($d['tgl_daftar'] ?? '')) ?: '—') ?></dd>
+            </dl>
+            <p class="mt-3 mb-0"><a href="<?= $e(app_url('/cetak_bukti.php?noreg=' . rawurlencode((string) $d['no_pendaftaran']))) ?>" target="_blank" rel="noopener">Cetak bukti pendaftaran<span class="s-vh"> (tab baru)</span></a></p>
+        </section>
+        <section class="s-panel" aria-labelledby="judul-pembiayaan">
+            <h2 id="judul-pembiayaan" class="h6 fw-bold">Pembiayaan</h2>
+            <p>Rincian biaya daftar ulang, pilihan komponen, cara bayar, dan kwitansi.</p>
+            <a class="s-btn" href="<?= $e(app_url('/biaya_psb.php')) ?>">Rincian &amp; pembayaran</a>
+        </section>
+    </div>
+</section>
+
+<section class="s-portal-sec" id="data" aria-labelledby="judul-data">
+    <h1 id="judul-data">Data diri</h1>
+    <p class="s-sub">Periksa data Anda. Ubah per bagian bila ada yang keliru.</p>
+    <?= $pesanDi('data') ?>
+
+    <section class="s-panel" aria-labelledby="judul-calon">
+        <details class="s-ubah"<?= $bagianUbah === 'calon' ? ' open' : '' ?>>
+            <summary class="s-panel__head"><h2 id="judul-calon">Calon santri</h2><span class="s-btn s-btn--sm">Ubah<span class="s-vh"> data calon santri</span></span></summary>
+            <form class="s-ubah__form s-form s-form--2" method="POST" action="portal_pendaftar.php">
+                <?= Csrf::input() ?>
+                <?= $kepalaForm('calon') . $tersembunyi('calon') ?>
+                <div class="s-field s-field--penuh"><label class="s-label" for="u-nama">Nama lengkap <em>*</em></label><input class="s-input" id="u-nama" name="nama_lengkap" required maxlength="100" value="<?= $e($nilai('nama_lengkap')) ?>"><?= $galat('nama_lengkap') ?></div>
+                <div class="s-field"><label class="s-label" for="u-nisn">NISN</label><input class="s-input" id="u-nisn" value="<?= $e($d['nisn']) ?>" readonly aria-describedby="u-nisn-bantu"><small class="s-hint" id="u-nisn-bantu">NISN tidak dapat diubah. Hubungi panitia bila keliru.</small></div>
+                <div class="s-field"><label class="s-label" for="u-nik">NIK <em>*</em></label><input class="s-input" id="u-nik" name="nik" inputmode="numeric" pattern="[0-9]{1,20}" maxlength="20" required value="<?= $e($nilai('nik')) ?>"><?= $galat('nik') ?></div>
+                <div class="s-field"><label class="s-label" for="u-tempat">Tempat lahir <em>*</em></label><input class="s-input" id="u-tempat" name="tempat_lahir" required maxlength="50" value="<?= $e($nilai('tempat_lahir')) ?>"><?= $galat('tempat_lahir') ?></div>
+                <div class="s-field"><label class="s-label" for="u-tgl">Tanggal lahir <em>*</em></label><input class="s-input" id="u-tgl" name="tgl_lahir" type="date" max="<?= date('Y-m-d') ?>" required value="<?= $e($nilai('tgl_lahir')) ?>"><?= $galat('tgl_lahir') ?></div>
+                <div class="s-field s-field--penuh" role="radiogroup" aria-labelledby="u-jk-label">
+                    <span class="s-label" id="u-jk-label">Jenis kelamin <em>*</em></span>
+                    <div class="s-radios">
+                        <label><input type="radio" name="jenis_kelamin" value="L" required<?= $nilai('jenis_kelamin') === 'L' ? ' checked' : '' ?>> Laki-laki</label>
+                        <label><input type="radio" name="jenis_kelamin" value="P"<?= $nilai('jenis_kelamin') === 'P' ? ' checked' : '' ?>> Perempuan</label>
+                    </div><?= $galat('jenis_kelamin') ?>
+                </div>
+                <div class="s-field">
+                    <label class="s-label" for="u-jenjang">Jenjang tujuan <em>*</em></label>
+                    <select class="s-select" id="u-jenjang" name="jenjang_tujuan" required>
+                        <?php $jenjangKini = $nilai('jenjang_tujuan'); $tersimpan = (string) $d['jenjang_tujuan']; ?>
+                        <?php if (!isset(Jenjang::UNIT_AL_HASAN[$tersimpan]) && !isset(Jenjang::SEKOLAH_MITRA[$tersimpan])): ?>
+                            <option value="<?= $e($tersimpan) ?>" selected><?= $e($tersimpan) ?></option>
+                        <?php endif; ?>
+                        <?php foreach (['Unit Al Hasan' => Jenjang::UNIT_AL_HASAN, 'Sekolah Mitra' => Jenjang::SEKOLAH_MITRA] as $grup => $pilihan): ?>
+                            <optgroup label="<?= $e($grup) ?>">
+                                <?php foreach ($pilihan as $v => $l): $boleh = Jenjang::galat($v, $tersimpan) === null; ?>
+                                    <option value="<?= $e($v) ?>"<?= $jenjangKini === $v ? ' selected' : '' ?><?= $boleh ? '' : ' disabled' ?>><?= $e($l) ?><?= $boleh ? '' : ' (belum dibuka)' ?></option>
+                                <?php endforeach; ?>
+                            </optgroup>
+                        <?php endforeach; ?>
+                    </select><?= $galat('jenjang_tujuan') ?>
+                </div>
+                <div class="s-field"><label class="s-label" for="u-sekolah">Sekolah asal <em>*</em></label><input class="s-input" id="u-sekolah" name="sekolah_asal" required maxlength="100" value="<?= $e($nilai('sekolah_asal')) ?>"><?= $galat('sekolah_asal') ?></div>
+                <div class="s-acts s-field--penuh"><button class="s-btn s-btn--pri" type="submit" data-s-memproses="Menyimpan…">Simpan data calon santri</button></div>
+            </form>
+        </details>
+        <dl class="s-dl">
+            <dt>Nama</dt><dd><?= $nilaiTampil($d['nama_lengkap']) ?></dd>
+            <dt>NISN</dt><dd><span class="s-mono"><?= $nilaiTampil($d['nisn']) ?></span> <small class="s-muted">(tidak dapat diubah)</small></dd>
+            <dt>NIK</dt><dd class="s-mono"><?= $nilaiTampil($d['nik']) ?></dd>
+            <dt>Tempat, tanggal lahir</dt><dd><?= $nilaiTampil($d['tempat_lahir']) ?>, <?= $tgl ? $e(Kerangka::tanggal((string) $d['tgl_lahir'])) : $nilaiTampil($d['tgl_lahir']) ?></dd>
+            <dt>Jenis kelamin</dt><dd><?= $d['jenis_kelamin'] === 'P' ? 'Perempuan' : 'Laki-laki' ?></dd>
+            <dt>Jenjang tujuan</dt><dd><?= $nilaiTampil($d['jenjang_tujuan']) ?></dd>
+            <dt>Sekolah asal</dt><dd><?= $nilaiTampil($d['sekolah_asal']) ?></dd>
+        </dl>
+    </section>
+
+    <section class="s-panel" aria-labelledby="judul-alamat">
+        <details class="s-ubah"<?= $bagianUbah === 'alamat' ? ' open' : '' ?>>
+            <summary class="s-panel__head"><h2 id="judul-alamat">Alamat</h2><span class="s-btn s-btn--sm">Ubah<span class="s-vh"> alamat</span></span></summary>
+            <form class="s-ubah__form s-form" method="POST" action="portal_pendaftar.php">
+                <?= Csrf::input() ?>
+                <?= $kepalaForm('alamat') . $tersembunyi('alamat') ?>
+                <div class="s-field"><label class="s-label" for="u-jalan">Jalan, dusun, RT/RW <em>*</em></label><textarea class="s-textarea" id="u-jalan" name="alamat_jalan" rows="2" required maxlength="1000"><?= $e($nilai('alamat_jalan')) ?></textarea><?= $galat('alamat_jalan') ?></div>
+                <div class="s-form" data-s-wilayah data-s-wilayah-tunda>
+                    <label class="s-check s-js-only" for="u-ganti-wilayah"><input type="checkbox" id="u-ganti-wilayah" data-s-wilayah-aktifkan> <span>Pindah wilayah (provinsi, kabupaten/kota, kecamatan, desa)</span></label>
+                    <div class="s-form s-form--2" data-s-wilayah-pilih hidden>
+                        <div class="s-field"><label class="s-label" for="provinsi">Provinsi</label><select class="s-select" id="provinsi"><option value="">Pilih provinsi…</option></select></div>
+                        <div class="s-field"><label class="s-label" for="kabupaten">Kabupaten/kota</label><select class="s-select" id="kabupaten" disabled><option value="">Pilih kabupaten/kota…</option></select></div>
+                        <div class="s-field"><label class="s-label" for="kecamatan">Kecamatan</label><select class="s-select" id="kecamatan" disabled><option value="">Pilih kecamatan…</option></select></div>
+                        <div class="s-field"><label class="s-label" for="desa">Desa/kelurahan</label><select class="s-select" id="desa" disabled><option value="">Pilih desa/kelurahan…</option></select></div>
+                        <div class="ah-note ah-note--warn s-field--penuh" data-s-wilayah-pesan hidden role="alert"><div><strong class="ah-note__title">Daftar wilayah gagal dimuat</strong><span>Coba lagi atau ketik nama wilayah sendiri.</span>
+                            <div class="s-acts mt-2"><button class="s-btn s-btn--sm" type="button" data-s-wilayah-ulang>Coba lagi</button><button class="s-btn s-btn--sm" type="button" data-s-wilayah-ketik>Ketik manual</button></div></div></div>
+                    </div>
+                    <div class="s-form s-form--2" data-s-wilayah-manual>
+                        <p class="s-hint s-field--penuh mb-0">Isi hanya bila pindah wilayah; kosongkan untuk mempertahankan wilayah sekarang.</p>
+                        <?php foreach (['nama_provinsi' => 'Provinsi', 'nama_kabupaten' => 'Kabupaten/kota', 'nama_kecamatan' => 'Kecamatan', 'nama_desa' => 'Desa/kelurahan'] as $isian => $labelWilayah): ?>
+                            <div class="s-field"><label class="s-label" for="u-<?= $e($isian) ?>"><?= $e($labelWilayah) ?></label><input class="s-input" id="u-<?= $e($isian) ?>" name="<?= $e($isian) ?>" maxlength="50" value="<?= $e($kiriman[$isian] ?? '') ?>"></div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?= $galat('provinsi') . $galat('kab_kota') . $galat('kecamatan') . $galat('desa') ?>
+                </div>
+                <div class="s-acts"><button class="s-btn s-btn--pri" type="submit" data-s-memproses="Menyimpan…">Simpan alamat</button></div>
+            </form>
+        </details>
+        <dl class="s-dl">
+            <dt>Jalan</dt><dd><?= $nilaiTampil($d['alamat_jalan']) ?></dd>
+            <dt>Desa · kecamatan</dt><dd><?= $nilaiTampil($d['desa']) ?> · <?= $nilaiTampil($d['kecamatan']) ?></dd>
+            <dt>Kab./kota · provinsi</dt><dd><?= $nilaiTampil($d['kab_kota']) ?> · <?= $nilaiTampil($d['provinsi']) ?></dd>
+        </dl>
+    </section>
+
+    <section class="s-panel" aria-labelledby="judul-ortu">
+        <details class="s-ubah"<?= $bagianUbah === 'ortu' ? ' open' : '' ?>>
+            <summary class="s-panel__head"><h2 id="judul-ortu">Orang tua</h2><span class="s-btn s-btn--sm">Ubah<span class="s-vh"> data orang tua</span></span></summary>
+            <form class="s-ubah__form s-form s-form--2" method="POST" action="portal_pendaftar.php" data-s-konfirmasi-ubah="no_hp_wali"
+                  data-s-konfirmasi-judul="Ganti No. HP wali?" data-s-konfirmasi-teks="Nomor baru akan dipakai untuk masuk Portal Pendaftar. Sesi di perangkat lain akan berakhir." data-s-konfirmasi-ok="Ya, ganti nomor">
+                <?= Csrf::input() ?>
+                <?= $kepalaForm('ortu') . $tersembunyi('ortu') ?>
+                <div class="s-field"><label class="s-label" for="u-ayah">Nama ayah <em>*</em></label><input class="s-input" id="u-ayah" name="nama_ayah" required maxlength="100" value="<?= $e($nilai('nama_ayah')) ?>"><?= $galat('nama_ayah') ?></div>
+                <div class="s-field"><label class="s-label" for="u-ibu">Nama ibu <em>*</em></label><input class="s-input" id="u-ibu" name="nama_ibu" required maxlength="100" value="<?= $e($nilai('nama_ibu')) ?>"><?= $galat('nama_ibu') ?></div>
+                <div class="s-field s-field--penuh"><label class="s-label" for="u-hp">No. HP/WhatsApp wali <em>*</em></label>
+                    <input class="s-input" id="u-hp" name="no_hp_wali" inputmode="numeric" pattern="[0-9]{8,15}" maxlength="15" required value="<?= $e($nilai('no_hp_wali')) ?>" aria-describedby="u-hp-bantu">
+                    <small class="s-hint" id="u-hp-bantu">Nomor ini dipakai untuk masuk portal. Bila diganti, masuk berikutnya memakai nomor baru.</small><?= $galat('no_hp_wali') ?></div>
+                <div class="s-acts s-field--penuh"><button class="s-btn s-btn--pri" type="submit" data-s-memproses="Menyimpan…">Simpan data orang tua</button></div>
+            </form>
+        </details>
+        <dl class="s-dl">
+            <dt>Ayah</dt><dd><?= $nilaiTampil($d['nama_ayah']) ?></dd>
+            <dt>Ibu</dt><dd><?= $nilaiTampil($d['nama_ibu']) ?></dd>
+            <dt>No. HP wali</dt><dd><span class="s-mono"><?= $nilaiTampil($d['no_hp_wali']) ?></span> <small class="s-muted">· dipakai untuk masuk</small></dd>
+        </dl>
+    </section>
+</section>
+
+<section class="s-portal-sec" id="berkas" aria-labelledby="judul-berkas">
+    <h1 id="judul-berkas">Berkas pendaftaran</h1>
+    <p class="s-sub">JPG, PNG, atau PDF · maksimal 2 MB per berkas. Mengunggah ulang menggantikan berkas sebelumnya.</p>
+    <?= $pesanDi('berkas') ?>
+    <?php $jumlahWajib = count($wajib) - count($kurang); ?>
+    <div class="s-panel mb-3">
+        <div class="s-panel__head"><h2 class="h6 fw-bold m-0">Berkas wajib</h2><span><?= $jumlahWajib ?> dari <?= count($wajib) ?></span></div>
+        <div class="s-meter" role="img" aria-label="<?= $jumlahWajib ?> dari <?= count($wajib) ?> berkas wajib terunggah"><span style="width:<?= (int) round($jumlahWajib / count($wajib) * 100) ?>%"></span></div>
+    </div>
+    <?php foreach (['Wajib' => array_map(static fn (string $l): array => [$l, 'Wajib'], $wajib), 'Opsional' => $opsional] as $grup => $daftarBerkas): ?>
+        <h2 class="h6 fw-bold mt-4"><?= $e($grup) ?></h2>
+        <ul class="s-upload">
+            <?php foreach ($daftarBerkas as $kolom => [$label, $ket]): $ada = !empty($d[$kolom]); $hasil = $hasilBerkas[$kolom] ?? null; ?>
+                <li id="berkas-<?= $e($kolom) ?>">
+                    <div class="s-upload__head">
+                        <b><?= $e($label) ?></b>
+                        <?= $ada ? '<span class="ah-badge ah-badge--ok">Terunggah</span>' : '<span class="ah-badge ah-badge--' . ($grup === 'Wajib' ? 'warn' : 'muted') . '">Belum ada</span>' ?>
+                        <?php if ($ket !== '' && !$ada): ?><small class="s-muted"><?= $e($ket) ?></small><?php endif; ?>
+                        <?php if ($ada): ?><a class="s-btn s-btn--sm s-btn--teks" href="<?= $e(app_url('/lihat_berkas_psb.php?jenis=' . $kolom)) ?>" target="_blank" rel="noopener">Lihat<span class="s-vh"> <?= $e($label) ?> (tab baru)</span></a><?php endif; ?>
+                    </div>
+                    <form action="proses_upload_berkas.php" method="POST" enctype="multipart/form-data" data-s-unggah="<?= 2 * 1024 * 1024 ?>">
+                        <?= Csrf::input() ?>
+                        <input type="hidden" name="upload" value="1">
+                        <label class="s-vh" for="f-<?= $e($kolom) ?>">Pilih berkas <?= $e($label) ?></label>
+                        <input id="f-<?= $e($kolom) ?>" type="file" name="<?= $e($kolom) ?>" accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf" required>
+                        <button class="s-btn s-btn--sm<?= $ada ? '' : ' s-btn--pri' ?>" type="submit" data-s-memproses="Mengunggah…"><?= $ada ? 'Ganti' : 'Unggah' ?><span class="s-vh"> <?= $e($label) ?></span></button>
+                    </form>
+                    <p class="s-upload__pesan<?= $hasil !== null ? ' s-upload__pesan--' . ($hasil[0] === 'ok' ? 'ok' : 'galat') : '' ?>" data-s-unggah-pesan role="status"<?= $hasil === null ? ' hidden' : '' ?>><?= $hasil !== null ? $e($hasil[1]) : '' ?></p>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endforeach; ?>
+</section>
+<?php Kerangka::tutupPortal(); ?>

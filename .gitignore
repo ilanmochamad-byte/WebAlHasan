@@ -20,6 +20,7 @@ tests/browser/tangkapan-redesain-web-tahap2/
 tests/browser/tangkapan-redesain-web-tahap6/
 tests/browser/tangkapan-redesain-web-tahap7/
 tests/browser/tangkapan-keamanan-psb/
+tests/browser/tangkapan-redesain-web-tahap8/
 
 # Dependensi lokal Playwright untuk uji browser opsional
 tests/browser/node_modules/

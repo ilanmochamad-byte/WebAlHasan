@@ -16,6 +16,10 @@ use App\Psb\PsbException;
  * sebenarnya JPG/PNG/PDF, gambar/PDF sah, maksimal 2 MB), disimpan privat di
  * `storage/private/psb/` dengan nama acak, dan kolom diperbarui dengan query
  * terikat untuk baris milik sendiri. Berkas lama tidak dihapus.
+ *
+ * Redesain Tahap 8 (P-6): portal mengirim satu berkas per formulir; hasil
+ * per berkas juga disimpan di sesi agar tampil di baris berkas itu. Pesan
+ * ringkas lama tetap ada.
  */
 
 require_once __DIR__ . '/koneksi.php';
@@ -23,9 +27,12 @@ require_once __DIR__ . '/koneksi.php';
 $sesiPendaftar = new PendaftarSesi($koneksi);
 $pendaftar = $sesiPendaftar->wajib('login_pendaftar.php');
 
-$selesai = static function (string $pesan): never {
+$hasilBerkas = [];
+$selesai = static function (string $pesan) use (&$hasilBerkas): never {
     $_SESSION['_psb_portal_pesan'] = $pesan;
-    header('Location: portal_pendaftar.php');
+    $_SESSION['_psb_portal_bagian'] = 'berkas';
+    $_SESSION['_psb_berkas_hasil'] = $hasilBerkas;
+    header('Location: portal_pendaftar.php#berkas');
     exit;
 };
 
@@ -58,8 +65,10 @@ foreach (array_keys(PsbAdmin::BERKAS) as $kolom) {
         $stmt->execute();
         $stmt->close();
         $tersimpan[] = PsbAdmin::BERKAS[$kolom];
+        $hasilBerkas[$kolom] = ['ok', 'Tersimpan: ' . PsbAdmin::BERKAS[$kolom] . '.'];
     } catch (PsbException $exception) {
         $galat[] = $exception->getMessage();
+        $hasilBerkas[$kolom] = ['galat', 'Belum tersimpan: ' . $exception->getMessage()];
     }
 }
 

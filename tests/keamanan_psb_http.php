@@ -405,11 +405,18 @@ $q("DELETE FROM psb_pendaftar WHERE nisn IN ('9900000099', '9900000098')");
 $daftar = ['daftar' => '1', 'nama_lengkap' => 'Pendaftar Baru Uji', 'nisn' => '9900000099', 'nik' => '3207000000000099', 'tempat_lahir' => 'Ciamis',
     'tgl_lahir' => '2013-02-03', 'jenis_kelamin' => 'P', 'jenjang_tujuan' => 'SMP Terpadu Al Hasan', 'alamat_jalan' => 'Jl. Baru', 'nama_provinsi' => 'JAWA BARAT',
     'nama_kabupaten' => 'KAB. CIAMIS', 'nama_kecamatan' => 'CIAMIS', 'nama_desa' => 'SINDANGRASA', 'nama_ayah' => 'Ayah Baru', 'nama_ibu' => 'Ibu Baru',
-    'no_hp_wali' => '081200000099', 'sekolah_asal' => 'SD Baru'];
+    'no_hp_wali' => '081200000099', 'sekolah_asal' => 'SD Baru',
+    // Redesain Tahap 8 (keputusan AO): persetujuan Kebijakan Privasi wajib dan diperiksa server.
+    'setuju_privasi' => '1'];
 $pub = new Klien($base);
 $cek($pub->req('/proses_psb.php')['status'] === 302, 'I1 GET proses pendaftaran tidak memproses');
 $r = $pub->req('/proses_psb.php', $daftar);
 $cek(str_contains((string) $r['location'], 'status=token') && $satu("SELECT id FROM psb_pendaftar WHERE nisn='9900000099'") === null, 'I2 pendaftaran tanpa CSRF ditolak');
+$tanpaSetuju = $daftar;
+unset($tanpaSetuju['setuju_privasi']);
+$r = $pub->req('/proses_psb.php', ['_csrf' => $pub->csrf('/psb.php')] + $tanpaSetuju);
+$cek(str_contains((string) $r['location'], 'status=gagal') && $satu("SELECT id FROM psb_pendaftar WHERE nisn='9900000099'") === null
+    && str_contains($pub->req('/psb.php?status=gagal')['body'], 'Kebijakan Privasi'), 'I2a tanpa persetujuan Kebijakan Privasi ditolak tanpa menyimpan (Tahap 8, AO)');
 $r = $pub->req('/proses_psb.php', ['_csrf' => $pub->csrf('/psb.php'), 'jenis_kelamin' => 'X', 'jenjang_tujuan' => 'Unit Karangan', 'tgl_lahir' => '2099-01-01'] + $daftar);
 $gagalPage = $pub->req('/psb.php?status=gagal');
 $cek(str_contains((string) $r['location'], 'status=gagal') && $satu("SELECT id FROM psb_pendaftar WHERE nisn='9900000099'") === null

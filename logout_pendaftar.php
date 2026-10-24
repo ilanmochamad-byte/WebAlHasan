@@ -19,24 +19,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+$situs = ['judul' => 'Keluar Portal Pendaftar', 'polos' => true, 'bootstrap' => false, 'robots' => 'noindex'];
 include 'header.php'; ?>
-<div class="container py-5 mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-body p-5 text-center">
-                    <h3 class="fw-bold">Keluar Portal Pendaftar?</h3>
-                    <?php if (http_response_code() === 419) { ?>
-                        <div class="alert alert-warning small">Halaman sudah kedaluwarsa. Tekan tombol di bawah sekali lagi.</div>
-                    <?php } ?>
-                    <form method="POST" class="mt-4">
-                        <?php echo Csrf::input(); ?>
-                        <button type="submit" class="btn btn-outline-danger w-100 fw-bold rounded-pill py-2">Keluar Portal</button>
-                    </form>
-                    <a href="portal_pendaftar.php" class="btn btn-link mt-2">Kembali ke portal</a>
-                </div>
-            </div>
-        </div>
+<div class="s-polos">
+    <div class="s-polos__kartu">
+        <section class="s-panel" aria-labelledby="judul-keluar">
+            <h1 id="judul-keluar" class="h4 fw-bold">Keluar Portal Pendaftar?</h1>
+            <p class="s-muted">Masuk lagi dengan NISN dan No. HP wali untuk membuka portal.</p>
+            <?php if (http_response_code() === 419) { ?>
+                <div class="ah-note ah-note--warn" role="alert"><div><span>Halaman sudah kedaluwarsa. Tekan tombol di bawah sekali lagi.</span></div></div>
+            <?php } ?>
+            <form method="POST" class="s-acts">
+                <?php echo Csrf::input(); ?>
+                <button type="submit" class="s-btn s-btn--bahaya">Keluar Portal</button>
+                <a href="portal_pendaftar.php" class="s-btn s-btn--teks">Kembali ke portal</a>
+            </form>
+        </section>
     </div>
 </div>
 <?php include 'footer.php'; ?>

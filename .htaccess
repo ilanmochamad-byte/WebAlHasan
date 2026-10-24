@@ -12,6 +12,11 @@ RewriteRule ^berkas_psb(?:/|$) - [F,L,NC]
 # kebijakan privasi di Google Play Console dan App Store Connect).
 RewriteRule ^privacy/?$ privacy.php [L]
 
+# Redesain website Tahap 8: alamat bersih halaman Profil (U-2) dan Unit
+# pendidikan (U-3). Alamat .php tetap dapat dibuka.
+RewriteRule ^profil/?$ profil.php [QSA,L]
+RewriteRule ^pendidikan/?$ pendidikan.php [QSA,L]
+
 # Rahasia, dump, log, dan dokumen implementasi tidak boleh diunduh.
 <FilesMatch "^(?:\.env(?:\..*)?|error_log|PRD\.md|PRD-V2\.md|PRD-V3\.md|PRD-V4\.md|composer\.(?:json|lock)|AGENTS\.md|design\.md|.*\.sql)$">
     Require all denied

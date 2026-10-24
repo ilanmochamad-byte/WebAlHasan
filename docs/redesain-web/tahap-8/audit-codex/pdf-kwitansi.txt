@@ -1,0 +1,19 @@
+Title:           Kwitansi KPSB-T-0006
+Creator:         Chromium
+Producer:        Skia/PDF m151
+CreationDate:    Sat Oct 24 09:51:21 2026 WIB
+ModDate:         Sat Oct 24 09:51:21 2026 WIB
+Custom Metadata: no
+Metadata Stream: no
+Tagged:          no
+UserProperties:  no
+Suspects:        no
+Form:            none
+JavaScript:      no
+Pages:           1
+Encrypted:       no
+Page size:       594.96 x 841.92 pts (A4)
+Page rot:        0
+File size:       168051 bytes
+Optimized:       no
+PDF version:     1.4

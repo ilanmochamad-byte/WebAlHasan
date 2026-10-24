@@ -1,101 +1,94 @@
 <?php
+/*
+ * Kabar pesantren (U-4) — redesain website Tahap 8.
+ *
+ * Berita tampil langsung tanpa status/kategori (keputusan AH), 12 per
+ * halaman, dengan pencarian judul/isi. Query terikat; keluaran di-escape.
+ */
 require_once __DIR__ . '/koneksi.php';
+
+use App\Situs\Kerangka;
+
+const BERITA_PER_HALAMAN = 12;
+
+$e = static fn (mixed $v): string => Kerangka::e($v);
+$cari = is_string($_GET['cari'] ?? null) ? trim(mb_substr($_GET['cari'], 0, 100)) : '';
+$halaman = max(1, (int) filter_var($_GET['halaman'] ?? 1, FILTER_VALIDATE_INT, ['options' => ['default' => 1]]));
+
+$where = '';
+$param = [];
+if ($cari !== '') {
+    $where = ' WHERE judul LIKE ? OR isi_berita LIKE ?';
+    $pola = '%' . addcslashes($cari, '%_\\') . '%';
+    $param = [$pola, $pola];
+}
+$stmt = $koneksi->prepare('SELECT COUNT(*) FROM berita' . $where);
+if ($param !== []) {
+    $stmt->bind_param('ss', ...$param);
+}
+$stmt->execute();
+$total = (int) $stmt->get_result()->fetch_row()[0];
+$stmt->close();
+$jumlahHalaman = max(1, (int) ceil($total / BERITA_PER_HALAMAN));
+$halaman = min($halaman, $jumlahHalaman);
+$offset = ($halaman - 1) * BERITA_PER_HALAMAN;
+$batas = BERITA_PER_HALAMAN;
+$stmt = $koneksi->prepare('SELECT id, judul, isi_berita, gambar, tanggal FROM berita' . $where . ' ORDER BY id DESC LIMIT ? OFFSET ?');
+if ($param !== []) {
+    $stmt->bind_param('ssii', $param[0], $param[1], $batas, $offset);
+} else {
+    $stmt->bind_param('ii', $batas, $offset);
+}
+$stmt->execute();
+$daftar = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+$tautanHalaman = static fn (int $h): string => app_url('/berita.php?' . http_build_query(array_filter(['cari' => $cari, 'halaman' => $h > 1 ? $h : null])));
+
+$situs = ['judul' => 'Kabar pesantren' . ($halaman > 1 ? ' · halaman ' . $halaman : ''), 'aktif' => 'kabar', 'deskripsi' => 'Berita dan kegiatan terbaru Pesantren Al Hasan Ciamis.'];
 include 'header.php';
 ?>
+<div class="s-wrap">
+    <header class="s-head">
+        <ol class="s-crumbs"><li><a href="<?= $e(app_url('/index.php')) ?>">Beranda</a></li><li aria-current="page">Kabar</li></ol>
+        <h1>Kabar pesantren</h1>
+        <p>Berita, kegiatan, dan informasi terkini.</p>
+    </header>
+    <form class="s-cari" method="get" action="<?= $e(app_url('/berita.php')) ?>" role="search">
+        <label class="s-vh" for="cari-berita">Cari berita</label>
+        <input class="s-input" id="cari-berita" type="search" name="cari" value="<?= $e($cari) ?>" placeholder="Cari berita…" maxlength="100">
+        <button class="s-btn s-btn--pri" type="submit" data-s-tanpa-kunci>Cari</button>
+        <?php if ($cari !== ''): ?><a class="s-btn" href="<?= $e(app_url('/berita.php')) ?>">Hapus pencarian</a><?php endif; ?>
+    </form>
 
-<section class="py-5 bg-dark text-white" style="margin-top: 60px;">
-    <div class="container text-center">
-        <h1 class="fw-bold">Kabar Pesantren</h1>
-        <p class="lead">Berita, Artikel, dan Informasi Terkini Seputar PP Al Hasan Ciamis</p>
-    </div>
-</section>
-
-<section class="py-5 bg-light">
-    <div class="container">
-        
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-6">
-                <form action="berita.php" method="GET" class="d-flex shadow-sm rounded-pill bg-white overflow-hidden">
-                    <input type="text" name="cari" class="form-control border-0 px-4 py-3" placeholder="Cari berita atau kegiatan..." value="<?php if(isset($_GET['cari'])){ echo $_GET['cari']; } ?>">
-                    <button type="submit" class="btn btn-success px-4 fw-bold"><i class="fas fa-search"></i> Cari</button>
-                </form>
-            </div>
+    <?php if ($daftar === []): ?>
+        <div class="s-kosong">
+            <b><?= $cari !== '' ? 'Berita tidak ditemukan' : 'Belum ada kabar' ?></b>
+            <?= $cari !== '' ? 'Tidak ada berita yang cocok dengan “' . $e($cari) . '”. Coba kata kunci lain.' : 'Kabar kegiatan pesantren akan tampil di sini setelah diterbitkan.' ?>
         </div>
-
-        <div class="row g-4">
-            <?php
-            // Logika Pencarian
-            if(isset($_GET['cari'])){
-                $cari = mysqli_real_escape_string($koneksi, $_GET['cari']);
-                // Cari berdasarkan Judul ATAU Isi Berita
-                $query = "SELECT * FROM berita WHERE judul LIKE '%$cari%' OR isi_berita LIKE '%$cari%' ORDER BY id DESC";
-            } else {
-                // Jika tidak mencari, tampilkan semua berita
-                $query = "SELECT * FROM berita ORDER BY id DESC";
-            }
-
-            $data = mysqli_query($koneksi, $query);
-            $jumlah_berita = mysqli_num_rows($data);
-
-            if($jumlah_berita > 0){
-                while($b = mysqli_fetch_array($data)){
-                    // Bersihkan tag HTML dari Summernote untuk tampilan preview
-                    $isi_murni = strip_tags($b['isi_berita']);
-                    // Potong teks jadi 150 karakter
-                    $isi_pendek = substr($isi_murni, 0, 150) . "...";
-            ?>
-            
-            <div class="col-md-4 d-flex align-items-stretch" data-aos="fade-up">
-                <div class="card border-0 shadow-sm w-100 rounded-4 overflow-hidden hover-shadow transition">
-                    <div style="height: 220px; overflow: hidden;">
-                        <img src="gambar/<?php echo $b['gambar']; ?>" class="w-100 h-100" style="object-fit: cover; transition: 0.5s;" alt="<?php echo $b['judul']; ?>">
+    <?php else: ?>
+        <?php if ($cari !== ''): ?><p class="s-muted"><?= $total ?> berita cocok dengan “<?= $e($cari) ?>”.</p><?php endif; ?>
+        <div class="s-grid">
+            <?php foreach ($daftar as $b): $gambar = Kerangka::gambarKonten('gambar', $b['gambar']); $tautan = app_url('/detail.php?id=' . (int) $b['id']); ?>
+                <article class="s-card">
+                    <?php if ($gambar !== null): ?><div class="s-card__img"><img src="<?= $e($gambar) ?>" alt="" loading="lazy"></div><?php endif; ?>
+                    <div class="s-card__body">
+                        <span class="s-card__meta"><?= $e(Kerangka::tanggal($b['tanggal'])) ?></span>
+                        <h2 class="s-card__title"><a href="<?= $e($tautan) ?>"><?= $e($b['judul']) ?></a></h2>
+                        <p class="s-card__text"><?= $e(Kerangka::cuplikan((string) $b['isi_berita'])) ?></p>
                     </div>
-                    
-                    <div class="card-body p-4 d-flex flex-column">
-                        <div class="small text-muted mb-2">
-                            <i class="far fa-calendar-alt me-2"></i> <?php echo date('d M Y', strtotime($b['tanggal'])); ?>
-                        </div>
-                        <h4 class="card-title fw-bold mb-3">
-                            <a href="detail.php?id=<?php echo $b['id']; ?>" class="text-decoration-none text-dark hover-success">
-                                <?php echo $b['judul']; ?>
-                            </a>
-                        </h4>
-                        <p class="card-text text-muted small flex-grow-1">
-                            <?php echo $isi_pendek; ?>
-                        </p>
-                        <div class="mt-3">
-                            <a href="detail.php?id=<?php echo $b['id']; ?>" class="btn btn-outline-success rounded-pill w-100 fw-bold">Baca Selengkapnya</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <?php 
-                } // End While 
-            } else { 
-            ?>
-                <div class="col-12 text-center py-5">
-                    <img src="https://cdn-icons-png.flaticon.com/512/7486/7486754.png" width="150" class="mb-3 opacity-50">
-                    <h3 class="text-muted">Berita tidak ditemukan</h3>
-                    <p>Coba cari dengan kata kunci lain.</p>
-                    <a href="berita.php" class="btn btn-secondary btn-sm">Reset Pencarian</a>
-                </div>
-            <?php } ?>
+                </article>
+            <?php endforeach; ?>
         </div>
-    </div>
-</section>
-
-<style>
-    .hover-shadow:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
-    }
-    .hover-success:hover {
-        color: #198754 !important; /* Warna Hijau Bootstrap */
-    }
-    .card:hover img {
-        transform: scale(1.1);
-    }
-</style>
-
+        <?php if ($jumlahHalaman > 1): ?>
+            <nav class="s-pager" aria-label="Halaman berita">
+                <span>Halaman <?= $halaman ?> dari <?= $jumlahHalaman ?></span>
+                <span class="s-acts">
+                    <?php if ($halaman > 1): ?><a class="s-btn" href="<?= $e($tautanHalaman($halaman - 1)) ?>" rel="prev">‹ Sebelumnya</a><?php endif; ?>
+                    <?php if ($halaman < $jumlahHalaman): ?><a class="s-btn" href="<?= $e($tautanHalaman($halaman + 1)) ?>" rel="next">Berikutnya ›</a><?php endif; ?>
+                </span>
+            </nav>
+        <?php endif; ?>
+    <?php endif; ?>
+</div>
 <?php include 'footer.php'; ?>
