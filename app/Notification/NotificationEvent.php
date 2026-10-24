@@ -89,6 +89,9 @@ final class NotificationEvent
             'v3_publikasi_terbit' => 'Informasi pembinaan diterbitkan',
             'v3_publikasi_koreksi' => 'Informasi pembinaan diperbarui',
             'v3_publikasi_tarik' => 'Informasi pembinaan ditarik',
+            'v5_kesehatan_ringkasan_terbit' => 'Informasi kesehatan',
+            'v5_kesehatan_ringkasan_diganti' => 'Informasi kesehatan diperbarui',
+            'v5_kesehatan_tindak_lanjut' => 'Informasi kesehatan perlu perhatian',
             default => $event,
         };
     }

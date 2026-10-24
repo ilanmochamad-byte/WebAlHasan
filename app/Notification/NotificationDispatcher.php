@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notification;
 
+use App\Kesehatan\RingkasanService;
 use App\Notification\Push\ExpoPushClient;
 use App\Notification\Push\PushClient;
 use App\Notification\Push\PushReceiptClient;
@@ -200,6 +201,34 @@ final class NotificationDispatcher
             }
             $row['judul']='Rapor semester tersedia';$row['isi']='Rapor semester tersedia';
         }
+        if (in_array((string) $row['event_type'], RingkasanService::EVENTS, true)) {
+            // PRD V5 Fase 3: ringkasan masih Terbit pada versi peristiwa ini dan
+            // penerima masih wali aktif santrinya; teks dirakit ulang dari katalog
+            // generik sehingga isi baris tidak pernah dipercaya.
+            $pointer = json_decode((string) $row['data_json'], true);
+            $rid = (int) (is_array($pointer) ? ($pointer['ringkasan_id'] ?? 0) : 0);
+            $ringkasan = null;
+            $stmt = $this->db->prepare('SELECT g.santri_id, g.status, g.versi_berlaku
+                FROM kesehatan_ringkasan g
+                JOIN santri s ON s.id = g.santri_id AND s.is_active = 1 AND s.archived_at IS NULL
+                WHERE g.id = ?');
+            if ($stmt !== false) {
+                $stmt->bind_param('i', $rid);
+                $stmt->execute();
+                $ringkasan = $stmt->get_result()?->fetch_assoc();
+                $stmt->close();
+            }
+            if (!is_array($ringkasan) || $ringkasan['status'] !== 'Terbit'
+                || (string) $row['event_key'] !== RingkasanService::eventKey($rid, (int) $ringkasan['versi_berlaku'])
+                || !in_array($userId, (new RecipientResolver($this->db))->waliSantri((int) $ringkasan['santri_id']), true)) {
+                $this->outbox->markFailed($outboxId, $owner, 'AKSES_BERUBAH', 'Penerima atau versi ringkasan tidak lagi berhak.', true);
+
+                return 'gagal';
+            }
+            $teks = RingkasanService::teksNotifikasi((string) $row['event_type']);
+            $row['judul'] = $teks['judul'];
+            $row['isi'] = $teks['isi'];
+        }
         $perangkat = $this->devices->activeTokensFor($userId);
 
         if ($perangkat === []) {
@@ -222,6 +251,10 @@ final class NotificationDispatcher
         $data = (string)$row['event_type']==='v4_rapor_terbit' ? array_intersect_key($data,array_flip(['tipe','rapor_id'])) : (str_starts_with((string)$row['event_type'], 'v3_publikasi_')
             ? array_intersect_key($data, array_flip(['tipe', 'publikasi_id']))
             : array_intersect_key($data, array_flip(['tipe', 'event', 'pengajuan_id', 'url'])));
+        if (in_array((string) $row['event_type'], RingkasanService::EVENTS, true)) {
+            // Penunjuk yang sudah diperiksa di atas; tidak ada kunci lain.
+            $data = ['tipe' => RingkasanService::TIPE_TAUTAN, 'ringkasan_id' => $rid];
+        }
 
         $messages = [];
         $petaToken = [];
@@ -253,6 +286,15 @@ final class NotificationDispatcher
             );
 
             return 'gagal';
+        }
+
+        // Sakelar dapat berubah sesudah batch diklaim atau ketika kiriman
+        // sebelumnya sedang berlangsung. Periksa ulang tepat sebelum request
+        // provider; sisa antrean dilepas tanpa percobaan maupun kiriman.
+        if ($this->settings->current()['push_enabled'] !== true) {
+            $this->outbox->release($outboxId, $owner);
+
+            return 'dilepas';
         }
 
         $mulai = microtime(true);

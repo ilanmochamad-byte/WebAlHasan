@@ -1,0 +1,763 @@
+[Sat Oct 24 16:51:14 2026] PHP 8.4.14 Development Server (http://127.0.0.1:8997) started
+[Sat Oct 24 16:51:14 2026] 127.0.0.1:53955 Accepted
+[Sat Oct 24 16:51:14 2026] 127.0.0.1:53955 Closed without sending a request; it was probably just an unused speculative preconnection
+[Sat Oct 24 16:51:14 2026] 127.0.0.1:53955 Closing
+[Sat Oct 24 16:51:14 2026] 127.0.0.1:53958 Accepted
+[Sat Oct 24 16:51:14 2026] 127.0.0.1:53958 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:14 2026] 127.0.0.1:53958 Closing
+[Sat Oct 24 16:51:14 2026] 127.0.0.1:53960 Accepted
+[Sat Oct 24 16:51:14 2026] 127.0.0.1:53961 Accepted
+[Sat Oct 24 16:51:14 2026] 127.0.0.1:53960 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:14 2026] 127.0.0.1:53961 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:14 2026] 127.0.0.1:53960 Closing
+[Sat Oct 24 16:51:14 2026] 127.0.0.1:53961 Closing
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53962 Accepted
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53962 [302]: POST /admin/cek_login.php
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53962 Closing
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53964 Accepted
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53964 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53964 Closing
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53966 Accepted
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53967 Accepted
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53968 Accepted
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53966 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53967 [200]: GET /portal/kesehatan_buat.php?q=V5S0101
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53967 Closing
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53968 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53966 Closing
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53968 Closing
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53970 Accepted
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53971 Accepted
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53970 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53971 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53970 Closing
+[Sat Oct 24 16:51:15 2026] 127.0.0.1:53971 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53972 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53972 [302]: POST /portal/kesehatan_buat.php?q=V5S0101
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53972 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53974 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53974 [200]: GET /portal/kesehatan_detail.php?id=6
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53974 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53976 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53977 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53976 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53977 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53976 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53977 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53978 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53978 [200]: GET /portal/kesehatan.php?santri_id=1702
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53978 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53980 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53981 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53980 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53981 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53980 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53981 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53982 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53982 [200]: GET /portal/kesehatan_detail.php?id=6
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53982 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53984 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53985 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53984 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53985 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53984 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53985 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53986 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53986 [200]: GET /portal/kesehatan_hasil_rujukan.php?id=6&rujukan=5
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53986 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53988 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53989 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53988 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53989 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53988 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53989 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53990 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53990 [302]: POST /portal/kesehatan_hasil_rujukan.php?id=6&rujukan=5
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53990 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53992 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53992 [200]: GET /portal/kesehatan_detail.php?id=6
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53992 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53994 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53995 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53994 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53995 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53994 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53995 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53996 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53996 [200]: GET /portal/kesehatan_detail.php?id=6
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53996 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53998 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53999 Accepted
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53998 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53999 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53998 Closing
+[Sat Oct 24 16:51:17 2026] 127.0.0.1:53999 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54000 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54000 [200]: GET /portal/kesehatan_koreksi.php?id=6
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54000 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54002 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54003 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54002 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54003 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54002 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54003 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54004 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54004 [302]: POST /portal/kesehatan_koreksi.php?id=6
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54004 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54006 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54006 [200]: GET /portal/kesehatan_detail.php?id=6
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54006 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54008 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54009 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54008 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54009 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54008 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54009 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54010 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54010 [200]: GET /portal/kesehatan_detail.php?id=6
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54010 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54012 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54013 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54012 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54013 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54012 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54013 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54014 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54014 [200]: GET /portal/kesehatan_riwayat.php?id=6
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54014 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54016 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54017 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54016 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54017 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54016 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54017 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54018 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54018 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54018 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54020 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54021 Accepted
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54020 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54021 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54020 Closing
+[Sat Oct 24 16:51:18 2026] 127.0.0.1:54021 Closing
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54022 Accepted
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54022 [302]: POST /admin/cek_login.php
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54022 Closing
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54024 Accepted
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54024 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54024 Closing
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54026 Accepted
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54027 Accepted
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54028 Accepted
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54026 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54027 [200]: GET /portal/kesehatan_buat.php?q=V5S0101
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54027 Closing
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54028 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54026 Closing
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54028 Closing
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54030 Accepted
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54031 Accepted
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54030 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54031 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54030 Closing
+[Sat Oct 24 16:51:19 2026] 127.0.0.1:54031 Closing
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54033 Accepted
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54033 [302]: POST /portal/kesehatan_buat.php?q=V5S0101
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54033 Closing
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54035 Accepted
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54035 [200]: GET /portal/kesehatan_detail.php?id=7
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54035 Closing
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54037 Accepted
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54038 Accepted
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54037 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54038 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54037 Closing
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54038 Closing
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54039 Accepted
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54039 [200]: GET /portal/kesehatan.php?santri_id=1702
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54039 Closing
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54041 Accepted
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54042 Accepted
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54041 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54042 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54041 Closing
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54042 Closing
+[Sat Oct 24 16:51:20 2026] 127.0.0.1:54043 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54043 [200]: GET /portal/kesehatan_detail.php?id=7
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54043 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54045 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54046 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54045 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54046 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54045 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54046 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54047 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54047 [200]: GET /portal/kesehatan_hasil_rujukan.php?id=7&rujukan=6
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54047 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54049 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54050 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54049 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54050 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54049 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54050 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54051 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54051 [302]: POST /portal/kesehatan_hasil_rujukan.php?id=7&rujukan=6
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54051 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54053 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54053 [200]: GET /portal/kesehatan_detail.php?id=7
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54053 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54055 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54056 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54055 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54056 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54055 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54056 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54057 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54057 [200]: GET /portal/kesehatan_detail.php?id=7
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54057 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54059 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54060 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54059 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54060 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54059 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54060 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54061 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54061 [200]: GET /portal/kesehatan_koreksi.php?id=7
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54061 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54063 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54064 Accepted
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54063 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54064 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54063 Closing
+[Sat Oct 24 16:51:21 2026] 127.0.0.1:54064 Closing
+[Sat Oct 24 16:51:22 2026] 127.0.0.1:54065 Accepted
+[Sat Oct 24 16:51:22 2026] 127.0.0.1:54065 [302]: POST /portal/kesehatan_koreksi.php?id=7
+[Sat Oct 24 16:51:22 2026] 127.0.0.1:54065 Closing
+[Sat Oct 24 16:51:22 2026] 127.0.0.1:54067 Accepted
+[Sat Oct 24 16:51:22 2026] 127.0.0.1:54067 [200]: GET /portal/kesehatan_detail.php?id=7
+[Sat Oct 24 16:51:22 2026] 127.0.0.1:54067 Closing
+[Sat Oct 24 16:51:22 2026] 127.0.0.1:54069 Accepted
+[Sat Oct 24 16:51:22 2026] 127.0.0.1:54070 Accepted
+[Sat Oct 24 16:51:22 2026] 127.0.0.1:54069 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:22 2026] 127.0.0.1:54070 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:22 2026] 127.0.0.1:54069 Closing
+[Sat Oct 24 16:51:22 2026] 127.0.0.1:54070 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54071 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54071 [200]: GET /portal/kesehatan_detail.php?id=7
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54071 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54073 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54074 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54073 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54074 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54073 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54074 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54075 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54075 [200]: GET /portal/kesehatan_riwayat.php?id=7
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54075 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54077 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54078 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54077 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54078 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54077 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54078 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54079 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54079 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54079 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54081 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54082 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54081 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54082 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54081 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54082 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54083 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54083 [302]: POST /admin/cek_login.php
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54083 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54085 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54085 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54085 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54087 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54088 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54089 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54087 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54088 [200]: GET /portal/kesehatan_buat.php?q=V5S0101
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54088 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54089 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54087 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54089 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54091 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54092 Accepted
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54091 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54092 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54091 Closing
+[Sat Oct 24 16:51:23 2026] 127.0.0.1:54092 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54093 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54093 [302]: POST /portal/kesehatan_buat.php?q=V5S0101
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54093 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54095 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54095 [200]: GET /portal/kesehatan_detail.php?id=8
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54095 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54097 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54098 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54097 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54098 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54097 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54098 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54099 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54099 [200]: GET /portal/kesehatan.php?santri_id=1702
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54099 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54101 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54102 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54101 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54102 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54101 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54102 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54103 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54103 [200]: GET /portal/kesehatan_detail.php?id=8
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54103 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54105 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54106 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54105 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54106 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54105 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54106 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54107 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54107 [200]: GET /portal/kesehatan_hasil_rujukan.php?id=8&rujukan=7
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54107 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54109 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54110 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54109 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54110 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54109 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54110 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54111 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54111 [302]: POST /portal/kesehatan_hasil_rujukan.php?id=8&rujukan=7
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54111 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54113 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54113 [200]: GET /portal/kesehatan_detail.php?id=8
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54113 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54115 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54116 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54115 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54116 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54115 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54116 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54117 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54117 [200]: GET /portal/kesehatan_detail.php?id=8
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54117 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54119 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54120 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54119 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54120 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54119 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54120 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54121 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54121 [200]: GET /portal/kesehatan_koreksi.php?id=8
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54121 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54123 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54124 Accepted
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54123 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54124 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54123 Closing
+[Sat Oct 24 16:51:25 2026] 127.0.0.1:54124 Closing
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54134 Accepted
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54134 [302]: POST /portal/kesehatan_koreksi.php?id=8
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54134 Closing
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54136 Accepted
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54136 [200]: GET /portal/kesehatan_detail.php?id=8
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54136 Closing
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54138 Accepted
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54139 Accepted
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54138 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54139 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54138 Closing
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54139 Closing
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54140 Accepted
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54140 [200]: GET /portal/kesehatan_detail.php?id=8
+[Sat Oct 24 16:51:27 2026] 127.0.0.1:54140 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54142 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54143 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54142 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54143 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54142 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54143 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54144 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54144 [200]: GET /portal/kesehatan_riwayat.php?id=8
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54144 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54146 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54147 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54146 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54147 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54146 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54147 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54148 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54148 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54148 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54150 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54151 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54150 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54151 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54150 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54151 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54152 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54152 [302]: POST /admin/cek_login.php
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54152 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54154 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54154 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54154 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54156 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54157 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54156 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54157 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54156 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54157 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54158 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54158 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54158 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54160 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54161 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54160 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54161 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54160 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54161 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54162 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54162 [302]: POST /admin/cek_login.php
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54162 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54164 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54164 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54164 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54166 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54167 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54168 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54166 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54167 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54168 [200]: GET /portal/kesehatan_koreksi.php?id=6
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54168 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54166 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54167 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54170 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54171 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54170 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54171 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54170 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54171 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54172 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54172 [200]: GET /portal/kesehatan_koreksi.php?id=6
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54172 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54174 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54175 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54174 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54175 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54174 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54175 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54176 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54176 [302]: POST /portal/kesehatan_koreksi.php?id=6
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54176 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54178 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54178 [200]: GET /portal/kesehatan_detail.php?id=6
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54178 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54180 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54181 Accepted
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54180 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54181 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54180 Closing
+[Sat Oct 24 16:51:28 2026] 127.0.0.1:54181 Closing
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54182 Accepted
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54182 [409]: POST /portal/kesehatan_koreksi.php?id=6
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54182 Closing
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54184 Accepted
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54185 Accepted
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54184 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54185 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54184 Closing
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54185 Closing
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54186 Accepted
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54186 [200]: GET /portal/kesehatan_detail.php?id=6
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54186 Closing
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54188 Accepted
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54189 Accepted
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54188 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54189 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54188 Closing
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54189 Closing
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54190 Accepted
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54190 [200]: GET /portal/kesehatan_detail.php?id=6
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54190 Closing
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54192 Accepted
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54193 Accepted
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54192 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54193 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54192 Closing
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54193 Closing
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54194 Accepted
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54194 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54194 Closing
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54196 Accepted
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54196 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54196 Closing
+[Sat Oct 24 16:51:29 2026] 127.0.0.1:54197 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54197 [302]: POST /admin/cek_login.php
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54197 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54199 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54199 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54199 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54201 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54202 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54201 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54202 [200]: GET /portal/kesehatan_buat.php?q=V5S0101
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54202 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54201 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54204 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54204 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54204 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54205 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54205 [302]: POST /portal/kesehatan_buat.php?q=V5S0101
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54205 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54207 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54207 [200]: GET /portal/kesehatan_detail.php?id=9
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54207 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54209 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54209 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54209 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54210 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54210 [200]: GET /portal/kesehatan_koreksi.php?id=9
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54210 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54212 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54212 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54212 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54213 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54213 [302]: POST /portal/kesehatan_koreksi.php?id=9
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54213 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54215 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54215 [200]: GET /portal/kesehatan_detail.php?id=9
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54215 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54217 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54217 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54217 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54218 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54218 [200]: GET /portal/kesehatan_koreksi.php?id=9
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54218 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54220 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54220 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54220 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54221 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54221 [302]: POST /portal/kesehatan_koreksi.php?id=9
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54221 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54223 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54223 [200]: GET /portal/kesehatan_detail.php?id=9
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54223 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54225 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54225 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54225 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54226 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54226 [200]: GET /portal/kesehatan_detail.php?id=9
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54226 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54228 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54228 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54228 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54229 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54229 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54229 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54231 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54232 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54231 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54232 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54231 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54232 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54233 Accepted
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54233 [302]: POST /admin/cek_login.php
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54233 Closing
+[Sat Oct 24 16:51:30 2026] 127.0.0.1:54235 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54235 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54235 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54237 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54238 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54237 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54238 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54237 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54238 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54239 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54239 [200]: GET /portal/kesehatan.php
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54239 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54241 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54242 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54241 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54242 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54241 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54242 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54243 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54243 [200]: GET /portal/kesehatan_detail.php?id=6
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54243 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54245 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54246 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54245 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54246 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54245 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54246 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54247 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54247 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54247 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54249 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54250 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54249 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54250 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54249 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54250 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54251 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54251 [302]: POST /admin/cek_login.php
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54251 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54253 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54253 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54253 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54255 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54256 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54255 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54257 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54256 [200]: GET /portal/kesehatan_riwayat.php?id=6
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54256 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54257 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54255 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54257 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54259 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54260 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54259 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54260 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54259 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54260 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54261 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54261 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54261 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54263 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54264 Accepted
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54263 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54264 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54263 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54264 Closing
+[Sat Oct 24 16:51:31 2026] 127.0.0.1:54265 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54265 [302]: POST /admin/cek_login.php
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54265 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54268 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54268 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54268 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54270 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54271 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54270 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54271 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54270 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54271 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54272 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54272 [200]: GET /portal/kesehatan.php
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54272 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54274 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54275 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54274 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54275 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54274 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54275 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54276 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54276 [200]: GET /portal/kesehatan_detail.php?id=6
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54276 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54278 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54279 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54278 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54279 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54278 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54279 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54280 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54280 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54280 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54282 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54283 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54282 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54283 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54282 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54283 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54284 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54284 [302]: POST /admin/cek_login.php
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54284 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54286 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54286 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54286 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54288 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54289 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54290 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54288 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54289 [200]: GET /portal/kesehatan_riwayat.php?id=6
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54289 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54290 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54288 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54290 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54292 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54293 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54292 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54293 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54292 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54293 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54294 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54294 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54294 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54296 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54297 Accepted
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54296 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54297 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54296 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54297 Closing
+[Sat Oct 24 16:51:32 2026] 127.0.0.1:54298 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54298 [302]: POST /admin/cek_login.php
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54298 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54300 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54300 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54300 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54302 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54303 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54302 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54303 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54302 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54303 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54304 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54304 [200]: GET /portal/kesehatan.php
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54304 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54306 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54307 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54306 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54307 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54306 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54307 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54308 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54308 [200]: GET /portal/kesehatan_detail.php?id=6
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54308 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54310 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54311 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54310 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54311 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54310 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54311 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54312 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54312 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54312 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54314 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54315 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54314 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54315 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54314 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54315 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54316 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54316 [302]: POST /admin/cek_login.php
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54316 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54318 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54318 [200]: GET /portal/index.php
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54318 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54320 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54321 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54322 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54320 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54321 [200]: GET /portal/kesehatan_riwayat.php?id=6
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54321 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54322 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54320 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54322 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54324 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54325 Accepted
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54324 [200]: GET /assets/ui/alhasan.css?v=1792822291
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54325 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54324 Closing
+[Sat Oct 24 16:51:33 2026] 127.0.0.1:54325 Closing

@@ -1,0 +1,14 @@
+v5-fase1-integrasi exit=1 71/4
+v5-fase1-http exit=1 79/3
+v5-fase2-integrasi exit=0 134/0
+v5-fase2-audit-probe exit=0 28/0
+v5-fase2-http exit=0 87/0
+v5-fase2-migrasi exit=1 23/6
+penugasan-integrasi exit=0 161/0
+v2-fase4-integrasi exit=0 124/0
+v2-fase5-integrasi exit=1 138/5
+redesain-tahap2-http exit=1 187/4
+redesain-tahap5-http exit=0 106/0
+redesain-tahap7-http exit=0 122/0
+redesain-tahap6-http-tanpa-024-026 exit=0 132/0
+SELESAI

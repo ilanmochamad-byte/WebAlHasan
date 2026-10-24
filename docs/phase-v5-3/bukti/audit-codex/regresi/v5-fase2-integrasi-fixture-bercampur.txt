@@ -1,0 +1,162 @@
+[lulus] Fixture V5 Fase 2 tersedia
+
+=== J-1. Matriks hak (dihitung server) ===
+[lulus] sbx_v5_petugas_b: baca=true catat=true sumber='petugas' cakupan='seluruh'
+[lulus] sbx_admin: baca=true catat=false sumber='admin' cakupan='seluruh'
+[lulus] sbx_v5_admin_petugas: baca=true catat=false sumber='admin_petugas' cakupan='seluruh'
+[lulus] sbx_v5_pembimbing: baca=true catat=false sumber='pembimbing' cakupan='binaan'
+[lulus] sbx_v5_murobi: baca=true catat=false sumber='murobi' cakupan='binaan'
+[lulus] sbx_v5_ganda: baca=true catat=false sumber='pembimbing_murobi' cakupan='binaan'
+[lulus] sbx_v5_murobi_kosong: baca=true catat=false sumber='murobi' cakupan='binaan'
+[lulus] sbx_pengurus_biasa: baca=false catat=false sumber=NULL cakupan=NULL
+[lulus] sbx_guru_biasa: baca=false catat=false sumber=NULL cakupan=NULL
+[lulus] sbx_ortu_a: baca=false catat=false sumber=NULL cakupan=NULL
+
+=== J-2. Satu kunjungan, dua obat, satu rujukan ===
+[lulus] Satu kunjungan tersimpan (201)
+[lulus] Baris kosong diabaikan: 2 obat, 1 rujukan, 1 tindak lanjut tersimpan
+[lulus] Versi 1 + snapshot rincian versi 1
+[lulus] Detail: dua obat, jumlah desimal, waktu pemberian bawaan = waktu kunjungan
+[lulus] Detail: satu rujukan Menunggu hasil, tanggal bawaan = tanggal kunjungan
+[lulus] Detail: satu tindak lanjut Terbuka
+[lulus] Daftar santri: SATU baris kunjungan dengan penanda 2 obat, 1 rujukan menunggu, 1 tindak lanjut terbuka
+[lulus] Ringkasan dari kueri yang sama: 1 kunjungan
+[lulus] Kirim ulang kunci+isi sama → kunjungan sama, tanpa obat/snapshot baru
+[lulus] Kunci sama + obat berbeda → 409 tanpa perubahan
+[lulus] Validasi nama obat kosong → 422 tanpa kunjungan
+[lulus] Validasi jumlah negatif → 422 tanpa kunjungan
+[lulus] Validasi jumlah bukan angka → 422 tanpa kunjungan
+[lulus] Validasi obat di masa depan → 422 tanpa kunjungan
+[lulus] Validasi rujukan tanpa tujuan → 422 tanpa kunjungan
+[lulus] Validasi tanggal hasil tanpa hasil → 422 tanpa kunjungan
+[lulus] Validasi rujukan sebelum kunjungan → 422 tanpa kunjungan
+[lulus] Validasi tindak lanjut status asing → 422 tanpa kunjungan
+[lulus] Validasi rincian bukan larik → 422 tanpa kunjungan
+[lulus] Validasi rincian baru membawa id → 422 tanpa kunjungan
+[lulus] Validasi obat lebih dari 20 → 422 tanpa kunjungan
+[lulus] Validasi gagal: 0 klaim idempotensi tertinggal
+
+=== J-3. Hasil rujukan diperbarui ===
+[lulus] Hasil rujukan tanpa alasan pada kunjungan Tercatat → 422
+[lulus] Hasil rujukan → versi 2, status Hasil diketahui
+[lulus] Replay kunci sama → versi 2 yang sama, tanpa versi baru
+[lulus] Membawa versi lama (1) → 409
+[lulus] Hasil yang sudah tercatat tidak ditimpa lewat jalur hasil (409)
+[lulus] Rujukan bukan milik kunjungan → 404
+[lulus] Riwayat versi 2: alasan + perubahan status/hasil rujukan sebelum→sesudah
+
+=== J-4. Koreksi berversi ===
+[lulus] Koreksi tanpa alasan → 422, versi tetap 2
+[lulus] Koreksi alasan < 5 karakter → 422, versi tetap 2
+[lulus] Koreksi tanpa perubahan isi → 422, versi tetap 2
+[lulus] Koreksi Tercatat → Draf → 422, versi tetap 2
+[lulus] Koreksi dengan id rincian kunjungan lain → 422, versi tetap 2
+[lulus] Koreksi tanpa versi → 422, versi tetap 2
+[lulus] Koreksi sah → versi 3
+[lulus] Obat yang dihapus dibatalkan pada versi 3, barisnya tetap ada (tidak DELETE)
+[lulus] Detail versi 3: keluhan baru, dua obat aktif, hasil rujukan tetap
+[lulus] Riwayat versi 3: pelaku, alasan, perubahan keluhan, jumlah obat, obat dihapus, obat ditambah
+[lulus] Nilai sebelum–sesudah keluhan dapat dibaca
+[lulus] Snapshot versi 2 utuh (dua obat, keluhan lama) setelah koreksi
+[lulus] Replay koreksi kunci sama → versi 3 yang sama
+[lulus] Kunci koreksi sama + isi berbeda → 409
+[lulus] Riwayat lengkap 3 versi, versi 1 pencatatan awal
+
+=== J-5. Alur draf ===
+[lulus] Draf tersimpan
+[lulus] Draf tidak tampil kepada pembimbing/murobi (daftar + detail 403)
+[lulus] Draf tampil kepada admin dan petugas lain
+[lulus] Penyaring status=Draf tidak membuka draf bagi pembimbing
+[lulus] Lanjutkan draf tanpa alasan → versi 2, tetap Draf (petugas lain boleh)
+[lulus] Koreksi API tanpa status mempertahankan Draf (tidak tercatatkan diam-diam)
+[lulus] Tetapkan tercatat → tampil kepada pembimbing
+[lulus] Setelah Tercatat, koreksi tanpa alasan → 422
+
+=== J-6. Koreksi bersamaan (proses terpisah) ===
+[lulus] 6 koreksi dari versi 3 bersamaan → 1 sukses + 5 konflik 409 (dapat: 1 sukses, 5 konflik)
+[lulus] Tepat satu versi baru (4) beserta satu snapshot
+[lulus] Isi pemenang utuh dan cocok dengan alasannya; versi 3 tidak tertimpa
+[lulus] Hanya klaim pemenang yang tersimpan; klaim konflik ikut dibatalkan
+[lulus] 6 kiriman kunci+isi sama bersamaan → 1 versi baru (5), 5 replay versi yang sama
+[lulus] Tidak ada versi ganda
+
+=== J-7. Pembaca binaan sesuai cakupan ===
+[gagal] Pembimbing Kamar A hanya membaca santri Binaan A
+[lulus] Pembimbing Kamar B hanya membaca santri Binaan B
+[lulus] Murobi Kelas X hanya membaca santri Binaan A
+[lulus] Murobi tanpa santri: daftar dan ringkasan kosong
+[lulus] Pembimbing+murobi membaca gabungan kedua cakupan (A lewat murobi, B lewat pembimbing)
+[lulus] Petugas membaca seluruh santri termasuk di luar cakupan binaan
+[lulus] sbx_v5_pembimbing: ID santri di luar cakupan dan ID tidak ada sama-sama 403
+[lulus] sbx_v5_pembimbing: penyaring santri di luar cakupan → hasil kosong
+[lulus] sbx_v5_pembimbing_b: ID santri di luar cakupan dan ID tidak ada sama-sama 403
+[lulus] sbx_v5_pembimbing_b: penyaring santri di luar cakupan → hasil kosong
+[lulus] sbx_v5_murobi: ID santri di luar cakupan dan ID tidak ada sama-sama 403
+[lulus] sbx_v5_murobi: penyaring santri di luar cakupan → hasil kosong
+[lulus] sbx_v5_ganda: ID santri di luar cakupan dan ID tidak ada sama-sama 403
+[lulus] sbx_v5_ganda: penyaring santri di luar cakupan → hasil kosong
+[lulus] sbx_v5_murobi_kosong: ID santri di luar cakupan dan ID tidak ada sama-sama 403
+[lulus] sbx_v5_murobi_kosong: penyaring santri di luar cakupan → hasil kosong
+[lulus] Silang pembimbing A↔B ditolak 403
+[lulus] Pembimbing membaca rincian internal terbaru (hanya baca)
+[lulus] Log akses mencatat sumber hak per baris (pembimbing/murobi)
+[lulus] Penyaring rujukan=menunggu pembimbing B tetap dalam cakupan, ringkasan = baris
+[lulus] Penyaring rujukan=diketahui pembimbing B tetap dalam cakupan, ringkasan = baris
+[lulus] Penyaring tindak_lanjut=terbuka pembimbing B tetap dalam cakupan, ringkasan = baris
+[lulus] Penyaring tindak lanjut terbuka (petugas) = hitungan sumber
+[lulus] Penyaring rujukan menunggu: kunjungan B ya, kunjungan A (hasil diketahui) tidak
+[lulus] Penyaring tanggal dari/sampai
+[lulus] Penyaring tidak valid diabaikan
+
+=== J-8. Tulis ditolak bagi pembaca dan admin ===
+[lulus] sbx_v5_pembimbing: catat/koreksi/hasil rujukan → 403
+[lulus] sbx_v5_murobi: catat/koreksi/hasil rujukan → 403
+[lulus] sbx_v5_ganda: catat/koreksi/hasil rujukan → 403
+[lulus] sbx_v5_murobi_kosong: catat/koreksi/hasil rujukan → 403
+[lulus] sbx_admin: catat/koreksi/hasil rujukan → 403
+[lulus] sbx_v5_admin_petugas: catat/koreksi/hasil rujukan → 403
+[lulus] sbx_pengurus_biasa: catat/koreksi/hasil rujukan → 403
+[lulus] sbx_ortu_a: catat/koreksi/hasil rujukan → 403
+[lulus] Seluruh percobaan tulis: 0 baris/versi/klaim baru
+[lulus] sbx_v5_pembimbing: riwayat versi/akses → 403
+[lulus] sbx_v5_murobi: riwayat versi/akses → 403
+[lulus] sbx_v5_ganda: riwayat versi/akses → 403
+[lulus] Petugas membaca riwayat versi, bukan riwayat akses
+[lulus] Pembimbing tidak membuka pemilih santri formulir (403)
+[lulus] Pesan penolakan pembaca binaan jelas
+
+=== J-9. Perubahan cakupan pada sesi lama ===
+[lulus] Sebelum: pembimbing membuka detail
+[lulus] Penugasan pembimbing dinonaktifkan → detail & daftar segera 403
+[lulus] Penugasan diakhiri kemarin → detail 403
+[lulus] Dipulihkan → detail terbuka lagi
+[gagal] Santri pindah kamar → pembimbing lama tertutup, pembimbing kamar baru terbuka
+[lulus] Penempatan kelas selesai → murobi tertutup, pembimbing kamar tetap
+[lulus] Master pengurus nonaktif → detail 403
+[lulus] Akun murobi nonaktif → daftar & detail 403
+[lulus] Santri nonaktif → pembaca binaan tertutup; petugas tetap membaca riwayat
+[lulus] Role guru dicabut → murobi tertutup
+[lulus] Seluruh cakupan dipulihkan
+
+=== J-10. Penugasan petugas dicabut saat sesi koreksi terbuka ===
+[lulus] Koreksi dari formulir yang masih terbuka ditolak 403, tanpa versi/klaim
+[lulus] Baca juga tertutup setelah pencabutan
+
+=== J-11. Privasi ===
+[lulus] Daftar (petugas/pembimbing/admin) tanpa isi klinis maupun rincian
+[lulus] audit_logs memuat 0 penanda isi klinis/rincian/alasan
+[lulus] Audit koreksi hanya metadata (versi, status, kode bagian, jumlah rincian)
+[lulus] Log akses dan klaim idempotensi tanpa isi
+[lulus] Pembacaan riwayat versi tercatat (aksi baca_versi)
+[lulus] Pesan galat validasi tanpa nilai masukan
+
+=== J-12. Tanpa stok; tabel lain tidak berubah ===
+[lulus] Tidak ada tabel stok/persediaan
+[lulus] Seluruh tabel non-kesehatan (termasuk PSB, pembayaran, izin, santri, wali) tidak berubah jumlah baris
+[lulus] Tidak ada tabel baru di luar kesehatan_*
+[lulus] Checksum tabel PSB (pendaftar, pembayaran, penugasan), izin, wali, santri_wali identik sebelum–sesudah
+[lulus] Verifier 025 lulus atas data uji (versi monoton, snapshot, alasan, rincian = snapshot, 0 yatim)
+
+Lulus: 132 · Gagal: 2
+  - Pembimbing Kamar A hanya membaca santri Binaan A
+  - Santri pindah kamar → pembimbing lama tertutup, pembimbing kamar baru terbuka

@@ -1,0 +1,33 @@
+alumni_static.php: exit 0  | SELURUH PEMERIKSAAN STATIS ALUMNI LULUS.
+get_mutasi_v1_static.php: exit 0 [lulus] admin_download.php memakai formulir POST + Csrf::input(), tanpa tautan bermutasi | Ringkasan: 28 lulus, 0 gagal
+keamanan_psb_static.php: exit 1 Hasil: 82 lulus, 1 gagal |   - S4 pratinjau (AG) tetap belum dipasang
+kredensial_static.php: exit 0  | SELURUH PEMERIKSAAN STATIS PESAN KREDENSIAL LULUS.
+navigasi_ikon_static.php: exit 0  | Semua pemeriksaan lulus.
+penempatan_static.php: exit 0  | SELURUH PEMERIKSAAN STATIS PENEMPATAN LULUS.
+penugasan_static.php: exit 1  | Total gagal: 2
+perapihan_static.php: exit 0  | SELURUH PEMERIKSAAN STATIS PERAPIHAN LULUS.
+phase1_static.php: exit 0 [lulus] Token CSRF valid dapat dibuat dan diverifikasi | [lulus] Token CSRF salah ditolak
+phase2_static.php: exit 0 [lulus] Nomor HP dinormalisasi ke format lokal | [lulus] Tanggal tidak valid ditolak
+phase3_static.php: exit 0 [lulus] Format ambigu ditolak parser dan harus dilaporkan | [lulus] Rentang lintas tengah malam tidak ditebak oleh parser
+phase4_static.php: exit 0 [lulus] Secret token dan TTL dikonfigurasi melalui environment | [lulus] Backup SQL mengecualikan generated column dan menulis daftar kolom eksplisit
+phase5_static.php: exit 0 [lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/csv-format.md | [lulus] Dokumentasi Fase 5 tersedia: docs/phase-5/acceptance-checklist.md
+redesain_web_tahap1_static.php: exit 0  | Semua pemeriksaan lulus.
+redesain_web_tahap2_static.php: exit 0  | Semua pemeriksaan lulus (121).
+redesain_web_tahap3_static.php: exit 1  | Ringkasan: 151 lulus, 1 gagal
+redesain_web_tahap4_static.php: exit 1 Ringkasan: 95 lulus, 1 gagal |   - Tanpa perubahan skema/migrasi (database/ tidak berubah sejak Tahap 3)
+redesain_web_tahap5_static.php: exit 0  | Ringkasan: 96 lulus, 0 gagal
+redesain_web_tahap6_static.php: exit 1  | Ringkasan: 140 lulus, 1 gagal
+redesain_web_tahap7_static.php: exit 1  | Ringkasan: 100 lulus, 2 gagal
+redesain_web_tahap8_static.php: exit 1   - T8-F tidak berubah dari baseline: database |   - T8-F tidak berubah dari baseline: api
+v2_phase1_static.php: exit 0 [lulus] php -l lulus untuk bin/v2_phase1_backfill.php | [lulus] php -l lulus untuk bin/v2_phase1_verify.php
+v2_phase2_static.php: exit 0 [lulus] php -l lulus untuk admin/ubah_password.php | [lulus] php -l lulus untuk admin/pertemuan_pengajian.php
+v2_phase3_static.php: exit 0  | SELURUH PEMERIKSAAN STATIS FASE 3 LULUS.
+v2_phase4_static.php: exit 0  | SELURUH PEMERIKSAAN STATIS FASE 4 LULUS.
+v2_phase5_static.php: exit 0  | SELURUH PEMERIKSAAN STATIS FASE 5 LULUS.
+v3_phase1_static.php: exit 0 [lulus] Warisan hanya baca | [lulus] Mutasi V3 hanya hadir bersama paket Fase 2
+v3_phase2_static.php: exit 77
+v3_phase3_static.php: exit 77
+v3_phase4_static.php: exit 0 [lulus] Payload V3 divalidasi dan tujuan sebelum login ditunda | [lulus] Layar publikasi tidak melog atau menyimpan isi ke penyimpanan/clipboard
+v5_phase1_static.php: exit 1   - Validasi: status Tercatat, waktu tidak di masa depan, kunci aman |   - Tanpa tombol ubah/hapus pada daftar dan detail
+v5_phase2_static.php: exit 1   - Migrasi 025 berurutan setelah 024 (migrasi terakhir yang ada) |   - Respons tulis hanya {id, versi, replayed}; kunci dari header/badan
+v5_phase3_static.php: exit 0  | Lulus: 71 · Gagal: 0

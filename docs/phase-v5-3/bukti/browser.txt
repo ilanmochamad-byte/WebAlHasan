@@ -1,0 +1,65 @@
+[lulus] E-A 375px: detail kunjungan memuat bagian Ringkasan untuk wali
+[lulus] E-A 375px: formulir ringkasan kosong, terpisah dari catatan klinis
+[lulus] E-A formulir susun ringkasan 375px: rapi di kerangka bersama
+[lulus] E-A 375px: pratinjau menampilkan tampilan wali tanpa catatan klinis
+[lulus] E-A pratinjau ringkasan 375px: rapi di kerangka bersama
+[lulus] E-A 375px: terbit (klik ganda) → tepat versi 1
+[lulus] E-A 375px: riwayat hanya satu peristiwa terbit
+[lulus] E-A ringkasan terbit (petugas) 375px: rapi di kerangka bersama
+[lulus] E-A 768px: detail kunjungan memuat bagian Ringkasan untuk wali
+[lulus] E-A 768px: formulir ringkasan kosong, terpisah dari catatan klinis
+[lulus] E-A formulir susun ringkasan 768px: rapi di kerangka bersama
+[lulus] E-A 768px: pratinjau menampilkan tampilan wali tanpa catatan klinis
+[lulus] E-A pratinjau ringkasan 768px: rapi di kerangka bersama
+[lulus] E-A 768px: terbit (klik ganda) → tepat versi 1
+[lulus] E-A 768px: riwayat hanya satu peristiwa terbit
+[lulus] E-A ringkasan terbit (petugas) 768px: rapi di kerangka bersama
+[lulus] E-A 1280px: detail kunjungan memuat bagian Ringkasan untuk wali
+[lulus] E-A 1280px: formulir ringkasan kosong, terpisah dari catatan klinis
+[lulus] E-A formulir susun ringkasan 1280px: rapi di kerangka bersama
+[lulus] E-A 1280px: pratinjau menampilkan tampilan wali tanpa catatan klinis
+[lulus] E-A pratinjau ringkasan 1280px: rapi di kerangka bersama
+[lulus] E-A 1280px: terbit (klik ganda) → tepat versi 1
+[lulus] E-A 1280px: riwayat hanya satu peristiwa terbit
+[lulus] E-A ringkasan terbit (petugas) 1280px: rapi di kerangka bersama
+[lulus] E-B 375px: menu "Kesehatan anak" tersedia bagi wali
+[lulus] E-B 375px: daftar memuat ringkasan terbit anak
+[lulus] E-A daftar kesehatan anak 375px: rapi di kerangka bersama
+[lulus] E-B 375px: notifikasi generik tanpa nama/isi
+[lulus] E-B 375px: ketuk notifikasi → ringkasan anak tanpa catatan klinis/nama petugas
+[lulus] E-A detail kesehatan anak 375px: rapi di kerangka bersama
+[lulus] E-B 768px: menu "Kesehatan anak" tersedia bagi wali
+[lulus] E-B 768px: daftar memuat ringkasan terbit anak
+[lulus] E-A daftar kesehatan anak 768px: rapi di kerangka bersama
+[lulus] E-B 768px: notifikasi generik tanpa nama/isi
+[lulus] E-B 768px: ketuk notifikasi → ringkasan anak tanpa catatan klinis/nama petugas
+[lulus] E-A detail kesehatan anak 768px: rapi di kerangka bersama
+[lulus] E-B 1280px: menu "Kesehatan anak" tersedia bagi wali
+[lulus] E-B 1280px: daftar memuat ringkasan terbit anak
+[lulus] E-A daftar kesehatan anak 1280px: rapi di kerangka bersama
+[lulus] E-B 1280px: notifikasi generik tanpa nama/isi
+[lulus] E-B 1280px: ketuk notifikasi → ringkasan anak tanpa catatan klinis/nama petugas
+[lulus] E-A detail kesehatan anak 1280px: rapi di kerangka bersama
+[lulus] E-B 375px: wali lain membuka tautan ringkasan → 403 tanpa isi
+[lulus] E-C 375px: formulir penggantian diisi versi berlaku
+[lulus] E-C 375px: penggantian tanpa alasan ditolak server
+[lulus] E-C 375px: versi 2 terbit; alasan tampil di riwayat
+[lulus] E-C 375px: tarik lewat dialog (dengan JavaScript)
+[lulus] E-A ringkasan ditarik (petugas) 375px: rapi di kerangka bersama
+[lulus] E-C 375px: daftar wali menandai ringkasan Ditarik
+[lulus] E-C 375px: wali melihat keterangan ditarik tanpa isi
+[lulus] E-D 375px tanpa JavaScript: susun → pratinjau → terbit, rapi
+[lulus] E-D 375px tanpa JavaScript: tarik lewat <details> berfungsi
+[lulus] E-E 375px sbx_admin: hanya baca + riwayat
+[lulus] E-A ringkasan sbx_admin 375px: rapi di kerangka bersama
+[lulus] E-E 375px sbx_v5_pembimbing: hanya baca, tanpa riwayat
+[lulus] E-A ringkasan sbx_v5_pembimbing 375px: rapi di kerangka bersama
+[lulus] E-E 1280px sbx_admin: hanya baca + riwayat
+[lulus] E-A ringkasan sbx_admin 1280px: rapi di kerangka bersama
+[lulus] E-E 1280px sbx_v5_pembimbing: hanya baca, tanpa riwayat
+[lulus] E-A ringkasan sbx_v5_pembimbing 1280px: rapi di kerangka bersama
+[lulus] E-E tanpa galat JavaScript
+[lulus] E-E tanpa confirm()/alert() bawaan
+
+Lulus: 62 · Gagal: 0
+log server galat PHP: 0

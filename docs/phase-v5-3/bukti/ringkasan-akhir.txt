@@ -1,0 +1,29 @@
+PRD V5 Fase 3 — ringkasan hasil uji implementator (kode final branch claude/prd-v5-fase-3, 24 Oktober 2026)
+Lingkungan: PHP 8.4.14, MariaDB 12.3.2 lokal, Node v26.7.0, Chromium Playwright. DB test_*_test, fixture sintetis.
+
+Fase 3
+  statis            tests/v5_phase3_static.php        71/0
+  integrasi         tests/v5_phase3_integration.php   82/0
+  http              tests/v5_phase3_http.php          70/0
+  migrasi-rollback  tests/v5_phase3_migration.php     26/0
+  browser           tests/browser/uji-v5-fase3.mjs    62/0 (375/768/1280 + tanpa JS; log server 0 galat PHP)
+
+Regresi (bukti/regresi/)
+  v5-fase1-integrasi exit=1 71/4
+  v5-fase1-http exit=1 79/3
+  v5-fase2-integrasi exit=0 134/0
+  v5-fase2-audit-probe exit=0 28/0
+  v5-fase2-http exit=0 87/0
+  v5-fase2-migrasi exit=1 23/6
+  penugasan-integrasi exit=0 161/0
+  v2-fase4-integrasi exit=0 124/0
+  v2-fase5-integrasi exit=1 138/5
+  redesain-tahap2-http exit=1 187/4
+  redesain-tahap5-http exit=0 106/0
+  redesain-tahap7-http exit=0 122/0
+  redesain-tahap6-http-tanpa-024-026 exit=0 132/0
+  v2-fase5-integrasi-kontrol exit=0 143/0 (antrean Push fixture lama ditunda; kode/suite tidak diubah)
+  browser-kerangka-sembilan-akun exit=0 107/0
+  browser-kerangka-akun-v5 (7 akun V5 termasuk wali) exit=0 99/0
+  v5-fase2-browser exit=0 58/0
+  statis seluruh suite: lihat regresi/statis-ringkasan.txt

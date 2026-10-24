@@ -94,6 +94,20 @@ final class NavigationContext
         return $akses !== false && $akses['cakupan'] === \App\Kesehatan\KesehatanService::CAKUPAN_BINAAN && ($akses['binaan'][$jenis] ?? false);
     }
 
+    /**
+     * Menu "Kesehatan anak" (PRD V5 Fase 3): akun orang tua aktif dengan master
+     * wali aktif dan migrasi 026 terpasang. Daftar/detail tetap disaring relasi
+     * wali aktif per baris oleh `RingkasanService`.
+     */
+    public function kesehatanWali(): bool
+    {
+        try {
+            return kesehatan_ringkasan_service()->aksesWali($this->user)['wali'];
+        } catch (Throwable) {
+            return false;
+        }
+    }
+
     /** @return array<string, mixed>|false false = modul belum dipasang/galat */
     private function aksesKesehatan(): array|false
     {

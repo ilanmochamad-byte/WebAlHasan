@@ -1,0 +1,18 @@
+[lulus] PHP lint app/V3/PublikasiService.php
+[lulus] PHP lint app/V3/PublikasiRepository.php
+[lulus] PHP lint portal/v3_publikasi.php
+[lulus] PHP lint portal/v3_publikasi_kelola.php
+[lulus] PHP lint portal/partials/v3_publikasi_konten.php
+[lulus] PHP lint bin/v3_phase4_preflight.php
+[lulus] PHP lint bin/v3_phase4_verify.php
+[lulus] Penjaga SQL menemukan metode parentFrom
+[lulus] SQL orang tua tidak mengambil isi kasus/sesi/pelanggaran
+[lulus] SQL pembacaan dibatasi pengguna dan relasi aktif
+[lulus] Memakai allowlist dan resolver wali yang ada
+[lulus] Rollback tidak menghapus data atau tabel bisnis
+[lulus] Tidak ada mutasi publikasi lewat GET
+[lulus] Penjaga GET mendeteksi contoh yang salah
+[lulus] Layar deep-link berada di Stack autentikasi
+[lulus] Detail memuat ulang API dan menghapus konten lama
+[lulus] Payload V3 divalidasi dan tujuan sebelum login ditunda
+[lulus] Layar publikasi tidak melog atau menyimpan isi ke penyimpanan/clipboard

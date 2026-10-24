@@ -1,0 +1,25 @@
+Audit Codex PRD V5 Fase 3 — 24 Oktober 2026
+Baseline c1cb262; implementasi bfc4630; hasil final sesudah dua koreksi worker.
+statis-final.txt: Lulus: 71 · Gagal: 0
+integrasi-final.txt: Lulus: 82 · Gagal: 0
+http-final.txt: Lulus: 70 · Gagal: 0
+probe-final.txt: Lulus: 26 · Gagal: 0
+migrasi-rollback.txt: Lulus: 26 · Gagal: 0
+browser.txt: Lulus: 62 · Gagal: 0
+regresi/v5-fase2-integrasi.txt: Lulus: 134 · Gagal: 0
+regresi/v5-fase2-probe.txt: Lulus: 28 · Gagal: 0
+regresi/browser-fase2.txt: Lulus: 58 · Gagal: 0
+regresi/browser-kerangka.txt: 107 lulus, 0 gagal.
+regresi/v2-fase4-integrasi.txt: 124/0
+regresi/v2-fase4-konkurensi.txt: 20/0
+regresi/v2-fase5-integrasi.txt: 143/0
+regresi/penugasan.txt: 161/0
+regresi/tahap5-http.txt: 106/0
+regresi/tahap7-http.txt: 122/0
+browser-server.txt: 0 galat PHP
+regresi/browser-fase2-server.txt: 0 galat PHP
+Probe kontrol sebelum: 21/5, sesudah: 26/0 (oracle sama).
+33 statis: 22 exit 0, 9 exit 1 historis, 2 exit 77; identik dengan handoff.
+Percobaan fixture bekas/bercampur disimpan, bukan hasil final.
+Push/receipt hanya provider palsu; tidak ada bukti perangkat fisik, Expo nyata atau produksi.
+Fase 4 belum dimulai; tidak merge/deploy/migrasi produksi.
