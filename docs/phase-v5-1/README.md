@@ -1,6 +1,6 @@
 # PRD V5 Fase 1 — Penugasan Kesehatan dan Kunjungan Dasar
 
-**Status (24 Oktober 2026):** implementasi Claude Code selesai dan diuji lokal; **menunggu audit independen Codex**. Belum merge, belum deploy, belum migrasi produksi. Fase 2 belum dimulai.
+**Status (24 Oktober 2026):** **lulus audit independen Codex tanpa koreksi kode aplikasi** atas tiga commit fase hingga `abce969`. Bukti auditor dan tinjauan P-1…P-10: [AUDIT-CODEX.md](AUDIT-CODEX.md). Belum merge, belum deploy, belum migrasi produksi. Fase 2 belum dimulai.
 
 | Butir | Nilai |
 | --- | --- |
@@ -84,7 +84,7 @@ Kegagalan berikut muncul karena Fase 1 **memang** menambah jenis penugasan, migr
 | `penugasan_static` (283/0 → 281/2) | FS-2, FS-4 "tujuh jenis penugasan" | Jenis kedelapan `kesehatan` (PRD V5 §5.2 mewajibkan aditif). Integrasi fondasi tetap 161/0. |
 | `redesain_web_tahap6_static` (141/0 → 140/1) | "Navigation dan app/Auth tidak diubah Tahap 6" | Menu Kesehatan di `Navigation`. `app/Auth` tidak diubah. |
 | `redesain_web_tahap7_static` (102/0 → 100/2) | `PenugasanJenis` tidak berubah; `api/`, `database/`, `bin/` tidak berubah | Katalog, migrasi 024, rute API, skrip `bin/v5_*`. |
-| `redesain_web_tahap8_static` (80/0 → 79/1) | `api` tidak berubah dari baseline | Rute `/v5/kesehatan`. |
+| `redesain_web_tahap8_static` (80/0 → 78/2 pada commit final) | `database` dan `api` tidak berubah dari baseline | Migrasi/rollback 024 dan rute `/v5/kesehatan`. Bukti implementator 79/1 dipertahankan; auditor mengoreksi catatan hasil commit final, tanpa mengubah oracle. |
 | `redesain_web_tahap2_http` (191/0 → 190/1) | H2-A "admin 17 menu" | Menu admin **Kesehatan**, dipertahankan oleh keputusan Human Developer BB (P-1). |
 | `redesain_web_tahap6_http` (132/0 → 125/7) | H6-A rollback mengasumsikan 023 migrasi terakhir | Rollback kini melepas 024 dahulu. Lulus 132/0 bila 024 di-rollback lebih dahulu (`bukti/regresi/redesain-tahap6-http-tanpa-024.txt`). |
 
@@ -92,7 +92,7 @@ Kegagalan statis lain sama persis dengan baseline: `keamanan_psb_static` 82/1, `
 
 ## Penafsiran yang perlu ditinjau auditor/Human Developer
 
-P-1 sudah diputuskan Human Developer; P-2…P-10 tetap untuk ditinjau auditor.
+P-1 sudah diputuskan Human Developer; P-2…P-10 telah ditinjau dan diterima auditor untuk batas Fase 1 (rincian di [AUDIT-CODEX.md](AUDIT-CODEX.md)). Ini tidak mengubah persyaratan fase berikutnya.
 
 
 - **P-1 Menu admin Kesehatan — DIPUTUSKAN Human Developer 24 Oktober 2026 (keputusan BB).** Menu baru "Kesehatan" di grup Kegiatan santri **dipertahankan**; admin kini punya 18 menu (A–E semula 17). Oracle Tahap 2 "admin 17 menu" tetap tidak diubah dan dicatat sebagai kegagalan yang diharapkan.
@@ -109,7 +109,7 @@ P-1 sudah diputuskan Human Developer; P-2…P-10 tetap untuk ditinjau auditor.
 ## Batas yang belum diuji / terbuka
 
 - Tidak ada uji cPanel, produksi, atau MySQL non-MariaDB (lokal MariaDB 12.3.2). `LOCK IN SHARE MODE` dan `CHECK` didukung MySQL 8.0.16+/MariaDB, tetapi belum dijalankan di hosting.
-- Balapan tepat-bersamaan antara admin menonaktifkan penugasan dan petugas menyimpan tidak dieksekusi dengan pengatur waktu; yang diuji adalah urutan (pencabutan lalu tulis) dan penguncian baca di transaksi. Kemungkinan deadlock pada urutan kunci berbeda dijawab 409 "coba lagi" tanpa data rusak (tidak direproduksi).
+- Auditor telah menguji penyimpanan yang menunggu transaksi pencabutan penugasan: setelah pencabutan commit, pekerja ditolak 403 dan tidak ada baris baru. Deadlock dari urutan kunci berbeda belum direproduksi; kode memetakan galat 1205/1213 menjadi 409. Uji tersebut bukan bukti seluruh kemungkinan interleaving telah diuji.
 - Safari fisik, pembaca layar, perangkat iOS/Android, dan aplikasi mobile belum diuji (aplikasi = Fase 4).
 - Performa daftar pada volume besar belum diukur (indeks `santri_id, waktu_kunjungan` dan `status, waktu_kunjungan` tersedia).
 - Obat, rujukan, tindak lanjut, koreksi berversi, pembaca pembimbing/murobi (Fase 2), ringkasan wali dan notifikasi (Fase 3) **belum** dikerjakan.

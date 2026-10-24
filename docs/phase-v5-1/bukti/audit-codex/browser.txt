@@ -1,0 +1,37 @@
+[lulus] B-A daftar kunjungan 375px: rapi di kerangka bersama
+[lulus] B-A formulir kunjungan 375px: rapi di kerangka bersama
+[lulus] B-A formulir terisi 375px: rapi di kerangka bersama
+[lulus] B-B 375px: kunjungan dikirim lalu dibaca ulang di detail
+[lulus] B-A detail kunjungan 375px: rapi di kerangka bersama
+[lulus] B-B 375px: tepat satu kunjungan baru di daftar
+[lulus] B-C 375px: klik ganda Simpan tetap menghasilkan satu kunjungan
+[lulus] B-A daftar kunjungan 768px: rapi di kerangka bersama
+[lulus] B-A formulir kunjungan 768px: rapi di kerangka bersama
+[lulus] B-A formulir terisi 768px: rapi di kerangka bersama
+[lulus] B-B 768px: kunjungan dikirim lalu dibaca ulang di detail
+[lulus] B-A detail kunjungan 768px: rapi di kerangka bersama
+[lulus] B-B 768px: tepat satu kunjungan baru di daftar
+[lulus] B-A daftar kunjungan 1280px: rapi di kerangka bersama
+[lulus] B-A formulir kunjungan 1280px: rapi di kerangka bersama
+[lulus] B-A formulir terisi 1280px: rapi di kerangka bersama
+[lulus] B-B 1280px: kunjungan dikirim lalu dibaca ulang di detail
+[lulus] B-A detail kunjungan 1280px: rapi di kerangka bersama
+[lulus] B-B 1280px: tepat satu kunjungan baru di daftar
+[lulus] B-D 375px tanpa JavaScript: kunjungan tersimpan dan detail rapi
+[lulus] B-D 375px tanpa JavaScript: tepat satu kunjungan baru
+[lulus] B-A daftar admin 375px: rapi di kerangka bersama
+[lulus] B-E 375px: admin tanpa tombol/tautan Catat kunjungan
+[lulus] B-A detail + riwayat akses admin 375px: rapi di kerangka bersama
+[lulus] B-E 375px: admin melihat riwayat akses
+[lulus] B-A daftar admin 768px: rapi di kerangka bersama
+[lulus] B-E 768px: admin tanpa tombol/tautan Catat kunjungan
+[lulus] B-A detail + riwayat akses admin 768px: rapi di kerangka bersama
+[lulus] B-E 768px: admin melihat riwayat akses
+[lulus] B-A daftar admin 1280px: rapi di kerangka bersama
+[lulus] B-E 1280px: admin tanpa tombol/tautan Catat kunjungan
+[lulus] B-A detail + riwayat akses admin 1280px: rapi di kerangka bersama
+[lulus] B-E 1280px: admin melihat riwayat akses
+[lulus] B-E tanpa galat JavaScript
+[lulus] B-E tanpa confirm()/alert() bawaan
+
+Lulus: 35 · Gagal: 0

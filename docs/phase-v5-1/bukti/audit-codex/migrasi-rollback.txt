@@ -1,0 +1,43 @@
+=== M-1. Salinan uji pada keadaan 023 ===
+[lulus] Salinan berantai Tahap 7 (fixture V1–V4 sintetis) dibangun: test_v5_f1_migrasi_test
+[lulus] Rollback 024 mengembalikan salinan ke keadaan 023
+[lulus] Verifier --rollback: tabel kesehatan tidak ada, 024 tidak tercatat
+
+=== M-2. Preflight dan migrasi ===
+[lulus] Preflight lulus dan menulis manifest
+[lulus] Checksum 17 tabel inti dicatat sebelum migrasi
+[lulus] bin/migrate.php up menerapkan 024
+
+=== M-3. Verifier sesudah migrasi ===
+[lulus] Verifier dengan manifest lulus (115 pemeriksaan)
+[lulus] 18 kunci asing, 0 referensi yatim
+[lulus] Checksum santri/wali/santri_wali/users/pengurus/penugasan/V2–V4/PSB tetap sesudah migrasi
+
+=== M-4. Migrasi idempoten ===
+[lulus] SQL 024 dijalankan ulang tanpa galat (CREATE TABLE IF NOT EXISTS)
+[lulus] Jalan ulang tidak mengubah data lama dan tidak menggandakan catatan migrasi
+[lulus] Migrasi 024 aditif murni: 5 CREATE TABLE IF NOT EXISTS, tanpa DROP/DELETE/UPDATE/ALTER
+
+=== M-5. Data kesehatan memblokir rollback ===
+[lulus] Fixture V5 Fase 1 dimuat pada salinan 024
+[lulus] Satu kunjungan sintetis dicatat lewat layanan
+[lulus] Verifier dengan data: 0 yatim, snapshot versi lengkap, audit tanpa isi klinis
+[lulus] Perbedaan manifest hanya pada baris fixture V5 yang memang ditambahkan (users/pengurus/santri/user_roles)
+[lulus] Preflight rollback MEMBLOKIR bila ada data kesehatan
+
+=== M-6. Rollback salinan tanpa data kesehatan ===
+[lulus] Salinan kedua dibangun: test_v5_f1_rollback_test
+[lulus] Preflight rollback lulus pada tabel kesehatan kosong
+[lulus] Rollback 024 dijalankan
+[lulus] Verifier --rollback dengan manifest: 5 tabel dilepas, seluruh baris lama tetap
+[lulus] Checksum tabel inti tetap sesudah rollback
+[lulus] Struktur kolom santri/wali/santri_wali/users/pengurus tidak berubah oleh migrasi maupun rollback
+
+=== M-7. Kode Fase 1 sesudah rollback ===
+[lulus] Sesudah rollback: layanan kesehatan 503, pusat penugasan berjalan (daftar kesehatan kosong, murobi tetap)
+
+=== M-8. Migrasi ulang sesudah rollback ===
+[lulus] Migrasi ulang 024 lulus verifier dengan manifest
+[lulus] Checksum tabel inti tetap sesudah siklus migrasi–rollback–migrasi
+
+Lulus: 26 · Gagal: 0
