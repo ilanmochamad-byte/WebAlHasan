@@ -1,6 +1,6 @@
 # Perbaikan keamanan PSB (24 Oktober 2026)
 
-Status: **diimplementasikan Claude, menunggu audit independen Codex.** Belum di-merge, belum dideploy, tanpa migrasi database. Prasyarat redesain website Tahap 8; Tahap 8 belum dimulai.
+Status: **LULUS audit independen Codex setelah dua koreksi terarah, 24 Oktober 2026** (`AUDIT-CODEX.md`). Implementasi Claude `c6014e1`; koreksi auditor pada konsistensi pembayaran bersamaan dan kategori tagihan, dengan bukti terpisah di `audit-codex/`. Belum di-merge, belum dideploy, tanpa migrasi database. Prasyarat redesain website Tahap 8; Tahap 8 belum dimulai.
 
 ## Keputusan Human Developer
 

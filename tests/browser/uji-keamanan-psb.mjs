@@ -44,6 +44,7 @@ const konteks = async width => {
     if (/bootstrap.*\.min\.css$/.test(url.href)) return route.fulfill({ contentType: 'text/css', body: readFileSync(new URL('bootstrap/dist/css/bootstrap.min.css', nm)) });
     if (/bootstrap.*bundle.*\.js$/.test(url.href)) return route.fulfill({ contentType: 'application/javascript', body: readFileSync(new URL('bootstrap/dist/js/bootstrap.bundle.min.js', nm)) });
     if (/font-awesome.*all\.min\.css$/.test(url.href)) return route.fulfill({ contentType: 'text/css', body: readFileSync(new URL('@fortawesome/fontawesome-free/css/all.min.css', nm)) });
+    if (/\/webfonts\/fa-[\w-]+\.woff2$/.test(url.pathname)) return route.fulfill({ contentType: 'font/woff2', body: readFileSync(new URL('@fortawesome/fontawesome-free/webfonts/' + url.pathname.split('/').pop(), nm)) });
     // Pustaka CDN lain diganti stub kosong (uji luring); kolom tanggal tetap teks biasa.
     if (/flatpickr/.test(url.href)) return route.fulfill({ contentType: 'application/javascript', body: url.pathname.endsWith('.js') && url.pathname.includes('l10n') ? '' : 'window.flatpickr=function(){};' });
     if (/aos.*\.js$/.test(url.href)) return route.fulfill({ contentType: 'application/javascript', body: 'window.AOS={init(){},refresh(){}};' });

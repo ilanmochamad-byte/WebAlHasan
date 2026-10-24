@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Psb;
 
 use mysqli;
+use Throwable;
 
 /**
  * Rincian biaya awal PSB (`biaya_psb.php`) — workstream keamanan PSB.
@@ -145,31 +146,63 @@ final class BiayaPsb
      */
     public static function simpan(mysqli $db, string $noPendaftaran, array $tagihan): void
     {
-        $stmt = $db->prepare('SELECT status_pembayaran FROM psb_pembayaran WHERE no_pendaftaran = ?');
-        $stmt->bind_param('s', $noPendaftaran);
-        $stmt->execute();
-        $lama = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
-        if (is_array($lama) && $lama['status_pembayaran'] === 'Lunas') {
-            throw new PsbException('Pembayaran sudah ditandai lunas oleh bendahara, sehingga rincian tidak dapat diubah lagi. Hubungi panitia PSB bila perlu koreksi.', [], 409);
-        }
-
-        $rincian = json_encode($tagihan['rincian'], JSON_UNESCAPED_UNICODE);
-        $stmt = $db->prepare(
-            'INSERT INTO psb_pembayaran (no_pendaftaran, kategori_biaya, syahriyyah, infaq, seragam_psas, seragam_pramuka, rincian_wajib, total_wajib, total_keseluruhan, metode_pembayaran)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-             ON DUPLICATE KEY UPDATE syahriyyah = VALUES(syahriyyah), infaq = VALUES(infaq), seragam_psas = VALUES(seragam_psas),
-                seragam_pramuka = VALUES(seragam_pramuka), rincian_wajib = VALUES(rincian_wajib), total_wajib = VALUES(total_wajib),
-                total_keseluruhan = VALUES(total_keseluruhan), metode_pembayaran = VALUES(metode_pembayaran)'
-        );
-        if ($stmt === false) {
+        if (!$db->begin_transaction()) {
             throw new PsbException('Rincian biaya tidak dapat disimpan. Coba lagi.', [], 500);
         }
-        $stmt->bind_param('ssiiiisiis', $noPendaftaran, $tagihan['kategori'], $tagihan['syahriyyah'], $tagihan['infaq'],
-            $tagihan['psas'], $tagihan['pramuka'], $rincian, $tagihan['total_wajib'], $tagihan['total'], $tagihan['metode']);
-        $ok = $stmt->execute();
-        $stmt->close();
-        if (!$ok) {
+
+        try {
+            $rincian = json_encode($tagihan['rincian'], JSON_UNESCAPED_UNICODE);
+            // Kondisi diperiksa saat kunci tulis diperoleh, termasuk jika ada
+            // transaksi lain yang baru membuat/melunasi tagihan yang sama.
+            // Semua kolom rincian lunas tetap utuh, termasuk kategori biaya.
+            $stmt = $db->prepare(
+                "INSERT INTO psb_pembayaran (no_pendaftaran, kategori_biaya, syahriyyah, infaq, seragam_psas, seragam_pramuka, rincian_wajib, total_wajib, total_keseluruhan, metode_pembayaran)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 ON DUPLICATE KEY UPDATE
+                    kategori_biaya = IF(status_pembayaran = 'Lunas', kategori_biaya, VALUES(kategori_biaya)),
+                    syahriyyah = IF(status_pembayaran = 'Lunas', syahriyyah, VALUES(syahriyyah)),
+                    infaq = IF(status_pembayaran = 'Lunas', infaq, VALUES(infaq)),
+                    seragam_psas = IF(status_pembayaran = 'Lunas', seragam_psas, VALUES(seragam_psas)),
+                    seragam_pramuka = IF(status_pembayaran = 'Lunas', seragam_pramuka, VALUES(seragam_pramuka)),
+                    rincian_wajib = IF(status_pembayaran = 'Lunas', rincian_wajib, VALUES(rincian_wajib)),
+                    total_wajib = IF(status_pembayaran = 'Lunas', total_wajib, VALUES(total_wajib)),
+                    total_keseluruhan = IF(status_pembayaran = 'Lunas', total_keseluruhan, VALUES(total_keseluruhan)),
+                    metode_pembayaran = IF(status_pembayaran = 'Lunas', metode_pembayaran, VALUES(metode_pembayaran))"
+            );
+            if ($stmt === false) {
+                throw new PsbException('Rincian biaya tidak dapat disimpan. Coba lagi.', [], 500);
+            }
+            $stmt->bind_param('ssiiiisiis', $noPendaftaran, $tagihan['kategori'], $tagihan['syahriyyah'], $tagihan['infaq'],
+                $tagihan['psas'], $tagihan['pramuka'], $rincian, $tagihan['total_wajib'], $tagihan['total'], $tagihan['metode']);
+            $ok = $stmt->execute();
+            $stmt->close();
+            if (!$ok) {
+                throw new PsbException('Rincian biaya tidak dapat disimpan. Coba lagi.', [], 500);
+            }
+
+            // Kunci dari INSERT/UPDATE tetap dipegang sampai hasil dilaporkan.
+            $stmt = $db->prepare('SELECT status_pembayaran FROM psb_pembayaran WHERE no_pendaftaran = ? FOR UPDATE');
+            if ($stmt === false) {
+                throw new PsbException('Rincian biaya tidak dapat disimpan. Coba lagi.', [], 500);
+            }
+            $stmt->bind_param('s', $noPendaftaran);
+            $result = $stmt->execute() ? $stmt->get_result() : false;
+            $lama = $result === false ? null : $result->fetch_assoc();
+            $stmt->close();
+            if (!is_array($lama)) {
+                throw new PsbException('Rincian biaya tidak dapat disimpan. Coba lagi.', [], 500);
+            }
+            if ($lama['status_pembayaran'] === 'Lunas') {
+                throw new PsbException('Pembayaran sudah ditandai lunas oleh bendahara, sehingga rincian tidak dapat diubah lagi. Hubungi panitia PSB bila perlu koreksi.', [], 409);
+            }
+            if (!$db->commit()) {
+                throw new PsbException('Rincian biaya tidak dapat disimpan. Coba lagi.', [], 500);
+            }
+        } catch (Throwable $exception) {
+            $db->rollback();
+            if ($exception instanceof PsbException) {
+                throw $exception;
+            }
             throw new PsbException('Rincian biaya tidak dapat disimpan. Coba lagi.', [], 500);
         }
     }

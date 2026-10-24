@@ -370,15 +370,21 @@ $cek($r['status'] === 200 && str_contains($r['type'], 'application/octet-stream'
 $r = $k->req('/biaya_psb.php?cari=KPSB-T-0001');
 $cek($r['status'] === 200 && str_contains($r['body'], 'Pendaftar Uji A2') && str_contains($r['body'], 'name="wajib[]"') && str_contains($r['body'], 'name="_csrf"'), 'H1 pemilik melihat rinciannya dengan formulir ber-CSRF');
 $katalog = App\Psb\BiayaPsb::katalog($satu('SELECT * FROM psb_pendaftar WHERE id = ?', [$id['A']]));
-$r = $k->req('/biaya_psb.php?cari=KPSB-T-0001', ['_csrf' => $k->csrf('/biaya_psb.php'), 'simpan_cetak' => '1', 'no_pendaftaran' => 'KPSB-T-0001',
+$kirimanBiaya = ['_csrf' => $k->csrf('/biaya_psb.php'), 'simpan_cetak' => '1', 'no_pendaftaran' => 'KPSB-T-0001',
     'kategori_biaya' => 'Kategori Karangan', 'syahriyyah' => '800000', 'infaq' => '500000', 'seragam_psas' => '190000', 'seragam_pramuka' => '0',
-    'metode_pembayaran' => 'Transfer', 'total_wajib' => '1', 'rincian_wajib_json' => '{"Kitab":1}', 'wajib' => ['Kitab', 'Lemari', 'Komponen Karangan']]);
+    'metode_pembayaran' => 'Transfer', 'total_wajib' => '1', 'rincian_wajib_json' => '{"Kitab":1}', 'wajib' => ['Kitab', 'Lemari', 'Komponen Karangan']];
+$r = $k->req('/biaya_psb.php?cari=KPSB-T-0001', $kirimanBiaya);
 $bayarA = $satu("SELECT * FROM psb_pembayaran WHERE no_pendaftaran='KPSB-T-0001'");
 $harapWajib = $katalog['wajib']['Lemari'] + $katalog['wajib']['Kitab'];
 $cek($r['status'] === 303 && str_contains((string) $r['location'], 'cetak_biaya_psb.php?noreg=KPSB-T-0001'), 'H2 simpan mengalihkan ke kwitansi');
 $cek($bayarA !== null && $bayarA['kategori_biaya'] === $katalog['kategori'] && (int) $bayarA['total_wajib'] === $harapWajib
     && (int) $bayarA['total_keseluruhan'] === 800000 + 500000 + 190000 + $harapWajib
     && json_decode($bayarA['rincian_wajib'], true) == ['Lemari' => $katalog['wajib']['Lemari'], 'Kitab' => $katalog['wajib']['Kitab']], 'H3 kategori, harga wajib, dan total dihitung server dari katalog');
+$q("UPDATE psb_pembayaran SET kategori_biaya = 'Kategori sebelumnya' WHERE no_pendaftaran='KPSB-T-0001'");
+$r = $k->req('/biaya_psb.php?cari=KPSB-T-0001', $kirimanBiaya);
+$cek($r['status'] === 303 && $satu("SELECT kategori_biaya FROM psb_pembayaran WHERE no_pendaftaran='KPSB-T-0001'")['kategori_biaya'] === $katalog['kategori'], 'H3a simpan ulang memperbarui kategori sesuai katalog server');
+$r = $k->req('/biaya_psb.php?cari=KPSB-T-0001', $kirimanBiaya);
+$cek($r['status'] === 303 && $satu("SELECT total_keseluruhan FROM psb_pembayaran WHERE no_pendaftaran='KPSB-T-0001'")['total_keseluruhan'] == $bayarA['total_keseluruhan'], 'H3b simpan ulang rincian yang sama tetap berhasil');
 $r = $k->req('/biaya_psb.php?cari=KPSB-T-0001', ['_csrf' => $k->csrf('/biaya_psb.php'), 'simpan_cetak' => '1', 'no_pendaftaran' => 'KPSB-T-0001',
     'syahriyyah' => '-5', 'infaq' => '1e9', 'seragam_psas' => '0', 'seragam_pramuka' => '0', 'metode_pembayaran' => 'Cash']);
 $cek($r['status'] === 200 && $satu("SELECT total_keseluruhan FROM psb_pembayaran WHERE no_pendaftaran='KPSB-T-0001'")['total_keseluruhan'] == $bayarA['total_keseluruhan'], 'H4 nominal tidak sah ditolak');
