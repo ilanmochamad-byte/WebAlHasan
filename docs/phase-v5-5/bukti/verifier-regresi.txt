@@ -1,0 +1,39 @@
+# bin/v5_verify.php pada DB regresi V5 sesudah suite integrasi/konkurensi/HTTP masing-masing (24 Okt 2026)
+
+== test_v5_f1_test: exit 0 · Ringkasan verifier V5: 20 lulus, 0 gagal
+
+== test_v5_f1_http_test: exit 0 · Ringkasan verifier V5: 20 lulus, 0 gagal
+
+== test_v5_f2_test: exit 0 · Ringkasan verifier V5: 20 lulus, 0 gagal
+
+== test_v5_f2_http_test: exit 0 · Ringkasan verifier V5: 20 lulus, 0 gagal
+
+== test_codex_v5_f2_test: exit 0 · Ringkasan verifier V5: 20 lulus, 0 gagal
+
+== test_v5_f3_test: exit 0 · Ringkasan verifier V5: 20 lulus, 0 gagal
+
+== test_v5_f3_http_test: exit 0 · Ringkasan verifier V5: 20 lulus, 0 gagal
+
+== test_codex_v5_f3_probe_test: exit 0 · Ringkasan verifier V5: 20 lulus, 0 gagal
+
+== test_v5_f4_http_test: exit 0 · Ringkasan verifier V5: 20 lulus, 0 gagal
+
+== test_v5_f5_test: exit 0 · Ringkasan verifier V5: 20 lulus, 0 gagal
+
+== test_v5_f5_http_test: exit 0 · Ringkasan verifier V5: 20 lulus, 0 gagal
+
+== test_v5_f5_regresi_test: exit 0 · Ringkasan verifier V5: 20 lulus, 0 gagal
+
+# Isi DB yang diverifikasi (kunjungan · versi · versi>1 · peristiwa ringkasan · notifikasi V5)
+test_v5_f1_test: 5 5 0 0 0
+test_v5_f1_http_test: 2 2 0 0 0
+test_v5_f2_test: 4 11 7 0 0
+test_v5_f2_http_test: 4 9 5 0 0
+test_codex_v5_f2_test: 1 5 4 0 0
+test_v5_f3_test: 11 12 1 13 36
+test_v5_f3_http_test: 2 2 0 5 7
+test_codex_v5_f3_probe_test: 4 5 1 6 21
+test_v5_f4_http_test: 1 1 0 0 0
+test_v5_f5_test: 9 11 2 6 3
+test_v5_f5_http_test: 7 8 1 5 0
+test_v5_f5_regresi_test: 7 8 1 5 0

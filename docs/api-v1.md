@@ -297,6 +297,34 @@ tautan skema `alhasanapps://kesehatan/wali/{id}` hanya penunjuk; aplikasi selalu
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v5-4/README.md`.
 
+## Laporan layanan klinik V5 Fase 5 (24 Oktober 2026)
+
+Aditif, hanya baca, `Cache-Control: private, no-store`. Layanan yang sama dengan
+`portal/kesehatan_laporan.php`; tidak ada isi klinis (keluhan, obat, tujuan/hasil
+rujukan, uraian tindak lanjut, teks ringkasan, alasan) pada respons.
+
+- `GET /v5/kesehatan/laporan?dari=YYYY-MM-DD&sampai=YYYY-MM-DD&kelas_id=` →
+  petugas dan admin: seluruh santri termasuk Draf; pembimbing/murobi terkait: hanya
+  kunjungan Tercatat santri dalam cakupan penugasan aktif (penyaring baris sama dengan
+  daftar); akun lain termasuk wali `403`. Periode bawaan awal bulan berjalan s.d. hari ini;
+  terbalik, > 366 hari, atau tanggal tidak valid `422`. `kelas_id` angka = kelas
+  penempatan aktif saat ini, `tanpa` = belum ditempatkan, lainnya = semua.
+- Respons `{periode: {dari, sampai, hari}, filter, akses,
+  kunjungan: {total, tercatat, draf|null, santri, dikoreksi, dengan_obat, dengan_rujukan, dengan_tindak_lanjut},
+  obat: {pemberian}, rujukan: {total, menunggu, diketahui}, tindak_lanjut: {total, terbuka, terlambat, selesai},
+  ringkasan_wali: {terbit, ditarik, belum}|null, per_kelas: [{kelas|null, kunjungan, santri}],
+  per_bulan: [{bulan, kunjungan, santri}], kelas_pilihan: [{id, nama}],
+  tertunda: {rujukan: {total, rows}, tindak_lanjut: {total, rows}, batas},
+  pengawasan: {...}|null}`. `draf` null bagi pembaca binaan. Baris `tertunda`
+  `{kunjungan_id, santri: {id, nis, nama}, kelas, waktu_kunjungan, status, jumlah, tanggal, lewat}`
+  tidak dibatasi periode (semua rujukan menunggu / tindak lanjut terbuka), paling banyak 50.
+- `pengawasan` hanya admin: `koreksi {total, beralasan, wajib_alasan, tanpa_alasan_wajib}`,
+  `koreksi_terbaru` (pelaku, waktu, versi sebelum/sesudah, beralasan — tanpa teks alasan),
+  `per_petugas`, `akses` (log akses per sumber/aksi/kanal), `peristiwa_ringkasan`, `notifikasi`
+  (status antrean V5), berdasarkan waktu peristiwa dalam periode.
+
+Rincian, penafsiran, dan batas uji: `docs/phase-v5-5/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh

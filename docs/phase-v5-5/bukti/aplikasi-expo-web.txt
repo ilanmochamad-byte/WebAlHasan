@@ -1,0 +1,43 @@
+# Expo WEB (Chromium 375 px) dari salinan kerja mobile b593d21 TANPA .env.local; EXPO_NO_DOTENV=1, API http://127.0.0.1:8982/api/v1 (DB test_v5_f5_app_test). Bundel diperiksa: 0 kemunculan host produksi. Bukan native/perangkat fisik.
+
+=== H-A/H-B. Laporan per peran (Bulan lalu = 2026-09-01 s.d. 2026-09-30) ===
+[lulus] sbx_v5_petugas_f: tombol "Laporan layanan klinik" di pintu kesehatan
+[lulus] sbx_v5_petugas_f: angka layar = API (kunjungan 6, obat 8, rujukan 4, TL 5)
+[lulus] sbx_v5_petugas_f: Draf tampil, pengawasan tidak tampil
+[lulus] sbx_v5_petugas_f: tanpa santri di luar cakupan dan tanpa penanda isi klinis
+[lulus] sbx_v5_petugas_f: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] sbx_v5_petugas_f: ketuk baris tertunda → detail kunjungan santri A
+[lulus] sbx_v5_petugas_f: local/sessionStorage tanpa isi klinis atau nama santri
+[lulus] sbx_admin: tombol "Laporan layanan klinik" di pintu kesehatan
+[lulus] sbx_admin: angka layar = API (kunjungan 6, obat 8, rujukan 4, TL 5)
+[lulus] sbx_admin: Draf tampil, pengawasan tampil
+[lulus] sbx_admin: tanpa santri di luar cakupan dan tanpa penanda isi klinis
+[lulus] sbx_admin: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] sbx_admin: local/sessionStorage tanpa isi klinis atau nama santri
+[lulus] sbx_v5_pembimbing: tombol "Laporan layanan klinik" di pintu kesehatan
+[lulus] sbx_v5_pembimbing: angka layar = API (kunjungan 3, obat 5, rujukan 1, TL 3)
+[lulus] sbx_v5_pembimbing: Draf tersembunyi, pengawasan tidak tampil
+[lulus] sbx_v5_pembimbing: tanpa santri di luar cakupan dan tanpa penanda isi klinis
+[lulus] sbx_v5_pembimbing: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] sbx_v5_pembimbing: ketuk baris tertunda → detail kunjungan santri A
+[lulus] sbx_v5_pembimbing: local/sessionStorage tanpa isi klinis atau nama santri
+[lulus] sbx_v5_pembimbing_b: tombol "Laporan layanan klinik" di pintu kesehatan
+[lulus] sbx_v5_pembimbing_b: angka layar = API (kunjungan 1, obat 2, rujukan 2, TL 0)
+[lulus] sbx_v5_pembimbing_b: Draf tersembunyi, pengawasan tidak tampil
+[lulus] sbx_v5_pembimbing_b: tanpa santri di luar cakupan dan tanpa penanda isi klinis
+[lulus] sbx_v5_pembimbing_b: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] sbx_v5_pembimbing_b: local/sessionStorage tanpa isi klinis atau nama santri
+[lulus] sbx_v5_murobi: tombol "Laporan layanan klinik" di pintu kesehatan
+[lulus] sbx_v5_murobi: angka layar = API (kunjungan 3, obat 5, rujukan 1, TL 3)
+[lulus] sbx_v5_murobi: Draf tersembunyi, pengawasan tidak tampil
+[lulus] sbx_v5_murobi: tanpa santri di luar cakupan dan tanpa penanda isi klinis
+[lulus] sbx_v5_murobi: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] sbx_v5_murobi: local/sessionStorage tanpa isi klinis atau nama santri
+
+=== H-C. Ditolak ===
+[lulus] sbx_v5_wali_1: layar laporan menolak tanpa data
+[lulus] sbx_pengurus_biasa: layar laporan menolak tanpa data
+[lulus] H-D konsol tanpa isi klinis/nama santri (44 baris)
+[lulus] H-D tidak ada permintaan ke luar localhost ()
+
+Lulus: 36 · Gagal: 0

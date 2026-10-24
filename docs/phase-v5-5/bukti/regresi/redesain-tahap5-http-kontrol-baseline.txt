@@ -1,0 +1,19 @@
+# Kontrol Tahap 5 HTTP: kode cabang Fase 5 vs salinan git archive 40ed077 (baseline), DB test_v5_f5_kontrol_t5_test dibangun ulang tiap run oleh skrip DB masing-masing, berselang-seling, 24 Okt 2026 21.09–21.11 WIB.
+
+== branch: 100/6
+[gagal] Tanpa pembimbing: pengirim "Pesantren Al Hasan" (web dan REST)
+[gagal] Ringkasan admin = basis data (catatan 5, poin 45, kasus 2, ambang 2)
+[gagal] CSV tidak berubah bentuk dan lengkap
+[gagal] Chip status = basis data cakupan pengurus A (Dicatat 5)
+[gagal] Catat lewat panel tersimpan dan membuka detail
+[gagal] POST catat oleh murobi ditolak layanan (tanpa baris baru)
+
+== base: 100/6
+[gagal] Tanpa pembimbing: pengirim "Pesantren Al Hasan" (web dan REST)
+[gagal] Ringkasan admin = basis data (catatan 5, poin 45, kasus 2, ambang 2)
+[gagal] CSV tidak berubah bentuk dan lengkap
+[gagal] Chip status = basis data cakupan pengurus A (Dicatat 5)
+[gagal] Catat lewat panel tersimpan dan membuka detail
+[gagal] POST catat oleh murobi ditolak layanan (tanpa baris baru)
+
+Run regresi utama (sekitar 20.59 WIB, kode cabang): 103/3 (redesain-tahap5-http.txt).

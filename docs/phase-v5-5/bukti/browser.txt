@@ -1,0 +1,63 @@
+[lulus] G-A 375px sbx_v5_petugas_f: 6 kunjungan (harap 6); kartu Draf tampil
+[lulus] G-A 375px sbx_v5_petugas_f: pengawasan tidak tampil
+[lulus] G-A 375px sbx_v5_petugas_f: tanpa penanda isi klinis
+[lulus] laporan sbx_v5_petugas_f 375px: rapi di kerangka bersama
+[lulus] G-A 375px sbx_admin: 6 kunjungan (harap 6); kartu Draf tampil
+[lulus] G-A 375px sbx_admin: pengawasan tampil
+[lulus] G-A 375px sbx_admin: tanpa penanda isi klinis
+[lulus] laporan sbx_admin 375px: rapi di kerangka bersama
+[lulus] G-A 375px sbx_v5_pembimbing: 3 kunjungan (harap 3); kartu Draf disembunyikan
+[lulus] G-A 375px sbx_v5_pembimbing: pengawasan tidak tampil
+[lulus] G-A 375px sbx_v5_pembimbing: tanpa penanda isi klinis
+[lulus] laporan sbx_v5_pembimbing 375px: rapi di kerangka bersama
+[lulus] G-A 375px sbx_v5_murobi: 3 kunjungan (harap 3); kartu Draf disembunyikan
+[lulus] G-A 375px sbx_v5_murobi: pengawasan tidak tampil
+[lulus] G-A 375px sbx_v5_murobi: tanpa penanda isi klinis
+[lulus] laporan sbx_v5_murobi 375px: rapi di kerangka bersama
+[lulus] G-A 768px sbx_v5_petugas_f: 6 kunjungan (harap 6); kartu Draf tampil
+[lulus] G-A 768px sbx_v5_petugas_f: pengawasan tidak tampil
+[lulus] G-A 768px sbx_v5_petugas_f: tanpa penanda isi klinis
+[lulus] laporan sbx_v5_petugas_f 768px: rapi di kerangka bersama
+[lulus] G-A 768px sbx_admin: 6 kunjungan (harap 6); kartu Draf tampil
+[lulus] G-A 768px sbx_admin: pengawasan tampil
+[lulus] G-A 768px sbx_admin: tanpa penanda isi klinis
+[lulus] laporan sbx_admin 768px: rapi di kerangka bersama
+[lulus] G-A 768px sbx_v5_pembimbing: 3 kunjungan (harap 3); kartu Draf disembunyikan
+[lulus] G-A 768px sbx_v5_pembimbing: pengawasan tidak tampil
+[lulus] G-A 768px sbx_v5_pembimbing: tanpa penanda isi klinis
+[lulus] laporan sbx_v5_pembimbing 768px: rapi di kerangka bersama
+[lulus] G-A 768px sbx_v5_murobi: 3 kunjungan (harap 3); kartu Draf disembunyikan
+[lulus] G-A 768px sbx_v5_murobi: pengawasan tidak tampil
+[lulus] G-A 768px sbx_v5_murobi: tanpa penanda isi klinis
+[lulus] laporan sbx_v5_murobi 768px: rapi di kerangka bersama
+[lulus] G-A 1280px sbx_v5_petugas_f: 6 kunjungan (harap 6); kartu Draf tampil
+[lulus] G-A 1280px sbx_v5_petugas_f: pengawasan tidak tampil
+[lulus] G-A 1280px sbx_v5_petugas_f: tanpa penanda isi klinis
+[lulus] laporan sbx_v5_petugas_f 1280px: rapi di kerangka bersama
+[lulus] G-A 1280px sbx_admin: 6 kunjungan (harap 6); kartu Draf tampil
+[lulus] G-A 1280px sbx_admin: pengawasan tampil
+[lulus] G-A 1280px sbx_admin: tanpa penanda isi klinis
+[lulus] laporan sbx_admin 1280px: rapi di kerangka bersama
+[lulus] G-A 1280px sbx_v5_pembimbing: 3 kunjungan (harap 3); kartu Draf disembunyikan
+[lulus] G-A 1280px sbx_v5_pembimbing: pengawasan tidak tampil
+[lulus] G-A 1280px sbx_v5_pembimbing: tanpa penanda isi klinis
+[lulus] laporan sbx_v5_pembimbing 1280px: rapi di kerangka bersama
+[lulus] G-A 1280px sbx_v5_murobi: 3 kunjungan (harap 3); kartu Draf disembunyikan
+[lulus] G-A 1280px sbx_v5_murobi: pengawasan tidak tampil
+[lulus] G-A 1280px sbx_v5_murobi: tanpa penanda isi klinis
+[lulus] laporan sbx_v5_murobi 1280px: rapi di kerangka bersama
+[lulus] G-B daftar kunjungan memuat tombol Laporan
+[lulus] G-B saringan periode + kelas Y dari formulir: 2 kunjungan (1 draf)
+[lulus] G-B kartu "Menunggu hasil" → daftar 2 kunjungan (sama dengan laporan)
+[lulus] G-B pembimbing: kartu Kunjungan → daftar 3 kunjungan
+[lulus] G-B pembimbing: baris tindak lanjut tertunda membuka detail santri binaan
+[lulus] G-C 375px tanpa JavaScript: saringan periode diterapkan (6/4/4)
+[lulus] G-C tanpa JavaScript: kartu "Tindak lanjut terbuka" → daftar 4 kunjungan
+[lulus] G-C daftar dari laporan (tanpa JS) 375px: rapi di kerangka bersama
+[lulus] G-C laporan tanpa JS 375px: rapi di kerangka bersama
+[lulus] G-D sbx_v5_wali_1: 403 tanpa data santri
+[lulus] G-D sbx_pengurus_biasa: 403 tanpa data santri
+[lulus] G-D tanpa galat JavaScript
+[lulus] G-D tanpa confirm()/alert() bawaan
+
+Lulus: 61 · Gagal: 0
