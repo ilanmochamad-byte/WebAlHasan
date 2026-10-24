@@ -87,4 +87,4 @@ Probe auditor awal diperbaiki pada pembacaan `pengurus_id`/`wali_id` dari tabel 
 - Direktori pekerjaan lain `docs/panduan-pengguna-v4/`, `docs/presentasi-al-hasan-v4/`, dan `output/` tidak disentuh.
 - Kedua server localhost milik audit dihentikan setelah verifikasi; DB tetap salinan sintetis.
 
-**Pembaruan keputusan, 24 Oktober 2026 (AX):** Human Developer akan melakukan merge di GitHub dan deploy produksi melalui cPanel tanpa menunggu rapor Ganjil 2026/2027 terbit, karena pengisian belum dilakukan. Auditor hanya mencatat keputusan ini; merge/deploy dan pemeriksaan produksi belum dikonfirmasi terlaksana. **Tahap 8 tetap belum dimulai.**
+**Pembaruan keputusan, 24 Oktober 2026 (AX):** Human Developer akan melakukan merge di GitHub dan deploy produksi melalui cPanel tanpa menunggu rapor Ganjil 2026/2027 terbit, karena pengisian belum dilakukan. Auditor hanya mencatat keputusan ini. PR #73 sudah di-merge ke `main` (`7f7a002`, 23 Oktober 2026 18.05 WIB) dan memuat kode hasil audit `a04c6e8`; catatan keputusan AX (`eab04e8`) dibawa ke `main` lewat PR lanjutan. Deploy cPanel belum dikonfirmasi; pemeriksaan produksi belum dijalankan. **Tahap 8 tetap belum dimulai.**
