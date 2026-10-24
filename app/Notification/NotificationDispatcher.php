@@ -208,7 +208,10 @@ final class NotificationDispatcher
             $pointer = json_decode((string) $row['data_json'], true);
             $rid = (int) (is_array($pointer) ? ($pointer['ringkasan_id'] ?? 0) : 0);
             $ringkasan = null;
-            $stmt = $this->db->prepare('SELECT santri_id, status, versi_berlaku FROM kesehatan_ringkasan WHERE id = ?');
+            $stmt = $this->db->prepare('SELECT g.santri_id, g.status, g.versi_berlaku
+                FROM kesehatan_ringkasan g
+                JOIN santri s ON s.id = g.santri_id AND s.is_active = 1 AND s.archived_at IS NULL
+                WHERE g.id = ?');
             if ($stmt !== false) {
                 $stmt->bind_param('i', $rid);
                 $stmt->execute();
@@ -283,6 +286,15 @@ final class NotificationDispatcher
             );
 
             return 'gagal';
+        }
+
+        // Sakelar dapat berubah sesudah batch diklaim atau ketika kiriman
+        // sebelumnya sedang berlangsung. Periksa ulang tepat sebelum request
+        // provider; sisa antrean dilepas tanpa percobaan maupun kiriman.
+        if ($this->settings->current()['push_enabled'] !== true) {
+            $this->outbox->release($outboxId, $owner);
+
+            return 'dilepas';
         }
 
         $mulai = microtime(true);

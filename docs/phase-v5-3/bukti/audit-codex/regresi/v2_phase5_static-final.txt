@@ -1,0 +1,330 @@
+=== 1. Migrasi 009 aditif dan berpasangan ===
+[lulus] Migrasi 009 dan rollback-nya ada
+[lulus] Setiap migrasi tetap memiliki tepat satu berkas rollback
+[lulus] Migrasi 009 tidak memakai DROP TABLE (aditif murni)
+[lulus] Migrasi 009 tidak memakai DROP COLUMN (aditif murni)
+[lulus] Migrasi 009 tidak memakai TRUNCATE (aditif murni)
+[lulus] Migrasi 009 tidak memakai DELETE FROM (aditif murni)
+[lulus] Setiap perubahan migrasi 009 dibungkus pemeriksaan INFORMATION_SCHEMA (idempoten)
+[lulus] Migrasi 009 tidak menyentuh tabel perizinan V1 maupun tabel inti V2
+[lulus] Migrasi 009 mencatat keputusan indeks laporan berbasis pengukuran
+[lulus] Migrasi 009 tidak menambahkan indeks izin_pengajuan yang tidak terbukti diperlukan
+[lulus] Rollback 009 hanya melepas kolom/indeks jejak, tidak menghapus tabel data
+[lulus] Rollback 009 tidak menghapus satu baris data pun
+
+=== 2. Satu definisi filter dan repository ===
+[lulus] Berkas app/Report/IzinReportFilter.php tersedia
+[lulus] Berkas app/Report/IzinReportRepository.php tersedia
+[lulus] Berkas app/Report/IzinReportService.php tersedia
+[lulus] Berkas app/Report/IzinCsvExport.php tersedia
+[lulus] Berkas app/Report/IzinPrintRenderer.php tersedia
+[lulus] Berkas app/Report/PrintLayout.php tersedia
+[lulus] IzinReportFilter tidak dapat dibangun sembarangan (konstruktor privat)
+[lulus] Seluruh kriteria filter bersifat readonly (immutable)
+[lulus] Filter menyediakan sidik jari kriteria untuk membuktikan konsistensi permukaan
+[lulus] Sidik jari kriteria TIDAK memuat pagination (halaman tidak boleh mengubah himpunan)
+[lulus] Klausa WHERE laporan dibangun di SATU tempat (conditions())
+[lulus] Seluruh query laporan memakai SATU klausa FROM yang sama
+[lulus] Metode summary() memakai conditions() yang sama
+[lulus] Metode decisionDuration() memakai conditions() yang sama
+[lulus] Metode page() memakai conditions() yang sama
+[lulus] Metode allRows() memakai conditions() yang sama
+[lulus] Metode explain() memakai conditions() yang sama
+[lulus] Kamar/kelas dibaca lewat subquery skalar agar baris pengajuan tidak berlipat
+[lulus] Median durasi memakai pola LIMIT/OFFSET yang kompatibel MySQL 5.7 (bukan window function)
+[lulus] Tidak ada window function yang akan gagal pada MySQL 5.7 cPanel
+[lulus] Dokumen cetak/CSV memakai jalur ekspor allRows(), bukan satu halaman pagination
+[lulus] CSV dibangun dari document() yang sama dengan cetak
+[lulus] Cetak dibangun dari document() yang sama dengan CSV
+[lulus] Tampilan berhalaman dan dokumen berangkat dari objek filter yang sama
+
+=== 3. Cakupan ditegakkan di server ===
+[lulus] Predikat cakupan dibangun di satu tempat khusus
+[lulus] Cakupan yang tidak dikenal menghasilkan 1 = 0, bukan seluruh baris
+[lulus] Cakupan Capabilities::PENGURUS dibatasi di SQL (p.pengurus_id = ?)
+[lulus] Cakupan Capabilities::MUROBI dibatasi di SQL (p.murobi_guru_id = ?)
+[lulus] Cakupan Capabilities::ORANG_TUA dibatasi di SQL (santri_wali)
+[lulus] conditions() selalu diawali predikat cakupan sehingga tidak dapat dilewati
+[lulus] Filter menolak parameter yang berusaha memperluas cakupan dengan 403
+[lulus] Cakupan dihitung ulang dari akun pada setiap pemanggilan laporan
+[lulus] EXPLAIN laporan dibatasi hanya untuk admin
+[lulus] Halaman portal/laporan.php tersedia
+[lulus] portal/laporan.php melewati guard portal sebelum menghasilkan output
+[lulus] portal/laporan.php memakai layanan laporan bersama, bukan query sendiri
+[lulus] portal/laporan.php tidak mengakses basis data secara langsung
+[lulus] Halaman portal/laporan_cetak.php tersedia
+[lulus] portal/laporan_cetak.php melewati guard portal sebelum menghasilkan output
+[lulus] portal/laporan_cetak.php memakai layanan laporan bersama, bukan query sendiri
+[lulus] portal/laporan_cetak.php tidak mengakses basis data secara langsung
+[lulus] Halaman portal/laporan_csv.php tersedia
+[lulus] portal/laporan_csv.php melewati guard portal sebelum menghasilkan output
+[lulus] portal/laporan_csv.php memakai layanan laporan bersama, bukan query sendiri
+[lulus] portal/laporan_csv.php tidak mengakses basis data secara langsung
+
+=== 4. CSV: header terdokumentasi dan formula injection ===
+[lulus] CSV memuat kolom yang memadai (30 kolom)
+[lulus] Setiap kolom CSV memiliki dokumentasi: lengkap
+[lulus] Tidak ada dokumentasi untuk kolom yang tidak ada: tidak ada
+[lulus] Tidak ada nama kolom CSV yang duplikat
+[lulus] Formula injection dinetralkan untuk '=SUM(A1:A9)' -> '\'=SUM(A1:A9)'
+[lulus] Formula injection dinetralkan untuk '+1+1' -> '\'+1+1'
+[lulus] Formula injection dinetralkan untuk '-2+3' -> '\'-2+3'
+[lulus] Formula injection dinetralkan untuk '@SUM(1)' -> '\'@SUM(1)'
+[lulus] Formula injection dinetralkan untuk '	=cmd' -> '\'	=cmd'
+[lulus] Formula injection dinetralkan untuk '
+=cmd' -> '\'
+=cmd'
+[lulus] Formula injection dinetralkan untuk ' =1+1' -> '\' =1+1'
+[lulus] Formula injection dinetralkan untuk '=HYPERLINK("http://x","klik")' -> '\'=HYPERLINK("http://x","klik")'
+[lulus] Formula injection dinetralkan untuk 'Nama Santri Biasa' -> 'Nama Santri Biasa'
+[lulus] Formula injection dinetralkan untuk '2026-01-01' -> '2026-01-01'
+[lulus] Formula injection dinetralkan untuk '' -> ''
+[lulus] Nilai null menjadi string kosong, bukan teks "null"
+[lulus] CSV diawali BOM UTF-8 agar Excel membaca huruf beraksen dengan benar
+[lulus] Daftar karakter pembuka berbahaya memuat = + - @ TAB dan CR
+[lulus] Unduhan CSV dipaksa sebagai lampiran dan tidak dirender peramban
+[lulus] Unduhan CSV mengumumkan jumlah baris agar dapat dicocokkan dengan ringkasan
+[lulus] CSV yang melebihi pagar memori ditolak eksplisit, bukan dikirim parsial
+[lulus] PRD menetapkan kontrak produk ekspor maksimum 20.000 baris tanpa CSV parsial
+[lulus] Dokumen menandai secara eksplisit bila hasil melebihi batas ekspor
+
+=== 5. Halaman cetak/PDF ===
+[lulus] Halaman cetak memuat identitas pesantren
+[lulus] Halaman cetak memuat pembuat laporan
+[lulus] Halaman cetak memuat waktu pembuatan
+[lulus] Halaman cetak memuat keputusan
+[lulus] Halaman cetak memuat filter aktif
+[lulus] CSS cetak yang dihasilkan tidak memakai counter(page) maupun footer position:fixed
+[lulus] Nomor halaman dihitung server dan dicetak sebagai teks biasa pada setiap lembar
+[lulus] CSS cetak tidak memakai overflow-wrap:anywhere yang memotong kata di tengah
+[lulus] Baris data dijaga tidak terbelah antarhalaman
+[lulus] Halaman cetak memberi petunjuk orientasi lanskap bagi peramban yang mengabaikan @page size
+[lulus] Seluruh nilai pada halaman cetak di-escape
+[lulus] Halaman cetak tidak boleh disimpan cache bersama (memuat data pribadi)
+[lulus] Halaman cetak memuat median durasi keputusan
+
+=== 6. Endpoint aditif ===
+[lulus] Endpoint /izin/laporan terpasang
+[lulus] Endpoint /izin/laporan/filters terpasang
+[lulus] Endpoint /izin/laporan/cetak terpasang
+[lulus] Endpoint /izin/laporan/csv terpasang
+[lulus] Endpoint /izin/laporan/explain terpasang
+[lulus] Endpoint lama /reports tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /reports/filters tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /reports/print tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /izin/pengajuan tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /izin/antrean tetap ada (tidak ada breaking change)
+[lulus] Endpoint lama /notifikasi tetap ada (tidak ada breaking change)
+[lulus] Seluruh endpoint laporan melewati layanan bersama
+[lulus] Parameter mode diperlakukan sebagai preferensi, bukan hak akses
+[lulus] Layanan laporan V2 ditambahkan tanpa mengganti layanan laporan absensi V1
+[lulus] Navigasi portal memuat tautan laporan untuk seluruh peran perizinan
+
+=== 7. Receipt push akhir (temuan terbuka Fase 4) ===
+[lulus] Antarmuka PushReceiptClient tersedia
+[lulus] Kontrak PushClient Fase 4 TIDAK berubah (klien tiruan Fase 4 tetap sah)
+[lulus] ExpoPushClient mengimplementasikan pengambilan receipt resmi Expo
+[lulus] Endpoint receipt sesuai dokumentasi Expo
+[lulus] Dispatcher melewatkan rekonsiliasi dengan tenang bila klien tidak mendukung receipt
+[lulus] Rekonsiliasi receipt berhenti SEBELUM permintaan apa pun ketika push mati
+[lulus] Receipt gagal TIDAK memicu pengiriman ulang (mencegah notifikasi ganda)
+[lulus] Repository outbox menyediakan klaim dan pencatatan receipt
+[lulus] Tiket tanpa jawaban berhenti diminta dan ditandai Tidak Tersedia, bukan Gagal
+[lulus] Kode dan pesan receipt melewati SafeError sebelum disimpan
+[lulus] Worker menyediakan mode --receipts untuk cron cPanel
+[lulus] Mode --status menampilkan sebaran receipt akhir, bukan hanya tiket awal
+[lulus] Id tiket disimpan saat pengiriman berhasil agar receipt dapat diambil
+[lulus] Pencabutan token dari receipt hanya dilakukan bila pemetaannya tidak ambigu
+
+=== 8. WhatsApp tetap ditangguhkan dan mati ===
+[lulus] Kalimat prinsip notifikasi PRD dipertahankan persis
+[lulus] Seluruh penanda [JANGAN DIUBAH] pada PRD tetap utuh
+[lulus] Status WhatsApp DITANGGUHKAN tetap tercatat pada PRD
+[lulus] Checklist aktivasi WhatsApp masa depan tetap disimpan
+[lulus] Dokumentasi Fase 5 (acceptance-status.md) tidak menyatakan WhatsApp lulus
+[lulus] Dokumentasi Fase 5 (test-results.md) tidak menyatakan WhatsApp lulus
+[lulus] Dokumentasi Fase 5 menyatakan secara eksplisit bahwa WhatsApp ditangguhkan dan tidak lulus
+[lulus] Preflight dan verifikasi memblokir rilis bila WhatsApp menyala
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada FakeProvider.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada HttpProvider.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada NullProvider.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada ProviderFactory.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada ProviderResult.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada WhatsAppMessage.php
+[lulus] Tidak ada endpoint atau credential penyedia nyata pada WhatsAppProvider.php
+
+=== 9. Perkakas hanya berjalan pada database uji ===
+[lulus] Perkakas bin/v2_phase5_fixture.php tersedia
+[lulus] bin/v2_phase5_fixture.php hanya dapat dijalankan dari CLI
+[lulus] bin/v2_phase5_fixture.php memerlukan penanda lingkungan eksplisit
+[lulus] bin/v2_phase5_fixture.php menolak database yang tidak berakhiran _test
+[lulus] Perkakas bin/v2_phase5_ukur_laporan.php tersedia
+[lulus] bin/v2_phase5_ukur_laporan.php hanya dapat dijalankan dari CLI
+[lulus] bin/v2_phase5_ukur_laporan.php memerlukan penanda lingkungan eksplisit
+[lulus] bin/v2_phase5_ukur_laporan.php menolak database yang tidak berakhiran _test
+[lulus] Perkakas bin/v2_phase5_backup_restore_drill.php tersedia
+[lulus] bin/v2_phase5_backup_restore_drill.php hanya dapat dijalankan dari CLI
+[lulus] bin/v2_phase5_backup_restore_drill.php memerlukan penanda lingkungan eksplisit
+[lulus] bin/v2_phase5_backup_restore_drill.php menolak database yang tidak berakhiran _test
+[lulus] bin/v2_phase5_fixture.php menolak APP_ENV=production
+[lulus] bin/v2_phase5_backup_restore_drill.php menolak APP_ENV=production
+[lulus] Fixture performa memakai data sintetis berawalan P5 dan tidak menyentuh dump produksi
+[lulus] Latihan restore mengirim credential lewat berkas opsi terkutip, bukan argumen baris perintah
+[lulus] Preflight menyimpan sidik jari nilai bisnis perizinan lama
+[lulus] Verifikasi membandingkan ID dan nilai bisnis perizinan lama dengan manifest
+
+=== 10. Kebersihan repositori ===
+[lulus] Tidak ada credential tertanam pada IzinCsvExport.php
+[lulus] Tidak ada token push sungguhan pada IzinCsvExport.php
+[lulus] Tidak ada credential tertanam pada IzinPrintRenderer.php
+[lulus] Tidak ada token push sungguhan pada IzinPrintRenderer.php
+[lulus] Tidak ada credential tertanam pada IzinReportFilter.php
+[lulus] Tidak ada token push sungguhan pada IzinReportFilter.php
+[lulus] Tidak ada credential tertanam pada IzinReportRepository.php
+[lulus] Tidak ada token push sungguhan pada IzinReportRepository.php
+[lulus] Tidak ada credential tertanam pada IzinReportService.php
+[lulus] Tidak ada token push sungguhan pada IzinReportService.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_backup_restore_drill.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_backup_restore_drill.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_cron_check.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_cron_check.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_fixture.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_fixture.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_preflight.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_preflight.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_ukur_laporan.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_ukur_laporan.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_verify.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_verify.php
+[lulus] Tidak ada credential tertanam pada laporan.php
+[lulus] Tidak ada token push sungguhan pada laporan.php
+[lulus] Tidak ada credential tertanam pada laporan_cetak.php
+[lulus] Tidak ada token push sungguhan pada laporan_cetak.php
+[lulus] Tidak ada credential tertanam pada laporan_csv.php
+[lulus] Tidak ada token push sungguhan pada laporan_csv.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_api_contract.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_api_contract.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_cetak_pdf.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_cetak_pdf.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_integration.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_integration.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_performance.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_performance.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_static.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_static.php
+[lulus] Tidak ada credential tertanam pada v2_phase5_web_smoke.php
+[lulus] Tidak ada token push sungguhan pada v2_phase5_web_smoke.php
+[lulus] Berkas .env tetap diabaikan Git
+
+=== 11. Aplikasi mobile ===
+[lulus] Expo TETAP ~57.0.15 (tidak dinaikkan)
+[lulus] React Native TETAP 0.86.2 (tidak dinaikkan)
+[lulus] expo-notifications tetap selaras SDK 57
+[lulus] expo-print selaras SDK 57
+[lulus] expo-sharing selaras SDK 57
+[lulus] expo-file-system selaras SDK 57
+[lulus] Modul dokumen laporan perizinan mobile tersedia
+[lulus] Layar laporan perizinan mobile tersedia
+[lulus] Cetak dan berbagi memakai API resmi Expo SDK 57
+[lulus] Penulisan berkas memakai API expo-file-system SDK 57 (Paths/File), bukan API lama
+[lulus] Aplikasi memakai endpoint laporan yang sama dengan website
+[lulus] Aplikasi memanggil /izin/laporan, bukan menyusun laporannya sendiri
+[lulus] Layar laporan tidak menegakkan otorisasi berbasis nama role di sisi aplikasi
+[lulus] Layar laporan tidak menyaring baris berdasarkan cakupan di sisi klien
+[lulus] Ringkasan pada aplikasi berasal dari server, tidak dihitung ulang dari satu halaman
+[lulus] Pilihan cakupan aplikasi berasal dari capability yang dikirim server
+[lulus] Aplikasi memverifikasi bahwa CSV memuat seluruh hasil filter
+[lulus] Jalur Expo Print meminta ukuran A4 lanskap (842×595 pada 72 PPI)
+[lulus] Dialog cetak iOS diminta dalam orientasi lanskap
+[lulus] PDF Android mengunci textZoom 100 agar tinggi baris tidak dipengaruhi WebView/OEM
+[lulus] Cetak dan PDF iOS memakai margin horizontal native sekurang-kurangnya 1 cm
+[lulus] HTML mempertahankan margin horizontal 10 mm untuk Android dan peramban
+[lulus] izin-report-document.ts tidak lagi mencetak dengan ukuran kertas bawaan US Letter
+[lulus] izin-report-document.ts memakai opsi halaman A4 lanskap bersama
+[lulus] izin-report-document.ts memakai penanganan pembatalan dialog cetak bersama
+[lulus] report-document.ts tidak lagi mencetak dengan ukuran kertas bawaan US Letter
+[lulus] report-document.ts memakai opsi halaman A4 lanskap bersama
+[lulus] report-document.ts memakai penanganan pembatalan dialog cetak bersama
+[lulus] Pembatalan cetak iOS dianggap normal tanpa menyembunyikan kegagalan printer nyata
+[lulus] Seluruh dialog cetak melewati normalisasi hasil native Expo Print
+[lulus] Tes mobile mencakup cetak dimulai, dibatalkan, dan kegagalan nyata
+[lulus] Tidak ada secret pada berkas laporan aplikasi
+
+=== 12. Lint sintaks PHP ===
+[lulus] php -l lulus: app/Report/CsvExport.php
+[lulus] php -l lulus: app/Report/IzinCsvExport.php
+[lulus] php -l lulus: app/Report/IzinPrintRenderer.php
+[lulus] php -l lulus: app/Report/IzinReportFilter.php
+[lulus] php -l lulus: app/Report/IzinReportRepository.php
+[lulus] php -l lulus: app/Report/IzinReportService.php
+[lulus] php -l lulus: app/Report/PrintLayout.php
+[lulus] php -l lulus: app/Report/PrintRenderer.php
+[lulus] php -l lulus: app/Report/ReportFilter.php
+[lulus] php -l lulus: app/Report/ReportRepository.php
+[lulus] php -l lulus: app/Report/ReportService.php
+[lulus] php -l lulus: app/Notification/Push/ExpoPushClient.php
+[lulus] php -l lulus: app/Notification/Push/PushClient.php
+[lulus] php -l lulus: app/Notification/Push/PushReceiptClient.php
+[lulus] php -l lulus: app/Notification/NotificationDispatcher.php
+[lulus] php -l lulus: app/Notification/OutboxRepository.php
+[lulus] php -l lulus: app/bootstrap.php
+[lulus] php -l lulus: api/v1/index.php
+[lulus] php -l lulus: portal/_guard.php
+[lulus] php -l lulus: portal/_kesehatan.php
+[lulus] php -l lulus: portal/_kesehatan_form.php
+[lulus] php -l lulus: portal/_rapor_ui.php
+[lulus] php -l lulus: portal/_ui.php
+[lulus] php -l lulus: portal/index.php
+[lulus] php -l lulus: portal/izin.php
+[lulus] php -l lulus: portal/izin_aksi.php
+[lulus] php -l lulus: portal/izin_antrean.php
+[lulus] php -l lulus: portal/izin_buat.php
+[lulus] php -l lulus: portal/izin_detail.php
+[lulus] php -l lulus: portal/izin_ringkasan.php
+[lulus] php -l lulus: portal/kesehatan.php
+[lulus] php -l lulus: portal/kesehatan_buat.php
+[lulus] php -l lulus: portal/kesehatan_detail.php
+[lulus] php -l lulus: portal/kesehatan_hasil_rujukan.php
+[lulus] php -l lulus: portal/kesehatan_koreksi.php
+[lulus] php -l lulus: portal/kesehatan_ringkasan.php
+[lulus] php -l lulus: portal/kesehatan_riwayat.php
+[lulus] php -l lulus: portal/kesehatan_wali.php
+[lulus] php -l lulus: portal/laporan.php
+[lulus] php -l lulus: portal/laporan_cetak.php
+[lulus] php -l lulus: portal/laporan_csv.php
+[lulus] php -l lulus: portal/nilai_semester.php
+[lulus] php -l lulus: portal/notifikasi.php
+[lulus] php -l lulus: portal/peran.php
+[lulus] php -l lulus: portal/rapor_pdf.php
+[lulus] php -l lulus: portal/rapor_penanda.php
+[lulus] php -l lulus: portal/rapor_semester.php
+[lulus] php -l lulus: portal/rapor_ttd.php
+[lulus] php -l lulus: portal/rapor_wali.php
+[lulus] php -l lulus: portal/rencana_nilai.php
+[lulus] php -l lulus: portal/santri_binaan.php
+[lulus] php -l lulus: portal/sikap_semester.php
+[lulus] php -l lulus: portal/v3_konseling.php
+[lulus] php -l lulus: portal/v3_konseling_cetak.php
+[lulus] php -l lulus: portal/v3_konseling_detail.php
+[lulus] php -l lulus: portal/v3_lampiran.php
+[lulus] php -l lulus: portal/v3_laporan.php
+[lulus] php -l lulus: portal/v3_pelanggaran.php
+[lulus] php -l lulus: portal/v3_pelanggaran_detail.php
+[lulus] php -l lulus: portal/v3_publikasi.php
+[lulus] php -l lulus: portal/v3_publikasi_kelola.php
+[lulus] php -l lulus: portal/verifikasi_semester.php
+[lulus] php -l lulus: bin/v2_phase5_backup_restore_drill.php
+[lulus] php -l lulus: bin/v2_phase5_cron_check.php
+[lulus] php -l lulus: bin/v2_phase5_fixture.php
+[lulus] php -l lulus: bin/v2_phase5_preflight.php
+[lulus] php -l lulus: bin/v2_phase5_ukur_laporan.php
+[lulus] php -l lulus: bin/v2_phase5_verify.php
+[lulus] php -l lulus: bin/notifikasi_worker.php
+[lulus] php -l lulus: tests/v2_phase5_api_contract.php
+[lulus] php -l lulus: tests/v2_phase5_cetak_pdf.php
+[lulus] php -l lulus: tests/v2_phase5_integration.php
+[lulus] php -l lulus: tests/v2_phase5_performance.php
+[lulus] php -l lulus: tests/v2_phase5_static.php
+[lulus] php -l lulus: tests/v2_phase5_web_smoke.php
+
+SELURUH PEMERIKSAAN STATIS FASE 5 LULUS.

@@ -1,0 +1,27 @@
+[lulus] Sebelum terbit: daftar kosong dan ID tebakan ditolak
+[lulus] Pratinjau tidak menulis dan tidak menyalin catatan klinis
+[lulus] Dua wali sah memperoleh proyeksi ringkasan yang sama
+[lulus] Wali anak lain: detail/filter tidak membuka ringkasan
+[lulus] Objek sesi lama: master/arsip/role wali dicabut menutup detail
+[lulus] Objek sesi lama: master/arsip/role wali dicabut menutup detail
+[lulus] Objek sesi lama: master/arsip/role wali dicabut menutup detail
+[lulus] Relasi dicabut: objek lama kehilangan daftar dan detail, wali pertama tetap berhak
+[lulus] Pencabutan wali kedua tidak menutup wali pertama
+[lulus] Koreksi internal tidak mengubah snapshot ringkasan terbit
+[lulus] Penggantian tanpa alasan ditolak
+[lulus] Penggantian membuat versi 2 yang dibaca wali
+[lulus] Teks snapshot versi pertama tetap utuh
+[lulus] Penarikan tanpa alasan ditolak
+[lulus] Ringkasan ditarik tidak mengandung isi atau alasan
+[lulus] Terbit dan ganti masing-masing sekali per tiga wali; tarik tidak menambah pesan
+[lulus] Santri nonaktif/arsip: tujuan ringkasan ditolak
+[gagal] Santri nonaktif/arsip sebelum worker: nol request provider, antrean gagal permanen
+[lulus] Santri nonaktif/arsip: tujuan ringkasan ditolak
+[gagal] Santri nonaktif/arsip sebelum worker: nol request provider, antrean gagal permanen
+[gagal] OFF sesudah kiriman pertama: tidak ada request provider berikutnya dalam batch
+[gagal] Sisa batch saat OFF dilepas tanpa percobaan agar dapat dilanjutkan
+[lulus] OFF dengan antrean/tiket nyata sintetis: nol send, receipt dan request WhatsApp
+[gagal] ON kembali: hanya sisa batch dikirim sekali, pesan pertama tidak diulang
+[lulus] Payload provider, pusat notifikasi, outbox dan log umum: nol isi/nama/telepon/alasan
+[lulus] Seluruh payload Push hanya dua kunci penunjuk aman
+Lulus: 21 · Gagal: 5

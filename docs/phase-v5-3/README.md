@@ -1,6 +1,6 @@
 # PRD V5 Fase 3 — Ringkasan Orang Tua dan Notifikasi
 
-**Status (24 Oktober 2026):** diimplementasikan Claude Code, **menunggu audit independen Codex**. Belum merge, belum deploy, belum migrasi produksi. Fase 4 belum dimulai.
+**Status (24 Oktober 2026):** diimplementasikan Claude Code, **lulus audit independen Codex setelah dua koreksi terarah worker Push** atas `bfc4630`; lihat [AUDIT-CODEX.md](AUDIT-CODEX.md) untuk temuan, bukti eksekusi auditor, dan batas. Belum merge, belum deploy, belum migrasi produksi. Fase 4 belum dimulai.
 
 | Butir | Nilai |
 | --- | --- |
