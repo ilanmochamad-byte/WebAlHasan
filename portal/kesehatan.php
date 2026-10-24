@@ -17,6 +17,7 @@ declare(strict_types=1);
  * Penyaring operasional (santri, tanggal, status rujukan, tindak lanjut)
  * dan ringkasan angkanya memakai kueri yang sama dengan daftar, sehingga
  * angka tidak pernah memuat baris yang tidak boleh dilihat akun ini.
+ * Fase 5: tombol "Laporan" membuka `kesehatan_laporan.php` (agregat periode).
  */
 
 require_once __DIR__ . '/_kesehatan.php';
@@ -42,7 +43,8 @@ ah_page_open([
         $f['santri_id'] > 0 ? ['label' => 'Kesehatan', 'url' => kesehatan_url('kesehatan.php')] : ['label' => 'Kesehatan'],
         $f['santri_id'] > 0 ? ['label' => 'Riwayat santri'] : null,
     ])),
-    'actions' => $catat ? '<a class="btn btn-primary" href="' . ah_e(kesehatan_url('kesehatan_buat.php', $f['santri_id'] > 0 ? ['santri_id' => $f['santri_id']] : [])) . '"><i class="fas fa-plus" aria-hidden="true"></i> Catat kunjungan</a>' : '',
+    'actions' => '<a class="btn btn-outline-secondary" href="' . ah_e(kesehatan_url('kesehatan_laporan.php')) . '"><i class="fas fa-chart-column" aria-hidden="true"></i> Laporan</a>'
+        . ($catat ? ' <a class="btn btn-primary" href="' . ah_e(kesehatan_url('kesehatan_buat.php', $f['santri_id'] > 0 ? ['santri_id' => $f['santri_id']] : [])) . '"><i class="fas fa-plus" aria-hidden="true"></i> Catat kunjungan</a>' : ''),
 ]);
 if (!$catat): ?>
     <div class="ah-ribbon" role="note"><i class="fas fa-eye mt-1" aria-hidden="true"></i>

@@ -14,6 +14,16 @@
 -- kesehatan menampilkan "belum dipasang", penugasan jenis kesehatan tidak
 -- menghasilkan capability, dan pusat penugasan tetap dapat dibuka.
 
+-- Penjaga data (PRD V5 Fase 5): rollback ini juga dapat dijalankan lewat
+-- `bin/migrate.php rollback` tanpa preflight. Bila salah satu tabel 024 berisi baris (catatan klinis, penugasan, atau jejak akses),
+-- INSERT melanggar CHECK, Migrator berhenti sebelum DROP mana pun, dan
+-- migrasi tetap tercatat. Tabel TEMPORARY hilang sendiri saat sesi berakhir.
+-- Memerlukan CHECK yang ditegakkan (MariaDB 10.2+/MySQL 8.0.16+).
+DROP TEMPORARY TABLE IF EXISTS v5_fase1_rollback_guard;
+CREATE TEMPORARY TABLE v5_fase1_rollback_guard (jumlah BIGINT NOT NULL, CONSTRAINT v5_fase1_rollback_guard_kosong CHECK (jumlah = 0));
+INSERT INTO v5_fase1_rollback_guard (jumlah) SELECT (SELECT COUNT(*) FROM kesehatan_akses_log) + (SELECT COUNT(*) FROM kesehatan_idempotensi) + (SELECT COUNT(*) FROM kesehatan_kunjungan_versi) + (SELECT COUNT(*) FROM kesehatan_kunjungan) + (SELECT COUNT(*) FROM kesehatan_assignments);
+DROP TEMPORARY TABLE v5_fase1_rollback_guard;
+
 DROP TABLE IF EXISTS kesehatan_akses_log;
 DROP TABLE IF EXISTS kesehatan_idempotensi;
 DROP TABLE IF EXISTS kesehatan_kunjungan_versi;

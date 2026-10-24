@@ -56,8 +56,9 @@ if ($rollback) {
     $periksa($tercatat === 1, 'Migrasi 024 tercatat sekali');
 
     $yatim = 0;
+    // Hanya lima tabel 024: tabel 025–026 menambah kunci asing sendiri (diperiksa verifier fasenya).
     $fks = $db->query("SELECT TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE
-        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE 'kesehatan\\_%' AND REFERENCED_TABLE_NAME IS NOT NULL ORDER BY TABLE_NAME, COLUMN_NAME")->fetch_all(MYSQLI_ASSOC);
+        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN ('" . implode("', '", $kesehatan) . "') AND REFERENCED_TABLE_NAME IS NOT NULL ORDER BY TABLE_NAME, COLUMN_NAME")->fetch_all(MYSQLI_ASSOC);
     $periksa(count($fks) === 18, 'Kunci asing tabel kesehatan terpasang (' . count($fks) . ')');
     foreach ($fks as $fk) {
         foreach ($fk as $nama) {
