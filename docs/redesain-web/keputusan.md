@@ -108,9 +108,9 @@ Hasilnya 17 menu dalam 7 grup: Beranda · Kegiatan santri (Perizinan, Pengajian,
 
 ## Penetapan peran & urutan tahap
 
-Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Codex**, delapan tahap berurutan seperti di `rencana.md` dan `AGENTS.md`. Tahap 7 menunggu rapor Ganjil 2026/2027 terbit; Tahap 8 menunggu tahap perbaikan keamanan PSB.
+Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Codex**, delapan tahap berurutan seperti di `rencana.md` dan `AGENTS.md`. Pada keputusan awal, Tahap 7 menunggu rapor Ganjil 2026/2027 terbit (diubah 23 dan 24 Oktober 2026 di bawah); Tahap 8 menunggu tahap perbaikan keamanan PSB.
 
-**Perubahan 23 Oktober 2026 (Human Developer):** Tahap 7 boleh dikerjakan dan diaudit sebelum rapor Ganjil 2026/2027 terbit; **merge ke `main` dan deploy ditahan sampai rapor itu terbit**, sehingga guru tetap tidak berganti alur di tengah masa pengisian nilai.
+**Perubahan 23 Oktober 2026 (Human Developer):** Tahap 7 boleh dikerjakan dan diaudit sebelum rapor Ganjil 2026/2027 terbit; **merge ke `main` dan deploy ditahan sampai rapor itu terbit**, sehingga guru tetap tidak berganti alur di tengah masa pengisian nilai. **Penundaan merge/deploy ini kemudian dicabut pada 24 Oktober 2026 (AX).**
 
 ## Masih menunggu keputusan
 
@@ -128,3 +128,12 @@ Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Code
 | AU | Aturan rencana disesuaikan agar efektif dan efisien: mapel tanpa nilai dapat diubah/dihapus walau mapel lain sudah bernilai; target mapel bernilai terkunci dan mapel itu tidak dapat dihapus; guru pengampunya tetap dapat diganti; penanda tangan dan tempat rencana bernilai tetap lewat penggantian beralasan admin (R-7); "Tandai siap" tidak dibuat. **[aturan layanan]** `RencanaService::save()`. |
 | AV | Orang tua melihat versi rapor yang sudah diganti hanya sebagai nomor, tanggal terbit, dan tanda "Sudah diganti", tanpa isi atau berkas. |
 | AW | Setiap perubahan isian nilai/sikap yang sudah tersimpan tetap koreksi beralasan (aturan layanan V4 yang ada); kisi meminta alasan koreksi. |
+
+
+## Keputusan merge/deploy Tahap 7 (24 Oktober 2026)
+
+| # | Keputusan |
+| --- | --- |
+| AX | Human Developer menyatakan pengisian rapor belum dilakukan dan belum ada data isian nilai atau rapor. **Syarat menunggu rapor Ganjil 2026/2027 terbit untuk merge/deploy Tahap 7 dicabut.** Tahap 7 telah lulus audit Codex pada `a04c6e8`; Human Developer akan melakukan merge branch `claude/redesain-web-tahap-7` ke `main` melalui GitHub, lalu deploy ke website produksi melalui cPanel sebelum pengisian dimulai. |
+
+Status pelaksanaan: **keputusan merge/deploy sudah diberikan; pelaksanaan oleh Human Developer belum dikonfirmasi**. Keterangan belum adanya data berasal dari Human Developer; auditor tidak memeriksa database produksi atau menyatakan smoke cPanel sudah lulus. Keputusan AX menggantikan penundaan 23 Oktober 2026 dan tidak mengubah cakupan, prasyarat, atau penetapan peran Tahap 8/keamanan PSB.

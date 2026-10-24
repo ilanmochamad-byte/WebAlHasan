@@ -2,7 +2,7 @@
 
 Tanggal: **23 Oktober 2026 (Asia/Jakarta)**. Branch `claude/redesain-web-tahap-7`; implementasi Claude **`733590f` dan `9db070f`**, baseline **`86721a2`**. Tanpa worktree. Audit mencakup R-1–R-8, M-5, keputusan U/V/W/X/Y dan AT–AW, kriteria selesai, jalur `portal/rapor_ttd.php`, seluruh penafsiran README, serta preservasi aturan PRD V4.
 
-**Putusan: LULUS setelah satu koreksi terarah auditor (F-1 ditutup).** Tidak ada temuan penghalang tersisa dalam cakupan ini. Merge ke `main` dan deploy tetap ditahan sampai rapor Ganjil 2026/2027 terbit **dan keputusan Human Developer**. Tahap 8 tidak dimulai.
+**Putusan: LULUS setelah satu koreksi terarah auditor (F-1 ditutup).** Tidak ada temuan penghalang tersisa dalam cakupan ini. Pada saat audit 23 Oktober, merge/deploy ditahan sampai rapor terbit. **Keputusan Human Developer 24 Oktober 2026 (AX) mencabut penundaan tersebut**: pengisian belum dimulai dan menurut Human Developer belum ada data isian nilai atau rapor; Human Developer akan merge di GitHub dan deploy melalui cPanel. Pelaksanaannya belum dikonfirmasi. Putusan audit dan batas pengujiannya tetap. Tahap 8 tidak dimulai.
 
 ## Temuan dan koreksi
 
@@ -87,4 +87,4 @@ Probe auditor awal diperbaiki pada pembacaan `pengurus_id`/`wali_id` dari tabel 
 - Direktori pekerjaan lain `docs/panduan-pengguna-v4/`, `docs/presentasi-al-hasan-v4/`, dan `output/` tidak disentuh.
 - Kedua server localhost milik audit dihentikan setelah verifikasi; DB tetap salinan sintetis.
 
-Human Developer memutuskan langkah berikutnya setelah rapor Ganjil 2026/2027 terbit. **Tahap 8 tetap belum dimulai.**
+**Pembaruan keputusan, 24 Oktober 2026 (AX):** Human Developer akan melakukan merge di GitHub dan deploy produksi melalui cPanel tanpa menunggu rapor Ganjil 2026/2027 terbit, karena pengisian belum dilakukan. Auditor hanya mencatat keputusan ini; merge/deploy dan pemeriksaan produksi belum dikonfirmasi terlaksana. **Tahap 8 tetap belum dimulai.**
