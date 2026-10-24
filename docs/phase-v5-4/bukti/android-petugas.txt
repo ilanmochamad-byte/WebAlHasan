@@ -1,0 +1,10 @@
+Putaran akhir 24 Oktober 2026 pada DB test_v5_f4_app_test baru, kode commit web 8f1282c + aplikasi branch claude/prd-v5-fase-4 (Metro dari salinan tanpa .env.local; bundel 0 host produksi).
+Perangkat: Android Emulator Medium_Phone, Android 16 (sdk_gphone16k_arm64) — EMULATOR, bukan fisik. Dev client debug 17 Oktober 2026.
+Skrip: tests/android/v5_fase4_a.py V5F4ANDF
+
+[lulus] Android: ketukan ganda Simpan → tepat satu kunjungan (baris=1)
+[lulus] Android: detail kunjungan memuat obat dari server
+[lulus] Android: obat dan rujukan tersimpan pada kunjungan yang sama
+[lulus] Android: koreksi beralasan → versi 2
+[lulus] Android: ketukan ganda Terbitkan → satu peristiwa
+KID 1 RID 1 GAGAL 0

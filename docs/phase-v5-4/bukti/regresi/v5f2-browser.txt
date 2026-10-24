@@ -1,0 +1,60 @@
+[lulus] C-A formulir dengan rincian 375px: rapi di kerangka bersama
+[lulus] C-B 375px: dua obat, satu rujukan menunggu, satu tindak lanjut tampil di detail
+[lulus] C-A detail dengan rincian 375px: rapi di kerangka bersama
+[lulus] C-B 375px: satu baris di riwayat santri dengan penanda 2 obat
+[lulus] C-A riwayat santri + ringkasan 375px: rapi di kerangka bersama
+[lulus] C-A formulir hasil rujukan 375px: rapi di kerangka bersama
+[lulus] C-C 375px: hasil rujukan tercatat, versi 2
+[lulus] C-A formulir koreksi 375px: rapi di kerangka bersama
+[lulus] C-D 375px: koreksi (klik ganda) → tepat versi 3, obat kedua tidak aktif
+[lulus] C-D 375px: riwayat versi menampilkan alasan dan perubahan sebelum–sesudah
+[lulus] C-A riwayat versi 375px: rapi di kerangka bersama
+[lulus] C-A formulir dengan rincian 768px: rapi di kerangka bersama
+[lulus] C-B 768px: dua obat, satu rujukan menunggu, satu tindak lanjut tampil di detail
+[lulus] C-A detail dengan rincian 768px: rapi di kerangka bersama
+[lulus] C-B 768px: satu baris di riwayat santri dengan penanda 2 obat
+[lulus] C-A riwayat santri + ringkasan 768px: rapi di kerangka bersama
+[lulus] C-A formulir hasil rujukan 768px: rapi di kerangka bersama
+[lulus] C-C 768px: hasil rujukan tercatat, versi 2
+[lulus] C-A formulir koreksi 768px: rapi di kerangka bersama
+[lulus] C-D 768px: koreksi (klik ganda) → tepat versi 3, obat kedua tidak aktif
+[lulus] C-D 768px: riwayat versi menampilkan alasan dan perubahan sebelum–sesudah
+[lulus] C-A riwayat versi 768px: rapi di kerangka bersama
+[lulus] C-A formulir dengan rincian 1280px: rapi di kerangka bersama
+[lulus] C-B 1280px: dua obat, satu rujukan menunggu, satu tindak lanjut tampil di detail
+[lulus] C-A detail dengan rincian 1280px: rapi di kerangka bersama
+[lulus] C-B 1280px: satu baris di riwayat santri dengan penanda 2 obat
+[lulus] C-A riwayat santri + ringkasan 1280px: rapi di kerangka bersama
+[lulus] C-A formulir hasil rujukan 1280px: rapi di kerangka bersama
+[lulus] C-C 1280px: hasil rujukan tercatat, versi 2
+[lulus] C-A formulir koreksi 1280px: rapi di kerangka bersama
+[lulus] C-D 1280px: koreksi (klik ganda) → tepat versi 3, obat kedua tidak aktif
+[lulus] C-D 1280px: riwayat versi menampilkan alasan dan perubahan sebelum–sesudah
+[lulus] C-A riwayat versi 1280px: rapi di kerangka bersama
+[lulus] C-E 375px: petugas kedua melihat konflik, isiannya tetap ada, tombol Muat versi terbaru
+[lulus] C-A konflik koreksi 375px: rapi di kerangka bersama
+[lulus] C-E 375px: koreksi pertama utuh, versi 4
+[lulus] C-F 375px tanpa JavaScript: draf tersimpan, detail rapi
+[lulus] C-F 375px tanpa JavaScript: lanjutkan draf lalu tetapkan tercatat (versi 3)
+[lulus] C-G 375px: menu Kesehatan tersedia bagi pembimbing
+[lulus] C-A daftar pembimbing 375px: rapi di kerangka bersama
+[lulus] C-G 375px: pembimbing membaca rincian tanpa tombol ubah/riwayat versi
+[lulus] C-A detail pembimbing 375px: rapi di kerangka bersama
+[lulus] C-A riwayat versi admin 375px: rapi di kerangka bersama
+[lulus] C-G 375px: admin membaca riwayat versi tanpa tombol koreksi
+[lulus] C-G 768px: menu Kesehatan tersedia bagi pembimbing
+[lulus] C-A daftar pembimbing 768px: rapi di kerangka bersama
+[lulus] C-G 768px: pembimbing membaca rincian tanpa tombol ubah/riwayat versi
+[lulus] C-A detail pembimbing 768px: rapi di kerangka bersama
+[lulus] C-A riwayat versi admin 768px: rapi di kerangka bersama
+[lulus] C-G 768px: admin membaca riwayat versi tanpa tombol koreksi
+[lulus] C-G 1280px: menu Kesehatan tersedia bagi pembimbing
+[lulus] C-A daftar pembimbing 1280px: rapi di kerangka bersama
+[lulus] C-G 1280px: pembimbing membaca rincian tanpa tombol ubah/riwayat versi
+[lulus] C-A detail pembimbing 1280px: rapi di kerangka bersama
+[lulus] C-A riwayat versi admin 1280px: rapi di kerangka bersama
+[lulus] C-G 1280px: admin membaca riwayat versi tanpa tombol koreksi
+[lulus] C-G tanpa galat JavaScript
+[lulus] C-G tanpa confirm()/alert() bawaan
+
+Lulus: 58 · Gagal: 0

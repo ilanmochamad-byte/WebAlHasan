@@ -1,0 +1,40 @@
+PRD V5 Fase 4 — uji runtime iOS Simulator (24 Oktober 2026, implementator Claude Code)
+
+Perangkat  : iOS Simulator "iPhone 17 Pro" (iOS 26.2), UDID 05999342-AE62-44C4-B0E1-1E8504CF8512
+             — SIMULATOR, bukan perangkat fisik.
+Build      : dev client Debug-iphonesimulator dari DerivedData (dibangun 15 Oktober 2026; native tidak
+             berubah sejak itu — Fase 4 tidak menambah modul native). JS dari Metro salinan tanpa
+             .env.local (EXPO_NO_DOTENV=1, EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:8982/api/v1).
+             Bundel Metro diperiksa: 0 kemunculan host produksi, 1 kemunculan API lokal.
+Server/DB  : PHP bawaan 127.0.0.1:8982, DB test_v5_f4_app_test (fixture sintetis). Ringkasan id 1
+             diterbitkan dari Android emulator pada sesi yang sama (lihat android-petugas.txt).
+Catatan    : kata sandi sbx_v5_wali_2 diganti sementara HANYA di DB test_v5_f4_app_test menjadi
+             nilai tanpa simbol karena keyboard simulator mengetik "#" berbeda (12 karakter alih-alih
+             11; server menjawab "Username atau password tidak valid").
+
+Hasil (diamati dari tangkapan layar; dijalankan manual, bukan skrip):
+[lulus] Bundel iOS termuat di dev client ("iOS Bundled ... 1621 modules"); layar masuk tampil.
+[lulus] Tautan alhasanapps://kesehatan/wali/1 tanpa sesi → tetap layar masuk, tanpa isi.
+[lulus] Masuk sebagai sbx_v5_wali_2 → ringkasan dari tautan langsung terbuka (penunjuk bertahan
+        melewati login; server memeriksa relasi). tangkapan/ios-tautan-sesudah-masuk.png
+[lulus] Pengalih aplikasi iOS: kartu aplikasi menampilkan "Memeriksa akses informasi kesehatan…",
+        bukan isi ringkasan (data dibuang saat tidak aktif).
+[lulus] Cold start (terminate → launch) dengan sesi tersimpan → Beranda wali dengan ubin
+        "Kesehatan anak" dan lonceng 1 notifikasi. tangkapan/ios-beranda-wali.png
+[lulus] Relasi santri_wali wali_2 diarsipkan di DB → tautan ringkasan → "Data belum dapat
+        ditampilkan / Informasi tidak dapat diakses", tanpa isi. tangkapan/ios-relasi-dicabut.png
+[lulus] Relasi dipulihkan → "Coba lagi" → ringkasan tampil lagi. tangkapan/ios-relasi-dipulihkan.png
+[lulus] Kontainer data aplikasi (55 berkas) tanpa penanda isi, nama santri, atau kata sandi
+        (grep -r). Log proses alhasanApps 15 menit terakhir (9.532 baris `log show`) tanpa penanda,
+        nama santri, kata sandi, atau "Bearer ".
+[batas] Mengetuk kartu pengalih aplikasi memicu muat ulang bundel dev dan galat runtime dev
+        "[runtime not ready]: ReferenceError: Property 'MessageQueue' doesn't exist" (layar galat
+        Metro, bukan kode V5); diatasi dengan terminate + launch. Perlu diulang pada build
+        preview/rilis untuk memastikan tidak terjadi di luar mode dev.
+[batas] Cold start LANGSUNG dari URI (terminate → openurl) pada dev client membuka peluncur
+        pengembangan, bukan bundel — perilaku dev client yang sama dengan Android. Cold start dari
+        tautan/notifikasi memerlukan build preview/rilis.
+[tidak diuji] Ketukan notifikasi Push nyata (APNs/Expo) di foreground/background/cold start:
+        simulator tanpa kredensial Push; tidak ada request ke provider. Jalur kode yang sama
+        (notificationTarget → penunjuk → layar yang memeriksa server) diuji unit dan lewat tautan skema.
+[tidak diuji] Alur mutasi petugas/admin di iOS (diuji di Android emulator dan Expo web).
