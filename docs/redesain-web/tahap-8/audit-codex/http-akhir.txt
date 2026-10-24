@@ -1,0 +1,86 @@
+[lulus] H8-A / 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /index.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /profil 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /profil.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /pendidikan 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /pendidikan.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /berita.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /galeri.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /jadwal_ngaji.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /download.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /privacy 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /privacy.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /verifikasi_rapor.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /psb.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /login_pendaftar.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /logout_pendaftar.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A /biaya_psb.php 200, kerangka situs, tanpa tautan "#"
+[lulus] H8-A Profil bagian sejarah beralamat sendiri, isi kosong tampil jujur
+[lulus] H8-A Profil bagian visi-misi beralamat sendiri, isi kosong tampil jujur
+[lulus] H8-A Profil bagian struktur-yayasan beralamat sendiri, isi kosong tampil jujur
+[lulus] H8-A Profil bagian pengurus-pesantren beralamat sendiri, isi kosong tampil jujur
+[lulus] H8-A Profil bagian pengurus-santri beralamat sendiri, isi kosong tampil jujur
+[lulus] H8-A Profil bagian dewan-pengajar beralamat sendiri, isi kosong tampil jujur
+[lulus] H8-A navbar "Masuk" dan bilah pintasan Beranda (AM)
+[lulus] H8-A isi resmi kosong (telepon/WA/statistik/tentang) tidak tampil; alamat dari kebijakan privasi tampil
+[lulus] H8-A empat unit, situs unit membuka tab baru
+[lulus] H8-A berkas isi resmi ditolak web; style.css memang tidak ada
+[lulus] H8-A Unit pendidikan: daftar dengan jenjang terpilih, RA/MI belum dibuka
+[lulus] H8-B berita 12 per halaman dengan penomoran
+[lulus] H8-B halaman 2 berisi sisa berita
+[lulus] H8-B cari berita
+[lulus] H8-B kata kunci di-escape
+[lulus] H8-B kata kunci berpetik tidak mengubah query
+[lulus] H8-B detail: meta bagikan, jalur ke Kabar, WhatsApp + salin tautan
+[lulus] H8-B detail id tidak sah (abc) 404
+[lulus] H8-B detail id tidak sah (8%20OR%201=1) 404
+[lulus] H8-B detail id tidak sah (0) 404
+[lulus] H8-B detail id tidak sah (-1) 404
+[lulus] H8-C galeri 24 foto pertama, keterangan tetap, muat lagi, tanpa album
+[lulus] H8-C muat lagi menampilkan sisa foto
+[lulus] H8-C jumlah tidak sah tetap aman
+[lulus] H8-D segmen 4 waktu sholat; jadwal nonaktif tidak tampil
+[lulus] H8-D pilih waktu Ba'da Isya
+[lulus] H8-D saringan tanpa hasil menjelaskan sebabnya
+[lulus] H8-D waktu tidak sah kembali ke Ba'da Shubuh
+[lulus] H8-E jenis dan ukuran berkas sebenarnya, seluruh baris diunduh
+[lulus] H8-E berkas unduhan tetap terbuka
+[lulus] H8-F header keamanan dan CSP ketat tetap (tanpa CDN)
+[lulus] H8-F di dalam kerangka situs, tanpa CDN dan skrip sebaris
+[lulus] H8-F POST tanpa CSRF ditolak 419
+[lulus] H8-F kode tidak dikenal 404 tanpa data
+[lulus] H8-G 4 langkah, jenjang dikelompokkan, RA/MI belum dibuka
+[lulus] H8-G NISN berpapan angka, persetujuan privasi wajib bertaut
+[lulus] H8-G jenjang dari tautan unit terpilih, kecuali yang belum dibuka
+[lulus] H8-G server menolak pendaftaran RA Terpadu Al Hasan (belum dibuka)
+[lulus] H8-G server menolak pendaftaran MI Daar el-Qolam (belum dibuka)
+[lulus] H8-G ketik ulang HP beda dan NIK salah: galat per isian, isian kembali, langkah galat dibuka
+[lulus] H8-G isian kembali hanya sekali (sesi dibersihkan)
+[lulus] H8-G pendaftaran sah tersimpan; halaman berhasil (P-2) dengan nomor, cetak bukti, langkah berikutnya
+[lulus] H8-G persetujuan dan ketik ulang tidak disimpan (AO, tanpa migrasi)
+[lulus] H8-H portal: Status, Data diri, Berkas, Pembiayaan (menu samping dan bilah bawah)
+[lulus] H8-H langkah berikutnya sesuai status nyata
+[lulus] H8-H tiga formulir ubah per bagian dan enam formulir unggah, semuanya ber-CSRF
+[lulus] H8-H formulir ubah bagian membawa seluruh biodata tersimpan
+[lulus] H8-H pindah ke RA ditolak server; bagian calon santri terbuka dengan galat
+[lulus] H8-H pindah ke MI ditolak server
+[lulus] H8-H ubah bagian calon santri tersimpan; bagian lain tetap
+[lulus] H8-H pesan hasil di bagian Data diri + toast (bukan alert)
+[lulus] H8-H pendaftar RA lama melihat jenjang tersimpannya dapat dipertahankan
+[lulus] H8-H pendaftar RA lama tetap dapat menyimpan biodata (jenjang tersimpan dipertahankan)
+[lulus] H8-H ubah alamat dengan wilayah baru
+[lulus] H8-H wilayah kosong mempertahankan wilayah sekarang
+[lulus] H8-H unggah satu dokumen: pesan di baris itu, tautan lihat berpenjaga
+[lulus] H8-H berkas ditolak: galat di baris berkas itu, tidak tersimpan
+[lulus] H8-H pembiayaan di alamat lama, dalam kerangka portal (menu Pembiayaan aktif), tanpa tab baru
+[lulus] H8-H pembiayaan anonim hanya ajakan masuk
+[lulus] H8-H status Diterima mengarahkan ke pembiayaan
+[lulus] H8-H status Ditolak tampil berkata, bukan warna saja
+[lulus] H8-I bukti pendaftaran memakai kop X-1
+[lulus] H8-I kwitansi memakai kop X-1, penanda tangan tetap
+[lulus] H8-I bukti/kwitansi tetap tertutup bagi anonim dan pendaftar lain
+[lulus] H8-J panel Pendaftar menampilkan pratinjau lewat jalur berpenjaga
+[lulus] H8-J gambar pratinjau: admin 200, guru 403, anonim 401, pendaftar lain 403
+[lulus] H8-K tanpa galat/peringatan PHP di log server
+
+Hasil: 84 lulus, 0 gagal

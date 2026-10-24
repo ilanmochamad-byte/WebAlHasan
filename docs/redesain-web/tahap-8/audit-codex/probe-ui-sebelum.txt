@@ -1,0 +1,22 @@
+[gagal] 375: jangkar unit pada halaman yang sama menutup menu dan membuka gulir
+[gagal] 375: Shift+Tab tetap di penampil galeri
+[lulus] 375: Tab berputar di penampil galeri
+[lulus] 375: tombol panah tetap mengganti foto
+[lulus] 375: Escape menutup galeri dan mengembalikan fokus serta gulir
+[gagal] 375: rekening transfer terbaca tanpa JavaScript
+[lulus] 375: pembiayaan tanpa JavaScript tidak meluber
+[gagal] 768: jangkar unit pada halaman yang sama menutup menu dan membuka gulir
+[gagal] 768: Shift+Tab tetap di penampil galeri
+[lulus] 768: Tab berputar di penampil galeri
+[lulus] 768: tombol panah tetap mengganti foto
+[lulus] 768: Escape menutup galeri dan mengembalikan fokus serta gulir
+[gagal] 768: rekening transfer terbaca tanpa JavaScript
+[lulus] 768: pembiayaan tanpa JavaScript tidak meluber
+[gagal] 1280: Shift+Tab tetap di penampil galeri
+[lulus] 1280: Tab berputar di penampil galeri
+[lulus] 1280: tombol panah tetap mengganti foto
+[lulus] 1280: Escape menutup galeri dan mengembalikan fokus serta gulir
+[gagal] 1280: rekening transfer terbaca tanpa JavaScript
+[lulus] 1280: pembiayaan tanpa JavaScript tidak meluber
+
+Hasil: 12 lulus, 8 gagal

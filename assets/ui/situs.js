@@ -120,6 +120,9 @@
     }
     if (burger && nav) {
         burger.addEventListener('click', function () { setMenu(!nav.classList.contains('is-buka')); });
+        nav.addEventListener('click', function (e) {
+            if (e.target.closest('a[href]')) { setMenu(false); }
+        });
         doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('is-buka')) { setMenu(false); burger.focus(); } });
         window.addEventListener('resize', function () { if (window.innerWidth >= 1100) { setMenu(false); } });
     }
@@ -202,6 +205,16 @@
         fotos.forEach(function (a, i) { a.addEventListener('click', function (e) { e.preventDefault(); buka(i); }); });
         doc.addEventListener('keydown', function (e) {
             if (!viewer) { return; }
+            if (e.key === 'Tab') {
+                var tombol = $$('button', viewer);
+                var pertama = tombol[0];
+                var terakhir = tombol[tombol.length - 1];
+                if (e.shiftKey && (doc.activeElement === pertama || !viewer.contains(doc.activeElement))) {
+                    e.preventDefault(); terakhir.focus();
+                } else if (!e.shiftKey && (doc.activeElement === terakhir || !viewer.contains(doc.activeElement))) {
+                    e.preventDefault(); pertama.focus();
+                }
+            }
             if (e.key === 'Escape') { tutupViewer(); }
             if (e.key === 'ArrowLeft') { tampil(posisi - 1); }
             if (e.key === 'ArrowRight') { tampil(posisi + 1); }

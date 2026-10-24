@@ -157,14 +157,14 @@ $formulir = static function (array $d, array $katalog, ?array $simpan) use ($e, 
                         <label><input type="radio" name="metode_pembayaran" value="Cash"<?= $metode !== 'Transfer' ? ' checked' : '' ?><?= $lunas ? ' disabled' : '' ?>> Tunai di kantor</label>
                         <label><input type="radio" name="metode_pembayaran" value="Transfer"<?= $metode === 'Transfer' ? ' checked' : '' ?><?= $lunas ? ' disabled' : '' ?>> Transfer bank</label>
                     </div>
-                    <div id="infoTransfer"<?= $metode === 'Transfer' ? '' : ' hidden' ?>>
+                    <div id="infoTransfer">
                         <ul class="s-rek">
                             <li><span><b>BSI</b> <span class="s-mono">1046-322-987</span><small>a.n. Yayasan Pendidikan Ponpes Al Hasan</small></span><button class="s-btn s-btn--sm s-js-only" type="button" data-s-salin="1046322987" data-s-salin-pesan="Nomor rekening BSI disalin.">Salin<span class="s-vh"> nomor rekening BSI</span></button></li>
                             <li><span><b>BRI</b> <span class="s-mono">0104-01001-218567</span><small>a.n. Yayasan Pendidikan Pondok Pesantren Al Hasan</small></span><button class="s-btn s-btn--sm s-js-only" type="button" data-s-salin="010401001218567" data-s-salin-pesan="Nomor rekening BRI disalin.">Salin<span class="s-vh"> nomor rekening BRI</span></button></li>
                         </ul>
                         <p class="s-hint mt-2 mb-0">Bawa bukti transfer dan kwitansi ke ruang bendahara untuk divalidasi.</p>
                     </div>
-                    <p class="s-hint mb-0" id="infoTunai"<?= $metode === 'Transfer' ? ' hidden' : '' ?>>Bayar di ruang bendahara pesantren dengan membawa kwitansi.</p>
+                    <p class="s-hint mb-0" id="infoTunai">Bayar di ruang bendahara pesantren dengan membawa kwitansi.</p>
                 </section>
                 <div class="s-total s-total--tempel mt-3">
                     <span>Total dibayar<br><b data-s-total id="txtTotalBayar"><?= $rp($s + $i + ($katalog['seragam'] ? $psas + $pramuka : 0) + array_sum(array_intersect_key($katalog['wajib'], $wajibTersimpan ?? $katalog['wajib']))) ?></b></span>

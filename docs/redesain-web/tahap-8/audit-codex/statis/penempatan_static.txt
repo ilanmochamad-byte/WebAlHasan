@@ -1,0 +1,140 @@
+[lulus] PS-1 lint bersih: app/MasterData/PenempatanRepository.php
+[lulus] PS-1 lint bersih: app/MasterData/PenempatanService.php
+[lulus] PS-1 lint bersih: app/MasterData/PenempatanConflictException.php
+[lulus] PS-1 lint bersih: admin/admin_penempatan_santri.php
+[lulus] PS-1 lint bersih: bin/penempatan_preflight.php
+[lulus] PS-1 lint bersih: tests/penempatan_static.php
+[lulus] PS-1 lint bersih: tests/penempatan_integration.php
+[lulus] PS-1 lint bersih: tests/penempatan_concurrency.php
+[lulus] PS-1 lint bersih: tests/penempatan_concurrency_worker.php
+[lulus] PS-1 lint bersih: tests/penempatan_web_smoke.php
+[lulus] PS-1 lint bersih: app/bootstrap.php
+[lulus] PS-1 lint bersih: app/Ui/Navigation.php
+[lulus] PS-1 lint bersih: admin/admin_santri.php
+[lulus] PS-1 lint bersih: admin/admin_master_santri.php
+[lulus] PS-1 lint bersih: admin/admin_kelas.php
+[lulus] PS-1 lint bersih: admin/admin_kamar.php
+[lulus] PS-1 lint bersih: admin/admin_dashboard.php
+[lulus] PS-2 halaman lama tidak lagi menghapus baris kamar
+[lulus] PS-2 halaman lama tidak lagi menyisipkan baris kamar
+[lulus] PS-2 halaman lama tidak lagi menyusun SQL dengan escape string
+[lulus] PS-2 endpoint AJAX lama tanpa CSRF sudah hilang
+[lulus] PS-2 halaman penempatan tidak menyentuh basis data langsung: plotting_kamar
+[lulus] PS-2 halaman penempatan tidak menyentuh basis data langsung: plotting_kelas
+[lulus] PS-2 halaman penempatan tidak menyentuh basis data langsung: mysqli_query
+[lulus] PS-2 halaman penempatan tidak menyentuh basis data langsung: mysqli_real_escape_string
+[lulus] PS-2 halaman penempatan tidak menyentuh basis data langsung: ->query(
+[lulus] PS-3 repository menyiapkan seluruh query lewat prepare()
+[lulus] PS-3 repository tidak memakai escape string
+[lulus] PS-3 tidak ada nilai variabel yang disambung ke SQL selain placeholder
+[lulus] PS-3 daftar ID dikirim sebagai placeholder, bukan nilai yang disambung
+[lulus] PS-3 seluruh parameter diikat dengan bind_param
+[lulus] PS-3 kolom pencarian berasal dari konstanta repository, bukan input URL
+[lulus] PS-4 halaman memakai adaptor kerangka bersama
+[lulus] PS-4 halaman memakai master_header dan master_footer
+[lulus] PS-4 breadcrumb halaman diatur eksplisit
+[lulus] PS-4 menu aktif ditandai dengan kunci peta menu
+[lulus] PS-4 halaman memakai komponen bersama: ah-card
+[lulus] PS-4 halaman memakai komponen bersama: ah-table
+[lulus] PS-4 halaman memakai komponen bersama: ah_menu(
+[lulus] PS-4 halaman memakai komponen bersama: ah_badge(
+[lulus] PS-4 halaman memakai komponen bersama: ah_stats(
+[lulus] PS-5 menu Data santri memuat tab Penempatan
+[lulus] PS-5 skrip baru dipetakan ke menu aktif
+[lulus] PS-5 alamat lama dipetakan ke menu yang sama
+[lulus] PS-5 kunci menu lama yang membingungkan sudah tidak dipakai
+[lulus] PS-6 alamat lama mengalihkan permintaan GET (bookmark tetap hidup)
+[lulus] PS-6 pengalihan menuju halaman penempatan baru
+[lulus] PS-6 POST lama dihentikan dengan 410, bukan dialihkan
+[lulus] PS-6 pemeriksaan metode dilakukan sebelum pengalihan apa pun
+[lulus] PS-6 alamat lama tetap dijaga peran admin
+[lulus] PS-6 guard admin berjalan sebelum jawaban 410, sehingga alamat lama tidak terbuka untuk tamu
+[lulus] PS-6 parameter lama cari dipetakan ke q
+[lulus] PS-6 parameter lama filter_status dipetakan ke status
+[lulus] PS-7 halaman dijaga guard admin (peran admin + CSRF POST)
+[lulus] PS-7 setiap formulir menyertakan token CSRF
+[lulus] PS-7 mutasi hanya diproses pada POST
+[lulus] PS-7 aksi lewat metode selain POST ditolak 405
+[lulus] PS-7 penerapan memakai token sekali pakai
+[lulus] PS-7 tidak ada formulir GET yang mengirim aksi mutasi
+[lulus] PS-7 seluruh formulir aksi memakai metode POST
+[lulus] PS-8 penerapan berjalan dalam satu transaksi dengan rollback
+[lulus] PS-8 transaksi memakai isolasi yang membuat kunci baris benar-benar menjaga kapasitas
+[lulus] PS-8 baris santri dan kamar dikunci sebelum perubahan
+[lulus] PS-8 penguncian memakai SELECT ... FOR UPDATE
+[lulus] PS-8 penguncian selalu menurut ID menaik (urutan konsisten, mengurangi deadlock)
+[lulus] PS-8 santri dikunci lebih dahulu, kamar menyusul di dalam rencana
+[lulus] PS-8 kapasitas dihitung SETELAH baris kamar terkunci
+[lulus] PS-8 deadlock/lock wait diterjemahkan menjadi pesan "coba lagi"
+[lulus] PS-8 galat dari jalur kelas (MasterDataRepository) ikut diterjemahkan, bukan menjadi galat 500
+[lulus] PS-8 nilai balik penyetelan isolasi dan pembukaan transaksi diperiksa, bukan diabaikan
+[lulus] PS-8 galat binlog_format=STATEMENT diterjemahkan menjadi pesan konfigurasi server
+[lulus] PS-8 preflight memeriksa binlog_format sebelum rilis
+[lulus] PS-8 santri nonaktif/arsip tetap dapat DIKELUARKAN dari kamar meski tidak dapat ditempatkan
+[lulus] PS-8 operasi massal dibatasi agar transaksi tidak mengunci terlalu lama
+[lulus] PS-8 kapasitas dihitung ulang di dalam transaksi
+[lulus] PS-9 audit ditulis oleh layanan, bukan halaman
+[lulus] PS-9 kegagalan audit membatalkan perubahan penempatan
+[lulus] PS-9 nama tindakan audit membedakan kelas/kamar dan tetapkan/keluarkan
+[lulus] PS-9 tindakan massal memiliki catatan audit ringkasannya sendiri
+[lulus] PS-9 audit menyebut entitas plotting_kamar dan plotting_kelas
+[lulus] PS-9 audit memuat bidang wajib: jumlah_santri
+[lulus] PS-9 audit memuat bidang wajib: mode
+[lulus] PS-9 audit memuat bidang wajib: alasan
+[lulus] PS-9 audit memuat bidang wajib: tahun_ajaran_id
+[lulus] PS-9 audit memuat bidang wajib: nis
+[lulus] PS-9 audit memuat bidang wajib: nama_santri
+[lulus] PS-9 audit tidak pernah memuat password
+[lulus] PS-9 audit tidak pernah memuat token
+[lulus] PS-9 audit tidak pernah memuat api_token
+[lulus] PS-10 penghapusan kamar hanya untuk satu baris pada tahun ajaran yang sedang dikerjakan
+[lulus] PS-10 riwayat kelas tidak pernah dihapus
+[lulus] PS-10 repository tidak memuat perintah merusak: TRUNCATE
+[lulus] PS-10 repository tidak memuat perintah merusak: DROP TABLE
+[lulus] PS-10 repository tidak memuat perintah merusak: DROP COLUMN
+[lulus] PS-10 preflight hanya membaca, tidak pernah menulis: INSERT
+[lulus] PS-10 preflight hanya membaca, tidak pernah menulis: UPDATE
+[lulus] PS-10 preflight hanya membaca, tidak pernah menulis: DELETE
+[lulus] PS-10 konflik data mengarahkan admin ke preflight, bukan diperbaiki otomatis
+[lulus] PS-11 tidak ada nilai baris yang dicetak tanpa escape
+[lulus] PS-11 tidak ada input pengguna yang dicetak langsung
+[lulus] PS-11 keluaran data memakai master_e()
+[lulus] PS-12 halaman menyediakan pencarian nama atau NIS
+[lulus] PS-12 halaman menyediakan filter jenis kelamin
+[lulus] PS-12 halaman menyediakan filter unit sekolah
+[lulus] PS-12 halaman menyediakan filter kelas
+[lulus] PS-12 halaman menyediakan filter kamar
+[lulus] PS-12 halaman menyediakan filter belum mempunyai kelas
+[lulus] PS-12 halaman menyediakan filter belum mempunyai kamar
+[lulus] PS-12 daftar memakai pagination server
+[lulus] PS-12 data diambil per halaman, bukan seluruh santri sekaligus
+[lulus] PS-12 tersedia keadaan kosong dan keadaan "tidak ada hasil pencarian"
+[lulus] PS-12 jumlah santri terpilih ditampilkan (bilah pilihan bersama)
+[lulus] PS-12 sisa tempat kamar ditampilkan pada pilihan kamar
+[lulus] PS-12 tersedia layar tinjauan sebelum perubahan diterapkan
+[lulus] PS-12 perilaku pilihan lintas halaman dijelaskan kepada admin
+[lulus] PS-12 setiap pilihan pada baris tabel memiliki nama aksesibel yang menyebut santrinya
+[lulus] PS-12 setiap kontrol filter dan massal memiliki label yang terhubung
+[lulus] PS-12 kotak centang "pilih semua" punya label yang jujur
+[lulus] PS-13 halaman tanpa blok skrip mutasi sendiri
+[lulus] PS-13 tidak ada mutasi lewat AJAX tanpa formulir ber-CSRF: fetch(
+[lulus] PS-13 tidak ada mutasi lewat AJAX tanpa formulir ber-CSRF: XMLHttpRequest
+[lulus] PS-13 tidak ada mutasi lewat AJAX tanpa formulir ber-CSRF: $.ajax
+[lulus] PS-13 halaman menyatakan bekerja tanpa JavaScript
+[lulus] PS-13 kelas/kamar tujuan divalidasi ulang di server (dropdown bukan validasi)
+[lulus] PS-14 tautan penempatan tersedia dari Data Santri
+[lulus] PS-14 Data Kelas menautkan penempatan dengan filter kelas
+[lulus] PS-14 Data Kamar menautkan penempatan dengan filter kamar
+[lulus] PS-14 panel penghuni kamar menyediakan tindakan menuju penempatan
+[lulus] PS-14 aksi cepat dasbor menunjuk halaman penempatan baru
+[lulus] PS-15 paket penempatan tidak menambah berkas migrasi apa pun
+[lulus] PS-15 setiap migrasi tetap berpasangan dengan rollback
+[lulus] PS-15 dokumen migrasi/rollback tersedia dan menyatakan keputusan tanpa migrasi
+[lulus] PS-15 dokumen menyatakan secara eksplisit bahwa deployment hanya perlu pembaruan kode
+[lulus] PS-15 dokumentasi tersedia: docs/penempatan-santri/rencana.md
+[lulus] PS-15 dokumentasi tersedia: docs/penempatan-santri/aturan-bisnis.md
+[lulus] PS-15 dokumentasi tersedia: docs/penempatan-santri/acceptance-status.md
+[lulus] PS-15 dokumentasi tersedia: docs/penempatan-santri/test-results.md
+[lulus] PS-15 dokumentasi tersedia: docs/penempatan-santri/cpanel-deployment.md
+
+SELURUH PEMERIKSAAN STATIS PENEMPATAN LULUS.

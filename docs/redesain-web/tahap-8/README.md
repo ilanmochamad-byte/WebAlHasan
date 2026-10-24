@@ -1,6 +1,6 @@
 # Redesain website Tahap 8 — Situs publik & PSB (24 Oktober 2026)
 
-Status: **diimplementasikan Claude, menunggu audit independen Codex.** Branch `claude/redesain-web-tahap-8` dari `origin/main` `1b319fa` (sudah memuat Tahap 7 dan perbaikan keamanan PSB). Tahap terakhir redesain. Belum merge, belum deploy, tanpa migrasi database.
+Status: **lulus audit independen Codex setelah tiga koreksi terarah tampilan (24 Oktober 2026).** Laporan, hasil pengujian independen dan batasnya: [AUDIT-CODEX.md](AUDIT-CODEX.md). Implementasi Claude tetap tercatat di bawah. Branch `claude/redesain-web-tahap-8` dari `origin/main` `1b319fa` (sudah memuat Tahap 7 dan perbaikan keamanan PSB). Tahap terakhir redesain. Belum merge, belum deploy, tanpa migrasi database.
 
 Cakupan: U-1 s.d. U-10, P-1 s.d. P-8, templat cetak X-1 untuk dokumen PSB · keputusan AG, AJ, AM, AN, AO, AP.
 
@@ -111,6 +111,8 @@ REDESAIN_T8_RUN=1 KPSB_URL=http://127.0.0.1:8981 KPSB_DB=test_redesain_t8_test K
 BASE_URL=http://127.0.0.1:8981 T8_BROWSER=1 node tests/browser/uji-redesain-web-tahap8.mjs
 KEAMANAN_PSB_RUN_TESTS=1 KPSB_URL=http://127.0.0.1:8981 KPSB_DB=test_redesain_t8_test KPSB_WEB_ROOT=/private/tmp/<privat>/web php tests/keamanan_psb_http.php
 BASE_URL=http://127.0.0.1:8981 KPSB_BROWSER=1 node tests/browser/uji-keamanan-psb.mjs
+# Probe regresi auditor, setelah fixture keamanan_psb_http.php tersedia:
+BASE_URL=http://127.0.0.1:8981 T8_BROWSER=1 node tests/browser/uji-redesain-web-tahap8-audit.mjs
 ```
 
 `tests/keamanan_psb_server.sh sync` menghapus berkas fixture di salinan; jalankan seed lagi sesudah sinkron. Suite menolak berjalan bila URL bukan `127.0.0.1`, salinan berisi `.git`, atau DB bukan `test_*_test`.

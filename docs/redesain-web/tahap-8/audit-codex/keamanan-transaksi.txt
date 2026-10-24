@@ -1,0 +1,13 @@
+[lulus] Kategori tersimpan mengikuti katalog server setelah biodata berubah
+[lulus] Nominal dan metode rincian belum lunas dapat diperbarui
+[lulus] Dua koneksi benar-benar bertemu pada kunci baris pembayaran
+[lulus] Simpan menolak rincian yang telah dilunasi transaksi bersamaan
+[lulus] Seluruh rincian lunas dipertahankan saat permintaan bertabrakan
+[lulus] Transaksi induk telah selesai: existing
+[lulus] Dua koneksi benar-benar bertemu pada kunci baris pembayaran
+[lulus] Simpan menolak rincian yang telah dilunasi transaksi bersamaan
+[lulus] Seluruh rincian lunas dipertahankan saat permintaan bertabrakan
+[lulus] Transaksi induk telah selesai: initial
+[lulus] Kegagalan tulis ditolak tanpa baris parsial
+[lulus] Kegagalan tulis menutup transaksi dan koneksi dapat dipakai lagi
+Hasil: 12 lulus, 0 gagal

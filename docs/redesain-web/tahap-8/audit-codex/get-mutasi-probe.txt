@@ -1,0 +1,85 @@
+[lulus] Login independent admin session a
+[lulus] Login independent admin session b
+[lulus] CSRF differs between admin sessions
+[lulus] GET with body/override refused: /admin/hapus_siswa.php
+[lulus] HEAD with body/override refused: /admin/hapus_siswa.php
+[lulus] PUT with body/override refused: /admin/hapus_siswa.php
+[lulus] PATCH with body/override refused: /admin/hapus_siswa.php
+[lulus] DELETE with body/override refused: /admin/hapus_siswa.php
+[lulus] OPTIONS with body/override refused: /admin/hapus_siswa.php
+[lulus] Cross-session CSRF refused: /admin/hapus_siswa.php
+[lulus] Query-only CSRF refused: /admin/hapus_siswa.php
+[lulus] Invalid body CSRF cannot be bypassed by header: /admin/hapus_siswa.php
+[lulus] GET with body/override refused: /admin/proses_psb_admin.php
+[lulus] HEAD with body/override refused: /admin/proses_psb_admin.php
+[lulus] PUT with body/override refused: /admin/proses_psb_admin.php
+[lulus] PATCH with body/override refused: /admin/proses_psb_admin.php
+[lulus] DELETE with body/override refused: /admin/proses_psb_admin.php
+[lulus] OPTIONS with body/override refused: /admin/proses_psb_admin.php
+[lulus] Cross-session CSRF refused: /admin/proses_psb_admin.php
+[lulus] Query-only CSRF refused: /admin/proses_psb_admin.php
+[lulus] Invalid body CSRF cannot be bypassed by header: /admin/proses_psb_admin.php
+[lulus] GET with body/override refused: /admin/proses_psb_admin.php
+[lulus] HEAD with body/override refused: /admin/proses_psb_admin.php
+[lulus] PUT with body/override refused: /admin/proses_psb_admin.php
+[lulus] PATCH with body/override refused: /admin/proses_psb_admin.php
+[lulus] DELETE with body/override refused: /admin/proses_psb_admin.php
+[lulus] OPTIONS with body/override refused: /admin/proses_psb_admin.php
+[lulus] Cross-session CSRF refused: /admin/proses_psb_admin.php
+[lulus] Query-only CSRF refused: /admin/proses_psb_admin.php
+[lulus] Invalid body CSRF cannot be bypassed by header: /admin/proses_psb_admin.php
+[lulus] GET with body/override refused: /admin/admin_pembayaran_psb.php
+[lulus] HEAD with body/override refused: /admin/admin_pembayaran_psb.php
+[lulus] PUT with body/override refused: /admin/admin_pembayaran_psb.php
+[lulus] PATCH with body/override refused: /admin/admin_pembayaran_psb.php
+[lulus] DELETE with body/override refused: /admin/admin_pembayaran_psb.php
+[lulus] OPTIONS with body/override refused: /admin/admin_pembayaran_psb.php
+[lulus] Cross-session CSRF refused: /admin/admin_pembayaran_psb.php
+[lulus] Query-only CSRF refused: /admin/admin_pembayaran_psb.php
+[lulus] Invalid body CSRF cannot be bypassed by header: /admin/admin_pembayaran_psb.php
+[lulus] GET with body/override refused: /admin/admin_pembayaran_psb.php
+[lulus] HEAD with body/override refused: /admin/admin_pembayaran_psb.php
+[lulus] PUT with body/override refused: /admin/admin_pembayaran_psb.php
+[lulus] PATCH with body/override refused: /admin/admin_pembayaran_psb.php
+[lulus] DELETE with body/override refused: /admin/admin_pembayaran_psb.php
+[lulus] OPTIONS with body/override refused: /admin/admin_pembayaran_psb.php
+[lulus] Cross-session CSRF refused: /admin/admin_pembayaran_psb.php
+[lulus] Query-only CSRF refused: /admin/admin_pembayaran_psb.php
+[lulus] Invalid body CSRF cannot be bypassed by header: /admin/admin_pembayaran_psb.php
+[lulus] GET with body/override refused: /admin/proses_berita.php?act=hapus
+[lulus] HEAD with body/override refused: /admin/proses_berita.php?act=hapus
+[lulus] PUT with body/override refused: /admin/proses_berita.php?act=hapus
+[lulus] PATCH with body/override refused: /admin/proses_berita.php?act=hapus
+[lulus] DELETE with body/override refused: /admin/proses_berita.php?act=hapus
+[lulus] OPTIONS with body/override refused: /admin/proses_berita.php?act=hapus
+[lulus] Cross-session CSRF refused: /admin/proses_berita.php?act=hapus
+[lulus] Query-only CSRF refused: /admin/proses_berita.php?act=hapus
+[lulus] Invalid body CSRF cannot be bypassed by header: /admin/proses_berita.php?act=hapus
+[lulus] GET with body/override refused: /admin/admin_galeri.php
+[lulus] HEAD with body/override refused: /admin/admin_galeri.php
+[lulus] PUT with body/override refused: /admin/admin_galeri.php
+[lulus] PATCH with body/override refused: /admin/admin_galeri.php
+[lulus] DELETE with body/override refused: /admin/admin_galeri.php
+[lulus] OPTIONS with body/override refused: /admin/admin_galeri.php
+[lulus] Cross-session CSRF refused: /admin/admin_galeri.php
+[lulus] Query-only CSRF refused: /admin/admin_galeri.php
+[lulus] Invalid body CSRF cannot be bypassed by header: /admin/admin_galeri.php
+[lulus] GET with body/override refused: /admin/admin_download.php
+[lulus] HEAD with body/override refused: /admin/admin_download.php
+[lulus] PUT with body/override refused: /admin/admin_download.php
+[lulus] PATCH with body/override refused: /admin/admin_download.php
+[lulus] DELETE with body/override refused: /admin/admin_download.php
+[lulus] OPTIONS with body/override refused: /admin/admin_download.php
+[lulus] Cross-session CSRF refused: /admin/admin_download.php
+[lulus] Query-only CSRF refused: /admin/admin_download.php
+[lulus] Invalid body CSRF cannot be bypassed by header: /admin/admin_download.php
+[lulus] All tables including users/audit/tokens preserved after refused requests
+[lulus] Header CSRF accepted; status/id/val come from POST; Cadangan remains valid
+[lulus] Valid status mutation leaves every other table unchanged
+[lulus] berita: forged request filename ignored, POST target and DB filename used
+[lulus] berita: every other table preserved
+[lulus] galeri: forged request filename ignored, POST target and DB filename used
+[lulus] galeri: every other table preserved
+[lulus] download: forged request filename ignored, POST target and DB filename used
+[lulus] download: every other table preserved
+Independent Codex audit: 84 passed, 0 failed.

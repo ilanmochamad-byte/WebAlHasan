@@ -154,3 +154,5 @@ Prompt instruksi Tahap 8 memuat tiga butir pilihan (a)/(b) yang artinya tidak te
 | BA | **Pembiayaan PSB tetap di `biaya_psb.php`** (sudah dilindungi perbaikan keamanan PSB), tampilannya didesain ulang, dan dibuka dari menu "Pembiayaan" Portal Pendaftar. Alasan Human Developer: tidak mengulang pekerjaan keamanan yang sudah lulus audit. |
 
 Implementasi dan bukti: `tahap-8/README.md`.
+
+Status audit 24 Oktober 2026: **Tahap 8 lulus audit independen Codex setelah tiga koreksi terarah tampilan**, tanpa mengubah keputusan AY–BA atau aturan/hak akses keamanan PSB. Laporan, bukti pengujian independen, oracle historis dan batas: `tahap-8/AUDIT-CODEX.md`. Belum merge/deploy; langkah manual `.htaccess` keamanan PSB tetap wajib saat rilis oleh Human Developer.

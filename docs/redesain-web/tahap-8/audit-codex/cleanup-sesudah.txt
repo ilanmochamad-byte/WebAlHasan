@@ -1,0 +1,247 @@
+[lulus] Login fixture admin
+[lulus] Login fixture pengurus_a
+[lulus] Login fixture murobi_a
+[lulus] Login fixture guru_biasa
+[lulus] Login fixture ortu_a
+[lulus] Login fixture ortu_b
+[lulus] Sentinel nonempty untuk riwayat, PSB, alumni dan akun wali
+[lulus] GET kompatibilitas daftar
+[lulus] GET kompatibilitas ?legacy=1
+[lulus] GET kompatibilitas ?legacy[]=1
+[lulus] GET kompatibilitas ?id[]=1
+[lulus] GET kompatibilitas ?id=0
+[lulus] GET kompatibilitas ?id=-1
+[lulus] GET kompatibilitas ?id=https://example.com
+[lulus] GET kompatibilitas ?id=999999999999999999999999
+[lulus] GET bookmark mempertahankan ID
+[lulus] HEAD bookmark mempertahankan ID
+[lulus] Token CSRF admin tersedia untuk probe POST bertoken
+[lulus] POST lama ditolak tanpa penerusan, tanpa CSRF
+[lulus] POST lama ditolak tanpa penerusan, CSRF sah
+[lulus] POST lama ditolak tanpa penerusan, tanpa CSRF ?legacy=1
+[lulus] POST lama ditolak tanpa penerusan, CSRF sah ?legacy=1
+[lulus] POST lama ditolak tanpa penerusan, tanpa CSRF ?legacy=1&id=1&status=Disetujui
+[lulus] POST lama ditolak tanpa penerusan, CSRF sah ?legacy=1&id=1&status=Disetujui
+[lulus] POST lama ditolak tanpa penerusan, tanpa CSRF ?legacy=1&hapus=1
+[lulus] POST lama ditolak tanpa penerusan, CSRF sah ?legacy=1&hapus=1
+[lulus] Mutasi GET lama ditolak ?status=Disetujui&id=1
+[lulus] Mutasi GET lama ditolak ?hapus=1
+[lulus] Mutasi GET lama ditolak ?legacy=1&status[]=Disetujui
+[lulus] Mutasi GET lama ditolak ?hapus[]=1
+[lulus] PUT lama ditolak
+[lulus] PATCH lama ditolak
+[lulus] DELETE lama ditolak
+[lulus] OPTIONS lama ditolak
+[lulus] pengurus_a GET lama tetap khusus admin
+[lulus] pengurus_a POST lama tetap khusus admin
+[lulus] murobi_a GET lama tetap khusus admin
+[lulus] murobi_a POST lama tetap khusus admin
+[lulus] guru_biasa GET lama tetap khusus admin
+[lulus] guru_biasa POST lama tetap khusus admin
+[lulus] ortu_a GET lama tetap khusus admin
+[lulus] ortu_a POST lama tetap khusus admin
+[lulus] Anonim GET wajib login
+[lulus] Anonim POST wajib login
+[lulus] Riwayat ID lama terbaca melalui portal V2
+[lulus] Filter Data warisan V2 tetap tersedia
+[lulus] Arsip pelanggaran tetap terbaca dan escape XSS
+[lulus] Arsip pelanggaran menolak GET 405
+[lulus] Arsip pelanggaran menolak POST 419
+[lulus] Arsip pelanggaran menolak POST 405
+[lulus] Halaman dipertahankan admin_master_santri
+[lulus] Halaman dipertahankan admin_wali
+[lulus] Halaman dipertahankan admin_penempatan_santri
+[lulus] Halaman dipertahankan admin_pengajian
+[lulus] Halaman dipertahankan admin_alumni
+[lulus] Halaman dipertahankan admin_data
+[lulus] Halaman dipertahankan admin_pembayaran_psb
+[lulus] Halaman dipertahankan admin_rekap_keuangan
+[lulus] Halaman dipertahankan admin_rekap_santri
+[lulus] Situs publik /
+[lulus] Situs publik /psb.php
+[lulus] Situs publik /berita.php
+[lulus] Situs publik /galeri.php
+[lulus] Situs publik /download.php
+[lulus] Menu perizinan hanya menuju alur V2
+[lulus] Menu arsip pelanggaran dan PSB dipertahankan
+[lulus] Preservasi jumlah dan seluruh nilai/ID absensi_guru
+[data sintetis] absensi_guru before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID absensi_santri
+[data sintetis] absensi_santri before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID alumni
+[data sintetis] alumni before=1 after=1 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID api_idempotency_keys
+[data sintetis] api_idempotency_keys before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID api_tokens
+[data sintetis] api_tokens before=334 after=334 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID audit_logs
+[data sintetis] audit_logs before=3144 after=3144 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID bendahara_bulanan_assignments
+[data sintetis] bendahara_bulanan_assignments before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID bendahara_psb_assignments
+[data sintetis] bendahara_psb_assignments before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID berita
+[data sintetis] berita before=2 after=2 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID download
+[data sintetis] download before=2 after=2 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID galeri
+[data sintetis] galeri before=2 after=2 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID guru
+[data sintetis] guru before=12 after=12 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID guru_mapel_assignments
+[data sintetis] guru_mapel_assignments before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID izin_idempotency_keys
+[data sintetis] izin_idempotency_keys before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID izin_keputusan
+[data sintetis] izin_keputusan before=550 after=550 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID izin_keputusan_koreksi
+[data sintetis] izin_keputusan_koreksi before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID izin_pengajuan
+[data sintetis] izin_pengajuan before=1049 after=1049 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID izin_riwayat_status
+[data sintetis] izin_riwayat_status before=1551 after=1551 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID jadwal_jam_migration_report
+[data sintetis] jadwal_jam_migration_report before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID jadwal_ngaji
+[data sintetis] jadwal_ngaji before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID kamar
+[data sintetis] kamar before=13 after=13 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID kelas
+[data sintetis] kelas before=1 after=1 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID mapel
+[data sintetis] mapel before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID mata_pelajaran
+[data sintetis] mata_pelajaran before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID mengajar
+[data sintetis] mengajar before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID murobi_assignments
+[data sintetis] murobi_assignments before=3 after=3 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID notifikasi_outbox
+[data sintetis] notifikasi_outbox before=420 after=420 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID notifikasi_pengaturan_audit
+[data sintetis] notifikasi_pengaturan_audit before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID notifikasi_percobaan
+[data sintetis] notifikasi_percobaan before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID notifikasi_worker_lock
+[data sintetis] notifikasi_worker_lock before=2 after=2 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID panitia_psb_assignments
+[data sintetis] panitia_psb_assignments before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID pelanggaran
+[data sintetis] pelanggaran before=1 after=1 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID pembimbing_assignments
+[data sintetis] pembimbing_assignments before=3 after=3 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID pembimbing_kamar
+[data sintetis] pembimbing_kamar before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID pendidikan_assignments
+[data sintetis] pendidikan_assignments before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID pengaturan_notifikasi
+[data sintetis] pengaturan_notifikasi before=1 after=1 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID pengurus
+[data sintetis] pengurus before=10 after=10 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID perangkat_push
+[data sintetis] perangkat_push before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID perizinan
+[data sintetis] perizinan before=1 after=1 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID pertemuan_pengajian
+[data sintetis] pertemuan_pengajian before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID pertemuan_peserta
+[data sintetis] pertemuan_peserta before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID plotting_kamar
+[data sintetis] plotting_kamar before=204 after=204 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID plotting_kelas
+[data sintetis] plotting_kelas before=1 after=1 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID psb_pembayaran
+[data sintetis] psb_pembayaran before=7 after=7 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID psb_pendaftar
+[data sintetis] psb_pendaftar before=7 after=7 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID roles
+[data sintetis] roles before=4 after=4 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID santri
+[data sintetis] santri before=206 after=206 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID santri_wali
+[data sintetis] santri_wali before=2 after=2 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID schema_migrations
+[data sintetis] schema_migrations before=23 after=23 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID tahun_ajaran
+[data sintetis] tahun_ajaran before=1 after=1 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID users
+[data sintetis] users before=9 after=9 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID user_roles
+[data sintetis] user_roles before=9 after=9 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_ambang
+[data sintetis] v3_ambang before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_idempotency
+[data sintetis] v3_idempotency before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_katalog
+[data sintetis] v3_katalog before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_kategori
+[data sintetis] v3_kategori before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_konseling_kasus
+[data sintetis] v3_konseling_kasus before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_konseling_kasus_revisi
+[data sintetis] v3_konseling_kasus_revisi before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_konseling_sesi
+[data sintetis] v3_konseling_sesi before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_konseling_tautan
+[data sintetis] v3_konseling_tautan before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_lampiran
+[data sintetis] v3_lampiran before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_murobi_catatan
+[data sintetis] v3_murobi_catatan before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_pelanggaran
+[data sintetis] v3_pelanggaran before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_poin_agregat
+[data sintetis] v3_poin_agregat before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_poin_ledger
+[data sintetis] v3_poin_ledger before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_publikasi
+[data sintetis] v3_publikasi before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_publikasi_outbox
+[data sintetis] v3_publikasi_outbox before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_publikasi_pratinjau
+[data sintetis] v3_publikasi_pratinjau before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_publikasi_riwayat
+[data sintetis] v3_publikasi_riwayat before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v3_rekomendasi
+[data sintetis] v3_rekomendasi before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_bahan
+[data sintetis] v4_bahan before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_bahan_riwayat
+[data sintetis] v4_bahan_riwayat before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_nilai
+[data sintetis] v4_nilai before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_nilai_riwayat
+[data sintetis] v4_nilai_riwayat before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_penanda_tangan
+[data sintetis] v4_penanda_tangan before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_rapor
+[data sintetis] v4_rapor before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_rapor_operasi
+[data sintetis] v4_rapor_operasi before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_rapor_versi
+[data sintetis] v4_rapor_versi before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_rencana
+[data sintetis] v4_rencana before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_rencana_mapel
+[data sintetis] v4_rencana_mapel before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_rencana_penanda_riwayat
+[data sintetis] v4_rencana_penanda_riwayat before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_sikap
+[data sintetis] v4_sikap before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_sikap_riwayat
+[data sintetis] v4_sikap_riwayat before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_tanda_tangan_aset
+[data sintetis] v4_tanda_tangan_aset before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_verifikasi
+[data sintetis] v4_verifikasi before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID v4_verifikasi_laju
+[data sintetis] v4_verifikasi_laju before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID wali
+[data sintetis] wali before=2 after=2 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID wali_bukan_ganda
+[data sintetis] wali_bukan_ganda before=0 after=0 fingerprint=identik
+[lulus] Preservasi jumlah dan seluruh nilai/ID integrity
+[lulus] Preservasi jumlah dan seluruh nilai/ID wali_accounts
+[lulus] Referensi yatim eksplisit = 0
+[integritas] {"santri_wali_santri":0,"santri_wali_wali":0,"akun_wali":0,"izin_santri":0,"pelanggaran_santri":0,"izin_migrasi":0,"izin_nilai_warisan":0,"psb_pembayaran":0,"plotting_kelas_santri":0,"plotting_kelas_kelas":0,"plotting_kelas_tahun":0,"plotting_kamar_santri":0,"plotting_kamar_kamar":0,"plotting_kamar_tahun":0}
+Hasil cleanup HTTP/preservasi: 157 lulus, 0 gagal.
