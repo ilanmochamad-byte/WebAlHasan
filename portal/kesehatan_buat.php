@@ -50,7 +50,7 @@ $nilai = static fn (string $kolom, string $bawaan = ''): string => is_string($is
 $kunci = preg_match('/^[A-Za-z0-9._:-]{8,100}$/D', $nilai('idempotency_key')) === 1 ? $nilai('idempotency_key') : bin2hex(random_bytes(16));
 $q = PageQuery::term($_GET['q'] ?? '');
 $pilihan = $kesehatan->santriPilihan($currentUser, $q);
-$santriTerpilih = (int) ($nilai('santri_id') ?: ($_GET['santri_id'] ?? 0));
+$santriTerpilih = (int) ($nilai('santri_id') ?: (is_scalar($_GET['santri_id'] ?? null) ? $_GET['santri_id'] : 0));
 
 ah_page_open([
     'title' => 'Catat kunjungan',

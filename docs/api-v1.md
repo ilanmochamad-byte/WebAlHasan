@@ -197,6 +197,30 @@ PSB, bendahara PSB, cakupan binaan murobi/pembimbing). Field `capabilities`
 yang tidak mengenal field ini mengabaikannya. Rincian:
 `docs/fondasi-penugasan-v3-v6/kontrak-api.md`.
 
+## Kesehatan santri V5 Fase 1 (24 Oktober 2026)
+
+Aditif di bawah `/api/v1/v5/kesehatan`; tidak mengubah kontrak di atas. Hak
+dihitung ulang server pada setiap permintaan oleh layanan yang sama dengan
+website: petugas (pengurus dengan penugasan kesehatan aktif) membaca dan
+mencatat; admin hanya membaca dan meninjau riwayat akses; akun lain `403`.
+Seluruh respons `Cache-Control: private, no-store`. `feature_capabilities`
+pada login/profil bertambah satu kunci aditif `kesehatan.catat`.
+
+- `GET /v5/kesehatan/akses` → `{baca, catat, sumber, riwayat_akses}`.
+- `GET /v5/kesehatan/santri?q=` (petugas) → santri aktif, paling banyak 100.
+- `GET /v5/kesehatan/kunjungan?q=&santri_id=&status=&page=` → daftar tanpa
+  isi klinis (`id, santri, waktu_kunjungan, dicatat_pada, status, versi, petugas`).
+- `POST /v5/kesehatan/kunjungan` (petugas) dengan header `Idempotency-Key`
+  (atau `idempotency_key` di badan, 8–100 karakter `A-Za-z0-9._:-`) dan badan
+  `{santri_id, waktu_kunjungan: "Y-m-d H:i", keluhan, catatan_klinis?, tindakan?}`
+  → `201 {id, replayed:false}`; kunci + isi sama → `200 {id, replayed:true}`;
+  kunci sama isi berbeda → `409 CONFLICT` tanpa perubahan. Admin → `403`.
+- `GET /v5/kesehatan/kunjungan/{id}` → rincian beserta `keluhan`,
+  `catatan_klinis`, `tindakan`; setiap pembukaan tercatat (kanal `api`).
+- `GET /v5/kesehatan/kunjungan/{id}/akses` (admin) → riwayat akses.
+
+Rincian, penafsiran, dan batas uji: `docs/phase-v5-1/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh
