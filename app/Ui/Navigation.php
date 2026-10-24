@@ -40,7 +40,7 @@ final class Navigation
     private const BOTTOM_BAR = [
         Peran::ADMIN => [2, ['izin', 'santri']],
         Peran::GURU => [2, ['pengajian', 'nilai', 'antrean', 'sikap_binaan']],
-        Peran::PENGURUS => [2, ['izin', 'sikap', 'pembinaan']],
+        Peran::PENGURUS => [2, ['izin', 'sikap', 'pembinaan', 'kesehatan']],
         Peran::PENDIDIKAN => [1, ['rapor', 'pengganti', 'absensi']],
         Peran::ORANG_TUA => [3, ['izin_anak', 'rapor_wali', 'info']],
     ];
@@ -116,11 +116,13 @@ final class Navigation
 
         return [
             ['label' => '', 'items' => [$beranda]],
-            ['label' => 'Kegiatan santri', 'items' => [
+            ['label' => 'Kegiatan santri', 'items' => array_values(array_filter([
                 self::perizinan(),
                 self::pengajian(),
                 self::pembinaan(true),
-            ]],
+                // PRD V5: admin membaca dan mengaudit catatan kesehatan (tanpa mutasi klinis).
+                $c->kesehatan(false) ? self::kesehatan() : null,
+            ]))],
             ['label' => 'Akademik', 'items' => array_filter([self::penilaian($c, true)])],
             ['label' => 'Data pesantren', 'items' => [
                 self::item('santri', 'Data santri', '/admin/admin_master_santri.php', 'fa-address-book', [], [
@@ -215,9 +217,13 @@ final class Navigation
             $items[] = self::pembinaan(false);
         }
 
+        // PRD V5: petugas kesehatan adalah pengurus dengan penugasan kesehatan aktif.
+        $klinik = $c->kesehatan(true) ? [self::kesehatan()] : [];
+
         return [
             ['label' => '', 'items' => [self::beranda()]],
             ['label' => 'Santri binaan', 'items' => $items],
+            ['label' => 'Klinik', 'items' => $klinik],
         ];
     }
 
@@ -296,6 +302,12 @@ final class Navigation
             self::tab('Antrean', '/portal/izin_antrean.php', ['izin_antrean.php']),
             self::tab('Laporan', '/portal/laporan.php', ['laporan.php', 'laporan_cetak.php', 'laporan_csv.php']),
         ], 'Perizinan');
+    }
+
+    /** @return array<string, mixed> */
+    private static function kesehatan(): array
+    {
+        return self::item('kesehatan', 'Kesehatan', '/portal/kesehatan.php', 'fa-kit-medical', ['kesehatan.php', 'kesehatan_buat.php', 'kesehatan_detail.php'], [], 'Kesehatan');
     }
 
     /** @return array<string, mixed> */

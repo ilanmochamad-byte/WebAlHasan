@@ -64,6 +64,9 @@ final class PenugasanService
     public function daftar(string $jenis, array $filters, int $page): array
     {
         $this->jenis($jenis);
+        if (!$this->skemaTersedia($jenis)) {
+            return ['rows' => [], 'total' => 0, 'page' => 1, 'perPage' => 20];
+        }
         $hasil = $this->repository->page($jenis, $filters, max(1, $page));
         $hasil['rows'] = array_map(fn (array $row): array => $this->hias($jenis, $row), $hasil['rows']);
 
@@ -73,9 +76,29 @@ final class PenugasanService
     public function detail(string $jenis, int $id): ?array
     {
         $this->jenis($jenis);
+        if (!$this->skemaTersedia($jenis)) {
+            return null;
+        }
         $row = $this->repository->detail($jenis, $id);
 
         return $row === null ? null : $this->hias($jenis, $row);
+    }
+
+    /** @var array<string, bool> */
+    private array $skema = [];
+
+    /**
+     * Tabel jenis ini sudah dipasang migrasinya (lihat
+     * `PenugasanRepository::tabelAda()`). Hanya jenis yang datang belakangan
+     * yang benar-benar diperiksa.
+     */
+    public function skemaTersedia(string $jenis): bool
+    {
+        if ($jenis !== PenugasanJenis::KESEHATAN) {
+            return true;
+        }
+
+        return $this->skema[$jenis] ??= $this->repository->tabelAda($jenis);
     }
 
     /**

@@ -73,6 +73,19 @@ final class PenugasanRepository
         ) === 1;
     }
 
+    /**
+     * Tabel satu jenis sudah terpasang. Jenis yang ditambahkan migrasi
+     * belakangan (kesehatan, 024) belum ada sebelum migrasinya dijalankan atau
+     * sesudah rollback; pusat penugasan tetap terbuka tanpanya.
+     */
+    public function tabelAda(string $jenis): bool
+    {
+        return $this->scalar(
+            'SELECT COUNT(*) AS jumlah FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
+            [PenugasanJenis::definisi($jenis)['tabel']]
+        ) === 1;
+    }
+
     // =======================================================================
     // Pembacaan
     // =======================================================================
@@ -478,6 +491,7 @@ final class PenugasanRepository
             PenugasanJenis::CAKUPAN_MAPEL_KELAS => ['mata_pelajaran_id', 'kelas_id'],
             PenugasanJenis::CAKUPAN_JENJANG => ['jenjang'],
             PenugasanJenis::CAKUPAN_GELOMBANG => ['gelombang'],
+            PenugasanJenis::CAKUPAN_SELURUH => [],
             default => throw new RuntimeException('Bentuk cakupan tidak dikenal.'),
         };
     }
@@ -523,6 +537,9 @@ final class PenugasanRepository
                 break;
             case PenugasanJenis::CAKUPAN_GELOMBANG:
                 $cakupanTeks = "COALESCE(CONCAT('Gelombang ', a.gelombang), 'Seluruh gelombang')";
+                break;
+            case PenugasanJenis::CAKUPAN_SELURUH:
+                $cakupanTeks = "'Seluruh santri aktif'";
                 break;
         }
 

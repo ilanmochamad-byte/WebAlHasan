@@ -628,3 +628,13 @@ function v3_publikasi_service(): \App\V3\PublikasiService
         v3_konseling_service(), new \App\Audit\AuditLogger(app_db()), new \App\Notification\SettingsRepository(app_db())
     );
 }
+
+/** Satu-satunya pintu kesehatan santri (PRD V5) untuk web dan REST API. */
+function kesehatan_service(): \App\Kesehatan\KesehatanService
+{
+    return new \App\Kesehatan\KesehatanService(
+        new \App\Kesehatan\KesehatanRepository(app_db()),
+        capabilities(),
+        audit_logger()
+    );
+}
