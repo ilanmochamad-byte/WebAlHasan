@@ -175,3 +175,13 @@ Rincian: `../phase-v5-1/README.md` (P-1).
 | BC | **Menu "Kesehatan" untuk pembimbing dan murobi dipertahankan**: pembimbing (peran Pengurus) di grup "Santri binaan", murobi (peran Guru) di grup "Murobi", hanya bila penugasan binaan aktifnya ada. Menu hanya-baca; hak baca tetap ditegakkan server per baris (kunjungan Tercatat santri dalam cakupan). Isi dan urutan menu lain pada peta peran F–K tidak berubah. Oracle historis Tahap 2 untuk menu `sbx_murobi_a` dan `sbx_pengurus_a` tidak diubah dan dicatat sebagai kegagalan yang diharapkan. |
 
 Rincian: `../phase-v5-2/README.md` (Q-1).
+
+
+
+## Keputusan PRD V5 Fase 3 (24 Oktober 2026, sesudah implementasi)
+
+| # | Keputusan |
+|---|---|
+| BD | **Menu "Kesehatan anak" untuk orang tua dipertahankan** pada peta peran orang tua (keputusan J–K), sesudah "Informasi pembinaan" dan sebelum "Notifikasi", bagi akun orang tua aktif dengan master wali aktif bila migrasi 026 terpasang (termasuk sebelum ada ringkasan; daftar kosong menjelaskan). Bilah bawah HP orang tua tidak berubah. Menu hanya-baca; hak baca ringkasan tetap ditegakkan server per baris (relasi wali aktif). Isi dan urutan menu lain tidak berubah. Oracle historis Tahap 2 untuk menu `sbx_ortu_a` tidak diubah dan dicatat sebagai kegagalan yang diharapkan. |
+
+Rincian: `../phase-v5-3/README.md` (R-1).
