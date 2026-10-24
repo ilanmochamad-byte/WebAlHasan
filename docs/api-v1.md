@@ -221,6 +221,48 @@ pada login/profil bertambah satu kunci aditif `kesehatan.catat`.
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v5-1/README.md`.
 
+## Ringkasan kesehatan untuk wali V5 Fase 3 (24 Oktober 2026)
+
+Aditif di bawah `/api/v1/v5/kesehatan`; kontrak Fase 1–2 tidak berubah.
+Seluruh respons `Cache-Control: private, no-store`. Tampilan wali berasal dari
+proyeksi khusus yang tidak membaca catatan klinis; relasi wali aktif (akun,
+master wali, `santri_wali`, santri) diperiksa pada setiap permintaan, sehingga
+token lama sesudah relasi dicabut mendapat `403`.
+
+Wali (akun orang tua aktif):
+
+- `GET /v5/kesehatan/wali/akses` → `{wali, anak:[{id, nama}]}`.
+- `GET /v5/kesehatan/wali/ringkasan?santri_id=&page=` → `rows:[{id, santri, tanggal_kunjungan,
+  diterbitkan_pada, status: Terbit|Ditarik, versi, diperbarui, ada_tindak_lanjut}]`.
+- `GET /v5/kesehatan/wali/ringkasan/{id}` → `{id, santri, tanggal_kunjungan, diterbitkan_pada,
+  status, versi, diperbarui, ringkasan, tindakan_umum, tindak_lanjut_wali}`; isi `null`
+  bila Ditarik. Tidak ada/anak lain/relasi dicabut → `403`.
+
+Petugas (penugasan kesehatan aktif; admin, pembimbing, murobi, wali → `403`):
+
+- `POST /v5/kesehatan/kunjungan/{id}/ringkasan/pratinjau` badan
+  `{kunjungan_versi, revisi_ringkasan (0 bila belum pernah), ringkasan, tindakan_umum?,
+  tindak_lanjut_wali?, alasan? (wajib bila pernah terbit)}` → `{pratinjau, pratinjau_hash, ...}`
+  tanpa menulis apa pun.
+- `POST /v5/kesehatan/kunjungan/{id}/ringkasan` badan yang sama + `konfirmasi: true` +
+  `pratinjau_hash`, header `Idempotency-Key` → `201 {ringkasan_id, versi, revisi, replayed:false,
+  notifikasi:{in_app, push}}`; kunci + isi sama → `200 replayed:true`; revisi/versi kunjungan
+  usang → `409`; isi berbeda dari pratinjau → `422`.
+- `POST /v5/kesehatan/kunjungan/{id}/ringkasan/tarik` `{revisi_ringkasan, alasan}` →
+  `{ringkasan_id, versi, revisi, replayed}`; tanpa notifikasi baru.
+
+Pembaca internal: `GET /v5/kesehatan/kunjungan/{id}/ringkasan` → petugas/admin
+mendapat versi berlaku + seluruh versi dan peristiwa (alasan, pelaku, waktu);
+pembimbing/murobi terkait hanya versi berlaku.
+
+Notifikasi: `event_type` `v5_kesehatan_ringkasan_terbit|_diganti` atau
+`v5_kesehatan_tindak_lanjut`, judul/isi generik, `tautan` pada `/notifikasi`
+bertambah kunci aditif `ringkasan_id` (`tipe: kesehatan_ringkasan`); payload
+Push hanya `{tipe, ringkasan_id}`. Klien wajib meminta
+`/v5/kesehatan/wali/ringkasan/{id}` (yang memeriksa ulang hak) setelah diketuk.
+
+Rincian, penafsiran, dan batas uji: `docs/phase-v5-3/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh
