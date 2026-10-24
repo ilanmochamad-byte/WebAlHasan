@@ -102,7 +102,19 @@ final class KesehatanRepository
             [$userId]
         );
 
-        return $row === null ? null : ['id' => (int) $row['id'], 'pengurus_id' => (int) $row['pengurus_id']];
+        if ($row === null) {
+            return null;
+        }
+        // Hak admin juga dapat berubah sesudah pemeriksaan capability di
+        // luar transaksi. Baca role dengan current/locking read sesudah
+        // kunci akun didapat: admin+petugas tetap tidak boleh menulis klinis.
+        $admin = $this->one(
+            "SELECT ur.user_id FROM user_roles ur JOIN roles r ON r.id = ur.role_id
+              WHERE ur.user_id = ? AND r.slug = 'admin' LIMIT 1 LOCK IN SHARE MODE",
+            [$userId]
+        );
+
+        return $admin !== null ? null : ['id' => (int) $row['id'], 'pengurus_id' => (int) $row['pengurus_id']];
     }
 
     /** @return array{id:int, nis:string, nama_santri:string}|null */
@@ -367,7 +379,7 @@ final class KesehatanRepository
      *
      * @return array<int, array<string, mixed>>
      */
-    public function versi(int $kunjunganId): array
+    public function versi(int $kunjunganId, int $sampaiVersi): array
     {
         return $this->all(
             'SELECT v.versi, v.status, v.waktu_kunjungan, v.keluhan, v.catatan_klinis, v.tindakan, v.alasan, v.dibuat_pada,
@@ -376,9 +388,9 @@ final class KesehatanRepository
                JOIN users u ON u.id = v.dibuat_oleh
                LEFT JOIN pengurus p ON p.id = u.pengurus_id
                LEFT JOIN kesehatan_versi_rincian r ON r.kunjungan_id = v.kunjungan_id AND r.versi = v.versi
-              WHERE v.kunjungan_id = ?
+              WHERE v.kunjungan_id = ? AND v.versi <= ?
               ORDER BY v.versi',
-            [$kunjunganId]
+            [$kunjunganId, $sampaiVersi]
         );
     }
 
@@ -496,11 +508,12 @@ final class KesehatanRepository
             'SELECT k.id, k.santri_id, k.waktu_kunjungan, k.status, k.versi, k.keluhan, k.catatan_klinis, k.tindakan,
                     k.petugas_user_id, k.created_at, k.updated_at,
                     s.nis, s.nama_santri, s.is_active AS santri_aktif, s.archived_at AS santri_arsip,
-                    COALESCE(p.nama, u.name) AS petugas_nama
+                    COALESCE(p.nama, u.name) AS petugas_nama, vr.rincian AS rincian_snapshot
                FROM kesehatan_kunjungan k
                JOIN santri s ON s.id = k.santri_id
                JOIN users u ON u.id = k.petugas_user_id
                LEFT JOIN pengurus p ON p.id = k.petugas_pengurus_id
+               LEFT JOIN kesehatan_versi_rincian vr ON vr.kunjungan_id = k.id AND vr.versi = k.versi
               WHERE k.id = ? AND ' . $where,
             [$id, ...$params]
         );

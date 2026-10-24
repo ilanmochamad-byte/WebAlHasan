@@ -1,0 +1,21 @@
+[lulus] Dua obat, dua rujukan, dua tindak lanjut tetap satu baris daftar
+[lulus] Detail majemuk dan jumlah desimal dipertahankan
+[lulus] Hasil rujukan kedua tidak mengubah rujukan pertama
+[lulus] Selesai tindak lanjut tanpa alasan ditolak atomik
+[lulus] Satu tindak lanjut selesai, yang lain tetap terbuka pada kunjungan sama
+[lulus] Riwayat sebelum/sesudah tindak lanjut utuh
+=== Kegagalan parsial koreksi ===
+[lulus] kesehatan_rujukan gagal: koreksi ditutup 503
+[lulus] kesehatan_rujukan gagal: isi, rincian, versi, snapshot, klaim, audit kembali utuh
+[lulus] kesehatan_versi_rincian gagal: koreksi ditutup 503
+[lulus] kesehatan_versi_rincian gagal: isi, rincian, versi, snapshot, klaim, audit kembali utuh
+[lulus] audit_logs gagal: koreksi ditutup 503
+[lulus] audit_logs gagal: isi, rincian, versi, snapshot, klaim, audit kembali utuh
+=== Pembacaan bersilangan koreksi ===
+[lulus] detail: pembaca benar-benar tertahan sesudah membaca kepala kunjungan
+[lulus] detail: respons pembaca berhasil
+[lulus] Detail memakai satu versi utuh meskipun koreksi masuk di tengah pembacaan
+[lulus] riwayat: pembaca benar-benar tertahan sesudah membaca kepala kunjungan
+[lulus] riwayat: respons pembaca berhasil
+[lulus] Kepala riwayat dan versi terbarunya konsisten saat koreksi bersamaan
+Lulus: 18 · Gagal: 0

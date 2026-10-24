@@ -1,0 +1,28 @@
+Tidak ada migrasi baru.
+{
+    "santri": {
+        "putri": 1667,
+        "luar": 1668,
+        "lulus": 1669
+    },
+    "alumni": 129,
+    "wali": {
+        "ganda_nama": [
+            325,
+            326
+        ],
+        "ganda_hp": [
+            327,
+            328
+        ],
+        "ganda_akun": [
+            329,
+            330
+        ]
+    },
+    "kamar": {
+        "a": 1,
+        "p5": 113
+    }
+}
+DB uji Tahap 6 siap: test_codex_v5_f2_t6_test

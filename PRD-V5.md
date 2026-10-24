@@ -2,7 +2,7 @@
 
 > **Untuk agen AI:** Dokumen ini adalah instruksi implementasi. Jika ada hal yang tidak jelas, jangan menebak—tanyakan kepada pengguna. Ketika keputusan berubah selama implementasi, perbarui dokumen ini agar tetap menjadi sumber kebenaran (*living document*).
 
-**Status:** Kebutuhan inti, rancangan lengkap, dan seluruh asumsi V5 disetujui Human Developer pada 24 Oktober 2026. Claude Code ditetapkan sebagai implementator dan Codex sebagai auditor untuk Fase 1–5; pekerjaan dilakukan bergantian, satu fase per giliran. Fase 1 diimplementasikan Claude Code pada branch `claude/prd-v5-fase-1` dari `cb7c181` (migrasi 024) dan **lulus audit independen Codex pada 24 Oktober 2026 tanpa koreksi kode aplikasi** atas `abce969`; laporan, bukti, tinjauan penafsiran P-1…P-10, dan batas uji di `docs/phase-v5-1/AUDIT-CODEX.md`. Fase 2 diimplementasikan Claude Code pada branch `claude/prd-v5-fase-2` dari baseline audit Fase 1 `1852fdb` (migrasi 025) dan **menunggu audit independen Codex**; bukti, penafsiran, dan batas uji di `docs/phase-v5-2/README.md`. Belum ada merge, deploy, atau migrasi produksi; Fase 3–5 belum dimulai.
+**Status:** Kebutuhan inti, rancangan lengkap, dan seluruh asumsi V5 disetujui Human Developer pada 24 Oktober 2026. Claude Code ditetapkan sebagai implementator dan Codex sebagai auditor untuk Fase 1–5; pekerjaan dilakukan bergantian, satu fase per giliran. Fase 1 diimplementasikan Claude Code pada branch `claude/prd-v5-fase-1` dari `cb7c181` (migrasi 024) dan **lulus audit independen Codex pada 24 Oktober 2026 tanpa koreksi kode aplikasi** atas `abce969`; laporan, bukti, tinjauan penafsiran P-1…P-10, dan batas uji di `docs/phase-v5-1/AUDIT-CODEX.md`. Fase 2 diimplementasikan Claude Code pada branch `claude/prd-v5-fase-2` dari baseline audit Fase 1 `1852fdb` (migrasi 025) dan **lulus audit independen Codex pada 24 Oktober 2026 setelah tiga koreksi terarah konsistensi pembacaan dan larangan admin menulis klinis** atas implementasi `5f95f5a`; laporan, bukti, tinjauan Q-1…Q-11 dan batas uji di `docs/phase-v5-2/AUDIT-CODEX.md`. Fase 1 telah masuk main lewat PR #80; Fase 2 belum merge, deploy, atau migrasi produksi. Fase 3–5 belum dimulai.
 
 **Penomoran resmi baru:** V5 = kesehatan santri; V6 = keuangan santri (tagihan bulanan, tabungan, pengeluaran); V7 = pengajuan izin orang tua melalui pembimbing ke murobi; V8 = pengembangan PSB yang sudah ada. Keputusan Human Developer 24 Oktober 2026 ini menggantikan **rujukan prospektif** V5/V6 lama di dokumen terdahulu; riwayat implementasi dan nama berkas lama tidak diubah hanya karena penomoran bergeser.
 
@@ -126,11 +126,11 @@ Urutan lima fase di bawah disetujui Human Developer agar setiap fase menghasilka
 
 **Kriteria penerimaan:**
 
-- [ ] Satu kunjungan dengan dua obat dan satu rujukan muncul sebagai satu baris daftar, dua obat pada detail, dan satu rujukan yang dapat diperbarui hasilnya.
-- [ ] Koreksi tanpa alasan ditolak; koreksi sah menghasilkan versi baru dan riwayat sebelum/sesudah, sedangkan dua koreksi bersamaan dari versi sama menghasilkan satu sukses dan satu konflik tanpa kehilangan data.
-- [ ] Pembimbing/murobi terkait dapat membaca tetapi seluruh percobaan tulisnya ditolak; petugas lain tanpa penugasan dan pembimbing/murobi di luar cakupan ditolak/hasil kosong.
-- [ ] Perubahan cakupan atau pencabutan penugasan pada sesi lama segera menutup detail kunjungan santri yang tidak lagi berhak dilihat.
-- [ ] Tidak ada perubahan jumlah stok atau tabel PSB/keuangan/izin akibat menyimpan kunjungan, obat, rujukan, atau koreksi.
+- [x] Satu kunjungan dengan dua obat dan satu rujukan muncul sebagai satu baris daftar, dua obat pada detail, dan satu rujukan yang dapat diperbarui hasilnya.
+- [x] Koreksi tanpa alasan ditolak; koreksi sah menghasilkan versi baru dan riwayat sebelum/sesudah, sedangkan dua koreksi bersamaan dari versi sama menghasilkan satu sukses dan satu konflik tanpa kehilangan data.
+- [x] Pembimbing/murobi terkait dapat membaca tetapi seluruh percobaan tulisnya ditolak; petugas lain tanpa penugasan dan pembimbing/murobi di luar cakupan ditolak/hasil kosong.
+- [x] Perubahan cakupan atau pencabutan penugasan pada sesi lama segera menutup detail kunjungan santri yang tidak lagi berhak dilihat.
+- [x] Tidak ada perubahan jumlah stok atau tabel PSB/keuangan/izin akibat menyimpan kunjungan, obat, rujukan, atau koreksi.
 
 ### Fase 3: Ringkasan Orang Tua dan Notifikasi (memerlukan Fase 2)
 

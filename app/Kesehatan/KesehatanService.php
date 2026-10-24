@@ -343,7 +343,12 @@ final class KesehatanService
                 : new KesehatanException('Kunjungan tidak ditemukan.', 404);
         }
         $this->repo->catatAkses((int) $row['id'], (int) $row['santri_id'], $userId, $this->sumberBaris($akses, $userId, (int) $row['id']), 'baca_detail', $this->kanal($kanal));
-        $rincian = $this->rincianDariBaris($this->repo->rincianAktif((int) $row['id']));
+        // Kepala dan snapshot diambil oleh satu SELECT. Pembacaan rincian
+        // aktif secara terpisah dapat mencampur versi bila koreksi masuk
+        // sesudah kepala dibaca (termasuk ketika log akses sedang menunggu).
+        // Kunjungan lama Fase 1 belum punya rincian/snapshot.
+        $rincian = $row['rincian_snapshot'] === null ? $this->rincianKosong()
+            : json_decode((string) $row['rincian_snapshot'], true, 32, JSON_THROW_ON_ERROR);
 
         return $this->ringkas($row) + [
             'keluhan' => (string) $row['keluhan'],
@@ -375,7 +380,7 @@ final class KesehatanService
 
         $hasil = [];
         $sebelum = null;
-        foreach ($this->repo->versi($id) as $v) {
+        foreach ($this->repo->versi($id, (int) $row['versi']) as $v) {
             $rincian = $v['rincian'] === null ? $this->rincianKosong() : json_decode((string) $v['rincian'], true, 32, JSON_THROW_ON_ERROR);
             $keadaan = [
                 'status' => (string) $v['status'], 'waktu_kunjungan' => (string) $v['waktu_kunjungan'], 'keluhan' => (string) $v['keluhan'],

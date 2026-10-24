@@ -1,6 +1,6 @@
 # PRD V5 Fase 2 — Obat, Rujukan, Koreksi, dan Pembaca Internal
 
-**Status (24 Oktober 2026):** diimplementasikan Claude Code, **menunggu audit independen Codex**. Belum merge, belum deploy, belum migrasi produksi. Fase 3 belum dimulai.
+**Status (24 Oktober 2026):** diimplementasikan Claude Code, **lulus audit independen Codex setelah tiga koreksi terarah konsistensi pembacaan dan larangan admin menulis klinis**. Laporan, hasil eksekusi auditor, tinjauan Q-1…Q-11 dan batas uji di [AUDIT-CODEX.md](AUDIT-CODEX.md). Bukti implementator di bawah dipertahankan sebagai riwayat handoff. Belum merge, belum deploy, belum migrasi produksi. Fase 3 belum dimulai.
 
 | Butir | Nilai |
 | --- | --- |
@@ -109,7 +109,7 @@ Tujuh kegagalan statis lain (`keamanan_psb`, `penugasan` FS-2/FS-4, `redesain_we
 
 ## Penafsiran yang perlu ditinjau auditor/Human Developer
 
-Q-1 sudah diputuskan Human Developer; Q-2…Q-11 menunggu tinjauan auditor.
+Q-1 sudah diputuskan Human Developer; Q-2…Q-11 telah ditinjau auditor untuk batas Fase 2 di [AUDIT-CODEX.md](AUDIT-CODEX.md). Uraian di bawah mempertahankan penafsiran saat handoff implementator.
 
 - **Q-1 Menu Kesehatan untuk pembimbing dan murobi — DIPUTUSKAN Human Developer 24 Oktober 2026 (keputusan BC, `docs/redesain-web/keputusan.md`).** Menu "Kesehatan" di grup "Santri binaan" (pembimbing) dan "Murobi" (murobi), hanya bila penugasan aktifnya ada, **dipertahankan**. Hak server tidak bergantung pada menu. Oracle Tahap 2 untuk menu kedua akun tetap tidak diubah dan dicatat sebagai kegagalan yang diharapkan.
 - **Q-2 Cakupan mengikuti penempatan saat ini.** Pembimbing/murobi membaca **seluruh** riwayat kunjungan Tercatat santri yang **sekarang** berada di kamar/kelas binaannya pada tahun ajaran aktif (aturan D-10), termasuk kunjungan sebelum penugasannya. Santri pindah → pembimbing lama kehilangan seluruh riwayat, pembimbing baru memperolehnya. Santri nonaktif/diarsipkan tidak terbaca pembaca binaan (petugas tetap, P-7).
