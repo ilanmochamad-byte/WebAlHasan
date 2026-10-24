@@ -2,7 +2,7 @@
 
 > **Untuk agen AI:** Dokumen ini adalah instruksi implementasi. Jika ada hal yang tidak jelas, jangan menebak—tanyakan kepada pengguna. Ketika keputusan berubah selama implementasi, perbarui dokumen ini agar tetap menjadi sumber kebenaran (*living document*).
 
-**Status:** Kebutuhan inti, rancangan lengkap, dan seluruh asumsi V5 disetujui Human Developer pada 24 Oktober 2026. Belum ada implementasi V5, penetapan implementator/auditor, migrasi, merge, atau deploy berdasarkan dokumen ini.
+**Status:** Kebutuhan inti, rancangan lengkap, dan seluruh asumsi V5 disetujui Human Developer pada 24 Oktober 2026. Claude Code ditetapkan sebagai implementator dan Codex sebagai auditor untuk Fase 1–5; pekerjaan dilakukan bergantian, satu fase per giliran. Belum ada implementasi V5, migrasi, merge, atau deploy berdasarkan dokumen ini.
 
 **Penomoran resmi baru:** V5 = kesehatan santri; V6 = keuangan santri (tagihan bulanan, tabungan, pengeluaran); V7 = pengajuan izin orang tua melalui pembimbing ke murobi; V8 = pengembangan PSB yang sudah ada. Keputusan Human Developer 24 Oktober 2026 ini menggantikan **rujukan prospektif** V5/V6 lama di dokumen terdahulu; riwayat implementasi dan nama berkas lama tidak diubah hanya karena penomoran bergeser.
 
@@ -63,7 +63,7 @@ Ketika santri berobat di klinik pesantren, catatan kunjungan, obat yang diberika
 - Relasi `santri_wali` dan status akun/wali aktif diperiksa ulang pada setiap daftar/detail ringkasan orang tua dan ketika membuka tujuan notifikasi. Tautan/ID yang ditebak tidak boleh membuka data anak lain.
 - Migrasi SQL baru aditif dan berversi setelah migrasi terakhir yang benar-benar ada saat implementasi (saat PRD ditulis: `023`). Data historis, ID santri/wali, arsip pelanggaran, PSB, V2, V3, dan V4 tidak dibersihkan. Sertakan preflight, verifier, backup, rollback aman, dan pengujian pada salinan database.
 - Fondasi push/in-app dan outbox yang ada dipakai kembali, termasuk deduplikasi, retry, pemeriksaan status kanal, dan receipt bila tersedia. Push OFF dan WhatsApp OFF tidak menghasilkan request provider.
-- Pelaksanaan V5 harus mengikuti branch fitur dan kolaborasi bergantian `AGENTS.md`. Implementator dan auditor khusus V5 **belum ditetapkan** Human Developer; jangan menganggap pembagian V4 otomatis berlaku. Sebelum fase mobile, cocokkan baseline web/mobile yang sebenarnya dan status rilis V4; audit lokal V4 tidak boleh disebut bukti deploy produksi.
+- Pelaksanaan V5 harus mengikuti branch fitur dan kolaborasi bergantian `AGENTS.md`: Claude Code mengimplementasikan, Codex mengaudit setiap fase secara independen. Sebelum fase mobile, cocokkan baseline web/mobile yang sebenarnya dan status rilis V4; audit lokal V4 tidak boleh disebut bukti deploy produksi.
 
 ### 5.3 Data minimum dan privasi
 
@@ -96,7 +96,7 @@ Urutan lima fase di bawah disetujui Human Developer agar setiap fase menghasilka
 
 **Persyaratan:**
 
-1. Periksa `AGENTS.md`, baseline branch web/mobile, migrasi terakhir, master santri/wali, fondasi penugasan, capability, audit, dan sistem notifikasi sebelum menulis kode. Tetapkan implementator/auditor V5 bersama Human Developer sebelum implementasi.
+1. Periksa `AGENTS.md`, baseline branch web/mobile, migrasi terakhir, master santri/wali, fondasi penugasan, capability, audit, dan sistem notifikasi sebelum menulis kode. Pastikan Claude Code bertugas sebagai implementator dan Codex sebagai auditor sesuai keputusan Human Developer.
 2. Buat migrasi aditif untuk penugasan kesehatan dan catatan kunjungan/versi yang diperlukan, tanpa mengubah tabel/ID santri dan wali yang sudah ada.
 3. Tambahkan capability petugas kesehatan yang berasal dari pengurus aktif + akun/role dasar + penugasan aktif; pisahkan kemampuan baca admin dari mutasi klinis.
 4. Sediakan UI admin untuk membuat/mengakhiri penugasan dan UI petugas untuk daftar, membuat, serta membaca kunjungan dasar. Sediakan endpoint API baca/tulis yang setara sebagai fondasi aplikasi.
