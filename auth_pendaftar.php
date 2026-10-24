@@ -1,24 +1,34 @@
 <?php
-session_start();
-include 'koneksi.php';
 
-$nisn = mysqli_real_escape_string($koneksi, $_POST['nisn']);
-$hp   = mysqli_real_escape_string($koneksi, $_POST['hp']);
+declare(strict_types=1);
 
-$login = mysqli_query($koneksi, "SELECT * FROM psb_pendaftar WHERE nisn='$nisn' AND no_hp_wali='$hp'");
-$cek = mysqli_num_rows($login);
+use App\Http\Csrf;
+use App\Psb\PendaftarSesi;
 
-if($cek > 0){
-    $data = mysqli_fetch_assoc($login);
-    // Menggunakan nama sesi yang baru
-    $_SESSION['status_pendaftar'] = "login";
-    $_SESSION['id_pendaftar']  = $data['id'];
-    $_SESSION['nama_pendaftar'] = $data['nama_lengkap'];
-    
-    // Arahkan ke portal pendaftar
-    header("Location: portal_pendaftar.php");
-} else {
-    // Jika gagal, kembalikan ke halaman login
-    header("Location: login_pendaftar.php?pesan=gagal");
+/**
+ * Penangan POST masuk Portal Pendaftar (keputusan AP: tetap NISN + No. HP
+ * wali). Workstream keamanan PSB: hanya POST + CSRF, pembatasan percobaan
+ * gagal, regenerasi sesi, dan query terikat lewat `PendaftarSesi`.
+ */
+
+require_once __DIR__ . '/koneksi.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: login_pendaftar.php');
+    exit;
 }
-?>
+if (!Csrf::validate($_POST['_csrf'] ?? null)) {
+    // Halaman masuk dibuka terlalu lama atau dari situs lain.
+    header('Location: login_pendaftar.php?pesan=token');
+    exit;
+}
+
+$ip = isset($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : null;
+$hasil = (new PendaftarSesi($koneksi))->masuk(
+    is_scalar($_POST['nisn'] ?? null) ? (string) $_POST['nisn'] : '',
+    is_scalar($_POST['hp'] ?? null) ? (string) $_POST['hp'] : '',
+    $ip
+);
+
+header('Location: ' . ($hasil === 'masuk' ? 'portal_pendaftar.php' : 'login_pendaftar.php?pesan=' . $hasil));
+exit;

@@ -1,44 +1,39 @@
 <?php
-include 'koneksi.php';
 
-if (isset($_POST['daftar'])) {
-    $nama        = mysqli_real_escape_string($koneksi, $_POST['nama_lengkap']);
-    $nisn        = mysqli_real_escape_string($koneksi, $_POST['nisn']);
-    $nik         = mysqli_real_escape_string($koneksi, $_POST['nik']);
-    $tempat_lahir= mysqli_real_escape_string($koneksi, $_POST['tempat_lahir']);
-    $tgl_lahir   = mysqli_real_escape_string($koneksi, $_POST['tgl_lahir']);
-    $jk          = mysqli_real_escape_string($koneksi, $_POST['jenis_kelamin']);
-    
-    // Alamat Terpisah
-    $alamat_jalan= mysqli_real_escape_string($koneksi, $_POST['alamat_jalan']);
-    $provinsi    = mysqli_real_escape_string($koneksi, $_POST['nama_provinsi']);
-    $kab_kota    = mysqli_real_escape_string($koneksi, $_POST['nama_kabupaten']);
-    $kecamatan   = mysqli_real_escape_string($koneksi, $_POST['nama_kecamatan']);
-    $desa        = mysqli_real_escape_string($koneksi, $_POST['nama_desa']);
+declare(strict_types=1);
 
-    $ayah        = mysqli_real_escape_string($koneksi, $_POST['nama_ayah']);
-    $ibu         = mysqli_real_escape_string($koneksi, $_POST['nama_ibu']);
-    $hp          = mysqli_real_escape_string($koneksi, $_POST['no_hp_wali']);
-    $sekolah     = mysqli_real_escape_string($koneksi, $_POST['sekolah_asal']);
-    $jenjang     = mysqli_real_escape_string($koneksi, $_POST['jenjang_tujuan']);
+use App\Http\Csrf;
+use App\Psb\PendaftarData;
+use App\Psb\PendaftarSesi;
+use App\Psb\PsbException;
 
-    $tahun = date('Y');
-    $random = rand(1000, 9999);
-    $no_pendaftaran = "PSB-" . $tahun . "-" . $random;
+/**
+ * Kirim formulir PSB publik.
+ *
+ * Workstream keamanan PSB: hanya POST ber-CSRF, isian diperiksa server dan
+ * disimpan dengan query terikat (`PendaftarData`). Aturan penerimaan tetap:
+ * status awal Baru, nomor PSB-tahun-acak, NISN tidak boleh ganda. Peramban
+ * yang mendaftar mendapat hak mencetak bukti pendaftaran itu saja.
+ */
 
-    $query = "INSERT INTO psb_pendaftar 
-              (no_pendaftaran, nama_lengkap, nisn, nik, tempat_lahir, tgl_lahir, jenis_kelamin, alamat_jalan, desa, kecamatan, kab_kota, provinsi, nama_ayah, nama_ibu, no_hp_wali, sekolah_asal, jenjang_tujuan)
-              VALUES 
-              ('$no_pendaftaran', '$nama', '$nisn', '$nik', '$tempat_lahir', '$tgl_lahir', '$jk', '$alamat_jalan', '$desa', '$kecamatan', '$kab_kota', '$provinsi', '$ayah', '$ibu', '$hp', '$sekolah', '$jenjang')";
+require_once __DIR__ . '/koneksi.php';
 
-    $result = mysqli_query($koneksi, $query);
-
-    if ($result) {
-        header("Location: psb.php?status=sukses&noreg=$no_pendaftaran");
-    } else {
-        header("Location: psb.php?status=gagal");
-    }
-} else {
-    header("Location: psb.php");
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['daftar'])) {
+    header('Location: psb.php');
+    exit;
 }
-?>
+if (!Csrf::validate($_POST['_csrf'] ?? null)) {
+    header('Location: psb.php?status=token');
+    exit;
+}
+
+try {
+    $baru = (new PendaftarData($koneksi))->daftar($_POST);
+    (new PendaftarSesi($koneksi))->izinkanBukti($baru['id'], $baru['no']);
+    unset($_SESSION['_psb_daftar_galat']);
+    header('Location: psb.php?status=sukses&noreg=' . rawurlencode($baru['no']));
+} catch (PsbException $exception) {
+    $_SESSION['_psb_daftar_galat'] = array_values($exception->errors() ?: [$exception->getMessage()]);
+    header('Location: psb.php?status=gagal');
+}
+exit;

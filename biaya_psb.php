@@ -1,39 +1,61 @@
 <?php
-include 'koneksi.php';
-include 'header.php';
+use App\Http\Csrf;
+use App\Psb\BiayaPsb;
+use App\Psb\PendaftarSesi;
+use App\Psb\PsbAkses;
+use App\Psb\PsbException;
+
+require_once __DIR__ . '/koneksi.php';
+
+// Workstream keamanan PSB: rincian biaya hanya untuk admin atau pendaftar
+// pemilik yang sedang masuk Portal Pendaftar (sebelumnya cukup mengetahui
+// No. Pendaftaran/NIK). Simpan lewat POST ber-CSRF; kategori, harga komponen
+// wajib, dan total dihitung ulang di server dari katalog yang sama
+// (`App\Psb\BiayaPsb`). Halaman tetap di alamat ini (P-7 belum diputuskan).
+$akses = new PsbAkses($koneksi, new PendaftarSesi($koneksi));
+$pesanBiaya = null;
 
 // --- LOGIKA SIMPAN KE DATABASE ---
-if(isset($_POST['simpan_cetak'])){
-    $no_pendaftaran = mysqli_real_escape_string($koneksi, $_POST['no_pendaftaran']);
-    $syahriyyah = (int)$_POST['syahriyyah'];
-    $infaq = (int)$_POST['infaq'];
-    $seragam_psas = (int)$_POST['seragam_psas'];
-    $seragam_pramuka = (int)$_POST['seragam_pramuka'];
-    
-    $kategori_biaya = $_POST['kategori_biaya'];
-    $total_wajib = (int)$_POST['total_wajib'];
-    $rincian_wajib = $_POST['rincian_wajib_json'];
-    $metode_pembayaran = mysqli_real_escape_string($koneksi, $_POST['metode_pembayaran']);
-    
-    $total_keseluruhan = $syahriyyah + $infaq + $seragam_psas + $seragam_pramuka + $total_wajib;
-
-    $query = "INSERT INTO psb_pembayaran (
-                no_pendaftaran, kategori_biaya, syahriyyah, infaq, seragam_psas, seragam_pramuka, rincian_wajib, total_wajib, total_keseluruhan, metode_pembayaran
-              ) VALUES (
-                '$no_pendaftaran', '$kategori_biaya', '$syahriyyah', '$infaq', '$seragam_psas', '$seragam_pramuka', '$rincian_wajib', '$total_wajib', '$total_keseluruhan', '$metode_pembayaran'
-              )
-              ON DUPLICATE KEY UPDATE 
-                syahriyyah='$syahriyyah', infaq='$infaq', seragam_psas='$seragam_psas', seragam_pramuka='$seragam_pramuka', rincian_wajib='$rincian_wajib', total_wajib='$total_wajib', total_keseluruhan='$total_keseluruhan', metode_pembayaran='$metode_pembayaran'";
-    
-    if(mysqli_query($koneksi, $query)){
-        // PERBAIKAN: Karena form dikirim ke Tab Baru (target="_blank"), 
-        // kita cukup alihkan tab baru ini ke halaman cetak kwitansi.
-        echo "<script>window.location.href='cetak_biaya_psb.php?noreg=$no_pendaftaran';</script>";
-        exit;
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan_cetak'])){
+    if (!Csrf::validate($_POST['_csrf'] ?? null)) {
+        $pesanBiaya = 'Halaman sudah kedaluwarsa. Rincian belum tersimpan; muat ulang halaman lalu simpan lagi.';
     } else {
-        echo "<script>alert('Gagal menyimpan data: ".mysqli_error($koneksi)."');</script>";
+        $target = $akses->cari(is_string($_POST['no_pendaftaran'] ?? null) ? $_POST['no_pendaftaran'] : '');
+        if ($target === null || !$akses->boleh($target)) {
+            PsbAkses::tolak(403);
+        }
+        try {
+            BiayaPsb::simpan($koneksi, (string) $target['no_pendaftaran'], BiayaPsb::dariKiriman($target, $_POST));
+            // Formulir dikirim ke tab baru: tab ini langsung membuka kwitansi.
+            header('Location: cetak_biaya_psb.php?noreg=' . rawurlencode((string) $target['no_pendaftaran']), true, 303);
+            exit;
+        } catch (PsbException $exception) {
+            $pesanBiaya = $exception->getMessage();
+        }
     }
 }
+
+// --- DATA YANG BOLEH DITAMPILKAN ---
+$cari = is_string($_GET['cari'] ?? null) ? trim($_GET['cari']) : null;
+$d = null;
+$tidakDitemukan = false;
+$bukanMilik = false;
+$pendaftarMasuk = $akses->pendaftar();
+if ($akses->admin()) {
+    if ($cari !== null && $cari !== '') {
+        $d = $akses->cari($cari, true);
+        $tidakDitemukan = $d === null;
+    }
+} elseif ($pendaftarMasuk !== null) {
+    // Pendaftar hanya melihat rincian miliknya sendiri.
+    if ($cari === null || $cari === '' || $cari === (string) $pendaftarMasuk['no_pendaftaran'] || $cari === (string) $pendaftarMasuk['nik']) {
+        $d = $pendaftarMasuk;
+    } else {
+        $bukanMilik = true;
+    }
+}
+
+include 'header.php';
 ?>
 
 <div class='container py-5 mt-5'>
@@ -44,6 +66,11 @@ if(isset($_POST['simpan_cetak'])){
         </div>
     </div>
 
+    <?php if ($pesanBiaya !== null) { ?>
+        <div class="row justify-content-center"><div class="col-lg-10"><div class="alert alert-danger" role="alert"><?php echo ah_e($pesanBiaya); ?></div></div></div>
+    <?php } ?>
+
+    <?php if ($akses->admin()) { ?>
     <div class="row justify-content-center mb-5" data-aos="fade-up">
         <div class="col-md-6">
             <div class="card shadow-sm border-success border-2 border-top-0 border-bottom-0 border-end-0">
@@ -51,7 +78,7 @@ if(isset($_POST['simpan_cetak'])){
                     <form method="GET">
                         <label class="fw-bold mb-2">Cari Data Pendaftar</label>
                         <div class="input-group">
-                            <input type="text" name="cari" class="form-control form-control-lg" placeholder="No. Pendaftaran / NIK" value="<?php echo isset($_GET['cari']) ? $_GET['cari'] : ''; ?>" required>
+                            <input type="text" name="cari" class="form-control form-control-lg" placeholder="No. Pendaftaran / NIK" value="<?php echo ah_e($cari ?? ''); ?>" required>
                             <button type="submit" class="btn btn-success px-4 fw-bold"><i class="fas fa-search me-1"></i> Cari</button>
                         </div>
                     </form>
@@ -59,70 +86,47 @@ if(isset($_POST['simpan_cetak'])){
             </div>
         </div>
     </div>
+    <?php } elseif ($pendaftarMasuk === null) { ?>
+    <div class="row justify-content-center mb-5" data-aos="fade-up">
+        <div class="col-md-6">
+            <div class="alert alert-info text-center shadow-sm">
+                <i class="fas fa-lock fa-2x mb-3 d-block"></i>
+                Rincian pembiayaan hanya dapat dibuka oleh pendaftar setelah masuk Portal Pendaftar, atau oleh panitia.
+                <div class="mt-3"><a href="login_pendaftar.php" class="btn btn-success fw-bold rounded-pill px-4">Masuk Portal Pendaftar</a></div>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
 
     <?php 
-    if(isset($_GET['cari'])){
-        $cari = mysqli_real_escape_string($koneksi, $_GET['cari']);
-        $q = mysqli_query($koneksi, "SELECT * FROM psb_pendaftar WHERE no_pendaftaran='$cari' OR nik='$cari'");
+    if($bukanMilik){
+        echo "<div class='container'><div class='alert alert-warning text-center shadow-sm'>Anda hanya dapat membuka rincian biaya pendaftaran Anda sendiri.</div></div>";
+    }
+    if($d !== null || $tidakDitemukan){
         
-        if(mysqli_num_rows($q) > 0){
-            $d = mysqli_fetch_assoc($q);
+        if($d !== null){
             $no_pendaftaran = $d['no_pendaftaran'];
             
-            $is_alumni = (stripos(strtolower($d['sekolah_asal']), 'smp terpadu al hasan') !== false);
             $unit = $d['jenjang_tujuan'];
             $jk = $d['jenis_kelamin'];
             $jk_teks = ($jk == 'L') ? 'Laki-laki' : 'Perempuan';
 
-            $kategori_biaya = "";
-            $s_default = 0; $i_default = 0; 
-            $psas_default = 0; $pramuka_default = 0;
+            // Katalog biaya yang sama dengan sebelumnya, kini satu sumber di server.
+            $katalog = BiayaPsb::katalog($d);
+            $kategori_biaya = $katalog['kategori'];
+            $s_default = $katalog['syahriyyah']; $i_default = $katalog['infaq'];
+            $psas_default = $katalog['psas']; $pramuka_default = $katalog['pramuka'];
             $m_default = 'Cash';
-            $wajib_items = [];
+            $wajib_items = $katalog['wajib'];
 
-            if($unit == 'SMP Terpadu Al Hasan'){
-                $kategori_biaya = "SMP Terpadu Al Hasan";
-                $s_default = 800000; $i_default = 1000000;
-                if($jk == 'L'){ $psas_default = 190000; $pramuka_default = 215000; } 
-                else { $psas_default = 225000; $pramuka_default = 230000; }
-
-                $wajib_items = ['Formulir Pendaftaran'=>150000, 'Administrasi Santri Baru'=>250000, 'Lemari'=>600000, 'Kitab'=>230000, 'Laundry (20 Kg)'=>100000, 'Biaya Ujian Tahunan'=>250000];
-                if($jk == 'L') $wajib_items += ['Seragam Yayasan'=>165000, 'Batik SMP'=>85000, 'Seragam Olahraga'=>155000, 'JAS Almamater'=>250000, 'Seragam Muslim'=>150000, 'Sabuk PSAS & Pramuka'=>35000, 'Dasi'=>17500];
-                else $wajib_items += ['Seragam Yayasan'=>170000, 'Batik SMP'=>85000, 'Seragam Olahraga'=>160000, 'JAS Almamater'=>250000, 'Seragam Muslimah'=>150000, 'Sabuk PSAS & Pramuka'=>35000, 'Kerudung'=>100000];
-            
-            } else if($unit == 'SMK Terpadu Al Hasan'){
-                if($jk == 'L'){ $psas_default = 200000; $pramuka_default = 200000; } 
-                else { $psas_default = 230000; $pramuka_default = 230000; }
-
-                if($is_alumni){
-                    $kategori_biaya = "SMK Terpadu Al Hasan (Alumni)";
-                    $s_default = 600000; $i_default = 0;
-                    $wajib_items = ['Administrasi Santri Baru'=>250000, 'Kitab'=>200000, 'Laundry'=>100000, 'Biaya Ujian Tahunan'=>250000, 'Seragam PDH SMK'=>231000, 'Seragam Olahraga'=>190000];
-                } else {
-                    $kategori_biaya = "SMK Terpadu Al Hasan (Baru)";
-                    $s_default = 800000; $i_default = 1000000;
-                    $wajib_items = ['Formulir Pendaftaran'=>150000, 'Administrasi Santri Baru'=>250000, 'Lemari'=>600000, 'Kitab'=>270000, 'Laundry (20 Kg)'=>100000, 'Biaya Ujian Tahunan'=>250000];
-                    if($jk == 'L') $wajib_items += ['Seragam PDH SMK'=>231000, 'Seragam Olahraga'=>190000, 'JAS Almamater'=>250000, 'Seragam Muslim'=>150000];
-                    else $wajib_items += ['Seragam PDH SMK'=>231000, 'Seragam Olahraga'=>190000, 'JAS Almamater'=>250000, 'Seragam Muslimah'=>150000];
-                }
-            
-            } else { 
-                if($is_alumni){
-                    $kategori_biaya = "Tsanawi Non-SMK (Alumni)";
-                    $s_default = 600000; $i_default = 0;
-                    $wajib_items = ['Administrasi Santri Baru'=>250000, 'Kitab'=>200000, 'Laundry'=>100000, 'Biaya Ujian Tahunan'=>150000];
-                } else {
-                    $kategori_biaya = "Tsanawi Non-SMK (Baru)";
-                    $s_default = 800000; $i_default = 1000000;
-                    $wajib_items = ['Formulir Pendaftaran'=>150000, 'Administrasi Santri Baru'=>250000, 'Lemari'=>600000, 'Kitab'=>270000, 'Laundry (20 Kg)'=>100000, 'Biaya Ujian Tahunan'=>150000];
-                    if($jk == 'L') $wajib_items += ['JAS Almamater'=>250000, 'Seragam Muslim'=>150000];
-                    else $wajib_items += ['JAS Almamater'=>250000, 'Seragam Muslimah'=>150000];
-                }
-            }
-
-            $q_cek = mysqli_query($koneksi, "SELECT * FROM psb_pembayaran WHERE no_pendaftaran='$no_pendaftaran'");
+            $stmtCek = mysqli_prepare($koneksi, "SELECT * FROM psb_pembayaran WHERE no_pendaftaran=?");
+            mysqli_stmt_bind_param($stmtCek, 's', $no_pendaftaran);
+            mysqli_stmt_execute($stmtCek);
+            $q_cek = mysqli_stmt_get_result($stmtCek);
+            $lunas = false;
             if(mysqli_num_rows($q_cek) > 0){
                 $d_saved = mysqli_fetch_assoc($q_cek);
+                $lunas = $d_saved['status_pembayaran'] === 'Lunas';
                 $s_default = $d_saved['syahriyyah'];
                 $i_default = $d_saved['infaq'];
                 $psas_default = $d_saved['seragam_psas'];
@@ -141,23 +145,24 @@ if(isset($_POST['simpan_cetak'])){
                     <div class="row mb-4 bg-light p-3 rounded-3 border">
                         <div class="col-md-6">
                             <table class="table table-sm table-borderless mb-0">
-                                <tr><td width="40%" class="text-muted">Nama Pendaftar</td><td class="fw-bold">: <?php echo $d['nama_lengkap']; ?></td></tr>
-                                <tr><td class="text-muted">No. Pendaftaran</td><td class="fw-bold text-success">: <?php echo $d['no_pendaftaran']; ?></td></tr>
+                                <tr><td width="40%" class="text-muted">Nama Pendaftar</td><td class="fw-bold">: <?php echo ah_e($d['nama_lengkap']); ?></td></tr>
+                                <tr><td class="text-muted">No. Pendaftaran</td><td class="fw-bold text-success">: <?php echo ah_e($d['no_pendaftaran']); ?></td></tr>
                                 <tr><td class="text-muted">Jenis Kelamin</td><td class="fw-bold">: <?php echo $jk_teks; ?></td></tr>
                             </table>
                         </div>
                         <div class="col-md-6 border-start">
                             <table class="table table-sm table-borderless mb-0">
-                                <tr><td width="40%" class="text-muted">Tujuan Unit</td><td class="fw-bold text-primary">: <?php echo $d['jenjang_tujuan']; ?></td></tr>
-                                <tr><td class="text-muted">Asal Sekolah</td><td class="fw-bold">: <?php echo $d['sekolah_asal']; ?></td></tr>
-                                <tr><td class="text-muted">Kategori Biaya</td><td class="fw-bold text-danger">: <?php echo $kategori_biaya; ?></td></tr>
+                                <tr><td width="40%" class="text-muted">Tujuan Unit</td><td class="fw-bold text-primary">: <?php echo ah_e($d['jenjang_tujuan']); ?></td></tr>
+                                <tr><td class="text-muted">Asal Sekolah</td><td class="fw-bold">: <?php echo ah_e($d['sekolah_asal']); ?></td></tr>
+                                <tr><td class="text-muted">Kategori Biaya</td><td class="fw-bold text-danger">: <?php echo ah_e($kategori_biaya); ?></td></tr>
                             </table>
                         </div>
                     </div>
 
                     <form method="POST" target="_blank" onsubmit="setTimeout(function(){ window.location.href='biaya_psb.php'; }, 1000);">
-                        <input type="hidden" name="no_pendaftaran" value="<?php echo $no_pendaftaran; ?>">
-                        <input type="hidden" name="kategori_biaya" value="<?php echo $kategori_biaya; ?>">
+                        <?php echo Csrf::input(); ?>
+                        <input type="hidden" name="no_pendaftaran" value="<?php echo ah_e($no_pendaftaran); ?>">
+                        <input type="hidden" name="kategori_biaya" value="<?php echo ah_e($kategori_biaya); ?>">
                         
                         <input type="hidden" name="total_wajib" id="inpTotalWajib" value="0">
                         <input type="hidden" name="rincian_wajib_json" id="inpRincianWajib" value="{}">
@@ -171,14 +176,14 @@ if(isset($_POST['simpan_cetak'])){
                                     <label class="fw-bold">Syahriyyah (Bulanan)</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light">Rp</span>
-                                        <input type="number" name="syahriyyah" id="inpSyahriyyah" class="form-control form-control-lg text-end fw-bold text-primary calc-biaya" value="<?php echo $s_default; ?>" required>
+                                        <input type="number" name="syahriyyah" id="inpSyahriyyah" class="form-control form-control-lg text-end fw-bold text-primary calc-biaya" value="<?php echo ah_e($s_default); ?>" required>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="fw-bold">Infaq Bangunan</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light">Rp</span>
-                                        <input type="number" name="infaq" id="inpInfaq" class="form-control form-control-lg text-end fw-bold text-primary calc-biaya" value="<?php echo $i_default; ?>" required>
+                                        <input type="number" name="infaq" id="inpInfaq" class="form-control form-control-lg text-end fw-bold text-primary calc-biaya" value="<?php echo ah_e($i_default); ?>" required>
                                     </div>
                                 </div>
 
@@ -187,14 +192,14 @@ if(isset($_POST['simpan_cetak'])){
                                         <label class="fw-bold">Seragam PSAS</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-light">Rp</span>
-                                            <input type="number" name="seragam_psas" id="inpPSAS" class="form-control form-control-lg text-end fw-bold text-primary calc-biaya" value="<?php echo $psas_default; ?>" required>
+                                            <input type="number" name="seragam_psas" id="inpPSAS" class="form-control form-control-lg text-end fw-bold text-primary calc-biaya" value="<?php echo ah_e($psas_default); ?>" required>
                                         </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="fw-bold">Seragam Pramuka</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-light">Rp</span>
-                                            <input type="number" name="seragam_pramuka" id="inpPramuka" class="form-control form-control-lg text-end fw-bold text-primary calc-biaya" value="<?php echo $pramuka_default; ?>" required>
+                                            <input type="number" name="seragam_pramuka" id="inpPramuka" class="form-control form-control-lg text-end fw-bold text-primary calc-biaya" value="<?php echo ah_e($pramuka_default); ?>" required>
                                         </div>
                                     </div>
                                 <?php else: ?>
@@ -234,8 +239,8 @@ if(isset($_POST['simpan_cetak'])){
                                         <tr>
                                             <td>
                                                 <div class="form-check mb-0">
-                                                    <input class="form-check-input calc-wajib border-danger" type="checkbox" value="<?php echo $item; ?>" data-harga="<?php echo $harga; ?>" id="chk_<?php echo md5($item); ?>" <?php echo $isChecked; ?> style="cursor: pointer; transform: scale(1.2); margin-top: 0.3em;">
-                                                    <label class="form-check-label ms-2 fw-bold" for="chk_<?php echo md5($item); ?>" style="cursor: pointer;"><?php echo $item; ?></label>
+                                                    <input class="form-check-input calc-wajib border-danger" type="checkbox" name="wajib[]" value="<?php echo ah_e($item); ?>" data-harga="<?php echo $harga; ?>" id="chk_<?php echo md5($item); ?>" <?php echo $isChecked; ?> style="cursor: pointer; transform: scale(1.2); margin-top: 0.3em;">
+                                                    <label class="form-check-label ms-2 fw-bold" for="chk_<?php echo md5($item); ?>" style="cursor: pointer;"><?php echo ah_e($item); ?></label>
                                                 </div>
                                             </td>
                                             <td class="text-end fw-bold">Rp <?php echo number_format($harga,0,',','.'); ?></td>
@@ -263,9 +268,14 @@ if(isset($_POST['simpan_cetak'])){
                         </div>
 
                         <div class="text-center mt-5">
+                            <?php if ($lunas) { ?>
+                                <div class="alert alert-success">Pembayaran sudah ditandai <b>lunas</b> oleh bendahara. Rincian tidak dapat diubah lagi; hubungi panitia PSB bila perlu koreksi.</div>
+                                <a href="cetak_biaya_psb.php?noreg=<?php echo ah_e(rawurlencode((string) $no_pendaftaran)); ?>" target="_blank" class="btn btn-success btn-lg px-5 fw-bold shadow-lg rounded-pill"><i class="fas fa-print me-2"></i> Cetak Kwitansi</a>
+                            <?php } else { ?>
                             <button type="submit" name="simpan_cetak" class="btn btn-success btn-lg px-5 fw-bold shadow-lg rounded-pill">
                                 <i class="fas fa-print me-2"></i> Simpan & Cetak Kwitansi
                             </button>
+                            <?php } ?>
                         </div>
                     </form>
 

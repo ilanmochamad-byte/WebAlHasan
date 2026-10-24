@@ -114,11 +114,11 @@ Ditetapkan Human Developer 22 Oktober 2026: **implementator Claude, auditor Code
 
 ## Masih menunggu keputusan
 
-1. Peran untuk tahap perbaikan keamanan PSB (workstream terpisah, syarat Tahap 8).
+1. ~~Peran untuk tahap perbaikan keamanan PSB~~ — **ditetapkan Human Developer 24 Oktober 2026: implementator Claude, auditor Codex** (`docs/keamanan-psb/`). Tahap 8 tetap menunggu workstream itu lulus audit.
 2. Pemindahan rincian pembiayaan PSB ke dalam portal pendaftar yang harus masuk (P-7).
 3. Isi resmi halaman Profil, tahun berdiri, nomor WhatsApp/telepon resmi, logo dan foto, serta angka statistik Beranda situs.
 4. Komponen biaya PSB untuk MI dan RA.
-5. Tahap perbaikan keamanan atas temuan yang disampaikan langsung kepada Human Developer (tidak dirinci di repositori publik).
+5. Tahap perbaikan keamanan atas temuan yang disampaikan langsung kepada Human Developer (tidak dirinci di repositori publik). Temuan PSB ditangani workstream keamanan PSB (24 Oktober 2026); temuan di luar PSB tetap menunggu.
 
 ## Keputusan Tahap 7 (23 Oktober 2026, sesudah implementasi)
 

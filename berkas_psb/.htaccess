@@ -1,0 +1,9 @@
+# Berkas pendaftar PSB bersifat pribadi (workstream keamanan PSB). Lapis kedua
+# di samping aturan .htaccess akar; berkas hanya dibuka lewat
+# lihat_berkas_psb.php yang memeriksa hak akses setiap permintaan.
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Deny from all
+</IfModule>

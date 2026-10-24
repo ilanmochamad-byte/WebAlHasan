@@ -1,21 +1,28 @@
 <?php
-include 'koneksi.php';
+use App\Psb\PendaftarSesi;
+use App\Psb\PsbAkses;
 
-$noreg = $_GET['noreg'];
-$data = mysqli_query($koneksi, "SELECT * FROM psb_pendaftar WHERE no_pendaftaran = '$noreg'");
-$d = mysqli_fetch_array($data);
+require_once __DIR__ . '/koneksi.php';
 
-// Jika data tidak ditemukan
-if (!$d) {
-    die("Data tidak ditemukan. Pastikan Nomor Pendaftaran benar.");
+// Workstream keamanan PSB: bukti hanya untuk admin, pendaftar pemilik yang
+// sedang masuk portal, atau peramban yang baru mengirim pendaftaran ini.
+// Nomor pendaftaran diikat sebagai parameter query dan isi di-escape.
+$akses = new PsbAkses($koneksi, new PendaftarSesi($koneksi));
+$d = $akses->cari(is_string($_GET['noreg'] ?? null) ? $_GET['noreg'] : '');
+if ($d === null) {
+    PsbAkses::tolak($akses->admin() ? 404 : 403);
 }
+if (!$akses->boleh($d, true)) {
+    PsbAkses::tolak(403);
+}
+header('Cache-Control: private, no-store');
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Cetak Bukti - <?php echo $d['nama_lengkap']; ?></title>
+    <title>Cetak Bukti - <?php echo ah_e($d['nama_lengkap']); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { font-family: 'Times New Roman', serif; color: #000; }
@@ -65,22 +72,22 @@ if (!$d) {
                             <tr>
                                 <td width="160">No. Pendaftaran</td>
                                 <td width="10">:</td>
-                                <td class="fw-bold fs-5 text-success"><?php echo $d['no_pendaftaran']; ?></td>
+                                <td class="fw-bold fs-5 text-success"><?php echo ah_e($d['no_pendaftaran']); ?></td>
                             </tr>
                             <tr>
                                 <td>Nama Lengkap</td>
                                 <td>:</td>
-                                <td class="text-uppercase fw-bold"><?php echo $d['nama_lengkap']; ?></td>
+                                <td class="text-uppercase fw-bold"><?php echo ah_e($d['nama_lengkap']); ?></td>
                             </tr>
                             <tr>
                                 <td>NISN</td>
                                 <td>:</td>
-                                <td><?php echo $d['nisn']; ?></td>
+                                <td><?php echo ah_e($d['nisn']); ?></td>
                             </tr>
                             <tr>
                                 <td>Tempat, Tgl Lahir</td>
                                 <td>:</td>
-                                <td><?php echo $d['tempat_lahir'] . ', ' . date('d-m-Y', strtotime($d['tgl_lahir'])); ?></td>
+                                <td><?php echo ah_e($d['tempat_lahir'] . ', ' . date('d-m-Y', strtotime((string) $d['tgl_lahir']))); ?></td>
                             </tr>
                             <tr>
                                 <td>Jenis Kelamin</td>
@@ -90,12 +97,12 @@ if (!$d) {
                             <tr>
                                 <td>Asal Sekolah</td>
                                 <td>:</td>
-                                <td><?php echo $d['sekolah_asal']; ?></td>
+                                <td><?php echo ah_e($d['sekolah_asal']); ?></td>
                             </tr>
                             <tr>
                                 <td>Jenjang Pilihan</td>
                                 <td>:</td>
-                                <td><span class="fw-bold border border-dark px-2 py-1 bg-light"><?php echo $d['jenjang_tujuan']; ?></span></td>
+                                <td><span class="fw-bold border border-dark px-2 py-1 bg-light"><?php echo ah_e($d['jenjang_tujuan']); ?></span></td>
                             </tr>
                         </table>
                     </div>
@@ -106,7 +113,7 @@ if (!$d) {
                         </div>
                         
                         <div class="box-noreg mb-0">
-                            <?php echo $d['no_pendaftaran']; ?>
+                            <?php echo ah_e($d['no_pendaftaran']); ?>
                         </div>
                         
                         <div class="waktu-daftar text-muted">

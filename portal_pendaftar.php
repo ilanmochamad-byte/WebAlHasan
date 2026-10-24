@@ -1,56 +1,47 @@
 <?php
-session_start();
-if(!isset($_SESSION['status_pendaftar']) || $_SESSION['status_pendaftar'] != "login"){
-    header("Location: login_pendaftar.php");
-    exit;
-}
-include 'koneksi.php';
-include 'header.php';
+use App\Http\Csrf;
+use App\Psb\PendaftarData;
+use App\Psb\PendaftarSesi;
+use App\Psb\PsbException;
 
-$id_user = $_SESSION['id_pendaftar'];
+require_once __DIR__ . '/koneksi.php';
+
+// Workstream keamanan PSB: sesi pendaftar diperiksa ulang setiap permintaan
+// (pendaftar dihapus atau NISN/No. HP berubah dari sesi lain -> keluar), dan
+// biodata hanya dapat diubah untuk baris milik sendiri lewat POST ber-CSRF.
+$sesiPendaftar = new PendaftarSesi($koneksi);
+$d = $sesiPendaftar->wajib('login_pendaftar.php');
+$id_user = (int) $d['id'];
 
 // ==========================================
 // PROSES UPDATE DATA DIRI
 // ==========================================
-if(isset($_POST['update_data'])){
-    $nama         = mysqli_real_escape_string($koneksi, $_POST['nama_lengkap']);
-    $nik          = mysqli_real_escape_string($koneksi, $_POST['nik']);
-    $tempat_lahir = mysqli_real_escape_string($koneksi, $_POST['tempat_lahir']);
-    $tgl_lahir    = mysqli_real_escape_string($koneksi, $_POST['tgl_lahir']);
-    $jk           = mysqli_real_escape_string($koneksi, $_POST['jenis_kelamin']);
-    $jenjang      = mysqli_real_escape_string($koneksi, $_POST['jenjang_tujuan']);
-    $alamat_jalan = mysqli_real_escape_string($koneksi, $_POST['alamat_jalan']);
-    $ayah         = mysqli_real_escape_string($koneksi, $_POST['nama_ayah']);
-    $ibu          = mysqli_real_escape_string($koneksi, $_POST['nama_ibu']);
-    $hp           = mysqli_real_escape_string($koneksi, $_POST['no_hp_wali']);
-    $sekolah      = mysqli_real_escape_string($koneksi, $_POST['sekolah_asal']);
-
-    $update_wilayah = "";
-    if(!empty($_POST['nama_provinsi'])){
-        $prov = mysqli_real_escape_string($koneksi, $_POST['nama_provinsi']);
-        $kab  = mysqli_real_escape_string($koneksi, $_POST['nama_kabupaten']);
-        $kec  = mysqli_real_escape_string($koneksi, $_POST['nama_kecamatan']);
-        $desa = mysqli_real_escape_string($koneksi, $_POST['nama_desa']);
-        $update_wilayah = ", provinsi='$prov', kab_kota='$kab', kecamatan='$kec', desa='$desa'";
-    }
-
-    $q_update = "UPDATE psb_pendaftar SET 
-                 nama_lengkap='$nama', nik='$nik', tempat_lahir='$tempat_lahir', 
-                 tgl_lahir='$tgl_lahir', jenis_kelamin='$jk', jenjang_tujuan='$jenjang',
-                 alamat_jalan='$alamat_jalan', nama_ayah='$ayah', nama_ibu='$ibu', 
-                 no_hp_wali='$hp', sekolah_asal='$sekolah' $update_wilayah 
-                 WHERE id='$id_user'";
-                 
-    if(mysqli_query($koneksi, $q_update)){
-        $_SESSION['nama_pendaftar'] = $nama; 
-        echo "<script>alert('Data Diri berhasil diperbarui!'); window.location='portal_pendaftar.php';</script>";
+$pesanPortal = null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_data'])) {
+    if (!Csrf::validate($_POST['_csrf'] ?? null)) {
+        $pesanPortal = 'Halaman sudah kedaluwarsa. Data belum tersimpan; muat ulang halaman lalu simpan lagi.';
     } else {
-        echo "<script>alert('Terjadi kesalahan saat menyimpan data.');</script>";
+        try {
+            $d = (new PendaftarData($koneksi))->ubah($id_user, $_POST);
+            $sesiPendaftar->perbarui($d);
+            $_SESSION['_psb_portal_pesan'] = 'Data Diri berhasil diperbarui!';
+            header('Location: portal_pendaftar.php');
+            exit;
+        } catch (PsbException $exception) {
+            $pesanPortal = $exception->getMessage() . ($exception->errors() === [] ? '' : ' ' . implode(' ', $exception->errors()));
+        }
     }
 }
+if ($pesanPortal === null && isset($_SESSION['_psb_portal_pesan'])) {
+    $pesanPortal = (string) $_SESSION['_psb_portal_pesan'];
+    unset($_SESSION['_psb_portal_pesan']);
+}
 
-$query = mysqli_query($koneksi, "SELECT * FROM psb_pendaftar WHERE id='$id_user'");
-$d     = mysqli_fetch_array($query);
+include 'header.php';
+if ($pesanPortal !== null) {
+    // Pesan tetap berupa kotak alert seperti sebelumnya; teks di-encode JSON.
+    echo '<script>alert(' . json_encode($pesanPortal, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) . ');</script>';
+}
 
 // ==========================================
 // LOGIKA PROGRESS BAR (VISUAL ALUR)
@@ -139,8 +130,8 @@ if($status_psb == 'Diterima'){
                     <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
                         <i class="fas fa-user-graduate fa-3x text-success"></i>
                     </div>
-                    <h5 class="fw-bold mb-1"><?php echo $d['nama_lengkap']; ?></h5>
-                    <span class="badge bg-light text-success border border-success mb-3 px-3 py-2 rounded-pill"><?php echo $d['no_pendaftaran']; ?></span>
+                    <h5 class="fw-bold mb-1"><?php echo ah_e($d['nama_lengkap']); ?></h5>
+                    <span class="badge bg-light text-success border border-success mb-3 px-3 py-2 rounded-pill"><?php echo ah_e($d['no_pendaftaran']); ?></span>
                     <hr class="text-muted">
                     <div class="text-start small">
                         <div class="d-flex justify-content-between mb-2">
@@ -149,21 +140,24 @@ if($status_psb == 'Diterima'){
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-muted">Jenjang Pilihan</span>
-                            <span class="fw-bold text-dark"><?php echo $d['jenjang_tujuan']; ?></span>
+                            <span class="fw-bold text-dark"><?php echo ah_e($d['jenjang_tujuan']); ?></span>
                         </div>
                     </div>
                     
-                    <a href="cetak_bukti.php?noreg=<?php echo $d['no_pendaftaran']; ?>" target="_blank" class="btn btn-warning w-100 mt-4 fw-bold shadow-sm rounded-pill py-2">
+                    <a href="cetak_bukti.php?noreg=<?php echo ah_e(rawurlencode((string) $d['no_pendaftaran'])); ?>" target="_blank" class="btn btn-warning w-100 mt-4 fw-bold shadow-sm rounded-pill py-2">
                         <i class="fas fa-print me-2"></i> Cetak Bukti Pendaftaran
                     </a>
                     
-                    <a href="biaya_psb.php?cari=<?php echo $d['no_pendaftaran']; ?>" class="btn btn-primary w-100 mt-3 fw-bold shadow-sm rounded-pill py-2">
+                    <a href="biaya_psb.php?cari=<?php echo ah_e(rawurlencode((string) $d['no_pendaftaran'])); ?>" class="btn btn-primary w-100 mt-3 fw-bold shadow-sm rounded-pill py-2">
                         <i class="fas fa-file-invoice-dollar me-2"></i> Rincian & Pembayaran
                     </a>
 
-                    <a href="logout_pendaftar.php" class="btn btn-outline-danger w-100 mt-3 fw-bold rounded-pill py-2">
-                        <i class="fas fa-sign-out-alt me-2"></i> Keluar Portal
-                    </a>
+                    <form action="logout_pendaftar.php" method="POST">
+                        <?php echo Csrf::input(); ?>
+                        <button type="submit" class="btn btn-outline-danger w-100 mt-3 fw-bold rounded-pill py-2">
+                            <i class="fas fa-sign-out-alt me-2"></i> Keluar Portal
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -234,28 +228,29 @@ if($status_psb == 'Diterima'){
                         <div class="tab-pane fade show active" id="tab-data" role="tabpanel">
                             
                             <form action="" method="POST">
+                                <?php echo Csrf::input(); ?>
                                 <div class="section-title"><i class="fas fa-id-card me-2"></i>Identitas Diri</div>
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold text-muted">NISN (Username Login)</label>
-                                        <input type="text" class="form-control bg-light text-muted" value="<?php echo $d['nisn']; ?>" readonly>
+                                        <input type="text" class="form-control bg-light text-muted" value="<?php echo ah_e($d['nisn']); ?>" readonly>
                                         <small class="text-danger" style="font-size: 11px;"><i class="fas fa-lock me-1"></i>NISN tidak dapat diubah secara mandiri.</small>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">NIK KTP/KK</label>
-                                        <input type="number" name="nik" class="form-control" value="<?php echo $d['nik']; ?>" required>
+                                        <input type="number" name="nik" class="form-control" value="<?php echo ah_e($d['nik']); ?>" required>
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label small fw-bold">Nama Lengkap (Sesuai Ijazah)</label>
-                                        <input type="text" name="nama_lengkap" class="form-control" value="<?php echo $d['nama_lengkap']; ?>" required>
+                                        <input type="text" name="nama_lengkap" class="form-control" value="<?php echo ah_e($d['nama_lengkap']); ?>" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Tempat Lahir</label>
-                                        <input type="text" name="tempat_lahir" class="form-control" value="<?php echo $d['tempat_lahir']; ?>" required>
+                                        <input type="text" name="tempat_lahir" class="form-control" value="<?php echo ah_e($d['tempat_lahir']); ?>" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Tanggal Lahir</label>
-                                        <input type="text" name="tgl_lahir" id="inputTanggal" class="form-control bg-white" value="<?php echo $d['tgl_lahir']; ?>" required>
+                                        <input type="text" name="tgl_lahir" id="inputTanggal" class="form-control bg-white" value="<?php echo ah_e($d['tgl_lahir']); ?>" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Jenis Kelamin</label>
@@ -280,7 +275,7 @@ if($status_psb == 'Diterima'){
                                         <div class="p-3 bg-light rounded-3 border mb-2 d-flex justify-content-between align-items-center">
                                             <div>
                                                 <p class="mb-0 small fw-bold text-secondary">Wilayah Terdaftar Saat Ini:</p>
-                                                <p class="mb-0 fw-bold text-dark">Ds. <?php echo $d['desa']; ?>, Kec. <?php echo $d['kecamatan']; ?>, <?php echo $d['kab_kota']; ?>, <?php echo $d['provinsi']; ?></p>
+                                                <p class="mb-0 fw-bold text-dark">Ds. <?php echo ah_e($d['desa']); ?>, Kec. <?php echo ah_e($d['kecamatan']); ?>, <?php echo ah_e($d['kab_kota']); ?>, <?php echo ah_e($d['provinsi']); ?></p>
                                             </div>
                                         </div>
                                         <div class="form-check form-switch mb-3">
@@ -320,11 +315,11 @@ if($status_psb == 'Diterima'){
                                     
                                     <div class="col-12">
                                         <label class="form-label small fw-bold">Detail Jalan / Gg / RT / RW</label>
-                                        <textarea name="alamat_jalan" class="form-control" rows="2" required><?php echo $d['alamat_jalan']; ?></textarea>
+                                        <textarea name="alamat_jalan" class="form-control" rows="2" required><?php echo ah_e($d['alamat_jalan']); ?></textarea>
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label small fw-bold">Asal Sekolah</label>
-                                        <input type="text" name="sekolah_asal" class="form-control" value="<?php echo $d['sekolah_asal']; ?>" required>
+                                        <input type="text" name="sekolah_asal" class="form-control" value="<?php echo ah_e($d['sekolah_asal']); ?>" required>
                                     </div>
                                 </div>
 
@@ -332,15 +327,15 @@ if($status_psb == 'Diterima'){
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Nama Ayah</label>
-                                        <input type="text" name="nama_ayah" class="form-control" value="<?php echo $d['nama_ayah']; ?>" required>
+                                        <input type="text" name="nama_ayah" class="form-control" value="<?php echo ah_e($d['nama_ayah']); ?>" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small fw-bold">Nama Ibu</label>
-                                        <input type="text" name="nama_ibu" class="form-control" value="<?php echo $d['nama_ibu']; ?>" required>
+                                        <input type="text" name="nama_ibu" class="form-control" value="<?php echo ah_e($d['nama_ibu']); ?>" required>
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label small fw-bold">No WhatsApp Wali (Password Login)</label>
-                                        <input type="number" name="no_hp_wali" class="form-control" value="<?php echo $d['no_hp_wali']; ?>" required>
+                                        <input type="number" name="no_hp_wali" class="form-control" value="<?php echo ah_e($d['no_hp_wali']); ?>" required>
                                         <small class="text-danger" style="font-size: 11px;"><i class="fas fa-exclamation-circle me-1"></i>Jika diubah, password untuk login ke portal ini akan ikut berubah menjadi nomor yang baru.</small>
                                     </div>
                                 </div>
@@ -361,6 +356,7 @@ if($status_psb == 'Diterima'){
                             </div>
 
                             <form action="proses_upload_berkas.php" method="POST" enctype="multipart/form-data">
+                                <?php echo Csrf::input(); ?>
                                 <div class="row g-4">
                                     
                                     <div class="col-md-6">
