@@ -134,21 +134,64 @@ final class KesehatanRepository
      *
      * @return array{rows:array<int, array<string, mixed>>, total:int}
      */
-    public function santriPilihan(string $q, int $limit = 100): array
+    public function santriPilihan(string $q, int $limit = 100, ?int $kelasId = null): array
     {
+        // Kelas = penempatan aktif tahun ajaran aktif (paling banyak satu per santri,
+        // dijaga indeks unik `plotting_kelas_one_active_unique`). $kelasId 0 = belum ditempatkan.
+        $from = "santri s
+                 LEFT JOIN plotting_kelas pk ON pk.id_santri = s.id AND pk.status = 'Aktif'
+                       AND pk.id_tahun = (SELECT ta.id FROM tahun_ajaran ta WHERE ta.status = 'Aktif' AND ta.archived_at IS NULL ORDER BY ta.id DESC LIMIT 1)
+                 LEFT JOIN kelas kl ON kl.id = pk.id_kelas";
         $where = 's.is_active = 1 AND s.archived_at IS NULL';
         $params = [];
         if ($q !== '') {
             $where .= ' AND (s.nama_santri LIKE ? OR s.nis LIKE ?)';
             $params = ['%' . $q . '%', '%' . $q . '%'];
         }
-        $total = (int) ($this->one('SELECT COUNT(*) AS n FROM santri s WHERE ' . $where, $params)['n'] ?? 0);
+        if ($kelasId !== null) {
+            $where .= $kelasId > 0 ? ' AND kl.id = ?' : ' AND kl.id IS NULL';
+            if ($kelasId > 0) {
+                $params[] = $kelasId;
+            }
+        }
+        $total = (int) ($this->one('SELECT COUNT(*) AS n FROM ' . $from . ' WHERE ' . $where, $params)['n'] ?? 0);
         $rows = $this->all(
-            'SELECT s.id, s.nis, s.nama_santri FROM santri s WHERE ' . $where . ' ORDER BY s.nama_santri, s.id LIMIT ?',
+            'SELECT s.id, s.nis, s.nama_santri, kl.id AS kelas_id, kl.nama_kelas FROM ' . $from . ' WHERE ' . $where
+                . ' ORDER BY kl.id IS NULL, kl.nama_kelas, kl.id, s.nama_santri, s.id LIMIT ?',
             [...$params, max(1, min(100, $limit))]
         );
 
         return ['rows' => $rows, 'total' => $total];
+    }
+
+    /**
+     * Kelas tahun ajaran aktif beserta jumlah santri aktif yang ditempatkan, dan
+     * jumlah santri aktif yang belum ditempatkan — kelompok pemilih santri.
+     *
+     * @return array{kelas:array<int, array{id:int, nama:string, jumlah:int}>, tanpa_kelas:int}
+     */
+    public function kelasPilihan(): array
+    {
+        $tahun = "(SELECT ta.id FROM tahun_ajaran ta WHERE ta.status = 'Aktif' AND ta.archived_at IS NULL ORDER BY ta.id DESC LIMIT 1)";
+        $kelas = $this->all(
+            "SELECT kl.id, kl.nama_kelas, COUNT(*) AS jumlah
+               FROM plotting_kelas pk
+               JOIN santri s ON s.id = pk.id_santri AND s.is_active = 1 AND s.archived_at IS NULL
+               JOIN kelas kl ON kl.id = pk.id_kelas
+              WHERE pk.status = 'Aktif' AND pk.id_tahun = {$tahun}
+              GROUP BY kl.id, kl.nama_kelas
+              ORDER BY kl.nama_kelas, kl.id"
+        );
+        $tanpa = (int) ($this->one(
+            "SELECT COUNT(*) AS n FROM santri s
+              WHERE s.is_active = 1 AND s.archived_at IS NULL
+                AND NOT EXISTS (SELECT 1 FROM plotting_kelas pk WHERE pk.id_santri = s.id AND pk.status = 'Aktif' AND pk.id_tahun = {$tahun})"
+        )['n'] ?? 0);
+
+        return [
+            'kelas' => array_map(static fn (array $k): array => ['id' => (int) $k['id'], 'nama' => (string) $k['nama_kelas'], 'jumlah' => (int) $k['jumlah']], $kelas),
+            'tanpa_kelas' => $tanpa,
+        ];
     }
 
     /**

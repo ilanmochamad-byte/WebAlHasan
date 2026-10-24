@@ -1,0 +1,94 @@
+
+=== A. Petugas mencatat dari aplikasi ===
+[lulus] Pemilih santri: membuka satu kelas hanya menampilkan santri kelas itu
+[lulus] Pemilih santri: santri tanpa kelas berada pada kelompok tersendiri
+[lulus] Formulir catat kunjungan: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Server menyimpan pada POST pertama (jawaban kemudian dibuang)
+[lulus] Ketukan ganda hanya mengirim satu POST (terhitung 1)
+[lulus] Kirim ulang dengan kunci sama → 200 replayed=true
+[lulus] Tepat satu kunjungan tersimpan (baris=1)
+[lulus] Detail kunjungan: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Paritas aplikasi–web: "KELUHAN demam" tampil di keduanya
+[lulus] Paritas aplikasi–web: "CATATAN suhu 38" tampil di keduanya
+[lulus] Paritas aplikasi–web: "TINDAKAN kompres" tampil di keduanya
+[lulus] Paritas aplikasi–web: "OBAT1" tampil di keduanya
+[lulus] Paritas aplikasi–web: "OBAT2" tampil di keduanya
+[lulus] Paritas aplikasi–web: "RUJUKAN Puskesmas" tampil di keduanya
+[lulus] Paritas aplikasi–web: "TL kontrol" tampil di keduanya
+[lulus] API: 2 obat, 1 rujukan, 1 tindak lanjut, Tercatat versi 1
+[lulus] Aplikasi menampilkan hitungan rincian yang sama
+[lulus] Audit pencatatan memakai kanal api (=api) tanpa isi klinis
+[lulus] audit_logs tanpa penanda isi klinis
+
+=== B. Koreksi, konflik versi, hasil rujukan ===
+[lulus] Koreksi tanpa alasan ditolak di aplikasi (versi tetap 1)
+[lulus] Koreksi beralasan dari aplikasi → versi 2
+[lulus] Koreksi tidak membatalkan obat yang tidak diubah
+[lulus] Petugas lain mengoreksi lebih dulu (versi 3)
+[lulus] Aplikasi mengirim versi 2 yang usang → 409
+[lulus] Konflik tidak menimpa versi baru
+[lulus] Muat versi terbaru menampilkan versi 3
+[lulus] Hasil rujukan dari aplikasi tersimpan (versi 4)
+[lulus] Riwayat versi web memuat alasan koreksi dari aplikasi
+[lulus] Riwayat versi aplikasi memuat alasan dan pelaku setiap versi
+
+=== C. Ringkasan untuk wali ===
+[lulus] Pratinjau tanpa catatan klinis
+[lulus] Terbitkan nonaktif sebelum konfirmasi
+[lulus] Ketukan ganda Terbitkan → satu POST (1)
+[lulus] Tepat satu peristiwa terbit
+[lulus] Satu InApp per wali berakun yang berhak (InApp=3, penerima=3)
+[lulus] Isi notifikasi generik (tanpa nama santri/isi ringkasan)
+
+=== D. Wali ===
+[lulus] Detail ringkasan wali: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Layar wali tanpa keluhan/catatan klinis/obat
+[lulus] Paritas wali aplikasi–web: "RINGKASAN Ananda sempat demam dan sudah ditangani."
+[lulus] Paritas wali aplikasi–web: "PENANGANAN istirahat"
+[lulus] Paritas wali aplikasi–web: "PERHATIAN kontrol pekan depan"
+[lulus] Label sama di aplikasi dan web (tanpa membedakan kapital CSS): Tanggal kunjungan klinik
+[lulus] Label sama di aplikasi dan web (tanpa membedakan kapital CSS): Penanganan di klinik
+[lulus] Label sama di aplikasi dan web (tanpa membedakan kapital CSS): Yang perlu diperhatikan orang tua
+[lulus] Wali lain membuka ringkasan anak lain → 403
+[lulus] Wali lain tidak melihat isi apa pun
+[lulus] Relasi dicabut → token lama 403 pada muat ulang
+[lulus] Isi lama dibersihkan dari layar sesudah 403
+[lulus] Sesudah ditarik, wali hanya melihat keterangan tanpa isi
+[lulus] Penarikan tidak membuat notifikasi baru
+
+=== E. Pembimbing dan murobi ===
+[lulus] Pembimbing terkait: detail hanya baca tanpa tombol mutasi/riwayat versi
+[lulus] Pembimbing mutasi lewat API → 403
+[lulus] sbx_v5_pembimbing_b (di luar cakupan) membuka detail → 403
+[lulus] sbx_v5_pembimbing_b: tanpa isi
+[lulus] sbx_v5_pembimbing_b: daftar tidak memuat kunjungan di luar cakupan
+[lulus] sbx_v5_murobi (di luar cakupan) membuka detail → 403
+[lulus] sbx_v5_murobi: tanpa isi
+[lulus] sbx_v5_murobi: daftar tidak memuat kunjungan di luar cakupan
+
+=== F. Admin ===
+[lulus] Admin tidak ditawari Catat kunjungan
+[lulus] Admin membaca riwayat akses yang memuat pembukaan dari aplikasi (kanal api)
+[lulus] Admin mutasi klinis lewat API → 403
+[lulus] sbx_v5_petugas belum dapat mencatat
+[lulus] Penugasan dari aplikasi → token petugas yang sudah masuk kini dapat mencatat
+[lulus] Aplikasi petugas baru menampilkan Catat kunjungan
+[lulus] Penugasan dinonaktifkan saat formulir terbuka → simpan 403
+[lulus] Tidak ada kunjungan tersimpan sesudah penugasan dicabut
+[lulus] Aplikasi menampilkan pesan akses ditolak
+[lulus] Petugas (bukan admin) mengubah penugasan lewat API → 403
+[lulus] Admin mengaktifkan kembali lewat API
+[lulus] Mutasi penugasan dari aplikasi tercatat di audit
+
+=== G. Sesi, penyimpanan, konsol ===
+[lulus] Token kedaluwarsa → kembali ke layar masuk tanpa isi
+[lulus] Masuk ulang → hak diperiksa server lagi dan rincian terbuka
+[lulus] Tanpa sesi: rute kesehatan meminta masuk, tanpa isi
+[lulus] Penyimpanan browser petugas tanpa isi kesehatan/nama santri
+[lulus] Penyimpanan browser wali tanpa isi kesehatan/nama santri
+[lulus] Penyimpanan browser admin tanpa isi kesehatan/nama santri
+[lulus] Penyimpanan browser pembimbing tanpa isi kesehatan/nama santri
+[lulus] Konsol aplikasi (101 baris) tanpa isi klinis, nama santri, token, atau kata sandi
+[lulus] Tidak ada permintaan ke host di luar 127.0.0.1 (nol)
+
+Hasil: 78 lulus, 0 gagal

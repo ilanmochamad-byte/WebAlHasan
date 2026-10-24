@@ -1,0 +1,6 @@
+[lulus] Android: ketukan ganda Simpan → tepat satu kunjungan (baris=1)
+[lulus] Android: detail kunjungan memuat obat dari server
+[lulus] Android: obat dan rujukan tersimpan pada kunjungan yang sama
+[lulus] Android: koreksi beralasan → versi 2
+[lulus] Android: ketukan ganda Terbitkan → satu peristiwa
+KID 2 RID 2 GAGAL 0

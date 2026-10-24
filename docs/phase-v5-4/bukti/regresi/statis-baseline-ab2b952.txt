@@ -1,0 +1,49 @@
+alumni_static exit=0
+get_mutasi_v1_static exit=0
+keamanan_psb_static exit=1
+  [gagal] S4 pratinjau (AG) tetap belum dipasang
+kredensial_static exit=0
+navigasi_ikon_static exit=0
+penempatan_static exit=0
+penugasan_static exit=1
+  [gagal] FS-2 seluruh tujuh jenis memakai role dasar guru atau pengurus
+  [gagal] FS-4 tujuh jenis penugasan masing-masing memakai tabel sendiri
+perapihan_static exit=0
+phase1_static exit=0
+phase2_static exit=0
+phase3_static exit=0
+phase4_static exit=0
+phase5_static exit=0
+redesain_web_tahap1_static exit=0
+redesain_web_tahap2_static exit=0
+redesain_web_tahap3_static exit=1
+  [gagal] S3-9 AG panel pendaftar tanpa pratinjau gambar berkas
+redesain_web_tahap4_static exit=1
+  [gagal] Tanpa perubahan skema/migrasi (database/ tidak berubah sejak Tahap 3)
+redesain_web_tahap5_static exit=0
+redesain_web_tahap6_static exit=0
+redesain_web_tahap7_static exit=1
+  [gagal] Tidak berubah: app/Penugasan/PenugasanJenis.php
+  [gagal] REST (api/), migrasi/rollback (database/), dan bin/ tidak berubah
+redesain_web_tahap8_static exit=1
+  [gagal] T8-F tidak berubah dari baseline: database
+  [gagal] T8-F tidak berubah dari baseline: api
+v2_phase1_static exit=0
+v2_phase2_static exit=0
+v2_phase3_static exit=0
+v2_phase4_static exit=1
+  [gagal] Deep link membuka layar detail izin
+v2_phase5_static exit=0
+v3_phase1_static exit=0
+v3_phase2_static exit=77
+v3_phase3_static exit=77
+v3_phase4_static exit=0
+v5_phase1_static exit=1
+  [gagal] Migrasi 024 berurutan setelah 023 (migrasi terakhir yang ada)
+  [gagal] Fase 1 tanpa jalur ubah/hapus kunjungan (koreksi berversi = Fase 2)
+  [gagal] Validasi: status Tercatat, waktu tidak di masa depan, kunci aman
+  [gagal] Tanpa tombol ubah/hapus pada daftar dan detail
+v5_phase2_static exit=1
+  [gagal] Migrasi 025 berurutan setelah 024 (migrasi terakhir yang ada)
+  [gagal] Respons tulis hanya {id, versi, replayed}; kunci dari header/badan
+v5_phase3_static exit=0

@@ -1,0 +1,11 @@
+[lulus] sbx_admin: native internal detail matches API fixture
+[lulus] Native admin: access history without clinical contents
+[lulus] sbx_v5_petugas_d: native internal detail matches API fixture
+[lulus] Android health window has native SECURE flag
+[lulus] Android recent-app card contains no clinical marker
+[lulus] sbx_v5_pembimbing: native internal detail matches API fixture
+[lulus] sbx_v5_pembimbing: native revocation removes detail on resume
+[lulus] sbx_v5_murobi: native internal detail matches API fixture
+[lulus] sbx_v5_murobi: native revocation removes detail on resume
+[lulus] Native wali: clinical URI denied without old data
+Hasil: 10 lulus, 0 gagal

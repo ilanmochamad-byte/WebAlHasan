@@ -1,0 +1,19 @@
+[lulus] Independent fixture: new visit created
+[lulus] Other staff commits v2 while app is in background
+[lulus] Unsaved draft retained only in memory
+[gagal] Retained draft sends its original version (actual 2)
+[gagal] Background concurrent edit returns conflict (actual 200)
+[gagal] No concurrent clinical values overwritten after resume
+[gagal] Referral outcome after background preserves optimistic conflict
+[gagal] Stale referral form changes neither result nor newer clinical state
+[lulus] Other staff publishes while local summary draft is retained
+[gagal] Retained summary does not silently adopt a concurrent publication revision
+[gagal] Retained withdrawal does not silently target a concurrent publication
+[gagal] Concurrent parent summary remains unchanged
+[lulus] sbx_v5_murobi: internal detail visible, no mutation controls
+[lulus] sbx_v5_murobi: revoked assignment removes retained screen data on resume
+[lulus] sbx_v5_murobi: existing API token denied after revocation
+[lulus] sbx_v5_pembimbing: internal detail visible, no mutation controls
+[lulus] sbx_v5_pembimbing: revoked assignment removes retained screen data on resume
+[lulus] sbx_v5_pembimbing: existing API token denied after revocation
+Hasil: 10 lulus, 8 gagal

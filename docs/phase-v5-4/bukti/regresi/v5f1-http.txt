@@ -1,0 +1,104 @@
+DB uji V5 Fase 1 siap: test_v5_f1_http_test
+[lulus] Fixture V5 Fase 1 tersedia dan belum ada kunjungan
+
+=== H-B. Admin menugaskan petugas kesehatan (Pusat Penugasan) ===
+[lulus] Formulir penugasan Petugas Kesehatan tampil dengan cakupan seluruh santri aktif
+[lulus] Sebelum ditugaskan, pengurus ditolak membuka formulir kunjungan (403)
+[lulus] Admin menyimpan penugasan lewat POST + CSRF
+[lulus] Daftar penugasan kesehatan memuat petugas, cakupan, dan hak
+[lulus] Non-admin tidak dapat membuat penugasan kesehatan (status 403)
+
+=== H-A. Hak setiap halaman (server) ===
+[lulus] /portal/kesehatan.php sbx_admin → 200
+[lulus] /portal/kesehatan.php sbx_v5_petugas → 200
+[lulus] /portal/kesehatan.php sbx_v5_admin_petugas → 200
+[lulus] /portal/kesehatan.php sbx_pengurus_biasa → 403
+[gagal] /portal/kesehatan.php sbx_pengurus_a → 403 (dapat 200)
+[lulus] /portal/kesehatan.php sbx_guru_biasa → 403
+[gagal] /portal/kesehatan.php sbx_murobi_c → 403 (dapat 200)
+[lulus] /portal/kesehatan.php sbx_ortu_a → 403
+[lulus] /portal/kesehatan_buat.php sbx_v5_petugas → 200
+[lulus] /portal/kesehatan_buat.php sbx_admin → 403
+[lulus] /portal/kesehatan_buat.php sbx_v5_admin_petugas → 403
+[lulus] /portal/kesehatan_buat.php sbx_pengurus_biasa → 403
+[lulus] /portal/kesehatan_buat.php sbx_guru_biasa → 403
+[lulus] /portal/kesehatan_buat.php sbx_ortu_a → 403
+[lulus] Tanpa sesi → dialihkan ke halaman masuk
+[lulus] Daftar petugas: no-store dan tombol Catat kunjungan
+[lulus] Daftar admin: tanpa tombol/tautan pencatatan, berlabel hanya baca
+[lulus] Menu Kesehatan hanya untuk admin dan petugas berpenugasan
+
+=== H-C. Pencatatan lewat formulir web ===
+[lulus] Formulir memuat kunci idempotensi, CSRF, santri aktif; santri nonaktif tidak ditawarkan
+[lulus] POST tanpa CSRF ditolak (419) tanpa baris
+[lulus] POST pertama → satu kunjungan, dialihkan ke detail
+[lulus] Klik ganda/POST ulang kunci sama → kunjungan yang sama, tetap satu
+[lulus] Detail dibaca ulang dengan isi yang sama; pesan bahwa kirim ulang tidak menggandakan
+[lulus] Detail petugas: tanpa riwayat akses, no-store
+[lulus] Kunci sama + isi berbeda → 409, formulir dirender ulang, tanpa baris baru
+[lulus] Validasi gagal → 422, kunci yang sama dipertahankan, tanpa baris
+[lulus] GET dengan parameter tidak memutasi
+[lulus] Daftar: satu baris kunjungan, tanpa isi klinis
+[lulus] Admin POST formulir kunjungan → 403 tanpa baris
+[lulus] Admin yang juga petugas POST formulir → 403 tanpa baris
+[lulus] sbx_pengurus_biasa POST formulir → 403 tanpa baris
+[lulus] sbx_guru_biasa POST formulir → 403 tanpa baris
+[lulus] sbx_ortu_a POST formulir → 403 tanpa baris
+
+=== H-D. API kesehatan ===
+[lulus] Token API petugas dan admin diperoleh
+[lulus] GET akses petugas: catat=true, no-store
+[lulus] GET akses admin: baca=true, catat=false
+[lulus] Tanpa token → 401
+[lulus] Pilihan santri API: hanya santri aktif
+[lulus] POST API → 201 {id}, respons tanpa isi klinis
+[lulus] Ulang POST kunci+isi sama → 200 kunjungan sama
+[lulus] Kunci di badan JSON setara dengan header
+[lulus] Kunci sama isi beda → 409 CONFLICT tanpa baris
+[lulus] Tanpa kunci idempotensi → 422
+[lulus] Badan kosong → 422
+[lulus] GET detail API petugas: isi sama, versi 1
+[lulus] GET daftar API: 2 kunjungan, tanpa isi klinis
+[lulus] API POST sbx_admin → 403 tanpa baris
+[lulus] API POST sbx_v5_admin_petugas → 403 tanpa baris
+[lulus] API POST sbx_pengurus_biasa → 403 tanpa baris
+[lulus] API GET daftar/detail sbx_pengurus_biasa → 403
+[lulus] API POST sbx_guru_biasa → 403 tanpa baris
+[lulus] API GET daftar/detail sbx_guru_biasa → 403
+[lulus] API POST sbx_murobi_c → 403 tanpa baris
+[gagal] API GET daftar/detail sbx_murobi_c → 403
+[lulus] API POST sbx_ortu_a → 403 tanpa baris
+[lulus] API GET daftar/detail sbx_ortu_a → 403
+[lulus] Detail tidak ada → 404
+[lulus] Endpoint kesehatan tak dikenal → 404
+
+=== H-E. Admin membaca detail dan audit akses ===
+[lulus] Admin web: detail + riwayat akses, tanpa tautan ubah
+[lulus] Admin API membaca detail (catat=false)
+[lulus] Riwayat akses API: pembukaan petugas & admin tercatat dengan kanal
+[lulus] Petugas tidak membaca riwayat akses lewat API (403)
+[lulus] Pembukaan web admin tercatat
+
+=== H-F. Penugasan dinonaktifkan saat sesi masih aktif ===
+[lulus] Petugas B membuka formulir saat penugasan aktif
+[lulus] Admin menonaktifkan penugasan lewat Pusat Penugasan
+[lulus] Formulir yang sudah terbuka dikirim setelah pencabutan → 403 tanpa baris
+[lulus] Token lama petugas B setelah pencabutan → 403 tanpa baris
+[lulus] Detail juga tertutup bagi sesi lama setelah pencabutan
+
+=== H-G. Akun dinonaktifkan saat sesi aktif ===
+[lulus] Petugas C membuka daftar sebelum akun dinonaktifkan
+[lulus] Sesi web akun nonaktif tidak lagi membuka daftar (status 302)
+[lulus] Token akun nonaktif ditolak (status 401) tanpa baris
+
+=== H-H. Log umum dan audit tanpa isi klinis ===
+[lulus] Log server tanpa galat/peringatan PHP
+[lulus] Log server memuat 0 isi klinis
+[lulus] audit_logs memuat 0 isi klinis
+[lulus] Setiap kunjungan tepat satu audit metadata
+[lulus] kesehatan_akses_log tidak punya kolom isi klinis
+
+Lulus: 79 · Gagal: 3
+  - /portal/kesehatan.php sbx_pengurus_a → 403 (dapat 200)
+  - /portal/kesehatan.php sbx_murobi_c → 403 (dapat 200)
+  - API GET daftar/detail sbx_murobi_c → 403

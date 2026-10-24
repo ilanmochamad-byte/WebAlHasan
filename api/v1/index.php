@@ -110,7 +110,8 @@ try {
         header('Cache-Control: private, no-store');
         $kesehatan = kesehatan_service();
         if ($method === 'GET' && $path === '/v5/kesehatan/akses') JsonResponse::success($kesehatan->akses($user));
-        if ($method === 'GET' && $path === '/v5/kesehatan/santri') JsonResponse::success($kesehatan->santriPilihan($user, $_GET['q'] ?? ''));
+        if ($method === 'GET' && $path === '/v5/kesehatan/santri') JsonResponse::success($kesehatan->santriPilihan($user, $_GET['q'] ?? '', $_GET['kelas_id'] ?? null));
+        if ($method === 'GET' && $path === '/v5/kesehatan/santri/kelas') JsonResponse::success($kesehatan->kelasPilihan($user));
         if ($method === 'GET' && $path === '/v5/kesehatan/kunjungan') JsonResponse::success($kesehatan->daftar($user, $_GET));
         if ($method === 'POST' && $path === '/v5/kesehatan/kunjungan') {
             $body = Request::json();
@@ -135,6 +136,15 @@ try {
             $body['idempotency_key'] ??= $_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? null;
             $hasil = $kesehatan->hasilRujukan($user, (int) $m[1], (int) $m[2], $body, \App\Kesehatan\KesehatanService::KANAL_API);
             JsonResponse::success(['id' => $hasil['id'], 'versi' => $hasil['versi'], 'replayed' => $hasil['replayed']], $hasil['status']);
+        }
+        // Fase 4: pengelolaan penugasan petugas kesehatan dari aplikasi (admin saja), lewat
+        // PenugasanService yang sama dengan Pusat Penugasan web; tanpa penghapusan.
+        if (str_starts_with($path, '/v5/kesehatan/penugasan')) {
+            $penugasanApi = kesehatan_penugasan_api();
+            if ($method === 'GET' && $path === '/v5/kesehatan/penugasan') JsonResponse::success($penugasanApi->daftar($user, $_GET));
+            if ($method === 'POST' && $path === '/v5/kesehatan/penugasan') JsonResponse::success($penugasanApi->buat($user, Request::json()), 201);
+            if ($method === 'POST' && preg_match('#^/v5/kesehatan/penugasan/(\d+)/(akhiri|nonaktifkan|aktifkan)$#', $path, $m)) JsonResponse::success($penugasanApi->ubahStatus($user, (int) $m[1], $m[2], Request::json()));
+            throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
         }
         // Fase 3: ringkasan wali. Petugas menyusun, mempratinjau, menerbitkan/mengganti, dan menarik;
         // pembaca internal sesuai haknya; wali hanya proyeksi khusus dengan relasi aktif diperiksa per permintaan.
@@ -486,6 +496,9 @@ try {
     throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
 } catch (\App\Kesehatan\KesehatanException $exception) {
     JsonResponse::error(match($exception->status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$exception->status);
+} catch (\App\Penugasan\PenugasanException $exception) {
+    $status = $exception->status();
+    JsonResponse::error(match($status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',default=>'VALIDATION_FAILED'},$exception->getMessage(),$status,$exception->errors());
 } catch (\App\V4\V4Exception $exception) {
     JsonResponse::error(match($exception->status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$exception->status);
 } catch (\App\V3\V3Exception $exception) {

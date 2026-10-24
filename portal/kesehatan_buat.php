@@ -90,8 +90,19 @@ if ($galat !== null) {
                 <span class="ah-visually-hidden" id="santri-filter-status" aria-live="polite"></span>
                 <select class="form-select" id="santri_id" name="santri_id" required>
                     <option value="">— Pilih santri (<?= (int) $pilihan['total'] ?>) —</option>
-                    <?php foreach ($pilihan['rows'] as $s): ?>
-                        <option value="<?= (int) $s['id'] ?>"<?= $s['id'] === $santriTerpilih ? ' selected' : '' ?>><?= ah_e($s['nama'] . ' · ' . $s['nis']) ?></option>
+                    <?php
+                    // Dikelompokkan per kelas penempatan aktif (urutan dari server: kelas, lalu belum ditempatkan).
+                    $kelompok = [];
+                    foreach ($pilihan['rows'] as $s) {
+                        $kelompok[$s['kelas']['nama'] ?? 'Belum ditempatkan di kelas'][] = $s;
+                    }
+                    ?>
+                    <?php foreach ($kelompok as $namaKelas => $anggota): ?>
+                        <optgroup label="<?= ah_e($namaKelas) ?>">
+                            <?php foreach ($anggota as $s): ?>
+                                <option value="<?= (int) $s['id'] ?>"<?= $s['id'] === $santriTerpilih ? ' selected' : '' ?>><?= ah_e($s['nama'] . ' · ' . $s['nis']) ?></option>
+                            <?php endforeach; ?>
+                        </optgroup>
                     <?php endforeach; ?>
                 </select>
             </div>

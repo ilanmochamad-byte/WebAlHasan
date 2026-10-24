@@ -1,0 +1,17 @@
+Lanjutan putaran yang sama: tests/android/v5_fase4_b.py V5F4ANDF (logcat dibersihkan sebelum putaran A).
+Catatan putaran sebelumnya: pemeriksaan logcat pertama gagal karena satu baris AccessibilityNodeInfoDumper — log alat uji uiautomator yang membaca layar, bukan log aplikasi; skrip kini mengecualikan tag itu dan melaporkan baris ReactNativeJS secara terpisah.
+
+[lulus] Petugas masih pada layar ringkasan sebelum uji sesi
+[lulus] Token kedaluwarsa → kembali ke depan menampilkan layar masuk tanpa isi kesehatan
+[lulus] Tautan ringkasan tanpa sesi → tetap layar masuk, tanpa isi
+[lulus] Sesudah masuk sebagai wali berhak, ringkasan dari tautan terbuka (server memeriksa relasi)
+[lulus] Layar wali tanpa keluhan/catatan klinis/obat
+[lulus] Tautan dari latar tidak menumpuk dua layar ringkasan yang sama (Kembali keluar dari ringkasan)
+[lulus] Tautan saat aplikasi di depan membuka ringkasan
+[lulus] Relasi dicabut → ringkasan ditolak sesudah kembali dari latar, isi lama hilang
+[lulus] Wali lain membawa tautan yang sama → ditolak tanpa isi
+[lulus] Data aplikasi di perangkat (63 berkas) tanpa isi kesehatan/nama santri: []
+[lulus] Baris log JS aplikasi (ReactNativeJS): 0
+[lulus] logcat (22611 baris) tanpa isi kesehatan, nama santri, kata sandi
+[lulus] logcat tanpa token bearer/token push
+GAGAL 0

@@ -1,0 +1,13 @@
+[lulus] Legacy capabilities envelope and list remain compatible
+[lulus] Legacy capabilities private response is no-store
+[lulus] Legacy parent report listing remains an array with data
+[lulus] Legacy report detail shape remains compatible
+[lulus] Legacy parent receives published snapshot
+[lulus] V4 audit correction preserved: display average without internal decimal
+[lulus] V4 parent projection still excludes signature image/assets
+[lulus] Legacy authenticated PDF endpoint returns PDF bytes
+[lulus] Legacy private PDF remains no-store
+[lulus] Legacy PDF bytes match the canonical stored SHA-256
+[lulus] V4 detail still denies an unrelated parent
+[lulus] V4 PDF still denies an unrelated parent
+Hasil: 12 lulus, 0 gagal
