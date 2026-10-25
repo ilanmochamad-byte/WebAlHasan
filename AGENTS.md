@@ -5,7 +5,7 @@ Repositori ini berisi dua proyek utama:
 1. **WebAlHasan** (Aplikasi Web)
 2. **alhasanApps** (Aplikasi Mobile)
 
-Proyek ini dikembangkan menggunakan kolaborasi bergantian (alternating collaboration) antara Human Developer dan dua AI Assistant (Claude & Codex/AI lain). Karena AI tidak membagikan riwayat percakapan satu sama lain, file `AGENTS.md`, `PRD.md`, `PRD-V2.md`, `PRD-V3.md`, dokumen status fase, dan riwayat commit Git bertindak sebagai **satu-satunya sumber kebenaran (Source of Truth)**.
+Proyek ini dikembangkan menggunakan kolaborasi bergantian (alternating collaboration) antara Human Developer dan dua AI Assistant (Claude & Codex/AI lain). Karena AI tidak membagikan riwayat percakapan satu sama lain, file `AGENTS.md`, PRD aktif (`PRD.md` atau `PRD-V2.md` sampai `PRD-V6.md`), dokumen status fase, dan riwayat commit Git bertindak sebagai **satu-satunya sumber kebenaran (Source of Truth)**.
 
 ---
 
@@ -32,9 +32,12 @@ Pembagian peran ditetapkan per workstream agar implementator dan auditor tidak t
 | Redesain tampilan website Tahap 1–8 (rencana dan penetapan peran 22 Oktober 2026; branch dokumen `claude/rencana-redesain-web`, `docs/redesain-web/`) | Claude | Codex |
 | Perbaikan keamanan PSB, prasyarat redesain website Tahap 8 (penetapan Human Developer 24 Oktober 2026; branch `claude/perbaikan-keamanan-psb`, `docs/keamanan-psb/`) | Claude | Codex |
 | PRD V5 Fase 1–5 — kesehatan santri (keputusan Human Developer 24 Oktober 2026) | Claude Code | Codex |
-| PRD V6–V8 (penomoran baru 24 Oktober 2026) | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
+| PRD V6 Fase 1–5 — keuangan santri/BSA (keputusan Human Developer 25 Oktober 2026) | Claude Code | Codex |
+| PRD V7–V8 (penomoran baru 24 Oktober 2026) | Belum ditetapkan; menunggu keputusan Human Developer | Belum ditetapkan; menunggu keputusan Human Developer |
 
-**Keputusan Human Developer 24 Oktober 2026:** urutan resmi baru adalah V5 kesehatan santri, V6 keuangan santri (tagihan bulanan, tabungan, pengeluaran), V7 pengajuan izin orang tua melalui pembimbing kepada murobi, dan V8 pengembangan PSB/pembiayaannya. Ini menggantikan rujukan rencana masa depan lama yang menyebut V5 sebagai tagihan bulanan dan V6 sebagai PSB; riwayat commit/dokumen dan nama capability lama tidak diubah hanya karena penomoran. `PRD-V5.md` memuat rancangan kesehatan dan seluruh asumsi awalnya telah disetujui Human Developer. **Claude Code ditetapkan sebagai implementator dan Codex sebagai auditor untuk Fase 1–5 V5**, bergantian, satu fase per giliran. Peran V6–V8 belum ditetapkan. Ketersediaan PRD maupun prompt seluruh fase bukan izin memulai semua fase sekaligus.
+**Keputusan Human Developer 24 Oktober 2026:** urutan resmi baru adalah V5 kesehatan santri, V6 keuangan santri (tagihan bulanan, tabungan, pengeluaran), V7 pengajuan izin orang tua melalui pembimbing kepada murobi, dan V8 pengembangan PSB/pembiayaannya. Ini menggantikan rujukan rencana masa depan lama yang menyebut V5 sebagai tagihan bulanan dan V6 sebagai PSB; riwayat commit/dokumen dan nama capability lama tidak diubah hanya karena penomoran. `PRD-V5.md` memuat rancangan kesehatan dan seluruh asumsi awalnya telah disetujui Human Developer. **Claude Code ditetapkan sebagai implementator dan Codex sebagai auditor untuk Fase 1–5 V5**, bergantian, satu fase per giliran. Peran V7–V8 belum ditetapkan. Ketersediaan PRD maupun prompt seluruh fase bukan izin memulai semua fase sekaligus.
+
+**Keputusan Human Developer 25 Oktober 2026 — PRD V6:** seluruh asumsi rancangan keuangan santri/BSA dalam `PRD-V6.md` disetujui. **Claude Code adalah implementator dan Codex auditor Fase 1–5 V6**, bergantian, satu fase per giliran. BSA menggunakan satu penugasan untuk tagihan bulanan, tabungan, dan penarikan/belanja; tagihan serta tabungan hanya dirilis bersama. Prompt siap salin untuk setiap giliran ada di `docs/prd-v6/prompts-implementasi-audit.md`. Keberadaan prompt bukan perintah memulai Fase 1–5 sekaligus. Branch spesifikasi `codex/prd-v6-spesifikasi` hanya memuat dokumen; belum ada implementasi, migrasi, merge, atau deploy V6.
 
 Ketentuan:
 
@@ -48,7 +51,7 @@ Ketentuan:
 
 Jika Anda adalah agen AI yang baru saja diaktifkan, Anda **WAJIB** mengikuti alur kerja ini:
 
-1.  **Baca Konteks:** Cek `git status`, `git log -n 5`, `AGENTS.md`, PRD aktif (`PRD.md`, `PRD-V2.md`, atau `PRD-V3.md` sesuai workstream), dokumen status fase, dan commit handoff. Pastikan Anda berada di branch fitur yang benar, bukan di `main`.
+1.  **Baca Konteks:** Cek `git status`, `git log -n 5`, `AGENTS.md`, PRD aktif (`PRD.md` atau `PRD-V2.md` sampai `PRD-V6.md` sesuai workstream), dokumen status fase, dan commit handoff. Pastikan Anda berada di branch fitur yang benar, bukan di `main`.
 2.  **Kerjakan Satu Fase:** Fokus hanya pada fase yang diinstruksikan oleh Human Developer. Jangan melompat ke fase berikutnya.
 3.  **Eksekusi sesuai Peran:** Tentukan lebih dahulu workstream pada tabel pembagian peran. Implementator mengerjakan fase dan menyerahkannya; auditor memeriksa secara independen terhadap PRD aktif. Jangan mengambil peran berdasarkan nama AI saja.
 4.  **Handoff (Serah Terima):** Setelah satu fase lolos audit, agen AI harus memberi tahu Human Developer bahwa tugas selesai, agar pekerjaan dapat dilanjutkan ke fase berikutnya.
@@ -70,6 +73,12 @@ Human Developer akan menggunakan format berikut untuk memicu pergantian agen AI.
 
 **Audit PRD V4 oleh Claude Code:**
 > *"Audit implementasi Fase [X] PRD V4 yang dibuat Codex pada branch [nama-branch]. Baca AGENTS.md dan PRD-V4.md, periksa seluruh commit fase, jalankan pengujian secara independen, dan lakukan koreksi terarah jika diperlukan. Commit dan push hasil audit, lalu berhenti. Jangan melanjutkan ke Fase [Y] sebelum seluruh kriteria penerimaan Fase [X] terpenuhi."*
+
+**Implementasi PRD V6 oleh Claude Code:**
+> *"Implementasikan hanya Fase [X] PRD V6 pada branch claude/prd-v6-fase-[X]. Baca AGENTS.md, PRD-V6.md, dokumen audit fase sebelumnya, dan prompt terinci di docs/prd-v6/prompts-implementasi-audit.md. Verifikasi baseline kedua repositori yang relevan, jalankan pengujian, catat bukti dan batasnya, commit serta push branch fitur, lalu berhenti untuk audit Codex. Jangan melanjutkan ke fase berikutnya, merge, atau deploy."*
+
+**Audit PRD V6 oleh Codex:**
+> *"Audit hanya Fase [X] PRD V6 buatan Claude Code pada branch claude/prd-v6-fase-[X]. Baca AGENTS.md, PRD-V6.md, prompt terinci, baseline, dan seluruh commit fase. Uji independen, koreksi terarah jika diperlukan, catat temuan dan bukti secara jujur, commit serta push hasil audit, lalu berhenti. Jangan memulai fase berikutnya, merge, atau deploy."*
 
 **Implementasi Redesain Website oleh Claude:**
 > *"Implementasikan hanya Tahap [N] redesain tampilan website pada branch claude/redesain-web-tahap-[N]. Baca AGENTS.md, docs/redesain-web/rencana.md, keputusan.md, cetak-biru.html, dan hasil audit tahap sebelumnya. Jalankan pengujian yang relevan, buat commit, push branch, lalu berhenti untuk audit Codex. Jangan melanjutkan ke Tahap [N+1]."*
