@@ -144,7 +144,10 @@ Tidak ada migrasi baru; langkah Fase 1–3 tetap. Pemberitahuan memakai tabel `n
 | Baseline web (commit audit Fase 3) | `1f2dbca574805954566305789e589540e27348f0` |
 | `origin/main` web saat mulai | `4502233` (memuat baseline; diff kosong) |
 | Baseline mobile (`origin/main`) | `f8ebba0a43493efde50a7a207933e86dc4b941d4` |
-| Commit implementasi web / mobile | lihat commit `docs(v6): hash …` berikutnya di branch web |
+| Commit implementasi web | `9754be56d1d361a3830de5eeac06cb5b787285ac` (`feat(v6): Fase 4 paritas aplikasi, pemberitahuan wali, dan privasi wali`) |
+| Commit implementasi mobile | `950ca355106600c791c34d977be94debf0174fbc` (`feat(v6): Fase 4 paritas aplikasi keuangan santri/BSA`) |
+| Commit dokumen hash ini | commit berikutnya di branch web yang sama (`docs(v6): hash …`) |
+| Migrasi | tidak ada; SHA-256 027–029 tidak berubah dari Fase 3 |
 
 ## Handoff ke auditor
 
