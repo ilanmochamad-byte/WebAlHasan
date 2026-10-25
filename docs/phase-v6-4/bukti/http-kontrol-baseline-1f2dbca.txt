@@ -1,0 +1,80 @@
+[lulus] Fixture V6 Fase 1–4 tersedia (wali dua anak); ledger, tagihan, dan antrean V6 kosong
+[lulus] Login API sembilan akun uji berhasil (token terpisah per akun)
+[lulus] sbx_v6_bsa_b: akses {"baca":true,"kelola":true,"sumber":"petugas"}
+[lulus] sbx_v6_bsa_tsanawi: akses {"baca":true,"kelola":true,"sumber":"petugas"}
+[lulus] sbx_admin: akses {"baca":true,"kelola":false,"sumber":"admin"}
+[lulus] sbx_v6_admin_bsa: akses {"baca":true,"kelola":false,"sumber":"admin_petugas"}
+[lulus] sbx_v6_wali_smp: akses {"baca":true,"kelola":false,"sumber":"wali"}
+[lulus] sbx_v6_wali_dua: akses {"baca":true,"kelola":false,"sumber":"wali"}
+[lulus] sbx_ortu_a: akses {"baca":true,"kelola":false,"sumber":"wali"}
+[lulus] sbx_pengurus_biasa: akses {"baca":false,"kelola":false,"sumber":null}
+[lulus] Wali dua anak: daftar memuat tepat dua anaknya
+[lulus] Dua wali dari santri berbeda: masing-masing hanya anaknya
+[lulus] Wali tanpa relasi santri V6: daftar tanpa santri V6; pengurus tanpa penugasan → 403
+[lulus] sbx_v6_wali_smp membaca santri 1711 → 404
+[lulus] sbx_v6_wali_tsanawi membaca santri 1710 → 404
+[lulus] sbx_v6_wali_dua membaca santri 1712 → 404
+[lulus] sbx_v6_bsa_tsanawi membaca santri 1710 → 404
+[lulus] sbx_ortu_a membaca santri 1710 → 404
+[lulus] sbx_pengurus_biasa membaca santri 1710 → 403
+[lulus] sbx_v6_bsa_tsanawi membaca santri 1711 → 200
+[lulus] sbx_admin membaca santri 1712 → 200
+[lulus] sbx_v6_wali_dua membaca santri 1711 → 200
+[lulus] Token rusak/kedaluwarsa → 401 (aplikasi meminta masuk ulang)
+[lulus] Setoran aplikasi + retry jaringan (kunci sama) → satu kredit; isi berbeda kunci sama → 409
+[lulus] Empat ketukan belanja serentak kunci sama (4 pekerja) → satu belanja, saldo Rp70.000 [200,200,200,201]
+[lulus] Transaksi aplikasi tampil sekali dengan angka identik di website petugas dan wali (saldo Rp70.000, kuitansi satu kali)
+[lulus] Tagihan aplikasi + retry → satu tagihan
+[lulus] Bayar dari tabungan diketuk tiga kali serentak → satu debit + satu pembayaran, saldo Rp20.000, sisa Rp50.000 [200,200,201]
+[lulus] Pembayaran dari tabungan sama di API wali dan web petugas (sisa Rp50.000, kuitansi sekali, rujukan debit)
+[lulus] Pembayaran tunai aplikasi + retry → satu kuitansi; melebihi sisa → 422 tanpa mutasi
+[lulus] Penerbitan massal aplikasi: pratinjau → 41 tagihan; retry kunci sama → replay; ulang periode → 422 tanpa tagihan kedua
+[lulus] Dua petugas mengubah versi yang sama: kedua → 409 berpesan "muat ulang", tanpa menimpa
+[lulus] Nominal pecahan dan transfer tanpa referensi → 422 tanpa mutasi
+[lulus] sbx_admin: setoran lewat API → 403 tanpa mutasi
+[lulus] sbx_v6_admin_bsa: setoran lewat API → 403 tanpa mutasi
+[lulus] sbx_v6_wali_dua: setoran lewat API → 403 tanpa mutasi
+[lulus] Petugas seluruh unit menyetor Tsanawi (201); petugas Tsanawi atas santri SMP → 404
+[gagal] Setoran sah → tepat satu InApp untuk tiap wali aktif santri (wali SMP + wali dua anak); retry tidak mengantre ulang
+[gagal] Tagihan terbit, bayar dari tabungan (satu pemberitahuan pembayaran, bukan dua), dan pembayaran tunai → masing-masing satu per wali
+[lulus] Wali santri lain tidak menerima pemberitahuan anak yang bukan relasinya; tagihan massal Tsanawi hanya ke wali Tsanawi
+[lulus] Transfer menunggu (setoran dan pembayaran) → tanpa pemberitahuan
+[lulus] Setoran transfer ditolak → tanpa pemberitahuan (antrean tidak terlihat wali)
+[gagal] Wali: total daftar pembayaran = baris tanpa transfer menunggu; tunggakan wali tanpa jumlah menunggu (petugas tetap melihat Rp5.000)
+[lulus] Halaman tunggakan web wali tanpa nominal transfer menunggu dan referensi
+[gagal] Verifikasi setoran dan pembayaran transfer → satu pemberitahuan per wali, saat sah
+[gagal] Pembatalan pembayaran dari tabungan → satu pemberitahuan pembaruan pembayaran (pengembalian tidak diberitahukan terpisah)
+[lulus] Koreksi setoran awal: 201 bila saldo cukup, 422 bila dana sudah dipakai (422)
+[lulus] Koreksi pembalik sah → pemberitahuan transaksi tabungan
+[gagal] Seluruh 0 baris pemberitahuan V6: teks generik tanpa angka/nama/kuitansi/referensi; data hanya {tipe, id}
+[gagal] API /notifikasi wali: tautan bsa_tagihan/bsa_pembayaran/bsa_tabungan dengan penunjuk id, tanpa nama santri
+[gagal] Penunjuk notifikasi dibuka pemilik → 200; dibuka wali anak lain (ID ditebak) → 404
+[gagal] Pusat notifikasi web: kategori Keuangan menampilkan pemberitahuan V6
+[gagal] Detail notifikasi web menaut ke halaman tagihan (halaman tujuan memeriksa ulang hak)
+[gagal] Sakelar Push menyala: baris Push hanya untuk wali berperangkat (wali dua anak); InApp tetap untuk kedua wali
+[gagal] Worker Push mengirim teks generik + penunjuk {tipe, transaksi_id} saja
+[gagal] Pembayaran dibatalkan sebelum worker: Push "pembayaran tercatat" ditolak (AKSES_BERUBAH), Push "pembaruan" terkirim []
+[gagal] Relasi dicabut sesudah antre: worker tidak mengirim Push anak itu (AKSES_BERUBAH)
+[lulus] Token/sesi wali lama sesudah satu relasi dicabut: anak itu 404 di API dan web, anak lain tetap terbaca
+[gagal] Sesudah pencabutan, transaksi baru anak itu tidak diberitahukan ke wali tercabut; wali aktif tetap menerima
+[lulus] Penugasan petugas dinonaktifkan: token/sesi lama → akses kosong, mutasi 403, baca 403 di API dan web
+[lulus] Log server: nol galat PHP, nol referensi transfer, nol token API/Push
+[lulus] Audit 62 baris bsa.* tanpa nominal, saldo, atau referensi
+[lulus] Antrean notifikasi V6 tanpa referensi transfer
+
+Ringkasan: 48 lulus, 15 gagal
+ - Setoran sah → tepat satu InApp untuk tiap wali aktif santri (wali SMP + wali dua anak); retry tidak mengantre ulang
+ - Tagihan terbit, bayar dari tabungan (satu pemberitahuan pembayaran, bukan dua), dan pembayaran tunai → masing-masing satu per wali
+ - Wali: total daftar pembayaran = baris tanpa transfer menunggu; tunggakan wali tanpa jumlah menunggu (petugas tetap melihat Rp5.000)
+ - Verifikasi setoran dan pembayaran transfer → satu pemberitahuan per wali, saat sah
+ - Pembatalan pembayaran dari tabungan → satu pemberitahuan pembaruan pembayaran (pengembalian tidak diberitahukan terpisah)
+ - Seluruh 0 baris pemberitahuan V6: teks generik tanpa angka/nama/kuitansi/referensi; data hanya {tipe, id}
+ - API /notifikasi wali: tautan bsa_tagihan/bsa_pembayaran/bsa_tabungan dengan penunjuk id, tanpa nama santri
+ - Penunjuk notifikasi dibuka pemilik → 200; dibuka wali anak lain (ID ditebak) → 404
+ - Pusat notifikasi web: kategori Keuangan menampilkan pemberitahuan V6
+ - Detail notifikasi web menaut ke halaman tagihan (halaman tujuan memeriksa ulang hak)
+ - Sakelar Push menyala: baris Push hanya untuk wali berperangkat (wali dua anak); InApp tetap untuk kedua wali
+ - Worker Push mengirim teks generik + penunjuk {tipe, transaksi_id} saja
+ - Pembayaran dibatalkan sebelum worker: Push "pembayaran tercatat" ditolak (AKSES_BERUBAH), Push "pembaruan" terkirim []
+ - Relasi dicabut sesudah antre: worker tidak mengirim Push anak itu (AKSES_BERUBAH)
+ - Sesudah pencabutan, transaksi baru anak itu tidak diberitahukan ke wali tercabut; wali aktif tetap menerima

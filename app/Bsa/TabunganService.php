@@ -244,6 +244,10 @@ final class TabunganService
                 'setoran_transfer_id' => $id, 'transaksi_id' => $transaksiId, 'santri_id' => $santriId, 'jenis' => 'Setoran', 'metode' => 'Transfer',
                 'status' => $sahkan ? 'Sah' : 'Ditolak', 'penugasan_id' => $tugas['id'], 'sumber' => BsaService::SUMBER_PETUGAS, 'kanal' => $this->bsa->kanal($kanal),
             ], $userId);
+            // Antrean menunggu/ditolak tidak terlihat orang tua; hanya baris ledger sah diberitahukan.
+            if ($transaksiId !== null) {
+                $this->bsa->beritahuWali($santriId, BsaNotifikasi::EVENT_TABUNGAN, $transaksiId);
+            }
 
             return $this->hasilSetoranTransfer($id, 200, false);
         });
@@ -323,6 +327,7 @@ final class TabunganService
                 'transaksi_id' => $id, 'pembalik_dari_id' => $transaksiId, 'santri_id' => $santriId, 'jenis' => 'Pembalik', 'metode' => (string) $x['metode'],
                 'status' => 'Sah', 'penugasan_id' => $tugas['id'], 'sumber' => BsaService::SUMBER_PETUGAS, 'kanal' => $this->bsa->kanal($kanal),
             ], $userId);
+            $this->bsa->beritahuWali($santriId, BsaNotifikasi::EVENT_TABUNGAN, $id);
 
             return ['id' => $id, 'status' => 201, 'replayed' => false, 'pembalik_dari_id' => $transaksiId, 'saldo_sesudah' => $saldoBaru, 'saldo' => $saldoBaru,
                 'nomor_kuitansi' => $this->nomor($id)];

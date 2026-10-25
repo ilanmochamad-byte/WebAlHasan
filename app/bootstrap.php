@@ -675,8 +675,15 @@ function bsa_service(): \App\Bsa\BsaService
     return new \App\Bsa\BsaService(
         new \App\Bsa\BsaRepository(app_db()),
         capabilities(),
-        audit_logger()
+        audit_logger(),
+        bsa_notifikasi()
     );
+}
+
+/** Pemberitahuan umum V6 Fase 4 kepada wali (outbox V2 di dalam transaksi mutasi). */
+function bsa_notifikasi(): \App\Bsa\BsaNotifikasi
+{
+    return new \App\Bsa\BsaNotifikasi(app_db(), notification_repository(), notification_settings_repository(), push_device_repository());
 }
 
 /** Tagihan bulanan lengkap (PRD V6 Fase 2): memakai penjaga hak `BsaService` yang sama. */
@@ -686,7 +693,7 @@ function tagihan_service(): \App\Bsa\TagihanService
     $tagihan = new \App\Bsa\TagihanRepository(app_db(), $repo);
 
     return new \App\Bsa\TagihanService(
-        new \App\Bsa\BsaService($repo, capabilities(), audit_logger()),
+        new \App\Bsa\BsaService($repo, capabilities(), audit_logger(), bsa_notifikasi()),
         $repo,
         $tagihan,
         new \App\Bsa\TabunganRepository(app_db(), $repo, $tagihan)
@@ -699,7 +706,7 @@ function tabungan_service(): \App\Bsa\TabunganService
     $repo = new \App\Bsa\BsaRepository(app_db());
 
     return new \App\Bsa\TabunganService(
-        new \App\Bsa\BsaService($repo, capabilities(), audit_logger()),
+        new \App\Bsa\BsaService($repo, capabilities(), audit_logger(), bsa_notifikasi()),
         $repo,
         new \App\Bsa\TabunganRepository(app_db(), $repo, new \App\Bsa\TagihanRepository(app_db(), $repo))
     );

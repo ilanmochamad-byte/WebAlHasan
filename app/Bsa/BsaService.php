@@ -67,8 +67,19 @@ final class BsaService
     public function __construct(
         private BsaRepository $repo,
         private Capabilities $capabilities,
-        private AuditLogger $audit
+        private AuditLogger $audit,
+        private ?BsaNotifikasi $notifikasi = null
     ) {
+    }
+
+    /**
+     * Fase 4: pemberitahuan umum kepada wali aktif santri, di dalam transaksi
+     * mutasi pemanggil (lihat `BsaNotifikasi`). Tanpa notifier (konstruksi
+     * lama) tidak mengantre apa pun.
+     */
+    public function beritahuWali(int $santriId, string $event, int $id): void
+    {
+        $this->notifikasi?->antrekan($santriId, $event, $id);
     }
 
     /**
@@ -296,6 +307,7 @@ final class BsaService
                 'tagihan_id' => $id, 'santri_id' => $data['santri_id'], 'periode' => $data['periode'], 'status' => 'Terbit', 'versi' => 1,
                 'jumlah_komponen' => count($data['komponen']), 'penugasan_id' => $tugas['id'], 'sumber' => self::SUMBER_PETUGAS, 'kanal' => $this->kanal($kanal),
             ], $userId);
+            $this->beritahuWali($data['santri_id'], BsaNotifikasi::EVENT_TAGIHAN, $id);
 
             return ['id' => $id, 'status' => 201, 'replayed' => false];
         });
@@ -367,6 +379,7 @@ final class BsaService
                 'transaksi_id' => $id, 'santri_id' => $santriId, 'jenis' => $data['jenis'], 'metode' => $data['metode'], 'status' => 'Sah',
                 'penugasan_id' => $tugas['id'], 'sumber' => self::SUMBER_PETUGAS, 'kanal' => $this->kanal($kanal),
             ], $userId);
+            $this->beritahuWali($santriId, BsaNotifikasi::EVENT_TABUNGAN, $id);
 
             return ['id' => $id, 'status' => 201, 'replayed' => false, 'saldo_sesudah' => $saldoBaru];
         });

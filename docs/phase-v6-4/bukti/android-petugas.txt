@@ -1,0 +1,52 @@
+Perangkat: Android emulator sdk_gphone16k_arm64 Android 16; dev client Debug APK 2026-10-24 19:47:01; Metro dari salinan tanpa .env.local
+ok
+ok
+ok
+ada
+ok
+ada
+ok
+ok
+ok
+tidak ditemukan: Buka keuangan SBX V6 Santri SMP
+tidak
+tidak ditemukan: Setoran
+tidak
+tidak ditemukan: Nominal (rupiah)
+ketukan ganda Catat setoran:
+tidak ditemukan: Catat setoran
+tidak
+ledger santri: 0 saldo: 
+POST setoran di log server: 0
+--- A1 setoran petugas (ketukan ganda)
+ok
+ada
+ok
+ada
+ok
+ok
+pesan: ada
+ledger santri: 1 saldo: 100000
+POST setoran di log server: 0
+Setoran Rp100.000 tercatat sah. Saldo kini Rp100.000
+klaim idempotensi setoran petugas: 1
+--- A2 belanja
+pesan: ada
+saldo: 70000 belanja: 1
+--- A3 setoran transfer menunggu lalu verifikasi
+pesan: ada
+menunggu: 1
+ada
+ada
+pesan: ada
+saldo: 90000 ledger transfer: 1 klaim verifikasi: 1
+--- A4 tautan skema alhasanapps://keuangan/tagihan/1 (sesi aktif) lalu bayar dari tabungan
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+rincian tagihan: ada
+ada
+tanpa centang: tidak pembayaran=0
+kuitansi: tidak
+pembayaran tabungan: 0 debit: 0 saldo: 90000 terbayar: 0
+tanpa centang: ada pembayaran=0
+kuitansi: ada
+pembayaran tabungan: 1 debit: 1 saldo: 40000 terbayar: 50000

@@ -1,0 +1,44 @@
+--- B1 wali dua anak
+ok
+ok
+SBX V6 Santri Tsanawi SBX V6 Santri Tsanawi NIS V6S0002 · SBX Kelas 1 Saldo tabungan Sisa tagihan (0) Rp0 Rp0 Riwayat pembayaran tagihan Riwa
+kartu anak: Buka keuangan SBX V6 Santri SMP;Buka keuangan SBX V6 Santri Tsanawi;
+rincian SMP memuat referensi transfer? 0 · antrean menunggu tampil? 0 · Tsanawi tampil? 0
+saldo SMP di layar = Rp40.000? 1
+--- B2 notifikasi InApp → Buka tagihan
+InApp V6 untuk wali dua: 5
+tagihan dari notifikasi: ada
+tombol petugas tampil? 0 · riwayat internal? 0
+--- B3 relasi Tsanawi dicabut saat layar anak terbuka
+rincian Tsanawi: ada
+ditolak: ada
+nama anak masih tampil? 0
+--- B4 latar → depan memeriksa ulang (relasi dipulihkan)
+Riwayat tabungan
+--- B5 cuplikan pengalih aplikasi (Recents)
+/private/tmp/v6f4/and-recents.png
+--- B6 berkas data aplikasi dan logcat
+berkas data aplikasi:       39
+  'REF-ANDROID-RAHASIA' di data aplikasi: 0
+  'SBX V6 Santri' di data aplikasi: 0
+  'BSA-TB-' di data aplikasi: 0
+  'BSA-KW-' di data aplikasi: 0
+  'Sandbox#123' di data aplikasi: 0
+  (token API disimpan hashed di server: 337 baris; token klien di SecureStore terenkripsi)
+logcat proses aplikasi:      702 baris
+  'REF-ANDROID-RAHASIA' di logcat: 0
+  'SBX V6 Santri' di logcat: 0
+  'Bearer' di logcat: 0
+  'Rp' di logcat: 0
+  'BSA-TB-' di logcat: 0
+--- B7 perlindungan native navigator keuangan (sesudah koreksi)
+pintu keuangan: ada
+flag jendela: SECURE
+/sdcard/sec.png: 1 file pulled, 0 skipped. 12.9 MB/s (15580 bytes in 0.001s)
+flag SECURE sesudah keluar dari navigator keuangan (jumlah): 1
+Tools Senin, 26 Oktober 2026 Notifikasi, 4 belum dibaca 4 As
+0
+At a glance Mon, Oct 26 Mon, Oct 26 Play Store Play Store Gm
+0
+At a glance Mon, Oct 26 Mon, Oct 26 Play Store Play Store Gm
+0

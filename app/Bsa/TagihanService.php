@@ -408,6 +408,7 @@ final class TagihanService
                         'tagihan_id' => $tagihanId, 'santri_id' => $r['santri_id'], 'periode' => $data['periode'], 'status' => 'Terbit', 'versi' => 1,
                         'tarif_id' => $r['tarif_id'], 'penerbitan_id' => $idBatch, 'penugasan_id' => $tugas['id'], 'sumber' => BsaService::SUMBER_PETUGAS, 'kanal' => $this->bsa->kanal($kanal),
                     ], $userId);
+                    $this->bsa->beritahuWali($r['santri_id'], BsaNotifikasi::EVENT_TAGIHAN, $tagihanId);
                 }
                 $this->repo->simpanHasilPenerbitan($idBatch, $r['santri_id'], $r['unit'], $r['hasil'], $tagihanId, $r['hasil'] === 'Terbit' ? $r['tarif_id'] : null, $r['keterangan']);
             }
@@ -674,6 +675,9 @@ final class TagihanService
                     'pembayaran_id' => $simpan['id'], 'tagihan_id' => $tagihanId, 'santri_id' => $t['santri_id'], 'metode' => $data['sumber'],
                     'status' => $terverifikasi ? 'Sah' : 'Menunggu', 'penugasan_id' => $tugas['id'], 'sumber' => BsaService::SUMBER_PETUGAS, 'kanal' => $this->bsa->kanal($kanal),
                 ], $userId);
+                if ($terverifikasi) {
+                    $this->bsa->beritahuWali($t['santri_id'], BsaNotifikasi::EVENT_PEMBAYARAN, $simpan['id']);
+                }
 
                 return ['id' => $simpan['id'], 'status' => 201, 'replayed' => false, 'nomor_kuitansi' => $simpan['nomor'],
                     'status_pembayaran' => $terverifikasi ? 'Sah' : 'Menunggu', 'sisa' => $sisaBaru];
@@ -717,6 +721,7 @@ final class TagihanService
                 'pembayaran_id' => $id, 'tagihan_id' => $t['id'], 'santri_id' => $t['santri_id'], 'metode' => $p['sumber'], 'status' => 'Sah',
                 'penugasan_id' => $tugas['id'], 'sumber' => BsaService::SUMBER_PETUGAS, 'kanal' => $this->bsa->kanal($kanal),
             ], $userId);
+            $this->bsa->beritahuWali($t['santri_id'], BsaNotifikasi::EVENT_PEMBAYARAN, $id);
             $lama = $this->repo->pembayaran($id);
 
             return ['id' => $id, 'status' => 200, 'replayed' => false, 'nomor_kuitansi' => (string) ($lama['nomor_kuitansi'] ?? ''), 'status_pembayaran' => 'Sah', 'sisa' => $sisa];
@@ -770,6 +775,10 @@ final class TagihanService
                 'jenis' => $p['status'] === 'Sah' ? 'Pembatalan' : 'Penolakan', 'penugasan_id' => $tugas['id'], 'sumber' => BsaService::SUMBER_PETUGAS, 'kanal' => $this->bsa->kanal($kanal),
                 'transaksi_id' => $pengembalian['id'] ?? null,
             ], $userId);
+            // Penolakan transfer menunggu tidak pernah terlihat orang tua; hanya pembatalan pembayaran sah.
+            if ($p['status'] === 'Sah') {
+                $this->bsa->beritahuWali($t['santri_id'], BsaNotifikasi::EVENT_PEMBAYARAN_BATAL, $id);
+            }
             $lama = $this->repo->pembayaran($id);
 
             return ['id' => $id, 'status' => 200, 'replayed' => false, 'nomor_kuitansi' => (string) ($lama['nomor_kuitansi'] ?? ''), 'status_pembayaran' => 'Dibatalkan',
@@ -846,6 +855,8 @@ final class TagihanService
                     'pembayaran_id' => $simpan['id'], 'transaksi_id' => $debit, 'tagihan_id' => $tagihanId, 'santri_id' => $t['santri_id'], 'metode' => 'Tabungan',
                     'status' => 'Sah', 'penugasan_id' => $tugas['id'], 'sumber' => BsaService::SUMBER_PETUGAS, 'kanal' => $this->bsa->kanal($kanal),
                 ], $userId);
+                // Satu pemberitahuan pembayaran mewakili debit tabungan pasangannya.
+                $this->bsa->beritahuWali($t['santri_id'], BsaNotifikasi::EVENT_PEMBAYARAN, $simpan['id']);
 
                 return ['id' => $simpan['id'], 'status' => 201, 'replayed' => false, 'nomor_kuitansi' => $simpan['nomor'], 'status_pembayaran' => 'Sah',
                     'sisa' => $sisaBaru, 'transaksi_id' => $debit, 'saldo' => $saldo - $nominal];
@@ -904,7 +915,7 @@ final class TagihanService
             'status' => $status,
             'sumber' => in_array($input['sumber'] ?? null, ['Tunai', 'Transfer', 'Tabungan'], true) ? (string) $input['sumber'] : null,
         ];
-        $hasil = $this->repo->daftarPembayaran($this->hak($user, $akses), $saring, PageQuery::term($input['q'] ?? ''), $this->bsa->halaman($input['page'] ?? 1));
+        $hasil = $this->repo->daftarPembayaran($this->hak($user, $akses), $saring, PageQuery::term($input['q'] ?? ''), $this->bsa->halaman($input['page'] ?? 1), $wali);
         $rows = array_values(array_filter($hasil['rows'], static fn (array $b): bool => !$wali || $b['status'] !== 'Menunggu'));
 
         return [
@@ -932,6 +943,8 @@ final class TagihanService
         $saring = ['periode' => $this->periodeOpsional($input['periode'] ?? null), 'unit' => $unit, 'lewat' => in_array($input['lewat'] ?? null, ['1', 1, true], true)];
         $hasil = $this->repo->tunggakan($this->hak($user, $akses), $saring, PageQuery::term($input['q'] ?? ''), $this->bsa->halaman($input['page'] ?? 1));
         $hariIni = date('Y-m-d');
+        // Fase 4: jumlah transfer menunggu tidak dikirim kepada orang tua (sama dengan rincian tagihan).
+        $wali = $akses['sumber'] === BsaService::SUMBER_WALI;
 
         return [
             'rows' => array_map(static fn (array $r): array => [
@@ -944,7 +957,7 @@ final class TagihanService
                 'total' => (int) $r['total'],
                 'terbayar' => (int) $r['terbayar'],
                 'sisa' => (int) $r['sisa'],
-                'menunggu_verifikasi' => (int) $r['menunggu'],
+                'menunggu_verifikasi' => $wali ? 0 : (int) $r['menunggu'],
             ], $hasil['rows']),
             'ringkasan' => $hasil['ringkasan'],
             'total' => (int) $hasil['total'], 'page' => (int) $hasil['page'], 'per_page' => (int) $hasil['perPage'],
