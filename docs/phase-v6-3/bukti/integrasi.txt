@@ -1,0 +1,163 @@
+[lulus] Fixture V6 tersedia (empat santri sintetis)
+[lulus] Tabel BSA mulai kosong (migrasi 027, 028, 029 terpasang)
+[lulus] TabunganService tersedia (029 terpasang)
+
+=== L-1. Matriks hak Fase 3 ===
+[lulus] sbx_admin (admin): membaca mutasi tabungan, setoran transfer, dan rekonsiliasi
+[lulus] sbx_v6_admin_bsa (admin_petugas): membaca mutasi tabungan, setoran transfer, dan rekonsiliasi
+[lulus] sbx_v6_bsa_b (petugas): membaca mutasi tabungan, setoran transfer, dan rekonsiliasi
+[lulus] sbx_v6_bsa_tsanawi (petugas): membaca mutasi tabungan, setoran transfer, dan rekonsiliasi
+[lulus] sbx_v6_wali_smp: mutasi lintas santri, setoran transfer, rekonsiliasi → 403 (hanya internal)
+[lulus] sbx_ortu_a: mutasi lintas santri, setoran transfer, rekonsiliasi → 403 (hanya internal)
+[lulus] sbx_pengurus_biasa: bacaan Fase 3 → 403
+[lulus] sbx_guru_biasa: bacaan Fase 3 → 403
+[lulus] sbx_v5_petugas_b: bacaan Fase 3 → 403
+[lulus] sbx_admin: setoran tunai/transfer, belanja, bayar dari tabungan → 403
+[lulus] sbx_v6_admin_bsa: setoran tunai/transfer, belanja, bayar dari tabungan → 403
+[lulus] sbx_v6_wali_smp: setoran tunai/transfer, belanja, bayar dari tabungan → 403
+[lulus] sbx_pengurus_biasa: setoran tunai/transfer, belanja, bayar dari tabungan → 403
+[lulus] sbx_guru_biasa: setoran tunai/transfer, belanja, bayar dari tabungan → 403
+[lulus] sbx_v6_bsa_tsanawi: setoran tunai/transfer, belanja, bayar dari tabungan → 404
+[lulus] Penolakan L-1 tanpa baris uang atau setoran transfer
+
+=== L-2. Setoran Rp100.000 + belanja Rp25.000 → Rp75.000 (kriteria 1a) ===
+[lulus] Setoran tunai Rp100.000 sah seketika; belanja Rp25.000 → saldo Rp75.000
+[lulus] Belanja tercatat jenis Belanja, sah, tujuan tersimpan, pencatat = penyetuju
+[lulus] Nomor kuitansi tabungan unik turunan ID ledger (BSA-TB-2026-000001)
+[lulus] Belanja/penarikan Rp75.001 (> saldo), jenis tidak dikenal, dan belanja tanpa tujuan → 422
+[lulus] Penolakan L-2 tanpa mutasi
+[lulus] Belanja kunci sama → replay; kunci sama sebagai penarikan → 409
+[lulus] Belanja Rp5.000 dikoreksi pembalik → saldo kembali Rp75.000
+
+=== L-3. Setoran transfer: menunggu, verifikasi, tolak ===
+[lulus] Transfer tanpa pernyataan diperiksa → 202 menunggu; saldo Rp0; tidak ada baris ledger
+[lulus] Kiriman ulang kunci sama → replay, satu setoran transfer
+[lulus] Kunci sama sebagai setoran terverifikasi atau nominal lain → 409; transfer tanpa referensi → 422
+[lulus] Rincian santri: saldo efektif Rp0, setoran menunggu Rp40.000 terpisah
+[lulus] Verifikasi oleh petugas lain → satu baris ledger Setoran/Transfer sah (pencatat = penerima, penyetuju = pemeriksa), saldo Rp40.000
+[lulus] Verifikasi diulang dengan kunci sama → replay tanpa kredit kedua
+[lulus] Verifikasi/tolak setoran yang sudah sah → 409
+[lulus] Replay setoran awal sesudah verifikasi mengembalikan status kini (Sah)
+[lulus] Tolak tanpa alasan ≥ 5 karakter → 422
+[lulus] Tolak beralasan: status Ditolak, aktor + alasan tersimpan, saldo tetap Rp40.000
+[lulus] Verifikasi setoran yang ditolak → 409
+[lulus] Transfer dengan pernyataan dana sudah diperiksa → sah seketika (saldo Rp50.000)
+[lulus] Daftar setoran transfer menurut status (menunggu 0, semua 2, sah 1)
+
+=== L-4. Bayar tagihan Rp50.000 dari saldo Rp75.000 (kriteria 2) ===
+[lulus] Tagihan Rp100.000 terbit tanpa memotong tabungan otomatis (saldo tetap Rp75.000)
+[lulus] Tanpa centang persetujuan pemotongan tabungan → 422 (tindakan eksplisit)
+[lulus] Melebihi saldo (Rp75.001) atau melebihi sisa tagihan → 422
+[lulus] Penolakan bayar dari tabungan tanpa mutasi
+[lulus] Bayar Rp50.000 dari tabungan → saldo Rp25.000, sisa tagihan tepat Rp50.000
+[lulus] Satu debit ledger PembayaranTagihan/Internal dan satu pembayaran Tabungan sah yang menunjuk debit itu (referensi silang unik)
+[lulus] Kuitansi tagihan snapshot: total Rp100.000, terbayar sebelum Rp0, sisa sesudah Rp50.000
+[lulus] Referensi silang terbaca di kedua riwayat: debit tabungan → BSA-KW-2026-000001, pembayaran tagihan → BSA-TB-2026-000007
+[lulus] Wali anak itu membaca referensi silang yang sama di riwayat tabungan dan rincian tagihan
+[lulus] Bayar dari tabungan atas tagihan yang dibatalkan → 422
+[lulus] Transfer menunggu ikut membatasi: sisa Rp10.000 − menunggu Rp8.000 → Rp3.000 ditolak, Rp2.000 diterima
+
+=== L-5. Kiriman ulang dan klik ganda (kriteria 4) ===
+[lulus] Ulang request kunci sama → hasil sama (pembayaran dan debit yang sama)
+[lulus] Kunci sama, nominal berbeda → 409
+[lulus] Tidak ada debit atau pembayaran kedua
+
+=== L-6. Konkurensi (proses terpisah, kriteria 1b) ===
+[lulus] Santri uji konkurensi: setoran Rp100.000 + belanja Rp25.000 → Rp75.000
+[lulus] Dua belanja Rp60.000 bersamaan atas saldo Rp75.000 → tepat satu sukses, satu 422, saldo Rp15.000 ([{"ok":true,"id":11,"status":201,"replayed":false,"saldo_sesudah":15000,"jenis":"Belanja","transaksi_id":11,"nomor_kuitansi":"BSA-TB-2026-000011"},{"ok":false,"status":422,"errno":0}])
+[lulus] Dua pembayaran Rp60.000 dari saldo Rp100.000 ke dua tagihan bersamaan → tepat satu sukses, saldo Rp40.000 ([{"ok":false,"status":422,"errno":0},{"ok":true,"id":4,"status":201,"replayed":false,"nomor_kuitansi":"BSA-KW-2026-000004","status_pembayaran":"Sah","sisa":40000,"transaksi_id":13,"saldo":40000}])
+[lulus] Pembayaran tabungan Rp30.000 vs penarikan Rp30.000 bersamaan atas saldo Rp40.000 → tepat satu sukses ([{"ok":false,"status":422,"errno":0},{"ok":true,"id":14,"status":201,"replayed":false,"saldo_sesudah":10000,"jenis":"Penarikan","transaksi_id":14,"nomor_kuitansi":"BSA-TB-2026-000014"}])
+[lulus] Pembayaran tabungan vs tunai Rp40.000 bersamaan atas sisa Rp50.000 → satu sukses, tanpa bayar berlebih ([{"ok":true,"id":5,"status":201,"replayed":false,"nomor_kuitansi":"BSA-KW-2026-000005","status_pembayaran":"Sah","sisa":10000,"transaksi_id":16,"saldo":60000},{"ok":false,"status":422,"errno":0}])
+[lulus] Delapan klik bersamaan kunci+isi sama → satu debit dan satu pembayaran, tujuh replay ([true,true,true,false,true,true,true,true])
+[lulus] Sepuluh belanja Rp10.000 bersamaan atas saldo Rp40000 → tepat 4 sukses berurutan (saldo sesudah berbeda), 6 × 422, saldo Rp0
+[lulus] Dua verifikasi bersamaan atas setoran transfer yang sama → satu kredit, satu 409 ([{"ok":true,"id":3,"status":200,"replayed":false,"status_setoran":"Sah","setoran_transfer_id":3,"transaksi_id":22,"nomor_kuitansi":"BSA-TB-2026-000022","saldo_sesudah":30000},{"ok":false,"status":409,"errno":0}])
+[lulus] Dua koreksi bersamaan atas setoran yang sama → satu pembalik, satu 409 ([{"ok":false,"status":409,"errno":0},{"ok":true,"id":24,"status":201,"replayed":false,"pembalik_dari_id":23,"saldo_sesudah":30000,"saldo":30000,"nomor_kuitansi":"BSA-TB-2026-000024"}])
+[lulus] Dua pembatalan bersamaan atas pembayaran dari tabungan → satu pengembalian saldo, satu 409 ([{"ok":false,"status":409,"errno":0},{"ok":true,"id":7,"status":200,"replayed":false,"nomor_kuitansi":"BSA-KW-2026-000007","status_pembayaran":"Dibatalkan","sisa":80000,"transaksi_id":26,"saldo":30000}])
+[lulus] Nol saldo negatif dan nol tagihan terbayar berlebih
+
+=== L-7. Kegagalan di antara dua pencatatan (kriteria 3) ===
+[lulus] INSERT pembayaran gagal SESUDAH debit ledger + saldo disiapkan → 503
+[lulus] Rollback: saldo Rp48000 dan sisa Rp100.000 semula; nol ledger, pembayaran, klaim, atau audit baru
+[lulus] Nol debit tabungan yatim
+[lulus] Kuitansi gagal sesudah debit, pembayaran, dan terbayar → 503
+[lulus] Audit pembayaran dari tabungan gagal → 503
+[lulus] Audit belanja dan setoran transfer menunggu gagal → 503
+[lulus] Koreksi belanja dengan audit gagal → 503
+[lulus] Seluruh kegagalan audit dibatalkan atomik: nol baris/klaim baru, saldo dan sisa semula
+[lulus] Pembatalan pembayaran dari tabungan dengan pengembalian saldo gagal → 503
+[lulus] Rollback: pembayaran tetap Sah, terbayar Rp20.000, tanpa entri pembatalan atau pengembalian yatim
+[lulus] Tidak ada klaim idempotensi menggantung
+
+=== L-8. Koreksi transaksi, termasuk yang terkait tagihan ===
+[lulus] Keadaan awal L-8: saldo Rp25.000 sesudah pembayaran tagihan Rp50.000
+[lulus] Membalik setoran Rp100.000 yang sudah dipakai membayar tagihan (saldo Rp25.000) → 422, saldo tidak boleh negatif
+[lulus] Debit pembayaran tagihan tidak dibalik sendirian → 422 dengan rujukan ke pembatalan BSA-KW-2026-000001
+[lulus] Koreksi tanpa alasan ≥ 5 karakter → 422
+[lulus] Penolakan koreksi tanpa mutasi
+[lulus] Pembatalan pembayaran dari tabungan → sisa kembali Rp100.000 dan saldo kembali Rp75.000 dalam satu transaksi
+[lulus] Pengembalian = baris Pembalik/Masuk/Internal beralasan yang merujuk debit asal
+[lulus] Riwayat tagihan menunjuk pengembalian; riwayat tabungan menunjuk pembayaran dan debit asal
+[lulus] Pembatalan diulang: replay tanpa pengembalian kedua; kunci baru → 409
+[lulus] Transaksi pembalik tidak dapat dibalik lagi → 422
+[lulus] Koreksi oleh admin/wali → 403; unit lain/ID tidak ada → 404
+[lulus] Koreksi belanja Rp25.000 → pembalik Masuk, saldo Rp100.000
+[lulus] Sesudah pembayaran dibatalkan dan belanja dikoreksi, setoran Rp100.000 dapat dibalik (saldo Rp0); koreksi kedua → 409
+[lulus] Pembalik setoran: Keluar, metode Tunai sama, nominal sama, alasan tersimpan, tujuan merujuk BSA-TB-2026-000001
+[lulus] Transaksi asal tidak diubah (nominal dan saldo sesudah tetap)
+[lulus] Saldo Rp0: bayar dari tabungan → 422, tagihan tetap
+
+=== L-9. Rekonsiliasi harian (kriteria 5) ===
+[lulus] Rekonsiliasi admin hari ini: selisih internal Rp0, selisih pengembalian Rp0, saldo awal + mutasi = akhir = Σ akun
+[lulus] Setoran tunai Rp100.000 → penerimaan kas baru +Rp100.000
+[lulus] Pembayaran tagihan Rp50.000 dari tabungan → penerimaan kas dan seluruh kas tunai/transfer TIDAK bertambah
+[lulus] Pembayaran itu tercatat sebagai perpindahan internal: debit tabungan = pembayaran dari tabungan (+Rp50.000), selisih Rp0
+[lulus] Pembayaran tagihan tunai Rp30.000 → penerimaan kas baru +Rp30.000 (uang nyata)
+[lulus] Setoran transfer menunggu tidak dihitung sebagai kas; tampil di "menunggu"
+[lulus] Sesudah diverifikasi: transfer Rp70.000 masuk penerimaan kas
+[lulus] Saldo akhir rekonsiliasi = Σ ledger = Σ akun (Rp178000)
+[lulus] Petugas Tsanawi hanya merekonsiliasi santri dalam cakupannya
+[lulus] Tanggal kemarin: tanpa transaksi, saldo akun cerminan tidak dibandingkan
+[lulus] Tanggal masa depan atau tidak valid → 422
+
+=== L-10. Otorisasi wali ===
+[lulus] Wali: riwayat tabungan anak tanpa referensi, catatan, alasan; tanpa setoran transfer
+[lulus] Wali membuka kuitansi tabungan anaknya tanpa alasan/referensi
+[lulus] Seluruh ID transaksi 1..39 ditebak wali SMP → hanya 8 transaksi anaknya, lainnya 404
+[lulus] Wali anak lain dan wali tanpa relasi → 404
+[lulus] Relasi wali dicabut → kuitansi dan rincian 404 pada sesi yang sama
+[lulus] Jejak audit bsa.tabungan.verifikasi ada
+[lulus] Jejak audit bsa.pembayaran.tabungan ada
+[lulus] Jejak audit bsa.tabungan.koreksi ada
+
+=== L-11. Pencabutan penugasan, cakupan, santri nonaktif ===
+[lulus] Cakupan dipersempit ke Tsanawi: replay bayar tabungan, verifikasi, belanja, kuitansi santri SMP → 404
+[lulus] Santri dinonaktifkan: replay dan mutasi baru → 404
+[lulus] Admin tetap membaca kuitansi tabungan santri nonaktif
+[lulus] Penugasan dinonaktifkan saat sesi masih dipakai: bayar tabungan, setoran, verifikasi, rekonsiliasi, mutasi → 403
+[lulus] Penolakan L-11 tanpa baris atau klaim baru
+
+=== L-12. Verifier, audit, preservasi ===
+[lulus] Verifier Fase 1 + 2 + 3 lulus pada data uji (133 pemeriksaan)
+[lulus] Setiap pembayaran dari tabungan, koreksi, dan keputusan setoran transfer punya satu jejak audit
+[lulus] Audit bsa.* Fase 3 tanpa nominal, saldo, referensi, alasan, tujuan, atau nama
+[lulus] Jumlah baris santri tetap 258
+[lulus] Jumlah baris wali tetap 17
+[lulus] Jumlah baris santri_wali tetap 14
+[lulus] Jumlah baris users tetap 42
+[lulus] Jumlah baris pengurus tetap 26
+[lulus] Jumlah baris kelas tetap 7
+[lulus] Jumlah baris plotting_kelas tetap 45
+[lulus] Jumlah baris psb_pendaftar tetap 33
+[lulus] Jumlah baris psb_pembayaran tetap 26
+[lulus] Jumlah baris izin_pengajuan tetap 1052
+[lulus] Jumlah baris kesehatan_kunjungan tetap 7
+[lulus] Jumlah baris kesehatan_ringkasan tetap 3
+[lulus] Jumlah baris v3_pelanggaran tetap 5
+[lulus] Jumlah baris v4_rapor tetap 2
+[lulus] Jumlah baris bendahara_bulanan_assignments tetap 4
+[lulus] Jumlah baris kesehatan_assignments tetap 7
+[lulus] Jumlah baris bsa_tarif tetap 0
+[lulus] Jumlah baris bsa_penyesuaian tetap 0
+[lulus] Jumlah baris bsa_penerbitan tetap 0
+
+Hasil: 137 lulus, 0 gagal

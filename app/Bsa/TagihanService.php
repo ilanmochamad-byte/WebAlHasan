@@ -32,7 +32,15 @@ use DateTimeImmutable;
  * pembatalan pembayaran = entri penyeimbang beralasan, nominal tidak diubah.
  * Setiap mutasi idempoten per akun dan berjalan dalam satu transaksi dengan
  * urutan kunci tetap (lihat `TagihanRepository`). Tagihan tidak memotong
- * tabungan.
+ * tabungan secara otomatis.
+ *
+ * Fase 3 (migrasi 029): pembayaran tagihan dari tabungan hanya melalui
+ * tindakan eksplisit petugas (`bayarDariTabungan`) yang disetujui: debit
+ * ledger `PembayaranTagihan` dan pembayaran bersumber `Tabungan` dicatat di
+ * SATU transaksi basis data dengan referensi silang unik
+ * (`bsa_pembayaran.tabungan_transaksi_id`), commit atau rollback bersama.
+ * Membatalkan pembayaran itu mengembalikan saldo lewat baris `Pembalik`
+ * beralasan di transaksi yang sama.
  */
 final class TagihanService
 {
@@ -45,6 +53,7 @@ final class TagihanService
     public const OP_BAYAR = 'pembayaran.catat';
     public const OP_VERIFIKASI = 'pembayaran.verifikasi';
     public const OP_BAYAR_BATAL = 'pembayaran.batal';
+    public const OP_BAYAR_TABUNGAN = 'pembayaran.tabungan';
 
     /** Penyesuaian aktif per santri dibatasi agar tagihan tetap terbaca. */
     public const PENYESUAIAN_AKTIF_MAKS = 5;
@@ -54,7 +63,8 @@ final class TagihanService
     public function __construct(
         private BsaService $bsa,
         private BsaRepository $bsaRepo,
-        private TagihanRepository $repo
+        private TagihanRepository $repo,
+        private TabunganRepository $tabungan
     ) {
     }
 
@@ -735,7 +745,7 @@ final class TagihanService
             throw new BsaException('Pembayaran tidak ditemukan.', 404);
         }
 
-        return $this->mutasiTagihan($userId, $pemilik['tagihan_id'], $kunci, self::OP_BAYAR_BATAL, $hash, function (array $t, array $tugas) use ($userId, $id, $alasan, $kanal): array {
+        return $this->mutasiTagihan($userId, $pemilik['tagihan_id'], $kunci, self::OP_BAYAR_BATAL, $hash, function (array $t, array $tugas) use ($userId, $id, $alasan, $kunci, $kanal): array {
             $p = $this->repo->pembayaranTerkunci($id);
             if ($p === null || $p['tagihan_id'] !== $t['id']) {
                 throw new BsaException('Pembayaran tidak ditemukan.', 404);
@@ -748,15 +758,104 @@ final class TagihanService
                 $this->repo->ubahTerbayar($t['id'], $t['terbayar'], $t['terbayar'] - $p['nominal']);
             }
             $this->repo->simpanPembatalan($id, $p['status'], $alasan, $userId, $tugas['pengurus_id'], $tugas['id']);
+            // Fase 3: pembayaran dari tabungan yang dibatalkan mengembalikan
+            // saldo di transaksi yang sama (kunci akun sesudah tagihan dan
+            // pembayaran), sebagai baris Pembalik beralasan atas debitnya.
+            $pengembalian = null;
+            if ($p['sumber'] === 'Tabungan' && $p['status'] === 'Sah' && $p['tabungan_transaksi_id'] !== null) {
+                $pengembalian = $this->kembalikanKeTabungan($t, $p, $kunci, $alasan, $userId, $tugas);
+            }
             $this->bsa->wajibAudit('bsa.pembayaran.batal', 'bsa_pembayaran', $id, [
                 'pembayaran_id' => $id, 'tagihan_id' => $t['id'], 'santri_id' => $t['santri_id'], 'metode' => $p['sumber'], 'status' => 'Dibatalkan',
                 'jenis' => $p['status'] === 'Sah' ? 'Pembatalan' : 'Penolakan', 'penugasan_id' => $tugas['id'], 'sumber' => BsaService::SUMBER_PETUGAS, 'kanal' => $this->bsa->kanal($kanal),
+                'transaksi_id' => $pengembalian['id'] ?? null,
             ], $userId);
             $lama = $this->repo->pembayaran($id);
 
             return ['id' => $id, 'status' => 200, 'replayed' => false, 'nomor_kuitansi' => (string) ($lama['nomor_kuitansi'] ?? ''), 'status_pembayaran' => 'Dibatalkan',
-                'sisa' => $t['total'] - ($p['status'] === 'Sah' ? $t['terbayar'] - $p['nominal'] : $t['terbayar'])];
-        }, fn (int $hasilId): array => $this->hasilPembayaranLama($hasilId));
+                'sisa' => $t['total'] - ($p['status'] === 'Sah' ? $t['terbayar'] - $p['nominal'] : $t['terbayar'])]
+                + ($pengembalian === null ? [] : ['transaksi_id' => $pengembalian['id'], 'saldo' => $pengembalian['saldo']]);
+        }, function (int $hasilId): array {
+            $p = $this->repo->pembayaran($hasilId);
+
+            return $this->hasilPembayaranLama($hasilId)
+                + (($p['sumber'] ?? null) !== 'Tabungan' ? [] : [
+                    'transaksi_id' => (int) $p['pengembalian_id'],
+                    'saldo' => (int) ($this->bsaRepo->santri((int) $p['santri_id'])['saldo'] ?? 0),
+                ]);
+        });
+    }
+
+    /**
+     * Membayar tagihan dari tabungan santri — tindakan EKSPLISIT petugas BSA
+     * dengan persetujuan tercentang (PRD V6 §3.4, §5.3). Satu transaksi:
+     * penugasan → klaim → santri + cakupan → tagihan (tulis) → akun tabungan
+     * (tulis); verifikasi sisa tagihan (dikurangi transfer menunggu) dan
+     * saldo; debit ledger `PembayaranTagihan`/`Internal` lalu pembayaran
+     * `Tabungan` sah yang menunjuk debit itu, terbayar naik, kuitansi
+     * snapshot. Gagal di titik mana pun → rollback keduanya. Kiriman ulang
+     * kunci sama → hasil sama (satu debit, satu pembayaran). Bukan kas baru:
+     * uangnya sudah diterima saat setoran.
+     *
+     * @param array<string, mixed> $user
+     * @param array<string, mixed> $input idempotency_key, nominal, setuju, catatan
+     * @return array{id:int, status:int, replayed:bool, nomor_kuitansi:string, status_pembayaran:string, sisa:int, transaksi_id:?int, saldo:int}
+     */
+    public function bayarDariTabungan(array $user, int $tagihanId, array $input, string $kanal): array
+    {
+        $this->siap();
+        if (!$this->tabungan->skemaSiap()) {
+            throw new BsaException('Modul tabungan lengkap (PRD V6 Fase 3) belum dipasang pada basis data ini.', 503);
+        }
+        $this->bsa->wajibKelola($user);
+        $userId = (int) $user['id'];
+        if (!in_array($input['setuju'] ?? null, [true, 1, '1', 'ya'], true)) {
+            throw new BsaException('Centang persetujuan bahwa tabungan santri dipotong untuk membayar tagihan ini.');
+        }
+        $nominal = $this->bsa->nominal($input['nominal'] ?? null, 'Nominal pembayaran');
+        $catatan = $this->bsa->teks($input['catatan'] ?? null, 500, 'Catatan');
+        $kunci = $this->bsa->kunci($input['idempotency_key'] ?? null);
+        $hash = $this->bsa->hash([self::OP_BAYAR_TABUNGAN, $tagihanId, $nominal, $catatan]);
+
+        return $this->mutasiTagihan($userId, $tagihanId, $kunci, self::OP_BAYAR_TABUNGAN, $hash,
+            function (array $t, array $tugas) use ($userId, $tagihanId, $nominal, $catatan, $kunci, $kanal): array {
+                if ($t['status'] !== 'Terbit') {
+                    throw new BsaException('Tagihan sudah dibatalkan; pembayaran tidak dicatat.');
+                }
+                $sisa = $t['total'] - $t['terbayar'];
+                if ($nominal > $sisa - $t['menunggu']) {
+                    throw new BsaException($t['menunggu'] > 0
+                        ? 'Nominal melebihi sisa tagihan sesudah transfer yang menunggu verifikasi. Tabungan tidak dipotong.'
+                        : 'Nominal melebihi sisa tagihan. Tabungan tidak dipotong.');
+                }
+                $akun = $this->bsaRepo->kunciAkun($t['santri_id']);
+                $saldo = $akun['saldo'] ?? 0;
+                if ($nominal > $saldo) {
+                    throw new BsaException('Saldo tabungan tidak mencukupi (saldo ' . $this->rupiah($saldo) . '). Tabungan tidak dipotong dan tagihan tidak berubah.', 422);
+                }
+                $debit = $this->bsaRepo->catatTransaksi($t['santri_id'], [
+                    'jenis' => 'PembayaranTagihan', 'arah' => 'Keluar', 'nominal' => $nominal, 'metode' => 'Internal',
+                    'tujuan' => 'Pembayaran tagihan ' . $t['periode'], 'referensi' => null, 'catatan' => $catatan, 'idempotency_key' => $kunci,
+                ], $saldo, $saldo - $nominal, $userId, $tugas['pengurus_id'], $tugas['id']);
+                $simpan = $this->repo->simpanPembayaran($tagihanId, $t['santri_id'], [
+                    'nominal' => $nominal, 'sumber' => 'Tabungan', 'tanggal_transaksi' => date('Y-m-d'), 'referensi' => null,
+                    'catatan' => $catatan, 'idempotency_key' => $kunci, 'tabungan_transaksi_id' => $debit,
+                ], true, $userId, $tugas['pengurus_id'], $tugas['id']);
+                $sisaBaru = $this->sahkan($t, $simpan['id'], $nominal);
+                $this->bsa->wajibAudit('bsa.pembayaran.tabungan', 'bsa_pembayaran', $simpan['id'], [
+                    'pembayaran_id' => $simpan['id'], 'transaksi_id' => $debit, 'tagihan_id' => $tagihanId, 'santri_id' => $t['santri_id'], 'metode' => 'Tabungan',
+                    'status' => 'Sah', 'penugasan_id' => $tugas['id'], 'sumber' => BsaService::SUMBER_PETUGAS, 'kanal' => $this->bsa->kanal($kanal),
+                ], $userId);
+
+                return ['id' => $simpan['id'], 'status' => 201, 'replayed' => false, 'nomor_kuitansi' => $simpan['nomor'], 'status_pembayaran' => 'Sah',
+                    'sisa' => $sisaBaru, 'transaksi_id' => $debit, 'saldo' => $saldo - $nominal];
+            },
+            function (int $hasilId): array {
+                $b = $this->repo->pembayaran($hasilId);
+
+                return $this->hasilPembayaranLama($hasilId) + ['transaksi_id' => $b['tabungan_transaksi_id'] === null ? null : (int) $b['tabungan_transaksi_id'],
+                    'saldo' => (int) ($this->bsaRepo->santri((int) ($b['santri_id'] ?? 0))['saldo'] ?? 0)];
+            });
     }
 
     /**
@@ -803,7 +902,7 @@ final class TagihanService
         $saring = [
             'periode' => $this->periodeOpsional($input['periode'] ?? null),
             'status' => $status,
-            'sumber' => in_array($input['sumber'] ?? null, ['Tunai', 'Transfer'], true) ? (string) $input['sumber'] : null,
+            'sumber' => in_array($input['sumber'] ?? null, ['Tunai', 'Transfer', 'Tabungan'], true) ? (string) $input['sumber'] : null,
         ];
         $hasil = $this->repo->daftarPembayaran($this->hak($user, $akses), $saring, PageQuery::term($input['q'] ?? ''), $this->bsa->halaman($input['page'] ?? 1));
         $rows = array_values(array_filter($hasil['rows'], static fn (array $b): bool => !$wali || $b['status'] !== 'Menunggu'));
@@ -943,6 +1042,45 @@ final class TagihanService
         $this->repo->simpanKuitansi($pembayaranId, $t['versi'], $t['total'], $t['terbayar'], $t['total'] - $baru);
 
         return $t['total'] - $baru;
+    }
+
+    /**
+     * Pengembalian saldo atas pembayaran dari tabungan yang dibatalkan: baris
+     * `Pembalik`/`Masuk`/`Internal` beralasan atas debit asal, di transaksi
+     * pembatalan yang sama. Kunci unik `pembalik_dari_id` menjamin satu
+     * pengembalian per debit.
+     *
+     * @param array{id:int, periode:string, santri_id:int} $t
+     * @param array{nominal:int, tabungan_transaksi_id:?int} $p
+     * @param array{id:int, pengurus_id:int} $tugas
+     * @return array{id:int, saldo:int}
+     */
+    private function kembalikanKeTabungan(array $t, array $p, string $kunci, string $alasan, int $userId, array $tugas): array
+    {
+        $akun = $this->bsaRepo->kunciAkun($t['santri_id']);
+        if ($akun === null) {
+            throw new BsaException('Akun tabungan santri tidak ditemukan. Tidak ada data yang diubah.', 409);
+        }
+        $baru = $akun['saldo'] + $p['nominal'];
+        try {
+            $id = $this->bsaRepo->catatTransaksi($t['santri_id'], [
+                'jenis' => 'Pembalik', 'arah' => 'Masuk', 'nominal' => $p['nominal'], 'metode' => 'Internal',
+                'tujuan' => 'Pengembalian pembayaran tagihan ' . $t['periode'], 'referensi' => null, 'catatan' => null,
+                'pembalik_dari_id' => $p['tabungan_transaksi_id'], 'alasan' => $alasan, 'idempotency_key' => $kunci,
+            ], $akun['saldo'], $baru, $userId, $tugas['pengurus_id'], $tugas['id']);
+        } catch (BsaException $exception) {
+            if ($exception->errno === 1062) {
+                throw new BsaException('Debit tabungan ini sudah dikembalikan. Tidak ada data yang diubah.', 409);
+            }
+            throw $exception;
+        }
+
+        return ['id' => $id, 'saldo' => $baru];
+    }
+
+    private function rupiah(int $n): string
+    {
+        return 'Rp' . number_format($n, 0, ',', '.');
     }
 
     /** @return array<string, mixed> */
@@ -1211,6 +1349,12 @@ final class TagihanService
             'pembatalan' => $b['batal_jenis'] === null ? null : ['jenis' => (string) $b['batal_jenis'], 'alasan' => (string) $b['batal_alasan'],
                 'oleh' => (string) $b['pembatal_nama'], 'pada' => (string) $b['batal_pada']],
             'dicatat_pada' => (string) $b['created_at'],
+            // Fase 3: referensi silang ke debit tabungan (dan pengembaliannya).
+            'tabungan' => ($b['tabungan_transaksi_id'] ?? null) === null ? null : [
+                'transaksi_id' => (int) $b['tabungan_transaksi_id'],
+                'nomor_kuitansi' => BsaService::nomorKuitansiTabungan((int) $b['tabungan_transaksi_id'], (string) $b['debit_dibuat']),
+                'pengembalian_id' => $b['pengembalian_id'] === null ? null : (int) $b['pengembalian_id'],
+            ],
         ];
         if ($wali) {
             unset($baris['referensi'], $baris['catatan']);

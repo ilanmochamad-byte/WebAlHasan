@@ -1,0 +1,205 @@
+[lulus] Fixture V6 tersedia (empat santri sintetis)
+[lulus] Tabel BSA Fase 1–2 mulai kosong (migrasi 027 dan 028 terpasang)
+
+=== J-1. Matriks hak Fase 2 ===
+[lulus] sbx_admin (admin): membaca tarif, tunggakan, dan pembayaran
+[lulus] sbx_v6_admin_bsa (admin_petugas): membaca tarif, tunggakan, dan pembayaran
+[lulus] sbx_v6_bsa_b (petugas): membaca tarif, tunggakan, dan pembayaran
+[lulus] sbx_v6_bsa_tsanawi (petugas): membaca tarif, tunggakan, dan pembayaran
+[lulus] Pilihan unit petugas Tsanawi = [Tsanawi]; admin melihat seluruh unit kelas aktif
+[lulus] sbx_v6_wali_smp: tarif, penyesuaian, penerbitan → 403 (hanya internal)
+[lulus] sbx_ortu_a: tarif, penyesuaian, penerbitan → 403 (hanya internal)
+[lulus] sbx_pengurus_biasa: seluruh bacaan Fase 2 → 403
+[lulus] sbx_guru_biasa: seluruh bacaan Fase 2 → 403
+[lulus] sbx_v5_petugas_b: seluruh bacaan Fase 2 → 403
+[lulus] sbx_admin: tarif, pratinjau, penyesuaian (mutasi) → 403
+[lulus] sbx_v6_admin_bsa: tarif, pratinjau, penyesuaian (mutasi) → 403
+[lulus] sbx_v6_wali_smp: tarif, pratinjau, penyesuaian (mutasi) → 403
+[lulus] sbx_pengurus_biasa: tarif, pratinjau, penyesuaian (mutasi) → 403
+[lulus] sbx_guru_biasa: tarif, pratinjau, penyesuaian (mutasi) → 403
+[lulus] Penolakan J-1 tanpa baris atau klaim idempotensi baru
+
+=== J-2. Tarif unit/jenjang ===
+[lulus] Petugas Tsanawi menetapkan tarif SMP → 404 (di luar cakupan)
+[lulus] Unit di luar kelas aktif ditolak 422
+[lulus] Komponen tarif nol ditolak 422
+[lulus] Komponen tarif pecahan ditolak 422
+[lulus] Komponen tarif float ditolak 422
+[lulus] Komponen tarif kosong ditolak 422
+[lulus] Komponen tarif tanpa nama ditolak 422
+[lulus] Periode mulai tidak valid ditolak
+[lulus] Validasi tarif tanpa baris atau klaim baru
+[lulus] Tarif SMP (unit dinormalisasi ke "SMP") tersimpan; kiriman ulang kunci sama → tarif yang sama
+[lulus] Tarif SMP Rp500.000 = Σ dua komponen
+[lulus] Petugas Tsanawi menetapkan tarif Tsanawi Rp250.000 mulai September 2026
+[lulus] Perubahan tarif unit yang sudah bertarif tanpa alasan ditolak
+[lulus] Mengganti tarif periode mulai sama: lama Diganti (nominal tetap Rp250.000, menunjuk pengganti), baru Berlaku
+[lulus] Komponen tarif lama tidak dihapus
+[lulus] Kunci unik basis data menolak tarif Berlaku kedua untuk unit+periode mulai yang sama
+[lulus] Setiap tarif tersimpan punya satu jejak audit (3)
+
+=== J-3. Penyesuaian per santri ===
+[lulus] Penyesuaian tanpa alasan ditolak 422
+[lulus] Penyesuaian alasan pendek ditolak 422
+[lulus] Penyesuaian jenis lain ditolak 422
+[lulus] Penyesuaian nominal nol ditolak 422
+[lulus] Penyesuaian keterangan kosong ditolak 422
+[lulus] Penyesuaian sampai sebelum mulai ditolak 422
+[lulus] Penyesuaian periode salah ditolak 422
+[lulus] Petugas Tsanawi atas santri SMP → 404
+[lulus] Santri nonaktif → 404
+[lulus] Penolakan penyesuaian tanpa baris baru
+[lulus] Pencabutan menyimpan aktor, waktu, dan alasan; baris tetap ada
+[lulus] Mencabut dua kali → 409
+[lulus] Petugas lain unit mencabut → 404
+[lulus] Admin membaca daftar penyesuaian santri (hanya baca)
+
+=== J-4. Pratinjau dan penerbitan massal (kriteria 1–2) ===
+[lulus] Jatuh tempo 2026-10-01x di luar awal periode..+3 bulan ditolak
+[lulus] Jatuh tempo 2026-09-30 di luar awal periode..+3 bulan ditolak
+[lulus] Jatuh tempo 2027-01-02 di luar awal periode..+3 bulan ditolak
+[lulus] Petugas Tsanawi mempratinjau unit SMP → 404
+[lulus] Pratinjau seluruh unit: 255 santri aktif → 45 akan terbit (SMP 4, Tsanawi 41), sisanya dilewati
+[lulus] Santri tanpa kelas dilewati beralasan; santri nonaktif bukan sasaran
+[lulus] Tarif unit SMP yang sama → setiap santri SMP lain Rp500.000 dari tarif SMP
+[lulus] Santri Tsanawi memakai tarif Tsanawi yang berlaku (pengganti, mulai September berlaku untuk Oktober) Rp250.000
+[lulus] Santri SMP berpenyesuaian: Rp500.000 − potongan Rp150.000 = Rp350.000 (penyesuaian dicabut tidak ikut)
+[lulus] Pratinjau petugas Tsanawi hanya memuat santri Tsanawi
+[lulus] Pratinjau tidak menulis tagihan atau klaim
+[lulus] Hash pratinjau tidak cocok → 409 tanpa tagihan
+[lulus] Penerbitan massal: 45 tagihan terbit dalam satu transaksi
+[lulus] Tagihan santri berpenyesuaian Rp350.000 dengan satu baris penyesuaian tersalin
+[lulus] Penyesuaian hanya mengubah tagihan santri itu; tagihan SMP lain tetap seragam
+[lulus] Snapshot komponen tarif tersalin per tagihan; riwayat versi 1 Terbit per tagihan
+[lulus] Hasil per santri sasaran tercatat (terbit dan dilewati beserta alasannya)
+[lulus] Tagihan terbit tidak memotong tabungan
+[lulus] Kiriman ulang kunci sama → penerbitan yang sama (replay), tanpa tagihan baru
+[lulus] Pratinjau ulang periode sama: seluruh sasaran "sudah ada"
+[lulus] Menjalankan penerbitan periode yang sama kedua kali (kunci lain) → 422 "tidak ada tagihan baru"
+[lulus] Pratinjau basi (petugas Tsanawi, sebelum penerbitan) → 409
+[lulus] Penerbitan ulang tidak membuat tagihan kedua dan tidak mengubah snapshot tagihan pertama
+[lulus] Tagihan manual Fase 1 untuk santri+periode yang sudah terbit massal → 409
+
+=== J-5. Pembayaran tunai/transfer, sebagian, berlebih (kriteria 3) ===
+[lulus] Tagihan manual Fase 1 Rp100.000 juga punya riwayat versi 1 sesudah 028
+[lulus] Nominal pembayaran nol ditolak 422
+[lulus] Nominal pembayaran negatif ditolak 422
+[lulus] Nominal pembayaran pecahan ditolak 422
+[lulus] Nominal pembayaran float ditolak 422
+[lulus] Nominal pembayaran notasi ilmiah ditolak 422
+[lulus] Nominal pembayaran teks ditolak 422
+[lulus] Cara selain Tunai/Transfer dan transfer tanpa referensi ditolak
+[lulus] Tanggal pembayaran di masa depan ditolak
+[lulus] Pembayaran Rp100.001 atas sisa Rp100.000 → 422
+[lulus] Penolakan pembayaran tanpa baris, kuitansi, atau klaim baru
+[lulus] Pembayaran Rp40.000 → sisa Rp60.000; kiriman ulang kunci sama → pembayaran dan kuitansi yang sama
+[lulus] Kunci sama nominal berbeda → 409
+[lulus] Rp60.001 atas sisa Rp60.000 → 422 (pembayaran berlebih ditolak)
+[lulus] Pembayaran Rp60.000 → sisa Rp0, terbayar Rp100.000, status Lunas
+[lulus] Dua transaksi terverifikasi dengan kuitansi (sisa sesudah Rp60.000 lalu Rp0)
+[lulus] Nomor kuitansi unik berformat BSA-KW-TTTT-NNNNNN
+[lulus] Tagihan lunas: pembayaran Rp1 pun ditolak
+[lulus] Transfer tanpa pernyataan verifikasi → Menunggu, belum mengurangi sisa, belum berkuitansi
+[lulus] Pembayaran baru melebihi sisa dikurangi transfer menunggu (Rp50.000) → 422
+[lulus] Admin dan wali tidak dapat memverifikasi (403)
+[lulus] Verifikasi oleh petugas BSA lain: Sah, sisa Rp50.000, pencatat dan verifikator tercatat terpisah
+[lulus] Verifikasi kedua (kunci lain) → 409
+[lulus] Transfer dengan pernyataan dana sudah diperiksa → Sah seketika, sisa Rp0
+[lulus] Pembatalan tanpa alasan memadai ditolak
+[lulus] Pembatalan: sisa kembali Rp50.000; nominal dan nomor kuitansi tidak diubah; entri penyeimbang beralasan + aktor
+[lulus] Kuitansi pembayaran yang dibatalkan tetap tersimpan (riwayat tidak dihapus)
+[lulus] Transfer menunggu ditolak → Penolakan beralasan; terbayar tidak berubah
+[lulus] Membatalkan pembayaran yang sudah dibatalkan → 409
+
+=== J-6. Perubahan tarif sesudah terbit (kriteria 4) ===
+[lulus] Tarif SMP Oktober diganti (Rp650.000) dan tarif November baru (Rp450.000)
+[lulus] Nominal, versi, dan snapshot komponen seluruh tagihan Oktober tidak berubah
+[lulus] Kuitansi tagihan lama tidak berubah
+[lulus] Data kuitansi Rp40.000 tetap (total Rp100.000, sisa sesudah Rp60.000)
+[lulus] Periode November memakai tarif baru (Rp450.000; santri berpenyesuaian Rp300.000); Oktober tetap tidak menerbitkan apa pun
+
+=== J-7. Revisi dan pembatalan tagihan ===
+[lulus] Tagihan Tsanawi Oktober Rp250.000 versi 1
+[lulus] Revisi dengan versi basi → 409
+[lulus] Revisi tanpa alasan → 422
+[lulus] Revisi yang membuat total Rp0 → 422 (gunakan pembatalan)
+[lulus] Revisi tanpa perubahan → 422
+[lulus] Admin merevisi → 403
+[lulus] Petugas Tsanawi merevisi tagihan SMP → 404
+[lulus] Revisi ke total di bawah terbayar (Rp100.000) → 422
+[lulus] Revisi: versi 2, total Rp200.000, jatuh tempo 20 Oktober, terbayar tetap
+[lulus] Komponen semula tetap; revisi tercatat sebagai baris potongan versi 2
+[lulus] Riwayat versi menyimpan revisi beralasan dengan aktor
+[lulus] Kuitansi sebelum revisi tetap menyimpan sisa sesudah Rp150.000 (keadaan saat dibayar)
+[lulus] Tagihan berpembayaran tidak dapat dibatalkan → 422
+[lulus] Pembatalan tagihan tanpa pembayaran: status Dibatalkan, nominal tetap, riwayat versi 2 beralasan
+[lulus] Pembayaran atas tagihan dibatalkan → 422
+[lulus] Santri dengan tagihan dibatalkan tidak mendapat tagihan kedua periode itu
+
+=== J-8. Konkurensi (proses terpisah) ===
+[lulus] Dua pembayaran Rp60.000 bersamaan atas sisa Rp100.000 → tepat satu sukses, satu 422, terbayar Rp60.000 ([{"ok":true,"id":7,"status":201,"replayed":false,"nomor_kuitansi":"BSA-KW-2026-000007","status_pembayaran":"Sah","sisa":40000},{"ok":false,"status":422,"errno":0}])
+[lulus] Delapan pembayaran Rp20.000 bersamaan atas Rp100.000 → lima sukses berurutan (sisa berbeda), tiga 422 bisnis, tanpa galat DB ([{"ok":true,"id":8,"status":201,"replayed":false,"nomor_kuitansi":"BSA-KW-2026-000008","status_pembayaran":"Sah","sisa":80000},{"ok":false,"status":422,"errno":0},{"ok":true,"id":12,"status":201,"replayed":false,"nomor_kuitansi":"BSA-KW-2026-000012","status_pembayaran":"Sah","sisa":0},{"ok":true,"id":9,"status":201,"replayed":false,"nomor_kuitansi":"BSA-KW-2026-000009","status_pembayaran":"Sah","sisa":60000},{"ok":false,"status":422,"errno":0},{"ok":true,"id":11,"status":201,"replayed":false,"nomor_kuitansi":"BSA-KW-2026-000011","status_pembayaran":"Sah","sisa":20000},{"ok":false,"status":422,"errno":0},{"ok":true,"id":10,"status":201,"replayed":false,"nomor_kuitansi":"BSA-KW-2026-000010","status_pembayaran":"Sah","sisa":40000}])
+[lulus] Delapan kiriman bersamaan kunci+isi sama → satu pembayaran Rp30.000, tujuh replay ([{"ok":true,"nomor_kuitansi":"BSA-KW-2026-000013","status_pembayaran":"Sah","sisa":70000,"id":13,"status":200,"replayed":true,"versi":1},{"ok":true,"nomor_kuitansi":"BSA-KW-2026-000013","status_pembayaran":"Sah","sisa":70000,"id":13,"status":200,"replayed":true,"versi":1},{"ok":true,"nomor_kuitansi":"BSA-KW-2026-000013","status_pembayaran":"Sah","sisa":70000,"id":13,"status":200,"replayed":true,"versi":1},{"ok":true,"nomor_kuitansi":"BSA-KW-2026-000013","status_pembayaran":"Sah","sisa":70000,"id":13,"status":200,"replayed":true,"versi":1},{"ok":true,"id":13,"status":201,"replayed":false,"nomor_kuitansi":"BSA-KW-2026-000013","status_pembayaran":"Sah","sisa":70000},{"ok":true,"nomor_kuitansi":"BSA-KW-2026-000013","status_pembayaran":"Sah","sisa":70000,"id":13,"status":200,"replayed":true,"versi":1},{"ok":true,"nomor_kuitansi":"BSA-KW-2026-000013","status_pembayaran":"Sah","sisa":70000,"id":13,"status":200,"replayed":true,"versi":1},{"ok":true,"nomor_kuitansi":"BSA-KW-2026-000013","status_pembayaran":"Sah","sisa":70000,"id":13,"status":200,"replayed":true,"versi":1}])
+[lulus] Dua verifikasi bersamaan atas transfer yang sama → satu sukses, satu 409, satu kuitansi ([{"ok":true,"id":14,"status":200,"replayed":false,"nomor_kuitansi":"BSA-KW-2026-000014","status_pembayaran":"Sah","sisa":0},{"ok":false,"status":409,"errno":0}])
+[lulus] Dua pembatalan bersamaan atas pembayaran yang sama → satu pembatalan, terbayar turun sekali ([{"ok":false,"status":409,"errno":0},{"ok":true,"id":1,"status":200,"replayed":false,"nomor_kuitansi":"BSA-KW-2026-000001","status_pembayaran":"Dibatalkan","sisa":40000}])
+[lulus] Dua penerbitan massal bersamaan periode sama → satu penerbitan, tanpa tagihan ganda ([{"ok":true,"id":2,"status":201,"replayed":false,"jumlah_terbit":45},{"ok":false,"status":409,"errno":0}])
+[lulus] Tidak ada tagihan ganda per santri+periode
+[lulus] Pembayaran Rp80.000 dan revisi −Rp30.000 bersamaan → terbayar ≤ total (Rp0 ≤ Rp70000), penolakan hanya 409/422 ([{"ok":false,"status":422,"errno":0},{"ok":true,"id":97,"status":200,"replayed":false,"versi":2}])
+
+=== J-9. Kegagalan transaksi di tengah operasi ===
+[lulus] Pembayaran dengan audit gagal → 503
+[lulus] Verifikasi dengan audit gagal → 503
+[lulus] Pembatalan dengan audit gagal → 503
+[lulus] Revisi dengan audit gagal → 503
+[lulus] Penerbitan massal 45 tagihan dengan audit penutup gagal → 503
+[lulus] Tarif dengan audit gagal → 503 (tarif lama tidak ditandai Diganti)
+[lulus] Seluruh kegagalan di tengah operasi dibatalkan atomik: nol tagihan, pembayaran, kuitansi, pembatalan, tarif, atau klaim baru
+[lulus] Tagihan dan pembayaran kembali ke keadaan sebelum kegagalan
+[lulus] Tidak ada klaim idempotensi menggantung
+
+=== J-10. Isolasi wali dan lintas santri (kriteria 5) ===
+[lulus] Wali Tsanawi membuka tagihan dan kuitansi santri SMP/santri lain → 404
+[lulus] Wali tanpa relasi → 404
+[lulus] Seluruh ID pembayaran 1..19 ditebak wali Tsanawi: hanya milik anaknya, lainnya 404
+[lulus] Daftar pembayaran wali SMP: hanya anaknya, tanpa transfer menunggu, referensi, atau catatan
+[lulus] Saringan status Menunggu bagi wali tidak membuka transfer menunggu
+[lulus] Rincian tagihan bagi wali tanpa riwayat internal, alasan, referensi, atau alasan pembatalan
+[lulus] Kuitansi dibatalkan bagi wali: status terlihat, tanpa referensi dan alasan
+[lulus] Tunggakan wali Tsanawi hanya anaknya
+[lulus] Tunggakan petugas Tsanawi hanya santri Tsanawi
+[lulus] Saringan "lewat jatuh tempo" hanya tagihan yang jatuh temponya sudah lewat
+[lulus] Daftar pembayaran petugas Tsanawi tanpa pembayaran santri SMP
+[lulus] Petugas Tsanawi: kuitansi SMP dan penerbitan seluruh unit buatan petugas lain → 404
+[lulus] Admin membaca referensi transfer (pengawasan)
+
+=== J-11. Pencabutan penugasan, cakupan dipersempit, santri nonaktif ===
+[lulus] Cakupan dipersempit ke Tsanawi: replay pembayaran santri SMP → 404 tanpa data hasil
+[lulus] Cakupan dipersempit: tagihan SMP 404; penerbitan unit SMP ditolak
+[lulus] Santri dinonaktifkan: replay dan pembayaran baru → 404
+[lulus] Admin tetap membaca tagihan/tunggakan santri nonaktif
+[lulus] Penugasan dinonaktifkan saat sesi masih dipakai: pembayaran, tarif, revisi, tunggakan, pratinjau → 403
+[lulus] Penolakan J-11 tanpa baris atau klaim baru
+
+=== J-12. Verifier, audit, preservasi ===
+[lulus] Verifier Fase 1 + Fase 2 lulus pada data uji (108 pemeriksaan)
+[lulus] Setiap tagihan (manual dan massal) punya satu jejak audit terbit
+[lulus] Setiap pembayaran dan pembatalan punya jejak audit
+[lulus] Audit bsa.* Fase 2 tanpa nominal, sisa, referensi, alasan, atau nama
+[lulus] Jumlah baris santri tetap 258
+[lulus] Jumlah baris wali tetap 17
+[lulus] Jumlah baris santri_wali tetap 14
+[lulus] Jumlah baris users tetap 42
+[lulus] Jumlah baris pengurus tetap 26
+[lulus] Jumlah baris kelas tetap 7
+[lulus] Jumlah baris plotting_kelas tetap 45
+[lulus] Jumlah baris psb_pendaftar tetap 33
+[lulus] Jumlah baris psb_pembayaran tetap 26
+[lulus] Jumlah baris izin_pengajuan tetap 1052
+[lulus] Jumlah baris kesehatan_kunjungan tetap 7
+[lulus] Jumlah baris kesehatan_ringkasan tetap 3
+[lulus] Jumlah baris v3_pelanggaran tetap 5
+[lulus] Jumlah baris v4_rapor tetap 2
+[lulus] Jumlah baris bendahara_bulanan_assignments tetap 4
+[lulus] Jumlah baris kesehatan_assignments tetap 7
+
+Hasil: 179 lulus, 0 gagal

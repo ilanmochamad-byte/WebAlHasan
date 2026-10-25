@@ -412,6 +412,67 @@ pecahan. Sebelum migrasi 028 terpasang endpoint di bawah ini menjawab `503`.
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v6-2/README.md`.
 
+### Tabungan lengkap dan pembayaran silang V6 Fase 3 (25 Oktober 2026)
+
+Aditif; aktif bila migrasi 029 terpasang (sebelum itu/sesudah rollback,
+fitur di bawah menjawab `503` dan setoran/penarikan berperilaku Fase 1–2).
+Hak sama dengan Fase 1–2: petugas memutasi santri aktif dalam cakupannya,
+admin dan orang tua hanya membaca, di luar hak `404`. Setiap mutasi memakai
+`Idempotency-Key` per akun (kunci + isi sama → hasil sama `200` dengan
+`replayed: true`; isi beda → `409`).
+
+- `POST /v6/bsa/santri/{id}/setoran` `{nominal, metode: Tunai|Transfer,
+  referensi?, catatan?, terverifikasi?}`: tunai, atau transfer dengan
+  `terverifikasi: true` (petugas menyatakan sudah memeriksa dana masuk) →
+  `201 {status_setoran: "Sah", transaksi_id, nomor_kuitansi, saldo_sesudah}`.
+  Transfer tanpa pernyataan itu → **`202`** `{status_setoran: "Menunggu",
+  setoran_transfer_id, transaksi_id: null, saldo_sesudah}` (saldo efektif
+  tidak berubah). **Perubahan perilaku dari Fase 1–2**: transfer tanpa
+  `terverifikasi` dulu langsung sah.
+- `GET /v6/bsa/setoran-transfer?status=Menunggu|Sah|Ditolak|semua&q=&page=`
+  (petugas, admin); `POST /v6/bsa/setoran-transfer/{id}/verifikasi` → `200`
+  (baris ledger sah disisipkan saat itu, saldo naik sekali) dan `POST
+  /v6/bsa/setoran-transfer/{id}/tolak` `{alasan}` → `200`; keputusan kedua
+  → `409`.
+- `POST /v6/bsa/santri/{id}/penarikan` kini menerima `jenis:
+  Penarikan|Belanja` (bawaan Penarikan); respons menambah `jenis`,
+  `transaksi_id`, `nomor_kuitansi`.
+- `GET /v6/bsa/santri/{id}` kini menambah `setoran_transfer[]` dan
+  `saldo_menunggu` (orang tua: daftar kosong/0); baris `tabungan.rows[]`
+  menambah `nomor_kuitansi`, `penyetuju`, `pembalik_dari`,
+  `dikoreksi_oleh_id`, `pembayaran {id, nomor_kuitansi, tagihan_id, periode,
+  status}` (referensi silang), dan `alasan` (bukan untuk orang tua).
+  `saldo_menunggu` menjumlah seluruh setoran menunggu santri, termasuk yang
+  berada di luar batas 50 baris `setoran_transfer[]`.
+- `GET /v6/bsa/tabungan?jenis=&metode=&tanggal=&q=&page=` (petugas, admin):
+  mutasi tabungan sah lintas santri. `GET /v6/bsa/tabungan/{id}` (petugas,
+  admin, orang tua anaknya): satu transaksi + `saldo_sebelum` untuk
+  kuitansi. `POST /v6/bsa/tabungan/{id}/koreksi` `{alasan}` → `201` baris
+  `Pembalik` beralasan; asal sudah dikoreksi → `409`; asal pembalik, debit
+  pembayaran tagihan (koreksi lewat pembatalan pembayaran), atau saldo tidak
+  cukup → `422`.
+- `POST /v6/bsa/tagihan/{id}/bayar-tabungan` `{nominal, setuju: true,
+  catatan?}` → `201 {id, nomor_kuitansi, status_pembayaran, sisa,
+  transaksi_id, saldo}`: debit ledger `PembayaranTagihan` dan pembayaran
+  `Tabungan` dalam satu transaksi, saling merujuk. Tanpa `setuju`, melebihi
+  saldo, atau melebihi sisa dikurangi transfer menunggu → `422`.
+  Pembayaran `GET /v6/bsa/tagihan/{id}` dan `/v6/bsa/pembayaran/{id}` menambah
+  `tabungan {transaksi_id, nomor_kuitansi, pengembalian_id}`. `POST
+  /v6/bsa/pembayaran/{id}/batal` atas pembayaran `Tabungan` mengembalikan
+  saldo (respons menambah `transaksi_id`, `saldo`).
+  Replay pembatalan juga membawa ID pembalik yang sama serta saldo kini;
+  transaksi sesudah pembatalan tidak mengubah referensi pembalik tersebut.
+- `GET /v6/bsa/rekonsiliasi?tanggal=TTTT-BB-HH` (petugas cakupannya, admin;
+  orang tua `403`): `kas{Tunai,Transfer}`, `penerimaan_kas_baru` (tanpa
+  perpindahan internal), `tabungan`, `tagihan`, `internal{…, selisih,
+  selisih_pengembalian}`, `saldo{awal, mutasi_bersih, akhir, selisih, akun,
+  selisih_akun}`, `menunggu`, `rows[]` (≤500).
+  Kas mengikuti waktu verifikasi/pembatalan. Dua sisi perpindahan internal
+  memakai waktu debit ledger (pembayaran) atau pembalik (pengembalian),
+  sehingga satu operasi yang melintasi tengah malam tetap satu hari laporan.
+
+Rincian, penafsiran, dan batas uji: `docs/phase-v6-3/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh

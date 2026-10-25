@@ -1,0 +1,327 @@
+[
+  {
+    "suite": "statis-alumni_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-get_mutasi_v1_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-keamanan_psb_static",
+    "baseline_gagal": [
+      "[gagal] S4 pratinjau (AG) tetap belum dipasang"
+    ],
+    "audit_gagal": [
+      "[gagal] S4 pratinjau (AG) tetap belum dipasang"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-kredensial_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-navigasi_ikon_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-penempatan_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-penugasan_static",
+    "baseline_gagal": [
+      "[gagal] FS-2 seluruh tujuh jenis memakai role dasar guru atau pengurus",
+      "[gagal] FS-4 tujuh jenis penugasan masing-masing memakai tabel sendiri"
+    ],
+    "audit_gagal": [
+      "[gagal] FS-2 seluruh tujuh jenis memakai role dasar guru atau pengurus",
+      "[gagal] FS-4 tujuh jenis penugasan masing-masing memakai tabel sendiri"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-perapihan_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-phase1_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-phase2_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-phase3_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-phase4_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-phase5_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-redesain_web_tahap1_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-redesain_web_tahap2_static",
+    "baseline_gagal": [
+      "[gagal] Admin: 7 grup (Beranda + 6 grup bernama)"
+    ],
+    "audit_gagal": [
+      "[gagal] Admin: 7 grup (Beranda + 6 grup bernama)"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-redesain_web_tahap3_static",
+    "baseline_gagal": [
+      "[gagal] S3-9 AG panel pendaftar tanpa pratinjau gambar berkas"
+    ],
+    "audit_gagal": [
+      "[gagal] S3-9 AG panel pendaftar tanpa pratinjau gambar berkas"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-redesain_web_tahap4_static",
+    "baseline_gagal": [
+      "[gagal] Tanpa perubahan skema/migrasi (database/ tidak berubah sejak Tahap 3)"
+    ],
+    "audit_gagal": [
+      "[gagal] Tanpa perubahan skema/migrasi (database/ tidak berubah sejak Tahap 3)"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-redesain_web_tahap5_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-redesain_web_tahap6_static",
+    "baseline_gagal": [
+      "[gagal] Jenis modul mendatang dipisah dengan keterangan",
+      "[gagal] Navigation dan app/Auth tidak diubah Tahap 6"
+    ],
+    "audit_gagal": [
+      "[gagal] Jenis modul mendatang dipisah dengan keterangan",
+      "[gagal] Navigation dan app/Auth tidak diubah Tahap 6"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-redesain_web_tahap7_static",
+    "baseline_gagal": [
+      "[gagal] Tidak berubah: app/Penugasan/PenugasanJenis.php",
+      "[gagal] REST (api/), migrasi/rollback (database/), dan bin/ tidak berubah"
+    ],
+    "audit_gagal": [
+      "[gagal] Tidak berubah: app/Penugasan/PenugasanJenis.php",
+      "[gagal] REST (api/), migrasi/rollback (database/), dan bin/ tidak berubah"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-redesain_web_tahap8_static",
+    "baseline_gagal": [
+      "[gagal] T8-F tidak berubah dari baseline: database",
+      "[gagal] T8-F tidak berubah dari baseline: api"
+    ],
+    "audit_gagal": [
+      "[gagal] T8-F tidak berubah dari baseline: database",
+      "[gagal] T8-F tidak berubah dari baseline: api"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-v2_phase1_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-v2_phase2_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-v2_phase3_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-v2_phase4_static",
+    "baseline_gagal": [
+      "[gagal] Deep link membuka layar detail izin"
+    ],
+    "audit_gagal": [
+      "[gagal] Deep link membuka layar detail izin"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-v2_phase5_static",
+    "baseline_gagal": [
+      "[gagal] Expo TETAP ~57.0.15 (tidak dinaikkan)",
+      "[gagal] React Native TETAP 0.86.2 (tidak dinaikkan)",
+      "[gagal] expo-notifications tetap selaras SDK 57"
+    ],
+    "audit_gagal": [
+      "[gagal] Expo TETAP ~57.0.15 (tidak dinaikkan)",
+      "[gagal] React Native TETAP 0.86.2 (tidak dinaikkan)",
+      "[gagal] expo-notifications tetap selaras SDK 57"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-v3_phase1_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-v3_phase2_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-v3_phase3_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-v3_phase4_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  },
+  {
+    "suite": "statis-v5_phase1_static",
+    "baseline_gagal": [
+      "[gagal] Migrasi 024 berurutan setelah 023 (migrasi terakhir yang ada)",
+      "[gagal] Fase 1 tanpa jalur ubah/hapus kunjungan (koreksi berversi = Fase 2)",
+      "[gagal] Validasi: status Tercatat, waktu tidak di masa depan, kunci aman",
+      "[gagal] Tanpa tombol ubah/hapus pada daftar dan detail"
+    ],
+    "audit_gagal": [
+      "[gagal] Migrasi 024 berurutan setelah 023 (migrasi terakhir yang ada)",
+      "[gagal] Fase 1 tanpa jalur ubah/hapus kunjungan (koreksi berversi = Fase 2)",
+      "[gagal] Validasi: status Tercatat, waktu tidak di masa depan, kunci aman",
+      "[gagal] Tanpa tombol ubah/hapus pada daftar dan detail"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-v5_phase2_static",
+    "baseline_gagal": [
+      "[gagal] Migrasi 025 berurutan setelah 024 (migrasi terakhir yang ada)",
+      "[gagal] app/Auth, app/Penugasan, dan AuditLogger tidak berubah dari baseline audit Fase 1 (1852fdb)"
+    ],
+    "audit_gagal": [
+      "[gagal] Migrasi 025 berurutan setelah 024 (migrasi terakhir yang ada)",
+      "[gagal] app/Auth, app/Penugasan, dan AuditLogger tidak berubah dari baseline audit Fase 1 (1852fdb)"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-v5_phase3_static",
+    "baseline_gagal": [
+      "[gagal] Migrasi 026 berurutan setelah 025 (migrasi terakhir yang ada)",
+      "[gagal] app/Auth, app/Penugasan, AuditLogger, dan layanan/repositori klinis tidak berubah dari baseline audit Fase 2",
+      "[gagal] Tidak mengubah modul V3/V4/izin/PSB/admin atau aplikasi mobile"
+    ],
+    "audit_gagal": [
+      "[gagal] Migrasi 026 berurutan setelah 025 (migrasi terakhir yang ada)",
+      "[gagal] app/Auth, app/Penugasan, AuditLogger, dan layanan/repositori klinis tidak berubah dari baseline audit Fase 2",
+      "[gagal] Tidak mengubah modul V3/V4/izin/PSB/admin atau aplikasi mobile"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-v5_phase5_static",
+    "baseline_gagal": [
+      "[gagal] Fase 5 tidak menambah migrasi (026 terakhir)"
+    ],
+    "audit_gagal": [
+      "[gagal] Fase 5 tidak menambah migrasi (026 terakhir)"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-v6_phase1_static",
+    "baseline_gagal": [
+      "[gagal] Migrasi 027 berurutan setelah 026 (migrasi terakhir yang ada)",
+      "[gagal] AuditLogger hanya meloloskan metadata untuk aksi bsa.* (tanpa nominal/saldo/referensi/tujuan)",
+      "[gagal] Riwayat wali tanpa referensi transfer dan catatan internal",
+      "[gagal] Migrasi/rollback lama (≤ 026) tidak diubah",
+      "[gagal] Fase 2+ belum dimulai: tanpa tarif, pembayaran tagihan, kuitansi, pembalik, atau notifikasi"
+    ],
+    "audit_gagal": [
+      "[gagal] Migrasi 027 berurutan setelah 026 (migrasi terakhir yang ada)",
+      "[gagal] AuditLogger hanya meloloskan metadata untuk aksi bsa.* (tanpa nominal/saldo/referensi/tujuan)",
+      "[gagal] Riwayat wali tanpa referensi transfer dan catatan internal",
+      "[gagal] Migrasi/rollback lama (≤ 026) tidak diubah",
+      "[gagal] Fase 2+ belum dimulai: tanpa tarif, pembayaran tagihan, kuitansi, pembalik, atau notifikasi"
+    ],
+    "sama": true
+  },
+  {
+    "suite": "statis-v6_phase2_static",
+    "baseline_gagal": [
+      "[gagal] Rute (revisi|batal|pembayaran)",
+      "[gagal] Sepuluh panggilan audit Fase 2 hanya memakai kunci metadata yang diizinkan",
+      "[gagal] Preflight Fase 1, halaman setoran/penarikan, dan BsaException tidak diubah",
+      "[gagal] Berkas berubah hanya dalam daftar Fase 2: app/Bsa/TabunganRepository.php, app/Bsa/TabunganService.php, bin/v6_phase3_preflight.php, bin/v6_phase3_rollback_preflight.php, bin/v6_phase3_verify.php, database/migrations/029_v6_fase3_tabungan.sql, database/rollbacks/029_v6_fase3_tabungan.sql, docs/phase-v6-3/bukti/browser.txt, docs/phase-v6-3/bukti/http.txt, docs/phase-v6-3/bukti/integrasi.txt, docs/phase-v6-3/bukti/migrasi-rollback.txt, docs/phase-v6-3/bukti/regresi/ringkasan.txt, docs/phase-v6-3/bukti/regresi/statis-alumni_static.txt, docs/phase-v6-3/bukti/regresi/statis-get_mutasi_v1_static.txt, docs/phase-v6-3/bukti/regresi/statis-keamanan_psb_static.txt, docs/phase-v6-3/bukti/regresi/statis-kredensial_static.txt, docs/phase-v6-3/bukti/regresi/statis-navigasi_ikon_static.txt, docs/phase-v6-3/bukti/regresi/statis-penempatan_static.txt, docs/phase-v6-3/bukti/regresi/statis-penugasan_static.txt, docs/phase-v6-3/bukti/regresi/statis-perapihan_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase4_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase5_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap1_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap2_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap3_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap4_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap5_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap6_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap7_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap8_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase4_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase5_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase4_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase5_static.txt, docs/phase-v6-3/bukti/regresi/statis-v6_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v6_phase2_static.txt, docs/phase-v6-3/bukti/statis.txt, docs/phase-v6-3/perintah-regresi.sh, docs/phase-v6-3/perintah-uji.sh, docs/phase-v6-3/tangkapan/bayar-tabungan-375.png, docs/phase-v6-3/tangkapan/dialog-tolak-375.png, docs/phase-v6-3/tangkapan/formulir-pengeluaran-375.png, docs/phase-v6-3/tangkapan/formulir-setoran-375.png, docs/phase-v6-3/tangkapan/kuitansi-tabungan-375.png, docs/phase-v6-3/tangkapan/kuitansi-tabungan-a4.pdf, docs/phase-v6-3/tangkapan/mutasi-tabungan-375.png, docs/phase-v6-3/tangkapan/rekonsiliasi-375.png, docs/phase-v6-3/tangkapan/rekonsiliasi-admin-375.png, docs/phase-v6-3/tangkapan/rincian-santri-admin-375.png, docs/phase-v6-3/tangkapan/rincian-santri-wali-375.png, docs/phase-v6-3/tangkapan/rincian-tagihan-admin-375.png, docs/phase-v6-3/tangkapan/rincian-tagihan-wali-375.png, docs/phase-v6-3/tangkapan/santri-375.png, docs/phase-v6-3/tangkapan/setoran-menunggu-375.png, docs/phase-v6-3/tangkapan/setoran-transfer-375.png, docs/phase-v6-3/tangkapan/tagihan-tabungan-375.png, docs/phase-v6-3/tangkapan/tanpa-js-santri-375.png, tests/browser/uji-v6-fase3.mjs, tests/v6_phase3_db.sh, tests/v6_phase3_http.php, tests/v6_phase3_integration.php, tests/v6_phase3_migration.php, tests/v6_phase3_static.php, tests/v6_phase3_worker.php"
+    ],
+    "audit_gagal": [
+      "[gagal] Rute (revisi|batal|pembayaran)",
+      "[gagal] Sepuluh panggilan audit Fase 2 hanya memakai kunci metadata yang diizinkan",
+      "[gagal] Migrasi/rollback ≤ 027 tidak diubah",
+      "[gagal] Preflight Fase 1, halaman setoran/penarikan, dan BsaException tidak diubah",
+      "[gagal] Berkas berubah hanya dalam daftar Fase 2: app/Bsa/TabunganRepository.php, app/Bsa/TabunganService.php, bin/v6_phase3_preflight.php, bin/v6_phase3_rollback_preflight.php, bin/v6_phase3_verify.php, database/migrations/029_v6_fase3_tabungan.sql, database/rollbacks/029_v6_fase3_tabungan.sql, docs/phase-v6-3/README.md, docs/phase-v6-3/bukti/browser.txt, docs/phase-v6-3/bukti/http.txt, docs/phase-v6-3/bukti/integrasi.txt, docs/phase-v6-3/bukti/migrasi-rollback.txt, docs/phase-v6-3/bukti/regresi/browser-kerangka-sembilan-akun.txt, docs/phase-v6-3/bukti/regresi/keamanan-psb-browser.txt, docs/phase-v6-3/bukti/regresi/keamanan-psb-http.txt, docs/phase-v6-3/bukti/regresi/penugasan-integrasi.txt, docs/phase-v6-3/bukti/regresi/redesain-tahap2-http.txt, docs/phase-v6-3/bukti/regresi/redesain-tahap3-http.txt, docs/phase-v6-3/bukti/regresi/redesain-tahap5-http.txt, docs/phase-v6-3/bukti/regresi/redesain-tahap6-http-tanpa-024-029.txt, docs/phase-v6-3/bukti/regresi/redesain-tahap6-rollback-029-024.txt, docs/phase-v6-3/bukti/regresi/redesain-tahap7-http.txt, docs/phase-v6-3/bukti/regresi/ringkasan.txt, docs/phase-v6-3/bukti/regresi/statis-alumni_static.txt, docs/phase-v6-3/bukti/regresi/statis-get_mutasi_v1_static.txt, docs/phase-v6-3/bukti/regresi/statis-keamanan_psb_static.txt, docs/phase-v6-3/bukti/regresi/statis-kredensial_static.txt, docs/phase-v6-3/bukti/regresi/statis-navigasi_ikon_static.txt, docs/phase-v6-3/bukti/regresi/statis-penempatan_static.txt, docs/phase-v6-3/bukti/regresi/statis-penugasan_static.txt, docs/phase-v6-3/bukti/regresi/statis-perapihan_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase4_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase5_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap1_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap2_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap3_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap4_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap5_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap6_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap7_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap8_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase4_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase5_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase4_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase5_static.txt, docs/phase-v6-3/bukti/regresi/statis-v6_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v6_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v6_phase3_static.txt, docs/phase-v6-3/bukti/regresi/v2-fase4-integrasi.txt, docs/phase-v6-3/bukti/regresi/v2-fase5-integrasi.txt, docs/phase-v6-3/bukti/regresi/v5-fase3-integrasi.txt, docs/phase-v6-3/bukti/regresi/v5-fase5-integrasi.txt, docs/phase-v6-3/bukti/regresi/v6-fase1-browser.txt, docs/phase-v6-3/bukti/regresi/v6-fase1-http-kontrol-tanpa-029.txt, docs/phase-v6-3/bukti/regresi/v6-fase1-http.txt, docs/phase-v6-3/bukti/regresi/v6-fase1-integrasi.txt, docs/phase-v6-3/bukti/regresi/v6-fase1-migrasi.txt, docs/phase-v6-3/bukti/regresi/v6-fase1-probe-audit.txt, docs/phase-v6-3/bukti/regresi/v6-fase2-browser.txt, docs/phase-v6-3/bukti/regresi/v6-fase2-http.txt, docs/phase-v6-3/bukti/regresi/v6-fase2-integrasi.txt, docs/phase-v6-3/bukti/regresi/v6-fase2-migrasi-kontrol-baseline-ca62c31.txt, docs/phase-v6-3/bukti/regresi/v6-fase2-migrasi.txt, docs/phase-v6-3/bukti/regresi/v6-fase2-probe-audit.txt, docs/phase-v6-3/bukti/regresi/v6-fase2-probe-era027.txt, docs/phase-v6-3/bukti/statis.txt, docs/phase-v6-3/perintah-regresi.sh, docs/phase-v6-3/perintah-uji.sh, docs/phase-v6-3/tangkapan/bayar-tabungan-375.png, docs/phase-v6-3/tangkapan/dialog-tolak-375.png, docs/phase-v6-3/tangkapan/formulir-pengeluaran-375.png, docs/phase-v6-3/tangkapan/formulir-setoran-375.png, docs/phase-v6-3/tangkapan/kuitansi-tabungan-375.png, docs/phase-v6-3/tangkapan/kuitansi-tabungan-a4.pdf, docs/phase-v6-3/tangkapan/mutasi-tabungan-375.png, docs/phase-v6-3/tangkapan/rekonsiliasi-375.png, docs/phase-v6-3/tangkapan/rekonsiliasi-admin-375.png, docs/phase-v6-3/tangkapan/rincian-santri-admin-375.png, docs/phase-v6-3/tangkapan/rincian-santri-wali-375.png, docs/phase-v6-3/tangkapan/rincian-tagihan-admin-375.png, docs/phase-v6-3/tangkapan/rincian-tagihan-wali-375.png, docs/phase-v6-3/tangkapan/santri-375.png, docs/phase-v6-3/tangkapan/setoran-menunggu-375.png, docs/phase-v6-3/tangkapan/setoran-transfer-375.png, docs/phase-v6-3/tangkapan/tagihan-tabungan-375.png, docs/phase-v6-3/tangkapan/tanpa-js-santri-375.png, tests/browser/uji-v6-fase3.mjs, tests/v6_phase3_db.sh, tests/v6_phase3_http.php, tests/v6_phase3_integration.php, tests/v6_phase3_migration.php, tests/v6_phase3_static.php, tests/v6_phase3_worker.php, docs/phase-v6-3/audit-codex/browser.txt, docs/phase-v6-3/audit-codex/http-akhir.txt, docs/phase-v6-3/audit-codex/http.txt, docs/phase-v6-3/audit-codex/integrasi-akhir.txt, docs/phase-v6-3/audit-codex/integrasi.txt, docs/phase-v6-3/audit-codex/migrasi-rollback.txt, docs/phase-v6-3/audit-codex/probe-akhir.txt, docs/phase-v6-3/audit-codex/probe-kontrol.txt, docs/phase-v6-3/audit-codex/probe-sebelum-lengkap.txt, docs/phase-v6-3/audit-codex/probe-sebelum.txt, docs/phase-v6-3/audit-codex/regresi/ringkasan.txt, docs/phase-v6-3/audit-codex/regresi/statis-alumni_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-get_mutasi_v1_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-keamanan_psb_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-kredensial_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-navigasi_ikon_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-penempatan_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-penugasan_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-perapihan_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-phase1_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-phase2_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-phase3_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-phase4_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-phase5_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-redesain_web_tahap1_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-redesain_web_tahap2_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-redesain_web_tahap3_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-redesain_web_tahap4_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-redesain_web_tahap5_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-redesain_web_tahap6_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-redesain_web_tahap7_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-redesain_web_tahap8_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v2_phase1_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v2_phase2_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v2_phase3_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v2_phase4_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v2_phase5_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v3_phase1_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v3_phase2_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v3_phase3_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v3_phase4_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v5_phase1_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v5_phase2_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v5_phase3_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v5_phase5_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v6_phase1_static.txt, docs/phase-v6-3/audit-codex/regresi/statis-v6_phase2_static.txt, docs/phase-v6-3/audit-codex/server-ringkasan.txt, docs/phase-v6-3/audit-codex/statis-akhir.txt, docs/phase-v6-3/audit-codex/statis.txt, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/bayar-tabungan-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/dialog-tolak-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/formulir-pengeluaran-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/formulir-setoran-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/kuitansi-tabungan-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/kuitansi-tabungan-a4.pdf, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/mutasi-tabungan-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/rekonsiliasi-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/rekonsiliasi-admin-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/rincian-santri-admin-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/rincian-santri-wali-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/rincian-tagihan-admin-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/rincian-tagihan-wali-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/santri-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/setoran-menunggu-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/setoran-transfer-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/tagihan-tabungan-375.png, docs/phase-v6-3/audit-codex/tangkapan/uji-v6-fase3/tanpa-js-santri-375.png, docs/phase-v6-3/audit-codex/ulang-uji.sh, tests/v6_phase3_audit.php"
+    ],
+    "sama": false
+  },
+  {
+    "suite": "statis-v6_phase3_static",
+    "baseline_gagal": [],
+    "audit_gagal": [],
+    "sama": true
+  }
+]

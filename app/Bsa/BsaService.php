@@ -56,6 +56,8 @@ final class BsaService
 
     public const OP_SETORAN = 'tabungan.setoran';
     public const OP_PENARIKAN = 'tabungan.penarikan';
+    /** Fase 3: belanja dari tabungan (jenis ledger `Belanja`), hash terpisah dari penarikan. */
+    public const OP_BELANJA = 'tabungan.belanja';
     public const OP_TAGIHAN = 'tagihan.terbit';
 
     /** Batas satu nominal (Rp1 miliar) — mencegah salah ketik berlipat, bukan aturan bisnis. */
@@ -246,6 +248,26 @@ final class BsaService
     }
 
     /**
+     * Mencatat belanja yang mengambil tabungan (PRD V6 Fase 3): aturan sama
+     * dengan penarikan — tujuan wajib, ditolak tanpa mutasi bila melebihi
+     * saldo — dengan jenis ledger `Belanja`. Dipanggil `TabunganService`.
+     *
+     * @param array<string, mixed> $user
+     * @param array<string, mixed> $input idempotency_key, nominal, metode, tujuan, referensi, catatan
+     * @return array{id:int, status:int, replayed:bool, saldo_sesudah:int}
+     */
+    public function belanja(array $user, int $santriId, array $input, string $kanal): array
+    {
+        return $this->mutasiTabungan($user, $santriId, $input, $kanal, self::OP_BELANJA);
+    }
+
+    /** Nomor kuitansi tabungan turunan ID ledger yang tidak berubah (Fase 3). */
+    public static function nomorKuitansiTabungan(int $id, string $dibuat): string
+    {
+        return 'BSA-TB-' . substr($dibuat, 0, 4) . '-' . str_pad((string) $id, 6, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Menerbitkan satu tagihan bulanan untuk satu santri dan satu periode.
      *
      * @param array<string, mixed> $user
@@ -304,7 +326,7 @@ final class BsaService
     {
         $this->wajibKelola($user);
         $userId = (int) $user['id'];
-        $keluar = $operasi === self::OP_PENARIKAN;
+        $keluar = $operasi !== self::OP_SETORAN;
         $data = $this->normalisasiTabungan($input, $keluar);
         $hash = $this->hash([$operasi, $santriId, $data['nominal'], $data['metode'], $data['tujuan'], $data['referensi'], $data['catatan']]);
 
@@ -327,17 +349,21 @@ final class BsaService
             $akun = $this->repo->kunciAkun($santriId);
             $saldoLama = $akun['saldo'] ?? 0;
             if ($keluar && ($akun === null || $data['nominal'] > $saldoLama)) {
-                throw new BsaException('Saldo tabungan tidak mencukupi. Penarikan tidak dicatat.', 422);
+                throw new BsaException('Saldo tabungan tidak mencukupi. ' . ($operasi === self::OP_BELANJA ? 'Belanja' : 'Penarikan') . ' tidak dicatat.', 422);
             }
             if ($akun === null) {
                 throw new BsaException('Akun tabungan sedang disiapkan. Tidak ada data yang diubah; coba lagi.', 409);
             }
             $saldoBaru = $keluar ? $saldoLama - $data['nominal'] : $saldoLama + $data['nominal'];
-            $data['jenis'] = $keluar ? 'Penarikan' : 'Setoran';
+            $data['jenis'] = match ($operasi) {
+                self::OP_BELANJA => 'Belanja',
+                self::OP_PENARIKAN => 'Penarikan',
+                default => 'Setoran',
+            };
             $data['arah'] = $keluar ? 'Keluar' : 'Masuk';
             $id = $this->repo->catatTransaksi($santriId, $data, $saldoLama, $saldoBaru, $userId, $tugas['pengurus_id'], $tugas['id']);
             $this->repo->selesaikanIdempotensi($klaim['id'], $id, 201);
-            $this->wajibAudit($keluar ? 'bsa.tabungan.penarikan' : 'bsa.tabungan.setoran', 'bsa_tabungan_transaksi', $id, [
+            $this->wajibAudit('bsa.tabungan.' . strtolower($data['jenis']), 'bsa_tabungan_transaksi', $id, [
                 'transaksi_id' => $id, 'santri_id' => $santriId, 'jenis' => $data['jenis'], 'metode' => $data['metode'], 'status' => 'Sah',
                 'penugasan_id' => $tugas['id'], 'sumber' => self::SUMBER_PETUGAS, 'kanal' => $this->kanal($kanal),
             ], $userId);
@@ -728,10 +754,15 @@ final class BsaService
      * orang tua (PRD V6 §5.4); orang tua melihat jenis, nominal, tujuan,
      * saldo sesudah, dan waktu.
      *
+     * Fase 3 (aditif): nomor kuitansi tabungan, referensi silang ke
+     * pembayaran tagihan (debit `PembayaranTagihan` atau pengembaliannya),
+     * hubungan pembalik ↔ transaksi asal, dan alasan koreksi (bukan untuk
+     * orang tua).
+     *
      * @param array<string, mixed> $x
      * @return array<string, mixed>
      */
-    private function ringkasTransaksi(array $x, bool $wali = false): array
+    public function ringkasTransaksi(array $x, bool $wali = false): array
     {
         $baris = [
             'id' => (int) $x['id'],
@@ -746,9 +777,21 @@ final class BsaService
             'catatan' => $x['catatan'] === null ? null : (string) $x['catatan'],
             'petugas' => ['nama' => (string) $x['petugas_nama']],
             'waktu' => (string) $x['created_at'],
+            'nomor_kuitansi' => self::nomorKuitansiTabungan((int) $x['id'], (string) $x['created_at']),
+            'penyetuju' => ($x['penyetuju_nama'] ?? null) === null ? null : ['nama' => (string) $x['penyetuju_nama']],
+            'pembalik_dari' => ($x['pembalik_dari_id'] ?? null) === null ? null : [
+                'id' => (int) $x['pembalik_dari_id'], 'jenis' => (string) $x['asal_jenis'],
+                'nomor_kuitansi' => self::nomorKuitansiTabungan((int) $x['pembalik_dari_id'], (string) $x['asal_created_at']),
+            ],
+            'dikoreksi_oleh_id' => ($x['dikoreksi_oleh_id'] ?? null) === null ? null : (int) $x['dikoreksi_oleh_id'],
+            'alasan' => ($x['alasan'] ?? null) === null ? null : (string) $x['alasan'],
+            'pembayaran' => ($x['bayar_id'] ?? null) === null ? null : [
+                'id' => (int) $x['bayar_id'], 'nomor_kuitansi' => (string) $x['bayar_kuitansi'], 'tagihan_id' => (int) $x['bayar_tagihan_id'],
+                'periode' => (string) $x['bayar_periode'], 'status' => (string) $x['bayar_status'],
+            ],
         ];
         if ($wali) {
-            unset($baris['referensi'], $baris['catatan']);
+            unset($baris['referensi'], $baris['catatan'], $baris['alasan']);
         }
 
         return $baris;

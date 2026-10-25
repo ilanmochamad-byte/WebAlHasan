@@ -1,0 +1,6 @@
+statis-akhir exit=0
+probe-akhir exit=0
+batas-tengah-malam-akhir exit=0
+integrasi-akhir exit=0
+http-akhir exit=0
+browser exit=0

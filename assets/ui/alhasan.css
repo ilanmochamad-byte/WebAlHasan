@@ -610,6 +610,8 @@ body.ah {
 /* V6 Fase 2: nominal rupiah besar (mis. total tunggakan) membungkus di HP alih-alih melebarkan halaman. */
 .ah-stat { min-width: 0; }
 .ah-stat__value { overflow-wrap: anywhere; }
+/* V6 Fase 3: di HP (dua kartu sebaris) nominal enam digit muat satu baris; pembungkusan tetap cadangan. */
+@media (max-width: 575.98px) { .ah-stat__value { font-size: 1.3rem; } }
 .ah-stat__hint { color: var(--ah-ink-muted); font-size: .8rem; }
 
 /* Tabel lebar menggulir di dalam wadahnya sendiri, bukan melebarkan halaman. */
@@ -1673,7 +1675,8 @@ body.ah-masuk { min-height: 100dvh; background: var(--ah-green-050); }
 @media (max-width: 767.98px) { .ah-only-split-sm { display: inline-flex; } }
 
 /* Segmen (Mingguan/Daftar, Santri/Guru/Gabungan). */
-.ah-seg { display: inline-flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--ah-line-strong); border-radius: 999px; padding: 3px; background: var(--ah-surface); margin-bottom: 1rem; max-width: 100%; }
+/* Radius setinggi satu baris: tetap berbentuk pil, tetapi saat butir membungkus (HP) menjadi persegi membulat, bukan elips. */
+.ah-seg { display: inline-flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--ah-line-strong); border-radius: calc(var(--ah-touch) / 2); padding: 3px; background: var(--ah-surface); margin-bottom: 1rem; max-width: 100%; }
 .ah-seg a { display: inline-flex; align-items: center; min-height: calc(var(--ah-touch) - 6px); padding: .25rem .95rem; border-radius: 999px; color: var(--ah-ink-soft); text-decoration: none; font-weight: 600; font-size: .9rem; }
 .ah-seg a:hover { color: var(--ah-green-800); background: var(--ah-green-050); }
 .ah-seg a[aria-current="page"] { background: var(--ah-green-700); color: #fff; }

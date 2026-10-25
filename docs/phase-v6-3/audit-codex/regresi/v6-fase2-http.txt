@@ -1,0 +1,128 @@
+[lulus] Fixture V6 tersedia; tabel tagihan Fase 2 kosong (027 + 028 terpasang)
+
+=== K-B. Formulir web petugas: tarif, penyesuaian, penerbitan ===
+[lulus] POST tarif tanpa CSRF → 419 tanpa tarif
+[lulus] Tarif SMP tersimpan lewat POST + CSRF; klik ganda (kunci sama) tetap satu tarif
+[lulus] Perubahan tarif tanpa alasan → 422, formulir dirender ulang dengan kunci sama
+[lulus] Halaman tarif memuat tarif SMP Rp500.000 dan Tsanawi Rp250.000 (no-store)
+[lulus] Penyesuaian santri beralasan tersimpan lewat web
+[lulus] Pratinjau web: 45 tagihan akan terbit, santri tanpa kelas dikelompokkan dilewati, belum ada tagihan tertulis
+[lulus] Terbitkan + klik ganda (kunci sama) → satu penerbitan, 45 tagihan
+[lulus] Rincian penerbitan tampil
+[lulus] Pratinjau ulang periode sama: tidak ada tagihan baru, tombol terbit tidak ada
+[lulus] POST terbit ulang periode sama (kunci lain, hash lama) ditolak tanpa tagihan kedua
+[lulus] Tagihan santri SMP berpenyesuaian Rp500.000 − Rp100.000 = Rp400.000
+
+=== K-A. Hak setiap halaman Fase 2 (server) ===
+[lulus] /portal/bsa_tarif.php sbx_v6_bsa_b → 200
+[lulus] /portal/bsa_tarif.php sbx_v6_bsa_tsanawi → 200
+[lulus] /portal/bsa_tarif.php sbx_admin → 200
+[lulus] /portal/bsa_tarif.php sbx_v6_admin_bsa → 200
+[lulus] /portal/bsa_tarif.php sbx_v6_wali_smp → 403
+[lulus] /portal/bsa_tarif.php sbx_pengurus_biasa → 403
+[lulus] /portal/bsa_tarif.php sbx_guru_biasa → 403
+[lulus] /portal/bsa_penerbitan.php sbx_v6_bsa_b → 200
+[lulus] /portal/bsa_penerbitan.php sbx_admin → 200
+[lulus] /portal/bsa_penerbitan.php sbx_v6_wali_smp → 403
+[lulus] /portal/bsa_penerbitan.php sbx_pengurus_biasa → 403
+[lulus] /portal/bsa_penyesuaian.php?santri_id=1710 sbx_v6_bsa_b → 200
+[lulus] /portal/bsa_penyesuaian.php?santri_id=1710 sbx_admin → 200
+[lulus] /portal/bsa_penyesuaian.php?santri_id=1710 sbx_v6_bsa_tsanawi → 404
+[lulus] /portal/bsa_penyesuaian.php?santri_id=1710 sbx_v6_wali_smp → 403
+[lulus] /portal/bsa_penyesuaian.php?santri_id=1710 sbx_guru_biasa → 403
+[lulus] /portal/bsa_tagihan.php?id=44 sbx_v6_bsa_b → 200
+[lulus] /portal/bsa_tagihan.php?id=44 sbx_admin → 200
+[lulus] /portal/bsa_tagihan.php?id=44 sbx_v6_wali_smp → 200
+[lulus] /portal/bsa_tagihan.php?id=44 sbx_v6_bsa_tsanawi → 404
+[lulus] /portal/bsa_tagihan.php?id=44 sbx_v6_wali_tsanawi → 404
+[lulus] /portal/bsa_tagihan.php?id=44 sbx_ortu_a → 404
+[lulus] /portal/bsa_tagihan.php?id=44 sbx_pengurus_biasa → 403
+[lulus] /portal/bsa_bayar.php?tagihan_id=44 sbx_v6_bsa_b → 200
+[lulus] /portal/bsa_bayar.php?tagihan_id=44 sbx_admin → 403
+[lulus] /portal/bsa_bayar.php?tagihan_id=44 sbx_v6_admin_bsa → 403
+[lulus] /portal/bsa_bayar.php?tagihan_id=44 sbx_v6_wali_smp → 403
+[lulus] /portal/bsa_bayar.php?tagihan_id=44 sbx_v6_bsa_tsanawi → 404
+[lulus] /portal/bsa_tunggakan.php sbx_v6_bsa_b → 200
+[lulus] /portal/bsa_tunggakan.php sbx_admin → 200
+[lulus] /portal/bsa_tunggakan.php sbx_v6_wali_smp → 200
+[lulus] /portal/bsa_tunggakan.php sbx_pengurus_biasa → 403
+[lulus] /portal/bsa_tunggakan.php sbx_guru_biasa → 403
+[lulus] /portal/bsa_pembayaran.php sbx_v6_bsa_b → 200
+[lulus] /portal/bsa_pembayaran.php sbx_admin → 200
+[lulus] /portal/bsa_pembayaran.php sbx_v6_wali_smp → 200
+[lulus] /portal/bsa_pembayaran.php sbx_pengurus_biasa → 403
+[lulus] /portal/bsa_kuitansi.php?id=999999 sbx_v6_bsa_b → 404
+[lulus] /portal/bsa_kuitansi.php?id=999999 sbx_admin → 404
+[lulus] /portal/bsa_kuitansi.php?id=999999 sbx_v6_wali_smp → 404
+[lulus] /portal/bsa_tagihan_aksi.php sbx_v6_bsa_b → 405
+[lulus] /portal/bsa_tagihan_aksi.php sbx_admin → 405
+[lulus] Rincian tagihan admin: tanpa tombol pembayaran/koreksi, berlabel hanya baca
+[lulus] Navigasi wali: Anak · Belum lunas · Pembayaran (tanpa tarif/penerbitan)
+[lulus] Navigasi petugas: santri, tunggakan, pembayaran, penerbitan, tarif
+
+=== K-C. Pembayaran web, kuitansi, koreksi ===
+[lulus] Tagihan manual Rp100.000 untuk santri tanpa kelas
+[lulus] Formulir pembayaran terisi sisa Rp100.000
+[lulus] Pembayaran Rp40.000 + klik ganda (kunci sama) → satu pembayaran
+[lulus] Pembayaran Rp60.001 atas sisa Rp60.000 → 422 tanpa pembayaran
+[lulus] Pembayaran Rp60.000 → sisa Rp0 tampil Lunas; dua kuitansi tertaut; pesan berhasil menautkan kuitansi
+[lulus] Formulir pembayaran tagihan lunas tidak tersedia
+[lulus] Kuitansi Rp40.000 memuat sisa sesudah Rp60.000 (snapshot), no-store
+[lulus] Transfer tanpa centang verifikasi → Menunggu, belum berkuitansi, tombol verifikasi tampil
+[lulus] Petugas BSA lain memverifikasi lewat web → Sah, sisa berkurang, kuitansi tersedia
+[lulus] Pembatalan dengan alasan terlalu pendek ditolak tanpa entri
+[lulus] Pembatalan beralasan + klik ganda → satu entri penyeimbang; nominal tetap; sisa naik Rp40.000
+[lulus] Kuitansi yang dibatalkan tetap terbuka dengan cap DIBATALKAN dan alasannya (petugas)
+[lulus] Revisi web: total Rp275.000 versi 2, baris tambahan dan riwayat versi tampil
+[lulus] Revisi dari versi basi (tab lain) ditolak dengan pesan versi berubah
+[lulus] Pembatalan tagihan lewat web: status Dibatalkan, riwayat tetap
+[lulus] Tarif SMP Oktober diganti lewat web (beralasan)
+[lulus] Perubahan tarif sesudah terbit tidak mengubah nominal tagihan, data kuitansi, atau tampilan kuitansi lama
+
+=== K-D. Admin dan wali ===
+[lulus] sbx_admin: POST pembayaran/tarif/revisi/pembatalan/penerbitan → 403 (403,403,403,403,403)
+[lulus] sbx_v6_admin_bsa: POST pembayaran/tarif/revisi/pembatalan/penerbitan → 403 (403,403,403,403,403)
+[lulus] sbx_v6_wali_smp: POST pembayaran/tarif/revisi/pembatalan/penerbitan → 403 (403,403,403,403,403)
+[lulus] Penolakan admin/wali tanpa mutasi apa pun
+[lulus] Wali membaca tagihan anaknya: baris penyesuaian tampil, tanpa referensi transfer, alasan, atau riwayat internal
+[lulus] Wali membuka kuitansi anaknya tanpa referensi transfer
+[lulus] Wali Tsanawi: seluruh kuitansi santri lain (ID ditebak) dan tagihan SMP → 404
+[lulus] Daftar pembayaran wali Tsanawi tanpa santri lain
+[lulus] Halaman "Belum lunas" wali hanya anaknya
+
+=== K-E. API ===
+[lulus] Token API petugas, admin, dan dua wali
+[lulus] GET tarif (no-store)
+[lulus] GET tarif: wali 403, tanpa token 401
+[lulus] POST tarif API: 201, replay 200, kunci sama isi beda 409
+[lulus] POST tarif admin → 403
+[lulus] Pratinjau API unit Tsanawi Desember
+[lulus] Penerbitan API: 201, replay sama, rincian petugas 200, wali 403
+[lulus] Rincian tagihan API = kontrak Fase 1 + pembayaran/penyesuaian/riwayat
+[lulus] Pembayaran API: 201 (sisa Rp160.000), replay 200, kunci sama nominal beda 409, berlebih 422
+[lulus] Admin/wali POST pembayaran dan pembatalan API → 403
+[lulus] Admin/wali POST pembayaran dan pembatalan API → 403
+[lulus] Admin/wali POST pembayaran dan pembatalan API → 403
+[lulus] Kuitansi API wali Tsanawi (anaknya): tanpa referensi, snapshot sisa
+[lulus] Kuitansi/tagihan API anak lain → 404 bagi wali
+[lulus] Daftar pembayaran API wali SMP hanya anaknya
+[lulus] Tunggakan API tersaring unit Tsanawi
+[lulus] Tunggakan API pengurus tanpa penugasan → 403
+[lulus] Penyesuaian API: buat 201, baca petugas, wali 403, cabut 200
+[lulus] Revisi API → versi 2
+
+=== K-F. Dua pembayaran API bersamaan ===
+[lulus] Dua pembayaran Rp60.000 bersamaan lewat API atas Rp100.000 → [201, 422], terbayar Rp60.000 (server PHP satu pekerja: bukti kontrak HTTP, bukan konkurensi DB)
+
+=== K-G. Pencabutan saat sesi lama aktif ===
+[lulus] Formulir pembayaran terbuka sebelum pencabutan → POST 403 tanpa pembayaran
+[lulus] Token/sesi lama sesudah pencabutan: mutasi dan baca → 403
+[lulus] Relasi wali dicabut: kuitansi/tagihan web dan API → 404, daftar kosong
+
+=== K-H. Log, audit, verifier ===
+[lulus] Log server tanpa galat/peringatan PHP
+[lulus] Log server tanpa referensi transfer
+[lulus] audit_logs bsa.* tanpa nominal, sisa, referensi, alasan, atau nama
+[lulus] Verifier Fase 1 + 2 lulus sesudah uji HTTP
+
+Lulus: 110 · Gagal: 0

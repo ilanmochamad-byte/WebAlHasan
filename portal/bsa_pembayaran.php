@@ -45,7 +45,7 @@ ah_filter_open($aktif, ['q' => $q], bsa_url('bsa_pembayaran.php')); ?>
             <?php foreach (($wali ? ['Sah', 'Dibatalkan'] : ['Menunggu', 'Sah', 'Dibatalkan']) as $st): ?><option value="<?= ah_e($st) ?>"<?= $d['saring']['status'] === $st ? ' selected' : '' ?>><?= ah_e($st === 'Menunggu' ? 'Menunggu verifikasi' : $st) ?></option><?php endforeach; ?></select></div>
     <div><label class="form-label" for="saring-sumber">Cara</label>
         <select class="form-select" id="saring-sumber" name="sumber"><option value="">Semua</option>
-            <?php foreach (['Tunai', 'Transfer'] as $sb): ?><option value="<?= ah_e($sb) ?>"<?= $d['saring']['sumber'] === $sb ? ' selected' : '' ?>><?= ah_e($sb) ?></option><?php endforeach; ?></select></div>
+            <?php foreach (['Tunai', 'Transfer', 'Tabungan'] as $sb): ?><option value="<?= ah_e($sb) ?>"<?= $d['saring']['sumber'] === $sb ? ' selected' : '' ?>><?= ah_e($sb) ?></option><?php endforeach; ?></select></div>
 <?php ah_filter_close(['q' => $q]);
 if ($d['rows'] === []) {
     echo $q !== '' || $aktif > 0 ? ah_empty('Tidak ada yang cocok', 'Coba saringan lain atau bersihkan saringan.') : ah_empty('Belum ada pembayaran', 'Pembayaran tagihan yang tercatat akan tampil di sini.');
@@ -58,7 +58,7 @@ if ($d['rows'] === []) {
                 <td data-label="Kuitansi"><span class="ah-cell-wrap"><?= $b['kuitansi'] !== null ? '<a href="' . ah_e(bsa_url('bsa_kuitansi.php', ['id' => $b['id']])) . '">' . ah_e($b['nomor_kuitansi']) . '</a>' : ah_e($b['nomor_kuitansi']) ?>
                     <span class="ah-cell-sub"><?= ah_e(ah_tanggal($b['tanggal_transaksi'], false)) ?></span></span></td>
                 <td data-label="Santri"><span class="ah-cell-wrap"><?= ah_e($b['santri']['nama']) ?><span class="ah-cell-sub"><a href="<?= ah_e(bsa_url('bsa_tagihan.php', ['id' => $b['tagihan_id']])) ?>">Tagihan <?= ah_e(bsa_periode($b['periode'])) ?></a></span></span></td>
-                <td data-label="Cara"><?= ah_e($b['sumber']) ?></td>
+                <td data-label="Cara"><?= ah_e($b['sumber'] === 'Tabungan' ? 'Dari tabungan' : $b['sumber']) ?></td>
                 <td data-label="Nominal" class="text-end"><?= ah_e(bsa_rp($b['nominal'])) ?></td>
                 <td data-label="Status"><?= bsa_status_bayar($b['status']) ?></td>
             </tr><?php endforeach; ?>

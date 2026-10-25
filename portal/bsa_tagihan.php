@@ -12,7 +12,9 @@ use App\Ui\Denial;
  *
  * Petugas BSA dalam cakupan: catat pembayaran, verifikasi/tolak transfer,
  * batalkan pembayaran, revisi, dan batalkan tagihan — semuanya POST ke
- * `bsa_tagihan_aksi.php` atau `bsa_bayar.php` yang diperiksa server. Admin
+ * `bsa_tagihan_aksi.php` atau `bsa_bayar.php` yang diperiksa server. Fase 3:
+ * "Bayar dari tabungan" (`bsa_bayar_tabungan.php`, tindakan eksplisit);
+ * pembayaran bersumber tabungan merujuk debit tabungannya. Admin
  * hanya membaca; orang tua melihat tagihan dan pembayaran sah anaknya tanpa
  * referensi, catatan internal, atau alasan.
  */
@@ -36,8 +38,11 @@ $kelola = $t['akses']['kelola'] && $fase2;
 $wali = $t['akses']['sumber'] === 'wali';
 $terbit = $t['status'] === 'Terbit';
 $sisaBayar = $t['sisa'] - (int) ($t['menunggu'] ?? 0);
+$fase3 = $tabunganBsa->tersedia();
 $aksi = $kelola && $terbit && $sisaBayar > 0
-    ? '<a class="btn btn-primary" href="' . ah_e(bsa_url('bsa_bayar.php', ['tagihan_id' => $t['id']])) . '"><i class="fas fa-money-bill-wave" aria-hidden="true"></i> Catat pembayaran</a>' : '';
+    ? '<a class="btn btn-primary" href="' . ah_e(bsa_url('bsa_bayar.php', ['tagihan_id' => $t['id']])) . '"><i class="fas fa-money-bill-wave" aria-hidden="true"></i> Catat pembayaran</a>'
+        . ($fase3 ? ' <a class="btn btn-outline-primary" href="' . ah_e(bsa_url('bsa_bayar_tabungan.php', ['tagihan_id' => $t['id']])) . '"><i class="fas fa-piggy-bank" aria-hidden="true"></i> Bayar dari tabungan</a>' : '')
+    : '';
 $kunci = static fn (): string => bin2hex(random_bytes(16));
 $aksiUrl = bsa_url('bsa_tagihan_aksi.php');
 
@@ -91,7 +96,8 @@ if (!$t['akses']['kelola'] && !$wali): ?>
             <?php foreach ($t['pembayaran'] as $b): ?><tr>
                 <td data-label="Kuitansi"><span class="ah-cell-wrap"><?= $b['kuitansi'] !== null ? '<a href="' . ah_e(bsa_url('bsa_kuitansi.php', ['id' => $b['id']])) . '">' . ah_e($b['nomor_kuitansi']) . '</a>' : ah_e($b['nomor_kuitansi']) ?>
                     <span class="ah-cell-sub"><?= ah_e(ah_tanggal($b['tanggal_transaksi'], false)) ?> · <?= ah_e($b['pencatat']['nama']) ?></span></span></td>
-                <td data-label="Cara"><span class="ah-cell-wrap"><?= ah_e($b['sumber']) ?><?php if (($b['referensi'] ?? null) !== null): ?><span class="ah-cell-sub ah-break">Ref. <?= ah_e($b['referensi']) ?></span><?php endif; ?></span></td>
+                <td data-label="Cara"><span class="ah-cell-wrap"><?= ah_e($b['sumber'] === 'Tabungan' ? 'Dari tabungan' : $b['sumber']) ?><?php if (($b['referensi'] ?? null) !== null): ?><span class="ah-cell-sub ah-break">Ref. <?= ah_e($b['referensi']) ?></span><?php endif; ?>
+                    <?php if (($b['tabungan'] ?? null) !== null): ?><span class="ah-cell-sub ah-break">Debit <?= $fase3 ? '<a href="' . ah_e(bsa_url('bsa_tabungan_kuitansi.php', ['id' => $b['tabungan']['transaksi_id']])) . '">' . ah_e($b['tabungan']['nomor_kuitansi']) . '</a>' : ah_e($b['tabungan']['nomor_kuitansi']) ?><?= $b['tabungan']['pengembalian_id'] !== null ? ' · saldo dikembalikan' : '' ?></span><?php endif; ?></span></td>
                 <td data-label="Nominal" class="text-end"><?= ah_e(bsa_rp($b['nominal'])) ?></td>
                 <td data-label="Status"><span class="ah-cell-wrap"><?= bsa_status_bayar($b['status']) ?>
                     <?php if ($b['pembatalan'] !== null): ?><span class="ah-cell-sub ah-break"><?= ah_e($b['pembatalan']['jenis'] . ' ' . ah_waktu($b['pembatalan']['pada'])) ?><?= isset($b['pembatalan']['alasan']) ? ' · ' . ah_e($b['pembatalan']['alasan']) . ' (' . ah_e($b['pembatalan']['oleh']) . ')' : '' ?></span><?php endif; ?></span></td>
@@ -108,7 +114,7 @@ if (!$t['akses']['kelola'] && !$wali): ?>
                         <form method="post" action="<?= ah_e($aksiUrl) ?>">
                             <?= ah_csrf() ?><input type="hidden" name="aksi" value="batal_bayar"><input type="hidden" name="pembayaran_id" value="<?= (int) $b['id'] ?>"><input type="hidden" name="tagihan_id" value="<?= (int) $t['id'] ?>">
                             <input type="hidden" name="idempotency_key" value="<?= ah_e($kunci()) ?>">
-                            <p class="small">Nominal dan nomor kuitansi tidak diubah. Pembatalan tercatat sebagai entri penyeimbang<?= $b['status'] === 'Sah' ? ' dan sisa tagihan naik kembali ' . ah_e(bsa_rp($b['nominal'])) : '' ?>.</p>
+                            <p class="small">Nominal dan nomor kuitansi tidak diubah. Pembatalan tercatat sebagai entri penyeimbang<?= $b['status'] === 'Sah' ? ' dan sisa tagihan naik kembali ' . ah_e(bsa_rp($b['nominal'])) : '' ?><?= $b['sumber'] === 'Tabungan' ? '; saldo tabungan dikembalikan ' . ah_e(bsa_rp($b['nominal'])) . ' sebagai transaksi pembalik pada saat yang sama' : '' ?>.</p>
                             <label class="form-label" for="alasan-bayar-<?= (int) $b['id'] ?>">Alasan <span class="text-danger" aria-hidden="true">*</span></label>
                             <input class="form-control mb-2" id="alasan-bayar-<?= (int) $b['id'] ?>" name="alasan" required minlength="5" maxlength="500">
                             <button class="btn btn-danger" type="submit" data-busy-label="Menyimpan…"><?= $b['status'] === 'Menunggu' ? 'Tolak transfer' : 'Batalkan pembayaran' ?></button>

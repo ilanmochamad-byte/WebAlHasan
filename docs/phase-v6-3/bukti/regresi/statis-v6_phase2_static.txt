@@ -1,0 +1,85 @@
+=== T-1. Migrasi 028 ===
+[lulus] Sembilan CREATE TABLE IF NOT EXISTS
+[lulus] Tanpa DROP/DELETE/UPDATE/ALTER/INSERT terhadap tabel mana pun
+[lulus] Tanpa tipe pecahan; nominal rupiah bulat
+[lulus] Seluruh kolom nominal BIGINT (8 kolom)
+[lulus] InnoDB ×9, 28 kunci asing, 22 CHECK
+[lulus] Hanya tabel baru bsa_*; enam tabel 027 tidak dibuat ulang
+[lulus] Kunci unik terbangkit: satu tarif Berlaku per unit+periode mulai
+[lulus] CHECK penerbitan, kuitansi, dan alasan pembatalan
+
+=== T-2. Rollback 028 ===
+[lulus] Rollback melepas tepat sembilan tabel 028
+[lulus] Penjaga data (tabel 028 + bsa_pembayaran) dijalankan sebelum DROP
+
+=== T-3. Layanan dan repository ===
+[lulus] Tanpa float, pembulatan, atau literal pecahan di kode layanan/repository tagihan
+[lulus] Layanan/repository tidak membaca superglobal
+[lulus] Repository hanya prepared statement (satu pintu prepare + bind_param)
+[lulus] Tidak ada string berinterpolasi di repository (nilai selalu parameter terikat)
+[lulus] Kunci/deadlock → 409, CHECK → 422 (sama dengan BsaRepository)
+[lulus] Penerbitan wajib hash pratinjau dan dibandingkan aman waktu
+
+=== T-4. Urutan kunci dan cakupan sebelum replay ===
+[lulus] buatTarif: penugasan (kunci baca) → klaim → cakupan/status santri → baru replay
+[lulus] buatPenyesuaian: penugasan (kunci baca) → klaim → cakupan/status santri → baru replay
+[lulus] cabutPenyesuaian: penugasan (kunci baca) → klaim → cakupan/status santri → baru replay
+[lulus] terbitkanMassal: penugasan (kunci baca) → klaim → cakupan/status santri → baru replay
+[lulus] mutasiTagihan: penugasan (kunci baca) → klaim → cakupan/status santri → baru replay
+[lulus] mutasiTagihan: santri dikunci sebelum tagihan (urutan santri → tagihan → pembayaran)
+[lulus] verifikasiPembayaran: tagihan dikunci (lewat mutasiTagihan) sebelum pembayaran
+[lulus] batalkanPembayaran: tagihan dikunci (lewat mutasiTagihan) sebelum pembayaran
+[lulus] Pembaruan terbayar dan versi tagihan bersyarat nilai yang dikunci
+
+=== T-5. Halaman web ===
+[lulus] Penjaga bersama: sesi web, CSRF untuk setiap POST, no-store
+[lulus] bsa_tarif.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_tarif.php: setiap formulir POST membawa CSRF dan kunci idempotensi
+[lulus] bsa_penerbitan.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_penerbitan.php: setiap formulir POST membawa CSRF dan kunci idempotensi
+[lulus] bsa_penyesuaian.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_penyesuaian.php: setiap formulir POST membawa CSRF dan kunci idempotensi
+[lulus] bsa_bayar.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_bayar.php: setiap formulir POST membawa CSRF dan kunci idempotensi
+[lulus] bsa_tagihan_aksi.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_kuitansi.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_tunggakan.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_pembayaran.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_tagihan.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_tagihan.php: setiap formulir POST membawa CSRF dan kunci idempotensi
+[lulus] bsa_tagihan_aksi.php menolak selain POST (405)
+[lulus] Kuitansi memakai snapshot kuitansi; referensi hanya untuk internal
+
+=== T-6. Rute API ===
+[lulus] Rute /v6/bsa/tarif
+[lulus] Rute /v6/bsa/penerbitan/pratinjau
+[lulus] Rute /v6/bsa/penerbitan
+[lulus] Rute /v6/bsa/pembayaran
+[lulus] Rute /v6/bsa/tunggakan
+[lulus] Rute penyesuaian
+[gagal] Rute (revisi|batal|pembayaran)
+[lulus] Rute (verifikasi|batal)
+[lulus] GET tagihan/{id} memakai rincianTagihan (kontrak Fase 1 + tambahan), satu rute
+[lulus] rincianTagihan dibangun dari BsaService::tagihan (hak dan kunci Fase 1 sama)
+
+=== T-7. Audit tanpa data uang ===
+[lulus] Daftar kunci audit bsa.* tanpa nominal/total/sisa/referensi/alasan/nama
+[gagal] Sepuluh panggilan audit Fase 2 hanya memakai kunci metadata yang diizinkan
+
+=== T-8. Batas Fase 2 ===
+[lulus] Baseline audit Fase 1 e895dbe tersedia
+[lulus] Kode Auth, PSB, V2–V5, penugasan, master data, dan notifikasi tidak diubah
+[lulus] Migrasi/rollback ≤ 027 tidak diubah
+[lulus] Halaman dan berkas PSB tidak diubah
+[gagal] Preflight Fase 1, halaman setoran/penarikan, dan BsaException tidak diubah
+[gagal] Berkas berubah hanya dalam daftar Fase 2: app/Bsa/TabunganRepository.php, app/Bsa/TabunganService.php, bin/v6_phase3_preflight.php, bin/v6_phase3_rollback_preflight.php, bin/v6_phase3_verify.php, database/migrations/029_v6_fase3_tabungan.sql, database/rollbacks/029_v6_fase3_tabungan.sql, docs/phase-v6-3/bukti/browser.txt, docs/phase-v6-3/bukti/http.txt, docs/phase-v6-3/bukti/integrasi.txt, docs/phase-v6-3/bukti/migrasi-rollback.txt, docs/phase-v6-3/bukti/regresi/ringkasan.txt, docs/phase-v6-3/bukti/regresi/statis-alumni_static.txt, docs/phase-v6-3/bukti/regresi/statis-get_mutasi_v1_static.txt, docs/phase-v6-3/bukti/regresi/statis-keamanan_psb_static.txt, docs/phase-v6-3/bukti/regresi/statis-kredensial_static.txt, docs/phase-v6-3/bukti/regresi/statis-navigasi_ikon_static.txt, docs/phase-v6-3/bukti/regresi/statis-penempatan_static.txt, docs/phase-v6-3/bukti/regresi/statis-penugasan_static.txt, docs/phase-v6-3/bukti/regresi/statis-perapihan_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase4_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase5_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap1_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap2_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap3_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap4_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap5_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap6_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap7_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap8_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase4_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase5_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase4_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase5_static.txt, docs/phase-v6-3/bukti/regresi/statis-v6_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v6_phase2_static.txt, docs/phase-v6-3/bukti/statis.txt, docs/phase-v6-3/perintah-regresi.sh, docs/phase-v6-3/perintah-uji.sh, docs/phase-v6-3/tangkapan/bayar-tabungan-375.png, docs/phase-v6-3/tangkapan/dialog-tolak-375.png, docs/phase-v6-3/tangkapan/formulir-pengeluaran-375.png, docs/phase-v6-3/tangkapan/formulir-setoran-375.png, docs/phase-v6-3/tangkapan/kuitansi-tabungan-375.png, docs/phase-v6-3/tangkapan/kuitansi-tabungan-a4.pdf, docs/phase-v6-3/tangkapan/mutasi-tabungan-375.png, docs/phase-v6-3/tangkapan/rekonsiliasi-375.png, docs/phase-v6-3/tangkapan/rekonsiliasi-admin-375.png, docs/phase-v6-3/tangkapan/rincian-santri-admin-375.png, docs/phase-v6-3/tangkapan/rincian-santri-wali-375.png, docs/phase-v6-3/tangkapan/rincian-tagihan-admin-375.png, docs/phase-v6-3/tangkapan/rincian-tagihan-wali-375.png, docs/phase-v6-3/tangkapan/santri-375.png, docs/phase-v6-3/tangkapan/setoran-menunggu-375.png, docs/phase-v6-3/tangkapan/setoran-transfer-375.png, docs/phase-v6-3/tangkapan/tagihan-tabungan-375.png, docs/phase-v6-3/tangkapan/tanpa-js-santri-375.png, tests/browser/uji-v6-fase3.mjs, tests/v6_phase3_db.sh, tests/v6_phase3_http.php, tests/v6_phase3_integration.php, tests/v6_phase3_migration.php, tests/v6_phase3_static.php, tests/v6_phase3_worker.php
+[lulus] Tidak ada perubahan aplikasi mobile/Expo
+
+=== T-9. Lint ===
+[lulus] Lint 49 berkas PHP
+
+Lulus: 58 · Gagal: 4
+  - Rute (revisi|batal|pembayaran)
+  - Sepuluh panggilan audit Fase 2 hanya memakai kunci metadata yang diizinkan
+  - Preflight Fase 1, halaman setoran/penarikan, dan BsaException tidak diubah
+  - Berkas berubah hanya dalam daftar Fase 2: app/Bsa/TabunganRepository.php, app/Bsa/TabunganService.php, bin/v6_phase3_preflight.php, bin/v6_phase3_rollback_preflight.php, bin/v6_phase3_verify.php, database/migrations/029_v6_fase3_tabungan.sql, database/rollbacks/029_v6_fase3_tabungan.sql, docs/phase-v6-3/bukti/browser.txt, docs/phase-v6-3/bukti/http.txt, docs/phase-v6-3/bukti/integrasi.txt, docs/phase-v6-3/bukti/migrasi-rollback.txt, docs/phase-v6-3/bukti/regresi/ringkasan.txt, docs/phase-v6-3/bukti/regresi/statis-alumni_static.txt, docs/phase-v6-3/bukti/regresi/statis-get_mutasi_v1_static.txt, docs/phase-v6-3/bukti/regresi/statis-keamanan_psb_static.txt, docs/phase-v6-3/bukti/regresi/statis-kredensial_static.txt, docs/phase-v6-3/bukti/regresi/statis-navigasi_ikon_static.txt, docs/phase-v6-3/bukti/regresi/statis-penempatan_static.txt, docs/phase-v6-3/bukti/regresi/statis-penugasan_static.txt, docs/phase-v6-3/bukti/regresi/statis-perapihan_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase4_static.txt, docs/phase-v6-3/bukti/regresi/statis-phase5_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap1_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap2_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap3_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap4_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap5_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap6_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap7_static.txt, docs/phase-v6-3/bukti/regresi/statis-redesain_web_tahap8_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase4_static.txt, docs/phase-v6-3/bukti/regresi/statis-v2_phase5_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-v3_phase4_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase2_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase3_static.txt, docs/phase-v6-3/bukti/regresi/statis-v5_phase5_static.txt, docs/phase-v6-3/bukti/regresi/statis-v6_phase1_static.txt, docs/phase-v6-3/bukti/regresi/statis-v6_phase2_static.txt, docs/phase-v6-3/bukti/statis.txt, docs/phase-v6-3/perintah-regresi.sh, docs/phase-v6-3/perintah-uji.sh, docs/phase-v6-3/tangkapan/bayar-tabungan-375.png, docs/phase-v6-3/tangkapan/dialog-tolak-375.png, docs/phase-v6-3/tangkapan/formulir-pengeluaran-375.png, docs/phase-v6-3/tangkapan/formulir-setoran-375.png, docs/phase-v6-3/tangkapan/kuitansi-tabungan-375.png, docs/phase-v6-3/tangkapan/kuitansi-tabungan-a4.pdf, docs/phase-v6-3/tangkapan/mutasi-tabungan-375.png, docs/phase-v6-3/tangkapan/rekonsiliasi-375.png, docs/phase-v6-3/tangkapan/rekonsiliasi-admin-375.png, docs/phase-v6-3/tangkapan/rincian-santri-admin-375.png, docs/phase-v6-3/tangkapan/rincian-santri-wali-375.png, docs/phase-v6-3/tangkapan/rincian-tagihan-admin-375.png, docs/phase-v6-3/tangkapan/rincian-tagihan-wali-375.png, docs/phase-v6-3/tangkapan/santri-375.png, docs/phase-v6-3/tangkapan/setoran-menunggu-375.png, docs/phase-v6-3/tangkapan/setoran-transfer-375.png, docs/phase-v6-3/tangkapan/tagihan-tabungan-375.png, docs/phase-v6-3/tangkapan/tanpa-js-santri-375.png, tests/browser/uji-v6-fase3.mjs, tests/v6_phase3_db.sh, tests/v6_phase3_http.php, tests/v6_phase3_integration.php, tests/v6_phase3_migration.php, tests/v6_phase3_static.php, tests/v6_phase3_worker.php

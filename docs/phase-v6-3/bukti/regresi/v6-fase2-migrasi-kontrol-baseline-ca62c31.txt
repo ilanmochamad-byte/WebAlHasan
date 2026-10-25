@@ -1,0 +1,53 @@
+=== N-1. Salinan uji pada keadaan 027 ===
+[lulus] Salinan berantai V6 Fase 1 (fixture V1–V6 sintetis) dibangun dengan 027 + 028: test_v6_f2_migrasi_test
+[lulus] Preflight rollback 028 lulus (tabel Fase 2 dan bsa_pembayaran kosong, 028 terakhir)
+[lulus] Rollback 028 mengembalikan salinan ke keadaan 027
+[lulus] Verifier --rollback: sembilan tabel dilepas, 028 tidak tercatat, enam tabel 027 tetap
+
+=== N-2. Data Fase 1, preflight, dan migrasi ===
+[lulus] Pada keadaan 027: setoran, penarikan, dan tagihan manual Fase 1 berjalan (saldo Rp70.000; fitur Fase 2 tidak tersedia)
+[lulus] Preflight Fase 2 lulus dan menulis manifest (tabel lama termasuk 027, sidik jari ID + isi uang 027)
+[lulus] Checksum 29 tabel (identitas, penugasan, V2–V5, PSB, enam tabel 027) dicatat sebelum migrasi
+[lulus] bin/migrate.php up menerapkan 028
+
+=== N-3. Verifier sesudah migrasi ===
+[lulus] Verifier Fase 2 dengan manifest lulus (222 pemeriksaan)
+[lulus] 28 kunci asing Fase 2 + 22 kunci asing 027, 0 referensi yatim
+[lulus] Sidik jari isi uang 027 (tagihan, komponen, ledger, saldo) dan ID identitas tetap
+[lulus] Checksum dan struktur kolom tabel inti + 027 tetap sesudah migrasi (028 tidak mengubah tabel lama)
+[lulus] Dua puluh dua CHECK basis data terpasang pada tabel Fase 2 (22)
+[lulus] Tagihan era 027 tidak diberi riwayat palsu (versi 1 tanpa riwayat tetap sah)
+
+=== N-4. Migrasi idempoten dan aditif ===
+[lulus] SQL 028 dijalankan ulang tanpa galat (CREATE TABLE IF NOT EXISTS)
+[lulus] Jalan ulang tidak mengubah data lama dan tidak menggandakan catatan migrasi
+[lulus] Migrasi 028 aditif murni: 9 CREATE TABLE IF NOT EXISTS, tanpa DROP/DELETE/UPDATE/ALTER/INSERT, tanpa tipe pecahan
+[lulus] Rollback 028 hanya melepas sembilan tabel Fase 2; penjaga memeriksa tabel 028 dan bsa_pembayaran (027)
+
+=== N-5. Data Fase 2 memblokir rollback ===
+[lulus] Tarif, penerbitan massal (4 tagihan), dan pembayaran Rp100.000 lewat layanan
+[lulus] Verifier dengan data Fase 2: 0 yatim, invarians lulus
+[lulus] Preflight rollback MEMBLOKIR bila ada data Fase 2
+[lulus] Rollback tanpa preflight ditolak penjaga SQL: sembilan tabel dan data tetap, 028 tetap tercatat
+[lulus] Preflight rollback 027 juga memblokir selama 028 terpasang (urutan migrasi)
+
+=== N-6. Rollback salinan tanpa data Fase 2 ===
+[lulus] Salinan kedua dibangun lalu dikembalikan ke 027: test_v6_f2_rollback_test
+[lulus] Data Fase 1 dicatat pada 027 (saldo Rp70.000, satu tagihan manual), lalu 028 dipasang tanpa data Fase 2
+[lulus] Preflight rollback lulus pada tabel Fase 2 kosong (data Fase 1 di tabel 027 tidak memblokir)
+[lulus] Rollback 028 dijalankan; sembilan tabel dilepas
+[lulus] Verifier --rollback dengan manifest: tabel lama, jumlah baris, sidik jari ID dan isi uang 027 tetap
+[lulus] Checksum dan struktur kolom tabel inti + 027 tetap sesudah rollback
+[lulus] Verifier Fase 1 lulus sesudah rollback 028 (saldo = ledger, total = Σ komponen)
+
+=== N-7. Kode Fase 2 sesudah rollback ===
+[lulus] Sesudah rollback: fitur Fase 2 503, rincian tagihan kembali ke kontrak Fase 1, setoran dan tagihan manual Fase 1 tetap berjalan (tarif=503 tunggakan=503 pratinjau=503 rincian=fase1 fase1=ok)
+[lulus] Web sesudah rollback: daftar 200 tanpa navigasi Fase 2, tarif/tunggakan 503, rincian tagihan 200 tanpa bagian pembayaran (200/503/503/200)
+[lulus] Log server sesudah rollback tanpa galat PHP
+
+=== N-8. Migrasi ulang sesudah rollback ===
+[lulus] Migrasi ulang 028 lulus verifier Fase 1 + 2 dengan manifest
+[lulus] Tagihan manual Fase 1 sesudah 028 menulis riwayat versi 1 → preflight rollback 028 memblokir
+[lulus] Verifier lulus dengan campuran tagihan era 027 (tanpa riwayat) dan pasca-028 (dengan riwayat)
+
+Lulus: 36 · Gagal: 0

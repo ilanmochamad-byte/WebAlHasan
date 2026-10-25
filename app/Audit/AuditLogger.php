@@ -69,7 +69,9 @@ final class AuditLogger
         $boleh = ['tagihan_id', 'transaksi_id', 'santri_id', 'jenis', 'metode', 'status', 'periode', 'penugasan_id', 'sumber', 'kanal', 'versi', 'jumlah_komponen',
             // Fase 2: ID dan jumlah saja (tarif, penyesuaian, penerbitan massal, pembayaran).
             'tarif_id', 'tarif_diganti_id', 'jenjang', 'berlaku_mulai', 'penyesuaian_id', 'penerbitan_id', 'pembayaran_id',
-            'jumlah_sasaran', 'jumlah_terbit', 'jumlah_sudah_ada', 'jumlah_dilewati'];
+            'jumlah_sasaran', 'jumlah_terbit', 'jumlah_sudah_ada', 'jumlah_dilewati',
+            // Fase 3: ID saja (setoran transfer menunggu, transaksi pembalik).
+            'setoran_transfer_id', 'pembalik_dari_id'];
 
         return array_intersect_key($data, array_flip($boleh));
     }

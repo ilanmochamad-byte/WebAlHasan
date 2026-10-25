@@ -27,7 +27,8 @@ use mysqli_stmt;
  *      atau penyesuaian santri (kunci tulis, hanya saat mencabut)
  *   5. tagihan (kunci tulis)                          `tagihanTerkunci()`
  *   6. pembayaran (kunci tulis)                       `pembayaranTerkunci()`
- *   7. akun tabungan (kunci tulis; Fase 3 kelak)
+ *   7. akun tabungan (kunci tulis; Fase 3: pembayaran dari tabungan dan
+ *      pengembalian saldo saat pembayaran tabungan dibatalkan)
  */
 final class TagihanRepository
 {
@@ -534,18 +535,23 @@ final class TagihanRepository
      * Menyisipkan pembayaran; nomor kuitansi diturunkan dari ID agar urut dan
      * unik (`BSA-KW-TTTT-000123`), diisi di transaksi yang sama.
      *
-     * @param array{nominal:int, sumber:string, tanggal_transaksi:string, referensi:?string, catatan:?string, idempotency_key:string} $data
+     * Fase 3: sumber `Tabungan` wajib membawa `tabungan_transaksi_id` = debit
+     * ledger `PembayaranTagihan` yang disisipkan di transaksi yang sama (kunci
+     * unik + CHECK 027: satu pembayaran ⇔ satu debit).
+     *
+     * @param array{nominal:int, sumber:string, tanggal_transaksi:string, referensi:?string, catatan:?string, idempotency_key:string,
+     *     tabungan_transaksi_id?:?int} $data
      * @return array{id:int, nomor:string}
      */
     public function simpanPembayaran(int $tagihanId, int $santriId, array $data, bool $sah, int $userId, int $pengurusId, int $penugasanId): array
     {
         $sementara = 'TMP-' . bin2hex(random_bytes(12));
         $this->execute(
-            'INSERT INTO bsa_pembayaran (tagihan_id, santri_id, nominal, sumber, status, tanggal_transaksi, referensi, nomor_kuitansi, alasan,
+            'INSERT INTO bsa_pembayaran (tagihan_id, santri_id, nominal, sumber, status, tanggal_transaksi, referensi, nomor_kuitansi, tabungan_transaksi_id, alasan,
                                          penugasan_id, pengurus_id, dicatat_oleh, diverifikasi_oleh, diverifikasi_pada, idempotency_key)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ' . ($sah ? 'NOW()' : 'NULL') . ', ?)',
-            [$tagihanId, $santriId, $data['nominal'], $data['sumber'], $sah ? 'Sah' : 'Menunggu', $data['tanggal_transaksi'], $data['referensi'], $sementara, $data['catatan'],
-                $penugasanId, $pengurusId, $userId, $sah ? $userId : null, $data['idempotency_key']]
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ' . ($sah ? 'NOW()' : 'NULL') . ', ?)',
+            [$tagihanId, $santriId, $data['nominal'], $data['sumber'], $sah ? 'Sah' : 'Menunggu', $data['tanggal_transaksi'], $data['referensi'], $sementara,
+                $data['tabungan_transaksi_id'] ?? null, $data['catatan'], $penugasanId, $pengurusId, $userId, $sah ? $userId : null, $data['idempotency_key']]
         );
         $id = (int) $this->db->insert_id;
         $nomor = 'BSA-KW-' . date('Y') . '-' . str_pad((string) $id, 6, '0', STR_PAD_LEFT);
@@ -562,12 +568,13 @@ final class TagihanRepository
         return $row === null ? null : ['tagihan_id' => (int) $row['tagihan_id'], 'santri_id' => (int) $row['santri_id']];
     }
 
-    /** @return array{id:int, tagihan_id:int, nominal:int, sumber:string, status:string}|null */
+    /** @return array{id:int, tagihan_id:int, nominal:int, sumber:string, status:string, tabungan_transaksi_id:?int}|null */
     public function pembayaranTerkunci(int $id): ?array
     {
-        $row = $this->one('SELECT id, tagihan_id, nominal, sumber, status FROM bsa_pembayaran WHERE id = ? FOR UPDATE', [$id]);
+        $row = $this->one('SELECT id, tagihan_id, nominal, sumber, status, tabungan_transaksi_id FROM bsa_pembayaran WHERE id = ? FOR UPDATE', [$id]);
 
-        return $row === null ? null : ['id' => (int) $row['id'], 'tagihan_id' => (int) $row['tagihan_id'], 'nominal' => (int) $row['nominal'], 'sumber' => (string) $row['sumber'], 'status' => (string) $row['status']];
+        return $row === null ? null : ['id' => (int) $row['id'], 'tagihan_id' => (int) $row['tagihan_id'], 'nominal' => (int) $row['nominal'], 'sumber' => (string) $row['sumber'],
+            'status' => (string) $row['status'], 'tabungan_transaksi_id' => $row['tabungan_transaksi_id'] === null ? null : (int) $row['tabungan_transaksi_id']];
     }
 
     public function verifikasiPembayaran(int $id, int $userId): void
@@ -602,7 +609,8 @@ final class TagihanRepository
 
     /** Pilihan kolom pembayaran beserta kuitansi, pembatalan, tagihan, dan santri. */
     private const PEMBAYARAN = 'SELECT b.id, b.tagihan_id, b.santri_id, b.nominal, b.sumber, b.status, b.tanggal_transaksi, b.referensi, b.nomor_kuitansi,
-                    b.alasan AS catatan, b.diverifikasi_pada, b.created_at,
+                    b.alasan AS catatan, b.diverifikasi_pada, b.created_at, b.tabungan_transaksi_id, tx.created_at AS debit_dibuat,
+                    (SELECT rv.id FROM bsa_tabungan_transaksi rv WHERE rv.pembalik_dari_id = b.tabungan_transaksi_id) AS pengembalian_id,
                     COALESCE(pc.nama, uc.name) AS pencatat_nama, COALESCE(pv.nama, uv.name) AS verifikator_nama,
                     k.tagihan_versi, k.total_tagihan, k.terbayar_sebelum, k.sisa_sesudah,
                     x.jenis AS batal_jenis, x.alasan AS batal_alasan, x.created_at AS batal_pada, ux.name AS pembatal_nama,
@@ -616,7 +624,8 @@ final class TagihanRepository
                LEFT JOIN pengurus pv ON pv.id = uv.pengurus_id
                LEFT JOIN bsa_pembayaran_kuitansi k ON k.pembayaran_id = b.id
                LEFT JOIN bsa_pembayaran_pembatalan x ON x.pembayaran_id = b.id
-               LEFT JOIN users ux ON ux.id = x.dibatalkan_oleh';
+               LEFT JOIN users ux ON ux.id = x.dibatalkan_oleh
+               LEFT JOIN bsa_tabungan_transaksi tx ON tx.id = b.tabungan_transaksi_id';
 
     /** @return array<string, mixed>|null */
     public function pembayaran(int $id): ?array
@@ -690,11 +699,12 @@ final class TagihanRepository
      * Syarat hak atas santri alias `s` (unit dari `kl` joinUnit): petugas =
      * santri aktif dalam cakupan unit; admin = semua; wali = anak dengan
      * relasi aktif. Selalu diakhiri klausa WHERE agar pemanggil menambah AND.
+     * Publik agar daftar Fase 3 (`TabunganRepository`) memakai syarat yang sama.
      *
      * @param array{mode:string, user_id:int, jenjang:?array<int, string>} $hak
      * @param array<int, mixed> $params
      */
-    private function syaratHak(array $hak, array &$params): string
+    public function syaratHak(array $hak, array &$params): string
     {
         switch ($hak['mode']) {
             case 'wali':
