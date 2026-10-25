@@ -37,7 +37,7 @@
    - Audit: `audit_logs` `bsa.tabungan.setoran|penarikan`, `bsa.tagihan.terbit` dengan ID, jenis, metode, status, periode, penugasan, kanal saja; `AuditLogger` menyaring kunci lain untuk awalan `bsa.` (nominal, saldo, referensi, tujuan, catatan tidak masuk log umum — PRD §5.4). Aktor, waktu, nominal, dan tujuan tersimpan di baris ledger/tagihan itu sendiri. Gagal audit membatalkan transaksi.
 5. **Web** (kerangka bersama, `Cache-Control: private, no-store`, POST wajib CSRF):
    - `portal/bsa.php` daftar santri sesuai hak (saldo, sisa tagihan); `portal/bsa_santri.php` rincian: kartu saldo + sisa tagihan, tagihan dan riwayat tabungan **terpisah**; `portal/bsa_transaksi.php?jenis=setoran|penarikan` dan `portal/bsa_tagihan_buat.php` (hanya petugas; kunci idempotensi tersembunyi, validasi gagal dirender ulang dengan kunci sama); `portal/bsa_tagihan.php` rincian tagihan + snapshot komponen.
-   - Menu: admin grup **Keuangan › Keuangan santri** (hanya baca), petugas grup **Keuangan › BSA**, orang tua **Keuangan anak**. Hak tetap ditegakkan halaman/layanan, bukan menu (lihat P-1).
+   - Menu: admin grup **Keuangan › Keuangan santri** (hanya baca), petugas grup **Keuangan › BSA**, orang tua **Keuangan anak** — dipertahankan oleh keputusan Human Developer BE. Hak tetap ditegakkan halaman/layanan, bukan menu.
    - Orang tua tidak melihat referensi transfer dan catatan internal petugas.
 6. **API** (`/api/v1/v6/bsa/*`, layanan yang sama, no-store): `GET akses`, `GET santri`, `GET santri/{id}`, `GET santri/{id}/saldo`, `POST santri/{id}/setoran`, `POST santri/{id}/penarikan`, `POST tagihan`, `GET tagihan/{id}`. Kunci idempotensi dari header `Idempotency-Key` atau badan. Kontrak lengkap di `docs/api-v1.md`. `feature_capabilities` login/profil bertambah satu kunci `bsa.tabungan` (aditif).
 7. **Operasi** — `bin/v6_phase1_preflight.php [manifest]` (versi server menegakkan CHECK, InnoDB, binlog, tabel induk, 026 tercatat, jumlah penugasan bendahara lama yang akan menjadi BSA, manifest jumlah baris seluruh tabel lama + **sidik jari ID** santri/wali/santri_wali/users + relasi santri–wali), `bin/v6_phase1_verify.php [--rollback] [manifest]` (6 tabel InnoDB, 22 kunci asing, 0 yatim, saldo akun = Σ ledger sah = saldo sesudah transaksi terakhir, jumlah berjalan per transaksi, tidak ada saldo negatif/tagihan ganda/klaim menggantung, total = Σ komponen, terbayar = Σ pembayaran sah, audit tanpa data keuangan; dengan manifest: jumlah baris dan sidik jari ID tetap), `bin/v6_phase1_rollback_preflight.php` (blokir bila ada data BSA atau 027 bukan migrasi terakhir). Fixture `tests/v6_phase1_seed.php`, DB uji `tests/v6_phase1_db.sh`.
@@ -85,7 +85,7 @@ Dijalankan berurutan lewat `perintah-regresi.sh` (ringkasan `bukti/regresi/ringk
 | V2 Fase 4 / Fase 5 integrasi | 124/0 · 143/0 | |
 | HTTP Tahap 5 / Tahap 7 | 106/0 · 122/0 | |
 | HTTP Tahap 6 sesudah 027 → 026 → 025 → 024 dilepas (preflight + penjaga SQL, tabel kosong) | 20/0 · 132/0 | Rantai rollback kosong berjalan dengan penjaga baru 027. |
-| HTTP Tahap 2 | 185/6 | Empat oracle menu BB/BC/BD lama + dua oracle peta menu Keuangan (P-1). |
+| HTTP Tahap 2 | 185/6 | Empat oracle menu BB/BC/BD lama + dua oracle peta menu Keuangan (P-1, keputusan BE). |
 | HTTP Tahap 3 | 166/1 | Oracle historis "AG belum dipasang" sejak Tahap 8 (sama dengan V5). |
 | V5 Fase 5 rilis / V5 Fase 3 migrasi | 12/10 · 20/6 | Mengasumsikan 026 migrasi terakhir. **Kontrol baseline:** suite yang sama dari `git archive 761ae07` → **22/0 · 26/0** (`bukti/regresi/*-kontrol-baseline-761ae07.txt`); selisih hanya karena 027 ada. |
 | Browser kerangka Tahap 1 (`uji-redesain-web-tahap1.mjs`) sembilan akun × 375/768/1280 pada DB V6 | 91/0 | Admin kini membuka 24 alamat menu (termasuk Keuangan santri). |
@@ -96,8 +96,8 @@ Dijalankan berurutan lewat `perintah-regresi.sh` (ringkasan `bukti/regresi/ringk
 
 | Suite | Kegagalan | Sebab |
 | --- | --- | --- |
-| `redesain_web_tahap2_static` 120/1 | "Admin: 7 grup" | Grup admin baru **Keuangan** (P-1). |
-| HTTP Tahap 2 185/6 | Peta menu admin/murobi/pengurus/orang tua (4 lama BB/BC/BD) + grup admin + "menu/tab menyorot tempatnya" untuk Keuangan santri | P-1. Penanda menu aktif benar (`menu=Keuangan santri`); oracle mengharapkan grup dari daftar grup lama. |
+| `redesain_web_tahap2_static` 120/1 | "Admin: 7 grup" | Grup admin baru **Keuangan** (P-1, keputusan BE). |
+| HTTP Tahap 2 185/6 | Peta menu admin/murobi/pengurus/orang tua (4 lama BB/BC/BD) + grup admin + "menu/tab menyorot tempatnya" untuk Keuangan santri | P-1, keputusan BE. Penanda menu aktif benar (`menu=Keuangan santri`); oracle mengharapkan grup dari daftar grup lama. |
 | `redesain_web_tahap6_static` 139/2 | AF "modul mendatang" literal tiga jenis; "Navigation tidak diubah Tahap 6" | BSA bukan lagi modul mendatang (K-1); menu Keuangan di `Navigation`. |
 | `penugasan_static` 281/2 | "tujuh jenis" | Sama dengan V5 (jenis kesehatan). |
 | `v5_phase1_static` 44/4, `v5_phase2_static` 61/2, `v5_phase3_static` 68/3, `v5_phase5_static` 57/1 | Migrasi 024/025/026 "terakhir"; berkas tidak berubah sejak baseline fase V5 | Migrasi 027, katalog `PenugasanJenis`, `AuditLogger`. Dua dari kegagalan V5 Fase 1 dan satu Fase 3 sudah gagal di bukti V5 Fase 5. |
@@ -109,7 +109,7 @@ Dijalankan berurutan lewat `perintah-regresi.sh` (ringkasan `bukti/regresi/ringk
 
 ## Penafsiran yang perlu ditinjau auditor/Human Developer
 
-- **P-1 Menu Keuangan — perlu keputusan Human Developer** (pola BB/BC/BD). Menu baru: admin grup "Keuangan" › "Keuangan santri" (admin kini 19 menu dalam 8 grup), pengurus grup "Keuangan" › "BSA", orang tua "Keuangan anak" (tampil untuk setiap akun orang tua aktif; daftar kosong bila belum ada anak berelasi). Oracle Tahap 2 tidak diubah; kegagalannya dicatat di atas.
+- **P-1 Menu Keuangan — DIPUTUSKAN Human Developer 25 Oktober 2026 (keputusan BE, `docs/redesain-web/keputusan.md`): dipertahankan.** Admin grup "Keuangan" › "Keuangan santri" (admin kini 19 menu dalam 8 grup), pengurus grup "Keuangan" › "BSA", orang tua "Keuangan anak" (tampil untuk setiap akun orang tua aktif; daftar kosong bila belum ada anak berelasi). Oracle Tahap 2 tidak diubah; kegagalannya dicatat sebagai kegagalan yang diharapkan.
 - **P-2 Penugasan lama menjadi BSA.** Sesuai K-1, baris `bendahara_bulanan_assignments` yang aktif dan dalam masa berlaku — termasuk yang dibuat sebelum V6 dan yang tahun ajarannya sudah tidak aktif — langsung menjadi Petugas BSA sesudah kode V6 dirilis. Preflight melaporkan jumlahnya.
 - **P-3 Unit santri.** Cakupan unit dibandingkan dengan `kelas.jenjang` penempatan aktif tahun ajaran aktif (tanpa membedakan huruf besar/kecil). Santri tanpa penempatan hanya terjangkau petugas seluruh unit; tagihan menyimpan unit saat terbit.
 - **P-4 Admin yang juga petugas.** Akun ber-role admin yang memegang penugasan BSA tetap hanya baca (tafsir ketat PRD §2 "admin membaca dan mengaudit tanpa mengubahnya"); BSA memakai akun pengurus tanpa role admin.
