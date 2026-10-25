@@ -1,0 +1,38 @@
+[lulus] Fixture auditor baru, transaksi awal kosong
+[lulus] Setoran, penarikan, satu tagihan: saldo 70000 tanpa debit otomatis
+[lulus] Replay lintas kanal mengembalikan ID yang sama
+[lulus] Kunci sama, isi berbeda ditolak 409
+[lulus] Replay/konflik tidak menggandakan ledger, saldo, tagihan, klaim, audit
+[lulus] Sesi web BSA dibuka sebelum perubahan hak
+[lulus] Token API dan CSRF tersedia sebelum penyempitan cakupan
+[lulus] cakupan: baca ditolak 404
+[gagal] cakupan: replay layanan setoran ditolak 404 (aktual 200)
+[gagal] cakupan: replay API setoran token lama ditolak tanpa hasil (aktual 200)
+[gagal] cakupan: replay web setoran sesi lama ditolak 404 (aktual 302)
+[gagal] cakupan: replay layanan penarikan ditolak 404 (aktual 200)
+[gagal] cakupan: replay API penarikan token lama ditolak tanpa hasil (aktual 200)
+[gagal] cakupan: replay web penarikan sesi lama ditolak 404 (aktual 302)
+[gagal] cakupan: replay layanan tagihan ditolak 404 (aktual 200)
+[gagal] cakupan: replay API tagihan token lama ditolak tanpa hasil (aktual 200)
+[gagal] cakupan: replay web tagihan sesi lama ditolak 404 (aktual 302)
+[lulus] cakupan: seluruh replay tanpa perubahan uang/klaim/audit
+[lulus] santri_nonaktif: baca ditolak 404
+[gagal] santri_nonaktif: replay layanan setoran ditolak 404 (aktual 200)
+[gagal] santri_nonaktif: replay API setoran token lama ditolak tanpa hasil (aktual 200)
+[gagal] santri_nonaktif: replay web setoran sesi lama ditolak 404 (aktual 302)
+[gagal] santri_nonaktif: replay layanan penarikan ditolak 404 (aktual 200)
+[gagal] santri_nonaktif: replay API penarikan token lama ditolak tanpa hasil (aktual 200)
+[gagal] santri_nonaktif: replay web penarikan sesi lama ditolak 404 (aktual 302)
+[gagal] santri_nonaktif: replay layanan tagihan ditolak 404 (aktual 200)
+[gagal] santri_nonaktif: replay API tagihan token lama ditolak tanpa hasil (aktual 200)
+[gagal] santri_nonaktif: replay web tagihan sesi lama ditolak 404 (aktual 302)
+[lulus] santri_nonaktif: seluruh replay tanpa perubahan uang/klaim/audit
+[lulus] Audit gagal: ledger, saldo, klaim dan audit rollback atomik
+[lulus] Audit tagihan gagal: snapshot, tagihan, klaim rollback atomik
+[lulus] Hak dipulihkan: replay sah kembali, tidak perlu kunci baru
+[lulus] Verifier menolak ledger sah tanpa akun tabungan
+[lulus] Penugasan dicabut: replay ditolak 403
+[lulus] Token lama kehilangan akses saat penugasan dicabut
+[lulus] Sesi web lama kehilangan akses saat penugasan dicabut
+[lulus] Log server probe tanpa galat PHP
+Lulus: 19 · Gagal: 18

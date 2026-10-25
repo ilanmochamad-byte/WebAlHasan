@@ -262,10 +262,12 @@ final class BsaService
         return $this->repo->transaction(function () use ($userId, $data, $hash, $kanal): array {
             $penugasan = $this->penugasanTerkunci($userId);
             $klaim = $this->klaim($userId, $data['idempotency_key'], self::OP_TAGIHAN, $hash);
+            // Replay tetap permintaan atas santri: cakupan dan status terkini
+            // wajib sah sebelum hasil lama boleh dikembalikan.
+            [$santri, $tugas] = $this->santriDalamCakupan($data['santri_id'], $penugasan);
             if ($klaim['hasil_id'] !== null) {
                 return ['id' => $klaim['hasil_id'], 'status' => 200, 'replayed' => true];
             }
-            [$santri, $tugas] = $this->santriDalamCakupan($data['santri_id'], $penugasan);
             $id = $this->repo->simpanTagihan($data, $santri['jenjang'], $userId, $tugas['pengurus_id'], $tugas['id']);
             $this->repo->selesaikanIdempotensi($klaim['id'], $id, 201);
             $this->wajibAudit('bsa.tagihan.terbit', 'bsa_tagihan', $id, [
@@ -302,12 +304,12 @@ final class BsaService
         return $this->repo->transaction(function () use ($userId, $santriId, $data, $hash, $kanal, $operasi, $keluar): array {
             $penugasan = $this->penugasanTerkunci($userId);
             $klaim = $this->klaim($userId, $data['idempotency_key'], $operasi, $hash);
+            [, $tugas] = $this->santriDalamCakupan($santriId, $penugasan);
             if ($klaim['hasil_id'] !== null) {
                 $lama = $this->repo->transaksi($klaim['hasil_id']);
 
                 return ['id' => $klaim['hasil_id'], 'status' => 200, 'replayed' => true, 'saldo_sesudah' => (int) ($lama['saldo_sesudah'] ?? 0)];
             }
-            [, $tugas] = $this->santriDalamCakupan($santriId, $penugasan);
             $akun = $this->repo->kunciAkun($santriId);
             $saldoLama = $akun['saldo'] ?? 0;
             if ($keluar && ($akun === null || $data['nominal'] > $saldoLama)) {

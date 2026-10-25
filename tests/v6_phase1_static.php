@@ -155,7 +155,7 @@ $diff = static function (string $jalur) use ($root, $baseline): string {
 };
 $assert(trim((string) shell_exec('cd ' . escapeshellarg($root) . ' && git cat-file -t ' . escapeshellarg($baseline) . ' 2>/dev/null')) === 'commit', 'Baseline ' . substr($baseline, 0, 7) . ' tersedia');
 $assert($diff('app/Auth app/Psb app/Kesehatan app/V3 app/V4 app/Izin app/MasterData app/Notification') === '', 'Kode Auth, PSB, V2–V5, master data, dan notifikasi tidak diubah');
-$assert($diff('database/migrations/0[0-2]*.sql database/rollbacks/0[0-2]*.sql') === '', 'Migrasi/rollback lama (≤ 026) tidak diubah');
+$assert($diff("'database/migrations/0*.sql' 'database/rollbacks/0*.sql' ':(exclude)database/migrations/027_v6_fase1_bsa.sql' ':(exclude)database/rollbacks/027_v6_fase1_bsa.sql'") === '', 'Migrasi/rollback lama (≤ 026) tidak diubah');
 $assert($diff('psb.php proses_psb.php portal_pendaftar.php biaya_psb.php cetak_biaya_psb.php lihat_berkas_psb.php admin/admin_pembayaran_psb.php admin/proses_psb_admin.php') === '', 'Halaman PSB tidak diubah');
 $semua = $src('app/Bsa/BsaService.php') . $src('app/Bsa/BsaRepository.php') . $src('api/v1/index.php');
 $assert(!preg_match('/\b(tarif|kuitansi_baru|bayarTagihan|pembalik\(|notifikasi_outbox)\b/i', $tanpaKomentar($src('app/Bsa/BsaService.php') . $src('app/Bsa/BsaRepository.php')))

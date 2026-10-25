@@ -2,6 +2,8 @@
 
 **Status (25 Oktober 2026):** implementasi selesai dan diuji lokal oleh implementator; **menunggu audit independen Codex**. Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Fase 2 belum dimulai. Fase 1 **bukan** izin rilis parsial: tagihan dan tabungan dirilis bersama sesudah Fase 5 dan keputusan Human Developer.
 
+**Pembaruan audit Codex (25 Oktober 2026): LULUS kriteria wajib Fase 1 setelah koreksi terarah pemeriksaan cakupan/status santri pada replay serta perbaikan pola tes migrasi lama.** Laporan lengkap, bukti independen, oracle historis dan batas nyata ada di [`AUDIT-CODEX.md`](AUDIT-CODEX.md) dan `audit-codex/`. Bagian hasil implementator di bawah dipertahankan sebagai riwayat; bukan hasil audit. Tidak merge/deploy/rilis atau memulai Fase 2.
+
 | Butir | Nilai |
 | --- | --- |
 | Workstream | PRD V6 Fase 1–5 keuangan santri/BSA — implementator Claude Code, auditor Codex (`AGENTS.md`, keputusan 25 Oktober 2026) |
