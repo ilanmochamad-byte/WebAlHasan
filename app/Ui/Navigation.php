@@ -337,7 +337,8 @@ final class Navigation
     private static function bsa(string $label): array
     {
         return self::item('bsa', $label, '/portal/bsa.php', 'fa-wallet',
-            ['bsa.php', 'bsa_santri.php', 'bsa_transaksi.php', 'bsa_tagihan.php', 'bsa_tagihan_buat.php'], [], 'Keuangan');
+            ['bsa.php', 'bsa_santri.php', 'bsa_transaksi.php', 'bsa_tagihan.php', 'bsa_tagihan_buat.php',
+                'bsa_tarif.php', 'bsa_penerbitan.php', 'bsa_penyesuaian.php', 'bsa_bayar.php', 'bsa_tunggakan.php', 'bsa_pembayaran.php'], [], 'Keuangan');
     }
 
     /** @return array<string, mixed> */

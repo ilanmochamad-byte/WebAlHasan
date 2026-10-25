@@ -1,0 +1,19 @@
+Title:           Kuitansi BSA-KW-2026-000005
+Creator:         Chromium
+Producer:        Skia/PDF m151
+CreationDate:    Sun Oct 25 21:07:33 2026 WIB
+ModDate:         Sun Oct 25 21:07:33 2026 WIB
+Custom Metadata: no
+Metadata Stream: no
+Tagged:          no
+UserProperties:  no
+Suspects:        no
+Form:            none
+JavaScript:      no
+Pages:           1
+Encrypted:       no
+Page size:       594.96 x 841.92 pts (A4)
+Page rot:        0
+File size:       145643 bytes
+Optimized:       no
+PDF version:     1.4

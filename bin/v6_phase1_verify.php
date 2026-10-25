@@ -65,8 +65,9 @@ if ($rollback) {
     $periksa($bukanInno === 0, 'Seluruh tabel BSA memakai InnoDB');
 
     $yatim = 0;
+    // Hanya enam tabel 027; tabel Fase 2 (028) diperiksa `bin/v6_phase2_verify.php`.
     $fks = $db->query("SELECT TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE
-        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE 'bsa\\_%' AND REFERENCED_TABLE_NAME IS NOT NULL ORDER BY TABLE_NAME, COLUMN_NAME")->fetch_all(MYSQLI_ASSOC);
+        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN ('" . implode("', '", $bsa) . "') AND REFERENCED_TABLE_NAME IS NOT NULL ORDER BY TABLE_NAME, COLUMN_NAME")->fetch_all(MYSQLI_ASSOC);
     $periksa(count($fks) === 22, 'Kunci asing tabel BSA terpasang (' . count($fks) . ' dari 22)');
     foreach ($fks as $fk) {
         foreach ($fk as $nama) {
@@ -108,8 +109,12 @@ if ($rollback) {
     $periksa($angka('SELECT COUNT(*) FROM (SELECT santri_id, periode FROM bsa_tagihan GROUP BY santri_id, periode HAVING COUNT(*) > 1) g') === 0, 'Paling banyak satu tagihan per santri per periode');
     $tanpaKomponen = $angka('SELECT COUNT(*) FROM bsa_tagihan t WHERE NOT EXISTS (SELECT 1 FROM bsa_tagihan_komponen k WHERE k.tagihan_id = t.id)');
     $periksa($tanpaKomponen === 0, 'Setiap tagihan punya snapshot komponen');
-    $selisihTagihan = $angka('SELECT COUNT(*) FROM bsa_tagihan t WHERE t.total <> (SELECT COALESCE(SUM(k.nominal), 0) FROM bsa_tagihan_komponen k WHERE k.tagihan_id = t.id)');
-    $periksa($selisihTagihan === 0, 'Total tagihan = Σ komponen snapshot');
+    // Sesudah migrasi 028 (Fase 2) total juga memuat baris penyesuaian bertanda.
+    $baris = $tabelAda('bsa_tagihan_penyesuaian')
+        ? " + (SELECT COALESCE(SUM(CASE WHEN b.jenis = 'Tambahan' THEN b.nominal ELSE -b.nominal END), 0) FROM bsa_tagihan_penyesuaian b WHERE b.tagihan_id = t.id)"
+        : '';
+    $selisihTagihan = $angka('SELECT COUNT(*) FROM bsa_tagihan t WHERE t.total <> (SELECT COALESCE(SUM(k.nominal), 0) FROM bsa_tagihan_komponen k WHERE k.tagihan_id = t.id)' . $baris);
+    $periksa($selisihTagihan === 0, 'Total tagihan = Σ komponen snapshot' . ($baris === '' ? '' : ' + Σ penyesuaian bertanda (028)'));
     $selisihBayar = $angka("SELECT COUNT(*) FROM bsa_tagihan t WHERE t.terbayar <> (SELECT COALESCE(SUM(p.nominal), 0) FROM bsa_pembayaran p WHERE p.tagihan_id = t.id AND p.status = 'Sah')");
     $periksa($selisihBayar === 0, 'Terbayar tagihan = Σ pembayaran sah; tidak ada pembayaran melebihi total (CHECK)');
 

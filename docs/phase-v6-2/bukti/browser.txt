@@ -1,0 +1,79 @@
+[lulus] C-B tarif SMP Rp500.000 dan Tsanawi Rp250.000 tersimpan lewat formulir
+[lulus] C-B penyesuaian santri beralasan tersimpan
+[lulus] C-B pratinjau: 45 tagihan akan terbit; santri berpenyesuaian Rp400.000; yang dilewati dikelompokkan
+[lulus] C-B terbitkan (klik ganda) → satu penerbitan
+[lulus] C-B riwayat penerbitan berisi tepat satu penerbitan
+[lulus] B-A tarif petugas 375px: rapi di kerangka bersama
+[lulus] B-A pratinjau petugas 375px: rapi di kerangka bersama
+[lulus] B-A penyesuaian petugas 375px: rapi di kerangka bersama
+[lulus] B-A tunggakan petugas 375px: rapi di kerangka bersama
+[lulus] B-A rincian tagihan petugas 375px: rapi di kerangka bersama
+[lulus] B-A formulir pembayaran petugas 375px: rapi di kerangka bersama
+[lulus] C-C 375px: klik ganda Simpan pembayaran tetap satu pembayaran
+[lulus] C-C 375px: Rp40.000 + Rp60.000 atas Rp100.000 → Lunas, sisa Rp0, dua kuitansi
+[lulus] B-A tagihan lunas 375px: rapi di kerangka bersama
+[lulus] C-C 375px: kuitansi Rp40.000 terbuka tanpa geser horizontal
+[lulus] C-D 375px: revisi lewat dialog tersimpan dan tampil di rincian biaya
+[lulus] B-A tagihan sesudah revisi 375px: rapi di kerangka bersama
+[lulus] B-A tarif petugas 768px: rapi di kerangka bersama
+[lulus] B-A pratinjau petugas 768px: rapi di kerangka bersama
+[lulus] B-A penyesuaian petugas 768px: rapi di kerangka bersama
+[lulus] B-A tunggakan petugas 768px: rapi di kerangka bersama
+[lulus] B-A rincian tagihan petugas 768px: rapi di kerangka bersama
+[lulus] B-A formulir pembayaran petugas 768px: rapi di kerangka bersama
+[lulus] C-C 768px: Rp40.000 + Rp60.000 atas Rp100.000 → Lunas, sisa Rp0, dua kuitansi
+[lulus] B-A tagihan lunas 768px: rapi di kerangka bersama
+[lulus] C-C 768px: kuitansi Rp40.000 terbuka tanpa geser horizontal
+[lulus] C-D 768px: revisi lewat dialog tersimpan dan tampil di rincian biaya
+[lulus] B-A tagihan sesudah revisi 768px: rapi di kerangka bersama
+[lulus] B-A tarif petugas 1280px: rapi di kerangka bersama
+[lulus] B-A pratinjau petugas 1280px: rapi di kerangka bersama
+[lulus] B-A penyesuaian petugas 1280px: rapi di kerangka bersama
+[lulus] B-A tunggakan petugas 1280px: rapi di kerangka bersama
+[lulus] B-A rincian tagihan petugas 1280px: rapi di kerangka bersama
+[lulus] B-A formulir pembayaran petugas 1280px: rapi di kerangka bersama
+[lulus] C-C 1280px: Rp40.000 + Rp60.000 atas Rp100.000 → Lunas, sisa Rp0, dua kuitansi
+[lulus] B-A tagihan lunas 1280px: rapi di kerangka bersama
+[lulus] C-C 1280px: kuitansi Rp40.000 terbuka tanpa geser horizontal
+[lulus] C-C kuitansi dicetak/PDF tepat satu halaman A4
+[lulus] C-D 1280px: revisi lewat dialog tersimpan dan tampil di rincian biaya
+[lulus] B-A tagihan sesudah revisi 1280px: rapi di kerangka bersama
+[lulus] C-D 375px: pembatalan beralasan lewat dialog → status Dibatalkan, sisa kembali Rp50.000, baris tetap
+[lulus] C-E 375px tanpa JavaScript: pratinjau → terbit 41 tagihan unit Tsanawi
+[lulus] C-E 375px tanpa JavaScript: pembayaran tersimpan sekali
+[lulus] C-E 375px tanpa JavaScript: dialog terbuka di tempat, pembatalan beralasan tersimpan
+[lulus] B-A tunggakan admin 375px: rapi di kerangka bersama
+[lulus] B-A pembayaran admin 375px: rapi di kerangka bersama
+[lulus] B-A rincian tagihan admin 375px: rapi di kerangka bersama
+[lulus] C-F 375px: admin tanpa tombol pembayaran/koreksi
+[lulus] C-F 375px: admin melihat referensi transfer, berlabel hanya baca
+[lulus] B-A tunggakan admin 768px: rapi di kerangka bersama
+[lulus] B-A pembayaran admin 768px: rapi di kerangka bersama
+[lulus] B-A rincian tagihan admin 768px: rapi di kerangka bersama
+[lulus] C-F 768px: admin tanpa tombol pembayaran/koreksi
+[lulus] C-F 768px: admin melihat referensi transfer, berlabel hanya baca
+[lulus] B-A tunggakan admin 1280px: rapi di kerangka bersama
+[lulus] B-A pembayaran admin 1280px: rapi di kerangka bersama
+[lulus] B-A rincian tagihan admin 1280px: rapi di kerangka bersama
+[lulus] C-F 1280px: admin tanpa tombol pembayaran/koreksi
+[lulus] C-F 1280px: admin melihat referensi transfer, berlabel hanya baca
+[lulus] B-A tunggakan wali 375px: rapi di kerangka bersama
+[lulus] B-A pembayaran wali 375px: rapi di kerangka bersama
+[lulus] B-A rincian tagihan wali 375px: rapi di kerangka bersama
+[lulus] C-F 375px: wali tanpa tombol pembayaran/koreksi
+[lulus] C-F 375px: wali melihat baris potongan tanpa referensi, alasan, atau riwayat internal
+[lulus] B-A tunggakan wali 768px: rapi di kerangka bersama
+[lulus] B-A pembayaran wali 768px: rapi di kerangka bersama
+[lulus] B-A rincian tagihan wali 768px: rapi di kerangka bersama
+[lulus] C-F 768px: wali tanpa tombol pembayaran/koreksi
+[lulus] C-F 768px: wali melihat baris potongan tanpa referensi, alasan, atau riwayat internal
+[lulus] B-A tunggakan wali 1280px: rapi di kerangka bersama
+[lulus] B-A pembayaran wali 1280px: rapi di kerangka bersama
+[lulus] B-A rincian tagihan wali 1280px: rapi di kerangka bersama
+[lulus] C-F 1280px: wali tanpa tombol pembayaran/koreksi
+[lulus] C-F 1280px: wali melihat baris potongan tanpa referensi, alasan, atau riwayat internal
+[lulus] C-F tanpa galat JavaScript
+[lulus] C-F tanpa confirm()/alert() bawaan
+
+Lulus: 76 · Gagal: 0
+galat PHP server browser: 0

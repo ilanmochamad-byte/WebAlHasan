@@ -1,0 +1,25 @@
+[lulus] Fixture baru tanpa tarif
+[lulus] Barrier memastikan batch sudah menghitung total dan menunggu INSERT
+[lulus] Koneksi kedua mencabut penyesuaian saat batch tertahan
+[lulus] Penerbitan setelah barrier berhasil tanpa galat
+[lulus] Total mempertahankan penyesuaian pada rencana yang disetujui
+[gagal] Snapshot menyimpan potongan yang sama dengan perhitungan total
+[gagal] Total = komponen + penyesuaian setelah race
+[gagal] Verifier menerima hasil penerbitan setelah race
+[lulus] Sesi web dibuka sebelum perubahan hak
+[lulus] Token API dibuat sebelum perubahan hak
+[lulus] Kontrol positif: santri Tsanawi terlihat pada batch
+[lulus] pindah_unit: rincian tagihan tertutup (kontrol)
+[gagal] pindah_unit: layanan batch tidak membuka santri di luar hak kini
+[gagal] pindah_unit: API batch token lama menutup data santri
+[gagal] pindah_unit: web batch sesi lama menutup data santri
+[lulus] pindah_unit: admin tetap dapat mengaudit riwayat
+[lulus] nonaktif: rincian tagihan tertutup (kontrol)
+[gagal] nonaktif: layanan batch tidak membuka santri di luar hak kini
+[gagal] nonaktif: API batch token lama menutup data santri
+[gagal] nonaktif: web batch sesi lama menutup data santri
+[lulus] nonaktif: admin tetap dapat mengaudit riwayat
+[lulus] Penugasan dicabut: token lama batch ditolak
+[lulus] Penugasan dicabut: sesi lama batch ditolak
+[lulus] Hak dipulihkan: batch kembali dapat diaudit
+Hasil: 15 lulus, 9 gagal

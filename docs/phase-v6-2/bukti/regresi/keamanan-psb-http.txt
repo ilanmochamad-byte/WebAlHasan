@@ -1,0 +1,99 @@
+[lulus] A1 portal anonim diarahkan ke halaman masuk
+[lulus] A2 rincian biaya anonim tanpa data pendaftar
+[lulus] A3 pencarian NIK anonim tanpa data
+[lulus] A4 /cetak_bukti.php?noreg=KPSB-T-0001 anonim 403 tanpa data
+[lulus] A4 /cetak_biaya_psb.php?noreg=KPSB-T-0002 anonim 403 tanpa data
+[lulus] A4 /cetak_bukti.php?noreg=TIDAK-ADA anonim 403 tanpa data
+[lulus] A5 jalur berkas anonim 401
+[lulus] A6 folder berkas_psb/ ditolak langsung oleh .htaccess
+[lulus] A7 daftar isi berkas_psb/ ditolak
+[lulus] A8 unggah anonim ditolak tanpa berkas tersimpan
+[lulus] A9 GET keluar hanya menampilkan konfirmasi
+[lulus] B1 GET penangan masuk tidak memproses
+[lulus] B2 masuk tanpa CSRF ditolak
+[lulus] B3 No. HP salah ditolak
+[lulus] B4 pendaftar ber-No. HP kosong tidak dapat masuk dengan isian kosong
+[lulus] B5 masuk sah dengan ID sesi baru
+[lulus] B6 portal tampil dengan token di formulir biodata, unggah, keluar
+[lulus] B7 audit masuk tanpa NISN mentah
+[lulus] B8 keluar tanpa CSRF tidak mengakhiri sesi
+[lulus] B9 keluar POST ber-CSRF mengakhiri sesi
+[lulus] C1 NISN terkunci setelah 8 gagal, walau kredensial benar
+[lulus] C2 NISN lain dari IP sama tetap dapat masuk di bawah batas IP
+[lulus] C3 IP terkunci setelah 20 gagal
+[lulus] D1 rincian biaya pendaftar lain ditolak
+[lulus] D2 pencarian NIK pendaftar lain ditolak
+[lulus] D3 bukti pendaftar lain 403
+[lulus] D4 kwitansi pendaftar lain 403
+[lulus] D5 berkas pendaftar lain 403
+[lulus] D6 simpan rincian biaya pendaftar lain ditolak, tagihan tetap
+[lulus] D7 ubah biodata hanya baris sendiri (id kiriman diabaikan)
+[lulus] D8 ubah biodata tanpa CSRF sah ditolak
+[lulus] D9 isian tidak sah ditolak server
+[lulus] E0 sesi kedua pendaftar A aktif
+[lulus] E1 ganti No. HP: sesi ini tetap, sesi lain berakhir
+[lulus] E2 sesi lama tidak lagi membuka berkas/bukti
+[lulus] E3 No. HP lama tidak berlaku, No. HP baru berlaku
+[lulus] E4 sesi pendaftar C aktif
+[lulus] E5 pendaftar dihapus admin: sesinya berakhir
+[lulus] E6 sesi terhapus tidak membuka rincian biaya
+[lulus] F1 PNG sah tersimpan privat dengan nama acak
+[lulus] F2 pesan hasil unggah tampil
+[lulus] F3 folder privat ditolak web (.htaccess akar + folder)
+[lulus] F4 ditolak: isi bukan gambar berekstensi jpg
+[lulus] F4 ditolak: isi bukan PDF berekstensi pdf
+[lulus] F4 ditolak: lebih dari 2 MB
+[lulus] F4 ditolak: ekstensi di luar daftar
+[lulus] F5 berkas tertolak tidak tersimpan di server
+[lulus] F6 PDF sah diterima
+[lulus] F7 unggah tanpa CSRF sah ditolak
+[lulus] F8 unggahan tidak menyentuh pendaftar lain
+[lulus] G1 pemilik membuka berkasnya (image/png, nosniff, no-store)
+[lulus] G2 berkas lama di berkas_psb/ dibaca lewat jalur berpenjaga
+[lulus] G3 unduh PDF sebagai lampiran
+[lulus] G4 HEAD diizinkan
+[lulus] G5 POST ke jalur berkas 405
+[lulus] G6 jenis tidak dikenal/kosong 404
+[lulus] G7 id tidak sah dari pendaftar 403
+[lulus] G8 admin membuka berkas pendaftar mana pun
+[lulus] G9 admin: pendaftar tidak ada 404
+[lulus] G10 staf bukan admin 403
+[lulus] G11 nama berkas tak wajar di basis data tidak keluar folder
+[lulus] G12 berkas lama berisi bukan JPG/PNG/PDF hanya diunduh sebagai lampiran
+[lulus] H1 pemilik melihat rinciannya dengan formulir ber-CSRF
+[lulus] H2 simpan mengalihkan ke kwitansi
+[lulus] H3 kategori, harga wajib, dan total dihitung server dari katalog
+[lulus] H3a simpan ulang memperbarui kategori sesuai katalog server
+[lulus] H3b simpan ulang rincian yang sama tetap berhasil
+[lulus] H4 nominal tidak sah ditolak
+[lulus] H5 pemilik membuka kwitansinya
+[lulus] H6 tagihan lunas tidak dapat diubah dari halaman biaya
+[lulus] H7 admin tetap mencari rincian pendaftar mana pun
+[lulus] H8 admin membuka kwitansi dan bukti
+[lulus] H9 staf bukan admin tidak membuka data pendaftar
+[lulus] H10 tagihan pendaftar B tidak berubah sepanjang uji
+[lulus] I1 GET proses pendaftaran tidak memproses
+[lulus] I2 pendaftaran tanpa CSRF ditolak
+[lulus] I2a tanpa persetujuan Kebijakan Privasi ditolak tanpa menyimpan (Tahap 8, AO)
+[lulus] I3 isian tidak sah ditolak dengan pesan
+[lulus] I4 pendaftaran sah tersimpan (status Baru, nomor PSB-tahun-acak)
+[lulus] I5 peramban pendaftar mencetak buktinya
+[lulus] I6 peramban lain tidak mendapat hak cetak
+[lulus] I7 hak cetak hanya untuk pendaftaran itu
+[lulus] I8 NISN ganda ditolak
+[lulus] I9 nomor di alamat tidak ditampilkan apa adanya
+[lulus] I10 pendaftar baru dapat masuk portal
+[lulus] J1 panel admin menautkan jalur berpenjaga, bukan folder
+[lulus] J2 halaman admin PSB tetap 200
+[lulus] J3 nama di-escape pada /portal_pendaftar.php
+[lulus] J3 nama di-escape pada /cetak_bukti.php?noreg=KPSB-T-0006
+[lulus] J3 nama di-escape pada /biaya_psb.php
+[lulus] J4 halaman publik / 200
+[lulus] J4 halaman publik /psb.php 200
+[lulus] J4 halaman publik /berita.php 200
+[lulus] J4 halaman publik /galeri.php 200
+[lulus] J4 halaman publik /download.php 200
+[lulus] J4 halaman publik /login_pendaftar.php 200
+[lulus] K1 tanpa galat/peringatan PHP di log server
+
+Hasil: 97 lulus, 0 gagal

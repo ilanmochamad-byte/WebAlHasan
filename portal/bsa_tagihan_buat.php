@@ -7,12 +7,13 @@ use App\Bsa\BsaService;
 use App\Ui\Denial;
 
 /**
- * Terbitkan satu tagihan bulanan untuk satu santri (PRD V6 Fase 1).
+ * Terbitkan satu tagihan bulanan untuk satu santri dengan komponen manual
+ * (PRD V6 Fase 1). Penerbitan dari tarif unit untuk banyak santri ada di
+ * `bsa_penerbitan.php` (Fase 2).
  *
  * Hanya petugas BSA berpenugasan aktif untuk santri aktif dalam cakupannya.
  * Satu santri + satu periode paling banyak satu tagihan (kunci unik basis
- * data); komponen disalin sebagai snapshot. Tarif unit dan penerbitan massal
- * datang di Fase 2. Penerbitan tidak memotong tabungan.
+ * data); komponen disalin sebagai snapshot. Penerbitan tidak memotong tabungan.
  */
 
 require_once __DIR__ . '/_bsa.php';

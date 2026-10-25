@@ -1,0 +1,46 @@
+=== M-1. Salinan uji pada keadaan 026 ===
+[lulus] Salinan berantai V5 Fase 5 (fixture V1–V5 sintetis) dibangun: test_v6_f1_migrasi_test
+[lulus] Preflight rollback lulus (tabel BSA kosong, 027 migrasi terakhir)
+[lulus] Rollback 027 mengembalikan salinan ke keadaan 026
+[lulus] Verifier --rollback: tabel BSA tidak ada, 027 tidak tercatat, tabel penugasan tetap
+
+=== M-2. Preflight dan migrasi ===
+[lulus] Preflight lulus (CHECK, InnoDB, binlog, 026) dan menulis manifest dengan sidik jari ID
+[lulus] Checksum 23 tabel inti (identitas, penugasan, V2–V5, PSB) dicatat sebelum migrasi
+[lulus] bin/migrate.php up menerapkan 027
+
+=== M-3. Verifier sesudah migrasi ===
+[lulus] Verifier dengan manifest lulus (148 pemeriksaan)
+[lulus] 22 kunci asing, 0 referensi yatim
+[lulus] Sidik jari ID santri/wali/santri_wali/users dan relasi tetap
+[lulus] Checksum dan struktur kolom tabel inti tetap sesudah migrasi
+[lulus] Empat belas CHECK basis data terpasang pada tabel BSA (14)
+
+=== M-4. Migrasi idempoten dan aditif ===
+[lulus] SQL 027 dijalankan ulang tanpa galat (CREATE TABLE IF NOT EXISTS)
+[lulus] Jalan ulang tidak mengubah data lama dan tidak menggandakan catatan migrasi
+[lulus] Migrasi 027 aditif murni: 6 CREATE TABLE IF NOT EXISTS, tanpa DROP/DELETE/UPDATE/ALTER/INSERT, tanpa tipe float
+[lulus] Rollback 027 hanya melepas enam tabel bsa_* (tanpa DELETE/UPDATE/ALTER)
+
+=== M-5. Data BSA memblokir rollback ===
+[lulus] Fixture V6 Fase 1 dimuat pada salinan 027
+[lulus] Setoran Rp100.000, penarikan Rp30.000, dan satu tagihan dicatat lewat layanan (saldo Rp70.000)
+[lulus] Verifier dengan data: 0 yatim, saldo = ledger
+[lulus] Preflight rollback MEMBLOKIR bila ada data BSA
+[lulus] Rollback tanpa preflight ditolak penjaga SQL: enam tabel dan data tetap, 027 tetap tercatat
+
+=== M-6. Rollback salinan tanpa data BSA ===
+[lulus] Salinan kedua dibangun: test_v6_f1_rollback_test
+[lulus] Preflight rollback lulus pada tabel BSA kosong
+[lulus] Rollback 027 dijalankan; enam tabel dilepas
+[lulus] Verifier --rollback dengan manifest: tabel lama, jumlah baris, dan sidik jari ID tetap
+[lulus] Checksum dan struktur kolom tabel inti tetap sesudah rollback
+
+=== M-7. Kode Fase 1 sesudah rollback ===
+[lulus] Sesudah rollback: layanan BSA 503, menu Keuangan tidak tampil, pusat penugasan dan capability tetap berjalan (status=503 menu=tidak daftar=0 murobi=ada cap=admin-ada)
+
+=== M-8. Migrasi ulang sesudah rollback ===
+[lulus] Migrasi ulang 027 lulus verifier dengan manifest
+[lulus] Checksum tabel inti tetap sesudah siklus migrasi–rollback–migrasi
+
+Lulus: 29 · Gagal: 0

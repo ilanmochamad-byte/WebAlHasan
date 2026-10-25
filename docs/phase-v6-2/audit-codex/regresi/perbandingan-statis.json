@@ -1,0 +1,97 @@
+[
+  {
+    "suite": "keamanan_psb_static.txt",
+    "gagal": 1,
+    "fase1": 1,
+    "pesan_baru": []
+  },
+  {
+    "suite": "penugasan_static.txt",
+    "gagal": 2,
+    "fase1": 2,
+    "pesan_baru": []
+  },
+  {
+    "suite": "redesain_web_tahap2_static.txt",
+    "gagal": 1,
+    "fase1": 1,
+    "pesan_baru": []
+  },
+  {
+    "suite": "redesain_web_tahap3_static.txt",
+    "gagal": 1,
+    "fase1": 1,
+    "pesan_baru": []
+  },
+  {
+    "suite": "redesain_web_tahap4_static.txt",
+    "gagal": 1,
+    "fase1": 1,
+    "pesan_baru": []
+  },
+  {
+    "suite": "redesain_web_tahap6_static.txt",
+    "gagal": 2,
+    "fase1": 2,
+    "pesan_baru": []
+  },
+  {
+    "suite": "redesain_web_tahap7_static.txt",
+    "gagal": 2,
+    "fase1": 2,
+    "pesan_baru": []
+  },
+  {
+    "suite": "redesain_web_tahap8_static.txt",
+    "gagal": 2,
+    "fase1": 2,
+    "pesan_baru": []
+  },
+  {
+    "suite": "v2_phase4_static.txt",
+    "gagal": 1,
+    "fase1": 1,
+    "pesan_baru": []
+  },
+  {
+    "suite": "v2_phase5_static.txt",
+    "gagal": 3,
+    "fase1": 3,
+    "pesan_baru": []
+  },
+  {
+    "suite": "v5_phase1_static.txt",
+    "gagal": 4,
+    "fase1": 4,
+    "pesan_baru": []
+  },
+  {
+    "suite": "v5_phase2_static.txt",
+    "gagal": 2,
+    "fase1": 2,
+    "pesan_baru": []
+  },
+  {
+    "suite": "v5_phase3_static.txt",
+    "gagal": 3,
+    "fase1": 3,
+    "pesan_baru": []
+  },
+  {
+    "suite": "v5_phase5_static.txt",
+    "gagal": 1,
+    "fase1": 1,
+    "pesan_baru": []
+  },
+  {
+    "suite": "v6_phase1_static.txt",
+    "gagal": 4,
+    "fase1": 0,
+    "pesan_baru": [
+      "[gagal] Migrasi 027 berurutan setelah 026 (migrasi terakhir yang ada)",
+      "[gagal] AuditLogger hanya meloloskan metadata untuk aksi bsa.* (tanpa nominal/saldo/referensi/tujuan)",
+      "[gagal] Migrasi/rollback lama (≤ 026) tidak diubah",
+      "[gagal] Fase 2+ belum dimulai: tanpa tarif, pembayaran tagihan, kuitansi, pembalik, atau notifikasi"
+    ]
+  }
+]

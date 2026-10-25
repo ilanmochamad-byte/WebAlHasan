@@ -678,3 +678,15 @@ function bsa_service(): \App\Bsa\BsaService
         audit_logger()
     );
 }
+
+/** Tagihan bulanan lengkap (PRD V6 Fase 2): memakai penjaga hak `BsaService` yang sama. */
+function tagihan_service(): \App\Bsa\TagihanService
+{
+    $repo = new \App\Bsa\BsaRepository(app_db());
+
+    return new \App\Bsa\TagihanService(
+        new \App\Bsa\BsaService($repo, capabilities(), audit_logger()),
+        $repo,
+        new \App\Bsa\TagihanRepository(app_db(), $repo)
+    );
+}

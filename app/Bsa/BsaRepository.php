@@ -384,6 +384,14 @@ final class BsaRepository
                 [$id, $i + 1, $k['nama'], $k['nominal']]
             );
         }
+        // Fase 2 (migrasi 028): setiap tagihan punya riwayat versi sejak terbit.
+        if (Schema::hasTable($this->db, 'bsa_tagihan_riwayat')) {
+            $this->execute(
+                "INSERT INTO bsa_tagihan_riwayat (tagihan_id, versi, tindakan, total, jatuh_tempo, alasan, penugasan_id, aktor)
+                 VALUES (?, 1, 'Terbit', ?, ?, NULL, ?, ?)",
+                [$id, $data['total'], $data['jatuh_tempo'], $penugasanId, $userId]
+            );
+        }
 
         return $id;
     }
@@ -420,8 +428,11 @@ final class BsaRepository
 
     // =======================================================================
 
-    /** Penempatan kelas aktif tahun ajaran aktif (paling banyak satu per santri). */
-    private function joinUnit(): string
+    /**
+     * Penempatan kelas aktif tahun ajaran aktif (paling banyak satu per santri).
+     * Publik agar `TagihanRepository` (Fase 2) memakai definisi unit yang sama.
+     */
+    public function joinUnit(): string
     {
         return " LEFT JOIN plotting_kelas pk ON pk.id_santri = s.id AND pk.status = 'Aktif' AND pk.id_tahun = " . self::TAHUN_AKTIF . '
                  LEFT JOIN kelas kl ON kl.id = pk.id_kelas';
@@ -430,9 +441,10 @@ final class BsaRepository
     /**
      * Relasi wali aktif akun atas santri alias `s` (satu parameter: user id):
      * akun aktif + peran orang tua + master wali aktif + `santri_wali` aktif +
-     * santri aktif. Dihitung ulang setiap permintaan.
+     * santri aktif. Dihitung ulang setiap permintaan. Publik agar daftar Fase 2
+     * (`TagihanRepository`) memakai syarat relasi wali yang sama persis.
      */
-    private function waliSyarat(): string
+    public function waliSyarat(): string
     {
         return " JOIN users wu ON wu.id = ? AND wu.is_active = 1
                  JOIN wali ww ON ww.id = wu.wali_id AND ww.is_active = 1 AND ww.archived_at IS NULL
