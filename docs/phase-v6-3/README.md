@@ -7,7 +7,7 @@
 | Workstream | PRD V6 Fase 1–5 keuangan santri/BSA — implementator Claude Code, auditor Codex (`AGENTS.md`, keputusan 25 Oktober 2026) |
 | Branch | `claude/prd-v6-fase-3` |
 | Baseline web | Commit audit Fase 2 `ca62c3108aafb71b0a93211b6b5d3a88d086a994` (`fix(v6): audit Fase 2…`, = `origin/claude/prd-v6-fase-2`). `origin/main` `271d8fc6ec6bfdd3709b1b33adff02c61f829475` (merge PR #88) memuatnya; `git diff ca62c31 origin/main` kosong. Branch dibuat dari `ca62c31`, tidak bekerja di `main`. |
-| Commit implementasi | Lihat bagian *Hash* di bawah (commit kode lalu commit dokumen bukti). |
+| Commit implementasi | `e61c7bd` (lihat bagian *Hash*) |
 | Mobile | `~/alhasanApps` tidak diubah dan tidak dibutuhkan Fase 3. `origin/main` `f8ebba0`; salinan kerja berada di branch lain (`claude/aset-appstore-header`) dengan `package.json`/`package-lock.json` belum di-commit milik pekerjaan lain — tidak disentuh. |
 | Lingkungan uji | PHP 8.4.14, MariaDB 12.3.2 lokal (`innodb_snapshot_isolation=ON`), Apache 2.4 + php-fpm lokal (regresi PSB), Chromium Playwright. Seluruh DB `test_*_test` dengan fixture sintetis; tidak ada data produksi yang dibuka/diubah. **MySQL tidak tersedia lokal — belum diuji.** |
 
@@ -134,7 +134,15 @@ Tagihan dan tabungan hanya dirilis bersama sesudah Fase 5. Bila kelak diputuskan
 
 ## Hash
 
-<!-- HASH -->
+| Butir | Nilai |
+| --- | --- |
+| Baseline (commit audit Fase 2) | `ca62c3108aafb71b0a93211b6b5d3a88d086a994` |
+| `origin/main` saat mulai | `271d8fc6ec6bfdd3709b1b33adff02c61f829475` (memuat baseline; diff kosong) |
+| Commit implementasi Fase 3 (kode, migrasi, uji, bukti) | `e61c7bd66049c45e72b8224ecd5f13d11af86792` |
+| Commit dokumen hash ini | commit berikutnya di branch yang sama (`docs(v6): hash …`) |
+| SHA-256 `database/migrations/029_v6_fase3_tabungan.sql` | `1a77f44ff1da9c63147faad8aad2b4b06ee6fcdfe4ff75267fbf40eef9c82010` |
+| SHA-256 `database/rollbacks/029_v6_fase3_tabungan.sql` | `234c68b42cb4a601455c0b98f36371f7b11c6037d1dd0463306ae8e6b30f485b` |
+| Mobile `alhasanApps` `origin/main` (hanya dibaca) | `f8ebba0` |
 
 ## Handoff ke auditor
 
