@@ -1,0 +1,62 @@
+[lulus] B-A daftar santri petugas 375px: rapi di kerangka bersama
+[lulus] B-A rincian santri petugas 375px: rapi di kerangka bersama
+[lulus] B-A formulir setoran 375px: rapi di kerangka bersama
+[lulus] B-A formulir penarikan 375px: rapi di kerangka bersama
+[lulus] B-B 375px: setoran Rp100.000 + penarikan Rp30.000 → saldo Rp70.000
+[lulus] B-A rincian sesudah transaksi 375px: rapi di kerangka bersama
+[lulus] B-A formulir tagihan 375px: rapi di kerangka bersama
+[lulus] B-B 375px: tagihan Rp550.000 terbit lalu dibaca ulang
+[lulus] B-A rincian tagihan 375px: rapi di kerangka bersama
+[lulus] B-C 375px: klik ganda Simpan setoran tetap satu transaksi
+[lulus] B-A daftar santri petugas 768px: rapi di kerangka bersama
+[lulus] B-A rincian santri petugas 768px: rapi di kerangka bersama
+[lulus] B-A formulir setoran 768px: rapi di kerangka bersama
+[lulus] B-A formulir penarikan 768px: rapi di kerangka bersama
+[lulus] B-B 768px: setoran Rp100.000 + penarikan Rp30.000 → saldo Rp145.000
+[lulus] B-A rincian sesudah transaksi 768px: rapi di kerangka bersama
+[lulus] B-A formulir tagihan 768px: rapi di kerangka bersama
+[lulus] B-B 768px: tagihan Rp550.000 terbit lalu dibaca ulang
+[lulus] B-A rincian tagihan 768px: rapi di kerangka bersama
+[lulus] B-A daftar santri petugas 1280px: rapi di kerangka bersama
+[lulus] B-A rincian santri petugas 1280px: rapi di kerangka bersama
+[lulus] B-A formulir setoran 1280px: rapi di kerangka bersama
+[lulus] B-A formulir penarikan 1280px: rapi di kerangka bersama
+[lulus] B-B 1280px: setoran Rp100.000 + penarikan Rp30.000 → saldo Rp215.000
+[lulus] B-A rincian sesudah transaksi 1280px: rapi di kerangka bersama
+[lulus] B-A formulir tagihan 1280px: rapi di kerangka bersama
+[lulus] B-B 1280px: tagihan Rp550.000 terbit lalu dibaca ulang
+[lulus] B-A rincian tagihan 1280px: rapi di kerangka bersama
+[lulus] B-D 375px tanpa JavaScript: setoran tersimpan sekali dan rincian rapi
+[lulus] B-D 375px tanpa JavaScript: tagihan terbit
+[lulus] B-A daftar admin 375px: rapi di kerangka bersama
+[lulus] B-A rincian admin 375px: rapi di kerangka bersama
+[lulus] B-E 375px: admin membaca rincian tanpa tombol/tautan pencatatan
+[lulus] B-A rincian tagihan admin 375px: rapi di kerangka bersama
+[lulus] B-A daftar admin 768px: rapi di kerangka bersama
+[lulus] B-A rincian admin 768px: rapi di kerangka bersama
+[lulus] B-E 768px: admin membaca rincian tanpa tombol/tautan pencatatan
+[lulus] B-A rincian tagihan admin 768px: rapi di kerangka bersama
+[lulus] B-A daftar admin 1280px: rapi di kerangka bersama
+[lulus] B-A rincian admin 1280px: rapi di kerangka bersama
+[lulus] B-E 1280px: admin membaca rincian tanpa tombol/tautan pencatatan
+[lulus] B-A rincian tagihan admin 1280px: rapi di kerangka bersama
+[lulus] B-A daftar wali 375px: rapi di kerangka bersama
+[lulus] B-A rincian wali 375px: rapi di kerangka bersama
+[lulus] B-E 375px: wali membaca rincian tanpa tombol/tautan pencatatan
+[lulus] B-E 375px: wali tidak melihat referensi transfer
+[lulus] B-A rincian tagihan wali 375px: rapi di kerangka bersama
+[lulus] B-A daftar wali 768px: rapi di kerangka bersama
+[lulus] B-A rincian wali 768px: rapi di kerangka bersama
+[lulus] B-E 768px: wali membaca rincian tanpa tombol/tautan pencatatan
+[lulus] B-E 768px: wali tidak melihat referensi transfer
+[lulus] B-A rincian tagihan wali 768px: rapi di kerangka bersama
+[lulus] B-A daftar wali 1280px: rapi di kerangka bersama
+[lulus] B-A rincian wali 1280px: rapi di kerangka bersama
+[lulus] B-E 1280px: wali membaca rincian tanpa tombol/tautan pencatatan
+[lulus] B-E 1280px: wali tidak melihat referensi transfer
+[lulus] B-A rincian tagihan wali 1280px: rapi di kerangka bersama
+[lulus] B-E tanpa galat JavaScript
+[lulus] B-E tanpa confirm()/alert() bawaan
+
+Lulus: 59 · Gagal: 0
+galat PHP server browser: 0

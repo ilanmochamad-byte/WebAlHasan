@@ -86,6 +86,11 @@ final class PenugasanJenis
     public const CAP_PEMBIAYAAN_BULANAN_PEMBAYARAN = 'pembiayaan_bulanan.pembayaran';
     public const CAP_PEMBIAYAAN_BULANAN_VERIFIKASI = 'pembiayaan_bulanan.verifikasi';
     public const CAP_PEMBIAYAAN_BULANAN_LAPORAN = 'pembiayaan_bulanan.laporan';
+    // Keuangan santri/BSA (PRD V6, keputusan Human Developer 25 Oktober 2026):
+    // satu penugasan BSA = jenis `bendahara_bulanan` yang diperluas aditif.
+    // `bsa.tabungan` = setoran, penarikan/belanja, dan saldo tabungan santri.
+    // Admin memperolehnya sebagai pengawasan; layanan BSA hanya mengizinkan baca.
+    public const CAP_BSA_TABUNGAN = 'bsa.tabungan';
     // Kesiapan V6.
     public const CAP_PSB_PENDAFTAR = 'psb.pendaftar';
     public const CAP_PSB_VERIFIKASI = 'psb.verifikasi';
@@ -192,7 +197,9 @@ final class PenugasanJenis
             'keterangan' => 'Pengurus petugas klinik/bagian kesehatan. Mencatat dan membaca kunjungan klinik seluruh santri aktif. Admin hanya membaca dan mengaudit, tidak mengubah isi klinis.',
         ],
         self::BENDAHARA_BULANAN => [
-            'label' => 'Bendahara Pembiayaan Bulanan',
+            // PRD V6: jenis, tabel, dan entitas audit lama dipertahankan; hanya
+            // label, capability, dan masa berlaku yang diperluas.
+            'label' => 'Petugas BSA',
             'label_subjek' => 'Pengurus',
             'tabel' => 'bendahara_bulanan_assignments',
             'entitas' => 'bendahara_bulanan_assignment',
@@ -200,11 +207,14 @@ final class PenugasanJenis
             'subjek_kolom' => 'pengurus_id',
             'role_dasar' => 'pengurus',
             'cakupan' => self::CAKUPAN_JENJANG,
-            'wajib_tahun_aktif' => true,
+            // Keputusan Human Developer 25 Oktober 2026: BSA melayani sepanjang
+            // tahun; masa berlaku mengikuti tanggal mulai/selesai dan status
+            // aktif, tidak gugur saat semester berganti.
+            'wajib_tahun_aktif' => false,
             'lama' => false,
-            'capabilities' => [self::CAP_PEMBIAYAAN_BULANAN_TAGIHAN, self::CAP_PEMBIAYAAN_BULANAN_PEMBAYARAN, self::CAP_PEMBIAYAAN_BULANAN_VERIFIKASI, self::CAP_PEMBIAYAAN_BULANAN_LAPORAN],
-            'prd' => 'V5',
-            'keterangan' => 'Pengurus yang diangkat sebagai bendahara pembiayaan bulanan, opsional dibatasi satu unit/jenjang. Tagihan, pembayaran, kuitansi, dan laporan keuangan belum ada.',
+            'capabilities' => [self::CAP_PEMBIAYAAN_BULANAN_TAGIHAN, self::CAP_PEMBIAYAAN_BULANAN_PEMBAYARAN, self::CAP_PEMBIAYAAN_BULANAN_VERIFIKASI, self::CAP_PEMBIAYAAN_BULANAN_LAPORAN, self::CAP_BSA_TABUNGAN],
+            'prd' => 'V6',
+            'keterangan' => 'Pengurus petugas BSA (Bank Santri Al Hasan), opsional dibatasi satu unit/jenjang: tagihan bulanan, tabungan, dan penarikan/belanja santri dalam cakupan. Admin hanya membaca dan mengaudit.',
         ],
         self::PANITIA_PSB => [
             'label' => 'Panitia PSB',
@@ -254,6 +264,7 @@ final class PenugasanJenis
         self::CAP_PEMBIAYAAN_BULANAN_PEMBAYARAN => 'Pembayaran bulanan',
         self::CAP_PEMBIAYAAN_BULANAN_VERIFIKASI => 'Verifikasi pembayaran bulanan',
         self::CAP_PEMBIAYAAN_BULANAN_LAPORAN => 'Laporan pembiayaan bulanan',
+        self::CAP_BSA_TABUNGAN => 'Tabungan santri (BSA)',
         self::CAP_PSB_PENDAFTAR => 'Data pendaftar PSB',
         self::CAP_PSB_VERIFIKASI => 'Verifikasi berkas PSB',
         self::CAP_PSB_SELEKSI => 'Seleksi PSB',
@@ -335,7 +346,7 @@ final class PenugasanJenis
     }
 
     /** Jenis penugasan untuk modul yang belum dibangun (keputusan AF). */
-    public const MENDATANG = [self::BENDAHARA_BULANAN, self::PANITIA_PSB, self::BENDAHARA_PSB];
+    public const MENDATANG = [self::PANITIA_PSB, self::BENDAHARA_PSB];
 
     /**
      * Hak yang didapat dari satu jenis penugasan, dalam kata biasa (G-1).
@@ -351,7 +362,8 @@ final class PenugasanJenis
             self::GURU_MAPEL => ['Mengisi nilai mata pelajarannya'],
             self::PENDIDIKAN => ['Memverifikasi kelengkapan rapor', 'Menyusun rencana nilai', 'Mengisi nilai pengganti', 'Membaca laporan absensi'],
             self::KESEHATAN => ['Mencatat kunjungan klinik', 'Membaca riwayat kesehatan santri'],
-            self::BENDAHARA_BULANAN, self::PANITIA_PSB, self::BENDAHARA_PSB => ['Belum ada — menunggu modul baru'],
+            self::BENDAHARA_BULANAN => ['Menerbitkan tagihan bulanan', 'Mencatat setoran dan penarikan tabungan', 'Membaca saldo santri dalam cakupan'],
+            self::PANITIA_PSB, self::BENDAHARA_PSB => ['Belum ada — menunggu modul baru'],
             default => [],
         };
     }
@@ -365,6 +377,7 @@ final class PenugasanJenis
             self::GURU_MAPEL => 'Guru mata pelajaran mengisi nilai satu mata pelajaran pada satu kelas untuk satu semester.',
             self::PENDIDIKAN => 'Bagian Pendidikan memeriksa kelengkapan bahan rapor dan membaca laporan absensi, opsional untuk satu unit.',
             self::KESEHATAN => 'Petugas kesehatan adalah pengurus yang mencatat kunjungan klinik seluruh santri aktif. Penugasan berlaku sampai tanggal selesai atau dinonaktifkan, tidak gugur saat semester berganti.',
+            self::BENDAHARA_BULANAN => 'Petugas BSA adalah pengurus yang mengelola tagihan bulanan dan tabungan santri, opsional untuk satu unit. Penugasan berlaku sampai tanggal selesai atau dinonaktifkan, tidak gugur saat semester berganti.',
             default => 'Penugasan ini belum memberi akses ke halaman apa pun sampai modul pembiayaan/PSB baru selesai. Data yang sudah ada tetap dapat dilihat dan dikelola.',
         };
     }

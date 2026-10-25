@@ -1,0 +1,28 @@
+[lulus] bsa_idempotensi = 0
+[lulus] bsa_pembayaran = 0
+[lulus] bsa_tabungan_akun = 0
+[lulus] bsa_tabungan_transaksi = 0
+[lulus] bsa_tagihan_komponen = 0
+[lulus] bsa_tagihan = 0
+Rollback 027 aman dijalankan: tidak ada data BSA yang akan hilang. Tetap buat backup terverifikasi.
+Rollback selesai: 027_v6_fase1_bsa.sql
+[lulus] kesehatan_ringkasan_penerima = 0
+[lulus] kesehatan_ringkasan_peristiwa = 0
+[lulus] kesehatan_ringkasan_versi = 0
+[lulus] kesehatan_ringkasan = 0
+[lulus] notifikasi_outbox V5 kesehatan = 0
+Rollback 026 aman dijalankan: tidak ada ringkasan wali atau notifikasinya yang akan hilang. Tetap buat backup terverifikasi.
+Rollback selesai: 026_v5_fase3_ringkasan_wali.sql
+[lulus] kesehatan_versi_rincian = 0
+[lulus] kesehatan_tindak_lanjut = 0
+[lulus] kesehatan_rujukan = 0
+[lulus] kesehatan_obat = 0
+Rollback 025 aman dijalankan: tidak ada rincian kesehatan yang akan hilang. Tetap buat backup terverifikasi.
+Rollback selesai: 025_v5_fase2_rincian_kesehatan.sql
+[lulus] kesehatan_akses_log = 0
+[lulus] kesehatan_idempotensi = 0
+[lulus] kesehatan_kunjungan_versi = 0
+[lulus] kesehatan_kunjungan = 0
+[lulus] kesehatan_assignments = 0
+Rollback 024 aman dijalankan: tidak ada data kesehatan yang akan hilang. Tetap buat backup terverifikasi.
+Rollback selesai: 024_v5_fase1_kesehatan.sql

@@ -185,3 +185,13 @@ Rincian: `../phase-v5-2/README.md` (Q-1).
 | BD | **Menu "Kesehatan anak" untuk orang tua dipertahankan** pada peta peran orang tua (keputusan J–K), sesudah "Informasi pembinaan" dan sebelum "Notifikasi", bagi akun orang tua aktif dengan master wali aktif bila migrasi 026 terpasang (termasuk sebelum ada ringkasan; daftar kosong menjelaskan). Bilah bawah HP orang tua tidak berubah. Menu hanya-baca; hak baca ringkasan tetap ditegakkan server per baris (relasi wali aktif). Isi dan urutan menu lain tidak berubah. Oracle historis Tahap 2 untuk menu `sbx_ortu_a` tidak diubah dan dicatat sebagai kegagalan yang diharapkan. |
 
 Rincian: `../phase-v5-3/README.md` (R-1).
+
+
+
+## Keputusan PRD V6 Fase 1 (25 Oktober 2026, sesudah implementasi)
+
+| # | Keputusan |
+|---|---|
+| BE | **Menu Keuangan dipertahankan untuk admin, petugas BSA, dan orang tua.** Admin: grup baru "Keuangan" (sesudah "Akademik", sebelum "Data pesantren") berisi "Keuangan santri" — hanya baca; peta admin menjadi 19 menu dalam 8 grup. Pengurus dengan penugasan Petugas BSA aktif: grup "Keuangan" berisi "BSA" (juga kandidat terakhir bilah bawah HP pengurus). Orang tua: "Keuangan anak" sesudah "Kesehatan anak" dan sebelum "Notifikasi", bagi akun orang tua aktif dengan master wali aktif bila migrasi 027 terpasang (daftar kosong menjelaskan bila belum ada anak berelasi); bilah bawah HP orang tua tidak berubah. Seluruh menu tidak tampil sebelum migrasi 027/sesudah rollback. Hak baca/mutasi tetap ditegakkan server oleh `BsaService` per santri, bukan oleh menu. Isi dan urutan menu lain tidak berubah. Oracle historis Tahap 2 ("admin 17 menu/7 grup", menu `sbx_ortu_a`, grup menu yang disorot) tidak diubah dan dicatat sebagai kegagalan yang diharapkan. Keputusan ini tidak mengubah larangan rilis parsial: tagihan dan tabungan tetap dirilis bersama sesudah Fase 5. |
+
+Rincian: `../phase-v6-1/README.md` (P-1).

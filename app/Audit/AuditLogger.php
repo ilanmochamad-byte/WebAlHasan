@@ -34,6 +34,13 @@ final class AuditLogger
                 $before = $before === null ? null : $this->tanpaIsiKlinis($before);
                 $after = $after === null ? null : $this->tanpaIsiKlinis($after);
             }
+            // Keuangan santri/BSA (PRD V6 §5.4): nominal, saldo, referensi,
+            // tujuan, dan catatan tidak masuk log umum. Hanya kunci metadata
+            // yang lolos; jejak uang lengkap berada di ledger BSA sendiri.
+            if (str_starts_with($action, 'bsa.')) {
+                $before = $before === null ? null : $this->metadataBsa($before);
+                $after = $after === null ? null : $this->metadataBsa($after);
+            }
             $actorUserId ??= isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
             $beforeJson = $before === null ? null : json_encode($before, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             $afterJson = $after === null ? null : json_encode($after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -55,6 +62,13 @@ final class AuditLogger
             error_log('Audit log gagal disimpan.');
             return false;
         }
+    }
+
+    private function metadataBsa(array $data): array
+    {
+        $boleh = ['tagihan_id', 'transaksi_id', 'santri_id', 'jenis', 'metode', 'status', 'periode', 'penugasan_id', 'sumber', 'kanal', 'versi', 'jumlah_komponen'];
+
+        return array_intersect_key($data, array_flip($boleh));
     }
 
     private function tanpaIsiKlinis(array $data): array

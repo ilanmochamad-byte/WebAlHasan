@@ -94,6 +94,28 @@ final class NavigationContext
         return $akses !== false && $akses['cakupan'] === \App\Kesehatan\KesehatanService::CAKUPAN_BINAAN && ($akses['binaan'][$jenis] ?? false);
     }
 
+    /** @var string|false|null false = belum dihitung */
+    private string|false|null $sumberBsa = false;
+
+    /**
+     * Sumber hak keuangan santri/BSA (PRD V6): `petugas`, `admin`,
+     * `admin_petugas`, `wali`, atau null (tanpa hak/migrasi 027 belum
+     * terpasang). Dihitung `BsaService::akses()`, sama dengan halaman tujuan.
+     */
+    public function bsa(): ?string
+    {
+        if ($this->sumberBsa === false) {
+            try {
+                $akses = bsa_service()->akses($this->user);
+                $this->sumberBsa = $akses['baca'] ? $akses['sumber'] : null;
+            } catch (Throwable) {
+                $this->sumberBsa = null;
+            }
+        }
+
+        return $this->sumberBsa;
+    }
+
     /**
      * Menu "Kesehatan anak" (PRD V5 Fase 3): akun orang tua aktif dengan master
      * wali aktif dan migrasi 026 terpasang. Daftar/detail tetap disaring relasi

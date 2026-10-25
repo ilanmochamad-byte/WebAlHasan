@@ -668,3 +668,13 @@ function kesehatan_ringkasan_service(): \App\Kesehatan\RingkasanService
         notification_repository()
     );
 }
+
+/** Satu-satunya pintu keuangan santri/BSA (PRD V6) untuk web dan REST API. */
+function bsa_service(): \App\Bsa\BsaService
+{
+    return new \App\Bsa\BsaService(
+        new \App\Bsa\BsaRepository(app_db()),
+        capabilities(),
+        audit_logger()
+    );
+}

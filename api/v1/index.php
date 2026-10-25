@@ -169,6 +169,34 @@ try {
         throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
     }
 
+    // V6 Fase 1 (keuangan santri/BSA): aditif. Hak dihitung ulang layanan yang
+    // sama dengan halaman web; admin dan wali hanya membaca, tidak pernah memutasi.
+    if (str_starts_with($path, '/v6/bsa')) {
+        header('Cache-Control: private, no-store');
+        $bsa = bsa_service();
+        $kanal = \App\Bsa\BsaService::KANAL_API;
+        $mutasi = static function (callable $aksi): never {
+            $body = Request::json();
+            $body['idempotency_key'] ??= $_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? null;
+            $hasil = $aksi($body);
+            $status = $hasil['status'];
+            unset($hasil['status']);
+            JsonResponse::success($hasil, $status);
+        };
+        if ($method === 'GET' && $path === '/v6/bsa/akses') JsonResponse::success($bsa->akses($user));
+        if ($method === 'GET' && $path === '/v6/bsa/santri') JsonResponse::success($bsa->daftarSantri($user, $_GET));
+        if ($method === 'GET' && preg_match('#^/v6/bsa/santri/(\d+)$#', $path, $m)) JsonResponse::success($bsa->santri($user, (int) $m[1], $_GET['page'] ?? 1));
+        if ($method === 'GET' && preg_match('#^/v6/bsa/santri/(\d+)/saldo$#', $path, $m)) JsonResponse::success($bsa->saldo($user, (int) $m[1]));
+        if ($method === 'POST' && preg_match('#^/v6/bsa/santri/(\d+)/(setoran|penarikan)$#', $path, $m)) {
+            $mutasi(static fn (array $body): array => $m[2] === 'setoran'
+                ? $bsa->setoran($user, (int) $m[1], $body, $kanal)
+                : $bsa->penarikan($user, (int) $m[1], $body, $kanal));
+        }
+        if ($method === 'POST' && $path === '/v6/bsa/tagihan') $mutasi(static fn (array $body): array => $bsa->terbitkanTagihan($user, $body, $kanal));
+        if ($method === 'GET' && preg_match('#^/v6/bsa/tagihan/(\d+)$#', $path, $m)) JsonResponse::success($bsa->tagihan($user, (int) $m[1]));
+        throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
+    }
+
     // V3 aditif; kontrak capability/mode/menu mobile lama tidak disentuh.
     if ($method === 'GET' && $path === '/v3/capabilities') {
         $v3 = (new \App\Auth\Capabilities(app_db()))->v3Capabilities($user);
@@ -496,6 +524,8 @@ try {
     }
 
     throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
+} catch (\App\Bsa\BsaException $exception) {
+    JsonResponse::error(match($exception->status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$exception->status);
 } catch (\App\Kesehatan\KesehatanException $exception) {
     JsonResponse::error(match($exception->status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$exception->status);
 } catch (\App\Penugasan\PenugasanException $exception) {
