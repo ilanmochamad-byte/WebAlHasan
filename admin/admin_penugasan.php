@@ -11,7 +11,7 @@ use App\Penugasan\PenugasanService;
  *
  * Satu halaman admin untuk seluruh penugasan fungsional: murobi, pembimbing,
  * guru mata pelajaran, Bagian Pendidikan, petugas kesehatan (PRD V5),
- * bendahara pembiayaan bulanan, panitia PSB, dan bendahara PSB. Master mata pelajaran pindah ke
+ * Petugas BSA (jenis `bendahara_bulanan`, PRD V6), panitia PSB, dan bendahara PSB. Master mata pelajaran pindah ke
  * `admin_mata_pelajaran.php` (M-5, redesain Tahap 7); POST lamanya tetap
  * diterima di sini.
  *
@@ -279,7 +279,8 @@ if ($tambah || $edit !== null):
             <div class="mb-3"><label class="form-label" for="jenjang">Unit/jenjang <span class="text-muted fw-normal">(opsional)</span></label>
                 <select class="form-select" id="jenjang" name="jenjang"><option value="">Seluruh unit</option>
                     <?php foreach ($opsi['jenjang'] as $j): ?><option value="<?= ah_e($j) ?>" <?= $nilai('jenjang') === $j ? 'selected' : '' ?>><?= ah_e($j) ?></option><?php endforeach; ?>
-                </select><?= $err('jenjang') ?></div>
+                </select><?= $err('jenjang') ?>
+                <?php if (!$definisi['wajib_tahun_aktif']): ?><div class="form-text">Penugasan berlaku sampai tanggal selesai atau dinonaktifkan, tidak gugur saat semester berganti.</div><?php endif; ?></div>
         <?php elseif ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_GELOMBANG): ?>
             <div class="mb-3"><label class="form-label" for="gelombang">Gelombang <span class="text-muted fw-normal">(opsional)</span></label>
                 <input class="form-control" id="gelombang" name="gelombang" maxlength="50" placeholder="Kosong = seluruh gelombang" value="<?= ah_e($nilai('gelombang')) ?>"><?= $err('gelombang') ?></div>

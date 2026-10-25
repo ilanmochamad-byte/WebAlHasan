@@ -40,7 +40,7 @@ final class Navigation
     private const BOTTOM_BAR = [
         Peran::ADMIN => [2, ['izin', 'santri']],
         Peran::GURU => [2, ['pengajian', 'nilai', 'antrean', 'sikap_binaan']],
-        Peran::PENGURUS => [2, ['izin', 'sikap', 'pembinaan', 'kesehatan']],
+        Peran::PENGURUS => [2, ['izin', 'sikap', 'pembinaan', 'kesehatan', 'bsa']],
         Peran::PENDIDIKAN => [1, ['rapor', 'pengganti', 'absensi']],
         Peran::ORANG_TUA => [3, ['izin_anak', 'rapor_wali', 'info']],
     ];
@@ -124,6 +124,8 @@ final class Navigation
                 $c->kesehatan(false) ? self::kesehatan() : null,
             ]))],
             ['label' => 'Akademik', 'items' => array_filter([self::penilaian($c, true)])],
+            // PRD V6: admin membaca dan mengaudit keuangan santri/BSA (tanpa mutasi).
+            ['label' => 'Keuangan', 'items' => in_array($c->bsa(), ['admin', 'admin_petugas'], true) ? [self::bsa('Keuangan santri')] : []],
             ['label' => 'Data pesantren', 'items' => [
                 self::item('santri', 'Data santri', '/admin/admin_master_santri.php', 'fa-address-book', [], [
                     self::tab('Santri', '/admin/admin_master_santri.php', ['admin_master_santri.php', 'export_santri.php', 'proses_import_santri.php', 'hapus_siswa.php']),
@@ -232,6 +234,8 @@ final class Navigation
             ['label' => '', 'items' => [self::beranda()]],
             ['label' => 'Santri binaan', 'items' => $items],
             ['label' => 'Klinik', 'items' => $klinik],
+            // PRD V6: petugas BSA adalah pengurus dengan penugasan BSA aktif.
+            ['label' => 'Keuangan', 'items' => in_array($c->bsa(), ['petugas', 'admin_petugas'], true) ? [self::bsa('BSA')] : []],
         ];
     }
 
@@ -291,6 +295,11 @@ final class Navigation
             // untuk anak dengan relasi wali aktif (hak dicek ulang di layanan).
             $items[] = self::item('kesehatan_wali', 'Kesehatan anak', '/portal/kesehatan_wali.php', 'fa-kit-medical', ['kesehatan_wali.php'], [], 'Kesehatan');
         }
+        if ($c->bsa() === 'wali') {
+            // PRD V6: tagihan dan tabungan anak dengan relasi wali aktif (hanya baca;
+            // hak dicek ulang per santri di `BsaService`).
+            $items[] = self::bsa('Keuangan anak');
+        }
         // Keputusan K: notifikasi orang tua juga tampil sebagai menu.
         $items[] = $notifikasi;
 
@@ -322,6 +331,13 @@ final class Navigation
     {
         return self::item('kesehatan', 'Kesehatan', '/portal/kesehatan.php', 'fa-kit-medical',
             ['kesehatan.php', 'kesehatan_buat.php', 'kesehatan_detail.php', 'kesehatan_koreksi.php', 'kesehatan_hasil_rujukan.php', 'kesehatan_riwayat.php', 'kesehatan_ringkasan.php'], [], 'Kesehatan');
+    }
+
+    /** @return array<string, mixed> */
+    private static function bsa(string $label): array
+    {
+        return self::item('bsa', $label, '/portal/bsa.php', 'fa-wallet',
+            ['bsa.php', 'bsa_santri.php', 'bsa_transaksi.php', 'bsa_tagihan.php', 'bsa_tagihan_buat.php'], [], 'Keuangan');
     }
 
     /** @return array<string, mixed> */

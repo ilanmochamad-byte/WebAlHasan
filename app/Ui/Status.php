@@ -60,6 +60,10 @@ final class Status
         'perlu penetapan admin' => 'warn',
         'dikembalikan' => 'warn',
         'belum lunas' => 'warn',
+        // Keuangan santri/BSA (PRD V6).
+        'belum dibayar' => 'warn',
+        'sebagian' => 'info',
+        'sah' => 'ok',
         'cadangan' => 'warn',
         'terlambat' => 'warn',
         'nonaktif' => 'warn',
