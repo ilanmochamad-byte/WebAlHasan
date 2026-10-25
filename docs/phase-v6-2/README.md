@@ -1,6 +1,6 @@
 # PRD V6 Fase 2 — Tagihan Bulanan Lengkap
 
-**Status (25 Oktober 2026):** implementasi selesai dan diuji lokal oleh implementator; **menunggu audit independen Codex**. Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Fase 3 belum dimulai. Fase 2 **bukan** izin rilis parsial: tagihan dan tabungan dirilis bersama sesudah Fase 5 dan keputusan Human Developer.
+**Status (25 Oktober 2026): LULUS audit independen Codex setelah empat koreksi terarah** (snapshot penyesuaian saat konkurensi, hak santri kini pada hasil penerbitan, sisa pada replay pembayaran, riwayat koreksi tagihan era 027). Lihat `AUDIT-CODEX.md`; bukti auditor terpisah di `audit-codex/`. Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Fase 3 belum dimulai. Fase 2 **bukan** izin rilis parsial: tagihan dan tabungan dirilis bersama sesudah Fase 5 dan keputusan Human Developer.
 
 | Butir | Nilai |
 | --- | --- |
@@ -47,7 +47,7 @@ Tidak ada keputusan Human Developer baru selama Fase 2. Penafsiran yang perlu di
 | Wali lain tidak dapat membaca tagihan, kuitansi, atau API anak yang bukan relasinya, termasuk ID ditebak | J-10 (seluruh ID pembayaran 1..maks ditebak wali → hanya anaknya, lainnya 404; daftar/tunggakan hanya anaknya; tanpa referensi/catatan/alasan/transfer menunggu), J-11; K-D (setiap kuitansi web ditebak → 404), K-E (API 404), K-G (relasi dicabut pada sesi/token lama → 404) |
 | Persyaratan 5: kegagalan transaksi, kiriman ganda, dua pembayaran bersamaan, perubahan tarif setelah terbit, pencabutan penugasan pada sesi lama | J-9 (audit dipaksa gagal lewat trigger uji: pembayaran, verifikasi, pembatalan, revisi, penerbitan massal, tarif → 503 dan nol baris/klaim/kuitansi), J-8, J-6, J-11 (penugasan dinonaktifkan → 403; cakupan dipersempit/santri dinonaktifkan → replay 404); K-G |
 
-## Hasil pengujian Fase 2 (lokal, kode final)
+## Hasil pengujian Fase 2 oleh implementator (sebelum audit)
 
 | Rangkaian | Hasil | Berkas |
 | --- | --- | --- |
@@ -91,7 +91,7 @@ Seluruh kegagalan statis di bawah identik jumlahnya dengan bukti Fase 1, kecuali
 
 | Suite | Kegagalan | Sebab |
 | --- | --- | --- |
-| `v6_phase1_static` 72/3 | "027 berurutan setelah 026 (migrasi terakhir)"; "AuditLogger hanya meloloskan …" (mengunci literal daftar kunci Fase 1); "Fase 2+ belum dimulai: tanpa tarif, pembayaran tagihan, kuitansi…" | Migrasi 028, kunci metadata audit Fase 2 (aditif, tetap tanpa nominal/alasan — diperiksa `v6_phase2_static` T-7 dan verifier), dan fitur Fase 2 itu sendiri. |
+| `v6_phase1_static` 72/3 pada bukti awal; **71/4 pada commit implementator dan audit** | "027 berurutan setelah 026 (migrasi terakhir)"; "AuditLogger hanya meloloskan …" (mengunci literal daftar kunci Fase 1); "Fase 2+ belum dimulai: tanpa tarif, pembayaran tagihan, kuitansi…" | Migrasi 028, kunci metadata audit Fase 2 (aditif, tetap tanpa nominal/alasan — diperiksa `v6_phase2_static` T-7 dan verifier), dan fitur Fase 2 itu sendiri. Audit menambahkan kontrol commit `b50eda5`: oracle migrasi lama juga ikut membaca pasangan 028 karena hanya mengecualikan 027; tidak ada perubahan migrasi ≤027. Lihat `AUDIT-CODEX.md`. |
 | V6 Fase 1 migrasi 19/10 | Lihat regresi | 027 bukan lagi migrasi terakhir; kontrol baseline 29/0. |
 | `keamanan_psb_static` 82/1, `penugasan_static` 281/2, `redesain_web_tahap2/3/4/6/7/8_static` 120/1 · 151/1 · 95/1 · 139/2 · 100/2 · 78/2, `v2_phase4_static` 287/1, `v5_phase1/2/3/5_static` 44/4 · 61/2 · 68/3 · 57/1 | Sama dengan Fase 1 | Oracle historis yang sudah tercatat di `docs/phase-v6-1/README.md` dan audit Codex Fase 1. |
 | `v2_phase5_static` 315/3 | Versi Expo/React Native/expo-notifications | Lingkungan: salinan kerja `~/alhasanApps` milik pekerjaan lain (lihat baris Mobile). Fase 1 auditor: ekspor bersih `origin/main` → 310/0. |

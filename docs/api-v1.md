@@ -401,6 +401,9 @@ pecahan. Sebelum migrasi 028 terpasang endpoint di bawah ini menjawab `503`.
 - `POST /v6/bsa/pembayaran/{id}/verifikasi` dan `POST
   /v6/bsa/pembayaran/{id}/batal` `{alasan}` (sah → dibatalkan; menunggu →
   ditolak) → `200 {nomor_kuitansi, status_pembayaran, sisa}`.
+  Pada replay pembayaran/verifikasi/pembatalan, ID dan nomor kuitansi tetap;
+  `status_pembayaran` dan `sisa` menunjukkan keadaan saat permintaan ulang.
+  Angka historis kuitansi tetap berada di `kuitansi.sisa_sesudah`.
 - `GET /v6/bsa/pembayaran?periode=&status=&sumber=&q=&page=` dan `GET
   /v6/bsa/pembayaran/{id}` (data kuitansi berupa snapshot saat sah). Orang
   tua: hanya anaknya, tanpa transfer menunggu, referensi, catatan, alasan.

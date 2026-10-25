@@ -1,0 +1,8 @@
+[lulus] revisi: fixture era 027 versi 1 tanpa riwayat
+[lulus] revisi: riwayat tagihan era 027 lengkap versi 1 dan 2
+[lulus] revisi: versi awal memakai angka, aktor, penugasan dan waktu penerbitan asli
+[lulus] batal: fixture era 027 versi 1 tanpa riwayat
+[lulus] batal: riwayat tagihan era 027 lengkap versi 1 dan 2
+[lulus] batal: versi awal memakai angka, aktor, penugasan dan waktu penerbitan asli
+[lulus] Verifier lulus setelah revisi dan pembatalan tagihan era 027
+Hasil: 7 lulus, 0 gagal

@@ -310,6 +310,15 @@ final class TagihanService
         $cakupan = $this->bsa->cakupan($penugasan);
         $this->wajibUnitDalamCakupan($data['unit'], $cakupan);
         $rencana = $this->rencana($data, $cakupan, null);
+        // Alasan hanya dibawa rencana internal untuk snapshot penerbitan;
+        // kontrak pratinjau web/API tetap seperti sebelumnya.
+        foreach ($rencana['rows'] as &$r) {
+            foreach ($r['penyesuaian'] as &$j) {
+                unset($j['alasan']);
+            }
+            unset($j);
+        }
+        unset($r);
 
         return $rencana + ['periode' => $data['periode'], 'jatuh_tempo' => $data['jatuh_tempo'], 'unit' => $data['unit']];
     }
@@ -368,7 +377,10 @@ final class TagihanService
             $idBatch = $this->repo->simpanPenerbitan(['periode' => $data['periode'], 'jenjang' => $data['unit'], 'jatuh_tempo' => $data['jatuh_tempo'], 'idempotency_key' => $kunci],
                 $jumlah, $rencana['hash'], $userId, $tugasUtama['pengurus_id'], $tugasUtama['id']);
             $komponenTarif = $this->repo->komponenTarif(array_values(array_filter(array_column($rencana['rows'], 'tarif_id'))));
-            $berlaku = $this->repo->penyesuaianBerlaku(array_column($rencana['rows'], 'santri_id'), $data['periode']);
+            // Gunakan pembacaan yang SAMA dengan perhitungan total/hash.
+            // Pada READ COMMITTED, penyesuaian dapat dicabut/disisipkan oleh
+            // permintaan lain setelah rencana dihitung. Membaca ulang di sini
+            // akan mencampur total lama dengan baris snapshot yang berbeda.
             foreach ($rencana['rows'] as $r) {
                 $tagihanId = null;
                 if ($r['hasil'] === 'Terbit') {
@@ -379,7 +391,7 @@ final class TagihanService
                         'komponen' => array_map(static fn (array $k): array => ['nama' => $k['nama'], 'nominal' => $k['nominal']], $komponenTarif[$r['tarif_id']] ?? []),
                         'total' => $r['total'],
                     ], $r['unit'], $userId, $tugas['pengurus_id'], $tugas['id']);
-                    foreach ($berlaku[$r['santri_id']] ?? [] as $j) {
+                    foreach ($r['penyesuaian'] as $j) {
                         $this->repo->simpanBarisPenyesuaian($tagihanId, 1, $j['jenis'], $j['nama'], $j['nominal'], 'Penyesuaian', $j['id'], $j['alasan'], $userId);
                     }
                     $this->bsa->wajibAudit('bsa.tagihan.terbit', 'bsa_tagihan', $tagihanId, [
@@ -416,7 +428,10 @@ final class TagihanService
         if ($b === null || ($cakupan !== null && ($b['jenjang'] === null ? (int) $b['dibuat_oleh'] !== (int) $user['id'] : !$this->bsa->unitTercakup($b['jenjang'], $cakupan)))) {
             throw new BsaException('Penerbitan tidak ditemukan.', 404);
         }
-        $rows = array_values(array_filter($this->repo->hasilPenerbitan($id), fn (array $r): bool => $cakupan === null || $this->bsa->unitTercakup($r['jenjang'], $cakupan)));
+        // Unit pada hasil penerbitan adalah snapshot historis. Hak atas
+        // identitas/uang santri tetap mengikuti penempatan dan status KINI,
+        // sama dengan rincian tagihan, termasuk untuk petugas seluruh unit.
+        $rows = $this->repo->hasilPenerbitan($id, $this->hak($user, $akses));
 
         return $this->ringkasPenerbitan($b) + [
             'rows' => array_map(static fn (array $r): array => [
@@ -935,7 +950,11 @@ final class TagihanService
     {
         $b = $this->repo->pembayaran($id);
 
-        return ['nomor_kuitansi' => (string) ($b['nomor_kuitansi'] ?? ''), 'status_pembayaran' => (string) ($b['status'] ?? ''), 'sisa' => (int) ($b['sisa_sesudah'] ?? 0)];
+        // Replay mengembalikan status pembayaran dan sisa tagihan saat ini.
+        // Transfer menunggu belum punya kuitansi; kuitansi pembayaran yang
+        // dibatalkan menyimpan sisa historis sebelum pembatalan, bukan sisa
+        // kini. Snapshot cetak tetap dibaca terpisah dan tidak diubah.
+        return ['nomor_kuitansi' => (string) ($b['nomor_kuitansi'] ?? ''), 'status_pembayaran' => (string) ($b['status'] ?? ''), 'sisa' => (int) ($b['sisa_kini'] ?? 0)];
     }
 
     /**
@@ -972,7 +991,7 @@ final class TagihanService
                 $total = $t['total'];
                 foreach ($berlaku[$s['id']] ?? [] as $j) {
                     $total += $j['jenis'] === 'Tambahan' ? $j['nominal'] : -$j['nominal'];
-                    $r['penyesuaian'][] = ['id' => $j['id'], 'jenis' => $j['jenis'], 'nama' => $j['nama'], 'nominal' => $j['nominal']];
+                    $r['penyesuaian'][] = ['id' => $j['id'], 'jenis' => $j['jenis'], 'nama' => $j['nama'], 'nominal' => $j['nominal'], 'alasan' => $j['alasan']];
                 }
                 $r['tarif_id'] = $t['id'];
                 if ($total < 1) {

@@ -385,16 +385,24 @@ final class TagihanRepository
         );
     }
 
-    /** @return array<int, array<string, mixed>> */
-    public function hasilPenerbitan(int $id): array
+    /**
+     * Hak memakai status/penempatan santri saat permintaan, bukan snapshot
+     * jenjang di h. Admin tetap dapat mengaudit seluruh hasil historis.
+     * @param array{mode:string, user_id:int, jenjang:?array<int, string>} $hak
+     * @return array<int, array<string, mixed>>
+     */
+    public function hasilPenerbitan(int $id, array $hak): array
     {
+        $params = [];
+        $syarat = $this->syaratHak($hak, $params);
+        $params[] = $id;
         return $this->all(
             'SELECT h.santri_id, h.jenjang, h.hasil, h.tagihan_id, h.tarif_id, h.keterangan, s.nis, s.nama_santri, t.total
                FROM bsa_penerbitan_santri h
                JOIN santri s ON s.id = h.santri_id
-               LEFT JOIN bsa_tagihan t ON t.id = h.tagihan_id
-              WHERE h.penerbitan_id = ? ORDER BY FIELD(h.hasil, \'Terbit\', \'SudahAda\', \'Dilewati\'), s.nama_santri, h.santri_id',
-            [$id]
+               LEFT JOIN bsa_tagihan t ON t.id = h.tagihan_id' . $this->bsa->joinUnit() . $syarat . '
+                AND h.penerbitan_id = ? ORDER BY FIELD(h.hasil, \'Terbit\', \'SudahAda\', \'Dilewati\'), s.nama_santri, h.santri_id',
+            $params
         );
     }
 
@@ -493,6 +501,19 @@ final class TagihanRepository
     /** Revisi/pembatalan bersyarat versi (optimistic) dan terbayar yang telah dikunci. */
     public function ubahTagihan(int $id, int $versiLama, int $total, string $jatuhTempo, string $status): void
     {
+        // Tagihan yang dibuat sebelum 028 sah tanpa riwayat versi 1.
+        // Saat koreksi pertama, simpan keadaan ASLI dari baris yang sudah
+        // dikunci, sebelum total/status berubah. Tidak membuat aktor/waktu
+        // penerbitan baru dan tidak memerlukan backfill migrasi tabel lama.
+        if ($versiLama === 1) {
+            $this->execute(
+                "INSERT INTO bsa_tagihan_riwayat (tagihan_id, versi, tindakan, total, jatuh_tempo, alasan, penugasan_id, aktor, created_at)
+                 SELECT t.id, 1, 'Terbit', t.total, t.jatuh_tempo, NULL, t.penugasan_id, t.diterbitkan_oleh, t.created_at
+                   FROM bsa_tagihan t WHERE t.id = ? AND t.versi = 1
+                    AND NOT EXISTS (SELECT 1 FROM bsa_tagihan_riwayat r WHERE r.tagihan_id = t.id AND r.versi = 1)",
+                [$id]
+            );
+        }
         if ($this->affected('UPDATE bsa_tagihan SET total = ?, jatuh_tempo = ?, status = ?, versi = versi + 1 WHERE id = ? AND versi = ?', [$total, $jatuhTempo, $status, $id, $versiLama]) !== 1) {
             throw new BsaException('Tagihan berubah oleh permintaan lain. Tidak ada data yang diubah; muat ulang.', 409);
         }
@@ -585,7 +606,7 @@ final class TagihanRepository
                     COALESCE(pc.nama, uc.name) AS pencatat_nama, COALESCE(pv.nama, uv.name) AS verifikator_nama,
                     k.tagihan_versi, k.total_tagihan, k.terbayar_sebelum, k.sisa_sesudah,
                     x.jenis AS batal_jenis, x.alasan AS batal_alasan, x.created_at AS batal_pada, ux.name AS pembatal_nama,
-                    t.periode, t.status AS tagihan_status, s.nis, s.nama_santri
+                    t.periode, t.status AS tagihan_status, t.total - t.terbayar AS sisa_kini, s.nis, s.nama_santri
                FROM bsa_pembayaran b
                JOIN bsa_tagihan t ON t.id = b.tagihan_id
                JOIN santri s ON s.id = b.santri_id
