@@ -31,6 +31,7 @@ ah_page_open([
     },
     'breadcrumbs' => [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => bsa_judul($aksesBsa)]],
 ]);
+echo bsa_nav($aksesBsa, 'bsa.php', $tagihanBsa);
 if (!$aksesBsa['kelola'] && !$wali): ?>
     <div class="ah-ribbon" role="note"><i class="fas fa-eye mt-1" aria-hidden="true"></i>
         <span><b>Hanya baca.</b> Admin mengawasi tagihan, saldo, dan transaksi BSA tetapi tidak mencatat atau mengubahnya.</span></div>

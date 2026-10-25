@@ -364,6 +364,51 @@ login/profil bertambah satu kunci aditif `bsa.tabungan`.
 Admin dan orang tua yang memanggil endpoint POST → `403` tanpa mutasi.
 Rincian, penafsiran, dan batas uji: `docs/phase-v6-1/README.md`.
 
+### Tagihan bulanan lengkap V6 Fase 2 (25 Oktober 2026)
+
+Aditif (migrasi 028); kontrak Fase 1 di atas tetap. Seluruh POST memakai
+header `Idempotency-Key` (atau `idempotency_key` di badan): kunci + isi sama →
+`200 {…, replayed: true}`; kunci sama isi beda → `409`. Mutasi hanya petugas BSA
+atas santri aktif dalam cakupan unitnya; admin/orang tua → `403`, data di luar
+hak → `404`. Nominal rupiah bulat (bilangan bulat JSON atau teks angka); tanpa
+pecahan. Sebelum migrasi 028 terpasang endpoint di bawah ini menjawab `503`.
+
+- `GET /v6/bsa/tarif` (petugas, admin) → `{unit[], tarif[{id, unit,
+  berlaku_mulai, total, status: Berlaku|Diganti, alasan, komponen[]}]}`.
+- `POST /v6/bsa/tarif` `{unit, berlaku_mulai: "TTTT-BB", komponen: [{nama,
+  nominal}] (1–10), alasan}` → `201 {id, menggantikan_id}`. Alasan wajib bila
+  unit sudah pernah bertarif; tarif periode mulai yang sama ditandai `Diganti`.
+- `GET /v6/bsa/santri/{id}/penyesuaian` (petugas, admin);
+  `POST /v6/bsa/santri/{id}/penyesuaian` `{jenis: Potongan|Tambahan, nama,
+  nominal, berlaku_mulai, berlaku_sampai?, alasan}` → `201`;
+  `POST /v6/bsa/penyesuaian/{id}/cabut` `{alasan}` → `200`.
+- `POST /v6/bsa/penerbitan/pratinjau` `{periode, jatuh_tempo, unit?}` →
+  `{rows[{santri_id, unit, hasil: Terbit|SudahAda|Dilewati, keterangan,
+  tarif_id, total, penyesuaian[]}], jumlah, total_terbit, hash}` tanpa menulis.
+- `POST /v6/bsa/penerbitan` `{periode, jatuh_tempo, unit?, pratinjau_hash}` →
+  `201 {id, jumlah_terbit}`; data berubah sejak pratinjau → `409`; tidak ada
+  tagihan baru → `422`. `GET /v6/bsa/penerbitan?page=`, `GET
+  /v6/bsa/penerbitan/{id}` (petugas sesuai cakupan, admin).
+- `GET /v6/bsa/tagihan/{id}` kini juga memuat `penyesuaian[]`, `pembayaran[]`,
+  `menunggu`, dan `riwayat[]` (riwayat dan alasan tidak dikirim ke orang tua).
+- `POST /v6/bsa/tagihan/{id}/revisi` `{versi, jenis?, nama?, nominal?,
+  jatuh_tempo?, alasan}` → `200 {versi}`; `POST /v6/bsa/tagihan/{id}/batal`
+  `{versi, alasan}` (hanya tanpa pembayaran). Versi basi → `409`.
+- `POST /v6/bsa/tagihan/{id}/pembayaran` `{nominal, sumber: Tunai|Transfer,
+  tanggal_transaksi, referensi (wajib transfer), catatan?, terverifikasi?}` →
+  `201 {id, nomor_kuitansi, status_pembayaran: Sah|Menunggu, sisa}`; melebihi
+  sisa (dikurangi transfer menunggu) → `422`.
+- `POST /v6/bsa/pembayaran/{id}/verifikasi` dan `POST
+  /v6/bsa/pembayaran/{id}/batal` `{alasan}` (sah → dibatalkan; menunggu →
+  ditolak) → `200 {nomor_kuitansi, status_pembayaran, sisa}`.
+- `GET /v6/bsa/pembayaran?periode=&status=&sumber=&q=&page=` dan `GET
+  /v6/bsa/pembayaran/{id}` (data kuitansi berupa snapshot saat sah). Orang
+  tua: hanya anaknya, tanpa transfer menunggu, referensi, catatan, alasan.
+- `GET /v6/bsa/tunggakan?periode=&unit=&lewat=1&q=&page=` → tagihan terbit
+  bersisa + `ringkasan{jumlah, sisa, santri}` sesuai hak.
+
+Rincian, penafsiran, dan batas uji: `docs/phase-v6-2/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh

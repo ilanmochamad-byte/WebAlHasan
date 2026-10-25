@@ -280,6 +280,20 @@ final class BsaService
     }
 
     // =======================================================================
+    // Metode publik di bawah ini (penjaga hak, klaim idempotensi, audit, dan
+    // normalisasi masukan) juga dipakai `TagihanService` (Fase 2) agar
+    // keputusan hak dan validasi nominal tetap satu sumber.
+    // =======================================================================
+
+    /** Periode bulan kalender 'TTTT-BB'. */
+    public function periode(mixed $value, string $label = 'Periode'): string
+    {
+        if (!is_string($value) || !preg_match('/^(20[0-9]{2})-(0[1-9]|1[0-2])$/D', $value)) {
+            throw new BsaException($label . ' wajib bulan kalender (format TTTT-BB).');
+        }
+
+        return $value;
+    }
 
     /**
      * @param array<string, mixed> $user
@@ -340,7 +354,7 @@ final class BsaService
     }
 
     /** @return array{baca:bool, kelola:bool, sumber:?string, jenjang:?array<int, string>} */
-    private function wajibBaca(array $user): array
+    public function wajibBaca(array $user): array
     {
         $akses = $this->akses($user);
         if (!$akses['baca']) {
@@ -350,7 +364,7 @@ final class BsaService
         return $akses;
     }
 
-    private function wajibKelola(array $user): void
+    public function wajibKelola(array $user): void
     {
         $akses = $this->akses($user);
         if ($akses['kelola']) {
@@ -369,7 +383,7 @@ final class BsaService
      * @param array{sumber:?string, jenjang:?array<int, string>} $akses
      * @return array<string, mixed>
      */
-    private function santriTerbaca(array $user, array $akses, int $santriId): array
+    public function santriTerbaca(array $user, array $akses, int $santriId): array
     {
         $s = $santriId > 0 ? $this->repo->santri($santriId) : null;
         $boleh = $s !== null && match ($akses['sumber']) {
@@ -399,7 +413,7 @@ final class BsaService
      *
      * @return array<int, array{id:int, pengurus_id:int, jenjang:?string}>
      */
-    private function penugasanTerkunci(int $userId): array
+    public function penugasanTerkunci(int $userId): array
     {
         $penugasan = $this->repo->penugasanAktif($userId, true);
         if ($penugasan === []) {
@@ -417,7 +431,7 @@ final class BsaService
      * @param array<int, array{id:int, pengurus_id:int, jenjang:?string}> $penugasan
      * @return array{0:array{id:int, jenjang:?string}, 1:array{id:int, pengurus_id:int, jenjang:?string}}
      */
-    private function santriDalamCakupan(int $santriId, array $penugasan): array
+    public function santriDalamCakupan(int $santriId, array $penugasan): array
     {
         $santri = $this->repo->santriTerkunci($santriId);
         if ($santri !== null) {
@@ -440,7 +454,7 @@ final class BsaService
      * @param array<int, array{jenjang:?string}> $penugasan
      * @return array<int, string>|null null = seluruh unit
      */
-    private function cakupan(array $penugasan): ?array
+    public function cakupan(array $penugasan): ?array
     {
         $unit = [];
         foreach ($penugasan as $p) {
@@ -454,7 +468,7 @@ final class BsaService
     }
 
     /** @param array<int, string>|null $cakupan */
-    private function unitTercakup(mixed $unitSantri, ?array $cakupan): bool
+    public function unitTercakup(mixed $unitSantri, ?array $cakupan): bool
     {
         if ($cakupan === null) {
             return true;
@@ -477,7 +491,7 @@ final class BsaService
     }
 
     /** @return array{id:int, operasi:string, request_hash:string, hasil_id:?int} */
-    private function klaim(int $userId, string $kunci, string $operasi, string $hash): array
+    public function klaim(int $userId, string $kunci, string $operasi, string $hash): array
     {
         $klaim = $this->repo->klaimIdempotensi($userId, $kunci, $operasi, $hash);
         if ($klaim['operasi'] !== $operasi || !hash_equals($klaim['request_hash'], $hash)) {
@@ -488,7 +502,7 @@ final class BsaService
     }
 
     /** @param array<string, mixed> $after */
-    private function wajibAudit(string $action, string $entitas, int $id, array $after, int $userId): void
+    public function wajibAudit(string $action, string $entitas, int $id, array $after, int $userId): void
     {
         if (!$this->audit->log($action, $entitas, $id, null, $after, $userId)) {
             throw new BsaException('Audit wajib tidak dapat disimpan. Transaksi tidak dicatat.', 503);
@@ -496,7 +510,7 @@ final class BsaService
     }
 
     /** @param array<int, mixed> $isi */
-    private function hash(array $isi): string
+    public function hash(array $isi): string
     {
         return hash('sha256', (string) json_encode($isi, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
@@ -588,7 +602,7 @@ final class BsaService
         ];
     }
 
-    private function kunci(mixed $kunci): string
+    public function kunci(mixed $kunci): string
     {
         if (!is_string($kunci) || !preg_match('/^[A-Za-z0-9._:-]{8,100}$/D', $kunci)) {
             throw new BsaException('Kunci idempotensi wajib 8–100 karakter aman (huruf, angka, . _ : -).');
@@ -602,7 +616,7 @@ final class BsaService
      * (titik pemisah ribuan boleh); pecahan, tanda, notasi ilmiah, dan float
      * ditolak — nominal tidak pernah melewati float.
      */
-    private function nominal(mixed $value, string $label): int
+    public function nominal(mixed $value, string $label): int
     {
         $teks = '';
         if (is_int($value)) {
@@ -617,7 +631,7 @@ final class BsaService
         return (int) $teks;
     }
 
-    private function tanggal(mixed $value, string $label): string
+    public function tanggal(mixed $value, string $label): string
     {
         if (!is_string($value) || trim($value) === '') {
             throw new BsaException($label . ' wajib diisi.');
@@ -632,7 +646,7 @@ final class BsaService
         return $raw;
     }
 
-    private function teks(mixed $value, int $maks, string $label): ?string
+    public function teks(mixed $value, int $maks, string $label): ?string
     {
         if ($value === null || $value === '') {
             return null;
@@ -648,7 +662,7 @@ final class BsaService
         return $teks === '' ? null : $teks;
     }
 
-    private function id(mixed $value): int
+    public function id(mixed $value): int
     {
         if (!is_scalar($value) || !preg_match('/^[1-9][0-9]{0,9}$/D', (string) $value) || (int) $value > 2147483647) {
             throw new BsaException('Santri wajib dipilih.');
@@ -657,12 +671,12 @@ final class BsaService
         return (int) $value;
     }
 
-    private function halaman(mixed $value): int
+    public function halaman(mixed $value): int
     {
         return is_scalar($value) && preg_match('/^[1-9][0-9]{0,6}$/D', (string) $value) ? (int) $value : 1;
     }
 
-    private function kanal(string $kanal): string
+    public function kanal(string $kanal): string
     {
         return $kanal === self::KANAL_API ? self::KANAL_API : self::KANAL_WEB;
     }
@@ -671,7 +685,7 @@ final class BsaService
      * @param array<string, mixed> $s
      * @return array<string, mixed>
      */
-    private function identitas(array $s): array
+    public function identitas(array $s): array
     {
         return [
             'id' => (int) $s['id'],
@@ -689,7 +703,7 @@ final class BsaService
      * @param array<string, mixed> $t
      * @return array<string, mixed>
      */
-    private function ringkasTagihan(array $t): array
+    public function ringkasTagihan(array $t): array
     {
         $total = (int) $t['total'];
         $terbayar = (int) $t['terbayar'];

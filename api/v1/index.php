@@ -193,7 +193,34 @@ try {
                 : $bsa->penarikan($user, (int) $m[1], $body, $kanal));
         }
         if ($method === 'POST' && $path === '/v6/bsa/tagihan') $mutasi(static fn (array $body): array => $bsa->terbitkanTagihan($user, $body, $kanal));
-        if ($method === 'GET' && preg_match('#^/v6/bsa/tagihan/(\d+)$#', $path, $m)) JsonResponse::success($bsa->tagihan($user, (int) $m[1]));
+        // V6 Fase 2 (tagihan bulanan lengkap): aditif. Rincian tagihan = kontrak Fase 1
+        // ditambah penyesuaian, pembayaran, dan riwayat; wali tetap hanya membaca anaknya.
+        $tagihan = tagihan_service();
+        if ($method === 'GET' && preg_match('#^/v6/bsa/tagihan/(\d+)$#', $path, $m)) JsonResponse::success($tagihan->rincianTagihan($user, (int) $m[1]));
+        if ($method === 'POST' && preg_match('#^/v6/bsa/tagihan/(\d+)/(revisi|batal|pembayaran)$#', $path, $m)) {
+            $mutasi(static fn (array $body): array => match ($m[2]) {
+                'revisi' => $tagihan->revisiTagihan($user, (int) $m[1], $body, $kanal),
+                'batal' => $tagihan->batalkanTagihan($user, (int) $m[1], $body, $kanal),
+                default => $tagihan->catatPembayaran($user, (int) $m[1], $body, $kanal),
+            });
+        }
+        if ($method === 'GET' && $path === '/v6/bsa/tarif') JsonResponse::success($tagihan->daftarTarif($user));
+        if ($method === 'POST' && $path === '/v6/bsa/tarif') $mutasi(static fn (array $body): array => $tagihan->buatTarif($user, $body, $kanal));
+        if ($method === 'GET' && preg_match('#^/v6/bsa/santri/(\d+)/penyesuaian$#', $path, $m)) JsonResponse::success($tagihan->penyesuaianSantri($user, (int) $m[1]));
+        if ($method === 'POST' && preg_match('#^/v6/bsa/santri/(\d+)/penyesuaian$#', $path, $m)) $mutasi(static fn (array $body): array => $tagihan->buatPenyesuaian($user, (int) $m[1], $body, $kanal));
+        if ($method === 'POST' && preg_match('#^/v6/bsa/penyesuaian/(\d+)/cabut$#', $path, $m)) $mutasi(static fn (array $body): array => $tagihan->cabutPenyesuaian($user, (int) $m[1], $body, $kanal));
+        if ($method === 'POST' && $path === '/v6/bsa/penerbitan/pratinjau') JsonResponse::success($tagihan->pratinjau($user, Request::json()));
+        if ($method === 'POST' && $path === '/v6/bsa/penerbitan') $mutasi(static fn (array $body): array => $tagihan->terbitkanMassal($user, $body, $kanal));
+        if ($method === 'GET' && $path === '/v6/bsa/penerbitan') JsonResponse::success($tagihan->daftarPenerbitan($user, $_GET['page'] ?? 1));
+        if ($method === 'GET' && preg_match('#^/v6/bsa/penerbitan/(\d+)$#', $path, $m)) JsonResponse::success($tagihan->penerbitan($user, (int) $m[1]));
+        if ($method === 'GET' && $path === '/v6/bsa/pembayaran') JsonResponse::success($tagihan->daftarPembayaran($user, $_GET));
+        if ($method === 'GET' && preg_match('#^/v6/bsa/pembayaran/(\d+)$#', $path, $m)) JsonResponse::success($tagihan->pembayaran($user, (int) $m[1]));
+        if ($method === 'POST' && preg_match('#^/v6/bsa/pembayaran/(\d+)/(verifikasi|batal)$#', $path, $m)) {
+            $mutasi(static fn (array $body): array => $m[2] === 'verifikasi'
+                ? $tagihan->verifikasiPembayaran($user, (int) $m[1], $body, $kanal)
+                : $tagihan->batalkanPembayaran($user, (int) $m[1], $body, $kanal));
+        }
+        if ($method === 'GET' && $path === '/v6/bsa/tunggakan') JsonResponse::success($tagihan->tunggakan($user, $_GET));
         throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
     }
 

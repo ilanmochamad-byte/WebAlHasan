@@ -607,6 +607,9 @@ body.ah {
 
 .ah-stat__label { color: var(--ah-ink-muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .05em; margin-bottom: .2rem; }
 .ah-stat__value { font-size: 1.6rem; font-weight: 700; line-height: 1.1; }
+/* V6 Fase 2: nominal rupiah besar (mis. total tunggakan) membungkus di HP alih-alih melebarkan halaman. */
+.ah-stat { min-width: 0; }
+.ah-stat__value { overflow-wrap: anywhere; }
 .ah-stat__hint { color: var(--ah-ink-muted); font-size: .8rem; }
 
 /* Tabel lebar menggulir di dalam wadahnya sendiri, bukan melebarkan halaman. */

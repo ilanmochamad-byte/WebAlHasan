@@ -1,0 +1,44 @@
+[lulus] 375: anonim tidak melihat rincian biaya
+[lulus] 375: folder berkas_psb/ ditolak
+[lulus] 375: formulir PSB ber-CSRF tanpa geser horizontal
+[lulus] 375: pendaftaran tersimpan PSB-2026-5428
+[lulus] 375: peramban pendaftar mencetak buktinya
+[lulus] 375: masuk portal tanpa geser horizontal
+[lulus] 375: unggah KTP berhasil dengan pesan
+[lulus] 375: berkas sendiri terbuka lewat jalur berpenjaga
+[lulus] 375: peramban menampilkan gambar berkas
+[lulus] 375: rincian biaya milik sendiri tanpa geser horizontal
+[lulus] 375: kwitansi sesuai pilihan (Rp 4.042.500)
+[lulus] 375: keluar lewat POST mengakhiri akses berkas
+[lulus] 375: panel admin menampilkan tautan berkas berpenjaga tanpa geser horizontal
+[lulus] 375: admin membuka berkas pendaftar
+[lulus] 768: anonim tidak melihat rincian biaya
+[lulus] 768: folder berkas_psb/ ditolak
+[lulus] 768: formulir PSB ber-CSRF tanpa geser horizontal
+[lulus] 768: pendaftaran tersimpan PSB-2026-2821
+[lulus] 768: peramban pendaftar mencetak buktinya
+[lulus] 768: masuk portal tanpa geser horizontal
+[lulus] 768: unggah KTP berhasil dengan pesan
+[lulus] 768: berkas sendiri terbuka lewat jalur berpenjaga
+[lulus] 768: peramban menampilkan gambar berkas
+[lulus] 768: rincian biaya milik sendiri tanpa geser horizontal
+[lulus] 768: kwitansi sesuai pilihan (Rp 4.042.500)
+[lulus] 768: keluar lewat POST mengakhiri akses berkas
+[lulus] 768: panel admin menampilkan tautan berkas berpenjaga tanpa geser horizontal
+[lulus] 768: admin membuka berkas pendaftar
+[lulus] 1280: anonim tidak melihat rincian biaya
+[lulus] 1280: folder berkas_psb/ ditolak
+[lulus] 1280: formulir PSB ber-CSRF tanpa geser horizontal
+[lulus] 1280: pendaftaran tersimpan PSB-2026-2904
+[lulus] 1280: peramban pendaftar mencetak buktinya
+[lulus] 1280: masuk portal tanpa geser horizontal
+[lulus] 1280: unggah KTP berhasil dengan pesan
+[lulus] 1280: berkas sendiri terbuka lewat jalur berpenjaga
+[lulus] 1280: peramban menampilkan gambar berkas
+[lulus] 1280: rincian biaya milik sendiri tanpa geser horizontal
+[lulus] 1280: kwitansi sesuai pilihan (Rp 4.042.500)
+[lulus] 1280: keluar lewat POST mengakhiri akses berkas
+[lulus] 1280: panel admin menampilkan tautan berkas berpenjaga tanpa geser horizontal
+[lulus] 1280: admin membuka berkas pendaftar
+
+Hasil: 42 lulus, 0 gagal

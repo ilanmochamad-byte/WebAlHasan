@@ -33,6 +33,10 @@ $sisa = array_sum(array_map(static fn (array $t): int => $t['sisa'], $terbuka));
 $aksi = $kelola ? '<a class="btn btn-primary" href="' . ah_e(bsa_url('bsa_transaksi.php', ['santri_id' => $s['id'], 'jenis' => 'setoran'])) . '"><i class="fas fa-arrow-down" aria-hidden="true"></i> Catat setoran</a>'
     . ' <a class="btn btn-outline-primary" href="' . ah_e(bsa_url('bsa_transaksi.php', ['santri_id' => $s['id'], 'jenis' => 'penarikan'])) . '"><i class="fas fa-arrow-up" aria-hidden="true"></i> Catat penarikan</a>'
     . ' <a class="btn btn-outline-primary" href="' . ah_e(bsa_url('bsa_tagihan_buat.php', ['santri_id' => $s['id']])) . '"><i class="fas fa-file-invoice" aria-hidden="true"></i> Terbitkan tagihan</a>' : '';
+// Fase 2: penyesuaian tarif per santri (petugas mengelola, admin membaca; orang tua tidak).
+if (!$wali && $tagihanBsa->tersedia()) {
+    $aksi .= ' <a class="btn btn-outline-primary" href="' . ah_e(bsa_url('bsa_penyesuaian.php', ['santri_id' => $s['id']])) . '"><i class="fas fa-percent" aria-hidden="true"></i> Penyesuaian tarif</a>';
+}
 
 ah_page_open([
     'title' => 'Keuangan ' . $s['nama'],
@@ -58,12 +62,13 @@ echo ah_stats([
         <div class="ah-card__body"><p class="text-muted mb-0">Belum ada tagihan terbit. Tagihan tidak memotong tabungan secara otomatis.</p></div>
     <?php else: ?>
         <div class="ah-table-wrap"><table class="ah-table ah-table--cards"><caption class="ah-visually-hidden">Tagihan bulanan santri</caption>
-            <thead><tr><th scope="col">Periode</th><th scope="col">Jatuh tempo</th><th scope="col" class="text-end">Total</th><th scope="col" class="text-end">Sisa</th><th scope="col">Status</th></tr></thead><tbody>
+            <thead><tr><th scope="col">Periode</th><th scope="col">Jatuh tempo</th><th scope="col" class="text-end">Total</th><th scope="col" class="text-end">Terbayar</th><th scope="col" class="text-end">Sisa</th><th scope="col">Status</th></tr></thead><tbody>
             <?php foreach ($d['tagihan'] as $t): ?><tr>
                 <td data-label="Periode"><a class="ah-row-link" href="<?= ah_e(bsa_url('bsa_tagihan.php', ['id' => $t['id']])) ?>"><?= ah_e(bsa_periode($t['periode'])) ?></a></td>
                 <td data-label="Jatuh tempo"><?= ah_e(ah_tanggal($t['jatuh_tempo'], false)) ?></td>
                 <td data-label="Total" class="text-end"><?= ah_e(bsa_rp($t['total'])) ?></td>
-                <td data-label="Sisa" class="text-end"><?= ah_e(bsa_rp($t['sisa'])) ?></td>
+                <td data-label="Terbayar" class="text-end"><?= ah_e(bsa_rp($t['terbayar'])) ?></td>
+                <td data-label="Sisa" class="text-end"><?= ah_e(bsa_rp($t['status'] === 'Terbit' ? $t['sisa'] : 0)) ?></td>
                 <td data-label="Status"><?= ah_status($t['status_bayar']) ?></td>
             </tr><?php endforeach; ?>
             </tbody></table></div>
