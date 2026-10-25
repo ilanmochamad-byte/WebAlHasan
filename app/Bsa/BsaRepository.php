@@ -232,7 +232,7 @@ final class BsaRepository
      * kunci yang sama berikutnya menunggu kunci baris ini sampai transaksi
      * pertama selesai, lalu membaca hasil yang tercatat.
      *
-     * @return array{id:int, operasi:string, request_hash:string, hasil_id:?int}
+     * @return array{id:int, operasi:string, request_hash:string, hasil_id:?int, status_code:?int}
      */
     public function klaimIdempotensi(int $userId, string $kunci, string $operasi, string $hash): array
     {
@@ -243,7 +243,7 @@ final class BsaRepository
             [$userId, $kunci, $operasi, $hash]
         );
         $row = $this->one(
-            'SELECT id, operasi, request_hash, hasil_id FROM bsa_idempotensi WHERE user_id = ? AND kunci = ? FOR UPDATE',
+            'SELECT id, operasi, request_hash, hasil_id, status_code FROM bsa_idempotensi WHERE user_id = ? AND kunci = ? FOR UPDATE',
             [$userId, $kunci]
         ) ?? throw new BsaException('Idempotensi tidak tersedia.', 503);
 
@@ -252,6 +252,8 @@ final class BsaRepository
             'operasi' => (string) $row['operasi'],
             'request_hash' => (string) $row['request_hash'],
             'hasil_id' => $row['hasil_id'] === null ? null : (int) $row['hasil_id'],
+            // Fase 3: 202 = hasil berupa setoran transfer menunggu verifikasi.
+            'status_code' => $row['status_code'] === null ? null : (int) $row['status_code'],
         ];
     }
 
@@ -287,19 +289,25 @@ final class BsaRepository
      * sama. Pembaruan akun bersyarat pada saldo lama yang telah dikunci: bila
      * tidak tepat satu baris berubah, seluruh transaksi dibatalkan.
      *
+     * Ledger hanya-tambah: baris yang tersimpan sudah sah dan tidak pernah
+     * diubah. Fase 3 menambah `pembalik_dari_id` + `alasan` (koreksi pembalik)
+     * dan penyetuju yang berbeda dari pencatat (verifikasi setoran transfer:
+     * pencatat = petugas yang menerima, penyetuju = petugas yang memeriksa).
+     *
      * @param array{jenis:string, arah:string, nominal:int, metode:string, tujuan:?string, referensi:?string,
-     *     catatan:?string, idempotency_key:string} $data
+     *     catatan:?string, idempotency_key:string, pembalik_dari_id?:?int, alasan?:?string} $data
      */
-    public function catatTransaksi(int $santriId, array $data, int $saldoLama, int $saldoBaru, int $userId, int $pengurusId, int $penugasanId): int
+    public function catatTransaksi(int $santriId, array $data, int $saldoLama, int $saldoBaru, int $userId, int $pengurusId, int $penugasanId, ?int $penyetuju = null): int
     {
         $this->execute(
             "INSERT INTO bsa_tabungan_transaksi
-                 (santri_id, jenis, arah, nominal, saldo_sesudah, status, metode, tujuan, referensi, catatan,
+                 (santri_id, jenis, arah, nominal, saldo_sesudah, status, metode, tujuan, referensi, catatan, pembalik_dari_id, alasan,
                   penugasan_id, pengurus_id, dicatat_oleh, disetujui_oleh, disetujui_pada, idempotency_key)
-             VALUES (?, ?, ?, ?, ?, 'Sah', ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)",
+             VALUES (?, ?, ?, ?, ?, 'Sah', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)",
             [
                 $santriId, $data['jenis'], $data['arah'], $data['nominal'], $saldoBaru, $data['metode'], $data['tujuan'], $data['referensi'], $data['catatan'],
-                $penugasanId, $pengurusId, $userId, $userId, $data['idempotency_key'],
+                $data['pembalik_dari_id'] ?? null, $data['alasan'] ?? null,
+                $penugasanId, $pengurusId, $userId, $penyetuju ?? $userId, $data['idempotency_key'],
             ]
         );
         $id = (int) $this->db->insert_id;
@@ -316,36 +324,36 @@ final class BsaRepository
         return $id;
     }
 
-    /** @return array<string, mixed>|null */
-    public function transaksi(int $id): ?array
-    {
-        return $this->one(
-            'SELECT x.id, x.santri_id, x.jenis, x.arah, x.nominal, x.saldo_sesudah, x.status, x.metode, x.tujuan, x.referensi, x.catatan,
+    /**
+     * Kolom ledger beserta referensi silang (semuanya tabel 027): pembayaran
+     * tagihan yang didebit dari baris ini (atau yang dikembalikan oleh baris
+     * pembalik ini), baris pembalik yang mengoreksinya, dan penyetuju.
+     */
+    private const LEDGER = 'SELECT x.id, x.santri_id, x.jenis, x.arah, x.nominal, x.saldo_sesudah, x.status, x.metode, x.tujuan, x.referensi, x.catatan,
                     x.pembalik_dari_id, x.alasan, x.disetujui_pada, x.created_at,
-                    COALESCE(p.nama, u.name) AS petugas_nama
+                    COALESCE(p.nama, u.name) AS petugas_nama, COALESCE(pv.nama, uv.name) AS penyetuju_nama,
+                    rv.id AS dikoreksi_oleh_id, ax.jenis AS asal_jenis, ax.created_at AS asal_created_at,
+                    pb.id AS bayar_id, pb.nomor_kuitansi AS bayar_kuitansi, pb.tagihan_id AS bayar_tagihan_id, pb.status AS bayar_status, tb.periode AS bayar_periode
                FROM bsa_tabungan_transaksi x
                JOIN users u ON u.id = x.dicatat_oleh
                LEFT JOIN pengurus p ON p.id = x.pengurus_id
-              WHERE x.id = ?',
-            [$id]
-        );
+               LEFT JOIN users uv ON uv.id = x.disetujui_oleh
+               LEFT JOIN pengurus pv ON pv.id = uv.pengurus_id
+               LEFT JOIN bsa_tabungan_transaksi rv ON rv.pembalik_dari_id = x.id
+               LEFT JOIN bsa_tabungan_transaksi ax ON ax.id = x.pembalik_dari_id
+               LEFT JOIN bsa_pembayaran pb ON pb.tabungan_transaksi_id = IF(x.jenis = \'Pembalik\', x.pembalik_dari_id, x.id)
+               LEFT JOIN bsa_tagihan tb ON tb.id = pb.tagihan_id';
+
+    /** @return array<string, mixed>|null */
+    public function transaksi(int $id): ?array
+    {
+        return $this->one(self::LEDGER . ' WHERE x.id = ?', [$id]);
     }
 
     /** @return array{rows:array<int, array<string, mixed>>, total:int, page:int, perPage:int} */
     public function riwayatTabungan(int $santriId, int $page): array
     {
-        return PageQuery::fetch(
-            $this->db,
-            'SELECT x.id, x.jenis, x.arah, x.nominal, x.saldo_sesudah, x.status, x.metode, x.tujuan, x.referensi, x.catatan,
-                    x.created_at, COALESCE(p.nama, u.name) AS petugas_nama
-               FROM bsa_tabungan_transaksi x
-               JOIN users u ON u.id = x.dicatat_oleh
-               LEFT JOIN pengurus p ON p.id = x.pengurus_id
-              WHERE x.santri_id = ?',
-            [$santriId],
-            'id DESC',
-            max(1, $page)
-        );
+        return PageQuery::fetch($this->db, self::LEDGER . ' WHERE x.santri_id = ?', [$santriId], 'id DESC', max(1, $page));
     }
 
     // =======================================================================

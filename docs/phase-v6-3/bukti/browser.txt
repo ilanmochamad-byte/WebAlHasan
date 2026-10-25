@@ -1,0 +1,92 @@
+[lulus] D-B 375px: klik ganda Simpan setoran tetap satu transaksi
+[lulus] D-B 375px: setoran Rp100.000 + belanja Rp25.000 → saldo Rp75.000
+[lulus] D-B 375px: tagihan terbit tanpa memotong tabungan otomatis
+[lulus] D-B 375px: tanpa centang persetujuan formulir tidak terkirim (wajib diisi), saldo tetap
+[lulus] D-A formulir bayar dari tabungan 375px: rapi di kerangka bersama
+[lulus] D-B 375px: bayar Rp50.000 dari tabungan → sisa Rp50.000; tagihan merujuk debit BSA-TB-2026-000003
+[lulus] D-A tagihan dibayar dari tabungan 375px: rapi di kerangka bersama
+[lulus] D-B 375px: saldo Rp25.000; riwayat tabungan merujuk kuitansi tagihan BSA-KW-2026-000001
+[lulus] D-A rincian santri 375px: rapi di kerangka bersama
+[lulus] D-B 375px: bukti debit tabungan terbuka rapi dan merujuk BSA-KW-2026-000001
+[lulus] D-A mutasi tabungan petugas 375px: rapi di kerangka bersama
+[lulus] D-A setoran transfer petugas 375px: rapi di kerangka bersama
+[lulus] D-A rekonsiliasi petugas 375px: rapi di kerangka bersama
+[lulus] D-A formulir setoran petugas 375px: rapi di kerangka bersama
+[lulus] D-A formulir pengeluaran petugas 375px: rapi di kerangka bersama
+[lulus] D-B 768px: setoran Rp100.000 + belanja Rp25.000 → saldo Rp75.000
+[lulus] D-B 768px: tagihan terbit tanpa memotong tabungan otomatis
+[lulus] D-B 768px: tanpa centang persetujuan formulir tidak terkirim (wajib diisi), saldo tetap
+[lulus] D-A formulir bayar dari tabungan 768px: rapi di kerangka bersama
+[lulus] D-B 768px: bayar Rp50.000 dari tabungan → sisa Rp50.000; tagihan merujuk debit BSA-TB-2026-000006
+[lulus] D-A tagihan dibayar dari tabungan 768px: rapi di kerangka bersama
+[lulus] D-B 768px: saldo Rp25.000; riwayat tabungan merujuk kuitansi tagihan BSA-KW-2026-000002
+[lulus] D-A rincian santri 768px: rapi di kerangka bersama
+[lulus] D-B 768px: bukti debit tabungan terbuka rapi dan merujuk BSA-KW-2026-000002
+[lulus] D-A mutasi tabungan petugas 768px: rapi di kerangka bersama
+[lulus] D-A setoran transfer petugas 768px: rapi di kerangka bersama
+[lulus] D-A rekonsiliasi petugas 768px: rapi di kerangka bersama
+[lulus] D-A formulir setoran petugas 768px: rapi di kerangka bersama
+[lulus] D-A formulir pengeluaran petugas 768px: rapi di kerangka bersama
+[lulus] D-B 1280px: setoran Rp100.000 + belanja Rp25.000 → saldo Rp75.000
+[lulus] D-B 1280px: tagihan terbit tanpa memotong tabungan otomatis
+[lulus] D-B 1280px: tanpa centang persetujuan formulir tidak terkirim (wajib diisi), saldo tetap
+[lulus] D-A formulir bayar dari tabungan 1280px: rapi di kerangka bersama
+[lulus] D-B 1280px: bayar Rp50.000 dari tabungan → sisa Rp50.000; tagihan merujuk debit BSA-TB-2026-000009
+[lulus] D-A tagihan dibayar dari tabungan 1280px: rapi di kerangka bersama
+[lulus] D-B 1280px: saldo Rp25.000; riwayat tabungan merujuk kuitansi tagihan BSA-KW-2026-000003
+[lulus] D-A rincian santri 1280px: rapi di kerangka bersama
+[lulus] D-B 1280px: bukti debit tabungan terbuka rapi dan merujuk BSA-KW-2026-000003
+[lulus] D-B kuitansi tabungan dicetak/PDF tepat satu halaman A4
+[lulus] D-A mutasi tabungan petugas 1280px: rapi di kerangka bersama
+[lulus] D-A setoran transfer petugas 1280px: rapi di kerangka bersama
+[lulus] D-A rekonsiliasi petugas 1280px: rapi di kerangka bersama
+[lulus] D-A formulir setoran petugas 1280px: rapi di kerangka bersama
+[lulus] D-A formulir pengeluaran petugas 1280px: rapi di kerangka bersama
+[lulus] D-C 375px: transfer tanpa centang → menunggu verifikasi, saldo tetap Rp25.000
+[lulus] D-C 375px: verifikasi dana masuk → saldo Rp65.000
+[lulus] D-C 375px: penolakan beralasan lewat dialog → Ditolak, saldo tetap
+[lulus] D-D 375px: koreksi belanja lewat dialog → pembalik masuk Rp25.000, saldo Rp90.000, cap "Sudah dikoreksi"
+[lulus] D-D 375px tanpa JavaScript: setoran Rp30.000 tersimpan (saldo Rp55.000)
+[lulus] D-D 375px tanpa JavaScript: bayar Rp50.000 dari tabungan → Lunas, saldo Rp5.000
+[lulus] D-D 375px tanpa JavaScript: dialog koreksi terbuka di tempat, pembalik tersimpan (saldo Rp30.000)
+[lulus] D-A rincian santri admin 375px: rapi di kerangka bersama
+[lulus] D-E 375px: admin tanpa tombol pencatatan/verifikasi/koreksi/bayar dari tabungan (rincian santri)
+[lulus] D-A rincian tagihan admin 375px: rapi di kerangka bersama
+[lulus] D-E 375px: admin tanpa tombol pencatatan/verifikasi/koreksi/bayar dari tabungan (rincian tagihan)
+[lulus] D-E 375px: admin melihat setoran menunggu dan referensi, berlabel hanya baca
+[lulus] D-A rekonsiliasi admin 375px: rapi di kerangka bersama
+[lulus] D-E 375px: rekonsiliasi admin — selisih Rp0; pembayaran dari tabungan Rp200.000 terpisah dari kas; transfer menunggu belum dihitung
+[lulus] D-A rincian santri admin 768px: rapi di kerangka bersama
+[lulus] D-E 768px: admin tanpa tombol pencatatan/verifikasi/koreksi/bayar dari tabungan (rincian santri)
+[lulus] D-A rincian tagihan admin 768px: rapi di kerangka bersama
+[lulus] D-E 768px: admin tanpa tombol pencatatan/verifikasi/koreksi/bayar dari tabungan (rincian tagihan)
+[lulus] D-E 768px: admin melihat setoran menunggu dan referensi, berlabel hanya baca
+[lulus] D-A rekonsiliasi admin 768px: rapi di kerangka bersama
+[lulus] D-E 768px: rekonsiliasi admin — selisih Rp0; pembayaran dari tabungan Rp200.000 terpisah dari kas; transfer menunggu belum dihitung
+[lulus] D-A rincian santri admin 1280px: rapi di kerangka bersama
+[lulus] D-E 1280px: admin tanpa tombol pencatatan/verifikasi/koreksi/bayar dari tabungan (rincian santri)
+[lulus] D-A rincian tagihan admin 1280px: rapi di kerangka bersama
+[lulus] D-E 1280px: admin tanpa tombol pencatatan/verifikasi/koreksi/bayar dari tabungan (rincian tagihan)
+[lulus] D-E 1280px: admin melihat setoran menunggu dan referensi, berlabel hanya baca
+[lulus] D-A rekonsiliasi admin 1280px: rapi di kerangka bersama
+[lulus] D-E 1280px: rekonsiliasi admin — selisih Rp0; pembayaran dari tabungan Rp200.000 terpisah dari kas; transfer menunggu belum dihitung
+[lulus] D-A rincian santri wali 375px: rapi di kerangka bersama
+[lulus] D-E 375px: wali tanpa tombol pencatatan/verifikasi/koreksi/bayar dari tabungan (rincian santri)
+[lulus] D-A rincian tagihan wali 375px: rapi di kerangka bersama
+[lulus] D-E 375px: wali tanpa tombol pencatatan/verifikasi/koreksi/bayar dari tabungan (rincian tagihan)
+[lulus] D-E 375px: wali tanpa referensi, setoran menunggu, atau alasan koreksi; referensi silang kuitansi tagihan tampil
+[lulus] D-A rincian santri wali 768px: rapi di kerangka bersama
+[lulus] D-E 768px: wali tanpa tombol pencatatan/verifikasi/koreksi/bayar dari tabungan (rincian santri)
+[lulus] D-A rincian tagihan wali 768px: rapi di kerangka bersama
+[lulus] D-E 768px: wali tanpa tombol pencatatan/verifikasi/koreksi/bayar dari tabungan (rincian tagihan)
+[lulus] D-E 768px: wali tanpa referensi, setoran menunggu, atau alasan koreksi; referensi silang kuitansi tagihan tampil
+[lulus] D-A rincian santri wali 1280px: rapi di kerangka bersama
+[lulus] D-E 1280px: wali tanpa tombol pencatatan/verifikasi/koreksi/bayar dari tabungan (rincian santri)
+[lulus] D-A rincian tagihan wali 1280px: rapi di kerangka bersama
+[lulus] D-E 1280px: wali tanpa tombol pencatatan/verifikasi/koreksi/bayar dari tabungan (rincian tagihan)
+[lulus] D-E 1280px: wali tanpa referensi, setoran menunggu, atau alasan koreksi; referensi silang kuitansi tagihan tampil
+[lulus] D-E tanpa galat JavaScript
+[lulus] D-E tanpa confirm()/alert() bawaan
+
+Lulus: 89 · Gagal: 0
+galat PHP server browser: 0

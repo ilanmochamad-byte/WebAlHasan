@@ -7,12 +7,16 @@ use App\Bsa\BsaService;
 use App\Ui\Denial;
 
 /**
- * Catat setoran atau penarikan/belanja tabungan satu santri (PRD V6 Fase 1).
+ * Catat setoran atau penarikan/belanja tabungan satu santri (PRD V6 Fase 1,
+ * dilengkapi Fase 3).
  *
  * Hanya petugas BSA berpenugasan aktif untuk santri aktif dalam cakupannya.
  * Admin dan orang tua ditolak di server (`BsaService`), bukan hanya
  * disembunyikan tombolnya. Petugas pencatat sekaligus menyetujui; transaksi
- * langsung sah dan saldo berubah satu kali.
+ * langsung sah dan saldo berubah satu kali. Fase 3 (bila migrasi 029
+ * terpasang, lewat `TabunganService`): setoran transfer tanpa pernyataan
+ * "sudah memeriksa dana masuk" tercatat menunggu verifikasi dan belum
+ * menambah saldo; pengeluaran dapat berjenis Penarikan atau Belanja.
  *
  * Kunci idempotensi dibuat saat formulir dirender dan dikirim tersembunyi:
  * klik ganda, muat ulang POST, atau retry jaringan memakai kunci yang sama dan
@@ -30,17 +34,22 @@ if (!$aksesBsa['kelola']) {
 }
 $santriId = max(0, (int) ($_GET['santri_id'] ?? 0));
 $kembali = bsa_url('bsa_santri.php', ['id' => $santriId]);
+$fase3 = $tabunganBsa->tersedia();
 
 $galat = null;
 $isian = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $hasil = $keluar
-            ? $bsa->penarikan($currentUser, $santriId, $_POST, BsaService::KANAL_WEB)
-            : $bsa->setoran($currentUser, $santriId, $_POST, BsaService::KANAL_WEB);
+            ? $tabunganBsa->penarikan($currentUser, $santriId, $_POST, BsaService::KANAL_WEB)
+            : $tabunganBsa->setoran($currentUser, $santriId, $_POST, BsaService::KANAL_WEB);
+        $menunggu = ($hasil['status_setoran'] ?? 'Sah') === 'Menunggu';
+        $kuitansi = ($hasil['transaksi_id'] ?? null) !== null && $fase3
+            ? '<a href="' . ah_e(bsa_url('bsa_tabungan_kuitansi.php', ['id' => $hasil['transaksi_id']])) . '">Buka kuitansi ' . ah_e((string) $hasil['nomor_kuitansi']) . '</a>' : null;
         ah_flash_set('success', $hasil['replayed']
             ? 'Transaksi ini sudah tersimpan sebelumnya. Tidak ada transaksi ganda yang dibuat.'
-            : ($keluar ? 'Penarikan tercatat.' : 'Setoran tercatat.') . ' Saldo sekarang ' . bsa_rp($hasil['saldo_sesudah']) . '.');
+            : ($menunggu ? 'Setoran transfer tercatat dan menunggu verifikasi. Saldo belum berubah (' . bsa_rp($hasil['saldo_sesudah']) . ').'
+                : ($keluar ? (($hasil['jenis'] ?? 'Penarikan') === 'Belanja' ? 'Belanja tercatat.' : 'Penarikan tercatat.') : 'Setoran tercatat.') . ' Saldo sekarang ' . bsa_rp($hasil['saldo_sesudah']) . '.'), $kuitansi);
         ah_redirect($kembali);
     } catch (BsaException $exception) {
         if (in_array($exception->status, [403, 404], true)) {
@@ -84,6 +93,15 @@ if ($galat !== null) {
                 <input class="form-control" type="text" inputmode="numeric" id="nominal" name="nominal" required maxlength="13" pattern="[0-9]{1,3}(\.[0-9]{3})*|[0-9]+" autocomplete="off" value="<?= ah_e($nilai('nominal')) ?>" aria-describedby="nominal-bantu">
                 <p class="form-text mb-0" id="nominal-bantu">Rupiah bulat, mis. 100000 atau 100.000.<?= $keluar ? ' Tidak boleh melebihi saldo ' . ah_e(bsa_rp($d['saldo'])) . '.' : '' ?></p>
             </div>
+            <?php if ($keluar && $fase3): ?>
+            <fieldset class="mb-3">
+                <legend class="form-label fs-6">Jenis pengeluaran <span class="text-danger" aria-hidden="true">*</span></legend>
+                <?php foreach (['Penarikan' => 'Penarikan uang', 'Belanja' => 'Belanja untuk santri'] as $v => $l): ?>
+                    <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="jenis" id="jenis-<?= ah_e(strtolower($v)) ?>" value="<?= ah_e($v) ?>" required<?= $nilai('jenis', 'Penarikan') === $v ? ' checked' : '' ?>>
+                        <label class="form-check-label" for="jenis-<?= ah_e(strtolower($v)) ?>"><?= ah_e($l) ?></label></div>
+                <?php endforeach; ?>
+            </fieldset>
+            <?php endif; ?>
             <fieldset class="mb-3">
                 <legend class="form-label fs-6"><?= $keluar ? 'Cara pengeluaran' : 'Cara penerimaan' ?> <span class="text-danger" aria-hidden="true">*</span></legend>
                 <?php foreach (['Tunai' => 'Tunai', 'Transfer' => 'Transfer'] as $v => $l): ?>
@@ -94,8 +112,15 @@ if ($galat !== null) {
             <div class="mb-3">
                 <label class="form-label" for="referensi">Referensi/bukti <span class="text-muted fw-normal">(wajib untuk transfer)</span></label>
                 <input class="form-control" id="referensi" name="referensi" maxlength="100" autocomplete="off" value="<?= ah_e($nilai('referensi')) ?>">
-                <p class="form-text mb-0">Mis. nomor bukti transfer yang sudah Anda periksa. Tidak tampil kepada orang tua.</p>
+                <p class="form-text mb-0">Mis. nomor bukti transfer. Tidak tampil kepada orang tua dan tidak masuk log umum.</p>
             </div>
+            <?php if (!$keluar && $fase3): ?>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="terverifikasi" name="terverifikasi" value="1"<?= $nilai('terverifikasi') === '1' ? ' checked' : '' ?>>
+                <label class="form-check-label" for="terverifikasi">Transfer: saya sudah memeriksa dana ini masuk ke rekening pesantren</label>
+                <p class="form-text mb-0">Tanpa centang, setoran transfer tercatat <b>menunggu verifikasi</b> dan belum menambah saldo. Tunai selalu langsung sah.</p>
+            </div>
+            <?php endif; ?>
             <?php if ($keluar): ?>
             <div class="mb-3">
                 <label class="form-label" for="tujuan">Tujuan penarikan/belanja <span class="text-danger" aria-hidden="true">*</span></label>

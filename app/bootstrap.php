@@ -683,10 +683,24 @@ function bsa_service(): \App\Bsa\BsaService
 function tagihan_service(): \App\Bsa\TagihanService
 {
     $repo = new \App\Bsa\BsaRepository(app_db());
+    $tagihan = new \App\Bsa\TagihanRepository(app_db(), $repo);
 
     return new \App\Bsa\TagihanService(
         new \App\Bsa\BsaService($repo, capabilities(), audit_logger()),
         $repo,
-        new \App\Bsa\TagihanRepository(app_db(), $repo)
+        $tagihan,
+        new \App\Bsa\TabunganRepository(app_db(), $repo, $tagihan)
+    );
+}
+
+/** Tabungan lengkap (PRD V6 Fase 3): memakai penjaga hak `BsaService` yang sama. */
+function tabungan_service(): \App\Bsa\TabunganService
+{
+    $repo = new \App\Bsa\BsaRepository(app_db());
+
+    return new \App\Bsa\TabunganService(
+        new \App\Bsa\BsaService($repo, capabilities(), audit_logger()),
+        $repo,
+        new \App\Bsa\TabunganRepository(app_db(), $repo, new \App\Bsa\TagihanRepository(app_db(), $repo))
     );
 }

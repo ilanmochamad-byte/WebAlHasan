@@ -183,24 +183,40 @@ try {
             unset($hasil['status']);
             JsonResponse::success($hasil, $status);
         };
+        // V6 Fase 3 (tabungan lengkap): setoran/penarikan lewat `TabunganService`
+        // (transfer tanpa pernyataan diperiksa → 202 menunggu verifikasi;
+        // penarikan boleh `jenis` Belanja). Sebelum migrasi 029 perilaku Fase 1–2.
+        $tabungan = tabungan_service();
         if ($method === 'GET' && $path === '/v6/bsa/akses') JsonResponse::success($bsa->akses($user));
         if ($method === 'GET' && $path === '/v6/bsa/santri') JsonResponse::success($bsa->daftarSantri($user, $_GET));
-        if ($method === 'GET' && preg_match('#^/v6/bsa/santri/(\d+)$#', $path, $m)) JsonResponse::success($bsa->santri($user, (int) $m[1], $_GET['page'] ?? 1));
+        if ($method === 'GET' && preg_match('#^/v6/bsa/santri/(\d+)$#', $path, $m)) JsonResponse::success($tabungan->santri($user, (int) $m[1], $_GET['page'] ?? 1));
         if ($method === 'GET' && preg_match('#^/v6/bsa/santri/(\d+)/saldo$#', $path, $m)) JsonResponse::success($bsa->saldo($user, (int) $m[1]));
         if ($method === 'POST' && preg_match('#^/v6/bsa/santri/(\d+)/(setoran|penarikan)$#', $path, $m)) {
             $mutasi(static fn (array $body): array => $m[2] === 'setoran'
-                ? $bsa->setoran($user, (int) $m[1], $body, $kanal)
-                : $bsa->penarikan($user, (int) $m[1], $body, $kanal));
+                ? $tabungan->setoran($user, (int) $m[1], $body, $kanal)
+                : $tabungan->penarikan($user, (int) $m[1], $body, $kanal));
         }
+        if ($method === 'GET' && $path === '/v6/bsa/tabungan') JsonResponse::success($tabungan->daftarMutasi($user, $_GET));
+        if ($method === 'GET' && $path === '/v6/bsa/setoran-transfer') JsonResponse::success($tabungan->daftarSetoranTransfer($user, $_GET));
+        if ($method === 'POST' && preg_match('#^/v6/bsa/setoran-transfer/(\d+)/(verifikasi|tolak)$#', $path, $m)) {
+            $mutasi(static fn (array $body): array => $m[2] === 'verifikasi'
+                ? $tabungan->verifikasiSetoran($user, (int) $m[1], $body, $kanal)
+                : $tabungan->tolakSetoran($user, (int) $m[1], $body, $kanal));
+        }
+        if ($method === 'GET' && preg_match('#^/v6/bsa/tabungan/(\d+)$#', $path, $m)) JsonResponse::success($tabungan->transaksi($user, (int) $m[1]));
+        if ($method === 'POST' && preg_match('#^/v6/bsa/tabungan/(\d+)/koreksi$#', $path, $m)) $mutasi(static fn (array $body): array => $tabungan->koreksi($user, (int) $m[1], $body, $kanal));
+        if ($method === 'GET' && $path === '/v6/bsa/rekonsiliasi') JsonResponse::success($tabungan->rekonsiliasi($user, $_GET));
         if ($method === 'POST' && $path === '/v6/bsa/tagihan') $mutasi(static fn (array $body): array => $bsa->terbitkanTagihan($user, $body, $kanal));
         // V6 Fase 2 (tagihan bulanan lengkap): aditif. Rincian tagihan = kontrak Fase 1
         // ditambah penyesuaian, pembayaran, dan riwayat; wali tetap hanya membaca anaknya.
         $tagihan = tagihan_service();
         if ($method === 'GET' && preg_match('#^/v6/bsa/tagihan/(\d+)$#', $path, $m)) JsonResponse::success($tagihan->rincianTagihan($user, (int) $m[1]));
-        if ($method === 'POST' && preg_match('#^/v6/bsa/tagihan/(\d+)/(revisi|batal|pembayaran)$#', $path, $m)) {
+        if ($method === 'POST' && preg_match('#^/v6/bsa/tagihan/(\d+)/(revisi|batal|pembayaran|bayar-tabungan)$#', $path, $m)) {
             $mutasi(static fn (array $body): array => match ($m[2]) {
                 'revisi' => $tagihan->revisiTagihan($user, (int) $m[1], $body, $kanal),
                 'batal' => $tagihan->batalkanTagihan($user, (int) $m[1], $body, $kanal),
+                // V6 Fase 3: tindakan eksplisit, wajib `setuju`; debit + pembayaran satu transaksi.
+                'bayar-tabungan' => $tagihan->bayarDariTabungan($user, (int) $m[1], $body, $kanal),
                 default => $tagihan->catatPembayaran($user, (int) $m[1], $body, $kanal),
             });
         }

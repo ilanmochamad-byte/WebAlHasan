@@ -90,7 +90,8 @@ $wali = $b['akses']['sumber'] === 'wali';
             <div><span>Nama santri</span><b><?= $e($b['santri']['nama']) ?></b></div>
             <div><span>NIS</span><b><?= $e($b['santri']['nis']) ?></b></div>
             <div><span>Tagihan</span><b><?= $e(bsa_periode($b['periode'])) ?> (versi <?= (int) $k['tagihan_versi'] ?>)</b></div>
-            <div><span>Cara bayar</span><b><?= $b['sumber'] === 'Transfer' ? 'Transfer bank' : 'Tunai' ?></b></div>
+            <div><span>Cara bayar</span><b><?= match ($b['sumber']) { 'Transfer' => 'Transfer bank', 'Tabungan' => 'Dari tabungan santri', default => 'Tunai' } ?></b></div>
+            <?php if (($b['tabungan'] ?? null) !== null): ?><div><span>Debit tabungan</span><b><?= $e($b['tabungan']['nomor_kuitansi']) ?></b></div><?php endif; ?>
             <?php if (!$wali && ($b['referensi'] ?? null) !== null): ?><div><span>Referensi</span><b><?= $e($b['referensi']) ?></b></div><?php endif; ?>
             <div><span>Diterima oleh</span><b><?= $e($b['verifikasi']['oleh'] ?? $b['pencatat']['nama']) ?></b></div>
         </div>
