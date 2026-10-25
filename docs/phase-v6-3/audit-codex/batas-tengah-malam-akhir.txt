@@ -1,0 +1,10 @@
+[lulus] Fixture kosong untuk batas tanggal
+[lulus] Kontrol: satu transaksi benar-benar mempunyai timestamp debit/pembayaran di dua hari ({"debit":"2026-10-23 23:59:59","pembayaran":"2026-10-24 00:00:01"})
+[lulus] Kontrol: pembatalan/pembalik di dua hari ({"batal":"2026-10-24 23:59:59","pembalik":"2026-10-25 00:00:01"})
+[lulus] Selisih debit/pembayaran Rp0 pada ketiga hari
+[lulus] Selisih pembalik/pembatalan Rp0 pada ketiga hari
+[lulus] Pasangan internal memakai hari debit/pembalik, bukan waktu statement pasangannya
+[lulus] Rincian dan agregat menempatkan dua sisi pada hari sama
+[lulus] Kas hanya saat setoran, saldo akhir mengikuti ledger lintas batas hari
+[lulus] Verifier tetap lulus: uang, referensi, dan saldo utuh
+Hasil: 9 lulus, 0 gagal

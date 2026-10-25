@@ -1,0 +1,97 @@
+=== S-1. Migrasi 027 ===
+[gagal] Migrasi 027 berurutan setelah 026 (migrasi terakhir yang ada)
+[lulus] Migrasi aditif: 6 CREATE TABLE IF NOT EXISTS, tanpa DROP/ALTER/DML
+[lulus] Tabel bsa_tagihan dibuat dan dilepas rollback berpasangan
+[lulus] Tabel bsa_tagihan_komponen dibuat dan dilepas rollback berpasangan
+[lulus] Tabel bsa_tabungan_transaksi dibuat dan dilepas rollback berpasangan
+[lulus] Tabel bsa_tabungan_akun dibuat dan dilepas rollback berpasangan
+[lulus] Tabel bsa_pembayaran dibuat dan dilepas rollback berpasangan
+[lulus] Tabel bsa_idempotensi dibuat dan dilepas rollback berpasangan
+[lulus] Nominal/saldo memakai BIGINT rupiah bulat, tanpa float/pecahan
+[lulus] CHECK basis data: bsa_akun_saldo_check CHECK (saldo >= 0)
+[lulus] CHECK basis data: bsa_transaksi_nominal_check CHECK (nominal > 0)
+[lulus] CHECK basis data: bsa_transaksi_saldo_check
+[lulus] CHECK basis data: bsa_tagihan_terbayar_check CHECK (terbayar >= 0 AND terbayar <= total)
+[lulus] CHECK basis data: bsa_komponen_nominal_check CHECK (nominal > 0)
+[lulus] CHECK basis data: bsa_pembayaran_nominal_check CHECK (nominal > 0)
+[lulus] Kunci unik: bsa_tagihan_santri_periode_unique (santri_id, periode)
+[lulus] Kunci unik: bsa_transaksi_retry_unique (dicatat_oleh, idempotency_key)
+[lulus] Kunci unik: bsa_idempotensi_unique (user_id, kunci)
+[lulus] Kunci unik: bsa_pembayaran_kuitansi_unique (nomor_kuitansi)
+[lulus] Kunci unik: bsa_tagihan_retry_unique (diterbitkan_oleh, idempotency_key)
+[lulus] Enam tabel InnoDB berkunci asing ke santri dan penugasan BSA fondasi
+[lulus] Rollback: penjaga data sebelum DROP, hanya 6 tabel baru, urut anak → induk
+
+=== S-2. Penugasan BSA pada fondasi ===
+[lulus] Jenis bendahara_bulanan tetap: tabel, entitas audit, subjek pengurus, cakupan unit/jenjang
+[lulus] Label Petugas BSA; tidak gugur saat semester berganti (keputusan 25 Oktober 2026)
+[lulus] Capability lama dipertahankan berurutan, bsa.tabungan ditambahkan aditif
+[lulus] bsa.tabungan hanya dari satu penugasan BSA
+[lulus] BSA bukan lagi "modul mendatang"; PSB tetap mendatang
+[lulus] Jenis lain (bendahara PSB, Pendidikan) tidak berubah
+[lulus] Resolver capability membaca wajib_tahun_aktif dari katalog (tanpa cabang khusus BSA)
+[lulus] Tidak ada role login baru
+[lulus] Formulir pusat penugasan menjelaskan masa berlaku BSA
+
+=== S-3. Layanan ===
+[lulus] Hak dihitung ulang dari basis data pada setiap panggilan (forget)
+[lulus] Hanya petugas berpenugasan yang kelola; admin, admin+petugas, dan wali hanya baca
+[lulus] Mutasi tabungan: penugasan → idempotensi → santri/cakupan → akun → ledger (satu urutan kunci)
+[lulus] Saldo dicek setelah kunci tulis akun; pembaruan bersyarat pada saldo lama
+[lulus] Penugasan/santri dikunci baca; mutasi di dalam transaksi layanan
+[lulus] Transaksi READ COMMITTED + kunci eksplisit; 1020/1205/1213 → 409 dapat diulang
+[lulus] Tidak ada float/pembulatan pada layanan dan repository
+[lulus] Nominal hanya rupiah bulat positif dengan batas
+[lulus] Idempotensi: hash isi + operasi; replay mengembalikan hasil sama, beda isi 409
+[lulus] Audit wajib di dalam transaksi; gagal audit membatalkan mutasi
+[lulus] Repository memakai parameter terikat (tanpa query mentah selain SET TRANSACTION, tanpa masukan disambung ke SQL)
+[lulus] Tanpa error_log berisi masukan
+
+=== S-4. Web ===
+[lulus] Guard bersama: sesi web, CSRF untuk POST, no-store, hak dari layanan
+[lulus] portal/bsa.php memakai guard bersama dan meng-escape keluaran
+[lulus] portal/bsa_santri.php memakai guard bersama dan meng-escape keluaran
+[lulus] portal/bsa_transaksi.php memakai guard bersama dan meng-escape keluaran
+[lulus] portal/bsa_tagihan_buat.php memakai guard bersama dan meng-escape keluaran
+[lulus] portal/bsa_tagihan.php memakai guard bersama dan meng-escape keluaran
+[lulus] Formulir mutasi menolak non-petugas sebelum render
+[lulus] Tombol pencatatan hanya untuk petugas; formulir membawa kunci idempotensi
+[lulus] Menu Keuangan: admin (baca), petugas BSA, dan orang tua — hak dari BsaService
+[lulus] Ikon fa-wallet tersedia di Font Awesome 6.0.0 yang dimuat
+
+=== S-5. API ===
+[lulus] Rute /v6/bsa memakai layanan yang sama dan no-store
+[lulus] Rute API '/v6/bsa/akses'
+[lulus] Rute API '/v6/bsa/santri'
+[lulus] Rute API #^/v6/bsa/santri/(\d+)$#
+[lulus] Rute API #^/v6/bsa/santri/(\d+)/saldo$#
+[lulus] Rute API #^/v6/bsa/santri/(\d+)/(setoran|penarikan)$#
+[lulus] Rute API '/v6/bsa/tagihan'
+[lulus] Rute API #^/v6/bsa/tagihan/(\d+)$#
+[lulus] Kunci idempotensi dari header/badan; BsaException dipetakan ke kode galat
+
+=== S-6. Privasi ===
+[gagal] AuditLogger hanya meloloskan metadata untuk aksi bsa.* (tanpa nominal/saldo/referensi/tujuan)
+[gagal] Riwayat wali tanpa referensi transfer dan catatan internal
+
+=== S-7. Batas Fase 1 ===
+[lulus] Baseline 761ae07 tersedia
+[lulus] Kode Auth, PSB, V2–V5, master data, dan notifikasi tidak diubah
+[gagal] Migrasi/rollback lama (≤ 026) tidak diubah
+[lulus] Halaman PSB tidak diubah
+[gagal] Fase 2+ belum dimulai: tanpa tarif, pembayaran tagihan, kuitansi, pembalik, atau notifikasi
+
+=== S-8. Operasi dan lint ===
+[lulus] bin/v6_phase1_preflight.php hanya CLI dan hanya membaca
+[lulus] bin/v6_phase1_verify.php hanya CLI dan hanya membaca
+[lulus] bin/v6_phase1_rollback_preflight.php hanya CLI dan hanya membaca
+[lulus] Manifest memuat sidik jari ID identitas, diperiksa verifier
+[lulus] Skrip DB uji dan fixture hanya untuk test_*_test
+[lulus] Lint 25 berkas PHP baru/diubah
+
+Lulus: 70 · Gagal: 5
+  - Migrasi 027 berurutan setelah 026 (migrasi terakhir yang ada)
+  - AuditLogger hanya meloloskan metadata untuk aksi bsa.* (tanpa nominal/saldo/referensi/tujuan)
+  - Riwayat wali tanpa referensi transfer dan catatan internal
+  - Migrasi/rollback lama (≤ 026) tidak diubah
+  - Fase 2+ belum dimulai: tanpa tarif, pembayaran tagihan, kuitansi, pembalik, atau notifikasi

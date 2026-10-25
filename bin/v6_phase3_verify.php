@@ -149,6 +149,18 @@ if (isset($args[0])) {
         fwrite(STDERR, "Manifest tidak valid (gunakan manifest bin/v6_phase3_preflight.php).\n");
         exit(2);
     }
+    // Daftar kosong/terpotong tidak boleh meloloskan klaim preservasi PSB
+    // atau tabel lama lain hanya karena loop perbandingan dilewati.
+    $tabelLama = array_column($db->query("SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_TYPE = 'BASE TABLE'
+        AND TABLE_NAME NOT IN ('schema_migrations', 'audit_logs', 'bsa_setoran_transfer') ORDER BY TABLE_NAME")->fetch_all(MYSQLI_ASSOC), 'TABLE_NAME');
+    $kunciManifest = array_keys($manifest['legacy_counts']);
+    sort($kunciManifest);
+    sort($tabelLama);
+    if ($kunciManifest !== $tabelLama || ($manifest['database'] ?? null) !== (string) $db->query('SELECT DATABASE()')->fetch_row()[0]
+        || array_filter($manifest['legacy_counts'], static fn (mixed $n): bool => !is_int($n) || $n < 0) !== []) {
+        fwrite(STDERR, "Manifest tidak lengkap atau bukan basis data ini: seluruh tabel lama beserta hitungan bulat wajib ada.\n");
+        exit(2);
+    }
     foreach ($manifest['legacy_counts'] as $t => $sebelum) {
         if (!preg_match('/^[a-zA-Z0-9_]+$/D', (string) $t)) {
             exit(2);

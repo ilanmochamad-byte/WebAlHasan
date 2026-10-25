@@ -119,6 +119,12 @@ final class TabunganRepository
         return $this->all(self::SETORAN . " WHERE st.santri_id = ? AND (st.status = 'Menunggu' OR st.created_at >= NOW() - INTERVAL 90 DAY) ORDER BY st.status = 'Menunggu' DESC, st.id DESC LIMIT 50", [$santriId]);
     }
 
+    /** Ringkasan tidak mengikuti batas 50 baris rincian. Hak diperiksa layanan. */
+    public function nominalMenungguSantri(int $santriId): int
+    {
+        return (int) ($this->one("SELECT COALESCE(SUM(nominal), 0) AS nominal FROM bsa_setoran_transfer WHERE santri_id = ? AND status = 'Menunggu'", [$santriId])['nominal'] ?? 0);
+    }
+
     /**
      * Setoran transfer menurut hak pembaca (petugas: santri aktif dalam
      * cakupan kini; admin: semua).
@@ -201,14 +207,16 @@ final class TabunganRepository
                 'ledger' => $this->terbatas($hak, "SELECT x.jenis, x.arah, x.metode, COUNT(*) AS jumlah, COALESCE(SUM(x.nominal), 0) AS nominal
                     FROM bsa_tabungan_transaksi x JOIN santri s ON s.id = x.santri_id", " AND x.status = 'Sah' AND x.created_at >= ? AND x.created_at < ? + INTERVAL 1 DAY
                     GROUP BY x.jenis, x.arah, x.metode", [$awal, $tanggal]),
-                // Pembayaran tagihan dihitung pada tanggal SAH-nya (verifikasi),
-                // termasuk yang kemudian dibatalkan — pembatalannya dihitung
-                // terpisah pada tanggal pembatalan.
+                // Kas mengikuti verifikasi/pembatalan. Pasangan INTERNAL
+                // mengikuti waktu debit/pembalik ledger yang sama, termasuk
+                // bila statement dalam satu transaksi melintasi tengah malam.
                 'bayar' => $this->terbatas($hak, 'SELECT b.sumber, COUNT(*) AS jumlah, COALESCE(SUM(b.nominal), 0) AS nominal
-                    FROM bsa_pembayaran b JOIN santri s ON s.id = b.santri_id', ' AND b.diverifikasi_pada >= ? AND b.diverifikasi_pada < ? + INTERVAL 1 DAY GROUP BY b.sumber', [$awal, $tanggal]),
+                    FROM bsa_pembayaran b LEFT JOIN bsa_tabungan_transaksi tx ON tx.id = b.tabungan_transaksi_id JOIN santri s ON s.id = b.santri_id',
+                    ' AND COALESCE(tx.created_at, b.diverifikasi_pada) >= ? AND COALESCE(tx.created_at, b.diverifikasi_pada) < ? + INTERVAL 1 DAY GROUP BY b.sumber', [$awal, $tanggal]),
                 'batal' => $this->terbatas($hak, 'SELECT b.sumber, COUNT(*) AS jumlah, COALESCE(SUM(b.nominal), 0) AS nominal
-                    FROM bsa_pembayaran b JOIN bsa_pembayaran_pembatalan xb ON xb.pembayaran_id = b.id AND xb.status_sebelum = \'Sah\' JOIN santri s ON s.id = b.santri_id',
-                    ' AND xb.created_at >= ? AND xb.created_at < ? + INTERVAL 1 DAY GROUP BY b.sumber', [$awal, $tanggal]),
+                    FROM bsa_pembayaran b JOIN bsa_pembayaran_pembatalan xb ON xb.pembayaran_id = b.id AND xb.status_sebelum = \'Sah\'
+                    LEFT JOIN bsa_tabungan_transaksi rv ON rv.pembalik_dari_id = b.tabungan_transaksi_id JOIN santri s ON s.id = b.santri_id',
+                    ' AND COALESCE(rv.created_at, xb.created_at) >= ? AND COALESCE(rv.created_at, xb.created_at) < ? + INTERVAL 1 DAY GROUP BY b.sumber', [$awal, $tanggal]),
                 'saldo_awal' => (int) ($this->terbatas($hak, "SELECT COALESCE(SUM(CASE WHEN x.arah = 'Masuk' THEN x.nominal ELSE -x.nominal END), 0) AS n
                     FROM bsa_tabungan_transaksi x JOIN santri s ON s.id = x.santri_id", " AND x.status = 'Sah' AND x.created_at < ?", [$awal])[0]['n'] ?? 0),
                 'saldo_akhir' => (int) ($this->terbatas($hak, "SELECT COALESCE(SUM(CASE WHEN x.arah = 'Masuk' THEN x.nominal ELSE -x.nominal END), 0) AS n
@@ -224,12 +232,14 @@ final class TabunganRepository
                            NULL AS nomor_kuitansi, x.created_at AS dibuat
                       FROM bsa_tabungan_transaksi x WHERE x.status = 'Sah' AND x.created_at >= ? AND x.created_at < ? + INTERVAL 1 DAY
                     UNION ALL
-                    SELECT 'pembayaran', b.id, b.diverifikasi_pada, 'Pembayaran', 'Masuk', b.sumber, b.nominal, b.santri_id, b.tabungan_transaksi_id, b.nomor_kuitansi, b.created_at
-                      FROM bsa_pembayaran b WHERE b.diverifikasi_pada >= ? AND b.diverifikasi_pada < ? + INTERVAL 1 DAY
+                    SELECT 'pembayaran', b.id, COALESCE(tx.created_at, b.diverifikasi_pada), 'Pembayaran', 'Masuk', b.sumber, b.nominal, b.santri_id, b.tabungan_transaksi_id, b.nomor_kuitansi, b.created_at
+                      FROM bsa_pembayaran b LEFT JOIN bsa_tabungan_transaksi tx ON tx.id = b.tabungan_transaksi_id
+                     WHERE COALESCE(tx.created_at, b.diverifikasi_pada) >= ? AND COALESCE(tx.created_at, b.diverifikasi_pada) < ? + INTERVAL 1 DAY
                     UNION ALL
-                    SELECT 'pembatalan', b.id, xb.created_at, 'Pembatalan', 'Keluar', b.sumber, b.nominal, b.santri_id, b.tabungan_transaksi_id, b.nomor_kuitansi, b.created_at
+                    SELECT 'pembatalan', b.id, COALESCE(rv.created_at, xb.created_at), 'Pembatalan', 'Keluar', b.sumber, b.nominal, b.santri_id, b.tabungan_transaksi_id, b.nomor_kuitansi, b.created_at
                       FROM bsa_pembayaran b JOIN bsa_pembayaran_pembatalan xb ON xb.pembayaran_id = b.id AND xb.status_sebelum = 'Sah'
-                     WHERE xb.created_at >= ? AND xb.created_at < ? + INTERVAL 1 DAY
+                      LEFT JOIN bsa_tabungan_transaksi rv ON rv.pembalik_dari_id = b.tabungan_transaksi_id
+                     WHERE COALESCE(rv.created_at, xb.created_at) >= ? AND COALESCE(rv.created_at, xb.created_at) < ? + INTERVAL 1 DAY
                   ) r JOIN santri s ON s.id = r.santri_id", " ORDER BY r.waktu, FIELD(r.asal, 'tabungan', 'pembayaran', 'pembatalan'), r.id LIMIT 500", [$awal, $tanggal, $awal, $tanggal, $awal, $tanggal], ['s.nis', 's.nama_santri']),
             ];
             $this->db->commit();

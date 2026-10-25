@@ -1,0 +1,29 @@
+[lulus] Fixture baru tanpa ledger
+=== A. Jumlah menunggu melampaui batas tampilan ===
+[lulus] Daftar rincian dibatasi 50 baris
+[gagal] Ringkasan seluruh 51 transfer Rp52275, bukan hanya 50 baris (aktual Rp51275)
+[lulus] 51 transfer belum sah tanpa saldo efektif atau data menunggu untuk wali
+[lulus] Rekonsiliasi memakai seluruh nominal menunggu
+=== B. Hari setoran, hari pembayaran, hari pembatalan terpisah ===
+[lulus] Setoran Rp100.000 − belanja Rp25.000 = Rp75.000; transfer belum sah tidak dihitung
+[lulus] Hari kedua: bayar Rp50.000 → saldo Rp25.000 dan sisa Rp50.000
+[lulus] Retry pembayaran menunjuk debit yang sama
+[gagal] Replay pembatalan tetap membawa ID pembalik dan saldo (kontrak Fase 3)
+[lulus] Replay pembatalan tanpa pembalik/klaim/audit tambahan
+[lulus] Kas baru per hari Rp100.000/Rp0/Rp20.000; internal tidak dihitung ulang
+[lulus] Saldo awal/akhir tepat pada tiga hari
+[lulus] Debit dan pembayaran pada hari kedua, pembalik dan pembatalan pada hari ketiga berpasangan Rp0 selisih
+[lulus] Transfer dihitung hari diverifikasi, bukan hari antrean dibuat
+[lulus] Kuitansi belanja mempertahankan angka dan nomor historis sesudah pembayaran/pembatalan
+=== C. Gagal sesudah debit, lalu retry kunci yang sama ===
+[lulus] Rollback debit/pembayaran/kuitansi/klaim/audit saat INSERT pembayaran gagal
+[lulus] Retry kunci yang gagal lalu dua kali berhasil hanya membukukan satu debit/pembayaran
+[lulus] Koreksi setoran yang sudah dipakai ditolak tanpa saldo negatif
+[lulus] Admin mutasi ditolak; petugas Tsanawi membaca Tsanawi; wali SMP menebak ID ditolak
+=== D. Kontrol negatif verifier dan preservasi invarians ===
+[lulus] Verifier lulus setelah fixture, rollback dan retry
+RuntimeException: CONSTRAINT `bsa_pembayaran_tabungan_check` failed for `test_v6_f3_audit_test`.`bsa_pembayaran` in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v6_phase3_audit.php:15
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v6_phase3_audit.php(106): {closure:/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v6_phase3_audit.php:15}('UPDATE bsa_pemb...')
+#1 {main}
+CONSTRAINT `bsa_pembayaran_tabungan_check` failed for `test_v6_f3_audit_test`.`bsa_pembayaran`

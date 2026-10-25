@@ -347,7 +347,7 @@ final class TabunganService
         $internal = $d['akses']['sumber'] !== BsaService::SUMBER_WALI;
         $rows = $internal && $this->tersedia() ? $this->repo->setoranTransferSantri($santriId) : [];
         $d['setoran_transfer'] = array_map(fn (array $r): array => $this->ringkasSetoran($r), $rows);
-        $d['saldo_menunggu'] = array_sum(array_map(static fn (array $r): int => $r['status'] === 'Menunggu' ? (int) $r['nominal'] : 0, $rows));
+        $d['saldo_menunggu'] = $internal && $this->tersedia() ? $this->repo->nominalMenungguSantri($santriId) : 0;
 
         return $d;
     }

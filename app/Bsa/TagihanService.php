@@ -775,7 +775,15 @@ final class TagihanService
             return ['id' => $id, 'status' => 200, 'replayed' => false, 'nomor_kuitansi' => (string) ($lama['nomor_kuitansi'] ?? ''), 'status_pembayaran' => 'Dibatalkan',
                 'sisa' => $t['total'] - ($p['status'] === 'Sah' ? $t['terbayar'] - $p['nominal'] : $t['terbayar'])]
                 + ($pengembalian === null ? [] : ['transaksi_id' => $pengembalian['id'], 'saldo' => $pengembalian['saldo']]);
-        }, fn (int $hasilId): array => $this->hasilPembayaranLama($hasilId));
+        }, function (int $hasilId): array {
+            $p = $this->repo->pembayaran($hasilId);
+
+            return $this->hasilPembayaranLama($hasilId)
+                + (($p['sumber'] ?? null) !== 'Tabungan' ? [] : [
+                    'transaksi_id' => (int) $p['pengembalian_id'],
+                    'saldo' => (int) ($this->bsaRepo->santri((int) $p['santri_id'])['saldo'] ?? 0),
+                ]);
+        });
     }
 
     /**

@@ -442,6 +442,8 @@ admin dan orang tua hanya membaca, di luar hak `404`. Setiap mutasi memakai
   menambah `nomor_kuitansi`, `penyetuju`, `pembalik_dari`,
   `dikoreksi_oleh_id`, `pembayaran {id, nomor_kuitansi, tagihan_id, periode,
   status}` (referensi silang), dan `alasan` (bukan untuk orang tua).
+  `saldo_menunggu` menjumlah seluruh setoran menunggu santri, termasuk yang
+  berada di luar batas 50 baris `setoran_transfer[]`.
 - `GET /v6/bsa/tabungan?jenis=&metode=&tanggal=&q=&page=` (petugas, admin):
   mutasi tabungan sah lintas santri. `GET /v6/bsa/tabungan/{id}` (petugas,
   admin, orang tua anaknya): satu transaksi + `saldo_sebelum` untuk
@@ -458,11 +460,16 @@ admin dan orang tua hanya membaca, di luar hak `404`. Setiap mutasi memakai
   `tabungan {transaksi_id, nomor_kuitansi, pengembalian_id}`. `POST
   /v6/bsa/pembayaran/{id}/batal` atas pembayaran `Tabungan` mengembalikan
   saldo (respons menambah `transaksi_id`, `saldo`).
+  Replay pembatalan juga membawa ID pembalik yang sama serta saldo kini;
+  transaksi sesudah pembatalan tidak mengubah referensi pembalik tersebut.
 - `GET /v6/bsa/rekonsiliasi?tanggal=TTTT-BB-HH` (petugas cakupannya, admin;
   orang tua `403`): `kas{Tunai,Transfer}`, `penerimaan_kas_baru` (tanpa
   perpindahan internal), `tabungan`, `tagihan`, `internal{…, selisih,
   selisih_pengembalian}`, `saldo{awal, mutasi_bersih, akhir, selisih, akun,
   selisih_akun}`, `menunggu`, `rows[]` (≤500).
+  Kas mengikuti waktu verifikasi/pembatalan. Dua sisi perpindahan internal
+  memakai waktu debit ledger (pembayaran) atau pembalik (pengembalian),
+  sehingga satu operasi yang melintasi tengah malam tetap satu hari laporan.
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v6-3/README.md`.
 
