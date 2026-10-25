@@ -1,0 +1,47 @@
+=== P-1. Salinan uji pada keadaan 025 dengan data Fase 2 ===
+[lulus] Salinan V5 Fase 2 (fixture V1–V4 + V5 F1–F2 sintetis) dibangun: test_v5_f3_migrasi_test
+[gagal] Rollback 026 mengembalikan salinan ke keadaan 025 (produksi sesudah Fase 2)
+[gagal] Verifier --rollback: empat tabel 026 tidak ada, 024–025 tetap
+[lulus] Satu kunjungan Fase 2 (obat + rujukan) dicatat sebelum 026
+
+=== P-2. Preflight dan migrasi ===
+[lulus] Preflight lulus; manifest memuat tabel 024–025 dan outbox, tanpa tabel 026
+[lulus] Checksum 30 tabel inti + notifikasi + 024–025 dicatat sebelum migrasi
+[gagal] bin/migrate.php up hanya menerapkan 026
+
+=== P-3. Verifier sesudah migrasi ===
+[lulus] Verifier dengan manifest lulus (139 pemeriksaan)
+[lulus] 14 kunci asing (satu gabungan), 0 referensi yatim
+[lulus] Checksum tabel inti, notifikasi, dan sembilan tabel 024–025 tetap sesudah migrasi
+
+=== P-4. Migrasi idempoten dan aditif ===
+[lulus] SQL 026 dijalankan ulang tanpa galat (CREATE TABLE IF NOT EXISTS)
+[lulus] Jalan ulang tidak mengubah data lama dan tidak menggandakan catatan migrasi
+[lulus] Migrasi 026 aditif murni: 4 CREATE TABLE IF NOT EXISTS
+
+=== P-5. Kunjungan sebelum 026 dengan kode Fase 3; data memblokir rollback ===
+[lulus] Fixture V5 Fase 3 dimuat pada salinan 026
+[lulus] Kunjungan yang dicatat sebelum 026 dapat diterbitkan ringkasannya dan dibaca wali berelasi
+[lulus] Verifier tetap lulus dengan data sebelum 026 + ringkasan Fase 3
+[lulus] Preflight rollback MEMBLOKIR bila ada ringkasan atau notifikasinya
+
+=== P-6. Rollback salinan tanpa ringkasan ===
+[lulus] Salinan kedua dibangun: test_v5_f3_rollback_test
+[lulus] Preflight rollback lulus pada tabel 026 kosong (walau 024–025 berisi)
+[gagal] Rollback 026 dijalankan (hanya 026)
+[gagal] Verifier --rollback dengan manifest: 4 tabel dilepas, seluruh baris lama tetap
+[lulus] Checksum tabel inti, notifikasi, dan 024–025 tetap sesudah rollback
+[lulus] Struktur kolom tabel lama tidak berubah oleh migrasi maupun rollback
+[gagal] Sesudah rollback 026: layanan ringkasan 503 (aman), menu wali tersembunyi, layanan klinis Fase 1–2 tetap berjalan
+
+=== P-7. Migrasi ulang sesudah rollback ===
+[lulus] Migrasi ulang 026 lulus verifier dengan manifest
+[lulus] Checksum tetap sesudah siklus migrasi–rollback–migrasi
+
+Lulus: 20 · Gagal: 6
+  - Rollback 026 mengembalikan salinan ke keadaan 025 (produksi sesudah Fase 2)
+  - Verifier --rollback: empat tabel 026 tidak ada, 024–025 tetap
+  - bin/migrate.php up hanya menerapkan 026
+  - Rollback 026 dijalankan (hanya 026)
+  - Verifier --rollback dengan manifest: 4 tabel dilepas, seluruh baris lama tetap
+  - Sesudah rollback 026: layanan ringkasan 503 (aman), menu wali tersembunyi, layanan klinis Fase 1–2 tetap berjalan

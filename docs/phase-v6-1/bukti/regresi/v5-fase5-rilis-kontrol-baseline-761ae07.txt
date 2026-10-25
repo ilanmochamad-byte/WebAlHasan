@@ -1,0 +1,46 @@
+
+=== S-1. Migrasi 024–026 dan rollback kosong pada salinan Tahap 7 ===
+[lulus] Salinan Tahap 7 dibuat (023 terakhir)
+[lulus] Keadaan sebelum V5: 023 terakhir, tanpa tabel kesehatan
+[lulus] Preflight V5 lulus; 024–026 belum tercatat; manifest privat ditulis
+[lulus] migrate up menerapkan tepat 024, 025, 026
+[lulus] Verifier V5 + manifest lulus sesudah migrasi (baris lama dan sidik jari santri/wali/relasi tetap)
+[lulus] migrate up kedua tidak menerapkan apa pun (idempoten)
+[lulus] Preflight lalu rollback 026 pada tabel kosong berhasil
+[lulus] Preflight lalu rollback 025 pada tabel kosong berhasil
+[lulus] Preflight lalu rollback 024 pada tabel kosong berhasil
+[lulus] Sesudah rollback 024: tidak ada tabel kesehatan tersisa
+[lulus] Jumlah baris 86 tabel lama dan sidik jari santri/wali/relasi identik dengan sebelum migrasi
+[lulus] Migrasi ulang sesudah rollback berhasil dan verifier lulus
+
+=== S-2. Manifest rilis ===
+[lulus] Manifest rilis: 26 migrasi + 3 rollback V5 ber-SHA-256
+[lulus] Preflight --rilis lulus untuk berkas yang sama
+[lulus] Preflight --rilis gagal bila SHA-256 satu berkas berbeda
+
+=== S-3. Penjaga SQL rollback pada data ===
+[lulus] Salinan fixture Fase 5 dibuat (berisi kunjungan, rincian, ringkasan)
+[lulus] Rollback 026 pada data ditolak penjaga CHECK; 13 tabel V5 dan barisnya tetap
+[lulus] Rollback 025 pada data ditolak penjaga CHECK; 13 tabel V5 dan barisnya tetap
+[lulus] Rollback 024 pada data ditolak penjaga CHECK; 13 tabel V5 dan barisnya tetap
+[lulus] Tidak ada tabel penjaga permanen tersisa (dilihat dari sesi lain)
+[lulus] bin/migrate.php rollback tanpa preflight ditolak; 026 tetap tercatat
+
+=== S-4. Latihan backup → restore → verifier ===
+    [lulus] Preflight V5 sumber lulus; manifest privat ditulis
+    [lulus] Sumber memuat migrasi 024–026
+    [lulus] Backup memuat 101 tabel termasuk tabel kesehatan berisi (7 kunjungan); SHA-256 c9f46beae646ac09…
+    [lulus] SHA-256 berkas backup stabil sebelum restore
+    [lulus] Restore lewat klien mariadb tanpa galat
+    [lulus] Jumlah baris seluruh 101 tabel pulihan = backup
+    [lulus] bin/v5_verify.php + manifest pada DB pulihan lulus (termasuk sidik jari santri/wali/relasi)
+    [lulus] Hash isi 20 tabel (kesehatan, santri, wali, relasi, outbox, migrasi, akun) sumber = pulihan
+    [lulus] Angka laporan seluruh waktu sumber = pulihan
+    [lulus] Preflight rollback 026 memblokir (ada ringkasan/notifikasi)
+    [lulus] migrate.php rollback tanpa preflight ditolak penjaga SQL 026
+    [lulus] Sesudah penolakan: hash isi tetap, 026 tetap tercatat, tidak ada tabel penjaga tersisa
+    [info] DB pulihan `test_v5_f5_rilis_data_test_restore` dihapus; backup sintetis tetap di storage/backups/v5-drill/20261025_183840 (abaikan Git).
+    Ringkasan latihan: 12 lulus, 0 gagal
+[lulus] bin/v5_backup_restore_drill.php lulus pada fixture Fase 5
+
+Ringkasan: 22 lulus, 0 gagal

@@ -1,0 +1,144 @@
+[lulus] Fixture V6 tersedia (empat santri sintetis)
+[lulus] Tabel BSA mulai kosong: saldo awal semua santri Rp0
+
+=== I-1. Matriks hak ===
+[lulus] sbx_v6_bsa_b → baca=true kelola=true sumber='petugas'
+[lulus] sbx_v6_bsa_tsanawi → baca=true kelola=true sumber='petugas'
+[lulus] sbx_v6_bsa_lama → baca=true kelola=true sumber='petugas'
+[lulus] sbx_v6_admin_bsa → baca=true kelola=false sumber='admin_petugas'
+[lulus] sbx_admin → baca=true kelola=false sumber='admin'
+[lulus] sbx_v6_wali_smp → baca=true kelola=false sumber='wali'
+[lulus] sbx_pengurus_biasa → baca=false kelola=false sumber=NULL
+[lulus] sbx_guru_biasa → baca=false kelola=false sumber=NULL
+[lulus] sbx_v5_petugas_b → baca=false kelola=false sumber=NULL
+[lulus] sbx_v6_bsa → baca=false kelola=false sumber=NULL
+[lulus] Penugasan BSA pada tahun ajaran non-aktif tetap berlaku (tidak gugur saat semester berganti, keputusan 25 Oktober 2026)
+[lulus] Satu penugasan BSA menghasilkan capability tagihan lama dan bsa.tabungan baru
+[lulus] Jenis bendahara_bulanan tetap memakai tabel fondasi dan tidak lagi "modul mendatang"
+
+=== I-2. Admin menugaskan satu pengurus BSA ===
+[lulus] Non-admin tidak dapat menugaskan BSA
+[lulus] Admin menugaskan sbx_v6_bsa sebagai Petugas BSA seluruh unit → hak kelola
+
+=== I-3. Satu tagihan, setoran Rp100.000, penarikan Rp30.000 ===
+[lulus] Tagihan terbit: total = Σ komponen Rp550.000, baris kosong diabaikan, status Belum dibayar
+[lulus] Tepat satu tagihan tersimpan
+[lulus] Tagihan kedua santri+periode sama (kunci lain) → 409, tetap satu tagihan
+[lulus] Setoran Rp100.000 lalu penarikan Rp30.000 → saldo sesudah Rp70.000
+[lulus] Saldo santri terbaca Rp70.000 (layanan dan basis data)
+[lulus] Admin dan wali anak itu membaca saldo yang sama Rp70.000
+[lulus] Penarikan menyimpan pencatat = penyetuju, waktu, penugasan, status Sah, dan tujuan
+[lulus] Tagihan terbit tidak memotong tabungan otomatis
+
+=== I-4. Idempotensi ===
+[lulus] Dua setoran kunci+isi sama → tepat satu kredit (kedua = replay)
+[lulus] Kunci sama nominal berbeda → 409 tanpa mutasi
+[lulus] Kunci sama dipakai untuk penarikan → 409 tanpa mutasi
+[lulus] Kunci sama untuk santri lain → 409 tanpa mutasi
+[lulus] Penerbitan tagihan diulang dengan kunci sama → tagihan yang sama
+
+=== I-5. Konkurensi (proses terpisah) ===
+[lulus] Saldo awal santri uji konkurensi Rp100.000
+[lulus] Dua penarikan Rp80.000 bersamaan atas saldo Rp100.000 → 1 sukses, saldo Rp20000 ([{"ok":false,"status":422,"errno":0},{"ok":true,"id":5,"status":201,"replayed":false,"saldo_sesudah":20000}])
+[lulus] Tepat satu dari dua penarikan bersamaan berhasil (yang lain ditolak saldo kurang)
+[lulus] Delapan penarikan Rp30.000 bersamaan atas Rp100000 → 3 sukses, sisa Rp10000, tidak negatif
+[lulus] Penarikan yang gagal ditolak karena saldo kurang (422), bukan galat basis data ([{"ok":false,"status":422,"errno":0},{"ok":false,"status":422,"errno":0},{"ok":true,"id":7,"status":201,"replayed":false,"saldo_sesudah":70000},{"ok":false,"status":422,"errno":0},{"ok":false,"status":422,"errno":0},{"ok":false,"status":422,"errno":0},{"ok":true,"id":9,"status":201,"replayed":false,"saldo_sesudah":10000},{"ok":true,"id":8,"status":201,"replayed":false,"saldo_sesudah":40000}])
+[lulus] Setiap penarikan sukses melihat saldo berbeda (berurutan, bukan uang yang sama)
+[lulus] Delapan setoran bersamaan kunci+isi sama → satu kredit Rp25.000, tujuh replay ([{"ok":true,"id":10,"status":200,"replayed":true,"saldo_sesudah":35000},{"ok":true,"id":10,"status":200,"replayed":true,"saldo_sesudah":35000},{"ok":true,"id":10,"status":200,"replayed":true,"saldo_sesudah":35000},{"ok":true,"id":10,"status":201,"replayed":false,"saldo_sesudah":35000},{"ok":true,"id":10,"status":200,"replayed":true,"saldo_sesudah":35000},{"ok":true,"id":10,"status":200,"replayed":true,"saldo_sesudah":35000},{"ok":true,"id":10,"status":200,"replayed":true,"saldo_sesudah":35000},{"ok":true,"id":10,"status":200,"replayed":true,"saldo_sesudah":35000}])
+[lulus] Enam setoran bersamaan kunci sama nominal berbeda → satu sukses, lima 409
+[lulus] Tidak ada saldo negatif setelah seluruh uji konkurensi
+
+=== I-6. Mutasi ditolak tanpa baris baru ===
+[lulus] sbx_admin: setoran/penarikan/tagihan → 403
+[lulus] sbx_v6_admin_bsa: setoran/penarikan/tagihan → 403
+[lulus] sbx_v6_wali_smp: setoran/penarikan/tagihan → 403
+[lulus] sbx_pengurus_biasa: setoran/penarikan/tagihan → 403
+[lulus] sbx_guru_biasa: setoran/penarikan/tagihan → 403
+[lulus] sbx_v5_petugas_b: setoran/penarikan/tagihan → 403
+[lulus] Petugas unit Tsanawi atas santri SMP → 404
+[lulus] Petugas unit atas santri tanpa kelas → 404 (unit tidak terbukti)
+[lulus] Santri nonaktif → 404
+[lulus] Santri tidak ada → 404
+[lulus] Penarikan santri nonaktif → 404
+[lulus] Penarikan Rp70.001 atas saldo Rp70.000 → 422, saldo tetap
+[lulus] Seluruh penolakan I-6 tanpa transaksi, tagihan, saldo, atau klaim idempotensi baru
+[lulus] Penolakan tidak menyiapkan akun tabungan santri nonaktif
+[lulus] Petugas unit Tsanawi mencatat untuk santri Tsanawi; penugasan unit tercatat di ledger
+[lulus] Petugas berpenugasan tahun ajaran non-aktif tetap dapat mencatat (setoran lalu penarikan Rp1.000)
+
+=== I-7. Isolasi baca ===
+[lulus] Wali anak lain membaca santri SMP → 404
+[lulus] Wali anak lain membuka ID tagihan → 404
+[lulus] Petugas unit lain membuka ID tagihan → 404
+[lulus] ID tagihan tidak ada → 404
+[lulus] Wali tanpa relasi santri V6 → 404
+[lulus] sbx_pengurus_biasa: daftar/rincian → 403
+[lulus] sbx_guru_biasa: daftar/rincian → 403
+[lulus] sbx_v5_petugas_b: daftar/rincian → 403
+[lulus] Daftar wali SMP hanya memuat anaknya (saldo Rp70.000)
+[lulus] Daftar petugas unit Tsanawi memuat santri Tsanawi saja (tanpa SMP dan tanpa kelas)
+[lulus] Daftar admin memuat seluruh santri V6 aktif
+[lulus] Riwayat bagi wali tanpa referensi dan catatan internal, dengan tujuan
+[lulus] Petugas melihat referensi transfer
+
+=== I-8. Pencabutan pada sesi yang masih dipakai ===
+[lulus] Sebelum pencabutan: sbx_v6_bsa_b kelola
+[lulus] Penugasan dinonaktifkan → mutasi dan baca 403 tanpa baris baru
+[lulus] Penugasan diakhiri kemarin → 403 tanpa baris baru
+[lulus] Akun petugas dinonaktifkan → 403 tanpa baris baru
+[lulus] Relasi wali diarsipkan → rincian 404 dan daftar kosong
+[lulus] Relasi dipulihkan → wali membaca lagi (diperiksa ulang setiap permintaan)
+[lulus] Penolakan pencabutan tidak meninggalkan klaim idempotensi
+
+=== I-9. Validasi nominal eksak dan masukan ===
+[lulus] Nominal 0 ditolak 422
+[lulus] Nominal negatif ditolak 422
+[lulus] Nominal pecahan koma ditolak 422
+[lulus] Nominal pecahan titik ditolak 422
+[lulus] Nominal notasi ilmiah ditolak 422
+[lulus] Nominal float ditolak 422
+[lulus] Nominal melebihi batas ditolak 422
+[lulus] Nominal kosong ditolak 422
+[lulus] Nominal teks ditolak 422
+[lulus] Nominal array ditolak 422
+[lulus] Nominal titik ribuan salah ditolak 422
+[lulus] Nominal spasi tengah ditolak 422
+[lulus] Nominal bool ditolak 422
+[lulus] Metode selain Tunai/Transfer ditolak
+[lulus] Transfer tanpa referensi ditolak
+[lulus] Penarikan tanpa tujuan memadai ditolak
+[lulus] Kunci idempotensi tidak aman ditolak
+[lulus] Periode '2026-13' ditolak
+[lulus] Periode '2026-1' ditolak
+[lulus] Periode '26-10' ditolak
+[lulus] Periode '2026-10-01' ditolak
+[lulus] Periode '' ditolak
+[lulus] Jatuh tempo sebelum awal periode ditolak
+[lulus] Tagihan tanpa komponen ditolak
+[lulus] Total tagihan melebihi batas ditolak
+[lulus] Seluruh validasi I-9 tanpa baris atau klaim idempotensi baru
+
+=== I-10. Penjaga basis data dan audit ===
+[lulus] CHECK basis data menolak saldo negatif, nominal nol, dan terbayar melebihi total
+[lulus] Setiap transaksi dan tagihan punya satu jejak audit
+[lulus] Audit bsa.* tanpa nominal, saldo, referensi, atau tujuan
+[lulus] Verifier invarians V6 lulus pada data uji (44 pemeriksaan)
+
+=== I-11. Preservasi tabel lain ===
+[lulus] Jumlah baris santri tetap 258
+[lulus] Jumlah baris wali tetap 17
+[lulus] Jumlah baris santri_wali tetap 14
+[lulus] Jumlah baris users tetap 42
+[lulus] Jumlah baris pengurus tetap 26
+[lulus] Jumlah baris kelas tetap 7
+[lulus] Jumlah baris plotting_kelas tetap 45
+[lulus] Jumlah baris psb_pendaftar tetap 33
+[lulus] Jumlah baris kesehatan_kunjungan tetap 7
+[lulus] Jumlah baris kesehatan_ringkasan tetap 3
+[lulus] Jumlah baris v3_pelanggaran tetap 5
+[lulus] Jumlah baris v4_nilai tetap 181
+[lulus] Jumlah baris v4_rapor tetap 2
+[lulus] Jumlah baris bendahara_bulanan_assignments 4 + 1 penugasan BSA oleh admin di I-2
+[lulus] Jumlah baris kesehatan_assignments tetap 7
+
+Hasil: 120 lulus, 0 gagal

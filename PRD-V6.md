@@ -49,6 +49,7 @@ Tagihan bulanan, tabungan, dan pengeluaran dari tabungan santri perlu tercatat d
 - **BSA, admin, dan orang tua memakai website serta aplikasi. Tagihan dan tabungan harus dirilis bersama.** **[JANGAN DIUBAH]**
 - **Tidak ada saldo tabungan atau tunggakan lama yang harus diimpor**. **[JANGAN DIUBAH]**
 - BSA adalah pengelola keuangan internal pesantren dalam ruang lingkup sistem ini; PRD tidak mengasumsikan layanan bank publik atau izin usaha tertentu. **[JANGAN DIUBAH]**
+- **Penugasan BSA tidak gugur saat semester berganti** (keputusan Human Developer 25 Oktober 2026, dijawab saat implementasi Fase 1): satu penugasan BSA memakai jenis fondasi `bendahara_bulanan` (tabel `bendahara_bulanan_assignments`, label "Petugas BSA", capability lama dipertahankan dan ditambah `bsa.tabungan`), berlaku menurut tanggal mulai/selesai dan status aktif seperti petugas kesehatan V5, bukan menurut status Aktif tahun ajaran/semester. Baris bendahara bulanan lama yang masih aktif dan dalam masa berlaku ikut menjadi Petugas BSA.
 
 ### 5.2 Sistem yang sudah ada
 

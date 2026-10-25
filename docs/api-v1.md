@@ -325,6 +325,45 @@ rujukan, uraian tindak lanjut, teks ringkasan, alasan) pada respons.
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v5-5/README.md`.
 
+## Keuangan santri/BSA V6 Fase 1 (25 Oktober 2026)
+
+Aditif di bawah `/api/v1/v6/bsa`; tidak mengubah kontrak di atas. Hak dihitung
+ulang server pada setiap permintaan oleh layanan yang sama dengan website
+(`BsaService`): petugas BSA (pengurus dengan penugasan `bendahara_bulanan`
+aktif, label "Petugas BSA") membaca dan memutasi santri aktif dalam cakupan
+unit penugasannya; admin hanya membaca seluruh santri; orang tua hanya membaca
+anak dengan relasi wali aktif; akun lain `403`. Santri/tagihan di luar hak
+dijawab `404`. Seluruh respons `Cache-Control: private, no-store`. Nominal
+rupiah bulat (bilangan bulat JSON atau teks angka dengan titik ribuan,
+1–1.000.000.000); pecahan/float ditolak `422`. `feature_capabilities` pada
+login/profil bertambah satu kunci aditif `bsa.tabungan`.
+
+- `GET /v6/bsa/akses` → `{baca, kelola, sumber, jenjang}` (`sumber`:
+  `petugas`, `admin`, `admin_petugas`, `wali`, atau `null`; `jenjang` null =
+  seluruh unit).
+- `GET /v6/bsa/santri?q=&page=` → santri sesuai hak beserta `saldo`,
+  `tagihan_terbuka`, `sisa_tagihan`.
+- `GET /v6/bsa/santri/{id}?page=` → `{santri, saldo, tagihan[], tabungan{rows,
+  total, page, per_page}, akses}`; bagi orang tua baris tabungan tanpa
+  `referensi` dan `catatan`.
+- `GET /v6/bsa/santri/{id}/saldo` → `{santri_id, saldo}`.
+- `POST /v6/bsa/santri/{id}/setoran` (petugas) dengan header `Idempotency-Key`
+  (atau `idempotency_key` di badan) dan badan `{nominal, metode: "Tunai"|"Transfer",
+  referensi? (wajib untuk Transfer), catatan?}` → `201 {id, replayed:false,
+  saldo_sesudah}`; kunci + isi sama → `200 {id, replayed:true, saldo_sesudah}`;
+  kunci sama dengan nominal/operasi/santri berbeda → `409 CONFLICT` tanpa mutasi.
+- `POST /v6/bsa/santri/{id}/penarikan` (petugas) — badan sama ditambah
+  `tujuan` (wajib, 3–255 karakter); melebihi saldo → `422` tanpa mutasi.
+- `POST /v6/bsa/tagihan` (petugas) dengan `Idempotency-Key` dan badan
+  `{santri_id, periode: "TTTT-BB", jatuh_tempo: "Y-m-d", komponen: [{nama,
+  nominal}] (1–10), catatan?}` → `201 {id, replayed}`; tagihan kedua untuk
+  santri+periode yang sama → `409`.
+- `GET /v6/bsa/tagihan/{id}` → rincian tagihan dengan snapshot komponen,
+  `total`, `terbayar`, `sisa`, `status_bayar`.
+
+Admin dan orang tua yang memanggil endpoint POST → `403` tanpa mutasi.
+Rincian, penafsiran, dan batas uji: `docs/phase-v6-1/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh
