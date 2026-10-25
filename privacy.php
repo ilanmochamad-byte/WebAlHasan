@@ -7,6 +7,9 @@
 $situs = ['judul' => 'Kebijakan privasi', 'deskripsi' => 'Kebijakan privasi aplikasi alhasanApps dan situs alhasan.co.id.'];
 $tanggal_berlaku_id = '1 September 2026';
 $tanggal_berlaku_en = '1 September 2026';
+// Pembaruan: pembinaan (V3), rapor (V4), dan kesehatan santri (V5).
+$tanggal_diperbarui_id = '25 Oktober 2026';
+$tanggal_diperbarui_en = '25 October 2026';
 $kontak_email = 'alhasanpesantren@gmail.com';
 $kontak_alamat = 'Jalan Jenderal Ahmad Yani No. 120, Ciamis, Jawa Barat 46213, Indonesia';
 
@@ -50,7 +53,7 @@ include 'header.php';
 
     <h1 class="mb-2">Kebijakan Privasi</h1>
     <p class="privacy-meta mb-4">
-      Berlaku sejak <?php echo $tanggal_berlaku_id; ?> &middot; Terakhir diperbarui <?php echo $tanggal_berlaku_id; ?><br>
+      Berlaku sejak <?php echo $tanggal_berlaku_id; ?> &middot; Terakhir diperbarui <?php echo $tanggal_diperbarui_id; ?><br>
       Berlaku untuk aplikasi <strong>alhasanApps</strong> (Android &amp; iOS) dan situs <strong>alhasan.co.id</strong>.
     </p>
 
@@ -61,6 +64,8 @@ include 'header.php';
         <li>Aplikasi <strong>tidak memuat SDK analitik, periklanan, atau pelacak pihak ketiga</strong>, dan tidak melacak Anda di aplikasi atau situs milik perusahaan lain.</li>
         <li>Aplikasi <strong>tidak mengakses lokasi, kamera, mikrofon, kontak, maupun galeri foto</strong> Anda.</li>
         <li>Akun aplikasi hanya diterbitkan pesantren untuk guru, pengurus, murobi, admin, dan orang tua/wali. Tidak ada pendaftaran mandiri.</li>
+        <li><strong>Data kesehatan santri</strong> diperlakukan sebagai data pribadi spesifik: hanya dapat dibaca pihak yang berwenang atas santri tersebut, setiap pembukaan rinciannya tercatat, dan isinya tidak pernah dimuat dalam pemberitahuan.</li>
+        <li>Orang tua/wali hanya menerima ringkasan yang sengaja diterbitkan pesantren, bukan catatan internal pembinaan maupun catatan klinis.</li>
         <li>Seluruh lalu lintas data berjalan melalui koneksi terenkripsi HTTPS.</li>
       </ul>
     </div>
@@ -99,8 +104,8 @@ include 'header.php';
     <h2 id="id-2">2. Ruang lingkup kebijakan</h2>
     <p>Kebijakan ini mencakup:</p>
     <ul>
-      <li><strong>alhasanApps</strong> &mdash; aplikasi mobile untuk Android dan iOS (paket <code>com.ilanmochamad.alhasanApps</code>) yang dipakai guru, pengurus, murobi, admin, dan orang tua/wali untuk melihat jadwal, mencatat kehadiran, mengelola perizinan santri, membaca laporan, dan menerima pemberitahuan.</li>
-      <li><strong>alhasan.co.id</strong> &mdash; situs resmi pesantren, termasuk layanan Penerimaan Santri Baru (PSB) daring dan portal pendaftar.</li>
+      <li><strong>alhasanApps</strong> &mdash; aplikasi mobile untuk Android dan iOS (paket <code>com.ilanmochamad.alhasanApps</code>) yang dipakai guru, pengurus (termasuk pembimbing dan petugas kesehatan), murobi, admin, dan orang tua/wali untuk melihat jadwal, mencatat kehadiran, mengelola perizinan santri, mencatat pembinaan, mengisi dan membaca rapor, mencatat layanan klinik pesantren, membaca laporan, dan menerima pemberitahuan.</li>
+      <li><strong>alhasan.co.id</strong> &mdash; situs resmi pesantren, termasuk layanan Penerimaan Santri Baru (PSB) daring, portal pendaftar, cek keaslian rapor, serta sistem internal pesantren yang memakai akun yang sama dengan aplikasi.</li>
     </ul>
     <p>
       Akun aplikasi tidak dapat dibuat sendiri oleh pengguna. Akun diterbitkan dan dinonaktifkan oleh administrator pesantren.
@@ -134,19 +139,54 @@ include 'header.php';
       Data pada butir ini adalah catatan kelembagaan pesantren. Pengguna aplikasi mengaksesnya sesuai kewenangan perannya; seorang guru, misalnya, hanya melihat jadwal dan laporan miliknya sendiri.
     </p>
 
-    <h3>3.4 Data pada situs alhasan.co.id</h3>
+    <h3>3.4 Data pembinaan santri</h3>
+    <ul>
+      <li>Catatan pelanggaran: waktu, tempat, kategori, uraian, poin, pencatat, dan bukti berupa berkas JPG, PNG, atau PDF bila ada (diunggah melalui situs).</li>
+      <li>Kasus dan sesi konseling: jadwal, pelaksanaan, ringkasan internal, tindak lanjut, dan status penyelesaian.</li>
+      <li>Tanda mengetahui dan catatan murobi, serta riwayat koreksi beserta alasannya.</li>
+      <li>Ringkasan pembinaan untuk orang tua/wali yang dipilih dan diterbitkan secara sengaja oleh pembimbing.</li>
+    </ul>
+    <p class="privacy-meta">
+      Catatan pembinaan hanya dapat dibaca pembimbing dan murobi yang bertugas atas santri tersebut serta admin. Isi konseling yang bersifat rahasia dan catatan internal tidak pernah ditampilkan kepada orang tua/wali.
+    </p>
+
+    <h3>3.5 Data rapor dan penilaian</h3>
+    <ul>
+      <li>Rencana penilaian: mata pelajaran, guru pengampu, target ketuntasan, dan bobot.</li>
+      <li>Nilai harian/praktik, tengah semester, akhir semester, catatan capaian, penilaian sikap, dan rekap kehadiran semester.</li>
+      <li>Rapor terbit: salinan tetap (snapshot) berisi nilai, predikat, sikap, kehadiran, catatan, kelas, semester, nama dan gambar tanda tangan penanda tangan, serta kode verifikasi. Revisi menghasilkan versi baru tanpa menimpa versi lama.</li>
+      <li>Riwayat isian, verifikasi, koreksi, dan alasannya.</li>
+    </ul>
+    <p class="privacy-meta">
+      Orang tua/wali hanya dapat membaca dan mengunduh rapor terbit milik anak yang relasi walinya masih aktif. Saat Anda mengunduh rapor di aplikasi, berkas PDF disimpan sementara di cache aplikasi, lalu dihapus setelah dialog simpan/bagikan ditutup.
+    </p>
+
+    <h3>3.6 Data kesehatan santri</h3>
+    <ul>
+      <li>Kunjungan layanan klinik pesantren: santri, waktu kejadian dan pencatatan, keluhan, catatan klinis internal, tindakan yang dilakukan, dan petugas pencatat.</li>
+      <li>Obat yang benar-benar diberikan: nama, jumlah, satuan, dan petunjuk yang ditulis petugas.</li>
+      <li>Rujukan ke luar pesantren: tujuan, tanggal, alasan, hasil bila diketahui, dan tindak lanjut.</li>
+      <li>Riwayat koreksi berversi beserta pelaku, waktu, dan alasan, serta catatan siapa yang membuka rincian kunjungan dan kapan.</li>
+      <li>Ringkasan kesehatan untuk orang tua/wali yang disusun dan diterbitkan secara sengaja oleh petugas, terpisah dari catatan klinis.</li>
+    </ul>
+    <p class="privacy-meta">
+      Data kesehatan termasuk data pribadi spesifik. Catatan klinis hanya dapat ditulis oleh petugas kesehatan berpenugasan aktif, dan hanya dapat dibaca oleh petugas tersebut, pembimbing dan murobi yang bertugas atas santri bersangkutan, serta admin untuk pengawasan. Orang tua/wali hanya melihat ringkasan yang diterbitkan untuk anaknya. Sistem tidak memberi diagnosis, rekomendasi obat, atau keputusan medis otomatis, dan tidak terhubung ke rumah sakit, apotek, atau laboratorium di luar pesantren.
+    </p>
+
+    <h3>3.7 Data pada situs alhasan.co.id</h3>
     <ul>
       <li><strong>Pendaftaran Santri Baru (PSB):</strong> nama lengkap, NIK, NISN, tempat dan tanggal lahir, jenis kelamin, alamat lengkap (jalan, desa, kecamatan, kabupaten, provinsi), nama ayah dan ibu, nomor HP wali, sekolah asal, dan jenjang tujuan.</li>
       <li><strong>Berkas unggahan pendaftar:</strong> kartu keluarga, KTP wali, akta kelahiran, ijazah, transkrip nilai, dan berkas prestasi dalam format PNG, JPG, atau PDF.</li>
+      <li><strong>Cek keaslian rapor:</strong> kode verifikasi yang Anda masukkan dan, bila Anda pilih, berkas PDF rapor untuk dicocokkan. Berkas PDF hanya dibaca untuk dibandingkan sidik digitalnya dengan salinan resmi dan tidak disimpan. Hasil pemeriksaan tidak menampilkan identitas maupun nilai santri.</li>
       <li><strong>Cookie sesi</strong> untuk menjaga status masuk pendaftar dan administrator. Situs tidak memasang cookie periklanan.</li>
     </ul>
 
-    <h3>3.5 Data teknis</h3>
+    <h3>3.8 Data teknis</h3>
     <p>
       Server web mencatat log teknis standar berupa alamat IP, waktu akses, alamat sumber daya yang diminta, kode status, dan jenis peramban atau aplikasi. Server juga mencatat percobaan masuk yang gagal untuk membatasi serangan tebak kata sandi. Log ini dipakai untuk keamanan dan penanganan gangguan, bukan untuk membuat profil pengguna.
     </p>
 
-    <h3>3.6 Data yang <em>tidak</em> kami kumpulkan</h3>
+    <h3>3.9 Data yang <em>tidak</em> kami kumpulkan</h3>
     <p>
       Aplikasi tidak mengumpulkan lokasi presisi maupun perkiraan, tidak mengakses kamera, mikrofon, galeri foto, kontak, kalender, SMS, atau daftar aplikasi terpasang, tidak menggunakan pengenal iklan, dan tidak memuat SDK analitik atau periklanan pihak ketiga.
     </p>
@@ -161,6 +201,9 @@ include 'header.php';
           <tr><td>Autentikasi dan menjaga sesi</td><td>Akun, token sesi, nama perangkat</td><td>Pelaksanaan tugas dan hubungan kelembagaan dengan pengguna</td></tr>
           <tr><td>Pencatatan kehadiran dan jadwal</td><td>Data operasional pesantren</td><td>Kepentingan sah pesantren dalam menyelenggarakan pendidikan</td></tr>
           <tr><td>Pengelolaan perizinan santri</td><td>Identitas santri, tanggal, alasan, keputusan</td><td>Kepentingan sah dan pelaksanaan pengasuhan santri</td></tr>
+          <tr><td>Pembinaan dan konseling santri</td><td>Catatan pelanggaran, konseling, tindak lanjut, ringkasan wali</td><td>Kepentingan sah dan pelaksanaan pengasuhan santri</td></tr>
+          <tr><td>Penilaian, penerbitan, dan verifikasi rapor</td><td>Nilai, sikap, kehadiran, rapor terbit, kode verifikasi</td><td>Kepentingan sah pesantren dalam menyelenggarakan pendidikan dan kewajiban kearsipan</td></tr>
+          <tr><td>Layanan kesehatan santri di klinik pesantren</td><td>Kunjungan, obat yang diberikan, rujukan, tindak lanjut, ringkasan wali</td><td>Pelindungan kepentingan vital santri dan pelaksanaan pengasuhan, sebagai data pribadi spesifik dengan pengamanan tambahan</td></tr>
           <tr><td>Pengiriman pemberitahuan</td><td>Token push, pengenal instalasi, platform</td><td>Persetujuan Anda melalui izin notifikasi perangkat</td></tr>
           <tr><td>Proses penerimaan santri baru</td><td>Data dan berkas pendaftar</td><td>Persetujuan pendaftar/wali dan langkah pra-perjanjian pendaftaran</td></tr>
           <tr><td>Keamanan sistem dan pencegahan penyalahgunaan</td><td>Log teknis, catatan percobaan masuk</td><td>Kewajiban hukum dan kepentingan sah menjaga keamanan</td></tr>
@@ -170,10 +213,10 @@ include 'header.php';
 
     <h2 id="id-5">5. Izin perangkat yang diminta aplikasi</h2>
     <ul>
-      <li><strong>Notifikasi</strong> &mdash; untuk mengirim pemberitahuan perizinan dan kegiatan. Izin diminta sekali; bila Anda menolak, aplikasi tetap berfungsi penuh kecuali pemberitahuan dorong. Anda dapat mencabutnya kapan saja lewat pengaturan perangkat, atau mematikan push per perangkat dari halaman <em>Profil &rarr; Perangkat &amp; push</em> di dalam aplikasi.</li>
+      <li><strong>Notifikasi</strong> &mdash; untuk mengirim pemberitahuan perizinan, kegiatan, pembinaan, rapor, dan kesehatan. Izin diminta sekali; bila Anda menolak, aplikasi tetap berfungsi penuh kecuali pemberitahuan dorong. Anda dapat mencabutnya kapan saja lewat pengaturan perangkat, atau mematikan push per perangkat dari halaman <em>Profil &rarr; Perangkat &amp; push</em> di dalam aplikasi.</li>
       <li><strong>Akses internet</strong> &mdash; untuk berkomunikasi dengan server pesantren.</li>
     </ul>
-    <p>Tidak ada izin sensitif lain yang diminta.</p>
+    <p>Tidak ada izin sensitif lain yang diminta. Menyimpan atau membagikan berkas PDF laporan dan rapor memakai dialog bawaan sistem operasi, tanpa izin akses penyimpanan.</p>
 
     <h2 id="id-6">6. Berbagi data dan pihak ketiga</h2>
     <p>Kami tidak menjual, menyewakan, atau menukarkan data pribadi. Data hanya dibagikan kepada pihak berikut, sebatas yang diperlukan agar layanan berjalan:</p>
@@ -193,6 +236,9 @@ include 'header.php';
       </table>
     </div>
     <p>
+      Pemberitahuan pembinaan, rapor, dan kesehatan hanya berisi kalimat umum, misalnya &ldquo;Rapor semester tersedia&rdquo;. Nama santri, keluhan, obat, rujukan, nilai, maupun isi ringkasan tidak pernah dikirim ke layanan pemberitahuan; isinya baru tampil setelah aplikasi memeriksa ulang hak akses Anda di server.
+    </p>
+    <p>
       Kami juga dapat mengungkapkan data bila diwajibkan oleh hukum atau permintaan sah dari aparat yang berwenang.
     </p>
 
@@ -200,7 +246,8 @@ include 'header.php';
     <ul>
       <li><strong>Token sesi:</strong> maksimal 30 hari, dan langsung dicabut saat Anda keluar dari aplikasi.</li>
       <li><strong>Token perangkat push:</strong> disimpan selama perangkat terdaftar, dan dihapus saat Anda mencabut perangkat, mematikan push, keluar, atau menghapus aplikasi.</li>
-      <li><strong>Kehadiran, perizinan, dan laporan:</strong> disimpan sebagai arsip akademik selama santri terdaftar dan paling lama 5 tahun setelah santri lulus atau keluar.</li>
+      <li><strong>Kehadiran, perizinan, pembinaan, kesehatan, dan laporan:</strong> disimpan sebagai arsip kelembagaan selama santri terdaftar dan paling lama 5 tahun setelah santri lulus atau keluar.</li>
+      <li><strong>Rapor terbit dan kode verifikasinya:</strong> disimpan sebagai arsip akademik selama diperlukan untuk kewajiban kearsipan pendidikan dan pemeriksaan keaslian rapor oleh pihak yang menerimanya.</li>
       <li><strong>Data dan berkas pendaftar PSB:</strong> disimpan selama proses seleksi; bagi pendaftar yang tidak melanjutkan pendaftaran, data dihapus atau dianonimkan paling lambat 1 tahun setelah tahun ajaran yang bersangkutan berakhir.</li>
       <li><strong>Log teknis server:</strong> umumnya disimpan tidak lebih dari 12 bulan.</li>
     </ul>
@@ -213,7 +260,10 @@ include 'header.php';
       <li>Token push disimpan terenkripsi dengan kunci yang berada di lingkungan server, di luar basis data dan di luar paket aplikasi.</li>
       <li>Di perangkat, token sesi disimpan pada Keychain (iOS) atau Keystore (Android).</li>
       <li>Akses data dibatasi menurut peran dan kewenangan yang dihitung ulang di server pada setiap permintaan.</li>
-      <li>Percobaan masuk dibatasi untuk mencegah serangan tebak kata sandi.</li>
+      <li>Catatan pembinaan, rapor, dan kesehatan tidak dihapus atau ditimpa diam-diam: setiap koreksi wajib beralasan dan versi sebelumnya tetap tersimpan untuk audit.</li>
+      <li>Setiap pembukaan rincian kesehatan tercatat. Catatan audit hanya memuat metadata, bukan isi klinis.</li>
+      <li>Layar kesehatan di aplikasi membatasi tangkapan dan rekaman layar selama dibuka.</li>
+      <li>Percobaan masuk dibatasi untuk mencegah serangan tebak kata sandi. Cek keaslian rapor juga dibatasi per alamat IP.</li>
     </ul>
     <p>
       Tidak ada sistem yang sepenuhnya kebal. Bila terjadi kebocoran data pribadi, kami akan memberi tahu subjek data dan lembaga berwenang sesuai ketentuan UU Pelindungan Data Pribadi.
@@ -245,7 +295,7 @@ include 'header.php';
     <p>Yang terjadi setelah permintaan disetujui:</p>
     <ul>
       <li><strong>Dihapus:</strong> akun dan kredensial, seluruh token sesi, serta seluruh pendaftaran perangkat push milik Anda.</li>
-      <li><strong>Dipertahankan:</strong> catatan kehadiran, perizinan, dan laporan yang sudah menjadi arsip resmi pesantren, dengan masa simpan pada Bagian 7. Bila memungkinkan, catatan tersebut dilepaskan kaitannya dari identitas pribadi Anda.</li>
+      <li><strong>Dipertahankan:</strong> catatan kehadiran, perizinan, pembinaan, kesehatan, rapor, dan laporan yang sudah menjadi arsip resmi pesantren, dengan masa simpan pada Bagian 7. Bila memungkinkan, catatan tersebut dilepaskan kaitannya dari identitas pribadi Anda.</li>
     </ul>
     <p>
       Anda juga dapat menghentikan pemrosesan sebagian tanpa menghapus akun: keluar dari aplikasi mencabut token sesi, dan mematikan push pada halaman <em>Profil &rarr; Perangkat &amp; push</em> mencabut pendaftaran perangkat.
@@ -256,12 +306,12 @@ include 'header.php';
       Aplikasi alhasanApps <strong>tidak ditujukan untuk digunakan oleh anak-anak</strong>. Akun hanya diterbitkan bagi guru, pengurus, murobi, admin, dan orang tua/wali yang telah dewasa.
     </p>
     <p>
-      Aplikasi memang memproses data santri yang sebagian di antaranya berusia di bawah 18 tahun &mdash; nama, kelas, kamar, status kehadiran, dan perizinan &mdash; sebagai catatan kelembagaan pendidikan. Data tersebut diperoleh saat pendaftaran santri dengan persetujuan orang tua atau wali, hanya dapat dilihat oleh pengguna yang berwenang atas santri bersangkutan, tidak pernah dipakai untuk iklan atau profil komersial, dan tidak dibagikan kepada pihak ketiga di luar Bagian 6. Orang tua atau wali dapat menghubungi kami untuk mengakses, memperbaiki, atau mengajukan penghapusan data anaknya.
+      Aplikasi memang memproses data santri yang sebagian di antaranya berusia di bawah 18 tahun &mdash; nama, kelas, kamar, status kehadiran, perizinan, pembinaan, nilai dan rapor, serta catatan layanan kesehatan &mdash; sebagai catatan kelembagaan pendidikan dan pengasuhan. Data tersebut diperoleh saat pendaftaran santri dengan persetujuan orang tua atau wali, hanya dapat dilihat oleh pengguna yang berwenang atas santri bersangkutan, tidak pernah dipakai untuk iklan atau profil komersial, dan tidak dibagikan kepada pihak ketiga di luar Bagian 6. Orang tua atau wali dapat menghubungi kami untuk mengakses, memperbaiki, atau mengajukan penghapusan data anaknya.
     </p>
 
     <h2 id="id-12">12. Transfer data ke luar negeri</h2>
     <p>
-      Server utama dan basis data kami berada di Indonesia. Pengecualiannya adalah pengiriman pemberitahuan: token push dan isi ringkas pemberitahuan diteruskan melalui layanan Expo, Google (FCM), dan Apple (APNs) yang servernya dapat berada di luar Indonesia. Kami membatasi data pada butir tersebut seminimal mungkin dan tidak mengirimkan data kehadiran maupun berkas pendaftar ke layanan tersebut.
+      Server utama dan basis data kami berada di Indonesia. Pengecualiannya adalah pengiriman pemberitahuan: token push dan isi ringkas pemberitahuan diteruskan melalui layanan Expo, Google (FCM), dan Apple (APNs) yang servernya dapat berada di luar Indonesia. Kami membatasi data pada butir tersebut seminimal mungkin dan tidak mengirimkan data kehadiran, pembinaan, rapor, kesehatan, maupun berkas pendaftar ke layanan tersebut.
     </p>
 
     <h2 id="id-13">13. Perubahan kebijakan</h2>
@@ -287,7 +337,7 @@ include 'header.php';
 
     <h1 class="mb-2">Privacy Policy</h1>
     <p class="privacy-meta mb-4">
-      Effective <?php echo $tanggal_berlaku_en; ?> &middot; Last updated <?php echo $tanggal_berlaku_en; ?><br>
+      Effective <?php echo $tanggal_berlaku_en; ?> &middot; Last updated <?php echo $tanggal_diperbarui_en; ?><br>
       Applies to the <strong>alhasanApps</strong> mobile app (Android &amp; iOS) and the <strong>alhasan.co.id</strong> website.
     </p>
 
@@ -298,6 +348,8 @@ include 'header.php';
         <li>The app contains <strong>no third-party analytics, advertising, or tracking SDKs</strong>, and does not track you across other companies' apps or websites.</li>
         <li>The app does <strong>not access your location, camera, microphone, contacts, or photo library</strong>.</li>
         <li>Accounts are issued by the pesantren to teachers, staff, murobi, administrators, and parents/guardians. There is no self-registration.</li>
+        <li><strong>Student health data</strong> is treated as sensitive personal data: only parties authorised for that student can read it, every opening of a visit's details is logged, and its content is never included in notifications.</li>
+        <li>Parents/guardians receive only summaries the school deliberately publishes, never internal guidance notes or clinical records.</li>
         <li>All traffic runs over encrypted HTTPS connections.</li>
       </ul>
     </div>
@@ -314,8 +366,8 @@ include 'header.php';
 
     <h2 id="en-2">2. Scope</h2>
     <ul>
-      <li><strong>alhasanApps</strong> &mdash; the Android and iOS app (package <code>com.ilanmochamad.alhasanApps</code>) used by teachers, staff, murobi, administrators, and parents/guardians to view schedules, record attendance, manage student leave requests, read reports, and receive notifications.</li>
-      <li><strong>alhasan.co.id</strong> &mdash; the official school website, including online new-student admission (PSB) and the applicant portal.</li>
+      <li><strong>alhasanApps</strong> &mdash; the Android and iOS app (package <code>com.ilanmochamad.alhasanApps</code>) used by teachers, staff (including student mentors and health officers), murobi, administrators, and parents/guardians to view schedules, record attendance, manage student leave requests, record student guidance, fill in and read report cards, record school clinic visits, read reports, and receive notifications.</li>
+      <li><strong>alhasan.co.id</strong> &mdash; the official school website, including online new-student admission (PSB), the applicant portal, report card authenticity checks, and the school's internal system, which uses the same accounts as the app.</li>
     </ul>
     <p>App accounts cannot be created by users; they are issued and deactivated by school administrators.</p>
 
@@ -344,19 +396,54 @@ include 'header.php';
       <li>Attendance reports. When you print a report, the PDF is generated on your device and leaves it only if you choose to share it.</li>
     </ul>
 
-    <h3>3.4 Website data (alhasan.co.id)</h3>
+    <h3>3.4 Student guidance data</h3>
+    <ul>
+      <li>Rule-violation records: time, place, category, description, points, who recorded it, and supporting evidence as JPG, PNG, or PDF files where available (uploaded through the website).</li>
+      <li>Counselling cases and sessions: schedule, delivery, internal summary, follow-up, and resolution status.</li>
+      <li>Murobi acknowledgements and notes, and the correction history with reasons.</li>
+      <li>Guidance summaries for parents/guardians, selected and published deliberately by the mentor.</li>
+    </ul>
+    <p class="privacy-meta">
+      Guidance records can be read only by the mentor and murobi assigned to that student and by administrators. Confidential counselling content and internal notes are never shown to parents/guardians.
+    </p>
+
+    <h3>3.5 Assessment and report card data</h3>
+    <ul>
+      <li>Assessment plans: subjects, subject teachers, mastery targets, and weights.</li>
+      <li>Daily/practical, mid-term, and end-of-term scores, achievement notes, character assessments, and the term's attendance summary.</li>
+      <li>Published report cards: a fixed snapshot of scores, grades, character, attendance, notes, class, term, the signatory's name and signature image, and a verification code. Revisions create a new version without overwriting earlier ones.</li>
+      <li>History of entries, verification, corrections, and their reasons.</li>
+    </ul>
+    <p class="privacy-meta">
+      Parents/guardians can read and download only published report cards of a child whose guardian relationship is still active. When you download a report card in the app, the PDF is kept temporarily in the app cache and deleted once the save/share dialog closes.
+    </p>
+
+    <h3>3.6 Student health data</h3>
+    <ul>
+      <li>School clinic visits: student, time of the event and of recording, complaint, internal clinical notes, actions taken, and the recording officer.</li>
+      <li>Medicines actually given: name, quantity, unit, and instructions written by the officer.</li>
+      <li>Referrals outside the school: destination, date, reason, outcome where known, and follow-up.</li>
+      <li>Versioned correction history with who, when, and why, plus a record of who opened a visit's details and when.</li>
+      <li>Health summaries for parents/guardians, written and published deliberately by the officer, separately from clinical records.</li>
+    </ul>
+    <p class="privacy-meta">
+      Health data is sensitive personal data. Clinical records can be written only by health officers with an active assignment, and read only by those officers, the mentor and murobi assigned to that student, and administrators for oversight. Parents/guardians see only the summaries published for their child. The system makes no automatic diagnosis, medicine recommendation, or medical decision, and is not connected to any hospital, pharmacy, or laboratory outside the school.
+    </p>
+
+    <h3>3.7 Website data (alhasan.co.id)</h3>
     <ul>
       <li><strong>New-student admission (PSB):</strong> full name, national ID number (NIK), national student number (NISN), place and date of birth, sex, full address, parents' names, guardian's mobile number, previous school, and desired level of study.</li>
       <li><strong>Applicant document uploads:</strong> family card, guardian's ID card, birth certificate, diploma, transcript, and achievement records, as PNG, JPG, or PDF.</li>
+      <li><strong>Report card authenticity check:</strong> the verification code you enter and, if you choose, the report card PDF to compare. The PDF is read only to compare its digital fingerprint with the official copy and is not stored. The result shows neither the student's identity nor their scores.</li>
       <li><strong>Session cookies</strong> to keep applicants and administrators signed in. The site sets no advertising cookies.</li>
     </ul>
 
-    <h3>3.5 Technical data</h3>
+    <h3>3.8 Technical data</h3>
     <p>
       The web server keeps standard technical logs: IP address, access time, requested resource, status code, and browser or app type. Failed sign-in attempts are recorded to throttle password-guessing attacks. These logs serve security and troubleshooting, not user profiling.
     </p>
 
-    <h3>3.6 Data we do <em>not</em> collect</h3>
+    <h3>3.9 Data we do <em>not</em> collect</h3>
     <p>
       The app collects no precise or approximate location, and does not access the camera, microphone, photo library, contacts, calendar, SMS, or installed-app list. It uses no advertising identifier and embeds no third-party analytics or advertising SDK.
     </p>
@@ -371,6 +458,9 @@ include 'header.php';
           <tr><td>Authentication and session management</td><td>Account, session token, device name</td><td>Performance of our institutional relationship with the user</td></tr>
           <tr><td>Attendance and schedule records</td><td>School operational data</td><td>Legitimate interest in delivering education</td></tr>
           <tr><td>Managing student leave requests</td><td>Student identity, dates, reasons, decisions</td><td>Legitimate interest and student care duties</td></tr>
+          <tr><td>Student guidance and counselling</td><td>Violation records, counselling, follow-up, guardian summaries</td><td>Legitimate interest and student care duties</td></tr>
+          <tr><td>Assessment, publication, and verification of report cards</td><td>Scores, character, attendance, published report cards, verification codes</td><td>Legitimate interest in delivering education and record-keeping duties</td></tr>
+          <tr><td>Student health care at the school clinic</td><td>Visits, medicines given, referrals, follow-up, guardian summaries</td><td>Protection of the student's vital interests and student care duties, as sensitive personal data with additional safeguards</td></tr>
           <tr><td>Delivering notifications</td><td>Push token, installation ID, platform</td><td>Your consent, given through the device notification permission</td></tr>
           <tr><td>New-student admission</td><td>Applicant data and documents</td><td>Consent of the applicant/guardian and pre-contractual steps</td></tr>
           <tr><td>System security and abuse prevention</td><td>Technical logs, sign-in attempt records</td><td>Legal obligation and legitimate security interest</td></tr>
@@ -380,10 +470,10 @@ include 'header.php';
 
     <h2 id="en-5">5. Device permissions</h2>
     <ul>
-      <li><strong>Notifications</strong> &mdash; to deliver leave-request and activity alerts. The permission is requested once; declining it leaves every other feature working. You can revoke it any time in device settings, or turn push off per device under <em>Profile &rarr; Devices &amp; push</em> in the app.</li>
+      <li><strong>Notifications</strong> &mdash; to deliver leave-request, activity, guidance, report card, and health alerts. The permission is requested once; declining it leaves every other feature working. You can revoke it any time in device settings, or turn push off per device under <em>Profile &rarr; Devices &amp; push</em> in the app.</li>
       <li><strong>Internet access</strong> &mdash; to communicate with the school server.</li>
     </ul>
-    <p>No other sensitive permission is requested.</p>
+    <p>No other sensitive permission is requested. Saving or sharing report and report card PDFs uses the operating system's own dialog, without storage access permission.</p>
 
     <h2 id="en-6">6. Sharing and third parties</h2>
     <p>We do not sell, rent, or trade personal data. Data is shared only with the following parties, limited to what the service requires:</p>
@@ -402,13 +492,17 @@ include 'header.php';
         </tbody>
       </table>
     </div>
+    <p>
+      Guidance, report card, and health notifications contain only generic wording, such as &ldquo;Report card available&rdquo;. Student names, complaints, medicines, referrals, scores, and summary content are never sent to notification services; the content appears only after the app re-checks your access on the server.
+    </p>
     <p>We may also disclose data where required by law or by a lawful request from a competent authority.</p>
 
     <h2 id="en-7">7. Retention</h2>
     <ul>
       <li><strong>Session tokens:</strong> up to 30 days, revoked immediately when you sign out.</li>
       <li><strong>Push device tokens:</strong> kept while the device is registered; deleted when you revoke the device, turn push off, sign out, or uninstall the app.</li>
-      <li><strong>Attendance, leave requests, and reports:</strong> kept as academic records while the student is enrolled and for up to 5 years after they graduate or leave.</li>
+      <li><strong>Attendance, leave requests, guidance, health, and reports:</strong> kept as institutional records while the student is enrolled and for up to 5 years after they graduate or leave.</li>
+      <li><strong>Published report cards and their verification codes:</strong> kept as academic records for as long as educational record-keeping duties and authenticity checks by recipients require.</li>
       <li><strong>Applicant data and documents:</strong> kept for the duration of the selection process; for applicants who do not proceed, data is deleted or anonymised within 1 year after the end of that academic year.</li>
       <li><strong>Server technical logs:</strong> normally no longer than 12 months.</li>
     </ul>
@@ -421,7 +515,10 @@ include 'header.php';
       <li>Push tokens are stored encrypted with a key held in the server environment, outside the database and outside the app bundle.</li>
       <li>On the device, session tokens live in the iOS Keychain or Android Keystore.</li>
       <li>Access is restricted by role, with permissions recomputed server-side on every request.</li>
-      <li>Sign-in attempts are rate-limited against password guessing.</li>
+      <li>Guidance, report card, and health records are never silently deleted or overwritten: every correction requires a reason and earlier versions are kept for audit.</li>
+      <li>Every opening of health details is logged. Audit records hold metadata only, never clinical content.</li>
+      <li>Health screens in the app restrict screenshots and screen recording while open.</li>
+      <li>Sign-in attempts are rate-limited against password guessing. Report card authenticity checks are also rate-limited per IP address.</li>
     </ul>
     <p>
       No system is perfectly secure. In the event of a personal data breach we will notify affected data subjects and the competent authority as required by Indonesian personal data protection law.
@@ -451,7 +548,7 @@ include 'header.php';
     <p>Once approved:</p>
     <ul>
       <li><strong>Deleted:</strong> your account and credentials, all session tokens, and all push device registrations.</li>
-      <li><strong>Retained:</strong> attendance, leave, and report records that form the school's official archive, for the periods in Section 7. Where feasible, those records are detached from your personal identity.</li>
+      <li><strong>Retained:</strong> attendance, leave, guidance, health, report card, and report records that form the school's official archive, for the periods in Section 7. Where feasible, those records are detached from your personal identity.</li>
     </ul>
     <p>
       You can also stop parts of the processing without deleting the account: signing out revokes the session token, and turning push off under <em>Profile &rarr; Devices &amp; push</em> revokes the device registration.
@@ -462,12 +559,12 @@ include 'header.php';
       alhasanApps is <strong>not directed to children</strong>. Accounts are issued only to adult teachers, staff, murobi, administrators, and parents/guardians.
     </p>
     <p>
-      The app does process data about students, some of whom are under 18 &mdash; name, class, dormitory room, attendance status, and leave records &mdash; as institutional education records. That data is collected at student enrolment with parental or guardian consent, is visible only to users authorised for that student, is never used for advertising or commercial profiling, and is not shared beyond the parties in Section 6. Parents and guardians may contact us to access, correct, or request deletion of their child's data.
+      The app does process data about students, some of whom are under 18 &mdash; name, class, dormitory room, attendance status, leave records, guidance records, scores and report cards, and health service records &mdash; as institutional education and care records. That data is collected at student enrolment with parental or guardian consent, is visible only to users authorised for that student, is never used for advertising or commercial profiling, and is not shared beyond the parties in Section 6. Parents and guardians may contact us to access, correct, or request deletion of their child's data.
     </p>
 
     <h2 id="en-12">12. International transfers</h2>
     <p>
-      Our main server and database are located in Indonesia. The exception is notification delivery: push tokens and short notification content pass through Expo, Google (FCM), and Apple (APNs), whose servers may be outside Indonesia. We keep that data minimal and never send attendance records or applicant documents to those services.
+      Our main server and database are located in Indonesia. The exception is notification delivery: push tokens and short notification content pass through Expo, Google (FCM), and Apple (APNs), whose servers may be outside Indonesia. We keep that data minimal and never send attendance, guidance, report card, or health records, or applicant documents, to those services.
     </p>
 
     <h2 id="en-13">13. Changes to this policy</h2>
