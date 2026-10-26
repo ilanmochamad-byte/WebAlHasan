@@ -8,6 +8,7 @@
 | Instruksi | Human Developer 26 Oktober 2026: implementasikan hanya Fase 5, lalu berhenti untuk audit Codex |
 | Branch web | `claude/prd-v6-fase-5` dari audit ulang Fase 4 `75cb144685d02d10df563f67eb1e23a67eec030b`. Diverifikasi: `origin/main` `11b0459` (merge PR #91) memuatnya dan `git diff 75cb144 origin/main` kosong. Tanpa worktree. |
 | Branch mobile | `~/alhasanApps` `claude/prd-v6-fase-5` dari `16bcdb7a7dc475f785c328cfdae90ad6b3072e6b` (audit ulang Fase 4). `origin/main` `f1141e0` (merge PR #18), `git diff 16bcdb7 origin/main` kosong. |
+| Commit implementasi | web `8108012` (branch `claude/prd-v6-fase-5`), mobile `18fe095` (branch `claude/prd-v6-fase-5`); keduanya sudah di-push. |
 | Migrasi | **Tidak ada migrasi baru** (029 tetap terakhir); berkas rollback tidak diubah (penjaga SQL 027–029 sudah ada sejak Fase 1–3). |
 | Keputusan baru | **R-10 (26 Oktober 2026): santri nonaktif bersaldo/bertunggakan hanya dilaporkan** (laporan admin + `[info]` verifier); tanpa jalur mutasi baru. Dicatat di `PRD-V6.md` §5.1 dan `AGENTS.md`. |
 | Lingkungan uji | PHP 8.4.14, MariaDB 12.3.2 lokal, Apache 2.4 + php-fpm (regresi PSB), Node v26.7.0, Chromium Playwright, Expo SDK 57 web. DB `test_*_test` berfixture sintetis. **MySQL, cPanel, perangkat fisik, Push nyata — belum diuji.** |
