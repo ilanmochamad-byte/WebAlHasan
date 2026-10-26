@@ -346,7 +346,7 @@ final class LaporanRepository
     /**
      * Satu halaman per santri beserta jumlah seluruh baris yang cocok.
      *
-     * @return array{rows:array<int, array<string, mixed>>, total:int, page:int, perPage:int, jumlah:array<string, int>}
+     * @return array{rows:array<int, array<string, mixed>>, total:int, page:int, perPage:int, jumlah:array<string, int>, rekonsiliasi:array<string, int>}
      */
     public function perSantri(array $hak, array $f, string $dari, string $sampai, string $mulai, string $akhir, string $q, int $page): array
     {
@@ -357,6 +357,12 @@ final class LaporanRepository
             . ', COALESCE(SUM(selisih_saldo <> 0), 0) AS santri_selisih_saldo, COALESCE(SUM(selisih_akun <> 0), 0) AS santri_selisih_akun FROM (' . $sql . ') r'
             . ($q === '' ? '' : ' WHERE (nama_santri LIKE ? OR nis LIKE ?)'), $q === '' ? $params : [...$params, '%' . $q . '%', '%' . $q . '%']);
         $hasil['jumlah'] = array_map('intval', $jumlah ?? []);
+        // Pencarian nama hanya menyaring daftar/totalnya. Pita rekonsiliasi
+        // berlaku atas seluruh cakupan laporan, sama seperti agregat uang.
+        $hasil['rekonsiliasi'] = $q === '' ? $hasil['jumlah'] : array_map('intval', $this->one(
+            'SELECT COALESCE(SUM(selisih_saldo <> 0), 0) AS santri_selisih_saldo, COALESCE(SUM(selisih_akun <> 0), 0) AS santri_selisih_akun FROM (' . $sql . ') r',
+            $params
+        ) ?? []);
 
         return $hasil;
     }

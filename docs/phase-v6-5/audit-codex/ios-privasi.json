@@ -1,0 +1,9 @@
+{
+  "files_read": 123,
+  "unreadable": 0,
+  "files_with_test_markers_or_raw_bearer": [],
+  "process_log_lines": 68058,
+  "process_log_marker_matches": 0,
+  "process_log_raw_bearer_matches": 0,
+  "limits": "Direktori data aplikasi simulator dan log proses 20 menit; bukan Keychain autentikasi, RAM, atau seluruh penyimpanan OS."
+}

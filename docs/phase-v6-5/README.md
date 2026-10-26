@@ -1,5 +1,7 @@
 # PRD V6 Fase 5 — Laporan, Audit, dan Kesiapan Rilis Bersama
 
+**Pembaruan audit 27 Oktober 2026:** **lulus audit teknis lokal setelah tiga koreksi auditor**, untuk tagihan dan tabungan bersama. **Seluruh gerbang akhir/produksi V6 belum lulus**: cPanel/MySQL hosting, fisik, Push nyata, UAT dan rekonsiliasi dana nyata tetap terbuka. Lihat [AUDIT-CODEX.md](AUDIT-CODEX.md) dan bukti terpisah `audit-codex/`. Catatan implementator 26 Oktober berikut dipertahankan sebagai riwayat, bukan status audit terbaru.
+
 **Status (26 Oktober 2026):** diimplementasikan Claude Code, **menunggu audit independen Codex**. Belum merge, belum deploy, belum migrasi produksi, tidak ada rilis aplikasi. Seluruh bukti berasal dari salinan DB lokal berfixture sintetis, Chromium, dan Expo **web**. Bukti tidak mencakup hosting cPanel, MySQL, perangkat fisik, build native baru, maupun Push nyata, sehingga **produksi tidak dinyatakan lulus dan V6 tidak dinyatakan siap rilis**. Keputusan rilis bersama tagihan dan tabungan tetap milik Human Developer sesudah audit.
 
 | Butir | Nilai |

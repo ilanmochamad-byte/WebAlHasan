@@ -12,7 +12,7 @@
 4. **Penugasan BSA (K-1).** Seluruh baris `bendahara_bulanan_assignments` yang aktif dan dalam masa berlaku otomatis menjadi **Petugas BSA** dengan hak mutasi uang. Preflight mencetak jumlahnya. Admin meninjau dan mengakhiri penugasan yang tidak dikehendaki **sebelum** deploy kode V6.
 5. **Menu Keuangan langsung tampil** bagi admin, petugas BSA, dan orang tua begitu 027 terpasang (keputusan BE). Tidak ada sakelar rilis. Karena itu kode dan 027–029 dipasang bersama, lalu smoke dijalankan dalam jendela pemeliharaan.
 6. **R-10 (santri keluar bersaldo).** Keputusan Human Developer 26 Oktober 2026: dilaporkan saja. Jalur pengembalian saldo santri nonaktif **belum ada**. Admin melihat daftarnya di laporan, dan verifier mencetaknya sebagai `[info]`. Kebijakan pengembalian tetap keputusan terbuka sebelum rilis.
-7. **Server DB:** InnoDB, **CHECK ditegakkan** (MariaDB 10.2.1+ / MySQL 8.0.16+; penjaga saldo dan penjaga rollback bergantung padanya), kolom terbangkit 028, binlog bukan `STATEMENT` (transaksi READ COMMITTED), dan **jam DB = jam aplikasi** (`APP_TIMEZONE`, bawaan Asia/Jakarta). Batas hari/bulan laporan dan rekonsiliasi membandingkan `created_at` DB dengan tanggal PHP. Bila zona waktu berbeda, transaksi dini hari bergeser hari/bulan, sehingga preflight **gagal** bila selisih > 5 menit. MySQL dan MariaDB hosting **belum diuji**.
+7. **Server DB:** InnoDB, **CHECK ditegakkan** (MariaDB 10.2.1+ / MySQL 8.0.16+; penjaga saldo dan penjaga rollback bergantung padanya), kolom terbangkit 028, binlog bukan `STATEMENT` (transaksi READ COMMITTED), dan **jam DB = jam aplikasi** (`APP_TIMEZONE`, bawaan Asia/Jakarta). Preflight juga menolak MariaDB dengan `check_constraint_checks` sesi atau default global nonaktif; versi saja tidak cukup. Batas hari/bulan laporan dan rekonsiliasi membandingkan `created_at` DB dengan tanggal PHP. Bila zona waktu berbeda, transaksi dini hari bergeser hari/bulan, sehingga preflight **gagal** bila selisih > 5 menit. MySQL dan MariaDB hosting **belum diuji**.
 8. **Manifest rilis:** `docs/phase-v6-5/manifest-migrasi.json` berisi SHA-256 29 migrasi, 6 rollback (024–029), `composer.lock`, dan berkas mobile (hash HEAD Git). Dicocokkan lewat `--rilis` pada langkah 3.
 
 ## 2. Backup dan restore point
@@ -64,10 +64,10 @@ Lokal teruji (`bukti/rilis.txt` S-1): salinan V6 tanpa data uang diturunkan 029 
 
 V6 memakai worker outbox V2 yang sama; tidak ada worker baru. InApp diantre di dalam transaksi mutasi, dan Push hanya bila sakelar Push menyala. Worker memeriksa ulang keadaan sumber, santri aktif, dan relasi wali sebelum provider. WhatsApp tidak pernah diantrekan untuk V6. Cron sama dengan runbook V5 (`docs/phase-v5-5/runbook-rilis-pemulihan.md` §4), **belum dipasang**.
 
-Pemeriksaan berkala opsional (hanya membaca; log di luar document root; tanpa nominal di keluaran):
+Pemeriksaan berkala opsional (hanya membaca). Verifier mencetak nominal agregat keuangan: simpan log khusus operator di luar document root, direktori privat 0700 dan berkas 0600; jangan teruskan ke log umum. Hentikan penulis saat verifikasi restore/migrasi; pemeriksaan berkala saat transaksi aktif dapat memerlukan pengulangan pada jendela tenang karena seluruh verifier berantai tidak memakai satu snapshot lintas proses.
 
 ```cron
-30 2 * * * /usr/local/bin/php /home/AKUN/public_html/bin/v6_verify.php >> /home/AKUN/logs/v6_verify.log 2>&1
+30 2 * * * umask 077; /usr/local/bin/php /home/AKUN/public_html/bin/v6_verify.php >> /home/AKUN/logs/v6_verify.log 2>&1
 ```
 
 ## 5. Rollback aman

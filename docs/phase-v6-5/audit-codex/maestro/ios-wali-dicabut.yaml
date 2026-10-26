@@ -1,0 +1,33 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "launchApp": {
+      "stopApp": false
+    }
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Saldo akhir",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertNotVisible": "Rp50\\.000"
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "text": ".*SBX V6 Santri Tsanawi.*"
+      },
+      "direction": "DOWN",
+      "timeout": 20000
+    }
+  },
+  {
+    "assertNotVisible": ".*SBX V6 Santri SMP.*"
+  },
+  {
+    "assertNotVisible": "Rp50\\.000"
+  }
+]

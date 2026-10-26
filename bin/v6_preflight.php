@@ -62,6 +62,13 @@ $maria = stripos($versi, 'mariadb') !== false;
 preg_match('/^(\d+)\.(\d+)\.(\d+)/', $versi, $v);
 $angka = isset($v[1]) ? [(int) $v[1], (int) $v[2], (int) $v[3]] : [0, 0, 0];
 $periksa($maria ? $angka >= [10, 2, 1] : $angka >= [8, 0, 16], 'Server ' . $versi . ' menegakkan CHECK (saldo tidak negatif, penjaga rollback) dan kolom terbangkit 028');
+if ($maria) {
+    // MariaDB dapat menonaktifkan CHECK walaupun versinya mendukungnya.
+    // Default global juga menentukan penjaga rollback pada koneksi berikutnya.
+    $checks = $db->query('SELECT @@session.check_constraint_checks, @@global.check_constraint_checks')->fetch_row();
+    $periksa((int) $checks[0] === 1 && (int) $checks[1] === 1,
+        'CHECK aktif pada sesi dan default global (penjaga saldo dan rollback)');
+}
 $binlog = $db->query('SELECT @@log_bin, @@binlog_format')->fetch_row();
 $periksa(!((int) $binlog[0] === 1 && strtoupper((string) $binlog[1]) === 'STATEMENT'),
     'Binary log ' . ((int) $binlog[0] === 1 ? 'aktif, format ' . $binlog[1] : 'tidak aktif') . ' — kompatibel dengan transaksi READ COMMITTED');

@@ -1,0 +1,3 @@
+[lulus] iOS Release admin: tagihan Rp100.000, saldo Rp62.000, kas Rp132.000, rekonsiliasi Rp0; hanya baca
+[gagal] ios-laporan-admin-nonaktif gagal
+Ringkasan: 1 lulus, 1 gagal

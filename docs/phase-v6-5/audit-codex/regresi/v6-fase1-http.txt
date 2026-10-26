@@ -1,0 +1,130 @@
+[lulus] Fixture V6 Fase 1 tersedia; tabel BSA kosong
+
+=== H-A. Admin menugaskan satu pengurus BSA ===
+[lulus] Formulir penugasan Petugas BSA: cakupan unit opsional, tidak gugur per semester
+[lulus] Sebelum ditugaskan, pengurus ditolak membuka keuangan santri (403)
+[lulus] Non-admin tidak dapat menugaskan BSA (status 403)
+[lulus] Admin menyimpan penugasan Petugas BSA lewat POST + CSRF
+[lulus] Daftar penugasan memuat petugas, cakupan, dan hak BSA
+
+=== H-B. Hak setiap halaman (server) ===
+[lulus] /portal/bsa.php sbx_admin → 200
+[lulus] /portal/bsa.php sbx_v6_bsa → 200
+[lulus] /portal/bsa.php sbx_v6_bsa_tsanawi → 200
+[lulus] /portal/bsa.php sbx_v6_admin_bsa → 200
+[lulus] /portal/bsa.php sbx_v6_wali_smp → 200
+[lulus] /portal/bsa.php sbx_pengurus_biasa → 403
+[lulus] /portal/bsa.php sbx_pengurus_a → 403
+[lulus] /portal/bsa.php sbx_guru_biasa → 403
+[lulus] /portal/bsa_santri.php?id=1710 sbx_admin → 200
+[lulus] /portal/bsa_santri.php?id=1710 sbx_v6_bsa → 200
+[lulus] /portal/bsa_santri.php?id=1710 sbx_v6_admin_bsa → 200
+[lulus] /portal/bsa_santri.php?id=1710 sbx_v6_wali_smp → 200
+[lulus] /portal/bsa_santri.php?id=1710 sbx_v6_bsa_tsanawi → 404
+[lulus] /portal/bsa_santri.php?id=1710 sbx_v6_wali_tsanawi → 404
+[lulus] /portal/bsa_santri.php?id=1710 sbx_ortu_a → 404
+[lulus] /portal/bsa_santri.php?id=1710 sbx_pengurus_biasa → 403
+[lulus] /portal/bsa_santri.php?id=1710 sbx_guru_biasa → 403
+[lulus] /portal/bsa_transaksi.php?santri_id=1710&jenis=setoran sbx_v6_bsa → 200
+[lulus] /portal/bsa_transaksi.php?santri_id=1710&jenis=setoran sbx_admin → 403
+[lulus] /portal/bsa_transaksi.php?santri_id=1710&jenis=setoran sbx_v6_admin_bsa → 403
+[lulus] /portal/bsa_transaksi.php?santri_id=1710&jenis=setoran sbx_v6_wali_smp → 403
+[lulus] /portal/bsa_transaksi.php?santri_id=1710&jenis=setoran sbx_pengurus_biasa → 403
+[lulus] /portal/bsa_transaksi.php?santri_id=1710&jenis=setoran sbx_v6_bsa_tsanawi → 404
+[lulus] /portal/bsa_tagihan_buat.php?santri_id=1710 sbx_v6_bsa → 200
+[lulus] /portal/bsa_tagihan_buat.php?santri_id=1710 sbx_admin → 403
+[lulus] /portal/bsa_tagihan_buat.php?santri_id=1710 sbx_v6_wali_smp → 403
+[lulus] /portal/bsa_tagihan_buat.php?santri_id=1710 sbx_v6_bsa_tsanawi → 404
+[lulus] /portal/bsa_tagihan.php?id=999999 sbx_v6_bsa → 404
+[lulus] /portal/bsa_tagihan.php?id=999999 sbx_admin → 404
+[lulus] /portal/bsa_tagihan.php?id=999999 sbx_v6_wali_smp → 404
+[lulus] Tanpa sesi → dialihkan ke halaman masuk
+[lulus] Rincian petugas: no-store dan tombol setoran/penarikan/tagihan
+[lulus] Rincian admin: tanpa tautan pencatatan, berlabel hanya baca
+[lulus] Rincian wali: judul Keuangan anak, tanpa tautan pencatatan
+[lulus] Daftar petugas unit Tsanawi tanpa santri unit lain
+[lulus] Daftar wali hanya anaknya, tanpa kotak pencarian daftar
+[lulus] Menu Keuangan hanya untuk admin, petugas BSA, dan orang tua
+
+=== H-C. Formulir web petugas ===
+[lulus] POST tagihan tanpa CSRF ditolak (419) tanpa baris
+[lulus] POST tagihan + POST ulang kunci sama → tepat satu tagihan, keduanya ke rincian yang sama
+[lulus] Rincian tagihan: total Rp550.000, komponen snapshot, Belum dibayar
+[lulus] Tagihan kedua periode sama (kunci lain) → 409, formulir dirender ulang dengan kunci sama
+[lulus] Setoran Rp100.000 + klik ganda (POST ulang kunci sama) → tepat satu kredit
+[lulus] Kunci sama nominal beda lewat web → 409 tanpa mutasi
+[lulus] Formulir penarikan menampilkan saldo dan meminta tujuan
+[lulus] Penarikan melebihi saldo → 422 (kunci tetap dipertahankan), tanpa mutasi
+[lulus] Penarikan Rp30.000 → saldo Rp70.000
+[lulus] Rincian web menampilkan saldo Rp70.000 dan riwayat
+[lulus] GET dengan parameter tidak memutasi
+[lulus] sbx_admin POST penarikan web → 403 tanpa mutasi
+[lulus] sbx_v6_admin_bsa POST penarikan web → 403 tanpa mutasi
+[lulus] sbx_v6_wali_smp POST penarikan web → 403 tanpa mutasi
+[lulus] sbx_pengurus_biasa POST penarikan web → 403 tanpa mutasi
+[lulus] sbx_v6_bsa_tsanawi POST penarikan web → 404 tanpa mutasi
+
+=== H-D. API BSA ===
+[lulus] Token API petugas, admin, dan wali diperoleh
+[lulus] GET akses petugas: kelola=true, no-store
+[lulus] GET akses admin: baca, tanpa kelola
+[lulus] Tanpa token → 401
+[lulus] Saldo web Rp70.000 terbaca sama di API
+[lulus] Admin dan wali anak itu membaca saldo Rp70.000 di API
+[gagal] POST setoran API → 201, saldo sesudah Rp100.000
+[gagal] Ulang setoran kunci+isi sama → 200 replay, tepat satu kredit
+[gagal] Kunci sama nominal berbeda → 409 CONFLICT tanpa mutasi
+[gagal] Tanpa kunci idempotensi → 422
+[gagal] Nominal pecahan (float JSON) → 422
+[gagal] Penarikan API Rp30.000 → saldo Rp70.000
+[lulus] POST tagihan API → 201
+[lulus] GET tagihan API: total = sisa Rp250.000, satu komponen
+[gagal] GET rincian santri API: saldo, tagihan, riwayat dengan referensi bagi petugas
+[lulus] Wali membaca anaknya lewat API tanpa referensi/catatan internal
+[lulus] Wali anak lain: rincian/tagihan/saldo lewat ID ditebak → 404
+[lulus] Daftar API wali anak lain hanya memuat anaknya
+[lulus] API mutasi sbx_admin → 403 tanpa baris
+[lulus] API mutasi sbx_v6_admin_bsa → 403 tanpa baris
+[lulus] API mutasi sbx_v6_wali_smp → 403 tanpa baris
+[lulus] API mutasi sbx_pengurus_biasa → 403 tanpa baris
+[lulus] API mutasi sbx_guru_biasa → 403 tanpa baris
+[lulus] API baca sbx_pengurus_biasa → 403
+[lulus] API baca sbx_guru_biasa → 403
+[lulus] Petugas di luar cakupan unit → 404 untuk baca dan mutasi, tanpa baris
+[lulus] Endpoint BSA tak dikenal → 404
+
+=== H-E. Dua penarikan Rp80.000 bersamaan lewat API ===
+[lulus] Saldo santri uji Rp100.000
+[lulus] Dua penarikan bersamaan → kode [201,422], saldo Rp20000 (paling banyak satu sukses, tidak negatif)
+[lulus] Server PHP lokal melayani berurutan/bersamaan: tepat satu 201 dan satu 422 saldo kurang
+
+=== H-F. Penugasan dinonaktifkan saat sesi masih aktif ===
+[lulus] Petugas B membuka formulir saat penugasan aktif
+[lulus] Admin menonaktifkan penugasan BSA lewat Pusat Penugasan
+[lulus] Formulir yang sudah terbuka dikirim setelah pencabutan → 403 tanpa baris
+[lulus] Token lama petugas B setelah pencabutan → 403 tanpa baris
+[lulus] Baca web/API juga tertutup bagi sesi lama
+[lulus] Menu Keuangan hilang setelah pencabutan
+
+=== H-G. Akun dinonaktifkan dan relasi wali dicabut ===
+[lulus] Petugas Tsanawi membuka daftar sebelum akun dinonaktifkan
+[lulus] Sesi web akun nonaktif tidak lagi membuka daftar (status 302)
+[lulus] Token akun nonaktif ditolak (status 401) tanpa baris
+[lulus] Relasi wali dicabut: sesi web dan token lama → 404, daftar kosong
+
+=== H-H. Log dan audit ===
+[lulus] Log server tanpa galat/peringatan PHP
+[lulus] Log server tanpa referensi transfer
+[lulus] audit_logs bsa.* tanpa nominal, saldo, tujuan, atau referensi
+[gagal] Setiap transaksi tepat satu jejak audit
+[lulus] Verifier invarians V6 lulus sesudah uji HTTP
+
+Lulus: 96 · Gagal: 8
+  - POST setoran API → 201, saldo sesudah Rp100.000
+  - Ulang setoran kunci+isi sama → 200 replay, tepat satu kredit
+  - Kunci sama nominal berbeda → 409 CONFLICT tanpa mutasi
+  - Tanpa kunci idempotensi → 422
+  - Nominal pecahan (float JSON) → 422
+  - Penarikan API Rp30.000 → saldo Rp70.000
+  - GET rincian santri API: saldo, tagihan, riwayat dengan referensi bagi petugas
+  - Setiap transaksi tepat satu jejak audit

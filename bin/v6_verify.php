@@ -241,6 +241,18 @@ if ($manifestPath !== null) {
         $beda = array_keys(array_filter($kini, static fn (int $c, string $t): bool => ($manifest['legacy_counts'][$t] ?? null) !== $c, ARRAY_FILTER_USE_BOTH));
         $periksa($beda === [], 'Jumlah baris seluruh tabel lama tetap' . ($beda === [] ? '' : ' (berubah: ' . implode(', ', $beda) . ')'));
         $sidik = v6_sidik_jari($db);
+        // Status sumber menentukan daftar wajib, bukan banyaknya hash yang
+        // kebetulan masih ada di manifest. Restore sesudah V6 harus membawa
+        // semua tabel uang; manifest terpotong tidak boleh dianggap pra-V6.
+        $sebelumV6 = ($manifest['v6_terpasang'] ?? null) === array_fill_keys(V6_MIGRASI, false);
+        $sesudahV6 = ($manifest['v6_terpasang'] ?? null) === array_fill_keys(V6_MIGRASI, true);
+        $identitas = ['santri', 'wali', 'santri_wali', 'users'];
+        $wajibSidik = $sesudahV6 ? [...$identitas, ...array_diff(v6_tabel(), ['bsa_idempotensi'])] : $identitas;
+        $kunciSidik = array_keys($manifest['sidik_jari']);
+        sort($wajibSidik);
+        sort($kunciSidik);
+        $periksa(($sebelumV6 || $sesudahV6) && $kunciSidik === $wajibSidik,
+            'Kelengkapan sidik jari sesuai status migrasi sumber (identitas dan seluruh tabel uang sesudah V6)');
         foreach (['santri', 'wali', 'santri_wali', 'users'] as $t) {
             $periksa(($manifest['sidik_jari'][$t] ?? null) === $sidik[$t], "Sidik jari $t tetap ({$sidik[$t]['baris']} baris)");
         }
@@ -248,7 +260,7 @@ if ($manifestPath !== null) {
         foreach ($uang as $t => $nilai) {
             $periksa(($sidik[$t] ?? null) === $nilai, "Isi uang $t tetap ({$nilai['baris']} baris)");
         }
-        if ($uang === []) {
+        if ($sebelumV6 && $uang === []) {
             echo '[info] Manifest diambil sebelum tabel V6 ada; isi uang V6 tidak dibandingkan.' . PHP_EOL;
         }
     }

@@ -1,0 +1,4 @@
+[lulus] iOS Release admin: tagihan Rp100.000, saldo Rp62.000, kas Rp132.000, rekonsiliasi Rp0; hanya baca
+[lulus] iOS admin: R-10 santri nonaktif tampil dalam laporan
+[gagal] ios-login-sbx_v6_bsa_b gagal
+Ringkasan: 2 lulus, 1 gagal

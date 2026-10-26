@@ -123,8 +123,8 @@ final class LaporanService
             'saldo' => $m['saldo_awal'] + $mutasi - $m['saldo_akhir'],
             'internal' => $internal['selisih'],
             'pengembalian' => $internal['selisih_pengembalian'],
-            'santri_saldo' => $ps['jumlah']['santri_selisih_saldo'] ?? 0,
-            'santri_akun' => $ps['jumlah']['santri_selisih_akun'] ?? 0,
+            'santri_saldo' => $ps['rekonsiliasi']['santri_selisih_saldo'] ?? 0,
+            'santri_akun' => $ps['rekonsiliasi']['santri_selisih_akun'] ?? 0,
         ];
         $selisih['nol'] = array_filter($selisih, static fn (int $n): bool => $n !== 0) === [];
 

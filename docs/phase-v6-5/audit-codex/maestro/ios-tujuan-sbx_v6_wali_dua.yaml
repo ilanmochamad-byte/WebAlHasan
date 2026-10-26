@@ -1,0 +1,10 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Saldo akhir",
+      "timeout": 15000
+    }
+  }
+]
