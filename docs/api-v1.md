@@ -500,6 +500,40 @@ atas. Perubahan aditif/penyempitan untuk orang tua:
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v6-4/README.md`.
 
+### Laporan dan ekspor V6 Fase 5 (26 Oktober 2026)
+
+Aditif; tanpa migrasi. Hak sama dengan halaman `portal/bsa_laporan.php`
+(dihitung ulang setiap permintaan): petugas = santri aktif dalam cakupan unit,
+admin = seluruh santri (hanya baca), orang tua = anak dengan relasi aktif;
+lainnya `403`; santri/unit di luar hak `404`. Membutuhkan 027–029 (`503`
+bila belum). Seluruh angka satu laporan dibaca dalam satu snapshot.
+
+- `GET /v6/bsa/laporan?dari=TTTT-BB&sampai=TTTT-BB&santri=&unit=&q=&page=`
+  (bawaan bulan ini; paling panjang 12 bulan; tidak di masa depan → `422`):
+  `rentang`, `saring`, `santri` (bila disaring), `tagihan{terbit, dibatalkan,
+  terbayar, sisa, lunas, belum_lunas, lewat_jatuh_tempo, pembayaran_sah{Tunai,
+  Transfer, Tabungan}, pembayaran_dibatalkan, menunggu_verifikasi}` menurut
+  periode tagihan; `tabungan{saldo_awal, setoran, penarikan, belanja,
+  pembayaran_tagihan, koreksi_masuk, koreksi_keluar, pengembalian,
+  mutasi_bersih, saldo_akhir, setoran_menunggu}` menurut waktu transaksi sah;
+  `kas{Tunai,Transfer}` dan `penerimaan_kas_baru` (setoran + pembayaran tagihan
+  tunai/transfer; pembayaran dari tabungan TIDAK termasuk); `internal`;
+  `pembatalan`; `koreksi{rows[≤200]{jenis, aktor, alasan, rujukan, …}}`;
+  `per_bulan[]`; `per_santri{rows, total, page, per_page, jumlah}`;
+  `nonaktif` (admin saja: santri nonaktif bersaldo/bertunggakan, R-10);
+  `selisih{tagihan_terbayar, tagihan_baris, saldo, internal, pengembalian,
+  santri_saldo, santri_akun, nol}`. Orang tua: `kas`, `penerimaan_kas_baru`,
+  `internal`, `koreksi`, `selisih`, `nonaktif`, angka menunggu, dan penolakan
+  transfer bernilai `null`; baris per anak tanpa `selisih_*`.
+- `GET /v6/bsa/laporan/ekspor?jenis=santri|transaksi|koreksi&dari=&sampai=&santri=&unit=`
+  → `text/csv` (UTF-8 BOM, lampiran `keuangan-{jenis}-{periode}.csv`,
+  `nosniff`). Rincian transaksi tanpa referensi, catatan, atau alasan; orang
+  tua tidak mendapat `koreksi` (`403`). Lebih dari 10.000 baris → `422`
+  (persempit periode). Setiap ekspor dicatat `audit_logs`
+  `bsa.laporan.ekspor` (jenis, periode, sumber hak, kanal; tanpa nominal).
+
+Rincian, penafsiran, dan batas uji: `docs/phase-v6-5/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh

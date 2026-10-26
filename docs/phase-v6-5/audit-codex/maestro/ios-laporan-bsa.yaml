@@ -1,0 +1,19 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Saldo akhir",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertVisible": "Rp50\\.000"
+  },
+  {
+    "assertVisible": "Rp120\\.000"
+  },
+  {
+    "assertVisible": "Rekonsiliasi: selisih Rp0"
+  }
+]

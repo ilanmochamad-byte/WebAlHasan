@@ -98,8 +98,8 @@ function bsa_wajib_fase3(\App\Bsa\TabunganService $layanan): void
 /**
  * Navigasi bagian keuangan (tautan biasa, tanpa JavaScript). Petugas dan
  * admin: santri, tunggakan, pembayaran, tabungan dan rekonsiliasi (Fase 3),
- * penerbitan, tarif; orang tua: anak, belum lunas, pembayaran. Hak tetap
- * diperiksa halaman tujuan.
+ * laporan (Fase 5), penerbitan, tarif; orang tua: anak, belum lunas,
+ * pembayaran, laporan. Hak tetap diperiksa halaman tujuan.
  */
 function bsa_nav(array $akses, string $aktif, \App\Bsa\TagihanService $layanan): string
 {
@@ -108,10 +108,12 @@ function bsa_nav(array $akses, string $aktif, \App\Bsa\TagihanService $layanan):
     }
     $wali = $akses['sumber'] === 'wali';
     $fase3 = tabungan_service()->tersedia();
+    // Fase 5: Laporan (tagihan + tabungan) hanya bila keduanya terpasang.
+    $laporan = $fase3 ? ['bsa_laporan.php' => 'Laporan'] : [];
     $butir = $wali
-        ? ['bsa.php' => 'Anak', 'bsa_tunggakan.php' => 'Belum lunas', 'bsa_pembayaran.php' => 'Pembayaran']
+        ? ['bsa.php' => 'Anak', 'bsa_tunggakan.php' => 'Belum lunas', 'bsa_pembayaran.php' => 'Pembayaran'] + $laporan
         : ['bsa.php' => 'Santri', 'bsa_tunggakan.php' => 'Tunggakan', 'bsa_pembayaran.php' => 'Pembayaran']
-            + ($fase3 ? ['bsa_tabungan.php' => 'Tabungan', 'bsa_rekonsiliasi.php' => 'Rekonsiliasi'] : [])
+            + ($fase3 ? ['bsa_tabungan.php' => 'Tabungan', 'bsa_rekonsiliasi.php' => 'Rekonsiliasi'] : []) + $laporan
             + ['bsa_penerbitan.php' => 'Penerbitan', 'bsa_tarif.php' => 'Tarif'];
 
     return ah_seg(array_map(static fn (string $halaman, string $label): array => ['label' => $label, 'url' => bsa_url($halaman), 'active' => $halaman === $aktif],

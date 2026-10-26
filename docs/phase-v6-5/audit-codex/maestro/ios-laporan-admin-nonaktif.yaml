@@ -1,0 +1,16 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "text": "Santri nonaktif masih bersaldo/bertunggakan"
+      },
+      "direction": "DOWN",
+      "timeout": 20000
+    }
+  },
+  {
+    "assertVisible": ".*SBX V6 Santri Nonaktif.*"
+  }
+]

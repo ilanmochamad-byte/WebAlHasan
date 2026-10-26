@@ -1,0 +1,38 @@
+[lulus] B-A sbx_admin 375px: rapi di kerangka bersama, navigasi Laporan aktif
+[lulus] B-A sbx_v6_bsa_b 375px: rapi di kerangka bersama, navigasi Laporan aktif
+[lulus] B-A sbx_v6_bsa_tsanawi 375px: rapi di kerangka bersama, navigasi Laporan aktif
+[lulus] B-A sbx_v6_wali_dua 375px: rapi di kerangka bersama, navigasi Laporan aktif
+[lulus] B-A sbx_admin 768px: rapi di kerangka bersama, navigasi Laporan aktif
+[lulus] B-A sbx_v6_bsa_b 768px: rapi di kerangka bersama, navigasi Laporan aktif
+[lulus] B-A sbx_v6_bsa_tsanawi 768px: rapi di kerangka bersama, navigasi Laporan aktif
+[lulus] B-A sbx_v6_wali_dua 768px: rapi di kerangka bersama, navigasi Laporan aktif
+[lulus] B-A sbx_admin 1280px: rapi di kerangka bersama, navigasi Laporan aktif
+[lulus] B-A sbx_v6_bsa_b 1280px: rapi di kerangka bersama, navigasi Laporan aktif
+[lulus] B-A sbx_v6_bsa_tsanawi 1280px: rapi di kerangka bersama, navigasi Laporan aktif
+[lulus] B-A sbx_v6_wali_dua 1280px: rapi di kerangka bersama, navigasi Laporan aktif
+[lulus] B-E admin: selisih Rp0, daftar santri nonaktif bersaldo (R-10), kas nyata
+[lulus] B-B saringan periode 2026-09: alamat GET dapat dibagikan; tagihan bulan lalu Rp0
+[lulus] B-B saringan unit Tsanawi: santri SMP tidak tampil
+[lulus] B-B klik santri → laporan per santri
+[lulus] B-B "Tampilkan semua santri" kembali ke seluruh santri
+[lulus] B-C admin: unduhan CSV per santri bernama periode, BOM, kepala kolom, termasuk santri keluar
+[lulus] B-C rincian transaksi: kolom kas baru/internal, tanpa referensi transfer
+[lulus] B-C CSV koreksi: alasan dan nomor kuitansi asal
+[lulus] B-E wali: tanpa kas, jejak koreksi, transfer menunggu, santri nonaktif, atau tombol CSV koreksi
+[lulus] B-C wali: unduhan rincian transaksi anaknya saja, tanpa referensi/alasan
+[lulus] B-A sbx_v6_bsa_b tanpa JS 375px: rapi di kerangka bersama, navigasi Laporan aktif
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.waitForURL: Timeout 30000ms exceeded.
+=========================== logs ===========================
+waiting for navigation until "load"
+============================================================
+    at /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/browser/uji-v6-fase5.mjs:177:29 {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v26.7.0
+galat PHP server browser: 0

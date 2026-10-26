@@ -1,0 +1,89 @@
+=== X-1. Tanpa migrasi baru; batas berkas ===
+[lulus] Baseline audit Fase 4 75cb144685d02d10df563f67eb1e23a67eec030b tersedia
+[lulus] Tidak ada berkas database/ (migrasi/rollback) yang ditambah atau diubah
+[lulus] Migrasi terakhir tetap 029
+[lulus] Berkas berubah hanya dalam daftar Fase 5
+[lulus] app/Auth/ tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] app/Penugasan/ tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] app/Ui/Navigation.php tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] app/Bsa/BsaService.php tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] app/Bsa/BsaRepository.php tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] app/Bsa/TagihanService.php tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] app/Bsa/TagihanRepository.php tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] app/Bsa/TabunganService.php tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] app/Bsa/TabunganRepository.php tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] app/Bsa/BsaNotifikasi.php tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] app/Audit/ tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] app/Kesehatan/ tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] portal/bsa_rekonsiliasi.php tidak berubah (layanan mutasi, hak, audit, dan modul lain tetap)
+[lulus] bootstrap.php hanya menambah pabrik laporan_bsa_service()
+[lulus] API hanya menambah dua rute GET laporan dan ekspor
+
+=== X-2. Laporan hanya membaca dan menurut hak ===
+[lulus] LaporanRepository tanpa INSERT/UPDATE/DELETE/DDL
+[lulus] Satu snapshot konsisten hanya-baca, tanpa kunci baris
+[lulus] Setiap kueri laporan berhak (13 fungsi) memasang syarat hak bersama (batas/syaratHak)
+[lulus] Syarat hak = TagihanRepository::syaratHak (petugas cakupan, admin semua, wali anak)
+[lulus] Layanan: hak dihitung ulang, santri di luar hak 404, unit di luar cakupan 404
+[lulus] Bagian internal disembunyikan bagi wali: 'kas' => $wali ? null
+[lulus] Bagian internal disembunyikan bagi wali: 'internal' => $wali ? null
+[lulus] Bagian internal disembunyikan bagi wali: 'koreksi' => $wali ? null
+[lulus] Bagian internal disembunyikan bagi wali: 'selisih' => $wali ? null
+[lulus] Bagian internal disembunyikan bagi wali: 'menunggu' => $wali ? null
+[lulus] Daftar santri nonaktif bersaldo (R-10) hanya admin
+[lulus] Rumus kas hanya Tunai/Transfer (tabungan/internal bukan kas)
+[lulus] Penerimaan kas baru = setoran + pembayaran tagihan tunai/transfer
+[lulus] Rentang paling panjang 12 bulan, tidak di masa depan
+
+=== X-3. Ekspor ===
+[lulus] Jenis ekspor tertutup; wali tanpa ekspor koreksi (403)
+[lulus] Ekspor terlalu besar ditolak (bukan dipotong diam-diam)
+[lulus] Ekspor diaudit (bsa.laporan.ekspor) tanpa nominal/nama/alasan
+[lulus] CSV: BOM UTF-8; sel teks berawalan formula diberi kutip
+[lulus] Rincian transaksi ekspor tanpa referensi, catatan, atau alasan
+
+=== X-4. Web dan API ===
+[lulus] Halaman laporan dan ekspor memakai penjaga _bsa.php (masuk, CSRF POST, no-store, hak)
+[lulus] Halaman laporan hanya GET (saringan GET, tanpa POST)
+[lulus] Ekspor web: text/csv lampiran + nosniff
+[lulus] API: GET laporan dan GET ekspor
+[lulus] Navigasi keuangan: "Laporan" bila tagihan dan tabungan terpasang (internal dan wali)
+[lulus] docs/api-v1.md mendokumentasikan laporan dan ekspor
+
+=== X-5. Alat rilis ===
+[lulus] bin/_v6_rilis.php hanya CLI
+[lulus] bin/v6_preflight.php hanya CLI
+[lulus] bin/v6_verify.php hanya CLI
+[lulus] bin/v6_manifest.php hanya CLI
+[lulus] bin/v6_backup_restore_drill.php hanya CLI
+[lulus] bin/_v6_rilis.php hanya membaca (tanpa INSERT/UPDATE/DELETE/DDL)
+[lulus] bin/v6_preflight.php hanya membaca (tanpa INSERT/UPDATE/DELETE/DDL)
+[lulus] bin/v6_verify.php hanya membaca (tanpa INSERT/UPDATE/DELETE/DDL)
+[lulus] bin/v6_manifest.php hanya membaca (tanpa INSERT/UPDATE/DELETE/DDL)
+[lulus] Latihan restore: V6_DRILL=1, hanya DB test_*_test, menolak APP_ENV=production
+[lulus] Manifest rilis ter-commit = hash 29 migrasi + 6 rollback di disk
+[lulus] Verifier memeriksa: Saldo akun = setoran − penarikan − belanja
+[lulus] Verifier memeriksa: Setiap tagihan: total − Σ pembayaran sah = sisa
+[lulus] Verifier memeriksa: Penerimaan kas baru laporan
+[lulus] Verifier memeriksa: Setiap koreksi tabungan punya audit
+[lulus] Verifier memeriksa: Setiap pembatalan/penolakan pembayaran: aktor, waktu, alasan, asal, dan audit
+[lulus] Verifier memeriksa: 0 notifikasi V6 kanal WhatsApp
+[lulus] Verifier memeriksa: Manifest memuat tepat seluruh tabel lama
+[lulus] docs/phase-v6-5/runbook-rilis-pemulihan.md ada
+[lulus] docs/phase-v6-5/checklist-smoke.md ada
+[lulus] docs/phase-v6-5/README.md ada
+[lulus] docs/phase-v6-5/perintah-uji.sh ada
+[lulus] docs/phase-v6-5/perintah-regresi.sh ada
+[lulus] Checklist smoke: kolom produksi "Menunggu pelaksanaan", tanpa klaim lulus produksi
+
+=== X-6. Aplikasi ===
+[lulus] Layar laporan hanya memanggil GET laporan
+[lulus] Layar laporan tanpa log, penyimpanan, atau berkas
+[lulus] Klien: laporan JSON saja; aplikasi tidak mengunduh ekspor
+[lulus] Layar laporan di navigator keuangan yang dilindungi tangkapan layar (T-1)
+[lulus] Data hanya di memori layar; berganti akun me-reset layar
+
+=== X-7. Lint PHP ===
+[lulus] Lint 17 berkas PHP baru/berubah
+
+Ringkasan: 74 lulus, 0 gagal

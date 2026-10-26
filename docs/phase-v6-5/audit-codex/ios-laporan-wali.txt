@@ -1,0 +1,9 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow ios-laporan-wali
+Assert that "Saldo akhir" is visible... COMPLETED
+Assert that "Rp50\.000" is visible... COMPLETED
+Assert that "Penerimaan kas baru" is not visible... COMPLETED
+Assert that "Rekonsiliasi: selisih Rp0" is not visible... COMPLETED
+Scrolling DOWN until ".*SBX V6 Santri Tsanawi.*" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+Assert that ".*SBX V6 Santri SMP.*" is visible... COMPLETED
+Assert that ".*SBX V6 Santri Nonaktif.*" is not visible... COMPLETED

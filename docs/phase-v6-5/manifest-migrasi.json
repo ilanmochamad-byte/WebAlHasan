@@ -1,0 +1,184 @@
+{
+    "rilis": "PRD V6 keuangan santri/BSA — tagihan dan tabungan dirilis bersama (Fase 1–5)",
+    "schema_required_before": "023_redesain_web_tahap6_data_pesantren.sql",
+    "catatan_urutan": "bin/migrate.php up menjalankan seluruh migrasi tertunda berurutan: bila 024–026 (V5) belum terpasang di server, keduanya ikut terpasang sebelum 027–029.",
+    "v6_migrations": [
+        "027_v6_fase1_bsa.sql",
+        "028_v6_fase2_tagihan_bulanan.sql",
+        "029_v6_fase3_tabungan.sql"
+    ],
+    "new_migration_in_phase5": null,
+    "web": {
+        "branch": "claude/prd-v6-fase-5",
+        "baseline": "75cb144685d02d10df563f67eb1e23a67eec030b"
+    },
+    "migrations": [
+        {
+            "file": "database/migrations/001_phase1_security.sql",
+            "sha256": "8cd56c0710fe6d1d06beef70df3c7be1ff7377cb404c6a2be61c7347500c8106"
+        },
+        {
+            "file": "database/migrations/002_phase2_master_data.sql",
+            "sha256": "4e9ef6fe5dd5cdde8751618294b3517a6afe27025e42e4dc49bba73f6274bb2e"
+        },
+        {
+            "file": "database/migrations/003_phase3_schedules_meetings.sql",
+            "sha256": "921d8e9e43d915a34f28e95cca18ff26b08d2e4076be2f845074ca2f93d3d4c7"
+        },
+        {
+            "file": "database/migrations/004_phase4_api_attendance.sql",
+            "sha256": "21eabfaeb623e1689fbeed72c8842153caa7d5e7fdd69c0830fd12e688f350f3"
+        },
+        {
+            "file": "database/migrations/005_phase5_reporting_indexes.sql",
+            "sha256": "f3a825beeb27129e679705e9d797d915c20af5c7122589f519afc430dcfebfb2"
+        },
+        {
+            "file": "database/migrations/006_v2_phase1_perizinan_foundation.sql",
+            "sha256": "42f980afb337b28248277aa0e1b1b13ffb846d87d63971fcba8d6e3e8c8e5c3a"
+        },
+        {
+            "file": "database/migrations/007_v2_phase2_pengajuan_routing_keputusan.sql",
+            "sha256": "1ea20a72c0cff122dabd25853b168afb8b8c4b9690d47d4353688484bf6a38c0"
+        },
+        {
+            "file": "database/migrations/008_v2_phase4_notifikasi_push_whatsapp.sql",
+            "sha256": "24491c48b2d0aeb3965c63ce7c8bee7de2b012ecf5b368a23dac55087ad303ec"
+        },
+        {
+            "file": "database/migrations/009_v2_phase5_laporan_dan_push_receipt.sql",
+            "sha256": "4100d880cbc873e212b4cfc13f59b30dc9189beecbfcaef0052fbdd58a60fbbc"
+        },
+        {
+            "file": "database/migrations/010_perapihan_rekonsiliasi_wali.sql",
+            "sha256": "0346c2dc84654ba647bd73dee6c72c307daa238ab288ee1df2571e33d3f9fc59"
+        },
+        {
+            "file": "database/migrations/011_koreksi_alumni.sql",
+            "sha256": "89bfc7016d12c6a4f6a87949c57375b0977f7a9bb8bdd2c81774e676fc642d3c"
+        },
+        {
+            "file": "database/migrations/012_fondasi_penugasan_v3_v6.sql",
+            "sha256": "919f835c5825ea90c2597ccf43aee700e8a4e5543d9e423ff1d4892a41fc4c72"
+        },
+        {
+            "file": "database/migrations/013_v3_fase1.sql",
+            "sha256": "0133acf59b87af08cb6c9a9dda4b558153855b2309591e91cc2f6f90727f100e"
+        },
+        {
+            "file": "database/migrations/014_v3_fase2_pelanggaran.sql",
+            "sha256": "905061487c1d3f61ef13e5b1731aea483b71e59ad13c6c1da53a397f429f0425"
+        },
+        {
+            "file": "database/migrations/015_v3_fase2_koreksi_dan_rekomendasi.sql",
+            "sha256": "12b93c9e125de2758bec9a40225c44bef50856829553aa7ec7b8813a61179a45"
+        },
+        {
+            "file": "database/migrations/016_v3_fase3_konseling.sql",
+            "sha256": "dbf974c0ef11eea083816a2bcc7f604b0cb3d63d2ede385924ea7c0b39cbe783"
+        },
+        {
+            "file": "database/migrations/017_v3_fase3_kerahasiaan_dan_revisi.sql",
+            "sha256": "db685155366be4e8332514a82aca47ec95b41a5dd6db9c72c542412fffffb6a0"
+        },
+        {
+            "file": "database/migrations/018_v3_fase4_publikasi.sql",
+            "sha256": "2c993d5593a251b37d38bc93120f9575eecab349898c65ea2798dd4a6146d395"
+        },
+        {
+            "file": "database/migrations/019_v3_fase5_laporan_retensi.sql",
+            "sha256": "363b3a35be0baec14513d1720260109cb0662caea7f37a8b9874e7f5dee04a07"
+        },
+        {
+            "file": "database/migrations/020_v4_fase1_fondasi.sql",
+            "sha256": "c5890cde72908326e4a0398139d7615b2f2ce5ae4b9a9ef49ed9e60fbe785955"
+        },
+        {
+            "file": "database/migrations/021_v4_fase3_verifikasi.sql",
+            "sha256": "d23c415b5e9f15e8a39e03cd0be98990f3e4ab65370626b80132350f053a65a4"
+        },
+        {
+            "file": "database/migrations/022_v4_fase4_publikasi.sql",
+            "sha256": "08835ed0e0b3d2d1853bbdacc108569838dca34b74c8858a66217bd4aaaf4350"
+        },
+        {
+            "file": "database/migrations/023_redesain_web_tahap6_data_pesantren.sql",
+            "sha256": "fd9d2d8544eb82d3505dde3a2a03d48f50a4fbe5686084e8bd6f35cbba6769ad"
+        },
+        {
+            "file": "database/migrations/024_v5_fase1_kesehatan.sql",
+            "sha256": "88793cb8a21a3268e57a58a3e6cac5a6ba39c8f34d49d7ce148ef871a1bfe2f6"
+        },
+        {
+            "file": "database/migrations/025_v5_fase2_rincian_kesehatan.sql",
+            "sha256": "e33d70adce83f8e9921d134f4679990b7ac1d179f51cb05b64c4668919a20382"
+        },
+        {
+            "file": "database/migrations/026_v5_fase3_ringkasan_wali.sql",
+            "sha256": "90755fe0e267de0d96d649f4e2fdd6df3bcfc7de0322de886e57d2d1c1fa5125"
+        },
+        {
+            "file": "database/migrations/027_v6_fase1_bsa.sql",
+            "sha256": "25c133ba5e25cb902a54a0255f463e45d14f4aab5a3395c5905a37d36e89c422"
+        },
+        {
+            "file": "database/migrations/028_v6_fase2_tagihan_bulanan.sql",
+            "sha256": "d8fe751f2d041f079bb49f64ce5ae166987c9bb2d5584d37437c6491a1e8fa02"
+        },
+        {
+            "file": "database/migrations/029_v6_fase3_tabungan.sql",
+            "sha256": "1a77f44ff1da9c63147faad8aad2b4b06ee6fcdfe4ff75267fbf40eef9c82010"
+        }
+    ],
+    "rollbacks": [
+        {
+            "file": "database/rollbacks/024_v5_fase1_kesehatan.sql",
+            "sha256": "befcec3004a89832eb90a62b1bf4a35c5d18799d848697bf30bf181500abe0aa"
+        },
+        {
+            "file": "database/rollbacks/025_v5_fase2_rincian_kesehatan.sql",
+            "sha256": "de4be5bf89103fc1dea91555a7f6c18c1ffb954e1bd70196565959a8525f31a3"
+        },
+        {
+            "file": "database/rollbacks/026_v5_fase3_ringkasan_wali.sql",
+            "sha256": "a22a40ee53c354183195f03e05df76774cd00b2ae816ddb0ebc6e6e6dbfe2d59"
+        },
+        {
+            "file": "database/rollbacks/027_v6_fase1_bsa.sql",
+            "sha256": "1e74a03ce024503594262a4e0515fd4f4cf783e0557b3d96e3d1cc54e426530f"
+        },
+        {
+            "file": "database/rollbacks/028_v6_fase2_tagihan_bulanan.sql",
+            "sha256": "18dcc568888eb790b48fb0238c8f6624b70902b3f829f6dc934f5dbf57eca4d4"
+        },
+        {
+            "file": "database/rollbacks/029_v6_fase3_tabungan.sql",
+            "sha256": "234c68b42cb4a601455c0b98f36371f7b11c6037d1dd0463306ae8e6b30f485b"
+        }
+    ],
+    "dependencies": [
+        {
+            "file": "composer.lock",
+            "sha256": "423824a810f519e903172aeb287ad6a115461da64815f9aefcec97092037aeb7"
+        }
+    ],
+    "mobile": {
+        "branch": "claude/prd-v6-fase-5",
+        "baseline": "16bcdb7a7dc475f785c328cfdae90ad6b3072e6b",
+        "catatan": "Hash berkas HEAD Git; perubahan salinan kerja milik pekerjaan lain tidak termasuk.",
+        "files": [
+            {
+                "file": "package.json",
+                "sha256_head": "99b97cd58ae025f4ba2c2e9515170831628e982a68daa8353c181edccb4ce210"
+            },
+            {
+                "file": "package-lock.json",
+                "sha256_head": "a874dd8856a59c2724939eb92d6d15b069c95ec56bb5f613c33fc5d9b7361f5a"
+            },
+            {
+                "file": "app.json",
+                "sha256_head": "78a59aba57fbd5dd4e4c7a5a945a17439260ff499b82ceae76015433f99b7d94"
+            }
+        ]
+    }
+}

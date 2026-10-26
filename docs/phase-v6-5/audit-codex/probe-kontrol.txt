@@ -1,0 +1,9 @@
+[lulus] Kontrol: preflight pada fixture 027–029 lengkap
+[lulus] Kontrol: manifest lengkap dan verifier lulus
+[gagal] Manifest kehilangan seluruh uang ditolak tanpa melewati pemeriksaan uang
+[gagal] Manifest kehilangan satu tabel uang ditolak tanpa melewati pemeriksaan uang
+[gagal] Manifest kehilangan status hilang ditolak tanpa melewati pemeriksaan uang
+[gagal] Manifest kehilangan status palsu sebelum V6 ditolak tanpa melewati pemeriksaan uang
+[gagal] CHECK sesi dinonaktifkan → preflight gagal walau versi server mendukung
+[lulus] CHECK koneksi induk tetap aktif (tanpa perubahan global)
+Ringkasan: 3 lulus, 5 gagal

@@ -1,0 +1,60 @@
+=== 1. Verifier per fase (Fase 3 → 2 → 1) ===
+[lulus] v6_phase3_verify.php (berantai Fase 1–2): exit 0, 133 pemeriksaan lulus
+
+=== 2a. Saldo per santri menurut jenis ===
+[lulus] Saldo akun = setoran − penarikan − belanja − bayar tagihan + pembalik masuk − pembalik keluar, per santri (0 santri selisih)
+[lulus] Agregat Σ saldo akun − Σ ledger menurut jenis = Rp0
+[lulus] Arah pembalik sesuai jenis asal (setoran → keluar; penarikan/belanja/bayar tagihan → masuk)
+
+=== 2b. Tagihan: total − pembayaran sah = sisa ===
+[lulus] Setiap tagihan: total − Σ pembayaran sah = sisa
+[lulus] Tidak ada pembayaran sah (atau sah + menunggu) melebihi total tagihan
+[lulus] Satu tagihan per santri per periode (0 tagihan ganda)
+[lulus] Tagihan dibatalkan tanpa sisa pembayaran sah
+[lulus] Nomor kuitansi pembayaran unik
+
+=== 2c. Rekonsiliasi seluruh waktu: kas vs perpindahan internal ===
+[lulus] Penerimaan kas baru laporan Rp910000 = setoran tunai/transfer Rp0 + pembayaran tunai/transfer sah Rp910000
+[lulus] Pembayaran dari tabungan Rp0 tercatat terpisah sebagai perpindahan internal (tidak termasuk kas baru)
+[lulus] Debit tabungan untuk tagihan Rp0 = pembayaran dari tabungan Rp0 (laporan dan sumber)
+[lulus] Pembatalan pembayaran sah laporan = sumber (Rp90000)
+
+=== 2d. Laporan seluruh waktu = sumber ===
+[lulus] Agregat tagihan laporan = sumber (96 terbit, Rp24400000, terbayar Rp820000)
+[lulus] Laporan: 0 tagihan dengan terbayar ≠ Σ pembayaran sah
+[lulus] Σ pembayaran sah menurut sumber Rp820000 = Σ terbayar tagihan
+[lulus] Saldo akhir laporan = Σ saldo per santri = Σ saldo akun (Rp0)
+[lulus] Laporan per santri: 0 santri dengan selisih saldo atau akun ≠ ledger
+[lulus] Jumlah per santri (tagihan, terbayar, setoran) = agregat laporan
+
+=== 2e. Koreksi dan pembatalan berjejak ===
+[lulus] Setiap pembalik ledger: aktor, waktu, alasan, dan asal
+[lulus] Setiap koreksi tabungan punya audit oleh pencatatnya
+[lulus] Setiap pembatalan/penolakan pembayaran: aktor, waktu, alasan, asal, dan audit
+[lulus] Setiap pengembalian ke tabungan terhubung ke pembatalan pembayaran oleh aktor yang sama
+[lulus] Setiap setoran transfer ditolak: aktor, waktu, alasan, dan audit
+[lulus] Setiap riwayat tagihan Revisi: aktor, alasan, dan satu audit per versi
+[lulus] Setiap riwayat tagihan Dibatalkan: aktor, alasan, dan satu audit per versi
+[lulus] Setiap penyesuaian dicabut beralasan (CHECK) dan punya audit
+[lulus] Setiap tarif yang diganti punya pengganti beralasan
+
+=== 2f. Setiap baris uang efektif punya audit ===
+[lulus] Setoran/penarikan/belanja: audit per baris ledger
+[lulus] Setoran transfer terverifikasi: audit verifikasi oleh pemutusnya
+[lulus] Debit tabungan untuk tagihan: audit pembayaran dari tabungan
+[lulus] Pembayaran tunai/transfer: audit pencatatan dan verifikasi
+[lulus] Setiap tagihan punya audit penerbitan oleh penerbitnya
+
+=== 2g. Pemberitahuan V6 ===
+[lulus] 0 notifikasi V6 efektif ganda (peristiwa × kanal × penerima)
+[lulus] 0 notifikasi V6 kanal WhatsApp
+[lulus] Seluruh notifikasi V6 memakai teks generik katalog dan data penunjuk saja (tanpa nominal/nama/referensi)
+
+=== Info ===
+[info] Santri nonaktif bersaldo/bertunggakan (R-10, hanya dilaporkan): 0 santri, saldo Rp0, sisa tagihan Rp0
+[info] Transfer menunggu verifikasi (tidak dihitung saldo/terbayar): 0 setoran, 1 pembayaran
+
+=== 3. Tabel lama dan identitas ===
+[belum diperiksa] Tabel lama dan sidik jari: berikan manifest privat bin/v6_preflight.php.
+
+Ringkasan verifier V6: 36 lulus, 0 gagal

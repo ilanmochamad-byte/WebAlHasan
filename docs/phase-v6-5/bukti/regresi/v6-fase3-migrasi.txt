@@ -1,0 +1,52 @@
+=== O-1. Salinan uji pada keadaan 028 ===
+[lulus] Salinan berantai V6 Fase 2 (fixture V1–V6 sintetis) dibangun dengan 027 + 028 + 029: test_v6_f3_migrasi_test
+[lulus] Preflight rollback 029 lulus (tanpa data Fase 3, 029 terakhir)
+[lulus] Rollback 029 mengembalikan salinan ke keadaan 028
+[lulus] Verifier --rollback: tabel 029 dilepas, 029 tidak tercatat, lima belas tabel 027/028 tetap
+
+=== O-2. Data Fase 1–2, preflight, dan migrasi ===
+[lulus] Pada keadaan 028: setoran, setoran transfer (sah seketika seperti Fase 1–2), penarikan, tagihan, dan pembayaran berjalan; saldo Rp90.000 (90000|201|tanpa-f3)
+[lulus] Preflight Fase 3 lulus dan menulis manifest (tabel lama termasuk 027/028, sidik jari ID + isi uang termasuk pembayaran)
+[lulus] Checksum 38 tabel (identitas, penugasan, V2–V5, PSB, 15 tabel 027/028) dicatat sebelum migrasi
+[lulus] bin/migrate.php up menerapkan 029
+
+=== O-3. Verifier sesudah migrasi ===
+[lulus] Verifier Fase 3 dengan manifest lulus (257 pemeriksaan)
+[lulus] 6 kunci asing Fase 3, 0 referensi yatim, invarians Fase 1–2 lulus
+[lulus] Sidik jari isi uang 027/028 (ledger, saldo, tagihan, pembayaran) dan ID identitas tetap
+[lulus] Checksum dan struktur kolom tabel inti + 027/028 tetap sesudah migrasi (029 tidak mengubah tabel lama)
+[lulus] Lima CHECK basis data terpasang pada tabel Fase 3 (5)
+[lulus] CHECK menolak setoran transfer Sah tanpa baris ledger (status ⇔ transaksi_id)
+
+=== O-4. Migrasi idempoten dan aditif ===
+[lulus] SQL 029 dijalankan ulang tanpa galat (CREATE TABLE IF NOT EXISTS)
+[lulus] Jalan ulang tidak mengubah data lama dan tidak menggandakan catatan migrasi
+[lulus] Migrasi 029 aditif murni: 1 CREATE TABLE IF NOT EXISTS, tanpa DROP/DELETE/UPDATE/ALTER/INSERT, tanpa tipe pecahan
+[lulus] Rollback 029 hanya melepas bsa_setoran_transfer; penjaga memeriksa antrean transfer, jenis ledger Fase 3, dan pembayaran dari tabungan
+
+=== O-5. Data Fase 3 memblokir rollback ===
+[lulus] Setoran transfer menunggu (202), belanja Rp10.000, dan bayar Rp50.000 dari tabungan (saldo Rp30.000, sisa Rp10.000) lewat layanan
+[lulus] Verifier dengan data Fase 3: 0 yatim, invarians lulus
+[lulus] Preflight rollback MEMBLOKIR tiga sumber data Fase 3
+[lulus] Rollback tanpa preflight ditolak penjaga SQL: tabel dan data tetap, 029 tetap tercatat
+[lulus] Preflight rollback 028 juga memblokir selama 029 terpasang (urutan migrasi)
+
+=== O-6. Rollback salinan tanpa data Fase 3 ===
+[lulus] Salinan kedua dibangun lalu dikembalikan ke 028: test_v6_f3_rollback_test
+[lulus] Data Fase 1–2 dicatat pada 028, lalu 029 dipasang tanpa data Fase 3
+[lulus] Preflight rollback lulus: data Fase 1–2 (setoran/penarikan/pembayaran tunai) tidak memblokir
+[lulus] Rollback 029 dijalankan; tabel dilepas
+[lulus] Verifier --rollback dengan manifest: tabel lama, jumlah baris, sidik jari ID dan isi uang 027/028 tetap
+[lulus] Checksum dan struktur kolom tabel inti + 027/028 tetap sesudah rollback
+[lulus] Verifier Fase 1–2 lulus sesudah rollback 029
+
+=== O-7. Kode Fase 3 sesudah rollback ===
+[lulus] Sesudah rollback: fitur Fase 3 503, setoran transfer kembali sah seketika (Fase 1–2), penarikan dan pembayaran tunai tetap berjalan (rekonsiliasi=503 mutasi=503 kuitansi=503 koreksi=503 belanja=503 bayartab=503 transfer=201-f12 santri=tanpa-antrean penarikan=201 fase2=201)
+[lulus] Web sesudah rollback: navigasi tanpa Tabungan/Rekonsiliasi, halaman Fase 3 503, rincian santri dan formulir setoran Fase 1 tanpa elemen Fase 3 (200/503/503/200/200)
+[lulus] Log server sesudah rollback tanpa galat PHP
+
+=== O-8. Migrasi ulang sesudah rollback ===
+[lulus] Migrasi ulang 029 lulus verifier Fase 1–3 dengan manifest
+[lulus] Satu belanja pasca-029 (tanpa antrean transfer) sudah cukup memblokir rollback 029
+
+Lulus: 35 · Gagal: 0

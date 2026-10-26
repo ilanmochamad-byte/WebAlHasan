@@ -1,0 +1,34 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Saldo akhir",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertVisible": "Rp50\\.000"
+  },
+  {
+    "assertNotVisible": "Penerimaan kas baru"
+  },
+  {
+    "assertNotVisible": "Rekonsiliasi: selisih Rp0"
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "text": ".*SBX V6 Santri Tsanawi.*"
+      },
+      "direction": "DOWN",
+      "timeout": 20000
+    }
+  },
+  {
+    "assertVisible": ".*SBX V6 Santri SMP.*"
+  },
+  {
+    "assertNotVisible": ".*SBX V6 Santri Nonaktif.*"
+  }
+]

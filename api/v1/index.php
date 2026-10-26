@@ -237,6 +237,18 @@ try {
                 : $tagihan->batalkanPembayaran($user, (int) $m[1], $body, $kanal));
         }
         if ($method === 'GET' && $path === '/v6/bsa/tunggakan') JsonResponse::success($tagihan->tunggakan($user, $_GET));
+        // V6 Fase 5: laporan per periode/per santri dan ekspor CSV, hak sama dengan web.
+        if ($method === 'GET' && $path === '/v6/bsa/laporan') JsonResponse::success(laporan_bsa_service()->laporan($user, $_GET));
+        if ($method === 'GET' && $path === '/v6/bsa/laporan/ekspor') {
+            $ekspor = laporan_bsa_service()->ekspor($user, $_GET, $kanal);
+            header('Content-Type: text/csv; charset=UTF-8');
+            header('Content-Disposition: attachment; filename="' . $ekspor['nama_berkas'] . '"');
+            header('X-Content-Type-Options: nosniff');
+            $out = fopen('php://output', 'w');
+            \App\Bsa\LaporanService::tulisCsv($out, $ekspor['kolom'], $ekspor['baris']);
+            fclose($out);
+            exit;
+        }
         throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
     }
 

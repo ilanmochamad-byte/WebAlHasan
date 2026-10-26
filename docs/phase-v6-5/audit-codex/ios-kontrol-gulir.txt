@@ -1,0 +1,7 @@
+[lulus] iOS Release admin: tagihan Rp100.000, saldo Rp62.000, kas Rp132.000, rekonsiliasi Rp0; hanya baca
+[lulus] iOS admin: R-10 santri nonaktif tampil dalam laporan
+[lulus] iOS BSA: saldo Rp50.000 dan kas Rp120.000 hanya santri aktif dalam hak
+[lulus] iOS laporan BSA lama ditutup setelah penugasan dicabut dan kembali dari latar
+[lulus] iOS wali dua anak: dua anak sendiri, saldo Rp50.000, tanpa kas/rekonsiliasi internal/santri keluar
+[gagal] ios-wali-dicabut gagal
+Ringkasan: 5 lulus, 1 gagal

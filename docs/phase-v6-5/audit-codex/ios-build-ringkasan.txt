@@ -1,0 +1,28 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace ios/alhasanApps.xcworkspace -scheme alhasanApps -configuration Release -sdk iphonesimulator -destination id=05999342-AE62-44C4-B0E1-1E8504CF8512 -derivedDataPath /private/tmp/v6f4/ios-dd-rel ONLY_ACTIVE_ARCH=YES ARCHS=arm64 CODE_SIGN_IDENTITY=- CODE_SIGNING_ALLOWED=YES CODE_SIGNING_REQUIRED=YES DEVELOPMENT_TEAM= build
+
+Build settings from command line:
+    ARCHS = arm64
+    CODE_SIGN_IDENTITY = -
+    CODE_SIGNING_ALLOWED = YES
+    CODE_SIGNING_REQUIRED = YES
+    DEVELOPMENT_TEAM = 
+    ONLY_ACTIVE_ARCH = YES
+    SDKROOT = iphonesimulator27.1
+
+note: Using codesigning identity override: -
+ComputePackagePrebuildTargetDependencyGraph
+
+[log lengkap lokal: /private/tmp/v6f5-codex-ios-build.log]
+Validate /tmp/v6f4/ios-dd-rel/Build/Products/Release-iphonesimulator/alhasanApps.app (in target 'alhasanApps' from project 'alhasanApps')
+    cd /tmp/v6f4-codex-revalidasi-ios/ios
+    builtin-validationUtility /tmp/v6f4/ios-dd-rel/Build/Products/Release-iphonesimulator/alhasanApps.app -validate-for-store -shallow-bundle -infoplist-subpath Info.plist
+
+PruneExplicitPrecompiledModules /tmp/v6f4/ios-dd-rel/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /tmp/v6f4/ios-dd-rel/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /tmp/v6f4/ios-dd-rel/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+** BUILD SUCCEEDED **
+
