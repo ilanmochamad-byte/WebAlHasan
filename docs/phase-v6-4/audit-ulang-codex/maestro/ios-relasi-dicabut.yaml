@@ -1,0 +1,25 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "text": "Muat ulang"
+      },
+      "direction": "DOWN",
+      "timeout": 15000
+    }
+  },
+  {
+    "tapOn": "Muat ulang"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Data belum dapat ditampilkan",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertNotVisible": ".*SBX V6 Santri Tsanawi.*"
+  }
+]

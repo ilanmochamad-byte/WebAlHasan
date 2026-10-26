@@ -1,0 +1,9 @@
+[lulus] iOS wali dua anak: dua kartu terpisah, tanpa tindakan petugas
+[lulus] iOS wali memilih Tsanawi: tidak membawa data SMP atau tombol setoran
+[lulus] iOS relasi dicabut pada layar lama: muat ulang menutup data anak itu
+[lulus] iOS kembali dari latar memeriksa relasi lagi; anak kedua tercabut tidak memakai data lama
+[lulus] iOS wali satu anak: hanya SMP, tanpa kartu anak lain
+[lulus] iOS cold start dengan token dicabut → masuk ulang, tanpa data lama
+[lulus] iOS deep link melewati login wali asing tetap 404/403, tanpa nama atau nominal anak lain
+[lulus] iOS admin mengawasi santri melalui data server, tanpa tombol mutasi
+Ringkasan: 8 lulus, 0 gagal

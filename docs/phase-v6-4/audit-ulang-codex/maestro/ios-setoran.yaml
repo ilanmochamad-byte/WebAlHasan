@@ -1,0 +1,37 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Saldo saat ini Rp0",
+      "timeout": 15000
+    }
+  },
+  {
+    "tapOn": {
+      "point": "201,397"
+    }
+  },
+  {
+    "inputText": "100000"
+  },
+  {
+    "tapOn": "Setoran tabungan"
+  },
+  {
+    "tapOn": {
+      "text": "Catat setoran",
+      "repeat": 2,
+      "delay": 50
+    }
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Saldo saat ini Rp100\\.000",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertVisible": "Saldo saat ini Rp100\\.000"
+  }
+]

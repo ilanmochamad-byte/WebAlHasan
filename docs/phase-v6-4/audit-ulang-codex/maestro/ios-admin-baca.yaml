@@ -1,0 +1,16 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": ".*SBX V6 Santri SMP.*",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertNotVisible": "Setoran"
+  },
+  {
+    "assertNotVisible": "Penarikan/belanja"
+  }
+]

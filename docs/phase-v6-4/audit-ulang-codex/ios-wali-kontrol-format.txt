@@ -1,0 +1,2 @@
+[gagal] Alur ios-login-sbx_v6_wali_dua gagal; lihat log/tangkapan
+Ringkasan: 0 lulus, 1 gagal

@@ -1,5 +1,7 @@
 # Audit Codex — PRD V6 Fase 4
 
+> Catatan audit pertama. Putusan terbaru ada di [AUDIT-ULANG-CODEX.md](AUDIT-ULANG-CODEX.md); isi historis berikut dipertahankan.
+
 26 Oktober 2026. Auditor Codex, setelah handoff implementator Claude Code. Hanya Fase 4; kedua checkout tetap `claude/prd-v6-fase-4`, tanpa worktree.
 
 **Putusan: BELUM LULUS seluruh validasi lintas platform Fase 4.** Temuan kode F-1 telah dikoreksi dan pengujian utama web/API/Expo Fase 4 lulus; runtime iOS terbaru belum dapat diuji karena build simulator gagal. Bukti Android dan batasnya dirinci di bawah. Tidak menyatakan siap produksi, tidak memulai Fase 5, merge, deploy, migrasi produksi, atau merilis aplikasi.

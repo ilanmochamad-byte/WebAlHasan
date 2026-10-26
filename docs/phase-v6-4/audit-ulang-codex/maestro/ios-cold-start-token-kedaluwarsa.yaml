@@ -1,0 +1,13 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Masukkan username",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertNotVisible": ".*SBX V6 Santri.*"
+  }
+]

@@ -1,0 +1,18 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow ios-cold-start-wali-asing
+Assert that "Masukkan username" is visible... COMPLETED
+Tap on "Masukkan username"... COMPLETED
+Erase text... COMPLETED
+Input text sbx_v6_wali_smp... COMPLETED
+Tap on "Masuk ke akun Anda"... COMPLETED
+Tap on "Masukkan password"... COMPLETED
+Wait for animation to end... COMPLETED
+Input text Sandbox#123... COMPLETED
+Press Enter key... COMPLETED
+Assert that "Not Now|Keuangan anak|Keuangan|Rincian biaya|Data belum dapat ditampilkan" is visible... COMPLETED
+Run flow when "Not Now" is visible...
+  Tap on "Not Now"... COMPLETED
+Run flow when "Not Now" is visible... COMPLETED
+Assert that "Data belum dapat ditampilkan" is visible... COMPLETED
+Assert that ".*SBX V6 Santri Tsanawi.*" is not visible... COMPLETED
+Assert that "Rp120[.]000" is not visible... COMPLETED

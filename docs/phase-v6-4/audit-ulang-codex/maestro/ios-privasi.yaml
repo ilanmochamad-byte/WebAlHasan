@@ -1,0 +1,22 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": ".*SBX V6 Santri SMP.*",
+      "timeout": 15000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "text": ".*REAUDIT-IOS-TRF-PRIVATE.*"
+      },
+      "direction": "DOWN",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertVisible": ".*REAUDIT-IOS-TRF-PRIVATE.*"
+  }
+]

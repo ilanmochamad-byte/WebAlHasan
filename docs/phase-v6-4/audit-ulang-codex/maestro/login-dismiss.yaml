@@ -1,0 +1,7 @@
+appId: com.ilanmochamad.alhasanApps
+---
+- tapOn: "Not Now"
+- extendedWaitUntil:
+    visible: "Keuangan"
+    timeout: 20000
+- assertVisible: "Keuangan"

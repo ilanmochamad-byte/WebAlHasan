@@ -1,0 +1,25 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "text": "Keluar dari aplikasi"
+      },
+      "direction": "DOWN",
+      "timeout": 15000
+    }
+  },
+  {
+    "tapOn": "Keluar dari aplikasi"
+  },
+  {
+    "tapOn": "Keluar"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Masukkan username",
+      "timeout": 15000
+    }
+  }
+]

@@ -1,0 +1,4 @@
+[lulus] Referensi transfer sintetis benar dimuat pada layar admin iOS
+[lulus] Kontainer iOS: 68 berkas, 0 berpenanda rahasia/bearer mentah, 0 tidak terbaca
+[lulus] Log proses iOS: 103527 baris tanpa penanda yang diuji/bearer mentah
+[lulus] Cold start iOS Release tetap membuka tujuan setelah Metro audit dihentikan

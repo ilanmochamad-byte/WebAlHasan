@@ -1,0 +1,8 @@
+appId: com.ilanmochamad.alhasanApps
+---
+- assertVisible: ".*SBX V6 Santri SMP.*"
+- swipe:
+    start: "50%,99%"
+    end: "50%,40%"
+    duration: 1500
+- waitForAnimationToEnd

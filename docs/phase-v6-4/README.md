@@ -1,6 +1,6 @@
 # PRD V6 Fase 4 — Paritas Aplikasi Mobile dan Orang Tua
 
-**Status audit (26 Oktober 2026): lihat [AUDIT-CODEX.md](AUDIT-CODEX.md). Temuan F-1 dikoreksi; validasi runtime iOS tetap terbuka, sehingga belum lulus seluruh validasi lintas platform Fase 4.** Catatan implementator berikut dipertahankan sebagai bukti handoff awal. Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Fase 5 belum dimulai. Fase 4 **bukan** izin rilis parsial: tagihan dan tabungan dirilis bersama sesudah Fase 5 dan keputusan Human Developer.
+**Putusan terbaru (26 Oktober 2026): LULUS audit ulang Fase 4 pada lingkungan uji yang tersedia — lihat [AUDIT-ULANG-CODEX.md](AUDIT-ULANG-CODEX.md).** Koreksi V-1 dan runtime iOS Release/cold start URI telah diuji independen. Perangkat fisik, Push nyata/cold start Push, Debug iOS dan validasi produksi tetap terbuka. Implementasi/audit awal sudah masuk `main` lewat PR #90 web dan #17 mobile; tindak lanjut ini tetap pada `claude/prd-v6-fase-4-validasi`, belum di-merge. Tidak deploy/migrasi produksi/rilis aplikasi atau memulai Fase 5. Tagihan dan tabungan tetap hanya dirilis bersama sesudah gerbang akhir V6 dan keputusan Human Developer. Catatan implementator awal di bawah dipertahankan sebagai riwayat.
 
 | Butir | Nilai |
 | --- | --- |

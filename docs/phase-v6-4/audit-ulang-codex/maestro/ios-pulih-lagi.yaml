@@ -1,0 +1,13 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "tapOn": "Coba lagi"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Rincian biaya",
+      "timeout": 15000
+    }
+  }
+]

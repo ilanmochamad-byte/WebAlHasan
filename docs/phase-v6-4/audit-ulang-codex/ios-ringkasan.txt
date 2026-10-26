@@ -1,0 +1,7 @@
+[lulus] iOS Release: dua ketukan setoran → satu ledger/klaim; saldo Rp100.000
+[lulus] iOS setoran → tepat dua pemberitahuan InApp wali aktif
+[lulus] iOS F-1: POST 403 pada formulir lama menutup data/draf tanpa mutasi
+[lulus] iOS V-1: Coba lagi sesudah akses dipulihkan → formulir bersih, tanpa pesan penolakan lama
+[lulus] iOS Release cold start dari URI, token tersimpan: langsung tagihan anak yang berhak, tanpa Metro/dev launcher
+[lulus] iOS Release cold start dari URI setelah penugasan dicabut: token lama ditolak tanpa nama/nominal
+Ringkasan: 6 lulus, 0 gagal

@@ -1,0 +1,6 @@
+Layar keuangan admin dengan SBX V6 Santri SMP dan Rp100.000 teramati sebelum ke latar (ios-keuangan-foreground.png).
+Gestur Maestro tidak berhasil membuka UI pengalih; dua Home membawa aplikasi ke latar.
+Cache SplashBoard terbaru dibaca dari kontainer aplikasi, dua snapshot penuh memiliki SHA-256 46f2a8e49bbf7f05ba4812fd0a7fb3c06fa0a8b9d56d197c91f55a55b491e7d9.
+Konversi sips/ImageIO → PNG diperiksa visual: hitam seluruhnya, tanpa nama/NIS/nominal.
+Kontrol snapshot splash pada kontainer yang sama berhasil didekode menjadi logo Alhasan, bukan selalu hitam.
+Ini membuktikan isi cache snapshot simulator yang diperiksa; bukan klaim UI pengalih/perangkat fisik/rekaman fisik sudah diuji.

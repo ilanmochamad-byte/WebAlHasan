@@ -1,0 +1,16 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Data belum dapat ditampilkan",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertNotVisible": ".*SBX V6 Santri SMP.*"
+  },
+  {
+    "assertNotVisible": "Rp100\\.000"
+  }
+]

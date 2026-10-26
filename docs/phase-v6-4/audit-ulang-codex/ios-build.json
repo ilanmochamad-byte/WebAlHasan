@@ -1,0 +1,9 @@
+{
+  "source_commit": "0097f91a50dfd18bd57959f2618d7c644175f219",
+  "configuration": "Release arm64 simulator, ad-hoc lokal",
+  "api": "http://127.0.0.1:8990/api/v1",
+  "bundle_sha256": "27a30c3316816a3d451811895929b68628d844e8cc2acc07772795ffcab34aed",
+  "executable_sha256": "ed66ec1d413fbabb0fa58ae5c277095188eb5fb3005c93257259baebeebebcc4",
+  "package_lock_sha256": "a874dd8856a59c2724939eb92d6d15b069c95ec56bb5f613c33fc5d9b7361f5a",
+  "production_host_count": 0
+}

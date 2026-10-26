@@ -1,0 +1,19 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "tapOn": "Catat setoran"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Data belum dapat ditampilkan",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertNotVisible": ".*SBX V6 Santri SMP.*"
+  },
+  {
+    "assertNotVisible": "Nominal \\(rupiah\\)"
+  }
+]

@@ -1,0 +1,19 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Rincian biaya",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertVisible": ".*SBX V6 Santri SMP.*"
+  },
+  {
+    "assertVisible": "Rp100\\.000"
+  },
+  {
+    "assertNotVisible": "Development Build"
+  }
+]
