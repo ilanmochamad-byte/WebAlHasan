@@ -711,3 +711,16 @@ function tabungan_service(): \App\Bsa\TabunganService
         new \App\Bsa\TabunganRepository(app_db(), $repo, new \App\Bsa\TagihanRepository(app_db(), $repo))
     );
 }
+
+/** Laporan keuangan dan ekspor (PRD V6 Fase 5): hak dari penjaga `BsaService` yang sama, hanya membaca. */
+function laporan_bsa_service(): \App\Bsa\LaporanService
+{
+    $repo = new \App\Bsa\BsaRepository(app_db());
+
+    return new \App\Bsa\LaporanService(
+        new \App\Bsa\BsaService($repo, capabilities(), audit_logger(), bsa_notifikasi()),
+        tagihan_service(),
+        tabungan_service(),
+        new \App\Bsa\LaporanRepository(app_db(), $repo, new \App\Bsa\TagihanRepository(app_db(), $repo))
+    );
+}
