@@ -1,0 +1,6 @@
+[lulus] Android wali dua anak: dua kartu data terpisah
+[lulus] Android wali: rincian Tsanawi tanpa data SMP/tombol mutasi
+[lulus] Android: relasi dicabut saat layar lama terbuka → ditolak tanpa data
+[lulus] Android: jendela keuangan tetap ber-SECURE saat ke latar
+[lulus] Android: kembali dari latar meminta server; relasi tercabut tidak memakai data lama
+Ringkasan: 5 lulus, 0 gagal

@@ -1,0 +1,15 @@
+{
+  "php": [
+    "PHP 8.4.14 (cli) (built: Oct 21 2025 19:23:55) (NTS)",
+    "Copyright (c) The PHP Group"
+  ],
+  "node": [
+    "v26.7.0"
+  ],
+  "xcode": [
+    "Xcode 27.1",
+    "Build version 27A9275"
+  ],
+  "expo_salinan": "57.0.15",
+  "expo_checkout_milik_pekerjaan_lain": "57.0.31"
+}

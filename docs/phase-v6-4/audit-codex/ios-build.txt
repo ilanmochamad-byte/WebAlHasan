@@ -1,0 +1,17 @@
+Xcode 27.1; iPhone 17 Pro simulator iOS 26.2; Debug; CODE_SIGNING_ALLOWED=NO.
+Salinan /private/tmp/v6f4/mobile, package-lock ter-commit SHA-256 a874dd8856a59c2724939eb92d6d15b069c95ec56bb5f613c33fc5d9b7361f5a.
+Binary lama juga tidak dapat dipasang: bundle executable tidak ada.
+Runtime iOS Fase 4 belum diuji.
+Ld /tmp/v6f4/ios-dd/Build/Products/Debug-iphonesimulator/alhasanApps.app/__preview.dylib normal (in target 'alhasanApps' from project 'alhasanApps')
+Ld /tmp/v6f4/ios-dd/Build/Products/Debug-iphonesimulator/alhasanApps.app/alhasanApps.debug.dylib normal (in target 'alhasanApps' from project 'alhasanApps')
+Undefined symbols for architecture arm64:
+  "_OBJC_CLASS_$_RCTPackagerConnection", referenced from:
+      __OBJC_$_CATEGORY_RCTPackagerConnection_$_EXDevLauncherPackagerConnectionInterceptor in libexpo-dev-launcher.a[10](RCTPackagerConnection+EXDevLauncherPackagerConnectionInterceptor.o)
+       in libexpo-dev-launcher.a[10](RCTPackagerConnection+EXDevLauncherPackagerConnectionInterceptor.o)
+  "facebook::react::Sealable::Sealable()", referenced from:
+  "facebook::react::Sealable::~Sealable()", referenced from:
+  "facebook::react::Sealable::ensureUnsealed() const", referenced from:
+/tmp/v6f4/mobile/ios/alhasanApps.xcodeproj: alhasanApps: clang: error: linker command failed with exit code 1 (use -v to see invocation)
+** BUILD FAILED **
+	Ld /tmp/v6f4/ios-dd/Build/Products/Debug-iphonesimulator/alhasanApps.app/alhasanApps.debug.dylib normal (in target 'alhasanApps' from project 'alhasanApps')
+(2 failures)

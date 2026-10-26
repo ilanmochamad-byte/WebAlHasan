@@ -1,0 +1,7 @@
+[lulus] Android dev client: setoran Rp100.000 → satu kredit dan saldo sesuai server
+[lulus] Android: dua ketukan belanja Rp25.000 → satu debit; saldo Rp75.000
+[lulus] Android: pembayaran tabungan tanpa persetujuan tidak terkirim
+[lulus] Android: bayar Rp50.000 → satu pembayaran/debit; saldo Rp25.000, sisa Rp50.000
+[lulus] Android: kuitansi memuat rujukan silang debit tabungan
+[lulus] Android: POST 403 pada formulir lama menutup data/draf; saldo tidak berubah
+Ringkasan: 6 lulus, 0 gagal

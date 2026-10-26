@@ -1,6 +1,6 @@
 # PRD V6 Fase 4 — Paritas Aplikasi Mobile dan Orang Tua
 
-**Status (26 Oktober 2026): implementasi Claude Code selesai, menunggu audit independen Codex.** Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Fase 5 belum dimulai. Fase 4 **bukan** izin rilis parsial: tagihan dan tabungan dirilis bersama sesudah Fase 5 dan keputusan Human Developer.
+**Status audit (26 Oktober 2026): lihat [AUDIT-CODEX.md](AUDIT-CODEX.md). Temuan F-1 dikoreksi; validasi runtime iOS tetap terbuka, sehingga belum lulus seluruh validasi lintas platform Fase 4.** Catatan implementator berikut dipertahankan sebagai bukti handoff awal. Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Fase 5 belum dimulai. Fase 4 **bukan** izin rilis parsial: tagihan dan tabungan dirilis bersama sesudah Fase 5 dan keputusan Human Developer.
 
 | Butir | Nilai |
 | --- | --- |

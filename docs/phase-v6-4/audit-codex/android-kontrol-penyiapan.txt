@@ -1,0 +1,2 @@
+[gagal] Command '['/Users/ilanmochamad/Library/Android/sdk/platform-tools/adb', 'shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', 'alhasanapps://keuangan/transaksi?santri_id=1710&mode=setoran', 'com.ilanmochamad.alhasanApps']' returned non-zero exit status 127.
+Ringkasan: 0 lulus, 1 gagal
