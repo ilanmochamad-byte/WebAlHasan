@@ -1,0 +1,12 @@
+# checkout ~/alhasanApps (node_modules expo 57.0.31, dari package.json belum di-commit milik pekerjaan lain)
+tsc exit=0
+lint exit=0 (0 galat, 0 peringatan)
+ℹ tests 36
+ℹ pass 36
+ℹ fail 0
+
+# salinan versi ter-commit (npm ci; expo 57.0.15)
+tsc exit=0
+ℹ tests 36
+ℹ pass 36
+ℹ fail 0

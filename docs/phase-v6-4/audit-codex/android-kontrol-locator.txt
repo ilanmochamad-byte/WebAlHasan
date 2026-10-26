@@ -1,0 +1,4 @@
+[lulus] Android dev client: setoran Rp100.000 → satu kredit dan saldo sesuai server
+[lulus] Android: dua ketukan belanja Rp25.000 → satu debit; saldo Rp75.000
+[gagal] Tidak ditemukan: Centang persetujuan
+Ringkasan: 2 lulus, 1 gagal

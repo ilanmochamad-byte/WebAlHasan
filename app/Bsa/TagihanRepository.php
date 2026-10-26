@@ -646,10 +646,15 @@ final class TagihanRepository
      * @param array{periode:?string, status:?string, sumber:?string} $saring
      * @return array{rows:array<int, array<string, mixed>>, total:int, page:int, perPage:int}
      */
-    public function daftarPembayaran(array $hak, array $saring, string $q, int $page): array
+    public function daftarPembayaran(array $hak, array $saring, string $q, int $page, bool $tanpaMenunggu = false): array
     {
         $params = [];
         $sql = self::PEMBAYARAN . $this->bsa->joinUnit() . $this->syaratHak($hak, $params);
+        // Fase 4: orang tua tidak melihat transfer menunggu — disaring di SQL agar
+        // jumlah total dan halaman juga tidak menghitungnya.
+        if ($tanpaMenunggu) {
+            $sql .= " AND b.status <> 'Menunggu'";
+        }
         foreach (['periode' => 't.periode', 'status' => 'b.status', 'sumber' => 'b.sumber'] as $kunci => $kolom) {
             if ($saring[$kunci] !== null) {
                 $sql .= ' AND ' . $kolom . ' = ?';

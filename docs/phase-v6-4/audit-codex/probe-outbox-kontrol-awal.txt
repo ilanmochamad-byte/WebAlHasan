@@ -1,0 +1,10 @@
+[lulus] Kegagalan outbox → 503 yang dapat dicoba ulang
+[gagal] Rollback penuh: uang, akun saldo, audit, klaim, dan seluruh penerima outbox tetap
+[lulus] Retry kunci sama sesudah kegagalan → satu kredit Rp100.000
+[lulus] Replay tidak menggandakan kredit, audit, atau notifikasi
+[lulus] Worker mengembalikan tepat penunjuk yang sah
+[lulus] Kunci tambahan tak dipercaya tidak masuk payload provider
+[lulus] Penunjuk dan event_key berbeda → ditolak
+[lulus] Master wali dicabut, relasi masih ada → worker menolak
+[lulus] Santri dinonaktifkan → worker menolak
+Ringkasan: 8 lulus, 1 gagal

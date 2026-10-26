@@ -1,0 +1,1 @@
+[lulus] Setelah proyek dev client dibuka kembali, FLAG_SECURE dilepas saat keluar navigator Keuangan ke Profil.

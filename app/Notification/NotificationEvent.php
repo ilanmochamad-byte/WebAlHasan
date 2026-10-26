@@ -92,6 +92,10 @@ final class NotificationEvent
             'v5_kesehatan_ringkasan_terbit' => 'Informasi kesehatan',
             'v5_kesehatan_ringkasan_diganti' => 'Informasi kesehatan diperbarui',
             'v5_kesehatan_tindak_lanjut' => 'Informasi kesehatan perlu perhatian',
+            'v6_bsa_tagihan_terbit' => 'Tagihan bulanan',
+            'v6_bsa_pembayaran_sah' => 'Pembayaran tercatat',
+            'v6_bsa_pembayaran_batal' => 'Pembaruan pembayaran',
+            'v6_bsa_tabungan' => 'Transaksi tabungan',
             default => $event,
         };
     }

@@ -18,7 +18,7 @@ use App\Ui\Layout;
  * menghasilkan 403, bukan notifikasi milik orang lain.
  *
  * Menyediakan: chip Semua/Belum dibaca/Sudah dibaca dan kategori dari jenis
- * peristiwa yang sudah tercatat (Perizinan, Rapor, Pembinaan, Kesehatan), pengelompokan
+ * peristiwa yang sudah tercatat (Perizinan, Rapor, Pembinaan, Kesehatan, Keuangan), pengelompokan
  * per hari, buka-dan-tandai-dibaca, detail, tandai semua dibaca, pagination,
  * serta keadaan kosong dan galat.
  */
@@ -88,6 +88,12 @@ function notifikasi_tujuan(array $item): ?string
     // PRD V5 Fase 3: hanya penunjuk; halaman tujuan memeriksa ulang relasi wali aktif.
     if (($tautan['tipe'] ?? '') === 'kesehatan_ringkasan' && (int) ($tautan['ringkasan_id'] ?? 0) > 0) {
         return app_url('/portal/kesehatan_wali.php?id=' . (int) $tautan['ringkasan_id']);
+    }
+    // PRD V6 Fase 4: penunjuk keuangan; halaman BSA memeriksa ulang hak (wali anak sendiri).
+    $bsa = ['bsa_tagihan' => ['tagihan_id', '/portal/bsa_tagihan.php'], 'bsa_pembayaran' => ['pembayaran_id', '/portal/bsa_kuitansi.php'],
+        'bsa_tabungan' => ['transaksi_id', '/portal/bsa_tabungan_kuitansi.php']][$tautan['tipe'] ?? ''] ?? null;
+    if ($bsa !== null && (int) ($tautan[$bsa[0]] ?? 0) > 0) {
+        return app_url($bsa[1] . '?id=' . (int) $tautan[$bsa[0]]);
     }
     if (($item['pengajuan_id'] ?? null) !== null) {
         return app_url('/portal/izin_detail.php?id=' . (int) $item['pengajuan_id']);
@@ -171,6 +177,7 @@ $chips = [
     ['label' => 'Rapor', 'query' => ['jenis' => 'rapor'], 'aktif' => $jenisAktif === 'rapor'],
     ['label' => 'Pembinaan', 'query' => ['jenis' => 'pembinaan'], 'aktif' => $jenisAktif === 'pembinaan'],
     ['label' => 'Kesehatan', 'query' => ['jenis' => 'kesehatan'], 'aktif' => $jenisAktif === 'kesehatan'],
+    ['label' => 'Keuangan', 'query' => ['jenis' => 'keuangan'], 'aktif' => $jenisAktif === 'keuangan'],
 ];
 ?>
 
@@ -204,6 +211,9 @@ $chips = [
                         ($detail['tautan']['tipe'] ?? '') === 'rapor' => 'Buka rapor semester',
                         ($detail['tautan']['tipe'] ?? '') === 'v3_publikasi' => 'Buka informasi pembinaan',
                         ($detail['tautan']['tipe'] ?? '') === 'kesehatan_ringkasan' => 'Buka informasi kesehatan',
+                        ($detail['tautan']['tipe'] ?? '') === 'bsa_tagihan' => 'Buka tagihan',
+                        ($detail['tautan']['tipe'] ?? '') === 'bsa_pembayaran' => 'Buka kuitansi pembayaran',
+                        ($detail['tautan']['tipe'] ?? '') === 'bsa_tabungan' => 'Buka transaksi tabungan',
                         default => 'Buka detail izin',
                     }) ?></a>
                 <?php endif; ?>

@@ -1,0 +1,7 @@
+[lulus] Android: tujuan deep link ditahan melewati login; akun BSA yang berhak membaca tujuan
+[lulus] Android petugas: referensi transfer sintetis benar dimuat dari API
+[lulus] Android disk/cache: 45 berkas, 0 berkas berpenanda keuangan/kata sandi, 0 bearer mentah
+[lulus] Android logcat proses: 1364 baris tanpa referensi/nama/kuitansi/kata sandi/bearer mentah
+[lulus] Android Recents: jendela Keuangan memakai FLAG_SECURE (gambar diperiksa terpisah)
+[gagal] Tidak ditemukan: AUDIT-NATIVE-TRANSFER-PRIVATE
+Ringkasan: 5 lulus, 1 gagal

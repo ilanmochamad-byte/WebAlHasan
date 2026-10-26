@@ -34,6 +34,7 @@ final class NotificationRepository
         'rapor' => 'v4%',
         'pembinaan' => 'v3%',
         'kesehatan' => 'v5%',
+        'keuangan' => 'v6%',
     ];
 
     public function __construct(private mysqli $db)

@@ -1,0 +1,5 @@
+[lulus] Android admin: membaca angka server, tanpa tombol mutasi
+[lulus] Android wali satu anak: tepat anak berelasi sendiri
+[lulus] Android wali asing: deep link tagihan Tsanawi ditolak tanpa nama/nominal
+[gagal] Tidak ditemukan: Assalamu
+Ringkasan: 3 lulus, 1 gagal

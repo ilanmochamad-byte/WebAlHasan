@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notification;
 
+use App\Bsa\BsaNotifikasi;
 use App\Kesehatan\RingkasanService;
 use App\Notification\Push\ExpoPushClient;
 use App\Notification\Push\PushClient;
@@ -229,6 +230,20 @@ final class NotificationDispatcher
             $row['judul'] = $teks['judul'];
             $row['isi'] = $teks['isi'];
         }
+        $penunjukBsa = null;
+        if (in_array((string) $row['event_type'], BsaNotifikasi::EVENTS, true)) {
+            // PRD V6 Fase 4: sumber daya masih dalam keadaan peristiwa, santri
+            // aktif, dan penerima masih wali aktif; teks dari katalog generik.
+            $penunjukBsa = BsaNotifikasi::pushMasihBerhak($this->db, $row);
+            if ($penunjukBsa === null) {
+                $this->outbox->markFailed($outboxId, $owner, 'AKSES_BERUBAH', 'Penerima atau keadaan transaksi tidak lagi berhak.', true);
+
+                return 'gagal';
+            }
+            $teks = BsaNotifikasi::teks((string) $row['event_type']);
+            $row['judul'] = $teks['judul'];
+            $row['isi'] = $teks['isi'];
+        }
         $perangkat = $this->devices->activeTokensFor($userId);
 
         if ($perangkat === []) {
@@ -254,6 +269,9 @@ final class NotificationDispatcher
         if (in_array((string) $row['event_type'], RingkasanService::EVENTS, true)) {
             // Penunjuk yang sudah diperiksa di atas; tidak ada kunci lain.
             $data = ['tipe' => RingkasanService::TIPE_TAUTAN, 'ringkasan_id' => $rid];
+        }
+        if ($penunjukBsa !== null) {
+            $data = $penunjukBsa;
         }
 
         $messages = [];

@@ -1,0 +1,65 @@
+Bundel  5854081 bita, host produksi: 0
+
+=== K-A. Petugas: setoran dari aplikasi, ketukan ganda, jawaban hilang ===
+[lulus] DB uji bersih (ledger kosong)
+[lulus] Rincian keuangan santri (petugas): tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Ketukan ganda "Catat setoran" → satu POST (terhitung 1); jawaban hilang tampil sebagai pesan jaringan
+[lulus] Server sudah menyimpan setoran pertama walau jawaban hilang (saldo Rp100.000)
+[lulus] Kirim ulang memakai kunci idempotensi yang SAMA
+[lulus] Tepat satu kredit Rp100.000 (tidak digandakan)
+[lulus] Formulir transaksi: tanpa gulir horizontal pada 375 px (selisih 0px)
+
+=== K-B. Belanja, melebihi saldo, transfer menunggu, verifikasi ===
+[lulus] Belanja Rp30.000 dari aplikasi → saldo Rp70.000
+[lulus] Belanja melebihi saldo → pesan server Bahasa Indonesia, saldo tetap
+[lulus] Setoran transfer tanpa centang → antrean Menunggu, saldo tetap
+[lulus] Verifikasi dari aplikasi (ketukan ganda) → satu POST, satu baris ledger, saldo Rp90.000
+[lulus] Verifikasi transfer: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Paritas: website menampilkan BSA-TB-2026-000001 satu kali dan saldo Rp90.000 yang sama
+
+=== K-C. Tagihan: bayar dari tabungan dan tunai ===
+[lulus] Rincian tagihan: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Tanpa centang persetujuan → tidak terkirim, tabungan tidak dipotong
+[lulus] Bayar dari tabungan (ketukan ganda) → satu debit + satu pembayaran; saldo Rp40.000, sisa Rp50.000
+[lulus] Kuitansi aplikasi: rujukan debit tabungan dan sisa sesudah Rp50.000
+[lulus] Kuitansi pembayaran: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Pembayaran tunai Rp20.000 dari aplikasi → terbayar Rp70.000
+[lulus] Paritas tagihan: dua kuitansi aplikasi tampil sekali di website, sisa Rp30.000
+
+=== K-D. Konflik versi dan penerbitan ===
+[lulus] Revisi dari layar versi lama → 409 dengan pesan muat ulang; tagihan tidak tertimpa
+[lulus] Tombol "Muat versi terbaru" memuat versi 2
+[lulus] Penerbitan massal dari aplikasi (ketukan ganda) → satu batch, 41 tagihan
+[lulus] Penerbitan: tanpa gulir horizontal pada 375 px (selisih 0px)
+
+=== K-E. Admin hanya membaca; rekonsiliasi = API ===
+[lulus] Admin: tanpa tombol penerbitan
+[lulus] Admin: rincian santri tanpa tombol mutasi; saldo Rp40.000 sama
+[lulus] Admin (internal) melihat referensi setoran transfer seperti website (wali tidak — diuji K-F)
+[lulus] Rekonsiliasi aplikasi = API (kas baru Rp140.000, internal Rp50.000, selisih Rp0)
+[lulus] Rekonsiliasi: tanpa gulir horizontal pada 375 px (selisih 0px)
+
+=== K-F. Wali dua anak, notifikasi, wali lain ===
+[lulus] Wali dua anak: dua kartu terpisah, saldo per anak = API (Rp40.000, Rp0)
+[lulus] Keuangan anak: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Rincian anak Tsanawi: tanpa data anak SMP, tanpa referensi atau antrean transfer
+[lulus] Notifikasi → "Buka tagihan" → rincian tagihan anak (tanpa tombol petugas/riwayat internal)
+[lulus] Wali: local/sessionStorage tanpa referensi atau nama santri
+[lulus] Wali SMP membuka URL anak Tsanawi → ditolak tanpa nama/angka
+[lulus] Wali SMP membuka tagihan anaknya sendiri → tampil
+
+=== K-G. Pencabutan saat layar terbuka, sesi berakhir, offline ===
+[lulus] Relasi dicabut saat layar anak terbuka → muat ulang ditolak, data tidak tampil
+[lulus] Pintu keuangan wali kini hanya satu anak
+[lulus] Offline → pesan "Perangkat sedang offline…" dengan tombol coba lagi
+[lulus] Kembali online → coba lagi memuat data
+[lulus] Token dicabut/kedaluwarsa → aplikasi kembali ke layar masuk
+[lulus] Penugasan dinonaktifkan saat formulir terbuka → kirim ditolak 403 berpesan jelas, tanpa mutasi
+[lulus] Petugas: local/sessionStorage tanpa referensi atau nama santri
+
+=== K-H. Konsol dan jaringan ===
+[lulus] Konsol (61 baris) tanpa referensi transfer, token, atau kata sandi
+[lulus] Nol permintaan ke luar 127.0.0.1 (0)
+
+Ringkasan: 45 lulus, 0 gagal
+galat PHP server aplikasi: 0

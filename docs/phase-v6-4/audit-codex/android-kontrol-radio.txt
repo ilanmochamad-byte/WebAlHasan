@@ -1,0 +1,3 @@
+[lulus] Android dev client: setoran Rp100.000 → satu kredit dan saldo sesuai server
+[gagal] Tidak ditemukan tombol: Belanja
+Ringkasan: 1 lulus, 1 gagal

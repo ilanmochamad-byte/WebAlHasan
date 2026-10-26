@@ -473,6 +473,33 @@ admin dan orang tua hanya membaca, di luar hak `404`. Setiap mutasi memakai
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v6-3/README.md`.
 
+### Paritas aplikasi dan pemberitahuan V6 Fase 4 (25–26 Oktober 2026)
+
+Tanpa endpoint atau migrasi baru; aplikasi Expo memakai endpoint Fase 1–3 di
+atas. Perubahan aditif/penyempitan untuk orang tua:
+
+- Pemberitahuan umum kepada wali aktif santri (InApp; Push bila sakelar
+  Push menyala dan wali berperangkat), diantre di dalam transaksi mutasi yang
+  sama: `v6_bsa_tagihan_terbit` (tagihan tunggal/massal), `v6_bsa_pembayaran_sah`
+  (pembayaran tunai/transfer sah, verifikasi, bayar dari tabungan),
+  `v6_bsa_pembayaran_batal` (pembatalan pembayaran sah), `v6_bsa_tabungan`
+  (setoran/penarikan/belanja sah, verifikasi setoran, koreksi). Transfer
+  menunggu/ditolak tidak diberitahukan; replay tidak mengantre ulang. Judul/isi
+  generik tanpa nominal, nama, kuitansi, atau referensi. Data Push hanya
+  `{tipe: bsa_tagihan|bsa_pembayaran|bsa_tabungan, tagihan_id|pembayaran_id|transaksi_id}`;
+  worker memeriksa ulang keadaan sumber, santri aktif, dan relasi wali sebelum
+  provider (`AKSES_BERUBAH` bila tidak lagi berhak).
+- `GET /notifikasi`: `tautan` bertambah `tagihan_id`, `pembayaran_id`,
+  `transaksi_id` (aditif); kategori `jenis=keuangan`. Klien wajib meminta
+  `/v6/bsa/tagihan/{id}`, `/v6/bsa/pembayaran/{id}`, atau `/v6/bsa/tabungan/{id}`
+  sesudah diketuk; anak lain → `404`. Tautan skema aplikasi
+  `alhasanapps://keuangan/{tagihan|pembayaran|tabungan}/{id}` hanya penunjuk.
+- Orang tua: `GET /v6/bsa/pembayaran` kini menyaring transfer menunggu di SQL
+  (`total` dan halaman tidak lagi menghitungnya); `GET /v6/bsa/tunggakan`
+  mengembalikan `menunggu_verifikasi: 0` bagi orang tua.
+
+Rincian, penafsiran, dan batas uji: `docs/phase-v6-4/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh

@@ -144,6 +144,10 @@ final class NotificationCenterService
                 'publikasi_id' => isset($data['publikasi_id']) ? (int) $data['publikasi_id'] : null,
                 'rapor_id' => isset($data['rapor_id']) ? (int) $data['rapor_id'] : null,
                 'ringkasan_id' => isset($data['ringkasan_id']) ? (int) $data['ringkasan_id'] : null,
+                // PRD V6 Fase 4 (aditif): penunjuk keuangan; endpoint BSA memeriksa ulang hak.
+                'tagihan_id' => isset($data['tagihan_id']) ? (int) $data['tagihan_id'] : null,
+                'pembayaran_id' => isset($data['pembayaran_id']) ? (int) $data['pembayaran_id'] : null,
+                'transaksi_id' => isset($data['transaksi_id']) ? (int) $data['transaksi_id'] : null,
             ],
         ];
     }
@@ -172,7 +176,7 @@ final class NotificationCenterService
     }
 
     /**
-     * Kategori jenis peristiwa (Perizinan, Rapor, Pembinaan, Kesehatan) atau null.
+     * Kategori jenis peristiwa (Perizinan, Rapor, Pembinaan, Kesehatan, Keuangan) atau null.
      *
      * @param array<string, mixed> $query
      */
