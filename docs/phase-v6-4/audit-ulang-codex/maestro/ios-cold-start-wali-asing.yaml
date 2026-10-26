@@ -1,0 +1,60 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Masukkan username",
+      "timeout": 15000
+    }
+  },
+  {
+    "tapOn": "Masukkan username"
+  },
+  "eraseText",
+  {
+    "inputText": "sbx_v6_wali_smp"
+  },
+  {
+    "tapOn": "Masuk ke akun Anda"
+  },
+  {
+    "tapOn": "Masukkan password"
+  },
+  "waitForAnimationToEnd",
+  {
+    "inputText": "Sandbox#123"
+  },
+  {
+    "pressKey": "enter"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Not Now|Keuangan anak|Keuangan|Rincian biaya|Data belum dapat ditampilkan",
+      "timeout": 15000
+    }
+  },
+  {
+    "runFlow": {
+      "when": {
+        "visible": "Not Now"
+      },
+      "commands": [
+        {
+          "tapOn": "Not Now"
+        }
+      ]
+    }
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Data belum dapat ditampilkan",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertNotVisible": ".*SBX V6 Santri Tsanawi.*"
+  },
+  {
+    "assertNotVisible": "Rp120[.]000"
+  }
+]

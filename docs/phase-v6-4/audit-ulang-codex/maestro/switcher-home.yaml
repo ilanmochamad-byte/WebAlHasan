@@ -1,0 +1,5 @@
+appId: com.ilanmochamad.alhasanApps
+---
+- pressKey: home
+- pressKey: home
+- waitForAnimationToEnd

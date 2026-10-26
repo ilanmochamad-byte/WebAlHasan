@@ -1,0 +1,25 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow login
+Launch app "com.ilanmochamad.alhasanApps"... COMPLETED
+Assert that "Masukkan username" is visible... COMPLETED
+Tap on "Masukkan username"... COMPLETED
+Erase text... COMPLETED
+Input text sbx_v6_bsa_b... COMPLETED
+Hide Keyboard... COMPLETED
+Wait for animation to end... COMPLETED
+Tap on "Masukkan password"... COMPLETED
+Wait for animation to end... COMPLETED
+Erase text... COMPLETED
+Input text Sandbox#123... COMPLETED
+Hide Keyboard... FAILED
+
+Couldn't hide the keyboard. This can happen if the app uses a custom input or doesn't expose a standard dismiss action.
+
+Instead of hideKeyboard, try tapping on non-interactive element to hide keyboard. Example:
+
+- tapOn:
+    text: 'Static Text on your screen'
+
+==== Debug output (logs & screenshots) ====
+
+/private/tmp/v6f4-reaudit-maestro/output-login-final/2026-10-26_202226

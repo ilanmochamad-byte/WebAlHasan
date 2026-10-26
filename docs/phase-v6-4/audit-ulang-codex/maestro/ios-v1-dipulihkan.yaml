@@ -1,0 +1,19 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "tapOn": "Coba lagi"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Saldo saat ini Rp100\\.000",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertNotVisible": ".*Informasi tidak dapat diakses.*"
+  },
+  {
+    "assertNotVisible": "5000"
+  }
+]

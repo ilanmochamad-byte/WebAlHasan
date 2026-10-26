@@ -1,0 +1,16 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Keuangan anak",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertVisible": ".*SBX V6 Santri SMP.*"
+  },
+  {
+    "assertNotVisible": ".*SBX V6 Santri Tsanawi.*"
+  }
+]

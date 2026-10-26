@@ -1,0 +1,22 @@
+appId: com.ilanmochamad.alhasanApps
+---
+- launchApp:
+    permissions:
+      all: deny
+- extendedWaitUntil:
+    visible: "Masukkan username"
+    timeout: 20000
+- tapOn: "Masukkan username"
+- eraseText
+- inputText: "sbx_v6_bsa_b"
+- hideKeyboard
+- waitForAnimationToEnd
+- tapOn: "Masukkan password"
+- waitForAnimationToEnd
+- eraseText
+- inputText: "Sandbox#123"
+- pressKey: enter
+- extendedWaitUntil:
+    visible: "Keuangan"
+    timeout: 20000
+- assertVisible: "Keuangan"
