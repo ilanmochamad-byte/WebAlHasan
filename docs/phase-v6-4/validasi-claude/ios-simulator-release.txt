@@ -1,0 +1,21 @@
+# iOS simulator — build Release (bukan dev client), 26 Oktober 2026
+Xcode 27.1, simulator iPhone 17 Pro iOS 26.2 (05999342-…), salinan alhasanApps 87d1c10 tanpa .env*, npm ci (Expo 57.0.15).
+Debug: linker gagal (sama dengan audit Codex) — lihat ../audit-codex/ios-build.txt.
+Release, CODE_SIGNING_ALLOWED=NO: BUILD SUCCEEDED, tetapi SecureStore gagal menyimpan token (KeyChainException: entitlement tidak ada) — batas build tanpa tanda tangan, bukan cacat aplikasi.
+Release, CODE_SIGN_IDENTITY=- (Sign to Run Locally, adhoc): BUILD SUCCEEDED; main.jsbundle: host produksi 0, API lokal 127.0.0.1:8984.
+
+[lulus] Login sbx_v6_bsa_b, token tersimpan; Beranda menampilkan ubin Keuangan (ios-pintu-keuangan.png menunjukkan pintu)
+[lulus] Pintu Keuangan termuat sesudah perlindungan expo-screen-capture siap (status ready = preventScreenCaptureAsync + enableAppSwitcherProtectionAsync berhasil); geser-kembali dari tepi kiri kembali ke Beranda
+[lulus] Tautan skema alhasanapps://keuangan/transaksi?santri_id=1710&mode=setoran membuka formulir (sesi aktif)
+[lulus] Ketukan ganda Catat setoran Rp100.000 → ledger 1, klaim idempotensi 1, saldo Rp100.000, InApp wali 2 (ios-setoran-ketukan-ganda.png)
+[lulus] F-1: penugasan dinonaktifkan saat formulir terbuka (nominal 5000 terisi) → POST 403, layar tertutup tanpa nama/saldo/draf (ios-f1-ditolak-tanpa-data.png); saldo DB tetap Rp100.000, ledger tetap 1
+[gagal→dikoreksi] Penugasan dipulihkan, Coba lagi → formulir termuat tetapi pesan 'Informasi tidak dapat diakses…' lama tetap tampil (ios-pesan-basi-sesudah-coba-lagi.png) — dikoreksi di claude/prd-v6-fase-4-validasi
+[lulus] Kontainer data aplikasi 52 berkas: 0 'SBX V6 Santri', 0 'BSA-TB-', 0 kata sandi, 0 'Rp100', 0 NIS
+[lulus] Log proses alhasanApps 15 menit (7.583 baris): 0 nama santri, 0 kuitansi, 0 'Bearer', 0 kata sandi, 0 NIS
+[tidak diverifikasi visual] Cuplikan pengalih aplikasi iOS: gestur pengalih tidak terbuka lewat simulasi sentuh; perlindungan hanya dibuktikan dari keberhasilan panggilan native.
+Tidak diuji: perangkat fisik, Push nyata, cold start dari Push, alur wali di iOS (diuji di Expo web dan Android emulator).
+
+# Build Release ulang dengan sumber koreksi (branch claude/prd-v6-fase-4-validasi), dipasang menimpa (sesi tetap)
+[lulus] BUILD SUCCEEDED; main.jsbundle host produksi 0
+[lulus] Penugasan dicabut saat formulir terisi 5000 → 403, layar tertutup tanpa data (ios-koreksi-f1-ditolak.png); saldo Rp100.000, ledger 1
+[lulus] Penugasan dipulihkan, Coba lagi → formulir bersih tanpa pesan penolakan lama (ios-koreksi-coba-lagi-bersih.png)
