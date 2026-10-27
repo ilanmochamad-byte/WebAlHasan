@@ -8,14 +8,14 @@ use App\Izin\IzinWaliService;
 require_once __DIR__ . '/_izin_wali.php';
 
 /**
- * Pengajuan izin wali (PRD V7 Fase 1) — satu alamat, tampilan per peran:
+ * Pengajuan izin wali (PRD V7 Fase 1–2) — satu alamat, tampilan per peran:
  *   - orang tua : pengajuan wali untuk anak berelasi aktif (pengaju: isi
  *                 lengkap; wali lain: status ringkas) + tombol Ajukan izin;
- *   - pembimbing: antrean pengajuan yang dialamatkan kepadanya (hanya baca;
- *                 tindakan tinjauan adalah Fase 2);
+ *   - pembimbing: antrean yang dialamatkan kepadanya (tinjauan di rincian)
+ *                 dan riwayat yang sudah ditinjau dengan status terkini;
  *   - admin     : pemantauan seluruh pengajuan wali dan antrean penetapan
- *                 pembimbing.
- * Murobi tidak memperoleh apa pun di sini sebelum pembimbing meneruskan.
+ *                 pembimbing/murobi.
+ * Murobi memutus pengajuan yang sudah diteruskan dari antrean perizinan V2.
  */
 
 $mode = (string) portal_requested_mode($currentUser, $userCapabilities);
@@ -29,7 +29,9 @@ try {
     $akses = $svc->akses($currentUser);
     $data = match ($peran) {
         IzinWaliService::PERAN_WALI => $svc->daftarWali($currentUser, $_GET['santri_id'] ?? null, $_GET['page'] ?? 1),
-        IzinWaliService::PERAN_PEMBIMBING => $svc->antreanPembimbing($currentUser, $_GET['page'] ?? 1),
+        IzinWaliService::PERAN_PEMBIMBING => ($_GET['riwayat'] ?? '') === '1'
+            ? $svc->riwayatPembimbing($currentUser, $_GET['page'] ?? 1)
+            : $svc->antreanPembimbing($currentUser, $_GET['page'] ?? 1),
         default => $svc->daftarAdmin($currentUser, [
             'antrean' => ($_GET['antrean'] ?? '1') === '1' ? '1' : '0',
             'status' => $_GET['status'] ?? null,
@@ -54,7 +56,7 @@ portal_header($judul, $userCapabilities, $mode, $currentUser, [
     'description' => match ($peran) {
         IzinWaliService::PERAN_WALI => 'Izin yang diajukan wali melalui pembimbing. Wali lain pada anak yang sama hanya melihat status ringkas.',
         IzinWaliService::PERAN_PEMBIMBING => 'Pengajuan wali untuk santri dalam cakupan penugasan pembimbing aktif Anda.',
-        default => 'Seluruh pengajuan wali. Antrean admin berisi pengajuan tanpa tepat satu pembimbing sah.',
+        default => 'Seluruh pengajuan wali. Antrean admin berisi pengajuan tanpa tepat satu pembimbing sah atau murobi tunggal.',
     },
     'actions' => $tombol,
     'breadcrumbs' => [
@@ -67,6 +69,13 @@ portal_header($judul, $userCapabilities, $mode, $currentUser, [
 ]);
 portal_flash_render();
 
+$riwayatPembimbing = $peran === IzinWaliService::PERAN_PEMBIMBING && ($_GET['riwayat'] ?? '') === '1';
+if ($peran === IzinWaliService::PERAN_PEMBIMBING) {
+    echo ah_chips([
+        ['label' => 'Menunggu tinjauan', 'url' => '?riwayat=0', 'active' => !$riwayatPembimbing, 'count' => (int) $akses['antrean_pembimbing']],
+        ['label' => 'Sudah ditinjau', 'url' => '?riwayat=1', 'active' => $riwayatPembimbing],
+    ], 'Saring pengajuan wali');
+}
 if ($peran === IzinWaliService::PERAN_ADMIN) {
     $antrean = (bool) $data['filter']['antrean'];
     echo ah_chips([
@@ -79,7 +88,7 @@ if ($data['items'] === []) {
     echo ah_empty(
         match ($peran) {
             IzinWaliService::PERAN_WALI => 'Belum ada pengajuan wali',
-            IzinWaliService::PERAN_PEMBIMBING => 'Antrean kosong',
+            IzinWaliService::PERAN_PEMBIMBING => $riwayatPembimbing ? 'Belum ada yang ditinjau' : 'Antrean kosong',
             default => 'Tidak ada pengajuan yang cocok',
         },
         match ($peran) {
@@ -107,7 +116,7 @@ if ($data['items'] === []) {
 } else {
     ?>
     <section class="ah-card" aria-labelledby="ah-daftar-wali">
-        <div class="ah-card__head"><span id="ah-daftar-wali"><?= $peran === IzinWaliService::PERAN_PEMBIMBING ? 'Menunggu tinjauan Anda' : 'Daftar pengajuan wali' ?></span>
+        <div class="ah-card__head"><span id="ah-daftar-wali"><?= $peran === IzinWaliService::PERAN_PEMBIMBING ? ($riwayatPembimbing ? 'Sudah Anda tinjau' : 'Menunggu tinjauan Anda') : 'Daftar pengajuan wali' ?></span>
             <span class="text-muted small"><?= count($data['items']) ?> dari <?= (int) $data['total'] ?></span></div>
         <div class="ah-table-wrap"><table class="ah-table ah-table--cards">
             <caption class="ah-visually-hidden">Pengajuan izin wali</caption>
@@ -122,7 +131,7 @@ if ($data['items'] === []) {
                     <td><?= portal_e(ah_rentang($item['tgl_izin'], $item['tgl_kembali'])) ?></td>
                     <td class="ah-col-secondary"><?= portal_e(mb_strimwidth((string) $item['alasan'], 0, 70, '…')) ?></td>
                     <td><?= portal_e($item['pembimbing']['nama'] ?? 'Belum ditetapkan') ?>
-                        <?php if ($item['perlu_admin']): ?><span class="ah-cell-sub"><?= ah_badge('Perlu penetapan admin', 'warn') ?></span><?php endif; ?></td>
+                        <?php if ($item['perlu_admin']): ?><span class="ah-cell-sub"><?= ah_badge($item['status'] === 'Perlu Penetapan Admin' ? 'Perlu penetapan murobi' : 'Perlu penetapan admin', 'warn') ?></span><?php endif; ?></td>
                     <td><?= izin_wali_status((string) $item['status']) ?></td>
                 </tr>
             <?php endforeach; ?>
@@ -132,7 +141,4 @@ if ($data['items'] === []) {
     <?php
 }
 portal_pagination((int) $data['total'], (int) $data['page'], (int) $data['per_page']);
-if ($peran === IzinWaliService::PERAN_PEMBIMBING) {
-    echo '<p class="small text-muted">Tindakan tinjauan (minta perbaikan, tolak, teruskan ke murobi) belum tersedia pada tahap ini.</p>';
-}
 portal_footer();

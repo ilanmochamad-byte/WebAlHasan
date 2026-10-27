@@ -413,7 +413,7 @@ final class IzinRepository
                        p.pengurus_id, p.murobi_guru_id, p.diajukan_oleh_user_id, p.tahun_ajaran_id,
                        p.routing_kandidat, p.routing_catatan, p.routing_pada,
                        p.murobi_ditetapkan_pada, p.dibatalkan_pada, p.alasan_pembatalan,
-                       s.nis, s.nama_santri,
+                       s.nis, s.nama_santri, " . $this->kolomAsal() . ",
                        pg.nama AS pengurus_nama, g.nama_guru AS murobi_nama,
                        ta.tahun AS tahun_ajaran, ta.semester AS semester,
                        k.hasil AS keputusan_hasil, k.kapasitas AS keputusan_kapasitas, k.diputus_pada,
@@ -459,6 +459,13 @@ final class IzinRepository
                 WHERE sw.wali_id = ? AND sw.archived_at IS NULL
                   AND w.is_active = 1 AND w.archived_at IS NULL)';
             $params[] = (int) ($scope['wali_id'] ?? 0);
+            // PRD V7 Fase 2: sesudah diteruskan, pengajuan wali berstatus V2.
+            // Orang tua tetap membacanya HANYA lewat `IzinWaliService`, yang
+            // membedakan wali pengaju (isi) dari wali lain (status ringkas);
+            // tampilan V2 tidak boleh membuka alasan kepada wali lain.
+            if ($this->adaAsal()) {
+                $parts[] = "p.asal_pengajuan = 'Pengurus'";
+            }
         } else {
             // Cakupan tidak dikenal: jangan pernah membocorkan data.
             $parts[] = '1 = 0';
@@ -531,6 +538,17 @@ final class IzinRepository
         }
 
         return [$parts === [] ? '' : ' WHERE ' . implode(' AND ', $parts), $params];
+    }
+
+    /** Kolom asal V7 (migrasi 030) bila ada; sebelum 030 semua baris berasal pengurus. */
+    private function adaAsal(): bool
+    {
+        return \App\Database\Schema::hasColumn($this->db, 'izin_pengajuan', 'asal_pengajuan');
+    }
+
+    private function kolomAsal(): string
+    {
+        return $this->adaAsal() ? 'p.asal_pengajuan' : "'Pengurus' AS asal_pengajuan";
     }
 
     /**

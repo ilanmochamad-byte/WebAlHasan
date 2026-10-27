@@ -11,14 +11,18 @@ use RuntimeException;
 use Throwable;
 
 /**
- * Pengajuan izin oleh orang tua/wali melalui pembimbing (PRD V7 Fase 1).
+ * Pengajuan izin oleh orang tua/wali melalui pembimbing (PRD V7 Fase 1–2).
  *
- * Satu pintu untuk website dan REST API. Fase 1 mencakup: wali berelasi aktif
- * membuat SATU pengajuan kanonis dan membaca statusnya; routing pembimbing
- * (tepat satu sah → antrean pembimbing, nol/lebih → antrean admin); antrean
- * pembimbing hanya-baca; pemantauan admin dan penetapan pembimbing sah.
- * Tinjauan pembimbing, perbaikan, penerusan ke murobi, pembatalan wali, dan
- * notifikasi adalah Fase 2–3 dan sengaja belum ada di sini.
+ * Satu pintu untuk website dan REST API. Fase 1: wali berelasi aktif membuat
+ * SATU pengajuan kanonis dan membaca statusnya; routing pembimbing (tepat satu
+ * sah → antrean pembimbing, nol/lebih → antrean admin); pemantauan admin dan
+ * penetapan pembimbing sah. Fase 2: pembimbing meminta perbaikan, menolak,
+ * atau meneruskan; wali pengaju memperbaiki/mengirim ulang saat diminta atau
+ * membatalkan sebelum keputusan akhir; penerusan menjalankan routing murobi V2
+ * pada baris yang SAMA, lalu penetapan murobi, keputusan murobi/admin
+ * pengganti, dan koreksi tetap `IzinWorkflowService` V2. Penolakan pembimbing
+ * berstatus `Ditolak Pembimbing` dan tidak pernah menulis `izin_keputusan`.
+ * Notifikasi V7 adalah Fase 3 dan sengaja belum ada di sini.
  *
  * Prinsip (sama dengan alur V2 `IzinWorkflowService`):
  *   1. Hak dihitung ulang dari basis data pada setiap panggilan; parameter
@@ -39,10 +43,21 @@ final class IzinWaliService
 {
     public const OP_CREATE = 'izin.wali.create';
     public const OP_PENETAPAN = 'izin.wali.penetapan_pembimbing';
+    public const OP_TINJAUAN = 'izin.wali.tinjauan';
+    public const OP_PERBAIKAN = 'izin.wali.perbaikan';
+    public const OP_BATAL = 'izin.wali.batal';
 
     public const PERAN_WALI = 'wali';
     public const PERAN_PEMBIMBING = 'pembimbing';
     public const PERAN_ADMIN = 'admin';
+    public const PERAN_MUROBI = 'murobi';
+
+    /** Kode tindakan pembimbing (web/API) → nilai tersimpan. */
+    public const TINDAKAN = [
+        'minta_perbaikan' => IzinWaliRepository::TINJAUAN_MINTA_PERBAIKAN,
+        'tolak' => IzinWaliRepository::TINJAUAN_TOLAK,
+        'teruskan' => IzinWaliRepository::TINJAUAN_TERUSKAN,
+    ];
 
     public function __construct(
         private IzinWaliRepository $repo,
@@ -51,7 +66,8 @@ final class IzinWaliService
         private PembimbingRouter $router,
         private IzinIdempotency $idempotency,
         private Capabilities $capabilities,
-        private AuditLogger $audit
+        private AuditLogger $audit,
+        private ?IzinRouter $murobiRouter = null
     ) {
     }
 
@@ -83,6 +99,8 @@ final class IzinWaliService
             'wali' => $peran[self::PERAN_WALI],
             'pembimbing' => $peran[self::PERAN_PEMBIMBING],
             'admin' => $peran[self::PERAN_ADMIN],
+            'murobi' => $peran[self::PERAN_MUROBI],
+            'tinjauan_terpasang' => $this->repo->fase2Terpasang(),
             'boleh_mengajukan' => false,
             'antrean_pembimbing' => 0,
             'antrean_admin' => 0,
@@ -388,6 +406,382 @@ final class IzinWaliService
     }
 
     // =======================================================================
+    // 2a. Tinjauan pembimbing (Fase 2)
+    // =======================================================================
+
+    /**
+     * Minta perbaikan, tolak, atau teruskan oleh pembimbing tujuan yang masih
+     * sah. Penolakan menutup pengajuan pada tahap pembimbing (status `Ditolak
+     * Pembimbing`, melepas rentang tanggal) TANPA baris `izin_keputusan`.
+     * Penerusan menjalankan routing murobi V2 pada baris yang sama: tepat satu
+     * murobi → `Diajukan`; nol/lebih → `Perlu Penetapan Admin`.
+     *
+     * @param array<string, mixed> $user
+     * @param array{ip:?string, user_agent:?string} $meta
+     * @return array<string, mixed>
+     */
+    public function tinjau(array $user, int $id, mixed $tindakan, mixed $catatan, mixed $expectedVersion, ?string $idempotencyKey, array $meta): array
+    {
+        $this->wajibFase2();
+        $kode = is_string($tindakan) ? $tindakan : '';
+        if (!isset(self::TINDAKAN[$kode])) {
+            throw IzinException::invalid('Tindakan tinjauan harus minta_perbaikan, tolak, atau teruskan.');
+        }
+        $tindakan = self::TINDAKAN[$kode];
+        $this->wajibPembimbing($user);
+        $userId = (int) $user['id'];
+        $key = $this->idempotency->normalizeKey($idempotencyKey);
+        $catatan = match ($tindakan) {
+            IzinWaliRepository::TINJAUAN_MINTA_PERBAIKAN => $this->requireText($catatan, 'Catatan perbaikan untuk wali', 3, 2000),
+            IzinWaliRepository::TINJAUAN_TOLAK => $this->requireText($catatan, 'Alasan penolakan', 3, 2000),
+            default => $this->optionalText($catatan, 'Catatan penerusan', 1000),
+        };
+        $version = $this->requireVersion($expectedVersion);
+        $payload = ['pengajuan_id' => $id, 'tindakan' => $tindakan, 'catatan' => $catatan, 'version' => $version];
+        $onDate = $this->today();
+
+        return $this->transactional(function () use ($userId, $id, $tindakan, $catatan, $version, $key, $payload, $onDate, $meta): array {
+            $this->repo->kunciAkun($userId);
+            // Hak dibaca ulang SESUDAH kunci akun: role/penugasan yang dicabut
+            // selagi permintaan menunggu tidak lagi memberi hak (sesi/token lama).
+            $pengurusId = $this->wajibPembimbing(['id' => $userId]);
+            $replay = $this->idempotency->begin($userId, self::OP_TINJAUAN, $key, $payload);
+            if ($replay !== null) {
+                $row = $this->repo->find($id, $onDate);
+                if ($row === null || (int) ($row['pembimbing_pengurus_id'] ?? 0) !== $pengurusId || (int) $row['pembimbing_sah'] !== 1) {
+                    throw IzinException::notFound();
+                }
+
+                return $replay['response'] + ['idempotent_replay' => true, 'status_http' => 200];
+            }
+
+            $row = $this->write->lockPengajuan($id);
+            if ($row === null || (string) ($row['asal_pengajuan'] ?? '') !== 'Wali'
+                || $row['pembimbing_pengurus_id'] === null || (int) $row['pembimbing_pengurus_id'] !== $pengurusId) {
+                throw IzinException::notFound();
+            }
+            // Kelayakan dihitung ulang sesudah baris dikunci; penugasan dikunci
+            // baca sampai transaksi selesai, sehingga pencabutan bersamaan
+            // menunggu atau membuat tindakan ini ditolak.
+            $santriId = (int) $row['santri_id'];
+            $assignmentId = $this->router->assignmentFor($pengurusId, $santriId, $onDate, true);
+            if ($assignmentId === null) {
+                throw IzinException::notFound();
+            }
+            $statusSebelum = (string) $row['status'];
+            if ($statusSebelum !== IzinWaliRepository::STATUS_MENUNGGU_PEMBIMBING) {
+                throw IzinException::conflict('Pengajuan berstatus ' . self::statusLabel($statusSebelum) . ' sehingga tidak lagi menunggu tinjauan pembimbing.');
+            }
+            if ((int) $row['version'] !== $version) {
+                throw IzinException::conflict('Pengajuan sudah diperbarui pihak lain (versi ' . (int) $row['version'] . '). Muat ulang halaman lalu ulangi.');
+            }
+
+            $murobiGuruId = null;
+            $jumlahMurobi = null;
+            $routing = null;
+            if ($tindakan === IzinWaliRepository::TINJAUAN_TERUSKAN) {
+                $santri = $this->read->santriBasic($santriId);
+                if ($santri === null || (int) $santri['is_active'] !== 1 || $santri['archived_at'] !== null) {
+                    throw IzinException::invalid('Santri tidak aktif sehingga pengajuan tidak dapat diteruskan.');
+                }
+                // Routing murobi V2 yang SAMA dengan jalur pengurus.
+                $routing = $this->murobiRouter()->resolve($santriId, $onDate);
+                $statusSesudah = (string) $routing['status'];
+                $murobiGuruId = $routing['murobi_guru_id'];
+                $jumlahMurobi = (int) $routing['jumlah'];
+                $ok = $this->repo->applyTeruskan($id, $statusSesudah, $murobiGuruId, $jumlahMurobi, mb_substr((string) $routing['catatan'], 0, 255), $version);
+            } else {
+                $statusSesudah = $tindakan === IzinWaliRepository::TINJAUAN_TOLAK
+                    ? IzinWaliRepository::STATUS_DITOLAK_PEMBIMBING
+                    : IzinWaliRepository::STATUS_PERLU_PERBAIKAN;
+                $ok = $this->repo->applyTinjauan($id, $statusSesudah, $version);
+            }
+            if (!$ok) {
+                throw IzinException::conflict('Pengajuan sudah berubah sejak halaman ini dimuat. Muat ulang lalu coba lagi.');
+            }
+
+            $tinjauanId = $this->repo->insertTinjauan([
+                'pengajuan_id' => $id,
+                'tindakan' => $tindakan,
+                'pengurus_id' => $pengurusId,
+                'assignment_id' => $assignmentId,
+                'actor' => $userId,
+                'catatan' => $catatan,
+                'status_sebelum' => $statusSebelum,
+                'status_sesudah' => $statusSesudah,
+                'versi_sebelum' => $version,
+                'isi_hash' => self::isiHash($row['tgl_izin'], $row['tgl_kembali'], $row['alasan'], $row['catatan_wali']),
+                'murobi_guru_id' => $murobiGuruId,
+                'murobi_routing_kandidat' => $jumlahMurobi,
+            ]);
+            $peristiwa = match ($tindakan) {
+                IzinWaliRepository::TINJAUAN_MINTA_PERBAIKAN => 'tinjauan_minta_perbaikan',
+                IzinWaliRepository::TINJAUAN_TOLAK => 'tinjauan_ditolak_pembimbing',
+                default => 'tinjauan_diteruskan',
+            };
+            $this->write->insertRiwayat($this->historyRow($id, $peristiwa, $statusSebelum, $statusSesudah, $userId, 'Pembimbing', $catatan, $meta));
+            if ($routing !== null) {
+                $this->write->insertRiwayat($this->historyRow(
+                    $id,
+                    $jumlahMurobi === 1 ? 'routing_otomatis' : 'routing_perlu_admin',
+                    $statusSesudah,
+                    $statusSesudah,
+                    $userId,
+                    'Sistem',
+                    (string) $routing['catatan'],
+                    $meta
+                ));
+            }
+
+            $response = [
+                'id' => $id,
+                'tindakan' => array_search($tindakan, self::TINDAKAN, true),
+                'status' => $statusSesudah,
+                'tahap' => self::tahap($statusSesudah),
+                'version' => $version + 1,
+                'tinjauan_id' => $tinjauanId,
+            ];
+            if ($routing !== null) {
+                $response['murobi_guru_id'] = $murobiGuruId;
+                $response['perlu_penetapan_murobi'] = $jumlahMurobi !== 1;
+            }
+            $this->idempotency->complete($userId, self::OP_TINJAUAN, $key, 200, $response, $id);
+            $this->auditOrFail(match ($tindakan) {
+                IzinWaliRepository::TINJAUAN_MINTA_PERBAIKAN => 'izin_wali_diminta_perbaikan',
+                IzinWaliRepository::TINJAUAN_TOLAK => 'izin_wali_ditolak_pembimbing',
+                default => 'izin_wali_diteruskan',
+            }, $id, ['status' => $statusSebelum, 'version' => $version], [
+                'status' => $statusSesudah,
+                'version' => $version + 1,
+                'tinjauan_id' => $tinjauanId,
+                'pembimbing_pengurus_id' => $pengurusId,
+                'pembimbing_assignment_id' => $assignmentId,
+                'murobi_guru_id' => $murobiGuruId,
+                'jumlah_kandidat_murobi' => $jumlahMurobi,
+                'catatan_terisi' => $catatan !== null,
+            ], $userId);
+
+            return $response + ['idempotent_replay' => false, 'status_http' => 200];
+        });
+    }
+
+    // =======================================================================
+    // 2b. Perbaikan dan pembatalan oleh wali pengaju (Fase 2)
+    // =======================================================================
+
+    /**
+     * Wali pengaju memperbaiki isi dan mengirim ulang — hanya saat pembimbing
+     * meminta perbaikan. Isi sebelum dan sesudah disimpan pada
+     * `izin_wali_perbaikan`; rentang baru diperiksa ulang terhadap benturan
+     * lintas jalur dengan kunci santri yang sama seperti pembuatan.
+     *
+     * @param array<string, mixed> $user
+     * @param array<string, mixed> $input tgl_izin, tgl_kembali, alasan, catatan
+     * @param array{ip:?string, user_agent:?string} $meta
+     * @return array<string, mixed>
+     */
+    public function perbaiki(array $user, int $id, array $input, mixed $expectedVersion, ?string $idempotencyKey, array $meta): array
+    {
+        $this->wajibFase2();
+        $this->wajibWali($user);
+        $userId = (int) $user['id'];
+        $key = $this->idempotency->normalizeKey($idempotencyKey);
+        $tglIzin = $this->requireDate($input['tgl_izin'] ?? null, 'Tanggal izin');
+        $tglKembali = $this->requireDate($input['tgl_kembali'] ?? null, 'Tanggal kembali');
+        if ($tglKembali < $tglIzin) {
+            throw IzinException::invalid('Tanggal kembali tidak boleh mendahului tanggal izin.');
+        }
+        $alasan = $this->requireText($input['alasan'] ?? null, 'Alasan izin', 3, 2000);
+        $catatan = $this->optionalText($input['catatan'] ?? null, 'Catatan', 1000);
+        $version = $this->requireVersion($expectedVersion);
+        $payload = ['pengajuan_id' => $id, 'tgl_izin' => $tglIzin, 'tgl_kembali' => $tglKembali, 'alasan' => $alasan, 'catatan' => $catatan, 'version' => $version];
+        $onDate = $this->today();
+
+        return $this->transactional(function () use ($userId, $id, $tglIzin, $tglKembali, $alasan, $catatan, $version, $key, $payload, $onDate, $meta): array {
+            $this->repo->kunciAkun($userId);
+            $replay = $this->idempotency->begin($userId, self::OP_PERBAIKAN, $key, $payload);
+            [$waliId, $row] = $this->wajibPengaju($userId, $id, $onDate, 'memperbaiki');
+            if ($replay !== null) {
+                return $replay['response'] + ['idempotent_replay' => true, 'status_http' => 200];
+            }
+
+            // Kunci santri LEBIH DULU (urutan sama dengan pembuatan kedua jalur),
+            // baru baris pengajuan; pemeriksaan benturan rentang baru aman.
+            $santriId = (int) $row['santri_id'];
+            $santri = $this->write->lockSantri($santriId);
+            $locked = $this->write->lockPengajuan($id);
+            if ($locked === null) {
+                throw IzinException::notFound();
+            }
+            $statusSebelum = (string) $locked['status'];
+            if ($statusSebelum !== IzinWaliRepository::STATUS_PERLU_PERBAIKAN) {
+                throw IzinException::conflict('Pengajuan berstatus ' . self::statusLabel($statusSebelum) . '; perbaikan hanya dapat dikirim saat pembimbing memintanya.');
+            }
+            if ((int) $locked['version'] !== $version) {
+                throw IzinException::conflict('Pengajuan sudah diperbarui pihak lain (versi ' . (int) $locked['version'] . '). Muat ulang halaman lalu ulangi.');
+            }
+            if ($santri === null || (int) $santri['is_active'] !== 1 || $santri['archived_at'] !== null) {
+                throw IzinException::invalid('Santri tidak aktif sehingga pengajuan tidak dapat dikirim ulang.');
+            }
+            $permintaan = $this->repo->permintaanPerbaikanTerbuka($id);
+            if ($permintaan === null) {
+                throw IzinException::conflict('Tidak ada permintaan perbaikan yang terbuka untuk pengajuan ini.');
+            }
+            $sebelum = [
+                'tgl_izin' => (string) $locked['tgl_izin'],
+                'tgl_kembali' => (string) $locked['tgl_kembali'],
+                'alasan' => (string) $locked['alasan'],
+                'catatan' => $locked['catatan_wali'] === null ? null : (string) $locked['catatan_wali'],
+            ];
+            $sesudah = ['tgl_izin' => $tglIzin, 'tgl_kembali' => $tglKembali, 'alasan' => $alasan, 'catatan' => $catatan];
+            $hashSebelum = self::isiHash($sebelum['tgl_izin'], $sebelum['tgl_kembali'], $sebelum['alasan'], $sebelum['catatan']);
+            $hashSesudah = self::isiHash($tglIzin, $tglKembali, $alasan, $catatan);
+            if (hash_equals($hashSebelum, $hashSesudah)) {
+                throw IzinException::invalid('Isi pengajuan belum diubah. Perbaiki tanggal, alasan, atau catatan sesuai permintaan pembimbing.');
+            }
+            $overlap = $this->write->findOverlap($santriId, $tglIzin, $tglKembali, $id);
+            if ($overlap !== null) {
+                throw IzinException::conflict(sprintf(
+                    'Anak ini sudah memiliki pengajuan izin yang masih berjalan pada rentang %s s.d. %s yang bersinggungan.',
+                    (string) $overlap['tgl_izin'],
+                    (string) $overlap['tgl_kembali']
+                ));
+            }
+            if (!$this->repo->applyPerbaikan($id, $tglIzin, $tglKembali, $alasan, $catatan, $version)) {
+                throw IzinException::conflict('Pengajuan sudah berubah sejak halaman ini dimuat. Muat ulang lalu coba lagi.');
+            }
+            $perbaikanId = $this->repo->insertPerbaikan([
+                'pengajuan_id' => $id,
+                'tinjauan_id' => (int) $permintaan['id'],
+                'wali_id' => $waliId,
+                'actor' => $userId,
+                'sebelum' => $sebelum,
+                'sesudah' => $sesudah,
+                'hash_sebelum' => $hashSebelum,
+                'hash_sesudah' => $hashSesudah,
+                'versi_sebelum' => $version,
+            ]);
+            // Riwayat tidak menyalin isi izin; isi tiap versi ada di tabel perbaikan.
+            $this->write->insertRiwayat($this->historyRow($id, 'perbaikan_wali_dikirim', $statusSebelum,
+                IzinWaliRepository::STATUS_MENUNGGU_PEMBIMBING, $userId, 'Wali', null, $meta));
+
+            $response = [
+                'id' => $id,
+                'status' => IzinWaliRepository::STATUS_MENUNGGU_PEMBIMBING,
+                'tahap' => self::tahap(IzinWaliRepository::STATUS_MENUNGGU_PEMBIMBING),
+                'version' => $version + 1,
+                'perbaikan_id' => $perbaikanId,
+            ];
+            $this->idempotency->complete($userId, self::OP_PERBAIKAN, $key, 200, $response, $id);
+            $this->auditOrFail('izin_wali_perbaikan_dikirim', $id,
+                ['status' => $statusSebelum, 'version' => $version, 'isi_hash' => $hashSebelum],
+                [
+                    'status' => IzinWaliRepository::STATUS_MENUNGGU_PEMBIMBING,
+                    'version' => $version + 1,
+                    'isi_hash' => $hashSesudah,
+                    'perbaikan_id' => $perbaikanId,
+                    'tinjauan_id' => (int) $permintaan['id'],
+                    'rentang_berubah' => $sebelum['tgl_izin'] !== $tglIzin || $sebelum['tgl_kembali'] !== $tglKembali,
+                ],
+                $userId
+            );
+
+            return $response + ['idempotent_replay' => false, 'status_http' => 200];
+        });
+    }
+
+    /**
+     * Wali pengaju membatalkan beralasan pada tahap mana pun sebelum keputusan
+     * murobi/admin pengganti. Bersaing dengan penerusan atau keputusan: baris
+     * pengajuan dikunci dan pembaruan bersyarat versi+status, sehingga hanya
+     * satu hasil terminal yang berlaku.
+     *
+     * @param array<string, mixed> $user
+     * @param array{ip:?string, user_agent:?string} $meta
+     * @return array<string, mixed>
+     */
+    public function batalkan(array $user, int $id, mixed $alasan, mixed $expectedVersion, ?string $idempotencyKey, array $meta): array
+    {
+        $this->wajibFase2();
+        $this->wajibWali($user);
+        $userId = (int) $user['id'];
+        $key = $this->idempotency->normalizeKey($idempotencyKey);
+        $alasan = $this->requireText($alasan, 'Alasan pembatalan', 3, 1000);
+        $version = $this->requireVersion($expectedVersion);
+        $payload = ['pengajuan_id' => $id, 'alasan' => $alasan, 'version' => $version];
+        $onDate = $this->today();
+
+        return $this->transactional(function () use ($userId, $id, $alasan, $version, $key, $payload, $onDate, $meta): array {
+            $this->repo->kunciAkun($userId);
+            $replay = $this->idempotency->begin($userId, self::OP_BATAL, $key, $payload);
+            $this->wajibPengaju($userId, $id, $onDate, 'membatalkan');
+            if ($replay !== null) {
+                return $replay['response'] + ['idempotent_replay' => true, 'status_http' => 200];
+            }
+
+            $locked = $this->write->lockPengajuan($id);
+            if ($locked === null) {
+                throw IzinException::notFound();
+            }
+            $statusSebelum = (string) $locked['status'];
+            if (!in_array($statusSebelum, IzinWaliRepository::STATUS_DAPAT_DIBATALKAN, true)) {
+                throw IzinException::conflict('Pengajuan berstatus ' . self::statusLabel($statusSebelum) . ' sehingga tidak dapat dibatalkan lagi.');
+            }
+            if ((int) $locked['version'] !== $version) {
+                throw IzinException::conflict('Pengajuan sudah diperbarui pihak lain (versi ' . (int) $locked['version'] . '). Muat ulang halaman lalu ulangi.');
+            }
+            if (!$this->repo->applyBatal($id, $userId, $alasan, $version)) {
+                throw IzinException::conflict('Pengajuan sudah diputus atau berubah, sehingga tidak dapat dibatalkan.');
+            }
+            $this->write->insertRiwayat($this->historyRow($id, 'pembatalan_wali', $statusSebelum, 'Dibatalkan', $userId, 'Wali', $alasan, $meta));
+
+            $response = ['id' => $id, 'status' => 'Dibatalkan', 'tahap' => self::tahap('Dibatalkan'), 'version' => $version + 1];
+            $this->idempotency->complete($userId, self::OP_BATAL, $key, 200, $response, $id);
+            $this->auditOrFail('izin_wali_dibatalkan', $id, ['status' => $statusSebelum, 'version' => $version], [
+                'status' => 'Dibatalkan',
+                'version' => $version + 1,
+                'tahap_sebelum' => self::tahap($statusSebelum),
+                'murobi_guru_id' => $locked['murobi_guru_id'] === null ? null : (int) $locked['murobi_guru_id'],
+            ], $userId);
+
+            return $response + ['idempotent_replay' => false, 'status_http' => 200];
+        });
+    }
+
+    /**
+     * Jejak asal untuk halaman rincian V2 (murobi/admin) — dipanggil HANYA
+     * sesudah layanan V2 mengizinkan pembaca melihat pengajuan itu. Null bila
+     * bukan pengajuan wali atau skema V7 belum ada.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function asalWali(int $id): ?array
+    {
+        if (!$this->terpasang()) {
+            return null;
+        }
+        $row = $this->repo->find($id, $this->today());
+        if ($row === null) {
+            return null;
+        }
+        $diteruskan = null;
+        if ($this->repo->fase2Terpasang()) {
+            foreach ($this->repo->tinjauan($id) as $t) {
+                if ((string) $t['tindakan'] === IzinWaliRepository::TINJAUAN_TERUSKAN) {
+                    $diteruskan = $t;
+                }
+            }
+        }
+
+        return [
+            'id' => (int) $row['id'],
+            'pembimbing' => $diteruskan['pembimbing'] ?? ($row['pembimbing_nama'] === null ? null : (string) $row['pembimbing_nama']),
+            'diteruskan_pada' => $diteruskan['ditinjau_pada'] ?? null,
+            'catatan_penerusan' => $diteruskan['catatan'] ?? null,
+        ];
+    }
+
+    // =======================================================================
     // 3. Pembacaan per peran
     // =======================================================================
 
@@ -436,6 +830,29 @@ final class IzinWaliService
     }
 
     /**
+     * Fase 2: pengajuan yang sudah keluar dari antrean pembimbing (diminta
+     * perbaikan, ditolak, diteruskan, diputus, dibatalkan) — status terkini.
+     *
+     * @param array<string, mixed> $user
+     * @return array<string, mixed>
+     */
+    public function riwayatPembimbing(array $user, mixed $page = 1): array
+    {
+        $this->wajibTerpasang();
+        $pengurusId = $this->wajibPembimbing($user);
+        [$page, $perPage] = [$this->pageOf($page), 20];
+        $hasil = $this->repo->riwayatPembimbing($pengurusId, $this->today(), $page, $perPage);
+
+        return [
+            'peran' => self::PERAN_PEMBIMBING,
+            'items' => array_map(fn (array $row): array => $this->proyeksiPetugas($row), $hasil['rows']),
+            'total' => $hasil['total'],
+            'page' => $page,
+            'per_page' => $perPage,
+        ];
+    }
+
+    /**
      * @param array<string, mixed> $user
      * @param array<string, mixed> $query  antrean=1, status
      * @return array<string, mixed>
@@ -464,9 +881,11 @@ final class IzinWaliService
 
     /**
      * Rincian satu pengajuan wali sesuai hak akun:
-     *   admin → lengkap + riwayat penetapan; pembimbing tujuan yang masih sah →
-     *   lengkap; wali pengaju → lengkap tanpa catatan internal; wali lain
-     *   berelasi aktif → status ringkas; selain itu 404.
+     *   admin → lengkap + riwayat penetapan/tinjauan/versi isi; pembimbing
+     *   tujuan yang masih sah → lengkap + tindakan tinjauan; murobi tujuan
+     *   sesudah penerusan → lengkap (keputusan lewat halaman/API V2); wali
+     *   pengaju → isi, catatan pembimbing, hasil, tindakan perbaiki/batal;
+     *   wali lain berelasi aktif → status ringkas; selain itu 404.
      *
      * @param array<string, mixed> $user
      * @return array<string, mixed>
@@ -481,42 +900,85 @@ final class IzinWaliService
         }
         $peran = $this->peran($user);
         $userId = (int) $user['id'];
+        $fase2 = $this->repo->fase2Terpasang();
+        $status = (string) $row['status'];
+        $statusV2 = in_array($status, IzinRepository::STATUSES, true);
+        $belumDiputus = in_array($status, IzinWriteRepository::STATUS_BELUM_DIPUTUS, true);
+        $jejakPetugas = fn (): array => [
+            'riwayat' => $this->riwayatPetugas($id),
+            'tinjauan' => $fase2 ? $this->tinjauanPetugas($id) : [],
+            'perbaikan' => $fase2 ? $this->perbaikanProyeksi($id) : [],
+            'keputusan' => $this->keputusanProyeksi($id, true),
+        ];
 
         if ($peran[self::PERAN_ADMIN]) {
             return [
                 'peran_akses' => self::PERAN_ADMIN,
                 'pengajuan' => $this->proyeksiPetugas($row),
-                'riwayat' => $this->riwayatPetugas($id),
                 'penetapan' => $this->repo->penetapan($id),
+                // Admin memantau dan menetapkan; tidak menggantikan tinjauan
+                // pembimbing. Penetapan murobi dan keputusan pengganti memakai
+                // halaman/API V2 pada ID yang sama.
                 'tindakan' => [
-                    'tetapkan_pembimbing' => in_array((string) $row['status'], IzinWaliRepository::STATUS_PENETAPAN, true),
+                    'tetapkan_pembimbing' => in_array($status, IzinWaliRepository::STATUS_PENETAPAN, true),
+                    'tetapkan_murobi' => $belumDiputus,
+                    'putuskan_pengganti' => $belumDiputus,
+                    'buka_v2' => $statusV2,
                 ],
-            ];
+            ] + $jejakPetugas();
         }
         if ($peran[self::PERAN_PEMBIMBING]
             && $row['pembimbing_pengurus_id'] !== null
             && (int) $row['pembimbing_pengurus_id'] === $this->pengurusId($user)
             && (int) $row['pembimbing_sah'] === 1) {
+            $menunggu = $fase2 && $status === IzinWaliRepository::STATUS_MENUNGGU_PEMBIMBING;
+
             return [
                 'peran_akses' => self::PERAN_PEMBIMBING,
                 'pengajuan' => $this->proyeksiPetugas($row),
-                'riwayat' => $this->riwayatPetugas($id),
-                // Tindakan tinjauan pembimbing adalah Fase 2.
-                'tindakan' => [],
-            ];
+                'tindakan' => [
+                    'minta_perbaikan' => $menunggu,
+                    'tolak' => $menunggu,
+                    'teruskan' => $menunggu,
+                ],
+            ] + $jejakPetugas();
+        }
+        if ($peran[self::PERAN_MUROBI] && $statusV2 && $row['murobi_guru_id'] !== null) {
+            $guruId = $this->repo->guruAkun($userId);
+            if ($guruId !== null && (int) $row['murobi_guru_id'] === $guruId) {
+                return [
+                    'peran_akses' => self::PERAN_MUROBI,
+                    'pengajuan' => $this->proyeksiPetugas($row),
+                    'tindakan' => [
+                        'putuskan' => $status === IzinRouter::STATUS_TERARAH,
+                        'buka_v2' => true,
+                    ],
+                ] + $jejakPetugas();
+            }
         }
         if ($peran[self::PERAN_WALI]) {
             $waliId = $this->repo->waliAkun($userId);
             if ($waliId !== null && $this->repo->relasiAktif($waliId, (int) $row['santri_id'])) {
                 $proyeksi = $this->proyeksiWali($row, $userId, $waliId);
+                if (!$proyeksi['pengaju_sendiri']) {
+                    // Wali lain: status ringkas tanpa catatan, alasan, atau tindakan.
+                    return ['peran_akses' => self::PERAN_WALI, 'pengajuan' => $proyeksi, 'riwayat' => [], 'tindakan' => []];
+                }
 
                 return [
                     'peran_akses' => self::PERAN_WALI,
                     'pengajuan' => $proyeksi,
-                    'riwayat' => $proyeksi['pengaju_sendiri'] ? $this->riwayatWali($id) : [],
-                    // Perbaikan/pembatalan oleh wali pengaju adalah Fase 2;
-                    // wali lain tidak pernah memperoleh tindakan.
-                    'tindakan' => [],
+                    'riwayat' => $this->riwayatWali($id),
+                    'tinjauan' => $fase2 ? $this->tinjauanWali($id) : [],
+                    'perbaikan' => $fase2 ? $this->perbaikanProyeksi($id) : [],
+                    'keputusan' => $this->keputusanProyeksi($id, false),
+                    'pembatalan' => $status === 'Dibatalkan' && $row['dibatalkan_pada'] !== null
+                        ? ['alasan' => $row['alasan_pembatalan'] === null ? null : (string) $row['alasan_pembatalan'], 'waktu' => (string) $row['dibatalkan_pada']]
+                        : null,
+                    'tindakan' => [
+                        'perbaiki' => $fase2 && $status === IzinWaliRepository::STATUS_PERLU_PERBAIKAN,
+                        'batalkan' => $fase2 && in_array($status, IzinWaliRepository::STATUS_DAPAT_DIBATALKAN, true),
+                    ],
                 ];
             }
         }
@@ -592,6 +1054,7 @@ final class IzinWaliService
             'catatan' => $row['catatan_wali'] === null ? null : (string) $row['catatan_wali'],
             'version' => (int) $row['version'],
             'pembimbing' => $row['pembimbing_nama'] === null ? null : (string) $row['pembimbing_nama'],
+            'murobi' => ($row['murobi_nama'] ?? null) === null ? null : (string) $row['murobi_nama'],
         ];
     }
 
@@ -625,8 +1088,19 @@ final class IzinWaliService
                 'ditetapkan_pada' => $row['pembimbing_ditetapkan_pada'] === null ? null : (string) $row['pembimbing_ditetapkan_pada'],
             ],
             'perlu_admin' => (string) $row['status'] === IzinWaliRepository::STATUS_PERLU_PENETAPAN_PEMBIMBING
+                || (string) $row['status'] === IzinRouter::STATUS_PERLU_ADMIN
                 || ((string) $row['status'] === IzinWaliRepository::STATUS_MENUNGGU_PEMBIMBING && (int) $row['pembimbing_sah'] !== 1),
             'murobi_guru_id' => $row['murobi_guru_id'] === null ? null : (int) $row['murobi_guru_id'],
+            'murobi' => [
+                'nama' => ($row['murobi_nama'] ?? null) === null ? null : (string) $row['murobi_nama'],
+                'routing_kandidat' => ($row['routing_kandidat'] ?? null) === null ? null : (int) $row['routing_kandidat'],
+                'routing_catatan' => ($row['routing_catatan'] ?? null) === null ? null : (string) $row['routing_catatan'],
+            ],
+            'keputusan_hasil' => ($row['keputusan_hasil'] ?? null) === null ? null : (string) $row['keputusan_hasil'],
+            'pembatalan' => ($row['dibatalkan_pada'] ?? null) === null ? null : [
+                'alasan' => $row['alasan_pembatalan'] === null ? null : (string) $row['alasan_pembatalan'],
+                'waktu' => (string) $row['dibatalkan_pada'],
+            ],
             'tahun_ajaran' => $row['tahun_ajaran'] === null ? null : (string) $row['tahun_ajaran'] . ' ' . (string) $row['semester'],
             'diajukan_pada' => $row['diajukan_pada'] === null ? null : (string) $row['diajukan_pada'],
         ];
@@ -663,6 +1137,89 @@ final class IzinWaliService
         ], $this->repo->riwayat($id));
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function tinjauanPetugas(int $id): array
+    {
+        return array_map(static fn (array $t): array => [
+            'tindakan' => (string) array_search((string) $t['tindakan'], self::TINDAKAN, true),
+            'tindakan_label' => (string) $t['tindakan'],
+            'catatan' => $t['catatan'] === null ? null : (string) $t['catatan'],
+            'pembimbing' => (string) $t['pembimbing'],
+            'peninjau' => $t['peninjau'] === null ? null : (string) $t['peninjau'],
+            'status_sesudah' => (string) $t['status_sesudah'],
+            'versi_sebelum' => (int) $t['versi_sebelum'],
+            'versi_sesudah' => (int) $t['versi_sesudah'],
+            'murobi' => $t['murobi'] === null ? null : (string) $t['murobi'],
+            'murobi_routing_kandidat' => $t['murobi_routing_kandidat'] === null ? null : (int) $t['murobi_routing_kandidat'],
+            'waktu' => (string) $t['ditinjau_pada'],
+        ], $this->repo->tinjauan($id));
+    }
+
+    /**
+     * Untuk wali pengaju: catatan perbaikan dan alasan penolakan pembimbing
+     * ditampilkan; catatan penerusan untuk murobi tidak.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function tinjauanWali(int $id): array
+    {
+        return array_map(static fn (array $t): array => [
+            'tindakan' => (string) array_search((string) $t['tindakan'], self::TINDAKAN, true),
+            'tindakan_label' => (string) $t['tindakan'],
+            'catatan' => (string) $t['tindakan'] === IzinWaliRepository::TINJAUAN_TERUSKAN || $t['catatan'] === null ? null : (string) $t['catatan'],
+            'pembimbing' => (string) $t['pembimbing'],
+            'waktu' => (string) $t['ditinjau_pada'],
+        ], $this->repo->tinjauan($id));
+    }
+
+    /**
+     * Versi isi yang pernah dikirim ulang wali pengaju.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function perbaikanProyeksi(int $id): array
+    {
+        return array_map(static fn (array $w): array => [
+            'versi_sebelum' => (int) $w['versi_sebelum'],
+            'versi_sesudah' => (int) $w['versi_sesudah'],
+            'sebelum' => ['tgl_izin' => (string) $w['tgl_izin_sebelum'], 'tgl_kembali' => (string) $w['tgl_kembali_sebelum'],
+                'alasan' => (string) $w['alasan_sebelum'], 'catatan' => $w['catatan_sebelum'] === null ? null : (string) $w['catatan_sebelum']],
+            'sesudah' => ['tgl_izin' => (string) $w['tgl_izin_sesudah'], 'tgl_kembali' => (string) $w['tgl_kembali_sesudah'],
+                'alasan' => (string) $w['alasan_sesudah'], 'catatan' => $w['catatan_sesudah'] === null ? null : (string) $w['catatan_sesudah']],
+            'pengirim' => $w['pengirim'] === null ? null : (string) $w['pengirim'],
+            'waktu' => (string) $w['dikirim_pada'],
+        ], $this->repo->perbaikan($id));
+    }
+
+    /**
+     * Keputusan akhir V2 (murobi atau admin pengganti). Penolakan pembimbing
+     * tidak pernah muncul di sini karena tidak menulis `izin_keputusan`.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function keputusanProyeksi(int $id, bool $petugas): ?array
+    {
+        $k = $this->repo->keputusan($id);
+        if ($k === null) {
+            return null;
+        }
+        $hasil = [
+            'hasil' => (string) $k['hasil'],
+            'kapasitas' => (string) $k['kapasitas'],
+            'oleh' => (string) $k['kapasitas'] === IzinWorkflowService::KAPASITAS_ADMIN_PENGGANTI ? 'Admin pengganti' : 'Murobi',
+            'alasan' => (string) $k['alasan'],
+            'waktu' => (string) $k['diputus_pada'],
+            'dikoreksi' => (int) $k['jumlah_koreksi'] > 0,
+        ];
+        if ($petugas) {
+            $hasil['pemberi'] = $k['pemberi'] === null ? null : (string) $k['pemberi'];
+        }
+
+        return $hasil;
+    }
+
     // =======================================================================
     // Penjaga hak
     // =======================================================================
@@ -683,7 +1240,34 @@ final class IzinWaliService
             self::PERAN_WALI => in_array('orang_tua', $roles, true) && $this->repo->waliAkun($userId) !== null,
             self::PERAN_PEMBIMBING => $this->capabilities->has($probe, Capabilities::PENGURUS),
             self::PERAN_ADMIN => $this->capabilities->has($probe, Capabilities::ADMIN),
+            self::PERAN_MUROBI => $this->capabilities->has($probe, Capabilities::MUROBI),
         ];
+    }
+
+    /**
+     * Wali pengaju atas satu pengajuan, dibaca ulang DI DALAM transaksi dengan
+     * kunci baca (akun wali dan relasi). Wali lain yang berelasi → 403 (boleh
+     * melihat status, tidak boleh mengubah); tanpa relasi/ID tebakan → 404.
+     * Diperiksa sebelum putar ulang, sehingga relasi yang dicabut sesudah
+     * kiriman pertama tidak lagi menerima hasil tersimpan.
+     *
+     * @return array{0:int, 1:array<string, mixed>}
+     */
+    private function wajibPengaju(int $userId, int $id, string $onDate, string $kerja): array
+    {
+        $waliId = $this->repo->waliAkun($userId, true);
+        if ($waliId === null) {
+            throw IzinException::forbidden('Akun ini bukan akun orang tua/wali yang aktif.');
+        }
+        $row = $this->repo->find($id, $onDate);
+        if ($row === null || !$this->repo->relasiAktif($waliId, (int) $row['santri_id'], true)) {
+            throw IzinException::notFound();
+        }
+        if ((int) $row['diajukan_oleh_user_id'] !== $userId || (int) $row['wali_id'] !== $waliId) {
+            throw IzinException::forbidden('Hanya wali pengaju yang dapat ' . $kerja . ' pengajuan ini.');
+        }
+
+        return [$waliId, $row];
     }
 
     /** @param array<string, mixed> $user */
@@ -726,6 +1310,37 @@ final class IzinWaliService
         if (!$this->terpasang()) {
             throw new IzinException('Fitur pengajuan izin wali belum dipasang (migrasi 030).', 503);
         }
+    }
+
+    private function wajibFase2(): void
+    {
+        $this->wajibTerpasang();
+        if (!$this->repo->fase2Terpasang()) {
+            throw new IzinException('Tinjauan pembimbing, perbaikan, dan pembatalan wali belum dipasang (migrasi 031).', 503);
+        }
+    }
+
+    private function murobiRouter(): IzinRouter
+    {
+        return $this->murobiRouter ??= new IzinRouter($this->repo->db());
+    }
+
+    private function requireVersion(mixed $expectedVersion): int
+    {
+        if (!is_numeric($expectedVersion) || (int) $expectedVersion < 1) {
+            throw IzinException::invalid('Versi data wajib disertakan. Muat ulang halaman lalu ulangi.');
+        }
+
+        return (int) $expectedVersion;
+    }
+
+    /** Sidik isi yang ditinjau/diperbaiki (isi tidak disalin ke tinjauan). */
+    public static function isiHash(mixed $tglIzin, mixed $tglKembali, mixed $alasan, mixed $catatan): string
+    {
+        return hash('sha256', (string) json_encode(
+            [(string) $tglIzin, (string) $tglKembali, (string) $alasan, $catatan === null ? null : (string) $catatan],
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+        ));
     }
 
     // =======================================================================

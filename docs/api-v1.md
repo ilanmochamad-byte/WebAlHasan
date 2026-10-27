@@ -579,6 +579,51 @@ tanpa akses → `403`; skema 030 belum terpasang → `503 SERVICE_UNAVAILABLE`.
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v7-1/README.md`.
 
+### V7 Fase 2 — tinjauan pembimbing, perbaikan, pembatalan (27 Oktober 2026)
+
+Aditif; endpoint Fase 1 di atas tetap. Setiap mutasi wajib `Idempotency-Key`
+(atau `idempotency_key` di badan) dan `version` yang sedang berlaku; kunci +
+isi sama → `200` dengan `idempotent_replay:true`; kunci sama isi berbeda atau
+versi lama → `409` tanpa perubahan. Skema 031 belum terpasang → `503`.
+
+- `POST /v7/izin/pengajuan/{id}/tinjauan` (pembimbing tujuan yang masih sah)
+  dengan `{tindakan: minta_perbaikan|tolak|teruskan, catatan, version}` —
+  catatan wajib 3–2000 untuk `minta_perbaikan`/`tolak`, opsional ≤1000 untuk
+  `teruskan` → `200 {id, tindakan, status, tahap, version, tinjauan_id}`;
+  `teruskan` menambah `murobi_guru_id` dan `perlu_penetapan_murobi`. Penolakan
+  pembimbing berstatus `Ditolak Pembimbing` dan **tidak** membuat keputusan
+  `/izin` V2. Penerusan menjalankan routing murobi V2 pada ID yang sama:
+  satu murobi → `Diajukan`; nol/lebih → `Perlu Penetapan Admin`. Pembimbing
+  lain/penugasan dicabut → `404`; bukan pengurus (termasuk admin dan wali) →
+  `403`; status bukan `Menunggu Pembimbing` → `409`.
+- `POST /v7/izin/pengajuan/{id}/perbaikan` (wali pengaju) dengan `{tgl_izin,
+  tgl_kembali, alasan, catatan?, version}` → `200 {id, status:"Menunggu
+  Pembimbing", tahap, version, perbaikan_id}`; hanya saat `Perlu Perbaikan
+  Wali` (lainnya `409`); isi tidak berubah → `422`; rentang baru berbenturan →
+  `409`; wali lain berelasi → `403`; tanpa relasi → `404`.
+- `POST /v7/izin/pengajuan/{id}/pembatalan` (wali pengaju) dengan `{alasan
+  (3–1000), version}` → `200 {id, status:"Dibatalkan", tahap, version}` pada
+  tahap mana pun sebelum keputusan murobi/admin pengganti (termasuk
+  `Diajukan`/`Perlu Penetapan Admin`); sesudah keputusan atau penolakan
+  pembimbing → `409`. Pembatalan V2 `/izin/pengajuan/{id}/pembatalan` atas
+  pengajuan wali → `403`.
+- `GET /v7/izin/pembimbing/riwayat?page=` (pengurus) → pengajuan yang sudah
+  keluar dari antrean pembimbing beserta status terkini.
+- `GET /v7/izin/pengajuan/{id}` kini juga untuk murobi tujuan sesudah
+  diteruskan (`peran_akses: murobi`) dan memuat `tinjauan`, `perbaikan`
+  (versi isi sebelum/sesudah), `keputusan` (murobi/admin pengganti), serta
+  `tindakan` per peran: pembimbing `{minta_perbaikan, tolak, teruskan}`, wali
+  pengaju `{perbaiki, batalkan}`, murobi `{putuskan, buka_v2}`, admin
+  `{tetapkan_pembimbing, tetapkan_murobi, putuskan_pengganti, buka_v2}`. Wali
+  lain tetap ringkas tanpa tinjauan/keputusan/tindakan.
+- Penetapan murobi, keputusan murobi/admin pengganti, dan koreksi atas
+  pengajuan wali yang sudah diteruskan memakai endpoint V2
+  `/izin/pengajuan/{id}/penetapan-murobi|keputusan|koreksi` tanpa perubahan
+  kontrak. Endpoint V2 orang tua (`/izin/pengajuan`, laporan) tidak memuat
+  pengajuan berasal wali; orang tua membacanya lewat `/v7/izin`.
+
+Rincian, penafsiran, dan batas uji: `docs/phase-v7-2/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh

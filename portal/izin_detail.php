@@ -123,6 +123,14 @@ portal_flash_render();
 if ($izin['is_legacy']) {
     ah_note('warning', 'Arsip sistem lama. Sistem sebelumnya tidak mencatat pengurus pengaju, murobi tujuan, maupun pemberi keputusan, sehingga kolom pelaku sengaja dikosongkan.');
 }
+// PRD V7 Fase 2: pengajuan wali yang sudah diteruskan pembimbing. Halaman ini
+// hanya terbuka bila layanan V2 di atas sudah mengizinkan pembaca.
+$asalWali = (string) ($izin['asal_pengajuan'] ?? 'Pengurus') === 'Wali' ? izin_wali_service()->asalWali($iz) : null;
+if ($asalWali !== null) {
+    ah_note('info', 'Diajukan wali dan diteruskan pembimbing ' . (string) ($asalWali['pembimbing'] ?? '—') . '.',
+        ($asalWali['catatan_penerusan'] !== null ? '<p class="mb-1 mt-1">Catatan penerusan: ' . portal_e((string) $asalWali['catatan_penerusan']) . '</p>' : '')
+        . '<p class="mb-0 mt-1">Hanya wali pengaju yang dapat membatalkan pengajuan ini. <a href="' . portal_e(app_url('/portal/izin_wali_detail.php') . '?id=' . $iz . '&mode=' . rawurlencode($mode)) . '">Lihat tinjauan pembimbing</a></p>');
+}
 ?>
 <div class="ah-split">
     <div class="ah-split__col">
@@ -136,7 +144,7 @@ if ($izin['is_legacy']) {
                     <?php if ($izin['catatan_pengurus'] !== null && $izin['catatan_pengurus'] !== ''): ?>
                         <div><dt>Catatan untuk murobi</dt><dd><?= nl2br(portal_e($izin['catatan_pengurus'])) ?></dd></div>
                     <?php endif; ?>
-                    <div><dt>Pengurus</dt><dd><?= portal_e(portal_label((string) $izin['pengurus_label'])) ?></dd></div>
+                    <div><dt>Pengurus</dt><dd><?= portal_e($asalWali !== null ? 'Diajukan wali melalui pembimbing' : portal_label((string) $izin['pengurus_label'])) ?></dd></div>
                     <div><dt>Murobi</dt><dd><?= portal_e(portal_label((string) $izin['murobi_label'])) ?></dd></div>
                     <?php if (!$ortu): ?>
                         <div><dt>Semester</dt><dd><?= $izin['tahun_ajaran'] === null ? 'Arsip sistem lama' : portal_e($izin['tahun_ajaran'] . ' ' . $izin['semester']) ?></dd></div>

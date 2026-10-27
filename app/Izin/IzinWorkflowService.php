@@ -529,6 +529,11 @@ final class IzinWorkflowService
             }
 
             $row = $this->requirePending($pengajuanId);
+            // PRD V7 §5.1: pengajuan wali hanya dibatalkan wali pengaju lewat
+            // `IzinWaliService::batalkan()`, termasuk sesudah diteruskan.
+            if ((string) ($row['asal_pengajuan'] ?? 'Pengurus') === 'Wali') {
+                throw IzinException::forbidden('Pengajuan wali hanya dapat dibatalkan oleh wali pengaju.');
+            }
             if ($scope['mode'] === Capabilities::PENGURUS) {
                 $pengurusId = $scope['pengurus_id'] === null ? 0 : (int) $scope['pengurus_id'];
                 if ($row['pengurus_id'] === null || (int) $row['pengurus_id'] !== $pengurusId) {
@@ -705,6 +710,7 @@ final class IzinWorkflowService
         $belumDiputus = in_array($status, IzinWriteRepository::STATUS_BELUM_DIPUTUS, true);
         $sudahDiputus = in_array($status, ['Disetujui', 'Ditolak'], true);
         $legacy = (bool) ($pengajuan['is_legacy'] ?? false);
+        $wali = (string) ($pengajuan['asal_pengajuan'] ?? 'Pengurus') === 'Wali';
         $mode = (string) ($scope['mode'] ?? '');
 
         $murobiCocok = $mode === Capabilities::MUROBI
@@ -718,7 +724,7 @@ final class IzinWorkflowService
             'putuskan_murobi' => !$legacy && $belumDiputus && $murobiCocok && $status === IzinRouter::STATUS_TERARAH,
             'putuskan_admin' => !$legacy && $belumDiputus && $mode === Capabilities::ADMIN,
             'tetapkan_murobi' => !$legacy && $belumDiputus && $mode === Capabilities::ADMIN,
-            'batalkan' => !$legacy && $belumDiputus && ($pengurusCocok || $mode === Capabilities::ADMIN),
+            'batalkan' => !$legacy && !$wali && $belumDiputus && ($pengurusCocok || $mode === Capabilities::ADMIN),
             'koreksi' => !$legacy && $sudahDiputus && $mode === Capabilities::ADMIN,
         ];
     }
@@ -873,6 +879,13 @@ final class IzinWorkflowService
      */
     private function notify(string $event, array $pengajuan, array $opsi): void
     {
+        // PRD V7: notifikasi pengajuan wali (penerima wali pengaju, bukan
+        // seluruh wali santri; tautan ke halaman V7) adalah Fase 3. Sampai
+        // itu, keputusan/penetapan V2 atas baris wali tidak memancarkan
+        // notifikasi V2 yang penerima dan tautannya tidak sesuai.
+        if ((string) ($pengajuan['asal_pengajuan'] ?? 'Pengurus') === 'Wali') {
+            return;
+        }
         $this->notifications->emit($event, $pengajuan, $opsi);
     }
 

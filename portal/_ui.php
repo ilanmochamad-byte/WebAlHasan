@@ -301,6 +301,12 @@ function portal_peristiwa_label(string $kode): string
         'routing_pembimbing_perlu_admin' => 'Menunggu penetapan pembimbing oleh admin',
         'pembimbing_ditetapkan' => 'Admin menetapkan pembimbing',
         'pembimbing_ditetapkan_ulang' => 'Admin mengganti pembimbing',
+        // PRD V7 Fase 2: tinjauan pembimbing, perbaikan, dan pembatalan wali.
+        'tinjauan_minta_perbaikan' => 'Pembimbing meminta perbaikan',
+        'tinjauan_ditolak_pembimbing' => 'Ditolak pembimbing',
+        'tinjauan_diteruskan' => 'Pembimbing meneruskan ke murobi',
+        'perbaikan_wali_dikirim' => 'Wali mengirim perbaikan',
+        'pembatalan_wali' => 'Wali membatalkan pengajuan',
         default => ucfirst(str_replace('_', ' ', $kode)),
     };
 }
