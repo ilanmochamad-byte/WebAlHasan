@@ -5,7 +5,7 @@ Repositori ini berisi dua proyek utama:
 1. **WebAlHasan** (Aplikasi Web)
 2. **alhasanApps** (Aplikasi Mobile)
 
-Proyek ini dikembangkan menggunakan kolaborasi bergantian (alternating collaboration) antara Human Developer dan dua AI Assistant (Claude & Codex/AI lain). Karena AI tidak membagikan riwayat percakapan satu sama lain, file `AGENTS.md`, PRD aktif (`PRD.md` atau `PRD-V2.md` sampai `PRD-V6.md`), dokumen status fase, dan riwayat commit Git bertindak sebagai **satu-satunya sumber kebenaran (Source of Truth)**.
+Proyek ini dikembangkan menggunakan kolaborasi bergantian (alternating collaboration) antara Human Developer dan dua AI Assistant (Claude & Codex/AI lain). Karena AI tidak membagikan riwayat percakapan satu sama lain, file `AGENTS.md`, PRD aktif (`PRD.md` atau `PRD-V2.md` sampai `PRD-V7.md`), dokumen status fase, dan riwayat commit Git bertindak sebagai **satu-satunya sumber kebenaran (Source of Truth)**.
 
 ---
 
@@ -39,6 +39,8 @@ Pembagian peran ditetapkan per workstream agar implementator dan auditor tidak t
 
 **Keputusan Human Developer 25 Oktober 2026 — PRD V6:** seluruh asumsi rancangan keuangan santri/BSA dalam `PRD-V6.md` disetujui. **Claude Code adalah implementator dan Codex auditor Fase 1–5 V6**, bergantian, satu fase per giliran. BSA menggunakan satu penugasan untuk tagihan bulanan, tabungan, dan penarikan/belanja; tagihan serta tabungan hanya dirilis bersama. Prompt siap salin untuk setiap giliran ada di `docs/prd-v6/prompts-implementasi-audit.md`. Keberadaan prompt bukan perintah memulai Fase 1–5 sekaligus. Branch spesifikasi `codex/prd-v6-spesifikasi` hanya memuat dokumen; belum ada implementasi, migrasi, merge, atau deploy V6.
 
+**Keputusan Human Developer 27 Oktober 2026 — PRD V7:** kebutuhan, alur, lima fase, dan seluruh asumsi dalam `PRD-V7.md` disetujui. Jalur wali → pembimbing → murobi ditambahkan tanpa menghapus jalur pengurus V2; satu pengajuan tetap memiliki satu identitas, dan wali lain hanya melihat status ringkas. Branch `codex/prd-v7-spesifikasi` berisi dokumentasi saja. Implementator/auditor V7 belum ditetapkan; persetujuan PRD bukan instruksi memulai implementasi, merge, atau deploy. Audit teknis lokal V6 Fase 5 lulus, tetapi gerbang akhir/produksi V6 tetap terbuka menurut `docs/phase-v6-5/AUDIT-CODEX.md`.
+
 Ketentuan:
 
 *   **Implementator:** membaca PRD aktif, menulis kode hanya untuk satu fase yang diperintahkan, menjalankan pengujian dasar dan regresi yang relevan, membuat commit, mendorong branch fitur, lalu berhenti agar auditor dapat masuk.
@@ -51,7 +53,7 @@ Ketentuan:
 
 Jika Anda adalah agen AI yang baru saja diaktifkan, Anda **WAJIB** mengikuti alur kerja ini:
 
-1.  **Baca Konteks:** Cek `git status`, `git log -n 5`, `AGENTS.md`, PRD aktif (`PRD.md` atau `PRD-V2.md` sampai `PRD-V6.md` sesuai workstream), dokumen status fase, dan commit handoff. Pastikan Anda berada di branch fitur yang benar, bukan di `main`.
+1.  **Baca Konteks:** Cek `git status`, `git log -n 5`, `AGENTS.md`, PRD aktif (`PRD.md` atau `PRD-V2.md` sampai `PRD-V7.md` sesuai workstream), dokumen status fase, dan commit handoff. Pastikan Anda berada di branch fitur yang benar, bukan di `main`.
 2.  **Kerjakan Satu Fase:** Fokus hanya pada fase yang diinstruksikan oleh Human Developer. Jangan melompat ke fase berikutnya.
 3.  **Eksekusi sesuai Peran:** Tentukan lebih dahulu workstream pada tabel pembagian peran. Implementator mengerjakan fase dan menyerahkannya; auditor memeriksa secara independen terhadap PRD aktif. Jangan mengambil peran berdasarkan nama AI saja.
 4.  **Handoff (Serah Terima):** Setelah satu fase lolos audit, agen AI harus memberi tahu Human Developer bahwa tugas selesai, agar pekerjaan dapat dilanjutkan ke fase berikutnya.
