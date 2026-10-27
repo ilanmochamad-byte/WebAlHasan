@@ -165,8 +165,21 @@ final class PembimbingRouter
                 'SELECT id FROM pembimbing_assignments WHERE id = ? AND pengurus_id = ? AND is_active = 1 AND archived_at IS NULL LOCK IN SHARE MODE',
                 [$candidate['assignment_id'], $pengurusId]
             );
+            if ($locked === []) {
+                return null;
+            }
+            // Kandidat di atas dibaca sebelum menunggu kunci. Tanggal,
+            // cakupan, tahun, atau akun dapat berubah selama penantian itu.
+            // READ COMMITTED membaca keadaan sesudah penulis selesai; baris
+            // penugasan kini terkunci sampai transaksi penetapan selesai.
+            foreach ($this->candidates($santriId, $onDate) as $current) {
+                if ($current['pengurus_id'] === $pengurusId
+                    && $current['assignment_id'] === $candidate['assignment_id']) {
+                    return $current['assignment_id'];
+                }
+            }
 
-            return $locked === [] ? null : $candidate['assignment_id'];
+            return null;
         }
 
         return null;

@@ -95,11 +95,25 @@ if ($rollback) {
 
 if ($manifestPath !== null) {
     $manifest = json_decode((string) @file_get_contents($manifestPath), true);
-    if (!is_array($manifest) || !isset($manifest['legacy_counts'], $manifest['id_fingerprints'])) {
+    if (!is_array($manifest) || !is_array($manifest['legacy_counts'] ?? null) || !is_array($manifest['id_fingerprints'] ?? null)) {
         $periksa(false, 'Manifest tidak terbaca: ' . $manifestPath);
     } else {
         $kini = v7f1_snapshot($db);
         $periksa((string) ($manifest['database'] ?? '') === (string) v7f1_nilai($db, 'SELECT DATABASE()'), 'Manifest milik basis data yang sama');
+        // Jangan mempercayai daftar pemeriksaan dari manifest yang terpotong:
+        // daftar kosong sebelumnya lolos tanpa membandingkan satu pun hash.
+        $lengkap = true;
+        foreach (['legacy_counts', 'id_fingerprints'] as $jenis) {
+            $lengkap = $lengkap && array_diff_key($kini[$jenis], $manifest[$jenis]) === []
+                && array_diff_key($manifest[$jenis], $kini[$jenis]) === [];
+        }
+        foreach ($manifest['legacy_counts'] as $jumlah) {
+            $lengkap = $lengkap && is_int($jumlah) && $jumlah >= 0;
+        }
+        foreach ($manifest['id_fingerprints'] as $hash) {
+            $lengkap = $lengkap && is_string($hash) && preg_match('/^[a-f0-9]{64}$/D', $hash) === 1;
+        }
+        $periksa($lengkap, 'Manifest memuat daftar jumlah dan sidik jari lengkap, termasuk isi riwayat V2');
         $beda = [];
         foreach ($manifest['legacy_counts'] as $tabel => $jumlah) {
             if (($kini['legacy_counts'][$tabel] ?? null) !== $jumlah) {

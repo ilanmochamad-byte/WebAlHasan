@@ -1,6 +1,6 @@
 # PRD V7 Fase 1 — Fondasi Pengajuan Wali dan Routing Pembimbing
 
-**Status (27 Oktober 2026):** implementasi selesai dan diuji lokal oleh implementator; **menunggu audit independen Codex**. Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Fase 2 belum dimulai. Fase 1 **bukan** izin rilis parsial V7.
+**Status (27 Oktober 2026): LULUS audit teknis lokal independen Codex setelah empat koreksi terarah.** Keputusan, bukti dan batas audit di [AUDIT-CODEX.md](AUDIT-CODEX.md); bukti implementator di bawah dipertahankan sebagai riwayat. Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Fase 2 belum dimulai. Fase 1 **bukan** izin rilis parsial V7.
 
 | Butir | Nilai |
 | --- | --- |
@@ -139,6 +139,7 @@ Suite statis lain yang gagal (`keamanan_psb` 82/1, `penugasan` 281/2, Tahap 2/3/
 ## Langkah rilis dan pemulihan (untuk keputusan Human Developer kelak — bukan izin deploy)
 
 1. Backup terverifikasi DB dan berkas.
+   Hentikan penulis selama pengambilan dan perbandingan manifest; manifest sebelum koreksi auditor perlu dibuat ulang karena belum memuat hash isi riwayat V2. Preflight kini juga memeriksa CHECK sesi dan default global MariaDB.
 2. `php bin/v7_phase1_preflight.php /jalur/aman/manifest-030.json` — wajib tanpa `[gagal]`.
 3. `php bin/migrate.php up` (menerapkan 030).
 4. `php bin/v7_phase1_verify.php /jalur/aman/manifest-030.json` — wajib "Verifikasi V7 Fase 1 lulus".

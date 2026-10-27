@@ -25,6 +25,7 @@ $periksa = static function (bool $ok, string $label) use (&$gagal): void {
     }
 };
 echo '[info] Basis data terpilih: ' . (string) v7f1_nilai($db, 'SELECT DATABASE()') . PHP_EOL;
+$periksa(v7f1_check_aktif($db), 'CHECK aktif pada sesi dan default global (MariaDB)');
 $terakhir = (string) v7f1_nilai($db, 'SELECT migration FROM schema_migrations ORDER BY id DESC LIMIT 1');
 $periksa($terakhir === '030_v7_fase1_pengajuan_wali.sql', 'Migrasi terakhir adalah 030 (' . $terakhir . ')');
 if (v7f1_ada_kolom($db, 'izin_pengajuan', 'asal_pengajuan') && v7f1_ada_tabel($db, 'izin_pembimbing_penetapan')) {

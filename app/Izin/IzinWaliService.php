@@ -302,6 +302,9 @@ final class IzinWaliService
 
         return $this->transactional(function () use ($userId, $id, $pengurusId, $alasan, $version, $key, $payload, $onDate, $meta): array {
             $this->repo->kunciAkun($userId);
+            // Pemeriksaan awal dapat mendahului pencabutan akun/role saat
+            // menunggu kunci. Periksa kembali sebelum klaim maupun replay.
+            $this->wajibAdmin(['id' => $userId]);
             $replay = $this->idempotency->begin($userId, self::OP_PENETAPAN, $key, $payload);
             if ($replay !== null) {
                 return $replay['response'] + ['idempotent_replay' => true, 'status_http' => 200];

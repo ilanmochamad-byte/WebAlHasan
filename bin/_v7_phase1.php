@@ -17,6 +17,17 @@ require_once dirname(__DIR__) . '/app/bootstrap.php';
 const V7F1_STATUS_V2 = ['Diajukan', 'Perlu Penetapan Admin', 'Disetujui', 'Ditolak', 'Dibatalkan'];
 const V7F1_STATUS_V7 = ['Menunggu Pembimbing', 'Perlu Penetapan Pembimbing', 'Perlu Perbaikan Wali', 'Ditolak Pembimbing'];
 
+/** CHECK harus aktif juga pada koneksi baru yang kelak menjalankan migrasi. */
+function v7f1_check_aktif(mysqli $db): bool
+{
+    if (stripos((string) v7f1_nilai($db, 'SELECT VERSION()'), 'mariadb') === false) {
+        return true; // MySQL tidak mempunyai variabel MariaDB ini.
+    }
+
+    return (int) v7f1_nilai($db, 'SELECT @@session.check_constraint_checks') === 1
+        && (int) v7f1_nilai($db, 'SELECT @@global.check_constraint_checks') === 1;
+}
+
 function v7f1_nilai(mysqli $db, string $sql): mixed
 {
     $hasil = $db->query($sql);
@@ -85,6 +96,10 @@ function v7f1_snapshot(mysqli $db): array
         FROM izin_pengajuan" . $saringV2);
     $sidik['izin_keputusan_isi'] = (string) v7f1_nilai($db, "SELECT SHA2(COALESCE(GROUP_CONCAT(CONCAT_WS(':', id, pengajuan_id, hasil, kapasitas, SHA2(alasan, 256)) ORDER BY id SEPARATOR ','), ''), 256) FROM izin_keputusan");
     $sidik['perizinan_isi'] = (string) v7f1_nilai($db, "SELECT SHA2(COALESCE(GROUP_CONCAT(CONCAT_WS(':', id, id_santri, tgl_izin, tgl_kembali, status) ORDER BY id SEPARATOR ','), ''), 256) FROM perizinan");
+    $sidik['izin_riwayat_status_isi'] = (string) v7f1_nilai($db, "SELECT SHA2(COALESCE(GROUP_CONCAT(
+        SHA2(JSON_ARRAY(id, pengajuan_id, peristiwa, status_sebelum, status_sesudah, pelaku_user_id,
+            pelaku_kapasitas, alasan, ip_address, user_agent, created_at), 256)
+        ORDER BY id SEPARATOR ''), ''), 256) FROM izin_riwayat_status");
 
     return ['legacy_counts' => $lama, 'id_fingerprints' => $sidik];
 }

@@ -1,0 +1,643 @@
+[Tue Oct 27 11:41:55 2026] PHP 8.4.14 Development Server (http://127.0.0.1:8999) started
+[Tue Oct 27 11:41:56 2026] 127.0.0.1:63066 Accepted
+[Tue Oct 27 11:41:56 2026] 127.0.0.1:63066 [200]: GET /portal/index.php
+[Tue Oct 27 11:41:56 2026] 127.0.0.1:63066 Closing
+[Tue Oct 27 11:41:56 2026] 127.0.0.1:63068 Accepted
+[Tue Oct 27 11:41:56 2026] 127.0.0.1:63069 Accepted
+[Tue Oct 27 11:41:56 2026] 127.0.0.1:63068 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:41:56 2026] 127.0.0.1:63069 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:41:56 2026] 127.0.0.1:63068 Closing
+[Tue Oct 27 11:41:56 2026] 127.0.0.1:63069 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63070 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63070 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63070 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63072 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63072 [200]: GET /portal/index.php
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63072 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63074 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63075 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63074 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63075 [200]: GET /portal/izin_wali.php
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63075 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63076 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63074 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63076 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63076 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63078 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63079 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63078 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63079 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63078 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63079 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63080 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63080 [200]: GET /portal/izin_wali_buat.php
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63080 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63082 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63083 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63082 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63083 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63082 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63083 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63084 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63084 [200]: GET /portal/izin_wali_buat.php
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63084 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63086 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63087 Accepted
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63086 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63087 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63086 Closing
+[Tue Oct 27 11:41:57 2026] 127.0.0.1:63087 Closing
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63088 Accepted
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63088 [303]: POST /portal/izin_wali_buat.php
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63088 Closing
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63090 Accepted
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63090 [200]: GET /portal/izin_wali_detail.php?id=2706
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63090 Closing
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63092 Accepted
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63093 Accepted
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63092 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63093 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63092 Closing
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63093 Closing
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63094 Accepted
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63094 [200]: GET /portal/index.php
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63094 Closing
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63096 Accepted
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63097 Accepted
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63096 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63097 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63096 Closing
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63097 Closing
+[Tue Oct 27 11:41:58 2026] 127.0.0.1:63098 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63098 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63098 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63100 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63100 [200]: GET /portal/index.php
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63100 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63102 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63103 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63104 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63102 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63103 [200]: GET /portal/izin_wali.php
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63103 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63104 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63102 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63104 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63106 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63107 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63106 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63107 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63106 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63107 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63108 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63108 [200]: GET /portal/izin_wali_buat.php
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63108 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63110 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63111 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63110 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63111 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63110 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63111 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63112 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63112 [200]: GET /portal/izin_wali_buat.php
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63112 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63114 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63115 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63114 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63115 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63114 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63115 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63116 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63116 [303]: POST /portal/izin_wali_buat.php
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63116 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63118 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63118 [200]: GET /portal/izin_wali_detail.php?id=2707
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63118 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63120 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63121 Accepted
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63120 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63121 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63120 Closing
+[Tue Oct 27 11:41:59 2026] 127.0.0.1:63121 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63122 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63122 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63122 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63124 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63125 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63124 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63125 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63124 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63125 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63126 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63126 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63126 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63128 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63128 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63128 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63130 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63131 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63132 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63130 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63131 [200]: GET /portal/izin_wali.php
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63131 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63132 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63130 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63132 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63134 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63135 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63134 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63135 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63134 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63135 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63136 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63136 [200]: GET /portal/izin_wali_buat.php
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63136 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63138 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63139 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63138 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63139 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63138 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63139 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63140 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63140 [200]: GET /portal/izin_wali_buat.php
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63140 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63142 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63143 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63142 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63143 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63142 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63143 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63144 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63144 [303]: POST /portal/izin_wali_buat.php
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63144 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63146 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63146 [200]: GET /portal/izin_wali_detail.php?id=2708
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63146 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63148 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63149 Accepted
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63148 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63149 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63148 Closing
+[Tue Oct 27 11:42:00 2026] 127.0.0.1:63149 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63150 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63150 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63150 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63152 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63153 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63152 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63153 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63152 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63153 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63154 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63154 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63154 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63156 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63156 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63156 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63158 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63159 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63158 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63159 [200]: GET /portal/izin_wali_detail.php?id=2706
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63159 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63161 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63161 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63158 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63161 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63162 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63163 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63162 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63163 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63162 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63163 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63164 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63164 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63164 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63166 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63167 Accepted
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63166 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63167 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63166 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63167 Closing
+[Tue Oct 27 11:42:01 2026] 127.0.0.1:63168 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63168 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63168 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63170 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63170 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63170 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63172 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63173 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63174 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63172 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63173 [200]: GET /portal/izin_wali_detail.php?id=2706
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63173 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63174 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63172 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63174 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63176 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63177 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63176 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63177 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63176 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63177 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63178 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63178 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63178 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63180 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63181 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63180 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63181 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63180 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63181 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63182 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63182 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63182 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63184 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63184 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63184 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63186 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63187 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63186 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63188 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63187 [200]: GET /portal/izin_wali_detail.php?id=2706
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63187 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63188 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63186 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63188 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63190 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63191 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63190 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63191 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63190 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63191 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63192 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63192 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63192 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63194 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63195 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63194 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63195 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63194 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63195 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63196 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63196 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63196 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63198 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63198 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63198 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63200 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63201 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63202 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63200 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63201 [200]: GET /portal/izin_wali_buat.php
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63201 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63202 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63200 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63202 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63204 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63205 Accepted
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63204 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63205 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63204 Closing
+[Tue Oct 27 11:42:02 2026] 127.0.0.1:63205 Closing
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63206 Accepted
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63206 [303]: POST /portal/izin_wali_buat.php
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63206 Closing
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63208 Accepted
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63208 [200]: GET /portal/izin_wali_detail.php?id=2709
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63208 Closing
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63210 Accepted
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63211 Accepted
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63210 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63211 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63210 Closing
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63211 Closing
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63212 Accepted
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63212 [200]: GET /portal/izin_wali.php
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63212 Closing
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63214 Accepted
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63215 Accepted
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63214 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63215 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63214 Closing
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63215 Closing
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63216 Accepted
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63216 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63216 Closing
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63218 Accepted
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63218 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63218 Closing
+[Tue Oct 27 11:42:03 2026] 127.0.0.1:63219 Accepted
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63219 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63219 Closing
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63221 Accepted
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63221 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63221 Closing
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63223 Accepted
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63224 Accepted
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63223 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63224 [200]: GET /portal/izin_wali_buat.php
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63224 Closing
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63223 Closing
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63226 Accepted
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63226 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63226 Closing
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63227 Accepted
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63227 [303]: POST /portal/izin_wali_buat.php
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63227 Closing
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63229 Accepted
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63229 [200]: GET /portal/izin_wali_detail.php?id=2710
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63229 Closing
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63231 Accepted
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63231 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:04 2026] 127.0.0.1:63231 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63232 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63232 [200]: GET /portal/izin_wali.php
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63232 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63234 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63234 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63234 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63235 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63235 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63235 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63237 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63238 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63237 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63238 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63237 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63238 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63239 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63239 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63239 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63241 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63241 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63241 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63243 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63244 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63245 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63243 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63244 [200]: GET /portal/izin_wali.php
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63244 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63245 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63243 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63245 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63247 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63248 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63247 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63248 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63247 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63248 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63249 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63249 [200]: GET /portal/izin_wali_detail.php?id=2706
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63249 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63251 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63252 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63251 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63252 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63251 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63252 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63253 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63253 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63253 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63255 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63256 Accepted
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63255 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63256 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63255 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63256 Closing
+[Tue Oct 27 11:42:05 2026] 127.0.0.1:63257 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63257 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63257 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63259 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63259 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63259 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63261 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63262 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63263 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63261 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63262 [200]: GET /portal/izin_wali.php
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63262 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63263 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63261 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63263 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63265 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63266 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63265 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63266 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63265 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63266 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63267 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63267 [200]: GET /portal/izin_wali_detail.php?id=2706
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63267 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63269 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63270 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63269 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63270 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63269 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63270 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63271 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63271 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63271 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63273 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63274 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63273 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63274 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63273 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63274 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63275 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63275 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63275 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63277 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63277 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63277 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63279 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63280 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63281 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63279 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63280 [200]: GET /portal/izin_wali.php
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63280 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63281 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63279 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63281 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63283 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63284 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63283 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63284 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63283 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63284 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63285 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63285 [200]: GET /portal/izin_wali_detail.php?id=2706
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63285 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63287 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63288 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63287 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63288 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63287 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63288 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63289 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63289 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63289 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63291 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63292 Accepted
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63291 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63292 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63291 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63292 Closing
+[Tue Oct 27 11:42:06 2026] 127.0.0.1:63293 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63293 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63293 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63295 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63295 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63295 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63297 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63298 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63299 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63297 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63298 [200]: GET /portal/izin_wali.php
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63298 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63299 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63297 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63299 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63301 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63302 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63301 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63302 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63301 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63302 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63303 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63303 [200]: GET /portal/izin_wali_detail.php?id=2709
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63303 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63305 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63306 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63305 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63306 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63305 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63306 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63307 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63307 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63307 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63309 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63310 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63309 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63310 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63309 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63310 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63311 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63311 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63311 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63313 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63313 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63313 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63315 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63316 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63315 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63317 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63316 [200]: GET /portal/izin_wali.php
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63316 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63317 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63315 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63317 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63319 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63320 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63319 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63320 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63319 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63320 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63321 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63321 [200]: GET /portal/izin_wali_detail.php?id=2709
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63321 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63323 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63324 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63323 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63324 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63323 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63324 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63325 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63325 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63325 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63327 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63328 Accepted
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63327 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63328 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63327 Closing
+[Tue Oct 27 11:42:07 2026] 127.0.0.1:63328 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63329 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63329 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63329 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63331 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63331 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63331 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63333 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63334 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63335 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63333 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63334 [200]: GET /portal/izin_wali.php
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63334 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63335 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63333 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63335 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63337 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63338 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63337 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63338 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63337 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63338 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63339 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63339 [200]: GET /portal/izin_wali_detail.php?id=2709
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63339 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63341 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63342 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63341 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63342 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63341 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63342 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63343 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63343 [303]: POST /portal/izin_wali_detail.php?id=2709
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63343 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63345 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63345 [200]: GET /portal/izin_wali_detail.php?id=2709
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63345 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63347 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63348 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63347 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63348 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63347 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63348 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63349 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63349 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63349 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63351 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63352 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63351 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63352 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63351 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63352 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63353 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63353 [302]: POST /admin/cek_login.php
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63353 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63355 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63355 [200]: GET /portal/index.php
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63355 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63357 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63358 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63359 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63357 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63358 [403]: GET /portal/izin_wali.php
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63358 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63359 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63357 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63359 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63361 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63362 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63361 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63362 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63361 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63362 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63363 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63363 [404]: GET /portal/izin_wali_detail.php?id=2706
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63363 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63365 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63366 Accepted
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63365 [200]: GET /assets/ui/alhasan.css?v=1792940884
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63366 [200]: GET /assets/ui/alhasan.js?v=1792737770
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63365 Closing
+[Tue Oct 27 11:42:08 2026] 127.0.0.1:63366 Closing
