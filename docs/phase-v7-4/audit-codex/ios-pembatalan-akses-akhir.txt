@@ -1,0 +1,4 @@
+[lulus] iOS pembatalan beralasan: satu status terminal dan satu riwayat
+[lulus] iOS wali kedua lewat cold URI/login: status ringkas tanpa isi dan mutasi
+[lulus] iOS relasi dicabut di sesi lama: kembali dari latar ditolak tanpa isi
+Ringkasan: 3 lulus, 0 gagal

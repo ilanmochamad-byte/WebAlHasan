@@ -1,0 +1,13 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "tapOn": "Muat versi terbaru"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "RAHASIA-IOS-V7 perangkat kedua",
+      "timeout": 15000
+    }
+  }
+]

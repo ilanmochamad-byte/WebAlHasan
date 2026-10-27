@@ -1,0 +1,19 @@
+[lulus] Kontrol: penulis lain benar-benar commit di antara bacaan laporan
+[lulus] Laporan satu snapshot: total=1, daftar=1, kartu=1
+[lulus] Wali kedua tidak menerima durasi internal lewat ringkasan API
+[lulus] Wali kedua: laporan menolak filter internal durasi_min_jam (HTTP 422)
+[lulus] Wali kedua: ekspor menolak filter internal durasi_min_jam (HTTP 422)
+[lulus] Wali kedua: laporan menolak filter internal durasi_maks_jam (HTTP 422)
+[lulus] Wali kedua: ekspor menolak filter internal durasi_maks_jam (HTTP 422)
+[lulus] Wali kedua: laporan menolak filter internal pembimbing_id (HTTP 422)
+[lulus] Wali kedua: ekspor menolak filter internal pembimbing_id (HTTP 422)
+[lulus] Wali kedua: laporan menolak filter internal murobi_id (HTTP 422)
+[lulus] Wali kedua: ekspor menolak filter internal murobi_id (HTTP 422)
+[lulus] Fault terjadi setelah notifikasi ditulis dalam transaksi izin
+[lulus] Rollback izin menghapus pengajuan/riwayat/kunci/audit/outbox tanpa sisa
+[lulus] Retry kunci transaksi rollback dapat membuat pengajuan baru
+[lulus] Retry sesudah commit memakai satu ID dan satu set outbox
+[lulus] Pemindaian outbox per baris: 2 baris, tanpa penanda sensitif yang diuji
+[lulus] Pemindaian audit per baris: 4 baris, tanpa penanda sensitif yang diuji
+[lulus] Pemindaian percobaan per baris: 0 baris, tanpa penanda sensitif yang diuji
+Hasil: 18 lulus, 0 gagal

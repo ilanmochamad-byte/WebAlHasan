@@ -1,0 +1,18 @@
+# V7 Fase 4 — iOS SIMULATOR (bukan perangkat fisik, bukan Push nyata)
+
+Lingkungan
+- iPhone 17 Pro simulator, iOS 26.2 (23C54); Xcode 27.1 (27A9275).
+- Binary: Release arm64 iphonesimulator, tanda tangan lokal ad-hoc (`CODE_SIGN_IDENTITY=-`), dibangun dari salinan proyek iOS audit V6 (Pods terpasang, paket lock ter-commit Expo 57.0.15) dengan `src/` disalin dari pohon kerja Fase 4. BUILD SUCCEEDED (dua kali; build kedua memuat perubahan kosmetik terakhir). `main.jsbundle` Hermes: host produksi 0, API `http://127.0.0.1:8976/api/v1`, teks penutup latar ada. Debug/dev client iOS TIDAK dibangun.
+- API/DB lokal sama dengan uji Android (`test_v7_f4_app_test`).
+- Penyesuaian penyiapan: injeksi teks simulator tidak andal untuk `#` dan sebagian karakter; kata sandi LIMA akun sintetis di DB uji lokal ini saja diubah menjadi tanpa `#` (bukan fixture repo, bukan produksi).
+
+Hasil
+[lulus] I-1 COLD START dari tautan: aplikasi dihentikan (`simctl terminate`), `open_url alhasanapps://izin-wali/2707` saat belum masuk → layar masuk tanpa isi → masuk wali A → rincian #2707 terbuka (penunjuk bertahan melewati login).
+[lulus] I-2 Pembatalan wali: alasan "Jadwal berubah" → "Batalkan pengajuan" → konfirmasi "Ya, batalkan pengajuan" diketuk dua kali → "Pengajuan dibatalkan"; DB: Dibatalkan v2, tepat 1 kunci `izin.wali.batal`, 1 riwayat `pembatalan_wali`.
+[lulus] I-3 Pengalih aplikasi iOS: kartu alhasanApps kosong/tertutup (perlindungan app switcher + penutup `Halaman`), tanpa nama atau alasan.
+[lulus] I-4 Tautan saat latar dengan sesi aktif → rincian #2706 (dibuat di Android) tampil "Disetujui murobi", tinjauan "Teruskan" dan keputusan sama dengan Android/API/DB (paritas lintas platform).
+[lulus] I-5 Privasi: kontainer data 157 berkas, 0 memuat penanda alasan/nama santri/kata sandi; `log show` proses alhasanApps 20 menit terakhir 6.371 baris, 0 memuat penanda/`Bearer `.
+
+Catatan: tangkapan `simctl io screenshot` pada simulator tetap menampilkan isi (screenshot alat host, bukan tangkapan pengguna); pencegahan tangkapan oleh pengguna pada perangkat tidak dibuktikan di simulator. Cache snapshot OS (SplashBoard) tidak didekode pada fase ini.
+
+Tidak diuji di iOS: perangkat fisik, Push nyata/ketukan notifikasi Push, Debug/dev client, alur pembimbing/murobi/admin penuh (dibuktikan di Expo web dan Android).

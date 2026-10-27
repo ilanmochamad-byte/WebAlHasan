@@ -1,0 +1,21 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "launchApp": {
+      "stopApp": false
+    }
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Data belum dapat ditampilkan",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertNotVisible": "SBX V7 Santri Satu"
+  },
+  {
+    "assertNotVisible": ".*RAHASIA-IOS-V7.*"
+  }
+]

@@ -1,0 +1,4 @@
+[gagal] F-1 draf lama tetap membawa versi asal 2; tidak mengadopsi versi 4
+[gagal] F-1 perubahan perangkat kedua tidak tertimpa draf lama
+[gagal] F-2 penolakan keputusan 403/404 menutup isi V2 pengajuan wali pada layar lama
+Ringkasan: 0 lulus, 3 gagal

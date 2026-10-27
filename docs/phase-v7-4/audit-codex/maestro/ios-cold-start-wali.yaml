@@ -1,0 +1,13 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "RAHASIA-IOS-V7 asli",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertVisible": "Menunggu tinjauan pembimbing"
+  }
+]

@@ -1,0 +1,33 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "launchApp": {
+      "stopApp": false
+    }
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Perbaikan kedua iOS",
+      "timeout": 15000
+    }
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "text": "Kirim perbaikan"
+      },
+      "direction": "DOWN",
+      "timeout": 15000
+    }
+  },
+  {
+    "tapOn": "Kirim perbaikan"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Muat versi terbaru",
+      "timeout": 15000
+    }
+  }
+]

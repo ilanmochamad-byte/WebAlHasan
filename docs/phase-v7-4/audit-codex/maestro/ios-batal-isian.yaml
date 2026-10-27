@@ -1,0 +1,25 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "tapOn": {
+      "point": "50%,53%"
+    }
+  },
+  "eraseText",
+  {
+    "inputText": "Jadwal keluarga berubah"
+  },
+  {
+    "tapOn": "Alasan pembatalan"
+  },
+  {
+    "scrollUntilVisible": {
+      "element": {
+        "text": "Batalkan pengajuan"
+      },
+      "direction": "DOWN",
+      "timeout": 15000
+    }
+  }
+]

@@ -1,0 +1,13 @@
+
+=== P-A. Wali A mengajukan dari aplikasi ===
+[lulus] DB uji bersih (belum ada pengajuan wali)
+[gagal] Pengecualian: locator.fill: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByPlaceholder('Masukkan username')[22m
+[2m    - waiting for "http://127.0.0.1:8098/" navigation to finish...[22m
+[2m    - navigated to "http://127.0.0.1:8098/"[22m
+
+    at halamanApp (/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/browser/uji-v7-fase4-app.mjs:78:52)
+    at async file:///Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/browser/uji-v7-fase4-app.mjs:104:13
+
+Ringkasan: 1 lulus, 1 gagal

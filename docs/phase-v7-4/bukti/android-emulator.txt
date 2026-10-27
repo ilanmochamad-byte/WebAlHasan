@@ -1,0 +1,25 @@
+# V7 Fase 4 — Android EMULATOR (bukan perangkat fisik, bukan Push nyata)
+
+Lingkungan
+- AVD `Medium_Phone` (sdk_gphone16k_arm64, Android 16, google/sdk_gphone16k_arm64/emu64a16k:16/BE4B.251210.005), dijalankan -no-snapshot-save.
+- Binary: dev client Debug `android/app/build/outputs/apk/debug/app-debug.apk` (24 Oktober 2026; SHA-256 awalan f2f443fbeed62636) — sudah memuat modul native `expo-screen-capture` (kelas `expo/modules/screencapture` ada di classes8.dex). V7 tidak menambah modul native; tidak membangun APK baru.
+- JS: Metro (`expo start --port 8098 --clear`) dari salinan sumber HEAD+perubahan Fase 4 tanpa `.env*`, `node_modules` NYATA dari lock ter-commit (Expo 57.0.15). API lokal `http://127.0.0.1:8976/api/v1` (adb reverse), DB `test_v7_f4_app_test` dari dump fixture V7.
+- Pengendali: adb + uiautomator (pohon aksesibilitas); tangkapan layar aplikasi HITAM karena FLAG_SECURE.
+
+Kesalahan penyiapan yang dicatat (bukan cacat aplikasi)
+- Percobaan pertama memakai `node_modules` salinan berupa SYMLINK ke luar akar proyek. Navigator Izin wali DAN navigator Keuangan V6 (kode yang sudah diaudit) sama-sama menampilkan "Perlindungan … belum tersedia". Pesan galat sementara (hanya di salinan uji, tidak di-commit) menunjukkan `Unable to resolve module ./v6f4-codex-mobile/node_modules/expo-screen-capture/...` — `import()` dinamis Metro gagal di luar akar proyek. Setelah `node_modules` diganti salinan nyata (cp -c -R) dan Metro --clear, keduanya terbuka normal. Galat tertutup ini sesuai rancangan (gagal tertutup: tidak ada data dimuat).
+
+Hasil (alur nyata pada emulator; diperiksa dengan uiautomator + basis data)
+[lulus] N-1 Wali A: Beranda → Perizinan → pintu "Izin orang tua melalui pembimbing" → Ajukan izin → pilih anak SBX V7 Santri Satu → pemilih tanggal NATIVE (29–30 Okt 2026, tombol "Pilih") → alasan → Tinjau → "Kirim pengajuan" diketuk DUA KALI dalam satu perintah shell → rincian #2706 "Pengajuan terkirim", Menunggu tinjauan pembimbing; DB: tepat 1 baris + 1 kunci `izin.wali.create`.
+[lulus] N-2 FLAG_SECURE: `dumpsys window` menampilkan flag SECURE pada jendela; screencap hitam; kartu Recents kosong tanpa nama/alasan.
+[lulus] N-3 Tautan `alhasanapps://izin-wali/2706` saat aplikasi di latar (sesi aktif) → rincian terbuka.
+[lulus] N-4 Logout → tautan yang sama → layar MASUK tanpa isi → masuk wali A → rincian #2706 terbuka (penunjuk bertahan melewati login).
+[lulus] N-5 Logout → tautan → masuk sebagai wali asing `sbx_ortu_b` → "Data belum dapat ditampilkan", tanpa nama santri/alasan.
+[lulus] N-6 Pembimbing (masuk lewat tautan) → "Teruskan ke murobi" diketuk dua kali → "Pengajuan diteruskan"; DB: status Diajukan v2, 1 tinjauan, 1 kunci `izin.wali.tinjauan`.
+[lulus] N-7 Murobi A (lewat tautan) → "Putuskan di Perizinan" → layar V2 menampilkan panel "Diajukan orang tua", tanpa tombol Batalkan → alasan → "Setujui" diketuk dua kali → DB: Disetujui, tepat 1 `izin_keputusan`.
+[lulus] N-8 Wali kedua (lewat tautan): "Diajukan wali lain" + "Disetujui murobi", tanpa alasan izin, alasan keputusan, atau tombol Batalkan.
+[lulus] N-9 Relasi wali kedua dicabut di DB saat aplikasi di latar → kembali ke depan → "Data belum dapat ditampilkan" tanpa nama santri (relasi dipulihkan sesudahnya).
+[lulus] N-10 Wali A: "Disetujui murobi" + Keputusan akhir, tombol batal tidak ditawarkan.
+[lulus] N-11 Privasi: logcat 52.766 baris — penanda alasan/alasan keputusan/nama santri/`Bearer `/kata sandi: 0 baris dari proses aplikasi (6 baris hanya dari proses `uiautomator` alat uji yang membaca pohon layar). Data aplikasi (`run-as`): 46 berkas, 0 memuat penanda/nama santri/kata sandi.
+
+Tidak diuji di Android: ketukan notifikasi Push nyata (tanpa FCM/Expo nyata), cold start dari URI (dev client membuka launcher; build rilis Android tidak dibuat), perangkat fisik.

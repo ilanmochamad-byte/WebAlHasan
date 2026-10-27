@@ -661,6 +661,23 @@ Aditif; tanpa migrasi dan tanpa perubahan bentuk respons yang sudah ada.
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v7-3/README.md`.
 
+### V7 Fase 4 — paritas aplikasi (27 Oktober 2026)
+
+Aditif; tanpa migrasi dan tanpa endpoint baru. Aplikasi `alhasanApps` memakai
+endpoint `/v7/izin` di atas dengan kunci idempotensi yang sama pada setiap
+kirim ulang, dan endpoint V2 `/izin/pengajuan/{id}/keputusan|penetapan-murobi`
+untuk tahap murobi.
+
+- Item `pengajuan` pada `GET /izin/pengajuan`, `/izin/antrean`,
+  `/izin/admin/monitor`, dan `GET /izin/pengajuan/{id}` bertambah satu kunci
+  `asal: "Wali"|"Pengurus"` (sebelum migrasi 030 selalu `"Pengurus"`). Hak,
+  cakupan, dan kunci lain tidak berubah.
+- Tautan skema aplikasi `alhasanapps://izin-wali/{id}` dan notifikasi
+  `{tipe:"izin_wali", pengajuan_id}` membuka rincian V7 yang memeriksa ulang
+  hak; ID hanya penunjuk.
+
+Rincian, penafsiran, dan batas uji: `docs/phase-v7-4/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh

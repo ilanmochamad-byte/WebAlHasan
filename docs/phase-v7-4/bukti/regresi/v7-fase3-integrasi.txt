@@ -1,0 +1,146 @@
+[lulus] Fixture V7 tersedia: 4 admin aktif, akun pembimbing satu [1216], belum ada notifikasi V7
+
+=== N-1. Pengajuan masuk dan penetapan pembimbing ===
+[lulus] Tepat satu pembimbing sah: satu InApp per akun pembimbing (1); nol untuk wali pengaju, wali lain, admin, murobi
+[lulus] Kunci berversi, pengajuan_id NULL, data hanya {tipe, pengajuan_id}, InApp langsung tersedia
+[lulus] Push OFF: nol baris Push; WhatsApp tidak pernah diantrekan
+[lulus] Kirim ulang kunci sama (replay) tidak menambah notifikasi
+[lulus] Audit antrean notifikasi tercatat satu kali (metadata)
+[lulus] Nol kandidat pembimbing: satu InApp per admin aktif, nol untuk pembimbing/murobi
+[lulus] Dua kandidat pembimbing: antrean admin diberi tahu
+[lulus] Penetapan admin → pembimbing yang ditetapkan diberi tahu (kunci versi 2)
+
+=== N-2. Tinjauan pembimbing dan perbaikan wali ===
+[lulus] Minta perbaikan → hanya wali pengaju (wali kedua berelasi tidak diberi tahu)
+[lulus] Perbaikan dikirim → pembimbing diberi tahu lagi (peristiwa baru, versi 3)
+[lulus] Teruskan (murobi tunggal) → wali pengaju dan murobi tujuan; tanpa admin
+[lulus] Tolak pembimbing → hanya wali pengaju
+[lulus] Teruskan (murobi nol) → wali pengaju dan admin routing; nol murobi
+
+=== N-3. Jalur V2 atas baris wali ===
+[lulus] Penetapan murobi V2 → murobi yang ditetapkan diberi tahu (V7)
+[lulus] Keputusan murobi → hanya wali pengaju
+[lulus] Koreksi keputusan → hanya wali pengaju
+[lulus] Santri dengan dua wali berelasi: keputusan hanya ke wali pengaju, wali kedua tidak
+[lulus] Tidak ada notifikasi V2 (ke seluruh wali, tautan V2) untuk baris asal wali
+
+=== N-4. Pembatalan wali → pemegang antrean ===
+[lulus] Batal saat menunggu pembimbing → pembimbing
+[lulus] Batal sesudah diteruskan → murobi tujuan
+[lulus] Batal saat perlu penetapan pembimbing → admin
+
+=== N-5. Replay dan deduplikasi ===
+[lulus] Replay dan kunci baru versi lama (409) tidak menambah notifikasi
+[lulus] Mengantre ulang peristiwa yang sama: kunci unik menolak baris kedua
+[lulus] Satu baris per peristiwa, kanal, dan penerima
+
+=== N-6. Push ON dan worker palsu ===
+[lulus] Push ON: satu Push untuk pembimbing berperangkat saja
+[lulus] Push untuk wali pengaju dan murobi berperangkat; paling banyak satu per penerima
+[lulus] Worker mengirim tiga Push V7 lewat klien palsu (bukan perangkat fisik) {"kanal":"Push","dijalankan":true,"alasan":null,"diproses":2,"terkirim":3,"gagal":0,"dilepas":0,"catatan":[]}
+[lulus] Payload Push hanya {tipe: izin_wali, pengajuan_id}
+[lulus] Putaran worker kedua tidak mengirim ulang (nol duplikat)
+[lulus] Gagal provider sementara → dicoba ulang lalu terkirim; satu baris outbox, dua upaya, satu sukses
+
+=== N-7. Pemeriksaan ulang tepat sebelum provider ===
+[lulus] Penugasan pembimbing dicabut sesudah antre → AKSES_BERUBAH, nol request provider
+[lulus] Relasi wali dicabut sesudah antre → Push wali tidak dikirim
+[lulus] Pembimbing sudah bertindak sebelum worker: Push "masuk" basi tidak dikirim; Push perbaikan terkini tetap dikirim
+[lulus] Push dimatikan sesudah antre: worker berhenti sebelum klaim, nol request provider
+
+=== N-8. Push OFF / WhatsApp OFF dan ON ===
+[lulus] Push OFF dan WhatsApp OFF: nol baris eksternal, nol request provider; pengajuan dan keputusan tetap berhasil
+[lulus] WhatsApp ON pun tidak mengantre notifikasi V7; worker WhatsApp ditangguhkan, nol request
+[lulus] Seluruh suite: nol baris WhatsApp V7
+
+=== N-9. Antrean gagal tidak membatalkan transaksi izin ===
+Notifikasi V7 gagal diantrekan untuk izin.wali_masuk_pembimbing #2722.
+Notifikasi V7 gagal diantrekan untuk izin.wali_diteruskan #2722.
+Notifikasi V7 gagal diantrekan untuk izin.wali_masuk_murobi #2722.
+Notifikasi V7 gagal diantrekan untuk izin.wali_diputus #2722.
+[lulus] Tabel outbox tidak tersedia: buat, teruskan (V7), dan keputusan (V2) tetap commit
+[lulus] Riwayat dan audit mutasi tetap ada; empat kegagalan antrean tercatat di audit tanpa isi; nol baris notifikasi
+
+=== N-10. Pusat notifikasi dan tautan pada sesi lama ===
+[lulus] Pusat notifikasi (kategori Perizinan): tautan izin_wali, tanpa nama santri/alasan
+[lulus] Tautan dibuka: pembimbing sah membaca rincian
+[lulus] Penugasan dicabut: tautan yang sama → 404 pada sesi lama
+[lulus] Relasi wali dicabut: tautan keputusan → 404
+[lulus] Relasi dipulihkan: rincian terbuka lagi
+[lulus] Wali asing dan murobi (sebelum diteruskan) tidak dapat membuka tautan
+
+=== N-11. Laporan: kartu, daftar, ekspor, rincian ===
+[lulus] Pengguna tanpa peran perizinan → 403 laporan
+[lulus] Laporan admin: kartu 1070 = daftar 1070 = ekspor 1070 (tanpa ganda; tahap/hasil/asal berjumlah sama)
+[lulus] Laporan admin sama dengan hitungan SQL independen (1070)
+[lulus] Laporan admin: baris yang tampil = rincian yang dapat dibuka (80 ID diuji)
+[lulus] Laporan admin: tanpa alasan izin/catatan/alasan keputusan
+[lulus] Laporan pembimbing satu: kartu 16 = daftar 16 = ekspor 16 (tanpa ganda; tahap/hasil/asal berjumlah sama)
+[lulus] Laporan pembimbing satu: baris yang tampil = rincian yang dapat dibuka (106 ID diuji)
+[lulus] Laporan pembimbing satu: tanpa alasan izin/catatan/alasan keputusan
+[lulus] Laporan pembimbing dua: kartu 1 = daftar 1 = ekspor 1 (tanpa ganda; tahap/hasil/asal berjumlah sama)
+[lulus] Laporan pembimbing dua: baris yang tampil = rincian yang dapat dibuka (106 ID diuji)
+[lulus] Laporan pembimbing dua: tanpa alasan izin/catatan/alasan keputusan
+[lulus] Laporan pengurus V2: kartu 52 = daftar 52 = ekspor 52 (tanpa ganda; tahap/hasil/asal berjumlah sama)
+[lulus] Laporan pengurus V2: baris yang tampil = rincian yang dapat dibuka (106 ID diuji)
+[lulus] Laporan pengurus V2: tanpa alasan izin/catatan/alasan keputusan
+[lulus] Laporan murobi A: kartu 31 = daftar 31 = ekspor 31 (tanpa ganda; tahap/hasil/asal berjumlah sama)
+[lulus] Laporan murobi A sama dengan hitungan SQL independen (31)
+[lulus] Laporan murobi A: baris yang tampil = rincian yang dapat dibuka (106 ID diuji)
+[lulus] Laporan murobi A: tanpa alasan izin/catatan/alasan keputusan
+[lulus] Laporan murobi B: kartu 1 = daftar 1 = ekspor 1 (tanpa ganda; tahap/hasil/asal berjumlah sama)
+[lulus] Laporan murobi B sama dengan hitungan SQL independen (1)
+[lulus] Laporan murobi B: baris yang tampil = rincian yang dapat dibuka (106 ID diuji)
+[lulus] Laporan murobi B: tanpa alasan izin/catatan/alasan keputusan
+[lulus] Laporan wali pengaju A: kartu 18 = daftar 18 = ekspor 18 (tanpa ganda; tahap/hasil/asal berjumlah sama)
+[lulus] Laporan wali pengaju A: baris yang tampil = rincian yang dapat dibuka (106 ID diuji)
+[lulus] Laporan wali pengaju A: tanpa alasan izin/catatan/alasan keputusan
+[lulus] Laporan wali kedua B: kartu 15 = daftar 15 = ekspor 15 (tanpa ganda; tahap/hasil/asal berjumlah sama)
+[lulus] Laporan wali kedua B: baris yang tampil = rincian yang dapat dibuka (106 ID diuji)
+[lulus] Laporan wali kedua B: tanpa alasan izin/catatan/alasan keputusan
+[lulus] Laporan wali asing: kartu 0 = daftar 0 = ekspor 0 (tanpa ganda; tahap/hasil/asal berjumlah sama)
+[lulus] Laporan wali asing: baris yang tampil = rincian yang dapat dibuka (106 ID diuji)
+[lulus] Laporan wali asing: tanpa alasan izin/catatan/alasan keputusan
+[lulus] Laporan wali relasi dicabut: kartu 0 = daftar 0 = ekspor 0 (tanpa ganda; tahap/hasil/asal berjumlah sama)
+[lulus] Laporan wali relasi dicabut: baris yang tampil = rincian yang dapat dibuka (106 ID diuji)
+[lulus] Laporan wali relasi dicabut: tanpa alasan izin/catatan/alasan keputusan
+[lulus] Admin: pengajuan wali (18) dan pengurus (1052) masing-masing terhitung tepat sekali
+[lulus] Saringan {"asal":"wali"} = SQL independen
+[lulus] Saringan {"asal":"pengurus"} = SQL independen
+[lulus] Saringan {"tahap":"pembimbing"} = SQL independen
+[lulus] Saringan {"tahap":"perbaikan_wali"} = SQL independen
+[lulus] Saringan {"hasil":"ditolak_pembimbing"} = SQL independen
+[lulus] Saringan {"hasil":"dibatalkan","asal":"wali"} = SQL independen
+[lulus] Saringan {"dari":"2027-09-01","sampai":"2027-09-20"} = SQL independen
+[lulus] Saringan {"santri_id":"1721","asal":"wali"} = SQL independen
+[lulus] Saringan {"murobi_id":"1"} = SQL independen
+[lulus] Saringan {"pembimbing_id":"282"} = SQL independen
+[lulus] Saringan durasi: pengajuan wali yang selesai dalam satu jam (fixture) terhitung tepat
+[lulus] Saringan tidak valid → 422
+[lulus] Wali kedua: pengajuan wali A tampil ringkas "Wali lain" tanpa nama petugas/durasi
+[lulus] Parameter peran tidak memperluas cakupan (wali meminta admin → tetap orang tua)
+[lulus] Penugasan dicabut: laporan pembimbing pada sesi lama kehilangan baris santri itu; pulih sesudah dikembalikan
+[lulus] Setiap ekspor diaudit (peran, saringan, jumlah) tanpa isi
+
+=== N-12. Audit, riwayat, dan privasi ===
+[lulus] Setiap riwayat pengajuan wali memiliki pelaku dan waktu
+[lulus] Setiap kenaikan versi pengajuan wali punya tepat satu audit mutasi berpelaku (audit = versi)
+[lulus] Tinjauan/perbaikan/penetapan mencatat versi sebelum/sesudah, pelaku, dan alasan wajib
+[lulus] Outbox V7 (judul/isi/data): nol alasan, nama santri, nomor telepon, token
+[lulus] Payload Push yang dikirim ke provider palsu (judul/isi/data): nol data terlarang
+[lulus] Audit V7 (mutasi, notifikasi, ekspor): nol alasan, nama santri, nomor telepon, token
+[lulus] Catatan percobaan pengiriman V7: tanpa data terlarang
+
+=== N-13. Konkurensi proses terpisah ===
+[lulus] Klik ganda teruskan 8 proses kunci sama → 8 sukses, satu set notifikasi {"teruskan:ok":8}
+[lulus] Putaran 1 batal vs teruskan: satu pemenang, notifikasi hanya untuk hasil efektif, tanpa 500 {"batal:409":4,"teruskan:409":3,"teruskan:ok":1}
+[lulus] Putaran 2 batal vs teruskan: satu pemenang, notifikasi hanya untuk hasil efektif, tanpa 500 {"batal:409":3,"teruskan:409":4,"batal:ok":1}
+[lulus] Putaran 3 batal vs teruskan: satu pemenang, notifikasi hanya untuk hasil efektif, tanpa 500 {"batal:409":4,"teruskan:409":3,"teruskan:ok":1}
+[lulus] Putaran 4 batal vs teruskan: satu pemenang, notifikasi hanya untuk hasil efektif, tanpa 500 {"batal:409":3,"teruskan:409":4,"batal:ok":1}
+[lulus] Kedua cabang balapan teramati: teruskan, batal, teruskan, batal
+
+=== N-14. Verifier ===
+[lulus] bin/v7_phase2_verify.php lulus sesudah seluruh uji (Verifikasi V7 Fase 2 lulus.)
+[lulus] bin/v7_phase3_verify.php lulus sesudah seluruh uji (Verifikasi V7 Fase 3 lulus.)
+
+Hasil: 112 lulus, 0 gagal

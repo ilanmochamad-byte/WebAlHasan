@@ -1,0 +1,17 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "tapOn": {
+      "point": "50%,56%"
+    }
+  },
+  "eraseText",
+  {
+    "inputText": "RAHASIA-IOS-V7 draf basi"
+  },
+  "hideKeyboard",
+  {
+    "pressKey": "home"
+  }
+]
