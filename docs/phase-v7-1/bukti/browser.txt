@@ -1,0 +1,42 @@
+[lulus] B-A daftar pengajuan wali 375px: rapi di kerangka bersama
+[lulus] B-A formulir pengajuan wali 375px: rapi di kerangka bersama
+[lulus] B-A 375px: pengajuan terkirim, rincian memuat tahap dan alasan
+[lulus] B-A rincian pengajuan wali 375px: rapi di kerangka bersama
+[lulus] B-A daftar pengajuan wali 768px: rapi di kerangka bersama
+[lulus] B-A formulir pengajuan wali 768px: rapi di kerangka bersama
+[lulus] B-A 768px: pengajuan terkirim, rincian memuat tahap dan alasan
+[lulus] B-A rincian pengajuan wali 768px: rapi di kerangka bersama
+[lulus] B-A daftar pengajuan wali 1280px: rapi di kerangka bersama
+[lulus] B-A formulir pengajuan wali 1280px: rapi di kerangka bersama
+[lulus] B-A 1280px: pengajuan terkirim, rincian memuat tahap dan alasan
+[lulus] B-A rincian pengajuan wali 1280px: rapi di kerangka bersama
+[lulus] B-B 375px: wali kedua melihat status ringkas tanpa alasan dan tanpa formulir
+[lulus] B-A rincian ringkas wali kedua 375px: rapi di kerangka bersama
+[lulus] B-B 768px: wali kedua melihat status ringkas tanpa alasan dan tanpa formulir
+[lulus] B-A rincian ringkas wali kedua 768px: rapi di kerangka bersama
+[lulus] B-B 1280px: wali kedua melihat status ringkas tanpa alasan dan tanpa formulir
+[lulus] B-A rincian ringkas wali kedua 1280px: rapi di kerangka bersama
+[lulus] B-C klik ganda Kirim pengajuan → tetap satu pengajuan
+[lulus] B-D 375px tanpa JavaScript: pengajuan tersimpan sekali
+[lulus] B-A antrean pembimbing 375px: rapi di kerangka bersama
+[lulus] B-E 375px: antrean pembimbing hanya pengajuan yang dialamatkan kepadanya
+[lulus] B-A rincian pembimbing 375px: rapi di kerangka bersama
+[lulus] B-A antrean pembimbing 768px: rapi di kerangka bersama
+[lulus] B-E 768px: antrean pembimbing hanya pengajuan yang dialamatkan kepadanya
+[lulus] B-A rincian pembimbing 768px: rapi di kerangka bersama
+[lulus] B-A antrean pembimbing 1280px: rapi di kerangka bersama
+[lulus] B-E 1280px: antrean pembimbing hanya pengajuan yang dialamatkan kepadanya
+[lulus] B-A rincian pembimbing 1280px: rapi di kerangka bersama
+[lulus] B-A antrean admin 375px: rapi di kerangka bersama
+[lulus] B-A rincian admin 375px: rapi di kerangka bersama
+[lulus] B-A antrean admin 768px: rapi di kerangka bersama
+[lulus] B-A rincian admin 768px: rapi di kerangka bersama
+[lulus] B-A antrean admin 1280px: rapi di kerangka bersama
+[lulus] B-A rincian admin 1280px: rapi di kerangka bersama
+[lulus] B-E 1280px: admin menetapkan pembimbing lewat formulir; riwayat penetapan tampil
+[lulus] B-E murobi: halaman pengajuan wali 403, rincian 404
+[lulus] B-E tanpa galat JavaScript
+[lulus] B-E tanpa confirm()/alert() bawaan
+
+Lulus: 39 · Gagal: 0
+galat PHP log server browser: 0

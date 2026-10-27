@@ -464,6 +464,13 @@ final class IzinRepository
             $parts[] = '1 = 0';
         }
 
+        // PRD V7 Fase 1: tampilan V2 hanya memuat status V2. Pengajuan wali yang
+        // masih di tahap pembimbing (status V7) dibaca lewat `IzinWaliService`
+        // dengan proyeksi per peran, sehingga tidak muncul di daftar, antrean,
+        // ringkasan, atau detail V2 — termasuk bagi admin dan orang tua.
+        $parts[] = 'p.status IN (' . implode(',', array_fill(0, count(self::STATUSES), '?')) . ')';
+        array_push($params, ...self::STATUSES);
+
         if (!empty($filters['id'])) {
             $parts[] = 'p.id = ?';
             $params[] = (int) $filters['id'];

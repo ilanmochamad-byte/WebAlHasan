@@ -295,6 +295,12 @@ function portal_peristiwa_label(string $kode): string
         'keputusan' => 'Memutuskan izin',
         'pembatalan' => 'Membatalkan pengajuan',
         'keputusan_dikoreksi' => 'Mengoreksi keputusan',
+        // PRD V7 Fase 1: pengajuan wali dan routing pembimbing.
+        'pengajuan_wali_dibuat' => 'Wali mengajukan izin',
+        'routing_pembimbing_otomatis' => 'Diarahkan ke pembimbing',
+        'routing_pembimbing_perlu_admin' => 'Menunggu penetapan pembimbing oleh admin',
+        'pembimbing_ditetapkan' => 'Admin menetapkan pembimbing',
+        'pembimbing_ditetapkan_ulang' => 'Admin mengganti pembimbing',
         default => ucfirst(str_replace('_', ' ', $kode)),
     };
 }

@@ -1,0 +1,42 @@
+[info] Tiga perizinan V1 + tiga pengajuan is_legacy + tiga riwayat migrasi dengan ID sama ditambahkan sebelum snapshot.
+
+=== M-1. Preflight pada salinan 029 ===
+[lulus] Salinan berada di migrasi 029, tanpa kolom V7
+[info] Pengajuan V2: 1055 (warisan 3), perizinan warisan: 3, keputusan: 551, relasi santri–wali: 23
+[lulus] Salinan memuat data izin V2 sintetis yang cukup untuk uji preservasi
+[lulus] Preflight lulus dan manifest ditulis
+[lulus] Hash isi 24 tabel inti (izin V2, identitas, penugasan, PSB, V3–V6) dan CHECKSUM 18 tabel tanpa kolom generated tercatat
+
+=== M-2. Migrasi naik ===
+[lulus] migrate up menerapkan 030
+[lulus] Verifier + manifest lulus sesudah migrasi
+[lulus] CHECKSUM tabel inti identik sesudah migrasi
+[lulus] Hash isi seluruh tabel inti identik sesudah migrasi
+[lulus] Definisi 27 kolom V2 izin_pengajuan tetap (selain ENUM status yang diperluas di ujung)
+[lulus] Seluruh baris lama berasal Pengurus, tanpa wali_id
+[lulus] Baris warisan tetap; tabel penetapan kosong
+[lulus] Penghitung ID melanjutkan ruang ID yang sama (tidak memakai ulang ID V2/warisan)
+
+=== M-3. Idempoten ===
+[lulus] Berkas 030 dijalankan ulang tanpa galat dan tanpa perubahan
+[lulus] migrate up kedua: tidak ada migrasi baru
+
+=== M-4. Rollback tanpa data V7 ===
+[lulus] Preflight rollback lulus (tidak ada data V7)
+[lulus] Rollback 030 berjalan
+[lulus] Verifier --rollback + manifest lulus
+[lulus] Checksum, hash isi, struktur kolom, dan constraint izin_pengajuan identik dengan sebelum 030
+
+=== M-5. Sesudah rollback ===
+[lulus] Jalur pengurus V2 tetap membuat pengajuan tanpa skema 030 (Perlu Penetapan Admin)
+[lulus] Layanan V7 menjawab 503 "belum dipasang" tanpa skema 030
+
+=== M-6. Naik lagi, data wali, rollback ditolak ===
+[lulus] Siklus naik–turun–naik: 030 terpasang lagi dan verifier lulus
+[lulus] Wali fixture V2 (anak A1) membuat pengajuan; tahap sesuai jumlah pembimbing sah (2)
+[lulus] Preflight rollback menolak karena ada data V7
+[lulus] Penjaga SQL menghentikan rollback sebelum perubahan skema; 030 tetap tercatat; data wali utuh
+[lulus] Verifier tetap lulus sesudah rollback yang ditolak
+
+Hasil: 25 lulus, 0 gagal
+[lulus] Tiga ID, nilai bisnis, pelaku NULL, dan riwayat warisan tetap terbaca sesudah seluruh siklus.

@@ -71,6 +71,16 @@ if ($mode === Capabilities::ORANG_TUA) {
         ],
     ]);
     portal_flash_render();
+    // PRD V7 Fase 1: orang tua dapat mengajukan izin melalui pembimbing.
+    // Tahap pembimbing tampil di halaman Pengajuan wali (proyeksi per wali).
+    try {
+        $aksesWali = izin_wali_service()->akses($currentUser);
+        echo '<p class="ah-no-print"><a class="btn btn-sm btn-outline-primary" href="' . portal_e(app_url('/portal/izin_wali.php')) . '">Pengajuan wali</a>'
+            . ($aksesWali['boleh_mengajukan'] ? ' <a class="btn btn-sm btn-primary" href="' . portal_e(app_url('/portal/izin_wali_buat.php')) . '"><i class="fas fa-plus" aria-hidden="true"></i> Ajukan izin</a>' : '')
+            . '</p>';
+    } catch (IzinException) {
+        // Migrasi 030 belum dipasang: halaman tetap seperti sebelum V7.
+    }
     if (count($anak) > 1) {
         $chips = [];
         foreach ($anak as $item) {
@@ -106,7 +116,7 @@ if ($mode === Capabilities::ORANG_TUA) {
         echo '</div>';
         portal_pagination((int) $result['total'], (int) $result['page'], (int) $result['per_page']);
     }
-    echo '<p class="small text-muted ah-no-print">Halaman ini hanya-baca. Ketuk kartu untuk melihat rincian dan riwayatnya. '
+    echo '<p class="small text-muted ah-no-print">Daftar ini hanya-baca. Ketuk kartu untuk melihat rincian dan riwayatnya. '
         . '<a href="' . portal_e(app_url('/portal/laporan.php')) . '">Laporan izin (cetak/CSV)</a></p>';
     portal_footer();
     exit;

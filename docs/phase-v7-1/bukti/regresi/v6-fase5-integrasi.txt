@@ -1,0 +1,102 @@
+Bulan A = 2026-09 (digeser), bulan B = 2026-10 (hari ini 2026-10-27)
+[lulus] Fixture V6 Fase 1–4 tersedia; ledger kosong
+[lulus] LaporanService tersedia (027–029 terpasang)
+
+=== Fixture bulan A (digeser) dan bulan B ===
+[lulus] Setoran transfer B Rp50.000 menunggu (belum saldo)
+[lulus] Pembayaran transfer B Rp30.000 menunggu verifikasi
+[lulus] Saldo fixture: SMP Rp90.000, Tsanawi Rp70.000, santri keluar Rp12.000
+
+=== I-1. Hak laporan ===
+[lulus] sbx_v6_bsa_b (petugas): laporan terbaca; bagian kas/internal/koreksi/selisih ada; daftar R-10 tidak ada
+[lulus] sbx_v6_bsa_tsanawi (petugas): laporan terbaca; bagian kas/internal/koreksi/selisih ada; daftar R-10 tidak ada
+[lulus] sbx_admin (admin): laporan terbaca; bagian kas/internal/koreksi/selisih ada; daftar R-10 ada
+[lulus] sbx_v6_admin_bsa (admin_petugas): laporan terbaca; bagian kas/internal/koreksi/selisih ada; daftar R-10 ada
+[lulus] sbx_v6_wali_dua (wali): laporan terbaca; bagian kas/internal/koreksi/selisih tidak ada; daftar R-10 tidak ada
+[lulus] sbx_ortu_a (wali): laporan terbaca; bagian kas/internal/koreksi/selisih tidak ada; daftar R-10 tidak ada
+[lulus] sbx_pengurus_biasa: laporan dan ekspor → 403
+[lulus] sbx_guru_biasa: laporan dan ekspor → 403
+[lulus] sbx_v5_petugas_b: laporan dan ekspor → 403
+[lulus] Santri di luar hak/tidak ada/nonaktif bagi petugas → 404
+[lulus] Unit di luar cakupan → 404; unit tidak dikenal → 422
+[lulus] Periode tidak sah {"dari":"2026-13"} → 422
+[lulus] Periode tidak sah {"sampai":"x"} → 422
+[lulus] Periode tidak sah {"dari":"2026-11","sampai":"2026-11"} → 422
+[lulus] Periode tidak sah {"dari":"2026-10","sampai":"2026-09"} → 422
+[lulus] Periode tidak sah {"dari":"2025-10","sampai":"2026-10"} → 422
+[lulus] Rentang tepat 12 bulan diterima
+
+=== I-2. Laporan = oracle (kriteria 1–2) ===
+[lulus] Tagihan B: terbit 2 = Rp210.000, terbayar Rp140.000, sisa Rp70.000, 1 dibatalkan Rp45.000 (sesudah revisi)
+[lulus] Pembayaran B: sah tunai 90.000 + tabungan 50.000; dibatalkan tunai 20.000 + tabungan 10.000; transfer menunggu 30.000 tidak dihitung
+[lulus] Tabungan B: awal 110.000 + setoran 137.000 − penarikan 20.000 − belanja 15.000 − bayar tagihan 60.000 + koreksi 15.000 − 5.000 + pengembalian 10.000 = akhir 172.000
+[lulus] Laporan A: tagihan Rp180.000 (lewat jatuh tempo 1 = Rp80.000), saldo 0 → 110.000, kas baru Rp240.000 (setoran 200.000 + tunai 40.000)
+[lulus] Laporan A..B: tagihan 4 = Rp390.000, terbayar 240.000 (tunai 130.000 + tabungan 110.000), saldo 0 → 172.000, kas baru Rp487.000
+[lulus] Per bulan A..B: kas baru 240.000 + 247.000; bayar dari tabungan 60.000 per bulan; pembatalan B 30.000
+[lulus] Per santri SMP B: 110.000 + 55.000 − 20.000 − 15.000 − 60.000 + 15.000 − 5.000 + 10.000 = 90.000 = saldo akun; selisih Rp0
+[lulus] Selisih rekonsiliasi laporan A = Rp0 (tagihan, saldo, internal, pengembalian, per santri, akun)
+[lulus] Selisih rekonsiliasi laporan B = Rp0 (tagihan, saldo, internal, pengembalian, per santri, akun)
+[lulus] Selisih rekonsiliasi laporan A..B = Rp0 (tagihan, saldo, internal, pengembalian, per santri, akun)
+
+=== I-3. Kas vs perpindahan internal (kriteria 3) ===
+[lulus] Kas B: tunai masuk 212.000 (setoran 87.000 + tagihan 110.000 + koreksi 15.000) keluar 60.000; transfer 50.000; kas baru 247.000
+[lulus] Internal B: debit tabungan 60.000 = pembayaran dari tabungan 60.000; pengembalian 10.000 = pembatalan 10.000
+[lulus] Kas dan internal laporan bulan B = rekonsiliasi harian hari ini (seluruh transaksi B dicatat hari ini)
+[lulus] Bayar tagihan Rp5.000 dari tabungan: kas baru tetap, pembayaran internal +5.000, saldo −5.000, terbayar +5.000
+
+=== I-4. Jejak koreksi dan pembatalan (kriteria 4) ===
+[lulus] Daftar koreksi B: 2 koreksi tabungan, 3 pembatalan pembayaran, 1 setoran ditolak, 1 revisi, 1 pembatalan tagihan
+[lulus] Seluruh 8 koreksi/pembatalan memiliki aktor, waktu, alasan, dan asal (nomor kuitansi/tagihan/setoran)
+[lulus] Koreksi tabungan merujuk nomor kuitansi tabungan asal
+[lulus] Ringkasan pembatalan B (termasuk pengembalian internal Rp5.000 dari I-3)
+
+=== I-5. Laporan = sumber ===
+[lulus] Angka laporan B = kueri sumber terpisah {"setoran_tunai":87000,"debit":65000,"saldo":172000,"terbayar":140000}
+[lulus] Jumlah per santri = agregat (saldo, tagihan, terbayar, setoran, bayar dari tabungan)
+[lulus] Jumlah per bulan = agregat rentang
+[lulus] Pencarian per santri menyaring tabel per santri saja (jumlah ikut pencarian; agregat tetap)
+[lulus] Halaman di luar jangkauan dijepit ke halaman terakhir
+
+=== I-6. Peran: unit, wali, R-10 ===
+[lulus] Petugas Tsanawi: hanya santri Tsanawi (saldo 70.000, tagihan 90.000, kas baru 160.000, 1 koreksi)
+[lulus] Wali dua anak: dua anak saja (saldo 160.000, tagihan 210.000); tanpa transfer menunggu, penolakan, selisih internal
+[lulus] Wali SMP: hanya anaknya (saldo 90.000, terbayar 50.000)
+[lulus] Wali tanpa anak V6: hanya 2 anaknya sendiri dengan angka Rp0, bukan data santri lain
+[lulus] Laporan wali tanpa referensi transfer, alasan, atau santri lain
+[lulus] R-10: admin melihat 1 santri nonaktif bersaldo Rp12.000 (hanya dilaporkan)
+[lulus] R-10: admin+petugas melihat daftar; petugas tidak melihat santri nonaktif di laporan maupun daftar
+
+=== I-7. Ekspor CSV per peran ===
+[lulus] Admin: CSV per santri 4 baris dengan kolom selisih; UTF-8 BOM
+[lulus] Wali dua anak: CSV per santri 2 baris tanpa kolom selisih; rincian transaksi hanya dua anaknya, tanpa referensi transfer/alasan
+[lulus] Wali: ekspor koreksi 403; jenis tidak dikenal 422; anak lain 404
+[lulus] Petugas Tsanawi: rincian transaksi hanya santri Tsanawi
+[lulus] Admin: CSV koreksi 8 baris, masing-masing beraktor, beralasan, dan berasal
+[lulus] CSV rincian transaksi: Σ "Kas baru" = penerimaan kas baru laporan (Rp247000); Σ pembayaran internal = laporan
+[lulus] Sel teks berawalan = diberi kutip pembuka (tanpa formula aktif)
+[lulus] Setiap ekspor berhasil tercatat di audit (7) tanpa nominal/nama/alasan; ekspor ditolak tidak dicatat
+
+=== I-8. Pencabutan pada sesi lama ===
+[lulus] Penugasan dinonaktifkan: laporan dan ekspor petugas → 403 seketika
+[lulus] Relasi satu anak dicabut: laporan/ekspor wali dua anak tinggal anak lainnya; anak dicabut 404
+
+=== I-9. Konkurensi, idempotensi, dan snapshot ===
+[lulus] Enam proses setoran kunci sama → satu kredit Rp40.000 (lima replay)
+[lulus] Dua belanja Rp30.000 bersamaan atas saldo Rp40.000 → tepat satu sukses, saldo Rp10.000
+[lulus] Tiga proses mutasi (36 langkah) bersamaan dengan 45 pembacaan laporan: 0 laporan tidak konsisten (satu snapshot)
+[info] KONTROL kueri satu per satu tanpa snapshot pada beban yang sama: 26 dari 45 pembacaan tidak konsisten (bergantung waktu; tidak dinilai).
+[lulus] Sesudah beban: laporan admin selisih Rp0
+
+=== I-10. Kontrol pengrusakan terdeteksi ===
+[lulus] Saldo akun +Rp1: laporan menandai 1 santri selisih; verifier gagal (exit 1)
+[lulus] Terbayar −Rp1: laporan selisih tagihan −Rp1; verifier gagal
+[lulus] Satu audit koreksi dihapus: verifier gagal "koreksi tanpa jejak" (audit dipulihkan)
+
+=== I-11. Verifier rilis dan laporan hanya membaca ===
+[lulus] Laporan tidak menulis apa pun (ledger, pembayaran, tagihan, idempotensi, saldo, audit, notifikasi tetap)
+[info] Santri nonaktif bersaldo/bertunggakan (R-10, hanya dilaporkan): 1 santri, saldo Rp12000, sisa tagihan Rp0
+[info] Transfer menunggu verifikasi (tidak dihitung saldo/terbayar): 0 setoran, 1 pembayaran
+Ringkasan verifier V6: 36 lulus, 0 gagal
+[lulus] bin/v6_verify.php lulus pada DB berfixture sesudah seluruh skenario
+
+Ringkasan: 71 lulus, 0 gagal

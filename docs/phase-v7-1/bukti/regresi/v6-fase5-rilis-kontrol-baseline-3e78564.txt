@@ -1,0 +1,41 @@
+
+=== S-1. Turun ke sebelum V6, lalu 027–029 sekaligus ===
+[lulus] Salinan V6 berfixture V1–V5 + penugasan BSA dibangun: test_v6_f5_rilis_test
+[lulus] Salinan tanpa data uang V6
+[lulus] Rollback 029: preflight lulus (tabel kosong) dan migrate rollback berhasil
+[lulus] Rollback 028: preflight lulus (tabel kosong) dan migrate rollback berhasil
+[lulus] Rollback 027: preflight lulus (tabel kosong) dan migrate rollback berhasil
+[lulus] Keadaan sebelum V6: 026 terakhir, 0 tabel bsa_*, 0 tabel penjaga tersisa
+[lulus] Preflight rilis sebelum migrasi lulus; manifest privat 0600 (027–029 belum, sidik jari identitas)
+[lulus] Preflight --rilis: 29 migrasi + 6 rollback = manifest ter-commit (35 SHA cocok)
+[lulus] migrate up memasang tepat 027, 028, 029 berurutan dalam satu langkah
+[lulus] Verifier rilis + manifest sesudah migrasi: invarians, tabel lama, dan identitas tetap
+[lulus] Preflight sesudah migrasi: 027–029 tercatat, lulus
+
+=== S-2. Manifest rilis ===
+[lulus] Manifest ter-commit = hash berkas saat ini (migrasi dan rollback); baseline web 75cb144
+[lulus] SHA rollback 029 yang berbeda → preflight gagal
+[lulus] Daftar migrasi terpotong → preflight gagal (hash cocok bukan bukti kelengkapan)
+[lulus] Rollback V5 hilang dari manifest → preflight gagal
+
+=== S-3. Pemasangan sebagian; S-4. Jam basis data ===
+[lulus] 028 tanpa 029 → preflight rilis gagal "pemasangan sebagian"
+[lulus] Zona waktu aplikasi ≠ basis data → preflight gagal (batas hari/periode)
+[lulus] Kembali ke zona waktu yang sama → preflight lulus
+
+=== S-5. Penjaga rollback dengan data ===
+[lulus] Salinan berisi seluruh jenis transaksi (setoran, belanja + koreksi, tagihan, bayar tabungan, pembatalan, transfer menunggu/ditolak, santri keluar)
+[lulus] Verifier rilis lulus pada salinan berisi; R-10 dilaporkan
+[lulus] Preflight rollback 029 memblokir (setoran transfer, belanja, pembalik, pembayaran tabungan)
+[lulus] Rollback 029_v6_fase3_tabungan.sql dijalankan langsung (tanpa preflight) ditolak penjaga SQL; 16 tabel V6 dan isi uang tetap
+[lulus] Rollback 028_v6_fase2_tagihan_bulanan.sql dijalankan langsung (tanpa preflight) ditolak penjaga SQL; 16 tabel V6 dan isi uang tetap
+[lulus] Rollback 027_v6_fase1_bsa.sql dijalankan langsung (tanpa preflight) ditolak penjaga SQL; 16 tabel V6 dan isi uang tetap
+[lulus] Catatan migrasi 029 tetap
+
+=== S-6. Latihan backup → restore → verifikasi ===
+[lulus] Latihan metode writer: 11/0 (preflight, backup, restore, verifier, hash isi, laporan, rollback ditolak)
+[lulus] Latihan metode dump: 12/0 (preflight, backup, restore, verifier, hash isi, laporan, rollback ditolak)
+[lulus] Latihan tanpa V6_DRILL=1 ditolak
+[lulus] Latihan pada DB bukan test_*_test ditolak
+
+Ringkasan: 29 lulus, 0 gagal

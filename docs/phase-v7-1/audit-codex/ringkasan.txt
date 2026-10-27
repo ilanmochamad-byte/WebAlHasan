@@ -1,0 +1,25 @@
+integrasi-akhir exit=0
+probe-akhir exit=0
+http-akhir exit=0
+migrasi-akhir exit=0
+browser exit=0
+regresi/penugasan exit=0
+regresi/v2-fase4-integrasi exit=0
+regresi/v2-fase5-integrasi exit=0
+regresi/v2-fase1-integrasi exit=0
+regresi/v2-fase2-integrasi exit=0
+regresi/v2-fase4-konkurensi exit=0
+regresi/v2-fase3-api exit=1
+regresi/v2-fase4-api exit=1
+regresi/v2-fase5-api exit=0
+regresi/v2-fase2-web exit=0
+regresi/v2-fase4-web exit=0
+regresi/v2-fase5-web exit=0
+regresi/verifier-reg1 exit=0
+regresi/verifier-reg2 exit=0
+regresi/verifier-reg3 exit=0
+regresi/verifier-reg4 exit=0
+regresi/verifier-reg5 exit=0
+regresi/verifier-reg6 exit=0
+statis-akhir exit=0
+SELESAI

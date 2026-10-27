@@ -414,6 +414,12 @@ final class IzinReportRepository
         // penggabungan di bawah tidak pernah menghasilkan WHERE kosong.
         $parts = [substr($scopeWhere, strlen(' WHERE '))];
 
+        // PRD V7 Fase 1: laporan V2 hanya memuat status V2. Pengajuan wali yang
+        // masih di tahap pembimbing (status V7) belum menjadi bagian laporan ini;
+        // laporan lintas asal wali/pengurus adalah V7 Fase 3.
+        $parts[] = 'p.status IN (' . implode(',', array_fill(0, count(\App\Izin\IzinRepository::STATUSES), '?')) . ')';
+        array_push($params, ...\App\Izin\IzinRepository::STATUSES);
+
         // --- 2. Rentang tanggal sesuai basis yang dipilih. -------------------
         if ($withDateRange) {
             switch ($filter->basisTanggal) {

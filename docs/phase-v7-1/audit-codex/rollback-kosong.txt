@@ -1,0 +1,8 @@
+[info] Basis data terpilih: test_v7_audit_migrasi_test
+[lulus] CHECK aktif pada sesi dan default global (MariaDB)
+[lulus] Migrasi terakhir adalah 030 (030_v7_fase1_pengajuan_wali.sql)
+[lulus] Tidak ada pengajuan wali/tahap V7 (0)
+[lulus] Tidak ada riwayat penetapan pembimbing (0)
+[lulus] Tidak ada klaim idempotensi izin.wali.* (0)
+Rollback 030 aman dijalankan sesudah backup terverifikasi.
+Rollback selesai: 030_v7_fase1_pengajuan_wali.sql

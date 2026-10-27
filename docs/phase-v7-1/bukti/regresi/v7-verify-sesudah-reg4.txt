@@ -1,0 +1,36 @@
+[lulus] Migrasi 030 tercatat
+[lulus] ENUM status: lima nilai V2 tetap di depan, empat tahap V7 di ujung
+[lulus] Kolom izin_pengajuan.asal_pengajuan
+[lulus] Kolom izin_pengajuan.wali_id
+[lulus] Kolom izin_pengajuan.catatan_wali
+[lulus] Kolom izin_pengajuan.pembimbing_pengurus_id
+[lulus] Kolom izin_pengajuan.pembimbing_routing_kandidat
+[lulus] Kolom izin_pengajuan.pembimbing_routing_catatan
+[lulus] Kolom izin_pengajuan.pembimbing_routing_pada
+[lulus] Kolom izin_pengajuan.pembimbing_ditetapkan_oleh_user_id
+[lulus] Kolom izin_pengajuan.pembimbing_ditetapkan_pada
+[lulus] Tabel izin_pembimbing_penetapan InnoDB
+[lulus] Tiga kunci asing V7 dan CHECK asal terpasang pada izin_pengajuan
+[lulus] Lima kunci asing tabel penetapan
+[lulus] Indeks izin_pengajuan_v7_pembimbing_index
+[lulus] Indeks izin_pengajuan_v7_asal_index
+[lulus] Indeks izin_pengajuan_v7_wali_index
+[info] Pengajuan berasal wali: 0; per status: []
+[lulus] Baris wali selalu berwali, tanpa pengurus pengaju, bukan warisan
+[lulus] Baris pengurus/warisan tanpa wali_id dan tetap berstatus V2
+[lulus] Tahap pembimbing V7 tidak pernah memiliki murobi tujuan (murobi belum menerima)
+[lulus] Tidak ada keputusan murobi untuk pengajuan di tahap pembimbing
+[lulus] Setiap Menunggu Pembimbing memiliki pembimbing dan penugasan tujuan
+[lulus] Perlu Penetapan Pembimbing belum memiliki pembimbing tujuan
+[lulus] Setiap pengajuan wali memiliki riwayat pembuatan
+[lulus] Setiap pengajuan wali memiliki audit pembuatan
+[lulus] Versi pengajuan tahap pembimbing = 1 + jumlah penetapan (Fase 1)
+[lulus] Setiap penetapan pembimbing memiliki riwayat
+[lulus] Penetapan pembimbing hanya untuk pengajuan wali
+[lulus] Tidak ada dua pengajuan aktif bertumpang tindih yang melibatkan pengajuan wali (lintas jalur)
+[lulus] Seluruh klaim idempotensi V7 selesai dan menunjuk pengajuan
+[lulus] Audit V7 tanpa alasan, catatan, atau tanggal rinci
+[lulus] Relasi santri–wali tanpa referensi yatim
+[lulus] Pengajuan izin tanpa santri yatim
+[lulus] Riwayat izin tanpa pengajuan yatim
+Verifikasi V7 Fase 1 lulus.

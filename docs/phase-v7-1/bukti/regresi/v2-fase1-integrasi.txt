@@ -1,0 +1,40 @@
+[lulus] Akun admin memperoleh kemampuan admin
+[lulus] Akun pengurus dengan relasi aktif memperoleh kemampuan pengurus
+[lulus] Akun orang tua dengan relasi wali aktif memperoleh kemampuan orang tua
+[lulus] Guru dengan penugasan murobi aktif memperoleh kemampuan murobi
+[lulus] Guru tanpa penugasan murobi aktif TIDAK memperoleh kemampuan keputusan izin
+[lulus] Akun tanpa role dan relasi tidak memperoleh kemampuan apa pun
+[lulus] Penugasan murobi yang sudah berakhir mencabut kemampuan keputusan
+[lulus] Penugasan murobi aktif kembali memberi kemampuan murobi
+[lulus] Penugasan pembimbing dapat dibuat untuk pengurus aktif dan kamar valid
+[lulus] Penugasan pembimbing menolak pengurus tidak aktif
+[lulus] Penugasan pembimbing menolak kamar yang tidak ada
+[lulus] Penugasan pembimbing menolak tanggal selesai sebelum tanggal mulai
+[lulus] Pengurus melihat santri di kamar binaannya
+[lulus] Pengurus tidak melihat santri di luar cakupan pembimbingnya
+[lulus] Satu akun orang tua hanya melihat santri dengan relasi wali aktif
+[lulus] Relasi wali yang sudah diarsipkan tidak terlihat oleh orang tua
+[lulus] Admin dapat membuat akun pengurus dengan password sementara
+[lulus] Akun pengurus terhubung ke tepat satu baris pengurus
+[lulus] Akun baru wajib mengganti password awal
+[lulus] Satu baris pengurus tidak dapat dihubungkan ke lebih dari satu akun
+[lulus] Akun tidak dapat dibuat untuk pengurus yang tidak aktif
+[lulus] Admin dapat menghubungkan akun yang sudah ada ke satu baris wali
+[lulus] Satu wali tidak dapat dihubungkan ke lebih dari satu akun
+[lulus] Akun yang baru dihubungkan langsung memperoleh kemampuan orang tua
+[lulus] Admin dapat memeriksa relasi wali–santri aktif maupun yang diarsipkan
+[lulus] Pengurus hanya melihat pengajuan yang dibuat atas namanya
+[lulus] Murobi hanya melihat pengajuan yang diarahkan kepadanya
+[lulus] Murobi A menerima 403 saat membuka pengajuan milik Murobi B
+[lulus] Pengurus menerima 403 saat membuka pengajuan pengurus lain
+[lulus] Orang tua A menerima 403 untuk pengajuan santri yang tidak terhubung dengannya
+[lulus] Guru tanpa kemampuan perizinan menerima 403
+[lulus] Orang tua dapat membuka pengajuan santri yang terhubung dengannya
+[lulus] Admin dapat membuka seluruh pengajuan
+[lulus] Parameter mode tidak dapat memperluas cakupan di luar kemampuan pengguna
+[lulus] Tidak ada baris perizinan warisan pada database uji (lewati pemeriksaan label)
+[lulus] Audit mencatat perizinan_account_created
+[lulus] Audit mencatat perizinan_account_linked
+[lulus] Audit mencatat pembimbing_assignment_created
+[lulus] Audit tidak menyimpan credential atau password
+[bersih] Fixture uji dihapus.

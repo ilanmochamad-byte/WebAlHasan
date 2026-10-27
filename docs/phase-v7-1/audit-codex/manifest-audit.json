@@ -1,0 +1,28 @@
+{
+  "baseline_web": "3e785645bc412b7bc95b1e05152f3ed0508a6a58",
+  "handoff": "974e1c5534b9ec473f29c534ec583cab2bc7fa23",
+  "mobile_read_only": "68a412108fc3b88b23b9b4c181269a4f10ffe9b7",
+  "PHP": "8.4.14",
+  "MariaDB": "12.3.2",
+  "Node": "26.7.0",
+  "innodb_snapshot_isolation": true,
+  "sha256": {
+    "app/Izin/IzinWaliService.php": "440f8fe95a5e122e7660438df1d6a5bf5eabfa85ed20d216b73607739556e293",
+    "app/Izin/PembimbingRouter.php": "e906f2bd6aa976f4309bc68f241484eae790f9dcecab392303791364c3d2bdfd",
+    "bin/_v7_phase1.php": "94b829125734c390572d50e505a3b15af3a0d8e538658159b20c2723d6c90dff",
+    "bin/v7_phase1_preflight.php": "fe9ce05d4b1af2f49181b400a8caa054cfca8df9071de85ff36738a2020a6532",
+    "bin/v7_phase1_rollback_preflight.php": "157c22b53b582161a43b99d722536d222f1f2b37ddf04018bb726fc367cfd453",
+    "bin/v7_phase1_verify.php": "363beccb63e673b0c77d942650be16954df3ea32e2fb312d76fd9ffbb653daed",
+    "database/migrations/030_v7_fase1_pengajuan_wali.sql": "81000c0d57acf9ebcfedf732ffa3acc325731dc96b6bfc809de96b7bf895bf19",
+    "database/rollbacks/030_v7_fase1_pengajuan_wali.sql": "7ca2635ddfd9584b1e7a8b13b83471f61d8b65f50127025f3d4460b87d3cffd1",
+    "tests/v7_phase1_audit.php": "4e07f5654231d6aa0d8f416bcf22ee5211a33ed325c4b18b115e5aa7bf9b3814",
+    "tests/v7_phase1_legacy_audit.php": "f54fe3a67f0c34dcc71cc9a683091ab940ad4ec3bb3c5e4d3c4bbe04660d39d0"
+  },
+  "privacy_scan": {
+    "files": 85,
+    "matches": {
+      "bearer": 0,
+      "token_json": 0
+    }
+  }
+}

@@ -414,6 +414,24 @@ function izin_workflow_service(): IzinWorkflowService
     );
 }
 
+/**
+ * PRD V7 Fase 1: pengajuan izin wali melalui pembimbing. Satu pintu untuk web
+ * dan REST API; memakai baris `izin_pengajuan`, kunci santri, benturan tanggal,
+ * idempotensi, dan riwayat V2 yang sama dengan jalur pengurus.
+ */
+function izin_wali_service(): \App\Izin\IzinWaliService
+{
+    return new \App\Izin\IzinWaliService(
+        new \App\Izin\IzinWaliRepository(app_db()),
+        new IzinWriteRepository(app_db()),
+        izin_repository(),
+        new \App\Izin\PembimbingRouter(app_db()),
+        new IzinIdempotency(app_db()),
+        capabilities(),
+        audit_logger()
+    );
+}
+
 function pembimbing_service(): PembimbingService
 {
     static $service;
