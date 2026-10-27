@@ -171,7 +171,8 @@ final class IzinService
             return ['total' => 0, 'disetujui' => 0, 'semester' => 'Tidak ada semester aktif'];
         }
 
-        return $this->repository->santriSemesterCount($santriId, (int) $tahun['id'])
+        return $this->repository->santriSemesterCount($santriId, (int) $tahun['id'],
+            $scope['mode'] === Capabilities::MUROBI ? (int) $scope['guru_id'] : null)
             + ['semester' => (string) $tahun['tahun'] . ' ' . (string) $tahun['semester']];
     }
 

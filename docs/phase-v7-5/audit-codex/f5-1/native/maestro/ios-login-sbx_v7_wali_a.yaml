@@ -1,0 +1,67 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "launchApp": {
+      "stopApp": false
+    }
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Masukkan username",
+      "timeout": 15000
+    }
+  },
+  {
+    "tapOn": {
+      "point": "50%,63%"
+    }
+  },
+  {
+    "inputText": "sbx_v7_wali_a"
+  },
+  {
+    "assertVisible": "sbx_v7_wali_a"
+  },
+  {
+    "tapOn": "Masuk ke akun Anda"
+  },
+  {
+    "assertVisible": "sbx_v7_wali_a"
+  },
+  {
+    "tapOn": {
+      "point": "50%,74%"
+    }
+  },
+  {
+    "inputText": "${UJI_SANDI}"
+  },
+  {
+    "pressKey": "enter"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Not Now|Diajukan wali lain|Menunggu tinjauan pembimbing|Perlu perbaikan wali|Dibatalkan|Diteruskan ke murobi",
+      "timeout": 15000
+    }
+  },
+  {
+    "runFlow": {
+      "when": {
+        "visible": "Not Now"
+      },
+      "commands": [
+        {
+          "tapOn": "Not Now"
+        }
+      ]
+    }
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Diajukan wali lain|Menunggu tinjauan pembimbing|Perlu perbaikan wali|Dibatalkan|Diteruskan ke murobi",
+      "timeout": 15000
+    }
+  }
+]

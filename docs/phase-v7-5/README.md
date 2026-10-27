@@ -8,9 +8,15 @@
 | Instruksi | Human Developer 27 Oktober 2026: implementasikan hanya Fase 5, lalu berhenti untuk audit Codex |
 | Branch web | `claude/prd-v7-fase-5` dari audit Fase 4 `851ef0a26d1b8dd4e1db80ecf4f4ce8104ee8da7`. Diverifikasi: `origin/main` `857aff9` (merge PR #98) memuatnya dan `git diff 851ef0a origin/main` kosong. Tanpa worktree. |
 | Branch mobile | `~/alhasanApps` `claude/prd-v7-fase-5` dari audit Fase 4 `7478f7cb153e4f8af1a1b85791ce843a29733bd2`. `origin/main` `c747ebd` (merge PR #20), `git diff 7478f7c origin/main` kosong. Hanya ringkasan dokumen. |
-| Perubahan kode | **Tidak ada** pada `app/`, `api/`, `portal/`, `admin/`, `assets/`, `database/`, maupun kode aplikasi mobile (dibuktikan uji statis Y-1). Fase 5 menambah alat rilis CLI, uji, dan dokumen. |
+| Perubahan kode implementator | **Tidak ada** pada `app/`, `api/`, `portal/`, `admin/`, `assets/`, `database/`, maupun kode aplikasi mobile (dibuktikan uji statis Y-1). Fase 5 menambah alat rilis CLI, uji, dan dokumen. |
 | Migrasi | **Tidak ada migrasi baru** (031 tetap terakhir); rollback 030–031 tidak diubah (penjaga SQL sudah ada sejak Fase 1–2). |
 | Lingkungan uji | PHP 8.4.14, MariaDB 12.3.2 lokal, Node v26.7.0, Chromium Playwright, Expo SDK 57 web (lock ter-commit 57.0.15). DB `test_*_test` berfixture sintetis. |
+
+## Pembaruan audit F5-1
+
+Human Developer memilih **“Tutup akses; wajib tetap mencakup santri”**. Koreksi auditor menegakkan cakupan terkini untuk asal Wali pada bacaan/mutasi/retry, laporan/ekspor/cetak dan notifikasi, termasuk pilihan admin; jalur Pengurus V2 dipertahankan. Pengecualian kehilangan murobi sah muncul di antrean admin tanpa mengubah ID/status/versi secara otomatis. Ini menggantikan catatan F5-1 “belum diputuskan/tidak diubah” pada bukti implementator di bawah.
+
+Ulangan akhir: E2E **83/0**, HTTP **40/0**, rilis/restore **37/0**, browser **95/0**, Expo **48/0 + 7/0 + 5/0**, probe asli layanan **6/0** dan aplikasi **5/0**, matriks **24/0**, worker palsu **5/0**, formulir basi/laporan **11/0**, Android **9/0**. Regresi 93 suite dicatat dengan perbedaan dan diagnostik secara terbuka. Ulangan iOS parsial **belum selesai (login alat uji 0/1 dua percobaan)**; hasil iOS audit awal tidak dijadikan bukti kasus ini. **T-1 dan seluruh gerbang produksi tetap terbuka.** Keputusan terkini dan bukti terperinci: `AUDIT-CODEX.md`, `audit-codex/f5-1/`.
 
 ## Yang dikerjakan
 
@@ -45,7 +51,7 @@
 | Setiap perubahan fixture berpelaku, berwaktu, beralasan bila wajib, berversi | Verifier: transisi + rantai + pelaku/alasan + riwayat = audit, versi = 1 + peristiwa (Fase 2), pada setiap DB uji/regresi; kontrol pengrusakan R-8 | Terbukti lokal |
 | Jumlah/ID pengajuan V2/warisan, keputusan, riwayat tetap pada migrasi/rollback salinan; nol yatim baru | R-3 (isi seluruh tabel lama + irisan V2 + perizinan warisan), R-5 (snapshot turun = pra-migrasi), R-7, E-9; yatim 15 relasi | Terbukti lokal (MariaDB) |
 | Backup/restore, migrasi, verifier, rollback, smoke cPanel, uji perangkat sesuai pelaksanaan nyata | R-1…R-7; runbook; checklist **Menunggu pelaksanaan** | Lokal tersedia; **cPanel, MySQL, fisik, Push nyata, UAT belum diuji** |
-| Auditor menyatakan seluruh kriteria wajib V7 terpenuhi | `AUDIT-CODEX.md` | **Belum seluruhnya terpenuhi; lihat temuan cakupan dan gerbang produksi** |
+| Auditor menyatakan seluruh kriteria wajib V7 terpenuhi | `AUDIT-CODEX.md` | **Belum seluruhnya terpenuhi; lihat ulangan iOS, T-1 dan gerbang produksi** |
 
 ## Hasil pengujian Fase 5 (lokal, kode final)
 
@@ -95,7 +101,7 @@ Dijalankan **berurutan** lewat `perintah-regresi.sh` pada DB salinan yang dibang
 
 | # | Temuan | Tindakan |
 | --- | --- | --- |
-| F5-1 | **Murobi tujuan tetap dapat memutus sesudah penugasan atas kamar santri dicabut**, selama ia masih memiliki penugasan murobi aktif lain. Aturan V2 `IzinRouter::isEligibleMurobi` hanya memeriksa penugasan murobi aktif mana pun; routing menetapkan murobi tujuan saat diteruskan. Reproduksi: E-8 `[temuan]`. Pencabutan **seluruh** penugasan murobi ditolak dengan benar. | Tidak diubah (perilaku V2, juga berlaku untuk jalur pengurus). Runbook: admin menetapkan ulang murobi bila penugasan dipindah. Perlu keputusan Human Developer apakah murobi wajib masih mencakup santri saat memutus. |
+| F5-1 | **Murobi tujuan tetap dapat memutus sesudah penugasan atas kamar santri dicabut**, selama ia masih memiliki penugasan murobi aktif lain. Aturan V2 `IzinRouter::isEligibleMurobi` hanya memeriksa penugasan murobi aktif mana pun; routing menetapkan murobi tujuan saat diteruskan. Reproduksi: E-8 `[temuan]`. Pencabutan **seluruh** penugasan murobi ditolak dengan benar. | **Catatan implementator historis, digantikan keputusan Human Developer F5-1 dan koreksi auditor.** Wajib tetap mencakup santri untuk asal Wali; bukti/status terkini di `AUDIT-CODEX.md`. Jalur Pengurus V2 dipertahankan. |
 | F5-2 | Model transisi verifier awal tidak memuat keputusan admin pengganti dari "Perlu Penetapan Admin". | Ditemukan oleh verifier sendiri pada E2E; `V7_TRANSISI` dilengkapi. Bukan cacat aplikasi. |
 | F5-3 | `V7F1_TANPA_030=1 tests/v7_phase1_db.sh` hanya melepas satu migrasi (031) sejak 031 ada, sehingga "salinan tanpa 030" sebenarnya masih memuat 030. | Uji Fase 1 lama tidak diubah. `tests/v7_phase5_db.sh V7F5_TANPA_V7=1` melepas 031 lalu 030 dan dipakai uji rilis. |
 | T-1 | (terbuka sejak Fase 1) kiriman bersamaan berkunci sama pada pembuatan pengajuan **pengurus** V2 → sebagian 500, tanpa baris ganda. | Tidak diubah; menunggu keputusan. Jalur wali V7 nol 500 (E-12). |

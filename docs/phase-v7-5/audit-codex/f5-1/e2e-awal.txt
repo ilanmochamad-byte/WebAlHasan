@@ -1,0 +1,37 @@
+[lulus] Fixture V7 tersedia (1/0/2 pembimbing, 1/0/2 murobi, dua wali); belum ada pengajuan wali
+[lulus] Sakelar Push dan WhatsApp OFF (keadaan rilis yang diuji)
+[lulus] Preflight rilis V7 lulus pada DB uji dan menulis manifest awal
+
+=== E-1. Satu pembimbing dan satu murobi: perbaikan → teruskan → putus ===
+[lulus] Wali A mengajukan untuk anak dengan tepat satu pembimbing sah → Menunggu Pembimbing
+[lulus] Pembimbing Satu melihat item; Pembimbing Dua tidak
+[lulus] Murobi belum menerima/melihat sebelum penerusan (404, tanpa murobi tujuan)
+[lulus] Notifikasi masuk pembimbing: tepat satu, kepada Pembimbing Satu
+[lulus] Minta perbaikan → wali pengaju diberi tahu
+[lulus] Wali kedua tidak dapat memperbaiki
+[lulus] Wali pengaju memperbaiki; versi sebelum/sesudah tercatat
+[lulus] Teruskan → routing V2 murobi tunggal (Murobi A) pada ID yang sama
+[lulus] Notifikasi diteruskan → wali; masuk murobi → Murobi A
+[lulus] Murobi A dapat memutus; Murobi B 404
+[lulus] Murobi A memutus: satu keputusan Murobi; wali diberi tahu
+[lulus] Satu baris dari pembuatan sampai keputusan (versi 5 = 1 + 4 peristiwa)
+[lulus] Wali pengaju dan wali kedua melihat status sama; wali kedua tanpa isi
+[lulus] Pembatalan sesudah keputusan → 409
+[lulus] Admin mengoreksi keputusan lewat mekanisme V2: tetap satu keputusan, wali diberi tahu dan melihat hasil baru
+
+=== E-2. Nol pembimbing → admin, penugasan sah dibuat, ditetapkan ===
+[lulus] Nol kandidat → antrean admin, notifikasi admin, tanpa notifikasi pembimbing
+[lulus] Admin tidak dapat menetapkan pengurus yang bukan pembimbing sah (422)
+[lulus] Sesudah penugasan sah dibuat admin, kandidat = Pembimbing Dua
+[lulus] Penugasan baru tidak memindahkan pengajuan tanpa penetapan beralasan
+[lulus] Admin menetapkan → antrean Pembimbing Dua, notifikasi, riwayat penetapan
+[info] Routing murobi V7S0002 sesudah diteruskan: Perlu Penetapan Admin
+[lulus] Pembimbing Dua meneruskan; routing murobi V2 berjalan
+App\Izin\IzinException: Murobi yang dipilih harus memiliki penugasan aktif yang mencakup santri ini. in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Izin/IzinException.php:33
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Izin/IzinWorkflowService.php(308): App\Izin\IzinException::invalid('Murobi yang dip...')
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Izin/IzinWorkflowService.php(1020): App\Izin\IzinWorkflowService->{closure:App\Izin\IzinWorkflowService::assignMurobi():287}()
+#2 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Izin/IzinWorkflowService.php(287): App\Izin\IzinWorkflowService->transactional(Object(Closure), true)
+#3 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v7_phase5_e2e.php(205): App\Izin\IzinWorkflowService->assignMurobi(Array, 2707, 1, 'Penetapan murob...', 3, 'v7f5-mur-0013-4...', Array)
+#4 {main}
+Murobi yang dipilih harus memiliki penugasan aktif yang mencakup santri ini.

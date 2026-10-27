@@ -8,9 +8,9 @@ declare(strict_types=1);
  *
  *   php tests/v7_phase5_static.php
  *
- *   Y-1  tanpa migrasi baru dan tanpa perubahan kode aplikasi: berkas berubah
- *        sejak baseline audit Fase 4 hanya alat rilis, uji Fase 5, dokumen;
- *        aplikasi, API, portal, admin, database, aset tetap;
+ *   Y-1  tanpa migrasi baru; kode aplikasi hanya koreksi F5-1 yang disetujui: berkas berubah
+ *        sejak baseline audit Fase 4 hanya alat rilis, uji/dokumen dan
+ *        daftar koreksi F5-1; admin, database dan aset tetap;
  *   Y-2  alat rilis: hanya CLI; preflight, verifier, manifest dan pembantu
  *        tanpa pernyataan tulis; latihan hanya `test_*_test` dengan
  *        V7_DRILL=1, menolak produksi, credential lewat berkas opsi 0600;
@@ -38,19 +38,26 @@ $berubah = array_values(array_unique(array_filter($berubah, static fn (string $f
     && !str_starts_with($f, 'docs/presentasi-al-hasan-v4/') && !str_starts_with($f, 'output/'))));
 
 // ===================================================================== Y-1
-echo '=== Y-1. Tanpa migrasi baru dan tanpa perubahan kode aplikasi ===' . PHP_EOL;
+echo '=== Y-1. Tanpa migrasi baru; koreksi F5-1 terarah ===' . PHP_EOL;
 $assert(trim($git("cat-file -t $baseline")) === 'commit', "Baseline audit Fase 4 $baseline tersedia");
 $migrasi = glob($root . '/database/migrations/*.sql') ?: [];
 sort($migrasi);
 $assert(basename((string) end($migrasi)) === '031_v7_fase2_tinjauan_pembimbing.sql' && count($migrasi) === 31, 'Migrasi terakhir tetap 031 (31 migrasi)');
+$f51 = [
+    'app/Izin/IzinRouter.php', 'app/Izin/IzinWorkflowService.php', 'app/Izin/IzinRepository.php', 'app/Izin/IzinService.php',
+    'app/Izin/IzinWaliRepository.php', 'app/Izin/IzinWaliService.php', 'app/Izin/IzinWaliNotifikasi.php', 'app/Izin/IzinLaporanRepository.php',
+    'app/Report/IzinReportRepository.php', 'app/Api/IzinApiService.php', 'portal/izin_detail.php',
+    'tests/v7_phase2_integration.php', 'tests/v7_phase2_audit.php', 'tests/v7_phase3_integration.php', 'tests/v7_phase3_audit_notifications.php',
+];
 $izin = '#^(bin/_v7_rilis\.php|bin/v7_(preflight|verify|manifest|backup_restore_drill)\.php|tests/v7_phase5_[a-z0-9]+\.(php|sh)|tests/browser/uji-v7-fase5(?:-audit)?\.mjs'
     . '|docs/phase-v7-5/.+|AGENTS\.md|PRD-V7\.md)$#';
-$luar = array_values(array_filter($berubah, static fn (string $f): bool => preg_match($izin, $f) !== 1));
-$assert($luar === [], 'Berkas berubah hanya alat rilis, uji Fase 5, dan dokumen' . ($luar === [] ? '' : ': ' . implode(', ', $luar)));
+$luar = array_values(array_filter($berubah, static fn (string $f): bool => preg_match($izin, $f) !== 1 && !in_array($f, $f51, true)));
+$assert($luar === [], 'Berkas berubah hanya alat rilis, uji/dokumen Fase 5 dan koreksi F5-1 yang disetujui' . ($luar === [] ? '' : ': ' . implode(', ', $luar)));
 foreach (['app/', 'api/', 'portal/', 'admin/', 'database/', 'assets/', 'bin/migrate.php', 'bin/_v7_phase1.php', 'bin/_v7_phase2.php', 'bin/v7_phase1_verify.php',
     'bin/v7_phase2_verify.php', 'bin/v7_phase3_verify.php', 'bin/v7_phase1_rollback_preflight.php', 'bin/v7_phase2_rollback_preflight.php', 'tests/v7_phase1_worker.php',
     'tests/v7_phase2_worker.php', 'tests/v7_phase1_seed.php', 'tests/v7_phase2_seed.php'] as $jalur) {
-    $assert(trim($git("diff --name-only $baseline -- " . escapeshellarg($jalur))) === '', "$jalur tidak berubah sejak baseline");
+    $paths = array_values(array_filter(explode("\n", trim($git("diff --name-only $baseline -- " . escapeshellarg($jalur))))));
+    $assert(array_diff($paths, $f51) === [], "$jalur di luar koreksi F5-1 tidak berubah sejak baseline");
 }
 
 // ===================================================================== Y-2

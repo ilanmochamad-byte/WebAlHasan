@@ -1,0 +1,4 @@
+[lulus] audit seluruh action: 142 baris, 0 temuan pola sensitif
+[lulus] outbox: 122 baris, 0 temuan pola sensitif
+[lulus] percobaan: 31 baris, 0 temuan pola sensitif
+Hasil: 3 lulus, 0 gagal

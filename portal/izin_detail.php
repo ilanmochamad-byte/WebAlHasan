@@ -52,7 +52,7 @@ $izin = $detail['pengajuan'];
 $keputusan = $detail['keputusan'];
 $ortu = $mode === Capabilities::ORANG_TUA;
 $aksi = izin_workflow_service()->actionsFor($izin, $scope);
-$kandidatMurobi = ($aksi['tetapkan_murobi'] ?? false) ? izin_workflow_service()->eligibleMurobi() : [];
+$kandidatMurobi = ($aksi['tetapkan_murobi'] ?? false) ? izin_workflow_service()->eligibleMurobi($id) : [];
 $versi = (int) $izin['version'];
 $iz = (int) $izin['id'];
 $bucket = static fn (string $aksiForm): string => '_portal_' . $iz . '_' . $aksiForm;

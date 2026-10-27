@@ -7,7 +7,7 @@ Kolom "Lokal" hanya menunjuk bukti salinan lokal; itu bukan bukti hosting.
 | # | Langkah | Lokal | Produksi/hosting |
 | --- | --- | --- | --- |
 | S-1 | Inventaris: SHA web terpasang, `migrate.php status` (024–029 dan 030–031), PHP CLI/FPM, engine/versi DB, CHECK sesi/global, zona waktu DB | MariaDB 12.3.2; preflight R-1/R-2 | Menunggu pelaksanaan |
-| S-2 | Keputusan Human Developer: V5/V6 sudah dirilis sesuai gerbangnya (V7 mewajibkan 029); F5-1 aturan murobi V2 dan T-1 diterima atau ditindaklanjuti | Preflight menolak tanpa 029 | Menunggu pelaksanaan |
+| S-2 | Keputusan Human Developer: V5/V6 sudah dirilis sesuai gerbangnya (V7 mewajibkan 029); F5-1 sesuai keputusan wajib mencakup santri (ulangan iOS/smoke produksi), dan T-1 diterima atau ditindaklanjuti | Preflight menolak tanpa 029 | Menunggu pelaksanaan |
 | S-3 | Tinjauan penugasan pembimbing/murobi dan akun pengurus/guru; daftar pembimbing tanpa akun dari preflight | Preflight mencetak jumlahnya | Menunggu pelaksanaan |
 | S-4 | Backup DB + konfigurasi privat, SHA-256, restore ke salinan, preflight/verifier pada salinan | `bukti/rilis.txt` R-7 (writer 11/0, dump 12/0) | Menunggu pelaksanaan |
 | S-5 | `bin/v7_preflight.php manifest-privat --rilis=docs/phase-v7-5/manifest-migrasi.json` exit 0 (33 SHA, daftar lengkap, jam DB = aplikasi, tidak sebagian) | R-1, R-2, R-4 | Menunggu pelaksanaan |

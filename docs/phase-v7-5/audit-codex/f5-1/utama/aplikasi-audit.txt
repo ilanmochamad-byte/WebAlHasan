@@ -1,0 +1,8 @@
+Bundel  6039095 bita, host produksi: 0
+[lulus] F-1 draf lama tetap membawa versi asal 2; tidak mengadopsi versi 4
+[lulus] F-1 perubahan perangkat kedua tidak tertimpa draf lama
+[lulus] F-2 server menolak POST murobi pada sesi lama (403/404)
+[lulus] F-2 tidak ada keputusan setelah hak murobi dicabut
+[lulus] F-2 penolakan keputusan 403/404 menutup isi V2 pengajuan wali pada layar lama
+Ringkasan: 5 lulus, 0 gagal
+galat PHP server aplikasi: 0

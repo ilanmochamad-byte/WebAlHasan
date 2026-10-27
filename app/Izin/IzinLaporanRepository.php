@@ -204,7 +204,8 @@ final class IzinLaporanRepository
                     OR (p.asal_pengajuan = 'Wali' AND p.pembimbing_pengurus_id = ? AND s.is_active = 1 AND s.archived_at IS NULL AND "
                     . PembimbingRouter::sahSql('p.pembimbing_pengurus_id', 'p.santri_id') . '))'],
                 [(int) $cakupan['pengurus_id'], (int) $cakupan['pengurus_id'], $onDate, $onDate]],
-            'murobi' => [['p.murobi_guru_id = ? AND p.status IN (' . $isi($v2) . ')'], array_merge([(int) $cakupan['guru_id']], $v2)],
+            'murobi' => [['p.murobi_guru_id = ? AND p.status IN (' . $isi($v2) . ") AND (p.asal_pengajuan = 'Pengurus' OR "
+                . IzinRouter::sahSql('p.murobi_guru_id', 'p.santri_id') . ')'], array_merge([(int) $cakupan['guru_id']], $v2, [$onDate, $onDate])],
             'orang_tua' => [["p.santri_id IN (SELECT sw.santri_id FROM santri_wali sw JOIN wali w ON w.id = sw.wali_id
                                   WHERE sw.wali_id = ? AND sw.archived_at IS NULL AND w.is_active = 1 AND w.archived_at IS NULL)
                     AND (p.asal_pengajuan = 'Wali' OR p.status IN (" . $isi($v2) . '))'], array_merge([(int) $cakupan['wali_id']], $v2)],

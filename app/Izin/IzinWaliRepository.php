@@ -624,8 +624,10 @@ final class IzinWaliRepository
         // tidak tunggal juga menunggu admin (penetapan murobi jalur V2).
         return [
             '(p.status IN (?, ?) OR (p.status = ? AND NOT (s.is_active = 1 AND s.archived_at IS NULL AND '
-                . PembimbingRouter::sahSql('p.pembimbing_pengurus_id', 'p.santri_id') . ')))',
-            [self::STATUS_PERLU_PENETAPAN_PEMBIMBING, IzinRouter::STATUS_PERLU_ADMIN, self::STATUS_MENUNGGU_PEMBIMBING, $onDate, $onDate],
+                . PembimbingRouter::sahSql('p.pembimbing_pengurus_id', 'p.santri_id') . ')) OR (p.status = ? AND NOT '
+                . IzinRouter::sahSql('p.murobi_guru_id', 'p.santri_id') . '))',
+            [self::STATUS_PERLU_PENETAPAN_PEMBIMBING, IzinRouter::STATUS_PERLU_ADMIN, self::STATUS_MENUNGGU_PEMBIMBING, $onDate, $onDate,
+                IzinRouter::STATUS_TERARAH, $onDate, $onDate],
         ];
     }
 
@@ -650,7 +652,8 @@ final class IzinWaliRepository
                              pg.nama AS pembimbing_nama, ta.tahun AS tahun_ajaran, ta.semester,
                              gm.nama_guru AS murobi_nama, k.hasil AS keputusan_hasil, k.kapasitas AS keputusan_kapasitas,
                              (s.is_active = 1 AND s.archived_at IS NULL AND p.pembimbing_pengurus_id IS NOT NULL
-                                AND " . PembimbingRouter::sahSql('p.pembimbing_pengurus_id', 'p.santri_id') . ") AS pembimbing_sah
+                                AND " . PembimbingRouter::sahSql('p.pembimbing_pengurus_id', 'p.santri_id') . ") AS pembimbing_sah,
+                             " . IzinRouter::sahSql('p.murobi_guru_id', 'p.santri_id') . " AS murobi_sah
                         FROM izin_pengajuan p
                         JOIN santri s ON s.id = p.santri_id
                         LEFT JOIN wali w ON w.id = p.wali_id
@@ -659,7 +662,7 @@ final class IzinWaliRepository
                         LEFT JOIN guru gm ON gm.id = p.murobi_guru_id
                         LEFT JOIN izin_keputusan k ON k.pengajuan_id = p.id
                         LEFT JOIN tahun_ajaran ta ON ta.id = p.tahun_ajaran_id",
-            'params' => [$onDate, $onDate],
+            'params' => [$onDate, $onDate, $onDate, $onDate],
         ];
     }
 

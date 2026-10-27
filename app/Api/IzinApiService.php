@@ -255,7 +255,7 @@ final class IzinApiService
                     'pada' => $pengajuan['routing_pada'] === null ? null : (string) $pengajuan['routing_pada'],
                 ],
                 'kandidat' => array_map([$this, 'presentGuru'], $this->workflow->routingCandidates($pengajuan)),
-                'murobi_berhak' => array_map([$this, 'presentGuru'], $this->workflow->eligibleMurobi()),
+                'murobi_berhak' => array_map([$this, 'presentGuru'], $this->workflow->eligibleMurobi($id)),
             ];
         });
     }

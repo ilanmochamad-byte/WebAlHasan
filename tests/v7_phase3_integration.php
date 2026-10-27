@@ -266,6 +266,8 @@ try {
 
     // ================================================================= N-3
     echo PHP_EOL . '=== N-3. Jalur V2 atas baris wali ===' . PHP_EOL;
+    require_once __DIR__ . '/v7_phase5_fixture.php';
+    $f51Assignment = v7f5_fixture_murobi($db, (int) $murobiB['guru_id'], (int) $sTanpaMurobi);
     $v2()->assignMurobi($admin, $idTm, (int) $murobiB['guru_id'], 'Penetapan murobi uji', 2, $kunci('am'), $meta);
     $assert($penerima($idTm, N::MASUK_MUROBI) === $akunMurobiB, 'Penetapan murobi V2 → murobi yang ditetapkan diberi tahu (V7)');
     $v2()->decide($murobiB, $idTm, 'Disetujui', $PENANDA . '-KEPUTUSAN alasan', null, 3, $kunci('pt'), $meta, 'murobi');

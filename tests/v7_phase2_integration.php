@@ -242,6 +242,8 @@ $assert($galat(fn () => $v2()->decide($murobiA, $id3, 'Disetujui', 'Putus tanpa 
 $dAdmin = $svc()->detail($admin, $id3);
 $assert($dAdmin['tindakan']['tetapkan_murobi'] === true && $dAdmin['tindakan']['buka_v2'] === true && $dAdmin['pengajuan']['perlu_admin'] === true,
     'Rincian admin V7 menandai perlu penetapan murobi dan mengarah ke halaman V2');
+require_once __DIR__ . '/v7_phase5_fixture.php';
+$f51Assignment = v7f5_fixture_murobi($db, (int) $murobiB['guru_id'], (int) $sTanpaMurobi);
 $v2()->assignMurobi($adminV2, $id3, (int) $murobiB['guru_id'], 'Murobi wali kelas santri', 2, $kunci('v2'), $meta);
 $assert($status($id3) === 'Diajukan' && (int) $satu("SELECT murobi_guru_id FROM izin_pengajuan WHERE id = $id3") === (int) $murobiB['guru_id'] && $versi($id3) === 3,
     'Admin menetapkan murobi lewat V2 (alasan, versi) pada ID yang sama');
@@ -328,6 +330,7 @@ $batal($id6c, 'sesudah diteruskan, sebelum keputusan murobi');
 $assert(izin_service()->list($murobiA, ['id' => $id6c, 'antrean' => '1'], 1, 20, 'murobi')['total'] === 0
     && $galat(fn () => $v2()->decide($murobiA, $id6c, 'Disetujui', 'Terlambat', null, 3, $kunci('v2'), $meta, 'murobi')) === 409,
     'Murobi melihat status terkini: keluar dari antrean, keputusan sesudah batal → 409');
+$jalankan('UPDATE murobi_assignments SET is_active = 0 WHERE id = ' . $f51Assignment);
 $id6d = (int) $svc()->buat($wA, $isi($sTanpaMurobi, '2027-01-20', '2027-01-21'), $kunci('buat'), $meta)['id'];
 $svc()->tinjau($pb1, $id6d, 'teruskan', null, 1, $kunci('teruskan'), $meta);
 $batal($id6d, 'menunggu penetapan murobi');

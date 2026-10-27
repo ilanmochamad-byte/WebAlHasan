@@ -1,0 +1,44 @@
+[lulus] Buat: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Buat: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Buat: replay mutasi dan worker tanpa duplikat efektif
+[lulus] Minta perbaikan: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Minta perbaikan: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Minta perbaikan: replay mutasi dan worker tanpa duplikat efektif
+[lulus] Kirim ulang: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Kirim ulang: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Kirim ulang: replay mutasi dan worker tanpa duplikat efektif
+[lulus] Tolak pembimbing: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Tolak pembimbing: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Tolak pembimbing: replay mutasi dan worker tanpa duplikat efektif
+[lulus] Buat kedua: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Buat kedua: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Buat kedua: replay mutasi dan worker tanpa duplikat efektif
+[lulus] Teruskan: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Teruskan: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Teruskan: replay mutasi dan worker tanpa duplikat efektif
+[lulus] Putuskan: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Putuskan: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Putuskan: replay mutasi dan worker tanpa duplikat efektif
+[lulus] Koreksi: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Koreksi: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Koreksi: replay mutasi dan worker tanpa duplikat efektif
+[lulus] Pembimbing ambigu: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Pembimbing ambigu: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Pembimbing ambigu: replay mutasi dan worker tanpa duplikat efektif
+[lulus] Tetapkan pembimbing: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Tetapkan pembimbing: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Tetapkan pembimbing: replay mutasi dan worker tanpa duplikat efektif
+[lulus] Batal pembimbing: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Batal pembimbing: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Batal pembimbing: replay mutasi dan worker tanpa duplikat efektif
+[lulus] Buat tanpa murobi: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Buat tanpa murobi: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Buat tanpa murobi: replay mutasi dan worker tanpa duplikat efektif
+[lulus] Routing murobi kosong: InApp/Push hanya kepada penerima yang diharapkan
+[lulus] Routing murobi kosong: worker benar-benar mengirim kepada penerima yang tepat
+[lulus] Routing murobi kosong: replay mutasi dan worker tanpa duplikat efektif
+RuntimeException: Fixture penugasan gagal: Column 'id' in UPDATE is ambiguous in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v7_phase5_fixture.php:18
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v7_phase3_audit_notifications.php(90): v7f5_fixture_murobi(Object(mysqli), 2, 1719)
+#1 {main}
+Fixture penugasan gagal: Column 'id' in UPDATE is ambiguous

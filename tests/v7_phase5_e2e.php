@@ -202,6 +202,9 @@ $h = $tinjau($pb2, $id2, 'teruskan');
 echo '[info] Routing murobi V7S0002 sesudah diteruskan: ' . $h['status'] . PHP_EOL;
 $assert(in_array($h['status'], ['Diajukan', 'Perlu Penetapan Admin'], true), 'Pembimbing Dua meneruskan; routing murobi V2 berjalan');
 if ($h['status'] === 'Perlu Penetapan Admin') {
+    $assert($galat(fn () => $v2()->assignMurobi($admin, $id2, $guruA, 'Belum mencakup', $versi($id2), $kunci('mur'), $meta)) === 422, 'Admin tidak dapat menetapkan murobi di luar cakupan santri (F5-1)');
+    require_once __DIR__ . '/v7_phase5_fixture.php';
+    v7f5_fixture_murobi($db, $guruA, $sNol);
     $v2()->assignMurobi($admin, $id2, $guruA, 'Penetapan murobi E-2', $versi($id2), $kunci('mur'), $meta);
 }
 $murobi2 = (int) $satu("SELECT u.id FROM users u JOIN izin_pengajuan p ON p.murobi_guru_id = u.guru_id WHERE p.id = $id2 LIMIT 1");
@@ -308,14 +311,14 @@ $jalankan("UPDATE pembimbing_assignments SET is_active = 1 WHERE id = $paSatu");
 $jalankan("UPDATE pembimbing_assignments SET is_active = 0 WHERE pengurus_id = $pengurus2 AND kamar_id = $kamarSatu");
 $h = $w()->batalkan($wA, $id7, 'Acara diundur', $versi($id7), $kunci('batal'), $meta);
 $assert($h['status'] === 'Dibatalkan' && $notif($id7, N::DIBATALKAN) === [$mA['id']], 'Pembatalan sesudah diteruskan; pemegang antrean (murobi) diberi tahu');
-// Temuan F5-1 (perilaku V2, tidak diubah): cabut HANYA penugasan kamar santri.
+// Keputusan F5-1: cabut HANYA penugasan kamar santri; akses harus tertutup.
 $id8b = (int) $buat($wA, $sCadangan)['id'];
 $tinjau($pb1, $id8b, 'teruskan');
 $maKamar = (int) $satu("SELECT id FROM murobi_assignments WHERE guru_id = $guruA AND kamar_id = $kamarSatu AND is_active = 1 LIMIT 1");
 $jalankan("UPDATE murobi_assignments SET is_active = 0 WHERE id = $maKamar");
 $hasilF51 = $galat(fn () => $putus($mA, $id8b));
-echo '[temuan] F5-1: penugasan murobi atas kamar santri dicabut, murobi tujuan masih memiliki penugasan murobi lain → keputusan '
-    . ($hasilF51 === null ? 'DITERIMA (aturan V2 isEligibleMurobi)' : 'ditolak ' . $hasilF51) . '; status ' . $status($id8b) . PHP_EOL;
+$assert($hasilF51 === 403 && $status($id8b) === 'Diajukan' && $hitung('izin_keputusan', "pengajuan_id = $id8b") === 0,
+    'F5-1: penugasan yang mencakup santri dicabut, penugasan lain tetap aktif → 403 tanpa keputusan');
 $jalankan("UPDATE murobi_assignments SET is_active = 1 WHERE id = $maKamar");
 
 // ===================================================================== E-9

@@ -1,0 +1,9 @@
+{
+  "berkas_teks": 137,
+  "kata_sandi_sintetis_disamarkan": [
+    "docs/phase-v7-5/audit-codex/f5-1/native/diagnostik-login/ios-login-sbx_v7_wali_a.txt",
+    "docs/phase-v7-5/audit-codex/f5-1/native/maestro/ios-login-sbx_v7_wali_a.yaml"
+  ],
+  "pola_token_credential_terdeteksi": [],
+  "catatan": "Hanya bukti sintetis; log mentah/DB/dump tetap di luar Git. Pemindaian ini bukan pengulangan scan penyimpanan native audit awal."
+}

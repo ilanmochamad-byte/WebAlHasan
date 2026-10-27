@@ -1,0 +1,10 @@
+[lulus] Android wali pengaju membaca isi pada ID kanonis
+[lulus] Android layar V7 memakai FLAG_SECURE
+[lulus] Android logout lalu URI: harus login tanpa isi pengajuan
+[lulus] Android wali kedua: status ringkas tanpa alasan
+[lulus] Android relasi dicabut pada sesi lama: kembali dari latar tanpa isi
+[lulus] Android dua ketukan pembimbing: satu penerusan pada ID sama
+[lulus] Android keputusan V2 atas pengajuan wali tetap ber-SECURE
+[lulus] Kontrol F5-1: penugasan murobi lain tetap aktif sesudah cakupan santri dicabut
+[lulus] Android layar V2 setelah pencabutan parsial dan kembali dari latar: isi tertutup, nol keputusan
+Ringkasan: 9 lulus, 0 gagal
