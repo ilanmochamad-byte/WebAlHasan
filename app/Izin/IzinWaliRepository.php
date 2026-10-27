@@ -9,7 +9,7 @@ use mysqli_stmt;
 use RuntimeException;
 
 /**
- * Akses data pengajuan izin wali (PRD V7 Fase 1).
+ * Akses data pengajuan izin wali (PRD V7 Fase 1–2).
  *
  * Baris wali tinggal di `izin_pengajuan` yang sama dengan jalur pengurus V2
  * (satu identitas kanonis). Kelas ini hanya menyentuh kolom/tabel V7 dan
@@ -36,6 +36,24 @@ final class IzinWaliRepository
 
     /** Status yang masih boleh ditetapkan/ditetapkan ulang pembimbingnya oleh admin. */
     public const STATUS_PENETAPAN = [self::STATUS_MENUNGGU_PEMBIMBING, self::STATUS_PERLU_PENETAPAN_PEMBIMBING];
+
+    /**
+     * Fase 2: status yang masih boleh dibatalkan wali pengaju — setiap tahap
+     * sebelum keputusan murobi/admin pengganti, termasuk sesudah diteruskan
+     * (PRD V7 §5.3). `Ditolak Pembimbing`, `Disetujui`, `Ditolak`, dan
+     * `Dibatalkan` sudah terminal.
+     */
+    public const STATUS_DAPAT_DIBATALKAN = [
+        self::STATUS_MENUNGGU_PEMBIMBING,
+        self::STATUS_PERLU_PENETAPAN_PEMBIMBING,
+        self::STATUS_PERLU_PERBAIKAN,
+        IzinRouter::STATUS_TERARAH,
+        IzinRouter::STATUS_PERLU_ADMIN,
+    ];
+
+    public const TINJAUAN_MINTA_PERBAIKAN = 'Minta Perbaikan';
+    public const TINJAUAN_TOLAK = 'Tolak';
+    public const TINJAUAN_TERUSKAN = 'Teruskan';
 
     public function __construct(private mysqli $db)
     {
@@ -216,6 +234,109 @@ final class IzinWaliRepository
     }
 
     /**
+     * Fase 2: minta perbaikan atau tolak oleh pembimbing. Hanya dari
+     * `Menunggu Pembimbing` dengan versi yang sama; false → 409.
+     */
+    public function applyTinjauan(int $id, string $statusBaru, int $expectedVersion): bool
+    {
+        return $this->execute(
+            "UPDATE izin_pengajuan SET status = ?, version = version + 1, updated_at = NOW()
+              WHERE id = ? AND asal_pengajuan = 'Wali' AND version = ? AND status = ?",
+            [$statusBaru, $id, $expectedVersion, self::STATUS_MENUNGGU_PEMBIMBING]
+        ) === 1;
+    }
+
+    /**
+     * Fase 2: penerusan pembimbing. Baris yang SAMA masuk routing murobi V2:
+     * kolom routing V2 diisi persis seperti `IzinWriteRepository::applyRouting()`
+     * sehingga antrean, penetapan, dan keputusan murobi tetap jalur V2.
+     */
+    public function applyTeruskan(int $id, string $statusBaru, ?int $murobiGuruId, int $jumlahKandidat, string $catatan, int $expectedVersion): bool
+    {
+        return $this->execute(
+            "UPDATE izin_pengajuan
+                SET status = ?, murobi_guru_id = ?, routing_kandidat = ?, routing_catatan = ?, routing_pada = NOW(),
+                    version = version + 1, updated_at = NOW()
+              WHERE id = ? AND asal_pengajuan = 'Wali' AND version = ? AND status = ?",
+            [$statusBaru, $murobiGuruId, $jumlahKandidat, $catatan, $id, $expectedVersion, self::STATUS_MENUNGGU_PEMBIMBING]
+        ) === 1;
+    }
+
+    /**
+     * Fase 2: perbaikan wali pengaju. Isi baru dan kembali ke antrean
+     * pembimbing; hanya dari `Perlu Perbaikan Wali` dengan versi yang sama.
+     */
+    public function applyPerbaikan(int $id, string $tglIzin, string $tglKembali, string $alasan, ?string $catatan, int $expectedVersion): bool
+    {
+        return $this->execute(
+            "UPDATE izin_pengajuan
+                SET tgl_izin = ?, tgl_kembali = ?, alasan = ?, catatan_wali = ?, status = ?,
+                    version = version + 1, updated_at = NOW()
+              WHERE id = ? AND asal_pengajuan = 'Wali' AND version = ? AND status = ?",
+            [$tglIzin, $tglKembali, $alasan, $catatan, self::STATUS_MENUNGGU_PEMBIMBING, $id, $expectedVersion, self::STATUS_PERLU_PERBAIKAN]
+        ) === 1;
+    }
+
+    /**
+     * Fase 2: pembatalan wali pengaju memakai kolom pembatalan V2. Syarat
+     * versi dan status di WHERE adalah pengaman terakhir terhadap keputusan
+     * atau penerusan yang bersaing: hanya satu hasil terminal yang menang.
+     */
+    public function applyBatal(int $id, int $actorUserId, string $alasan, int $expectedVersion): bool
+    {
+        $placeholders = implode(',', array_fill(0, count(self::STATUS_DAPAT_DIBATALKAN), '?'));
+
+        return $this->execute(
+            "UPDATE izin_pengajuan
+                SET status = 'Dibatalkan', dibatalkan_oleh_user_id = ?, dibatalkan_pada = NOW(), alasan_pembatalan = ?,
+                    version = version + 1, updated_at = NOW()
+              WHERE id = ? AND asal_pengajuan = 'Wali' AND version = ? AND status IN ($placeholders)",
+            array_merge([$actorUserId, $alasan, $id, $expectedVersion], self::STATUS_DAPAT_DIBATALKAN)
+        ) === 1;
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    public function insertTinjauan(array $data): int
+    {
+        return $this->insert(
+            'INSERT INTO izin_pembimbing_tinjauan
+                (pengajuan_id, tindakan, pembimbing_pengurus_id, pembimbing_assignment_id, ditinjau_oleh_user_id, catatan,
+                 status_sebelum, status_sesudah, versi_sebelum, versi_sesudah, isi_hash, murobi_guru_id, murobi_routing_kandidat, ditinjau_pada)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())',
+            [
+                $data['pengajuan_id'], $data['tindakan'], $data['pengurus_id'], $data['assignment_id'], $data['actor'], $data['catatan'],
+                $data['status_sebelum'], $data['status_sesudah'], $data['versi_sebelum'], $data['versi_sebelum'] + 1,
+                $data['isi_hash'], $data['murobi_guru_id'], $data['murobi_routing_kandidat'],
+            ],
+            'Riwayat tinjauan pembimbing gagal disimpan.'
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    public function insertPerbaikan(array $data): int
+    {
+        return $this->insert(
+            'INSERT INTO izin_wali_perbaikan
+                (pengajuan_id, tinjauan_id, wali_id, dikirim_oleh_user_id,
+                 tgl_izin_sebelum, tgl_kembali_sebelum, alasan_sebelum, catatan_sebelum,
+                 tgl_izin_sesudah, tgl_kembali_sesudah, alasan_sesudah, catatan_sesudah,
+                 isi_hash_sebelum, isi_hash_sesudah, versi_sebelum, versi_sesudah, dikirim_pada)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())',
+            [
+                $data['pengajuan_id'], $data['tinjauan_id'], $data['wali_id'], $data['actor'],
+                $data['sebelum']['tgl_izin'], $data['sebelum']['tgl_kembali'], $data['sebelum']['alasan'], $data['sebelum']['catatan'],
+                $data['sesudah']['tgl_izin'], $data['sesudah']['tgl_kembali'], $data['sesudah']['alasan'], $data['sesudah']['catatan'],
+                $data['hash_sebelum'], $data['hash_sesudah'], $data['versi_sebelum'], $data['versi_sebelum'] + 1,
+            ],
+            'Riwayat perbaikan wali gagal disimpan.'
+        );
+    }
+
+    /**
      * @param array<string, mixed> $data
      */
     public function insertPenetapan(array $data): int
@@ -248,6 +369,113 @@ final class IzinWaliRepository
     // -----------------------------------------------------------------------
     // Pembacaan
     // -----------------------------------------------------------------------
+
+    /** Fase 2 terpasang: tabel tinjauan dan perbaikan migrasi 031 ada. */
+    public function fase2Terpasang(): bool
+    {
+        return \App\Database\Schema::hasTable($this->db, 'izin_pembimbing_tinjauan')
+            && \App\Database\Schema::hasTable($this->db, 'izin_wali_perbaikan');
+    }
+
+    /** Guru yang tertaut pada akun aktif (murobi dinilai dari basis data, bukan sesi). */
+    public function guruAkun(int $userId): ?int
+    {
+        $row = $this->one(
+            'SELECT g.id FROM users u JOIN guru g ON g.id = u.guru_id AND g.is_active = 1 AND g.archived_at IS NULL
+              WHERE u.id = ? AND u.is_active = 1 LIMIT 1',
+            [$userId]
+        );
+
+        return $row === null ? null : (int) $row['id'];
+    }
+
+    /**
+     * Permintaan perbaikan terakhir yang belum dijawab (dipakai saat wali
+     * mengirim ulang). Dibaca sesudah baris pengajuan dikunci.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function permintaanPerbaikanTerbuka(int $id): ?array
+    {
+        return $this->one(
+            "SELECT t.id, t.versi_sesudah FROM izin_pembimbing_tinjauan t
+              WHERE t.pengajuan_id = ? AND t.tindakan = 'Minta Perbaikan'
+                AND NOT EXISTS (SELECT 1 FROM izin_wali_perbaikan w WHERE w.tinjauan_id = t.id)
+              ORDER BY t.id DESC LIMIT 1",
+            [$id]
+        );
+    }
+
+    /**
+     * Seluruh tinjauan pembimbing (terlama dulu).
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function tinjauan(int $id): array
+    {
+        return $this->all(
+            'SELECT t.id, t.tindakan, t.catatan, t.status_sebelum, t.status_sesudah, t.versi_sebelum, t.versi_sesudah,
+                    t.murobi_guru_id, t.murobi_routing_kandidat, t.ditinjau_pada,
+                    pg.nama AS pembimbing, u.name AS peninjau, g.nama_guru AS murobi
+               FROM izin_pembimbing_tinjauan t
+               JOIN pengurus pg ON pg.id = t.pembimbing_pengurus_id
+               LEFT JOIN users u ON u.id = t.ditinjau_oleh_user_id
+               LEFT JOIN guru g ON g.id = t.murobi_guru_id
+              WHERE t.pengajuan_id = ?
+              ORDER BY t.id',
+            [$id]
+        );
+    }
+
+    /**
+     * Seluruh versi isi yang dikirim ulang wali pengaju (terlama dulu).
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function perbaikan(int $id): array
+    {
+        return $this->all(
+            'SELECT w.id, w.tinjauan_id, w.tgl_izin_sebelum, w.tgl_kembali_sebelum, w.alasan_sebelum, w.catatan_sebelum,
+                    w.tgl_izin_sesudah, w.tgl_kembali_sesudah, w.alasan_sesudah, w.catatan_sesudah,
+                    w.versi_sebelum, w.versi_sesudah, w.dikirim_pada, u.name AS pengirim
+               FROM izin_wali_perbaikan w
+               LEFT JOIN users u ON u.id = w.dikirim_oleh_user_id
+              WHERE w.pengajuan_id = ?
+              ORDER BY w.id',
+            [$id]
+        );
+    }
+
+    /**
+     * Keputusan murobi/admin pengganti V2 (satu per pengajuan).
+     *
+     * @return array<string, mixed>|null
+     */
+    public function keputusan(int $id): ?array
+    {
+        return $this->one(
+            'SELECT k.hasil, k.alasan, k.kapasitas, k.diputus_pada, k.jumlah_koreksi, u.name AS pemberi
+               FROM izin_keputusan k LEFT JOIN users u ON u.id = k.diputus_oleh_user_id
+              WHERE k.pengajuan_id = ? LIMIT 1',
+            [$id]
+        );
+    }
+
+    /**
+     * Pengajuan wali yang pernah dialamatkan kepada pembimbing dan sudah
+     * keluar dari antrean (riwayat tinjauan). Tetap dibatasi pembimbing yang
+     * masih sah atas santri itu, sama dengan rincian.
+     *
+     * @return array{rows:array<int,array<string,mixed>>, total:int}
+     */
+    public function riwayatPembimbing(int $pengurusId, string $onDate, int $page, int $perPage): array
+    {
+        $where = " WHERE p.asal_pengajuan = 'Wali' AND p.pembimbing_pengurus_id = ? AND p.status <> ?
+                     AND s.is_active = 1 AND s.archived_at IS NULL
+                     AND " . PembimbingRouter::sahSql('p.pembimbing_pengurus_id', 'p.santri_id');
+
+        return $this->page($where, [$pengurusId, self::STATUS_MENUNGGU_PEMBIMBING, $onDate, $onDate], $onDate, $page, $perPage);
+    }
 
     /**
      * Satu baris wali lengkap (tanpa saringan hak; pemanggil wajib memeriksa).
@@ -392,10 +620,12 @@ final class IzinWaliRepository
      */
     private function kondisiAntreanAdmin(string $onDate): array
     {
+        // Fase 2: pengajuan wali yang sudah diteruskan tetapi routing murobinya
+        // tidak tunggal juga menunggu admin (penetapan murobi jalur V2).
         return [
-            '(p.status = ? OR (p.status = ? AND NOT (s.is_active = 1 AND s.archived_at IS NULL AND '
+            '(p.status IN (?, ?) OR (p.status = ? AND NOT (s.is_active = 1 AND s.archived_at IS NULL AND '
                 . PembimbingRouter::sahSql('p.pembimbing_pengurus_id', 'p.santri_id') . ')))',
-            [self::STATUS_PERLU_PENETAPAN_PEMBIMBING, self::STATUS_MENUNGGU_PEMBIMBING, $onDate, $onDate],
+            [self::STATUS_PERLU_PENETAPAN_PEMBIMBING, IzinRouter::STATUS_PERLU_ADMIN, self::STATUS_MENUNGGU_PEMBIMBING, $onDate, $onDate],
         ];
     }
 
@@ -413,9 +643,12 @@ final class IzinWaliRepository
                              p.pembimbing_pengurus_id, p.pembimbing_assignment_id, p.pembimbing_routing_kandidat,
                              p.pembimbing_routing_catatan, p.pembimbing_routing_pada, p.pembimbing_ditetapkan_pada,
                              p.murobi_guru_id, p.pengurus_id, p.diajukan_pada, p.created_at, p.updated_at,
+                             p.routing_kandidat, p.routing_catatan, p.routing_pada,
+                             p.dibatalkan_pada, p.alasan_pembatalan, p.dibatalkan_oleh_user_id,
                              s.nis, s.nama_santri, s.is_active AS santri_aktif,
                              w.nama AS wali_nama, uw.name AS pengaju_nama,
                              pg.nama AS pembimbing_nama, ta.tahun AS tahun_ajaran, ta.semester,
+                             gm.nama_guru AS murobi_nama, k.hasil AS keputusan_hasil, k.kapasitas AS keputusan_kapasitas,
                              (s.is_active = 1 AND s.archived_at IS NULL AND p.pembimbing_pengurus_id IS NOT NULL
                                 AND " . PembimbingRouter::sahSql('p.pembimbing_pengurus_id', 'p.santri_id') . ") AS pembimbing_sah
                         FROM izin_pengajuan p
@@ -423,6 +656,8 @@ final class IzinWaliRepository
                         LEFT JOIN wali w ON w.id = p.wali_id
                         LEFT JOIN users uw ON uw.id = p.diajukan_oleh_user_id
                         LEFT JOIN pengurus pg ON pg.id = p.pembimbing_pengurus_id
+                        LEFT JOIN guru gm ON gm.id = p.murobi_guru_id
+                        LEFT JOIN izin_keputusan k ON k.pengajuan_id = p.id
                         LEFT JOIN tahun_ajaran ta ON ta.id = p.tahun_ajaran_id",
             'params' => [$onDate, $onDate],
         ];
@@ -442,6 +677,23 @@ final class IzinWaliRepository
         );
 
         return ['rows' => $rows, 'total' => $total];
+    }
+
+    private function insert(string $sql, array $params, string $pesan): int
+    {
+        $statement = $this->db->prepare($sql);
+        if ($statement === false) {
+            throw new RuntimeException($pesan);
+        }
+        if (!$this->run($statement, $params)) {
+            $errno = $statement->errno;
+            $statement->close();
+            throw $this->dbError($errno, $pesan);
+        }
+        $id = (int) $statement->insert_id;
+        $statement->close();
+
+        return $id;
     }
 
     private function dbError(int $errno, string $pesan): \Throwable

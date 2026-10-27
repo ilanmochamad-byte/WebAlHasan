@@ -1,0 +1,77 @@
+[lulus] Fixture V7 Fase 2 tersedia; belum ada pengajuan wali
+[lulus] Sesi web dan token API untuk delapan akun
+
+=== W-A. Pembimbing di website ===
+[lulus] Rincian pembimbing tujuan: tindakan teruskan, minta perbaikan, tolak
+[lulus] Pembimbing lain: rincian 404
+[lulus] Formulir minta perbaikan ditemukan di halaman
+[lulus] POST sah 303 berlaku; POST dengan CSRF salah ditolak (419)
+[lulus] Minta perbaikan → 303 ke rincian
+[lulus] Kirim ulang (klik ganda) → 303, tetap satu tinjauan, pesan kiriman ulang
+[lulus] GET berparameter tidak memutasi
+[lulus] Sesudah diminta perbaikan: tindakan tinjauan hilang, catatan tampil di jejak tinjauan
+
+=== W-B. Wali pengaju di website ===
+[lulus] Wali pengaju: catatan perbaikan, tombol perbaiki dan batalkan
+[lulus] Wali kedua: hanya status ringkas, tanpa catatan pembimbing, alasan, atau formulir
+[lulus] Wali kedua POST perbaikan → 403 tanpa perubahan
+[lulus] Pembimbing POST aksi wali → 403
+[lulus] Isi tidak berubah → 422; dialog tetap terbuka dengan kunci idempotensi yang sama
+[lulus] Perbaikan web → 303, kembali Menunggu Pembimbing, versi 3, satu versi isi lama
+[lulus] Pembimbing melihat versi isi lama dan tindakan tinjauan kembali
+
+=== W-C. Penerusan, keputusan murobi V2 ===
+[lulus] Teruskan web → 303, Diajukan ke murobi tunggal
+[lulus] Tinjauan dari halaman basi sesudah diteruskan → 409 dengan penjelasan, tanpa formulir tinjauan, tanpa perubahan
+[lulus] Rincian V2 murobi: penanda asal wali, catatan penerusan, tautan tinjauan
+[lulus] Rincian V7 murobi tujuan terbuka dengan tautan ke halaman keputusan V2
+[lulus] Murobi lain: rincian V7 404
+[lulus] Rincian V2 admin: putuskan pengganti tersedia, batalkan tidak
+[lulus] Admin POST batal V2 atas pengajuan wali → 403
+[lulus] Murobi B (di luar penugasan) POST keputusan → 403
+[lulus] Murobi tujuan memutus lewat formulir V2 → 303, satu keputusan
+[lulus] Wali pengaju melihat keputusan murobi beserta alasannya; tanpa tombol batal
+[lulus] Wali kedua melihat status "Disetujui murobi" tanpa alasan keputusan
+
+=== W-D. Tolak dan batal di website; daftar V2 orang tua ===
+[lulus] Tolak web → Ditolak Pembimbing tanpa keputusan
+[lulus] Wali pengaju melihat hasil tahap pembimbing dan alasannya
+[lulus] Wali kedua: status ringkas tanpa alasan penolakan
+[lulus] Pengajuan santri tanpa murobi diteruskan → Perlu Penetapan Admin
+[lulus] Antrean admin V7 menandai "Perlu penetapan murobi"
+[lulus] Wali pengaju membatalkan di web saat menunggu penetapan murobi
+[lulus] Daftar Izin anak V2 tidak memuat pengajuan wali yang sudah diputus
+[lulus] Rincian V2 orang tua untuk pengajuan wali → 403 (dibaca lewat halaman V7)
+[lulus] Pembimbing: tab "Sudah ditinjau" memuat pengajuan yang diteruskan dan ditolak
+
+=== W-E. API ===
+[lulus] API tinjauan → 200, versi 2, no-store
+[lulus] API tinjauan tanpa isi → 422
+[lulus] Kunci lewat header Idempotency-Key → putar ulang 200
+[lulus] API kunci sama isi berbeda → 409
+[lulus] API tinjauan: pembimbing lain 404, admin 403, wali 403, tanpa token 401
+[lulus] API rincian wali pengaju: tindakan dan catatan perbaikan
+[lulus] API rincian wali kedua: ringkas tanpa catatan/alasan/tindakan
+[lulus] API perbaikan: wali kedua 403, wali asing 404
+[lulus] API perbaikan wali pengaju → 200, versi 3
+[lulus] API teruskan → Diajukan
+[lulus] API keputusan V2 oleh murobi di luar penugasan → 403
+[lulus] API pembatalan V2 oleh admin atas pengajuan wali → 403
+[lulus] API pembatalan wali pengaju sesudah diteruskan → 200 Dibatalkan
+[lulus] Keputusan murobi sesudah pembatalan → 409, tanpa keputusan
+[lulus] API riwayat pembimbing memuat status terkini
+[lulus] API riwayat pembimbing untuk wali → 403
+[lulus] API V2 orang tua tidak memuat pengajuan wali
+
+=== W-F. Pencabutan pada sesi/token lama ===
+[lulus] Penugasan dicabut sesudah halaman dibuka: POST dari sesi web lama → 404 tanpa perubahan
+[lulus] Token lama pembimbing → 404 tanpa perubahan
+[lulus] Relasi wali dicabut: POST batal dari sesi web lama → 404
+[lulus] Token lama wali → 404 tanpa perubahan
+
+=== W-G. Log dan verifier ===
+[lulus] Log server tanpa galat/peringatan PHP
+[lulus] Log server tanpa alasan izin atau catatan pembimbing
+[lulus] Verifier V7 Fase 2 lulus sesudah uji HTTP (Verifikasi V7 Fase 2 lulus.)
+
+Lulus: 61 · Gagal: 0

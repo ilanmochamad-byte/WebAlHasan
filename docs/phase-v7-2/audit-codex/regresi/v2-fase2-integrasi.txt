@@ -1,0 +1,95 @@
+[lulus] KP-1a Pengurus melihat seluruh santri dalam cakupan pembimbingnya
+[lulus] KP-1b Santri di luar cakupan tidak muncul pada daftar pilihan
+[lulus] KP-1c Santri pada kelas nonaktif tidak muncul pada daftar pilihan
+[lulus] KP-1d Pencarian tidak dapat memunculkan santri di luar cakupan
+[lulus] KP-1e Pengajuan untuk santri di luar cakupan ditolak 403 [403]
+[lulus] KP-1f Pengajuan melalui penugasan kelas nonaktif ditolak 403 [403]
+[lulus] KP-1g Kelas nonaktif tidak menghasilkan kandidat routing
+[lulus] KP-1h Penugasan pada kelas nonaktif tidak memberi kemampuan murobi
+[lulus] KP-1i Penolakan cakupan tidak menyimpan baris pengajuan
+[lulus] KP-2a Tanggal kembali sebelum tanggal izin ditolak 422 [422]
+[lulus] KP-2b Tanggal yang tidak ada pada kalender ditolak 422 [422]
+[lulus] KP-2c Alasan kosong ditolak 422 [422]
+[lulus] KP-2d Seluruh penolakan validasi tidak menyimpan baris
+[lulus] KP-3a Dua request dengan idempotency key sama menghasilkan satu pengajuan
+[lulus] KP-3b Request kedua ditandai sebagai putar ulang idempoten
+[lulus] KP-3c Hanya satu baris pengajuan bertambah setelah retry
+[lulus] KP-3d Kunci idempotensi yang dipakai untuk isi berbeda ditolak 409 [409]
+[lulus] KP-5a Pengajuan dengan satu murobi valid berstatus Diajukan
+[lulus] KP-5b Routing memilih murobi dari penugasan aktif yang cocok
+[lulus] KP-5c Pengajuan muncul pada antrean murobi yang ditetapkan
+[lulus] KP-5d Murobi lain tidak melihat pengajuan tersebut
+[lulus] KP-4a Pengajuan dengan rentang identik ditolak 409 [409]
+[lulus] KP-4b Pengajuan dengan rentang bersinggungan sebagian ditolak 409 [409]
+[lulus] KP-4c Penolakan tumpang tindih tidak menyimpan baris
+[lulus] KP-4d Rentang yang tidak bersinggungan tetap diterima
+[lulus] KP-6a Routing tanpa kandidat masuk antrean penetapan admin
+[lulus] KP-6b Jumlah kandidat nol tercatat pada pengajuan
+[lulus] KP-6c Routing dengan lebih dari satu kandidat masuk antrean penetapan admin
+[lulus] KP-6d Jumlah kandidat lebih dari satu tercatat pada pengajuan
+[lulus] KP-6e Kedua kasus muncul pada antrean admin
+[lulus] KP-6f Pengajuan tanpa routing tunggal tidak terlihat oleh murobi yang tidak ditetapkan (user 1220)
+[lulus] KP-6f Pengajuan tanpa routing tunggal tidak terlihat oleh murobi yang tidak ditetapkan (user 1221)
+[lulus] KP-7a Murobi B menerima 403 saat memutus pengajuan milik Murobi A [403]
+[lulus] KP-7b Murobi B menerima 403 saat membuka detail pengajuan Murobi A [403]
+[lulus] KP-7c Guru tanpa penugasan murobi aktif tidak dapat memutus [403]
+[lulus] KP-7d Pengurus tidak dapat memberi keputusan [403]
+[lulus] KP-7e Murobi tidak dapat membuat pengajuan [403]
+[lulus] KP-8a Penetapan murobi tanpa alasan ditolak 422 [422]
+[lulus] KP-8b Guru tanpa penugasan murobi aktif tidak dapat ditetapkan [422]
+[lulus] KP-8c Non-admin menerima 403 saat menetapkan murobi [403]
+[lulus] KP-8d Admin dapat menetapkan murobi dan status kembali ke Diajukan
+[lulus] KP-8e Pengajuan yang ditetapkan muncul pada antrean murobi tujuan
+[lulus] KP-8f Admin dapat menetapkan ulang murobi sebelum ada keputusan
+[lulus] KP-8g Penetapan dan penetapan ulang tercatat sebagai peristiwa terpisah pada riwayat
+[lulus] KP-9a Admin Pengganti tidak dapat memutus tanpa alasan penggantian (422) [422]
+[lulus] KP-9b Keputusan admin tersimpan dengan kapasitas Admin Pengganti
+[lulus] KP-9c Basis data menyimpan kapasitas dan alasan penggantian
+[lulus] KP-10a Orang tua dapat melihat status izin santri yang terhubung
+[lulus] KP-10b Orang tua A menerima 403 untuk pengajuan santri yang tidak terhubung [403]
+[lulus] KP-10c Orang tua tidak dapat memberi keputusan [403]
+[lulus] KP-10d Orang tua tidak dapat membatalkan pengajuan [403]
+[lulus] KP-10e Orang tua tidak dapat membuat pengajuan [403]
+[lulus] KP-11a Pengurus lain menerima 403 saat membatalkan pengajuan bukan miliknya [403]
+[lulus] KP-11b Pembatalan tanpa alasan ditolak 422 [422]
+[lulus] KP-11c Pengurus dapat membatalkan pengajuan sebelum keputusan
+[lulus] KP-11d Pembatalan menambah riwayat tanpa menghapus riwayat sebelumnya
+[lulus] KP-11e Riwayat pembuatan tetap ada setelah pembatalan
+[lulus] KP-11f Pembatalan kedua ditolak 409 [409]
+[lulus] KP-11g Pengajuan dibatalkan tidak lagi menahan rentang tanggal santri
+[lulus] KP-12a Murobi yang ditugaskan dapat memutus dengan kapasitas Murobi
+[lulus] KP-12b Keputusan kedua atas pengajuan yang sama ditolak 409 [409]
+[lulus] KP-12c Pembatalan setelah keputusan ditolak 409 [409]
+[lulus] KP-12d Versi optimistic yang kedaluwarsa ditolak 409 [409]
+[lulus] KP-13a Dua keputusan bersamaan: tepat satu berhasil ([{"ok":true,"status":200,"response":{"id":2712,"keputusan_id":1313,"status":"Disetujui","kapasitas":"Murobi","version":2,"idempotent_replay":false}},{"ok":false,"status":409,"message":"Pengajuan ini berstatus Disetujui sehingga tidak dapat diproses lagi."}])
+[lulus] KP-13b Request kedua menerima 409 tanpa menimpa keputusan pertama
+[lulus] KP-13c Hanya satu baris keputusan tersimpan
+[lulus] KP-13d Status akhir tunggal dan konsisten: Disetujui
+[lulus] KP-13e Dua pembuatan bersamaan dengan kunci sama hanya menambah satu pengajuan
+[lulus] KP-13f Sedikitnya satu dari dua request bersamaan berhasil ([{"ok":true,"status":200,"response":{"id":2713,"status":"Perlu Penetapan Admin","murobi_guru_id":null,"routing_kandidat":2,"routing_catatan":"Ditemukan 2 murobi kandidat (Guru Murobi Dua 5223C7, Guru Murobi Tiga 5223C7); admin harus menetapkan satu.","idempotent_replay":true}},{"ok":true,"status":200,"response":{"id":2713,"status":"Perlu Penetapan Admin","murobi_guru_id":null,"routing_kandidat":2,"routing_catatan":"Ditemukan 2 murobi kandidat (Guru Murobi Dua 5223C7, Guru Murobi Tiga 5223C7); admin harus menetapkan satu.","idempotent_replay":false}}])
+[lulus] KP-14a Non-admin menerima 403 saat mengoreksi keputusan [403]
+[lulus] KP-14b Koreksi tanpa alasan koreksi ditolak 422 [422]
+[lulus] KP-14c Admin dapat mengoreksi keputusan melalui peristiwa koreksi
+[lulus] KP-14d Koreksi tersimpan sebagai satu peristiwa
+[lulus] KP-14e Koreksi menyimpan nilai sebelum dan sesudah
+[lulus] KP-14f Koreksi menambah riwayat, tidak menghapusnya
+[lulus] KP-14g Riwayat keputusan pertama tetap ada setelah koreksi
+[lulus] KP-14h Koreksi tidak menghapus atau menggandakan baris keputusan
+[lulus] KP-15a Riwayat memuat peristiwa pengajuan_dibuat
+[lulus] KP-15a Riwayat memuat peristiwa routing_otomatis
+[lulus] KP-15a Riwayat memuat peristiwa keputusan
+[lulus] KP-15a Riwayat memuat peristiwa keputusan_dikoreksi
+[lulus] KP-15b Setiap riwayat V2 memiliki pelaku, alasan, dan waktu
+[lulus] KP-15c Audit mencatat izin_pengajuan_created
+[lulus] KP-15c Audit mencatat izin_routing_resolved
+[lulus] KP-15c Audit mencatat izin_murobi_assigned
+[lulus] KP-15c Audit mencatat izin_decision_recorded
+[lulus] KP-15c Audit mencatat izin_cancelled
+[lulus] KP-15c Audit mencatat izin_decision_corrected
+[lulus] KP-15d Audit perizinan tidak memuat credential atau secret
+[lulus] KP-15e Daftar mendukung pencarian dan pagination
+[lulus] KP-15f Filter tanpa hasil menghasilkan empty state, bukan galat
+[lulus] KP-15g Filter status hanya mengembalikan status yang diminta
+[lulus] KP-15h Tidak ada baris warisan pada database uji (lewati pemeriksaan)
+[lulus] KP-15i Orang tua tidak memperoleh satu pun tombol mutasi
+[bersih] Fixture uji Fase 2 dihapus.

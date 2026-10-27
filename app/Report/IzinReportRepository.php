@@ -542,6 +542,12 @@ final class IzinReportRepository
                      WHERE sw.wali_id = ? AND sw.archived_at IS NULL
                        AND w.is_active = 1 AND w.archived_at IS NULL)';
                 $params[] = (int) ($scope['wali_id'] ?? 0);
+                // PRD V7 Fase 2: pengajuan wali yang sudah diteruskan berstatus
+                // V2, tetapi orang tua membacanya hanya lewat layanan V7 (wali
+                // lain hanya status ringkas). Laporan lintas asal = Fase 3.
+                if (\App\Database\Schema::hasColumn($this->db, 'izin_pengajuan', 'asal_pengajuan')) {
+                    $predikat .= " AND p.asal_pengajuan = 'Pengurus'";
+                }
                 break;
             default:
                 // Cakupan tidak dikenal: jangan pernah membocorkan satu baris pun.

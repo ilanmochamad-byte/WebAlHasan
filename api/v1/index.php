@@ -169,9 +169,9 @@ try {
         throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
     }
 
-    // V7 Fase 1 (pengajuan izin wali melalui pembimbing): aditif. Hak dihitung
+    // V7 Fase 1–2 (pengajuan izin wali melalui pembimbing): aditif. Hak dihitung
     // ulang `IzinWaliService` yang sama dengan halaman web; murobi tidak
-    // menerima apa pun sebelum pembimbing meneruskan (Fase 2).
+    // menerima apa pun sebelum pembimbing meneruskan.
     if (str_starts_with($path, '/v7/izin')) {
         header('Cache-Control: private, no-store');
         $wali = izin_wali_service();
@@ -202,6 +202,22 @@ try {
             $body = Request::json();
             $hasilMutasi($wali->tetapkanPembimbing($user, (int) $m[1], $body['pengurus_id'] ?? null, $body['alasan'] ?? null,
                 $body['version'] ?? null, $kunci($body), $requestMeta()));
+        }
+        // V7 Fase 2: tinjauan pembimbing, perbaikan dan pembatalan wali pengaju.
+        // Keputusan murobi/admin pengganti tetap endpoint V2 `/izin/pengajuan/{id}/keputusan`.
+        if ($method === 'GET' && $path === '/v7/izin/pembimbing/riwayat') JsonResponse::success($wali->riwayatPembimbing($user, $_GET['page'] ?? 1));
+        if ($method === 'POST' && preg_match('#^/v7/izin/pengajuan/(\d+)/tinjauan$#', $path, $m)) {
+            $body = Request::json();
+            $hasilMutasi($wali->tinjau($user, (int) $m[1], $body['tindakan'] ?? null, $body['catatan'] ?? null,
+                $body['version'] ?? null, $kunci($body), $requestMeta()));
+        }
+        if ($method === 'POST' && preg_match('#^/v7/izin/pengajuan/(\d+)/perbaikan$#', $path, $m)) {
+            $body = Request::json();
+            $hasilMutasi($wali->perbaiki($user, (int) $m[1], $body, $body['version'] ?? null, $kunci($body), $requestMeta()));
+        }
+        if ($method === 'POST' && preg_match('#^/v7/izin/pengajuan/(\d+)/pembatalan$#', $path, $m)) {
+            $body = Request::json();
+            $hasilMutasi($wali->batalkan($user, (int) $m[1], $body['alasan'] ?? null, $body['version'] ?? null, $kunci($body), $requestMeta()));
         }
         throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
     }

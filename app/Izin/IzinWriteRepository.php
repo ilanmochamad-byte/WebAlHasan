@@ -43,6 +43,12 @@ final class IzinWriteRepository
     {
     }
 
+    /** Koneksi transaksi yang sama untuk pengaman tambahan pengajuan wali. */
+    public function db(): mysqli
+    {
+        return $this->db;
+    }
+
     public function beginTransaction(): void
     {
         if (!$this->db->begin_transaction()) {

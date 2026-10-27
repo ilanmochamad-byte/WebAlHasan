@@ -1,0 +1,43 @@
+[lulus] Migrasi 030 dan 031 tercatat
+[lulus] Tabel izin_pembimbing_tinjauan InnoDB
+[lulus] Tabel izin_wali_perbaikan InnoDB
+[lulus] Lima kunci asing tabel tinjauan
+[lulus] Empat kunci asing tabel perbaikan
+[lulus] Delapan CHECK tabel 031 terpasang
+[lulus] Kunci asing dan CHECK asal 030 tetap terpasang
+[info] Pengajuan wali per status: [{"status":"Disetujui","n":"1"},{"status":"Dibatalkan","n":"2"},{"status":"Ditolak Pembimbing","n":"1"}]; tinjauan 8; perbaikan 4
+[lulus] Baris wali selalu berwali, tanpa pengurus pengaju, bukan warisan
+[lulus] Baris pengurus/warisan tanpa wali_id dan tetap berstatus V2
+[lulus] Tahap pembimbing V7 tidak pernah memiliki murobi tujuan
+[lulus] Tidak ada izin_keputusan untuk pengajuan di tahap pembimbing, termasuk Ditolak Pembimbing
+[lulus] Setiap Menunggu Pembimbing memiliki pembimbing dan penugasan tujuan
+[lulus] Perlu Penetapan Pembimbing belum memiliki pembimbing tujuan
+[lulus] Setiap pengajuan wali memiliki riwayat pembuatan
+[lulus] Setiap pengajuan wali memiliki audit pembuatan
+[lulus] Penetapan pembimbing hanya untuk pengajuan wali
+[lulus] Tidak ada dua pengajuan aktif bertumpang tindih yang melibatkan pengajuan wali (lintas jalur)
+[lulus] Seluruh klaim idempotensi V7 selesai dan menunjuk pengajuan
+[lulus] Audit V7 tanpa alasan, catatan, atau tanggal rinci
+[lulus] Versi setiap pengajuan wali = 1 + jumlah peristiwa yang menaikkan versi (tidak ada perubahan tanpa riwayat)
+[lulus] Jumlah penetapan pembimbing = jumlah riwayat penetapan per pengajuan
+[lulus] Jumlah tinjauan = jumlah riwayat tinjauan per pengajuan
+[lulus] Setiap tinjauan memiliki audit
+[lulus] Setiap perbaikan wali memiliki riwayat dan audit
+[lulus] Perbaikan menjawab permintaan perbaikan pengajuan yang sama pada versi sesudahnya, oleh wali dan akun pengaju
+[lulus] Riwayat perbaikan tidak menyalin isi izin
+[lulus] Tinjauan hanya pada pengajuan wali, oleh pengurus pemilik penugasan yang dipakai
+[lulus] Setiap Perlu Perbaikan Wali memiliki permintaan perbaikan terbuka pada versi saat ini
+[lulus] Setiap Ditolak Pembimbing berasal dari tinjauan Tolak pada versi saat ini
+[lulus] Tolak pembimbing selalu terminal (jumlah tinjauan Tolak = jumlah Ditolak Pembimbing)
+[lulus] Baris wali berstatus V2 selalu diteruskan pembimbing tepat satu kali (tanpa pengajuan kedua)
+[lulus] Setiap penerusan menjalankan routing murobi V2 pada baris yang sama
+[lulus] Keputusan murobi/admin pengganti hanya untuk pengajuan wali yang diteruskan
+[lulus] Pengajuan wali yang diputus memiliki tepat satu keputusan efektif
+[lulus] Pembatalan wali oleh akun pengaju, beralasan, tepat satu riwayat dan audit, tanpa keputusan
+[lulus] Pembatalan V2 (pengurus/admin) tidak pernah terjadi pada pengajuan wali
+[lulus] Klaim idempotensi Fase 2 hanya menunjuk pengajuan wali
+[lulus] Relasi santri–wali tanpa referensi yatim
+[lulus] Pengajuan izin tanpa santri yatim
+[lulus] Riwayat izin tanpa pengajuan yatim
+[lulus] Keputusan izin tanpa pengajuan yatim
+Verifikasi V7 Fase 2 lulus.

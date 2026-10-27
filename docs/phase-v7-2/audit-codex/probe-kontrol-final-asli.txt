@@ -1,0 +1,35 @@
+[lulus] Kontrol decision: permintaan sudah tertahan pada kunci
+[lulus] Kontrol decision: pencabutan benar-benar tersimpan sebelum melepas kunci
+[gagal] Hak decision dicabut saat menunggu → 403 tanpa mutasi (HTTP 200)
+[lulus] Kontrol admin: permintaan sudah tertahan pada kunci
+[lulus] Kontrol admin: pencabutan benar-benar tersimpan sebelum melepas kunci
+[gagal] Hak admin dicabut saat menunggu → 403 tanpa mutasi (HTTP 200)
+[lulus] Kontrol assign: permintaan sudah tertahan pada kunci
+[lulus] Kontrol assign: pencabutan benar-benar tersimpan sebelum melepas kunci
+[gagal] Hak assign dicabut saat menunggu → 403 tanpa mutasi (HTTP 200)
+[lulus] Kontrol correct: permintaan sudah tertahan pada kunci
+[lulus] Kontrol correct: pencabutan benar-benar tersimpan sebelum melepas kunci
+[gagal] Hak correct dicabut saat menunggu → 403 tanpa mutasi (HTTP 200)
+[gagal] Versi wajib pada decision pengajuan wali → 422 tanpa mutasi (HTTP 200)
+[gagal] Versi wajib pada assign pengajuan wali → 422 tanpa mutasi (HTTP 200)
+[gagal] Versi wajib pada correct pengajuan wali → 422 tanpa mutasi (HTTP 200)
+[gagal] Kunci keputusan sama dengan versi berbeda → 409 tanpa mutasi (HTTP 200)
+[lulus] Retry keputusan sesudah penugasan dicabut → 403 tanpa membuka hasil
+[gagal] Kunci penetapan sama dengan versi berbeda → 409 (HTTP 200)
+[gagal] Kunci koreksi sama dengan versi berbeda → 409 (HTTP 200)
+[gagal] Delapan retry keputusan serentak: 8 sukses, satu keputusan {"500":6,"200":2}
+[gagal] Delapan retry keputusan serentak: 8 sukses, satu keputusan {"500":6,"200":2}
+[gagal] Delapan retry keputusan serentak: 8 sukses, satu keputusan {"500":6,"200":2}
+[gagal] Batal vs keputusan dengan retry serentak + retry hasil: terminal Disetujui, keputusan 1 {"200":3,"409":5,"500":2}
+[gagal] Batal vs keputusan dengan retry serentak + retry hasil: terminal Dibatalkan, keputusan 0 {"500":2,"200":5,"409":3}
+[gagal] Batal vs keputusan dengan retry serentak + retry hasil: terminal Disetujui, keputusan 1 {"500":2,"409":5,"200":3}
+[lulus] Kontrol review: pemeriksaan hak menunggu kunci
+[lulus] Kontrol review: pencabutan tersimpan
+[lulus] review sesudah pencabutan terkunci → 404 tanpa mutasi
+[lulus] Kontrol cancel: pemeriksaan hak menunggu kunci
+[lulus] Kontrol cancel: pencabutan tersimpan
+[lulus] cancel sesudah pencabutan terkunci → 404 tanpa mutasi
+[lulus] Batal vs penerusan + retry sampai terminal: awal Diajukan, akhir Dibatalkan {"200":5,"409":5}
+[lulus] Batal vs penerusan + retry sampai terminal: awal Dibatalkan, akhir Dibatalkan {"409":5,"200":5}
+[lulus] Batal vs penerusan + retry sampai terminal: awal Diajukan, akhir Dibatalkan {"200":5,"409":5}
+Ringkasan: 18 lulus, 16 gagal
