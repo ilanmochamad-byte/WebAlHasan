@@ -1,0 +1,98 @@
+[lulus] Fixture V7 tersedia; belum ada pengajuan wali
+
+=== I-1. Satu pengajuan wali, tepat satu pembimbing sah ===
+[lulus] Pengajuan wali tersimpan (201) berstatus Menunggu Pembimbing
+[lulus] Asal Wali, wali pengaju dan akun pengaju tercatat; tanpa pengurus pengaju
+[lulus] Routing: satu kandidat sah → Pembimbing Satu dan penugasannya
+[lulus] Murobi belum ditetapkan; versi 1; catatan wali dan tahun ajaran tersimpan
+[lulus] Riwayat: dibuat + routing pembimbing; alasan izin tidak disalin ke riwayat
+[lulus] Audit pembuatan ada dan tanpa alasan/catatan/tanggal
+[lulus] Pembimbing Satu melihat tepat satu item dengan isi lengkap
+[lulus] Pembimbing Dua (bukan tujuan) melihat nol item
+[lulus] Murobi (kamar santri) tidak menerima item baru sebelum penerusan
+[lulus] Murobi ditolak pada antrean/daftar/detail V7 (403/404)
+
+=== I-2. Idempotensi ===
+[lulus] Kiriman identik kunci sama → ID sama, 200 replay, tanpa baris baru
+[lulus] Kunci sama isi berbeda → 409, tanpa baris baru
+[lulus] Kunci baru rentang sama → 409 benturan, tanpa baris baru
+[lulus] Tanpa kunci idempotensi → 422
+
+=== I-3. Hak baca per wali/peran ===
+[gagal] Wali pengaju: isi lengkap + riwayat; belum ada tindakan (Fase 2)
+[lulus] Wali kedua: status ringkas tanpa alasan/catatan/riwayat/tindakan
+[lulus] Daftar wali kedua: satu item ringkas
+[lulus] Wali asing: daftar kosong, detail 404
+[lulus] Wali dengan relasi diarsipkan: daftar kosong, detail 404
+[lulus] ID tebakan dan ID pengajuan pengurus → 404 di detail V7
+[lulus] Detail: pembimbing lain 404, pembimbing tujuan lengkap
+[lulus] Buat: wali asing/dicabut 404, pengurus dan admin 403 (jalur wali)
+[lulus] Daftar/detail V2 (orang tua dan admin) tidak memuat pengajuan tahap pembimbing
+[lulus] Pencarian alasan lewat daftar V2 orang tua tidak menemukan alasan wali lain
+
+=== I-4. Nol/dua/tanpa-akun pembimbing → admin; penetapan ===
+[lulus] Nol kandidat, dua kandidat, dan pembimbing tanpa akun → Perlu Penetapan Pembimbing
+[lulus] Jumlah kandidat sah tercatat (0, 2, 0)
+[lulus] Antrean admin tepat tiga item pengecualian (tanpa pengajuan bertujuan tunggal)
+[lulus] Kandidat ganda belum masuk antrean pembimbing mana pun
+[lulus] Murobi tidak menerima pengajuan ambigu
+[lulus] Hitungan antrean akses admin/pembimbing konsisten dengan daftar
+[lulus] Kandidat santri Dua: Pembimbing Satu dan Dua
+[lulus] Kandidat santri Nol/TanpaAkun kosong
+[lulus] Kandidat pembimbing hanya untuk admin
+[lulus] Admin tidak dapat menetapkan pengurus tanpa akun atau pembimbing di luar kamar/kelas santri (422)
+[lulus] Pembimbing dan wali tidak dapat menetapkan pembimbing (403)
+[lulus] Penetapan: versi lama 409, tanpa versi 422, tanpa alasan 422
+[lulus] Admin menetapkan Pembimbing Dua → Menunggu Pembimbing, versi 2
+[lulus] Replay penetapan → hasil sama, satu baris penetapan
+[lulus] Kunci penetapan sama isi berbeda → 409
+[lulus] Riwayat penetapan: sebelum/sesudah, kandidat, versi, pelaku
+[lulus] Sesudah penetapan: Pembimbing Dua melihat satu item; antrean admin berkurang
+[lulus] Menetapkan pembimbing yang sama lagi → 409
+[lulus] Sesudah penugasan baru: kandidat santri Nol = Pembimbing Dua
+[lulus] Penetapan santri Nol berhasil; antrean Pembimbing Dua dua item
+[lulus] Tetap nol murobi tujuan dan nol keputusan untuk pengajuan wali
+
+=== I-5. Benturan tanggal lintas jalur ===
+[lulus] Pengurus V2 bertumpang tindih dengan pengajuan wali Menunggu Pembimbing → 409
+[lulus] Pengurus V2 bertumpang tindih dengan pengajuan wali yang ditetapkan admin → 409
+[lulus] Jalur pengurus V2 tetap langsung ke murobi (asal Pengurus) tanpa tahap pembimbing
+[lulus] Wali bertumpang tindih dengan pengajuan pengurus V2 → 409
+[lulus] Sesudah pengajuan pengurus dibatalkan, rentang terlepas dan wali dapat mengajukan
+
+=== I-6. Konkurensi proses terpisah ===
+[lulus] Delapan proses kunci+isi sama bersamaan → delapan jawaban sukses, satu ID, satu baris ({"ok":8})
+[lulus] Empat wali + empat pengurus bersamaan pada rentang bertumpang tindih → tepat satu sukses, tujuh 409 (["409","409","409","409","409","409","409","ok:Diajukan"])
+[lulus] Dua wali berbeda mengajukan bersamaan untuk anak yang sama → satu pengajuan aktif
+
+=== I-7. Pencabutan hak pada sesi lama ===
+[lulus] Relasi wali kedua dicabut → daftar kosong, detail 404, buat 404
+[lulus] Penugasan Pembimbing Satu dinonaktifkan → antrean/detail tertutup; pengajuan pindah ke antrean admin (pembimbing tidak sah)
+[lulus] Admin tidak dapat menetapkan kembali pembimbing yang penugasannya nonaktif
+[lulus] Penugasan dipulihkan → antrean kembali
+[lulus] Akun wali dinonaktifkan → buat 403, detail 404
+[lulus] Akun Pembimbing Dua dinonaktifkan → antrean 403; pengajuannya kembali tampil sebagai pengecualian admin
+
+=== I-8. Validasi dan santri nonaktif ===
+[lulus] Santri nonaktif tidak dapat diajukan (422) dan tidak ada di pilihan anak
+[lulus] Validasi: tanggal tidak valid → 422
+[lulus] Validasi: kembali sebelum izin → 422
+[lulus] Validasi: alasan terlalu pendek → 422
+[lulus] Validasi: santri bukan angka → 422
+[lulus] Validasi: alasan bukan teks → 422
+[lulus] Validasi: catatan terlalu panjang → 422
+[lulus] Masukan tidak valid tidak membuat baris
+
+=== I-9. CHECK basis data dan jalur V2 ===
+[lulus] CHECK: baris pengurus tidak dapat berstatus tahap V7
+[lulus] CHECK: baris wali wajib wali_id
+[lulus] CHECK: baris wali tidak dapat memiliki pengurus pengaju
+[lulus] Jalur V2 (keputusan admin/murobi, penetapan murobi, pembatalan) menolak pengajuan di tahap pembimbing (409)
+[lulus] Penolakan V2 tanpa perubahan versi dan tanpa keputusan
+
+=== I-10. Verifier dan preservasi V2 ===
+[lulus] Baris pengajuan V2/warisan yang ada sebelum uji tidak berubah (ID, status, versi)
+[lulus] bin/v7_phase1_verify.php lulus sesudah seluruh uji (Verifikasi V7 Fase 1 lulus.)
+
+Hasil: 74 lulus, 1 gagal
+  - Wali pengaju: isi lengkap + riwayat; belum ada tindakan (Fase 2)

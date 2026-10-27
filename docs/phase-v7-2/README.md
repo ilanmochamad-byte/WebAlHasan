@@ -1,6 +1,6 @@
 # PRD V7 Fase 2 — Tinjauan Pembimbing, Perbaikan, dan Keputusan Akhir
 
-**Status (27 Oktober 2026): implementasi selesai, menunggu audit independen Codex.** Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Fase 3 belum dimulai. Fase 2 **bukan** izin rilis parsial V7; gerbang akhir/produksi V6 tetap terbuka.
+**Status (27 Oktober 2026): LULUS audit teknis lokal Codex setelah tiga koreksi terarah.** Keputusan dan bukti independen: [AUDIT-CODEX.md](AUDIT-CODEX.md). Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Fase 3 belum dimulai. Fase 2 **bukan** izin rilis parsial V7; gerbang akhir/produksi V6 tetap terbuka.
 
 | Butir | Nilai |
 | --- | --- |
@@ -155,3 +155,5 @@ Dari 40 suite yang sama dengan Fase 1, hanya `v7_phase1_static` berpindah dari e
 ## Handoff
 
 Implementasi Fase 2 selesai pada branch `claude/prd-v7-fase-2` di atas commit audit Fase 1 `192711e0b6bc2cadd46ffc79ee5dfa921f3a76d1`; commit implementasi `8b0d958fc836c5844f588099018dcbd156e03527`; commit sesudahnya hanya mencatat hash ini. Implementator berhenti untuk **audit independen Codex** sesuai prompt audit Fase 2 di `docs/prd-v7/prompts-implementasi-audit.md`. Tidak merge, deploy, migrasi produksi, rilis aplikasi, atau memulai Fase 3.
+
+Audit independen Codex selesai sesudah handoff tersebut: tiga koreksi pada pemrosesan **baris wali melalui V2** (hak sesudah menunggu kunci, versi wajib/ikut sidik request, dan serialisasi retry keputusan). Statis 54/0, integrasi 119/0, HTTP 61/0, migrasi 27/0, browser 33/0; probe yang sama pada sumber asli 18/16 → koreksi 34/0. Regresi, oracle historis, batas dan penyesuaian daftar berkas uji statis Fase 2 dijelaskan di `AUDIT-CODEX.md`; bukti pada `audit-codex/`. Auditor berhenti setelah commit/push branch ini; Fase 3 memerlukan instruksi baru Human Developer.

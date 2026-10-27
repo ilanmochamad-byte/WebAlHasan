@@ -187,7 +187,9 @@ echo PHP_EOL . '=== T-6. Batas Fase 2 terhadap baseline ===' . PHP_EOL;
 exec('git -C ' . escapeshellarg($root) . ' diff --name-only ' . escapeshellarg($baseline) . ' -- . 2>&1', $berubah, $kode);
 exec('git -C ' . escapeshellarg($root) . ' ls-files --others --exclude-standard 2>&1', $baru);
 $semua = array_values(array_unique(array_merge($berubah, $baru)));
-$izin = '#^(app/Izin/(IzinWaliService|IzinWaliRepository|IzinRepository|IzinWorkflowService)\.php|app/Report/IzinReportRepository\.php|app/bootstrap\.php'
+// Audit F-1/F-3 membutuhkan koneksi transaksi yang sama untuk kunci akun V7;
+// IzinWriteRepository hanya bertambah accessor db(), tanpa perubahan SQL V2.
+$izin = '#^(app/Izin/(IzinWaliService|IzinWaliRepository|IzinRepository|IzinWorkflowService|IzinWriteRepository)\.php|app/Report/IzinReportRepository\.php|app/bootstrap\.php'
     . '|api/v1/index\.php|portal/(izin_wali|izin_wali_detail|izin_detail|_ui)\.php'
     . '|database/(migrations|rollbacks)/031_v7_fase2_tinjauan_pembimbing\.sql|bin/(_v7_phase2|v7_phase2_\w+)\.php'
     . '|tests/(v7_phase2_\w+\.(php|sh)|browser/uji-v7-fase2\.mjs)|docs/(phase-v7-2/.+|api-v1\.md)|AGENTS\.md|PRD-V7\.md'

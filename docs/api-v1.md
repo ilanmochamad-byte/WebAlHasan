@@ -618,8 +618,11 @@ versi lama → `409` tanpa perubahan. Skema 031 belum terpasang → `503`.
   lain tetap ringkas tanpa tinjauan/keputusan/tindakan.
 - Penetapan murobi, keputusan murobi/admin pengganti, dan koreksi atas
   pengajuan wali yang sudah diteruskan memakai endpoint V2
-  `/izin/pengajuan/{id}/penetapan-murobi|keputusan|koreksi` tanpa perubahan
-  kontrak. Endpoint V2 orang tua (`/izin/pengajuan`, laporan) tidak memuat
+  `/izin/pengajuan/{id}/penetapan-murobi|keputusan|koreksi`. Khusus baris
+  asal wali, ketiganya wajib `version` positif (`422` bila tidak ada), versi
+  ikut sidik idempotensi (kunci sama dengan versi berbeda → `409`), dan hak
+  pemroses dibaca ulang setelah menunggu kunci serta sebelum replay. Kontrak
+  jalur pengurus V2 tetap. Endpoint V2 orang tua (`/izin/pengajuan`, laporan) tidak memuat
   pengajuan berasal wali; orang tua membacanya lewat `/v7/izin`.
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v7-2/README.md`.

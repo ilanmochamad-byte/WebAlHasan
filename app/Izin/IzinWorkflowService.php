@@ -269,6 +269,8 @@ final class IzinWorkflowService
         ?string $idempotencyKey,
         array $meta
     ): array {
+        $wali = $this->waliRepository($pengajuanId);
+        if ($wali !== null) $user = $this->waliActor($wali, (int) $user['id']);
         if (!$this->capabilities->has($user, Capabilities::ADMIN)) {
             throw IzinException::forbidden('Hanya admin yang dapat menetapkan atau mengganti murobi.');
         }
@@ -280,14 +282,24 @@ final class IzinWorkflowService
         }
 
         $payload = ['pengajuan_id' => $pengajuanId, 'guru_id' => $guruId, 'alasan' => $alasan];
+        if ($wali !== null) $payload['version'] = $this->waliVersion($expectedVersion);
 
-        return $this->transactional(function () use ($userId, $pengajuanId, $guruId, $alasan, $expectedVersion, $key, $payload, $meta): array {
+        return $this->transactional(function () use ($userId, $pengajuanId, $guruId, $alasan, $expectedVersion, $key, $payload, $meta, $wali): array {
+            if ($wali !== null) {
+                $wali->kunciAkun($userId);
+                $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
+            }
             $replay = $this->idempotency->begin($userId, IzinIdempotency::OP_ASSIGN, $key, $payload);
             if ($replay !== null) {
+                if ($wali !== null) {
+                    $this->write->lockPengajuan($pengajuanId);
+                    $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
+                }
                 return $replay['response'] + ['idempotent_replay' => true];
             }
 
             $row = $this->requirePending($pengajuanId);
+            if ($wali !== null) $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
             $version = $this->requireVersion($row, $expectedVersion);
 
             if (!$this->router->isEligibleMurobi($guruId, $this->today())) {
@@ -351,7 +363,7 @@ final class IzinWorkflowService
             );
 
             return $response + ['idempotent_replay' => false];
-        });
+        }, $wali !== null);
     }
 
     // =======================================================================
@@ -374,6 +386,8 @@ final class IzinWorkflowService
         array $meta,
         ?string $preferred = null
     ): array {
+        $wali = $this->waliRepository($pengajuanId);
+        if ($wali !== null) $user = $this->waliActor($wali, (int) $user['id']);
         if (!in_array($hasil, ['Disetujui', 'Ditolak'], true)) {
             throw IzinException::invalid('Hasil keputusan harus Disetujui atau Ditolak.');
         }
@@ -405,17 +419,30 @@ final class IzinWorkflowService
             'kapasitas' => $kapasitas,
             'alasan_penggantian' => $alasanPenggantian,
         ];
+        if ($wali !== null) $payload['version'] = $this->waliVersion($expectedVersion);
 
         return $this->transactional(function () use (
             $user, $userId, $scope, $pengajuanId, $hasil, $alasan, $alasanPenggantian,
-            $kapasitas, $expectedVersion, $key, $payload, $meta
+            $kapasitas, $expectedVersion, $key, $payload, $meta, $wali
         ): array {
+            if ($wali !== null) {
+                $wali->kunciAkun($userId);
+                $this->requireWaliActor($wali, $userId, $scope['mode']);
+            }
             $replay = $this->idempotency->begin($userId, IzinIdempotency::OP_DECISION, $key, $payload);
             if ($replay !== null) {
+                if ($wali !== null) {
+                    $current = $this->write->lockPengajuan($pengajuanId);
+                    $this->requireWaliActor($wali, $userId, $scope['mode'], $current);
+                }
                 return $replay['response'] + ['idempotent_replay' => true];
             }
 
             $row = $this->requirePending($pengajuanId);
+            if ($wali !== null) {
+                $currentActor = $this->requireWaliActor($wali, $userId, $scope['mode'], $row);
+                $scope['guru_id'] = $currentActor['guru_id'];
+            }
 
             if ($kapasitas === self::KAPASITAS_MUROBI) {
                 $guruId = $scope['guru_id'] === null ? 0 : (int) $scope['guru_id'];
@@ -492,7 +519,7 @@ final class IzinWorkflowService
             );
 
             return $response + ['idempotent_replay' => false];
-        });
+        }, $wali !== null);
     }
 
     // =======================================================================
@@ -603,6 +630,8 @@ final class IzinWorkflowService
         ?string $idempotencyKey,
         array $meta
     ): array {
+        $wali = $this->waliRepository($pengajuanId);
+        if ($wali !== null) $user = $this->waliActor($wali, (int) $user['id']);
         if (!$this->capabilities->has($user, Capabilities::ADMIN)) {
             throw IzinException::forbidden('Hanya admin yang dapat mengoreksi keputusan.');
         }
@@ -620,12 +649,21 @@ final class IzinWorkflowService
             'alasan' => $alasanBaru,
             'alasan_koreksi' => $alasanKoreksi,
         ];
+        if ($wali !== null) $payload['version'] = $this->waliVersion($expectedVersion);
 
         return $this->transactional(function () use (
-            $userId, $pengajuanId, $hasilBaru, $alasanBaru, $alasanKoreksi, $expectedVersion, $key, $payload, $meta
+            $userId, $pengajuanId, $hasilBaru, $alasanBaru, $alasanKoreksi, $expectedVersion, $key, $payload, $meta, $wali
         ): array {
+            if ($wali !== null) {
+                $wali->kunciAkun($userId);
+                $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
+            }
             $replay = $this->idempotency->begin($userId, IzinIdempotency::OP_CORRECTION, $key, $payload);
             if ($replay !== null) {
+                if ($wali !== null) {
+                    $this->write->lockPengajuan($pengajuanId);
+                    $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
+                }
                 return $replay['response'] + ['idempotent_replay' => true];
             }
 
@@ -633,6 +671,7 @@ final class IzinWorkflowService
             if ($row === null) {
                 throw IzinException::forbidden();
             }
+            if ($wali !== null) $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
             $keputusan = $this->write->lockKeputusan($pengajuanId);
             if ($keputusan === null) {
                 throw IzinException::conflict('Pengajuan ini belum memiliki keputusan yang dapat dikoreksi.');
@@ -692,7 +731,7 @@ final class IzinWorkflowService
             );
 
             return $response + ['idempotent_replay' => false];
-        });
+        }, $wali !== null);
     }
 
     // =======================================================================
@@ -890,12 +929,58 @@ final class IzinWorkflowService
     }
 
     /**
+     * Pengajuan wali memakai pengaman V7 juga ketika diproses lewat V2.
+     * Asal tidak dapat diubah oleh layanan; pembacaan awal ini hanya memilih
+     * protokol kunci, bukan memberi hak. Jalur pengurus V2 tetap seperti semula.
+     */
+    private function waliRepository(int $id): ?IzinWaliRepository
+    {
+        $db = $this->write->db();
+        if (!\App\Database\Schema::hasColumn($db, 'izin_pengajuan', 'asal_pengajuan')) return null;
+        $repo = new IzinWaliRepository($db);
+        return $repo->find($id, $this->today()) === null ? null : $repo;
+    }
+
+    /** Identitas selalu dari DB, bukan role/guru yang tertinggal di sesi. */
+    private function waliActor(IzinWaliRepository $repo, int $id): array
+    {
+        $this->capabilities->forget($id);
+        return ['id' => $id, 'roles' => $repo->rolesAkun($id), 'guru_id' => $repo->guruAkun($id)];
+    }
+
+    private function waliVersion(?int $version): int
+    {
+        if ($version === null || $version < 1) {
+            throw IzinException::invalid('Versi data wajib disertakan. Muat ulang halaman lalu ulangi.');
+        }
+        return $version;
+    }
+
+    /** Diperiksa sesudah kunci akun, sesudah menunggu pengajuan, dan sebelum replay. */
+    private function requireWaliActor(IzinWaliRepository $repo, int $id, string $mode, ?array $row = null): array
+    {
+        $user = $this->waliActor($repo, $id);
+        if (!in_array($mode, [Capabilities::ADMIN, Capabilities::MUROBI], true)
+            || !$this->capabilities->has($user, $mode)) {
+            throw IzinException::forbidden('Hak pemroses pengajuan ini sudah tidak berlaku.');
+        }
+        if ($mode === Capabilities::MUROBI && $row !== null
+            && ($row['murobi_guru_id'] === null || (int) $row['murobi_guru_id'] !== $user['guru_id'])) {
+            throw IzinException::forbidden('Pengajuan ini tidak diarahkan kepada Anda.');
+        }
+        return $user;
+    }
+
+    /**
      * @template T
      * @param callable():T $operation
      * @return T
      */
-    private function transactional(callable $operation): mixed
+    private function transactional(callable $operation, bool $wali = false): mixed
     {
+        // Penugasan yang dicabut ketika menunggu harus terbaca setelah kunci
+        // diperoleh, termasuk MariaDB dengan innodb_snapshot_isolation=ON.
+        if ($wali) $this->write->db()->query('SET TRANSACTION ISOLATION LEVEL READ COMMITTED');
         $this->write->beginTransaction();
         try {
             $result = $operation();

@@ -1,0 +1,23 @@
+[lulus] Kontrol decision: permintaan sudah tertahan pada kunci
+[lulus] Kontrol decision: pencabutan benar-benar tersimpan sebelum melepas kunci
+[gagal] Hak decision dicabut saat menunggu → 403 tanpa mutasi (HTTP 200)
+[gagal] Kontrol admin: permintaan sudah tertahan pada kunci
+[lulus] Kontrol admin: pencabutan benar-benar tersimpan sebelum melepas kunci
+[gagal] Hak admin dicabut saat menunggu → 403 tanpa mutasi (HTTP 200)
+[gagal] Kontrol assign: permintaan sudah tertahan pada kunci
+[lulus] Kontrol assign: pencabutan benar-benar tersimpan sebelum melepas kunci
+[gagal] Hak assign dicabut saat menunggu → 403 tanpa mutasi (HTTP 200)
+[gagal] Kontrol correct: permintaan sudah tertahan pada kunci
+[lulus] Kontrol correct: pencabutan benar-benar tersimpan sebelum melepas kunci
+[gagal] Hak correct dicabut saat menunggu → 403 tanpa mutasi (HTTP 200)
+[gagal] Kunci keputusan sama dengan versi berbeda → 409 tanpa mutasi (HTTP 200)
+[lulus] Retry keputusan sesudah penugasan dicabut → 403 tanpa membuka hasil
+[gagal] Kunci penetapan sama dengan versi berbeda → 409 (HTTP 200)
+[gagal] Kunci koreksi sama dengan versi berbeda → 409 (HTTP 200)
+[gagal] Delapan retry keputusan serentak: 8 sukses, satu keputusan {"500":6,"200":2}
+[gagal] Delapan retry keputusan serentak: 8 sukses, satu keputusan {"200":2,"500":6}
+[gagal] Delapan retry keputusan serentak: 8 sukses, satu keputusan {"500":5,"200":3}
+[gagal] Batal vs keputusan dengan retry serentak + retry hasil: terminal Disetujui, keputusan 1 {"500":2,"409":5,"200":3}
+[gagal] Batal vs keputusan dengan retry serentak + retry hasil: terminal Dibatalkan, keputusan 0 {"500":2,"200":5,"409":3}
+[gagal] Batal vs keputusan dengan retry serentak + retry hasil: terminal Disetujui, keputusan 1 {"500":2,"409":5,"200":3}
+Ringkasan: 6 lulus, 16 gagal

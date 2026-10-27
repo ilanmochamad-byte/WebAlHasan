@@ -1,0 +1,15 @@
+[lulus] Kontrol decision: permintaan tertahan pada pengajuan
+[lulus] Hak decision dicabut saat menunggu → 403 tanpa mutasi (HTTP 403)
+[lulus] Kontrol admin: permintaan tertahan pada pengajuan
+[gagal] Hak admin dicabut saat menunggu → 403 tanpa mutasi (HTTP 200)
+[lulus] Kunci keputusan sama dengan versi berbeda → 409 tanpa mutasi (HTTP 409)
+[lulus] Retry keputusan sesudah penugasan dicabut → 403 tanpa membuka hasil
+[lulus] Kunci penetapan sama dengan versi berbeda → 409 (HTTP 409)
+[lulus] Kunci koreksi sama dengan versi berbeda → 409 (HTTP 409)
+[lulus] Delapan retry keputusan serentak: 8 sukses, satu keputusan {"200":8}
+[lulus] Delapan retry keputusan serentak: 8 sukses, satu keputusan {"200":8}
+[lulus] Delapan retry keputusan serentak: 8 sukses, satu keputusan {"200":8}
+[lulus] Batal vs keputusan dengan retry serentak + retry hasil: terminal Disetujui, keputusan 1 {"200":5,"409":5}
+[lulus] Batal vs keputusan dengan retry serentak + retry hasil: terminal Dibatalkan, keputusan 0 {"409":5,"200":5}
+[lulus] Batal vs keputusan dengan retry serentak + retry hasil: terminal Disetujui, keputusan 1 {"200":5,"409":5}
+Ringkasan: 13 lulus, 1 gagal
