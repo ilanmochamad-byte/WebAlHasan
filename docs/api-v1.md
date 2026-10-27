@@ -534,6 +534,51 @@ bila belum). Seluruh angka satu laporan dibaca dalam satu snapshot.
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v6-5/README.md`.
 
+## Pengajuan izin wali V7 Fase 1 (27 Oktober 2026)
+
+Aditif di bawah `/api/v1/v7/izin`; kontrak perizinan V2 di atas tidak berubah
+bentuknya. Hak dihitung ulang server pada setiap permintaan oleh layanan yang
+sama dengan website (`IzinWaliService`). Seluruh respons `Cache-Control:
+private, no-store`. Pengajuan wali tinggal di ruang ID `izin_pengajuan` yang
+sama dengan jalur pengurus (satu identitas kanonis). Selama berada di tahap
+pembimbing (`Menunggu Pembimbing`, `Perlu Penetapan Pembimbing`; `Perlu
+Perbaikan Wali` dan `Ditolak Pembimbing` disiapkan untuk Fase 2) pengajuan
+**tidak** muncul pada endpoint `/izin/*` V2 (daftar, antrean, ringkasan,
+detail, laporan) dan murobi tidak menerimanya. Di luar hak → `404`; peran
+tanpa akses → `403`; skema 030 belum terpasang → `503 SERVICE_UNAVAILABLE`.
+
+- `GET /v7/izin/akses` → `{peran[], wali, pembimbing, admin, boleh_mengajukan,
+  antrean_pembimbing, antrean_admin}`.
+- `GET /v7/izin/wali/anak` (orang tua) → `{items:[{id, nis, nama, hubungan}]}`
+  — anak berelasi `santri_wali` aktif dan santri aktif.
+- `POST /v7/izin/wali/pengajuan` (orang tua) dengan header `Idempotency-Key`
+  (atau `idempotency_key` di badan) dan badan `{santri_id, tgl_izin, tgl_kembali,
+  alasan (3–2000), catatan? (≤1000)}` → `201 {id, status, tahap, version,
+  pembimbing_ditetapkan, idempotent_replay:false}`; kunci + isi sama → `200`
+  dengan `idempotent_replay:true` dan ID sama; kunci sama isi berbeda → `409`;
+  rentang bertumpang tindih dengan pengajuan aktif jalur mana pun → `409`;
+  anak tidak berelasi aktif → `404`; bukan akun orang tua → `403`.
+- `GET /v7/izin/wali/pengajuan?santri_id=&page=` (orang tua) → pengajuan wali
+  untuk anak berelasi aktif. Wali pengaju: `alasan`, `catatan`, `version`,
+  `pembimbing`; wali lain: `ringkas:true` tanpa alasan/catatan/riwayat.
+- `GET /v7/izin/pembimbing/antrean?page=` (pengurus) → pengajuan yang
+  dialamatkan kepadanya, `Menunggu Pembimbing`, santri aktif, dan ia masih
+  pembimbing sah; isi lengkap untuk ditinjau (tindakan tinjauan: Fase 2).
+- `GET /v7/izin/admin/pengajuan?antrean=1&status=&page=` (admin) → seluruh
+  pengajuan wali; `antrean=1` = pengecualian (tanpa tepat satu pembimbing sah,
+  atau pembimbing tujuan tidak lagi sah). Menyertakan `ringkasan` per status.
+- `GET /v7/izin/pengajuan/{id}` → rincian sesuai hak (`peran_akses`: admin,
+  pembimbing, wali); wali lain ringkas tanpa riwayat.
+- `GET /v7/izin/pengajuan/{id}/kandidat-pembimbing` (admin) → pembimbing sah
+  `{pengurus_id, nama, assignment_id, targets[]}`.
+- `POST /v7/izin/pengajuan/{id}/penetapan-pembimbing` (admin) dengan
+  `Idempotency-Key` dan badan `{pengurus_id, alasan (3–1000), version}` →
+  `200 {id, status:"Menunggu Pembimbing", tahap, pembimbing_pengurus_id,
+  version}`; bukan pembimbing sah → `422`; versi lama → `409`; status di luar
+  tahap pembimbing → `409`; non-admin → `403`.
+
+Rincian, penafsiran, dan batas uji: `docs/phase-v7-1/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh

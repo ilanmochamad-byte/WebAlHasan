@@ -169,6 +169,43 @@ try {
         throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
     }
 
+    // V7 Fase 1 (pengajuan izin wali melalui pembimbing): aditif. Hak dihitung
+    // ulang `IzinWaliService` yang sama dengan halaman web; murobi tidak
+    // menerima apa pun sebelum pembimbing meneruskan (Fase 2).
+    if (str_starts_with($path, '/v7/izin')) {
+        header('Cache-Control: private, no-store');
+        $wali = izin_wali_service();
+        $kunci = static function (array $body): ?string {
+            $nilai = $body['idempotency_key'] ?? ($_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? null);
+
+            return is_string($nilai) ? $nilai : null;
+        };
+        $hasilMutasi = static function (array $hasil): never {
+            $status = (int) $hasil['status_http'];
+            unset($hasil['status_http']);
+            JsonResponse::success($hasil, $status);
+        };
+        if ($method === 'GET' && $path === '/v7/izin/akses') JsonResponse::success($wali->akses($user));
+        if ($method === 'GET' && $path === '/v7/izin/wali/anak') JsonResponse::success(['items' => $wali->anak($user)]);
+        if ($method === 'GET' && $path === '/v7/izin/wali/pengajuan') JsonResponse::success($wali->daftarWali($user, $_GET['santri_id'] ?? null, $_GET['page'] ?? 1));
+        if ($method === 'POST' && $path === '/v7/izin/wali/pengajuan') {
+            $body = Request::json();
+            $hasilMutasi($wali->buat($user, $body, $kunci($body), $requestMeta()));
+        }
+        if ($method === 'GET' && $path === '/v7/izin/pembimbing/antrean') JsonResponse::success($wali->antreanPembimbing($user, $_GET['page'] ?? 1));
+        if ($method === 'GET' && $path === '/v7/izin/admin/pengajuan') JsonResponse::success($wali->daftarAdmin($user, $_GET));
+        if ($method === 'GET' && preg_match('#^/v7/izin/pengajuan/(\d+)$#', $path, $m)) JsonResponse::success($wali->detail($user, (int) $m[1]));
+        if ($method === 'GET' && preg_match('#^/v7/izin/pengajuan/(\d+)/kandidat-pembimbing$#', $path, $m)) {
+            JsonResponse::success(['items' => $wali->kandidatPembimbing($user, (int) $m[1])]);
+        }
+        if ($method === 'POST' && preg_match('#^/v7/izin/pengajuan/(\d+)/penetapan-pembimbing$#', $path, $m)) {
+            $body = Request::json();
+            $hasilMutasi($wali->tetapkanPembimbing($user, (int) $m[1], $body['pengurus_id'] ?? null, $body['alasan'] ?? null,
+                $body['version'] ?? null, $kunci($body), $requestMeta()));
+        }
+        throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
+    }
+
     // V6 Fase 1 (keuangan santri/BSA): aditif. Hak dihitung ulang layanan yang
     // sama dengan halaman web; admin dan wali hanya membaca, tidak pernah memutasi.
     if (str_starts_with($path, '/v6/bsa')) {
@@ -579,6 +616,11 @@ try {
     }
 
     throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
+} catch (\App\Izin\IzinException $exception) {
+    // V7: `IzinWaliService` melempar IzinException langsung (V2 menerjemahkannya
+    // sendiri di IzinApiService, sehingga jalur V2 tidak berubah).
+    $status = $exception->status();
+    JsonResponse::error(match($status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$status);
 } catch (\App\Bsa\BsaException $exception) {
     JsonResponse::error(match($exception->status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$exception->status);
 } catch (\App\Kesehatan\KesehatanException $exception) {

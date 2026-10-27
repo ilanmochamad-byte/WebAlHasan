@@ -1,0 +1,65 @@
+
+=== S-1. Migrasi 030 ===
+[lulus] 030 adalah migrasi terakhir dan memiliki pasangan rollback
+[lulus] Migrasi tanpa DROP/DELETE/TRUNCATE/UPDATE/INSERT/RENAME (selain aturan ON DELETE kunci asing)
+[lulus] ALTER hanya pada izin_pengajuan
+[lulus] Setiap perubahan dibungkus pemeriksaan INFORMATION_SCHEMA (idempoten)
+[lulus] ENUM: lima nilai V2 berurutan di depan, empat tahap V7 di ujung
+[lulus] Asal bawaan Pengurus; CHECK asal ↔ wali ↔ tahap
+[lulus] Tabel penetapan: versi berurutan, InnoDB
+
+=== S-2. Rollback 030 ===
+[lulus] Penjaga data (CHECK pada tabel sementara) dijalankan sebelum perubahan skema
+[lulus] Penjaga menghitung baris wali/tahap V7, penetapan, dan klaim idempotensi V7
+[lulus] Rollback tanpa DELETE/UPDATE dan hanya melepas tabel V7
+[lulus] ENUM dikembalikan ke lima nilai V2
+
+=== S-3. Layanan ===
+[lulus] Buat: kunci akun → klaim idempotensi → hak wali (kunci baca) → kunci santri → tahun → benturan → routing → sisip → riwayat → selesai → audit
+[lulus] Penetapan: admin → kunci akun → klaim → kunci pengajuan → versi → pembimbing sah (kunci baca) → ubah bersyarat versi → riwayat penetapan → riwayat → audit
+[lulus] Ubah penetapan memakai versi optimistis + status; transaksi READ COMMITTED
+[lulus] Sisip pengajuan wali: pengurus_id dan murobi_guru_id NULL (murobi belum menerima)
+[lulus] Audit pembuatan tanpa alasan/catatan/tanggal; riwayat pembuatan tanpa alasan izin
+[lulus] Layanan/repositori/router V7 tidak membaca variabel global request
+[lulus] Fase 1 tidak mengirim notifikasi (Fase 3); WhatsApp tidak disentuh
+[lulus] Pembimbing sah: penugasan aktif, tahun aktif, akun pengurus aktif
+[lulus] Di luar hak baca/anak lain → 404
+[lulus] Wali lain: proyeksi ringkas tanpa riwayat
+
+=== S-4. Perubahan V2 terarah ===
+[lulus] Status penahan rentang: V2 + tiga tahap wali aktif; Ditolak Pembimbing/Dibatalkan melepaskan
+[lulus] Status yang dapat diputus V2 tidak berubah (tahap V7 tidak dapat diputus murobi/admin)
+[lulus] Daftar/antrean/ringkasan/detail dan laporan V2 hanya memuat status V2
+[lulus] Daftar status V2 (kontrak API/laporan) tidak berubah
+
+=== S-5. Web dan API ===
+[lulus] portal/_izin_wali.php memakai guard portal (CSRF POST)
+[lulus] portal/_izin_wali.php meng-escape keluaran isi pengajuan
+[lulus] portal/izin_wali.php memakai guard portal (CSRF POST)
+[lulus] portal/izin_wali.php meng-escape keluaran isi pengajuan
+[lulus] portal/izin_wali_buat.php memakai guard portal (CSRF POST)
+[lulus] portal/izin_wali_buat.php meng-escape keluaran isi pengajuan
+[lulus] portal/izin_wali_detail.php memakai guard portal (CSRF POST)
+[lulus] portal/izin_wali_detail.php meng-escape keluaran isi pengajuan
+[lulus] Halaman V7: Cache-Control private, no-store
+[lulus] Guard portal memeriksa CSRF untuk setiap POST
+[lulus] Formulir mutasi membawa kunci idempotensi; penetapan membawa versi
+[lulus] Rute API '/v7/izin/akses'
+[lulus] Rute API '/v7/izin/wali/anak'
+[lulus] Rute API '/v7/izin/wali/pengajuan'
+[lulus] Rute API '/v7/izin/pembimbing/antrean'
+[lulus] Rute API '/v7/izin/admin/pengajuan'
+[lulus] Rute API #^/v7/izin/pengajuan/(\d+)$#
+[lulus] Rute API #^/v7/izin/pengajuan/(\d+)/kandidat-pembimbing$#
+[lulus] Rute API #^/v7/izin/pengajuan/(\d+)/penetapan-pembimbing$#
+[lulus] API V7: no-store dan pemetaan IzinException (403/404/409/422/503)
+[lulus] Tidak ada rute murobi V7 pada Fase 1
+
+=== S-6. Batas Fase 1 terhadap baseline ===
+[lulus] Hanya berkas Fase 1 yang berubah dari baseline 3e78564
+[lulus] Auth, Penugasan, BSA V6, Kesehatan V5, V3, V4, PSB, notifikasi, dan halaman admin tidak berubah
+
+=== S-7. Lint ===
+[lulus] php -l 25 berkas PHP baru/berubah
+
+Hasil: 49 lulus, 0 gagal

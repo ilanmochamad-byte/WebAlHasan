@@ -24,8 +24,17 @@ use RuntimeException;
  */
 final class IzinWriteRepository
 {
-    /** Status yang masih menahan slot tanggal santri (PRD 5.3). */
-    public const STATUS_MENAHAN = ['Diajukan', 'Perlu Penetapan Admin', 'Disetujui'];
+    /**
+     * Status yang masih menahan slot tanggal santri (PRD V2 5.3), berlaku bagi
+     * KEDUA jalur. PRD V7 §5.2: pengajuan wali yang menunggu pembimbing,
+     * menunggu penetapan pembimbing, atau perlu perbaikan juga menahan
+     * rentang; ditolak pembimbing dan dibatalkan melepaskannya. Sebelum
+     * migrasi 030 nilai V7 tidak pernah ada, sehingga daftar ini tetap aman.
+     */
+    public const STATUS_MENAHAN = [
+        'Diajukan', 'Perlu Penetapan Admin', 'Disetujui',
+        'Menunggu Pembimbing', 'Perlu Penetapan Pembimbing', 'Perlu Perbaikan Wali',
+    ];
 
     /** Status yang masih boleh diputus, dibatalkan, atau ditetapkan ulang. */
     public const STATUS_BELUM_DIPUTUS = ['Diajukan', 'Perlu Penetapan Admin'];

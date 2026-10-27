@@ -277,6 +277,8 @@ final class Navigation
                 ['izin_ringkasan.php', 'laporan.php', 'laporan_cetak.php', 'laporan_csv.php', 'izin_antrean.php'], [
                 self::tab('Aktif', '/portal/izin.php', ['izin.php', 'izin_detail.php']),
                 self::tab('Riwayat', '/portal/izin.php?tab=riwayat', ['izin.php?tab=riwayat']),
+                // PRD V7 Fase 1: pengajuan oleh wali melalui pembimbing.
+                self::tab('Pengajuan wali', '/portal/izin_wali.php', ['izin_wali.php', 'izin_wali_buat.php', 'izin_wali_detail.php']),
             ], 'Izin');
         }
         if ($c->raporWali()) {
@@ -322,6 +324,8 @@ final class Navigation
             self::tab('Ringkasan', '/portal/izin_ringkasan.php', ['izin_ringkasan.php']),
             self::tab('Pengajuan', '/portal/izin.php', ['izin.php', 'izin_detail.php', 'izin_buat.php', 'izin_aksi.php']),
             self::tab('Antrean', '/portal/izin_antrean.php', ['izin_antrean.php']),
+            // PRD V7 Fase 1: antrean pembimbing / pemantauan admin pengajuan wali.
+            self::tab('Pengajuan wali', '/portal/izin_wali.php', ['izin_wali.php', 'izin_wali_detail.php']),
             self::tab('Laporan', '/portal/laporan.php', ['laporan.php', 'laporan_cetak.php', 'laporan_csv.php']),
         ], 'Perizinan');
     }
