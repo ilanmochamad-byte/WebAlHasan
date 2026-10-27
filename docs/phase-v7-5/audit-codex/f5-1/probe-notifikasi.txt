@@ -1,0 +1,6 @@
+[lulus] Kontrol: satu Push murobi benar-benar diantre dan awalnya berhak
+[lulus] Pencabutan sebagian membatalkan hak Push walau masih menjadi murobi tujuan
+[lulus] Worker menolak Push lama dengan AKSES_BERUBAH dan nol request provider palsu
+[lulus] Pembatalan saat murobi tidak sah memberi tahu admin, tanpa penerima lama yang kehilangan cakupan
+[lulus] Koreksi cakupan tetap tidak mengantre WhatsApp
+Hasil: 5 lulus, 0 gagal

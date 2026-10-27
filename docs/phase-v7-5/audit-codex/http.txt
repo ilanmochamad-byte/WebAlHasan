@@ -1,0 +1,55 @@
+[lulus] Sesi web dan token API untuk sembilan akun
+[lulus] Fixture V7 tersedia; belum ada pengajuan wali
+
+=== H-A. Jalur wali penuh di website ===
+[lulus] Wali mengirim formulir web dua kali (klik ganda/muat ulang) → satu pengajuan, keduanya dialihkan ke rincian
+[lulus] POST tanpa CSRF sah ditolak 419
+[lulus] Pembimbing meminta perbaikan dari halaman web
+[lulus] Wali memperbaiki dari halaman web; API menandai tindakan perbaiki
+[lulus] Pembimbing meneruskan dari halaman web → murobi tunggal
+[lulus] Murobi memutus dari halaman keputusan V2 pada ID yang sama; satu keputusan
+[lulus] Status dan ID sama di API wali, halaman wali, dan laporan admin
+[lulus] Notifikasi wali dibuka → rincian pengajuan yang sama
+[lulus] Wali kedua tidak dapat membuka notifikasi milik wali pengaju
+
+=== H-B. Jalur wali penuh lewat API (aplikasi) ===
+[lulus] API: retry berkunci sama → ID sama; dua pembimbing → Perlu Penetapan Pembimbing
+[lulus] Kandidat dua pembimbing hanya untuk admin
+[lulus] Admin menetapkan Pembimbing Dua lewat API
+[lulus] Pembimbing yang tidak ditetapkan → 404
+[info] Routing murobi V7S0003: Perlu Penetapan Admin
+[lulus] Pembimbing Dua meneruskan lewat API
+[lulus] Admin pengganti beralasan memutus lewat API V2 pada ID yang sama [201]
+[lulus] Wali melihat hasil yang sama di website dan API
+
+=== H-C. Jalur pengurus V2 di website dan API ===
+[lulus] Pengurus membuat pengajuan V2 dari web (klik ganda → satu), asal Pengurus
+[lulus] Murobi memutus pengajuan pengurus dari web tanpa tahap pembimbing
+[lulus] Admin mengoreksi keputusan V2 lewat API (satu keputusan)
+[lulus] Pengurus membuat lewat API V2; retry tidak menambah baris
+[lulus] Pengurus membatalkan lewat API V2
+[lulus] Rentang pengajuan pengurus yang dibatalkan dilepas untuk pengajuan wali
+[lulus] Pembatalan V2 (admin) atas pengajuan wali di tahap pembimbing ditolak tanpa perubahan [409]
+[lulus] Pengajuan pengurus bertumpang tindih dengan pengajuan wali aktif → 409
+
+=== H-D. Matriks akses sembilan akun ===
+[lulus] Dua pengajuan uji matriks: menunggu pembimbing dan sudah diteruskan
+[lulus] Pembatalan V2 (admin) atas pengajuan wali berstatus V2 ditolak 403 tanpa perubahan [403]
+[lulus] Rincian web/API, laporan, dan ekspor: 9 akun × 2 pengajuan sesuai peran; laporan/ekspor tanpa alasan
+[lulus] Enam akun tanpa hak (termasuk admin untuk tinjauan/batal wali dan murobi sebelum penerusan): batal/tinjau/putus ditolak, tanpa perubahan
+[lulus] Notifikasi pembimbing tidak dapat dibuka/dibaca akun lain (web dan API)
+[lulus] Relasi dicabut: token dan sesi lama 404; tautan notifikasi tidak menampilkan isi
+
+=== H-E. Laporan dan cetak lama, laporan V7 ===
+[lulus] Laporan/cetak/CSV V2, daftar orang tua V2, dan halaman V7 terbuka 200 tanpa galat (10 halaman)
+[lulus] CSV laporan V2 tetap CSV
+[lulus] API laporan V2 /izin/laporan?mode=admin tetap 200
+[lulus] API laporan V2 /izin/laporan/cetak?mode=admin tetap 200
+[lulus] Laporan V7 admin: total API = baris ekspor web = 1059 pengajuan sumber (kedua asal dihitung tepat sekali)
+[lulus] Halaman laporan V7 menampilkan total yang sama
+
+=== H-F. Log server ===
+[lulus] Log server tanpa galat PHP
+[lulus] Log server tanpa isi alasan dan tanpa token mentah
+
+Hasil: 40 lulus, 0 gagal

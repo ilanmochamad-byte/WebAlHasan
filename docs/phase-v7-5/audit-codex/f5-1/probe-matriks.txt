@@ -1,0 +1,24 @@
+[lulus] Kontrol: hanya cakupan santri hilang, kemampuan murobi lain tetap aktif
+[lulus] Daftar/antrean V2 menyembunyikan pengajuan Wali di luar cakupan
+[lulus] Laporan dan ekspor V7 sama-sama kosong setelah pencabutan
+[lulus] Ringkasan, ekspor dan cetak laporan V2 memakai cakupan terkini
+[lulus] Kehilangan murobi sah muncul pada antrean admin V7 dan V2
+[lulus] Bacaan antrean admin hanya menandai, tanpa mutasi ID/status/versi/riwayat/audit
+[lulus] Pilihan penetapan admin menyingkirkan murobi yang tidak mencakup santri
+[lulus] Admin tidak dapat mengembalikan tujuan tanpa cakupan, tanpa mutasi
+[lulus] Admin pengganti beralasan menyelesaikan pengajuan yang kehilangan murobi pada ID sama
+[lulus] Riwayat terminal juga tertutup bagi murobi yang tidak lagi mencakup santri
+[lulus] Replay keputusan lama ditolak 403 setelah pencabutan sebagian, tanpa membuka hasil atau mutasi
+[lulus] Penugasan sah dipulihkan: replay tetap satu keputusan, tidak menghilangkan riwayat
+[lulus] Kontrol penugasan: worker benar-benar menunggu kunci
+[lulus] Pencabutan penugasan saat menunggu: 403, nol keputusan dan riwayat baru
+[lulus] Kontrol tanggal: worker benar-benar menunggu kunci
+[lulus] Pencabutan tanggal saat menunggu: 403, nol keputusan dan riwayat baru
+[lulus] Kontrol penempatan: worker benar-benar menunggu kunci
+[lulus] Pencabutan penempatan saat menunggu: 403, nol keputusan dan riwayat baru
+[lulus] Murobi aktif lain tidak dapat dipilih sebelum mencakup santri
+[lulus] Penugasan baru saja tidak membuka pengajuan yang masih ditujukan kepada murobi lain
+[lulus] Penetapan ulang beralasan memindah akses ke murobi tujuan baru yang sah
+[lulus] Rerouting sah mempertahankan ID dan satu keputusan dengan jejak beralasan
+[lulus] Pencabutan parsial tidak mengubah kontrak baca/keputusan asal Pengurus V2
+Hasil: 23 lulus, 0 gagal

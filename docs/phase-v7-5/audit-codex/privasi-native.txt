@@ -1,0 +1,6 @@
+Android log baris: 629 baris berpenanda: 0
+Android pola bearer mentah log/data: 0 0
+Android berkas data: 80 berkas berpenanda: 0
+iOS log baris: 28915 baris berpenanda: 0
+iOS pola bearer mentah log: 0
+iOS berkas data: 250 berkas berpenanda: 0

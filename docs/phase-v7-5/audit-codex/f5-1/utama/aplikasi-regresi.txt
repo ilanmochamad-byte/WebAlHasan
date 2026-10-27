@@ -1,0 +1,10 @@
+Bundel  6037542 bita, host produksi: 0
+[lulus] Murobi luar cakupan ditolak setelah penerusan
+[lulus] Admin tanpa alasan penggantian tidak menghasilkan keputusan
+[lulus] Admin pengganti dari aplikasi: satu keputusan, ID/status sama dengan API
+[lulus] Wali pengaju membaca keputusan admin yang sama
+[lulus] V2 aplikasi: pengurus membuat dan membatalkan tanpa tahap pembimbing wali
+[lulus] V2 aplikasi: keputusan langsung murobi satu kali tanpa tinjauan V7
+[lulus] POST wali setelah relasi dicabut: isi dan draf tertutup, tanpa pembatalan
+Ringkasan: 7 lulus, 0 gagal
+galat PHP server aplikasi: 0

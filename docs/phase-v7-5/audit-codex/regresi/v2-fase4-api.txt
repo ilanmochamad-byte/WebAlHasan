@@ -1,0 +1,111 @@
+[lulus] Login fixture sbx_admin berhasil
+[lulus] Login fixture sbx_pengurus_a berhasil
+[lulus] Login fixture sbx_murobi_a berhasil
+[lulus] Login fixture sbx_murobi_b berhasil
+[lulus] Login fixture sbx_ortu_a berhasil
+[lulus] Login fixture sbx_ortu_b berhasil
+
+=== Persiapan ===
+[lulus] Pengajuan uji dibuat (201)
+[lulus] ID pengajuan uji diperoleh
+
+=== KA-1/KA-3. Pusat notifikasi ===
+[lulus] GET /notifikasi menjawab 200
+[lulus] KA-1a Envelope JSON mengikuti konvensi V1
+[lulus] KA-1b Respons memuat items
+[lulus] KA-1b Respons memuat jumlah_belum_dibaca
+[lulus] KA-1b Respons memuat filters
+[lulus] KA-1b Respons memuat pagination
+[lulus] KA-1c Pagination memuat current_page
+[lulus] KA-1c Pagination memuat per_page
+[lulus] KA-1c Pagination memuat total
+[lulus] KA-1c Pagination memuat total_pages
+[lulus] KA-1d Parameter per_page dihormati
+[lulus] KA-3a Murobi menerima notifikasi pengajuan baru
+[lulus] KA-3b Item notifikasi memuat id
+[lulus] KA-3b Item notifikasi memuat event_type
+[lulus] KA-3b Item notifikasi memuat event_label
+[lulus] KA-3b Item notifikasi memuat judul
+[lulus] KA-3b Item notifikasi memuat isi
+[lulus] KA-3b Item notifikasi memuat dibaca
+[lulus] KA-3b Item notifikasi memuat tautan
+[lulus] KA-3c Notifikasi tidak memuat alasan izin maupun catatan pengurus
+[lulus] KA-3d Jumlah belum dibaca tersedia dan positif
+[lulus] KA-3e Detail notifikasi milik sendiri dapat dibuka
+[lulus] KA-3f Tandai dibaca menjawab 200
+[lulus] KA-3g Jumlah belum dibaca berkurang tepat satu
+[lulus] KA-3h Menandai dibaca dua kali bersifat idempoten
+[lulus] KA-3i Tandai semua dibaca mengosongkan jumlah
+[lulus] KA-3j Filter belum_dibaca menghasilkan daftar kosong setelah semua dibaca
+
+=== KA-2. Otorisasi lintas pengguna ===
+[lulus] KA-2a ortu_a ditolak 403 membuka notifikasi milik murobi_a
+[lulus] KA-2a ortu_b ditolak 403 membuka notifikasi milik murobi_a
+[lulus] KA-2a murobi_b ditolak 403 membuka notifikasi milik murobi_a
+[lulus] KA-2a pengurus_a ditolak 403 membuka notifikasi milik murobi_a
+[lulus] KA-2b Menandai baca notifikasi orang lain ditolak 403
+[lulus] KA-2c ID yang tidak ada dijawab 403, tidak membocorkan keberadaan baris
+[lulus] KA-2d Tanpa bearer token dijawab 401
+[lulus] KA-2e Admin sekalipun tidak dapat membaca notifikasi pribadi murobi
+
+=== KA-4. Perangkat push ===
+[lulus] KA-4a Registrasi perangkat menjawab 201
+[lulus] KA-4b ID perangkat dikembalikan
+[lulus] KA-4c Respons registrasi tidak mengembalikan token
+[lulus] KA-4d Token yang bukan Expo push token ditolak 422
+[lulus] KA-4e Daftar perangkat dapat dibaca pemiliknya
+[lulus] KA-4f Daftar perangkat tidak pernah memuat token atau hash-nya
+[lulus] KA-4g Pengguna dapat mematikan push perangkatnya
+[lulus] KA-4h Status push perangkat berubah menjadi nonaktif
+[lulus] KA-4i Pengguna lain tidak dapat mengubah perangkat milik murobi
+[lulus] KA-4j Pengguna lain tidak dapat mencabut perangkat milik murobi
+
+=== KA-5. Deep link ===
+[gagal] KA-5a Murobi tujuan dapat membuka detail izin dari deep link
+[lulus] KA-5b Orang tua yang tidak terhubung ditolak 403 walaupun mengetahui ID dari payload
+[lulus] KA-5c Murobi lain ditolak 403 untuk pengajuan yang bukan miliknya
+
+=== KA-6/KA-7. Panel admin ===
+[lulus] KA-6a pengurus_a ditolak 403 pada status kanal admin
+[lulus] KA-6a murobi_a ditolak 403 pada status kanal admin
+[lulus] KA-6a ortu_a ditolak 403 pada status kanal admin
+[lulus] KA-6b Non-admin ditolak 403 saat mengubah sakelar
+[lulus] KA-6c Admin dapat membaca status kanal
+[lulus] KA-6d Status memuat ketiga kanal
+[lulus] KA-6e Kanal in-app selalu aktif dan tidak dapat dimatikan
+[lulus] KA-6f Permintaan mematikan in-app ditolak 422
+[lulus] KA-6g Admin dapat menyalakan push
+[lulus] KA-6h Admin dapat mematikan push kembali
+[lulus] KA-6i Pemeriksaan konfigurasi push dapat dijalankan
+[lulus] KA-6j Pemeriksaan mengembalikan status yang jelas
+[lulus] KA-7a Pemeriksaan WhatsApp dapat dijalankan tanpa penyedia
+[lulus] KA-7b Tanpa penyedia, pemeriksaan WhatsApp berstatus Gagal
+[lulus] KA-7c WhatsApp ditolak 409 saat pemeriksaan konfigurasi gagal
+[lulus] KA-7d Sakelar WhatsApp tetap mati setelah penolakan
+[lulus] KA-6k Daftar kegagalan dapat dibaca admin
+[lulus] KA-6l Audit kanal dapat dibaca admin
+[lulus] KA-6m Perubahan sakelar tercatat dan terbaca pada audit kanal
+[lulus] KA-6n Mode uji coba worker dapat dijalankan admin
+[lulus] KA-6o Worker WhatsApp tidak berjalan karena kanal mati
+[lulus] KA-6p Admin dapat mengirim pesan uji in-app
+[lulus] KA-6q Pesan uji push ditolak 409 ketika kanal push mati
+
+=== KA-9. Kebocoran secret ===
+[lulus] KA-9a Respons admin tidak memuat token perangkat
+[lulus] KA-9b Respons admin tidak memuat kunci environment
+[lulus] KA-9c Respons admin tidak memuat credential
+[lulus] KA-9d Status hanya menyebut NAMA environment yang dibutuhkan
+
+=== KA-8. Logout ===
+[lulus] KA-8a Perangkat masih aktif sebelum logout
+[lulus] KA-8b Logout berhasil
+[lulus] KA-8c Logout melaporkan satu perangkat dicabut
+[lulus] KA-8d Perangkat tercabut dengan alasan logout
+[lulus] KA-8e Token sesi lama tidak dapat lagi mengakses notifikasi
+
+=== KA-10. Regresi V1 dan Fase 3 ===
+[lulus] KA-10a Profil V1 tetap mengirim capability Fase 3
+[lulus] KA-10b Endpoint antrean Fase 3 tidak berubah
+[lulus] KA-10c Rute notifikasi yang tidak dikenal tetap 404
+[lulus] KA-10d Endpoint jadwal V1 tetap berperilaku sama
+[bersih] Fixture kontrak Fase 4 dihapus.

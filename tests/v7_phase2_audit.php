@@ -127,6 +127,8 @@ try {
     capabilities()->forget($m['id']);
 }
 $id=$create(); $other=(int)$value("SELECT guru_id FROM users WHERE username='sbx_murobi_b'");
+require_once __DIR__ . '/v7_phase5_fixture.php';
+$f51Assignment = v7f5_fixture_murobi($db, (int) $other, (int) $sid);
 $key='audit-assign-'.$nonce; $call('assign',$a,$id,2,$key,$other); $before=$state($id);
 $r=$result(fn()=>$call('assign',$a,$id,999,$key,$other));
 $assert($r['http']===409 && $state($id)===$before,'Kunci penetapan sama dengan versi berbeda → 409 (HTTP '.$r['http'].')');
@@ -134,6 +136,8 @@ $call('admin',$a,$id,3,'audit-admin-'.$nonce);
 $key='audit-correct-'.$nonce; $call('correct',$a,$id,4,$key); $before=$state($id);
 $r=$result(fn()=>$call('correct',$a,$id,999,$key));
 $assert($r['http']===409 && $state($id)===$before,'Kunci koreksi sama dengan versi berbeda → 409 (HTTP '.$r['http'].')');
+
+$db->query('UPDATE murobi_assignments SET is_active = 0 WHERE id = ' . $f51Assignment);
 
 // Kunci sama benar-benar serentak pada jalur keputusan yang dipakai V7.
 for($round=0;$round<3;$round++) {

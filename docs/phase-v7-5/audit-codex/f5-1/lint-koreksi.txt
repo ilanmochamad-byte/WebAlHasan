@@ -1,0 +1,21 @@
+No syntax errors detected in app/Api/IzinApiService.php
+No syntax errors detected in app/Izin/IzinLaporanRepository.php
+No syntax errors detected in app/Izin/IzinRepository.php
+No syntax errors detected in app/Izin/IzinRouter.php
+No syntax errors detected in app/Izin/IzinService.php
+No syntax errors detected in app/Izin/IzinWaliNotifikasi.php
+No syntax errors detected in app/Izin/IzinWaliRepository.php
+No syntax errors detected in app/Izin/IzinWaliService.php
+No syntax errors detected in app/Izin/IzinWorkflowService.php
+No syntax errors detected in app/Report/IzinReportRepository.php
+No syntax errors detected in portal/izin_detail.php
+No syntax errors detected in tests/v7_phase2_audit.php
+No syntax errors detected in tests/v7_phase2_integration.php
+No syntax errors detected in tests/v7_phase3_audit_notifications.php
+No syntax errors detected in tests/v7_phase3_integration.php
+No syntax errors detected in tests/v7_phase5_e2e.php
+No syntax errors detected in tests/v7_phase5_static.php
+No syntax errors detected in tests/v7_phase5_fixture.php
+No syntax errors detected in tests/v7_phase5_notification.php
+No syntax errors detected in tests/v7_phase5_revocation.php
+Ringkasan: 20 berkas, 0 gagal

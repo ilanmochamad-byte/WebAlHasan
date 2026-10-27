@@ -1,0 +1,6 @@
+# Mobile — tsc/lint/unit (salinan HEAD 7478f7c tanpa .env*, node_modules lock ter-commit)
+tsc exit=0
+lint exit=0
+ℹ tests 42
+ℹ pass 42
+ℹ fail 0

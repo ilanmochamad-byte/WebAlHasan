@@ -1,0 +1,34 @@
+[info] Basis data terpilih: test_v7_f5_reg5_test (verifier hanya membaca).
+[lulus] Migrasi 030 dan 031 tercatat (rilis V7 utuh, bukan sebagian)
+
+=== 1. Verifier per fase ===
+[lulus] v7_phase2_verify.php: exit 0, 41 lulus
+[lulus] v7_phase3_verify.php: exit 0, 8 lulus
+
+=== 2. Invarians rilis ===
+[info] Pengajuan Wali: 0; riwayat: 0
+[lulus] Setiap pengajuan Wali memiliki riwayat
+[lulus] Setiap riwayat baris Wali adalah transisi sah (peristiwa, status sebelum → sesudah)
+[lulus] Rantai riwayat tiap pengajuan Wali bersambung dari pembuatan sampai status kini (tanpa status ganda/lompatan)
+[lulus] Setiap riwayat baris Wali memiliki pelaku
+[lulus] Peristiwa wajib beralasan (penetapan, permintaan perbaikan, tolak, batal, keputusan, koreksi) beralasan
+[lulus] Jumlah peristiwa riwayat = jumlah audit terpetakan per pengajuan Wali dan jenis (0 pasangan; 0 mutasi tanpa audit)
+[lulus] Setiap audit izin_wali_* berpelaku
+[lulus] Setiap audit izin_wali_* menunjuk pengajuan Wali yang ada
+[lulus] Setiap pengajuan Wali Disetujui/Ditolak memiliki tepat satu keputusan dengan hasil yang sama
+[lulus] Indeks unik satu keputusan per pengajuan (kedua asal) terpasang
+[info] Pengajuan Pengurus Disetujui/Ditolak tanpa keputusan yang cocok (data sebelum V7, termasuk warisan): 36
+[lulus] Tidak ada keputusan untuk pengajuan yang belum diputus, dibatalkan, atau ditolak pembimbing
+[lulus] Pengajuan Wali Diajukan selalu memiliki murobi tujuan
+[lulus] Pengajuan Wali Perlu Penetapan Admin belum bermurobi
+[lulus] Murobi tidak pernah dituju sebelum pembimbing meneruskan
+[lulus] Routing/penetapan/keputusan murobi selalu sesudah penerusan pembimbing (urutan riwayat)
+[lulus] Tidak ada dua pengajuan aktif bertumpang tindih yang melibatkan pengajuan Wali
+[lulus] Nol referensi yatim pada 15 relasi perizinan/V7/outbox/identitas
+[lulus] Laporan V7 (cakupan admin, seluruh waktu) = hitungan sumber per asal/status (1052 pengajuan dihitung tepat sekali)
+[info] Per asal: [{"asal_pengajuan":"Pengurus","n":"1052"}]
+
+=== 3. Tabel lama, irisan V2, dan isi V7 ===
+[belum diperiksa] Tabel lama, irisan V2, dan isi V7: berikan manifest privat bin/v7_preflight.php.
+
+Ringkasan verifier V7: 21 lulus, 0 gagal

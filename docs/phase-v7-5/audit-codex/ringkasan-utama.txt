@@ -1,0 +1,29 @@
+statis exit=0 Hasil: 56 lulus, 0 gagal
+e2e exit=0 Hasil: 81 lulus, 0 gagal
+verifier-e2e exit=0 Ringkasan verifier V7: 21 lulus, 0 gagal
+http exit=0 Hasil: 40 lulus, 0 gagal
+verifier-http exit=0 Ringkasan verifier V7: 21 lulus, 0 gagal
+rilis exit=0 Hasil: 36 lulus, 0 gagal
+browser exit=0 Hasil: 95 lulus, 0 gagal
+docs/phase-v7-5/perintah-audit.sh: line 38: 74432 Terminated: 15          DB_NAME=test_v7_f5_codex_browser_test PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8992 tests/redesain_web_tahap1_router.php > "$T/browser-server.log" 2>&1
+galat PHP server browser: 0
+verifier-browser exit=0 Ringkasan verifier V7: 21 lulus, 0 gagal
+aplikasi-app exit=0 48/0
+docs/phase-v7-5/perintah-audit.sh: line 45: 74999 Terminated: 15          DB_NAME=test_v7_f5_codex_app_${s}_test PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8996 tests/redesain_web_tahap1_router.php > "$T/app-$s-server.log" 2>&1
+galat PHP server aplikasi: 0
+verifier-aplikasi-app exit=0 Ringkasan verifier V7: 21 lulus, 0 gagal
+aplikasi-regresi exit=0 7/0
+docs/phase-v7-5/perintah-audit.sh: line 45: 76026 Terminated: 15          DB_NAME=test_v7_f5_codex_app_${s}_test PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8996 tests/redesain_web_tahap1_router.php > "$T/app-$s-server.log" 2>&1
+galat PHP server aplikasi: 0
+verifier-aplikasi-regresi exit=0 Ringkasan verifier V7: 21 lulus, 0 gagal
+aplikasi-audit exit=0 5/0
+docs/phase-v7-5/perintah-audit.sh: line 45: 76892 Terminated: 15          DB_NAME=test_v7_f5_codex_app_${s}_test PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8996 tests/redesain_web_tahap1_router.php > "$T/app-$s-server.log" 2>&1
+galat PHP server aplikasi: 0
+verifier-aplikasi-audit exit=0 Ringkasan verifier V7: 21 lulus, 0 gagal
+# Mobile — tsc/lint/unit (salinan HEAD 7478f7c tanpa .env*, node_modules lock ter-commit)
+tsc exit=0
+lint exit=0
+ℹ tests 42
+ℹ pass 42
+ℹ fail 0
+Sementara: /private/tmp/v7f5-uji-Ypu121

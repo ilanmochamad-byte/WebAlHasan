@@ -1,0 +1,70 @@
+Bundel  6039095 bita, host produksi: 0
+
+=== P-A. Wali A mengajukan dari aplikasi ===
+[lulus] DB uji bersih (belum ada pengajuan wali)
+[lulus] Pintu izin wali: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Validasi lokal: anak wajib dipilih (pesan Indonesia)
+[lulus] Formulir ajukan izin: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Ketukan ganda "Kirim pengajuan" → satu POST (terhitung 1); jawaban hilang tampil sebagai pesan jaringan
+[lulus] Server sudah menyimpan pengajuan pertama walau jawaban hilang
+[lulus] Kirim ulang memakai kunci idempotensi yang SAMA
+[lulus] Tepat satu pengajuan #2706 berstatus Menunggu Pembimbing
+[lulus] Rincian wali pengaju: isi dan tombol batal tampil
+[lulus] Rincian wali pengaju: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Rentang bertumpang tindih → pesan server (409), tanpa baris baru
+
+=== P-B. Wali kedua, wali asing, di luar cakupan ===
+[lulus] Wali kedua: status ringkas tanpa alasan, catatan, atau tombol mutasi
+[lulus] Wali kedua melihat status yang sama
+[lulus] Wali asing: rincian ditolak server, tanpa nama santri atau alasan
+[lulus] Pembimbing lain: rincian ditolak server, tanpa nama santri atau alasan
+[lulus] Murobi sebelum penerusan: rincian ditolak server, tanpa nama santri atau alasan
+
+=== P-C. Pembimbing meminta perbaikan; layar basi → 409 ===
+[lulus] Rincian pembimbing: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Minta perbaikan dari aplikasi → status Perlu Perbaikan Wali
+[lulus] Perangkat kedua (layar basi) → 409, status tidak berubah, tombol "Muat versi terbaru"
+[lulus] Sesudah muat ulang, tindakan tinjauan tidak lagi ditawarkan
+
+=== P-D. Wali memperbaiki; pembimbing meneruskan ===
+[lulus] Perbaikan tanpa perubahan ditolak sebelum dikirim
+[lulus] Formulir perbaikan: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Perbaikan terkirim → kembali ke pembimbing, satu versi perbaikan tercatat
+[lulus] Pembimbing melihat versi isi sebelum/sesudah
+[lulus] Ketukan ganda "Teruskan" → satu POST, status Diajukan (murobi tunggal)
+
+=== P-E. Murobi: notifikasi → rincian → keputusan V2 ===
+[lulus] Murobi menerima notifikasi izin_wali tanpa nama/alasan
+[lulus] Rincian V2 murobi (asal wali): tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Layar V2 murobi tidak menawarkan pembatalan pengajuan wali
+[lulus] Ketukan ganda "Setujui" → satu POST, satu keputusan efektif
+
+=== P-F. Paritas aplikasi / API / website ===
+[lulus] Aplikasi wali: Disetujui murobi, keputusan tampil, batal tidak ditawarkan
+[lulus] API wali/admin dan DB: status dan ID sama
+[lulus] Wali kedua: status Disetujui tanpa alasan keputusan
+[lulus] Website wali: status dan isi terakhir sama dengan aplikasi
+[lulus] Website memuat pengajuan dari aplikasi; tetap satu baris
+
+=== P-G. Admin menetapkan pembimbing; wali membatalkan ===
+[lulus] Dua kandidat pembimbing → menunggu admin
+[lulus] Rincian admin (penetapan): tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Admin menetapkan pembimbing sah dari aplikasi
+[lulus] Konfirmasi + ketukan ganda batal → satu POST, status Dibatalkan
+
+=== P-H. Pencabutan hak, offline, sesi ===
+[lulus] Penugasan dicabut saat layar terbuka → kirim ditolak, isi ditutup, tanpa mutasi
+[lulus] Relasi wali kedua dicabut → muat ulang menampilkan penolakan tanpa isi
+[lulus] Offline → pesan "Perangkat sedang offline…" dengan tombol coba lagi
+[lulus] Kembali online → coba lagi memuat rincian
+[lulus] Wali: local/sessionStorage tanpa alasan izin atau nama santri
+[lulus] Token dicabut/kedaluwarsa → aplikasi kembali ke layar masuk
+[lulus] Tautan rincian tanpa sesi → layar masuk, tanpa isi
+
+=== P-I. Konsol dan jaringan ===
+[lulus] Konsol (93 baris) tanpa alasan izin, token, atau kata sandi
+[lulus] Nol permintaan ke luar 127.0.0.1 (0)
+[lulus] WhatsApp tidak pernah diantrekan untuk peristiwa V7
+
+Ringkasan: 48 lulus, 0 gagal
+galat PHP server aplikasi: 0

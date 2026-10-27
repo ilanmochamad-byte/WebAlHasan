@@ -1,0 +1,33 @@
+=== Latihan backup → restore → verifikasi V7 ===
+Sumber : test_v7_f5_codex_warisan_test
+Tujuan : test_v7_f5_codex_warisan_test_restore
+Metode : dump
+
+--- a. Preflight sumber ---
+[lulus] Preflight V7 sumber lulus; manifest privat ditulis
+[lulus] Sumber memuat migrasi 030–031 dan data V7 (pengajuan Wali, tinjauan)
+
+--- b. Backup (dump) ---
+[lulus] mariadb-dump --single-transaction --routines --triggers tanpa galat
+[lulus] Backup memuat 120 tabel termasuk perizinan/V7 berisi (1057 pengajuan, 2 tinjauan, 552 keputusan); SHA-256 1b680592248eee57…
+
+--- c. Restore ke `test_v7_f5_codex_warisan_test_restore` ---
+[lulus] Restore lewat klien mariadb tanpa galat
+[lulus] Jumlah baris seluruh 120 tabel pulihan = backup
+
+--- d. Verifier V7 pada DB pulihan ---
+    Ringkasan verifier V7: 38 lulus, 0 gagal
+[lulus] bin/v7_verify.php + manifest pada DB pulihan lulus (verifier fase, rantai riwayat, audit, yatim, laporan, isi tabel lama/V2/V7)
+
+--- e. Hash isi dan laporan sumber = pulihan ---
+[lulus] Hash isi 17 tabel (V7, perizinan V2/warisan, identitas, penugasan, outbox, migrasi) sumber = pulihan
+[lulus] Ringkasan laporan V7 (per asal/status, rerata lama tahap, total) sumber = pulihan
+
+--- f. Rollback berisi data ditolak pada DB pulihan ---
+[lulus] Preflight rollback 031 memblokir (ada data tinjauan/perbaikan/pembatalan)
+[lulus] migrate.php rollback tanpa preflight ditolak penjaga SQL 031
+[lulus] Sesudah penolakan: hash isi tetap, 031 tetap tercatat, tidak ada tabel penjaga tersisa
+
+[info] DB pulihan `test_v7_f5_codex_warisan_test_restore` dihapus; backup sintetis tetap di storage/backups/v7-drill/20261027_212827-dump (diabaikan Git).
+
+Ringkasan latihan: 12 lulus, 0 gagal

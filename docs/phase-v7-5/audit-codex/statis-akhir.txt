@@ -1,0 +1,69 @@
+=== Y-1. Tanpa migrasi baru dan tanpa perubahan kode aplikasi ===
+[lulus] Baseline audit Fase 4 851ef0a26d1b8dd4e1db80ecf4f4ce8104ee8da7 tersedia
+[lulus] Migrasi terakhir tetap 031 (31 migrasi)
+[lulus] Berkas berubah hanya alat rilis, uji Fase 5, dan dokumen
+[lulus] app/ tidak berubah sejak baseline
+[lulus] api/ tidak berubah sejak baseline
+[lulus] portal/ tidak berubah sejak baseline
+[lulus] admin/ tidak berubah sejak baseline
+[lulus] database/ tidak berubah sejak baseline
+[lulus] assets/ tidak berubah sejak baseline
+[lulus] bin/migrate.php tidak berubah sejak baseline
+[lulus] bin/_v7_phase1.php tidak berubah sejak baseline
+[lulus] bin/_v7_phase2.php tidak berubah sejak baseline
+[lulus] bin/v7_phase1_verify.php tidak berubah sejak baseline
+[lulus] bin/v7_phase2_verify.php tidak berubah sejak baseline
+[lulus] bin/v7_phase3_verify.php tidak berubah sejak baseline
+[lulus] bin/v7_phase1_rollback_preflight.php tidak berubah sejak baseline
+[lulus] bin/v7_phase2_rollback_preflight.php tidak berubah sejak baseline
+[lulus] tests/v7_phase1_worker.php tidak berubah sejak baseline
+[lulus] tests/v7_phase2_worker.php tidak berubah sejak baseline
+[lulus] tests/v7_phase1_seed.php tidak berubah sejak baseline
+[lulus] tests/v7_phase2_seed.php tidak berubah sejak baseline
+
+=== Y-2. Alat rilis ===
+[lulus] bin/_v7_rilis.php hanya CLI (penjaga PHP_SAPI langsung atau lewat pembantu Fase 1)
+[lulus] bin/v7_preflight.php hanya CLI (penjaga PHP_SAPI langsung atau lewat pembantu Fase 1)
+[lulus] bin/v7_verify.php hanya CLI (penjaga PHP_SAPI langsung atau lewat pembantu Fase 1)
+[lulus] bin/v7_manifest.php hanya CLI (penjaga PHP_SAPI langsung atau lewat pembantu Fase 1)
+[lulus] bin/v7_backup_restore_drill.php hanya CLI (penjaga PHP_SAPI langsung atau lewat pembantu Fase 1)
+[lulus] Pembantu Fase 1 yang dipakai bersama menolak non-CLI
+[lulus] bin/_v7_rilis.php tanpa pernyataan tulis/DDL dan tanpa menjalankan migrasi
+[lulus] bin/v7_preflight.php tanpa pernyataan tulis/DDL dan tanpa menjalankan migrasi
+[lulus] bin/v7_verify.php tanpa pernyataan tulis/DDL dan tanpa menjalankan migrasi
+[lulus] bin/v7_manifest.php tanpa pernyataan tulis/DDL dan tanpa menjalankan migrasi
+[lulus] Latihan: V7_DRILL=1, sumber/tujuan test_*_test, menolak produksi, credential lewat berkas opsi 0600 (tidak di argumen proses)
+[lulus] Latihan: dump transaksi tunggal, rollback berisi data ditolak, DB pulihan dihapus
+[lulus] Preflight: manifest privat 0600, daftar rilis lengkap, tolak pemasangan sebagian, jam DB = aplikasi
+
+=== Y-3. Verifier rilis ===
+[lulus] Verifier menjalankan verifier Fase 2 dan 3 sebagai proses terpisah
+[lulus] Verifier memeriksa transisi status sah
+[lulus] Verifier memeriksa rantai riwayat sampai status kini
+[lulus] Verifier memasangkan riwayat dengan audit
+[lulus] Verifier memeriksa indeks keputusan tunggal
+[lulus] Verifier memeriksa referensi yatim
+[lulus] Verifier membandingkan laporan dengan sumber
+[lulus] Verifier menolak manifest terpotong
+[lulus] Verifier mendukung pembandingan irisan V2 saat V7 dipakai
+[lulus] Baseline web/mobile pada pembantu rilis = commit audit Fase 4
+[lulus] Hash isi tidak bergantung urutan baris (multiset), bukan ORDER BY kolom pertama
+
+=== Y-4. Manifest rilis ===
+[lulus] Manifest: 31 migrasi, rollback 030–031, baseline web/mobile, tanpa migrasi baru Fase 5
+[lulus] SHA-256 manifest = berkas di disk (34 berkas)
+
+=== Y-5. Dokumen ===
+[lulus] docs/phase-v7-5/README.md tersedia
+[lulus] docs/phase-v7-5/runbook-rilis-pemulihan.md tersedia
+[lulus] docs/phase-v7-5/checklist-smoke.md tersedia
+[lulus] docs/phase-v7-5/perintah-uji.sh tersedia
+[lulus] docs/phase-v7-5/perintah-regresi.sh tersedia
+[lulus] Checklist smoke: setiap langkah produksi/cPanel berstatus "Menunggu pelaksanaan" (22 langkah)
+[lulus] Dokumen Fase 5 tanpa kata sandi fixture dan tanpa token mentah
+[lulus] README memisahkan bukti lokal dari yang belum diuji
+
+=== Y-6. Lint ===
+[lulus] Lint 11 berkas PHP baru
+
+Hasil: 56 lulus, 0 gagal

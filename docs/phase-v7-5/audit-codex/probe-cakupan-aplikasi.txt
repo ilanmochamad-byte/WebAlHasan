@@ -1,0 +1,6 @@
+[lulus] Kontrol: aplikasi murobi membaca pengajuan sebelum pencabutan
+[gagal] Pencabutan cakupan: API V7/V2 harus tertutup (aktual 200/200)
+[gagal] Pencabutan cakupan: muat ulang aplikasi harus menutup data
+[gagal] Pencabutan cakupan: API laporan harus kosong (aktual 1)
+[gagal] Pencabutan cakupan: keputusan dari aplikasi harus ditolak tanpa mutasi (aktual 201)
+Ringkasan: 1 lulus, 4 gagal

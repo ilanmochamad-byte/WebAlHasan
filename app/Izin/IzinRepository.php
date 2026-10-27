@@ -331,13 +331,20 @@ final class IzinRepository
      *
      * @return array{total:int, disetujui:int}
      */
-    public function santriSemesterCount(int $santriId, int $tahunAjaranId): array
+    public function santriSemesterCount(int $santriId, int $tahunAjaranId, ?int $murobiGuruId = null): array
     {
+        $where = '';
+        $params = [$santriId, $tahunAjaranId];
+        if ($murobiGuruId !== null && $this->adaAsal()) {
+            $where = " AND (p.asal_pengajuan = 'Pengurus' OR (p.murobi_guru_id = ? AND "
+                . IzinRouter::sahSql('p.murobi_guru_id', 'p.santri_id') . '))';
+            array_push($params, $murobiGuruId, date('Y-m-d'), date('Y-m-d'));
+        }
         $row = $this->one(
             "SELECT COUNT(*) AS total, COALESCE(SUM(p.status = 'Disetujui'), 0) AS disetujui
                FROM izin_pengajuan p
-              WHERE p.santri_id = ? AND p.tahun_ajaran_id = ? AND p.status <> 'Dibatalkan'",
-            [$santriId, $tahunAjaranId]
+              WHERE p.santri_id = ? AND p.tahun_ajaran_id = ? AND p.status <> 'Dibatalkan'" . $where,
+            $params
         );
 
         return ['total' => (int) ($row['total'] ?? 0), 'disetujui' => (int) ($row['disetujui'] ?? 0)];
@@ -346,9 +353,15 @@ final class IzinRepository
     /** Murobi pernah menerima pengajuan santri ini (cakupan baca riwayat santri). */
     public function murobiHasSantri(int $guruId, int $santriId): bool
     {
+        $where = '';
+        $params = [$guruId, $santriId];
+        if ($this->adaAsal()) {
+            $where = " AND (p.asal_pengajuan = 'Pengurus' OR " . IzinRouter::sahSql('p.murobi_guru_id', 'p.santri_id') . ')';
+            array_push($params, date('Y-m-d'), date('Y-m-d'));
+        }
         return $this->one(
-            'SELECT 1 AS ada FROM izin_pengajuan WHERE murobi_guru_id = ? AND santri_id = ? LIMIT 1',
-            [$guruId, $santriId]
+            'SELECT 1 AS ada FROM izin_pengajuan p WHERE p.murobi_guru_id = ? AND p.santri_id = ?' . $where . ' LIMIT 1',
+            $params
         ) !== null;
     }
 
@@ -452,6 +465,10 @@ final class IzinRepository
         } elseif ($mode === 'murobi') {
             $parts[] = 'p.murobi_guru_id = ?';
             $params[] = (int) ($scope['guru_id'] ?? 0);
+            if ($this->adaAsal()) {
+                $parts[] = "(p.asal_pengajuan = 'Pengurus' OR " . IzinRouter::sahSql('p.murobi_guru_id', 'p.santri_id') . ')';
+                array_push($params, date('Y-m-d'), date('Y-m-d'));
+            }
         } elseif ($mode === 'orang_tua') {
             $parts[] = 'p.santri_id IN (
                 SELECT sw.santri_id FROM santri_wali sw
@@ -529,7 +546,11 @@ final class IzinRepository
         // Antrean = pengajuan yang menunggu tindakan pengguna pada cakupannya.
         // Cakupan di atas sudah membatasi baris; filter ini hanya mempersempit.
         if (!empty($filters['antrean'])) {
-            $parts[] = match ($mode) {
+            if ($mode === 'admin' && $this->adaAsal()) {
+                $parts[] = "(p.status = 'Perlu Penetapan Admin' OR (p.asal_pengajuan = 'Wali' AND p.status = 'Diajukan' AND NOT "
+                    . IzinRouter::sahSql('p.murobi_guru_id', 'p.santri_id') . '))';
+                array_push($params, date('Y-m-d'), date('Y-m-d'));
+            } else $parts[] = match ($mode) {
                 'murobi' => "p.status = 'Diajukan'",
                 'admin' => "p.status = 'Perlu Penetapan Admin'",
                 'pengurus' => "p.status IN ('Diajukan', 'Perlu Penetapan Admin')",

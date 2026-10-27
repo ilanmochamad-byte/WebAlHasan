@@ -534,6 +534,11 @@ final class IzinReportRepository
             case Capabilities::MUROBI:
                 $predikat = 'p.murobi_guru_id = ?';
                 $params[] = (int) ($scope['guru_id'] ?? 0);
+                if (\App\Database\Schema::hasColumn($this->db, 'izin_pengajuan', 'asal_pengajuan')) {
+                    $predikat .= " AND (p.asal_pengajuan = 'Pengurus' OR "
+                        . \App\Izin\IzinRouter::sahSql('p.murobi_guru_id', 'p.santri_id') . ')';
+                    array_push($params, date('Y-m-d'), date('Y-m-d'));
+                }
                 break;
             case Capabilities::ORANG_TUA:
                 $predikat = 'p.santri_id IN (

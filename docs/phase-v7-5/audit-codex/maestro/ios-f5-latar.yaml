@@ -1,0 +1,12 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "launchApp": {
+      "stopApp": false
+    }
+  },
+  {
+    "pressKey": "home"
+  }
+]

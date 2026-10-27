@@ -172,6 +172,49 @@ final class IzinRouter
     }
 
     /**
+     * Cakupan terkini untuk pengajuan Wali (keputusan Human Developer F5-1).
+     * Ekspresi SQL hanya dari kode pemanggil; dua placeholder tanggal wajib
+     * diisi tanggal aplikasi yang sama. Jalur Pengurus tetap memakai aturan V2.
+     */
+    public static function sahSql(string $guruExpr, string $santriExpr): string
+    {
+        return "EXISTS (
+            SELECT 1 FROM murobi_assignments v7ma
+            JOIN guru v7g ON v7g.id = v7ma.guru_id AND v7g.is_active = 1 AND v7g.archived_at IS NULL
+            JOIN tahun_ajaran v7ta ON v7ta.id = v7ma.tahun_ajaran_id AND v7ta.status = 'Aktif' AND v7ta.archived_at IS NULL
+            JOIN santri v7s ON v7s.id = $santriExpr AND v7s.is_active = 1 AND v7s.archived_at IS NULL
+            LEFT JOIN kelas v7kl ON v7kl.id = v7ma.kelas_id AND v7kl.is_active = 1 AND v7kl.archived_at IS NULL
+            WHERE v7ma.guru_id = $guruExpr AND v7ma.is_active = 1 AND v7ma.archived_at IS NULL
+              AND v7ma.tanggal_mulai <= ? AND (v7ma.tanggal_selesai IS NULL OR v7ma.tanggal_selesai >= ?)
+              AND ((v7ma.target_type = 'Kamar' AND EXISTS (
+                       SELECT 1 FROM plotting_kamar v7pk WHERE v7pk.id_santri = $santriExpr
+                       AND v7pk.id_kamar = v7ma.kamar_id AND v7pk.id_tahun = v7ma.tahun_ajaran_id))
+                OR (v7ma.target_type = 'Kelas' AND v7kl.id IS NOT NULL AND EXISTS (
+                       SELECT 1 FROM plotting_kelas v7pc WHERE v7pc.id_santri = $santriExpr
+                       AND v7pc.id_kelas = v7ma.kelas_id AND v7pc.id_tahun = v7ma.tahun_ajaran_id AND v7pc.status = 'Aktif')))
+        )";
+    }
+
+    /** Mutasi mengunci penugasan lalu membaca ulang kelayakan sesudah menunggu. */
+    public function coversSantri(int $guruId, int $santriId, string $onDate, bool $lock = false): bool
+    {
+        $sah = fn (): bool => $this->select('SELECT 1 FROM (SELECT ? AS guru_id, ? AS santri_id) v7scope WHERE '
+            . self::sahSql('v7scope.guru_id', 'v7scope.santri_id'), [$guruId, $santriId, $onDate, $onDate]) !== [];
+        if (!$sah()) return false;
+        if (!$lock) return true;
+        foreach ($this->candidates($santriId, $onDate) as $candidate) {
+            if ((int) $candidate['guru_id'] !== $guruId) continue;
+            $id = (int) $candidate['assignment_id'];
+            if ($this->select('SELECT id FROM murobi_assignments WHERE id = ? LOCK IN SHARE MODE', [$id]) === []) return false;
+            foreach ($this->candidates($santriId, $onDate) as $current) {
+                if ((int) $current['guru_id'] === $guruId && (int) $current['assignment_id'] === $id) return $sah();
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
      * @return array<int, array<string, mixed>>
      */
     private function select(string $sql, array $params = []): array

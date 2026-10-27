@@ -1,0 +1,18 @@
+[lulus] Kontrol: sesi web dan aplikasi membaca isi serta formulir keputusan sah
+[lulus] Kontrol: hak murobi dari penugasan lain tetap aktif
+[lulus] POST aplikasi tanpa reload ditolak dan membersihkan isi pada layar lama
+[lulus] Formulir web basi ditolak; tujuan sesudah POST tidak membuka isi
+[diagnostik] {"route":"/portal/izin_detail.php","marker":false,"nama":false,"link":false}
+[lulus] Sesi lama tertutup tanpa bocor pada /portal/izin_detail.php (403)
+[diagnostik] {"route":"/portal/izin_wali_detail.php","marker":false,"nama":false,"link":false}
+[lulus] Sesi lama tertutup tanpa bocor pada /portal/izin_wali_detail.php (404)
+[diagnostik] {"route":"/portal/laporan.php","marker":false,"nama":true,"link":false}
+[gagal] Sesi lama tertutup tanpa bocor pada /portal/laporan.php (200)
+[diagnostik] {"route":"/portal/laporan_cetak.php","marker":false,"nama":true,"link":false}
+[gagal] Sesi lama tertutup tanpa bocor pada /portal/laporan_cetak.php (200)
+[diagnostik] {"route":"/portal/laporan_csv.php","marker":false,"nama":false,"link":false}
+[lulus] Sesi lama tertutup tanpa bocor pada /portal/laporan_csv.php (200)
+[diagnostik] {"route":"/portal/izin_wali_laporan_ekspor.php","marker":false,"nama":false,"link":false}
+[lulus] Sesi lama tertutup tanpa bocor pada /portal/izin_wali_laporan_ekspor.php (200)
+[lulus] Dua POST basi menghasilkan nol keputusan dan tidak mengubah status/versi
+Ringkasan: 9 lulus, 2 gagal

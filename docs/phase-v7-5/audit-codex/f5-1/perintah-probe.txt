@@ -1,0 +1,8 @@
+Hanya DB sintetis test_*_test yang telah dibangun melalui tests/v7_phase5_db.sh.
+V7_RUN_AUDIT=1 DB_NAME=test_v7_f5_scope_final_test php tests/v7_phase5_scope.php
+V7_RUN_AUDIT=1 DB_NAME=test_v7_f5_scope_final_test php tests/v7_phase5_revocation.php
+V7_RUN_AUDIT=1 DB_NAME=test_v7_f5_scope_final_test php tests/v7_phase5_notification.php
+# Server API8977 + Expo web8118 menunjuk DB test_v7_f5_codex_initial_test; tanpa env/host produksi.
+DB_NAME=test_v7_f5_codex_initial_test V7_WEB=http://127.0.0.1:8977 V7_APP=http://127.0.0.1:8118 OUT_DIR=docs/phase-v7-5/audit-codex/f5-1/tangkapan node tests/browser/uji-v7-fase5-audit.mjs
+DB_NAME=test_v7_f5_codex_initial_test V7_WEB=http://127.0.0.1:8977 V7_APP=http://127.0.0.1:8118 OUT_DIR=docs/phase-v7-5/audit-codex/f5-1/tangkapan node docs/phase-v7-5/uji-f51-http.mjs
+# Jangan jalankan bersamaan dengan runner native (token/penugasan fixture sama).

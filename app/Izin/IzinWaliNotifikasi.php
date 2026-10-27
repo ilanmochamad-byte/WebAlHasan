@@ -291,6 +291,7 @@ final class IzinWaliNotifikasi
         $pemegangPembimbing = fn (): array => $sah
             ? $this->resolver->pengurus($row['pembimbing_pengurus_id'] === null ? null : (int) $row['pembimbing_pengurus_id'])
             : $this->resolver->admin();
+        $murobiSah = (int) ($row['murobi_sah'] ?? 0) === 1;
         $ids = match ($event) {
             self::MASUK_PEMBIMBING => $status === IzinWaliRepository::STATUS_MENUNGGU_PEMBIMBING && $sah
                 ? $this->resolver->pengurus((int) $row['pembimbing_pengurus_id']) : [],
@@ -299,14 +300,15 @@ final class IzinWaliNotifikasi
             self::PERLU_PERBAIKAN => $status === IzinWaliRepository::STATUS_PERLU_PERBAIKAN ? $this->waliPengaju($row) : [],
             self::DITOLAK_PEMBIMBING => $status === IzinWaliRepository::STATUS_DITOLAK_PEMBIMBING ? $this->waliPengaju($row) : [],
             self::DITERUSKAN => in_array($status, [IzinRouter::STATUS_TERARAH, IzinRouter::STATUS_PERLU_ADMIN], true) ? $this->waliPengaju($row) : [],
-            self::MASUK_MUROBI => $status === IzinRouter::STATUS_TERARAH && $row['murobi_guru_id'] !== null
+            self::MASUK_MUROBI => $status === IzinRouter::STATUS_TERARAH && $row['murobi_guru_id'] !== null && $murobiSah
                 ? $this->resolver->murobi((int) $row['murobi_guru_id']) : [],
             self::PERLU_PENETAPAN_MUROBI => $status === IzinRouter::STATUS_PERLU_ADMIN ? $this->resolver->admin() : [],
             self::DIPUTUS, self::DIKOREKSI => in_array($status, ['Disetujui', 'Ditolak'], true) ? $this->waliPengaju($row) : [],
             self::DIBATALKAN => $status === 'Dibatalkan' ? match ($this->statusSebelumBatal((int) $row['id'])) {
                 IzinWaliRepository::STATUS_MENUNGGU_PEMBIMBING, IzinWaliRepository::STATUS_PERLU_PERBAIKAN => $pemegangPembimbing(),
                 IzinWaliRepository::STATUS_PERLU_PENETAPAN_PEMBIMBING, IzinRouter::STATUS_PERLU_ADMIN => $this->resolver->admin(),
-                IzinRouter::STATUS_TERARAH => $row['murobi_guru_id'] === null ? [] : $this->resolver->murobi((int) $row['murobi_guru_id']),
+                IzinRouter::STATUS_TERARAH => $row['murobi_guru_id'] !== null && $murobiSah
+                    ? $this->resolver->murobi((int) $row['murobi_guru_id']) : $this->resolver->admin(),
                 default => [],
             } : [],
             default => [],

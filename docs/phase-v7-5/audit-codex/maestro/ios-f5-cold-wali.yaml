@@ -1,0 +1,18 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "launchApp": {
+      "stopApp": false
+    }
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "RAHASIA-IOS-V7F5 fixture",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertVisible": "Menunggu tinjauan pembimbing"
+  }
+]

@@ -1,0 +1,24 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "launchApp": {
+      "stopApp": false
+    }
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Putuskan di Perizinan",
+      "timeout": 15000
+    }
+  },
+  {
+    "tapOn": "Putuskan di Perizinan"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Diajukan orang tua",
+      "timeout": 15000
+    }
+  }
+]

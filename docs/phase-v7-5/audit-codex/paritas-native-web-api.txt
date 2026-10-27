@@ -1,0 +1,2 @@
+[lulus] Android #2709: API Diajukan; website menampilkan Diteruskan ke murobi pada ID sama
+[lulus] iOS #2708: API Diajukan; website menampilkan Diteruskan ke murobi pada ID sama

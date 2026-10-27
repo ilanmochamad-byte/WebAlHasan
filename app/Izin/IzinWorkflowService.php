@@ -302,9 +302,14 @@ final class IzinWorkflowService
             if ($wali !== null) $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
             $version = $this->requireVersion($row, $expectedVersion);
 
-            if (!$this->router->isEligibleMurobi($guruId, $this->today())) {
-                throw IzinException::invalid('Guru yang dipilih tidak memiliki penugasan murobi aktif pada tahun ajaran aktif, sehingga tidak dapat memberi keputusan.');
+            if (!($wali !== null
+                ? $this->router->coversSantri($guruId, (int) $row['santri_id'], $this->today(), true)
+                : $this->router->isEligibleMurobi($guruId, $this->today()))) {
+                throw IzinException::invalid($wali !== null
+                    ? 'Murobi yang dipilih harus memiliki penugasan aktif yang mencakup santri ini.'
+                    : 'Guru yang dipilih tidak memiliki penugasan murobi aktif pada tahun ajaran aktif, sehingga tidak dapat memberi keputusan.');
             }
+            if ($wali !== null) $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
 
             $statusSebelum = (string) $row['status'];
             $murobiSebelum = $row['murobi_guru_id'] === null ? null : (int) $row['murobi_guru_id'];
@@ -757,7 +762,8 @@ final class IzinWorkflowService
 
         $murobiCocok = $mode === Capabilities::MUROBI
             && $pengajuan['murobi_guru_id'] !== null
-            && (int) $pengajuan['murobi_guru_id'] === (int) ($scope['guru_id'] ?? 0);
+            && (int) $pengajuan['murobi_guru_id'] === (int) ($scope['guru_id'] ?? 0)
+            && (!$wali || $this->router->coversSantri((int) $scope['guru_id'], (int) $pengajuan['santri_id'], $this->today()));
         $pengurusCocok = $mode === Capabilities::PENGURUS
             && $pengajuan['pengurus_id'] !== null
             && (int) $pengajuan['pengurus_id'] === (int) ($scope['pengurus_id'] ?? 0);
@@ -803,9 +809,15 @@ final class IzinWorkflowService
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function eligibleMurobi(): array
+    public function eligibleMurobi(?int $pengajuanId = null): array
     {
-        return $this->router->eligibleMurobi($this->today());
+        $eligible = $this->router->eligibleMurobi($this->today());
+        if ($pengajuanId !== null && ($wali = $this->waliRepository($pengajuanId)) !== null) {
+            $row = $wali->find($pengajuanId, $this->today());
+            return array_values(array_filter($eligible, fn (array $guru): bool => $this->router->coversSantri(
+                (int) $guru['guru_id'], (int) $row['santri_id'], $this->today())));
+        }
+        return $eligible;
     }
 
     /**
@@ -980,10 +992,17 @@ final class IzinWorkflowService
             throw IzinException::forbidden('Hak pemroses pengajuan ini sudah tidak berlaku.');
         }
         if ($mode === Capabilities::MUROBI && $row !== null
-            && ($row['murobi_guru_id'] === null || (int) $row['murobi_guru_id'] !== $user['guru_id'])) {
-            throw IzinException::forbidden('Pengajuan ini tidak diarahkan kepada Anda.');
+            && ($row['murobi_guru_id'] === null || (int) $row['murobi_guru_id'] !== $user['guru_id']
+                || !$this->router->coversSantri((int) $user['guru_id'], (int) $row['santri_id'], $this->today(), true))) {
+            throw IzinException::forbidden('Pengajuan ini tidak berada dalam tujuan dan cakupan penugasan murobi aktif Anda.');
         }
-        return $user;
+        // coversSantri() dapat menunggu kunci penugasan. Jangan memakai role
+        // atau tautan guru yang dibaca sebelum penantian itu.
+        $fresh = $this->waliActor($repo, $id);
+        if (!$this->capabilities->has($fresh, $mode) || $fresh['guru_id'] !== $user['guru_id']) {
+            throw IzinException::forbidden('Hak pemroses pengajuan ini sudah tidak berlaku.');
+        }
+        return $fresh;
     }
 
     /**

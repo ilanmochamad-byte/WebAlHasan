@@ -1,0 +1,6 @@
+{
+  "berkas_teks_dipindai": 146,
+  "sandi_fixture_disamarkan": 4,
+  "pola_token_mentah_ditemukan": [],
+  "batas": "Pemindaian pola pada keluaran auditor; bukan seluruh kemungkinan data sensitif atau dekode seluruh gambar. Sumber uji memakai fixture sintetis yang sama dengan suite repo."
+}

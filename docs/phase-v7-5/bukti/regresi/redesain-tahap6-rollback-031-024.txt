@@ -1,0 +1,62 @@
+[info] Basis data terpilih: test_redesain_t6_test
+[lulus] CHECK aktif pada sesi dan default global (MariaDB)
+[lulus] Migrasi terakhir adalah 031 (031_v7_fase2_tinjauan_pembimbing.sql)
+[lulus] Tidak ada tinjauan pembimbing (0)
+[lulus] Tidak ada perbaikan wali (0)
+[lulus] Tidak ada klaim idempotensi tinjauan/perbaikan/batal (0)
+[lulus] Tidak ada pengajuan wali di luar tahap Fase 1 (0)
+Rollback 031 aman dijalankan sesudah backup terverifikasi.
+Rollback selesai: 031_v7_fase2_tinjauan_pembimbing.sql
+[info] Basis data terpilih: test_redesain_t6_test
+[lulus] CHECK aktif pada sesi dan default global (MariaDB)
+[lulus] Migrasi terakhir adalah 030 (030_v7_fase1_pengajuan_wali.sql)
+[lulus] Tidak ada pengajuan wali/tahap V7 (0)
+[lulus] Tidak ada riwayat penetapan pembimbing (0)
+[lulus] Tidak ada klaim idempotensi izin.wali.* (0)
+Rollback 030 aman dijalankan sesudah backup terverifikasi.
+Rollback selesai: 030_v7_fase1_pengajuan_wali.sql
+[lulus] bsa_setoran_transfer = 0
+[lulus] bsa_tabungan_transaksi (data Fase 3) = 0
+[lulus] bsa_pembayaran (data Fase 3) = 0
+Rollback 029 aman dijalankan: tidak ada data Fase 3 yang akan kehilangan konteks. Tetap buat backup terverifikasi.
+Rollback selesai: 029_v6_fase3_tabungan.sql
+[lulus] bsa_tarif = 0
+[lulus] bsa_tarif_komponen = 0
+[lulus] bsa_penyesuaian = 0
+[lulus] bsa_penerbitan = 0
+[lulus] bsa_penerbitan_santri = 0
+[lulus] bsa_tagihan_penyesuaian = 0
+[lulus] bsa_tagihan_riwayat = 0
+[lulus] bsa_pembayaran_kuitansi = 0
+[lulus] bsa_pembayaran_pembatalan = 0
+[lulus] bsa_pembayaran = 0
+Rollback 028 aman dijalankan: tidak ada data Fase 2 yang akan hilang. Tetap buat backup terverifikasi.
+Rollback selesai: 028_v6_fase2_tagihan_bulanan.sql
+[lulus] bsa_idempotensi = 0
+[lulus] bsa_pembayaran = 0
+[lulus] bsa_tabungan_akun = 0
+[lulus] bsa_tabungan_transaksi = 0
+[lulus] bsa_tagihan_komponen = 0
+[lulus] bsa_tagihan = 0
+Rollback 027 aman dijalankan: tidak ada data BSA yang akan hilang. Tetap buat backup terverifikasi.
+Rollback selesai: 027_v6_fase1_bsa.sql
+[lulus] kesehatan_ringkasan_penerima = 0
+[lulus] kesehatan_ringkasan_peristiwa = 0
+[lulus] kesehatan_ringkasan_versi = 0
+[lulus] kesehatan_ringkasan = 0
+[lulus] notifikasi_outbox V5 kesehatan = 0
+Rollback 026 aman dijalankan: tidak ada ringkasan wali atau notifikasinya yang akan hilang. Tetap buat backup terverifikasi.
+Rollback selesai: 026_v5_fase3_ringkasan_wali.sql
+[lulus] kesehatan_versi_rincian = 0
+[lulus] kesehatan_tindak_lanjut = 0
+[lulus] kesehatan_rujukan = 0
+[lulus] kesehatan_obat = 0
+Rollback 025 aman dijalankan: tidak ada rincian kesehatan yang akan hilang. Tetap buat backup terverifikasi.
+Rollback selesai: 025_v5_fase2_rincian_kesehatan.sql
+[lulus] kesehatan_akses_log = 0
+[lulus] kesehatan_idempotensi = 0
+[lulus] kesehatan_kunjungan_versi = 0
+[lulus] kesehatan_kunjungan = 0
+[lulus] kesehatan_assignments = 0
+Rollback 024 aman dijalankan: tidak ada data kesehatan yang akan hilang. Tetap buat backup terverifikasi.
+Rollback selesai: 024_v5_fase1_kesehatan.sql

@@ -960,7 +960,7 @@ final class IzinWaliService
         }
         if ($peran[self::PERAN_MUROBI] && $statusV2 && $row['murobi_guru_id'] !== null) {
             $guruId = $this->repo->guruAkun($userId);
-            if ($guruId !== null && (int) $row['murobi_guru_id'] === $guruId) {
+            if ($guruId !== null && (int) $row['murobi_guru_id'] === $guruId && (int) $row['murobi_sah'] === 1) {
                 return [
                     'peran_akses' => self::PERAN_MUROBI,
                     'pengajuan' => $this->proyeksiPetugas($row),
@@ -1104,10 +1104,12 @@ final class IzinWaliService
             ],
             'perlu_admin' => (string) $row['status'] === IzinWaliRepository::STATUS_PERLU_PENETAPAN_PEMBIMBING
                 || (string) $row['status'] === IzinRouter::STATUS_PERLU_ADMIN
-                || ((string) $row['status'] === IzinWaliRepository::STATUS_MENUNGGU_PEMBIMBING && (int) $row['pembimbing_sah'] !== 1),
+                || ((string) $row['status'] === IzinWaliRepository::STATUS_MENUNGGU_PEMBIMBING && (int) $row['pembimbing_sah'] !== 1)
+                || ((string) $row['status'] === IzinRouter::STATUS_TERARAH && (int) $row['murobi_sah'] !== 1),
             'murobi_guru_id' => $row['murobi_guru_id'] === null ? null : (int) $row['murobi_guru_id'],
             'murobi' => [
                 'nama' => ($row['murobi_nama'] ?? null) === null ? null : (string) $row['murobi_nama'],
+                'sah' => (int) $row['murobi_sah'] === 1,
                 'routing_kandidat' => ($row['routing_kandidat'] ?? null) === null ? null : (int) $row['routing_kandidat'],
                 'routing_catatan' => ($row['routing_catatan'] ?? null) === null ? null : (string) $row['routing_catatan'],
             ],

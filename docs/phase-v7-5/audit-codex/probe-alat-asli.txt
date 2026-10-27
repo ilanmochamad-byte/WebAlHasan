@@ -1,0 +1,9 @@
+[gagal] Hash membedakan pemisah kolom di dalam nilai teks
+[gagal] Hash membedakan NULL dan string byte NUL
+[lulus] Hash tetap tidak bergantung urutan baris
+[lulus] Baris kembar tetap dihitung
+[lulus] Kontrol positif: preflight dan verifier manifest asli lulus
+[gagal] Perubahan isi audit lama tanpa perubahan jumlah wajib ditolak verifier
+[lulus] Kontrol pemulihan: isi audit dikembalikan, verifier kembali lulus
+[gagal] Manifest yang menghilangkan audit_logs wajib ditolak
+Hasil: 4 lulus, 4 gagal

@@ -86,6 +86,8 @@ try {
     $k=$key();$step('Batal pembimbing',fn()=>izin_wali_service()->batalkan($w,$id,'Pembatalan fixture auditor',2,$k,[]),[N::DIBATALKAN=>[$pb2['id']]]);
     $input=$makeInput('V7S0006');$k=$key();$id=(int)$step('Buat tanpa murobi',fn()=>izin_wali_service()->buat($w,$input,$k,[]),[N::MASUK_PEMBIMBING=>[$pb['id']]])['id'];
     $k=$key();$step('Routing murobi kosong',fn()=>izin_wali_service()->tinjau($pb,$id,'teruskan',null,1,$k,[]),[N::DITERUSKAN=>[$w['id']],N::PERLU_PENETAPAN_MUROBI=>$admins]);
+    require_once __DIR__ . '/v7_phase5_fixture.php';
+    $f51Assignment = v7f5_fixture_murobi($db, (int) $m2['guru_id'], (int) $value("SELECT id FROM santri WHERE nis='V7S0006'"));
     $k=$key();$step('Tetapkan murobi',fn()=>izin_workflow_service()->assignMurobi($a,$id,(int)$m2['guru_id'],'Penetapan fixture auditor',2,$k,[]),[N::MASUK_MUROBI=>[$m2['id']]]);
     $k=$key();$step('Batal murobi',fn()=>izin_wali_service()->batalkan($w,$id,'Pembatalan fixture auditor',3,$k,[]),[N::DIBATALKAN=>[$m2['id']]]);
     $assert(count($seen)===10,'Kesepuluh jenis peristiwa dibuktikan dengan Push ON');
