@@ -1,0 +1,58 @@
+[lulus] DB uji V6 Fase 5 kosong dari transaksi (027–029 terpasang)
+
+=== H-A. Hak halaman laporan dan ekspor ===
+[lulus] sbx_admin: laporan dan ekspor per santri → 200 (200,200)
+[lulus] sbx_v6_admin_bsa: laporan dan ekspor per santri → 200 (200,200)
+[lulus] sbx_v6_bsa_b: laporan dan ekspor per santri → 200 (200,200)
+[lulus] sbx_v6_bsa_tsanawi: laporan dan ekspor per santri → 200 (200,200)
+[lulus] sbx_v6_wali_smp: laporan dan ekspor per santri → 200 (200,200)
+[lulus] sbx_v6_wali_dua: laporan dan ekspor per santri → 200 (200,200)
+[lulus] sbx_ortu_a: laporan dan ekspor per santri → 200 (200,200)
+[lulus] sbx_pengurus_biasa: laporan dan ekspor per santri → 403 (403,403)
+[lulus] sbx_guru_biasa: laporan dan ekspor per santri → 403 (403,403)
+[lulus] sbx_v5_petugas_b: laporan dan ekspor per santri → 403 (403,403)
+[lulus] Tanpa masuk: laporan dan ekspor dialihkan ke halaman masuk tanpa data
+[lulus] Navigasi keuangan memuat "Laporan" untuk petugas dan orang tua (rekonsiliasi tetap internal)
+
+=== H-B. Isi halaman per peran ===
+[lulus] Admin: tagihan Rp190.000, terbayar Rp140.000, saldo akhir Rp132.000, kas baru Rp272.000 (setoran 182.000 + tunai 90.000; dari tabungan Rp50.000 terpisah)
+[lulus] Admin: selisih Rp0, jejak koreksi beralasan, R-10 santri keluar bersaldo, transfer menunggu terpisah
+[lulus] Petugas Tsanawi: hanya santri Tsanawi (saldo Rp70.000), tanpa santri lain dan tanpa daftar R-10
+[lulus] sbx_v6_wali_smp: laporan anak (Saldo akhir Rp50.000) tanpa kas, koreksi beralasan, referensi, transfer menunggu, santri lain, atau ekspor koreksi
+[lulus] sbx_v6_wali_dua: laporan anak (Saldo akhir Rp120.000) tanpa kas, koreksi beralasan, referensi, transfer menunggu, santri lain, atau ekspor koreksi
+[lulus] Wali SMP tidak melihat anak lain (santri Tsanawi)
+
+=== H-C. Saringan ===
+[lulus] Periode tidak sah → dialihkan dengan pesan
+[lulus] Periode masa depan → dialihkan
+[lulus] Santri/unit di luar hak (petugas unit, wali anak lain), juga lewat ekspor → 404
+[lulus] Laporan per santri (admin): hanya santri itu, saldo Rp50.000
+
+=== H-D. Ekspor web ===
+[lulus] Ekspor admin: text/csv, lampiran bernama periode, no-store, nosniff, BOM UTF-8
+[lulus] Ekspor admin per santri: 3 santri + kepala, dengan kolom selisih
+[lulus] Ekspor wali dua anak: rincian transaksi kedua anaknya saja, tanpa referensi/alasan
+[lulus] Wali: ekspor koreksi 403; ekspor anak lain 404
+[lulus] Ekspor koreksi petugas: alasan dan nomor kuitansi asal
+[lulus] Jenis ekspor tidak dikenal → dialihkan dengan pesan (tanpa berkas)
+[lulus] Audit ekspor: tepat 3 ekspor web berhasil di bagian ini tercatat
+
+=== H-E. API laporan dan ekspor ===
+[lulus] Token API untuk lima akun
+[lulus] API admin: 200 no-store; angka = layanan web (kas baru Rp272000), selisih Rp0
+[lulus] API wali SMP: hanya anaknya, tanpa kas/internal/koreksi/transfer menunggu/referensi
+[lulus] API: tanpa token 401, pengurus 403, santri di luar cakupan 404, periode salah 422, POST 404
+[lulus] API ekspor wali dua anak: CSV dua anaknya saja
+[lulus] API ekspor koreksi oleh wali → 403 JSON
+
+=== H-F. Sesi dan token lama sesudah pencabutan ===
+[lulus] Penugasan dinonaktifkan: sesi web dan token lama → 403 untuk laporan dan ekspor
+[lulus] Relasi satu anak dicabut: halaman, ekspor, dan API wali dua anak tinggal satu anak; anak dicabut 404
+
+=== H-G. Log, audit, verifier ===
+[lulus] Log server tanpa galat/peringatan PHP
+[lulus] Log server tanpa referensi transfer atau token
+[lulus] Audit ekspor tanpa nominal/alasan/referensi; ekspor API tercatat berkanal api
+[lulus] Verifier rilis V6 lulus sesudah uji HTTP
+
+Lulus: 42 · Gagal: 0

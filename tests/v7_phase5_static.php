@@ -43,7 +43,7 @@ $assert(trim($git("cat-file -t $baseline")) === 'commit', "Baseline audit Fase 4
 $migrasi = glob($root . '/database/migrations/*.sql') ?: [];
 sort($migrasi);
 $assert(basename((string) end($migrasi)) === '031_v7_fase2_tinjauan_pembimbing.sql' && count($migrasi) === 31, 'Migrasi terakhir tetap 031 (31 migrasi)');
-$izin = '#^(bin/_v7_rilis\.php|bin/v7_(preflight|verify|manifest|backup_restore_drill)\.php|tests/v7_phase5_[a-z0-9]+\.(php|sh)|tests/browser/uji-v7-fase5\.mjs'
+$izin = '#^(bin/_v7_rilis\.php|bin/v7_(preflight|verify|manifest|backup_restore_drill)\.php|tests/v7_phase5_[a-z0-9]+\.(php|sh)|tests/browser/uji-v7-fase5(?:-audit)?\.mjs'
     . '|docs/phase-v7-5/.+|AGENTS\.md|PRD-V7\.md)$#';
 $luar = array_values(array_filter($berubah, static fn (string $f): bool => preg_match($izin, $f) !== 1));
 $assert($luar === [], 'Berkas berubah hanya alat rilis, uji Fase 5, dan dokumen' . ($luar === [] ? '' : ': ' . implode(', ', $luar)));

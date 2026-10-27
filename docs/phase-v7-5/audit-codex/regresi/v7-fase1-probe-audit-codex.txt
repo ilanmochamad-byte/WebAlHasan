@@ -1,0 +1,14 @@
+[lulus] Kontrol: manifest asli dan verifier lulus pada fixture sehat
+[lulus] Manifest kosong ditolak
+[lulus] Manifest satu jumlah hilang ditolak
+[lulus] Manifest satu hash hilang ditolak
+[lulus] Perubahan isi riwayat V2 dengan ID/jumlah tetap terdeteksi manifest
+[lulus] Preflight menolak CHECK sesi OFF meskipun versi MariaDB mendukung
+[lulus] CHECK koneksi induk tetap ON; default global tidak diubah
+[lulus] Kontrol: penetapan admin sudah lolos pemeriksaan awal dan menunggu kunci akun
+[lulus] Admin dicabut sebelum mendapat kunci → 403 tanpa penetapan (HTTP 403)
+[lulus] Kontrol: penetapan membaca kandidat lama lalu menunggu kunci penugasan
+[lulus] Kontrol: tanggal berakhir kemarin benar-benar tersimpan (CHECK tetap aktif)
+[lulus] Penugasan kedaluwarsa sebelum mendapat kunci → 422 tanpa penetapan (HTTP 422)
+[lulus] Verifier invarians lulus sesudah kontrol negatif dipulihkan
+Ringkasan: 13 lulus, 0 gagal

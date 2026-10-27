@@ -1,0 +1,4 @@
+Delapan proses pengurus V2 berkunci/isi sama: {"500": 6, "sukses": 2}
+ID sukses unik=1; baris=1
+[lulus] Tidak ada pengajuan efektif ganda
+[terbuka] Retry pengurus V2 menghasilkan 6 respons 500 pada putaran ini (T-1)

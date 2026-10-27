@@ -1,0 +1,39 @@
+
+=== N-1. Salinan 030 dengan data Fase 1 ===
+[lulus] Salinan berada di migrasi 030, tanpa tabel 031
+[lulus] Tiga pengajuan wali tahap Fase 1 dan satu penetapan pembimbing dibuat tanpa 031
+[lulus] Tanpa 031: tindakan Fase 2 menjawab 503; rincian tetap terbaca tanpa tindakan
+[lulus] Salinan memuat 1052 pengajuan V2/warisan untuk uji preservasi
+[lulus] Preflight Fase 2 lulus dan manifest ditulis
+[lulus] Hash isi 26 tabel inti (termasuk izin_pengajuan dan penetapan V7) tercatat
+
+=== N-2. Migrasi naik ===
+[lulus] migrate up hanya menerapkan 031
+[lulus] Verifier Fase 2 + manifest lulus sesudah migrasi
+[lulus] CHECKSUM tabel inti identik sesudah migrasi
+[lulus] Hash isi tabel inti identik sesudah migrasi (pengajuan wali Fase 1 tidak berubah)
+[lulus] Struktur kolom dan constraint izin_pengajuan tidak berubah (031 tanpa ALTER)
+[lulus] Tabel 031 kosong
+[lulus] Verifier Fase 1 tetap lulus pada data Fase 1 sesudah 031
+
+=== N-3. Idempoten ===
+[lulus] Berkas 031 dijalankan ulang tanpa galat dan tanpa perubahan
+[lulus] migrate up kedua: tidak ada migrasi baru
+
+=== N-4. Rollback dengan data Fase 1 saja ===
+[lulus] Preflight rollback 031 lulus (hanya data tahap Fase 1)
+[lulus] Rollback 031 berjalan
+[lulus] Verifier --rollback + manifest lulus
+[lulus] Checksum, hash isi, struktur, dan constraint identik dengan sebelum 031
+[lulus] Verifier Fase 1 lulus sesudah rollback 031
+[lulus] Sesudah rollback: pengajuan Fase 1 tetap dibuat; tinjauan Fase 2 menjawab 503
+[lulus] Jalur pengurus V2 tetap membuat pengajuan sesudah rollback 031
+
+=== N-5. Naik lagi, data Fase 2, rollback ditolak ===
+[lulus] Siklus naik–turun–naik: 031 terpasang lagi dan verifier lulus
+[lulus] Sesudah pembatalan wali (tanpa tinjauan): preflight rollback menolak
+[lulus] Penjaga SQL menghentikan rollback; 031 tetap tercatat
+[lulus] Dengan tinjauan tersimpan: rollback ditolak, tabel dan jejak utuh
+[lulus] Verifier Fase 2 lulus sesudah rollback yang ditolak
+
+Hasil: 27 lulus, 0 gagal

@@ -25,12 +25,11 @@ const V7_KOLOM_PENGAJUAN = ['asal_pengajuan', 'wali_id', 'catatan_wali', 'pembim
     'pembimbing_routing_catatan', 'pembimbing_routing_pada', 'pembimbing_ditetapkan_oleh_user_id', 'pembimbing_ditetapkan_pada'];
 
 /**
- * Tabel yang isinya berubah karena pemakaian biasa (sesi, token, percobaan
- * masuk, pembatas laju, antrean worker). Jumlah barisnya tetap dibandingkan,
- * tetapi isinya tidak di-hash: verifier dijalankan segera sesudah migrasi atau
- * pada DB pulihan tanpa lalu lintas, dan isi kredensial tidak perlu dibaca.
+ * Catatan migrasi memang berubah saat naik/turun. Semua tabel bisnis,
+ * termasuk audit_logs, harus tetap utuh pada migrasi/restore tanpa lalu
+ * lintas. Pemakaian V7 diperiksa terpisah melalui --irisan-v2.
  */
-const V7_TABEL_TIDAK_DIHASH = ['audit_logs', 'schema_migrations'];
+const V7_TABEL_TIDAK_DIHASH = ['schema_migrations'];
 
 /** @return array<string, bool> migrasi V7 → sudah tercatat */
 function v7_terpasang(mysqli $db): array
@@ -65,7 +64,15 @@ function v7_hash_kueri(mysqli $db, string $sql): array
         throw new RuntimeException($db->error . ' :: ' . $sql);
     }
     while ($row = $r->fetch_row()) {
-        $h = hash('sha256', implode("\x1f", array_map(static fn ($v): string => $v === null ? "\0" : (string) $v, $row)));
+        // Tanda NULL dan panjang byte membuat pengodean tak ambigu, termasuk
+        // teks/biner yang memuat NUL atau pemisah kolom. Jangan implode nilai:
+        // ["a\x1fb", "c"] dan ["a", "b\x1fc"] akan menjadi byte yang sama.
+        $ctx = hash_init('sha256');
+        hash_update($ctx, count($row) . ':');
+        foreach ($row as $value) {
+            hash_update($ctx, $value === null ? 'N;' : 'S' . strlen((string) $value) . ':' . (string) $value);
+        }
+        $h = hash_final($ctx);
         for ($i = 0; $i < 4; $i++) {
             $lajur[$i] = ($lajur[$i] + hexdec(substr($h, $i * 13, 13))) % $p;
         }
@@ -106,7 +113,7 @@ function v7_semua_tabel(mysqli $db): array
  * Snapshot preservasi rilis V7. Hanya hitungan dan hash.
  *
  *  - `legacy_counts`: jumlah baris seluruh tabel lama (di luar tabel V7,
- *    `schema_migrations`, `audit_logs`); `izin_pengajuan` hanya baris
+ *    `schema_migrations`); `izin_pengajuan` hanya baris
  *    berasal Pengurus/warisan.
  *  - `isi_tabel_lama`: hash multiset ISI seluruh kolom setiap tabel lama
  *    selain `izin_pengajuan` — identitas, PSB, V1–V6 (kesehatan, BSA), dan

@@ -1,0 +1,14 @@
+{
+  "ios": "Release iphonesimulator, binary audit Fase 4 dipakai ulang; tidak membangun ulang",
+  "bundle_sha256": "22fd94791f7ae6baab4d4989a36cd46de09dd74bd25e68acc1090fd383c80ac0",
+  "kode_mobile_dan_lock_sama_dengan_audit_fase4": true,
+  "host_produksi_dalam_bundle": 0,
+  "api_fixture_8977_dalam_bundle": true,
+  "android_devices": [
+    "List of devices attached",
+    "emulator-5554          device product:sdk_gphone16k_arm64 model:sdk_gphone16k_arm64 device:emu64a16k transport_id:6",
+    ""
+  ],
+  "android_apk_sha256": "f2f443fbeed626360da3821cae8109adb44ad1225246bb559924bd28072fe441",
+  "android_apk_cocok_audit_fase4": true
+}

@@ -1,0 +1,85 @@
+[lulus] Fixture V7 tersedia; belum ada pengajuan wali
+
+=== H-A. Formulir wali ===
+[lulus] Wali pengaju: halaman Pengajuan wali 200, tombol Ajukan izin, no-store
+[lulus] Formulir: kunci idempotensi tersembunyi; pilihan anak aktif saja
+[lulus] POST tanpa CSRF sah ditolak (419) tanpa baris
+[lulus] GET berparameter tidak memutasi
+[lulus] Kirim + kirim ulang (klik ganda) → dua 303 ke detail yang sama, satu baris
+[lulus] Detail pengaju: alasan, tahap Menunggu tinjauan pembimbing, pesan kiriman ulang
+[lulus] Benturan tanggal → 409, isian dan kunci dipertahankan, tanpa baris
+
+=== H-B. Hak halaman per akun ===
+[lulus] Wali kedua: status ringkas, tanpa alasan/catatan, tanpa formulir mutasi
+[lulus] Daftar wali kedua: item ringkas
+[lulus] /portal/izin_wali_detail.php?id=2706 sbx_ortu_b → 404
+[lulus] /portal/izin_wali_detail.php?id=2706 sbx_v7_pembimbing_dua → 404
+[lulus] /portal/izin_wali_detail.php?id=2706 sbx_murobi_a → 404
+[lulus] /portal/izin_wali_detail.php?id=2706 sbx_v7_pembimbing_satu → 200
+[lulus] /portal/izin_wali_detail.php?id=2706 sbx_admin → 200
+[lulus] /portal/izin_wali_detail.php?id=999999 sbx_v7_wali_a → 404
+[lulus] /portal/izin_wali_detail.php?id=999999 sbx_admin → 404
+[lulus] /portal/izin_wali.php sbx_murobi_a → 403
+[lulus] /portal/izin_wali.php sbx_ortu_b → 200
+[lulus] /portal/izin_wali.php sbx_v7_pembimbing_dua → 200
+[lulus] /portal/izin_wali_buat.php sbx_admin → 403
+[lulus] /portal/izin_wali_buat.php sbx_v7_pembimbing_satu → 403
+[lulus] /portal/izin_wali_buat.php sbx_murobi_a → 403
+[lulus] Wali asing: daftar tidak memuat pengajuan anak lain
+[lulus] Wali asing POST untuk anak lain → 404 tanpa baris
+[lulus] Pembimbing tujuan: antrean memuat item dengan alasan
+[lulus] Pembimbing lain: antrean kosong
+[lulus] Antrean murobi V2 tidak memuat pengajuan wali
+[lulus] Detail V2 untuk ID tahap pembimbing → 403 (dibaca lewat halaman V7)
+[lulus] Tanpa sesi → dialihkan ke halaman masuk
+
+=== H-C. Admin: antrean dan penetapan ===
+[lulus] Santri dua kandidat → Perlu Penetapan Pembimbing
+[lulus] Antrean admin bawaan: hanya pengecualian
+[lulus] Semua pengajuan wali: keduanya
+[lulus] Formulir penetapan: versi 1, dua kandidat sah
+[lulus] Penetapan tanpa CSRF sah ditolak
+[lulus] Pembimbing POST penetapan → 403
+[lulus] Admin memilih pengurus bukan pembimbing sah → 422
+[lulus] Penetapan + kiriman ulang → satu baris penetapan, versi 2, Pembimbing Dua
+[lulus] Formulir versi lama dengan kunci baru → 409
+[lulus] Sesudah penetapan: antrean Pembimbing Dua memuat item
+[lulus] Detail admin memuat riwayat penetapan beralasan
+
+=== H-D. API ===
+[lulus] Token API seluruh akun uji
+[lulus] GET akses wali: peran wali, boleh mengajukan, no-store
+[lulus] Tanpa token → 401
+[lulus] Daftar anak API: empat anak aktif, tanpa santri nonaktif
+[lulus] API buat: 201, replay 200 ID sama, kunci sama isi beda 409, satu baris
+[lulus] API buat: wali asing 404, pengurus 403, isian kurang 422
+[lulus] API detail wali kedua: ringkas tanpa alasan/riwayat
+[lulus] API detail wali pengaju: alasan lengkap
+[lulus] API detail sbx_ortu_b → 404
+[lulus] API detail sbx_v7_pembimbing_dua → 404
+[lulus] API detail sbx_murobi_a → 404
+[lulus] API detail sbx_v7_pembimbing_satu → 200
+[lulus] API detail sbx_admin → 200
+[lulus] API detail ID tebakan → 404
+[lulus] API daftar: murobi 403, pembimbing ke pemantauan admin 403
+[lulus] API antrean Pembimbing Satu: satu item
+[lulus] API antrean admin: pengajuan santri Nol (nol kandidat)
+[lulus] API kandidat santri Nol: kosong
+[lulus] API penetapan pembimbing tidak sah → 422
+[lulus] API penetapan oleh wali → 403
+[lulus] API V2: detail admin untuk tahap V7 403; daftar orang tua V2 tidak memuat pengajuan wali
+[lulus] API V2 orang tua: pencarian alasan wali lain kosong
+
+=== H-E. Pencabutan pada sesi/token lama ===
+[lulus] Relasi wali kedua dicabut: sesi web dan token lama → 404, daftar kosong
+[lulus] Penugasan pembimbing dicabut: sesi/token lama tertutup; admin melihat pengecualian baru
+
+=== H-F. Navigasi, log, verifier ===
+[lulus] Orang tua: halaman Izin anak memuat tautan Pengajuan wali
+[lulus] Pengurus: menu Perizinan memuat tab Pengajuan wali
+[lulus] Murobi: tanpa tautan Pengajuan wali
+[lulus] Log server tanpa galat/peringatan PHP
+[lulus] Log server tanpa alasan izin
+[lulus] Verifier V7 lulus sesudah uji HTTP
+
+Lulus: 71 · Gagal: 0

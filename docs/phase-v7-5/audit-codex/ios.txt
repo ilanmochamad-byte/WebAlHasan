@@ -1,0 +1,8 @@
+[lulus] iOS Release cold URI/login: pengaju membaca ID dan isi fixture Fase 5
+[lulus] iOS wali kedua hanya status tanpa alasan dan mutasi
+[lulus] iOS relasi dicabut saat latar: sesi lama menutup isi
+[lulus] Server fixture meneruskan dengan satu ID dan versi 2
+[lulus] iOS murobi membuka keputusan V2 pengajuan wali pada ID sama
+[lulus] iOS seluruh penugasan murobi dicabut: keputusan V2 menutup data saat kembali
+[lulus] iOS pencabutan tidak membuat keputusan
+Ringkasan: 7 lulus, 0 gagal

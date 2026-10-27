@@ -82,6 +82,16 @@ $a->query("INSERT INTO perizinan (id, id_santri, tgl_izin, tgl_kembali, alasan, 
     (990001, $santri, '2024-01-02', '2024-01-03', 'Warisan V1 sintetis satu', 'Disetujui'),
     (990002, $santri, '2024-02-02', '2024-02-04', 'Warisan V1 sintetis dua', 'Ditolak'),
     (990003, $santri, '2024-03-02', '2024-03-02', 'Warisan V1 sintetis tiga', 'Pending')");
+// Bentuk hasil impor 006: identitas kanonis sama dengan V1, pelaku lama
+// tidak direka. Buktikan preservasi warisan yang benar-benar sudah diimpor,
+// bukan hanya baris perizinan yang ditambahkan sesudah migrasi 006.
+$a->query("INSERT INTO izin_pengajuan (id, legacy_perizinan_id, is_legacy, santri_id, tgl_izin, tgl_kembali, alasan, status)
+    SELECT id, id, 1, id_santri, tgl_izin, tgl_kembali, alasan,
+           CASE status WHEN 'Pending' THEN 'Diajukan' ELSE status END
+      FROM perizinan WHERE id IN (990001, 990002, 990003)");
+$a->query("INSERT INTO izin_riwayat_status (pengajuan_id, peristiwa, status_sesudah, alasan)
+    SELECT id, 'migrasi_warisan', status, 'Data warisan V1: pelaku tidak tercatat pada sistem lama.'
+      FROM izin_pengajuan WHERE id IN (990001, 990002, 990003)");
 $assert($n('SELECT COUNT(*) FROM perizinan WHERE id >= 990001') === 3 && $n("SELECT COUNT(*) FROM izin_pengajuan") > 0 && $n('SELECT COUNT(*) FROM izin_keputusan') > 0,
     'Data lama tersedia: tiga baris perizinan warisan V1, pengajuan dan keputusan V2');
 $pre = $scratch . '/manifest-pra.json';
@@ -118,6 +128,12 @@ $assert($kode === 0 && preg_match_all('/^- 03[01]_v7_/m', $out) === 2 && $terakh
 $assert($kode === 0 && str_contains($out, 'Ringkasan verifier V7:') && str_contains($out, '[lulus] Isi seluruh') && str_contains($out, '[lulus] Irisan V2 perizinan tetap (3 baris)'),
     'bin/v7_verify.php + manifest pra-migrasi lulus: jumlah dan isi seluruh tabel lama, irisan V2, perizinan warisan tetap');
 echo '    ' . (preg_match('/Ringkasan verifier V7: .*/', $out, $mm) ? $mm[0] : '') . PHP_EOL;
+$assert($n("SELECT COUNT(*) FROM perizinan old JOIN izin_pengajuan p ON p.id = old.id AND p.legacy_perizinan_id = old.id
+    JOIN izin_riwayat_status r ON r.pengajuan_id = p.id AND r.peristiwa = 'migrasi_warisan'
+    WHERE old.id IN (990001,990002,990003) AND p.is_legacy = 1 AND p.pengurus_id IS NULL AND p.diajukan_oleh_user_id IS NULL
+      AND r.pelaku_user_id IS NULL AND p.alasan = old.alasan AND p.tgl_izin = old.tgl_izin AND p.tgl_kembali = old.tgl_kembali
+      AND p.status = CASE old.status WHEN 'Pending' THEN 'Diajukan' ELSE old.status END") === 3,
+    'Tiga ID kanonis V1 = V2 warisan, isi/status, pelaku NULL dan riwayat impor tetap utuh sesudah 030–031');
 
 // ===================================================================== R-4
 echo PHP_EOL . '=== R-4. Pemasangan sebagian ditolak ===' . PHP_EOL;

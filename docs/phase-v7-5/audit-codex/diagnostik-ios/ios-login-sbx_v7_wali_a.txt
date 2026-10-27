@@ -1,0 +1,40 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow ios-login-sbx_v7_wali_a
+Assert that "Masukkan username" is visible... COMPLETED
+Tap on "Masukkan username"... COMPLETED
+Erase text... COMPLETED
+Input text sbx_v7_wali_a... COMPLETED
+Tap on "Masuk ke akun Anda"... COMPLETED
+Tap on "Masukkan password"... COMPLETED
+Erase text... COMPLETED
+Input text [SANDI FIXTURE DISAMARKAN]... COMPLETED
+Press Enter key... COMPLETED
+Assert that "Not Now|Diajukan wali lain|Menunggu tinjauan pembimbing|Perlu perbaikan wali|Dibatalkan|Diteruskan ke murobi" is visible... COMPLETED
+Run flow when "Not Now" is visible...
+  Tap on "Not Now"... COMPLETED
+Run flow when "Not Now" is visible... COMPLETED
+Assert that "Diajukan wali lain|Menunggu tinjauan pembimbing|Perlu perbaikan wali|Dibatalkan|Diteruskan ke murobi" is visible... COMPLETED
+Exception in thread "Thread-5" java.lang.IllegalStateException: An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=64):
+Simulator device failed to terminate dev.mobile.maestro-driver-iosUITests.xctrunner.
+The system shell (SpringBoard:17109) probably crashed.
+Underlying error (domain=NSPOSIXErrorDomain, code=64):
+	The request to terminate "dev.mobile.maestro-driver-iosUITests.xctrunner" failed. The system shell (SpringBoard:17109) probably crashed.
+	The system shell (SpringBoard:17109) probably crashed.
+
+	at util.CommandLineUtils.runCommand(CommandLineUtils.kt:50)
+	at util.CommandLineUtils.runCommand$default(CommandLineUtils.kt:16)
+	at util.LocalSimulatorUtils.terminate(LocalSimulatorUtils.kt:178)
+	at device.SimctlIOSDevice.stop(SimctlIOSDevice.kt:102)
+	at device.SimctlIOSDevice.close(SimctlIOSDevice.kt:201)
+	at xcuitest.installer.LocalXCTestInstaller.close(LocalXCTestInstaller.kt:253)
+	at xcuitest.XCTestDriverClient.close(XCTestDriverClient.kt:224)
+	at ios.xctest.XCTestIOSDevice.close(XCTestIOSDevice.kt:197)
+	at ios.LocalIOSDevice.close(LocalIOSDevice.kt:151)
+	at maestro.drivers.IOSDriver.close$lambda$4(IOSDriver.kt:103)
+	at maestro.utils.Metrics.measured(Metrics.kt:48)
+	at maestro.utils.Metrics.measured$default(Metrics.kt:42)
+	at maestro.drivers.IOSDriver.close(IOSDriver.kt:99)
+	at maestro.Maestro.close(Maestro.kt:602)
+	at maestro.cli.session.MaestroSessionManager$MaestroSession.close(MaestroSessionManager.kt:471)
+	at maestro.cli.session.MaestroSessionManager.newSession$lambda$2(MaestroSessionManager.kt:129)
+	at kotlin.concurrent.ThreadsKt$thread$thread$1.run(Thread.kt:30)

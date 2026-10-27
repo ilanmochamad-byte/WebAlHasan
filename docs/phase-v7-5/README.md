@@ -1,6 +1,6 @@
 # PRD V7 Fase 5 — Regresi, Keamanan, dan Kesiapan Rilis
 
-**Status (27 Oktober 2026):** diimplementasikan Claude Code, **menunggu audit independen Codex** atas Fase 5 dan gerbang akhir V7. Belum merge, belum deploy, belum migrasi produksi, tidak ada rilis aplikasi, V8 tidak dimulai. Seluruh bukti berasal dari salinan DB lokal berfixture sintetis, Chromium, dan Expo **web**. MySQL/cPanel, perangkat fisik, Push nyata, dan UAT **belum diuji**, sehingga **produksi tidak dinyatakan lulus dan V7 tidak dinyatakan siap rilis**.
+**Status (27 Oktober 2026):** diimplementasikan Claude Code, **audit independen Codex dilaksanakan** atas Fase 5 dan gerbang akhir V7; keputusan, koreksi, bukti dan gerbang yang tetap terbuka ada di `AUDIT-CODEX.md`. Belum merge, belum deploy, belum migrasi produksi, tidak ada rilis aplikasi, V8 tidak dimulai. Bukti implementator berasal dari salinan DB lokal berfixture sintetis, Chromium, dan Expo **web**; auditor juga mengulang Android emulator/iOS simulator memakai binary Fase 4 yang identik (rincian di `AUDIT-CODEX.md`). MySQL/cPanel, perangkat fisik, Push nyata, dan UAT **belum diuji**, sehingga **produksi tidak dinyatakan lulus dan V7 tidak dinyatakan siap rilis**.
 
 | Butir | Nilai |
 | --- | --- |
@@ -45,7 +45,7 @@
 | Setiap perubahan fixture berpelaku, berwaktu, beralasan bila wajib, berversi | Verifier: transisi + rantai + pelaku/alasan + riwayat = audit, versi = 1 + peristiwa (Fase 2), pada setiap DB uji/regresi; kontrol pengrusakan R-8 | Terbukti lokal |
 | Jumlah/ID pengajuan V2/warisan, keputusan, riwayat tetap pada migrasi/rollback salinan; nol yatim baru | R-3 (isi seluruh tabel lama + irisan V2 + perizinan warisan), R-5 (snapshot turun = pra-migrasi), R-7, E-9; yatim 15 relasi | Terbukti lokal (MariaDB) |
 | Backup/restore, migrasi, verifier, rollback, smoke cPanel, uji perangkat sesuai pelaksanaan nyata | R-1…R-7; runbook; checklist **Menunggu pelaksanaan** | Lokal tersedia; **cPanel, MySQL, fisik, Push nyata, UAT belum diuji** |
-| Auditor menyatakan seluruh kriteria wajib V7 terpenuhi | — | **Menunggu audit Codex** |
+| Auditor menyatakan seluruh kriteria wajib V7 terpenuhi | `AUDIT-CODEX.md` | **Belum seluruhnya terpenuhi; lihat temuan cakupan dan gerbang produksi** |
 
 ## Hasil pengujian Fase 5 (lokal, kode final)
 
@@ -120,4 +120,4 @@ Dijalankan **berurutan** lewat `perintah-regresi.sh` pada DB salinan yang dibang
 
 ## Handoff
 
-Commit web dan mobile pada branch `claude/prd-v7-fase-5` sudah di-push; hash dibaca dari Git. Berhenti untuk audit independen Codex atas Fase 5 dan gerbang akhir V7. Tidak merge, deploy, migrasi produksi, rilis aplikasi, atau memulai V8.
+Commit web dan mobile pada branch `claude/prd-v7-fase-5` sudah di-push; hash dibaca dari Git. Hasil audit independen Codex Fase 5/gerbang akhir ada di `AUDIT-CODEX.md`; penerimaan penuh belum lulus dan keputusan tindak lanjut diserahkan kepada Human Developer. Tidak merge, deploy, migrasi produksi, rilis aplikasi, atau memulai V8.
