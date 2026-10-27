@@ -440,6 +440,9 @@ final class IzinApiService
             'id' => (int) $row['id'],
             'is_legacy' => $legacy,
             'sumber_label' => (string) ($row['sumber_label'] ?? ($legacy ? 'Data warisan' : 'V2')),
+            // V7 Fase 4 (aditif): asal pengajuan agar aplikasi menandai pengajuan
+            // orang tua yang sudah diteruskan pembimbing; hak tidak berubah.
+            'asal' => (string) ($row['asal_pengajuan'] ?? 'Pengurus') === 'Wali' ? 'Wali' : 'Pengurus',
             'status' => (string) $row['status'],
             'version' => (int) $row['version'],
             'santri' => [

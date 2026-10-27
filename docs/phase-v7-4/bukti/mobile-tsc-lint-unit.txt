@@ -1,0 +1,9 @@
+# Mobile — tsc/lint/unit (salinan tanpa .env*, node_modules lock ter-commit Expo 57.0.15)
+$ npx tsc --noEmit
+tsc exit=0
+$ npx eslint src tests
+lint exit=0
+$ node --experimental-strip-types --test tests/*.test.ts
+ℹ tests 42
+ℹ pass 42
+ℹ fail 0
