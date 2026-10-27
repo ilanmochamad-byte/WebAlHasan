@@ -1,0 +1,8 @@
+App\V4\V4Exception: Dependensi PDF belum tersedia. in /private/tmp/v7-f3-kontrol-PHH3tz/app/V4/RaporDocument.php:29
+Stack trace:
+#0 /private/tmp/v7-f3-kontrol-PHH3tz/app/V4/RaporService.php(117): App\V4\RaporDocument->render(Array, '/verifikasi_rap...', '92626793bc1de7a...')
+#1 /private/tmp/v7-f3-kontrol-PHH3tz/app/V4/RaporService.php(80): App\V4\RaporService->actAttempt(Array, Array)
+#2 /private/tmp/v7-f3-kontrol-PHH3tz/tests/redesain_web_tahap7_seed.php(197): App\V4\RaporService->act(Array, Array)
+#3 /private/tmp/v7-f3-kontrol-PHH3tz/tests/redesain_web_tahap7_seed.php(200): {closure:/private/tmp/v7-f3-kontrol-PHH3tz/tests/redesain_web_tahap7_seed.php:195}(1670, 'Terbit', '')
+#4 {main}
+Dependensi PDF belum tersedia.

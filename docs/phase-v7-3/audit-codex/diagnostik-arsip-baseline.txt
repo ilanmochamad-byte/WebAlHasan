@@ -1,0 +1,16 @@
+PHP Warning:  imagepng(/private/tmp/v7-f3-kontrol-Ne4Z4t/storage/private/v4/6f89c8d9744112ef5738280bd654d74407d5b1cf): Failed to open stream: No such file or directory in /private/tmp/v7-f3-kontrol-Ne4Z4t/tests/redesain_web_tahap7_seed.php on line 99
+PHP Warning:  chmod(): No such file or directory in /private/tmp/v7-f3-kontrol-Ne4Z4t/tests/redesain_web_tahap7_seed.php on line 101
+PHP Warning:  hash_file(/private/tmp/v7-f3-kontrol-Ne4Z4t/storage/private/v4/6f89c8d9744112ef5738280bd654d74407d5b1cf): Failed to open stream: No such file or directory in /private/tmp/v7-f3-kontrol-Ne4Z4t/tests/redesain_web_tahap7_seed.php on line 103
+PHP Warning:  imagepng(/private/tmp/v7-f3-kontrol-Ne4Z4t/storage/private/v4/f63ff5f4c0b7fb1a04fa5fc365eea3eda6c3649c): Failed to open stream: No such file or directory in /private/tmp/v7-f3-kontrol-Ne4Z4t/tests/redesain_web_tahap7_seed.php on line 99
+PHP Warning:  chmod(): No such file or directory in /private/tmp/v7-f3-kontrol-Ne4Z4t/tests/redesain_web_tahap7_seed.php on line 101
+PHP Warning:  hash_file(/private/tmp/v7-f3-kontrol-Ne4Z4t/storage/private/v4/f63ff5f4c0b7fb1a04fa5fc365eea3eda6c3649c): Failed to open stream: No such file or directory in /private/tmp/v7-f3-kontrol-Ne4Z4t/tests/redesain_web_tahap7_seed.php on line 103
+PHP Warning:  imagepng(/private/tmp/v7-f3-kontrol-Ne4Z4t/storage/private/v4/6283534ad2858b99d2512b6adfb538a2188e0498): Failed to open stream: No such file or directory in /private/tmp/v7-f3-kontrol-Ne4Z4t/tests/redesain_web_tahap7_seed.php on line 99
+PHP Warning:  chmod(): No such file or directory in /private/tmp/v7-f3-kontrol-Ne4Z4t/tests/redesain_web_tahap7_seed.php on line 101
+PHP Warning:  hash_file(/private/tmp/v7-f3-kontrol-Ne4Z4t/storage/private/v4/6283534ad2858b99d2512b6adfb538a2188e0498): Failed to open stream: No such file or directory in /private/tmp/v7-f3-kontrol-Ne4Z4t/tests/redesain_web_tahap7_seed.php on line 103
+App\V4\V4Exception: Penerbitan ditolak: Aset tanda tangan tidak tersedia atau berubah. Aset tanda tangan tidak tersedia atau berubah. in /private/tmp/v7-f3-kontrol-Ne4Z4t/app/V4/RaporService.php:114
+Stack trace:
+#0 /private/tmp/v7-f3-kontrol-Ne4Z4t/app/V4/RaporService.php(80): App\V4\RaporService->actAttempt(Array, Array)
+#1 /private/tmp/v7-f3-kontrol-Ne4Z4t/tests/redesain_web_tahap7_seed.php(197): App\V4\RaporService->act(Array, Array)
+#2 /private/tmp/v7-f3-kontrol-Ne4Z4t/tests/redesain_web_tahap7_seed.php(200): {closure:/private/tmp/v7-f3-kontrol-Ne4Z4t/tests/redesain_web_tahap7_seed.php:195}(1670, 'Terbit', '')
+#3 {main}
+Penerbitan ditolak: Aset tanda tangan tidak tersedia atau berubah. Aset tanda tangan tidak tersedia atau berubah.

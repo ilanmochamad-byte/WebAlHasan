@@ -1,6 +1,6 @@
 # PRD V7 Fase 3 — Notifikasi, Laporan, dan Audit
 
-**Status (27 Oktober 2026): implementasi selesai, menunggu audit independen Codex.** Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Fase 4 belum dimulai. Fase 3 **bukan** izin rilis parsial V7; gerbang akhir/produksi V6 tetap terbuka.
+**Status (27 Oktober 2026): lulus audit teknis lokal Codex setelah tiga koreksi terarah** — snapshot laporan, pembatasan metadata/filter wali, dan alasan pada log umum jalur wali melalui V2. Keputusan, bukti independen, kegagalan historis dan batas di [`AUDIT-CODEX.md`](AUDIT-CODEX.md); uraian implementasi/bukti awal di bawah tetap sebagai riwayat handoff. Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Fase 4 belum dimulai. Fase 3 **bukan** izin rilis parsial V7; gerbang akhir/produksi V6 tetap terbuka.
 
 | Butir | Nilai |
 | --- | --- |

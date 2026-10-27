@@ -1,0 +1,34 @@
+[lulus] Login API sbx_v7_wali_a
+[lulus] API sbx_v7_wali_a: proyeksi durasi sesuai peran dan no-store
+[lulus] API sbx_v7_wali_a /v7/izin/laporan: filter pembimbing_id HTTP 422
+[lulus] API sbx_v7_wali_a /v7/izin/laporan/ekspor: filter pembimbing_id HTTP 422
+[lulus] API sbx_v7_wali_a /v7/izin/laporan: filter murobi_id HTTP 422
+[lulus] API sbx_v7_wali_a /v7/izin/laporan/ekspor: filter murobi_id HTTP 422
+[lulus] API sbx_v7_wali_a /v7/izin/laporan: filter durasi_min_jam HTTP 422
+[lulus] API sbx_v7_wali_a /v7/izin/laporan/ekspor: filter durasi_min_jam HTTP 422
+[lulus] API sbx_v7_wali_a /v7/izin/laporan: filter durasi_maks_jam HTTP 422
+[lulus] API sbx_v7_wali_a /v7/izin/laporan/ekspor: filter durasi_maks_jam HTTP 422
+[lulus] Login API sbx_v7_wali_b
+[lulus] API sbx_v7_wali_b: proyeksi durasi sesuai peran dan no-store
+[lulus] API sbx_v7_wali_b /v7/izin/laporan: filter pembimbing_id HTTP 422
+[lulus] API sbx_v7_wali_b /v7/izin/laporan/ekspor: filter pembimbing_id HTTP 422
+[lulus] API sbx_v7_wali_b /v7/izin/laporan: filter murobi_id HTTP 422
+[lulus] API sbx_v7_wali_b /v7/izin/laporan/ekspor: filter murobi_id HTTP 422
+[lulus] API sbx_v7_wali_b /v7/izin/laporan: filter durasi_min_jam HTTP 422
+[lulus] API sbx_v7_wali_b /v7/izin/laporan/ekspor: filter durasi_min_jam HTTP 422
+[lulus] API sbx_v7_wali_b /v7/izin/laporan: filter durasi_maks_jam HTTP 422
+[lulus] API sbx_v7_wali_b /v7/izin/laporan/ekspor: filter durasi_maks_jam HTTP 422
+[lulus] Login API sbx_admin
+[lulus] API sbx_admin: proyeksi durasi sesuai peran dan no-store
+[lulus] API sbx_admin /v7/izin/laporan: filter pembimbing_id HTTP 200
+[lulus] API sbx_admin /v7/izin/laporan/ekspor: filter pembimbing_id HTTP 200
+[lulus] API sbx_admin /v7/izin/laporan: filter murobi_id HTTP 200
+[lulus] API sbx_admin /v7/izin/laporan/ekspor: filter murobi_id HTTP 200
+[lulus] API sbx_admin /v7/izin/laporan: filter durasi_min_jam HTTP 200
+[lulus] API sbx_admin /v7/izin/laporan/ekspor: filter durasi_min_jam HTTP 200
+[lulus] API sbx_admin /v7/izin/laporan: filter durasi_maks_jam HTTP 200
+[lulus] API sbx_admin /v7/izin/laporan/ekspor: filter durasi_maks_jam HTTP 200
+[lulus] API anonim /v7/izin/laporan ditolak 401
+[lulus] API anonim /v7/izin/laporan/ekspor ditolak 401
+[lulus] Log server probe tanpa token mentah atau galat PHP
+Hasil: 33 lulus, 0 gagal

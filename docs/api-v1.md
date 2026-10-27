@@ -643,6 +643,11 @@ Aditif; tanpa migrasi dan tanpa perubahan bentuk respons yang sudah ada.
   penugasan/relasi sudah dicabut). Payload Push hanya
   `{tipe: "izin_wali", pengajuan_id}`. WhatsApp tidak pernah diantrekan.
 - `GET /v7/izin/laporan?peran=&asal=wali|pengurus&tahap=&hasil=&basis=izin|diajukan&dari=&sampai=&santri_id=&pembimbing_id=&murobi_id=&kamar_id=&kelas_id=&durasi_min_jam=&durasi_maks_jam=&page=`
+  - Kartu, total dan daftar satu respons dibaca dalam satu snapshot konsisten.
+  - Orang tua tidak menerima rerata durasi internal. Filter `pembimbing_id`,
+    `murobi_id`, `durasi_min_jam`, dan `durasi_maks_jam` ditolak `422` untuk
+    orang tua, termasuk pada ekspor, agar filter tidak membuka metadata yang
+    disembunyikan proyeksi ringkas.
   → `{peran, peran_tersedia, cakupan_label, filter, ringkasan:{total,
   per_asal, per_tahap, per_hasil, rerata_lama_jam}, items, total, page,
   per_page}`. Cakupan dari akun: admin seluruh; pengurus = pengajuan miliknya

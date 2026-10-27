@@ -42,15 +42,22 @@ final class IzinLaporanService
     {
         $cakupan = $this->cakupan($user, $query['peran'] ?? null);
         $filter = $this->filter($query);
+        $this->batasiFilterWali($cakupan, $filter);
         $page = is_numeric($query['page'] ?? null) ? max(1, min(10000, (int) $query['page'])) : 1;
-        $hasil = $this->repo->halaman($filter, $cakupan, $page, self::PER_PAGE);
+        [$hasil, $ringkasan] = $this->repo->snapshot(fn (): array => [
+            $this->repo->halaman($filter, $cakupan, $page, self::PER_PAGE),
+            $this->ringkasan($this->repo->ringkasan($filter, $cakupan)),
+        ]);
+        if ($cakupan['mode'] === Capabilities::ORANG_TUA) {
+            unset($ringkasan['rerata_lama_jam']);
+        }
 
         return [
             'peran' => $cakupan['mode'],
             'peran_tersedia' => $cakupan['tersedia'],
             'cakupan_label' => $this->labelCakupan($cakupan['mode']),
             'filter' => $filter,
-            'ringkasan' => $this->ringkasan($this->repo->ringkasan($filter, $cakupan)),
+            'ringkasan' => $ringkasan,
             'items' => array_map(fn (array $r): array => $this->proyeksi($r, $cakupan, (int) $user['id']), $hasil['rows']),
             'total' => $hasil['total'],
             'page' => $page,
@@ -69,6 +76,7 @@ final class IzinLaporanService
     {
         $cakupan = $this->cakupan($user, $query['peran'] ?? null);
         $filter = $this->filter($query);
+        $this->batasiFilterWali($cakupan, $filter);
         $rows = $this->repo->semua($filter, $cakupan);
         if (count($rows) > IzinLaporanRepository::MAX_EKSPOR) {
             throw IzinException::invalid('Hasil melebihi ' . IzinLaporanRepository::MAX_EKSPOR . ' baris. Persempit filter lalu ekspor lagi.');
@@ -108,6 +116,19 @@ final class IzinLaporanService
     }
 
     // =======================================================================
+
+    /** Filter juga dapat mengungkap medan yang sengaja tidak diproyeksikan. */
+    private function batasiFilterWali(array $cakupan, array $filter): void
+    {
+        if ($cakupan['mode'] !== Capabilities::ORANG_TUA) {
+            return;
+        }
+        foreach (['pembimbing_id', 'murobi_id', 'durasi_min_jam', 'durasi_maks_jam'] as $kunci) {
+            if ($filter[$kunci] !== null) {
+                throw IzinException::invalid('Saringan petugas dan lama tahap hanya tersedia bagi petugas perizinan.');
+            }
+        }
+    }
 
     /**
      * Cakupan efektif dari basis data. Tanpa peran perizinan apa pun → 403.

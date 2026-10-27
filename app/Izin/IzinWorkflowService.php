@@ -359,7 +359,8 @@ final class IzinWorkflowService
                 $pengajuanId,
                 ['status' => $statusSebelum, 'murobi_guru_id' => $murobiSebelum],
                 ['status' => IzinRouter::STATUS_TERARAH, 'murobi_guru_id' => $guruId, 'alasan' => $alasan],
-                $userId
+                $userId,
+                $wali !== null
             );
 
             return $response + ['idempotent_replay' => false];
@@ -515,7 +516,8 @@ final class IzinWorkflowService
                     'keputusan_id' => $keputusanId,
                     'alasan_penggantian_terisi' => $alasanPenggantian !== null,
                 ],
-                $userId
+                $userId,
+                $wali !== null
             );
 
             return $response + ['idempotent_replay' => false];
@@ -727,7 +729,8 @@ final class IzinWorkflowService
                 $pengajuanId,
                 ['status' => $statusSebelum, 'hasil' => (string) $keputusan['hasil'], 'alasan' => (string) $keputusan['alasan']],
                 ['status' => $hasilBaru, 'hasil' => $hasilBaru, 'alasan' => $alasanBaru, 'alasan_koreksi' => $alasanKoreksi],
-                $userId
+                $userId,
+                $wali !== null
             );
 
             return $response + ['idempotent_replay' => false];
@@ -1023,8 +1026,26 @@ final class IzinWorkflowService
         ?int $entityId,
         ?array $before,
         ?array $after,
-        int $actorUserId
+        int $actorUserId,
+        bool $wali = false
     ): void {
+        // V7: alasan bebas tetap di riwayat bisnis privat, tidak di log umum.
+        // Jalur Pengurus V2 mempertahankan bentuk audit historisnya.
+        if ($wali) {
+            $metadata = static function (?array $data): ?array {
+                if ($data === null) return null;
+                foreach (['alasan', 'alasan_koreksi'] as $key) {
+                    if (array_key_exists($key, $data)) {
+                        $data[$key . '_sha256'] = $data[$key] === null ? null : hash('sha256', (string) $data[$key]);
+                        unset($data[$key]);
+                    }
+                }
+
+                return $data;
+            };
+            $before = $metadata($before);
+            $after = $metadata($after);
+        }
         if (!$this->audit->log($action, $entityType, $entityId, $before, $after, $actorUserId)) {
             throw new RuntimeException('Audit perubahan perizinan tidak dapat disimpan. Transaksi dibatalkan.');
         }

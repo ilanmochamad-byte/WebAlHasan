@@ -59,6 +59,26 @@ final class IzinLaporanRepository
     {
     }
 
+    /** Seluruh bacaan satu respons memakai keadaan DB yang sama. */
+    public function snapshot(callable $kerja): mixed
+    {
+        if (!$this->db->query('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ')
+            || !$this->db->query('START TRANSACTION WITH CONSISTENT SNAPSHOT, READ ONLY')) {
+            throw new RuntimeException('Snapshot laporan perizinan tidak dapat dimulai.');
+        }
+        try {
+            $hasil = $kerja();
+            if (!$this->db->commit()) {
+                throw new RuntimeException('Snapshot laporan perizinan tidak dapat diselesaikan.');
+            }
+
+            return $hasil;
+        } catch (\Throwable $exception) {
+            $this->db->rollback();
+            throw $exception;
+        }
+    }
+
     /**
      * Kartu: jumlah per asal × status dan rerata lama tiap tahap untuk kriteria
      * yang SAMA dengan daftar dan ekspor.
