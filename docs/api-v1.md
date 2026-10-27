@@ -627,6 +627,40 @@ versi lama → `409` tanpa perubahan. Skema 031 belum terpasang → `503`.
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v7-2/README.md`.
 
+### V7 Fase 3 — notifikasi tahap dan laporan lintas asal (27 Oktober 2026)
+
+Aditif; tanpa migrasi dan tanpa perubahan bentuk respons yang sudah ada.
+
+- **Notifikasi** memakai `/notifikasi` V2 (kategori `jenis=perizinan`). Jenis
+  peristiwa `izin.wali_masuk_pembimbing`, `izin.wali_perlu_penetapan_pembimbing`,
+  `izin.wali_perlu_perbaikan`, `izin.wali_ditolak_pembimbing`,
+  `izin.wali_diteruskan`, `izin.wali_masuk_murobi`,
+  `izin.wali_perlu_penetapan_murobi`, `izin.wali_diputus`,
+  `izin.wali_keputusan_dikoreksi`, `izin.wali_dibatalkan`. Judul/isi generik
+  (hanya nomor pengajuan); `pengajuan_id` dan `santri_nama` item bernilai
+  `null`; `tautan = {tipe: "izin_wali", pengajuan_id}`. Klien membuka
+  `GET /v7/izin/pengajuan/{id}`, yang memeriksa ulang hak (`404` bila
+  penugasan/relasi sudah dicabut). Payload Push hanya
+  `{tipe: "izin_wali", pengajuan_id}`. WhatsApp tidak pernah diantrekan.
+- `GET /v7/izin/laporan?peran=&asal=wali|pengurus&tahap=&hasil=&basis=izin|diajukan&dari=&sampai=&santri_id=&pembimbing_id=&murobi_id=&kamar_id=&kelas_id=&durasi_min_jam=&durasi_maks_jam=&page=`
+  - Kartu, total dan daftar satu respons dibaca dalam satu snapshot konsisten.
+  - Orang tua tidak menerima rerata durasi internal. Filter `pembimbing_id`,
+    `murobi_id`, `durasi_min_jam`, dan `durasi_maks_jam` ditolak `422` untuk
+    orang tua, termasuk pada ekspor, agar filter tidak membuka metadata yang
+    disembunyikan proyeksi ringkas.
+  → `{peran, peran_tersedia, cakupan_label, filter, ringkasan:{total,
+  per_asal, per_tahap, per_hasil, rerata_lama_jam}, items, total, page,
+  per_page}`. Cakupan dari akun: admin seluruh; pengurus = pengajuan miliknya
+  + pengajuan wali yang ditujukan kepadanya sebagai pembimbing sah; murobi =
+  pengajuan yang diarahkan kepadanya (status V2); orang tua = anak berelasi
+  aktif (pengajuan wali lain hanya `pengaju: "Wali lain"`). `peran` hanya
+  memilih peran yang dimiliki. Tanpa alasan/catatan. Tanpa peran perizinan
+  `403`; saringan tidak valid `422`.
+- `GET /v7/izin/laporan/ekspor` (saringan sama) → `text/csv` (paling banyak
+  5.000 baris, diaudit tanpa isi).
+
+Rincian, penafsiran, dan batas uji: `docs/phase-v7-3/README.md`.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh

@@ -1,0 +1,10 @@
+[info] Baris notifikasi V7: 127
+[lulus] Notifikasi V7 hanya InApp/Push (nol WhatsApp)
+[lulus] Kunci peristiwa V7 cocok dengan jenis dan berformat v7:izin:{id}:{peristiwa}:v{versi}
+[lulus] Kunci menunjuk pengajuan asal Wali, versi tidak melebihi versi baris, pengajuan_id NULL
+[lulus] Data tautan hanya {tipe: izin_wali, pengajuan_id}
+[lulus] Judul/isi sama dengan katalog generik (tanpa nama, alasan, tanggal, nomor telepon)
+[lulus] Tidak ada notifikasi peristiwa V2 untuk pengajuan asal Wali
+[lulus] Paling banyak satu baris per peristiwa, kanal, dan penerima
+[lulus] Audit antrean notifikasi V7 hanya memuat metadata
+Verifikasi V7 Fase 3 lulus.

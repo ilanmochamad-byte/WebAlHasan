@@ -169,7 +169,7 @@ try {
         throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
     }
 
-    // V7 Fase 1–2 (pengajuan izin wali melalui pembimbing): aditif. Hak dihitung
+    // V7 Fase 1–3 (pengajuan izin wali melalui pembimbing): aditif. Hak dihitung
     // ulang `IzinWaliService` yang sama dengan halaman web; murobi tidak
     // menerima apa pun sebelum pembimbing meneruskan.
     if (str_starts_with($path, '/v7/izin')) {
@@ -218,6 +218,17 @@ try {
         if ($method === 'POST' && preg_match('#^/v7/izin/pengajuan/(\d+)/pembatalan$#', $path, $m)) {
             $body = Request::json();
             $hasilMutasi($wali->batalkan($user, (int) $m[1], $body['alasan'] ?? null, $body['version'] ?? null, $kunci($body), $requestMeta()));
+        }
+        // V7 Fase 3: laporan lintas asal wali/pengurus. Kartu, daftar, dan ekspor
+        // memakai cakupan peran yang sama dengan rincian; tanpa alasan izin.
+        if ($method === 'GET' && $path === '/v7/izin/laporan') JsonResponse::success(izin_laporan_service()->laporan($user, $_GET));
+        if ($method === 'GET' && $path === '/v7/izin/laporan/ekspor') {
+            $ekspor = izin_laporan_service()->ekspor($user, $_GET);
+            header('Content-Type: text/csv; charset=UTF-8');
+            header('Content-Disposition: attachment; filename="' . $ekspor['nama_berkas'] . '"');
+            header('X-Content-Type-Options: nosniff');
+            echo $ekspor['csv'];
+            exit;
         }
         throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
     }

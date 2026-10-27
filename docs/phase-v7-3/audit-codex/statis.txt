@@ -1,0 +1,60 @@
+
+=== T-1. Katalog notifikasi ===
+[lulus] Sepuluh peristiwa izin.wali_* dengan penerima terdokumentasi (masuk dalam kategori Perizinan pusat notifikasi)
+[lulus] Teks izin.wali_masuk_pembimbing: generik, muat kolom outbox, hanya nomor pengajuan, berlabel
+[lulus] Teks izin.wali_perlu_penetapan_pembimbing: generik, muat kolom outbox, hanya nomor pengajuan, berlabel
+[lulus] Teks izin.wali_perlu_perbaikan: generik, muat kolom outbox, hanya nomor pengajuan, berlabel
+[lulus] Teks izin.wali_ditolak_pembimbing: generik, muat kolom outbox, hanya nomor pengajuan, berlabel
+[lulus] Teks izin.wali_diteruskan: generik, muat kolom outbox, hanya nomor pengajuan, berlabel
+[lulus] Teks izin.wali_masuk_murobi: generik, muat kolom outbox, hanya nomor pengajuan, berlabel
+[lulus] Teks izin.wali_perlu_penetapan_murobi: generik, muat kolom outbox, hanya nomor pengajuan, berlabel
+[lulus] Teks izin.wali_diputus: generik, muat kolom outbox, hanya nomor pengajuan, berlabel
+[lulus] Teks izin.wali_keputusan_dikoreksi: generik, muat kolom outbox, hanya nomor pengajuan, berlabel
+[lulus] Teks izin.wali_dibatalkan: generik, muat kolom outbox, hanya nomor pengajuan, berlabel
+[lulus] Katalog tanpa tanggal, nama, atau placeholder isi
+[lulus] Perakitan dan antrean tidak membaca nama santri, alasan, catatan, atau nomor telepon
+[lulus] Kunci peristiwa berversi dan muat 120 karakter
+[lulus] Data tautan hanya {tipe, pengajuan_id}
+[lulus] pengajuan_id NULL (pusat notifikasi tidak menggabungkan nama santri); WhatsApp tidak pernah; Push hanya saat sakelar menyala
+
+=== T-2. Antrean transaksional dan kegagalan ===
+[lulus] Savepoint → baris terkini → penerima dihitung ulang tanpa aktor → antre (dedup) → audit metadata → lepas savepoint
+[lulus] Galat antrean dikembalikan ke savepoint dan dicatat; hanya deadlock (transaksi sudah dibatalkan InnoDB) menjadi 409
+[lulus] Log galat hanya nama peristiwa dan nomor
+[lulus] app/Izin/IzinWaliService.php: kode galat dibaca sebelum rollback; deadlock → 409
+[lulus] app/Izin/IzinWorkflowService.php: kode galat dibaca sebelum rollback; deadlock → 409
+[lulus] IzinWriteRepository membawa kode galat MySQL pada exception (tanpa perubahan SQL)
+
+=== T-3. Kait peralihan tahap ===
+[lulus] IzinWaliService::buat mengantre notifikasi sesudah mutasi, di dalam transaksi
+[lulus] IzinWaliService::tetapkanPembimbing mengantre notifikasi sesudah mutasi, di dalam transaksi
+[lulus] IzinWaliService::tinjau mengantre notifikasi sesudah mutasi, di dalam transaksi
+[lulus] IzinWaliService::perbaiki mengantre notifikasi sesudah mutasi, di dalam transaksi
+[lulus] IzinWaliService::batalkan mengantre notifikasi sesudah mutasi, di dalam transaksi
+[lulus] Jalur V2 atas baris wali: penetapan murobi → murobi, keputusan/koreksi → wali pengaju (V7); notifikasi V2 lama tidak dipancarkan
+
+=== T-4. Worker Push dan tautan ===
+[lulus] Worker: pemeriksaan ulang penerima/keadaan → teks dari katalog → data hanya penunjuk → sakelar dibaca ulang → provider
+[lulus] Push basi (versi berubah) atau penerima tidak berhak lagi tidak dikirim
+[lulus] Penerima: pembimbing sah, murobi berpenugasan, admin, atau HANYA wali pengaju (bukan seluruh wali santri)
+[lulus] Wali pengaju diperiksa: akun aktif ber-role orang tua, data wali aktif, relasi santri aktif
+[lulus] Pusat notifikasi web membuka rincian V7 (yang memeriksa ulang hak)
+
+=== T-5. Laporan ===
+[lulus] Kartu, daftar, dan ekspor memakai satu pembangun WHERE dan FROM yang sama
+[lulus] SQL laporan tidak membaca alasan, catatan, atau alasan keputusan
+[lulus] Cakupan di SQL: tidak dikenal → 1 = 0; pembimbing sah; relasi wali aktif
+[lulus] Cakupan dihitung ulang dari basis data; parameter peran hanya memilih peran yang dimiliki
+[lulus] Ekspor diaudit dan aman spreadsheet
+[lulus] Rute API laporan dan ekspor
+[lulus] Halaman laporan memakai penjaga V7 (no-store) dan keluaran ter-escape
+
+=== T-6. Batas Fase 3 terhadap baseline ===
+[lulus] Hanya berkas Fase 3 yang berubah dari baseline 96dc827
+[lulus] Tanpa migrasi; Auth, Penugasan, Navigation/Ui, BSA, Kesehatan, V3, V4, PSB, dan admin tidak berubah
+[lulus] Uji dan alat Fase 1–2 tidak diubah (oracle historis tidak dilonggarkan)
+
+=== T-7. Lint ===
+[lulus] php -l 24 berkas PHP baru/berubah
+
+Hasil: 44 lulus, 0 gagal

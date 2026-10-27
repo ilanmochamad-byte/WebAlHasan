@@ -22,7 +22,8 @@ use Throwable;
  * pada baris yang SAMA, lalu penetapan murobi, keputusan murobi/admin
  * pengganti, dan koreksi tetap `IzinWorkflowService` V2. Penolakan pembimbing
  * berstatus `Ditolak Pembimbing` dan tidak pernah menulis `izin_keputusan`.
- * Notifikasi V7 adalah Fase 3 dan sengaja belum ada di sini.
+ * Fase 3: setiap peralihan tahap mengantre notifikasi V7 (`IzinWaliNotifikasi`)
+ * di dalam transaksi yang sama; kegagalan antrean tidak membatalkan mutasi.
  *
  * Prinsip (sama dengan alur V2 `IzinWorkflowService`):
  *   1. Hak dihitung ulang dari basis data pada setiap panggilan; parameter
@@ -67,7 +68,8 @@ final class IzinWaliService
         private IzinIdempotency $idempotency,
         private Capabilities $capabilities,
         private AuditLogger $audit,
-        private ?IzinRouter $murobiRouter = null
+        private ?IzinRouter $murobiRouter = null,
+        private ?IzinWaliNotifikasi $notifikasi = null
     ) {
     }
 
@@ -268,6 +270,7 @@ final class IzinWaliService
                 'jumlah_kandidat_pembimbing' => $routing['jumlah'],
                 'pembimbing_pengurus_id' => $routing['pengurus_id'],
             ], $userId);
+            $this->notifikasi()->antrekanTahapPembimbing($id, $userId);
 
             return $response + ['idempotent_replay' => false, 'status_http' => 201];
         });
@@ -400,6 +403,7 @@ final class IzinWaliService
                 ],
                 $userId
             );
+            $this->notifikasi()->antrekanTahapPembimbing($id, $userId);
 
             return $response + ['idempotent_replay' => false, 'status_http' => 200];
         });
@@ -560,6 +564,13 @@ final class IzinWaliService
                 'jumlah_kandidat_murobi' => $jumlahMurobi,
                 'catatan_terisi' => $catatan !== null,
             ], $userId);
+            if ($tindakan === IzinWaliRepository::TINJAUAN_TERUSKAN) {
+                $this->notifikasi()->antrekan(IzinWaliNotifikasi::DITERUSKAN, $id, $userId);
+                $this->notifikasi()->antrekan($jumlahMurobi === 1 ? IzinWaliNotifikasi::MASUK_MUROBI : IzinWaliNotifikasi::PERLU_PENETAPAN_MUROBI, $id, $userId);
+            } else {
+                $this->notifikasi()->antrekan($tindakan === IzinWaliRepository::TINJAUAN_TOLAK
+                    ? IzinWaliNotifikasi::DITOLAK_PEMBIMBING : IzinWaliNotifikasi::PERLU_PERBAIKAN, $id, $userId);
+            }
 
             return $response + ['idempotent_replay' => false, 'status_http' => 200];
         });
@@ -685,6 +696,7 @@ final class IzinWaliService
                 ],
                 $userId
             );
+            $this->notifikasi()->antrekanTahapPembimbing($id, $userId);
 
             return $response + ['idempotent_replay' => false, 'status_http' => 200];
         });
@@ -743,6 +755,7 @@ final class IzinWaliService
                 'tahap_sebelum' => self::tahap($statusSebelum),
                 'murobi_guru_id' => $locked['murobi_guru_id'] === null ? null : (int) $locked['murobi_guru_id'],
             ], $userId);
+            $this->notifikasi()->antrekan(IzinWaliNotifikasi::DIBATALKAN, $id, $userId);
 
             return $response + ['idempotent_replay' => false, 'status_http' => 200];
         });
@@ -916,6 +929,8 @@ final class IzinWaliService
                 'peran_akses' => self::PERAN_ADMIN,
                 'pengajuan' => $this->proyeksiPetugas($row),
                 'penetapan' => $this->repo->penetapan($id),
+                // Fase 3: jejak antrean/pengiriman notifikasi (metadata, tanpa isi).
+                'notifikasi' => $this->notifikasi()->jejak($id),
                 // Admin memantau dan menetapkan; tidak menggantikan tinjauan
                 // pembimbing. Penetapan murobi dan keputusan pengganti memakai
                 // halaman/API V2 pada ID yang sama.
@@ -1320,6 +1335,11 @@ final class IzinWaliService
         }
     }
 
+    private function notifikasi(): IzinWaliNotifikasi
+    {
+        return $this->notifikasi ??= new IzinWaliNotifikasi($this->repo->db(), $this->audit);
+    }
+
     private function murobiRouter(): IzinRouter
     {
         return $this->murobiRouter ??= new IzinRouter($this->repo->db());
@@ -1361,8 +1381,12 @@ final class IzinWaliService
 
             return $result;
         } catch (Throwable $exception) {
+            // Kode galat dibaca SEBELUM rollback (rollback mengosongkannya).
+            // Fase 3: baris outbox berkunci asing ke akun penerima, sehingga
+            // balapan wali vs pemroses dapat berakhir deadlock; korban dijawab
+            // 409 seperti konflik versi, bukan 500.
+            $errno = (int) $exception->getCode() ?: $this->repo->db()->errno;
             $this->repo->rollback();
-            $errno = $this->repo->db()->errno;
             if (!$exception instanceof IzinException && in_array($errno, [1020, 1205, 1213], true)) {
                 throw IzinException::conflict('Pengajuan sedang diproses permintaan lain. Coba lagi sesaat lagi.');
             }

@@ -8,7 +8,7 @@ use App\Izin\IzinWaliService;
 require_once __DIR__ . '/_izin_wali.php';
 
 /**
- * Pengajuan izin wali (PRD V7 Fase 1–2) — satu alamat, tampilan per peran:
+ * Pengajuan izin wali (PRD V7 Fase 1–3) — satu alamat, tampilan per peran:
  *   - orang tua : pengajuan wali untuk anak berelasi aktif (pengaju: isi
  *                 lengkap; wali lain: status ringkas) + tombol Ajukan izin;
  *   - pembimbing: antrean yang dialamatkan kepadanya (tinjauan di rincian)
@@ -58,7 +58,8 @@ portal_header($judul, $userCapabilities, $mode, $currentUser, [
         IzinWaliService::PERAN_PEMBIMBING => 'Pengajuan wali untuk santri dalam cakupan penugasan pembimbing aktif Anda.',
         default => 'Seluruh pengajuan wali. Antrean admin berisi pengajuan tanpa tepat satu pembimbing sah atau murobi tunggal.',
     },
-    'actions' => $tombol,
+    'actions' => $tombol . '<a class="btn btn-outline-secondary" href="' . portal_e(app_url('/portal/izin_wali_laporan.php')) . '">'
+        . '<i class="fas fa-chart-column" aria-hidden="true"></i> Laporan</a>',
     'breadcrumbs' => [
         ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
         $peran === IzinWaliService::PERAN_WALI

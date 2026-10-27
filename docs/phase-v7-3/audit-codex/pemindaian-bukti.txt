@@ -1,0 +1,1 @@
+Pemindaian 112 berkas teks bukti: nol pola bearer/token push/access_token/refresh_token/password mentah yang diuji.

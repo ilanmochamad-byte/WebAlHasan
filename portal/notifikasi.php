@@ -95,6 +95,11 @@ function notifikasi_tujuan(array $item): ?string
     if ($bsa !== null && (int) ($tautan[$bsa[0]] ?? 0) > 0) {
         return app_url($bsa[1] . '?id=' . (int) $tautan[$bsa[0]]);
     }
+    // PRD V7 Fase 3: pengajuan izin wali; halaman V7 memeriksa ulang peran,
+    // penugasan, dan relasi wali sebelum menampilkan apa pun.
+    if (($tautan['tipe'] ?? '') === 'izin_wali' && (int) ($tautan['pengajuan_id'] ?? 0) > 0) {
+        return app_url('/portal/izin_wali_detail.php?id=' . (int) $tautan['pengajuan_id']);
+    }
     if (($item['pengajuan_id'] ?? null) !== null) {
         return app_url('/portal/izin_detail.php?id=' . (int) $item['pengajuan_id']);
     }
@@ -214,6 +219,7 @@ $chips = [
                         ($detail['tautan']['tipe'] ?? '') === 'bsa_tagihan' => 'Buka tagihan',
                         ($detail['tautan']['tipe'] ?? '') === 'bsa_pembayaran' => 'Buka kuitansi pembayaran',
                         ($detail['tautan']['tipe'] ?? '') === 'bsa_tabungan' => 'Buka transaksi tabungan',
+                        ($detail['tautan']['tipe'] ?? '') === 'izin_wali' => 'Buka pengajuan izin',
                         default => 'Buka detail izin',
                     }) ?></a>
                 <?php endif; ?>

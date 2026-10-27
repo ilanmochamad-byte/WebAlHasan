@@ -1,0 +1,56 @@
+[lulus] D-A pusat notifikasi pembimbing 375px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-A 375px: notifikasi pembimbing membuka rincian pengajuan
+[lulus] D-B 375px: wali pengaju membuka notifikasi "diteruskan" ke rincian terkini
+[lulus] D-B 375px: wali kedua tidak menerima notifikasi pengajuan wali A
+[lulus] D-A pusat notifikasi pembimbing 768px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-A 768px: notifikasi pembimbing membuka rincian pengajuan
+[lulus] D-B 768px: wali pengaju membuka notifikasi "diteruskan" ke rincian terkini
+[lulus] D-B 768px: wali kedua tidak menerima notifikasi pengajuan wali A
+[lulus] D-A pusat notifikasi pembimbing 1280px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-A 1280px: notifikasi pembimbing membuka rincian pengajuan
+[lulus] D-B 1280px: wali pengaju membuka notifikasi "diteruskan" ke rincian terkini
+[lulus] D-B 1280px: wali kedua tidak menerima notifikasi pengajuan wali A
+[lulus] D-C laporan admin 375px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C admin 375px: kartu total = data-total = baris tabel halaman pertama (1055)
+[lulus] D-C laporan admin 768px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C admin 768px: kartu total = data-total = baris tabel halaman pertama (1055)
+[lulus] D-C admin 768px: saringan asal wali hanya baris asal Wali
+[lulus] D-C admin 768px: tautan ekspor membawa saringan yang sama
+[lulus] D-C laporan admin 1280px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C admin 1280px: kartu total = data-total = baris tabel halaman pertama (1055)
+[lulus] D-C laporan pembimbing 375px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C pembimbing 375px: kartu total = data-total = baris tabel halaman pertama (3)
+[lulus] D-C laporan pembimbing 768px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C pembimbing 768px: kartu total = data-total = baris tabel halaman pertama (3)
+[lulus] D-C laporan pembimbing 1280px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C pembimbing 1280px: kartu total = data-total = baris tabel halaman pertama (3)
+[lulus] D-C laporan murobi 375px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C murobi 375px: kartu total = data-total = baris tabel halaman pertama (28)
+[lulus] D-C laporan murobi 768px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C murobi 768px: kartu total = data-total = baris tabel halaman pertama (28)
+[lulus] D-C laporan murobi 1280px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C murobi 1280px: kartu total = data-total = baris tabel halaman pertama (28)
+[lulus] D-C laporan wali pengaju 375px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C wali pengaju 375px: kartu total = data-total = baris tabel halaman pertama (3)
+[lulus] D-C laporan wali pengaju 768px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C wali pengaju 768px: kartu total = data-total = baris tabel halaman pertama (3)
+[lulus] D-C laporan wali pengaju 1280px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C wali pengaju 1280px: kartu total = data-total = baris tabel halaman pertama (3)
+[lulus] D-C laporan wali kedua 375px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C wali kedua 375px: kartu total = data-total = baris tabel halaman pertama (3)
+[lulus] D-C wali kedua 375px: pengajuan wali A ringkas "Wali lain"
+[lulus] D-C laporan wali kedua 768px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C wali kedua 768px: kartu total = data-total = baris tabel halaman pertama (3)
+[lulus] D-C wali kedua 768px: pengajuan wali A ringkas "Wali lain"
+[lulus] D-C laporan wali kedua 1280px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-C wali kedua 1280px: kartu total = data-total = baris tabel halaman pertama (3)
+[lulus] D-C wali kedua 1280px: pengajuan wali A ringkas "Wali lain"
+[lulus] D-D 375px tanpa JavaScript: saringan hasil laporan bekerja
+[lulus] D-D laporan tanpa JavaScript 375px: rapi di kerangka bersama, tanpa alasan izin
+[lulus] D-D 375px tanpa JavaScript: tautan notifikasi membuka rincian
+[lulus] D-E admin: jejak notifikasi tampil di rincian
+[lulus] D-F tanpa galat JavaScript
+[lulus] D-F tanpa confirm()/alert() bawaan
+
+Lulus: 53 · Gagal: 0
+galat PHP log server browser: 0

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Notification;
 
 use App\Bsa\BsaNotifikasi;
+use App\Izin\IzinWaliNotifikasi;
 use App\Kesehatan\RingkasanService;
 use App\Notification\Push\ExpoPushClient;
 use App\Notification\Push\PushClient;
@@ -244,6 +245,21 @@ final class NotificationDispatcher
             $row['judul'] = $teks['judul'];
             $row['isi'] = $teks['isi'];
         }
+        $penunjukIzinWali = null;
+        if (in_array((string) $row['event_type'], IzinWaliNotifikasi::EVENTS, true)) {
+            // PRD V7 Fase 3: pengajuan masih pada keadaan peristiwa (versi sama)
+            // dan penerima masih berhak (pembimbing sah, murobi tujuan aktif,
+            // admin aktif, atau wali pengaju berelasi aktif); teks generik.
+            $penunjukIzinWali = IzinWaliNotifikasi::pushMasihBerhak($this->db, $row);
+            if ($penunjukIzinWali === null) {
+                $this->outbox->markFailed($outboxId, $owner, 'AKSES_BERUBAH', 'Penerima atau keadaan pengajuan tidak lagi berhak.', true);
+
+                return 'gagal';
+            }
+            $teks = IzinWaliNotifikasi::teks((string) $row['event_type'], (int) $penunjukIzinWali['pengajuan_id']);
+            $row['judul'] = $teks['judul'];
+            $row['isi'] = $teks['isi'];
+        }
         $perangkat = $this->devices->activeTokensFor($userId);
 
         if ($perangkat === []) {
@@ -272,6 +288,9 @@ final class NotificationDispatcher
         }
         if ($penunjukBsa !== null) {
             $data = $penunjukBsa;
+        }
+        if ($penunjukIzinWali !== null) {
+            $data = $penunjukIzinWali;
         }
 
         $messages = [];
