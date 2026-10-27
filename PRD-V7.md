@@ -2,7 +2,7 @@
 
 > **Untuk agen AI:** Dokumen ini adalah instruksi implementasi. Jika ada hal yang tidak jelas, jangan menebak—tanyakan kepada Human Developer. Ketika keputusan berubah selama implementasi, perbarui dokumen ini agar tetap menjadi sumber kebenaran.
 
-**Status:** Kebutuhan, alur, lima fase, dan seluruh asumsi V7 disetujui Human Developer pada 27 Oktober 2026. Implementator dan auditor V7 belum ditetapkan dalam `AGENTS.md`; dokumen ini bukan perintah implementasi, merge, migrasi/deploy produksi, atau rilis aplikasi. Audit teknis lokal V6 Fase 5 sudah lulus, tetapi gerbang akhir/produksi V6 masih terbuka menurut `docs/phase-v6-5/AUDIT-CODEX.md`; perencanaan V7 tidak mengubah status itu.
+**Status:** Kebutuhan, alur, lima fase, dan seluruh asumsi V7 disetujui Human Developer pada 27 Oktober 2026. Claude Code ditetapkan sebagai implementator dan Codex sebagai auditor V7, bergantian satu fase per giliran; prompt ada di `docs/prd-v7/prompts-implementasi-audit.md`. Dokumen ini bukan perintah implementasi semua fase, merge, migrasi/deploy produksi, atau rilis aplikasi. Audit teknis lokal V6 Fase 5 sudah lulus, tetapi gerbang akhir/produksi V6 masih terbuka menurut `docs/phase-v6-5/AUDIT-CODEX.md`; perencanaan V7 tidak mengubah status itu.
 
 **Hubungan dengan V2:** V7 menambah **jalur orang tua → pembimbing → murobi**. Jalur V2 **pengurus → murobi** tetap tersedia. Keputusan akhir izin yang diteruskan tetap oleh guru yang mendapat penugasan murobi, atau admin sebagai pengganti beralasan. V7 mengganti batas V2 yang dahulu membuat orang tua hanya-baca **khusus untuk pengajuan yang dibuat orang tua**; aturan V2 lain dipertahankan kecuali dinyatakan berubah di bawah.
 
@@ -61,7 +61,7 @@ Orang tua saat ini dapat melihat status izin anak, tetapi tidak dapat mengajukan
 - Periksa pembimbing aktif menurut tanggal, tahun ajaran, kelas/kamar, dan kondisi santri; admin hanya menetapkan calon yang sah. Periksa ulang penugasan dan akun pada setiap permintaan; bila penugasan dicabut sebelum tindakan, sesi/token lama tidak memberi hak. Aturan persis perpindahan cakupan saat permohonan sedang berjalan memerlukan penanganan audit/rerouting tanpa menghapus jejak.
 - Pengajuan wali dan pengurus berbagi pemeriksaan benturan waktu V2. Status wali yang masih menunggu pembimbing, perbaikan, atau penetapan admin termasuk pengajuan aktif yang menahan pengajuan lain pada rentang sama; status ditolak pembimbing/dibatalkan melepaskan rentang.
 - Perubahan skema aditif dan berversi setelah migrasi terakhir yang benar-benar ada. Sediakan preflight, backup, rollback aman, dan verifier; uji pada salinan MySQL/MariaDB serta lindungi data identitas santri/wali dan riwayat V1–V6. Jangan menjalankan migrasi produksi dalam fase implementasi tanpa keputusan Human Developer.
-- Belum ada pembagian peran implementator/auditor V7 di `AGENTS.md`. Tetapkan sebelum Fase 1; satu fase per giliran dan audit independen. Status gerbang produksi V6 yang masih terbuka tidak boleh dinyatakan selesai hanya karena V7 dirancang.
+- Pembagian peran V7 tercatat di `AGENTS.md`: Claude Code mengimplementasikan dan Codex mengaudit secara independen, bergantian satu fase per giliran. Fase 1 tetap memerlukan instruksi Human Developer tersendiri. Status gerbang produksi V6 yang masih terbuka tidak boleh dinyatakan selesai hanya karena V7 dirancang.
 
 ### 5.3 Status, tindakan, dan batas akses
 
@@ -85,7 +85,7 @@ Orang tua saat ini dapat melihat status izin anak, tetapi tidak dapat mengajukan
 
 ## 6. Persyaratan Bertahap
 
-Urutan lima fase berikut telah disetujui. Setiap fase menghasilkan alur yang dapat dicoba manual pada lingkungan uji; fase parsial bukan izin rilis. Implementasi baru dimulai setelah Human Developer menetapkan implementator/auditor V7 dan memerintahkan satu fase tertentu.
+Urutan lima fase berikut telah disetujui. Setiap fase menghasilkan alur yang dapat dicoba manual pada lingkungan uji; fase parsial bukan izin rilis. Implementasi baru dimulai setelah Human Developer memerintahkan satu fase tertentu.
 
 ### Fase 1: Fondasi Pengajuan Wali dan Routing Pembimbing
 
