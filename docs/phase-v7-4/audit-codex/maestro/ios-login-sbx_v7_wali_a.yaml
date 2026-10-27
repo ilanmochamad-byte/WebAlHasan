@@ -1,0 +1,54 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Masukkan username",
+      "timeout": 15000
+    }
+  },
+  {
+    "tapOn": "Masukkan username"
+  },
+  "eraseText",
+  {
+    "inputText": "sbx_v7_wali_a"
+  },
+  {
+    "tapOn": "Masuk ke akun Anda"
+  },
+  {
+    "tapOn": "Masukkan password"
+  },
+  "eraseText",
+  {
+    "inputText": "Sandbox#123"
+  },
+  {
+    "pressKey": "enter"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Not Now|Diajukan wali lain|Menunggu tinjauan pembimbing|Perlu perbaikan wali|Dibatalkan",
+      "timeout": 15000
+    }
+  },
+  {
+    "runFlow": {
+      "when": {
+        "visible": "Not Now"
+      },
+      "commands": [
+        {
+          "tapOn": "Not Now"
+        }
+      ]
+    }
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Diajukan wali lain|Menunggu tinjauan pembimbing|Perlu perbaikan wali|Dibatalkan",
+      "timeout": 15000
+    }
+  }
+]

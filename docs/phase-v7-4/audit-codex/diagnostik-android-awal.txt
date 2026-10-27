@@ -1,0 +1,4 @@
+/private/tmp/v7f4-codex-android.py:15: DeprecationWarning: Testing an element's truth value will always return True in future versions.  Use specific 'len(elem)' or 'elem is not None' test instead.
+  if not u.find(s,timeout=45):raise RuntimeError('Tidak ditemukan '+s)
+[gagal] Tidak ditemukan Masuk ke akun Anda
+Ringkasan: 0 lulus, 1 gagal

@@ -1,0 +1,4 @@
+Android log baris: 618 baris berpenanda: 0
+Android berkas data: 51 berkas berpenanda: 1
+iOS log baris: 33537 baris berpenanda: 0
+iOS berkas data: 195 berkas berpenanda: 0

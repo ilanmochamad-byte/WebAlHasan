@@ -44,7 +44,7 @@ echo '=== X-1. Batas web Fase 4 ===' . PHP_EOL;
 $assert(trim($git("cat-file -t $baseline")) === 'commit', "Baseline audit Fase 3 $baseline tersedia");
 $assert(array_filter($berubah, static fn (string $f): bool => str_starts_with($f, 'database/')) === [], 'Tidak ada migrasi/rollback baru atau berubah');
 $izin = static fn (string $f): bool => $f === 'app/Api/IzinApiService.php' || $f === 'AGENTS.md' || $f === 'docs/api-v1.md'
-    || str_starts_with($f, 'docs/phase-v7-4/') || preg_match('#^tests/(v7_phase4_[a-z_]+\.(php|sh)|browser/uji-v7-fase4-app\.mjs)$#', $f) === 1;
+    || str_starts_with($f, 'docs/phase-v7-4/') || preg_match('#^tests/(v7_phase4_[a-z_]+\.(php|sh)|browser/uji-v7-fase4-(app|audit|regresi)\.mjs)$#', $f) === 1;
 $lain = array_values(array_filter($berubah, static fn (string $f): bool => !$izin($f)));
 $assert($lain === [], 'Berkas web berubah hanya dalam daftar Fase 4' . ($lain === [] ? '' : ': ' . implode(', ', $lain)));
 foreach (['app/Izin', 'app/Auth', 'app/Notification', 'api/v1/index.php', 'portal'] as $jalur) {
@@ -95,7 +95,7 @@ $assert(str_contains($m('src/app/_layout.tsx'), '<Stack.Screen name="izin-wali"'
 
 // ===================================================================== X-5
 echo PHP_EOL . '=== X-5. Privasi dan keadaan layar ===' . PHP_EOL;
-$layout = $m('src/app/izin-wali/_layout.tsx');
+$layout = $m('src/app/izin-wali/_layout.tsx') . $m('src/components/izin-wali-protection.tsx');
 $assert(str_contains($layout, 'preventScreenCaptureAsync(key)') && str_contains($layout, 'enableAppSwitcherProtectionAsync') && str_contains($layout, "status !== 'ready'"),
     'Perlindungan tangkapan layar dipasang sebelum layar V7 dimuat');
 $modul = $semua . $klien . $hook . $m('src/components/izin-wali-shared.tsx') . $m('src/izin-wali/forms.ts');

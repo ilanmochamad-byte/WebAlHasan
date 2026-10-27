@@ -1,0 +1,10 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Perbaikan pertama iOS",
+      "timeout": 15000
+    }
+  }
+]

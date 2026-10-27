@@ -1,0 +1,4 @@
+[lulus] iOS F-1: draf versi 2 setelah latar menolak 409 terhadap versi 4, tanpa menimpa perangkat kedua
+[lulus] iOS Muat versi terbaru mengganti draf lama dengan isi server
+[gagal] Kolom input tidak ditemukan Alasan pembatalan
+Ringkasan: 2 lulus, 1 gagal

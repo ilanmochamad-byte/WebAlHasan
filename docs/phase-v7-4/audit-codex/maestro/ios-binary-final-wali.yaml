@@ -1,0 +1,13 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "RAHASIA-IOS-V7 perangkat kedua",
+      "timeout": 15000
+    }
+  },
+  {
+    "pressKey": "home"
+  }
+]

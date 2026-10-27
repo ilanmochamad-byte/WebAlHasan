@@ -1,0 +1,6 @@
+Android: APK Debug dev client 24 Oktober 2026, SHA-256 f2f443fbeed626360da3821cae8109adb44ad1225246bb559924bd28072fe441; tidak membangun APK baru. Metro sumber koreksi/paket lock ter-commit dari direktori node_modules nyata, API fixture port 8977. Emulator Medium_Phone Android 16, bukan perangkat fisik.
+iOS: xcodebuild -workspace ios/alhasanApps.xcworkspace -scheme alhasanApps -configuration Release -sdk iphonesimulator -arch arm64 -derivedDataPath /private/tmp/v7f4-codex-mobile/dd CODE_SIGN_IDENTITY=- CODE_SIGNING_ALLOWED=YES CODE_SIGNING_REQUIRED=YES DEVELOPMENT_TEAM=
+EXPO_NO_DOTENV=1 EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:8977/api/v1
+Build pertama gagal cache kompilasi salinan masih menunjuk jalur lama; cache dibuang. Build akhir, final dan final2: BUILD SUCCEEDED. Tidak membangun arsip distribusi. iPhone 17 Pro simulator iOS 26.2, Xcode 27.1; bukan iOS Debug atau perangkat fisik.
+Bundel Hermes final: API fixture port 8977, nol host produksi, nol teks diagnostik sementara. Smoke final2 pada ios-binary-final.txt.
+22fd94791f7ae6baab4d4989a36cd46de09dd74bd25e68acc1090fd383c80ac0  /private/tmp/v7f4-codex-mobile/dd/Build/Products/Release-iphonesimulator/alhasanApps.app/main.jsbundle

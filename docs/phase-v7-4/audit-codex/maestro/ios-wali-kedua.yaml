@@ -1,0 +1,16 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Diajukan wali lain",
+      "timeout": 15000
+    }
+  },
+  {
+    "assertNotVisible": ".*RAHASIA-IOS-V7.*"
+  },
+  {
+    "assertNotVisible": "Batalkan pengajuan"
+  }
+]
