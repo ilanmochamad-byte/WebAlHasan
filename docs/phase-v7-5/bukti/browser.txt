@@ -1,0 +1,101 @@
+[lulus] E-A 375px: wali mengajukan dengan klik ganda → pengajuan #2706 tercantum
+[lulus] E-A daftar wali 375px: tidak melebar, kerangka bersama
+[lulus] E-A 375px: pembimbing meminta perbaikan
+[lulus] E-A 375px: wali memperbaiki dan mengirim ulang
+[lulus] E-A 375px: pembimbing meneruskan ke murobi
+[lulus] E-A rincian V2 murobi 375px: tidak melebar, kerangka bersama
+[lulus] E-A 375px: murobi memutus di dialog V2 pada ID yang sama
+[lulus] E-A 375px: wali pengaju dan wali kedua melihat Disetujui; wali kedua tanpa alasan/tindakan
+[lulus] E-A rincian wali sesudah keputusan 375px: tidak melebar, kerangka bersama
+[lulus] E-A rincian wali kedua 375px: tidak melebar, kerangka bersama, tanpa alasan
+[lulus] E-B 375px: pengurus membuat pengajuan V2 langsung (#2707), tanpa tahap pembimbing
+[lulus] E-B 375px: murobi memutus pengajuan pengurus
+[lulus] E-A 768px: wali mengajukan dengan klik ganda → pengajuan #2708 tercantum
+[lulus] E-A daftar wali 768px: tidak melebar, kerangka bersama
+[lulus] E-A 768px: pembimbing meminta perbaikan
+[lulus] E-A 768px: wali memperbaiki dan mengirim ulang
+[lulus] E-A 768px: pembimbing meneruskan ke murobi
+[lulus] E-A rincian V2 murobi 768px: tidak melebar, kerangka bersama
+[lulus] E-A 768px: murobi memutus di dialog V2 pada ID yang sama
+[lulus] E-A 768px: wali pengaju dan wali kedua melihat Disetujui; wali kedua tanpa alasan/tindakan
+[lulus] E-A rincian wali sesudah keputusan 768px: tidak melebar, kerangka bersama
+[lulus] E-A rincian wali kedua 768px: tidak melebar, kerangka bersama, tanpa alasan
+[lulus] E-B 768px: pengurus membuat pengajuan V2 langsung (#2709), tanpa tahap pembimbing
+[lulus] E-B 768px: murobi memutus pengajuan pengurus
+[lulus] E-A 1280px: wali mengajukan dengan klik ganda → pengajuan #2710 tercantum
+[lulus] E-A daftar wali 1280px: tidak melebar, kerangka bersama
+[lulus] E-A 1280px: pembimbing meminta perbaikan
+[lulus] E-A 1280px: wali memperbaiki dan mengirim ulang
+[lulus] E-A 1280px: pembimbing meneruskan ke murobi
+[lulus] E-A rincian V2 murobi 1280px: tidak melebar, kerangka bersama
+[lulus] E-A 1280px: murobi memutus di dialog V2 pada ID yang sama
+[lulus] E-A 1280px: wali pengaju dan wali kedua melihat Disetujui; wali kedua tanpa alasan/tindakan
+[lulus] E-A rincian wali sesudah keputusan 1280px: tidak melebar, kerangka bersama
+[lulus] E-A rincian wali kedua 1280px: tidak melebar, kerangka bersama, tanpa alasan
+[lulus] E-B 1280px: pengurus membuat pengajuan V2 langsung (#2711), tanpa tahap pembimbing
+[lulus] E-B 1280px: murobi memutus pengajuan pengurus
+[lulus] E-C 375px: wali asing membuka ID pengajuan → 404 tanpa isi
+[lulus] E-C 375px: pembimbing lain membuka ID pengajuan → 404 tanpa isi
+[lulus] E-C 375px: murobi lain membuka ID pengajuan → 404 tanpa isi
+[lulus] E-D laporan V2 admin 375px: 200
+[lulus] E-D laporan V2 admin 375px: tidak melebar, kerangka bersama
+[lulus] E-D cetak laporan V2 admin 375px: 200
+[lulus] E-D cetak laporan V2 admin 375px: tidak melebar
+[lulus] E-D laporan V2 murobi 375px: 200
+[lulus] E-D laporan V2 murobi 375px: tidak melebar, kerangka bersama
+[lulus] E-D laporan V2 pengurus 375px: 200
+[lulus] E-D laporan V2 pengurus 375px: tidak melebar, kerangka bersama
+[lulus] E-D laporan V7 admin 375px: 200
+[lulus] E-D laporan V7 admin 375px: tidak melebar, kerangka bersama, tanpa alasan
+[lulus] E-D laporan V7 wali 375px: 200
+[lulus] E-D laporan V7 wali 375px: tidak melebar, kerangka bersama, tanpa alasan
+[lulus] E-D daftar perizinan V2 admin 375px: 200
+[lulus] E-D daftar perizinan V2 admin 375px: tidak melebar, kerangka bersama
+[lulus] E-D pemantauan V7 admin 375px: 200
+[lulus] E-D pemantauan V7 admin 375px: tidak melebar, kerangka bersama, tanpa alasan
+[lulus] E-D laporan V2 admin 768px: 200
+[lulus] E-D laporan V2 admin 768px: tidak melebar, kerangka bersama
+[lulus] E-D cetak laporan V2 admin 768px: 200
+[lulus] E-D cetak laporan V2 admin 768px: tidak melebar
+[lulus] E-D laporan V2 murobi 768px: 200
+[lulus] E-D laporan V2 murobi 768px: tidak melebar, kerangka bersama
+[lulus] E-D laporan V2 pengurus 768px: 200
+[lulus] E-D laporan V2 pengurus 768px: tidak melebar, kerangka bersama
+[lulus] E-D laporan V7 admin 768px: 200
+[lulus] E-D laporan V7 admin 768px: tidak melebar, kerangka bersama, tanpa alasan
+[lulus] E-D laporan V7 wali 768px: 200
+[lulus] E-D laporan V7 wali 768px: tidak melebar, kerangka bersama, tanpa alasan
+[lulus] E-D daftar perizinan V2 admin 768px: 200
+[lulus] E-D daftar perizinan V2 admin 768px: tidak melebar, kerangka bersama
+[lulus] E-D pemantauan V7 admin 768px: 200
+[lulus] E-D pemantauan V7 admin 768px: tidak melebar, kerangka bersama, tanpa alasan
+[lulus] E-D laporan V2 admin 1280px: 200
+[lulus] E-D laporan V2 admin 1280px: tidak melebar, kerangka bersama
+[lulus] E-D cetak laporan V2 admin 1280px: 200
+[lulus] E-D cetak laporan V2 admin 1280px: tidak melebar
+[lulus] E-D laporan V2 murobi 1280px: 200
+[lulus] E-D laporan V2 murobi 1280px: tidak melebar, kerangka bersama
+[lulus] E-D laporan V2 pengurus 1280px: 200
+[lulus] E-D laporan V2 pengurus 1280px: tidak melebar, kerangka bersama
+[lulus] E-D laporan V7 admin 1280px: 200
+[lulus] E-D laporan V7 admin 1280px: tidak melebar, kerangka bersama, tanpa alasan
+[lulus] E-D laporan V7 wali 1280px: 200
+[lulus] E-D laporan V7 wali 1280px: tidak melebar, kerangka bersama, tanpa alasan
+[lulus] E-D daftar perizinan V2 admin 1280px: 200
+[lulus] E-D daftar perizinan V2 admin 1280px: tidak melebar, kerangka bersama
+[lulus] E-D pemantauan V7 admin 1280px: 200
+[lulus] E-D pemantauan V7 admin 1280px: tidak melebar, kerangka bersama, tanpa alasan
+[lulus] E-E 375px tanpa JavaScript: wali mengajukan lalu membatalkan beralasan
+[lulus] E-E rincian dibatalkan tanpa JavaScript 375px: tidak melebar, kerangka bersama
+[lulus] E-E 375px tanpa JavaScript: laporan V2 terbaca
+[lulus] E-E laporan V2 tanpa JavaScript 375px: tidak melebar, kerangka bersama
+[lulus] E-E 375px tanpa JavaScript: laporan V7 terbaca
+[lulus] E-E laporan V7 tanpa JavaScript 375px: tidak melebar, kerangka bersama
+[lulus] E-F tanpa galat JavaScript
+[lulus] E-F tanpa confirm()/alert() bawaan
+
+Hasil: 95 lulus, 0 gagal
+[lulus] Klik ganda browser 2027-08-02: 1 pengajuan
+[lulus] Klik ganda browser 2027-08-09: 1 pengajuan
+[lulus] Klik ganda browser 2027-08-16: 1 pengajuan
+galat PHP server browser: 0

@@ -1,0 +1,27 @@
+[lulus] KC-0 Antrean uji berisi 12 baris WhatsApp
+
+=== KC-1. Dua worker bersamaan ===
+[lulus] KC-1a Kedua proses worker selesai tanpa galat
+[lulus] KC-1b Total terkirim kedua worker = 12 (tercatat 12)
+[lulus] KC-1c Adapter uji menerima tepat 12 pesan (tercatat 12)
+[lulus] KC-1d Tidak ada satu pun peristiwa yang terkirim dua kali
+[lulus] KC-1e Jurnal adapter uji menyamarkan nomor tujuan
+[lulus] KC-1f Seluruh baris antrean berstatus Sent setelah kedua worker selesai
+[lulus] KC-1g Tidak ada baris yang dicoba lebih dari satu kali
+[lulus] KC-1h Tidak ada baris yang tertinggal dalam keadaan terkunci
+
+=== KC-2. Klaim baris eksklusif ===
+[lulus] KC-2a Pemilik pertama memperoleh baris
+[lulus] KC-2b Dua pemilik tidak pernah memperoleh baris yang sama
+[lulus] KC-2c Gabungan klaim tidak memuat duplikat
+[lulus] KC-2d Pemilik lain tidak dapat menandai baris yang bukan klaimnya
+[lulus] KC-2e Pemilik yang benar dapat menyelesaikan barisnya
+
+=== KC-3. Sewa proses ===
+[lulus] KC-3a Proses pertama memperoleh sewa
+[lulus] KC-3b Proses kedua ditolak selama sewa masih berlaku
+[lulus] KC-3c Pemilik dapat memperpanjang sewa proses
+[lulus] KC-3d Proses lain tidak dapat memperpanjang sewa milik worker pertama
+[lulus] KC-3e Sewa dapat diambil kembali setelah dilepas
+[lulus] KC-3f Sewa kembali kosong setelah dilepas
+[bersih] Fixture uji concurrency Fase 4 dihapus.

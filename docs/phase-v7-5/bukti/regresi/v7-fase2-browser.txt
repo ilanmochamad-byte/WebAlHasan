@@ -1,0 +1,35 @@
+[lulus] C-A rincian pembimbing 375px: rapi di kerangka bersama
+[lulus] C-A 375px: pembimbing meminta perbaikan lewat dialog; tindakan tinjauan hilang
+[lulus] C-B 375px: wali pengaju melihat catatan perbaikan
+[lulus] C-B rincian wali perlu perbaikan 375px: rapi di kerangka bersama
+[lulus] C-B 375px: perbaikan terkirim, kembali menunggu pembimbing
+[lulus] C-C 375px: wali kedua hanya status ringkas tanpa formulir
+[lulus] C-C rincian wali kedua 375px: rapi di kerangka bersama
+[lulus] C-D 375px: klik ganda Teruskan → satu penerusan (dua tinjauan: minta perbaikan + teruskan)
+[lulus] C-F 375px: wali pengaju membatalkan sesudah diteruskan
+[lulus] C-F rincian dibatalkan 375px: rapi di kerangka bersama
+[lulus] C-A rincian pembimbing 768px: rapi di kerangka bersama
+[lulus] C-A 768px: pembimbing meminta perbaikan lewat dialog; tindakan tinjauan hilang
+[lulus] C-B 768px: wali pengaju melihat catatan perbaikan
+[lulus] C-B rincian wali perlu perbaikan 768px: rapi di kerangka bersama
+[lulus] C-B 768px: perbaikan terkirim, kembali menunggu pembimbing
+[lulus] C-C 768px: wali kedua hanya status ringkas tanpa formulir
+[lulus] C-C rincian wali kedua 768px: rapi di kerangka bersama
+[lulus] C-E 768px: wali melihat penolakan tahap pembimbing beserta alasannya; tanpa tombol batal
+[lulus] C-E rincian ditolak pembimbing 768px: rapi di kerangka bersama
+[lulus] C-A rincian pembimbing 1280px: rapi di kerangka bersama
+[lulus] C-A 1280px: pembimbing meminta perbaikan lewat dialog; tindakan tinjauan hilang
+[lulus] C-B 1280px: wali pengaju melihat catatan perbaikan
+[lulus] C-B rincian wali perlu perbaikan 1280px: rapi di kerangka bersama
+[lulus] C-B 1280px: perbaikan terkirim, kembali menunggu pembimbing
+[lulus] C-C 1280px: wali kedua hanya status ringkas tanpa formulir
+[lulus] C-C rincian wali kedua 1280px: rapi di kerangka bersama
+[lulus] C-D 1280px: klik ganda Teruskan → satu penerusan (dua tinjauan: minta perbaikan + teruskan)
+[lulus] C-D 1280px: rincian V2 murobi menandai asal wali dan catatan penerusan
+[lulus] C-D 1280px: murobi memutus lewat dialog V2; wali pengaju melihat keputusan
+[lulus] C-D rincian wali sesudah keputusan 1280px: rapi di kerangka bersama
+[lulus] C-G 375px tanpa JavaScript: minta perbaikan, perbaikan, teruskan, dan batal tersimpan
+[lulus] C-H tanpa galat JavaScript
+[lulus] C-H tanpa confirm()/alert() bawaan
+
+Lulus: 33 · Gagal: 0
