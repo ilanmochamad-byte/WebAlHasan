@@ -96,7 +96,8 @@ final class NotificationEvent
             'v6_bsa_pembayaran_sah' => 'Pembayaran tercatat',
             'v6_bsa_pembayaran_batal' => 'Pembaruan pembayaran',
             'v6_bsa_tabungan' => 'Transaksi tabungan',
-            default => $event,
+            // PRD V7 Fase 3: katalog label pengajuan izin wali.
+            default => \App\Izin\IzinWaliNotifikasi::label($event),
         };
     }
 

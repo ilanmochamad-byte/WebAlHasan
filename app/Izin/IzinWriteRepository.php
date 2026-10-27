@@ -344,7 +344,9 @@ final class IzinWriteRepository
     {
         $statement = $this->db->prepare($sql);
         if ($statement === false || !$this->run($statement, $params)) {
-            throw new RuntimeException('Data perizinan tidak dapat dikunci untuk diperbarui.');
+            // Kode galat MySQL dibawa sebagai kode exception (mis. 1213 deadlock)
+            // agar transaksi pengajuan wali dapat menjawab 409, bukan 500.
+            throw new RuntimeException('Data perizinan tidak dapat dikunci untuk diperbarui.', $statement === false ? $this->db->errno : $statement->errno);
         }
         $row = $statement->get_result()?->fetch_assoc();
         $statement->close();
@@ -371,7 +373,7 @@ final class IzinWriteRepository
             if ($errno === 4025 || $errno === 3819) {
                 throw IzinException::invalid('Perintah perizinan ditolak oleh aturan basis data: ' . $error);
             }
-            throw new RuntimeException('Perintah perizinan gagal disimpan.');
+            throw new RuntimeException('Perintah perizinan gagal disimpan.', $errno);
         }
         $affected = (int) $statement->affected_rows;
         $statement->close();
@@ -399,7 +401,7 @@ final class IzinWriteRepository
             if ($errno === 4025 || $errno === 3819) {
                 throw IzinException::invalid('Perintah perizinan ditolak oleh aturan basis data: ' . $error);
             }
-            throw new RuntimeException('Perintah perizinan gagal disimpan.');
+            throw new RuntimeException('Perintah perizinan gagal disimpan.', $errno);
         }
         $id = (int) $statement->insert_id;
         $statement->close();

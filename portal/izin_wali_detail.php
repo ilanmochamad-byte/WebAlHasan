@@ -376,6 +376,19 @@ $keputusan = $detail['keputusan'] ?? null;
                 </ol></div>
             </section>
         <?php endif; ?>
+
+        <?php if (($detail['notifikasi'] ?? []) !== []): ?>
+            <section class="ah-card" aria-labelledby="ah-jejak-notifikasi">
+                <div class="ah-card__head"><span id="ah-jejak-notifikasi">Jejak notifikasi</span></div>
+                <div class="ah-card__body"><ol class="list-unstyled mb-0">
+                    <?php foreach ($detail['notifikasi'] as $n): ?>
+                        <li class="mb-2"><b><?= portal_e($n['peristiwa_label']) ?></b> · <?= portal_e($n['kanal']) ?>
+                            <span class="d-block small text-muted"><?= portal_e((string) ($n['penerima'] ?? '—') . ' · ' . $n['status']
+                                . ($n['kode_galat'] !== null ? ' (' . $n['kode_galat'] . ')' : '') . ' · ' . ah_waktu((string) $n['dibuat'])) ?></span></li>
+                    <?php endforeach; ?>
+                </ol></div>
+            </section>
+        <?php endif; ?>
     </aside>
 </div>
 <?php portal_footer(); ?>

@@ -62,7 +62,9 @@ portal_header('Laporan perizinan', $userCapabilities, $mode, $currentUser, [
     'active' => $mode === Capabilities::ORANG_TUA ? 'izin_anak' : ($mode === Capabilities::MUROBI ? 'antrean' : 'izin'),
     'description' => $laporan['cakupan_label'] . ' · ' . ah_rentang((string) $filter['date_from'], (string) $filter['date_to'], false),
     'actions' => '<a class="btn btn-outline-primary" href="' . portal_e($tautanEkspor('laporan_csv.php')) . '"><i class="fas fa-file-csv" aria-hidden="true"></i> Unduh CSV</a>'
-        . '<a class="btn btn-primary" target="_blank" rel="noopener" href="' . portal_e($tautanEkspor('laporan_cetak.php')) . '"><i class="fas fa-print" aria-hidden="true"></i> Cetak / PDF</a>',
+        . '<a class="btn btn-primary" target="_blank" rel="noopener" href="' . portal_e($tautanEkspor('laporan_cetak.php')) . '"><i class="fas fa-print" aria-hidden="true"></i> Cetak / PDF</a>'
+        // PRD V7 Fase 3: laporan lintas asal wali/pengurus dan tahap pembimbing.
+        . '<a class="btn btn-outline-secondary" href="' . portal_e(app_url('/portal/izin_wali_laporan.php')) . '">Laporan asal &amp; tahap</a>',
     'breadcrumbs' => [
         ['label' => 'Beranda', 'url' => app_url('/portal/index.php')],
         ['label' => 'Perizinan', 'url' => app_url('/portal/izin_ringkasan.php')],

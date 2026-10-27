@@ -918,11 +918,23 @@ final class IzinWorkflowService
      */
     private function notify(string $event, array $pengajuan, array $opsi): void
     {
-        // PRD V7: notifikasi pengajuan wali (penerima wali pengaju, bukan
-        // seluruh wali santri; tautan ke halaman V7) adalah Fase 3. Sampai
-        // itu, keputusan/penetapan V2 atas baris wali tidak memancarkan
-        // notifikasi V2 yang penerima dan tautannya tidak sesuai.
+        // PRD V7 Fase 3: baris wali tidak memancarkan notifikasi V2 (penerima
+        // seluruh wali santri, tautan V2). Penetapan murobi memberi tahu murobi
+        // tujuan; keputusan dan koreksi HANYA wali pengaju, dengan teks generik
+        // dan tautan V7 yang memeriksa ulang hak saat dibuka.
         if ((string) ($pengajuan['asal_pengajuan'] ?? 'Pengurus') === 'Wali') {
+            $v7 = match ($event) {
+                NotificationEvent::MUROBI_DITETAPKAN, NotificationEvent::MUROBI_DITETAPKAN_ULANG => IzinWaliNotifikasi::MASUK_MUROBI,
+                NotificationEvent::KEPUTUSAN_DISETUJUI, NotificationEvent::KEPUTUSAN_DITOLAK,
+                NotificationEvent::KEPUTUSAN_ADMIN_PENGGANTI => IzinWaliNotifikasi::DIPUTUS,
+                NotificationEvent::KOREKSI => IzinWaliNotifikasi::DIKOREKSI,
+                default => null,
+            };
+            if ($v7 !== null) {
+                (new IzinWaliNotifikasi($this->write->db(), $this->audit))
+                    ->antrekan($v7, (int) $pengajuan['id'], (int) ($opsi['aktor_user_id'] ?? 0));
+            }
+
             return;
         }
         $this->notifications->emit($event, $pengajuan, $opsi);
@@ -988,7 +1000,14 @@ final class IzinWorkflowService
 
             return $result;
         } catch (Throwable $exception) {
+            $errno = (int) $exception->getCode() ?: $this->write->db()->errno;
             $this->write->rollback();
+            // PRD V7 Fase 3: notifikasi baris wali berkunci asing ke akun wali
+            // pengaju yang juga dikunci pembatalan wali; korban deadlock dijawab
+            // 409 (bukan 500). Jalur pengurus V2 tidak berubah.
+            if ($wali && !$exception instanceof IzinException && in_array($errno, [1020, 1205, 1213], true)) {
+                throw IzinException::conflict('Pengajuan sedang diproses permintaan lain. Coba lagi sesaat lagi.');
+            }
             throw $exception;
         }
     }
