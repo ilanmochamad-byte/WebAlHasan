@@ -75,9 +75,43 @@ final class MasterDataService
             return $id;
         }
         $before = $this->mustFind($this->repository->guruFind($id), 'Guru');
-        $this->repository->guruUpdate($id, $data);
-        $this->audit->log('master.update', 'guru', $id, $before, $this->repository->guruFind($id));
+        // PK-1: identitas pengurus milik guru ikut berubah di transaksi yang sama.
+        $this->repository->transaction(function () use ($id, $data, $before): void {
+            $this->repository->guruUpdate($id, $data);
+            $this->audit->log('master.update', 'guru', $id, $before, $this->repository->guruFind($id));
+            $this->sinkronIdentitasGuru($id);
+        });
         return $id;
+    }
+
+    /**
+     * Identitas pengurus milik guru (PK-1), untuk panel Data Guru.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function identitasGuru(int $guruId): ?array
+    {
+        return $this->repository->identitasGuru($guruId);
+    }
+
+    private function sinkronIdentitasGuru(int $guruId): void
+    {
+        if ($this->repository->sinkronIdentitasGuru($guruId) > 0) {
+            $identitas = $this->repository->identitasGuru($guruId);
+            if (!$this->audit->log('master.identitas_guru.sinkron', 'pengurus', (int) ($identitas['id'] ?? 0), null, [
+                'guru_id' => $guruId, 'is_active' => (int) ($identitas['is_active'] ?? 0), 'diarsipkan' => !empty($identitas['archived_at']),
+            ])) {
+                throw new MasterDataException('Perubahan data guru dibatalkan karena audit identitas pengurus tidak dapat disimpan. Silakan coba lagi.');
+            }
+        }
+    }
+
+    /** Identitas pengurus milik guru tidak diubah dari Data Pengurus. */
+    private function tolakIdentitasGuru(?array $pengurus): void
+    {
+        if ($pengurus !== null && !empty($pengurus['guru_id'])) {
+            throw new MasterDataException('Data ini adalah identitas pengurus milik seorang guru. Nama, nomor HP, dan statusnya mengikuti Data Guru; ubah dari halaman Data Guru.');
+        }
     }
 
     /**
@@ -94,7 +128,12 @@ final class MasterDataService
 
     public function setGuruState(int $id, string $action): void
     {
-        $this->setState('guru', $id, $action, fn () => $this->repository->guruFind($id), fn (bool $active, bool $archive) => $this->repository->guruSetState($id, $active, $archive));
+        $this->repository->transaction(function () use ($id, $action): void {
+            $this->setState('guru', $id, $action, fn () => $this->repository->guruFind($id), fn (bool $active, bool $archive) => $this->repository->guruSetState($id, $active, $archive));
+            // PK-1: menonaktifkan/mengarsipkan guru menggugurkan seluruh penugasan
+            // berbasis pengurus miliknya; mengaktifkan memulihkan identitasnya.
+            $this->sinkronIdentitasGuru($id);
+        });
     }
 
     public function santriList(array $filters, int $page, int $perPage = 20): array
@@ -834,6 +873,7 @@ final class MasterDataService
             return $id;
         }
         $before = $this->mustFind($this->repository->pengurusFind($id), 'Pengurus');
+        $this->tolakIdentitasGuru($before);
         $this->repository->pengurusUpdate($id, $data);
         $this->audit->log('master.update', 'pengurus', $id, $before, $this->repository->pengurusFind($id));
         return $id;
@@ -841,6 +881,7 @@ final class MasterDataService
 
     public function setPengurusState(int $id, string $action): void
     {
+        $this->tolakIdentitasGuru($this->repository->pengurusFind($id));
         $this->setState('pengurus', $id, $action, fn () => $this->repository->pengurusFind($id), fn (bool $active, bool $archive) => $this->repository->pengurusSetState($id, $active, $archive));
     }
 

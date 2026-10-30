@@ -288,6 +288,109 @@ final class PenugasanRepository
     }
 
     // =======================================================================
+    // Identitas pengurus milik guru (penugasan lintas guru/pengurus, PK-1).
+    // Selalu dipanggil di dalam transaksi oleh PenugasanService.
+    // =======================================================================
+
+    /** Migrasi 032 (`pengurus.guru_id`) sudah terpasang. */
+    public function identitasGuruTersedia(): bool
+    {
+        return \App\Database\Schema::hasColumn($this->db, 'pengurus', 'guru_id');
+    }
+
+    /** Guru pemilik identitas pengurus `$pengurusId`, atau null bila pengurus biasa. */
+    public function guruPemilikIdentitas(int $pengurusId): ?int
+    {
+        if (!$this->identitasGuruTersedia()) {
+            return null;
+        }
+        $row = $this->one('SELECT guru_id FROM pengurus WHERE id = ? LIMIT 1', [$pengurusId]);
+
+        return $row === null || $row['guru_id'] === null ? null : (int) $row['guru_id'];
+    }
+
+    /**
+     * Gerbang serialisasi per guru: pembentukan identitas dan penghubungan akun
+     * untuk guru yang sama menunggu di sini.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function kunciGuru(int $guruId): ?array
+    {
+        return $this->one('SELECT id, nama_guru, no_hp, is_active, archived_at FROM guru WHERE id = ? FOR UPDATE', [$guruId]);
+    }
+
+    /** @return array<string, mixed>|null */
+    public function kunciIdentitasGuru(int $guruId): ?array
+    {
+        return $this->one('SELECT * FROM pengurus WHERE guru_id = ? FOR UPDATE', [$guruId]);
+    }
+
+    /**
+     * Membentuk identitas pengurus dari data guru: nama dan nomor HP disalin,
+     * jabatan "Guru", tanpa nomor identitas (milik data guru).
+     *
+     * @param array<string, mixed> $guru baris hasil `kunciGuru()`
+     */
+    public function buatIdentitasGuru(array $guru): int
+    {
+        $this->ubahIdentitas(
+            "INSERT INTO pengurus (nama, nomor_identitas, no_hp, jabatan, guru_id, is_active, archived_at, created_at, updated_at)
+             VALUES (?, NULL, ?, 'Guru', ?, 1, NULL, NOW(), NOW())",
+            [(string) $guru['nama_guru'], $guru['no_hp'] === null ? null : (string) $guru['no_hp'], (int) $guru['id']]
+        );
+
+        return (int) $this->db->insert_id;
+    }
+
+    /** Menyamakan nama, HP, status, dan arsip identitas dengan data guru. Mengembalikan baris yang berubah. */
+    public function sinkronIdentitasGuru(int $guruId): int
+    {
+        return $this->ubahIdentitas(
+            'UPDATE pengurus p JOIN guru g ON g.id = p.guru_id
+                SET p.nama = g.nama_guru, p.no_hp = g.no_hp, p.is_active = g.is_active, p.archived_at = g.archived_at, p.updated_at = NOW()
+              WHERE p.guru_id = ?
+                AND (BINARY p.nama <> BINARY g.nama_guru OR NOT (p.no_hp <=> g.no_hp) OR p.is_active <> g.is_active OR NOT (p.archived_at <=> g.archived_at))',
+            [$guruId]
+        );
+    }
+
+    /**
+     * Akun milik guru (bila ada), DIKUNCI.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function kunciAkunGuru(int $guruId): ?array
+    {
+        $row = $this->one(
+            "SELECT u.id, u.username, u.is_active, u.pengurus_id, u.wali_id,
+                    (SELECT GROUP_CONCAT(r.slug ORDER BY r.slug SEPARATOR ',')
+                       FROM user_roles ur JOIN roles r ON r.id = ur.role_id WHERE ur.user_id = u.id) AS roles
+               FROM users u WHERE u.guru_id = ? ORDER BY u.id LIMIT 1 FOR UPDATE",
+            [$guruId]
+        );
+        if ($row !== null) {
+            $row['roles'] = $row['roles'] ? explode(',', (string) $row['roles']) : [];
+        }
+
+        return $row;
+    }
+
+    /** Menghubungkan akun guru ke identitas pengurusnya dan memberi role dasar `pengurus` (idempoten). */
+    public function hubungkanAkunIdentitas(int $userId, int $pengurusId, int $actorId): void
+    {
+        $this->ubahIdentitas('UPDATE users SET pengurus_id = ?, updated_at = NOW() WHERE id = ? AND pengurus_id IS NULL', [$pengurusId, $userId]);
+        $this->ubahIdentitas(
+            "INSERT IGNORE INTO user_roles (user_id, role_id, assigned_by) SELECT ?, id, ? FROM roles WHERE slug = 'pengurus'",
+            [$userId, $actorId]
+        );
+        if ($this->one("SELECT 1 AS ada FROM users u JOIN user_roles ur ON ur.user_id = u.id JOIN roles r ON r.id = ur.role_id AND r.slug = 'pengurus'
+                         WHERE u.id = ? AND u.pengurus_id = ? LIMIT 1", [$userId, $pengurusId]) === null) {
+            throw PenugasanException::conflict('Akun guru tidak dapat dihubungkan ke identitas pengurusnya. Muat ulang halaman lalu coba lagi.');
+        }
+    }
+
+    // =======================================================================
     // Validasi referensi
     // =======================================================================
 
@@ -336,10 +439,17 @@ final class PenugasanRepository
         return $this->all('SELECT id, nama_guru AS nama, nip AS keterangan FROM guru WHERE is_active = 1 AND archived_at IS NULL ORDER BY nama_guru');
     }
 
-    /** @return array<int, array<string, mixed>> */
+    /**
+     * Pengurus biasa yang aktif. Identitas pengurus milik guru tidak ikut
+     * (guru tersebut dipilih dari kelompok Guru), agar satu orang tidak muncul dua kali.
+     *
+     * @return array<int, array<string, mixed>>
+     */
     public function pengurusOptions(): array
     {
-        return $this->all('SELECT id, nama, jabatan AS keterangan FROM pengurus WHERE is_active = 1 AND archived_at IS NULL ORDER BY nama');
+        $bukanIdentitas = $this->identitasGuruTersedia() ? ' AND guru_id IS NULL' : '';
+
+        return $this->all('SELECT id, nama, jabatan AS keterangan FROM pengurus WHERE is_active = 1 AND archived_at IS NULL' . $bukanIdentitas . ' ORDER BY nama');
     }
 
     /** @return array<int, array<string, mixed>> */
@@ -705,6 +815,30 @@ final class PenugasanRepository
             throw new RuntimeException('Penugasan gagal disimpan.');
         }
         $statement->close();
+    }
+
+    /** Mutasi identitas/akun; mengembalikan jumlah baris yang berubah. */
+    private function ubahIdentitas(string $sql, array $params): int
+    {
+        $statement = $this->db->prepare($sql);
+        if ($statement === false) {
+            throw new RuntimeException('Perintah identitas pengurus tidak dapat disiapkan.');
+        }
+        if (!$this->run($statement, $params)) {
+            $errno = $statement->errno;
+            $statement->close();
+            if (($konflik = $this->lockingError($errno)) !== null) {
+                throw $konflik;
+            }
+            if ($errno === 1062) {
+                throw PenugasanException::conflict('Guru ini sudah memiliki identitas pengurus atau identitasnya sudah dipakai akun lain.');
+            }
+            throw new RuntimeException('Identitas pengurus milik guru gagal disimpan.');
+        }
+        $berubah = $statement->affected_rows;
+        $statement->close();
+
+        return max(0, $berubah);
     }
 
     private function run(mysqli_stmt $statement, array $params): bool

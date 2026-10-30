@@ -1,0 +1,88 @@
+[lulus] FW-10a login API guru berhasil
+[lulus] FW-10b struktur capabilities lama utuh pada profil guru
+[lulus] FW-10c field aditif feature_capabilities ada dan kosong sebelum penugasan
+[lulus] FW-10d respons login memuat field lama (default_mode guru biasa tetap null) dan field aditif
+[lulus] FW-10e default_mode pengurus sebelum penugasan
+[lulus] FW-1a tanpa sesi diarahkan ke pintu masuk [302]
+[lulus] FW-11a login web admin berhasil
+[lulus] FW-1b admin membuka tab murobi [200]
+[lulus] FW-1b admin membuka tab pembimbing [200]
+[lulus] FW-1b admin membuka tab guru_mapel [200]
+[lulus] FW-1b admin membuka tab pendidikan [200]
+[lulus] FW-1b admin membuka tab bendahara_bulanan [200]
+[lulus] FW-1b admin membuka tab panitia_psb [200]
+[lulus] FW-1b admin membuka tab bendahara_psb [200]
+[lulus] FW-1b tab mata pelajaran lama dialihkan ke M-5 [301]
+[lulus] FW-1b admin membuka tab mata_pelajaran [200]
+[lulus] FW-1c jenis tak dikenal jatuh ke tab murobi, bukan galat
+[lulus] FW-1d sidebar admin memuat menu Penugasan
+[lulus] FW-1e halaman murobi dan pembimbing lama dialihkan ke Penugasan
+[lulus] FW-11b login web guru berhasil
+[lulus] FW-2a guru DITOLAK membuka Pusat Penugasan [403]
+[lulus] FW-2b POST guru ke Pusat Penugasan ditolak tanpa mengubah data [403]
+[lulus] FW-2c guru tetap ditolak pada halaman murobi lama [403]
+[lulus] FW-11b login web pengurus berhasil
+[lulus] FW-2a pengurus DITOLAK membuka Pusat Penugasan [403]
+[lulus] FW-2b POST pengurus ke Pusat Penugasan ditolak tanpa mengubah data [403]
+[lulus] FW-11b login web orang tua berhasil
+[lulus] FW-2a orang tua DITOLAK membuka Pusat Penugasan [403]
+[lulus] FW-2b POST orang tua ke Pusat Penugasan ditolak tanpa mengubah data [403]
+[lulus] FW-3a POST tanpa token CSRF ditolak 419 tanpa perubahan
+[lulus] FW-3b POST dengan token CSRF palsu ditolak 419 tanpa perubahan
+[lulus] FW-4 parameter aksi lewat GET tidak memutasi data
+[lulus] FW-5a mata pelajaran tersimpan lewat formulir
+[lulus] FW-12 nama mata pelajaran berisi tag HTML di-escape
+[lulus] FW-5b penugasan guru mapel tersimpan lewat formulir
+[lulus] FW-5c daftar menampilkan status Aktif dan capability efektif akun guru
+[lulus] FW-5d daftar menampilkan cakupan dan masa berlaku
+[lulus] FW-5e guru tanpa akun: penugasan tersimpan dengan pesan yang jelas
+[lulus] FW-5f penugasan Bagian Pendidikan tersimpan
+[lulus] FW-5g penugasan bendahara bulanan tersimpan
+[lulus] FW-5h penugasan panitia PSB tersimpan
+[lulus] FW-5i penugasan bendahara PSB tersimpan
+[lulus] FW-5j penugasan murobi tersimpan dari pusat
+[lulus] FW-5k penugasan pembimbing tersimpan dari pusat
+[lulus] FW-5l tab panitia PSB hanya menampilkan capability panitia, bukan keuangan
+[lulus] FW-5m filter status Dinonaktifkan mengembalikan kosong sebelum ada yang dinonaktifkan
+[lulus] FW-6a penugasan bertumpang tindih ditolak lewat formulir dengan pesan
+[lulus] FW-6b penugasan identik ditolak lewat formulir
+[lulus] FW-6c tanggal selesai mendahului tanggal mulai ditolak dengan pesan pada kolom
+[lulus] FW-7a ubah cakupan dan masa berlaku tercermin di data
+[lulus] FW-7b ubah tanpa alasan ditolak dan kembali ke formulir ubah
+[lulus] FW-7c akhiri lewat formulir mencatat tanggal, pelaku, dan alasan
+[lulus] FW-7d nonaktifkan murobi lewat pusat tercermin di tabel lama
+[lulus] FW-7e filter Dinonaktifkan menampilkan penugasan dengan tombol Aktifkan
+[lulus] FW-7f aktifkan kembali lewat formulir
+[lulus] FW-7g audit web menyimpan IP dan user agent pelaku
+[lulus] FW-13a ID yang tidak ada pada tabel jenis itu dijawab tidak ditemukan tanpa mengubah baris mana pun
+[lulus] FW-13b guru_id yang disuntikkan pada ubah diabaikan
+[lulus] FW-8a admin_murobi.php dialihkan ke Penugasan (POST lama tetap diproses)
+[lulus] FW-8a admin_pembimbing.php dialihkan ke Penugasan (POST lama tetap diproses)
+[lulus] FW-8b formulir lama admin_murobi.php masih menyimpan penugasan
+[lulus] FW-8c penugasan dari halaman lama tampil di Pusat Penugasan
+[lulus] FW-8d formulir lama admin_pembimbing.php masih menyimpan penugasan
+[lulus] FW-8e murobi deactivate tanpa alasan tidak mengubah data
+[lulus] FW-8e murobi archive tanpa alasan tidak mengubah data
+[lulus] FW-8f murobi deactivate dengan alasan melalui pusat
+[lulus] FW-8f murobi activate dengan alasan melalui pusat
+[lulus] FW-8f murobi archive dengan alasan melalui pusat
+[lulus] FW-8f murobi restore dengan alasan melalui pusat
+[lulus] FW-8e pembimbing deactivate tanpa alasan tidak mengubah data
+[lulus] FW-8e pembimbing archive tanpa alasan tidak mengubah data
+[lulus] FW-8f pembimbing deactivate dengan alasan melalui pusat
+[lulus] FW-8f pembimbing activate dengan alasan melalui pusat
+[lulus] FW-8f pembimbing archive dengan alasan melalui pusat
+[lulus] FW-8f pembimbing restore dengan alasan melalui pusat
+[lulus] FW-9a halaman akun menjelaskan role dasar vs penugasan
+[lulus] FW-9b halaman akun menampilkan ringkasan penugasan efektif dan tautan ke pusat
+[lulus] FW-9c penugasan tidak muncul sebagai pilihan role dasar
+[lulus] FW-10f field profil guru sebelum dan sesudah penugasan identik urutan dan namanya
+[lulus] FW-10g menu/mode guru tetap: jadwal, laporan, dan murobi (karena penugasan murobi), tanpa menu nilai
+[lulus] FW-10h field aditif memuat capability nilai dari penugasan guru mapel
+[lulus] FW-10i struktur capabilities pengurus IDENTIK sebelum dan sesudah empat penugasan
+[lulus] FW-10j capability fondasi hanya pada field aditif; tidak ada mode pendidikan/bendahara
+[lulus] FW-10k endpoint /me/capabilities tidak berubah bentuk
+[lulus] FW-10l endpoint jadwal V1 tetap 403 untuk pengurus
+[lulus] FW-10m endpoint jadwal V1 tetap 200 untuk guru
+
+Total gagal: 0

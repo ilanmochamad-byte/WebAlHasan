@@ -1,0 +1,20 @@
+[lulus] penugasan.identitas_guru.buat gagal: layanan menolak
+[lulus] penugasan.identitas_guru.buat gagal: guru, identitas, akun, role dan audit kembali utuh
+[lulus] account_identitas_guru_linked gagal: layanan menolak
+[lulus] account_identitas_guru_linked gagal: guru, identitas, akun, role dan audit kembali utuh
+[lulus] penugasan.buat gagal: layanan menolak
+[lulus] penugasan.buat gagal: guru, identitas, akun, role dan audit kembali utuh
+[lulus] kontrol: hak kesehatan efektif
+[gagal] sinkron nama tanpa audit ditolak
+[gagal] sinkron nama tanpa audit: guru, identitas dan audit rollback utuh
+[gagal] sinkron nonaktif tanpa audit ditolak
+[gagal] sinkron nonaktif tanpa audit: guru, identitas dan audit rollback utuh
+[gagal] sinkron arsip tanpa audit ditolak
+[gagal] sinkron arsip tanpa audit: guru, identitas dan audit rollback utuh
+[lulus] kontrol sukses: nonaktif menutup hak dan menyinkronkan identitas
+[lulus] kontrol sukses: sinkron tercatat tepat sekali
+[lulus] arsip guru tanpa sinkron tetap mencabut hak pada resolver baru
+[lulus] akun tanpa guru tidak memperoleh hak identitas milik guru
+[lulus] kontrol: hak pulih setelah relasi asli dipulihkan
+
+Hasil: 12 lulus, 6 gagal.

@@ -1,0 +1,43 @@
+[lulus] B-A 375px: pemilih memuat kelompok Pengurus dan Guru (nilai guru:ID)
+[lulus] B-A 375px: guru bernama sama dengan pengurus ditandai dan peringatan terlihat
+[lulus] B-A formulir pembimbing 375px: rapi di kerangka bersama
+[lulus] B-A 375px: Murobi tetap khusus guru tanpa kelompok tambahan
+[lulus] B-A 768px: pemilih memuat kelompok Pengurus dan Guru (nilai guru:ID)
+[lulus] B-A 768px: guru bernama sama dengan pengurus ditandai dan peringatan terlihat
+[lulus] B-A formulir pembimbing 768px: rapi di kerangka bersama
+[lulus] B-A 768px: Murobi tetap khusus guru tanpa kelompok tambahan
+[lulus] B-A 1280px: pemilih memuat kelompok Pengurus dan Guru (nilai guru:ID)
+[lulus] B-A 1280px: guru bernama sama dengan pengurus ditandai dan peringatan terlihat
+[lulus] B-A formulir pembimbing 1280px: rapi di kerangka bersama
+[lulus] B-A 1280px: Murobi tetap khusus guru tanpa kelompok tambahan
+[lulus] B-B dialog konfirmasi kerangka tampil sebelum menyimpan
+[lulus] B-B 1280px: guru dari kelompok Guru tersimpan sebagai pembimbing
+[lulus] B-C 375px tanpa JavaScript: guru (P5 Murobi 01) tersimpan sebagai petugas kesehatan
+[lulus] B-D 375px: Data Pengurus menandai identitas milik guru
+[lulus] B-D Data Pengurus 375px: rapi di kerangka bersama
+[lulus] B-D 375px: rincian identitas menautkan ke data guru
+[lulus] B-D 375px: Data Guru menampilkan penugasan sebagai pengurus
+[lulus] B-D Data Guru 375px: rapi di kerangka bersama
+[lulus] B-D 768px: Data Pengurus menandai identitas milik guru
+[lulus] B-D Data Pengurus 768px: rapi di kerangka bersama
+[lulus] B-D 768px: rincian identitas menautkan ke data guru
+[lulus] B-D 768px: Data Guru menampilkan penugasan sebagai pengurus
+[lulus] B-D Data Guru 768px: rapi di kerangka bersama
+[lulus] B-D 1280px: Data Pengurus menandai identitas milik guru
+[lulus] B-D Data Pengurus 1280px: rapi di kerangka bersama
+[lulus] B-D 1280px: rincian identitas menautkan ke data guru
+[lulus] B-D 1280px: Data Guru menampilkan penugasan sebagai pengurus
+[lulus] B-D Data Guru 1280px: rapi di kerangka bersama
+[lulus] B-E 375px: akun guru menawarkan peran Pengurus
+[lulus] B-E 375px: sebagai Pengurus, daftar santri binaan berisi santri kamar binaan
+[lulus] B-E santri binaan guru 375px: rapi di kerangka bersama
+[lulus] B-E 768px: akun guru menawarkan peran Pengurus
+[lulus] B-E 768px: sebagai Pengurus, daftar santri binaan berisi santri kamar binaan
+[lulus] B-E santri binaan guru 768px: rapi di kerangka bersama
+[lulus] B-E 1280px: akun guru menawarkan peran Pengurus
+[lulus] B-E 1280px: sebagai Pengurus, daftar santri binaan berisi santri kamar binaan
+[lulus] B-E santri binaan guru 1280px: rapi di kerangka bersama
+[lulus] Tanpa galat JavaScript
+[lulus] Tanpa confirm()/alert() bawaan
+
+Hasil: 41 lulus, 0 gagal.

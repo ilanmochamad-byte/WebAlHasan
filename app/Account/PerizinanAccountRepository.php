@@ -50,11 +50,15 @@ final class PerizinanAccountRepository
      */
     public function availablePengurus(): array
     {
+        // PK-1: identitas pengurus milik guru hanya dipakai akun guru itu
+        // sendiri (dihubungkan layanan penugasan), tidak dibuatkan akun terpisah.
+        $bukanIdentitas = \App\Database\Schema::hasColumn($this->db, 'pengurus', 'guru_id') ? ' AND pg.guru_id IS NULL' : '';
+
         return $this->select(
             'SELECT pg.id, pg.nama, pg.jabatan
                FROM pengurus pg
                LEFT JOIN users u ON u.pengurus_id = pg.id
-              WHERE pg.is_active = 1 AND pg.archived_at IS NULL AND u.id IS NULL
+              WHERE pg.is_active = 1 AND pg.archived_at IS NULL AND u.id IS NULL' . $bukanIdentitas . '
               ORDER BY pg.nama'
         );
     }

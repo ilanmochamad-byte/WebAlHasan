@@ -225,7 +225,7 @@ if ($tambah || $edit !== null):
     echo ah_error_summary($bucket);
     if (!$service->skemaTersedia($jenis)): ?>
         <p class="text-muted mb-0">Tabel penugasan <?= ah_e($definisi['label']) ?> belum dipasang. Jalankan migrasi basis data terbaru terlebih dahulu.</p>
-    <?php elseif ($opsi['subjek'] === []): ?>
+    <?php elseif ($opsi['subjek'] === [] && $opsi['subjek_guru'] === []): ?>
         <p class="text-muted mb-0">Belum ada <?= ah_e(mb_strtolower($definisi['label_subjek'])) ?> aktif. Tambahkan datanya di Data pesantren › Asatidz &amp; pengurus terlebih dahulu.</p>
     <?php elseif ($definisi['cakupan'] === PenugasanJenis::CAKUPAN_MAPEL_KELAS && $opsi['mata_pelajaran'] === []): ?>
         <p class="text-muted mb-0">Belum ada mata pelajaran aktif. <a href="admin_mata_pelajaran.php?action=create">Tambahkan mata pelajaran</a> terlebih dahulu.</p>
@@ -235,15 +235,25 @@ if ($tambah || $edit !== null):
         <input type="hidden" name="jenis" value="<?= ah_e($jenis) ?>">
         <input type="hidden" name="action" value="<?= $modeUbah ? 'ubah' : 'buat' ?>">
         <?php if ($modeUbah): ?><input type="hidden" name="id" value="<?= (int) $edit['id'] ?>"><?php endif; ?>
-        <div class="mb-3"><label class="form-label" for="<?= ah_e($subjekKolom) ?>"><?= ah_e($definisi['label_subjek']) ?></label>
+        <?php $bisaGuru = !$modeUbah && $opsi['subjek_guru'] !== []; ?>
+        <div class="mb-3"><label class="form-label" for="<?= ah_e($subjekKolom) ?>"><?= ah_e($bisaGuru ? 'Pengurus atau guru' : $definisi['label_subjek']) ?></label>
             <?php if ($modeUbah): ?>
                 <input class="form-control" id="<?= ah_e($subjekKolom) ?>" value="<?= ah_e($edit['subjek_nama'] . ($edit['subjek_keterangan'] ? ' — ' . $edit['subjek_keterangan'] : '')) ?>" disabled>
                 <div class="form-text">Ganti orang berarti penugasan baru: akhiri penugasan ini lalu buat yang baru.</div>
             <?php else: ?>
-                <select class="form-select" id="<?= ah_e($subjekKolom) ?>" name="<?= ah_e($subjekKolom) ?>" required>
-                    <option value="">Pilih <?= ah_e(mb_strtolower($definisi['label_subjek'])) ?> aktif</option>
+                <select class="form-select" id="<?= ah_e($subjekKolom) ?>" name="<?= ah_e($subjekKolom) ?>" required<?= $bisaGuru ? ' aria-describedby="subjek-guru-info"' : '' ?>>
+                    <option value=""><?= $bisaGuru ? 'Pilih pengurus atau guru aktif' : 'Pilih ' . ah_e(mb_strtolower($definisi['label_subjek'])) . ' aktif' ?></option>
+                    <?php if ($bisaGuru): ?><optgroup label="Pengurus"><?php endif; ?>
                     <?php foreach ($opsi['subjek'] as $s): ?><option value="<?= (int) $s['id'] ?>" <?= $nilai($subjekKolom) === (string) $s['id'] ? 'selected' : '' ?>><?= ah_e($s['nama'] . ($s['keterangan'] ? ' — ' . $s['keterangan'] : '')) ?></option><?php endforeach; ?>
+                    <?php if ($bisaGuru): ?></optgroup>
+                    <optgroup label="Guru">
+                    <?php foreach ($opsi['subjek_guru'] as $g): $nilaiGuru = 'guru:' . (int) $g['id']; ?><option value="<?= ah_e($nilaiGuru) ?>" <?= $nilai($subjekKolom) === $nilaiGuru ? 'selected' : '' ?>><?= ah_e($g['nama'] . ($g['keterangan'] ? ' — NIP ' . $g['keterangan'] : '') . ' (guru)' . (!empty($g['nama_sama_pengurus']) ? ' — nama sama dengan pengurus' : '')) ?></option><?php endforeach; ?>
+                    </optgroup><?php endif; ?>
                 </select><?= $err($subjekKolom) ?>
+                <?php if ($bisaGuru): ?><div class="form-text" id="subjek-guru-info">Guru yang dipilih memakai akun gurunya sendiri; akun itu otomatis mendapat peran Pengurus untuk penugasan ini.</div>
+                    <?php $namaKembar = array_values(array_filter($opsi['subjek_guru'], static fn (array $g): bool => !empty($g['nama_sama_pengurus']))); ?>
+                    <?php if ($namaKembar !== []): ?><div class="alert alert-warning small mt-2 mb-0" role="note" id="subjek-nama-kembar"><strong>Periksa nama yang sama.</strong> <?= count($namaKembar) ?> guru bernama sama dengan pengurus aktif (ditandai "nama sama dengan pengurus"): <?= ah_e(implode(', ', array_map(static fn (array $g): string => (string) $g['nama'], $namaKembar))) ?>. Bila orangnya memang sama dan sudah bertugas sebagai pengurus, pilih namanya dari kelompok Pengurus agar tidak terbentuk identitas pengurus kedua dan akun pengurusnya tetap dipakai.</div><?php endif; ?>
+                <?php endif; ?>
             <?php endif; ?></div>
         <div class="mb-3"><label class="form-label" for="tahun_ajaran_id">Tahun ajaran<?= $definisi['cakupan'] === PenugasanJenis::CAKUPAN_GELOMBANG ? ' penerimaan' : '' ?></label>
             <?php if ($modeUbah): ?>

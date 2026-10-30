@@ -1,6 +1,6 @@
 # Rancangan — Penugasan lintas guru/pengurus dan penugasan Keamanan
 
-Status: **rancangan, menunggu persetujuan Human Developer.** Branch
+Status: **disetujui Human Developer 30 Oktober 2026** (PK-1…PK-7, PK-T1…PK-T4); Fase 1 diperintahkan. Branch
 `claude/rancangan-penugasan-keamanan` dari `origin/main` `cbb5aa1` hanya berisi
 dokumen; belum ada kode, migrasi, merge, atau deploy.
 
@@ -121,14 +121,14 @@ peran Pengurus (grup "Keamanan"). Peta menu admin tidak berubah.
 Satu fase per giliran. Implementator berhenti sesudah commit/push untuk audit
 Codex; fase berikutnya hanya atas instruksi Human Developer.
 
-## 5. Keputusan terbuka (perlu jawaban sebelum fase terkait)
+## 5. Keputusan lanjutan Human Developer (30 Oktober 2026)
 
-| Kode | Pertanyaan | Rekomendasi | Diperlukan sebelum |
+| Kode | Pertanyaan | Keputusan | Berlaku untuk |
 | --- | --- | --- | --- |
-| **PK-T1** | Bolehkah Bagian Pendidikan memverifikasi rapor yang memuat nilai yang ia isi sendiri sebagai Guru Mapel? | Tidak boleh; verifikasi itu dialihkan ke petugas Pendidikan lain atau admin | Fase 2 |
-| **PK-T2** | Bolehkah Keamanan mencetak atau mengekspor (CSV) laporan? | Cetak laporan yang sudah ada boleh, ekspor CSV tidak | Fase 3 |
-| **PK-T3** | Apakah Keamanan juga tersedia di aplikasi? | Ya, hanya baca, di Fase 4 | Fase 4 |
-| **PK-T4** | Apakah Keamanan melihat alasan izin dan catatan pelanggaran secara lengkap? | Ya, karena dibutuhkan untuk pengawasan; hanya kasus Rahasia yang tertutup | Fase 3 |
+| **PK-T1** | Bolehkah Bagian Pendidikan memverifikasi rapor yang memuat nilai yang ia isi sendiri sebagai Guru Mapel? | **Tidak boleh**; verifikasi itu dilakukan petugas Pendidikan lain atau admin | Fase 2 |
+| **PK-T2** | Bolehkah Keamanan mencetak atau mengekspor laporan? | **Cetak PDF boleh.** Ekspor CSV tidak disebut, sehingga tidak disediakan (mengikuti rekomendasi) sampai Human Developer memutuskan lain | Fase 3 |
+| **PK-T3** | Apakah Keamanan juga tersedia di aplikasi? | **Ya, hanya baca** | Fase 4 |
+| **PK-T4** | Apakah Keamanan melihat alasan izin dan catatan pelanggaran secara lengkap? | **Ya**; hanya kasus Rahasia yang tertutup (PK-6) | Fase 3 |
 
 ## 6. Batas
 

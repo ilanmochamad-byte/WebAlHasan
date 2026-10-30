@@ -17,7 +17,10 @@ use InvalidArgumentException;
  *
  *   - tabel dan kolom subjek/cakupan tiap jenis;
  *   - role dasar yang WAJIB dimiliki akun agar penugasan menghasilkan
- *     capability (murobi/guru mapel → `guru`; selebihnya → `pengurus`);
+ *     capability (murobi/guru mapel → `guru`; selebihnya → `pengurus`).
+ *     Keputusan Human Developer 30 Oktober 2026 (PK-1/PK-3): jenis berbasis
+ *     pengurus juga dapat dipegang guru melalui identitas pengurus miliknya
+ *     (`pengurus.guru_id`, migrasi 032) yang terhubung ke akun gurunya sendiri;
  *   - capability yang dihasilkan;
  *   - apakah tahun ajaran penugasan wajib berstatus Aktif (PSB tidak:
  *     penerimaan berjalan sebelum tahun ajarannya aktif).
@@ -373,11 +376,11 @@ final class PenugasanJenis
     {
         return match ($jenis) {
             self::MUROBI => 'Murobi adalah guru yang ditugaskan memutus izin dan mengetahui sikap santri pada kamar/kelas binaan.',
-            self::PEMBIMBING => 'Pembimbing adalah pengurus yang mengajukan izin, mengisi sikap, dan mencatat pembinaan santri pada kamar/kelas binaan.',
+            self::PEMBIMBING => 'Pembimbing adalah pengurus atau guru yang mengajukan izin, mengisi sikap, dan mencatat pembinaan santri pada kamar/kelas binaan.',
             self::GURU_MAPEL => 'Guru mata pelajaran mengisi nilai satu mata pelajaran pada satu kelas untuk satu semester.',
-            self::PENDIDIKAN => 'Bagian Pendidikan memeriksa kelengkapan bahan rapor dan membaca laporan absensi, opsional untuk satu unit.',
-            self::KESEHATAN => 'Petugas kesehatan adalah pengurus yang mencatat kunjungan klinik seluruh santri aktif. Penugasan berlaku sampai tanggal selesai atau dinonaktifkan, tidak gugur saat semester berganti.',
-            self::BENDAHARA_BULANAN => 'Petugas BSA adalah pengurus yang mengelola tagihan bulanan dan tabungan santri, opsional untuk satu unit. Penugasan berlaku sampai tanggal selesai atau dinonaktifkan, tidak gugur saat semester berganti.',
+            self::PENDIDIKAN => 'Bagian Pendidikan (pengurus atau guru) memeriksa kelengkapan bahan rapor dan membaca laporan absensi, opsional untuk satu unit.',
+            self::KESEHATAN => 'Petugas kesehatan adalah pengurus atau guru yang mencatat kunjungan klinik seluruh santri aktif. Penugasan berlaku sampai tanggal selesai atau dinonaktifkan, tidak gugur saat semester berganti.',
+            self::BENDAHARA_BULANAN => 'Petugas BSA adalah pengurus atau guru yang mengelola tagihan bulanan dan tabungan santri, opsional untuk satu unit. Penugasan berlaku sampai tanggal selesai atau dinonaktifkan, tidak gugur saat semester berganti.',
             default => 'Penugasan ini belum memberi akses ke halaman apa pun sampai modul pembiayaan/PSB baru selesai. Data yang sudah ada tetap dapat dilihat dan dikelola.',
         };
     }

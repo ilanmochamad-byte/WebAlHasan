@@ -1,0 +1,36 @@
+[gagal] H-1 pembimbing: kelompok Guru ditawarkan dengan nilai guru:ID
+[gagal] H-1 pembimbing: guru yang bernama sama dengan pengurus aktif ditandai dan diberi peringatan
+[gagal] H-1 pendidikan: kelompok Guru ditawarkan
+[gagal] H-1 kesehatan: kelompok Guru ditawarkan
+[gagal] H-1 bendahara_bulanan: kelompok Guru ditawarkan
+[gagal] H-1 panitia_psb: kelompok Guru ditawarkan
+[gagal] H-1 bendahara_psb: kelompok Guru ditawarkan
+[lulus] H-1 murobi: tetap khusus guru tanpa kelompok tambahan
+[lulus] H-1 guru_mapel: tetap khusus guru tanpa kelompok tambahan
+[lulus] H-2 POST tanpa CSRF tidak memutasi (status 419)
+[lulus] H-2 GET berparameter tidak memutasi
+[lulus] H-2 non-admin ditolak tanpa mutasi (status 403)
+[gagal] H-2 POST ber-CSRF menugaskan guru sebagai pembimbing lewat identitasnya
+[gagal] H-2 pesan berhasil dan nama guru tampil di daftar
+[gagal] H-2 guru tidak sah ditolak dengan pesan pada panel tambah
+[gagal] H-3 akun guru kini dapat beralih ke peran Pengurus
+[gagal] H-3 sebagai Pengurus, daftar santri binaan pembimbing berisi santri kamar binaan
+[lulus] H-3 profil santri binaan terbuka
+[lulus] H-4 menonaktifkan guru lewat halaman Data Guru ikut menonaktifkan identitas
+[lulus] H-4 sesi guru yang sama: daftar binaan langsung kosong
+[gagal] H-4 sesi guru yang sama: profil santri binaan ditolak 403 (status 200)
+[gagal] H-4 mengaktifkan guru memulihkan akses
+[gagal] H-5 Data Pengurus menandai identitas milik guru
+[gagal] H-5 panel ubah identitas tidak menampilkan formulir
+[gagal] H-5 POST ubah/arsip identitas lewat Data Pengurus ditolak dengan pesan
+[gagal] H-5 panel Data Guru menampilkan penugasan sebagai pengurus
+[gagal] H-5 detail identitas menunjukkan akun guru yang memakainya
+[lulus] H-6 /admin/admin_akun.php tetap 200
+[lulus] H-6 /admin/admin_akun.php?tab=pengurus tetap 200
+[lulus] H-6 /admin/admin_penugasan.php?jenis=murobi tetap 200
+[lulus] H-6 /admin/admin_penugasan.php?jenis=kesehatan&kelola=1 tetap 200
+[lulus] H-6 /admin/admin_pengurus.php?action=create tetap 200
+[lulus] H-6 /admin/admin_guru.php tetap 200
+[lulus] H-6 log server tanpa galat PHP
+
+Hasil: 15 lulus, 19 gagal.
