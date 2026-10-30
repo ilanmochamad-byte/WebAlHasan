@@ -1,0 +1,41 @@
+[lulus] Fixture: tarif SMP Rp350.000, potongan Rp50.000 santri SMP, belum ada tagihan
+
+=== W-1. Santri bertarif ===
+[lulus] Halaman: komponen tarif, potongan santri, total Rp300.000 dari tarif
+[lulus] Isian komponen manual tidak ditawarkan untuk santri bertarif
+[lulus] Formulir terbit membawa mode tarif, periode, dan hash pratinjau
+[lulus] Terbitkan → rincian tagihan Rp300.000; klik ganda tetap satu tagihan
+[lulus] Santri SMP lain tidak ikut tertagih
+[lulus] Rincian tagihan memuat komponen tarif dan potongan tersalin
+[lulus] Buka ulang halaman: tagihan sudah ada, tautan ke tagihan, tanpa tombol terbit
+
+=== W-2. Manual ditolak untuk santri bertarif ===
+[lulus] Kiriman manual tanpa mode (formulir lama) untuk santri bertarif → 422, tanpa tagihan
+[lulus] Kiriman manual mode manual untuk santri bertarif → 422, tanpa tagihan
+
+=== W-3. Tanpa kelas / tanpa tarif ===
+[lulus] Santri tanpa kelas: penjelasan + isian manual
+[lulus] Kiriman manual santri tanpa kelas → tagihan Rp120.000
+[lulus] Kiriman manual ulang kunci sama → replay ke tagihan yang sama (tidak ditolak, tidak ganda)
+[lulus] Santri tanpa kelas yang sudah bertagihan bulan ini: catatan "sudah ada" dan isian manual tetap tersedia untuk bulan lain
+[lulus] Santri Tsanawi tanpa tarif unit: penjelasan + isian manual
+
+=== W-4. Pratinjau basi ===
+[lulus] Tambahan sesudah pratinjau → pesan, pratinjau baru Rp355.000, tanpa tagihan
+
+=== W-5. Hak halaman ===
+[lulus] sbx_admin: halaman terbitkan tagihan santri SMP → 403
+[lulus] sbx_v6_wali_smp: halaman terbitkan tagihan santri SMP → 403
+[lulus] sbx_pengurus_biasa: halaman terbitkan tagihan santri SMP → 403
+[lulus] sbx_v6_bsa_tsanawi: halaman terbitkan tagihan santri SMP → 404
+
+=== W-6. API ===
+[lulus] API pratinjau dengan santri_id: satu baris, komponen tarif, total Rp355.000
+[lulus] API penerbitan dengan santri_id → 201, satu tagihan Rp355.000
+[lulus] API pratinjau santri tidak ada → 404
+
+=== W-7. Log dan verifier ===
+[lulus] Log server tanpa galat/peringatan PHP
+[lulus] Verifier Fase 1–3 lulus sesudah uji HTTP
+
+Lulus: 25 · Gagal: 0

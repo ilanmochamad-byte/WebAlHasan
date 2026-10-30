@@ -1,0 +1,12 @@
+{
+  "common_count": 61,
+  "different": {},
+  "only_handoff": [],
+  "only_auditor": {
+    "statis-v6_tagihan_satu_santri_static": {
+      "exit": 0,
+      "lulus": 24,
+      "gagal": 0
+    }
+  }
+}

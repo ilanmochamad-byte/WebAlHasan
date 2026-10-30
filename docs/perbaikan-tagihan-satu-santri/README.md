@@ -1,5 +1,7 @@
 # Perbaikan: "Terbitkan tagihan" satu santri memakai tarif
 
+**Pembaruan audit Codex 30 Oktober 2026:** **lulus audit teknis lokal tanpa koreksi kode aplikasi**. Uji independen statis 24/0, integrasi 27/0, HTTP 25/0, browser 11/0 dan probe konkurensi/rollback auditor 16/0; regresi V6 dan oracle historis dicatat terpisah. Lihat [AUDIT-CODEX.md](AUDIT-CODEX.md) dan `audit-codex/`. Kelulusan ini bukan izin merge/deploy atau penutupan gerbang produksi. Catatan implementator di bawah dipertahankan sebagai riwayat sebelum audit.
+
 **Status (30 Oktober 2026):** diimplementasikan Claude Code atas permintaan Human Developer, **menunggu audit independen Codex**. Belum merge, belum deploy, tanpa migrasi, mobile tidak diubah. Bukti berasal dari DB salinan lokal berfixture sintetis (MariaDB 12.3.2, PHP 8.4.14, Chromium). Hosting/cPanel dan MySQL belum diuji.
 
 | Butir | Nilai |

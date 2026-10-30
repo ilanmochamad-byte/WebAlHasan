@@ -1,0 +1,13 @@
+[lulus] B-1 santri bertarif 375px rapi
+[lulus] B-1 santri tanpa kelas (manual) 375px rapi
+[lulus] B-1 santri bertarif 768px rapi
+[lulus] B-1 santri tanpa kelas (manual) 768px rapi
+[lulus] B-1 santri bertarif 1280px rapi
+[lulus] B-1 santri tanpa kelas (manual) 1280px rapi
+[lulus] B-2 dari rincian santri: rincian tarif + potongan, total Rp300.000, tanpa isian manual
+[lulus] B-2 Terbitkan → rincian tagihan Rp300.000 dengan komponen tarif
+[lulus] B-3 tanpa JavaScript 375px: terbit dari tarif (Rp350.000, tanpa potongan)
+[lulus] B-4 tanpa galat JavaScript
+[lulus] B-4 tanpa dialog bawaan
+
+Ringkasan browser satu santri: 11 lulus, 0 gagal
