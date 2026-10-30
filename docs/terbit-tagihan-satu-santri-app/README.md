@@ -1,6 +1,6 @@
 # Aplikasi: "Terbitkan tagihan" satu santri dari tarif
 
-**Status (30 Oktober 2026):** diimplementasikan Claude Code atas permintaan Human Developer, **menunggu audit independen Codex**. Belum merge, belum rilis aplikasi, tanpa migrasi, **tanpa perubahan kode web**. Bukti dari Expo web (Chromium 375 px) dengan API dan DB salinan lokal berfixture sintetis (MariaDB 12.3.2, PHP 8.4.14). Perangkat native, perangkat fisik, Push, MySQL/cPanel belum diuji.
+**Status audit (30 Oktober 2026): LULUS teknis lokal setelah koreksi P2 oleh Codex**; lihat [AUDIT-CODEX.md](AUDIT-CODEX.md). Hasil implementator berikut tetap disimpan sebagai riwayat. Belum merge, belum rilis aplikasi, tanpa migrasi, **tanpa perubahan kode web**. Bukti dari Expo web (Chromium 375 px) dengan API dan DB salinan lokal berfixture sintetis (MariaDB 12.3.2, PHP 8.4.14). Implementator belum menguji native. Audit Codex menambah uji iOS Release simulator; perangkat fisik, Android native untuk perubahan ini, Push, MySQL/cPanel tetap belum diuji.
 
 | Butir | Nilai |
 | --- | --- |
@@ -49,7 +49,7 @@ Bundel Expo web diperiksa: 0 `alhasan.co.id`; Metro dijalankan ulang dengan `--c
 - **Q-3** Sesudah terbit, layar membaca ulang rincian santri untuk menemukan tagihan periode itu dan membukanya; bila gagal dibaca, layar kembali ke rincian santri (tagihan tetap terbit).
 - **Q-4** Penerbitan satu santri dari aplikasi tercatat sebagai satu penerbitan sasaran 1 (P-1 perbaikan web).
 
-## Batas
+## Batas bukti implementator (hasil audit terbaru di AUDIT-CODEX.md)
 
 Expo web bukan perangkat native: Android/iOS native, perangkat fisik, Push, MySQL/cPanel/produksi dan UAT belum diuji. Konkurensi lintas perangkat bergantung pada jalur server yang sudah diaudit di PR #100. Aplikasi yang memakai server tanpa PR #100 menolak penerbitan satu santri (A-5) dan petugas tetap memakai menu Penerbitan atau website.
 

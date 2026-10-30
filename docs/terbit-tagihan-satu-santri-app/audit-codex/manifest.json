@@ -1,0 +1,43 @@
+{
+  "web_handoff": "f8ded4e3299128539cda70c09a3b9109b35f58aa",
+  "mobile_handoff": "a815d45e23a413611557939281e2f345aeb05a71",
+  "correction": "F-1 on top of mobile handoff; source hashes below",
+  "expo_lock": "57.0.15; committed lock from mobile handoff, no root .env* in test copies",
+  "lock_sha256": "a874dd8856a59c2724939eb92d6d15b069c95ec56bb5f613c33fc5d9b7361f5a",
+  "copy_source_matches": {
+    "src/app/keuangan/terbit-santri.tsx": true,
+    "src/app/keuangan/santri/[id].tsx": true,
+    "src/app/keuangan/_layout.tsx": true,
+    "src/api/keuangan.ts": true,
+    "src/keuangan/forms.ts": true
+  },
+  "corrected_screen_sha256": "45a26f8a36b1a0394a12467d036ab82cd1ad18b6750f1d3776b5bb23d325ad94",
+  "ios": {
+    "device": "iPhone17 Pro simulator iOS26.2 arm64",
+    "configuration": "Release, ad-hoc simulator signing",
+    "derived_data": "/private/tmp/v7f4-codex-mobile/dd",
+    "bundle_sha256": "e39deb75c26dfdc75a54c7e51294d4b1b7283747b2e891a68c60abc7f6240d12",
+    "bundle_bytes": 3605948,
+    "production_host_count": 0,
+    "loopback_api_count": 1,
+    "build_succeeded": true
+  },
+  "db_web": "test_v6_ss_app_codex_test",
+  "db_ios": "test_v6_ss_app_ios_test",
+  "services": "PHP8.4.14 / MariaDB12.3.2; loopback8986/8990; Metro8099",
+  "physical_android_push_cpanel": "not executed; no evidence of authorized physical target/production access for this audit",
+  "results": {
+    "expo_before": "27/0",
+    "expo_after": "27/0",
+    "probe_control": "1/2",
+    "probe_after": "3/0",
+    "phase4_app": "45/0",
+    "phase5_app": "20/0",
+    "unit": "43/0",
+    "typescript_exit": 0,
+    "ios": "7/0",
+    "php_warning_fatal": 0,
+    "npm_run_lint_exit": 0,
+    "eslint_entire_folder_exit": 1
+  }
+}

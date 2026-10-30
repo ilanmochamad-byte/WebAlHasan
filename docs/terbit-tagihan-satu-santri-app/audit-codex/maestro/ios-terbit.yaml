@@ -1,0 +1,22 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "tapOn": "Tampilkan tagihan"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Terbitkan tagihan Rp300.000",
+      "timeout": 20000
+    }
+  },
+  {
+    "tapOn": "Terbitkan tagihan Rp300.000"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Rincian tagihan",
+      "timeout": 20000
+    }
+  }
+]

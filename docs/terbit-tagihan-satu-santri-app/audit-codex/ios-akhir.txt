@@ -1,0 +1,8 @@
+[lulus] iOS BSA: tombol detail, tarif150000+200000-potongan50000=300000; pratinjau tanpa tagihan
+[lulus] iOS kembali dari latar membuang pratinjau lama, meminta pratinjau baru
+[lulus] iOS terbit: tepat satu tagihan300000, satu sasaran; membuka rincian
+[lulus] iOS periode sudah terbit membuka tagihan yang sama
+[lulus] iOS penugasan dicabut saat latar menutup formulir pada sesi lama
+[lulus] iOS sbx_admin: tanpa tombol; deep link penerbitan ditolak
+[lulus] iOS sbx_v6_wali_dua: tanpa tombol; deep link penerbitan ditolak
+Ringkasan: 7 lulus, 0 gagal

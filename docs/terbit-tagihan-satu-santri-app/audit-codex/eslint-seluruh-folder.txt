@@ -1,0 +1,32 @@
+
+/private/tmp/v6ss-app-codex-mobile/.agents/skills/expo-skill-feedback/scripts/skill-event.cjs
+   85:42  error  '__dirname' is not defined   no-undef
+  127:24  error  '__filename' is not defined  no-undef
+
+/private/tmp/v6ss-app-codex-mobile/.agents/skills/expo-skill-feedback/scripts/telemetry_common.cjs
+  138:18  error  'Buffer' is not defined  no-undef
+  149:44  error  'Buffer' is not defined  no-undef
+
+/private/tmp/v6ss-app-codex-mobile/.expo/types/router.d.ts
+  1:1  warning  Unused eslint-disable directive (no problems were reported)
+
+/private/tmp/v6ss-app-codex-mobile/store/_source/capture-header-search.js
+  14:26  error  '__dirname' is not defined  no-undef
+
+/private/tmp/v6ss-app-codex-mobile/store/_source/render-header-search.js
+  7:39  error  '__dirname' is not defined  no-undef
+
+/private/tmp/v6ss-app-codex-mobile/store/_source/render-play-tablet.js
+  10:39  error  '__dirname' is not defined  no-undef
+
+/private/tmp/v6ss-app-codex-mobile/store/_source/render-screens.js
+  5:39  error  '__dirname' is not defined  no-undef
+
+/private/tmp/v6ss-app-codex-mobile/store/_source/render-store.js
+  5:39  error  '__dirname' is not defined  no-undef
+
+✖ 10 problems (9 errors, 1 warning)
+  0 errors and 1 warning potentially fixable with the `--fix` option.
+
+
+exit=1

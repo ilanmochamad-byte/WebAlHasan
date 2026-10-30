@@ -1,0 +1,3 @@
+[gagal] B-1 respons pratinjau lama sesudah periode/jatuh tempo diubah tidak mengaktifkan tombol terbit
+[gagal] Probe berhenti: page.waitForResponse: Timeout 30000ms exceeded while waiting for event "response"
+Ringkasan probe: 0 lulus, 2 gagal

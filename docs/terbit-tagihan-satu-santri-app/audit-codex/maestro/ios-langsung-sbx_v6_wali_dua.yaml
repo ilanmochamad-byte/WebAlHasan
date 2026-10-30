@@ -1,0 +1,13 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Data belum dapat ditampilkan",
+      "timeout": 20000
+    }
+  },
+  {
+    "assertNotVisible": "Tampilkan tagihan"
+  }
+]

@@ -1,0 +1,24 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "pressKey": "home"
+  },
+  {
+    "launchApp": {
+      "stopApp": false
+    }
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Tampilkan tagihan",
+      "timeout": 20000
+    }
+  },
+  {
+    "assertNotVisible": "Total tagihan"
+  },
+  {
+    "assertNotVisible": "Terbitkan tagihan Rp300.000"
+  }
+]
