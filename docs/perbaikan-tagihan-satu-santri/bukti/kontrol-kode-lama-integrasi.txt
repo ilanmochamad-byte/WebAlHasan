@@ -1,0 +1,37 @@
+[lulus] Fixture: santri SMP + 3 santri SMP lain, belum ada tagihan
+
+=== T-1. Pratinjau satu santri ===
+[gagal] Satu baris santri itu saja: tarif Rp350.000 − potongan Rp50.000 = Rp300.000
+PHP Warning:  Undefined array key "komponen" in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v6_tagihan_satu_santri_integration.php on line 92
+
+Warning: Undefined array key "komponen" in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v6_tagihan_satu_santri_integration.php on line 92
+[gagal] Baris memuat komponen tarif dan penyesuaian (tanpa alasan internal)
+[lulus] Pratinjau massal tidak berubah bentuk (tanpa komponen/santri_id), hash berbeda dari pratinjau satu santri
+
+=== T-2. Penerbitan satu santri ===
+[gagal] Tepat satu tagihan Rp300.000: komponen tarif tersalin, satu baris potongan
+[gagal] Santri SMP lain tidak mendapat tagihan dari tombol satu santri
+[gagal] Catatan penerbitan: sasaran 1 santri, hasil menunjuk tagihan itu
+[lulus] Audit penerbitan dan pemberitahuan wali tercatat seperti penerbitan massal
+[lulus] Kirim ulang kunci sama → hasil sama, tanpa tagihan kedua
+[gagal] Pratinjau ulang: sudah ada; kunci baru tidak menerbitkan tagihan kedua (422)
+[gagal] Kunci sama untuk santri lain → 409 (kunci idempotensi terikat santri)
+
+=== T-3. Berubah sesudah pratinjau ===
+[gagal] Penyesuaian ditambah sesudah pratinjau → 409 tanpa tagihan
+[gagal] Pratinjau baru memuat tambahan: Rp360.000
+
+=== T-4. Hak ===
+[gagal] Petugas unit Tsanawi atas santri SMP: pratinjau dan penerbitan 404
+[gagal] Santri nonaktif/tidak ada → 404
+[lulus] sbx_admin: pratinjau dan penerbitan → 403
+[lulus] sbx_v6_admin_bsa: pratinjau dan penerbitan → 403
+[lulus] sbx_v6_wali_smp: pratinjau dan penerbitan → 403
+[lulus] sbx_pengurus_biasa: pratinjau dan penerbitan → 403
+App\Bsa\BsaException: Tidak ada tagihan baru untuk diterbitkan pada periode ini. Tidak ada data yang diubah. in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Bsa/TagihanService.php:377
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Bsa/BsaRepository.php(67): App\Bsa\TagihanService->{closure:App\Bsa\TagihanService::terbitkanMassal():358}()
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Bsa/TagihanService.php(358): App\Bsa\BsaRepository->transaction(Object(Closure))
+#2 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v6_tagihan_satu_santri_integration.php(144): App\Bsa\TagihanService->terbitkanMassal(Array, Array, 'web')
+#3 {main}
+Tidak ada tagihan baru untuk diterbitkan pada periode ini. Tidak ada data yang diubah.

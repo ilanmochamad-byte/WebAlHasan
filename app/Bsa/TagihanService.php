@@ -60,6 +60,9 @@ final class TagihanService
     /** Jatuh tempo penerbitan massal paling lambat tiga bulan sesudah awal periode. */
     public const JATUH_TEMPO_BULAN_MAKS = 3;
 
+    /** Keterangan "Dilewati" yang berarti tarif tidak dapat dipakai untuk santri itu (isian manual boleh). */
+    public const DILEWATI_TANPA_TARIF = ['Belum ditempatkan di kelas', 'Belum ada tarif unit untuk periode ini'];
+
     public function __construct(
         private BsaService $bsa,
         private BsaRepository $bsaRepo,
@@ -307,8 +310,13 @@ final class TagihanService
      * `hash` wajib dikirim kembali saat menerbitkan; bila data berubah di
      * antara pratinjau dan penerbitan, penerbitan ditolak 409.
      *
+     * Dengan `santri_id`, sasaran hanya satu santri (tombol "Terbitkan
+     * tagihan" di rincian santri): nominal tetap dihitung dari tarif unit dan
+     * penyesuaian santri, dan setiap baris membawa `komponen` tarif yang akan
+     * disalin. Santri di luar cakupan/nonaktif → 404.
+     *
      * @param array<string, mixed> $user
-     * @param array<string, mixed> $input periode, jatuh_tempo, unit (opsional)
+     * @param array<string, mixed> $input periode, jatuh_tempo, unit (opsional), santri_id (opsional)
      * @return array<string, mixed>
      */
     public function pratinjau(array $user, array $input): array
@@ -320,6 +328,17 @@ final class TagihanService
         $cakupan = $this->bsa->cakupan($penugasan);
         $this->wajibUnitDalamCakupan($data['unit'], $cakupan);
         $rencana = $this->rencana($data, $cakupan, null);
+        if ($data['santri_id'] !== null) {
+            if ($rencana['rows'] === []) {
+                throw new BsaException('Santri tidak ditemukan.', 404);
+            }
+            $komponen = $this->repo->komponenTarif(array_values(array_filter(array_column($rencana['rows'], 'tarif_id'))));
+            foreach ($rencana['rows'] as &$r) {
+                $r['komponen'] = array_map(static fn (array $k): array => ['nama' => $k['nama'], 'nominal' => $k['nominal']],
+                    $r['tarif_id'] === null ? [] : ($komponen[$r['tarif_id']] ?? []));
+            }
+            unset($r);
+        }
         // Alasan hanya dibawa rencana internal untuk snapshot penerbitan;
         // kontrak pratinjau web/API tetap seperti sebelumnya.
         foreach ($rencana['rows'] as &$r) {
@@ -330,7 +349,36 @@ final class TagihanService
         }
         unset($r);
 
-        return $rencana + ['periode' => $data['periode'], 'jatuh_tempo' => $data['jatuh_tempo'], 'unit' => $data['unit']];
+        return $rencana + ['periode' => $data['periode'], 'jatuh_tempo' => $data['jatuh_tempo'], 'unit' => $data['unit']]
+            + ($data['santri_id'] === null ? [] : ['santri_id' => $data['santri_id']]);
+    }
+
+    /**
+     * Isian komponen manual (`BsaService::terbitkanTagihan`) hanya ditawarkan
+     * di rincian santri bila tarif tidak dapat dipakai untuk santri itu pada
+     * periode tersebut: belum ditempatkan di kelas, atau unitnya belum punya
+     * tarif berlaku. Mengembalikan keterangannya, atau null bila tarif unit
+     * berlaku (tagihan semestinya terbit dari tarif). Tidak bergantung pada
+     * tagihan yang sudah ada: kiriman manual ulang tetap diteruskan ke layanan
+     * (replay atau 409). Hanya membaca; santri di luar hak → 404.
+     *
+     * @param array<string, mixed> $user
+     */
+    public function alasanTagihanManual(array $user, int $santriId, mixed $periode): ?string
+    {
+        $this->siap();
+        $this->bsa->wajibKelola($user);
+        $periode = $this->bsa->periode($periode);
+        $cakupan = $this->bsa->cakupan($this->bsaRepo->penugasanAktif((int) $user['id']));
+        $s = $this->repo->sasaranPenerbitan($cakupan, null, $santriId)[0] ?? null;
+        if ($s === null) {
+            throw new BsaException('Santri tidak ditemukan.', 404);
+        }
+        if ($s['jenjang'] === null) {
+            return self::DILEWATI_TANPA_TARIF[0];
+        }
+
+        return isset($this->repo->tarifEfektif($periode)[mb_strtolower($s['jenjang'])]) ? null : self::DILEWATI_TANPA_TARIF[1];
     }
 
     /**
@@ -339,7 +387,11 @@ final class TagihanService
      * tidak membuat tagihan kedua atau mengubah snapshot tagihan pertama.
      *
      * @param array<string, mixed> $user
-     * @param array<string, mixed> $input idempotency_key, periode, jatuh_tempo, unit, pratinjau_hash
+     * Dengan `santri_id` sasaran hanya satu santri (lihat `pratinjau`); santri
+     * diperiksa ulang masih aktif dalam cakupan sebelum replay.
+     *
+     * @param array<string, mixed> $user
+     * @param array<string, mixed> $input idempotency_key, periode, jatuh_tempo, unit, santri_id (opsional), pratinjau_hash
      * @return array{id:int, status:int, replayed:bool, jumlah_terbit:int}
      */
     public function terbitkanMassal(array $user, array $input, string $kanal): array
@@ -353,7 +405,8 @@ final class TagihanService
             throw new BsaException('Tinjau pratinjau penerbitan lebih dahulu.');
         }
         $kunci = $this->bsa->kunci($input['idempotency_key'] ?? null);
-        $hash = $this->bsa->hash([self::OP_MASSAL, $data['periode'], $data['jatuh_tempo'], $data['unit'], $hashPratinjau]);
+        $hash = $this->bsa->hash([self::OP_MASSAL, $data['periode'], $data['jatuh_tempo'], $data['unit'], $hashPratinjau,
+            ...($data['santri_id'] === null ? [] : [$data['santri_id']])]);
 
         return $this->bsaRepo->transaction(function () use ($userId, $data, $hashPratinjau, $kunci, $hash, $kanal): array {
             $penugasan = $this->bsa->penugasanTerkunci($userId);
@@ -361,6 +414,9 @@ final class TagihanService
             $cakupan = $this->bsa->cakupan($penugasan);
             // Replay juga wajib masih dalam cakupan (pelajaran F-1 audit Fase 1).
             $this->wajibUnitDalamCakupan($data['unit'], $cakupan);
+            if ($data['santri_id'] !== null) {
+                $this->bsa->santriDalamCakupan($data['santri_id'], $penugasan);
+            }
             if ($klaim['hasil_id'] !== null) {
                 $lama = $this->repo->penerbitan($klaim['hasil_id']);
 
@@ -368,7 +424,7 @@ final class TagihanService
             }
             // Kunci baca santri sasaran (urut ID), lalu baca ulang sasaran dari
             // keadaan yang telah dikunci sebelum membandingkan dengan pratinjau.
-            $this->repo->kunciSantri(array_column($this->repo->sasaranPenerbitan($cakupan, $data['unit']), 'id'));
+            $this->repo->kunciSantri(array_column($this->repo->sasaranPenerbitan($cakupan, $data['unit'], $data['santri_id']), 'id'));
             $rencana = $this->rencana($data, $cakupan, null);
             if (!hash_equals($rencana['hash'], $hashPratinjau)) {
                 throw new BsaException('Data santri, tarif, penyesuaian, atau tagihan berubah sejak pratinjau. Tidak ada tagihan yang diterbitkan; tinjau ulang pratinjau.', 409);
@@ -1118,7 +1174,7 @@ final class TagihanService
      */
     private function rencana(array $data, ?array $cakupan, ?array $sasaran): array
     {
-        $sasaran ??= $this->repo->sasaranPenerbitan($cakupan, $data['unit']);
+        $sasaran ??= $this->repo->sasaranPenerbitan($cakupan, $data['unit'], $data['santri_id'] ?? null);
         $ids = array_column($sasaran, 'id');
         $tarif = $this->repo->tarifEfektif($data['periode']);
         $ada = $this->repo->tagihanPeriode($ids, $data['periode']);
@@ -1135,9 +1191,9 @@ final class TagihanService
                 $r['tagihan_id'] = $ada[$s['id']]['id'];
                 $r['keterangan'] = $ada[$s['id']]['status'] === 'Dibatalkan' ? 'Tagihan periode ini sudah ada (dibatalkan)' : 'Tagihan periode ini sudah ada';
             } elseif ($s['jenjang'] === null) {
-                $r['keterangan'] = 'Belum ditempatkan di kelas';
+                $r['keterangan'] = self::DILEWATI_TANPA_TARIF[0];
             } elseif ($t === null) {
-                $r['keterangan'] = 'Belum ada tarif unit untuk periode ini';
+                $r['keterangan'] = self::DILEWATI_TANPA_TARIF[1];
             } else {
                 $total = $t['total'];
                 foreach ($berlaku[$s['id']] ?? [] as $j) {
@@ -1159,14 +1215,16 @@ final class TagihanService
             $rows[] = $r;
         }
         $sidik = array_map(static fn (array $r): array => [$r['santri_id'], $r['hasil'], $r['unit'], $r['tarif_id'], $r['tagihan_id'], $r['total'], array_column($r['penyesuaian'], 'id')], $rows);
-        $hash = hash('sha256', (string) json_encode([$data['periode'], $data['jatuh_tempo'], $data['unit'], $cakupan, $sidik], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        // Penerbitan satu santri menambah ID santri ke sidik; tanpa santri hash sama seperti sebelumnya.
+        $hash = hash('sha256', (string) json_encode([$data['periode'], $data['jatuh_tempo'], $data['unit'], $cakupan, $sidik,
+            ...(($data['santri_id'] ?? null) === null ? [] : [$data['santri_id']])], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         return ['rows' => $rows, 'jumlah' => $jumlah, 'total_terbit' => $totalTerbit, 'hash' => $hash];
     }
 
     /**
      * @param array<string, mixed> $input
-     * @return array{periode:string, jatuh_tempo:string, unit:?string}
+     * @return array{periode:string, jatuh_tempo:string, unit:?string, santri_id:?int}
      */
     private function normalisasiPenerbitan(array $input): array
     {
@@ -1178,7 +1236,9 @@ final class TagihanService
         }
         $unit = ($input['unit'] ?? '') === '' || ($input['unit'] ?? null) === null ? null : $this->unitKanonik($input['unit']);
 
-        return ['periode' => $periode, 'jatuh_tempo' => $jatuhTempo, 'unit' => $unit];
+        $santriId = ($input['santri_id'] ?? '') === '' || ($input['santri_id'] ?? null) === null ? null : $this->bsa->id($input['santri_id']);
+
+        return ['periode' => $periode, 'jatuh_tempo' => $jatuhTempo, 'unit' => $unit, 'santri_id' => $santriId];
     }
 
     /**

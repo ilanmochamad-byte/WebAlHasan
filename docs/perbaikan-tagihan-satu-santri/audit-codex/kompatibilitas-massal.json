@@ -1,0 +1,9 @@
+{
+  "baseline": "0b2fcd1",
+  "current": "3d6ca62",
+  "input_without_santri_id": true,
+  "entire_response_equal": true,
+  "hash_equal": true,
+  "row_count": 4,
+  "no_extra_component_or_target_fields": true
+}

@@ -1,0 +1,66 @@
+== Perbaikan satu santri ==
+integrasi exit=0 27/0
+http exit=0 25/0 (ulang sesudah teks baris total)
+browser exit=0 11/0 (ulang sesudah teks baris total)
+galat PHP server browser: 0
+== Regresi V6 ==
+v6-fase1-http exit=1 96/8
+v6-fase1-probe-audit exit=0 37/0
+v6-fase1-browser exit=0 59/0
+v6-fase2-integrasi exit=0 179/0
+v6-fase2-http exit=0 110/0
+v6-fase2-probe-audit exit=0 30/0
+v6-fase2-browser exit=0 76/0
+v6-fase3-integrasi exit=0 137/0
+v6-fase3-http exit=0 66/0
+v6-fase3-browser exit=0 89/0
+v6-fase4-http exit=0 63/0
+v6-fase5-integrasi exit=0 71/0
+v6-fase5-http exit=0 42/0
+v6-verify-sesudah-fase5-http exit=0 36/0
+== Statis (seluruh suite) ==
+statis-alumni_static exit=0 180/0
+statis-get_mutasi_v1_static exit=0 28/0
+statis-keamanan_psb_static exit=1 82/1
+statis-kredensial_static exit=0 105/0
+statis-navigasi_ikon_static exit=0 36/0
+statis-penempatan_static exit=0 138/0
+statis-penugasan_static exit=1 281/2
+statis-perapihan_static exit=0 131/0
+statis-phase1_static exit=0 77/0
+statis-phase2_static exit=0 46/0
+statis-phase3_static exit=0 35/0
+statis-phase4_static exit=0 38/0
+statis-phase5_static exit=0 44/0
+statis-redesain_web_tahap1_static exit=0 69/0
+statis-redesain_web_tahap2_static exit=1 120/1
+statis-redesain_web_tahap3_static exit=1 151/1
+statis-redesain_web_tahap4_static exit=1 95/1
+statis-redesain_web_tahap5_static exit=0 96/0
+statis-redesain_web_tahap6_static exit=1 140/1
+statis-redesain_web_tahap7_static exit=1 100/2
+statis-redesain_web_tahap8_static exit=1 78/2
+statis-v2_phase1_static exit=0 126/0
+statis-v2_phase2_static exit=1 173/1
+statis-v2_phase3_static exit=0 147/0
+statis-v2_phase4_static exit=1 287/1
+statis-v2_phase5_static exit=1 328/3
+statis-v3_phase1_static exit=0 15/0
+statis-v3_phase2_static exit=77 0/0
+statis-v3_phase3_static exit=77 0/0
+statis-v3_phase4_static exit=0 18/0
+statis-v5_phase1_static exit=1 44/4
+statis-v5_phase2_static exit=1 61/2
+statis-v5_phase3_static exit=1 68/3
+statis-v5_phase5_static exit=1 57/1
+statis-v6_phase1_static exit=1 69/6
+statis-v6_phase2_static exit=1 56/6
+statis-v6_phase3_static exit=1 54/3
+statis-v6_phase4_static exit=1 19/3
+statis-v6_phase5_static exit=1 67/7
+statis-v7_phase1_static exit=1 44/5
+statis-v7_phase2_static exit=1 52/2
+statis-v7_phase3_static exit=1 41/3
+statis-v7_phase4_static exit=1 26/5
+statis-v7_phase5_static exit=1 53/3
+SELESAI

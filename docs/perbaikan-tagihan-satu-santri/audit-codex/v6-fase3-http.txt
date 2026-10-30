@@ -1,0 +1,84 @@
+[lulus] Fixture V6 tersedia; tabungan dan pembayaran kosong (027–029 terpasang)
+
+=== M-A. Hak halaman Fase 3 ===
+[lulus] sbx_admin: halaman tabungan, setoran transfer, rekonsiliasi → 200 (200,200,200)
+[lulus] sbx_v6_admin_bsa: halaman tabungan, setoran transfer, rekonsiliasi → 200 (200,200,200)
+[lulus] sbx_v6_bsa_b: halaman tabungan, setoran transfer, rekonsiliasi → 200 (200,200,200)
+[lulus] sbx_v6_bsa_tsanawi: halaman tabungan, setoran transfer, rekonsiliasi → 200 (200,200,200)
+[lulus] sbx_v6_wali_smp: halaman tabungan, setoran transfer, rekonsiliasi → 403 (403,403,403)
+[lulus] sbx_pengurus_biasa: halaman tabungan, setoran transfer, rekonsiliasi → 403 (403,403,403)
+[lulus] sbx_guru_biasa: halaman tabungan, setoran transfer, rekonsiliasi → 403 (403,403,403)
+[lulus] sbx_ortu_a: halaman tabungan, setoran transfer, rekonsiliasi → 403 (403,403,403)
+[lulus] sbx_admin: formulir bayar dari tabungan → 403
+[lulus] sbx_v6_admin_bsa: formulir bayar dari tabungan → 403
+[lulus] sbx_v6_wali_smp: formulir bayar dari tabungan → 403
+[lulus] sbx_pengurus_biasa: formulir bayar dari tabungan → 403
+[lulus] sbx_v6_bsa_tsanawi: formulir bayar dari tabungan → 404
+[lulus] sbx_v6_bsa_b: formulir bayar dari tabungan → 200
+[lulus] GET bsa_tabungan_aksi.php → 405 (tanpa mutasi lewat GET)
+[lulus] Navigasi keuangan: petugas melihat Tabungan dan Rekonsiliasi; orang tua tidak
+[lulus] Pemeriksaan hak tanpa mutasi
+
+=== M-B. Setoran, belanja, setoran transfer lewat web ===
+[lulus] POST setoran tanpa CSRF → 419 tanpa transaksi
+[lulus] Formulir setoran memuat pernyataan "sudah memeriksa dana masuk" untuk transfer
+[lulus] Setoran tunai Rp100.000 lewat web; klik ganda tetap satu transaksi
+[lulus] Formulir pengeluaran memuat pilihan Penarikan/Belanja
+[lulus] Belanja Rp25.000 → saldo Rp75.000 tampil; riwayat memuat jenis Belanja dan nomor kuitansi tabungan
+[lulus] Belanja melebihi saldo → 422, formulir dirender ulang dengan kunci sama
+[lulus] Setoran transfer tanpa centang → satu setoran menunggu (klik ganda tetap satu), saldo Rp0, tampil "Setoran menunggu"
+[lulus] Admin dan wali POST verifikasi → 403 tanpa mutasi
+[lulus] Verifikasi lewat web → saldo Rp40.000; klik ganda tetap satu kredit
+[lulus] Tolak dengan alasan pendek → dikembalikan dengan pesan, tanpa perubahan
+[lulus] Tolak beralasan lewat web: status Ditolak, alasan tampil, saldo tetap
+[lulus] Transfer dengan centang "sudah diperiksa" → sah seketika (saldo Rp50.000), tanpa antrean
+[lulus] Kuitansi setoran tabungan siap cetak (Rp100.000, no-store)
+
+=== M-C. Bayar tagihan dari tabungan lewat web ===
+[lulus] Formulir bayar dari tabungan: saldo Rp75.000 tampil, persetujuan wajib
+[lulus] Tanpa centang persetujuan → 422 tanpa debit atau pembayaran
+[lulus] Bayar Rp50.000 dari tabungan lewat web → saldo Rp25.000, sisa Rp50.000; klik ganda tetap satu debit dan satu pembayaran
+[lulus] Referensi silang tampil di kedua riwayat: tagihan → debit BSA-TB-2026-000005; tabungan → kuitansi BSA-KW-2026-000001
+[lulus] Kuitansi tagihan menyebut debit tabungan; bukti debit menyebut kuitansi tagihan dan bukan kas baru
+[lulus] Wali melihat referensi silang dan bukti debit anaknya, tanpa tombol koreksi
+[lulus] Melebihi saldo → 422 "Saldo tabungan tidak mencukupi"
+
+=== M-D. Koreksi lewat web ===
+[lulus] Koreksi setoran yang sudah dipakai membayar tagihan → ditolak dengan pesan, tanpa mutasi
+[lulus] Pembatalan pembayaran dari tabungan lewat web → saldo Rp75.000 dan sisa Rp100.000 kembali; tertulis "saldo dikembalikan"
+[lulus] Koreksi belanja lewat web → pembalik masuk, saldo Rp100.000, cap "Sudah dikoreksi"
+
+=== M-E. API Fase 3 ===
+[lulus] API tanpa token → 401
+[lulus] Setoran tunai API → 201 Sah, replay 200, no-store
+[lulus] Setoran transfer API tanpa terverifikasi → 202 Menunggu (saldo tetap); kunci sama dengan terverifikasi → 409
+[lulus] Daftar setoran transfer menunggu API (petugas 200; wali 403)
+[lulus] API mutasi Fase 3 oleh admin → 403
+[lulus] API mutasi Fase 3 oleh wali → 403
+[lulus] Verifikasi API → 200 Sah saldo Rp120.000; tolak sesudahnya → 409
+[lulus] Belanja API → 201, saldo Rp100.000
+[lulus] Bayar-tabungan API: 201 (saldo Rp50.000, sisa Rp10.000), replay 200, kunci sama nominal beda 409, tanpa setuju 422, melebihi sisa 422
+[lulus] GET tabungan/{id}: debit menunjuk pembayaran tagihan, saldo sebelum Rp100.000
+[lulus] GET tagihan/{id}: pembayaran menunjuk debit tabungan yang sama
+[lulus] Koreksi debit pembayaran tagihan lewat API → 422 (gunakan pembatalan pembayaran)
+[lulus] Mutasi tabungan API tersaring jenis (admin 200); wali 403
+[lulus] Rekonsiliasi API admin: selisih internal dan saldo Rp0; wali 403; tanggal tidak valid 422
+[lulus] Rincian santri API wali: tanpa setoran transfer, referensi, atau alasan
+[lulus] Kuitansi tabungan API: anak lain → 404; anak sendiri → 200
+[lulus] Rincian santri API petugas memuat riwayat setoran transfer
+
+=== M-F. Dua belanja API bersamaan ===
+[lulus] Dua belanja Rp30.000 bersamaan lewat API atas saldo Rp50.000 → [201, 422], saldo Rp20.000 (server PHP satu pekerja: bukti kontrak HTTP, bukan konkurensi DB)
+
+=== M-G. Pencabutan saat sesi lama aktif ===
+[lulus] Formulir bayar dari tabungan terbuka sebelum pencabutan → POST 403 tanpa debit
+[lulus] Token/sesi lama sesudah pencabutan: belanja, rekonsiliasi, daftar tabungan → 403
+[lulus] Relasi wali dicabut: kuitansi tabungan web dan API → 404
+
+=== M-H. Log, audit, verifier ===
+[lulus] Log server tanpa galat/peringatan PHP
+[lulus] Log server tanpa referensi transfer
+[lulus] audit_logs bsa.* tanpa nominal, saldo, referensi, alasan, tujuan, atau nama
+[lulus] Verifier Fase 1–3 lulus sesudah uji HTTP
+
+Lulus: 66 · Gagal: 0

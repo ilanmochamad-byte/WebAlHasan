@@ -1,0 +1,43 @@
+[lulus] Fixture: santri SMP + 3 santri SMP lain, belum ada tagihan
+
+=== T-1. Pratinjau satu santri ===
+[lulus] Satu baris santri itu saja: tarif Rp350.000 − potongan Rp50.000 = Rp300.000
+[lulus] Baris memuat komponen tarif dan penyesuaian (tanpa alasan internal)
+[lulus] Pratinjau massal tidak berubah bentuk (tanpa komponen/santri_id), hash berbeda dari pratinjau satu santri
+
+=== T-2. Penerbitan satu santri ===
+[lulus] Tepat satu tagihan Rp300.000: komponen tarif tersalin, satu baris potongan
+[lulus] Santri SMP lain tidak mendapat tagihan dari tombol satu santri
+[lulus] Catatan penerbitan: sasaran 1 santri, hasil menunjuk tagihan itu
+[lulus] Audit penerbitan dan pemberitahuan wali tercatat seperti penerbitan massal
+[lulus] Kirim ulang kunci sama → hasil sama, tanpa tagihan kedua
+[lulus] Pratinjau ulang: sudah ada; kunci baru tidak menerbitkan tagihan kedua (422)
+[lulus] Kunci sama untuk santri lain → 409 (kunci idempotensi terikat santri)
+
+=== T-3. Berubah sesudah pratinjau ===
+[lulus] Penyesuaian ditambah sesudah pratinjau → 409 tanpa tagihan
+[lulus] Pratinjau baru memuat tambahan: Rp360.000
+
+=== T-4. Hak ===
+[lulus] Petugas unit Tsanawi atas santri SMP: pratinjau dan penerbitan 404
+[lulus] Santri nonaktif/tidak ada → 404
+[lulus] sbx_admin: pratinjau dan penerbitan → 403
+[lulus] sbx_v6_admin_bsa: pratinjau dan penerbitan → 403
+[lulus] sbx_v6_wali_smp: pratinjau dan penerbitan → 403
+[lulus] sbx_pengurus_biasa: pratinjau dan penerbitan → 403
+[lulus] Santri dinonaktifkan sesudah terbit: replay kunci sama tidak lagi mengembalikan hasil (404)
+
+=== T-5. Isian manual hanya tanpa tarif ===
+[lulus] Santri SMP bertarif: isian manual tidak ditawarkan
+[lulus] Santri tanpa kelas: isian manual boleh (belum ditempatkan di kelas)
+[lulus] Santri Tsanawi tanpa tarif unit: isian manual boleh
+[lulus] Pratinjau santri tanpa kelas: dilewati, tanpa komponen
+[lulus] Pemeriksaan isian manual juga menegakkan hak (404 di luar cakupan, 403 admin)
+
+=== T-6. Penerbitan massal tidak berubah ===
+[lulus] Massal unit SMP sesudahnya: 2 sudah ada dilewati, sisanya (2) terbit — tanpa ganda
+
+=== T-7. Verifier ===
+[lulus] Verifier Fase 1–3 lulus
+
+Ringkasan: 27 lulus, 0 gagal

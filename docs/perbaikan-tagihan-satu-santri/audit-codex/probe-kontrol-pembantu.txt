@@ -1,0 +1,9 @@
+[lulus] Fixture auditor: dua petugas sah dan dua santri SMP, satu Tsanawi
+[lulus] Nominal/komponen kiriman palsu diabaikan: tarif 350.000 − potongan 50.000 = 300.000
+[lulus] Manipulasi komponen tidak memperluas sasaran
+Error: Call to a member function fetch_row() on false in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v6_tagihan_satu_santri_audit.php:10
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v6_tagihan_satu_santri_audit.php(24): {closure:/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v6_tagihan_satu_santri_audit.php:10}('SELECT CONCAT_W...')
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v6_tagihan_satu_santri_audit.php(46): {closure:/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/v6_tagihan_satu_santri_audit.php:24}()
+#2 {main}
+Call to a member function fetch_row() on false
