@@ -188,6 +188,65 @@ final class MasterDataRepository
         ];
     }
 
+    /** PK-1 (migrasi 032): kolom identitas pengurus milik guru sudah terpasang. */
+    public function identitasGuruTersedia(): bool
+    {
+        return \App\Database\Schema::hasColumn($this->db, 'pengurus', 'guru_id');
+    }
+
+    /**
+     * Identitas pengurus milik guru (bila ada).
+     *
+     * @return array<string, mixed>|null
+     */
+    public function identitasGuru(int $guruId): ?array
+    {
+        return $this->identitasGuruTersedia() ? $this->one('SELECT * FROM pengurus WHERE guru_id = ? LIMIT 1', [$guruId]) : null;
+    }
+
+    /**
+     * PK-1: nama, nomor HP, status aktif, dan arsip identitas pengurus mengikuti
+     * data guru. Dipanggil di transaksi yang sama dengan perubahan guru.
+     * Mengembalikan baris yang berubah (0 bila tidak ada identitas atau sudah sama).
+     */
+    public function sinkronIdentitasGuru(int $guruId): int
+    {
+        if (!$this->identitasGuruTersedia()) {
+            return 0;
+        }
+        $statement = $this->db->prepare(
+            'UPDATE pengurus p JOIN guru g ON g.id = p.guru_id
+                SET p.nama = g.nama_guru, p.no_hp = g.no_hp, p.is_active = g.is_active, p.archived_at = g.archived_at, p.updated_at = NOW()
+              WHERE p.guru_id = ?
+                AND (p.nama <> g.nama_guru OR NOT (p.no_hp <=> g.no_hp) OR p.is_active <> g.is_active OR NOT (p.archived_at <=> g.archived_at))'
+        );
+        if ($statement === false || !$this->run($statement, [$guruId])) {
+            throw new RuntimeException('Identitas pengurus milik guru gagal disinkronkan.');
+        }
+        $berubah = max(0, $statement->affected_rows);
+        $statement->close();
+
+        return $berubah;
+    }
+
+    public function transaction(callable $work): mixed
+    {
+        if (!$this->db->begin_transaction()) {
+            throw new RuntimeException('Transaksi master data tidak dapat dimulai.');
+        }
+        try {
+            $hasil = $work();
+            if (!$this->db->commit()) {
+                throw new RuntimeException('Transaksi master data tidak dapat disimpan.');
+            }
+
+            return $hasil;
+        } catch (\Throwable $exception) {
+            $this->db->rollback();
+            throw $exception;
+        }
+    }
+
     public function guruSetState(int $id, bool $active, bool $archive): void
     {
         $this->execute(

@@ -1,0 +1,18 @@
+[lulus] fixture tersedia: admin, tahun aktif, kamar, guru berakun/tanpa akun, akun ganda warisan
+[lulus] awal: belum ada identitas pengurus milik guru
+PHP Warning:  Undefined array key "subjek_guru" in <baseline-8917295>/tests/penugasan_keamanan_f1_integration.php on line 118
+
+Warning: Undefined array key "subjek_guru" in <baseline-8917295>/tests/penugasan_keamanan_f1_integration.php on line 118
+[gagal] I-1 murobi tetap khusus guru (tanpa kelompok guru tambahan)
+PHP Warning:  Undefined array key "subjek_guru" in <baseline-8917295>/tests/penugasan_keamanan_f1_integration.php on line 118
+
+Warning: Undefined array key "subjek_guru" in <baseline-8917295>/tests/penugasan_keamanan_f1_integration.php on line 118
+[gagal] I-1 guru_mapel tetap khusus guru (tanpa kelompok guru tambahan)
+PHP Warning:  Undefined array key "subjek_guru" in <baseline-8917295>/tests/penugasan_keamanan_f1_integration.php on line 122
+
+Warning: Undefined array key "subjek_guru" in <baseline-8917295>/tests/penugasan_keamanan_f1_integration.php on line 122
+TypeError: array_map(): Argument #2 ($array) must be of type array, null given in <baseline-8917295>/tests/penugasan_keamanan_f1_integration.php:122
+Stack trace:
+#0 <baseline-8917295>/tests/penugasan_keamanan_f1_integration.php(122): array_map(Object(Closure), NULL)
+#1 {main}
+array_map(): Argument #2 ($array) must be of type array, null given

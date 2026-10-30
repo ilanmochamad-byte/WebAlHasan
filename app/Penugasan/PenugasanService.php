@@ -132,8 +132,22 @@ final class PenugasanService
         $definisi = $this->jenis($jenis);
         $opsi = [
             'subjek' => $definisi['subjek'] === 'guru' ? $this->repository->guruOptions() : $this->repository->pengurusOptions(),
+            // PK-3: jenis berbasis pengurus juga dapat dipegang guru (lewat
+            // identitas pengurus miliknya). Murobi dan Guru Mapel tetap khusus guru.
+            'subjek_guru' => $definisi['subjek'] === 'pengurus' && $this->repository->identitasGuruTersedia()
+                ? $this->repository->guruOptions() : [],
             'tahun' => $this->repository->tahunOptions(),
         ];
+        // Data lama dapat mencatat satu orang dua kali (guru dan pengurus biasa).
+        // Guru yang namanya sama dengan pengurus aktif hanya ditandai sebagai
+        // peringatan; pilihan tidak dikunci karena nama sama belum tentu orang sama.
+        $namaPengurus = [];
+        foreach ($opsi['subjek_guru'] !== [] ? $opsi['subjek'] : [] as $s) {
+            $namaPengurus[self::namaPembanding((string) $s['nama'])] = true;
+        }
+        foreach ($opsi['subjek_guru'] as $i => $g) {
+            $opsi['subjek_guru'][$i]['nama_sama_pengurus'] = isset($namaPengurus[self::namaPembanding((string) $g['nama'])]);
+        }
         switch ($definisi['cakupan']) {
             case PenugasanJenis::CAKUPAN_TARGET:
                 $opsi['kamar'] = $this->repository->kamarOptions();
@@ -204,6 +218,12 @@ final class PenugasanService
             $data = $this->normalisasi($jenis, $input, null);
 
             return $this->repository->transaction(function () use ($jenis, $definisi, $data, $actorId): int {
+                if ($data['guru_identitas_id'] !== null) {
+                    // PK-1: guru dipilih untuk jenis berbasis pengurus. Identitas
+                    // pengurusnya dibentuk/dipakai ulang dan dihubungkan ke akun
+                    // guru di transaksi yang sama dengan penugasan.
+                    $data['subjek_id'] = $this->pastikanIdentitasGuru($data['guru_identitas_id'], $actorId);
+                }
                 // Gerbang serialisasi per orang: mutasi bersamaan untuk subjek
                 // yang sama menunggu di sini, lalu membaca keadaan terbaru.
                 $this->repository->lockSubjectMaster($jenis, $data['subjek_id']);
@@ -541,6 +561,54 @@ final class PenugasanService
      *
      * @return array<string, mixed>
      */
+    /**
+     * PK-1: identitas pengurus milik guru. Dibentuk sekali per guru (nama dan
+     * HP dari data guru, jabatan "Guru"), lalu akun guru — bila ada — dihubungkan
+     * ke identitas itu dan memperoleh role dasar `pengurus`. Seluruhnya di dalam
+     * transaksi pemanggil dan diaudit; kunci guru dibaca PERTAMA agar
+     * pembentukan bersamaan untuk guru yang sama berurutan.
+     */
+    private function pastikanIdentitasGuru(int $guruId, int $actorId): int
+    {
+        $guru = $this->repository->kunciGuru($guruId);
+        if ($guru === null || (int) $guru['is_active'] !== 1 || $guru['archived_at'] !== null) {
+            throw PenugasanException::invalid('Guru harus dipilih dari data guru yang aktif dan belum diarsipkan.');
+        }
+
+        $identitas = $this->repository->kunciIdentitasGuru($guruId);
+        if ($identitas === null) {
+            $pengurusId = $this->repository->buatIdentitasGuru($guru);
+            $this->auditRequired('penugasan.identitas_guru.buat', 'pengurus', $pengurusId, null,
+                ['guru_id' => $guruId, 'pengurus_id' => $pengurusId, 'jabatan' => 'Guru'], $actorId);
+        } else {
+            $pengurusId = (int) $identitas['id'];
+            if ($this->repository->sinkronIdentitasGuru($guruId) > 0) {
+                $this->auditRequired('penugasan.identitas_guru.sinkron', 'pengurus', $pengurusId,
+                    ['is_active' => (int) $identitas['is_active'], 'diarsipkan' => $identitas['archived_at'] !== null],
+                    ['guru_id' => $guruId, 'is_active' => 1, 'diarsipkan' => false], $actorId);
+            }
+        }
+
+        $akun = $this->repository->kunciAkunGuru($guruId);
+        if ($akun === null) {
+            return $pengurusId;
+        }
+        $terhubung = $akun['pengurus_id'] === null ? null : (int) $akun['pengurus_id'];
+        if ($terhubung !== null && $terhubung !== $pengurusId) {
+            throw PenugasanException::conflict('Akun guru ini sudah terhubung ke data pengurus lain (#' . $terhubung . '). Pilih data pengurus itu dari kelompok Pengurus, atau periksa halaman Akun & hak akses.');
+        }
+        if ($terhubung === $pengurusId && in_array('pengurus', $akun['roles'], true)) {
+            return $pengurusId;
+        }
+        $this->repository->hubungkanAkunIdentitas((int) $akun['id'], $pengurusId, $actorId);
+        $this->auditRequired('account_identitas_guru_linked', 'user', (int) $akun['id'],
+            ['pengurus_id' => $terhubung, 'roles' => $akun['roles']],
+            ['pengurus_id' => $pengurusId, 'guru_id' => $guruId, 'roles' => array_values(array_unique(array_merge($akun['roles'], ['pengurus'])))], $actorId);
+        $this->capabilities->forget((int) $akun['id']);
+
+        return $pengurusId;
+    }
+
     private function kunciBaris(string $jenis, int $id): array
     {
         $definisi = PenugasanJenis::definisi($jenis);
@@ -588,10 +656,32 @@ final class PenugasanService
         $definisi = PenugasanJenis::definisi($jenis);
         $errors = [];
 
-        $subjekId = (int) ($input[$definisi['subjek_kolom']] ?? 0);
-        $subjek = $definisi['subjek'] === 'guru' ? $this->repository->guruAktif($subjekId) : $this->repository->pengurusAktif($subjekId);
-        if ($subjekId < 1 || $subjek === null) {
-            $errors[$definisi['subjek_kolom']] = ucfirst($definisi['label_subjek']) . ' harus dipilih dari data ' . $definisi['label_subjek'] . ' yang aktif dan belum diarsipkan.';
+        $mentah = $input[$definisi['subjek_kolom']] ?? 0;
+        $subjekId = is_scalar($mentah) && preg_match('/^\d{1,18}$/', (string) $mentah) ? (int) $mentah : 0;
+        // PK-1/PK-3: pada pembuatan, jenis berbasis pengurus menerima guru —
+        // nilai `guru:<id>` dari kelompok Guru, atau ID identitas pengurus
+        // milik guru. Pengubahan memakai subjek lama apa adanya.
+        $guruIdentitas = null;
+        if ($lama === null && $definisi['subjek'] === 'pengurus') {
+            if (is_string($mentah) && preg_match('/^guru:(\d{1,10})$/', $mentah, $cocok) === 1) {
+                $guruIdentitas = (int) $cocok[1];
+            } elseif ($subjekId > 0) {
+                $guruIdentitas = $this->repository->guruPemilikIdentitas($subjekId);
+            }
+        }
+        if ($guruIdentitas !== null) {
+            $subjekId = 0;
+            if (!$this->repository->identitasGuruTersedia()) {
+                $errors[$definisi['subjek_kolom']] = 'Penugasan ' . $definisi['label'] . ' untuk guru belum dapat disimpan: migrasi basis data terbaru belum dipasang.';
+            } elseif ($guruIdentitas < 1 || $this->repository->guruAktif($guruIdentitas) === null) {
+                $errors[$definisi['subjek_kolom']] = 'Guru harus dipilih dari data guru yang aktif dan belum diarsipkan.';
+            }
+        } else {
+            $subjek = $definisi['subjek'] === 'guru' ? $this->repository->guruAktif($subjekId) : $this->repository->pengurusAktif($subjekId);
+            if ($subjekId < 1 || $subjek === null) {
+                $errors[$definisi['subjek_kolom']] = ucfirst($definisi['label_subjek']) . ($definisi['subjek'] === 'pengurus' && $lama === null ? ' atau guru' : '')
+                    . ' harus dipilih dari data ' . $definisi['label_subjek'] . ($definisi['subjek'] === 'pengurus' && $lama === null ? '/guru' : '') . ' yang aktif dan belum diarsipkan.';
+            }
         }
 
         $tahunId = (int) ($input['tahun_ajaran_id'] ?? 0);
@@ -602,6 +692,7 @@ final class PenugasanService
 
         $data = [
             'subjek_id' => $subjekId,
+            'guru_identitas_id' => $guruIdentitas,
             'tahun_ajaran_id' => $tahunId,
             'catatan' => $this->teksOpsional($input['catatan'] ?? '', 500, 'Catatan', $errors, 'catatan'),
         ];
@@ -924,5 +1015,11 @@ final class PenugasanService
         $row['user_roles_list'] = !empty($row['user_roles']) ? explode(',', (string) $row['user_roles']) : [];
 
         return $row;
+    }
+
+    /** Nama untuk perbandingan: huruf kecil, spasi dirapikan. */
+    private static function namaPembanding(string $nama): string
+    {
+        return mb_strtolower(trim((string) preg_replace('/\\s+/u', ' ', $nama)));
     }
 }

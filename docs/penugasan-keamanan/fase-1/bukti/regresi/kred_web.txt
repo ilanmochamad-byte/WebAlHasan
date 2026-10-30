@@ -1,0 +1,61 @@
+[lulus] PW-0 admin uji berhasil masuk [302]
+
+=== PW: jalur guru ===
+[lulus] PW-1a POST pembuatan akun guru menjawab redirect [302]
+[lulus] PW-1b panel pesan kredensial tampil setelah akun guru dibuat
+[lulus] PW-1c tombol salin dan area status tersedia
+[lulus] PW-1d password sementara tampil pada panel
+[lulus] PW-2 respons berisi password memakai Cache-Control private, no-store
+[lulus] PW-3a password yang tampil cocok dengan hash akun yang tersimpan
+[lulus] PW-3b basis data tetap hanya menyimpan hash
+[lulus] PW-9 isi kotak pesan sama persis dengan teks baku
+[lulus] PW-9b isi yang disalin berupa teks biasa tanpa markup
+[lulus] PW-4a memuat ulang halaman menghilangkan panel kredensial
+[lulus] PW-4b password tidak muncul lagi pada muat ulang
+[lulus] PW-4c membuka kembali halaman tidak menyajikan password dari sesi
+[lulus] PW-5a password tidak pernah ditulis ke cookie
+[lulus] PW-5b header Location tidak membawa password
+
+=== PW: jalur pengurus ===
+[lulus] PW-1a POST pembuatan akun pengurus menjawab redirect [302]
+[lulus] PW-1b panel pesan kredensial tampil setelah akun pengurus dibuat
+[lulus] PW-1c tombol salin dan area status tersedia
+[lulus] PW-1d password sementara tampil pada panel
+[lulus] PW-2 respons berisi password memakai Cache-Control private, no-store
+[lulus] PW-3a password yang tampil cocok dengan hash akun yang tersimpan
+[lulus] PW-3b basis data tetap hanya menyimpan hash
+[lulus] PW-9 isi kotak pesan sama persis dengan teks baku
+[lulus] PW-9b isi yang disalin berupa teks biasa tanpa markup
+[lulus] PW-4a memuat ulang halaman menghilangkan panel kredensial
+[lulus] PW-4b password tidak muncul lagi pada muat ulang
+[lulus] PW-4c membuka kembali halaman tidak menyajikan password dari sesi
+[lulus] PW-5a password tidak pernah ditulis ke cookie
+[lulus] PW-5b header Location tidak membawa password
+
+=== PW: jalur orang tua ===
+[lulus] PW-1a POST pembuatan akun orang tua menjawab redirect [302]
+[lulus] PW-1b panel pesan kredensial tampil setelah akun orang tua dibuat
+[lulus] PW-1c tombol salin dan area status tersedia
+[lulus] PW-1d password sementara tampil pada panel
+[lulus] PW-2 respons berisi password memakai Cache-Control private, no-store
+[lulus] PW-3a password yang tampil cocok dengan hash akun yang tersimpan
+[lulus] PW-3b basis data tetap hanya menyimpan hash
+[lulus] PW-9 isi kotak pesan sama persis dengan teks baku
+[lulus] PW-9b isi yang disalin berupa teks biasa tanpa markup
+[lulus] PW-4a memuat ulang halaman menghilangkan panel kredensial
+[lulus] PW-4b password tidak muncul lagi pada muat ulang
+[lulus] PW-4c membuka kembali halaman tidak menyajikan password dari sesi
+[lulus] PW-5a password tidak pernah ditulis ke cookie
+[lulus] PW-5b header Location tidak membawa password
+
+=== PW-6 s.d. PW-10. Kegagalan, retry, dan daftar akun ===
+[lulus] PW-6 ketiga jalur (guru, pengurus, orang tua) menampilkan panel yang sama
+[lulus] PW-6b setiap akun memperoleh password sementara yang berbeda
+[lulus] PW-7a pembuatan akun yang gagal tetap menjawab redirect
+[lulus] PW-7b kegagalan tidak menampilkan panel kredensial palsu
+[lulus] PW-7c kegagalan dijelaskan dengan pesan galat
+[lulus] PW-8 retry tidak membuat akun kedua dengan username yang sama
+[lulus] PW-10a daftar akun tidak pernah menampilkan password sementara
+[lulus] PW-10b tidak ada password pada URL maupun header Location sepanjang alur (19 alamat diperiksa)
+
+SELURUH SMOKE TEST WEB PESAN KREDENSIAL LULUS.

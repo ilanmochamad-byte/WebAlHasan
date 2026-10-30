@@ -61,7 +61,15 @@ master_header('Asatidz & pengurus', [
         . '<a class="btn btn-primary" href="?action=create"><i class="fas fa-plus" aria-hidden="true"></i> Tambah pengurus</a>',
 ]);
 
-if ($mode === 'create' || ($mode === 'edit' && $selected)):
+// PK-1 (migrasi 032): identitas pengurus milik guru mengikuti Data Guru.
+$milikGuru = static fn (?array $row): int => (int) ($row['guru_id'] ?? 0);
+
+if ($mode === 'edit' && $selected && $milikGuru($selected) > 0):
+    ah_panel_open(['title' => (string) $selected['nama'], 'close_url' => $tutup, 'description' => 'Identitas pengurus milik guru']); ?>
+    <p>Nama, nomor HP, dan status data ini mengikuti Data Guru. Ubah dari halaman guru yang bersangkutan.</p>
+    <a class="btn btn-outline-primary" href="admin_guru.php?action=detail&amp;id=<?= $milikGuru($selected) ?>"><i class="fas fa-chalkboard-user" aria-hidden="true"></i> Buka data guru</a>
+    <?php ah_panel_close();
+elseif ($mode === 'create' || ($mode === 'edit' && $selected)):
     $r = array_replace($selected ?? [], is_array($_SESSION['_pengurus_old'] ?? null) ? $_SESSION['_pengurus_old'] : []);
     ah_panel_open(['title' => $selected ? 'Ubah ' . $selected['nama'] : 'Tambah pengurus', 'close_url' => $selected ? $halaman . '?action=detail&id=' . (int) $selected['id'] : $tutup]);
     echo ah_error_summary('_pengurus_old'); ?>
@@ -94,7 +102,9 @@ elseif ($mode === 'detail' && $selected):
         <div><dt>Nomor identitas</dt><dd><?= master_e($selected['nomor_identitas'] ?: '—') ?></dd></div>
         <div><dt>Nomor HP</dt><dd><?= master_e($selected['no_hp'] ?: '—') ?></dd></div>
         <div><dt>Status</dt><dd><?= ah_state_badge($selected) ?></dd></div>
-        <div><dt>Akun login</dt><dd><?php if ($akun === []): ?>Belum ada · <a class="btn btn-sm btn-outline-primary" href="admin_akun.php?pengurus_id=<?= $pid ?>#ah-buat-pengurus">Buat akun</a>
+        <?php if ($milikGuru($selected) > 0): ?><div><dt>Identitas</dt><dd>Milik guru · <a href="admin_guru.php?action=detail&amp;id=<?= $milikGuru($selected) ?>">Buka data guru</a></dd></div><?php endif; ?>
+        <div><dt>Akun login</dt><dd><?php if ($akun === [] && $milikGuru($selected) > 0): ?>Memakai akun guru (terhubung saat akun guru dibuat)
+            <?php elseif ($akun === []): ?>Belum ada · <a class="btn btn-sm btn-outline-primary" href="admin_akun.php?pengurus_id=<?= $pid ?>#ah-buat-pengurus">Buat akun</a>
             <?php else: foreach ($akun as $a): ?>@<?= master_e($a['username']) ?> · <?= master_e($a['peran'] ?: 'tanpa peran') ?><?= (int) $a['is_active'] === 1 ? '' : ' (nonaktif)' ?><br><?php endforeach; endif; ?></dd></div>
     </dl>
     <h3 class="h6 mt-3">Penugasan</h3>
@@ -102,7 +112,8 @@ elseif ($mode === 'detail' && $selected):
         <li><a href="admin_penugasan.php?jenis=pembimbing&amp;q=<?= master_e(rawurlencode((string) $selected['nama'])) ?>"><span>Pembimbing</span><b><?= $binaan !== '' ? master_e($binaan) : 'Lihat' ?></b></a></li>
         <li><a href="admin_penugasan.php?jenis=pendidikan&amp;q=<?= master_e(rawurlencode((string) $selected['nama'])) ?>"><span>Bagian Pendidikan</span><b>Lihat</b></a></li>
     </ul>
-    <div class="d-flex flex-wrap gap-2"><a class="btn btn-outline-primary" href="?action=edit&amp;id=<?= $pid ?>"><i class="fas fa-pen" aria-hidden="true"></i> Ubah</a></div>
+    <div class="d-flex flex-wrap gap-2"><?php if ($milikGuru($selected) > 0): ?><a class="btn btn-outline-primary" href="admin_guru.php?action=detail&amp;id=<?= $milikGuru($selected) ?>"><i class="fas fa-chalkboard-user" aria-hidden="true"></i> Buka data guru</a>
+        <?php else: ?><a class="btn btn-outline-primary" href="?action=edit&amp;id=<?= $pid ?>"><i class="fas fa-pen" aria-hidden="true"></i> Ubah</a><?php endif; ?></div>
     <?php ah_panel_close();
 endif;
 
@@ -124,12 +135,15 @@ ah_filter_open($filters['q'] !== '' ? 1 : 0, ['state' => $filters['state']]); ?>
         <?php foreach ($result['rows'] as $row): $pid = (int) $row['id']; ?>
             <tr<?= $row['archived_at'] !== null ? ' class="ah-row-muted"' : '' ?>>
                 <td><?= master_e($row['nomor_identitas'] ?: '—') ?></td>
-                <td><a class="ah-row-link" href="?<?= master_e(ah_query(['action' => 'detail', 'id' => $pid])) ?>"><?= master_e($row['nama']) ?></a></td>
+                <td><a class="ah-row-link" href="?<?= master_e(ah_query(['action' => 'detail', 'id' => $pid])) ?>"><?= master_e($row['nama']) ?></a><?= $milikGuru($row) > 0 ? ' ' . ah_badge('Guru', 'info') : '' ?></td>
                 <td><?= master_e($row['no_hp'] ?: '—') ?></td>
                 <td><?= master_e($row['jabatan']) ?></td>
                 <td><span class="ah-cell-wrap"><?= master_e($row['binaan'] ?: '—') ?></span></td>
                 <td><?= ah_state_badge($row) ?></td>
-                <td data-label=""><?= ah_menu(array_values(array_filter([
+                <td data-label=""><?= $milikGuru($row) > 0 ? ah_menu([
+                    ['label' => 'Lihat', 'url' => '?' . ah_query(['action' => 'detail', 'id' => $pid]), 'icon' => 'fa-eye'],
+                    ['label' => 'Buka data guru', 'url' => 'admin_guru.php?action=detail&id=' . $milikGuru($row), 'icon' => 'fa-chalkboard-user'],
+                ], 'Tindakan untuk ' . $row['nama']) : ah_menu(array_values(array_filter([
                     ['label' => 'Lihat', 'url' => '?' . ah_query(['action' => 'detail', 'id' => $pid]), 'icon' => 'fa-eye'],
                     ['label' => 'Ubah', 'url' => '?' . ah_query(['action' => 'edit', 'id' => $pid]), 'icon' => 'fa-pen'],
                     $row['archived_at'] === null ? ((int) $row['is_active'] === 1

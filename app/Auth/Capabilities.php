@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Auth;
 
+use App\Database\Schema;
 use App\Penugasan\PenugasanJenis;
 use mysqli;
 
@@ -118,10 +119,28 @@ final class Capabilities
             'SELECT p.id AS nilai
                FROM users u
                JOIN pengurus p ON p.id = u.pengurus_id
-              WHERE u.id = ? AND u.is_active = 1 AND p.is_active = 1 AND p.archived_at IS NULL
+              WHERE u.id = ? AND u.is_active = 1 AND p.is_active = 1 AND p.archived_at IS NULL'
+            . $this->syaratIdentitasGuru('p') . '
               LIMIT 1',
             $userId
         );
+    }
+
+    /**
+     * PK-1 (penugasan lintas guru/pengurus, migrasi 032): identitas pengurus
+     * milik guru hanya sah untuk akun guru itu sendiri dan selama data guru
+     * aktif serta belum diarsipkan. Statusnya disinkronkan layanan Data Guru;
+     * syarat ini menjaga hak tetap gugur walau sinkronisasi terlewat.
+     * Kosong sebelum migrasi/sesudah rollback (kolom belum ada).
+     */
+    private function syaratIdentitasGuru(string $alias): string
+    {
+        if (!Schema::hasColumn($this->db, 'pengurus', 'guru_id')) {
+            return '';
+        }
+
+        return " AND ({$alias}.guru_id IS NULL OR ({$alias}.guru_id = u.guru_id AND EXISTS (
+                    SELECT 1 FROM guru gi WHERE gi.id = {$alias}.guru_id AND gi.is_active = 1 AND gi.archived_at IS NULL)))";
     }
 
     public function linkedWaliId(int $userId): ?int
@@ -587,6 +606,7 @@ final class Capabilities
         }
 
         $syaratTahun = $definisi['wajib_tahun_aktif'] ? "AND ta.status = 'Aktif'" : '';
+        $syaratIdentitas = $definisi['subjek'] === 'pengurus' ? $this->syaratIdentitasGuru('s') : '';
 
         $sql = "SELECT a.id, a.tahun_ajaran_id, {$kolom}, a.tanggal_mulai, a.tanggal_selesai
                   FROM users u
@@ -595,7 +615,7 @@ final class Capabilities
                   JOIN tahun_ajaran ta ON ta.id = a.tahun_ajaran_id
                   {$joinCakupan}
                  WHERE u.id = ? AND u.is_active = 1
-                   AND s.is_active = 1 AND s.archived_at IS NULL
+                   AND s.is_active = 1 AND s.archived_at IS NULL {$syaratIdentitas}
                    AND a.is_active = 1
                    AND a.tanggal_mulai <= CURDATE()
                    AND (a.tanggal_selesai IS NULL OR a.tanggal_selesai >= CURDATE())

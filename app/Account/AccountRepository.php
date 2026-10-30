@@ -108,11 +108,15 @@ final class AccountRepository
 
     public function find(int $id): ?array
     {
+        // PK-1 (migrasi 032): pemilik identitas pengurus; NULL sebelum migrasi.
+        $pengurusGuru = \App\Database\Schema::hasColumn($this->db, 'pengurus', 'guru_id') ? 'pg.guru_id' : 'NULL';
+
         return $this->one(
             "SELECT u.id, u.name, u.username, u.email, u.phone, u.guru_id, u.pengurus_id, u.wali_id,
                     u.is_active, u.force_password_change,
                     g.nama_guru, g.is_active AS guru_aktif, g.archived_at AS guru_arsip,
                     pg.nama AS pengurus_nama, pg.is_active AS pengurus_aktif, pg.archived_at AS pengurus_arsip,
+                    {$pengurusGuru} AS pengurus_guru_id,
                     w.nama AS wali_nama, w.is_active AS wali_aktif, w.archived_at AS wali_arsip,
                     (SELECT GROUP_CONCAT(DISTINCT r.slug ORDER BY r.slug SEPARATOR ',')
                        FROM user_roles ur JOIN roles r ON r.id = ur.role_id WHERE ur.user_id = u.id) AS roles
@@ -153,6 +157,28 @@ final class AccountRepository
             $this->db->rollback();
             throw $exception;
         }
+    }
+
+    /**
+     * PK-1: akun guru baru langsung terhubung ke identitas pengurus miliknya
+     * (bila guru itu sudah pernah ditugaskan pada jenis berbasis pengurus) dan
+     * memperoleh role dasar `pengurus`. Dipanggil di dalam transaksi pembuatan akun.
+     * Mengembalikan ID identitas yang dihubungkan, atau null.
+     */
+    public function hubungkanIdentitasGuru(int $userId, int $guruId, int $actorId): ?int
+    {
+        if (!\App\Database\Schema::hasColumn($this->db, 'pengurus', 'guru_id')) {
+            return null;
+        }
+        $identitas = $this->one('SELECT id FROM pengurus WHERE guru_id = ? LIMIT 1 FOR UPDATE', [$guruId]);
+        if ($identitas === null) {
+            return null;
+        }
+        $pengurusId = (int) $identitas['id'];
+        $this->execute('UPDATE users SET pengurus_id = ?, updated_at = NOW() WHERE id = ? AND guru_id = ? AND pengurus_id IS NULL', [$pengurusId, $userId, $guruId]);
+        $this->grantRole($userId, 'pengurus', $actorId);
+
+        return $pengurusId;
     }
 
     public function setActive(int $id, bool $active): bool

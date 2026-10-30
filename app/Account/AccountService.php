@@ -103,6 +103,12 @@ final class AccountService
                 $this->auditRequired('account_created', $id, null, [
                     'name' => $data['name'], 'username' => $data['username'], 'guru_id' => $data['guru_id'], 'roles' => ['guru'],
                 ], $actorId);
+                // PK-1: guru yang sudah memegang penugasan berbasis pengurus.
+                $identitas = $this->accounts->hubungkanIdentitasGuru($id, $data['guru_id'], $actorId);
+                if ($identitas !== null) {
+                    $this->auditRequired('account_identitas_guru_linked', $id, ['pengurus_id' => null, 'roles' => ['guru']],
+                        ['pengurus_id' => $identitas, 'guru_id' => $data['guru_id'], 'roles' => ['guru', 'pengurus']], $actorId);
+                }
             });
 
         // Nilai yang ditampilkan pada pesan kredensial harus berasal dari baris
@@ -261,6 +267,12 @@ final class AccountService
         if ($role === 'pengurus') {
             if (empty($account['pengurus_id'])) {
                 throw new InvalidArgumentException('Role Pengurus hanya dapat diberikan kepada akun yang terhubung dengan satu data pengurus.');
+            }
+            // PK-1: identitas pengurus milik guru hanya untuk akun guru itu sendiri.
+            // Akun warisan yang terhubung ke pengurus biasa tidak berubah aturannya.
+            $pemilik = (int) ($account['pengurus_guru_id'] ?? 0);
+            if ($pemilik > 0 && $pemilik !== (int) ($account['guru_id'] ?? 0)) {
+                throw new InvalidArgumentException('Data pengurus akun ini bukan identitas pengurus milik guru yang sama. Role Pengurus tidak dapat diberikan.');
             }
             if ((int) ($account['pengurus_aktif'] ?? 0) !== 1 || !empty($account['pengurus_arsip'])) {
                 throw new InvalidArgumentException('Data pengurus yang terhubung sedang nonaktif atau diarsipkan.');
