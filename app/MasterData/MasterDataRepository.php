@@ -218,7 +218,7 @@ final class MasterDataRepository
             'UPDATE pengurus p JOIN guru g ON g.id = p.guru_id
                 SET p.nama = g.nama_guru, p.no_hp = g.no_hp, p.is_active = g.is_active, p.archived_at = g.archived_at, p.updated_at = NOW()
               WHERE p.guru_id = ?
-                AND (p.nama <> g.nama_guru OR NOT (p.no_hp <=> g.no_hp) OR p.is_active <> g.is_active OR NOT (p.archived_at <=> g.archived_at))'
+                AND (BINARY p.nama <> BINARY g.nama_guru OR NOT (p.no_hp <=> g.no_hp) OR p.is_active <> g.is_active OR NOT (p.archived_at <=> g.archived_at))'
         );
         if ($statement === false || !$this->run($statement, [$guruId])) {
             throw new RuntimeException('Identitas pengurus milik guru gagal disinkronkan.');

@@ -1,6 +1,6 @@
 # Penugasan lintas guru/pengurus — Fase 1: identitas pengurus milik guru
 
-**Status (30 Oktober 2026): implementasi Claude Code selesai dan diserahkan untuk audit independen Codex.** Belum diaudit, belum merge, belum deploy, belum migrasi produksi. Fase 2 belum dimulai. Fase 1 **bukan** izin rilis parsial (lihat "Risiko rilis terpisah").
+**Status (30 Oktober 2026): LULUS audit teknis lokal Codex setelah dua koreksi terarah.** Hasil independen, temuan, dan batas ada di [AUDIT-CODEX.md](AUDIT-CODEX.md). Belum merge, belum deploy, belum migrasi produksi. Fase 2 belum dimulai. Fase 1 **bukan** izin rilis parsial (lihat "Risiko rilis terpisah").
 
 | Butir | Nilai |
 | --- | --- |
@@ -55,7 +55,7 @@
    - Identitas milik guru sendiri tidak memicu tanda.
    - Penggabungan akun/data ganda tetap di luar Fase 1; bila diperlukan, itu tahap tersendiri atas keputusan Human Developer.
 
-## Penafsiran (menunggu tinjauan auditor)
+## Penafsiran (diterima auditor; rincian di AUDIT-CODEX.md)
 
 - **PF-1** Jabatan identitas = "Guru" dan `nomor_identitas` NULL: data identitas berasal dari data guru, bukan isian admin.
 - **PF-2** Identitas tidak dihapus ketika penugasan terakhir berakhir. Identitas dipakai ulang; hak tetap dihitung dari penugasan aktif.
@@ -135,4 +135,4 @@ Akibatnya, bila Fase 1 dirilis sendiri, seorang guru yang menjadi pembimbing **d
 
 ## Handoff
 
-Tidak merge, deploy, migrasi produksi, atau memulai Fase 2. Berikutnya: audit independen Codex dengan prompt di [`../rancangan.md`](../rancangan.md) §7 (Fase 1, branch `claude/penugasan-keamanan-fase-1`).
+Audit independen Codex selesai; lihat [AUDIT-CODEX.md](AUDIT-CODEX.md). Tidak merge, deploy, migrasi produksi, atau memulai Fase 2. Auditor berhenti setelah commit/push pada branch yang sama; pekerjaan berikutnya memerlukan instruksi Human Developer.

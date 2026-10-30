@@ -98,9 +98,11 @@ final class MasterDataService
     {
         if ($this->repository->sinkronIdentitasGuru($guruId) > 0) {
             $identitas = $this->repository->identitasGuru($guruId);
-            $this->audit->log('master.identitas_guru.sinkron', 'pengurus', (int) ($identitas['id'] ?? 0), null, [
+            if (!$this->audit->log('master.identitas_guru.sinkron', 'pengurus', (int) ($identitas['id'] ?? 0), null, [
                 'guru_id' => $guruId, 'is_active' => (int) ($identitas['is_active'] ?? 0), 'diarsipkan' => !empty($identitas['archived_at']),
-            ]);
+            ])) {
+                throw new MasterDataException('Perubahan data guru dibatalkan karena audit identitas pengurus tidak dapat disimpan. Silakan coba lagi.');
+            }
         }
     }
 

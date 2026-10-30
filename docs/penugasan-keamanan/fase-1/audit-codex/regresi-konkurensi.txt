@@ -1,0 +1,54 @@
+[lulus] KP-1 lima permintaan bertumpang tindih bersamaan: tepat satu berhasil (1)
+[lulus] KP-1 hanya satu baris penugasan aktif tersimpan
+[lulus] KP-1 empat permintaan yang kalah dijawab 409 tumpang tindih
+[lulus] KP-4 permintaan yang kalah menerima pesan yang dapat dimengerti, bukan galat basis data
+[lulus] KP-4 penolakan bersamaan tercatat pada audit
+[lulus] KP-4 hanya satu audit pembuatan (transaksi yang kalah dibatalkan utuh)
+[lulus] KP-2 lima permintaan identik (klik ganda): tepat satu berhasil (1)
+[lulus] KP-2 hanya satu baris untuk cakupan itu
+[lulus] KP-2 permintaan identik yang kalah dijawab 409
+[lulus] KP-3 dua pengaktifan bertumpang tindih bersamaan: tepat satu yang aktif (1)
+[lulus] KP-3 tepat satu permintaan pengaktifan yang berhasil
+[lulus] KP-5 empat permintaan cakupan/jenis berbeda yang dikirim bersamaan seluruhnya berhasil
+[lulus] KA-1 murobi lama vs pusat overlap: tepat satu berhasil
+[lulus] KA-1 murobi tanpa data parsial/ganda
+[lulus] KA-2 murobi tanggal terbalik ditolak: pesan aman
+[lulus] KA-2 murobi alasan status wajib: pesan aman
+[lulus] KA-2 murobi alasan arsip wajib: pesan aman
+[lulus] KA-2 murobi tanpa alasan tidak mengubah status
+[lulus] KA-3 murobi pulihkan arsip bentrok ditolak: pesan aman
+[lulus] KA-3 murobi arsip tetap utuh
+[lulus] KA-4 murobi pengaktifan lama vs pusat tepat satu
+[lulus] KA-1 pembimbing lama vs pusat overlap: tepat satu berhasil
+[lulus] KA-1 pembimbing tanpa data parsial/ganda
+[lulus] KA-2 pembimbing tanggal terbalik ditolak: pesan aman
+[lulus] KA-2 pembimbing alasan status wajib: pesan aman
+[lulus] KA-2 pembimbing alasan arsip wajib: pesan aman
+[lulus] KA-2 pembimbing tanpa alasan tidak mengubah status
+[lulus] KA-3 pembimbing pulihkan arsip bentrok ditolak: pesan aman
+[lulus] KA-3 pembimbing arsip tetap utuh
+[lulus] KA-4 pembimbing pengaktifan lama vs pusat tepat satu
+[lulus] KA-5 perubahan cakupan bersamaan tepat satu
+[lulus] KA-6 perubahan tanggal bersamaan tepat satu
+[lulus] KA-7 akhiri tidak boleh memperpanjang ke periode lain: pesan aman
+[lulus] KA-7 penolakan akhiri tidak mengubah baris
+[lulus] KA-8 audit gagal pada dua proses: nol perubahan parsial
+[lulus] KA-9 get_result lock timeout keenam repository tidak dianggap data kosong
+[lulus] KA-9 seluruh timeout menghasilkan konflik aman
+[lulus] KA-10 cakupan kamar tidak memberi akses seluruh jenjang
+[lulus] KA-11 murobi deadlock nyata: satu pembacaan berhasil, satu konflik
+[lulus] KA-11 murobi deadlock tidak menjadi data kosong/pesan MySQL
+[lulus] KA-11 pembimbing deadlock nyata: satu pembacaan berhasil, satu konflik
+[lulus] KA-11 pembimbing deadlock tidak menjadi data kosong/pesan MySQL
+[lulus] KA-11 pusat deadlock nyata: satu pembacaan berhasil, satu konflik
+[lulus] KA-11 pusat deadlock tidak menjadi data kosong/pesan MySQL
+[lulus] KA-11 akun deadlock nyata: satu pembacaan berhasil, satu konflik
+[lulus] KA-11 akun deadlock tidak menjadi data kosong/pesan MySQL
+[lulus] KA-11 penempatan deadlock nyata: satu pembacaan berhasil, satu konflik
+[lulus] KA-11 penempatan deadlock tidak menjadi data kosong/pesan MySQL
+[lulus] KA-11 alumni deadlock nyata: satu pembacaan berhasil, satu konflik
+[lulus] KA-11 alumni deadlock tidak menjadi data kosong/pesan MySQL
+[lulus] KA-12 aktifkan menilai ulang master aktif: pesan aman
+[lulus] KA-12 aktivasi ditolak tanpa perubahan parsial
+
+Total gagal: 0

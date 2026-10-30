@@ -1,0 +1,24 @@
+[lulus] M-1 salinan berada pada 031 tanpa kolom pengurus.guru_id
+[lulus] M-1 halaman penugasan berjalan; kelompok guru belum ditawarkan
+[lulus] M-1 memilih guru sebelum 032 ditolak dengan pesan "belum dipasang"
+[lulus] M-1 hak pengurus biasa tetap dihitung tanpa kolom baru
+[lulus] M-1 halaman akun berjalan (pemilik identitas NULL)
+[lulus] M-1 Data Guru tetap dapat disimpan; sinkronisasi tidak berbuat apa-apa
+[lulus] M-2 migrasi 032 diterapkan dan tercatat
+[lulus] M-2 kolom guru_id INT NULL DEFAULT NULL (sama dengan guru.id)
+[lulus] M-2 unique key dan foreign key ke guru terpasang
+[lulus] M-2 seluruh baris lama tidak berubah (guru_id NULL, sidik sama)
+[lulus] M-2 hak pengurus biasa sama sebelum dan sesudah migrasi
+[lulus] M-3 menjalankan ulang 032 aman: tanpa galat, tanpa indeks/FK ganda
+[lulus] M-4 FK menolak identitas untuk guru yang tidak ada (errno 1452)
+[lulus] M-4 unique menolak identitas kedua untuk guru yang sama (errno 1062)
+[lulus] M-5 rollback tanpa identitas berhasil; kolom dan catatan migrasi dilepas
+[lulus] M-5 unique key dan FK ikut dilepas
+[lulus] M-5 data dan hak lama utuh sesudah rollback
+[lulus] M-5 naik lagi sesudah rollback berhasil
+[lulus] M-6 penyiapan: identitas guru terbentuk lewat layanan
+[lulus] M-6 rollback ditolak penjaga data (Migrasi gagal pada 032_penugasan_keamanan_fase1_identitas_guru.sql: CONSTRAINT `penugasan_fase1_rollback_guard_kosong` failed for `test_pk_f1_audit_mig_final_test`.`penugasan_fase1_rollback_guard`)
+[lulus] M-6 skema, catatan migrasi, identitas, dan seluruh data tetap sesudah penolakan
+[lulus] M-6 hak akun guru tetap berjalan sesudah rollback ditolak
+
+Hasil: 22 lulus, 0 gagal.

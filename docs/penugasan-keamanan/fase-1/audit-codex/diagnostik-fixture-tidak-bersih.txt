@@ -1,0 +1,15 @@
+[lulus] penugasan.identitas_guru.buat gagal: layanan menolak
+[gagal] penugasan.identitas_guru.buat gagal: guru, identitas, akun, role dan audit kembali utuh
+[lulus] account_identitas_guru_linked gagal: layanan menolak
+[gagal] account_identitas_guru_linked gagal: guru, identitas, akun, role dan audit kembali utuh
+[lulus] penugasan.buat gagal: layanan menolak
+[gagal] penugasan.buat gagal: guru, identitas, akun, role dan audit kembali utuh
+App\Penugasan\PenugasanException: Penugasan bertumpang tindih dengan penugasan aktif #8 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode. in /private/tmp/pkf1-audit-original/app/Penugasan/PenugasanException.php:58
+Stack trace:
+#0 /private/tmp/pkf1-audit-original/app/Penugasan/PenugasanService.php(844): App\Penugasan\PenugasanException::conflict('Penugasan bertu...')
+#1 /private/tmp/pkf1-audit-original/app/Penugasan/PenugasanService.php(234): App\Penugasan\PenugasanService->tolakTumpangTindih('kesehatan', Array, Array, NULL)
+#2 /private/tmp/pkf1-audit-original/app/Penugasan/PenugasanRepository.php(31): App\Penugasan\PenugasanService->{closure:App\Penugasan\PenugasanService::buat():220}()
+#3 /private/tmp/pkf1-audit-original/app/Penugasan/PenugasanService.php(220): App\Penugasan\PenugasanRepository->transaction(Object(Closure))
+#4 /private/tmp/pkf1-audit-original/tests/penugasan_keamanan_f1_audit_probe.php(60): App\Penugasan\PenugasanService->buat('kesehatan', Array, 1)
+#5 {main}
+Penugasan bertumpang tindih dengan penugasan aktif #8 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.
