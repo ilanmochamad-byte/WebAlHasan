@@ -80,7 +80,7 @@ ah_page_open(['title' => $judul, 'user' => $currentUser,
         ? [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => $judul]]
         : [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => 'Pengajian', 'url' => app_url('/admin/admin_pengajian.php')], ['label' => 'Kehadiran']],
     'actions' => $report === null ? '' :
-        '<a class="btn btn-outline-primary" href="export_laporan_absensi.php?' . ah_e(http_build_query($query)) . '"><i class="fas fa-file-csv" aria-hidden="true"></i> Ekspor CSV</a>'
+        ($laporanCsv ? '<a class="btn btn-outline-primary" href="export_laporan_absensi.php?' . ah_e(http_build_query($query)) . '"><i class="fas fa-file-csv" aria-hidden="true"></i> Ekspor CSV</a>' : '')
         . '<a class="btn btn-primary" target="_blank" rel="noopener" href="laporan_absensi_cetak.php?' . ah_e(http_build_query($query)) . '"><i class="fas fa-print" aria-hidden="true"></i> Cetak / PDF</a>',
 ]);
 

@@ -6,6 +6,7 @@ namespace App\V3;
 
 use App\Audit\AuditLogger;
 use App\Auth\Capabilities;
+use App\Keamanan\KeamananAkses;
 use DateTimeImmutable;
 use Throwable;
 
@@ -242,6 +243,8 @@ final class PelanggaranService
     {
         $mode=$this->readMode($user);$row=$this->repo->visibleViolation($id,$this->actorId($user),$mode);
         if($row===null){throw new V3Exception('Pelanggaran berada di luar cakupan pengguna.',403);}
+        // Keamanan (penugasan lintas guru/pengurus Fase 3): setiap pembukaan rincian diaudit tanpa isi.
+        if($mode===KeamananAkses::MODE){$this->auditRequired('keamanan.pelanggaran.dilihat','v3_pelanggaran',$id,null,['pelanggaran_id'=>$id,'santri_id'=>(int)$row['santri_id']],$this->actorId($user));}
         $ledger=$this->repo->ledgerHistory((int)$row['santri_id'],(int)$row['tahun_ajaran_id']);
         $ledgerTotal=array_sum(array_map(static fn(array $item):int=>(int)$item['perubahan_poin'],$ledger));
         $aggregate=$this->repo->aggregate((int)$row['santri_id'],(int)$row['tahun_ajaran_id']);
@@ -299,6 +302,7 @@ final class PelanggaranService
         $file=$this->repo->attachment($id);if($file===null){throw new V3Exception('Lampiran tidak ditemukan.',404);}
         $mode=$this->readMode($user);
         if($this->repo->visibleViolation((int)$file['pelanggaran_id'],$this->actorId($user),$mode)===null){throw new V3Exception('Lampiran berada di luar cakupan pengguna.',403);}
+        if($mode===KeamananAkses::MODE){$this->auditRequired('keamanan.pelanggaran.lampiran.diunduh','v3_pelanggaran_lampiran',$id,null,['lampiran_id'=>$id,'pelanggaran_id'=>(int)$file['pelanggaran_id']],$this->actorId($user));}
         return ['id'=>(int)$file['id'],'name'=>(string)$file['nama_aman'],'mime'=>(string)$file['mime'],'size'=>(int)$file['ukuran'],'sha256'=>(string)$file['sha256'],'path'=>$this->storage->absolute((string)$file['lokasi_privat'])];
     }
 
@@ -366,6 +370,12 @@ final class PelanggaranService
 
     private function readMode(array $user):string
     {
+        // Halaman Keamanan memasang penanda; hak penugasan Keamanan diperiksa ulang di sini.
+        // Mode ini hanya membaca (seluruh santri aktif, kasus Rahasia tertutup seperti murobi).
+        if(KeamananAkses::diminta($user)){
+            if(!KeamananAkses::sah($this->capabilities,$user)){throw new V3Exception('Akun tidak memegang penugasan Keamanan yang aktif.',403);}
+            return KeamananAkses::MODE;
+        }
         $caps=$this->capabilities->v3Capabilities($user);
         if(isset($caps['v3.pengawasan']))return 'admin';
         if(isset($caps['v3.pelanggaran.kelola']))return 'pembimbing';

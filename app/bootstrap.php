@@ -446,6 +446,23 @@ function izin_laporan_service(): \App\Izin\IzinLaporanService
     );
 }
 
+/**
+ * Penugasan Keamanan (lintas guru/pengurus Fase 3): rincian dan cetak izin
+ * hanya baca. Daftar izin dan pembinaan memakai layanan yang sudah ada dengan
+ * penanda `App\Keamanan\KeamananAkses`.
+ */
+function keamanan_service(): \App\Keamanan\KeamananService
+{
+    return new \App\Keamanan\KeamananService(
+        app_db(),
+        capabilities(),
+        audit_logger(),
+        izin_repository(),
+        new \App\Izin\IzinWaliRepository(app_db()),
+        izin_laporan_service()
+    );
+}
+
 function pembimbing_service(): PembimbingService
 {
     static $service;

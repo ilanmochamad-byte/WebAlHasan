@@ -1,0 +1,7 @@
+RuntimeException: Table 'test_pkf3k_f3h_test.keamanan_assignments' doesn't exist :: SELECT COUNT(*) FROM keamanan_assignments in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/da386690-eda4-4f0b-9d60-cd28bc460db8/scratchpad/baseline/tests/penugasan_keamanan_f3_seed.php:46
+Stack trace:
+#0 /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/da386690-eda4-4f0b-9d60-cd28bc460db8/scratchpad/baseline/tests/penugasan_keamanan_f3_seed.php(56): {closure:{closure:/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/da386690-eda4-4f0b-9d60-cd28bc460db8/scratchpad/baseline/tests/penugasan_keamanan_f3_seed.php:41}:43}('SELECT COUNT(*)...')
+#1 /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/da386690-eda4-4f0b-9d60-cd28bc460db8/scratchpad/baseline/tests/penugasan_keamanan_f3_seed.php(118): {closure:/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/da386690-eda4-4f0b-9d60-cd28bc460db8/scratchpad/baseline/tests/penugasan_keamanan_f3_seed.php:41}()
+#2 /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/da386690-eda4-4f0b-9d60-cd28bc460db8/scratchpad/baseline/tests/penugasan_keamanan_f3_http.php(43): require('/private/tmp/cl...')
+#3 {main}
+Table 'test_pkf3k_f3h_test.keamanan_assignments' doesn't exist :: SELECT COUNT(*) FROM keamanan_assignments

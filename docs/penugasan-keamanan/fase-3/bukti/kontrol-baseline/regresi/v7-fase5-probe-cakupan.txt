@@ -1,0 +1,7 @@
+[lulus] Kontrol: routing otomatis kepada murobi yang mencakup santri
+[lulus] Kontrol: detail terbuka sebelum pencabutan
+[lulus] Kontrol: cakupan santri benar-benar hilang, capability murobi masih sah dari penugasan lain
+[lulus] Sesudah pencabutan cakupan: detail V7/V2 harus tertutup (aktual 404/403)
+[lulus] Sesudah pencabutan cakupan: laporan tidak boleh memuat pengajuan (aktual 0)
+[lulus] Sesudah pencabutan cakupan: keputusan ditolak tanpa mutasi (aktual HTTP 403, 0 keputusan)
+Hasil: 6 lulus, 0 gagal

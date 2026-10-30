@@ -1,0 +1,3 @@
+Server PHP lokal 127.0.0.1:8996, DB sintetis test_pk_f3_browser_audit_test.
+Pola PHP Warning/Notice/Fatal/Deprecated atau Uncaught: 0.
+Log mentah lokal di browser-server.log (diabaikan Git).

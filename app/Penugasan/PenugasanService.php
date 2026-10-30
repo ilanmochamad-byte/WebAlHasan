@@ -94,7 +94,7 @@ final class PenugasanService
      */
     public function skemaTersedia(string $jenis): bool
     {
-        if ($jenis !== PenugasanJenis::KESEHATAN) {
+        if (!in_array($jenis, [PenugasanJenis::KESEHATAN, PenugasanJenis::KEAMANAN], true)) {
             return true;
         }
 

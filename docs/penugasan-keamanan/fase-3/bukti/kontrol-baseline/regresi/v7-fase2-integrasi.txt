@@ -1,0 +1,145 @@
+[lulus] Fixture V7 Fase 2 tersedia; belum ada pengajuan wali atau tinjauan
+
+=== J-1. Minta perbaikan, perbaikan wali pengaju, penerusan, keputusan murobi ===
+[lulus] Pengajuan wali #2706 menunggu Pembimbing Satu (versi 1)
+[lulus] Wali pengaju tidak dapat memperbaiki sebelum pembimbing meminta (409)
+[lulus] Rincian pembimbing tujuan menawarkan tiga tindakan tinjauan
+[lulus] Minta perbaikan tanpa catatan, tindakan tak dikenal, atau tanpa versi → 422
+[lulus] Minta perbaikan → Perlu Perbaikan Wali, versi 1→2
+[lulus] Kiriman ulang kunci sama → hasil sama, tanpa tinjauan kedua
+[lulus] Wali pengaju melihat catatan perbaikan dan tindakan perbaiki/batalkan
+[lulus] Wali kedua hanya melihat status ringkas tanpa catatan pembimbing, alasan, atau tindakan
+[lulus] Wali kedua berelasi tidak dapat memperbaiki (403)
+[lulus] Wali asing tidak dapat memperbaiki (404)
+[lulus] Pembimbing tidak dapat mengubah isi wali (403)
+[lulus] Perbaikan tanpa perubahan isi ditolak (422)
+[lulus] Perbaikan wali pengaju → isi baru, kembali Menunggu Pembimbing, versi 2→3
+[lulus] Versi isi sebelum/sesudah tercatat (2→3) oleh akun wali pengaju; isi lama tidak hilang
+[lulus] Kirim ulang perbaikan kunci sama → putar ulang tanpa versi baru
+[lulus] Murobi belum melihat pengajuan sebelum diteruskan (V7 404, V2 kosong)
+[lulus] Teruskan → routing murobi V2 tunggal: Diajukan ke SBX Murobi A, versi 3→4
+[lulus] Penerusan tidak membuat pengajuan kedua (ID dan asal tetap)
+[lulus] Antrean murobi A bertambah tepat satu (pengajuan yang sama)
+[lulus] Murobi tujuan membaca rincian V7 beserta tinjauan dan catatan penerusan
+[lulus] Pembimbing tidak dapat meninjau lagi sesudah diteruskan (409)
+[lulus] Wali tidak dapat mengubah isi sesudah diteruskan (409)
+[lulus] Murobi memutus lewat layanan V2: satu keputusan efektif, versi 4→5
+[lulus] Wali pengaju melihat keputusan murobi; tidak ada tindakan lagi
+[lulus] Riwayat lengkap berurutan: pengajuan_wali_dibuat, routing_pembimbing_otomatis, tinjauan_minta_perbaikan, perbaikan_wali_dikirim, tinjauan_diteruskan, routing_otomatis, keputusan
+[lulus] Tinjauan mencatat pelaku, versi sebelum/sesudah, murobi hasil routing, dan sidik isi yang ditinjau
+[lulus] Audit tiap tindakan ada dan tanpa alasan izin, catatan, atau tanggal
+
+=== J-2. Penolakan pembimbing dan pelepasan rentang ===
+[lulus] Sebelum ditolak, rentang ditahan bagi wali dan pengurus V2 (409)
+[lulus] Tolak dengan alasan < 3 karakter → 422
+[lulus] Tolak → Ditolak Pembimbing tanpa baris izin_keputusan murobi
+[lulus] Ditolak pembimbing tidak pernah masuk murobi maupun daftar keputusan V2
+[lulus] Wali pengaju melihat hasil tahap pembimbing (bukan keputusan murobi) beserta alasannya
+[lulus] Wali kedua melihat status "Ditolak pembimbing" yang berbeda dari "Ditolak murobi"
+[lulus] Sesudah ditolak pembimbing: keputusan V2, pembatalan V2, dan pembatalan wali ditolak (409)
+[lulus] Pengajuan wali baru pada rentang yang sudah ditolak diterima (rentang dilepas)
+[lulus] Pengurus V2 dapat mengajukan pada rentang yang dilepas penolakan pembimbing (lintas jalur)
+
+=== J-3. Routing murobi tidak tunggal → admin; penetapan dan admin pengganti V2 ===
+[lulus] Nol murobi → Perlu Penetapan Admin, tanpa murobi tujuan
+[lulus] Muncul di antrean admin V7 dan antrean penetapan murobi V2
+[lulus] Tidak ada murobi yang menerima antrean
+[lulus] Murobi tidak dapat memutus sebelum ditetapkan (403)
+[lulus] Rincian admin V7 menandai perlu penetapan murobi dan mengarah ke halaman V2
+[lulus] Admin menetapkan murobi lewat V2 (alasan, versi) pada ID yang sama
+[lulus] Murobi A (bukan tujuan) ditolak 403
+[lulus] Murobi tujuan menolak: wali melihat "Ditolak murobi", berbeda dari penolakan pembimbing
+[lulus] Dua murobi → Perlu Penetapan Admin (dua kandidat tercatat di pengajuan dan tinjauan)
+[lulus] Admin pengganti tanpa alasan penggantian → 422
+[lulus] Admin pengganti memutus beralasan (aturan V2); wali melihat "Admin pengganti"
+[lulus] Keputusan kedua ditolak (409); tetap satu keputusan efektif
+[lulus] Koreksi keputusan memakai mekanisme V2 (riwayat koreksi, satu keputusan)
+
+=== J-4. Murobi di luar penugasan dan peran lain ===
+[lulus] Pembimbing lain (bukan tujuan) → 404
+[lulus] Admin tidak menggantikan tinjauan pembimbing → 403
+[lulus] Wali dan murobi tidak dapat meninjau → 403
+[lulus] Murobi B di luar penugasan: keputusan 403, rincian V7 404, tanpa keputusan
+[lulus] Guru tanpa penugasan murobi → 403
+[lulus] Wali tidak dapat memutus → 403
+
+=== J-5. Versi lama, kunci konflik, benturan saat perbaikan ===
+[lulus] Tinjauan dengan versi lama → 409 tanpa perubahan
+[lulus] Kunci sama dengan isi berbeda → 409 tanpa perubahan
+[lulus] Perbaikan yang membentur pengajuan aktif lain → 409 tanpa perubahan
+[lulus] Perbaikan dengan tanggal kembali mendahului tanggal izin → 422
+[lulus] Perbaikan dengan versi lama → 409
+[lulus] Perbaikan dengan rentang bebas diterima (versi 3)
+[lulus] Dua putaran perbaikan: dua versi isi lama tersimpan, versi 5
+
+=== J-6. Pembatalan wali pengaju pada setiap tahap ===
+[lulus] Wali lain 403, wali asing 404, alasan pendek 422
+[lulus] Wali pengaju membatalkan dari Menunggu Pembimbing (menunggu pembimbing)
+[lulus] Wali pengaju membatalkan dari Perlu Penetapan Pembimbing (menunggu penetapan pembimbing oleh admin)
+[lulus] Wali pengaju membatalkan dari Perlu Perbaikan Wali (perlu perbaikan wali)
+[lulus] Pembatalan V2 oleh admin atas pengajuan wali → 403 (hanya wali pengaju)
+[lulus] Wali pengaju membatalkan dari Diajukan (sesudah diteruskan, sebelum keputusan murobi)
+[lulus] Murobi melihat status terkini: keluar dari antrean, keputusan sesudah batal → 409
+[lulus] Wali pengaju membatalkan dari Perlu Penetapan Admin (menunggu penetapan murobi)
+[lulus] Pembatalan sesudah keputusan murobi → 409
+[lulus] Rentang yang dibatalkan dilepas untuk pengajuan baru
+[lulus] Pembatalan tercatat dengan pelaku wali pengaju dan alasannya
+
+=== J-7. Pencabutan pada sesi lama ===
+[lulus] Penugasan pembimbing dinonaktifkan: tinjauan dan rincian sesi lama → 404 tanpa perubahan
+[lulus] Pengajuan itu muncul di antrean admin untuk penetapan ulang
+[lulus] Penugasan berakhir kemarin → 404 tanpa perubahan
+[lulus] Akun pembimbing dinonaktifkan → 403
+[lulus] Putar ulang tinjauan sesudah penugasan dicabut → 404 (hasil tersimpan tidak dibuka)
+[lulus] Relasi wali dicabut: perbaiki/batal/rincian sesi lama → 404 tanpa perubahan
+[lulus] Seluruh penugasan murobi A dicabut: keputusan dari sesi lama → 403 tanpa keputusan
+[lulus] Akun wali pengaju dinonaktifkan → 403
+[lulus] Sesudah penugasan murobi dipulihkan, murobi tujuan memutus seperti biasa
+
+=== J-8. Permukaan V2: orang tua, tindakan batal, notifikasi ===
+[lulus] Daftar/rincian V2 orang tua tidak memuat pengajuan wali yang sudah diteruskan (dibaca lewat V7)
+[lulus] Laporan V2 cakupan orang tua tidak memuat pengajuan wali; cakupan admin tetap memuatnya
+[lulus] Rincian V2 admin atas pengajuan wali: putuskan sebagai pengganti ada, batalkan tidak ditawarkan
+[lulus] Rincian V2 murobi tujuan menawarkan keputusan
+[lulus] Notifikasi V2 tidak dipancarkan untuk pengajuan wali (notifikasi V7 adalah Fase 3)
+[lulus] Penanda asal wali untuk rincian V2 hanya untuk baris wali
+
+=== J-9. Konkurensi proses terpisah ===
+[lulus] Putaran 1 batal vs teruskan (4+4 proses): tepat satu menang → Diajukan, versi 2 {"batal:409":4,"teruskan:409":3,"teruskan:ok":1}
+[lulus] Putaran 2 batal vs teruskan (4+4 proses): tepat satu menang → Dibatalkan, versi 2 {"batal:409":3,"teruskan:409":4,"batal:ok":1}
+[lulus] Putaran 3 batal vs teruskan (4+4 proses): tepat satu menang → Diajukan, versi 2 {"batal:409":4,"teruskan:ok":1,"teruskan:409":3}
+[lulus] Putaran 4 batal vs teruskan (4+4 proses): tepat satu menang → Diajukan, versi 2 {"batal:409":4,"teruskan:409":3,"teruskan:ok":1}
+[lulus] Putaran 5 batal vs teruskan (4+4 proses): tepat satu menang → Dibatalkan, versi 2 {"batal:409":3,"teruskan:409":4,"batal:ok":1}
+[lulus] Kedua cabang balapan batal vs teruskan teramati: Diajukan, Dibatalkan, Diajukan, Diajukan, Dibatalkan
+[lulus] Putaran 1 batal vs keputusan (4+4 proses): satu status terminal Disetujui, keputusan efektif 1 {"batal:409":4,"putus:ok":1,"putus:409":3}
+[lulus] Putaran 2 batal vs keputusan (4+4 proses): satu status terminal Dibatalkan, keputusan efektif 0 {"batal:409":3,"putus:409":4,"batal:ok":1}
+[lulus] Putaran 3 batal vs keputusan (4+4 proses): satu status terminal Disetujui, keputusan efektif 1 {"batal:409":4,"putus:409":3,"putus:ok":1}
+[lulus] Putaran 4 batal vs keputusan (4+4 proses): satu status terminal Ditolak, keputusan efektif 1 {"batal:409":4,"putus:409":3,"putus:ok":1}
+[lulus] Putaran 5 batal vs keputusan (4+4 proses): satu status terminal Dibatalkan, keputusan efektif 0 {"batal:409":3,"putus:409":4,"batal:ok":1}
+[lulus] Kedua cabang balapan batal vs keputusan teramati: Disetujui, Dibatalkan, Disetujui, Ditolak, Dibatalkan
+[lulus] Delapan klik ganda tinjauan kunci sama → delapan jawaban sukses, satu tinjauan, versi 2 {"minta_perbaikan:ok":8}
+[lulus] Delapan klik ganda perbaikan kunci sama → satu versi isi baru {"perbaiki:ok":8}
+[lulus] Delapan klik ganda pembatalan kunci sama → satu pembatalan {"batal:ok":8}
+[lulus] Perbaikan vs pembatalan (4+4 proses, akun sama): tepat satu menang → Dibatalkan {"perbaiki:409":4,"batal:409":3,"batal:ok":1}
+[lulus] Keputusan murobi vs admin pengganti (4+4 proses): tepat satu keputusan efektif {"putus:409":4,"putus_admin:409":3,"putus_admin:ok":1}
+
+=== J-10. Jalur pengurus V2 tetap utuh ===
+[lulus] Pengurus V2 mengajukan langsung ke murobi tanpa tahap pembimbing
+[lulus] Tindakan V7 tidak berlaku atas pengajuan pengurus (404)
+[lulus] Pengajuan pengurus aktif menahan rentang bagi wali (409)
+[lulus] Pengurus V2 membatalkan pengajuannya sendiri
+[lulus] Pengurus V2: keputusan murobi, koreksi admin, dan notifikasi V2 tetap berjalan
+
+=== J-11. CHECK basis data 031 ===
+[lulus] CHECK: tolak tanpa alasan ditolak basis data
+[lulus] CHECK: penerusan berstatus Diajukan tanpa murobi ditolak
+[lulus] CHECK: penolakan pembimbing tidak dapat ditulis sebagai status Ditolak murobi
+[lulus] CHECK: versi tinjauan harus naik tepat satu
+[lulus] CHECK/kunci asing: perbaikan tanpa perubahan isi atau tanpa permintaan ditolak
+
+=== J-12. Verifier dan preservasi V2 ===
+[lulus] Baris pengajuan V2/warisan yang ada sebelum uji tidak berubah (ID, status, versi)
+[lulus] bin/v7_phase2_verify.php lulus sesudah seluruh uji (Verifikasi V7 Fase 2 lulus.)
+[lulus] [info] Outbox hanya bertambah dari jalur pengurus V2
+
+Hasil: 119 lulus, 0 gagal

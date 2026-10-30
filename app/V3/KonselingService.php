@@ -6,6 +6,7 @@ namespace App\V3;
 
 use App\Audit\AuditLogger;
 use App\Auth\Capabilities;
+use App\Keamanan\KeamananAkses;
 use DateTimeImmutable;
 
 /** Aturan bisnis tunggal konseling Fase 3 untuk website dan REST API. */
@@ -241,7 +242,9 @@ final class KonselingService
     {
         $mode=$this->readMode($user);$actorId=$this->actorId($user);$row=$this->repo->visibleCase($id,$actorId,$mode);if($row===null)throw new V3Exception('Kasus berada di luar cakupan pengguna.',403);
         // Kasus Internal diketahui pembimbing dan murobi terkait; kasus Rahasia sudah tersaring query bagi murobi dan pembimbing bukan pemilik.
-        $internal=$mode!=='murobi'||(string)$row['kerahasiaan']==='Internal';
+        $internal=!in_array($mode,['murobi',KeamananAkses::MODE],true)||(string)$row['kerahasiaan']==='Internal';
+        // Keamanan (penugasan lintas guru/pengurus Fase 3): setiap pembukaan rincian diaudit tanpa isi.
+        if($mode===KeamananAkses::MODE)$this->auditRequired('keamanan.konseling.kasus.dilihat','v3_konseling_kasus',$id,null,['kasus_id'=>$id,'santri_id'=>(int)$row['santri_id']],$actorId);
         if($mode==='admin')$this->auditRequired('v3.konseling.kasus.dilihat.admin','v3_konseling_kasus',$id,null,['kasus_id'=>$id,'kerahasiaan'=>(string)$row['kerahasiaan']],$actorId);
         $sessions=$this->repo->sessions($id,true);return ['kasus'=>$this->serializeCase($row,$internal),'sesi'=>array_map(fn(array $s):array=>$this->serializeSession($s,$internal),$sessions),'sesi_aktif'=>array_values(array_filter(array_map(fn(array $s):array=>$this->serializeSession($s,$internal),$sessions),static fn(array $s):bool=>$s['digantikan_oleh_id']===null)),'tautan'=>array_map(fn(array $link):array=>$this->serializeLink($link,$internal),$this->repo->links($id)),'rekomendasi'=>$internal?array_map([$this,'serializeRecommendation'],$this->repo->recommendationsForCase($id)):[],'catatan_murobi'=>array_map([$this,'serializeMurobi'],$this->repo->notes($id)),'riwayat_revisi_kasus'=>$internal?array_map([$this,'serializeCaseRevision'],$this->repo->caseRevisions($id)):[],'akses_internal'=>$internal];
     }
@@ -295,6 +298,8 @@ final class KonselingService
     }
     private function readMode(array $user):string
     {
+        // Halaman Keamanan memasang penanda; hak penugasan Keamanan diperiksa ulang di sini (hanya baca).
+        if(KeamananAkses::diminta($user)){if(!KeamananAkses::sah($this->capabilities,$user))throw new V3Exception('Akun tidak memegang penugasan Keamanan yang aktif.',403);return KeamananAkses::MODE;}
         $caps=$this->capabilities->v3Capabilities($user);if(isset($caps['v3.pengawasan']))return 'admin';if(isset($caps['v3.konseling.kelola']))return 'pembimbing';if(isset($caps['v3.binaan.baca']))return 'murobi';throw new V3Exception('Akun tidak berhak membaca konseling internal.',403);
     }
     private function caseOr404(int $id):array{return $this->repo->case($id)??throw new V3Exception('Kasus tidak ditemukan.',404);}

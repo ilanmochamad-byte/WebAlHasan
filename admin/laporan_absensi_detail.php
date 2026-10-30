@@ -26,6 +26,12 @@ try {
     http_response_code($exception->status());
     exit(ah_e($exception->getMessage()));
 }
+// PK-5: setiap pembukaan rincian oleh Keamanan wajib berjejak, tanpa isi.
+if ($kehadiranKeamanan && !audit_logger()->log('keamanan.kehadiran.dilihat', 'pertemuan_pengajian', (int) $id,
+    null, ['pertemuan_id' => (int) $id], (int) $currentUser['id'])) {
+    http_response_code(503);
+    exit('Audit akses tidak dapat disimpan. Rincian tidak ditampilkan.');
+}
 $j6 = !empty($currentUser[ReportFilter::BACA_SEMUA_JADWAL]);
 $task = $meeting['task'];
 $labelIzin = izin_service()->approvedCovering(array_map(static fn (array $s): int => (int) $s['student_id'], $meeting['students']), (string) $meeting['date']);

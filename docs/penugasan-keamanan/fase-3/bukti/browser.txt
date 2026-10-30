@@ -1,0 +1,58 @@
+[lulus] B-A 375px: menu memuat Kehadiran, Perizinan, dan Pembinaan Keamanan
+[lulus] B-B 375px: daftar izin memuat pengajuan wali; tanpa Ekspor CSV
+[lulus] B-B daftar izin 375px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-B 375px: rincian izin wali menampilkan alasan lengkap
+[lulus] B-B rincian izin 375px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-C 375px: daftar pelanggaran tanpa santri nonaktif dan tanpa Catat
+[lulus] B-C daftar pelanggaran 375px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-C 375px: tautan kasus Rahasia tidak tampil; tanpa Tandai mengetahui
+[lulus] B-C rincian pelanggaran 375px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-C 375px: daftar konseling hanya kasus Internal
+[lulus] B-C daftar konseling 375px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-C rincian konseling 375px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-D 375px: kehadiran dengan Cetak, tanpa Ekspor CSV
+[lulus] B-D kehadiran 375px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-E 375px: G beralih ke peran Pengurus
+[lulus] B-E 375px: G membuka daftar izin Keamanan
+[lulus] B-E daftar izin G 375px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-A 768px: menu memuat Kehadiran, Perizinan, dan Pembinaan Keamanan
+[lulus] B-B 768px: daftar izin memuat pengajuan wali; tanpa Ekspor CSV
+[lulus] B-B daftar izin 768px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-B 768px: rincian izin wali menampilkan alasan lengkap
+[lulus] B-B rincian izin 768px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-C 768px: daftar pelanggaran tanpa santri nonaktif dan tanpa Catat
+[lulus] B-C daftar pelanggaran 768px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-C 768px: tautan kasus Rahasia tidak tampil; tanpa Tandai mengetahui
+[lulus] B-C rincian pelanggaran 768px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-C 768px: daftar konseling hanya kasus Internal
+[lulus] B-C daftar konseling 768px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-C rincian konseling 768px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-D 768px: kehadiran dengan Cetak, tanpa Ekspor CSV
+[lulus] B-D kehadiran 768px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-E 768px: G beralih ke peran Pengurus
+[lulus] B-E 768px: G membuka daftar izin Keamanan
+[lulus] B-E daftar izin G 768px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-A 1280px: menu memuat Kehadiran, Perizinan, dan Pembinaan Keamanan
+[lulus] B-B 1280px: daftar izin memuat pengajuan wali; tanpa Ekspor CSV
+[lulus] B-B daftar izin 1280px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-B 1280px: rincian izin wali menampilkan alasan lengkap
+[lulus] B-B rincian izin 1280px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-C 1280px: daftar pelanggaran tanpa santri nonaktif dan tanpa Catat
+[lulus] B-C daftar pelanggaran 1280px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-C 1280px: tautan kasus Rahasia tidak tampil; tanpa Tandai mengetahui
+[lulus] B-C rincian pelanggaran 1280px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-C 1280px: daftar konseling hanya kasus Internal
+[lulus] B-C daftar konseling 1280px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-C rincian konseling 1280px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-D 1280px: kehadiran dengan Cetak, tanpa Ekspor CSV
+[lulus] B-D kehadiran 1280px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-E 1280px: G beralih ke peran Pengurus
+[lulus] B-E 1280px: G membuka daftar izin Keamanan
+[lulus] B-E daftar izin G 1280px: kerangka bersama, tanpa formulir POST, tanpa geser horizontal
+[lulus] B-F 375px tanpa JavaScript: daftar izin tampil
+[lulus] B-F 375px tanpa JavaScript: saringan GET bekerja
+[lulus] B-F 375px tanpa JavaScript: rincian kasus tampil
+[lulus] Tanpa galat JavaScript
+[lulus] Tanpa confirm()/alert() bawaan
+
+Hasil: 56 lulus, 0 gagal.

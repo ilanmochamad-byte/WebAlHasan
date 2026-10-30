@@ -1,0 +1,159 @@
+[lulus] Fixture Tahap 6 tersedia: {"a1":1,"a2":2,"b1":3,"c1":4,"putri":1667,"luar":1668,"kamarA":1,"kamarP5":113,"alumni":129,"rahasia":2,"paA":1}
+
+=== H6-A. Migrasi 023 dan rollback ===
+[lulus] Salinan DB migrasi dibuat: test_redesain_t6_migrasi_test
+[lulus] Migrasi 023 tercatat: kolom kamar.asrama dan tabel wali_bukan_ganda ada
+[lulus] SQL migrasi 023 dapat dijalankan ulang (idempoten)
+[lulus] Batasan: pasangan wajib terurut (wali_a_id < wali_b_id)
+[lulus] Batasan: paling banyak satu tanda aktif per pasangan
+[lulus] Tanda dibatalkan tetap tersimpan; tanda baru boleh dibuat
+[lulus] Batasan: kunci asing ke wali
+[lulus] Asrama hanya Putra/Putri
+[gagal] Rollback 023: kolom asrama dan tabel bukan ganda dilepas — Rollback selesai: 032_penugasan_keamanan_fase1_identitas_guru.sql (exit 0)
+[lulus] Rollback tidak menyentuh baris kamar, wali, relasi, penempatan, audit ([13,460,8,5,205,3133])
+[gagal] Rollback menghapus catatan migrasi 023 sehingga dapat dinaikkan lagi
+[lulus] Tanpa migrasi (sesudah rollback) halaman kamar, penempatan, wali, rekonsiliasi tetap 200
+[gagal] Tanpa migrasi: tombol Bukan ganda tidak ada, ada keterangan
+[gagal] Tanpa migrasi: formulir kamar tanpa asrama, ada keterangan
+[gagal] Tanpa migrasi: kamar tetap dapat disimpan tanpa asrama
+[gagal] Migrasi naik lagi sesudah rollback
+[gagal] Sesudah rollback+naik, asrama kosong lagi (kehilangan data yang didokumentasikan rollback)
+[lulus] Sesudah naik lagi: kamar baru tanpa asrama ditolak (pemeriksaan skema per permintaan)
+
+=== H6-B. Profil santri binaan (keputusan AB) ===
+[lulus] sbx_pengurus_a → santri 1: 200 di keempat tab
+[lulus] sbx_pengurus_a → santri 4: 200 di keempat tab
+[lulus] sbx_pengurus_a → santri 3: 403 di keempat tab
+[lulus] sbx_pengurus_a → santri 1668: 403 di keempat tab
+[lulus] sbx_pengurus_a → santri 99999999: 403 di keempat tab
+[lulus] sbx_pengurus_b → santri 2: 200 di keempat tab
+[lulus] sbx_pengurus_b → santri 3: 200 di keempat tab
+[lulus] sbx_pengurus_b → santri 4: 403 di keempat tab
+[lulus] sbx_murobi_a → santri 1: 200 di keempat tab
+[lulus] sbx_murobi_a → santri 4: 403 di keempat tab
+[lulus] sbx_murobi_c → santri 4: 200 di keempat tab
+[lulus] sbx_murobi_c → santri 3: 403 di keempat tab
+[lulus] sbx_ortu_a → santri 1: 403 di keempat tab
+[lulus] sbx_guru_biasa → santri 1: 403 di keempat tab
+[lulus] sbx_pengurus_biasa → santri 1: 403 di keempat tab
+[lulus] Di luar cakupan dan tidak ada dijawab sama, tanpa nama santri
+[lulus] Admin dialihkan ke profil 360° (D-2)
+[lulus] Peran Bagian Pendidikan ditolak (403)
+[lulus] Ringkasan hanya-baca: kelas, kamar, wali utama, izin semester; Ajukan izin; tanpa tab Nilai & rapor, tanpa formulir ubah
+[lulus] Murobi tidak mendapat tombol Ajukan izin
+[lulus] Tab Izin: jumlah izin semester = basis data (25)
+[lulus] Tab Pembinaan: kasus Rahasia hanya untuk pembimbing pemiliknya (bukan pembimbing lain/murobi)
+[lulus] Data santri admin tetap khusus admin: /admin/admin_master_santri.php?action=detail&id=1
+[lulus] Data santri admin tetap khusus admin: /admin/admin_wali.php
+[lulus] Data santri admin tetap khusus admin: /admin/admin_penempatan_santri.php
+[lulus] Penugasan pembimbing dinonaktifkan → sesi yang sama langsung 403
+[lulus] Penugasan pembimbing berakhir kemarin → 403
+[lulus] Santri dinonaktifkan → keluar dari cakupan (403)
+[lulus] Dipulihkan → 200 lagi
+[lulus] Daftar santri binaan hanya cakupan sendiri
+[lulus] Beranda pengurus menautkan santri binaan ke profil (D-10)
+
+=== H6-C. Asrama kamar dan penempatan (keputusan AE) ===
+[lulus] Kamar baru tanpa asrama ditolak 422
+[lulus] Nilai asrama di luar Putra/Putri ditolak
+[lulus] Kamar baru dengan asrama Putra tersimpan
+[lulus] Ubah tanpa isian asrama (pemanggil lama) tidak mengosongkan asrama
+[lulus] Audit kamar memuat asrama
+[lulus] Chip "Belum ditentukan" = basis data (10) dan menyaring
+[lulus] Panel penghuni: label asrama, penghuni tidak sesuai, Tempatkan santri
+[lulus] Tinjau: peringatan per santri + konfirmasi dan alasan
+[lulus] Terapkan tanpa konfirmasi: 422, tidak tersimpan, tinjauan tampil lagi
+[lulus] Alasan kurang dari 5 karakter ditolak
+[lulus] Jalur cepat lama (tahap=langsung) juga ditolak tanpa konfirmasi
+[lulus] Jalur cepat yang ditolak menampilkan tinjauan dengan konfirmasi
+[lulus] Dengan konfirmasi + alasan: tersimpan
+[lulus] Audit penempatan memuat tanda tidak sesuai, asrama, dan alasan
+[lulus] Kamar dengan asrama belum ditentukan: tanpa peringatan
+[lulus] Bilah pilihan → langkah "pilih tujuan" dengan nama santri
+[lulus] Keluarkan dari bilah pilihan langsung ke tinjauan beralasan
+[lulus] GET bermutasi ke penempatan tetap 405
+[lulus] Panel "Ubah penempatan": pilihan kamar berlabel asrama
+[lulus] POST penempatan tanpa CSRF ditolak (419)
+
+=== H6-D. Rekonsiliasi dan "Bukan ganda" (keputusan AD) ===
+[lulus] Satu pasangan per layar; chip = jumlah pasangan (3)
+[lulus] Alasan pendek ditolak, tidak ada tanda
+[lulus] Tanpa CSRF ditolak
+[lulus] Tanda tersimpan terurut, dengan alasan dan pelaku (urutan masukan terbalik pun diterima)
+[lulus] Pasangan hilang dari kemungkinan ganda (3 → 2)
+[lulus] Audit master.wali.bukan_ganda tercatat
+[lulus] Tanda kedua untuk pasangan aktif ditolak
+[lulus] Pasangan yang bukan kandidat (nama/HP berbeda) tidak dapat ditandai
+[lulus] Chip "Ditandai bukan ganda": pasangan, alasan, pelaku, Batalkan tanda
+[lulus] Pembatalan menyimpan jejak (baris tidak dihapus) dan pasangan muncul lagi
+[lulus] Pasangan yang keduanya berakun: tanpa formulir gabung
+[lulus] Gabung tanpa centang konfirmasi ditolak
+[lulus] Gabungkan (pertahankan A): B diarsipkan dengan penanda, relasi pindah ke A
+[lulus] Tombol Rekonsiliasi wali di D-6 menyebut jumlah yang perlu ditinjau (224)
+[lulus] Panel wali: santri terhubung, hubungkan santri, Buat akun
+
+=== H6-E. Impor dengan pemeriksaan (keputusan AC) ===
+[lulus] Periksa: 5 baris, 2 siap, 3 bermasalah (baris judul dan kosong dilewati)
+[lulus] Masalah per baris: NIS terdaftar, NIS ganda dalam berkas, aturan formulir santri
+[lulus] Periksa TIDAK menyimpan apa pun; jawaban tanpa isi mentah
+[lulus] Santri lain memakai NIS baris 3 sesudah pemeriksaan (simulasi perubahan data)
+[lulus] Impor memeriksa ulang: NIS yang terisi sejak pemeriksaan ditolak, hanya baris siap tersimpan
+[lulus] Isi bukan daftar baris ditolak 422
+[lulus] Jalur lama (tanpa mode) tetap: teks IMPORT SELESAI
+[lulus] GET tanpa templat → 405
+[lulus] Templat Excel dapat diunduh
+[lulus] Templat/impor khusus admin
+[lulus] Impor tanpa CSRF ditolak
+
+=== H6-F. Layar, akses, alamat lama ===
+[lulus] Seluruh layar D/M/G (24 alamat) 200 untuk admin
+[lulus] Tanpa isian ID yang diketik di layar D/M/G
+[lulus] Alamat lama /admin/admin_murobi.php dialihkan → jenis=murobi
+[lulus] Alamat lama /admin/admin_pembimbing.php dialihkan → jenis=pembimbing
+[lulus] Alamat lama /admin/admin_santri.php dialihkan → admin_penempatan_santri.php
+[lulus] D-1: tanpa kolom ID, chip status berangka, Impor/Ekspor/Templat di ⋯
+[lulus] Chip Aktif = basis data (216)
+[lulus] D-1 saringan kamar bernama
+[lulus] D-2 tab Kelas & kamar: kelas, kamar, riwayat
+[lulus] D-2 admin melihat kasus Rahasia (pengawasan)
+[lulus] D-2 santri tidak ada → 404
+[lulus] D-3: formulir tidak lagi memuat kotak centang penimpaan
+[lulus] D-3: perbedaan data lama memunculkan dialog konfirmasi; belum tersimpan
+[lulus] D-3: "Ganti dan simpan" mengganti data lama dan menyimpan
+
+=== H6-G. Kelulusan (D-8) dan alumni (D-9) ===
+[lulus] Langkah 1: santri tercentang, Lanjut ke keterangan
+[lulus] Langkah 2: keterangan keluar
+[lulus] Langkah 2 tanpa santri dicentang ditolak
+[lulus] Langkah 3: tinjau & proses
+[lulus] Proses: santri menjadi alumni dan diarsipkan
+[lulus] D-9: 6 kolom data + tindakan
+[lulus] D-9 panel detail: penempatan terakhir, data orang tua, jejak, tindakan beralasan
+[lulus] Arsip alumni dengan alasan pendek ditolak
+[lulus] Arsip alumni dengan alasan tersimpan (tidak dihapus)
+
+=== H6-H. Asatidz & pengurus, kelas, tahun ajaran, penugasan ===
+[lulus] M-1 panel asatidz: akun terhubung / Buat akun, tautan Penugasan
+[lulus] M-1 tab Pengurus: kolom kamar/kelas binaan dari penugasan aktif
+[lulus] Ekspor CSV pengurus
+[lulus] M-2 Kelas: anggota semester aktif, Atur anggota, kartu tempatkan ganda dihapus
+[lulus] M-3: semester baru tersimpan Non-Aktif
+[lulus] M-3: kartu semester aktif, dialog aktifkan menjelaskan dampak
+[lulus] G-1/AF: jenis modul mendatang dipisah dan diberi keterangan
+[lulus] G-1: "Hak yang didapat" dengan kata biasa; Mata pelajaran tidak di menu jenis
+[lulus] G-1: arsipkan penugasan pembimbing (sebelumnya hanya di halaman lama)
+[lulus] G-1: pulihkan penugasan
+[lulus] G-1: ⋯ Akhiri membuka dialog tanggal selesai + alasan di panel
+[lulus] POST halaman lama murobi tetap diproses (kompatibilitas)
+
+=== H6-I. Log server ===
+[lulus] Server tanpa galat/peringatan PHP
+
+Ringkasan: 125 lulus, 7 gagal
+  - Rollback 023: kolom asrama dan tabel bukan ganda dilepas — Rollback selesai: 032_penugasan_keamanan_fase1_identitas_guru.sql (exit 0)
+  - Rollback menghapus catatan migrasi 023 sehingga dapat dinaikkan lagi
+  - Tanpa migrasi: tombol Bukan ganda tidak ada, ada keterangan
+  - Tanpa migrasi: formulir kamar tanpa asrama, ada keterangan
+  - Tanpa migrasi: kamar tetap dapat disimpan tanpa asrama
+  - Migrasi naik lagi sesudah rollback
+  - Sesudah rollback+naik, asrama kosong lagi (kehilangan data yang didokumentasikan rollback)

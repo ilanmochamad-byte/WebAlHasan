@@ -1,0 +1,10 @@
+[lulus] Kontrol: seluruh komponen kini diisi pihak lain
+[lulus] Riwayat nilai X tetap menutup verifikasi dan pengembalian setelah pengisi terakhir berubah
+[lulus] Riwayat pembimbing X tetap dikenali meski pembimbing pertama dan terakhir adalah Y
+[lulus] Murobi X tidak mengetahui sikap yang pernah dikoreksi sebagai pembimbing
+[lulus] Kontrol konkurensi: verifikasi benar-benar menunggu kunci rencana
+[lulus] Sesudah menunggu, isian X yang baru ter-commit ditolak 403 tanpa verifikasi
+[lulus] PK-T5: nilai sendiri sudah diperiksa pihak lain; sikap dan kehadiran tetap dapat diverifikasi X
+[lulus] PK-T5: finalisasi oleh X tetap boleh sesudah seluruh bahan sah
+[lulus] PK-T5: X dapat menerbitkan satu PDF nyata sesudah verifikasi pihak lain
+Hasil: 9 lulus, 0 gagal

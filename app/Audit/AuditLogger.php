@@ -41,6 +41,13 @@ final class AuditLogger
                 $before = $before === null ? null : $this->metadataBsa($before);
                 $after = $after === null ? null : $this->metadataBsa($after);
             }
+            // Pantauan Keamanan (penugasan lintas guru/pengurus Fase 3): jejak
+            // akses baca hanya memuat ID, status, asal, dan jumlah — tidak pernah
+            // alasan izin, uraian pelanggaran, atau isi konseling.
+            if (str_starts_with($action, 'keamanan.')) {
+                $before = $before === null ? null : $this->metadataKeamanan($before);
+                $after = $after === null ? null : $this->metadataKeamanan($after);
+            }
             $actorUserId ??= isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
             $beforeJson = $before === null ? null : json_encode($before, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             $afterJson = $after === null ? null : json_encode($after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -74,6 +81,20 @@ final class AuditLogger
             'setoran_transfer_id', 'pembalik_dari_id'];
 
         return array_intersect_key($data, array_flip($boleh));
+    }
+
+    private function metadataKeamanan(array $data): array
+    {
+        $boleh = ['pengajuan_id', 'pelanggaran_id', 'lampiran_id', 'kasus_id', 'santri_id', 'pertemuan_id', 'asal', 'status', 'jumlah', 'filter'];
+        $hasil = array_intersect_key($data, array_flip($boleh));
+        if (isset($hasil['filter'])) {
+            // Saringan cetak izin: kunci terkendali layanan, nilai skalar saja.
+            $hasil['filter'] = is_array($hasil['filter'])
+                ? array_filter($hasil['filter'], static fn ($v): bool => is_scalar($v))
+                : null;
+        }
+
+        return $hasil;
     }
 
     private function tanpaIsiKlinis(array $data): array
