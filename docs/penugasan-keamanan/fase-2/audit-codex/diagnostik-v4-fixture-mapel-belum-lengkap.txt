@@ -1,0 +1,12 @@
+[lulus] Kontrol: seluruh komponen kini diisi pihak lain
+[lulus] Riwayat nilai X tetap menutup verifikasi dan pengembalian setelah pengisi terakhir berubah
+[lulus] Riwayat pembimbing X tetap dikenali meski pembimbing pertama dan terakhir adalah Y
+[lulus] Murobi X tidak mengetahui sikap yang pernah dikoreksi sebagai pembimbing
+[lulus] Kontrol konkurensi: verifikasi benar-benar menunggu kunci rencana
+[lulus] Sesudah menunggu, isian X yang baru ter-commit ditolak 403 tanpa verifikasi
+[gagal] PK-T5: nilai sendiri sudah diperiksa pihak lain; sikap dan kehadiran tetap dapat diverifikasi X
+App\V4\V4Exception: Finalisasi ditolak: Nahwu belum lengkap Nahwu perlu verifikasi. in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/V4/VerifikasiService.php:115
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_v4.php(72): App\V4\VerifikasiService->act(Array, Array)
+#1 {main}
+Finalisasi ditolak: Nahwu belum lengkap Nahwu perlu verifikasi.

@@ -1,0 +1,113 @@
+Regresi independen auditor; format exit lulus/gagal.
+Perbandingan hitungan, bukan klaim output identik byte demi byte.
+Kontrol kode baseline pada bukti/kontrol-baseline/regresi adalah eksekusi implementator.
+
+Non-statis: 38 suite; identik exit/hitungan handoff: 37/38; identik kontrol baseline handoff: 38/38.
+Statis: 47 suite; exit 0=18, exit 1=27, exit 77=2.
+
+Catatan: ringkasan token handoff masih mencatat kegagalan penyiapan; log individual handoff sudah 10/0.
+Dua tambahan lint probe menjelaskan +2 pada statis Fase 1/2.
+
+Perbedaan dari handoff kode Claude (hanya yang berbeda):
+pk-fase1-probe-token: auditor 0 10/0; handoff 1 0/0
+statis-penugasan_keamanan_f1_static: auditor 1 80/2; handoff 1 78/2
+statis-penugasan_keamanan_f2_static: auditor 0 58/0; handoff 0 56/0
+
+Perbedaan statis terhadap kontrol baseline Fase 1 handoff:
+statis-penugasan_keamanan_f1_static: auditor 1 80/2; baseline 1 56/1
+statis-penugasan_keamanan_f2_static: auditor 0 58/0; baseline tidak tersedia
+statis-phase5_static: auditor 0 44/0; baseline 1 41/3
+statis-redesain_web_tahap6_static: auditor 1 140/1; baseline 1 139/2
+statis-redesain_web_tahap7_static: auditor 1 96/6; baseline 1 98/4
+statis-redesain_web_tahap8_static: auditor 1 76/4; baseline 1 77/3
+statis-v2_phase3_static: auditor 0 147/0; baseline 1 97/1
+statis-v2_phase4_static: auditor 1 287/1; baseline 1 247/1
+statis-v2_phase5_static: auditor 1 328/3; baseline 0 299/0
+statis-v7_phase2_static: auditor 1 50/4; baseline 1 51/3
+
+Seluruh hasil auditor:
+pk-fase1-integrasi 0 70/0
+pk-fase1-probe-audit 0 20/0
+pk-fase1-probe-token 0 10/0
+pk-fase1-http 0 34/0
+v7-fase5-e2e 1 82/1
+v7-fase5-http 0 40/0
+v7-fase5-probe-cakupan 0 6/0
+v7-fase5-probe-pencabutan 0 24/0
+v7-fase4-http 0 54/0
+v7-fase3-integrasi 0 112/0
+v7-fase3-probe-audit-notifikasi 0 49/0
+v7-fase3-http 0 43/0
+v7-fase2-integrasi 0 119/0
+v7-fase2-http 0 61/0
+v7-fase2-probe-audit-codex 0 34/0
+v7-fase1-integrasi 1 73/2
+v7-fase1-http 0 71/0
+penugasan-integrasi 0 161/0
+v2-fase4-integrasi 0 124/0
+v2-fase5-integrasi 0 145/0
+v2-fase1-integrasi 0 39/0
+v2-fase2-integrasi 0 94/0
+v2-fase4-konkurensi 0 20/0
+v2-fase3-api 1 95/21
+v2-fase4-api 1 91/1
+v2-fase5-api 0 150/0
+v2-fase2-web 0 36/0
+v2-fase4-web 0 46/0
+v2-fase5-web 0 79/0
+v3_phase2_integration 0 67/0
+v3_phase3_integration 0 121/0
+v3_phase4_integration 0 65/0
+v3_phase5_integration 0 43/0
+v3_phase5_access 0 5/0
+redesain-tahap2-http 1 185/6
+redesain-tahap4-http 0 132/0
+redesain-tahap5-http 0 106/0
+redesain-tahap7-http 0 122/0
+statis-alumni_static 0 180/0
+statis-get_mutasi_v1_static 0 28/0
+statis-keamanan_psb_static 1 82/1
+statis-kredensial_static 0 105/0
+statis-navigasi_ikon_static 0 36/0
+statis-penempatan_static 0 138/0
+statis-penugasan_keamanan_f1_static 1 80/2
+statis-penugasan_keamanan_f2_static 0 58/0
+statis-penugasan_static 1 281/2
+statis-perapihan_static 0 131/0
+statis-phase1_static 0 77/0
+statis-phase2_static 0 46/0
+statis-phase3_static 0 35/0
+statis-phase4_static 0 38/0
+statis-phase5_static 0 44/0
+statis-redesain_web_tahap1_static 0 69/0
+statis-redesain_web_tahap2_static 1 120/1
+statis-redesain_web_tahap3_static 1 151/1
+statis-redesain_web_tahap4_static 1 95/1
+statis-redesain_web_tahap5_static 0 96/0
+statis-redesain_web_tahap6_static 1 140/1
+statis-redesain_web_tahap7_static 1 96/6
+statis-redesain_web_tahap8_static 1 76/4
+statis-v2_phase1_static 0 126/0
+statis-v2_phase2_static 1 173/1
+statis-v2_phase3_static 0 147/0
+statis-v2_phase4_static 1 287/1
+statis-v2_phase5_static 1 328/3
+statis-v3_phase1_static 0 15/0
+statis-v3_phase2_static 77 0/0
+statis-v3_phase3_static 77 0/0
+statis-v3_phase4_static 0 18/0
+statis-v5_phase1_static 1 44/4
+statis-v5_phase2_static 1 61/2
+statis-v5_phase3_static 1 68/3
+statis-v5_phase5_static 1 57/1
+statis-v6_phase1_static 1 69/6
+statis-v6_phase2_static 1 56/6
+statis-v6_phase3_static 1 54/3
+statis-v6_phase4_static 1 19/3
+statis-v6_phase5_static 1 65/9
+statis-v6_tagihan_satu_santri_static 1 20/4
+statis-v7_phase1_static 1 44/5
+statis-v7_phase2_static 1 50/4
+statis-v7_phase3_static 1 41/3
+statis-v7_phase4_static 1 24/7
+statis-v7_phase5_static 1 50/6

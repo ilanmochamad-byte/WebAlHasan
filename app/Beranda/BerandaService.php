@@ -278,7 +278,7 @@ final class BerandaService
     {
         $service = new SikapService($this->db, audit_logger());
 
-        return count($service->filterOptions($service->options($user, 'murobi'), 'perlu_diketahui'));
+        return count($service->filterOptions($service->options($user, 'murobi'), 'perlu_diketahui', (int) $user['id']));
     }
 
     // ------------------------------------------------------------------

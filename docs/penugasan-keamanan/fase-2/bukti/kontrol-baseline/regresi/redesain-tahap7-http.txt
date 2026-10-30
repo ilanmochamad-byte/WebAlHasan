@@ -1,0 +1,140 @@
+[lulus] Fixture Tahap 7 tersedia (rencana 4, 30 santri)
+
+=== H7-A. Hak akses setiap layar (server) ===
+[lulus] R-1 sbx_admin → 200
+[lulus] R-1 sbx_pendidikan → 200
+[lulus] R-1 sbx_guru_mapel → 403
+[lulus] R-1 sbx_pengurus_a → 403
+[lulus] R-1 sbx_t7_ortu → 403
+[lulus] R-2 sbx_guru_mapel → 200
+[lulus] R-2 sbx_guru_biasa → 403
+[lulus] R-2 sbx_pengurus_a → 403
+[lulus] R-2 sbx_t7_ortu → 403
+[lulus] R-3 sbx_pendidikan → 200
+[lulus] R-3 sbx_guru_mapel → 403
+[lulus] R-3 sbx_pengurus_a → 403
+[lulus] R-4 sbx_pengurus_a → 200
+[lulus] R-4 sbx_pengurus_biasa → 403
+[lulus] R-4 sbx_guru_mapel → 403
+[lulus] R-4 sbx_t7_ortu → 403
+[lulus] R-4m sbx_murobi_c → 200
+[lulus] R-4m sbx_pengurus_a → 403
+[lulus] R-4m sbx_guru_biasa → 403
+[lulus] R-5 sbx_pendidikan → 200
+[lulus] R-5 sbx_admin → 200
+[lulus] R-5 sbx_guru_mapel → 403
+[lulus] R-5 sbx_pengurus_a → 403
+[lulus] R-5 sbx_t7_ortu → 403
+[lulus] R-6 sbx_pendidikan → 200
+[lulus] R-6 sbx_admin → 200
+[lulus] R-6 sbx_guru_mapel → 403
+[lulus] R-6 sbx_murobi_c → 403
+[lulus] R-6 sbx_t7_ortu → 403
+[lulus] R-7 sbx_admin → 200
+[lulus] R-7 sbx_pendidikan → 403
+[lulus] R-7 sbx_guru_mapel → 403
+[lulus] R-8 sbx_t7_ortu → 200
+[lulus] R-8 sbx_ortu_a → 200
+[lulus] R-8 sbx_guru_mapel → 403
+[lulus] R-8 sbx_pendidikan → 403
+[lulus] M-5 sbx_admin → 200
+[lulus] M-5 sbx_pendidikan → 403
+[lulus] M-5 sbx_guru_mapel → 403
+[lulus] Gambar tanda tangan: tanpa sesi dialihkan ke halaman masuk
+[lulus] Gambar tanda tangan: admin aset aktif → 200
+[lulus] Gambar tanda tangan: Pendidikan aset aktif → 200
+[lulus] Gambar tanda tangan: admin aset nonaktif → 200
+[lulus] Gambar tanda tangan: Pendidikan aset nonaktif → 403
+[lulus] Gambar tanda tangan: guru mapel → 403
+[lulus] Gambar tanda tangan: orang tua → 403
+[lulus] Gambar tanda tangan: aset tidak ada → 404
+[lulus] Gambar tanda tangan: no-store, nosniff, CSP sandbox
+[lulus] Gambar tanda tangan: berkas tidak cocok sidik sha256 tidak disajikan
+
+=== H7-B. R-2/R-3 kisi nilai ===
+[lulus] R-2: satu halaman memuat 30 santri dengan isian per komponen
+[lulus] Simpan draf: hanya santri yang berubah tersimpan (3 + 1 komponen baru), baris kosong diabaikan
+[lulus] Setiap komponen baru punya riwayat revisi per santri
+[lulus] Mengubah nilai tersimpan tanpa alasan koreksi ditolak per santri
+[lulus] Koreksi beralasan tersimpan sebagai versi baru dengan alasan
+[lulus] Versi usang dari kisi ditolak (tidak menimpa)
+[lulus] Santri di luar kelas & semester ditolak dari kisi
+[lulus] Guru tanpa penugasan mapel: POST kisi 403 tanpa perubahan
+[lulus] Serahkan yang lengkap: 9 santri lengkap siap diserahkan
+[lulus] Serahkan satu santri per permintaan (JSON); seluruh komponennya Diserahkan
+[lulus] Sidik berubah (sudah diserahkan) → 409, tidak diserahkan ulang
+[lulus] Sidik palsu ditolak (409) tanpa perubahan
+[lulus] R-3: kisi terkunci sampai alasan sesi diisi
+[lulus] R-3: tanpa alasan sesi, penyimpanan pengganti ditolak layanan
+[lulus] R-3: catatan "atas nama guru" + alasan; kisi terbuka
+[lulus] R-3: alasan sesi tercatat pada setiap perubahan (kapasitas pengganti)
+[lulus] R-2 admin: tindakan admin pada nilai meminta alasan sesi (V4Access)
+
+=== H7-C. R-4 sikap ===
+[lulus] R-4: kisi santri × 3 aspek untuk santri binaan
+[lulus] Simpan draf sikap: baris lengkap tersimpan, baris sebagian ditolak
+[lulus] Santri di luar penugasan ditolak dari kisi sikap
+[lulus] Serahkan sikap per santri (JSON)
+[lulus] Murobi tidak dapat mengisi sikap sebagai pembimbing lewat kisi
+[lulus] Tandai diketahui per santri (JSON)
+[lulus] Tandai diketahui dengan versi usang → 409
+
+=== H7-D. R-5 verifikasi ===
+[lulus] R-5: matriks 30 santri × 5 bahan dengan legenda
+[lulus] Verifikasi massal: 15 bahan diserahkan siap diverifikasi
+[lulus] Verifikasi satu bahan per permintaan (JSON)
+[lulus] Bahan berubah sejak dibuka (versi usang) → 409
+[lulus] Admin wajib beralasan pada verifikasi massal
+[lulus] Kembalikan tanpa alasan ditolak
+[lulus] Panel bahan: alasan pemeriksaan dan nama pengisi
+
+=== H7-E. R-6 penerbitan ===
+[lulus] R-6: 6 santri siap terbit dapat dicentang
+[lulus] Terbit satu santri per permintaan (JSON), 3 rapor terbit
+[lulus] Durasi terlama satu permintaan terbit 0.16 detik (< 20 detik; batas cPanel umumnya 30)
+[lulus] Catatan umum draf sesi ikut terbit
+[lulus] Kunci idempotensi sama: diulang tanpa versi ganda
+[lulus] Sidik pratinjau palsu ditolak (409) tanpa rapor
+[lulus] Tarik tanpa alasan ditolak
+[lulus] Buka untuk koreksi beralasan
+[lulus] Terbitkan yang siap meminta alasan bila ada versi pengganti
+[lulus] Guru mapel tidak dapat menerbitkan (403)
+[lulus] Tanpa JavaScript: diproses paling banyak 10, sisanya dilaporkan belum diproses
+
+=== H7-F. R-1, R-7, M-5, R-8 ===
+[lulus] R-1: Pendidikan (penugasan semester aktif saja) tidak ditawari salin
+[lulus] R-1: salin oleh Pendidikan tanpa cakupan semester lalu ditolak layanan baca
+[lulus] R-1: salin admin mengisi formulir tanpa menyimpan; guru nonaktif ditandai
+[lulus] R-1: mapel bernilai terkunci (mapel/target tersembunyi, tanpa hapus); penanda tidak dapat diganti di sini
+[lulus] R-1: mapel baru dapat ditambah walau mapel lain sudah bernilai
+[lulus] R-1: target mapel bernilai tidak dapat diubah
+[lulus] R-1: guru pengampu mapel bernilai tetap dapat diganti
+[lulus] R-1: hanya mapel tanpa nilai yang dapat dihapus
+[lulus] R-1: "Hapus dari rencana" menghapus mapel tanpa nilai dan tercatat di audit
+[lulus] R-1: mapel bernilai tidak dapat dihapus (layanan menolak)
+[lulus] R-1: tempat/penanda rencana bernilai tidak dapat diganti lewat simpan biasa (jalur admin R-7)
+[lulus] R-7: ganti penanda tanpa alasan ditolak
+[lulus] R-7: perubahan beralasan tercatat sebagai kalimat dengan nama
+[lulus] R-7: Pendidikan tidak dapat menonaktifkan penanda (403)
+[lulus] M-5: alamat tab lama dialihkan 301
+[lulus] M-5: tambah mapel lewat layanan dengan audit
+[lulus] M-5: POST lama di Pusat Penugasan tetap diproses lalu kembali ke M-5
+[lulus] M-5: saringan kategori/status; kolom guru pengampu semester aktif
+[lulus] R-8: hanya versi terbaru dengan catatan menggantikan; unduhan versi terbaru
+[lulus] R-8: versi sebelumnya bertanda "Sudah diganti" tanpa isi
+[lulus] R-8: PDF versi lama tetap tidak dapat diunduh orang tua (aturan layanan)
+[lulus] R-8: wali lain tidak dapat membuka rapor anak orang lain (403, tanpa nama)
+
+=== H7-G. Kompatibilitas POST lama, GET, CSRF ===
+[lulus] Nilai: bentuk POST lama per santri (komponen[...]) tetap diterima
+[lulus] Sikap: bentuk POST lama per santri tetap diterima
+[lulus] Penerbitan: POST lama "Muat pratinjau" membuka panel santri
+[lulus] Rencana: POST lama status penanda tangan tetap diterima
+[lulus] GET dengan parameter tindakan tidak memutasi
+[lulus] CSRF salah ditolak tanpa perubahan
+
+=== H7-H. Nama bukan nomor, log server ===
+[lulus] Riwayat menyebut nama pelaku, bukan nomor ID
+[lulus] Server tanpa galat/peringatan PHP
+
+Ringkasan: 122 lulus, 0 gagal

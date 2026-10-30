@@ -121,7 +121,7 @@ if ($mode === Capabilities::ORANG_TUA) {
             <section class="ah-card"><div class="ah-card__body"><?= ah_empty('Pilih pengajuan', 'Pilih satu pengajuan di daftar untuk melihat rinciannya dan memutuskan.') ?></div></section>
         <?php else:
             $izin = $detail['pengajuan'];
-            $aksi = izin_workflow_service()->actionsFor($izin, $scope);
+            $aksi = izin_workflow_service()->actionsFor($izin, $scope, (int) $currentUser['id']);
             try {
                 $jumlah = izin_service()->santriSemesterCount($currentUser, (int) $izin['santri_id'], $mode);
                 $jumlahTeks = $jumlah['total'] . ' pengajuan (' . $jumlah['disetujui'] . ' disetujui) · ' . $jumlah['semester'];

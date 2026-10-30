@@ -158,7 +158,7 @@ final class IzinApiService
 
             return [
                 'scope' => $this->presentScope($scope),
-                'items' => array_map(fn (array $row): array => $this->presentPengajuan($row, $scope), $result['rows']),
+                'items' => array_map(fn (array $row): array => $this->presentPengajuan($row, $scope, (int) $user['id']), $result['rows']),
                 'pagination' => $this->pagination($page, $perPage, (int) $result['total']),
                 'filters' => $this->presentFilters($filters, $antreanOnly),
                 'summary' => $result['summary'],
@@ -197,11 +197,11 @@ final class IzinApiService
             $detail = $this->izin->detail($user, $id, $this->mode($query));
             $scope = $detail['scope'];
             $pengajuan = $detail['pengajuan'];
-            $actions = $this->workflow->actionsFor($pengajuan, $scope);
+            $actions = $this->workflow->actionsFor($pengajuan, $scope, (int) $user['id']);
 
             return [
                 'scope' => $this->presentScope($scope),
-                'pengajuan' => $this->presentPengajuan($pengajuan, $scope),
+                'pengajuan' => $this->presentPengajuan($pengajuan, $scope, (int) $user['id']),
                 'keputusan' => $this->presentKeputusan($detail['keputusan']),
                 'riwayat' => array_map([$this, 'presentRiwayat'], $detail['riwayat']),
                 'koreksi' => array_map([$this, 'presentKoreksi'], $detail['koreksi']),
@@ -432,7 +432,7 @@ final class IzinApiService
      * @param array<string, mixed> $scope
      * @return array<string, mixed>
      */
-    private function presentPengajuan(array $row, array $scope): array
+    private function presentPengajuan(array $row, array $scope, ?int $userId = null): array
     {
         $legacy = (bool) ($row['is_legacy'] ?? false);
 
@@ -486,7 +486,7 @@ final class IzinApiService
                 'alasan' => $row['alasan_pembatalan'] === null ? null : (string) $row['alasan_pembatalan'],
             ],
             'diajukan_pada' => $row['diajukan_pada'] === null ? null : (string) $row['diajukan_pada'],
-            'aksi' => $this->workflow->actionsFor($row, $scope),
+            'aksi' => $this->workflow->actionsFor($row, $scope, $userId),
         ];
     }
 

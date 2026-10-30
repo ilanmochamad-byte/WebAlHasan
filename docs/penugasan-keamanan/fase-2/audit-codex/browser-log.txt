@@ -1,0 +1,3 @@
+Server: PHP loopback 127.0.0.1:8987; DB fixture sintetis test_pk_f2_audit_browser_test
+Galat PHP: 0
+Empat PNG ditinjau visual di /private/tmp/pkf2-audit-browser (tidak di-commit).

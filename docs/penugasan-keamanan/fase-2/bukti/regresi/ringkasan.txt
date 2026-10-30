@@ -1,0 +1,96 @@
+== Penugasan Fase 1 (identitas pengurus milik guru) ==
+pk-fase1-integrasi exit=0 70/0
+pk-fase1-probe-audit exit=0 20/0
+pk-fase1-probe-token exit=1 0/0
+pk-fase1-http exit=0 34/0
+== V7 Fase 5 (E2E dan HTTP) ==
+v7-fase5-e2e exit=1 82/1
+v7-fase5-http exit=0 40/0
+v7-fase5-probe-cakupan exit=0 6/0
+v7-fase5-probe-pencabutan exit=0 24/0
+== V7 Fase 4 (paritas REST aplikasi) ==
+v7-fase4-http exit=0 54/0
+== V7 Fase 3 ==
+v7-fase3-integrasi exit=0 112/0
+v7-fase3-probe-audit-notifikasi exit=0 49/0
+v7-fase3-http exit=0 43/0
+== V7 Fase 2 ==
+v7-fase2-integrasi exit=0 119/0
+v7-fase2-http exit=0 61/0
+v7-fase2-probe-audit-codex exit=0 34/0
+== V7 Fase 1 ==
+v7-fase1-integrasi exit=1 73/2
+v7-fase1-http exit=0 71/0
+== Fondasi penugasan, perizinan dan notifikasi V2 ==
+penugasan-integrasi exit=0 161/0
+v2-fase4-integrasi exit=0 124/0
+v2-fase5-integrasi exit=0 145/0
+v2-fase1-integrasi exit=0 39/0
+v2-fase2-integrasi exit=0 94/0
+v2-fase4-konkurensi exit=0 20/0
+v2-fase3-api exit=1 95/21
+v2-fase4-api exit=1 91/1
+v2-fase5-api exit=0 150/0
+v2-fase2-web exit=0 36/0
+v2-fase4-web exit=0 46/0
+v2-fase5-web exit=0 79/0
+== Pembinaan V3 (DB tetap webalhasan_v3_phase1_test, dipulihkan) ==
+v3_phase2_integration exit=0 67/0
+v3_phase3_integration exit=0 121/0
+v3_phase4_integration exit=0 65/0
+v3_phase5_integration exit=0 43/0
+v3_phase5_access exit=0 5/0
+== Redesain web HTTP: navigasi, perizinan/cetak, pembinaan, rapor ==
+redesain-tahap2-http exit=1 185/6
+redesain-tahap4-http exit=0 132/0
+redesain-tahap5-http exit=0 106/0
+redesain-tahap7-http exit=0 122/0
+== Statis (seluruh suite) ==
+statis-alumni_static exit=0 180/0
+statis-get_mutasi_v1_static exit=0 28/0
+statis-keamanan_psb_static exit=1 82/1
+statis-kredensial_static exit=0 105/0
+statis-navigasi_ikon_static exit=0 36/0
+statis-penempatan_static exit=0 138/0
+statis-penugasan_keamanan_f1_static exit=1 78/2
+statis-penugasan_keamanan_f2_static exit=0 56/0
+statis-penugasan_static exit=1 281/2
+statis-perapihan_static exit=0 131/0
+statis-phase1_static exit=0 77/0
+statis-phase2_static exit=0 46/0
+statis-phase3_static exit=0 35/0
+statis-phase4_static exit=0 38/0
+statis-phase5_static exit=0 44/0
+statis-redesain_web_tahap1_static exit=0 69/0
+statis-redesain_web_tahap2_static exit=1 120/1
+statis-redesain_web_tahap3_static exit=1 151/1
+statis-redesain_web_tahap4_static exit=1 95/1
+statis-redesain_web_tahap5_static exit=0 96/0
+statis-redesain_web_tahap6_static exit=1 140/1
+statis-redesain_web_tahap7_static exit=1 96/6
+statis-redesain_web_tahap8_static exit=1 76/4
+statis-v2_phase1_static exit=0 126/0
+statis-v2_phase2_static exit=1 173/1
+statis-v2_phase3_static exit=0 147/0
+statis-v2_phase4_static exit=1 287/1
+statis-v2_phase5_static exit=1 328/3
+statis-v3_phase1_static exit=0 15/0
+statis-v3_phase2_static exit=77 0/0
+statis-v3_phase3_static exit=77 0/0
+statis-v3_phase4_static exit=0 18/0
+statis-v5_phase1_static exit=1 44/4
+statis-v5_phase2_static exit=1 61/2
+statis-v5_phase3_static exit=1 68/3
+statis-v5_phase5_static exit=1 57/1
+statis-v6_phase1_static exit=1 69/6
+statis-v6_phase2_static exit=1 56/6
+statis-v6_phase3_static exit=1 54/3
+statis-v6_phase4_static exit=1 19/3
+statis-v6_phase5_static exit=1 65/9
+statis-v6_tagihan_satu_santri_static exit=1 20/4
+statis-v7_phase1_static exit=1 44/5
+statis-v7_phase2_static exit=1 50/4
+statis-v7_phase3_static exit=1 41/3
+statis-v7_phase4_static exit=1 24/7
+statis-v7_phase5_static exit=1 50/6
+SELESAI

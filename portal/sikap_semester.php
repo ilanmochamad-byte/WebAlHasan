@@ -36,7 +36,7 @@ try{
     $semua=$service->options($user,$mode);
     // Saringan dari kartu Beranda (Tahap 2): himpunan sama dengan angkanya.
     $saring=in_array($_GET['status']??'',['belum','perlu_diketahui'],true)?(string)$_GET['status']:'';
-    $options=$saring!==''?$service->filterOptions($semua,$saring):$semua;
+    $options=$saring!==''?$service->filterOptions($semua,$saring,$mode==='murobi'?(int)$user['id']:null):$semua;
     if($_SERVER['REQUEST_METHOD']==='POST'){
         Csrf::requireValid(is_string($_POST['_csrf']??null)?$_POST['_csrf']:null);
         $aksi=(string)($_POST['aksi']??'');
@@ -120,13 +120,16 @@ $sikap=$tahun?$tampil->sikapKelas($tahun,$ids):[];
 $rapor=$tahun?$tampil->raporKelas($tahun,$ids):[];
 $pelaku=$tampil->namaPengguna(array_column($sikap,'diketahui_murobi_user_id'));
 $murobi=$mode==='murobi';$pembimbing=$mode==='pembimbing';
+// Pemisahan tugas (penugasan lintas guru/pengurus Fase 2): sikap yang diisi akun ini sebagai pembimbing tidak dapat ia ketahui sebagai murobi.
+$pengisi=$murobi?$service->pengisiPembimbing(array_column($sikap,'id')):[];
 $siapSerah=[];$siapTahu=0;$belum=0;
 foreach($baris as &$o){
     $s=(int)$o['santri_id'];$row=$sikap[$s]??null;
     $o['sikap']=$row;
     $o['state']=$repo->state((int)$o['rencana_id'],$s,'sikap',0,$row?[$row]:[],$row['status']??'Draf');
     $o['kunci']=($rapor[$s]['status']??'')==='Terbit';
-    $o['bisa_tahu']=$row!==null&&$row['status']==='Dikirim'&&$row['diketahui_murobi_user_id']===null&&$o['state']['status']!=='Dikembalikan'&&!$o['kunci'];
+    $o['diisi_sendiri']=$row!==null&&in_array((int)$user['id'],$pengisi[(int)$row['id']]??[],true);
+    $o['bisa_tahu']=$row!==null&&$row['status']==='Dikirim'&&$row['diketahui_murobi_user_id']===null&&$o['state']['status']!=='Dikembalikan'&&!$o['kunci']&&!$o['diisi_sendiri'];
     if($row===null||$row['status']==='Draf')$belum++;
     if($o['bisa_tahu'])$siapTahu++;
     if($pembimbing&&$row!==null&&$row['status']==='Draf'&&!$o['kunci'])$siapSerah[]=$o;
@@ -184,7 +187,8 @@ ah_page_open(['title'=>$judul,'user'=>$user,'active'=>$murobi?'sikap_binaan':'si
                 else echo rapor_status_badge($o['state']['status']);
                 if($o['state']['perlu_verifikasi_ulang'])echo ' '.ah_badge('Perlu diserahkan ulang','warn');
                 if($row&&$row['diketahui_murobi_user_id']!==null)echo ' <span class="small text-muted d-block">Diketahui '.$e($pelaku[(int)$row['diketahui_murobi_user_id']]??'murobi').'</span>';
-                elseif($row&&$row['status']==='Dikirim')echo ' <span class="small text-muted d-block">Menunggu diketahui murobi</span>'; ?>
+                elseif($row&&$row['status']==='Dikirim')echo ' <span class="small text-muted d-block">Menunggu diketahui murobi</span>';
+                if($murobi&&$o['diisi_sendiri'])echo ' <span class="small text-muted d-block" data-pemisahan-tugas>Anda pengisi sikap ini · diketahui murobi lain</span>'; ?>
                 <?php if($pembimbing&&$row):?><input type="hidden" name="v[<?= $kunci ?>]" value="<?= (int)$row['version'] ?>"><?php endif ?></td>
         </tr>
     <?php endforeach ?>
@@ -213,7 +217,10 @@ ah_page_open(['title'=>$judul,'user'=>$user,'active'=>$murobi?'sikap_binaan':'si
         <span class="small text-muted d-block">Murobi aktif: <?= $current['murobi_aktif']?$e(implode(', ',array_map(static fn($id)=>$orang[$id]??'murobi',$current['murobi_aktif']))):'—' ?></span></p>
     <?php if($current['pemeriksaan']['alasan']):?><?php ah_note('info','Catatan pemeriksaan: '.$current['pemeriksaan']['alasan']) ?><?php endif ?>
     <?php if(!$current['murobi_aktif']):?><?php ah_note('warning','Tidak ada murobi aktif yang sah. Minta admin memperbaiki penugasan.') ?><?php endif ?>
+    <?php if($mode==='murobi'&&$current['diisi_sendiri']):?><?php ah_note('info','Anda mengisi sikap ini sebagai pembimbing, sehingga tidak dapat mengetahui atau mengoreksinya sebagai murobi. Sikap diketahui murobi lain; bila tidak ada, minta admin mengubah penugasan.') ?><?php endif ?>
     <?php if($mode==='murobi'&&!$row):?><p>Pembimbing belum mengisi sikap.</p>
+    <?php elseif($mode==='murobi'&&$current['diisi_sendiri']):?>
+        <dl class="ah-kv"><?php foreach($aspek as $key=>$label):?><dt><?= $e($label) ?></dt><dd><?= $e($row[$key]??'Belum diisi') ?></dd><?php endforeach ?><dt>Catatan</dt><dd><?= $e(($row['catatan']??'')!==''?$row['catatan']:'—') ?></dd></dl>
     <?php elseif($mode!=='pendidikan'):?>
     <form method="post" id="panel-sikap" data-rapor-panel-koreksi><?= ah_csrf() ?><input type="hidden" name="mode" value="<?= $e($mode) ?>"><input type="hidden" name="rencana_id" value="<?= $plan ?>"><input type="hidden" name="santri_id" value="<?= $sid ?>"><input type="hidden" name="version" value="<?= (int)($row['version']??0) ?>">
         <div class="ah-komponen__grid"><?php foreach($aspek as $key=>$label):?><label><?= $e($label) ?><select class="form-select" name="<?= $key ?>" required><option value="">Pilih predikat</option><?php foreach(SikapService::PREDIKAT as $pred):?><option <?= ($row[$key]??'')===$pred?'selected':'' ?>><?= $e($pred) ?></option><?php endforeach ?></select></label><?php endforeach ?></div>

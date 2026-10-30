@@ -1,0 +1,56 @@
+
+=== T-1. Izin: routing dan penolakan ===
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/app/Izin/PemisahanTugas.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/tests/penugasan_keamanan_f2_static.php on line 28
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/app/Izin/PemisahanTugas.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/tests/penugasan_keamanan_f2_static.php on line 28
+[gagal] Akun terlibat = pengaju + peninjau V7 (tabel V7 diperiksa keberadaannya)
+[gagal] Guru terlibat dibaca dari users.guru_id (level akun)
+[lulus] PemisahanTugas izin hanya membaca
+[gagal] Router: kandidat dikurangi guru terlibat sebelum dihitung
+[gagal] Catatan routing dibatasi 255 karakter dengan akhiran pemisahan tugas
+[gagal] create(): guru milik akun pengaju dikecualikan dari routing
+[gagal] assignMurobi(): guru terlibat ditolak sesudah baris dikunci, sebelum perubahan
+[gagal] decide(): akun terlibat ditolak sesudah kunci, sebelum keputusan; berlaku untuk murobi dan admin pengganti
+[lulus] correctDecision(): akun terlibat ditolak sebelum koreksi
+[gagal] V7 tinjau(): pengaju, peninjau sekarang, dan peninjau sebelumnya dikecualikan sesudah baris dikunci
+[gagal] Daftar murobi berhak dan kandidat tampilan mengecualikan guru terlibat
+
+=== T-2. Izin: tampilan ===
+[lulus] actionsFor(): tetap lima kunci (tipe IzinActions aplikasi tidak berubah)
+[gagal] actionsFor(): parameter akun opsional; pemanggil lama tetap sah
+[gagal] portal/izin_detail.php meneruskan akun yang melihat
+[gagal] portal/izin_antrean.php meneruskan akun yang melihat
+[gagal] REST rincian dan daftar meneruskan akun
+[gagal] Rincian V7 menyembunyikan keputusan bagi akun terlibat
+
+=== T-3. Sikap V4 ===
+[gagal] save(): pengisi dibaca sesudah baris sikap dikunci, untuk seluruh tindakan murobi (diketahui dan koreksi)
+[gagal] Pengisi = pembimbing pertama + pelaku riwayat berkapasitas pembimbing
+[gagal] Tanda lama dari pengisi tidak mengunci murobi lain
+[gagal] Matriks: diketahui sah hanya dari murobi yang bukan pengisi; penghalang khusus bila seluruh murobi pengisi
+[lulus] Tanpa tindakan baru: tidak ada jalur admin/pengganti untuk mengetahui (PK-T7)
+
+=== T-4. PK-T1 verifikasi nilai ===
+[gagal] act(): pengisi nilai dibaca sesudah rencana dikunci (penyimpanan nilai mengunci rencana yang sama)
+[gagal] Hanya bahan nilai, verifikasi/kembalikan, kapasitas Pendidikan (admin tetap jalur pengganti)
+[lulus] Kapasitas dihitung ulang di dalam transaksi
+[gagal] Penanda diisi sendiri di luar matriks bersidik jari
+[gagal] Pengisi nilai mencakup riwayat (guru maupun Pendidikan pengganti)
+[gagal] Verifikasi massal tidak memuat nilai isian sendiri
+
+=== T-5. V3 tanda mengetahui ===
+[gagal] Pelanggaran: pemilik diperiksa sesudah baris dikunci, sebelum catatan murobi
+[gagal] Kasus/sesi: pemilik diperiksa sesudah kasus dikunci, sebelum catatan murobi
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/app/V3/PemisahanTugas.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/tests/penugasan_keamanan_f2_static.php on line 28
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/app/V3/PemisahanTugas.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/tests/penugasan_keamanan_f2_static.php on line 28
+[gagal] Pemilik = pembuat/pembaru/revisi atau identitas pembimbing akun; hanya membaca
+
+=== T-6. Batas Fase 2 ===
+[gagal] Hanya berkas Fase 2 yang berubah terhadap baseline 464d9a1
+[lulus] Tanpa migrasi; Auth, Penugasan, akun, master, kesehatan, BSA, notifikasi, dan rute API tidak diubah
+
+=== T-7. Lint ===
+
+Hasil: 6 lulus, 27 gagal.
+exit 1

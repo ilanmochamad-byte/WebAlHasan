@@ -38,6 +38,8 @@ final class IzinWorkflowService
     public const KAPASITAS_MUROBI = 'Murobi';
     public const KAPASITAS_ADMIN_PENGGANTI = 'Admin Pengganti';
 
+    private ?PemisahanTugas $pemisahan = null;
+
     public function __construct(
         private IzinRepository $read,
         private IzinWriteRepository $write,
@@ -184,7 +186,8 @@ final class IzinWorkflowService
             $this->write->insertRiwayat($this->historyRow($pengajuanId, 'pengajuan_dibuat', null, IzinRouter::STATUS_TERARAH, $userId, $kapasitas, $alasan, $meta));
 
             // --- Routing ---------------------------------------------------
-            $routing = $this->router->resolve($santriId, $onDate);
+            // Pemisahan tugas: guru milik akun pengaju tidak menjadi murobi tujuan.
+            $routing = $this->router->resolve($santriId, $onDate, $this->pemisahan()->guruAkun([$userId]));
             $this->write->applyRouting(
                 $pengajuanId,
                 $routing['murobi_guru_id'],
@@ -295,6 +298,7 @@ final class IzinWorkflowService
                     $this->write->lockPengajuan($pengajuanId);
                     $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
                 }
+                $this->requireReplaySeparation($userId, $pengajuanId, $guruId);
                 return $replay['response'] + ['idempotent_replay' => true];
             }
 
@@ -302,6 +306,9 @@ final class IzinWorkflowService
             if ($wali !== null) $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
             $version = $this->requireVersion($row, $expectedVersion);
 
+            if (in_array($guruId, $this->pemisahan()->guruTerlibat($pengajuanId), true)) {
+                throw IzinException::invalid('Murobi yang dipilih memakai akun yang mengajukan atau meninjau pengajuan ini (pemisahan tugas). Pilih murobi lain.');
+            }
             if (!($wali !== null
                 ? $this->router->coversSantri($guruId, (int) $row['santri_id'], $this->today(), true)
                 : $this->router->isEligibleMurobi($guruId, $this->today()))) {
@@ -441,6 +448,7 @@ final class IzinWorkflowService
                     $current = $this->write->lockPengajuan($pengajuanId);
                     $this->requireWaliActor($wali, $userId, $scope['mode'], $current);
                 }
+                $this->requireReplaySeparation($userId, $pengajuanId);
                 return $replay['response'] + ['idempotent_replay' => true];
             }
 
@@ -449,6 +457,8 @@ final class IzinWorkflowService
                 $currentActor = $this->requireWaliActor($wali, $userId, $scope['mode'], $row);
                 $scope['guru_id'] = $currentActor['guru_id'];
             }
+            // Pengaju/peninjau bukan pemutus, termasuk admin pengganti (PK-T6).
+            $this->pemisahan()->wajibBukanTerlibat($userId, $pengajuanId);
 
             if ($kapasitas === self::KAPASITAS_MUROBI) {
                 $guruId = $scope['guru_id'] === null ? 0 : (int) $scope['guru_id'];
@@ -671,6 +681,7 @@ final class IzinWorkflowService
                     $this->write->lockPengajuan($pengajuanId);
                     $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
                 }
+                $this->requireReplaySeparation($userId, $pengajuanId);
                 return $replay['response'] + ['idempotent_replay' => true];
             }
 
@@ -679,6 +690,7 @@ final class IzinWorkflowService
                 throw IzinException::forbidden();
             }
             if ($wali !== null) $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
+            $this->pemisahan()->wajibBukanTerlibat($userId, $pengajuanId);
             $keputusan = $this->write->lockKeputusan($pengajuanId);
             if ($keputusan === null) {
                 throw IzinException::conflict('Pengajuan ini belum memiliki keputusan yang dapat dikoreksi.');
@@ -747,11 +759,14 @@ final class IzinWorkflowService
     // =======================================================================
 
     /**
+     * `$userId` (akun yang sedang melihat) menyembunyikan keputusan/koreksi
+     * bagi akun pengaju/peninjau; server tetap menolaknya pada mutasi.
+     *
      * @param array<string, mixed> $pengajuan
      * @param array<string, mixed> $scope
      * @return array<string, bool>
      */
-    public function actionsFor(array $pengajuan, array $scope): array
+    public function actionsFor(array $pengajuan, array $scope, ?int $userId = null): array
     {
         $status = (string) ($pengajuan['status'] ?? '');
         $belumDiputus = in_array($status, IzinWriteRepository::STATUS_BELUM_DIPUTUS, true);
@@ -767,14 +782,22 @@ final class IzinWorkflowService
         $pengurusCocok = $mode === Capabilities::PENGURUS
             && $pengajuan['pengurus_id'] !== null
             && (int) $pengajuan['pengurus_id'] === (int) ($scope['pengurus_id'] ?? 0);
+        $terlibat = $userId !== null && isset($pengajuan['id'])
+            && $this->pemisahan()->terlibat($userId, (int) $pengajuan['id']);
 
         return [
-            'putuskan_murobi' => !$legacy && $belumDiputus && $murobiCocok && $status === IzinRouter::STATUS_TERARAH,
-            'putuskan_admin' => !$legacy && $belumDiputus && $mode === Capabilities::ADMIN,
+            'putuskan_murobi' => !$legacy && !$terlibat && $belumDiputus && $murobiCocok && $status === IzinRouter::STATUS_TERARAH,
+            'putuskan_admin' => !$legacy && !$terlibat && $belumDiputus && $mode === Capabilities::ADMIN,
             'tetapkan_murobi' => !$legacy && $belumDiputus && $mode === Capabilities::ADMIN,
             'batalkan' => !$legacy && !$wali && $belumDiputus && ($pengurusCocok || $mode === Capabilities::ADMIN),
-            'koreksi' => !$legacy && $sudahDiputus && $mode === Capabilities::ADMIN,
+            'koreksi' => !$legacy && !$terlibat && $sudahDiputus && $mode === Capabilities::ADMIN,
         ];
+    }
+
+    /** Untuk penjelasan tampilan: akun ini mengajukan/meninjau pengajuan tersebut. */
+    public function terlibat(int $userId, int $pengajuanId): bool
+    {
+        return $this->pemisahan()->terlibat($userId, $pengajuanId);
     }
 
     /**
@@ -797,7 +820,11 @@ final class IzinWorkflowService
             && $this->read->pembimbingAssignmentFor((int) $scope['pengurus_id'], $santriId, $this->today()) === null) {
             throw IzinException::forbidden('Santri ini berada di luar cakupan penugasan pembimbing Anda.');
         }
-        $kandidat = $this->router->candidates($santriId, $this->today());
+        // Pratinjau memakai pengecualian yang sama dengan create().
+        $kandidat = IzinRouter::tanpaGuru(
+            $this->router->candidates($santriId, $this->today()),
+            $this->pemisahan()->guruAkun([(int) $user['id']])
+        );
 
         return [
             'santri' => ['id' => (int) $santri['id'], 'nis' => (string) $santri['nis'], 'nama' => (string) $santri['nama_santri']],
@@ -812,6 +839,9 @@ final class IzinWorkflowService
     public function eligibleMurobi(?int $pengajuanId = null): array
     {
         $eligible = $this->router->eligibleMurobi($this->today());
+        if ($pengajuanId !== null) {
+            $eligible = IzinRouter::tanpaGuru($eligible, $this->pemisahan()->guruTerlibat($pengajuanId));
+        }
         if ($pengajuanId !== null && ($wali = $this->waliRepository($pengajuanId)) !== null) {
             $row = $wali->find($pengajuanId, $this->today());
             return array_values(array_filter($eligible, fn (array $guru): bool => $this->router->coversSantri(
@@ -826,7 +856,10 @@ final class IzinWorkflowService
      */
     public function routingCandidates(array $pengajuan): array
     {
-        return $this->router->candidates((int) $pengajuan['santri_id'], $this->today());
+        return IzinRouter::tanpaGuru(
+            $this->router->candidates((int) $pengajuan['santri_id'], $this->today()),
+            isset($pengajuan['id']) ? $this->pemisahan()->guruTerlibat((int) $pengajuan['id']) : []
+        );
     }
 
     // =======================================================================
@@ -960,6 +993,26 @@ final class IzinWorkflowService
      * Asal tidak dapat diubah oleh layanan; pembacaan awal ini hanya memilih
      * protokol kunci, bukan memberi hak. Jalur pengurus V2 tetap seperti semula.
      */
+    private function pemisahan(): PemisahanTugas
+    {
+        return $this->pemisahan ??= new PemisahanTugas($this->write->db());
+    }
+
+    /** Cache dari sebelum Fase 2 tetap tunduk pada pemisahan tugas saat ini. */
+    private function requireReplaySeparation(int $userId, int $pengajuanId, ?int $guruId = null): void
+    {
+        if ($this->write->lockPengajuan($pengajuanId) === null) {
+            throw IzinException::forbidden();
+        }
+        if ($guruId !== null) {
+            if (in_array($guruId, $this->pemisahan()->guruTerlibat($pengajuanId), true)) {
+                throw IzinException::invalid('Murobi yang dipilih memakai akun yang mengajukan atau meninjau pengajuan ini (pemisahan tugas). Pilih murobi lain.');
+            }
+            return;
+        }
+        $this->pemisahan()->wajibBukanTerlibat($userId, $pengajuanId);
+    }
+
     private function waliRepository(int $id): ?IzinWaliRepository
     {
         $db = $this->write->db();

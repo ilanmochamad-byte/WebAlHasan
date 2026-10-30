@@ -1,0 +1,21 @@
+[lulus] Kontrol: kasus tidak dimiliki/diperbarui X
+[lulus] F-1 riwayat revisi sesi tetap mengenali X sebagai pengisi
+[lulus] F-1 X tidak mengetahui revisi terbaru sesi yang pernah ia isi
+[lulus] F-1 pengisi tetap dikenali setelah lebih dari 100 revisi pelanggaran
+[lulus] F-1 rantai panjang tidak membuka tanda mengetahui sendiri
+[lulus] Kontrol baseline: keputusan sendiri murobi berhasil sebelum Fase 2
+[lulus] F-2 replay keputusan sendiri murobi ditolak tanpa mengubah sejarah
+[lulus] Kontrol baseline: keputusan sendiri admin berhasil sebelum Fase 2
+[lulus] F-2 replay keputusan sendiri admin ditolak tanpa mengubah sejarah
+[lulus] Kontrol baseline: koreksi admin pengaju berhasil sebelum Fase 2
+[lulus] F-2 replay koreksi admin pengaju ditolak
+[lulus] Kontrol replay admin lain tetap satu keputusan
+[lulus] Kontrol baseline: peninjau V7 dapat memutus sendiri sebelum Fase 2
+[lulus] F-2 replay keputusan peninjau V7 ditolak
+[lulus] Kontrol baseline: mengetahui sendiri v3p berhasil sebelum Fase 2
+[lulus] F-2 replay mengetahui sendiri v3p ditolak tanpa mutasi
+[lulus] Kontrol baseline: mengetahui sendiri v3k berhasil sebelum Fase 2
+[lulus] F-2 replay mengetahui sendiri v3k ditolak tanpa mutasi
+[lulus] Kontrol baseline: mengetahui sendiri v3s berhasil sebelum Fase 2
+[lulus] F-2 replay mengetahui sendiri v3s ditolak tanpa mutasi
+Hasil: 20 lulus, 0 gagal

@@ -1,0 +1,7 @@
+PHP Warning:  Trying to access array offset on null in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f1_token_probe.php on line 13
+
+Warning: Trying to access array offset on null in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f1_token_probe.php on line 13
+RuntimeException: Jalankan audit_probe lebih dahulu. in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f1_token_probe.php:14
+Stack trace:
+#0 {main}
+Jalankan audit_probe lebih dahulu.

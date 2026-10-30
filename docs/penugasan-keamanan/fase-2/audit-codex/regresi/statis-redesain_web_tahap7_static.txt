@@ -1,0 +1,119 @@
+=== S7-1. Lint ===
+[lulus] php -l portal/rencana_nilai.php
+[lulus] php -l portal/nilai_semester.php
+[lulus] php -l portal/sikap_semester.php
+[lulus] php -l portal/verifikasi_semester.php
+[lulus] php -l portal/rapor_semester.php
+[lulus] php -l portal/rapor_penanda.php
+[lulus] php -l portal/rapor_wali.php
+[lulus] php -l portal/rapor_ttd.php
+[lulus] php -l portal/_rapor_ui.php
+[lulus] php -l admin/admin_mata_pelajaran.php
+[lulus] php -l admin/admin_penugasan.php
+[lulus] php -l app/V4/RaporTampilan.php
+[lulus] php -l app/Penugasan/PenugasanRepository.php
+[lulus] php -l app/Penugasan/PenugasanService.php
+[lulus] php -l app/Ui/Navigation.php
+[lulus] php -l app/Ui/Status.php
+[lulus] php -l tests/redesain_web_tahap7_seed.php
+[lulus] php -l tests/redesain_web_tahap7_http.php
+[lulus] node --check assets/ui/rapor.js
+[lulus] node --check assets/ui/alhasan.js
+[lulus] node --check tests/browser/uji-redesain-web-tahap7.mjs
+[lulus] bash -n tests/redesain_web_tahap7_db.sh
+
+=== S7-2. Layanan V4, REST, dan basis data tidak berubah ===
+[lulus] Baseline 86721a2 tersedia
+[lulus] Tidak berubah: app/V4/NilaiService.php
+[gagal] Tidak berubah: app/V4/SikapService.php
+[gagal] Tidak berubah: app/V4/VerifikasiService.php
+[lulus] Tidak berubah: app/V4/RaporService.php
+[lulus] Tidak berubah: app/V4/BahanRepository.php
+[lulus] Tidak berubah: app/V4/SemesterScope.php
+[lulus] Tidak berubah: app/V4/V4Access.php
+[lulus] Tidak berubah: app/V4/RaporDocument.php
+[lulus] Tidak berubah: app/V4/RaporStorage.php
+[lulus] Tidak berubah: app/V4/VerifikasiPublik.php
+[gagal] Tidak berubah: app/Auth/Capabilities.php
+[gagal] Tidak berubah: app/Penugasan/PenugasanJenis.php
+[gagal] REST (api/), migrasi/rollback (database/), dan bin/ tidak berubah
+[gagal] Penugasan: hanya penambahan baca (daftar M-5), tanpa baris lama dihapus
+[lulus] RencanaService: mapel bernilai terkunci (hapus/target), penanda & tempat tetap jalur admin
+[lulus] RencanaService: hapus hanya baris tanpa nilai, tercatat di audit
+[lulus] RencanaService: hapus di bawah kunci baris induk v4_rencana (sama dengan pengisian nilai)
+
+=== S7-3. Pembaca tampilan hanya SELECT, sesudah layanan ===
+[lulus] RaporTampilan tanpa pernyataan tulis
+[lulus] RaporTampilan memakai satu jalur prepared statement
+[lulus] portal/nilai_semester.php: layanan menegakkan cakupan sebelum pembacaan tampilan
+[lulus] portal/sikap_semester.php: layanan menegakkan cakupan sebelum pembacaan tampilan
+[lulus] portal/verifikasi_semester.php: layanan menegakkan cakupan sebelum pembacaan tampilan
+[lulus] portal/rapor_semester.php: layanan menegakkan cakupan sebelum pembacaan tampilan
+[lulus] portal/rapor_wali.php: layanan menegakkan cakupan sebelum pembacaan tampilan
+[lulus] portal/rencana_nilai.php: layanan menegakkan cakupan sebelum pembacaan tampilan
+[lulus] portal/rapor_penanda.php: layanan menegakkan cakupan sebelum pembacaan tampilan
+[lulus] Kisi sikap hanya menerima pasangan rencana–santri dari pilihan layanan
+[lulus] Kisi nilai hanya menerima santri dari kelas layanan
+
+=== S7-4. Mutasi hanya POST + CSRF ===
+[lulus] portal/rencana_nilai.php: cabang POST memeriksa CSRF sebelum mutasi
+[lulus] portal/rencana_nilai.php: tidak ada mutasi dari GET
+[lulus] portal/nilai_semester.php: cabang POST memeriksa CSRF sebelum mutasi
+[lulus] portal/nilai_semester.php: tidak ada mutasi dari GET
+[lulus] portal/sikap_semester.php: cabang POST memeriksa CSRF sebelum mutasi
+[lulus] portal/sikap_semester.php: tidak ada mutasi dari GET
+[lulus] portal/verifikasi_semester.php: cabang POST memeriksa CSRF sebelum mutasi
+[lulus] portal/verifikasi_semester.php: tidak ada mutasi dari GET
+[lulus] portal/rapor_semester.php: cabang POST memeriksa CSRF sebelum mutasi
+[lulus] portal/rapor_semester.php: tidak ada mutasi dari GET
+[lulus] portal/rapor_penanda.php: cabang POST memeriksa CSRF sebelum mutasi
+[lulus] portal/rapor_penanda.php: tidak ada mutasi dari GET
+[lulus] M-5: penjaga admin, mutasi lewat POST (CSRF di _guard)
+[lulus] R-6 tanpa JavaScript paling banyak 10 rapor per kiriman (batas waktu cPanel)
+
+=== S7-5. Keputusan U, V, W, X, Y ===
+[lulus] U: peringatan perubahan belum disimpan pada kisi
+[lulus] U: portal/nilai_semester.php memakai tombol "Simpan draf"
+[lulus] U: portal/sikap_semester.php memakai tombol "Simpan draf"
+[lulus] V: tindakan massal dikirim satu pilihan per permintaan
+[lulus] V: portal/nilai_semester.php — serahkan_lengkap berjawaban JSON per pilihan
+[lulus] V: portal/sikap_semester.php — diketahui berjawaban JSON per pilihan
+[lulus] V: portal/verifikasi_semester.php — verifikasi_massal berjawaban JSON per pilihan
+[lulus] V: portal/rapor_semester.php — terbit_massal berjawaban JSON per pilihan
+[lulus] W: tanpa impor Excel (unggah berkas) di portal/nilai_semester.php
+[lulus] W: tanpa impor Excel (unggah berkas) di portal/sikap_semester.php
+[lulus] X: salin memakai RencanaService::read semester lalu tanpa menyimpan
+[lulus] X: tombol salin hanya bila cakupan baca semester lalu berlaku (dalam praktik admin; keputusan 23 Okt 2026)
+[lulus] Y: versi terbaru + "Versi sebelumnya" + "Sudah diganti"
+[lulus] Y: orang tua tetap memakai jalur non-staf RaporService::show()
+
+=== S7-6. Gambar tanda tangan berpenjaga ===
+[lulus] rapor_ttd.php: requireWebUser()
+[lulus] rapor_ttd.php: hasFeature($user,PenugasanJenis::CAP_RAPOR_RENCANA)
+[lulus] rapor_ttd.php: if(!(bool)$aset['berlaku']&&!$admin)
+[lulus] rapor_ttd.php: hash_equals((string)$aset['sha256'],hash('sha256',$bytes))
+[lulus] rapor_ttd.php: X-Content-Type-Options: nosniff
+[lulus] rapor_ttd.php: Cache-Control: private, no-store
+[lulus] rapor_ttd.php: Content-Security-Policy: default-src 'none'; sandbox
+[lulus] Halaman memakai jalur berpenjaga, bukan berkas privat
+
+=== S7-7. M-5 dan peta menu ===
+[lulus] Tab Mata pelajaran menuju M-5
+[lulus] Tab tetap: self::tab('Rencana'
+[lulus] Tab tetap: self::tab('Kelengkapan'
+[lulus] Tab tetap: self::tab('Penerbitan'
+[lulus] Tab tetap: self::tab('Penanda tangan'
+[lulus] Alamat lama mapel dialihkan 301; POST lama tetap diproses
+
+=== S7-8. Nama bukan nomor, tanpa dialog bawaan ===
+[lulus] Tanpa "pelaku #" di tampilan
+[lulus] Tanpa "Admin #" di tampilan
+[lulus] Tanpa "aset #" di tampilan
+[lulus] Tanpa "murobi #" di tampilan
+[lulus] Tanpa "kapasitas #" di tampilan
+[lulus] Tanpa "'#'.(int)" di tampilan
+[lulus] Tanpa alert()/confirm()/handler inline
+[lulus] Tanpa isian ID yang diketik
+[lulus] Pratinjau rapor di halaman memakai judul bertingkat turun (satu h1)
+
+Ringkasan: 96 lulus, 6 gagal

@@ -1,0 +1,72 @@
+
+=== T-1. Izin: routing dan penolakan ===
+[lulus] Akun terlibat = pengaju + peninjau V7 (tabel V7 diperiksa keberadaannya)
+[lulus] Guru terlibat dibaca dari users.guru_id (level akun)
+[lulus] PemisahanTugas izin hanya membaca
+[lulus] Router: kandidat dikurangi guru terlibat sebelum dihitung
+[lulus] Catatan routing dibatasi 255 karakter dengan akhiran pemisahan tugas
+[lulus] create(): guru milik akun pengaju dikecualikan dari routing
+[lulus] assignMurobi(): guru terlibat ditolak sesudah baris dikunci, sebelum perubahan
+[lulus] decide(): akun terlibat ditolak sesudah kunci, sebelum keputusan; berlaku untuk murobi dan admin pengganti
+[lulus] correctDecision(): akun terlibat ditolak sebelum koreksi
+[lulus] V7 tinjau(): pengaju, peninjau sekarang, dan peninjau sebelumnya dikecualikan sesudah baris dikunci
+[lulus] Daftar murobi berhak dan kandidat tampilan mengecualikan guru terlibat
+
+=== T-2. Izin: tampilan ===
+[lulus] actionsFor(): tetap lima kunci (tipe IzinActions aplikasi tidak berubah)
+[lulus] actionsFor(): parameter akun opsional; pemanggil lama tetap sah
+[lulus] portal/izin_detail.php meneruskan akun yang melihat
+[lulus] portal/izin_antrean.php meneruskan akun yang melihat
+[lulus] REST rincian dan daftar meneruskan akun
+[lulus] Rincian V7 menyembunyikan keputusan bagi akun terlibat
+
+=== T-3. Sikap V4 ===
+[lulus] save(): pengisi dibaca sesudah baris sikap dikunci, untuk seluruh tindakan murobi (diketahui dan koreksi)
+[lulus] Pengisi = pembimbing pertama + pelaku riwayat berkapasitas pembimbing
+[lulus] Tanda lama dari pengisi tidak mengunci murobi lain
+[lulus] Matriks: diketahui sah hanya dari murobi yang bukan pengisi; penghalang khusus bila seluruh murobi pengisi
+[lulus] Tanpa tindakan baru: tidak ada jalur admin/pengganti untuk mengetahui (PK-T7)
+
+=== T-4. PK-T1 verifikasi nilai ===
+[lulus] act(): pengisi nilai dibaca sesudah rencana dikunci (penyimpanan nilai mengunci rencana yang sama)
+[lulus] Hanya bahan nilai, verifikasi/kembalikan, kapasitas Pendidikan (admin tetap jalur pengganti)
+[lulus] Kapasitas dihitung ulang di dalam transaksi
+[lulus] Penanda diisi sendiri di luar matriks bersidik jari
+[lulus] Pengisi nilai mencakup riwayat (guru maupun Pendidikan pengganti)
+[lulus] Verifikasi massal tidak memuat nilai isian sendiri
+
+=== T-5. V3 tanda mengetahui ===
+[lulus] Pelanggaran: pemilik diperiksa sesudah baris dikunci, sebelum catatan murobi
+[lulus] Kasus/sesi: pemilik diperiksa sesudah kasus dikunci, sebelum catatan murobi
+[lulus] Pemilik = pembuat/pembaru/revisi atau identitas pembimbing akun; hanya membaca
+
+=== T-6. Batas Fase 2 ===
+[lulus] Hanya berkas Fase 2 yang berubah terhadap baseline 464d9a1
+[lulus] Tanpa migrasi; Auth, Penugasan, akun, master, kesehatan, BSA, notifikasi, dan rute API tidak diubah
+
+=== T-7. Lint ===
+[lulus] lint app/Api/IzinApiService.php
+[lulus] lint app/Beranda/BerandaService.php
+[lulus] lint app/Izin/IzinRouter.php
+[lulus] lint app/Izin/IzinWaliService.php
+[lulus] lint app/Izin/IzinWorkflowService.php
+[lulus] lint app/V3/KonselingRepository.php
+[lulus] lint app/V3/KonselingService.php
+[lulus] lint app/V3/PelanggaranRepository.php
+[lulus] lint app/V3/PelanggaranService.php
+[lulus] lint app/V4/SikapService.php
+[lulus] lint app/V4/VerifikasiService.php
+[lulus] lint portal/izin_antrean.php
+[lulus] lint portal/izin_detail.php
+[lulus] lint portal/sikap_semester.php
+[lulus] lint portal/v3_konseling_detail.php
+[lulus] lint portal/v3_pelanggaran_detail.php
+[lulus] lint portal/verifikasi_semester.php
+[lulus] lint app/Izin/PemisahanTugas.php
+[lulus] lint app/V3/PemisahanTugas.php
+[lulus] lint tests/penugasan_keamanan_f2_http.php
+[lulus] lint tests/penugasan_keamanan_f2_integration.php
+[lulus] lint tests/penugasan_keamanan_f2_seed.php
+[lulus] lint tests/penugasan_keamanan_f2_static.php
+
+Hasil: 56 lulus, 0 gagal.

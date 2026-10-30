@@ -1,0 +1,12 @@
+[lulus] akun guru dua identitas mendapat token
+[lulus] token membuka BSA sesuai penugasan guru
+[lulus] token memiliki capability pengurus
+[lulus] token lama ditolak saat guru is_active=0 walau identitas masih aktif
+[lulus] token lama kehilangan capability dan konteks pengurus saat guru is_active=0
+[lulus] kontrol: token yang sama kembali memperoleh hak setelah guru dipulihkan
+[lulus] token lama ditolak saat guru archived_at=NOW() walau identitas masih aktif
+[lulus] token lama kehilangan capability dan konteks pengurus saat guru archived_at=NOW()
+[lulus] kontrol: token yang sama kembali memperoleh hak setelah guru dipulihkan
+[lulus] log server tanpa galat PHP
+
+Hasil: 10 lulus, 0 gagal.
