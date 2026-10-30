@@ -1,0 +1,34 @@
+
+=== M-A. Petugas: laporan = API ===
+[lulus] Angka layar = API: tagihan Rp100.000, terbayar Rp50.000, saldo akhir Rp50.000, kas baru Rp120.000, selisih Rp0
+[lulus] Pembayaran dari tabungan tampil terpisah sebagai bukan kas; jejak koreksi beralasan
+[lulus] Per santri: santri aktif dalam cakupan; santri keluar tidak tampil bagi petugas
+[lulus] Laporan petugas: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] "Bulan lalu" meminta periode 2026-09 ke server; data bulan lalu kosong
+
+=== M-B. Admin: R-10 dan hanya membaca ===
+[lulus] Admin: santri keluar bersaldo Rp12.000 dilaporkan (R-10)
+[lulus] Laporan admin tanpa tombol mutasi
+[lulus] Laporan admin: tanpa gulir horizontal pada 375 px (selisih 0px)
+
+=== M-C. Petugas unit Tsanawi ===
+[lulus] Petugas Tsanawi: hanya santri Tsanawi; angka = API
+
+=== M-D. Wali dua anak ===
+[lulus] Wali dua anak: dua anak saja, saldo akhir Rp50.000 = API
+[lulus] Wali: tanpa kas, alasan koreksi, transfer menunggu, referensi, atau status rekonsiliasi internal
+[lulus] Laporan wali: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Ketuk anak → rincian keuangan anak itu (dibaca ulang dari server)
+
+=== M-E. Pencabutan saat layar terbuka ===
+[lulus] Wali SMP: anaknya tampil
+[lulus] Relasi dicabut lalu muat ulang: nama dan saldo anak hilang dari layar terbuka
+[lulus] Penugasan dinonaktifkan: laporan petugas ditutup dengan pesan akses, tanpa data lama
+
+=== M-F. Hanya membaca, penyimpanan, jaringan ===
+[lulus] Layar laporan tidak mengirim POST /v6 (terhitung 0)
+[lulus] local/sessionStorage tanpa referensi, alasan, token, atau nominal
+[lulus] Konsol tanpa referensi/token/nominal (16 baris)
+[lulus] Nol permintaan keluar 127.0.0.1 (tidak ada)
+
+Ringkasan aplikasi Fase 5: 20 lulus, 0 gagal
