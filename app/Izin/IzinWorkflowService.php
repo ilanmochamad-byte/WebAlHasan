@@ -298,6 +298,7 @@ final class IzinWorkflowService
                     $this->write->lockPengajuan($pengajuanId);
                     $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
                 }
+                $this->requireReplaySeparation($userId, $pengajuanId, $guruId);
                 return $replay['response'] + ['idempotent_replay' => true];
             }
 
@@ -447,6 +448,7 @@ final class IzinWorkflowService
                     $current = $this->write->lockPengajuan($pengajuanId);
                     $this->requireWaliActor($wali, $userId, $scope['mode'], $current);
                 }
+                $this->requireReplaySeparation($userId, $pengajuanId);
                 return $replay['response'] + ['idempotent_replay' => true];
             }
 
@@ -679,6 +681,7 @@ final class IzinWorkflowService
                     $this->write->lockPengajuan($pengajuanId);
                     $this->requireWaliActor($wali, $userId, Capabilities::ADMIN);
                 }
+                $this->requireReplaySeparation($userId, $pengajuanId);
                 return $replay['response'] + ['idempotent_replay' => true];
             }
 
@@ -993,6 +996,21 @@ final class IzinWorkflowService
     private function pemisahan(): PemisahanTugas
     {
         return $this->pemisahan ??= new PemisahanTugas($this->write->db());
+    }
+
+    /** Cache dari sebelum Fase 2 tetap tunduk pada pemisahan tugas saat ini. */
+    private function requireReplaySeparation(int $userId, int $pengajuanId, ?int $guruId = null): void
+    {
+        if ($this->write->lockPengajuan($pengajuanId) === null) {
+            throw IzinException::forbidden();
+        }
+        if ($guruId !== null) {
+            if (in_array($guruId, $this->pemisahan()->guruTerlibat($pengajuanId), true)) {
+                throw IzinException::invalid('Murobi yang dipilih memakai akun yang mengajukan atau meninjau pengajuan ini (pemisahan tugas). Pilih murobi lain.');
+            }
+            return;
+        }
+        $this->pemisahan()->wajibBukanTerlibat($userId, $pengajuanId);
     }
 
     private function waliRepository(int $id): ?IzinWaliRepository

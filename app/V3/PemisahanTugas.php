@@ -15,7 +15,7 @@ use mysqli;
  * akun bila akun itu:
  *
  *   - membuat atau memperbarui baris sumber (`created_by`/`updated_by`),
- *     termasuk seluruh revisi pelanggaran sebelumnya dan revisi kasus; atau
+ *     termasuk seluruh revisi pelanggaran/sesi sebelumnya dan revisi kasus; atau
  *   - memegang identitas pengurus yang tercatat sebagai `pembimbing_id`
  *     sumber (identitas pengurus milik guru dari Fase 1 maupun akun ganda
  *     warisan).
@@ -25,28 +25,13 @@ use mysqli;
  */
 final class PemisahanTugas
 {
-    private const BATAS_RANTAI_REVISI = 100;
-
     public function __construct(private mysqli $db)
     {
     }
 
     public function pelanggaranMilik(int $userId, int $pelanggaranId): bool
     {
-        $pengurus = $this->pengurusAkun($userId);
-        $id = $pelanggaranId;
-        for ($i = 0; $id > 0 && $i < self::BATAS_RANTAI_REVISI; $i++) {
-            $row = $this->one('SELECT created_by, updated_by, pembimbing_id, revisi_dari_id FROM v3_pelanggaran WHERE id = ?', [$id]);
-            if ($row === null) {
-                return false;
-            }
-            if ($this->cocok($row, $userId, $pengurus)) {
-                return true;
-            }
-            $id = (int) ($row['revisi_dari_id'] ?? 0);
-        }
-
-        return false;
+        return $this->rantaiMilik('v3_pelanggaran', $pelanggaranId, $userId);
     }
 
     public function kasusMilik(int $userId, int $kasusId): bool
@@ -64,12 +49,36 @@ final class PemisahanTugas
 
     public function sesiMilik(int $userId, int $sesiId): bool
     {
-        $row = $this->one('SELECT kasus_id, created_by, updated_by, pembimbing_id FROM v3_konseling_sesi WHERE id = ?', [$sesiId]);
+        $row = $this->one('SELECT kasus_id FROM v3_konseling_sesi WHERE id = ?', [$sesiId]);
         if ($row === null) {
             return false;
         }
 
-        return $this->cocok($row, $userId, $this->pengurusAkun($userId)) || $this->kasusMilik($userId, (int) $row['kasus_id']);
+        return $this->rantaiMilik('v3_konseling_sesi', $sesiId, $userId) || $this->kasusMilik($userId, (int) $row['kasus_id']);
+    }
+
+    /** Seluruh revisi ikut diperiksa; rantai rusak tidak boleh membuka akses. */
+    private function rantaiMilik(string $table, int $id, int $userId): bool
+    {
+        // Nama tabel hanya berasal dari dua pemanggil internal di atas.
+        $pengurus = $this->pengurusAkun($userId);
+        $visited = [];
+        while ($id > 0) {
+            if (isset($visited[$id])) {
+                throw new V3Exception('Rantai revisi tidak valid; pemisahan tugas tidak dapat diperiksa.', 503);
+            }
+            $visited[$id] = true;
+            $row = $this->one('SELECT created_by, updated_by, pembimbing_id, revisi_dari_id FROM ' . $table . ' WHERE id = ?', [$id]);
+            if ($row === null) {
+                throw new V3Exception('Sumber revisi tidak ditemukan; pemisahan tugas tidak dapat diperiksa.', 503);
+            }
+            if ($this->cocok($row, $userId, $pengurus)) {
+                return true;
+            }
+            $id = (int) ($row['revisi_dari_id'] ?? 0);
+        }
+
+        return false;
     }
 
     /** @param array<string, mixed> $row */

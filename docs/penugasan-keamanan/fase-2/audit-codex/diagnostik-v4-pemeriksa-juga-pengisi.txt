@@ -1,0 +1,8 @@
+[lulus] Kontrol: seluruh komponen kini diisi pihak lain
+[lulus] Riwayat nilai X tetap menutup verifikasi dan pengembalian setelah pengisi terakhir berubah
+App\V4\V4Exception: Nilai ini memuat isian Anda sendiri, sehingga diverifikasi Bagian Pendidikan lain atau admin (pemisahan tugas). in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/V4/VerifikasiService.php:124
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_v4.php(21): App\V4\VerifikasiService->act(Array, Array)
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_v4.php(39): {closure:/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_v4.php:21}(Array, 1694, 'nilai', 11, 'verifikasi')
+#2 {main}
+Nilai ini memuat isian Anda sendiri, sehingga diverifikasi Bagian Pendidikan lain atau admin (pemisahan tugas).

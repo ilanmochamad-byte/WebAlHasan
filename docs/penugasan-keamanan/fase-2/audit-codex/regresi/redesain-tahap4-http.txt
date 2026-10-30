@@ -1,0 +1,156 @@
+[lulus] Fixture Tahap 4 tersedia (pertemuan, antrean murobi C, izin perlu penetapan)
+
+=== H4-A. Akses per peran, menu, dan tab ===
+[lulus] /portal/izin_ringkasan.php status per peran 200/200/200/200/403/403/200/403 = 200/200/200/200/403/403/200/403
+[lulus] /portal/izin.php status per peran 200/200/200/200/403/403/200/403 = 200/200/200/200/403/403/200/403
+[lulus] /portal/izin_antrean.php status per peran 200/200/200/200/403/403/200/403 = 200/200/200/200/403/403/200/403
+[lulus] /portal/izin_buat.php status per peran 200/200/403/403/403/403/200/403 = 200/200/403/403/403/403/200/403
+[lulus] /portal/laporan.php status per peran 200/200/200/200/403/403/200/403 = 200/200/200/200/403/403/200/403
+[lulus] /admin/admin_pengajian.php status per peran 200/403/200/403/200/403/403/200 = 200/403/200/403/200/403/403/200
+[lulus] /admin/admin_pengajian.php?tab=pertemuan status per peran 200/403/200/403/200/403/403/200 = 200/403/200/403/200/403/403/200
+[lulus] /admin/admin_laporan_absensi.php status per peran 200/403/200/403/200/200/403/200 = 200/403/200/403/200/200/403/200
+[lulus] Anonim /portal/izin_ringkasan.php diarahkan ke halaman masuk
+[lulus] Anonim /portal/izin.php diarahkan ke halaman masuk
+[lulus] Anonim /admin/admin_pengajian.php diarahkan ke halaman masuk
+[lulus] Anonim /admin/admin_laporan_absensi.php diarahkan ke halaman masuk
+[lulus] /portal/izin_ringkasan.php: menu "Perizinan" tab "Ringkasan" (Perizinan/Ringkasan)
+[lulus] /portal/izin.php: menu "Perizinan" tab "Pengajuan" (Perizinan/Pengajuan)
+[lulus] /portal/izin_antrean.php: menu "Perizinan" tab "Antrean" (Perizinan/Antrean)
+[lulus] /portal/laporan.php: menu "Perizinan" tab "Laporan" (Perizinan/Laporan)
+[lulus] /portal/izin_buat.php: menu "Perizinan" tab "Pengajuan" (Perizinan/Pengajuan)
+[lulus] /admin/admin_pengajian.php: menu "Pengajian" tab "Jadwal" (Pengajian/Jadwal)
+[lulus] /admin/admin_pengajian.php?tab=pertemuan: menu "Pengajian" tab "Pertemuan" (Pengajian/Pertemuan)
+[lulus] /admin/admin_laporan_absensi.php: menu "Pengajian" tab "Kehadiran" (Pengajian/Kehadiran)
+[lulus] /admin/laporan_absensi_detail.php?id=720: menu "Pengajian" tab "Kehadiran" (Pengajian/Kehadiran)
+[lulus] /portal/izin_antrean.php: menu "Antrean izin" tab "Menunggu keputusan" (Antrean izin/Menunggu keputusan)
+[lulus] /portal/izin.php: menu "Izin anak" tab "Aktif" (Izin anak/Aktif)
+[lulus] /portal/izin.php?tab=riwayat: menu "Izin anak" tab "Riwayat" (Izin anak/Riwayat)
+[lulus] /admin/admin_laporan_absensi.php: menu "Laporan absensi pengajian" tanpa tab (Laporan absensi pengajian/)
+[lulus] /portal/izin_buat.php: menu "Perizinan" tab "Pengajuan" (Perizinan/Pengajuan)
+[lulus] Pengajian bertab Jadwal · Pertemuan · Kehadiran (cetak biru J-1 s.d. J-5)
+[lulus] Menu Bagian Pendidikan memuat "Laporan absensi pengajian" (grup Laporan)
+[lulus] Pengurus tanpa penugasan Pendidikan tidak melihat menu laporan absensi
+
+=== H4-B. Keputusan H: laporan absensi Bagian Pendidikan ===
+[lulus] Bagian Pendidikan membaca angka seluruh jadwal = admin ({"pertemuan":2,"jadwal":2} = {"pertemuan":2,"jadwal":2})
+[lulus] Guru tetap hanya jadwal sendiri (1 < 2)
+[lulus] J-6: judul dan keterangan hanya-baca, tanpa tab Jadwal/Pertemuan
+[lulus] Bagian Pendidikan boleh menyaring guru mana pun (guru lain)
+[lulus] Guru menyaring guru lain tetap ditolak 403
+[lulus] J-5 Bagian Pendidikan membuka detail pertemuan guru mana pun, tanpa formulir ubah
+[lulus] Guru tidak membuka detail pertemuan guru lain (403)
+[lulus] CSV Bagian Pendidikan = CSV admin untuk filter sama
+[lulus] Cetak kehadiran terbuka untuk Bagian Pendidikan
+[lulus] Hanya-baca: POST /admin/admin_laporan_absensi.php → 405
+[lulus] Hanya-baca: POST /admin/export_laporan_absensi.php → 405
+[lulus] Hanya-baca: POST /admin/laporan_absensi_cetak.php → 405
+[lulus] Bagian Pendidikan tidak membuka modul jadwal/pertemuan dan tidak dapat mengubah jadwal
+[lulus] Pengurus tanpa penugasan Pendidikan / orang tua: laporan dan detail 403
+[lulus] Pengurus tanpa penugasan Pendidikan / orang tua: laporan dan detail 403
+[lulus] Pengurus tanpa penugasan Pendidikan / orang tua: laporan dan detail 403
+[lulus] Penanda baca-semua tidak dapat disuntik lewat parameter alamat
+[lulus] apiReport (REST API) tetap menolak Bagian Pendidikan: 403, kontrak API tidak melebar
+[lulus] Layanan detail pertemuan tanpa penanda web menolak 403
+[lulus] Penanda web memberi cakupan baca yang sama dengan admin, tidak lebih
+
+=== H4-C. Ringkasan, pengajuan, Izin anak ===
+[lulus] I-1 kartu angka = DB (total 1052) dan menjadi tautan ke Pengajuan
+[lulus] I-1 kartu Alur izin menggantikan catatan panjang; tanpa label "Data warisan"
+[lulus] I-2 chip status berangka = DB (120 perlu penetapan)
+[lulus] I-2 tabel 7 kolom, tanpa label "V2" dan kolom Keputusan
+[lulus] I-2 Asal data di Filter lanjutan: "Arsip sistem lama", terbuka saat aktif
+[lulus] I-2 pengajuan menunggu > 1 hari diberi tanda kuning
+[lulus] I-2 parameter tidak sah diabaikan dan isian di-escape
+[lulus] I-7 tab Aktif (19) dan Riwayat (6) = DB
+[lulus] I-7 pilihan anak tampil bila lebih dari satu anak
+[lulus] I-7 orang tua tanpa formulir dan tanpa tabel staf
+[lulus] I-7 santri_id di luar anak sendiri diabaikan (kembali ke anak sendiri)
+[lulus] Orang tua tidak membuka izin anak lain (403)
+
+=== H4-D. Antrean murobi dan keputusan N ===
+[lulus] I-3 daftar antrean: satu ditandai tertunda > 1 hari, alasan ber-tag di-escape
+[lulus] I-3 detail berdampingan dengan Setujui/Tolak dan jumlah izin semester ini
+[lulus] I-3 detail alasan di-escape
+[lulus] Keputusan dari antrean kembali ke antrean dengan detail yang sama (303)
+[lulus] Pesan hasil + tombol "Berikutnya"; tidak pindah otomatis; status tersimpan
+[lulus] Nilai "kembali" lain diabaikan: tetap ke detail (tidak ada pengalihan bebas)
+[lulus] Keputusan tanpa CSRF ditolak 419
+[lulus] Antrean ?id= di luar cakupan murobi tidak membuka detail
+
+=== H4-E. Ajukan izin: info panel dan jumlah semester (M, Q) ===
+[lulus] Info panel pengurus: jumlah izin semester ini = DB (25/19) (Q)
+[lulus] Info panel murobi tujuan = routing yang sama dengan pengajuan (Lebih dari satu murobi (SBX Murobi A, SBX Murobi C); admin akan menetapkan.)
+[lulus] Info panel santri di luar binaan ditolak 403 (tanpa membocorkan data)
+[lulus] Info panel tidak untuk orang tua dan murobi (403)
+[lulus] Alasan cepat = empat tombol yang mengisi awal teks; tanpa isian/kolom baru (M)
+[lulus] Satu kotak pilih santri yang dapat dicari (tanpa daftar + dropdown ganda)
+[lulus] Mode admin ditandai pita kuning
+[lulus] Pengajuan untuk santri di luar binaan tetap ditolak server 403
+
+=== H4-F. Detail izin ===
+[lulus] I-5 admin: Tetapkan/Putuskan pengganti/Batalkan sebagai tombol + dialog; koreksi belum ada
+[lulus] I-5 versi data tersembunyi di ⋯ Info teknis; riwayat sebagai linimasa
+[lulus] I-5 Info teknis tampil untuk admin
+[lulus] I-5 pengurus: tanpa info teknis; izin yang sudah diputus tanpa tindakan
+[lulus] I-5 tampilan orang tua hanya-baca, tanpa catatan teknis routing
+[lulus] I-5 arsip sistem lama tanpa tindakan
+[lulus] I-5 nomor pengajuan tidak sah → 404 (tidak lagi membuka pengajuan pertama)
+[lulus] I-5 pengurus tidak membuka pengajuan pengurus lain (403)
+[lulus] I-5 peristiwa riwayat ditulis manusiawi
+
+=== H4-G. Laporan perizinan ===
+[lulus] I-6 jumlah batang per pekan dan per kelas = total ringkasan (filter sama, 245)
+[lulus] I-6 pekan dimulai hari Senin (T)
+[lulus] Periode "Semester ini" mengikuti semester aktif (2026-07-01 s.d. 2026-12-31)
+[lulus] Periode "Pekan ini" Senin 19 – Ahad 25 Okt 2026
+[lulus] Alamat lama bertanggal tanpa periode tetap memakai tanggalnya
+[lulus] I-6 grafik per pekan & per kelas (tanpa grafik alasan); tautan cetak/CSV membawa tanggal hasil periode
+[lulus] I-6 empat saringan utama (Periode, Status, Kelas, Kamar) + Filter lanjutan
+[lulus] I-6 kode laporan = sidik kriteria
+[lulus] I-6 pengurus memperluas cakupan lewat parameter tetap 403
+
+=== H4-H. Pengajian: jadwal, pertemuan, kehadiran ===
+[lulus] J-1 kisi mingguan Senin…Ahad, "Minggu" ditulis "Ahad" (T)
+[lulus] J-1 setiap jadwal semester aktif tampil di kisi dan tampilan hari (4)
+[lulus] J-1 tanpa label "Minggu"; pilih hari untuk HP
+[lulus] J-1 daftar dengan ⋯ dan dialog bersama, tanpa confirm() bawaan
+[lulus] J-1 tambah jadwal di panel samping; nilai "Minggu" tetap tersimpan, label "Ahad"
+[lulus] J-1 guru hanya melihat jadwal sendiri, tanpa Tambah jadwal
+[lulus] J-1 guru tidak dapat melihat jadwal guru lain lewat parameter
+[lulus] J-1 POST jadwal oleh guru ditolak 403
+[lulus] J-3 daftar pertemuan 6 kolom, terpisah dari formulir buka
+[lulus] J-3 Buka pertemuan di panel samping (draf / buka & bekukan)
+[lulus] J-2 9 peserta; label "Sedang izin" = izin disetujui pada tanggalnya (1) (S)
+[lulus] J-2 ringkasan kehadiran dari aplikasi = DB (3 hadir), sisanya belum dicatat
+[lulus] J-2 tanpa isian kehadiran (R); hanya Selesaikan pertemuan
+[lulus] Label tidak mengisi status: status santri yang izin tetap seperti dicatat aplikasi
+[lulus] J-2 guru lain tidak membuka pertemuan ini (403)
+[lulus] J-2 Selesaikan pertemuan seperti sebelumnya; langkah berpindah ke Selesai
+[lulus] J-5 detail pertemuan: label izin, waktu perubahan, tanpa formulir
+[lulus] J-4 segmen Santri/Guru/Gabungan, bilah komposisi, rincian terlipat
+[lulus] J-4 CSV memakai tanggal hasil periode dan penyajian yang sama
+
+=== H4-I. Templat cetak (X-1, AS) ===
+[lulus] Cetak perizinan: satu tanda tangan Bagian Pendidikan di lembar terakhir
+[lulus] Garis nama kosong untuk diisi manual
+[lulus] Kode laporan di kaki setiap lembar
+[lulus] Kop identitas "Pesantren Al Hasan" sama
+[lulus] Cetak kehadiran: tanda tangan Bagian Pendidikan + kode laporan
+[lulus] Renderer perizinan (juga dipakai aplikasi/API) memuat tanda tangan
+[lulus] Laporan kosong tetap satu lembar bertanda tangan
+
+=== H4-J. Keadaan kosong ===
+[lulus] Kosong /portal/izin_ringkasan.php: "Belum ada pengajuan"
+[lulus] Kosong /portal/izin.php: "Tidak ada pengajuan yang cocok"
+[lulus] Kosong /portal/izin_antrean.php: "Antrean kosong"
+[lulus] Kosong /portal/laporan.php: "Tidak ada pengajuan sesuai saringan"
+[lulus] Kosong /admin/admin_pengajian.php?tab=pertemuan: "Belum ada pertemuan"
+[lulus] Kosong /admin/admin_laporan_absensi.php: "Tidak ada data sesuai saringan"
+[lulus] Grafik laporan kosong punya keadaan kosong
+[lulus] Kosong I-7: "Tidak ada izin aktif"
+
+=== H4-K. Log server ===
+[lulus] Server 8972 tanpa galat/peringatan PHP
+[lulus] Server 8973 tanpa galat/peringatan PHP
+
+Ringkasan: 132 lulus, 0 gagal

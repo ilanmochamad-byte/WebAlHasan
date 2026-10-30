@@ -203,11 +203,11 @@ final class PelanggaranService
         return $this->repo->transaction(function()use($actorId,$id,$probe,$assignment,$key,$note,$hash):array{
             $this->repo->lockSubject((int)$probe['santri_id'],(int)$probe['tahun_ajaran_id'],$actorId);
             $idem=$this->repo->claimIdempotency($actorId,'v3.pelanggaran.acknowledge:'.$id,$key,$hash);
-            if($idem['response_json']!==null){return $this->replay($idem,$hash);}
             $current=$this->repo->violation($id,true);
             if($current===null){throw new V3Exception('Pelanggaran tidak ditemukan.',404);}
             // Pemisahan tugas: catatan sendiri sebagai pembimbing tidak ditandai mengetahui oleh akun yang sama.
             if($this->repo->pemisahanTugas()->pelanggaranMilik($actorId,$id)){throw new V3Exception(self::PESAN_MILIK_SENDIRI,403);}
+            if($idem['response_json']!==null){return $this->replay($idem,$hash);}
             $event='v3:pelanggaran:'.$id.':diketahui:guru:'.(int)$assignment['guru_id'];
             $noteId=$this->repo->insertMurobiNote($id,(int)$current['version'],(int)$assignment['guru_id'],(int)$assignment['id'],$note,$event,$actorId);
             $payload=['id'=>$noteId,'pelanggaran_id'=>$id,'diketahui_pada'=>(new DateTimeImmutable())->format('Y-m-d H:i:s')];

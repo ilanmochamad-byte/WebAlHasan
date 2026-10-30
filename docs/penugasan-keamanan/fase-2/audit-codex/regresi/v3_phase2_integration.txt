@@ -1,0 +1,67 @@
+[lulus] Ambang tahun nonaktif memberi sinyal operator yang terlihat
+[lulus] Validasi gagal membersihkan lampiran pending (422)
+[lulus] Tidak ada lampiran yatim saat validasi gagal
+[lulus] Pembimbing mencatat pelanggaran dalam cakupan
+[lulus] Snapshot poin katalog tersimpan bersama catatan
+[lulus] Ledger awal tersimpan tepat satu
+[lulus] Ambang menghasilkan tepat satu rekomendasi
+[lulus] Rekomendasi unik per ambang dan subjek
+[lulus] Rekomendasi tidak membuat konseling atau perubahan akademik otomatis
+[lulus] Lampiran privat dicatat dengan metadata aman
+[lulus] Admin murni mengawasi seluruh catatan tanpa menyamar sebagai pembimbing
+[lulus] Idempotency key sama me-replay respons tanpa dampak kedua
+[lulus] Retry hanya menghasilkan satu pelanggaran
+[lulus] Fingerprint bisnis menolak duplikasi dengan key berbeda (409)
+[lulus] Pembimbing tidak dapat mencatat santri di luar cakupan (403)
+[lulus] Pengurus lain tidak dapat mencatat santri A (403)
+[lulus] Perubahan poin default tidak mengubah poin catatan lama
+[lulus] Akumulasi sama dengan penjumlahan ledger dan agregat terrekonsiliasi
+[lulus] Serializer detail tidak mengembalikan baris database mentah
+[lulus] Koreksi membuat revisi dan mempertahankan snapshot bila katalog sama
+[lulus] Koreksi tidak menimpa nilai historis
+[lulus] Pembalik koreksi dan ledger revisi tetap terrekonsiliasi
+[lulus] Koreksi membuat satu ledger pembalik
+[lulus] Optimistic version menolak koreksi versi lama (409)
+[lulus] T-2: admin merangkap pembimbing bersumber keduanya
+[lulus] Koreksi akun ganda tercatat sebagai admin beralasan
+[lulus] Murobi terkait menandai mengetahui tepat satu kali
+[lulus] Murobi lain ditolak (403)
+[lulus] Orang tua ditolak dari tanda mengetahui (403)
+[lulus] Pengurus di luar cakupan ditolak dari tanda mengetahui (403)
+[lulus] Pembimbing dan murobi terkait membaca daftar
+[lulus] Daftar pembimbing lain tidak membocorkan santri A
+[lulus] Daftar murobi lain tidak membocorkan santri A
+[lulus] Orang tua tidak membaca data internal Fase 2 (403)
+[lulus] Murobi lain ditolak dari detail (403)
+[lulus] Orang tua ditolak dari detail (403)
+[lulus] Pengurus lain ditolak dari detail (403)
+[lulus] Lampiran privat ditolak lintas cakupan (403)
+[lulus] Pembatalan mengubah status tanpa menghapus catatan
+[lulus] Pembatalan membuat pembalik poin, bukan mengedit total
+[lulus] Rekonsiliasi setelah koreksi berulang dan pembatalan berselisih nol
+[lulus] Pembatalan tidak menggandakan rekomendasi
+[lulus] Payload outbox/push hanya generik tanpa nama, kategori, uraian, poin, nomor, atau catatan rahasia
+[lulus] Santri tanpa penempatan tetap di luar cakupan
+[lulus] Pencatatan santri tanpa penempatan ditolak (403)
+[lulus] Kegagalan audit menggulung seluruh transaksi (503)
+[lulus] Tidak ada catatan parsial setelah audit gagal
+[lulus] Tidak ada hard delete catatan bisnis
+[lulus] Catatan yang digantikan revisi melepas fingerprint
+[lulus] Koreksi boleh mengembalikan isi ke nilai catatan yang sudah digantikan
+[lulus] Pembatalan tidak menimpa alasan koreksi
+[lulus] Alasan pembatalan tersimpan pada kolomnya sendiri
+[lulus] Catatan yang dibatalkan melepas fingerprint
+[lulus] Serializer detail memisahkan alasan koreksi dan pembatalan
+[lulus] Kejadian identik boleh dicatat ulang setelah pembatalan
+[lulus] Ambang tercapai memberi satu rekomendasi yang berlaku
+[lulus] Pembatalan menandai rekomendasi yang totalnya sudah tidak berlaku
+[lulus] Rekomendasi basi terbaca sebagai tidak berlaku
+[lulus] Total kembali ke rentang memulihkan rekomendasi tanpa membuat baris kedua
+[lulus] Rekomendasi tetap tepat satu per ambang setelah batal dan pulih
+[lulus] Rekomendasi yang dipulihkan berlaku kembali
+[lulus] Seluruh catatan koreksi audit tetap tersimpan
+[lulus] Koreksi tanpa perubahan isi tetap membentuk revisi beralasan
+[lulus] Revisi tanpa perubahan isi mempertahankan uraian sumber
+[lulus] Fingerprint berpindah dari catatan sumber ke revisinya
+[lulus] Bukti dapat dilampirkan lewat koreksi tanpa mengubah isi
+[lulus] Koreksi tanpa perubahan isi tetap terrekonsiliasi

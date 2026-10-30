@@ -217,10 +217,11 @@ final class KonselingService
         $assignment=$this->repo->murobiAssignment($actorId,(int)$case['santri_id'],(int)$case['tahun_ajaran_id']);if($assignment===null)throw new V3Exception('Penugasan murobi tidak berlaku.',403);
         $key=$this->idempotencyKey($input);$note=$this->optionalText($input['catatan']??null,2000,'Catatan');$hash=$this->requestHash('ack',[$type,$id,$note]);
         return $this->repo->transaction(function()use($actorId,$case,$source,$assignment,$type,$id,$key,$note,$hash):array{
-            $this->repo->lockSubject((int)$case['santri_id'],(int)$case['tahun_ajaran_id'],$actorId);$idem=$this->repo->claimIdempotency($actorId,'v3.konseling.'.$type.'.ack:'.$id,$key,$hash);if($idem['response_json']!==null)return $this->replay($idem,$hash);
+            $this->repo->lockSubject((int)$case['santri_id'],(int)$case['tahun_ajaran_id'],$actorId);$idem=$this->repo->claimIdempotency($actorId,'v3.konseling.'.$type.'.ack:'.$id,$key,$hash);
             if((string)($this->repo->case((int)$case['id'],true)['kerahasiaan']??'Rahasia')==='Rahasia')throw new V3Exception('Kasus rahasia tidak dibuka kepada murobi.',403);
             // Pemisahan tugas: kasus/sesi milik akun sendiri sebagai pembimbing tidak ditandai mengetahui olehnya.
             if($this->milikAkun($actorId,$type,$id))throw new V3Exception(PelanggaranService::PESAN_MILIK_SENDIRI,403);
+            if($idem['response_json']!==null)return $this->replay($idem,$hash);
             $event='v3:konseling:'.$type.':'.$id.':diketahui:guru:'.(int)$assignment['guru_id'];$noteId=$this->repo->insertMurobiNote($type,$id,(int)$source['version'],(int)$assignment['guru_id'],(int)$assignment['id'],$note,$event,$actorId);$payload=['id'=>$noteId,$type.'_id'=>$id,'diketahui_pada'=>(new DateTimeImmutable())->format('Y-m-d H:i:s')];$this->auditRequired('v3.konseling.'.$type.'.murobi.diketahui','v3_murobi_catatan',$noteId,null,[$type.'_id'=>$id,'sumber_version'=>(int)$source['version'],'catatan'=>$note],$actorId);$this->repo->completeIdempotency((int)$idem['id'],$payload,201);return ['data'=>$payload,'status'=>201,'replayed'=>false];
         });
     }

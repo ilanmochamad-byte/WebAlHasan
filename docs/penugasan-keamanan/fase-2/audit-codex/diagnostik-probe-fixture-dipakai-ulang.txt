@@ -1,0 +1,42 @@
+[lulus] Kontrol: kasus tidak dimiliki/diperbarui X
+[lulus] F-1 riwayat revisi sesi tetap mengenali X sebagai pengisi
+[lulus] F-1 X tidak mengetahui revisi terbaru sesi yang pernah ia isi
+[lulus] F-1 pengisi tetap dikenali setelah lebih dari 100 revisi pelanggaran
+[lulus] F-1 rantai panjang tidak membuka tanda mengetahui sendiri
+[lulus] Kontrol baseline: keputusan sendiri murobi berhasil sebelum Fase 2
+[lulus] F-2 replay keputusan sendiri murobi ditolak tanpa mengubah sejarah
+[lulus] Kontrol baseline: keputusan sendiri admin berhasil sebelum Fase 2
+[lulus] F-2 replay keputusan sendiri admin ditolak tanpa mengubah sejarah
+[lulus] Kontrol baseline: koreksi admin pengaju berhasil sebelum Fase 2
+[lulus] F-2 replay koreksi admin pengaju ditolak
+[lulus] Kontrol replay admin lain tetap satu keputusan
+[lulus] Kontrol baseline: peninjau V7 dapat memutus sendiri sebelum Fase 2
+[lulus] F-2 replay keputusan peninjau V7 ditolak
+RuntimeException: Kontrol baseline gagal: App\V3\V3Exception: Permintaan menduplikasi catatan yang sudah ada. in /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranRepository.php:774
+Stack trace:
+#0 /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranRepository.php(765): App\V3\PelanggaranRepository->fail(1062)
+#1 /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranRepository.php(749): App\V3\PelanggaranRepository->statement('INSERT INTO v3_...', Array)
+#2 /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranRepository.php(612): App\V3\PelanggaranRepository->insert('INSERT INTO v3_...', Array)
+#3 /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranService.php(202): App\V3\PelanggaranRepository->insertMurobiNote(6, 1, 4, 349, NULL, 'v3:pelanggaran:...', 7)
+#4 /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranRepository.php(24): App\V3\PelanggaranService->{closure:App\V3\PelanggaranService::acknowledge():195}()
+#5 /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranService.php(195): App\V3\PelanggaranRepository->transaction(Object(Closure))
+#6 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_probe.php(24): App\V3\PelanggaranService->acknowledge(Array, 6, Array)
+#7 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_probe.php(31): {closure:/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_probe.php:21}(Array)
+#8 {main}
+Permintaan menduplikasi catatan yang sudah ada.
+ in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_probe.php:65
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_probe.php(101): {closure:/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_probe.php:62}(Array)
+#1 {main}
+Kontrol baseline gagal: App\V3\V3Exception: Permintaan menduplikasi catatan yang sudah ada. in /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranRepository.php:774
+Stack trace:
+#0 /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranRepository.php(765): App\V3\PelanggaranRepository->fail(1062)
+#1 /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranRepository.php(749): App\V3\PelanggaranRepository->statement('INSERT INTO v3_...', Array)
+#2 /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranRepository.php(612): App\V3\PelanggaranRepository->insert('INSERT INTO v3_...', Array)
+#3 /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranService.php(202): App\V3\PelanggaranRepository->insertMurobiNote(6, 1, 4, 349, NULL, 'v3:pelanggaran:...', 7)
+#4 /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranRepository.php(24): App\V3\PelanggaranService->{closure:App\V3\PelanggaranService::acknowledge():195}()
+#5 /private/tmp/pkf2-audit-baseline/app/V3/PelanggaranService.php(195): App\V3\PelanggaranRepository->transaction(Object(Closure))
+#6 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_probe.php(24): App\V3\PelanggaranService->acknowledge(Array, 6, Array)
+#7 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_probe.php(31): {closure:/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f2_audit_probe.php:21}(Array)
+#8 {main}
+Permintaan menduplikasi catatan yang sudah ada.

@@ -1,0 +1,6 @@
+V7 final e2e: 82/1
+V7 final http: 40/0
+V7 final scope: 6/0
+V7 final revocation: 24/0
+Scan 114 berkas teks: 0 kecocokan pola bearer/JWT/private key.
+Pola terbatas; ini bukan klaim seluruh kemungkinan data sensitif telah dideteksi.

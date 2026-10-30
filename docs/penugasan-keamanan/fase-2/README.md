@@ -1,6 +1,6 @@
 # Penugasan lintas guru/pengurus — Fase 2: pemisahan tugas per akun
 
-**Status (30 Oktober 2026): diimplementasikan Claude Code, menunggu audit independen Codex.** Belum merge, belum deploy, tanpa migrasi. Fase 3 belum dimulai.
+**Status (30 Oktober 2026): LULUS audit teknis lokal Codex setelah dua koreksi terarah.** Laporan independen: [`AUDIT-CODEX.md`](AUDIT-CODEX.md), bukti `audit-codex/`. Belum merge, belum deploy, tanpa migrasi. Fase 3 belum dimulai.
 
 | Butir | Nilai |
 | --- | --- |
@@ -73,19 +73,19 @@ Prinsipnya satu: **akun yang mengisi, mengajukan, atau meninjau tidak memutus, m
 | Halaman | `portal/izin_detail.php`, `izin_antrean.php`, `sikap_semester.php`, `verifikasi_semester.php`, `v3_pelanggaran_detail.php`, `v3_konseling_detail.php` |
 | Tidak diubah | `app/Auth`, `app/Penugasan`, akun/master, kesehatan, BSA, notifikasi, rute `api/v1/index.php`, migrasi, mobile |
 
-## Penafsiran (menunggu tinjauan auditor)
+## Penafsiran implementator (hasil tinjauan di AUDIT-CODEX.md)
 
 - **PF2-1** Level akun memakai `users.guru_id`. Dua akun **terpisah** milik satu orang (data ganda guru/pengurus yang tidak dihubungkan; Fase 1 memutuskan "peringatan saja") tidak dapat dikenali. Penggabungan data tetap tahap tersendiri.
 - **PF2-2** Kandidat terlibat dibuang **sebelum** dihitung. Dua murobi (X dan Y) dengan X terlibat → langsung ke Y, tanpa melalui admin. Ini sesuai kata "mengecualikan" pada rancangan; satu-satunya murobi terlibat → admin.
 - **PF2-3** Peninjau V7 = **setiap** pembimbing yang mencatat tinjauan, termasuk "minta perbaikan", bukan hanya yang meneruskan. Wali tidak pernah memegang `guru_id` (akun guru tidak dapat dihubungkan ke wali), tetapi akunnya tetap dihitung.
 - **PF2-4** Koreksi keputusan oleh admin termasuk "pemutus" (PK-T6). Admin yang mengajukan tetap boleh **menetapkan murobi** dan membatalkan pengajuannya sendiri. Keduanya bukan keputusan.
 - **PF2-5** Penolakan POST web memakai halaman "Aksi ditolak" 403 yang sudah ada untuk seluruh penolakan hak perizinan, bukan pengalihan.
-- **PF2-6** Tanda mengetahui V3 tidak tercantum eksplisit di rancangan §3.2. Ditambahkan karena prinsipnya sama dengan sikap (PK-T7) dan tidak menambah jalur baru. Tanda mengetahui V3 bersifat informatif (tidak menghalangi rapor), sehingga catatan yang hanya diketahui pemiliknya tetap tanpa tanda. **Mohon ditinjau auditor/Human Developer**; bila tidak dikehendaki, cukup mencabut pemeriksaan di dua layanan V3.
+- **PF2-6** Tanda mengetahui V3 tidak tercantum eksplisit di daftar awal Fase 2. Ditambahkan karena prinsipnya sama dengan sikap (PK-T7) dan tidak menambah jalur baru. Tanda mengetahui V3 bersifat informatif (tidak menghalangi rapor), sehingga catatan yang hanya diketahui pemiliknya tetap tanpa tanda. **Disetujui eksplisit Human Developer saat audit Codex (PK-T8): "Ya, pertahankan larangan V3".**
 - **PF2-7** Pengisi sikap mencakup pengisi pertama **dan** setiap revisi pembimbing. Akun yang pernah mengisi tidak mengetahui walau isi terakhir direvisi pembimbing lain (aturan sederhana dan dapat diaudit). Tanda "diketahui" lama oleh pengisi tidak dihitung sah pada matriks (dihitung langsung). Baris tersimpan tidak diubah.
 - **PF2-8** Status verifikasi nilai yang **sudah tersimpan** sebelum Fase 2 tidak dievaluasi ulang. Sejak Fase 1 belum dirilis, kasus ini hanya mungkin pada akun ganda warisan.
 - **PF2-9** Catatan routing (`VARCHAR(255)`) dipotong pada daftar nama kandidat agar akhiran pemisahan tugas selalu tercatat. Teks lama yang lebih dari 255 karakter sebelumnya akan gagal disimpan pada mode ketat.
 
-## Hasil pengujian (kode final, lokal)
+## Hasil pengujian implementator (sebelum audit, lokal)
 
 | Rangkaian | Hasil | Berkas |
 | --- | --- | --- |
@@ -181,4 +181,4 @@ Fase 2 menutup risiko yang dicatat Fase 1 (satu akun mengajukan lalu memutus sen
 
 ## Handoff
 
-Implementasi selesai; commit dan push pada `claude/penugasan-keamanan-fase-2`. **Berhenti untuk audit independen Codex.** Tidak merge, deploy, migrasi produksi, atau memulai Fase 3.
+Audit independen selesai pada `claude/penugasan-keamanan-fase-2`. Dua koreksi: seluruh rantai revisi pelanggaran/sesi V3 dihitung, dan replay izin/V3 tetap memeriksa pemisahan tugas. Probe final identik pada sumber Claude **12/12** menjadi **24/0**; probe V4 **9/0**, integrasi **53/0**, HTTP **28/0**, browser **41/0**, statis **58/0**. Rincian regresi, diagnostik dan batas di [`AUDIT-CODEX.md`](AUDIT-CODEX.md). Commit/push audit pada branch yang sama, lalu berhenti; tidak merge, deploy, migrasi produksi, atau memulai Fase 3.
