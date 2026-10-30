@@ -56,7 +56,7 @@ Semua peran di atas dapat menggunakan website dan aplikasi mobile sesuai hak aks
 - **Mobile:** pertahankan proyek Expo 57, React Native 0.86, Expo Router, dan TypeScript strict di `/Users/ilanmochamad/alhasanApps`. **[JANGAN DIUBAH]**
 - **Website:** seluruh peran V2 dapat memakai website; pertahankan pola Bootstrap dan autentikasi V1. **[JANGAN DIUBAH]**
 - **Murobi:** murobi adalah guru dengan penugasan murobi aktif. **[JANGAN DIUBAH]**
-- **Pembimbing:** pembimbing adalah tugas inti/tambahan pengurus, bukan guru atau murobi. **[JANGAN DIUBAH]**
+- **Pembimbing:** pembimbing adalah tugas inti/tambahan pengurus, bukan guru atau murobi. **[JANGAN DIUBAH]** — *Dibuka Human Developer 30 Oktober 2026 (PK-4): identitas pengurus boleh milik seorang guru; lihat `docs/penugasan-keamanan/rancangan.md`.*
 - **Keputusan:** murobi yang ditugaskan menjadi pemberi keputusan utama; admin dapat menggantikan bila diperlukan. **[JANGAN DIUBAH]**
 - **Orang tua:** menggunakan akun username/password yang terhubung ke data wali dan santri. **[JANGAN DIUBAH]**
 - **Notifikasi:** in-app dan push didukung; WhatsApp opsional serta dikendalikan admin. **[JANGAN DIUBAH]**
