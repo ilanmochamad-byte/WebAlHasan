@@ -15,6 +15,12 @@ final class KonselingRepository
     {
     }
 
+    /** Pemisahan tugas per akun (penugasan lintas guru/pengurus Fase 2). */
+    public function pemisahanTugas(): PemisahanTugas
+    {
+        return new PemisahanTugas($this->db);
+    }
+
     public function transaction(callable $work): mixed
     {
         if (!$this->db->begin_transaction()) {

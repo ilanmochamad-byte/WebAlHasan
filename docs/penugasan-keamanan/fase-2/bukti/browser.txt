@@ -1,0 +1,44 @@
+[lulus] B-A 375px: rincian izin pengajuan X tanpa dialog Putuskan
+[lulus] B-A rincian izin 375px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-B 375px: panel sikap murobi X hanya-baca, tanpa Tandai diketahui dan tanpa centang
+[lulus] B-B panel sikap 375px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-D 375px: pelanggaran catatan X tanpa Tandai mengetahui
+[lulus] B-D pelanggaran 375px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-D 375px: kasus milik X tanpa Tandai mengetahui kasus
+[lulus] B-C 375px: akun X dapat beralih ke peran Pendidikan
+[lulus] B-C 375px: nilai isian X tanpa tombol Verifikasi/Kembalikan
+[lulus] B-C kelengkapan 375px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-E 375px: admin pembuat tanpa Putuskan pengganti; tindakan lain tetap ada
+[lulus] B-E rincian admin 375px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-A 768px: rincian izin pengajuan X tanpa dialog Putuskan
+[lulus] B-A rincian izin 768px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-B 768px: panel sikap murobi X hanya-baca, tanpa Tandai diketahui dan tanpa centang
+[lulus] B-B panel sikap 768px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-D 768px: pelanggaran catatan X tanpa Tandai mengetahui
+[lulus] B-D pelanggaran 768px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-D 768px: kasus milik X tanpa Tandai mengetahui kasus
+[lulus] B-C 768px: akun X dapat beralih ke peran Pendidikan
+[lulus] B-C 768px: nilai isian X tanpa tombol Verifikasi/Kembalikan
+[lulus] B-C kelengkapan 768px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-E 768px: admin pembuat tanpa Putuskan pengganti; tindakan lain tetap ada
+[lulus] B-E rincian admin 768px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-A 1280px: rincian izin pengajuan X tanpa dialog Putuskan
+[lulus] B-A rincian izin 1280px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-B 1280px: panel sikap murobi X hanya-baca, tanpa Tandai diketahui dan tanpa centang
+[lulus] B-B panel sikap 1280px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-D 1280px: pelanggaran catatan X tanpa Tandai mengetahui
+[lulus] B-D pelanggaran 1280px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-D 1280px: kasus milik X tanpa Tandai mengetahui kasus
+[lulus] B-C 1280px: akun X dapat beralih ke peran Pendidikan
+[lulus] B-C 1280px: nilai isian X tanpa tombol Verifikasi/Kembalikan
+[lulus] B-C kelengkapan 1280px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-E 1280px: admin pembuat tanpa Putuskan pengganti; tindakan lain tetap ada
+[lulus] B-E rincian admin 1280px: penjelasan terlihat, rapi tanpa geser horizontal
+[lulus] B-F 375px tanpa JavaScript: beralih ke peran Guru
+[lulus] B-F 375px tanpa JavaScript: penjelasan izin tampil, tanpa Putuskan
+[lulus] B-F 375px tanpa JavaScript: penjelasan sikap tampil
+[lulus] Tanpa galat JavaScript
+[lulus] Tanpa confirm()/alert() bawaan
+
+Hasil: 41 lulus, 0 gagal.
+exit 0

@@ -1,8 +1,9 @@
 # Rancangan — Penugasan lintas guru/pengurus dan penugasan Keamanan
 
-Status: **disetujui Human Developer 30 Oktober 2026** (PK-1…PK-7, PK-T1…PK-T4); Fase 1 diperintahkan. Branch
+Status: **disetujui Human Developer 30 Oktober 2026** (PK-1…PK-7, PK-T1…PK-T7). Fase 1 lulus audit Codex dan digabung ke `main` (PR #103); Fase 2 diimplementasikan
+(`fase-2/README.md`), menunggu audit. Branch rancangan
 `claude/rancangan-penugasan-keamanan` dari `origin/main` `cbb5aa1` hanya berisi
-dokumen; belum ada kode, migrasi, merge, atau deploy.
+dokumen. Belum ada deploy atau migrasi produksi.
 
 ## 1. Latar belakang (keterangan Human Developer, 30 Oktober 2026)
 
@@ -79,7 +80,10 @@ ditegakkan di server pada level **akun**, bukan identitas master:
   walau dikirim langsung ke API.
 - **Sikap V4:** murobi tidak dapat "mengetahui" sikap yang ia isi sendiri
   sebagai pembimbing.
-- **Rapor V4:** lihat keputusan terbuka PK-T1.
+- **Rapor V4:** lihat PK-T1 dan PK-T5.
+- **Tanda "mengetahui" murobi pada pembinaan V3** (pelanggaran, kasus, sesi):
+  ditambahkan saat Fase 2 dengan prinsip yang sama dengan sikap (PK-T7); lihat
+  penafsiran PF2-6 di `fase-2/README.md`.
 - Kesehatan dan BSA tidak memiliki alur dua pihak, sehingga tidak terdampak.
 
 ### 3.3 Penugasan Keamanan (PK-5, PK-6)
@@ -129,6 +133,11 @@ Codex; fase berikutnya hanya atas instruksi Human Developer.
 | **PK-T2** | Bolehkah Keamanan mencetak atau mengekspor laporan? | **Cetak PDF boleh.** Ekspor CSV tidak disebut, sehingga tidak disediakan (mengikuti rekomendasi) sampai Human Developer memutuskan lain | Fase 3 |
 | **PK-T3** | Apakah Keamanan juga tersedia di aplikasi? | **Ya, hanya baca** | Fase 4 |
 | **PK-T4** | Apakah Keamanan melihat alasan izin dan catatan pelanggaran secara lengkap? | **Ya**; hanya kasus Rahasia yang tertutup (PK-6) | Fase 3 |
+| **PK-T5** | Seberapa luas larangan PK-T1? | **Per bahan nilai**: tidak memverifikasi/mengembalikan nilai mapel yang ia isi sendiri; mapel lain, sikap, kehadiran, finalisasi, dan penerbitan tetap boleh setelah nilainya diverifikasi pihak lain | Fase 2 |
+| **PK-T6** | Apakah "pengaju bukan pemutus" pada izin juga berlaku bagi admin pengganti? | **Ya, berlaku juga untuk admin**: akun yang mengajukan/meninjau tidak memutus atau mengoreksi; pengajuan buatan admin diputus murobi atau admin lain | Fase 2 |
+| **PK-T7** | Bila satu-satunya murobi sah juga pengisi sikap (sebagai pembimbing)? | **Tertahan, tanpa jalur baru**: murobi lain yang sah yang mengetahui; bila tidak ada, rapor menampilkan penghalang sampai admin mengubah penugasan | Fase 2 |
+
+PK-T5…PK-T7 dijawab Human Developer pada 30 Oktober 2026 saat implementasi Fase 2.
 
 ## 6. Batas
 

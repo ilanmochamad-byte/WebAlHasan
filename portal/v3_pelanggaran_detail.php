@@ -35,6 +35,8 @@ if(($_SERVER['REQUEST_METHOD']??'GET')==='POST'){
 try{$detail=$service->show($currentUser,(int)$id);}catch(V3Exception $exception){Denial::render('Catatan tidak ditemukan atau tidak dapat diakses.',$exception->getMessage());}
 $row=$detail['pelanggaran'];$current=$row['digantikan_oleh_id']===null;$canManage=isset($caps['v3.pelanggaran.kelola'])||isset($caps['v3.koreksi']);
 $canAcknowledge=isset($caps['v3.murobi.mengetahui'])&&capabilities()->v3AppliesToSantri($currentUser,'v3.murobi.mengetahui',$row['santri_id'],$row['tahun_ajaran_id']);
+// Pemisahan tugas (penugasan lintas guru/pengurus Fase 2): server tetap menolak; ini penjelasan tampilan.
+$milikSendiri=$canAcknowledge&&$service->milikSendiri($currentUser,(int)$row['id']);$canAcknowledge=$canAcknowledge&&!$milikSendiri;
 $key=static fn(string $action):string=>'web-'.$action.'-'.bin2hex(random_bytes(12));
 $bisaKoreksi=$current&&$canManage&&$row['status']!=='Dibatalkan';
 
@@ -204,7 +206,8 @@ echo ah_seg([
                         </form>
                     <?php ah_action_dialog_close(); ?>
                 <?php endif ?>
-                <?php if($publikasi===null&&!$bisaKoreksi&&!$canAcknowledge): ?><p class="small text-muted mb-0">Tidak ada tindakan untuk akun ini. Halaman ini hanya-baca.</p><?php endif ?>
+                <?php if($milikSendiri): ?><p class="small text-muted" data-pemisahan-tugas><?= ah_e(\App\V3\PelanggaranService::PESAN_MILIK_SENDIRI) ?></p><?php endif ?>
+                <?php if($publikasi===null&&!$bisaKoreksi&&!$canAcknowledge&&!$milikSendiri): ?><p class="small text-muted mb-0">Tidak ada tindakan untuk akun ini. Halaman ini hanya-baca.</p><?php endif ?>
                 <?php if($detail['murobi']!==[]): ?><p class="small text-muted mb-0">Murobi sudah menandai mengetahui <?= count($detail['murobi']) ?> kali.</p><?php endif ?>
             </div></div>
         </section>

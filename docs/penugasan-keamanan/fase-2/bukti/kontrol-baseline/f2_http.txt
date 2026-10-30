@@ -1,0 +1,31 @@
+[lulus] penyiapan: izin dipaksa ke X, izin buatan admin, sikap dan nilai isian X, pelanggaran catatan X
+[lulus] token API X, admin, dan admin lain
+[gagal] W-1a rincian izin bagi murobi X (pengaju): penjelasan pemisahan tugas, tanpa dialog Putuskan
+[gagal] W-1b POST web keputusan oleh X → halaman Aksi ditolak 403 tanpa baris keputusan (status 303)
+[gagal] W-1c halaman penolakan menyebut alasan pemisahan tugas
+[gagal] W-1d REST keputusan oleh X → 403 tanpa keputusan
+[lulus] W-2a REST rincian: putuskan_murobi false bagi pengaju, kunci aksi tetap lima (kontrak aplikasi)
+[gagal] W-2b REST routing admin: murobi berhak tidak memuat X
+[gagal] W-2c REST penetapan admin atas X → 422 (status 409)
+[gagal] W-3a admin pembuat: tanpa Putuskan pengganti, dengan penjelasan
+[lulus] W-3b admin lain: putuskan_admin tersedia
+[gagal] W-3c REST admin pembuat memutus → 403
+[gagal] W-3d REST admin lain memutus → 201
+[gagal] W-4a REST murobi X mengetahui sikap isiannya → 403
+[gagal] W-4b halaman Sikap binaan X: penjelasan, tanpa tombol Tandai diketahui, baris tanpa centang
+[gagal] W-5a halaman Kelengkapan X: nilai isiannya dijelaskan, tanpa tombol Verifikasi
+[gagal] W-5b REST matriks memuat penanda diisi sendiri
+[gagal] W-5c REST verifikasi nilai isian sendiri → 403
+[gagal] W-6a rincian pelanggaran catatan X: penjelasan, tanpa Tandai mengetahui
+[gagal] W-6b REST tanda mengetahui X → 403
+[lulus] W-7 murobi lain /portal/izin_antrean.php?mode=murobi tetap 200
+[lulus] W-7 murobi lain /portal/sikap_semester.php?mode=murobi tetap 200
+[lulus] W-7 murobi lain /portal/index.php tetap 200
+[gagal] W-7 murobi lain (bukan pengisi) tetap melihat Tandai diketahui
+[lulus] W-7 admin /portal/izin_antrean.php?mode=admin tetap 200
+[lulus] W-7 admin /portal/index.php tetap 200
+[lulus] W-7 admin /portal/verifikasi_semester.php?rencana_id=4 tetap 200
+[lulus] W-7 log server tanpa galat PHP
+
+Hasil: 11 lulus, 17 gagal.
+exit 1

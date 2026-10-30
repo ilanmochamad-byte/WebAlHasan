@@ -38,7 +38,7 @@ if(($_SERVER['REQUEST_METHOD']??'GET')==='POST'){
     }catch(V3Exception $exception){$error=$exception->getMessage();}
 }
 try{$detail=$service->show($currentUser,(int)$id);$timeline=$service->timeline($currentUser,(int)$id,$detail);}catch(V3Exception $exception){Denial::render('Kasus tidak ditemukan atau tidak dapat diakses.',$exception->getMessage());}
-$case=$detail['kasus'];$canManage=isset($caps['v3.konseling.kelola'])&&capabilities()->v3AppliesToSantri($currentUser,'v3.konseling.kelola',$case['santri_id'],$case['tahun_ajaran_id']);$canCorrect=$canManage||isset($caps['v3.koreksi']);$canAck=isset($caps['v3.murobi.mengetahui'])&&capabilities()->v3AppliesToSantri($currentUser,'v3.murobi.mengetahui',$case['santri_id'],$case['tahun_ajaran_id']);$open=!in_array($case['status'],['Selesai','Dibatalkan'],true);$options=$canManage?$service->options($currentUser,$case['santri_id'],$case['tahun_ajaran_id']):['pelanggaran'=>[],'rekomendasi_belum_ditindaklanjuti'=>[]];$key=static fn(string $action):string=>'web-'.$action.'-'.bin2hex(random_bytes(12));
+$case=$detail['kasus'];$canManage=isset($caps['v3.konseling.kelola'])&&capabilities()->v3AppliesToSantri($currentUser,'v3.konseling.kelola',$case['santri_id'],$case['tahun_ajaran_id']);$canCorrect=$canManage||isset($caps['v3.koreksi']);$canAck=isset($caps['v3.murobi.mengetahui'])&&capabilities()->v3AppliesToSantri($currentUser,'v3.murobi.mengetahui',$case['santri_id'],$case['tahun_ajaran_id']);$ackKasusSendiri=$canAck&&$service->milikSendiri($currentUser,'kasus',(int)$case['id']);$open=!in_array($case['status'],['Selesai','Dibatalkan'],true);$options=$canManage?$service->options($currentUser,$case['santri_id'],$case['tahun_ajaran_id']):['pelanggaran'=>[],'rekomendasi_belum_ditindaklanjuti'=>[]];$key=static fn(string $action):string=>'web-'.$action.'-'.bin2hex(random_bytes(12));
 // Pilihan tautan manual: pelanggaran yang belum tertaut pada tingkat kasus (termasuk revisinya) dan rekomendasi antrean milik santri/tahun kasus ini.
 $caseLinked=[];foreach($detail['tautan'] as $link){if($link['sesi_id']===null){$caseLinked[]=$link['pelanggaran_id'];if($link['pelanggaran_digantikan_oleh_id']!==null)$caseLinked[]=$link['pelanggaran_digantikan_oleh_id'];}}
 $linkableViolations=array_values(array_filter($options['pelanggaran'],static fn(array $violation):bool=>!in_array($violation['id'],$caseLinked,true)));
@@ -125,7 +125,9 @@ echo ah_seg([
                         </form>
                     <?php ah_action_dialog_close(); ?>
                 <?php endif ?>
-                <?php if($canAck): ?>
+                <?php if($canAck&&$service->milikSendiri($currentUser,'sesi',$sid)): ?>
+                    <p class="small text-muted mb-0" data-pemisahan-tugas>Sesi ini milik Anda sebagai pembimbing; tanda mengetahui diberikan murobi lain.</p>
+                <?php elseif($canAck): ?>
                     <?php ah_action_dialog_open('ketahui-sesi-'.$sid,'Tandai mengetahui sesi','Tandai mengetahui sesi '.(int)($nomorSesi[$sid]??0),'outline-primary',$gagal('diketahui_sesi-'.$sid)); ?>
                         <?php $galatDi('diketahui_sesi-'.$sid); ?>
                         <form method="post"><?= ah_csrf() ?><input type="hidden" name="aksi" value="diketahui_sesi"><input type="hidden" name="sesi_id" value="<?= $sid ?>"><input type="hidden" name="idempotency_key" value="<?= ah_e($key('ack-session')) ?>">
@@ -168,7 +170,8 @@ echo ah_seg([
             <?php if($detail['catatan_murobi']===[]): ?><p class="text-muted">Murobi belum menandai mengetahui.</p><?php else: ?>
                 <?= ah_timeline(array_map(static fn(array $note):array=>['waktu'=>ah_waktu($note['diketahui_pada']),'pelaku'=>'murobi','judul'=>$note['sesi_id']?'Mengetahui sesi '.(int)($nomorSesi[(int)$note['sesi_id']]??0):'Mengetahui kasus','isi'=>(string)($note['catatan']??'')],$detail['catatan_murobi']),'Catatan murobi') ?>
             <?php endif ?>
-            <?php if($canAck): ?><div class="ah-acts mt-3">
+            <?php if($ackKasusSendiri): ?><p class="small text-muted mt-3 mb-0" data-pemisahan-tugas><?= ah_e(\App\V3\PelanggaranService::PESAN_MILIK_SENDIRI) ?></p>
+            <?php elseif($canAck): ?><div class="ah-acts mt-3">
                 <?php ah_action_dialog_open('ketahui-kasus','Tandai mengetahui kasus','Tandai mengetahui kasus','primary',$gagal('diketahui_kasus')); ?>
                     <?php $galatDi('diketahui_kasus'); ?>
                     <form method="post"><?= ah_csrf() ?><input type="hidden" name="aksi" value="diketahui_kasus"><input type="hidden" name="idempotency_key" value="<?= ah_e($key('ack-case')) ?>">

@@ -102,13 +102,15 @@ if($saringPerbaikan&&$current){
 // ---- Ringkasan & matriks -----------------------------------------------------------
 $stat=['total'=>0,'Terverifikasi'=>0,'Dikirim'=>0,'Dikembalikan'=>0,'belum'=>0];
 $kolom=[];$siapMassal=[];$orangIds=[];
+// PK-T1 (pemisahan tugas): bahan nilai yang memuat isian akun ini tidak ia verifikasi.
+$sendiri=array_flip($current['diisi_sendiri']??[]);
 $adaSumber=static fn(array $m):bool=>match($m['jenis']){'nilai'=>$m['komponen']!==[],'sikap'=>!empty($m['sikap']),default=>true};
 foreach($current['matriks']??[] as $st){
     foreach($st['bahan'] as $m){
         $kolom[$m['jenis'].':'.$m['mapel_key']]=$m['jenis']==='kehadiran'?'Hadir':$m['label'];
         $s=$m['pemeriksaan']['status'];$stat['total']++;
         if(isset($stat[$s]))$stat[$s]++;else $stat['belum']++;
-        if($s==='Dikirim'&&$m['lengkap'])$siapMassal[]=['v'=>(int)$st['santri']['id'].'|'.$m['jenis'].'|'.(int)$m['mapel_key'].'|'.$m['pemeriksaan']['version'].'|'.$m['pemeriksaan']['sumber_hash'],'nama'=>$st['santri']['nama_santri'].' · '.$m['label']];
+        if($s==='Dikirim'&&$m['lengkap']&&!isset($sendiri[(int)$st['santri']['id'].':'.(int)$m['mapel_key']]))$siapMassal[]=['v'=>(int)$st['santri']['id'].'|'.$m['jenis'].'|'.(int)$m['mapel_key'].'|'.$m['pemeriksaan']['version'].'|'.$m['pemeriksaan']['sumber_hash'],'nama'=>$st['santri']['nama_santri'].' · '.$m['label']];
         foreach($m['komponen']??[] as $k)$orangIds[]=(int)$k['pelaku_user_id'];
         if(!empty($m['sikap']))$orangIds[]=(int)($m['sikap']['diketahui_murobi_user_id']??0);
     }
@@ -211,7 +213,9 @@ if($panelSantri):
         <?php if($m['jenis']==='kehadiran'&&$m['kehadiran']['kekurangan']):?><ul class="small"><?php foreach($m['kehadiran']['kekurangan'] as $r):?><li>Pertemuan <?= $e(ah_tanggal($r['tanggal_pertemuan'])) ?> belum dicatat.</li><?php endforeach ?></ul><?php endif ?>
         <?php if($state['alasan']):?><?php ah_note('info','Catatan pemeriksaan terakhir: '.$state['alasan']) ?><?php endif ?>
         <?php $tetap='<input type="hidden" name="rencana_id" value="'.$plan.'"><input type="hidden" name="santri_id" value="'.$sid.'"><input type="hidden" name="jenis" value="'.$e($m['jenis']).'"><input type="hidden" name="mapel_key" value="'.(int)$m['mapel_key'].'"><input type="hidden" name="version" value="'.(int)$state['version'].'"><input type="hidden" name="sumber_hash" value="'.$e($state['sumber_hash']).'">'; ?>
-        <?php if($state['status']==='Dikirim'): ?>
+        <?php if($m['jenis']==='nilai'&&isset($sendiri[$sid.':'.(int)$m['mapel_key']])&&in_array($state['status'],['Dikirim','Terverifikasi'],true)): ?>
+            <?php if($state['status']==='Dikirim')ah_note('info','Nilai ini memuat isian Anda sendiri, sehingga diverifikasi Bagian Pendidikan lain atau admin (pemisahan tugas).') ?>
+        <?php elseif($state['status']==='Dikirim'): ?>
             <form method="post" class="mt-3"><?= ah_csrf() ?><?= $tetap ?>
                 <label class="form-label" for="alasan-verif">Alasan<?= $sebagaiAdmin?' <span class="text-danger">*</span> <span class="small text-muted">(tindakan admin)</span>':' <span class="small text-muted">(opsional)</span>' ?></label>
                 <textarea class="form-control" id="alasan-verif" name="alasan" maxlength="1000" rows="2"<?= $sebagaiAdmin?' required':'' ?>></textarea>

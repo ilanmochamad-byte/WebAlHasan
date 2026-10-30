@@ -183,6 +183,14 @@ final class PelanggaranService
     }
 
     /** @return array{data:array<string,mixed>,status:int,replayed:bool} */
+    public const PESAN_MILIK_SENDIRI='Anda mencatat atau memegang catatan ini sebagai pembimbing, sehingga tidak dapat menandai mengetahui sebagai murobi. Tanda mengetahui diberikan murobi lain (pemisahan tugas).';
+
+    /** Untuk tampilan: catatan ini dibuat/dimiliki akun sendiri sebagai pembimbing. */
+    public function milikSendiri(array $user,int $id):bool
+    {
+        return $this->repo->pemisahanTugas()->pelanggaranMilik($this->actorId($user),$id);
+    }
+
     public function acknowledge(array $user,int $id,array $input):array
     {
         $actorId=$this->actorId($user);$probe=$this->repo->violation($id);
@@ -198,6 +206,8 @@ final class PelanggaranService
             if($idem['response_json']!==null){return $this->replay($idem,$hash);}
             $current=$this->repo->violation($id,true);
             if($current===null){throw new V3Exception('Pelanggaran tidak ditemukan.',404);}
+            // Pemisahan tugas: catatan sendiri sebagai pembimbing tidak ditandai mengetahui oleh akun yang sama.
+            if($this->repo->pemisahanTugas()->pelanggaranMilik($actorId,$id)){throw new V3Exception(self::PESAN_MILIK_SENDIRI,403);}
             $event='v3:pelanggaran:'.$id.':diketahui:guru:'.(int)$assignment['guru_id'];
             $noteId=$this->repo->insertMurobiNote($id,(int)$current['version'],(int)$assignment['guru_id'],(int)$assignment['id'],$note,$event,$actorId);
             $payload=['id'=>$noteId,'pelanggaran_id'=>$id,'diketahui_pada'=>(new DateTimeImmutable())->format('Y-m-d H:i:s')];

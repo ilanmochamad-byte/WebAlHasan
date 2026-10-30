@@ -85,13 +85,24 @@ final class IzinRouter
     /**
      * Keputusan routing untuk satu santri.
      *
+     * Pemisahan tugas (penugasan lintas guru/pengurus Fase 2): guru milik akun
+     * pengaju/peninjau dikeluarkan dari kandidat SEBELUM dihitung. Satu kandidat
+     * tersisa diarahkan otomatis; nol atau lebih dari satu ke admin.
+     *
+     * @param array<int, int> $kecualiGuru guru milik akun pengaju/peninjau
      * @return array{status:string, murobi_guru_id:?int, jumlah:int, catatan:string,
-     *               kandidat:array<int, array<string, mixed>>}
+     *               kandidat:array<int, array<string, mixed>>, dikecualikan:int}
      */
-    public function resolve(int $santriId, string $onDate): array
+    public function resolve(int $santriId, string $onDate, array $kecualiGuru = []): array
     {
-        $candidates = $this->candidates($santriId, $onDate);
+        $semua = $this->candidates($santriId, $onDate);
+        $candidates = self::tanpaGuru($semua, $kecualiGuru);
+        $dikecualikan = count($semua) - count($candidates);
         $jumlah = count($candidates);
+        // Kolom routing_catatan VARCHAR(255): akhiran pemisahan dipertahankan,
+        // daftar nama kandidat yang dipotong.
+        $catatanPemisahan = $dikecualikan === 0 ? '' : ' ' . $dikecualikan . ' kandidat dikecualikan: akun pengaju/peninjau (pemisahan tugas).';
+        $batas = static fn (string $catatan): string => mb_substr($catatan, 0, 255 - mb_strlen($catatanPemisahan)) . $catatanPemisahan;
 
         if ($jumlah === 1) {
             $only = $candidates[0];
@@ -99,8 +110,9 @@ final class IzinRouter
                 'status' => self::STATUS_TERARAH,
                 'murobi_guru_id' => (int) $only['guru_id'],
                 'jumlah' => 1,
-                'catatan' => 'Routing otomatis: satu murobi aktif cocok (' . implode(', ', $only['targets']) . ').',
+                'catatan' => $batas('Routing otomatis: satu murobi aktif cocok (' . implode(', ', $only['targets']) . ').'),
                 'kandidat' => $candidates,
+                'dikecualikan' => $dikecualikan,
             ];
         }
 
@@ -109,8 +121,11 @@ final class IzinRouter
                 'status' => self::STATUS_PERLU_ADMIN,
                 'murobi_guru_id' => null,
                 'jumlah' => 0,
-                'catatan' => 'Tidak ada penugasan murobi aktif yang cocok dengan kamar/kelas santri pada tahun ajaran aktif.',
+                'catatan' => $batas($dikecualikan === 0
+                    ? 'Tidak ada penugasan murobi aktif yang cocok dengan kamar/kelas santri pada tahun ajaran aktif.'
+                    : 'Tidak ada murobi lain yang dapat memutus; admin harus menetapkan murobi.'),
                 'kandidat' => [],
+                'dikecualikan' => $dikecualikan,
             ];
         }
 
@@ -120,9 +135,26 @@ final class IzinRouter
             'status' => self::STATUS_PERLU_ADMIN,
             'murobi_guru_id' => null,
             'jumlah' => $jumlah,
-            'catatan' => 'Ditemukan ' . $jumlah . ' murobi kandidat (' . mb_substr(implode(', ', $nama), 0, 160) . '); admin harus menetapkan satu.',
+            'catatan' => $batas('Ditemukan ' . $jumlah . ' murobi kandidat (' . mb_substr(implode(', ', $nama), 0, 160) . '); admin harus menetapkan satu.'),
             'kandidat' => $candidates,
+            'dikecualikan' => $dikecualikan,
         ];
+    }
+
+    /**
+     * Membuang guru tertentu dari daftar kandidat/murobi berhak.
+     *
+     * @param array<int, array<string, mixed>> $rows baris berkunci `guru_id`
+     * @param array<int, int> $kecualiGuru
+     * @return array<int, array<string, mixed>>
+     */
+    public static function tanpaGuru(array $rows, array $kecualiGuru): array
+    {
+        if ($kecualiGuru === []) {
+            return $rows;
+        }
+
+        return array_values(array_filter($rows, static fn (array $row): bool => !in_array((int) $row['guru_id'], $kecualiGuru, true)));
     }
 
     /**

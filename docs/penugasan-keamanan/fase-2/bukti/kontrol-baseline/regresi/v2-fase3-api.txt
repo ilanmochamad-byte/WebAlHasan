@@ -1,0 +1,159 @@
+[lulus] Login fixture sbx_admin berhasil
+[lulus] Login fixture sbx_pengurus_a berhasil
+[lulus] Login fixture sbx_pengurus_b berhasil
+[lulus] Login fixture sbx_murobi_a berhasil
+[lulus] Login fixture sbx_murobi_b berhasil
+[lulus] Login fixture sbx_murobi_c berhasil
+[lulus] Login fixture sbx_guru_biasa berhasil
+[lulus] Login fixture sbx_ortu_a berhasil
+[lulus] Login fixture sbx_ortu_b berhasil
+
+=== 1. Envelope, autentikasi, dan capability ===
+[lulus] Envelope sukses tetap {success,data,error}
+[lulus] Endpoint perizinan tanpa bearer token menghasilkan 401
+[lulus] Kode error 401 adalah UNAUTHENTICATED
+[lulus] Token palsu menghasilkan 401
+[lulus] Akun pengurus dapat membaca /profile
+[lulus] Profil pengurus memuat capability aktual `pengurus`
+[lulus] Konteks capability memuat pengurus_id tertaut
+[lulus] Pengurus tidak memperoleh kemampuan keputusan
+[lulus] Guru tanpa penugasan murobi tidak memperoleh capability perizinan (bukan berbasis nama role)
+[lulus] Guru dengan penugasan murobi aktif memperoleh capability `murobi`
+[lulus] Akun orang tua ditandai hanya baca
+[lulus] Login pengurus ditolak ketika relasi master pengurus tidak aktif
+[lulus] Login orang tua ditolak ketika relasi master wali tidak aktif
+
+=== 2. Alur pengurus ===
+[lulus] Pengurus dapat membaca daftar santri dalam cakupannya
+[lulus] Santri dalam cakupan pembimbing muncul pada daftar pengurus
+[lulus] Santri di luar cakupan tidak pernah muncul pada daftar pengurus
+[lulus] Daftar santri memakai metadata pagination V1
+[lulus] Pengurus dapat membuat pengajuan (201)
+[gagal] Routing tunggal menghasilkan status Diajukan
+[gagal] Pengajuan diarahkan ke murobi kamar yang benar
+[lulus] Retry create dengan kunci dan isi sama membalas 200 (bukan 201)
+[lulus] Retry create mengembalikan pengajuan yang sama
+[lulus] Retry create ditandai sebagai pemutaran ulang
+[lulus] Retry create tidak menambah baris pengajuan
+[lulus] Pengurus dapat membaca kembali pengajuan yang baru disimpan
+[lulus] Nilai bisnis pengajuan terbaca utuh
+[lulus] Kunci idempotensi sama dengan isi berbeda menghasilkan 409
+[lulus] Pengajuan tumpang tindih ditolak dengan 409
+[lulus] Tanggal kembali sebelum tanggal izin ditolak dengan 422
+[lulus] Mutasi tanpa idempotency key ditolak dengan 422
+
+=== 3. Otorisasi lintas peran ===
+[lulus] Pengurus tidak dapat mengajukan santri di luar cakupannya (403)
+[lulus] Pengurus lain menerima 403 saat membuka pengajuan bukan miliknya
+[lulus] Murobi B menerima 403 saat memutus pengajuan milik Murobi A
+[lulus] Orang tua lain menerima 403 untuk santri yang tidak terhubung
+[lulus] Orang tua tidak dapat membuat pengajuan (403)
+[lulus] Orang tua tidak dapat memberi keputusan (403)
+[lulus] Orang tua tidak dapat membatalkan pengajuan (403)
+[lulus] Parameter `mode` tidak dapat menaikkan cakupan: pengurus tetap pada mode pengurus
+[lulus] Pemantauan admin ditolak untuk non-admin (403)
+[lulus] Routing hanya dapat dibaca admin (403 untuk murobi)
+[lulus] Penetapan murobi ditolak untuk non-admin (403)
+
+=== 4. Antrean murobi dan keputusan ===
+[lulus] Murobi dapat membaca antreannya
+[gagal] Pengajuan yang ditetapkan muncul pada antrean murobi tujuan
+[lulus] Cakupan antrean murobi ditetapkan server
+[lulus] Antrean murobi lain tidak memuat pengajuan yang bukan tujuannya
+[gagal] Detail murobi menandai aksi keputusan tersedia
+[gagal] Murobi dapat memberi keputusan (201)
+[gagal] Kapasitas keputusan murobi tercatat
+[gagal] Retry keputusan dengan kunci sama membalas 200
+[gagal] Retry keputusan tidak menambah baris keputusan
+[gagal] Keputusan kedua menghasilkan 409
+[gagal] Keputusan pertama tidak ditimpa keputusan kedua
+[gagal] Hasil keputusan terlihat oleh pengurus pengaju
+[gagal] Hasil keputusan terlihat oleh orang tua terhubung dalam mode baca-saja
+[lulus] Orang tua tidak menerima satu pun aksi mutasi pada detail
+[gagal] Riwayat perubahan dapat dibaca melalui API
+[gagal] Riwayat memuat pembuatan, routing, dan keputusan
+
+=== 5. Alur admin: routing, penetapan, keputusan pengganti ===
+[lulus] Routing dengan lebih dari satu kandidat masuk antrean admin
+[lulus] Jumlah kandidat routing tercatat pada respons
+[lulus] Pengajuan yang belum ditetapkan tidak terlihat oleh murobi kandidat
+[lulus] Admin dapat memantau seluruh pengajuan
+[lulus] Pemantauan admin memuat penghitung antrean penetapan
+[lulus] Admin melihat dua kandidat routing
+[lulus] Penetapan guru tanpa penugasan murobi aktif ditolak dengan 422
+[lulus] Penetapan murobi tanpa alasan ditolak dengan 422
+[lulus] Admin dapat menetapkan murobi (200)
+[lulus] Setelah penetapan, status kembali ke Diajukan
+[lulus] Pengajuan masuk antrean murobi yang ditetapkan admin
+[lulus] Versi kedaluwarsa pada penetapan menghasilkan 409
+[gagal] Routing tanpa kandidat masuk antrean admin
+[lulus] Admin Pengganti tanpa alasan penggantian ditolak dengan 422
+[lulus] Admin dapat memberi keputusan pengganti
+[lulus] Keputusan admin disimpan dengan kapasitas Admin Pengganti
+[lulus] Admin dapat mengoreksi keputusan melalui API
+[lulus] Koreksi tersimpan sebagai peristiwa terpisah tanpa menghapus keputusan
+[lulus] Koreksi tidak menghasilkan keputusan tambahan
+
+=== 6. Pembatalan pengurus ===
+[lulus] Pembatalan tanpa alasan ditolak dengan 422
+[lulus] Pengurus dapat membatalkan sebelum keputusan
+[lulus] Retry pembatalan memakai kunci sama tidak menghasilkan peristiwa baru
+[gagal] Pembatalan setelah keputusan ditolak dengan 409
+
+=== 7. Orang tua ===
+[lulus] Orang tua dapat membaca daftar anak terhubung
+[gagal] Daftar anak hanya memuat santri dengan relasi wali aktif
+[gagal] Daftar izin orang tua hanya memuat santri yang terhubung
+[lulus] Endpoint daftar anak hanya untuk akun orang tua
+
+=== 8. Concurrency: dua keputusan bersamaan ===
+[lulus] Pengajuan untuk uji concurrency berhasil dibuat
+[lulus] Dua proses keputusan bersamaan menghasilkan dua respons
+[gagal] Tepat satu keputusan berhasil (201) dan satu ditolak konflik (409) — diterima: 403, 403
+[gagal] Hanya satu baris keputusan tersimpan setelah request bersamaan
+[gagal] Status akhir pengajuan tepat satu hasil keputusan
+
+=== 9. Pencabutan token ===
+[lulus] Login fixture sbx_pengurus_a berhasil
+[lulus] Token baru dapat mengakses endpoint V2
+[lulus] Logout berhasil
+[lulus] Token lama tidak dapat lagi mengakses endpoint V2 setelah logout
+[lulus] Token yang dicabut juga ditolak pada endpoint V1
+
+=== 10. Regresi kontrak V1 ===
+[lulus] Guru V1 tetap dapat membaca /profile
+[lulus] Field profil V1 `id` tetap ada
+[lulus] Field profil V1 `name` tetap ada
+[lulus] Field profil V1 `username` tetap ada
+[lulus] Field profil V1 `guru` tetap ada
+[lulus] Field profil V1 `roles` tetap ada
+[lulus] Bentuk objek `guru` pada profil tidak berubah
+[lulus] GET /schedules/today tetap 200 untuk guru
+[lulus] Bentuk respons /schedules/today tidak berubah
+[lulus] GET /schedules tetap mengembalikan pagination V1
+[lulus] GET /reports tetap berfungsi untuk guru
+[lulus] Penjaga V1 tetap menolak akun tanpa role guru/admin dengan 403
+[lulus] Rute tidak dikenal tetap menghasilkan 404
+
+GAGAL (21):
+ - Routing tunggal menghasilkan status Diajukan
+ - Pengajuan diarahkan ke murobi kamar yang benar
+ - Pengajuan yang ditetapkan muncul pada antrean murobi tujuan
+ - Detail murobi menandai aksi keputusan tersedia
+ - Murobi dapat memberi keputusan (201)
+ - Kapasitas keputusan murobi tercatat
+ - Retry keputusan dengan kunci sama membalas 200
+ - Retry keputusan tidak menambah baris keputusan
+ - Keputusan kedua menghasilkan 409
+ - Keputusan pertama tidak ditimpa keputusan kedua
+ - Hasil keputusan terlihat oleh pengurus pengaju
+ - Hasil keputusan terlihat oleh orang tua terhubung dalam mode baca-saja
+ - Riwayat perubahan dapat dibaca melalui API
+ - Riwayat memuat pembuatan, routing, dan keputusan
+ - Routing tanpa kandidat masuk antrean admin
+ - Pembatalan setelah keputusan ditolak dengan 409
+ - Daftar anak hanya memuat santri dengan relasi wali aktif
+ - Daftar izin orang tua hanya memuat santri yang terhubung
+ - Tepat satu keputusan berhasil (201) dan satu ditolak konflik (409) — diterima: 403, 403
+ - Hanya satu baris keputusan tersimpan setelah request bersamaan
+ - Status akhir pengajuan tepat satu hasil keputusan

@@ -488,8 +488,14 @@ final class IzinWaliService
                 if ($santri === null || (int) $santri['is_active'] !== 1 || $santri['archived_at'] !== null) {
                     throw IzinException::invalid('Santri tidak aktif sehingga pengajuan tidak dapat diteruskan.');
                 }
-                // Routing murobi V2 yang SAMA dengan jalur pengurus.
-                $routing = $this->murobiRouter()->resolve($santriId, $onDate);
+                // Routing murobi V2 yang SAMA dengan jalur pengurus. Pemisahan
+                // tugas: guru milik akun wali pengaju, pembimbing yang sedang
+                // meneruskan, dan peninjau sebelumnya tidak menjadi murobi tujuan.
+                $routing = $this->murobiRouter()->resolve(
+                    $santriId,
+                    $onDate,
+                    (new PemisahanTugas($this->write->db()))->guruTerlibat($id, [$userId])
+                );
                 $statusSesudah = (string) $routing['status'];
                 $murobiGuruId = $routing['murobi_guru_id'];
                 $jumlahMurobi = (int) $routing['jumlah'];
@@ -917,6 +923,8 @@ final class IzinWaliService
         $status = (string) $row['status'];
         $statusV2 = in_array($status, IzinRepository::STATUSES, true);
         $belumDiputus = in_array($status, IzinWriteRepository::STATUS_BELUM_DIPUTUS, true);
+        // Pemisahan tugas: tampilan saja; layanan V2 menolak keputusan akun terlibat.
+        $terlibat = (new PemisahanTugas($this->write->db()))->terlibat($userId, $id);
         $jejakPetugas = fn (): array => [
             'riwayat' => $this->riwayatPetugas($id),
             'tinjauan' => $fase2 ? $this->tinjauanPetugas($id) : [],
@@ -937,7 +945,7 @@ final class IzinWaliService
                 'tindakan' => [
                     'tetapkan_pembimbing' => in_array($status, IzinWaliRepository::STATUS_PENETAPAN, true),
                     'tetapkan_murobi' => $belumDiputus,
-                    'putuskan_pengganti' => $belumDiputus,
+                    'putuskan_pengganti' => $belumDiputus && !$terlibat,
                     'buka_v2' => $statusV2,
                 ],
             ] + $jejakPetugas();
@@ -965,7 +973,7 @@ final class IzinWaliService
                     'peran_akses' => self::PERAN_MUROBI,
                     'pengajuan' => $this->proyeksiPetugas($row),
                     'tindakan' => [
-                        'putuskan' => $status === IzinRouter::STATUS_TERARAH,
+                        'putuskan' => $status === IzinRouter::STATUS_TERARAH && !$terlibat,
                         'buka_v2' => true,
                     ],
                 ] + $jejakPetugas();

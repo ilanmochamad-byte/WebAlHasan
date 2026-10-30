@@ -1,0 +1,17 @@
+[lulus] fixture tersedia: dua admin, akun X (guru), murobi Y kamar 381, wali V7, pembimbing lama kamar 381
+[lulus] penyiapan: akun X memegang mode Pengurus (identitas milik guru) dan Murobi sekaligus
+[lulus] penyiapan: X satu-satunya kandidat murobi santri kamar 381 (tanpa pengecualian)
+[gagal] J-1a pengajuan oleh X: satu-satunya murobi = X sendiri → Perlu Penetapan Admin, catatan routing menyebut pengecualian
+[gagal] J-1b audit routing mencatat catatan pengecualian
+[gagal] J-1c pratinjau tujuan bagi X juga mengecualikan dirinya
+[gagal] J-1d router: dua kandidat (X dan Y) tetap ke admin tanpa pengecualian; dengan X dikecualikan → Y
+[gagal] J-1e pengajuan X dengan murobi X dan Y → langsung diarahkan ke Y
+App\Izin\IzinException: Pengajuan ini tidak diarahkan kepada Anda. in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/app/Izin/IzinException.php:23
+Stack trace:
+#0 /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/app/Izin/IzinWorkflowService.php(458): App\Izin\IzinException::forbidden('Pengajuan ini t...')
+#1 /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/app/Izin/IzinWorkflowService.php(1020): App\Izin\IzinWorkflowService->{closure:App\Izin\IzinWorkflowService::decide():430}()
+#2 /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/app/Izin/IzinWorkflowService.php(430): App\Izin\IzinWorkflowService->transactional(Object(Closure), false)
+#3 /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/0bbba3b2-8582-4bc2-88a0-2061b743305e/scratchpad/baseline/tests/penugasan_keamanan_f2_integration.php(151): App\Izin\IzinWorkflowService->decide(Array, 2707, 'Disetujui', 'Disetujui murob...', NULL, NULL, 'pkf2-v2b-putus-...', Array, 'murobi')
+#4 {main}
+Pengajuan ini tidak diarahkan kepada Anda.
+exit 1

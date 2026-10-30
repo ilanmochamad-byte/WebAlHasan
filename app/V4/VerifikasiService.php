@@ -39,16 +39,37 @@ final class VerifikasiService
         }
         $sk=$this->repo->query('SELECT * FROM v4_sikap WHERE santri_id=? AND tahun_ajaran_id=?','ii',[$sid,(int)$p['tahun_ajaran_id']]);$row=$sk[0]??[];
         $murobis=$this->scope->murobis($p,$sid);
-        $known=$row&&in_array((int)($row['diketahui_murobi_user_id']??0),$murobis,true);
+        // Pemisahan tugas (PK-T7): tanda dari murobi yang juga pengisi sikap sebagai pembimbing tidak sah.
+        $sah=(new SikapService($this->db,$this->audit))->murobiSah($p,$sid,$row?:null);
+        $known=$row&&in_array((int)($row['diketahui_murobi_user_id']??0),$sah,true);
         $complete=$row&&(int)$row['kelas_id']===(int)$p['kelas_id']&&$row['adab']&&$row['kedisiplinan']&&$row['tanggung_jawab']&&$known;
-        $out[]=['jenis'=>'sikap','mapel_key'=>0,'label'=>'Sikap','lengkap'=>(bool)$complete,'sumber'=>$sk,'sikap'=>$row,'murobi_aktif'=>$murobis,'diketahui_sah'=>$known,'penghalang'=>!$murobis?'Tidak ada murobi aktif yang sah. Minta admin memperbaiki penugasan.':(!$known?'Menunggu diketahui atau koreksi murobi.':null),'pemeriksaan'=>$this->repo->state($plan,$sid,'sikap',0,$sk,$row['status']??'Draf')];
+        $out[]=['jenis'=>'sikap','mapel_key'=>0,'label'=>'Sikap','lengkap'=>(bool)$complete,'sumber'=>$sk,'sikap'=>$row,'murobi_aktif'=>$murobis,'diketahui_sah'=>$known,'penghalang'=>!$murobis?'Tidak ada murobi aktif yang sah. Minta admin memperbaiki penugasan.':(!$sah?'Seluruh murobi aktif juga pengisi sikap sebagai pembimbing (pemisahan tugas). Minta admin menugaskan murobi atau pembimbing lain.':(!$known?'Menunggu diketahui atau koreksi murobi.':null)),'pemeriksaan'=>$this->repo->state($plan,$sid,'sikap',0,$sk,$row['status']??'Draf')];
         $att=$this->attendance($p,$sid);
         $out[]=['jenis'=>'kehadiran','mapel_key'=>0,'label'=>'Kehadiran','lengkap'=>$att['belum_dicatat']===0,'sumber'=>$att['sumber'],'kehadiran'=>$att,'pemeriksaan'=>$this->repo->state($plan,$sid,'kehadiran',0,$att['sumber'])];
         return $out;
     }
+    /**
+     * PK-T1 (penugasan lintas guru/pengurus Fase 2, keputusan Human Developer
+     * PK-T5 "per bahan nilai"): akun pengisi nilai — pelaku baris `v4_nilai`
+     * atau riwayatnya, sebagai Guru Mapel maupun Pendidikan pengganti — tidak
+     * memverifikasi atau mengembalikan bahan nilai itu dalam kapasitas
+     * Pendidikan. Bahan lain, finalisasi, dan penerbitan tidak terdampak;
+     * admin tetap jalur pengganti.
+     *
+     * @param array<int,array<string,mixed>> $sumber baris `v4_nilai`
+     * @return array<int,int>
+     */
+    public function pengisiNilai(array $sumber): array
+    {
+        $ids=array_values(array_unique(array_map(static fn($r)=>(int)$r['id'],$sumber)));
+        $out=array_map(static fn($r)=>(int)$r['pelaku_user_id'],$sumber);
+        if($ids!==[]){$in=implode(',',array_fill(0,count($ids),'?'));
+            foreach($this->repo->query("SELECT DISTINCT pelaku_user_id FROM v4_nilai_riwayat WHERE pelaku_user_id IS NOT NULL AND nilai_id IN ($in)",str_repeat('i',count($ids)),$ids) as $r)$out[]=(int)$r['pelaku_user_id'];}
+        return array_values(array_unique($out));
+    }
     public function read(array $u,int $plan,int $sid=0): array
     {
-        $p=$this->scope->plan($plan);$this->scope->education($u,$p);
+        $p=$this->scope->plan($plan);$capacity=$this->scope->education($u,$p);
         $students=$this->repo->query('SELECT DISTINCT s.id,s.nama_santri FROM santri s JOIN plotting_kelas pk ON pk.id_santri=s.id WHERE pk.id_kelas=? AND pk.id_tahun=? AND s.is_active=1 AND s.archived_at IS NULL ORDER BY s.nama_santri','ii',[(int)$p['kelas_id'],(int)$p['tahun_ajaran_id']]);
         if($sid){$this->scope->student($p,$sid);$students=$this->repo->query('SELECT id,nama_santri FROM santri WHERE id=?','i',[$sid]);}
         $matrix=[];
@@ -60,7 +81,21 @@ final class VerifikasiService
             $history=$this->repo->query('SELECT h.* FROM v4_bahan_riwayat h JOIN v4_bahan b ON b.id=h.bahan_id WHERE b.rencana_id=? AND b.santri_id=? ORDER BY h.id DESC','ii',[$plan,$id]);
             $matrix[]=['santri'=>$s,'bahan'=>$items,'kekurangan'=>$missing,'siap_finalisasi'=>!$missing,'riwayat_pemeriksaan'=>$history];
         }
-        return ['rencana'=>$p,'matriks'=>$matrix,'matriks_hash'=>$sid?BahanRepository::fingerprint($matrix[0]):null];
+        // Di luar matriks agar sidik jari bahan tidak bergantung pada akun pembaca.
+        // Satu kueri riwayat untuk seluruh matriks; aturan sama dengan pengisiNilai().
+        $sendiri=[];
+        if($capacity==='pendidikan'){
+            $uid=(int)$u['id'];$ids=[];
+            foreach($matrix as $st)foreach($st['bahan'] as $m)if($m['jenis']==='nilai')foreach($m['sumber'] as $r)$ids[]=(int)$r['id'];
+            $riwayat=[];
+            if($ids!==[]){$ids=array_values(array_unique($ids));$in=implode(',',array_fill(0,count($ids),'?'));
+                foreach($this->repo->query("SELECT DISTINCT nilai_id FROM v4_nilai_riwayat WHERE pelaku_user_id=? AND nilai_id IN ($in)",'i'.str_repeat('i',count($ids)),array_merge([$uid],$ids)) as $r)$riwayat[(int)$r['nilai_id']]=true;}
+            foreach($matrix as $st)foreach($st['bahan'] as $m){
+                if($m['jenis']!=='nilai')continue;
+                foreach($m['sumber'] as $r)if((int)$r['pelaku_user_id']===$uid||isset($riwayat[(int)$r['id']])){$sendiri[]=(int)$st['santri']['id'].':'.(int)$m['mapel_key'];break;}
+            }
+        }
+        return ['rencana'=>$p,'matriks'=>$matrix,'matriks_hash'=>$sid?BahanRepository::fingerprint($matrix[0]):null,'diisi_sendiri'=>$sendiri];
     }
     public function act(array $u,array $in): array
     {
@@ -73,7 +108,7 @@ final class VerifikasiService
         try{
             $this->repo->query('SELECT id FROM v4_rencana WHERE id=? FOR UPDATE','i',[$plan]);
             RaporService::assertEditable($this->db,$sid,(int)$p['tahun_ajaran_id']);
-            $p=$this->scope->plan($plan);$this->scope->education($u,$p,$action==='periksa_finalisasi'?PenugasanJenis::CAP_RAPOR_FINALISASI:PenugasanJenis::CAP_RAPOR_VERIFIKASI);$this->scope->student($p,$sid);
+            $p=$this->scope->plan($plan);$capacity=$this->scope->education($u,$p,$action==='periksa_finalisasi'?PenugasanJenis::CAP_RAPOR_FINALISASI:PenugasanJenis::CAP_RAPOR_VERIFIKASI);$this->scope->student($p,$sid);
             $current=$this->read($u,$plan,$sid);$student=$current['matriks'][0];
             if($action==='periksa_finalisasi'){
                 if(($in['matriks_hash']??'')!==BahanRepository::fingerprint($student))throw new V4Exception('Bahan berubah. Muat ulang matriks.',409);
@@ -84,6 +119,9 @@ final class VerifikasiService
             $kind=$in['jenis']??'';$key=(int)($in['mapel_key']??0);$material=null;
             foreach($student['bahan'] as $m)if($m['jenis']===$kind&&$m['mapel_key']===$key)$material=$m;
             if(!$material)throw new V4Exception('Bahan tidak ada pada rencana ini.',403);
+            // PK-T1: dibaca sesudah rencana dikunci; penyimpanan nilai mengunci rencana yang sama.
+            if($kind==='nilai'&&in_array($action,['verifikasi','kembalikan'],true)&&$capacity==='pendidikan'&&in_array((int)$u['id'],$this->pengisiNilai($material['sumber']),true))
+                throw new V4Exception('Nilai ini memuat isian Anda sendiri, sehingga diverifikasi Bagian Pendidikan lain atau admin (pemisahan tugas).',403);
             $state=$material['pemeriksaan'];
             if((string)($in['version']??'')!==(string)$state['version']||($in['sumber_hash']??'')!==$state['sumber_hash'])throw new V4Exception('Versi atau sumber bahan berubah. Muat ulang matriks.',409);
             if($action==='serahkan'){

@@ -51,7 +51,9 @@ $mode = (string) $scope['mode'];
 $izin = $detail['pengajuan'];
 $keputusan = $detail['keputusan'];
 $ortu = $mode === Capabilities::ORANG_TUA;
-$aksi = izin_workflow_service()->actionsFor($izin, $scope);
+$aksi = izin_workflow_service()->actionsFor($izin, $scope, (int) $currentUser['id']);
+// Pemisahan tugas (penugasan lintas guru/pengurus Fase 2): penjelasan saja; server menolak mutasi.
+$terlibat = !$ortu && izin_workflow_service()->terlibat((int) $currentUser['id'], (int) $izin['id']);
 $kandidatMurobi = ($aksi['tetapkan_murobi'] ?? false) ? izin_workflow_service()->eligibleMurobi($id) : [];
 $versi = (int) $izin['version'];
 $iz = (int) $izin['id'];
@@ -289,6 +291,9 @@ if ($asalWali !== null) {
                     <?php ah_action_dialog_close(); ?>
                 <?php endif; ?>
                 </div>
+                <?php if ($terlibat && in_array($mode, [Capabilities::ADMIN, Capabilities::MUROBI], true)): ?>
+                    <p class="small text-muted mb-2" data-pemisahan-tugas>Anda mengajukan atau meninjau pengajuan ini, sehingga keputusan dan koreksinya diberikan murobi lain atau admin lain.</p>
+                <?php endif; ?>
                 <?php if ($utama === null): ?>
                     <p class="small text-muted mb-0">Tidak ada tindakan yang dapat Anda lakukan pada pengajuan berstatus <?= portal_e(strtolower((string) $izin['status'])) ?>.</p>
                 <?php elseif ($mode === Capabilities::ADMIN && !$aksi['koreksi']): ?>
