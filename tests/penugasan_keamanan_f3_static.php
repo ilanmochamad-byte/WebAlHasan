@@ -158,6 +158,9 @@ $boleh = static fn (string $f): bool => in_array($f, [
     'app/Izin/IzinLaporanService.php', 'app/Izin/IzinLaporanRepository.php',
     'app/V3/PelanggaranService.php', 'app/V3/PelanggaranRepository.php', 'app/V3/KonselingService.php', 'app/V3/KonselingRepository.php',
     'app/Audit/AuditLogger.php', 'app/Ui/Navigation.php', 'app/bootstrap.php',
+    // Koreksi audit F-1/F-2: cakupan santri aktif dan audit rincian/cetak kehadiran.
+    'app/Report/ReportFilter.php', 'app/Report/ReportRepository.php', 'app/Report/ReportService.php',
+    'admin/laporan_absensi_detail.php', 'admin/laporan_absensi_cetak.php',
     'admin/_laporan_guard.php', 'admin/admin_laporan_absensi.php', 'admin/admin_guru.php',
     'database/migrations/033_penugasan_keamanan_fase3_keamanan.sql', 'database/rollbacks/033_penugasan_keamanan_fase3_keamanan.sql',
     'AGENTS.md',
@@ -166,8 +169,8 @@ $boleh = static fn (string $f): bool => in_array($f, [
     || str_starts_with($f, 'docs/penugasan-keamanan/') || str_starts_with($f, 'docs/panduan-pengguna-v4/') || str_starts_with($f, 'docs/presentasi-al-hasan-v4/') || str_starts_with($f, 'output/');
 $liar = array_values(array_filter($semua, static fn (string $f): bool => !$boleh($f)));
 $assert($kode === 0 && $liar === [], 'Hanya berkas Fase 3 yang berubah terhadap baseline ' . $baseline . ($liar === [] ? '' : ': ' . implode(', ', $liar)));
-$assert(array_filter($semua, static fn (string $f): bool => (bool) preg_match('#^(app/(Auth|Account|MasterData|Kesehatan|Bsa|Notification|Api|V4|Report)/|api/|app/Izin/(IzinWorkflowService|IzinWaliService|IzinRepository|IzinRouter|PemisahanTugas)\.php)#', $f)) === [],
-    'Auth, akun, master, kesehatan, BSA, notifikasi, REST, V4, laporan kehadiran, dan alur tulis izin tidak diubah');
+$assert(array_filter($semua, static fn (string $f): bool => (bool) preg_match('#^(app/(Auth|Account|MasterData|Kesehatan|Bsa|Notification|Api|V4)/|api/|app/Izin/(IzinWorkflowService|IzinWaliService|IzinRepository|IzinRouter|PemisahanTugas)\.php)#', $f)) === [],
+    'Auth, akun, master, kesehatan, BSA, notifikasi, REST, V4, dan alur tulis izin tidak diubah');
 
 // ===================================================================== S-9
 echo PHP_EOL . '=== S-9. Lint ===' . PHP_EOL;

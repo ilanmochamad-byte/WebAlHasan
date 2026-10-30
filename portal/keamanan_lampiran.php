@@ -21,8 +21,8 @@ if (!$id || $id < 1) {
 }
 try {
     $file = v3_pelanggaran_service()->attachment($pantauUser, (int) $id);
-} catch (V3Exception) {
-    http_response_code(404);
+} catch (V3Exception $exception) {
+    http_response_code($exception->status === 503 ? 503 : 404);
     exit;
 }
 header('Content-Type: ' . $file['mime']);

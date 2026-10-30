@@ -143,8 +143,11 @@ final class ReportRepository
         );
     }
 
-    public function meetingStudents(int $meetingId): array
+    public function meetingStudents(int $meetingId, bool $activeStudentsOnly = false): array
     {
+        $active = $activeStudentsOnly
+            ? ' AND EXISTS (SELECT 1 FROM santri sk WHERE sk.id=pp.santri_id AND sk.is_active=1 AND sk.archived_at IS NULL)'
+            : '';
         return $this->all(
             "SELECT pp.santri_id, pp.nis_snapshot, pp.nama_santri_snapshot,
                     attendance.id AS attendance_id, attendance.status, attendance.catatan,
@@ -153,7 +156,7 @@ final class ReportRepository
              LEFT JOIN absensi_santri attendance
                ON attendance.pertemuan_id = pp.pertemuan_id AND attendance.santri_id = pp.santri_id
              LEFT JOIN users actor ON actor.id = attendance.dicatat_oleh
-             WHERE pp.pertemuan_id = ?
+             WHERE pp.pertemuan_id = ? {$active}
              ORDER BY pp.nama_santri_snapshot, pp.santri_id",
             [$meetingId]
         );
@@ -195,6 +198,10 @@ final class ReportRepository
                     {$where}";
 
         [$studentWhere, $studentParams] = $this->where($filter, 'attendance.status');
+        if ($filter->activeStudentsOnly) {
+            // Satu predikat untuk daftar, angka, ringkasan jadwal, dan cetak.
+            $studentWhere .= ' AND EXISTS (SELECT 1 FROM santri sk WHERE sk.id=attendance.santri_id AND sk.is_active=1 AND sk.archived_at IS NULL)';
+        }
         $student = "SELECT 'Santri' AS subject_type, attendance.id AS attendance_id,
                            p.id AS meeting_id, p.jadwal_id AS schedule_id, p.tanggal_pertemuan AS meeting_date,
                            p.status AS meeting_status, j.id_tahun AS academic_year_id,

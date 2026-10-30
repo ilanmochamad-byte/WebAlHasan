@@ -47,6 +47,9 @@ final class ReportFilter
      */
     public const BACA_SEMUA_JADWAL = '_laporan_baca_semua_jadwal';
 
+    /** Penanda internal guard web Keamanan: batasi peserta ke santri aktif kini (PK-5). */
+    public const SANTRI_AKTIF_SAJA = '_laporan_santri_aktif_saja';
+
     /** Akun admin atau pembaca seluruh jadwal (lihat `BACA_SEMUA_JADWAL`). */
     public static function bacaSemua(array $user): bool
     {
@@ -63,7 +66,8 @@ final class ReportFilter
         public readonly ?string $status,
         public readonly int $page,
         public readonly int $perPage,
-        public readonly string $subjectScope = self::SCOPE_GABUNGAN
+        public readonly string $subjectScope = self::SCOPE_GABUNGAN,
+        public readonly bool $activeStudentsOnly = false
     ) {
     }
 
@@ -138,7 +142,14 @@ final class ReportFilter
     public function forUser(array $user): self
     {
         if (self::bacaSemua($user)) {
-            return $this;
+            // Tidak dibaca dari input HTTP. Guard memasang penanda hanya
+            // sesudah memastikan penugasan Keamanan milik akun masih sah.
+            return new self(
+                $this->dateFrom, $this->dateTo, $this->academicYearId, $this->teacherId,
+                $this->classId, $this->scheduleId, $this->status, $this->page,
+                $this->perPage, $this->subjectScope,
+                ($user[self::SANTRI_AKTIF_SAJA] ?? false) === true
+            );
         }
         $guruId = isset($user['guru_id']) ? (int) $user['guru_id'] : 0;
         if (!in_array('guru', $user['roles'] ?? [], true) || $guruId < 1) {
@@ -158,7 +169,8 @@ final class ReportFilter
             $this->status,
             $this->page,
             $this->perPage,
-            $this->subjectScope
+            $this->subjectScope,
+            $this->activeStudentsOnly
         );
     }
 
@@ -174,7 +186,8 @@ final class ReportFilter
             $this->status,
             max(1, $page),
             max(1, min(100, $perPage)),
-            $this->subjectScope
+            $this->subjectScope,
+            $this->activeStudentsOnly
         );
     }
 

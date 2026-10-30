@@ -58,6 +58,7 @@ $kehadiranKeamanan = false;
 if ($isKeamanan && !$isAdmin && empty($currentUser[ReportFilter::BACA_SEMUA_JADWAL])
     && (!$isGuru || App\Ui\Peran::active($currentUser) === App\Ui\Peran::PENGURUS)) {
     $currentUser[ReportFilter::BACA_SEMUA_JADWAL] = true;
+    $currentUser[ReportFilter::SANTRI_AKTIF_SAJA] = true;
     $kehadiranKeamanan = true;
 }
 // PK-T2: Keamanan mencetak (PDF lewat dialog cetak), tidak mengekspor CSV.

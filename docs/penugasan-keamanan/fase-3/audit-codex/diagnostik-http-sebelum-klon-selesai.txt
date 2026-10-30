@@ -1,0 +1,7 @@
+RuntimeException: Table 'test_pk_f3_http_audit_test.keamanan_assignments' doesn't exist :: SELECT COUNT(*) FROM keamanan_assignments in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f3_seed.php:46
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f3_seed.php(56): {closure:{closure:/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f3_seed.php:41}:43}('SELECT COUNT(*)...')
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f3_seed.php(118): {closure:/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f3_seed.php:41}()
+#2 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f3_http.php(43): require('/Users/ilanmoch...')
+#3 {main}
+Table 'test_pk_f3_http_audit_test.keamanan_assignments' doesn't exist :: SELECT COUNT(*) FROM keamanan_assignments

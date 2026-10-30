@@ -85,7 +85,7 @@ final class AuditLogger
 
     private function metadataKeamanan(array $data): array
     {
-        $boleh = ['pengajuan_id', 'pelanggaran_id', 'lampiran_id', 'kasus_id', 'santri_id', 'asal', 'status', 'jumlah', 'filter'];
+        $boleh = ['pengajuan_id', 'pelanggaran_id', 'lampiran_id', 'kasus_id', 'santri_id', 'pertemuan_id', 'asal', 'status', 'jumlah', 'filter'];
         $hasil = array_intersect_key($data, array_flip($boleh));
         if (isset($hasil['filter'])) {
             // Saringan cetak izin: kunci terkendali layanan, nilai skalar saja.

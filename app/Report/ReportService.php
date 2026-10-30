@@ -154,7 +154,7 @@ final class ReportService
             }
         }
         $teacher = $this->repository->meetingTeacherAttendance($meetingId);
-        $students = $this->repository->meetingStudents($meetingId);
+        $students = $this->repository->meetingStudents($meetingId, ($user[ReportFilter::SANTRI_AKTIF_SAJA] ?? false) === true);
         $statusCounts = array_fill_keys(ReportFilter::STATUSES, 0);
         foreach ($students as $student) {
             if ($student['status'] !== null && isset($statusCounts[$student['status']])) {

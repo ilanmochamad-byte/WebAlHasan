@@ -22,6 +22,11 @@ try {
     http_response_code($exception->status());
     exit(htmlspecialchars($exception->getMessage(), ENT_QUOTES, 'UTF-8'));
 }
+if ($kehadiranKeamanan && !audit_logger()->log('keamanan.kehadiran.dicetak', 'pertemuan_pengajian', null,
+    null, ['jumlah' => count($report['items'])], (int) $currentUser['id'])) {
+    http_response_code(503);
+    exit('Audit akses tidak dapat disimpan. Laporan tidak dicetak.');
+}
 
 header('Content-Type: text/html; charset=UTF-8');
 header('X-Content-Type-Options: nosniff');

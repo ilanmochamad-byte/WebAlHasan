@@ -1,6 +1,6 @@
 # Penugasan lintas guru/pengurus — Fase 3: penugasan Keamanan di website
 
-**Status (31 Oktober 2026): diimplementasikan Claude Code, menunggu audit independen Codex.** Belum merge, belum deploy, migrasi 033 belum dijalankan di produksi. Fase 4 belum dimulai.
+**Status (31 Oktober 2026): LULUS audit teknis lokal Codex setelah tiga koreksi terarah.** Laporan independen: [`AUDIT-CODEX.md`](AUDIT-CODEX.md), bukti `audit-codex/`. Belum merge, belum deploy, migrasi 033 belum dijalankan di produksi. Fase 4 belum dimulai. Angka di bagian "Hasil pengujian implementator" di bawah adalah riwayat sebelum audit.
 
 | Butir | Nilai |
 | --- | --- |
@@ -33,7 +33,7 @@ Prinsip: **Keamanan hanya membaca.** Hak dihitung ulang dari penugasan Keamanan 
 
 | Bagian | Isi | Cakupan |
 | --- | --- | --- |
-| Kehadiran pengajian | Laporan seluruh jadwal lewat `admin/_laporan_guard.php` (pola keputusan H): daftar, rincian pertemuan, cetak | Seluruh jadwal. Akun guru yang juga Keamanan membaca seluruh jadwal hanya saat peran aktif Pengurus; sebagai Guru tetap jadwal sendiri |
+| Kehadiran pengajian | Laporan seluruh jadwal lewat `admin/_laporan_guard.php` (pola keputusan H): daftar, rincian pertemuan, cetak | Seluruh jadwal, peserta santri aktif kini (koreksi audit F-1). Akun guru yang juga Keamanan membaca seluruh jadwal hanya saat peran aktif Pengurus; sebagai Guru tetap jadwal sendiri |
 | Perizinan | `portal/keamanan_izin.php` (daftar + kartu, saringan asal/tahap/hasil/tanggal), `keamanan_izin_detail.php` (alasan, catatan pengurus/wali, keputusan + alasan, koreksi, riwayat status), `keamanan_izin_cetak.php` | Seluruh santri aktif, asal Pengurus (V2) dan Wali (V7), semua tahap. Daftar = `IzinLaporanRepository` cakupan `keamanan` (satu pembangun WHERE dengan laporan V7) |
 | Pelanggaran | `keamanan_pelanggaran.php` (chip status, cari, periode), `_detail.php` (uraian, saksi, poin, riwayat revisi, lampiran, tindak lanjut), `_cetak.php`, `keamanan_lampiran.php` | Seluruh santri aktif. Tautan ke kasus Rahasia tidak tampil |
 | Konseling | `keamanan_konseling.php` (chip status, cari), `_detail.php` (tujuan, sesi, hasil, tindak lanjut, revisi, tautan pelanggaran), `_cetak.php` | Seluruh santri aktif, **hanya kasus Internal**: penyaring kerahasiaan sama dengan murobi (`kerahasiaan <> 'Rahasia'`) pada daftar, angka chip, pencarian, rincian, dan tautan |
@@ -48,6 +48,7 @@ Tidak ada tombol ajukan, tinjau, putus, koreksi, batal, catat, publikasi, atau t
 ### 5. Audit akses
 
 - Setiap pembukaan rincian izin/pelanggaran/kasus, setiap unduhan lampiran, dan setiap cetak laporan izin dicatat di `audit_logs` (`keamanan.izin.dilihat`, `keamanan.izin.dicetak`, `keamanan.pelanggaran.dilihat`, `keamanan.pelanggaran.lampiran.diunduh`, `keamanan.konseling.kasus.dilihat`).
+- Koreksi audit F-2 melengkapi rincian pertemuan dan cetak kehadiran: `keamanan.kehadiran.dilihat` (ID pertemuan) / `keamanan.kehadiran.dicetak` (jumlah), wajib tersimpan sebelum isi dikirim. F-3 mempertahankan status 503 saat audit unduhan gagal; isi tetap tertutup.
 - Isi jejak hanya ID, asal, status, saringan, dan jumlah. `AuditLogger` menyaring setiap aksi `keamanan.*` ke daftar kunci metadata, sehingga alasan, uraian, atau isi konseling tidak pernah masuk log walau pemanggil keliru.
 - Bila audit gagal disimpan, rincian tidak dikembalikan (503).
 
@@ -62,11 +63,12 @@ Grup **Keamanan** pada peran Pengurus: Kehadiran pengajian · Perizinan santri �
 | Penugasan | `app/Penugasan/PenugasanJenis.php`, `PenugasanService.php` (pemeriksaan tabel), `PenugasanRepository.php` (komentar), `admin/admin_guru.php` |
 | Keamanan (baru) | `app/Keamanan/KeamananAkses.php`, `KeamananService.php`, `KeamananException.php`, `portal/_keamanan.php`, sepuluh `portal/keamanan_*.php` |
 | Layanan baca | `app/Izin/IzinLaporanService.php`, `IzinLaporanRepository.php`, `app/V3/PelanggaranService.php`, `PelanggaranRepository.php`, `KonselingService.php`, `KonselingRepository.php` |
+| Koreksi audit kehadiran | `app/Report/ReportFilter.php`, `ReportRepository.php`, `ReportService.php` (peserta santri aktif khusus Keamanan); `admin/laporan_absensi_detail.php`, `laporan_absensi_cetak.php` (audit wajib) |
 | Lain | `app/Audit/AuditLogger.php`, `app/Ui/Navigation.php`, `app/bootstrap.php`, `admin/_laporan_guard.php`, `admin/admin_laporan_absensi.php` |
 | Basis data | `database/migrations/033_…`, `database/rollbacks/033_…` |
 | Tidak diubah | `app/Auth`, akun/master, kesehatan, BSA, notifikasi, V4, REST `api/v1`, alur tulis izin (`IzinWorkflowService`, `IzinWaliService`, `IzinRepository`, `IzinRouter`, `PemisahanTugas`), mobile |
 
-## Penafsiran implementator (menunggu tinjauan auditor)
+## Penafsiran implementator (diterima auditor dalam cakupan Fase 3; lihat AUDIT-CODEX.md)
 
 - **PF3-1** Admin tidak membuka halaman Keamanan lewat hak pengawasan; halaman Keamanan hanya untuk penugasan milik sendiri. Admin yang juga memegang penugasan Keamanan (sumber `keduanya`) dapat membukanya sebagai Keamanan.
 - **PF3-2** Jalur baca memakai layanan yang sudah diaudit dengan mode baca baru, bukan lapisan data kedua. Halaman pembinaan/perizinan biasa tidak berubah dan tetap menolak akun Keamanan yang tidak punya hak lain.

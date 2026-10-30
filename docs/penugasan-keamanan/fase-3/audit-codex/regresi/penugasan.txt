@@ -1,0 +1,163 @@
+[lulus] FI-1 daftar capability perizinan V2 tidak berubah
+[lulus] FI-1 akun admin tetap memperoleh capability admin
+[lulus] FI-1 guru tanpa penugasan murobi tidak memperoleh capability perizinan
+[lulus] FI-1 pengurus dengan relasi master aktif tetap memperoleh capability pengurus
+[lulus] FI-1 orang tua dengan wali aktif tetap memperoleh capability orang_tua
+[lulus] FI-1 tanpa penugasan tidak ada feature capability
+[lulus] FI-1 admin memperoleh seluruh feature capability sebagai pengawasan
+[lulus] FI-1 sumber capability admin ditandai "admin" (pengawasan), bukan operasional
+[lulus] FI-4 admin membuat penugasan murobi (#349)
+[lulus] FI-4 admin membuat penugasan pembimbing (#266)
+[lulus] FI-4 admin membuat penugasan guru_mapel (#148)
+[lulus] FI-4 admin membuat penugasan pendidikan (#88)
+[lulus] FI-4 admin membuat penugasan bendahara_bulanan (#58)
+[lulus] FI-4 admin membuat penugasan panitia_psb (#75)
+[lulus] FI-4 admin membuat penugasan bendahara_psb (#65)
+[lulus] FI-4 baris guru_mapel_assignments menyimpan created_by admin
+[lulus] FI-4 baris pendidikan_assignments menyimpan created_by admin
+[lulus] FI-4 baris bendahara_bulanan_assignments menyimpan created_by admin
+[lulus] FI-4 baris panitia_psb_assignments menyimpan created_by admin
+[lulus] FI-4 baris bendahara_psb_assignments menyimpan created_by admin
+[lulus] FI-2 penugasan murobi tetap menghasilkan capability murobi V2 pada akun guru
+[lulus] FI-2 penugasan murobi menghasilkan capability binaan (kesiapan V3)
+[lulus] FI-2 cakupan binaan murobi mengikuti kamar penugasan
+[lulus] FI-2 cakupan kamar tidak mewakili kelas
+[lulus] FI-3 role pengurus tetap menghasilkan capability pengurus V2
+[lulus] FI-3 penugasan pembimbing menghasilkan capability binaan pengurus
+[lulus] FI-3 layanan pembimbing V2 tetap membaca penugasan yang dibuat pusat penugasan
+[lulus] FI-3 cakupan binaan pembimbing mengikuti kelas penugasan
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh pembimbing.binaan
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh rapor.verifikasi
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh rapor.finalisasi
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh rapor.buka_koreksi
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh rapor.cetak
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh pembiayaan_bulanan.tagihan
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh pembiayaan_bulanan.pembayaran
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh pembiayaan_bulanan.verifikasi
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh pembiayaan_bulanan.laporan
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh psb.pendaftar
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh psb.verifikasi
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh psb.seleksi
+[lulus] FI-7/9 pengurus dengan empat penugasan sekaligus memperoleh psb.penerimaan
+[lulus] FI-7 sumber capability pengurus adalah penugasan (operasional)
+[lulus] FI-7 cakupan Bagian Pendidikan mengikuti jenjang
+[lulus] FI-7 cakupan jenjang mencakup kelas dengan jenjang itu
+[lulus] FI-7 bendahara bulanan tanpa jenjang berlaku untuk seluruh unit
+[lulus] FI-7 cakupan panitia PSB mengikuti gelombang
+[lulus] FI-7 capability PSB tidak berlaku pada tahun ajaran lain
+[lulus] FI-12 guru mapel memperoleh nilai.input
+[lulus] FI-12 guru mapel memperoleh nilai.lihat_sendiri
+[lulus] FI-12 guru mapel memperoleh nilai.koreksi_sendiri
+[lulus] FI-12 capability nilai berlaku pada kelas yang ditugaskan
+[lulus] FI-12 capability nilai TIDAK berlaku pada kelas lain
+[lulus] FI-12 capability nilai berlaku pada mata pelajaran yang ditugaskan
+[lulus] FI-12 capability nilai TIDAK berlaku pada mata pelajaran lain
+[lulus] FI-12 capability nilai berlaku pada tahun ajaran/semester yang ditugaskan
+[lulus] FI-12 capability nilai TIDAK berlaku pada tahun ajaran/semester lain
+[lulus] FI-12 capability nilai TIDAK berlaku pada tahun ajaran lain
+[lulus] FI-12 guru tidak memperoleh capability penugasan pengurus
+[lulus] FI-10 panitia PSB tidak otomatis memperoleh capability bendahara PSB
+[lulus] FI-11 bendahara PSB tidak otomatis memperoleh capability panitia PSB
+[lulus] FI-10/11 pengurus boleh menjadi panitia PSB dan bendahara PSB sekaligus
+[lulus] FI-26 penugasan PSB pada tahun ajaran yang BELUM aktif tetap efektif
+[lulus] FI-26 tahun ajaran yang diarsipkan ditolak [422: Tahun ajaran tidak valid atau sudah diarsipkan.]
+[lulus] FI-26 penugasan non-PSB pada tahun ajaran yang belum aktif BELUM menghasilkan capability
+[lulus] FI-6 penugasan yang belum mulai tidak menghasilkan capability
+[lulus] FI-6 status penugasan belum mulai = Akan Datang
+[lulus] FI-8 penugasan yang sudah berakhir tidak menghasilkan capability
+[lulus] FI-8 status penugasan lampau = Berakhir
+[lulus] FI-8 pengakhiran pada hari ini masih berlaku sampai akhir tanggal selesai
+[lulus] FI-8 pengakhiran mencatat pelaku, waktu, dan alasan
+[lulus] FI-8 tanggal selesai mendahului tanggal mulai ditolak [422: Tanggal selesai tidak boleh mendahului tanggal mulai (2026-10-31).]
+[lulus] FI-8 penugasan yang dinonaktifkan tidak lagi menghasilkan capability
+[lulus] FI-8 menonaktifkan penugasan tidak menonaktifkan akun dan tidak mencabut role dasar
+[lulus] FI-8 baris penugasan yang dinonaktifkan tetap tersimpan (tidak dihapus)
+[lulus] FI-8 pengaktifan kembali memulihkan capability
+[lulus] FI-8 menonaktifkan murobi dari pusat penugasan mencabut capability murobi V2 dan binaan
+[lulus] FI-8 mengaktifkan kembali murobi memulihkan capability V2
+[lulus] FI-13 penugasan identik ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #148 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-13 penugasan murobi identik ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #349 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-13 penugasan bendahara PSB identik ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #65 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-13 penolakan duplikat tidak menyimpan baris
+[lulus] FI-13 percobaan duplikat tercatat pada audit
+[lulus] FI-14 periode beririsan dengan penugasan tanpa akhir ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #148 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-14 cakupan jenjang tertentu bertumpang tindih dengan cakupan seluruh unit ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #58 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-14 gelombang tertentu bertumpang tindih dengan seluruh gelombang ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #76 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-14 periode beririsan dengan penugasan lampau ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #149 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-14 mata pelajaran sama pada kelas berbeda diterima
+[lulus] FI-14 periode berurutan setelah penugasan lampau berakhir diterima
+[lulus] FI-14 murobi kamar dan murobi kelas untuk guru yang sama diterima (cakupan berbeda)
+[lulus] FI-14 mengubah cakupan menjadi bertumpang tindih ditolak [409: Penugasan bertumpang tindih dengan penugasan aktif #148 untuk orang, tahun ajaran, dan cakupan yang sama pada periode yang beririsan. Akhiri penugasan lama lebih dahulu atau sesuaikan cakupan/periode.]
+[lulus] FI-14 mengaktifkan kembali penugasan yang sudah aktif ditolak sebagai konflik [409: Penugasan ini sudah aktif.]
+[lulus] FI-5 guru tidak dapat membuat penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 pengurus tidak dapat membuat penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 orang tua tidak dapat membuat penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 anonim tidak dapat membuat penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 pengurus tidak dapat mengakhiri penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 guru tidak dapat menonaktifkan penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 orang tua tidak dapat mengubah penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 guru tidak dapat menambah mata pelajaran [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-5 percobaan tanpa hak tercatat pada audit
+[lulus] FI-16 ID yang tidak ada ditolak (404) [404: Penugasan tidak ditemukan.]
+[lulus] FI-16 ID nol ditolak [404: Penugasan tidak ditemukan.]
+[lulus] FI-16 parameter guru_id/tahun_ajaran_id pada ubah diabaikan (subjek dan tahun dikunci)
+[lulus] FI-16 guru nonaktif ditolak [422: Guru harus dipilih dari data Guru yang aktif dan belum diarsipkan.]
+[lulus] FI-16 kelas nonaktif ditolak [422: Kelas tidak ditemukan atau sudah tidak aktif.]
+[lulus] FI-16 mata pelajaran yang tidak ada ditolak [422: Mata pelajaran harus dipilih dari master yang aktif.]
+[lulus] FI-16 jenjang yang tidak dipakai kelas ditolak [422: Unit/jenjang harus salah satu jenjang yang dipakai data kelas, atau dikosongkan untuk seluruh unit.]
+[lulus] FI-16 ID guru dipakai sebagai pengurus ditolak bila bukan pengurus aktif [422: Pengurus atau guru harus dipilih dari data Pengurus/guru yang aktif dan belum diarsipkan.]
+[lulus] FI-16 target Kelas tanpa kelas ditolak [422: Kelas tidak ditemukan atau sudah tidak aktif.]
+[lulus] FI-16 jenis target di luar pilihan ditolak [422: Jenis kelompok harus Kamar atau Kelas.]
+[lulus] FI-16 label gelombang dengan karakter tak wajar ditolak [422: Label gelombang maksimal 50 karakter huruf/angka, atau dikosongkan untuk seluruh gelombang.]
+[lulus] FI-16 tanggal tidak valid ditolak [422: Tanggal mulai wajib diisi dengan tanggal yang valid.]
+[lulus] FI-16 tanggal selesai mendahului tanggal mulai ditolak [422: Tanggal selesai tidak boleh mendahului tanggal mulai.]
+[lulus] FI-16 jenis penugasan tak dikenal ditolak [422: Jenis penugasan tidak dikenal.]
+[lulus] FI-16 alasan perubahan terlalu pendek ditolak [422: Alasan perubahan wajib diisi (5–500 karakter).]
+[lulus] FI-15 kegagalan pencatatan audit menggagalkan pembuatan [Perubahan penugasan dibatalkan karena audit tidak dapat disimpan. Silakan coba lagi.]
+[lulus] FI-15 rollback penuh: tidak ada baris penugasan tersimpan tanpa audit
+[lulus] FI-15 tidak ada capability yang bocor dari transaksi yang dibatalkan
+[lulus] FI-15 pembuatan yang berhasil menulis audit beserta pelakunya
+[lulus] FI-15 hanya satu audit pembuatan bertambah
+[lulus] FI-15 perubahan capability akun tercatat (bertambah psb_keuangan.*)
+[lulus] FI-25 penugasan untuk pengurus tanpa akun tersimpan, dijelaskan belum efektif
+[lulus] FI-25 akun tanpa role guru tidak memperoleh capability walau penugasan aktif
+[lulus] FI-25 pusat penugasan menjelaskan role dasar yang belum diberikan
+[lulus] FI-25 setelah role guru diberikan, capability langsung efektif tanpa mengubah penugasan
+[lulus] FI-25 mencabut role dasar mematikan capability tanpa menghapus riwayat penugasan
+[lulus] FI-25 master guru nonaktif mematikan seluruh capability penugasan
+[lulus] FI-25 akun nonaktif tidak memperoleh capability apa pun
+[lulus] FI-25 mata pelajaran nonaktif menghentikan capability penugasan yang memakainya
+[lulus] FI-23 role sesi yang dimanipulasi ditimpa role dari basis data
+[lulus] FI-23 capability admin tidak muncul dari sesi palsu
+[lulus] FI-23 role palsu pada input resolver diabaikan; hasil sama dengan role basis data
+[lulus] FI-23 capability pengurus tidak diperoleh guru lewat manipulasi input
+[lulus] FI-23 sesi palsu tidak memberi hak mengelola penugasan [403: Hanya admin yang dapat mengelola penugasan.]
+[lulus] FI-19 profil memuat field lama pada urutan lama + satu field aditif
+[lulus] FI-19 struktur capabilities lama tidak berubah
+[lulus] FI-19 mode guru-murobi tetap seperti sebelumnya
+[lulus] FI-20 menu aplikasi guru tidak berubah walau punya penugasan mapel
+[lulus] FI-19 field aditif memuat capability fondasi beserta sumbernya
+[lulus] FI-20 field aditif tidak membawa menu atau mode baru
+[lulus] FI-20 mode dan menu pengurus tidak berubah walau punya banyak penugasan
+[lulus] FI-20 tidak ada mode baru pendidikan/bendahara pada daftar mode
+[lulus] FI-19 profil orang tua tidak berubah dan tanpa feature capability
+[lulus] FI-21 login web admin tetap berfungsi
+[lulus] FI-21 login web guru tetap berfungsi
+[lulus] FI-21 login web pengurus tetap berfungsi
+[lulus] FI-21 login web orang tua tetap berfungsi
+[lulus] FI-24 audit penugasan tidak memuat password/token
+[lulus] FI-24 audit perubahan menyimpan nilai sebelum/sesudah, jenis, subjek, dan alasan
+[lulus] FI-24 aksi audit tercatat: penugasan.buat
+[lulus] FI-24 aksi audit tercatat: penugasan.ubah
+[lulus] FI-24 aksi audit tercatat: penugasan.akhiri
+[lulus] FI-24 aksi audit tercatat: penugasan.nonaktifkan
+[lulus] FI-24 aksi audit tercatat: penugasan.aktifkan
+[lulus] FI-24 aksi audit tercatat: penugasan.capability_berubah
+[lulus] FI-24 aksi audit tercatat: penugasan.tolak_tumpang_tindih
+[lulus] FI-24 aksi audit tercatat: penugasan.tolak_hak
+[lulus] FI-daftar filter nama + status + kelas mengembalikan penugasan yang tepat
+[lulus] FI-daftar filter Berakhir mengembalikan penugasan lampau
+[lulus] FI-daftar filter Akan Datang mengembalikan penugasan mendatang
+[lulus] FI-daftar nilai filter berbahaya diperlakukan sebagai teks biasa
+
+Total gagal: 0
