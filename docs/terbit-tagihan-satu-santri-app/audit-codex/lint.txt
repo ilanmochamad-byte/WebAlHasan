@@ -1,0 +1,6 @@
+
+> alhasanapps@1.0.0 lint
+> expo lint
+
+
+exit=0

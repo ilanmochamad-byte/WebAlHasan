@@ -1,0 +1,87 @@
+(node:30108) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/v6ss-app-codex-mobile/tests/attendance-shortcut.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/v6ss-app-codex-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Absensi kembali ke daftar jadwal saat hari kosong atau seluruh sesi selesai (0.922958ms)
+✔ Absensi memilih sesi pertama yang belum selesai, termasuk yang belum dibuka (1.064083ms)
+(node:30109) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/v6ss-app-codex-mobile/tests/date-time.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/v6ss-app-codex-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ tanggal/jam lokal lengkap termasuk tengah malam dan tahun kabisat (7.172959ms)
+✔ tolak bagian kosong, format manual salah dan tanggal yang dinormalisasi JS (0.09075ms)
+(node:30110) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/v6ss-app-codex-mobile/tests/izin-wali.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/v6ss-app-codex-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Isian izin wali mengikuti aturan server (0.951959ms)
+✔ Isian dirapikan; perbaikan wajib berbeda dari versi asal (0.390042ms)
+✔ Catatan tinjauan: perbaikan/tolak wajib, teruskan opsional (0.092667ms)
+✔ Penolakan pembimbing dibedakan dari keputusan murobi (0.097333ms)
+✔ Tautan notifikasi izin wali hanya membawa penunjuk (0.194042ms)
+(node:30111) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/v6ss-app-codex-mobile/tests/kesehatan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/v6ss-app-codex-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Koreksi mengirim keadaan lengkap: rincian lama ber-id dipertahankan, waktu asli tidak bergeser (3.353167ms)
+✔ Baris baru yang seluruhnya kosong diabaikan; baris lama kosong tetap dikirim agar server menolaknya (4.515084ms)
+✔ Alasan wajib minimal lima karakter, maksimal 1000; sidik jari berubah bila isi berubah (0.364ms)
+✔ Penunjuk notifikasi kesehatan hanya ringkasan_id valid; isi/tautan lain diabaikan (0.129458ms)
+✔ Deep-link kesehatan hanya skema aplikasi dan rute ringkasan wali (0.183625ms)
+✔ Teks perubahan versi memakai label manusia (0.088625ms)
+✔ Hasil pencarian santri dikelompokkan per kelas; belum ditempatkan paling akhir (0.130834ms)
+✔ Periode laporan: bulan ini, bulan lalu (lintas tahun), dan 30 hari berakhir hari ini (0.159459ms)
+(node:30112) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/v6ss-app-codex-mobile/tests/keuangan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/v6ss-app-codex-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Rupiah ditampilkan bulat dengan titik ribuan tanpa Intl (0.911541ms)
+✔ Nominal dikirim sebagai teks angka; pecahan dan huruf diteruskan agar server menolak (0.247792ms)
+✔ Alasan koreksi wajib 5–500 karakter seperti website (0.079791ms)
+✔ Sidik jari sama untuk isi sama (retry memakai kunci yang sama) dan berbeda bila isi berubah (0.076083ms)
+✔ Label periode, jenis, dan nilai awal tanggal (0.643541ms)
+✔ Penunjuk notifikasi keuangan hanya id; tipe/kunci lain ditolak (0.401583ms)
+✔ Tautan skema keuangan hanya menerima jalur yang dikenal (0.146375ms)
+✔ Rentang laporan Fase 5: bulan ini, bulan lalu (lintas tahun), 3 bulan, tahun ini — paling panjang 12 bulan (0.114959ms)
+✔ Pratinjau satu santri sah hanya bila server menyaring santri itu (server lama mengabaikan santri_id) (0.082667ms)
+(node:30113) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/v6ss-app-codex-mobile/tests/print-dialog.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/v6ss-app-codex-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ mengenali exception pembatalan cetak iOS dari nama dan pesan (0.65475ms)
+✔ mengenali bentuk CodedError dari bridge native (0.4995ms)
+✔ tidak menyembunyikan kegagalan cetak yang sebenarnya (0.193208ms)
+✔ mengembalikan hasil normal ketika pencetakan dimulai (0.204208ms)
+✔ mengubah penutupan dialog menjadi hasil dibatalkan (0.211833ms)
+✔ meneruskan kegagalan printer tanpa perubahan (0.482083ms)
+(node:30114) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/v6ss-app-codex-mobile/tests/rapor.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/v6ss-app-codex-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kosong tetap belum lengkap, nol sah, versi lama tetap dikirim (0.728709ms)
+✔ Validasi angka/reason tidak meloloskan nilai tak sah atau alasan kosong (0.122833ms)
+✔ Push hanya penunjuk valid; data/nilai/tautan lain tidak dipakai (1.643458ms)
+✔ Deep-link native hanya skema/rute rapor sah; ID bertahan sebagai penunjuk (0.182375ms)
+(node:30115) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/v6ss-app-codex-mobile/tests/redesain-fase1.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/v6ss-app-codex-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ pekan dimulai Senin, termasuk ketika tanggal terpilih hari Minggu (1.344041ms)
+✔ pekan melintasi pergantian bulan, tahun, dan 29 Februari (0.103333ms)
+✔ geser pekan maju dan mundur mempertahankan hari (0.0685ms)
+✔ pesan tanpa menu hanya muncul setelah akses pembinaan selesai diperiksa (0.099875ms)
+(node:30116) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/v6ss-app-codex-mobile/tests/redesain-fase2.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/v6ss-app-codex-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sesi hari ini yang belum dibuka atau belum selesai ditandai perlu absen (0.671875ms)
+✔ sesi selesai tidak pernah meminta absen, kapan pun tanggalnya (0.066167ms)
+✔ sesi hari lain tidak diberi penanda absen dan dibedakan masa depan/lampau (0.059625ms)
+ℹ tests 43
+ℹ suites 0
+ℹ pass 43
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 229.265583

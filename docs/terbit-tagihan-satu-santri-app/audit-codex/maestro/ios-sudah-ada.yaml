@@ -1,0 +1,31 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Tampilkan tagihan",
+      "timeout": 20000
+    }
+  },
+  {
+    "tapOn": "Tampilkan tagihan"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Buka tagihan",
+      "timeout": 20000
+    }
+  },
+  {
+    "assertNotVisible": "Terbitkan tagihan Rp300.000"
+  },
+  {
+    "tapOn": "Buka tagihan"
+  },
+  {
+    "extendedWaitUntil": {
+      "visible": "Rincian tagihan",
+      "timeout": 20000
+    }
+  }
+]

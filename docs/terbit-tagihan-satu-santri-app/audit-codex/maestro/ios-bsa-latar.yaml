@@ -1,0 +1,13 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "Tampilkan tagihan",
+      "timeout": 20000
+    }
+  },
+  {
+    "pressKey": "home"
+  }
+]

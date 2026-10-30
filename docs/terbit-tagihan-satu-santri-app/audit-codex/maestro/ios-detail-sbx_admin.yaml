@@ -1,0 +1,13 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[
+  {
+    "extendedWaitUntil": {
+      "visible": "SBX V6 Santri SMP",
+      "timeout": 20000
+    }
+  },
+  {
+    "assertNotVisible": "Terbitkan tagihan"
+  }
+]

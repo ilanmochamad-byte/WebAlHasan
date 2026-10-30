@@ -1,0 +1,45 @@
+
+=== A-1. Petugas: rincian tarif = API ===
+[lulus] Rincian santri (petugas): tombol "Terbitkan tagihan" tampil
+[lulus] API pratinjau satu santri: satu baris, total Rp300.000
+[lulus] Layar = API: Syahriah Rp150.000, Makan Rp200.000, potongan −Rp50.000, total Rp300.000
+[lulus] Tanpa isian komponen/nominal manual di aplikasi
+[lulus] Pratinjau tidak menulis: nol POST penerbitan, nol tagihan
+[lulus] Rincian tarif: tanpa gulir horizontal pada 375 px (selisih 0px)
+
+=== A-2. Ketukan ganda → satu tagihan ===
+[lulus] Tepat satu tagihan Rp300.000 untuk santri ini; santri SMP lain tidak ikut
+[lulus] Sesudah terbit layar membuka rincian tagihan baru
+[lulus] Kiriman penerbitan membawa santri_id dan hash pratinjau (1 kiriman, isi sama)
+[lulus] Catatan penerbitan: sasaran 1
+
+=== A-3. Buka ulang: sudah ada ===
+[lulus] Tagihan bulan ini sudah ada: tanpa tombol terbit, arahan koreksi
+[lulus] "Buka tagihan" membuka tagihan yang sama
+
+=== A-4. Santri tanpa kelas ===
+[lulus] Santri tanpa kelas: penjelasan, arahan ke website, tanpa tombol terbit
+[lulus] Tanpa tagihan untuk santri tanpa kelas
+[lulus] Santri tanpa kelas: tanpa gulir horizontal pada 375 px (selisih 0px)
+
+=== A-5. Server lama mengabaikan santri_id ===
+[lulus] Respons tanpa santri_id/banyak baris: ditolak, tanpa rincian dan tombol terbit
+[lulus] Nol POST penerbitan, tanpa tagihan
+
+=== A-6. Penugasan dicabut sesudah pratinjau ===
+[lulus] Ditolak server: rincian tarif ditutup, tanpa tombol terbit
+[lulus] Tanpa tagihan sesudah penugasan dicabut
+
+=== A-7. Admin, wali, petugas unit lain ===
+[lulus] Admin: tombol "Terbitkan tagihan" tidak tampil
+[lulus] Admin: alamat langsung ditolak tanpa formulir dan tanpa POST
+[lulus] Wali: tombol "Terbitkan tagihan" tidak tampil
+[lulus] Wali: alamat langsung ditolak tanpa formulir dan tanpa POST
+[lulus] Petugas Tsanawi (santri sendiri): tombol "Terbitkan tagihan" tampil untuk santri dalam unitnya
+[lulus] Petugas Tsanawi: santri SMP di luar cakupan → 404, tanpa formulir
+
+=== A-8. Privasi ===
+[lulus] Penyimpanan web dan konsol tanpa token API
+[lulus] Nol permintaan keluar 127.0.0.1 (tidak ada)
+
+Ringkasan: 27 lulus, 0 gagal
