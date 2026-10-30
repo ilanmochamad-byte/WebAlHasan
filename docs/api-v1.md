@@ -534,6 +534,19 @@ bila belum). Seluruh angka satu laporan dibaca dalam satu snapshot.
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v6-5/README.md`.
 
+### Tagihan satu santri dari tarif (perbaikan sesudah V6, 30 Oktober 2026)
+
+Aditif; tanpa migrasi. `POST /v6/bsa/penerbitan/pratinjau` dan `POST
+/v6/bsa/penerbitan` menerima `santri_id` opsional: sasaran hanya santri itu,
+nominal tetap dari tarif unit ± penyesuaian santri. Pratinjau dengan
+`santri_id` menambah `santri_id` pada respons dan `komponen[{nama, nominal}]`
+(komponen tarif yang akan disalin) pada barisnya; santri nonaktif/di luar
+cakupan/tidak ada → `404`. Kunci idempotensi penerbitan terikat santri (kunci
+sama untuk santri lain → `409`); replay memeriksa ulang santri masih aktif
+dalam cakupan. Tanpa `santri_id` respons dan hash pratinjau massal tidak
+berubah. `POST /v6/bsa/tagihan` (komponen manual, Fase 1) tetap tersedia tanpa
+perubahan. Rincian: `docs/perbaikan-tagihan-satu-santri/README.md`.
+
 ## Pengajuan izin wali V7 Fase 1 (27 Oktober 2026)
 
 Aditif di bawah `/api/v1/v7/izin`; kontrak perizinan V2 di atas tidak berubah

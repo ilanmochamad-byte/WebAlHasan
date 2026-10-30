@@ -287,9 +287,10 @@ final class TagihanRepository
      *
      * @param array<int, string>|null $cakupan unit petugas (null = seluruh unit)
      * @param string|null $unit saringan satu unit (null = seluruh cakupan)
+     * @param int|null $santriId saringan satu santri (penerbitan dari rincian santri)
      * @return array<int, array{id:int, nis:string, nama:string, kelas:?string, jenjang:?string}>
      */
-    public function sasaranPenerbitan(?array $cakupan, ?string $unit): array
+    public function sasaranPenerbitan(?array $cakupan, ?string $unit, ?int $santriId = null): array
     {
         $params = [];
         $sql = 'SELECT s.id, s.nis, s.nama_santri, kl.nama_kelas, kl.jenjang FROM santri s' . $this->bsa->joinUnit() . '
@@ -306,6 +307,10 @@ final class TagihanRepository
         if ($unit !== null) {
             $sql .= ' AND LOWER(TRIM(kl.jenjang)) = ?';
             $params[] = mb_strtolower(trim($unit));
+        }
+        if ($santriId !== null) {
+            $sql .= ' AND s.id = ?';
+            $params[] = $santriId;
         }
 
         return array_map(static fn (array $r): array => [
