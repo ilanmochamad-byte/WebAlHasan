@@ -19,7 +19,8 @@ use RuntimeException;
  *     tidak dikenal menghasilkan `1 = 0`. Predikat cakupan sama dengan aturan
  *     rincian: pembimbing sah (`PembimbingRouter::sahSql`) untuk baris wali,
  *     `pengurus_id` untuk baris pengurus, `murobi_guru_id` + status V2 untuk
- *     murobi, dan relasi wali aktif untuk orang tua.
+ *     murobi, relasi wali aktif untuk orang tua, dan santri aktif untuk
+ *     Keamanan (rincian `App\Keamanan\KeamananService`).
  *  3. **Satu baris per pengajuan.** Kamar, kelas, dan waktu tinjauan dibaca
  *     lewat subquery skalar; `izin_keputusan` unik per pengajuan.
  *  4. **Tanpa isi izin.** Alasan, catatan, dan alasan keputusan tidak dibaca.
@@ -209,6 +210,10 @@ final class IzinLaporanRepository
             'orang_tua' => [["p.santri_id IN (SELECT sw.santri_id FROM santri_wali sw JOIN wali w ON w.id = sw.wali_id
                                   WHERE sw.wali_id = ? AND sw.archived_at IS NULL AND w.is_active = 1 AND w.archived_at IS NULL)
                     AND (p.asal_pengajuan = 'Wali' OR p.status IN (" . $isi($v2) . '))'], array_merge([(int) $cakupan['wali_id']], $v2)],
+            // Penugasan Keamanan (lintas guru/pengurus Fase 3): seluruh santri
+            // aktif, kedua asal, semua tahap (PK-5). Dipilih layanan hanya bila
+            // hak Keamanan sah; tidak pernah dari parameter request.
+            'keamanan' => [['s.is_active = 1 AND s.archived_at IS NULL'], []],
             default => [['1 = 0'], []],
         };
 

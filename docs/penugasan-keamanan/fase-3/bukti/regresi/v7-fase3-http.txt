@@ -1,0 +1,55 @@
+[lulus] Fixture V7 tersedia; belum ada notifikasi V7
+[lulus] Sesi web dan token API untuk sepuluh akun
+
+=== H-A. Notifikasi pembimbing dan tautan ===
+[lulus] API /notifikasi pembimbing: satu notifikasi izin_wali tanpa nama santri/alasan
+[lulus] Pengaju, wali kedua, murobi, dan pembimbing lain tidak menerima notifikasi "masuk"
+[lulus] Pusat notifikasi web pembimbing menampilkan judul generik
+[lulus] Buka notifikasi → dialihkan ke rincian pengajuan wali
+[lulus] Tautan dibuka: rincian tampil sesudah pemeriksaan hak
+[lulus] ID notifikasi milik pembimbing tidak dapat dibuka akun lain
+[lulus] Penugasan dicabut: tautan yang sama → 404 di web (sesi lama) dan API (token lama)
+
+=== H-B. Penerusan, keputusan, dan relasi wali ===
+[lulus] API teruskan → Diajukan
+[lulus] Diteruskan: wali pengaju dan murobi tujuan masing-masing satu (replay tidak menggandakan); wali kedua dan murobi lain nol
+[lulus] Tautan murobi membuka rincian sesudah diteruskan
+[lulus] Keputusan murobi (API V2) → satu notifikasi untuk wali pengaju saja, tanpa alasan keputusan
+[lulus] Notifikasi V2 lama tidak dipancarkan untuk baris wali
+[lulus] Relasi wali dicabut: tautan keputusan → 404 pada token dan sesi lama
+[lulus] Tolak → wali pengaju; batal → pembimbing (masuk + dibatalkan)
+
+=== H-C. Laporan API ===
+[lulus] API laporan sbx_admin: total 1055 = baris CSV; no-store; tanpa alasan
+[lulus] API laporan sbx_v7_pembimbing_satu: total 3 = baris CSV; no-store; tanpa alasan
+[lulus] API laporan sbx_v7_pembimbing_dua: total 0 = baris CSV; no-store; tanpa alasan
+[lulus] API laporan sbx_pengurus_a: total 52 = baris CSV; no-store; tanpa alasan
+[lulus] API laporan sbx_murobi_a: total 26 = baris CSV; no-store; tanpa alasan
+[lulus] API laporan sbx_v7_wali_a: total 3 = baris CSV; no-store; tanpa alasan
+[lulus] API laporan sbx_v7_wali_b: total 3 = baris CSV; no-store; tanpa alasan
+[lulus] API laporan sbx_ortu_b: total 0 = baris CSV; no-store; tanpa alasan
+[lulus] API laporan admin menghitung seluruh pengajuan tepat sekali
+[lulus] Guru tanpa penugasan murobi → 403 laporan dan ekspor
+[lulus] Saringan tidak valid → 422; tanpa token → 401
+[lulus] Wali kedua: baris wali A ringkas "Wali lain"
+[lulus] Parameter peran tidak memperluas cakupan
+
+=== H-D. Laporan web ===
+[lulus] Web laporan sbx_admin: data-total = API = ekspor web (1055)
+[lulus] Web laporan sbx_v7_pembimbing_satu: data-total = API = ekspor web (3)
+[lulus] Web laporan sbx_murobi_a: data-total = API = ekspor web (26)
+[lulus] Web laporan sbx_v7_wali_a: data-total = API = ekspor web (3)
+[lulus] Web laporan sbx_v7_wali_b: data-total = API = ekspor web (3)
+[lulus] Web wali kedua: kolom pengaju "Wali lain", tanpa kolom petugas/durasi
+[lulus] Web saringan tidak valid → peringatan, laporan tanpa saringan
+[lulus] Web saringan asal+hasil = SQL independen
+[lulus] Web guru tanpa penugasan → 403
+[lulus] Setiap ekspor (8 API + 5 web) diaudit
+
+=== H-E. Log dan verifier ===
+[lulus] Log server tanpa galat/peringatan PHP
+[lulus] Log server tanpa alasan izin atau token
+[lulus] v7_phase2_verify.php lulus sesudah uji HTTP (Verifikasi V7 Fase 2 lulus.)
+[lulus] v7_phase3_verify.php lulus sesudah uji HTTP (Verifikasi V7 Fase 3 lulus.)
+
+Lulus: 43 · Gagal: 0

@@ -417,6 +417,7 @@ final class KonselingRepository
      * Keputusan Human Developer 11 September 2026: kasus Internal diketahui pembimbing
      * dan murobi terkait; kasus Rahasia hanya pembimbing pemilik kasus, ditambah admin
      * untuk pengawasan dengan audit akses. Dipakai bersama penjaga cakupan pada query.
+     * Keamanan (PK-6) memakai aturan murobi: kasus Rahasia tidak pernah terbaca.
      */
     private function privacySql(string $mode,int $userId):array
     {
@@ -459,6 +460,8 @@ final class KonselingRepository
     private function scopeSql(string $mode,int $userId,string $alias):array
     {
         if($mode==='admin')return ['1=1',[]];
+        // Keamanan (penugasan lintas guru/pengurus Fase 3, PK-5): seluruh santri aktif; hak diperiksa layanan.
+        if($mode==='keamanan')return ["EXISTS (SELECT 1 FROM santri skx WHERE skx.id={$alias}.santri_id AND skx.is_active=1 AND skx.archived_at IS NULL)",[]];
         $assignment=$mode==='pembimbing'?'pembimbing_assignments':'murobi_assignments';$master=$mode==='pembimbing'?'pengurus':'guru';$userColumn=$mode==='pembimbing'?'pengurus_id':'guru_id';$role=$mode==='pembimbing'?'pengurus':'guru';$prefix=$mode==='pembimbing'?'pa':'ma';
         $sql="EXISTS (SELECT 1 FROM users ux JOIN user_roles urx ON urx.user_id=ux.id JOIN roles rx ON rx.id=urx.role_id AND rx.slug='{$role}' JOIN {$master} mx ON mx.id=ux.{$userColumn} AND mx.is_active=1 AND mx.archived_at IS NULL JOIN {$assignment} {$prefix} ON {$prefix}.{$userColumn}=mx.id JOIN tahun_ajaran tx ON tx.id={$prefix}.tahun_ajaran_id AND tx.status='Aktif' AND tx.archived_at IS NULL WHERE ux.id=? AND ux.is_active=1 AND {$prefix}.tahun_ajaran_id={$alias}.tahun_ajaran_id AND {$prefix}.is_active=1 AND {$prefix}.archived_at IS NULL AND {$prefix}.tanggal_mulai<=CURDATE() AND ({$prefix}.tanggal_selesai IS NULL OR {$prefix}.tanggal_selesai>=CURDATE()) AND (({$prefix}.target_type='Kelas' AND EXISTS (SELECT 1 FROM plotting_kelas pk WHERE pk.id_santri={$alias}.santri_id AND pk.id_tahun={$alias}.tahun_ajaran_id AND pk.id_kelas={$prefix}.kelas_id AND pk.status='Aktif')) OR ({$prefix}.target_type='Kamar' AND EXISTS (SELECT 1 FROM plotting_kamar pm WHERE pm.id_santri={$alias}.santri_id AND pm.id_tahun={$alias}.tahun_ajaran_id AND pm.id_kamar={$prefix}.kamar_id))))";
         return [$sql,[$userId]];

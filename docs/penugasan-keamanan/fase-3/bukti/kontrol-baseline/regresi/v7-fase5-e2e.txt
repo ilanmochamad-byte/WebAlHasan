@@ -1,0 +1,120 @@
+[lulus] Fixture V7 tersedia (1/0/2 pembimbing, 1/0/2 murobi, dua wali); belum ada pengajuan wali
+[lulus] Sakelar Push dan WhatsApp OFF (keadaan rilis yang diuji)
+[gagal] Preflight rilis V7 lulus pada DB uji dan menulis manifest awal
+
+=== E-1. Satu pembimbing dan satu murobi: perbaikan → teruskan → putus ===
+[lulus] Wali A mengajukan untuk anak dengan tepat satu pembimbing sah → Menunggu Pembimbing
+[lulus] Pembimbing Satu melihat item; Pembimbing Dua tidak
+[lulus] Murobi belum menerima/melihat sebelum penerusan (404, tanpa murobi tujuan)
+[lulus] Notifikasi masuk pembimbing: tepat satu, kepada Pembimbing Satu
+[lulus] Minta perbaikan → wali pengaju diberi tahu
+[lulus] Wali kedua tidak dapat memperbaiki
+[lulus] Wali pengaju memperbaiki; versi sebelum/sesudah tercatat
+[lulus] Teruskan → routing V2 murobi tunggal (Murobi A) pada ID yang sama
+[lulus] Notifikasi diteruskan → wali; masuk murobi → Murobi A
+[lulus] Murobi A dapat memutus; Murobi B 404
+[lulus] Murobi A memutus: satu keputusan Murobi; wali diberi tahu
+[lulus] Satu baris dari pembuatan sampai keputusan (versi 5 = 1 + 4 peristiwa)
+[lulus] Wali pengaju dan wali kedua melihat status sama; wali kedua tanpa isi
+[lulus] Pembatalan sesudah keputusan → 409
+[lulus] Admin mengoreksi keputusan lewat mekanisme V2: tetap satu keputusan, wali diberi tahu dan melihat hasil baru
+
+=== E-2. Nol pembimbing → admin, penugasan sah dibuat, ditetapkan ===
+[lulus] Nol kandidat → antrean admin, notifikasi admin, tanpa notifikasi pembimbing
+[lulus] Admin tidak dapat menetapkan pengurus yang bukan pembimbing sah (422)
+[lulus] Sesudah penugasan sah dibuat admin, kandidat = Pembimbing Dua
+[lulus] Penugasan baru tidak memindahkan pengajuan tanpa penetapan beralasan
+[lulus] Admin menetapkan → antrean Pembimbing Dua, notifikasi, riwayat penetapan
+[info] Routing murobi V7S0002 sesudah diteruskan: Perlu Penetapan Admin
+[lulus] Pembimbing Dua meneruskan; routing murobi V2 berjalan
+[lulus] Admin tidak dapat menetapkan murobi di luar cakupan santri (F5-1)
+[lulus] Murobi memutus Ditolak; satu keputusan
+
+=== E-3. Dua pembimbing → admin menetapkan salah satu ===
+[lulus] Dua kandidat → antrean admin (dua kandidat sah), tanpa murobi
+[lulus] Belum masuk antrean pembimbing mana pun sebelum penetapan
+[lulus] Pembimbing yang tidak ditetapkan → 404 tanpa perubahan
+[lulus] Pembimbing Dua menolak: terminal tanpa keputusan murobi; wali diberi tahu
+
+=== E-4. Pembimbing tanpa akun: nol kandidat sah ===
+[lulus] Penugasan milik pengurus tanpa akun bukan kandidat sah → antrean admin
+[lulus] Wali pengaju membatalkan dari antrean admin
+
+=== E-5. Nol murobi → admin pengganti beralasan ===
+[lulus] Routing murobi nol → Perlu Penetapan Admin; admin diberi tahu, tidak ada murobi
+[lulus] Admin pengganti tanpa alasan penggantian ditolak
+[lulus] Admin pengganti beralasan memutus: satu keputusan berkapasitas Admin Pengganti
+
+=== E-6. Dua murobi → admin menetapkan Murobi B ===
+[lulus] Routing murobi ganda → admin; kedua murobi belum dapat memutus
+[lulus] Murobi A ditolak sesudah penetapan Murobi B
+[lulus] Murobi B memutus; satu keputusan
+
+=== E-7. Dua wali, wali asing, ID tebakan ===
+[lulus] Wali kedua melihat status ringkas tanpa alasan dan tanpa tindakan
+[lulus] Wali kedua tidak dapat membatalkan
+[lulus] Wali asing: daftar tanpa item, rincian 404
+[lulus] Wali asing tidak dapat mengajukan atau membatalkan untuk anak orang lain
+[lulus] ID tebakan (tidak ada, V2, milik anak lain) → 404 bagi wali asing
+[lulus] Pengurus V2 bukan pembimbing tujuan: rincian 404, tinjauan ditolak
+
+=== E-8. Pencabutan relasi dan penugasan pada sesi lama ===
+[lulus] Relasi wali pengaju diarsipkan: rincian 404, batal ditolak, daftar kosong
+[lulus] Pembimbing tetap meninjau (cakupan santri, bukan relasi wali)
+[lulus] Penugasan pembimbing dicabut: tinjauan ditolak, rincian 404, status tetap
+[lulus] Admin menetapkan ulang pembimbing sah (riwayat penetapan ulang beralasan)
+[lulus] Pembimbing pengganti meneruskan ke Murobi A
+[lulus] Seluruh penugasan murobi dicabut pada sesi lama: keputusan ditolak, nol keputusan
+[lulus] Pembatalan sesudah diteruskan; pemegang antrean (murobi) diberi tahu
+[lulus] F5-1: penugasan yang mencakup santri dicabut, penugasan lain tetap aktif → 403 tanpa keputusan
+
+=== E-9. Irisan V2 tetap sesudah pemakaian V7 ===
+[lulus] Keputusan, riwayat, idempotensi, dan kolom V2 baris Pengurus, perizinan warisan, serta identitas tidak berubah oleh E-1…E-8 (6 irisan; verifier exit 0)
+[lulus] Tidak ada notifikasi peristiwa V2 untuk seluruh baris Wali
+
+=== E-10. Benturan tanggal lintas jalur ===
+[lulus] Pengurus V2 bertumpang tindih dengan pengajuan wali yang menunggu pembimbing → 409
+[lulus] Perlu Perbaikan Wali tetap menahan rentang
+[lulus] Sesudah wali membatalkan, rentang dilepas: pengurus V2 dapat mengajukan
+[lulus] Sebaliknya: pengajuan wali bertumpang tindih dengan pengajuan pengurus aktif → 409
+[lulus] Rentang yang ditolak pembimbing dilepas untuk pengajuan baru
+
+=== E-11. Retry berkunci sama dan isi berbeda ===
+[lulus] Buat: retry → ID sama; isi beda → 409; satu baris
+[lulus] Tinjau: retry → hasil sama; tindakan lain berkunci sama → 409; satu tinjauan
+[lulus] Versi lama → 409
+[lulus] Perbaiki: retry → satu perbaikan
+[lulus] Teruskan: retry → satu penerusan
+[lulus] Keputusan: retry → satu keputusan; hasil lain berkunci sama → 409
+[lulus] Seluruh retry E-11 tidak menggandakan notifikasi (0 kunci peristiwa/penerima ganda)
+[lulus] Batal: retry → satu pembatalan
+
+=== E-12. Konkurensi proses terpisah ===
+[lulus] Enam kiriman wali bersamaan berkunci sama → satu ID, satu baris, nol 500
+[lulus] Tiga kiriman lintas jalur bersamaan pada rentang sama → tepat satu pengajuan aktif
+[info] Batal vs putus 4 ronde: {"batal":4,"putus":0,"ganda":0,"galat500":0}
+[lulus] Batal vs putus bersamaan (4 ronde): tepat satu berhasil, satu status terminal, paling banyak satu keputusan, nol 500
+[lulus] Batal vs teruskan bersamaan: tepat satu hasil efektif (Diajukan)
+[lulus] Klik ganda murobi + admin pengganti bersamaan → satu keputusan efektif, hasil seragam bagi yang berhasil, nol 500
+
+=== E-13. Jalur pengurus V2 tanpa tahap pembimbing ===
+[lulus] Pengurus V2 langsung ke routing murobi (asal Pengurus, tanpa tinjauan pembimbing)
+[lulus] Murobi memutus pengajuan pengurus
+[lulus] Admin mengoreksi keputusan V2 (tetap satu baris keputusan)
+[lulus] Pengurus membatalkan pengajuan V2-nya
+[lulus] Pembatalan V2 tetap ditolak untuk pengajuan Wali
+
+=== E-14. Notifikasi ===
+[lulus] Nol baris WhatsApp untuk seluruh peristiwa V7
+[lulus] Push OFF → nol baris Push (nol request provider)
+[lulus] Tepat satu baris per peristiwa/kanal/penerima pada seluruh E2E
+[info] Jenis peristiwa V7 yang terjadi: 10/10 ( tidak terjadi)
+[lulus] Kesepuluh jenis peristiwa V7 terjadi pada E2E dan masing-masing tercatat
+[lulus] Judul/isi/data notifikasi tanpa nama santri, alasan, atau tanggal
+
+=== E-15. Verifier rilis ===
+    Ringkasan verifier V7: 21 lulus, 0 gagal
+[lulus] bin/v7_verify.php lulus pada DB sesudah seluruh E2E dan konkurensi (rantai riwayat, audit, keputusan tunggal, yatim, laporan)
+
+Hasil: 82 lulus, 1 gagal
+  - Preflight rilis V7 lulus pada DB uji dan menulis manifest awal

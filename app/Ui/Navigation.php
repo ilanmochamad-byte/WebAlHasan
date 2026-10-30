@@ -40,7 +40,7 @@ final class Navigation
     private const BOTTOM_BAR = [
         Peran::ADMIN => [2, ['izin', 'santri']],
         Peran::GURU => [2, ['pengajian', 'nilai', 'antrean', 'sikap_binaan']],
-        Peran::PENGURUS => [2, ['izin', 'sikap', 'pembinaan', 'kesehatan', 'bsa']],
+        Peran::PENGURUS => [2, ['izin', 'sikap', 'pembinaan', 'kesehatan', 'bsa', 'keamanan_izin']],
         Peran::PENDIDIKAN => [1, ['rapor', 'pengganti', 'absensi']],
         Peran::ORANG_TUA => [3, ['izin_anak', 'rapor_wali', 'info']],
     ];
@@ -236,6 +236,8 @@ final class Navigation
             ['label' => 'Klinik', 'items' => $klinik],
             // PRD V6: petugas BSA adalah pengurus dengan penugasan BSA aktif.
             ['label' => 'Keuangan', 'items' => in_array($c->bsa(), ['petugas', 'admin_petugas'], true) ? [self::bsa('BSA')] : []],
+            // Penugasan Keamanan (lintas guru/pengurus Fase 3): hanya baca.
+            ['label' => 'Keamanan', 'items' => $c->own(PenugasanJenis::CAP_KEAMANAN_PANTAU) ? self::keamanan() : []],
         ];
     }
 
@@ -328,6 +330,29 @@ final class Navigation
             self::tab('Pengajuan wali', '/portal/izin_wali.php', ['izin_wali.php', 'izin_wali_detail.php']),
             self::tab('Laporan', '/portal/laporan.php', ['laporan.php', 'laporan_cetak.php', 'laporan_csv.php']),
         ], 'Perizinan');
+    }
+
+    /**
+     * Menu Keamanan (lintas guru/pengurus Fase 3, PK-5): kehadiran pengajian,
+     * perizinan, dan pembinaan seluruh santri aktif, hanya baca. Hak dan
+     * cakupannya ditegakkan `portal/_keamanan.php`, `admin/_laporan_guard.php`,
+     * dan layanan masing-masing, bukan oleh menu ini.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private static function keamanan(): array
+    {
+        return [
+            self::item('absensi', 'Kehadiran pengajian', '/admin/admin_laporan_absensi.php', 'fa-clipboard-check',
+                ['admin_laporan_absensi.php', 'laporan_absensi_detail.php', 'laporan_absensi_cetak.php'], [], 'Kehadiran'),
+            // Ikon dan label pendek berbeda dari "Perizinan" pengurus agar tidak tertukar di bilah bawah HP.
+            self::item('keamanan_izin', 'Perizinan santri', '/portal/keamanan_izin.php', 'fa-user-shield',
+                ['keamanan_izin.php', 'keamanan_izin_detail.php', 'keamanan_izin_cetak.php'], [], 'Keamanan'),
+            self::item('keamanan_pembinaan', 'Pembinaan santri', '/portal/keamanan_pelanggaran.php', 'fa-scale-balanced', [], [
+                self::tab('Pelanggaran', '/portal/keamanan_pelanggaran.php', ['keamanan_pelanggaran.php', 'keamanan_pelanggaran_detail.php', 'keamanan_pelanggaran_cetak.php', 'keamanan_lampiran.php']),
+                self::tab('Konseling', '/portal/keamanan_konseling.php', ['keamanan_konseling.php', 'keamanan_konseling_detail.php', 'keamanan_konseling_cetak.php']),
+            ], 'Pembinaan'),
+        ];
     }
 
     /** @return array<string, mixed> */

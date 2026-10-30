@@ -1,0 +1,8 @@
+[lulus] Kontrol: kasus tidak dimiliki/diperbarui X
+[lulus] F-1 riwayat revisi sesi tetap mengenali X sebagai pengisi
+[lulus] F-1 X tidak mengetahui revisi terbaru sesi yang pernah ia isi
+App\V3\V3Exception: Penugasan pembimbing tidak berlaku pada tanggal kejadian. in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/da386690-eda4-4f0b-9d60-cd28bc460db8/scratchpad/baseline/app/V3/PelanggaranService.php:43
+Stack trace:
+#0 /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/da386690-eda4-4f0b-9d60-cd28bc460db8/scratchpad/baseline/tests/penugasan_keamanan_f2_audit_probe.php(53): App\V3\PelanggaranService->create(Array, Array)
+#1 {main}
+Penugasan pembimbing tidak berlaku pada tanggal kejadian.

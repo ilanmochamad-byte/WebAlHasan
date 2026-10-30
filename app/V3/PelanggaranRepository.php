@@ -675,7 +675,8 @@ final class PelanggaranRepository
      * tidak memutus tampilan tindak lanjut pada catatan terkini.
      *
      * Kasus Rahasia hanya ditampilkan kepada pembimbing pemilik dan admin; murobi
-     * tidak mengetahui keberadaannya (keputusan Human Developer 11 September 2026).
+     * dan Keamanan (PK-6) tidak mengetahui keberadaannya (keputusan Human
+     * Developer 11 September 2026).
      *
      * @param array<int,int> $violationIds
      */
@@ -704,10 +705,15 @@ final class PelanggaranRepository
 
     public function scopeSql(string $mode, int $userId, string $alias): array
     {
-        if (!in_array($mode, ['admin','pembimbing','murobi'], true) || !in_array($alias, ['p','k','r'], true)) {
+        if (!in_array($mode, ['admin','pembimbing','murobi','keamanan'], true) || !in_array($alias, ['p','k','r'], true)) {
             throw new V3Exception('Cakupan tidak valid.',403);
         }
         if ($mode === 'admin') { return ['1=1', []]; }
+        // Keamanan (penugasan lintas guru/pengurus Fase 3, PK-5): seluruh santri aktif.
+        // Hak penugasannya diperiksa layanan (`KeamananAkses::sah`) sebelum mode ini dipilih.
+        if ($mode === 'keamanan') {
+            return ["EXISTS (SELECT 1 FROM santri skx WHERE skx.id={$alias}.santri_id AND skx.is_active=1 AND skx.archived_at IS NULL)", []];
+        }
         $assignment = $mode === 'pembimbing' ? 'pembimbing_assignments' : 'murobi_assignments';
         $master = $mode === 'pembimbing' ? 'pengurus' : 'guru';
         $userColumn = $mode === 'pembimbing' ? 'pengurus_id' : 'guru_id';

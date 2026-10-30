@@ -1,0 +1,9 @@
+[lulus] Kontrol: kasus tidak dimiliki/diperbarui X
+[lulus] F-1 riwayat revisi sesi tetap mengenali X sebagai pengisi
+[lulus] F-1 X tidak mengetahui revisi terbaru sesi yang pernah ia isi
+[lulus] F-1 pengisi tetap dikenali setelah lebih dari 100 revisi pelanggaran
+[lulus] F-1 rantai panjang tidak membuka tanda mengetahui sendiri
+RuntimeException: PKF2_BASELINE wajib arsip 464d9a1 in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/da386690-eda4-4f0b-9d60-cd28bc460db8/scratchpad/baseline/tests/penugasan_keamanan_f2_audit_probe.php:61
+Stack trace:
+#0 {main}
+PKF2_BASELINE wajib arsip 464d9a1

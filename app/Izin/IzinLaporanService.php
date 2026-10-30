@@ -6,6 +6,7 @@ namespace App\Izin;
 
 use App\Audit\AuditLogger;
 use App\Auth\Capabilities;
+use App\Keamanan\KeamananAkses;
 use App\Report\IzinCsvExport;
 
 /**
@@ -19,6 +20,12 @@ use App\Report\IzinCsvExport;
  * yang memeriksa hak dengan aturan yang sama (V7 untuk baris wali, V2 untuk
  * baris pengurus). Laporan tidak memuat alasan, catatan, atau alasan
  * keputusan. Bagi orang tua, baris wali yang bukan kirimannya hanya status.
+ *
+ * Penugasan Keamanan (lintas guru/pengurus Fase 3) memakai cakupan
+ * `keamanan` = seluruh santri aktif, kedua asal, semua tahap. Cakupan itu
+ * hanya dipilih bila halaman Keamanan memasang penanda `KeamananAkses` dan
+ * hak penugasannya sah; tidak pernah dari parameter `peran`. Keamanan
+ * membaca dan mencetak, tanpa ekspor CSV (PK-T2).
  */
 final class IzinLaporanService
 {
@@ -75,6 +82,9 @@ final class IzinLaporanService
     public function ekspor(array $user, array $query): array
     {
         $cakupan = $this->cakupan($user, $query['peran'] ?? null);
+        if ($cakupan['mode'] === KeamananAkses::MODE) {
+            throw IzinException::forbidden('Ekspor CSV tidak tersedia bagi Keamanan. Gunakan Cetak / PDF.');
+        }
         $filter = $this->filter($query);
         $this->batasiFilterWali($cakupan, $filter);
         $rows = $this->repo->semua($filter, $cakupan);
@@ -115,6 +125,33 @@ final class IzinLaporanService
         ];
     }
 
+    /**
+     * Seluruh baris kriteria yang sama dengan daftar Keamanan, untuk halaman
+     * cetak (paling banyak 5.000). Hanya cakupan `keamanan`.
+     *
+     * @param array<string, mixed> $user
+     * @param array<string, mixed> $query
+     * @return array{cakupan_label:string, filter:array<string, mixed>, items:array<int, array<string, mixed>>}
+     */
+    public function cetakKeamanan(array $user, array $query): array
+    {
+        $cakupan = $this->cakupan($user);
+        if ($cakupan['mode'] !== KeamananAkses::MODE) {
+            throw IzinException::forbidden('Cetak ini khusus penugasan Keamanan.');
+        }
+        $filter = $this->filter($query);
+        [$rows] = $this->repo->snapshot(fn (): array => [$this->repo->semua($filter, $cakupan)]);
+        if (count($rows) > IzinLaporanRepository::MAX_EKSPOR) {
+            throw IzinException::invalid('Hasil melebihi ' . IzinLaporanRepository::MAX_EKSPOR . ' baris. Persempit filter lalu cetak lagi.');
+        }
+
+        return [
+            'cakupan_label' => $this->labelCakupan($cakupan['mode']),
+            'filter' => $filter,
+            'items' => array_map(fn (array $r): array => $this->proyeksi($r, $cakupan, (int) $user['id']), $rows),
+        ];
+    }
+
     // =======================================================================
 
     /** Filter juga dapat mengungkap medan yang sengaja tidak diproyeksikan. */
@@ -142,6 +179,16 @@ final class IzinLaporanService
             throw new IzinException('Laporan pengajuan wali memerlukan migrasi 030 dan 031.', 503);
         }
         $userId = (int) ($user['id'] ?? 0);
+        if (KeamananAkses::diminta($user)) {
+            if (!KeamananAkses::sah($this->capabilities, $user)) {
+                throw IzinException::forbidden('Akun ini tidak memegang penugasan Keamanan yang aktif.');
+            }
+
+            return [
+                'mode' => KeamananAkses::MODE, 'tersedia' => [KeamananAkses::MODE], 'tanggal' => date('Y-m-d'),
+                'pengurus_id' => null, 'guru_id' => null, 'wali_id' => null,
+            ];
+        }
         $this->capabilities->forget($userId);
         $probe = ['id' => $userId, 'roles' => $this->wali->rolesAkun($userId), 'guru_id' => $this->wali->guruAkun($userId)];
         $tersedia = array_values(array_filter(self::PERAN, fn (string $p): bool => $this->capabilities->has($probe, $p)));
@@ -300,9 +347,11 @@ final class IzinLaporanService
             'tahap' => IzinWaliService::tahap($status),
             'hasil' => self::hasil($status),
             'diajukan_pada' => $r['diajukan_pada'] === null ? null : (string) $r['diajukan_pada'],
-            'detail' => $asalWali
-                ? ['web' => '/portal/izin_wali_detail.php?id=' . $id, 'api' => '/v7/izin/pengajuan/' . $id]
-                : ['web' => '/portal/izin_detail.php?id=' . $id, 'api' => '/izin/pengajuan/' . $id],
+            'detail' => $cakupan['mode'] === KeamananAkses::MODE
+                ? ['web' => '/portal/keamanan_izin_detail.php?id=' . $id, 'api' => null]
+                : ($asalWali
+                    ? ['web' => '/portal/izin_wali_detail.php?id=' . $id, 'api' => '/v7/izin/pengajuan/' . $id]
+                    : ['web' => '/portal/izin_detail.php?id=' . $id, 'api' => '/izin/pengajuan/' . $id]),
         ];
         if ($cakupan['mode'] === Capabilities::ORANG_TUA) {
             $sendiri = $asalWali && (int) $r['diajukan_oleh_user_id'] === $userId && (int) $r['wali_id'] === (int) $cakupan['wali_id'];
@@ -336,6 +385,7 @@ final class IzinLaporanService
             Capabilities::PENGURUS => 'Pengurus — pengajuan Anda dan pengajuan wali yang ditujukan kepada Anda sebagai pembimbing',
             Capabilities::MUROBI => 'Murobi — pengajuan yang diarahkan kepada Anda',
             Capabilities::ORANG_TUA => 'Orang tua — anak yang terhubung dengan Anda',
+            KeamananAkses::MODE => 'Keamanan — seluruh santri aktif, asal wali dan pengurus, hanya baca',
             default => 'Tanpa cakupan',
         };
     }

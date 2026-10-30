@@ -1,0 +1,1 @@
+log galat PHP: 0

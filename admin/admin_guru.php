@@ -104,13 +104,13 @@ elseif ($mode === 'detail' && $selected):
         <li><a href="admin_penugasan.php?jenis=murobi&amp;q=<?= master_e(rawurlencode((string) $selected['nama_guru'])) ?>"><span>Murobi</span><b><?= (int) $tugas['murobi_aktif'] ?></b></a></li>
         <li><a href="admin_penugasan.php?jenis=guru_mapel&amp;q=<?= master_e(rawurlencode((string) $selected['nama_guru'])) ?>"><span>Guru mata pelajaran</span><b>Lihat</b></a></li>
     </ul>
-    <?php // PK-1: penugasan berbasis pengurus milik guru ini (pembimbing, Pendidikan, kesehatan, BSA, PSB).
+    <?php // PK-1: penugasan berbasis pengurus milik guru ini (pembimbing, Pendidikan, kesehatan, BSA, Keamanan, PSB).
     $identitas = $service->identitasGuru($gid);
     if ($identitas !== null): ?>
         <h3 class="h6 mt-3">Penugasan sebagai pengurus</h3>
         <p class="small text-muted mb-2">Guru ini memegang identitas pengurus untuk penugasan selain murobi dan guru mata pelajaran. Nama, nomor HP, dan statusnya mengikuti data guru ini.</p>
         <ul class="ah-mini-list mb-3">
-            <?php foreach (['pembimbing' => 'Pembimbing', 'pendidikan' => 'Bagian Pendidikan', 'kesehatan' => 'Petugas Kesehatan', 'bendahara_bulanan' => 'Petugas BSA'] as $jenisPengurus => $labelPengurus): ?>
+            <?php foreach (['pembimbing' => 'Pembimbing', 'pendidikan' => 'Bagian Pendidikan', 'kesehatan' => 'Petugas Kesehatan', 'bendahara_bulanan' => 'Petugas BSA', 'keamanan' => 'Keamanan'] as $jenisPengurus => $labelPengurus): ?>
                 <li><a href="admin_penugasan.php?jenis=<?= $jenisPengurus ?>&amp;q=<?= master_e(rawurlencode((string) $identitas['nama'])) ?>"><span><?= $labelPengurus ?></span><b>Lihat</b></a></li>
             <?php endforeach; ?>
         </ul>

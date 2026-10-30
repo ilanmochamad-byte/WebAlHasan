@@ -38,6 +38,7 @@ final class PenugasanJenis
     public const PENDIDIKAN = 'pendidikan';
     public const KESEHATAN = 'kesehatan';
     public const BENDAHARA_BULANAN = 'bendahara_bulanan';
+    public const KEAMANAN = 'keamanan';
     public const PANITIA_PSB = 'panitia_psb';
     public const BENDAHARA_PSB = 'bendahara_psb';
 
@@ -49,6 +50,7 @@ final class PenugasanJenis
         self::PENDIDIKAN,
         self::KESEHATAN,
         self::BENDAHARA_BULANAN,
+        self::KEAMANAN,
         self::PANITIA_PSB,
         self::BENDAHARA_PSB,
     ];
@@ -94,6 +96,12 @@ final class PenugasanJenis
     // `bsa.tabungan` = setoran, penarikan/belanja, dan saldo tabungan santri.
     // Admin memperolehnya sebagai pengawasan; layanan BSA hanya mengizinkan baca.
     public const CAP_BSA_TABUNGAN = 'bsa.tabungan';
+    // Penugasan Keamanan (keputusan Human Developer 30 Oktober 2026, PK-5/PK-6):
+    // HANYA BACA kehadiran pengajian, perizinan, dan pembinaan Internal seluruh
+    // santri aktif. Tidak ada jalur tulis yang memeriksa capability ini. Admin
+    // memperolehnya sebagai pengawasan, tetapi halaman Keamanan hanya dibuka
+    // untuk penugasan milik akun sendiri (`App\Keamanan\KeamananAkses`).
+    public const CAP_KEAMANAN_PANTAU = 'keamanan.pantau';
     // Kesiapan V6.
     public const CAP_PSB_PENDAFTAR = 'psb.pendaftar';
     public const CAP_PSB_VERIFIKASI = 'psb.verifikasi';
@@ -219,6 +227,23 @@ final class PenugasanJenis
             'prd' => 'V6',
             'keterangan' => 'Pengurus petugas BSA (Bank Santri Al Hasan), opsional dibatasi satu unit/jenjang: tagihan bulanan, tabungan, dan penarikan/belanja santri dalam cakupan. Admin hanya membaca dan mengaudit.',
         ],
+        self::KEAMANAN => [
+            'label' => 'Keamanan',
+            'label_subjek' => 'Pengurus',
+            'tabel' => 'keamanan_assignments',
+            'entitas' => 'keamanan_assignment',
+            'subjek' => 'pengurus',
+            'subjek_kolom' => 'pengurus_id',
+            'role_dasar' => 'pengurus',
+            'cakupan' => self::CAKUPAN_SELURUH,
+            // PK-5: seperti Petugas Kesehatan, masa berlaku mengikuti tanggal
+            // mulai/selesai dan status aktif, tidak gugur saat semester berganti.
+            'wajib_tahun_aktif' => false,
+            'lama' => false,
+            'capabilities' => [self::CAP_KEAMANAN_PANTAU],
+            'prd' => 'Penugasan Keamanan (Fase 3)',
+            'keterangan' => 'Pengurus atau guru yang memantau kehadiran pengajian, perizinan, dan pembinaan seluruh santri aktif, hanya baca. Kasus pembinaan Rahasia tetap tertutup.',
+        ],
         self::PANITIA_PSB => [
             'label' => 'Panitia PSB',
             'label_subjek' => 'Pengurus',
@@ -268,6 +293,7 @@ final class PenugasanJenis
         self::CAP_PEMBIAYAAN_BULANAN_VERIFIKASI => 'Verifikasi pembayaran bulanan',
         self::CAP_PEMBIAYAAN_BULANAN_LAPORAN => 'Laporan pembiayaan bulanan',
         self::CAP_BSA_TABUNGAN => 'Tabungan santri (BSA)',
+        self::CAP_KEAMANAN_PANTAU => 'Pantauan keamanan (hanya baca)',
         self::CAP_PSB_PENDAFTAR => 'Data pendaftar PSB',
         self::CAP_PSB_VERIFIKASI => 'Verifikasi berkas PSB',
         self::CAP_PSB_SELEKSI => 'Seleksi PSB',
@@ -366,6 +392,7 @@ final class PenugasanJenis
             self::PENDIDIKAN => ['Memverifikasi kelengkapan rapor', 'Menyusun rencana nilai', 'Mengisi nilai pengganti', 'Membaca laporan absensi'],
             self::KESEHATAN => ['Mencatat kunjungan klinik', 'Membaca riwayat kesehatan santri'],
             self::BENDAHARA_BULANAN => ['Menerbitkan tagihan bulanan', 'Mencatat setoran dan penarikan tabungan', 'Membaca saldo santri dalam cakupan'],
+            self::KEAMANAN => ['Membaca kehadiran pengajian', 'Membaca perizinan santri', 'Membaca pembinaan (tanpa kasus Rahasia)'],
             self::PANITIA_PSB, self::BENDAHARA_PSB => ['Belum ada — menunggu modul baru'],
             default => [],
         };
@@ -380,6 +407,7 @@ final class PenugasanJenis
             self::GURU_MAPEL => 'Guru mata pelajaran mengisi nilai satu mata pelajaran pada satu kelas untuk satu semester.',
             self::PENDIDIKAN => 'Bagian Pendidikan (pengurus atau guru) memeriksa kelengkapan bahan rapor dan membaca laporan absensi, opsional untuk satu unit.',
             self::KESEHATAN => 'Petugas kesehatan adalah pengurus atau guru yang mencatat kunjungan klinik seluruh santri aktif. Penugasan berlaku sampai tanggal selesai atau dinonaktifkan, tidak gugur saat semester berganti.',
+            self::KEAMANAN => 'Keamanan adalah pengurus atau guru yang memantau kehadiran pengajian, perizinan, dan pembinaan seluruh santri aktif tanpa dapat mengubah apa pun. Kasus pembinaan Rahasia tetap tertutup. Penugasan berlaku sampai tanggal selesai atau dinonaktifkan, tidak gugur saat semester berganti.',
             self::BENDAHARA_BULANAN => 'Petugas BSA adalah pengurus atau guru yang mengelola tagihan bulanan dan tabungan santri, opsional untuk satu unit. Penugasan berlaku sampai tanggal selesai atau dinonaktifkan, tidak gugur saat semester berganti.',
             default => 'Penugasan ini belum memberi akses ke halaman apa pun sampai modul pembiayaan/PSB baru selesai. Data yang sudah ada tetap dapat dilihat dan dikelola.',
         };

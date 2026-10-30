@@ -1,0 +1,22 @@
+[gagal] M-1 salinan berada pada 031 tanpa kolom pengurus.guru_id
+[gagal] M-1 halaman penugasan berjalan; kelompok guru belum ditawarkan
+[gagal] M-1 memilih guru sebelum 032 seharusnya ditolak
+[lulus] M-1 hak pengurus biasa tetap dihitung tanpa kolom baru
+[lulus] M-1 halaman akun berjalan (pemilik identitas NULL)
+[gagal] M-1 Data Guru tetap dapat disimpan; sinkronisasi tidak berbuat apa-apa
+[gagal] M-2 migrasi 032 diterapkan dan tercatat
+[lulus] M-2 kolom guru_id INT NULL DEFAULT NULL (sama dengan guru.id)
+[lulus] M-2 unique key dan foreign key ke guru terpasang
+[gagal] M-2 seluruh baris lama tidak berubah (guru_id NULL, sidik sama)
+[lulus] M-2 hak pengurus biasa sama sebelum dan sesudah migrasi
+[lulus] M-3 menjalankan ulang 032 aman: tanpa galat, tanpa indeks/FK ganda
+[lulus] M-4 FK menolak identitas untuk guru yang tidak ada (errno 1452)
+[gagal] M-4 unique menolak identitas kedua untuk guru yang sama (errno 1062)
+[gagal] M-5 rollback tanpa identitas berhasil; kolom dan catatan migrasi dilepas
+[gagal] M-5 unique key dan FK ikut dilepas
+RuntimeException: Table 'test_pkf3_f1mig_test.keamanan_assignments' doesn't exist :: SELECT CONCAT(COUNT(*), ":", COALESCE(SUM(CRC32(CONCAT_WS("|", id, pengurus_id, is_active))), 0)) FROM keamanan_assignments in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f1_migration.php:44
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f1_migration.php(66): {closure:/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f1_migration.php:41}('SELECT CONCAT(C...')
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f1_migration.php(152): {closure:/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/penugasan_keamanan_f1_migration.php:58}()
+#2 {main}
+Table 'test_pkf3_f1mig_test.keamanan_assignments' doesn't exist :: SELECT CONCAT(COUNT(*), ":", COALESCE(SUM(CRC32(CONCAT_WS("|", id, pengurus_id, is_active))), 0)) FROM keamanan_assignments

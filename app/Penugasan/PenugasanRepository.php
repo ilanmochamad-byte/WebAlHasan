@@ -75,7 +75,7 @@ final class PenugasanRepository
 
     /**
      * Tabel satu jenis sudah terpasang. Jenis yang ditambahkan migrasi
-     * belakangan (kesehatan, 024) belum ada sebelum migrasinya dijalankan atau
+     * belakangan (kesehatan 024, keamanan 033) belum ada sebelum migrasinya dijalankan atau
      * sesudah rollback; pusat penugasan tetap terbuka tanpanya.
      */
     public function tabelAda(string $jenis): bool

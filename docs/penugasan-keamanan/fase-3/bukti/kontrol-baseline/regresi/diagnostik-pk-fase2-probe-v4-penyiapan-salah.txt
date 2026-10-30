@@ -1,0 +1,5 @@
+App\V4\V4Exception: Isi paling sedikit satu komponen, maksimal 100 harian. in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/da386690-eda4-4f0b-9d60-cd28bc460db8/scratchpad/baseline/app/V4/NilaiService.php:114
+Stack trace:
+#0 /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/da386690-eda4-4f0b-9d60-cd28bc460db8/scratchpad/baseline/tests/penugasan_keamanan_f2_audit_v4.php(35): App\V4\NilaiService->save(Array, Array, true)
+#1 {main}
+Isi paling sedikit satu komponen, maksimal 100 harian.
