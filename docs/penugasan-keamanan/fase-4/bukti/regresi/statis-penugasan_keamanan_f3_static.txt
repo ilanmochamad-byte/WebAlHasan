@@ -1,0 +1,106 @@
+
+=== S-1. Katalog ===
+[lulus] Jenis `keamanan` dan capability `keamanan.pantau`
+[lulus] Definisi: tabel sendiri, seluruh santri aktif, tidak gugur semester, subjek pengurus, satu capability
+[lulus] Keamanan diurutkan sebelum PSB; bukan "modul mendatang"
+[lulus] Pusat penugasan memeriksa keberadaan tabel Keamanan (berjalan sebelum 033/sesudah rollback)
+
+=== S-2. Capability baca tidak dipakai jalur tulis ===
+[gagal] Capability/penanda Keamanan hanya dipakai di guard baca, layanan baca, katalog, dan menu: admin/_laporan_guard.php, app/Izin/IzinLaporanService.php, app/Keamanan/KeamananAkses.php, app/Keamanan/KeamananApiService.php, app/Keamanan/KeamananService.php, app/Penugasan/PenugasanJenis.php, app/Ui/Navigation.php, app/V3/KonselingService.php, app/V3/PelanggaranService.php, portal/_keamanan.php
+[lulus] Modul App\Keamanan hanya membaca (tanpa INSERT/UPDATE/DELETE)
+[lulus] app/V3/PelanggaranService.php: penanda hanya dibaca di readMode (jalur baca)
+[lulus] app/V3/KonselingService.php: penanda hanya dibaca di readMode (jalur baca)
+
+=== S-3. Halaman Keamanan ===
+[lulus] Guard: hak penugasan sendiri, hanya GET/HEAD (405), tanpa cache
+[lulus] Sepuluh halaman Keamanan (izin 3, pelanggaran 4, konseling 3)
+[lulus] keamanan_izin.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_izin_cetak.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_izin_detail.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_konseling.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_konseling_cetak.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_konseling_detail.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_lampiran.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_pelanggaran.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_pelanggaran_cetak.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_pelanggaran_detail.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+
+=== S-4. Layanan dan cakupan ===
+[lulus] Hak dihitung ulang; pengawasan admin (sumber admin) tidak sah
+[lulus] app/V3/PelanggaranRepository.php: mode keamanan = santri aktif
+[lulus] app/V3/KonselingRepository.php: mode keamanan = santri aktif
+[lulus] Konseling: penyaring kerahasiaan bawaan (murobi) berlaku untuk Keamanan
+[lulus] Tautan konseling pada pelanggaran: Rahasia tersaring untuk Keamanan
+[lulus] Rincian kasus: isi internal hanya untuk kasus Internal bagi Keamanan
+[lulus] Laporan izin: cakupan keamanan = santri aktif, kedua asal
+[lulus] Laporan izin: cakupan dipilih dari penanda + hak, bukan parameter; ekspor CSV ditolak
+[lulus] Rincian izin: santri aktif
+
+=== S-5. Audit ===
+[lulus] Rincian izin diaudit sebelum isi dikembalikan; cetak diaudit
+[lulus] Rincian pelanggaran/kasus dan unduhan lampiran diaudit
+[lulus] Jejak `keamanan.*` disaring ke kunci metadata (tanpa alasan/uraian)
+
+=== S-6. Kehadiran ===
+[lulus] Guard laporan: Keamanan seluruh jadwal pada peran Pengurus; CSV ditolak
+[lulus] Tombol Ekspor CSV disembunyikan bagi Keamanan
+[lulus] Menu Keamanan hanya pada peran Pengurus, dari penugasan sendiri
+
+=== S-7. Migrasi ===
+[lulus] Migrasi 033 aditif: satu tabel baru, tanpa ALTER/DML
+[lulus] Rollback 033 berpenjaga data dan hanya melepas tabel Keamanan
+
+=== S-8. Batas Fase 3 ===
+[gagal] Hanya berkas Fase 3 yang berubah terhadap baseline 6c9d544: api/v1/index.php, app/Api/ApiAuthRepository.php, app/Api/ApiAuthService.php, docs/api-v1.md, tests/browser/uji-penugasan-keamanan-f4-app.mjs, tests/penugasan_keamanan_f4_db.sh, tests/penugasan_keamanan_f4_http.php, tests/penugasan_keamanan_f4_static.php
+[gagal] Auth, akun, master, kesehatan, BSA, notifikasi, REST, V4, dan alur tulis izin tidak diubah
+
+=== S-9. Lint ===
+[lulus] lint admin/_laporan_guard.php
+[lulus] lint admin/admin_guru.php
+[lulus] lint admin/admin_laporan_absensi.php
+[lulus] lint admin/laporan_absensi_cetak.php
+[lulus] lint admin/laporan_absensi_detail.php
+[lulus] lint api/v1/index.php
+[lulus] lint app/Api/ApiAuthRepository.php
+[lulus] lint app/Api/ApiAuthService.php
+[lulus] lint app/Audit/AuditLogger.php
+[lulus] lint app/Izin/IzinLaporanRepository.php
+[lulus] lint app/Izin/IzinLaporanService.php
+[lulus] lint app/Keamanan/KeamananAkses.php
+[lulus] lint app/Keamanan/KeamananException.php
+[lulus] lint app/Keamanan/KeamananService.php
+[lulus] lint app/Penugasan/PenugasanJenis.php
+[lulus] lint app/Penugasan/PenugasanRepository.php
+[lulus] lint app/Penugasan/PenugasanService.php
+[lulus] lint app/Report/ReportFilter.php
+[lulus] lint app/Report/ReportRepository.php
+[lulus] lint app/Report/ReportService.php
+[lulus] lint app/Ui/Navigation.php
+[lulus] lint app/V3/KonselingRepository.php
+[lulus] lint app/V3/KonselingService.php
+[lulus] lint app/V3/PelanggaranRepository.php
+[lulus] lint app/V3/PelanggaranService.php
+[lulus] lint app/bootstrap.php
+[lulus] lint portal/_keamanan.php
+[lulus] lint portal/keamanan_izin.php
+[lulus] lint portal/keamanan_izin_cetak.php
+[lulus] lint portal/keamanan_izin_detail.php
+[lulus] lint portal/keamanan_konseling.php
+[lulus] lint portal/keamanan_konseling_cetak.php
+[lulus] lint portal/keamanan_konseling_detail.php
+[lulus] lint portal/keamanan_lampiran.php
+[lulus] lint portal/keamanan_pelanggaran.php
+[lulus] lint portal/keamanan_pelanggaran_cetak.php
+[lulus] lint portal/keamanan_pelanggaran_detail.php
+[lulus] lint tests/penugasan_keamanan_f3_audit_probe.php
+[lulus] lint tests/penugasan_keamanan_f3_audit_report_matrix.php
+[lulus] lint tests/penugasan_keamanan_f3_http.php
+[lulus] lint tests/penugasan_keamanan_f3_integration.php
+[lulus] lint tests/penugasan_keamanan_f3_migration.php
+[lulus] lint tests/penugasan_keamanan_f3_seed.php
+[lulus] lint tests/penugasan_keamanan_f3_static.php
+[lulus] lint app/Keamanan/KeamananApiService.php
+[lulus] lint tests/penugasan_keamanan_f4_http.php
+[lulus] lint tests/penugasan_keamanan_f4_static.php
+
+Hasil: 83 lulus, 3 gagal.

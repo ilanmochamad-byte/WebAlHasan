@@ -1,0 +1,23 @@
+[lulus] Android K: ubin Keamanan dari server fixture tampil
+[lulus] Android: pintu Keamanan dan empat bagian baca tampil
+[lulus] Android: FLAG_SECURE terpasang pada navigator Keamanan
+[lulus] Android: rincian izin asal Wali menampilkan alasan lengkap
+[lulus] Android: daftar konseling hanya Internal tanpa kasus Rahasia
+[lulus] Android: rincian kasus Internal terbaca
+args: [-p, com.ilanmochamad.alhasanApps, -c, android.intent.category.LAUNCHER, 1]
+ arg: "-p"
+ arg: "com.ilanmochamad.alhasanApps"
+ arg: "-c"
+ arg: "android.intent.category.LAUNCHER"
+ arg: "1"
+data="com.ilanmochamad.alhasanApps"
+data="android.intent.category.LAUNCHER"
+[lulus] Android: dari latar setelah pencabutan, isi kasus ditutup dan akses ditolak
+Traceback (most recent call last):
+  File "/private/tmp/pkf4audit-android.py", line 51, in <module>
+    check('SECURE' not in adb('shell','dumpsys','window','windows'),'Android: perlindungan dilepas setelah keluar navigator Keamanan')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/pkf4audit-android.py", line 18, in check
+    if not ok:raise Exception(label)
+              ^^^^^^^^^^^^^^^^^^^^^^
+Exception: Android: perlindungan dilepas setelah keluar navigator Keamanan

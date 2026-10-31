@@ -1,0 +1,39 @@
+=== W-1. Tanpa migrasi baru ===
+[gagal] Baseline audit Fase 3 1f2dbca574805954566305789e589540e27348f0 tersedia
+[lulus] Tidak ada berkas database/ (migrasi/rollback) yang ditambah atau diubah
+
+=== W-2. Pemberitahuan umum ===
+[lulus] Katalog delapan teks generik tanpa angka, rupiah, atau sisipan data
+[lulus] Data hanya {tipe, id}; kanal InApp + Push saja (WhatsApp tidak diantrekan)
+[lulus] Push hanya bila sakelar menyala + perangkat aktif; penerima = wali aktif; gagal antre → 503 (mutasi batal)
+[lulus] Sembilan titik pemberitahuan (tagihan tunggal/massal, setoran/penarikan/belanja, verifikasi setoran, koreksi, pembayaran tunai/transfer sah, verifikasi, pembatalan, bayar dari tabungan) — ditemukan 9
+[lulus] Setiap pemberitahuan diantre sesudah audit di cabang mutasi baru (bukan cabang replay)
+[lulus] Transfer menunggu, penolakan transfer, dan setoran ditolak tidak diberitahukan
+[lulus] Worker Push memeriksa ulang keadaan sumber, santri aktif, dan relasi wali sebelum provider; data = penunjuk yang diperiksa
+
+=== W-3. Privasi wali ===
+[lulus] Daftar pembayaran wali menyaring transfer menunggu di SQL (total dan halaman benar)
+[lulus] Tunggakan wali tanpa jumlah transfer menunggu
+
+=== W-4. Tautan notifikasi ===
+[lulus] Tautan /notifikasi menambah penunjuk keuangan (aditif) dan kategori Keuangan
+[lulus] Pusat notifikasi web menaut ke halaman BSA yang memeriksa ulang hak
+
+=== W-5. Batas Fase 4 ===
+[lulus] Berkas berubah hanya dalam daftar Fase 4
+[lulus] Auth, PSB, penugasan, V2–V5, admin, rute API, dan halaman BSA tidak berubah
+
+=== W-6. Aplikasi (checkout mobile) ===
+[lulus] Klien /v6/bsa: kunci idempotensi per mutasi, tanpa cache disk atau log
+[lulus] 19 layar keuangan tanpa penyimpanan disk, log konsol, atau berbagi berkas
+[lulus] Setiap mutasi aplikasi (11) lewat useMutationGuard + sidik jari isi (11): ketukan ganda diabaikan, retry kunci sama
+[lulus] Layar membaca server lewat usePrivateResource (dimuat ulang saat fokus/aktif, dibuang di latar)
+[lulus] Ketukan notifikasi keuangan hanya membawa penunjuk; bertahan melewati login; layar tujuan meminta server
+[lulus] Konflik versi menawarkan muat ulang eksplisit; persetujuan memakai kotak centang aksesibel
+
+=== W-7. Lint ===
+[gagal] Lint 0 berkas PHP Fase 4
+
+Ringkasan: 20 lulus, 2 gagal
+ - Baseline audit Fase 3 1f2dbca574805954566305789e589540e27348f0 tersedia
+ - Lint 0 berkas PHP Fase 4

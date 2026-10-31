@@ -463,6 +463,25 @@ function keamanan_service(): \App\Keamanan\KeamananService
     );
 }
 
+/**
+ * Penugasan Keamanan (lintas guru/pengurus Fase 4): REST baca-saja untuk
+ * aplikasi di atas layanan yang sama dengan halaman web Keamanan.
+ */
+function keamanan_api_service(): \App\Keamanan\KeamananApiService
+{
+    return new \App\Keamanan\KeamananApiService(
+        app_db(),
+        capabilities(),
+        audit_logger(),
+        keamanan_service(),
+        izin_laporan_service(),
+        izin_service(),
+        v3_pelanggaran_service(),
+        v3_konseling_service(),
+        report_service()
+    );
+}
+
 function pembimbing_service(): PembimbingService
 {
     static $service;

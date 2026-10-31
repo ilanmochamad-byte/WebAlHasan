@@ -1,0 +1,34 @@
+=== Z-1. Batas ===
+[gagal] Baseline main 0b2fcd1 tersedia
+[lulus] Berkas berubah hanya daftar perbaikan
+[lulus] database/ tidak berubah
+[lulus] app/Bsa/BsaService.php tidak berubah
+[lulus] app/Bsa/BsaRepository.php tidak berubah
+[lulus] app/Bsa/TabunganService.php tidak berubah
+[lulus] app/Bsa/LaporanService.php tidak berubah
+[lulus] app/Bsa/BsaNotifikasi.php tidak berubah
+[lulus] app/Auth/ tidak berubah
+[lulus] app/Penugasan/ tidak berubah
+[lulus] app/Audit/ tidak berubah
+[lulus] api/ tidak berubah
+[lulus] portal/bsa_penerbitan.php tidak berubah
+[lulus] portal/_bsa.php tidak berubah
+
+=== Z-2. Layanan ===
+[lulus] Sasaran penerbitan: saringan santri opsional (parameter terikat), pemanggil lama tetap sah
+[lulus] Normalisasi penerbitan membaca santri_id opsional dengan validasi ID
+[lulus] Hash pratinjau dan hash idempotensi menambah santri hanya bila ada (hash massal lama tetap)
+[lulus] Santri diperiksa masih aktif dalam cakupan sebelum replay
+[lulus] Manual hanya tanpa kelas / unit tanpa tarif; hak ditegakkan (kelola, 404 di luar cakupan)
+
+=== Z-3. Halaman ===
+[lulus] Halaman memakai penjaga _bsa.php dan hanya petugas berpenugasan
+[lulus] Jalan tarif: pratinjau berhash lalu penerbitan dengan santri_id
+[lulus] Kiriman manual diperiksa ulang server; isian manual hanya ditampilkan bila boleh
+[lulus] Sebelum migrasi 028: isian manual Fase 1 tetap
+
+=== Z-4. Lint ===
+[lulus] Lint PHP berkas baru/berubah
+
+Ringkasan: 23 lulus, 1 gagal
+  - Baseline main 0b2fcd1 tersedia

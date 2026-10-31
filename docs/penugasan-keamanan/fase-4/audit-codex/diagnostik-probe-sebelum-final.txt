@@ -1,0 +1,39 @@
+role Pengurus guru dicabut: HTTP 403,403,403,403,403,403,403,403
+[lulus] role Pengurus guru dicabut: delapan rute tanpa isi (token lama)
+[lulus] role Pengurus guru dicabut: ubin gugur
+[lulus] role Pengurus guru dicabut: pulih sesudah dikembalikan
+master Pengurus nonaktif: HTTP 403,403,403,403,403,403,403,403
+[lulus] master Pengurus nonaktif: delapan rute tanpa isi (token lama)
+[lulus] master Pengurus nonaktif: ubin gugur
+[lulus] master Pengurus nonaktif: pulih sesudah dikembalikan
+master Guru diarsipkan: HTTP 403,403,403,403,403,403,403,403
+[lulus] master Guru diarsipkan: delapan rute tanpa isi (token lama)
+[lulus] master Guru diarsipkan: ubin gugur
+[lulus] master Guru diarsipkan: pulih sesudah dikembalikan
+identitas guru dipalsukan ke pengurus orang lain: HTTP 403,403,403,403,403,403,403,403
+[lulus] identitas guru dipalsukan ke pengurus orang lain: delapan rute tanpa isi (token lama)
+[lulus] identitas guru dipalsukan ke pengurus orang lain: ubin gugur
+[lulus] identitas guru dipalsukan ke pengurus orang lain: pulih sesudah dikembalikan
+penugasan belum mulai: HTTP 403,403,403,403,403,403,403,403
+[lulus] penugasan belum mulai: delapan rute tanpa isi (token lama)
+[lulus] penugasan belum mulai: ubin gugur
+[lulus] penugasan belum mulai: pulih sesudah dikembalikan
+[lulus] Keamanan bertahan saat semester tidak aktif
+[lulus] Seluruh pengawasan admin tidak dipresentasikan sebagai penugasan
+[lulus] Sumber keduanya (admin + tugas sendiri) tetap sah
+[lulus] Array filter ditolak: /keamanan/izin?asal[]=wali
+[lulus] Array filter ditolak: /keamanan/pelanggaran?status[]=Dicatat
+[lulus] Array filter ditolak: /keamanan/konseling?page[]=1
+<anonymous_script>:1
+<br />
+^
+
+SyntaxError: Unexpected token '<', "<br />
+<b>"... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4359:19)
+    at successSteps (node:internal/deps/undici/undici:6998:27)
+    at readAllBytes (node:internal/deps/undici/undici:5821:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v26.7.0

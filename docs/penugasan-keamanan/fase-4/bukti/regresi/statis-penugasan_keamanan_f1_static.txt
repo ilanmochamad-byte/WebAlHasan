@@ -1,0 +1,137 @@
+
+=== S-1. Migrasi 032 ===
+[gagal] 032 adalah migrasi terakhir dan memiliki pasangan rollback
+[lulus] Migrasi tanpa DROP/DELETE/TRUNCATE/UPDATE/INSERT/RENAME: baris lama tidak diubah
+[lulus] ALTER hanya pada tabel pengurus
+[lulus] Tiga langkah bersyarat information_schema (kolom, unique, FK): dapat dijalankan ulang
+[lulus] Kolom INT NULL, unique per guru, dan FK ke guru(id)
+[lulus] FK tanpa CASCADE/SET NULL: menghapus guru yang punya identitas ditolak basis data
+
+=== S-2. Rollback 032 ===
+[lulus] Penjaga data CHECK dipasang sebelum perubahan skema
+[lulus] Penjaga menghitung identitas pengurus milik guru
+[lulus] Rollback tidak menghapus baris maupun tabel permanen
+[lulus] Urutan pelepasan: FK → unique → kolom
+
+=== S-3. Katalog penugasan ===
+[lulus] PK-2: Murobi dan Guru Mapel tetap berbasis guru dengan role dasar guru
+[lulus] PK-1: enam jenis lain tetap merujuk pengurus_id dengan role dasar pengurus (modul V2–V7 tidak berubah)
+[gagal] Fase 1 tidak menambah jenis penugasan (Keamanan adalah Fase 3)
+[lulus] Penjelasan pembimbing menyebut pengurus atau guru
+
+=== S-4. Layanan ===
+[lulus] Identitas dibentuk di dalam transaksi pembuatan, sebelum kunci subjek
+[lulus] Urutan kunci: guru → identitas → akun
+[lulus] Pembentukan identitas dan penghubungan akun diaudit wajib (gagal audit = batal)
+[lulus] Guru, identitas, dan akun dibaca dengan kunci baris
+[lulus] Jalur guru hanya pada pembuatan jenis berbasis pengurus; pengubahan tidak mengganti subjek
+[lulus] Capabilities: syarat identitas dipakai untuk akun pengurus dan cakupan penugasan, dijaga keberadaan skema
+[lulus] Capabilities: identitas hanya untuk akun guru pemiliknya dan selama guru aktif
+[lulus] app/Account/AccountRepository.php: rujukan pengurus.guru_id dijaga keberadaan skema
+[lulus] app/Account/PerizinanAccountRepository.php: rujukan pengurus.guru_id dijaga keberadaan skema
+[lulus] app/MasterData/MasterDataRepository.php: rujukan pengurus.guru_id dijaga keberadaan skema
+[lulus] app/Penugasan/PenugasanRepository.php: rujukan pengurus.guru_id dijaga keberadaan skema
+[lulus] Data Guru: simpan dan ubah status menyinkronkan identitas di transaksi yang sama
+[lulus] Data Pengurus: simpan dan ubah status menolak identitas milik guru
+[lulus] Penghubungan manual akun guru ke pengurus biasa tetap ditolak
+
+=== S-5. Halaman web ===
+[lulus] admin/admin_penugasan.php tanpa SQL langsung
+[lulus] admin/admin_pengurus.php tanpa SQL langsung
+[lulus] admin/admin_guru.php tanpa SQL langsung
+[lulus] Kelompok Guru: nilai guru:ID dari integer, label di-escape
+[lulus] Kelompok Guru hanya pada formulir tambah
+[lulus] Peringatan nama sama: hanya penanda dan catatan, nama di-escape
+[lulus] Penanda nama sama dihitung layanan dari pengurus biasa aktif
+[lulus] Daftar pengurus: identitas guru tanpa menu ubah/status
+
+=== S-6. Batas Fase 1 ===
+[gagal] Hanya berkas Fase 1 yang berubah terhadap baseline 8917295: admin/_laporan_guard.php, admin/admin_laporan_absensi.php, admin/laporan_absensi_cetak.php, admin/laporan_absensi_detail.php, api/v1/index.php, app/Api/ApiAuthRepository.php, app/Api/ApiAuthService.php, app/Api/IzinApiService.php, app/Audit/AuditLogger.php, app/Beranda/BerandaService.php, app/Izin/IzinLaporanRepository.php, app/Izin/IzinLaporanService.php, app/Izin/IzinRouter.php, app/Izin/IzinWaliService.php, app/Izin/IzinWorkflowService.php, app/Izin/PemisahanTugas.php, app/Keamanan/KeamananAkses.php, app/Keamanan/KeamananException.php, app/Keamanan/KeamananService.php, app/Report/ReportFilter.php, app/Report/ReportRepository.php, app/Report/ReportService.php, app/Ui/Navigation.php, app/V3/KonselingRepository.php, app/V3/KonselingService.php, app/V3/PelanggaranRepository.php, app/V3/PelanggaranService.php, app/V3/PemisahanTugas.php, app/V4/SikapService.php, app/V4/VerifikasiService.php, app/bootstrap.php, database/migrations/033_penugasan_keamanan_fase3_keamanan.sql, database/rollbacks/033_penugasan_keamanan_fase3_keamanan.sql, docs/api-v1.md, portal/_keamanan.php, portal/izin_antrean.php, portal/izin_detail.php, portal/keamanan_izin.php, portal/keamanan_izin_cetak.php, portal/keamanan_izin_detail.php, portal/keamanan_konseling.php, portal/keamanan_konseling_cetak.php, portal/keamanan_konseling_detail.php, portal/keamanan_lampiran.php, portal/keamanan_pelanggaran.php, portal/keamanan_pelanggaran_cetak.php, portal/keamanan_pelanggaran_detail.php, portal/sikap_semester.php, portal/v3_konseling_detail.php, portal/v3_pelanggaran_detail.php, portal/verifikasi_semester.php, tests/browser/uji-penugasan-keamanan-f2.mjs, tests/browser/uji-penugasan-keamanan-f3.mjs, tests/penugasan_keamanan_f2_audit_probe.php, tests/penugasan_keamanan_f2_audit_v4.php, tests/penugasan_keamanan_f2_db.sh, tests/penugasan_keamanan_f2_http.php, tests/penugasan_keamanan_f2_integration.php, tests/penugasan_keamanan_f2_seed.php, tests/penugasan_keamanan_f2_static.php, tests/penugasan_keamanan_f3_audit_probe.php, tests/penugasan_keamanan_f3_audit_report_matrix.php, tests/penugasan_keamanan_f3_db.sh, tests/penugasan_keamanan_f3_http.php, tests/penugasan_keamanan_f3_integration.php, tests/penugasan_keamanan_f3_migration.php, tests/penugasan_keamanan_f3_seed.php, tests/penugasan_keamanan_f3_static.php, app/Keamanan/KeamananApiService.php, tests/browser/uji-penugasan-keamanan-f4-app.mjs, tests/penugasan_keamanan_f4_db.sh, tests/penugasan_keamanan_f4_http.php, tests/penugasan_keamanan_f4_static.php
+[gagal] Modul izin, pembinaan, rapor, kesehatan, BSA, notifikasi, API, dan portal tidak diubah
+
+=== S-7. Lint ===
+[lulus] lint admin/_laporan_guard.php
+[lulus] lint admin/admin_guru.php
+[lulus] lint admin/admin_laporan_absensi.php
+[lulus] lint admin/admin_pengurus.php
+[lulus] lint admin/admin_penugasan.php
+[lulus] lint admin/laporan_absensi_cetak.php
+[lulus] lint admin/laporan_absensi_detail.php
+[lulus] lint api/v1/index.php
+[lulus] lint app/Account/AccountRepository.php
+[lulus] lint app/Account/AccountService.php
+[lulus] lint app/Account/PerizinanAccountRepository.php
+[lulus] lint app/Api/ApiAuthRepository.php
+[lulus] lint app/Api/ApiAuthService.php
+[lulus] lint app/Api/IzinApiService.php
+[lulus] lint app/Audit/AuditLogger.php
+[lulus] lint app/Auth/Capabilities.php
+[lulus] lint app/Beranda/BerandaService.php
+[lulus] lint app/Izin/IzinLaporanRepository.php
+[lulus] lint app/Izin/IzinLaporanService.php
+[lulus] lint app/Izin/IzinRouter.php
+[lulus] lint app/Izin/IzinWaliService.php
+[lulus] lint app/Izin/IzinWorkflowService.php
+[lulus] lint app/Izin/PemisahanTugas.php
+[lulus] lint app/Keamanan/KeamananAkses.php
+[lulus] lint app/Keamanan/KeamananException.php
+[lulus] lint app/Keamanan/KeamananService.php
+[lulus] lint app/MasterData/MasterDataRepository.php
+[lulus] lint app/MasterData/MasterDataService.php
+[lulus] lint app/Penugasan/PenugasanJenis.php
+[lulus] lint app/Penugasan/PenugasanRepository.php
+[lulus] lint app/Penugasan/PenugasanService.php
+[lulus] lint app/Report/ReportFilter.php
+[lulus] lint app/Report/ReportRepository.php
+[lulus] lint app/Report/ReportService.php
+[lulus] lint app/Ui/Navigation.php
+[lulus] lint app/V3/KonselingRepository.php
+[lulus] lint app/V3/KonselingService.php
+[lulus] lint app/V3/PelanggaranRepository.php
+[lulus] lint app/V3/PelanggaranService.php
+[lulus] lint app/V3/PemisahanTugas.php
+[lulus] lint app/V4/SikapService.php
+[lulus] lint app/V4/VerifikasiService.php
+[lulus] lint app/bootstrap.php
+[lulus] lint portal/_keamanan.php
+[lulus] lint portal/izin_antrean.php
+[lulus] lint portal/izin_detail.php
+[lulus] lint portal/keamanan_izin.php
+[lulus] lint portal/keamanan_izin_cetak.php
+[lulus] lint portal/keamanan_izin_detail.php
+[lulus] lint portal/keamanan_konseling.php
+[lulus] lint portal/keamanan_konseling_cetak.php
+[lulus] lint portal/keamanan_konseling_detail.php
+[lulus] lint portal/keamanan_lampiran.php
+[lulus] lint portal/keamanan_pelanggaran.php
+[lulus] lint portal/keamanan_pelanggaran_cetak.php
+[lulus] lint portal/keamanan_pelanggaran_detail.php
+[lulus] lint portal/sikap_semester.php
+[lulus] lint portal/v3_konseling_detail.php
+[lulus] lint portal/v3_pelanggaran_detail.php
+[lulus] lint portal/verifikasi_semester.php
+[lulus] lint tests/penugasan_keamanan_f1_audit_probe.php
+[lulus] lint tests/penugasan_keamanan_f1_http.php
+[lulus] lint tests/penugasan_keamanan_f1_integration.php
+[lulus] lint tests/penugasan_keamanan_f1_migration.php
+[lulus] lint tests/penugasan_keamanan_f1_static.php
+[lulus] lint tests/penugasan_keamanan_f1_token_probe.php
+[lulus] lint tests/penugasan_keamanan_f1_worker.php
+[lulus] lint tests/penugasan_keamanan_f2_audit_probe.php
+[lulus] lint tests/penugasan_keamanan_f2_audit_v4.php
+[lulus] lint tests/penugasan_keamanan_f2_http.php
+[lulus] lint tests/penugasan_keamanan_f2_integration.php
+[lulus] lint tests/penugasan_keamanan_f2_seed.php
+[lulus] lint tests/penugasan_keamanan_f2_static.php
+[lulus] lint tests/penugasan_keamanan_f3_audit_probe.php
+[lulus] lint tests/penugasan_keamanan_f3_audit_report_matrix.php
+[lulus] lint tests/penugasan_keamanan_f3_http.php
+[lulus] lint tests/penugasan_keamanan_f3_integration.php
+[lulus] lint tests/penugasan_keamanan_f3_migration.php
+[lulus] lint tests/penugasan_keamanan_f3_seed.php
+[lulus] lint tests/penugasan_keamanan_f3_static.php
+[lulus] lint app/Keamanan/KeamananApiService.php
+[lulus] lint tests/penugasan_keamanan_f4_http.php
+[lulus] lint tests/penugasan_keamanan_f4_static.php
+
+Hasil: 117 lulus, 4 gagal.

@@ -1,0 +1,44 @@
+=== I-1. Versi Font Awesome ===
+[lulus] app/Ui/Layout.php memuat Font Awesome 6.0.0 saja
+[lulus] app/Ui/Denial.php memuat Font Awesome 6.0.0 saja
+[lulus] portal/index.php memuat Font Awesome 6.0.0 saja
+
+=== I-2. Ikon navigasi tersedia ===
+[lulus] Fixture memuat daftar ikon Solid (1670 nama)
+[lulus] Navigation.php memakai 30 nama ikon
+[lulus] fa-address-book ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-bars ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-bell ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-book-open ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-box-archive ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-calendar-days ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-chalkboard-user ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-chart-area ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-clipboard-check ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-door-open ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-envelope-open-text ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-file-lines ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-file-signature ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-heart ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-house ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-id-badge ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-inbox ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-key ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-kit-medical ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-money-bill ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-newspaper ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-pen ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-pen-to-square ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-scale-balanced ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-school ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-tower-broadcast ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-user-lock ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-user-plus ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-user-shield ada di Font Awesome Free 6.0.0 Solid
+[lulus] fa-wallet ada di Font Awesome Free 6.0.0 Solid
+
+=== I-3. Ikon Perizinan dan Izin anak ===
+[lulus] Perizinan memakai fa-door-open
+[lulus] Izin anak memakai fa-door-open
+
+Semua pemeriksaan lulus.
