@@ -1,6 +1,6 @@
 # Penugasan lintas guru/pengurus — Fase 5: kesiapan rilis
 
-**Status (31 Oktober 2026): implementasi Claude Code selesai, menunggu audit independen Codex.** Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Tidak ada fase berikutnya dalam workstream ini; keputusan rilis tetap milik Human Developer.
+**Status (31 Oktober 2026): LULUS audit teknis lokal Codex setelah tiga koreksi alat rilis.** Laporan dan bukti independen: [`AUDIT-CODEX.md`](AUDIT-CODEX.md), `audit-codex/`. Kesiapan produksi belum dinyatakan lulus. Belum merge, belum deploy, belum migrasi produksi, belum rilis aplikasi. Tidak ada fase berikutnya dalam workstream ini; keputusan rilis tetap milik Human Developer.
 
 | Butir | Nilai |
 | --- | --- |
@@ -114,7 +114,7 @@ Pembanding: handoff/audit Fase 4 (`../fase-4/bukti/regresi/ringkasan.txt`). Hasi
 
 Kegagalan V7 Fase 5 E2E 82/1 (preflight historis menolak 032), statis lain, dan dua exit 77 V3 sama dengan Fase 4. Probe audit Codex Fase 2 (perlu arsip baseline `464d9a1`) dan matriks laporan Fase 3 (perlu server/sakelar audit) tidak diulang karena kode yang mereka periksa tidak berubah. V2, V3, V5, V6, dan redesain HTTP juga tidak diulang karena Fase 5 tidak menyentuh kode aplikasi (S-4 statis).
 
-## Penafsiran (menunggu tinjauan auditor)
+## Penafsiran (diterima dalam lingkup lokal; lihat audit Codex)
 
 - **PF5-1 Rilis utuh.** 032 dan 033 dirilis bersama kode Fase 1–4. Preflight dan verifier menolak 032 tanpa 033. Fase 1 tanpa pemisahan tugas Fase 2 tidak boleh hidup di produksi, dan Fase 2 tidak memiliki migrasi sehingga dirilis bersama kodenya.
 - **PF5-2 Batas waktu pemisahan tugas.** Invarians keputusan/koreksi izin berlaku sejak `schema_migrations.applied_at` 032, sebagai pengganti waktu deploy kode Fase 2 yang tidak tercatat di DB. Keputusan sebelumnya adalah riwayat lama dan hanya dilaporkan. Routing murobi ke guru milik akun terlibat hanya `[info]`, karena `users.guru_id` dapat berubah sesudahnya dan perubahan bersamaan tidak dikunci (batas Fase 2).
@@ -141,4 +141,4 @@ Kegagalan V7 Fase 5 E2E 82/1 (preflight historis menolak 032), statis lain, dan 
 
 ## Handoff
 
-Tidak merge, deploy, migrasi produksi, atau rilis aplikasi. Berhenti untuk audit independen Codex Fase 5.
+Audit independen Codex selesai; tiga koreksi dan seluruh batas dicatat di `AUDIT-CODEX.md`. Tidak merge, deploy, migrasi produksi, atau rilis aplikasi. Berhenti setelah commit/push hasil audit Fase 5.

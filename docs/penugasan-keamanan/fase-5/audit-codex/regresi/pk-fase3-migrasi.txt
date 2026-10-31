@@ -1,0 +1,21 @@
+[lulus] M-0 salinan berada pada 033 dengan tabel kosong
+[lulus] M-5a rollback 033 saat kosong berhasil; tabel dan catatan dilepas
+[lulus] M-1 pusat penugasan: Keamanan "belum dipasang", daftar kosong tanpa galat
+[lulus] M-1 tanpa tabel: tidak ada capability Keamanan
+[lulus] M-1 peta menu pengurus tanpa grup Keamanan
+[lulus] M-1 laporan izin lain tetap berjalan
+[lulus] M-2 migrasi 033 diterapkan dan tercatat
+[lulus] M-2 tabel baru kosong; seluruh tabel lain tidak berubah (sidik sama)
+[lulus] M-2 hak akun sama sebelum dan sesudah migrasi
+[lulus] M-2 lima kunci asing terpasang (pengurus, tahun, pembuat, pengubah, pengakhir)
+[lulus] M-3 menjalankan ulang 033 aman: tanpa galat, tanpa batasan ganda
+[lulus] M-4 kunci asing menolak pengurus yang tidak ada (errno 1452)
+[lulus] M-4 CHECK menolak tanggal selesai sebelum mulai (errno 4025)
+[lulus] M-4 tidak ada baris tersisa dari percobaan yang ditolak
+[lulus] M-5b rollback kosong berhasil; data lain utuh
+[lulus] M-5c naik lagi sesudah rollback berhasil
+[lulus] M-6 penyiapan: penugasan Keamanan lewat layanan, hak aktif
+[lulus] M-6 rollback ditolak penjaga data walau penugasan sudah nonaktif (Migrasi gagal pada 033_penugasan_keamanan_fase3_keamanan.sql: CONSTRAINT `penugasan_fase3_rollback_guard_kosong` failed for `test_pkf5audit_f3m_test`.`penugasan_fase3_rollback_guard`)
+[lulus] M-6 tabel, catatan migrasi, riwayat penugasan, dan data lain tetap sesudah penolakan
+
+Hasil: 19 lulus, 0 gagal.

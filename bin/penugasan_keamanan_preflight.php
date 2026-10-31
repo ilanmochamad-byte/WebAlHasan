@@ -174,9 +174,23 @@ $manifest = json_encode([
     'pk_terpasang' => $terpasang,
 ] + pk_snapshot($db), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 if ($tujuan !== null) {
-    file_put_contents($tujuan, $manifest . PHP_EOL);
-    @chmod($tujuan, 0600);
-    echo PHP_EOL . 'Manifest privat ditulis: ' . $tujuan . PHP_EOL;
+    // Tulis privat sejak byte pertama. Jangan chmod tujuan yang gagal ditulis
+    // (misalnya direktori), atau mengaku sukses tanpa restore point tersimpan.
+    $sementara = @tempnam(dirname($tujuan), '.pk-manifest-');
+    $tersimpan = false;
+    if ($sementara !== false) {
+        $isiManifest = $manifest . PHP_EOL;
+        $tersimpan = @chmod($sementara, 0600)
+            && @file_put_contents($sementara, $isiManifest) === strlen($isiManifest)
+            && @rename($sementara, $tujuan);
+        if (!$tersimpan) {
+            @unlink($sementara);
+        }
+    }
+    $periksa($tersimpan, 'Manifest privat tersimpan dengan izin 0600: ' . $tujuan);
+    if ($tersimpan) {
+        echo PHP_EOL . 'Manifest privat ditulis: ' . $tujuan . PHP_EOL;
+    }
 } else {
     echo $manifest . PHP_EOL;
 }

@@ -100,20 +100,28 @@ if (!$hanyaIrisan) {
         'UNIQUE pengurus_guru_unique (guru_id): satu guru paling banyak satu identitas');
     // Saringan skema/tabel langsung pada KEY_COLUMN_USAGE: tanpa itu MariaDB
     // membuka seluruh tabel di server (lambat pada hosting bersama).
-    $fk = static fn (string $tabel, string $nama): string => (string) v7f1_nilai($db, "SELECT CONCAT(REFERENCED_TABLE_NAME, '.', REFERENCED_COLUMN_NAME)
+    $fk = static fn (string $tabel, string $nama): array => $db->query("SELECT COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME
         FROM information_schema.KEY_COLUMN_USAGE
-        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '$tabel' AND CONSTRAINT_NAME = '$nama' AND REFERENCED_TABLE_NAME IS NOT NULL");
-    $periksa($fk('pengurus', 'pengurus_guru_fk') === 'guru.id', 'Kunci asing pengurus_guru_fk → guru.id');
+        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '$tabel' AND CONSTRAINT_NAME = '$nama' AND REFERENCED_TABLE_NAME IS NOT NULL
+        ORDER BY ORDINAL_POSITION")->fetch_all(MYSQLI_NUM);
+    $periksa($fk('pengurus', 'pengurus_guru_fk') === [['guru_id', 'guru', 'id']], 'Kunci asing pengurus_guru_fk → guru.id');
     $periksa(v7_kolom($db, PK_TABEL) === PK_KOLOM_KEAMANAN, 'Kolom keamanan_assignments persis menurut 033 (' . count(PK_KOLOM_KEAMANAN) . ' kolom)');
     $periksa(strtolower((string) v7f1_nilai($db, "SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '" . PK_TABEL . "'")) === 'innodb',
         'keamanan_assignments bermesin InnoDB');
     $periksa((string) v7f1_nilai($db, "SELECT GROUP_CONCAT(COLUMN_NAME ORDER BY SEQ_IN_INDEX) FROM information_schema.STATISTICS
         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '" . PK_TABEL . "' AND INDEX_NAME = 'keamanan_assignment_unique' AND NON_UNIQUE = 0") === 'pengurus_id,tahun_ajaran_id,tanggal_mulai',
         'UNIQUE keamanan_assignment_unique (pengurus_id, tahun_ajaran_id, tanggal_mulai)');
+    $kolomFk = ['keamanan_pengurus_fk' => 'pengurus_id', 'keamanan_tahun_fk' => 'tahun_ajaran_id', 'keamanan_creator_fk' => 'created_by',
+        'keamanan_updater_fk' => 'updated_by', 'keamanan_ender_fk' => 'diakhiri_oleh'];
     foreach (PK_FK_KEAMANAN as $nama => $induk) {
-        $periksa(str_starts_with($fk(PK_TABEL, $nama), $induk . '.'), 'Kunci asing ' . $nama . ' → ' . $induk);
+        $periksa($fk(PK_TABEL, $nama) === [[$kolomFk[$nama], $induk, 'id']], 'Kunci asing ' . $nama . ' → ' . $induk);
     }
-    $periksa($n("SELECT COUNT(*) FROM information_schema.CHECK_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND CONSTRAINT_NAME = 'keamanan_range_check'") === 1,
+    // Nama saja dapat cocok walau isi CHECK berubah menjadi CHECK (1).
+    // MariaDB dan MySQL menambahkan backtick/kurung/spasi saat normalisasi.
+    $clauses = $db->query("SELECT CHECK_CLAUSE FROM information_schema.CHECK_CONSTRAINTS
+        WHERE CONSTRAINT_SCHEMA = DATABASE() AND CONSTRAINT_NAME = 'keamanan_range_check'")->fetch_all(MYSQLI_NUM);
+    $clause = count($clauses) === 1 ? preg_replace('/[\\s`()]+/', '', strtolower((string) $clauses[0][0])) : '';
+    $periksa($clause === 'tanggal_selesaiisnullortanggal_selesai>=tanggal_mulai' && v7f1_check_aktif($db),
         'CHECK keamanan_range_check (tanggal_selesai ≥ tanggal_mulai) terpasang');
     $periksa($n("SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE 'penugasan\\_fase%rollback\\_guard'") === 0,
         'Tidak ada tabel penjaga rollback tersisa');
@@ -244,9 +252,23 @@ if ($manifestPath !== null) {
     foreach ($kunci as $k) {
         $valid = $valid && is_array($m[$k] ?? null) && $m[$k] !== [];
     }
+    $sebelum = ($m['pk_terpasang'] ?? null) === array_fill_keys(PK_MIGRASI, false);
+    $sesudah = ($m['pk_terpasang'] ?? null) === array_fill_keys(PK_MIGRASI, true);
+    // Status hilang/sebagian atau isi_pk yang terpotong tidak boleh mengubah
+    // manifest pasca-rilis menjadi pengecekan tabel lama saja.
+    $valid = $valid && ($sebelum || $sesudah) && is_array($m['isi_pk'] ?? null)
+        && (!$sebelum || $m['isi_pk'] === [])
+        && (!$sesudah || array_keys($m['isi_pk']) === ['identitas_guru', PK_TABEL]);
     $periksa($valid, 'Manifest privat terbaca dan lengkap: ' . $manifestPath);
     if ($valid) {
         $kini = pk_snapshot($db);
+        if (!$hanyaIrisan && $sebelum) {
+            // Manifest sebelum 032/033 hanya membuktikan rilis segera sesudah
+            // migrasi, sebelum identitas/penugasan pertama (runbook §3.4).
+            // Mengaku "pra-rilis" tidak boleh melewati isi pulihan berisi data.
+            $periksa(($kini['isi_pk']['identitas_guru']['baris'] ?? -1) === 0 && ($kini['isi_pk'][PK_TABEL]['baris'] ?? -1) === 0,
+                'Manifest pra-rilis: identitas guru dan penugasan Keamanan masih kosong (sebelum lalu lintas)');
+        }
         foreach ($kunci as $k) {
             $beda = [];
             foreach ($m[$k] as $t => $nilai) {

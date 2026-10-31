@@ -1,0 +1,6 @@
+1. Percobaan rilis sandbox awal tidak dapat menghubungi DB lokal (mysqli closed); diulang melalui izin alat.
+2. Probe pertama belum memulihkan izin direktori sesudah kontrol tujuan direktori: preflight lama chmod direktori menjadi 0600. Probe kini memulihkan 0700 sebelum kontrol positif terakhir. Hasil kontrol sesudah koreksi pembantu: 6/8; ditambah satu skenario pra-rilis palsu menjadi hasil final 6/9.
+3. Dua orkestrator rilis/regresi sempat tumpang tindih. Keduanya dihentikan beserta proses anak dan semua fixture dibangun ulang. Log percobaan terhenti di /private/tmp/pkf5audit-*-terhenti* tidak menjadi bukti penerimaan. Ulangan rilis berjalan sendiri sampai 49/0, lalu E2E dan regresi secara berurutan. Setelah penjaga manifest pra-rilis dilengkapi, seluruh rilis diulang sendiri lagi sampai 49/0 pada kode final.
+4. eslint . langsung exit 1 (9 error no-undef pada skrip tooling di .agents/ dan store/, satu warning generated router). Perintah resmi npm run lint memakai expo lint: exit 0. Tidak mengubah aturan atau source.
+5. Pemeriksaan glob awal tanpa .env* menghasilkan false karena .env.example ter-commit; arsip tidak memuat .env atau .env.local.
+6. Spasi akhir baris pada log auditor dinormalisasi untuk git diff --check; assertion, hitungan dan isi pesan tidak diubah.

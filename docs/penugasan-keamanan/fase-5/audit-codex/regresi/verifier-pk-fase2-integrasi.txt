@@ -1,0 +1,51 @@
+[info] Basis data terpilih: test_pkf5audit_f2_test (verifier hanya membaca).
+[lulus] Migrasi 032 dan 033 tercatat (rilis utuh, bukan sebagian)
+
+=== 1. Verifier fondasi penugasan (proses terpisah) ===
+[lulus] bin/penugasan_verify.php (skema fondasi 012, role dasar, resolver) exit 0
+
+=== 2. Skema 032–033 ===
+[lulus] Kolom pengurus.guru_id NULL bertipe sama dengan guru.id
+[lulus] UNIQUE pengurus_guru_unique (guru_id): satu guru paling banyak satu identitas
+[lulus] Kunci asing pengurus_guru_fk → guru.id
+[lulus] Kolom keamanan_assignments persis menurut 033 (15 kolom)
+[lulus] keamanan_assignments bermesin InnoDB
+[lulus] UNIQUE keamanan_assignment_unique (pengurus_id, tahun_ajaran_id, tanggal_mulai)
+[lulus] Kunci asing keamanan_pengurus_fk → pengurus
+[lulus] Kunci asing keamanan_tahun_fk → tahun_ajaran
+[lulus] Kunci asing keamanan_creator_fk → users
+[lulus] Kunci asing keamanan_updater_fk → users
+[lulus] Kunci asing keamanan_ender_fk → users
+[lulus] CHECK keamanan_range_check (tanggal_selesai ≥ tanggal_mulai) terpasang
+[lulus] Tidak ada tabel penjaga rollback tersisa
+
+=== 3. Identitas pengurus milik guru (PK-1) ===
+[info] Identitas pengurus milik guru: 1; terhubung ke akun: 1
+[lulus] Identitas berjabatan "Guru" tanpa nomor identitas (tidak diubah dari Data Pengurus)
+[lulus] Nama, nomor HP, status aktif, dan arsip identitas = data guru
+[lulus] Identitas hanya dipegang akun guru pemiliknya, tanpa relasi wali
+[lulus] Setiap identitas memiliki audit penugasan.identitas_guru.buat
+[lulus] Setiap penautan akun ke identitas memiliki audit account_identitas_guru_linked
+[info] Akun terhubung identitas tanpa role pengurus (penugasan tidak berlaku): 0
+[info] Guru berakun dengan identitas yang belum terhubung ke akunnya: 0
+[info] Akun guru yang memegang pengurus biasa (akun ganda warisan): 1
+[lulus] Identitas milik guru nonaktif/diarsipkan tidak memberi capability penugasan (resolver Capabilities)
+
+=== 4. Penugasan Keamanan (PK-5/PK-6) ===
+[info] Penugasan Keamanan: 0 baris, aktif kini 0 (pengurus biasa 0, identitas guru 0)
+[lulus] Setiap penugasan Keamanan memiliki audit penugasan.buat
+[lulus] Setiap pengakhiran penugasan Keamanan beralasan
+[lulus] Akun ber-keamanan.pantau menurut resolver = hitungan SQL independen (0 akun)
+[info] Penugasan Keamanan aktif tanpa akun sah (hak tidak berlaku sampai akun dibuat/dihubungkan): 0
+[info] Jejak akses keamanan.*: 0 baris
+[lulus] Audit keamanan.* hanya memuat kunci metadata (ID, status, asal, jumlah, saringan skalar) — tanpa alasan/uraian/isi
+[lulus] Setiap audit keamanan.* berpelaku akun yang memegang penugasan Keamanan
+
+=== 5. Pemisahan tugas izin per akun (Fase 2) ===
+[info] 032 tercatat 2026-10-31 12:11:06 — keputusan sebelum waktu itu adalah riwayat lama dan hanya dilaporkan.
+[lulus] Tidak ada keputusan izin sejak rilis oleh akun pengaju/peninjau pengajuan yang sama
+[lulus] Tidak ada koreksi keputusan sejak rilis oleh akun pengaju/peninjau pengajuan yang sama
+[info] Keputusan sebelum rilis oleh akun pengaju/peninjau (riwayat lama, tidak diubah): 0
+[info] Pengajuan sejak rilis yang murobinya guru milik akun pengaju/peninjau (tinjau penugasan; keputusan tetap ditolak per akun): 0
+
+Ringkasan verifier penugasan Keamanan: 28 lulus, 0 gagal

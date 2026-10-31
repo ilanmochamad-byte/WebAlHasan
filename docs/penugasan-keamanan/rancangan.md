@@ -6,7 +6,8 @@ diimplementasikan Claude Code pada `claude/penugasan-keamanan-fase-3` dan **lulu
 31 Oktober 2026 setelah tiga koreksi terarah** (`fase-3/AUDIT-CODEX.md`) dan digabung ke `main` (PR #105). Fase 4 (aplikasi)
 diimplementasikan Claude Code pada `claude/penugasan-keamanan-fase-4` di kedua repositori dan **lulus audit teknis lokal Codex
 31 Oktober 2026 setelah satu koreksi P3** (`fase-4/AUDIT-CODEX.md`; iOS/fisik/produksi belum diverifikasi) dan digabung ke `main` (PR #106). Fase 5 (kesiapan rilis)
-diimplementasikan Claude Code pada `claude/penugasan-keamanan-fase-5` 31 Oktober 2026 dan menunggu audit Codex (`fase-5/README.md`). Branch rancangan
+diimplementasikan Claude Code pada `claude/penugasan-keamanan-fase-5` dan **lulus audit teknis lokal Codex
+31 Oktober 2026 setelah tiga koreksi alat rilis** (`fase-5/AUDIT-CODEX.md`); kesiapan produksi belum dinyatakan lulus. Branch rancangan
 `claude/rancangan-penugasan-keamanan` dari `origin/main` `cbb5aa1` hanya berisi
 dokumen. Belum ada deploy atau migrasi produksi.
 

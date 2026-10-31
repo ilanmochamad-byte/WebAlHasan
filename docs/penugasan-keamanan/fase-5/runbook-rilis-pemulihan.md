@@ -44,9 +44,12 @@
 ## 3. Urutan rilis (sesudah izin Human Developer)
 
 1. Merge oleh Human Developer. Deploy kode lewat `bin/deploy-cpanel.sh --dry-run`, lalu tanpa argumen dari `main` yang bersih. Pastikan `bin/`, `database/`, `docs/`, `tests/`, dan `storage/` ditolak HTTP. Skrip `bin/*` menolak non-CLI dengan 404.
-2. Preflight dan manifest privat (di luar document root, 0600):
+2. Jalankan CLI dari **direktori kode yang benar-benar dilayani** (contoh konfigurasi `deploy-cpanel.sh`: `/DATA/k1807225/public_html`), dengan `.env` produksi yang benar. Skrip deploy tidak menyalin `docs/`, sehingga manifest rilis dibaca melalui **jalur absolut checkout sumber** yang SHA-nya sama dengan kode terpasang. Jangan menjalankan alat dari checkout tanpa konfigurasi DB yang sesuai.
+
+   Preflight dan manifest privat (di luar document root, 0600):
    ```bash
-   php bin/penugasan_keamanan_preflight.php /jalur/privat/manifest-pk.json --rilis=docs/penugasan-keamanan/fase-5/manifest-migrasi.json
+   cd /DATA/k1807225/public_html
+   php bin/penugasan_keamanan_preflight.php /jalur/privat/manifest-pk.json --rilis=/DATA/k1807225/repositories/WebAlHasan/docs/penugasan-keamanan/fase-5/manifest-migrasi.json
    ```
    Harus exit 0:
    - server, CHECK sesi/global, InnoDB, jam DB = jam aplikasi;
@@ -55,6 +58,7 @@
    - tipe kolom induk kunci asing (`guru.id` INT bertanda, `pengurus.id`/`users.id` BIGINT UNSIGNED, `tahun_ajaran.id` INT) dan mesin InnoDB tabel induk;
    - daftar migrasi/rollback manifest **lengkap** dan setiap SHA-256 sama dengan yang diaudit (35 SHA);
    - data ganda nama, akun ganda warisan, akun guru, dan penugasan aktif per jenis dicetak untuk ditinjau.
+   - Bila penulisan manifest privat gagal, preflight keluar nonzero. Hentikan rilis, perbaiki tujuan/izin, lalu ulangi; jangan migrasi tanpa manifest tersimpan.
 3. `php bin/migrate.php up`, lalu ulangi `up` sekali. Ulangan tidak boleh memasang migrasi baru.
 4. **Segera** (sebelum penugasan pertama): `php bin/penugasan_keamanan_verify.php /jalur/privat/manifest-pk.json`, harus exit 0. Verifier ini:
    - menjalankan verifier fondasi penugasan (`bin/penugasan_verify.php`) sebagai proses terpisah;
@@ -63,6 +67,7 @@
    - memeriksa penugasan Keamanan: setiap baris diaudit, pengakhiran beralasan, akun `keamanan.pantau` menurut resolver = SQL independen, audit `keamanan.*` hanya metadata dan berpelaku pemegang Keamanan;
    - memeriksa pemisahan tugas sejak 032 tercatat: tidak ada keputusan/koreksi izin oleh akun pengaju atau peninjau pengajuan yang sama;
    - mencocokkan jumlah baris **dan isi** seluruh tabel lama (`pengurus` tanpa kolom baru) dengan manifest.
+   - Manifest wajib menyatakan keadaan pra-rilis atau pasca-rilis utuh. Status hilang/sebagian atau hash isi 032–033 terpotong ditolak. CHECK diperiksa ekspresinya dan FK diperiksa kolom lokal serta targetnya.
 5. Smoke (`checklist-smoke.md`), sebaiknya pada **staging hasil restore backup produksi** dengan kode yang sama. Penugasan, identitas guru, dan audit tidak dihapus, sehingga smoke di produksi meninggalkan baris selamanya dan **menahan rollback DB** (§5). Bila smoke produksi dipilih, gunakan akun smoke sintetis (`SMOKE PK …`), lalu akhiri penugasan smoke dengan alasan dan nonaktifkan akun smoke. Pilihan ini keputusan Human Developer.
 6. Aplikasi: Fase 5 tidak mengubah kode aplikasi. Layar Keamanan dan "Identitas & penugasan" berasal dari Fase 4 (JavaScript, tanpa modul native baru; `expo-screen-capture` sudah diwajibkan sejak V5). Pasang web/API dahulu, lalu rilis aplikasi. Aplikasi lama tetap berjalan terhadap server baru. Aplikasi baru terhadap server lama menyembunyikan bagian yang endpoint-nya belum ada (404). Perangkat fisik, runtime iOS, dan build distribusi belum diuji.
 
