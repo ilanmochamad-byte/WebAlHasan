@@ -1,0 +1,126 @@
+
+=== T-1. Izin: routing dan penolakan ===
+[lulus] Akun terlibat = pengaju + peninjau V7 (tabel V7 diperiksa keberadaannya)
+[lulus] Guru terlibat dibaca dari users.guru_id (level akun)
+[lulus] PemisahanTugas izin hanya membaca
+[lulus] Router: kandidat dikurangi guru terlibat sebelum dihitung
+[lulus] Catatan routing dibatasi 255 karakter dengan akhiran pemisahan tugas
+[lulus] create(): guru milik akun pengaju dikecualikan dari routing
+[lulus] assignMurobi(): guru terlibat ditolak sesudah baris dikunci, sebelum perubahan
+[lulus] decide(): akun terlibat ditolak sesudah kunci, sebelum keputusan; berlaku untuk murobi dan admin pengganti
+[lulus] correctDecision(): akun terlibat ditolak sebelum koreksi
+[lulus] V7 tinjau(): pengaju, peninjau sekarang, dan peninjau sebelumnya dikecualikan sesudah baris dikunci
+[lulus] Daftar murobi berhak dan kandidat tampilan mengecualikan guru terlibat
+
+=== T-2. Izin: tampilan ===
+[lulus] actionsFor(): tetap lima kunci (tipe IzinActions aplikasi tidak berubah)
+[lulus] actionsFor(): parameter akun opsional; pemanggil lama tetap sah
+[lulus] portal/izin_detail.php meneruskan akun yang melihat
+[lulus] portal/izin_antrean.php meneruskan akun yang melihat
+[lulus] REST rincian dan daftar meneruskan akun
+[lulus] Rincian V7 menyembunyikan keputusan bagi akun terlibat
+
+=== T-3. Sikap V4 ===
+[lulus] save(): pengisi dibaca sesudah baris sikap dikunci, untuk seluruh tindakan murobi (diketahui dan koreksi)
+[lulus] Pengisi = pembimbing pertama + pelaku riwayat berkapasitas pembimbing
+[lulus] Tanda lama dari pengisi tidak mengunci murobi lain
+[lulus] Matriks: diketahui sah hanya dari murobi yang bukan pengisi; penghalang khusus bila seluruh murobi pengisi
+[lulus] Tanpa tindakan baru: tidak ada jalur admin/pengganti untuk mengetahui (PK-T7)
+
+=== T-4. PK-T1 verifikasi nilai ===
+[lulus] act(): pengisi nilai dibaca sesudah rencana dikunci (penyimpanan nilai mengunci rencana yang sama)
+[lulus] Hanya bahan nilai, verifikasi/kembalikan, kapasitas Pendidikan (admin tetap jalur pengganti)
+[lulus] Kapasitas dihitung ulang di dalam transaksi
+[lulus] Penanda diisi sendiri di luar matriks bersidik jari
+[lulus] Pengisi nilai mencakup riwayat (guru maupun Pendidikan pengganti)
+[lulus] Verifikasi massal tidak memuat nilai isian sendiri
+
+=== T-5. V3 tanda mengetahui ===
+[lulus] Pelanggaran: pemilik diperiksa sesudah baris dikunci, sebelum catatan murobi
+[lulus] Kasus/sesi: pemilik diperiksa sesudah kasus dikunci, sebelum catatan murobi
+[lulus] Pemilik = pembuat/pembaru/revisi atau identitas pembimbing akun; hanya membaca
+
+=== T-6. Batas Fase 2 ===
+[gagal] Hanya berkas Fase 2 yang berubah terhadap baseline 464d9a1: admin/_laporan_guard.php, admin/admin_guru.php, admin/admin_laporan_absensi.php, admin/laporan_absensi_cetak.php, admin/laporan_absensi_detail.php, api/v1/index.php, app/Api/ApiAuthRepository.php, app/Api/ApiAuthService.php, app/Audit/AuditLogger.php, app/Izin/IzinLaporanRepository.php, app/Izin/IzinLaporanService.php, app/Keamanan/KeamananAkses.php, app/Keamanan/KeamananApiService.php, app/Keamanan/KeamananException.php, app/Keamanan/KeamananService.php, app/Penugasan/PenugasanJenis.php, app/Penugasan/PenugasanRepository.php, app/Penugasan/PenugasanService.php, app/Report/ReportFilter.php, app/Report/ReportRepository.php, app/Report/ReportService.php, app/Ui/Navigation.php, app/bootstrap.php, database/migrations/033_penugasan_keamanan_fase3_keamanan.sql, database/rollbacks/033_penugasan_keamanan_fase3_keamanan.sql, docs/api-v1.md, portal/_keamanan.php, portal/keamanan_izin.php, portal/keamanan_izin_cetak.php, portal/keamanan_izin_detail.php, portal/keamanan_konseling.php, portal/keamanan_konseling_cetak.php, portal/keamanan_konseling_detail.php, portal/keamanan_lampiran.php, portal/keamanan_pelanggaran.php, portal/keamanan_pelanggaran_cetak.php, portal/keamanan_pelanggaran_detail.php, tests/browser/uji-penugasan-keamanan-f3.mjs, tests/browser/uji-penugasan-keamanan-f4-api-probe.mjs, tests/browser/uji-penugasan-keamanan-f4-app.mjs, tests/penugasan_keamanan_f3_audit_probe.php, tests/penugasan_keamanan_f3_audit_report_matrix.php, tests/penugasan_keamanan_f3_db.sh, tests/penugasan_keamanan_f3_http.php, tests/penugasan_keamanan_f3_integration.php, tests/penugasan_keamanan_f3_migration.php, tests/penugasan_keamanan_f3_seed.php, tests/penugasan_keamanan_f3_static.php, tests/penugasan_keamanan_f4_db.sh, tests/penugasan_keamanan_f4_http.php, tests/penugasan_keamanan_f4_static.php, bin/_penugasan_keamanan_rilis.php, bin/penugasan_keamanan_backup_restore_drill.php, bin/penugasan_keamanan_manifest.php, bin/penugasan_keamanan_preflight.php, bin/penugasan_keamanan_rollback_preflight.php, bin/penugasan_keamanan_verify.php, tests/penugasan_keamanan_f5_db.sh, tests/penugasan_keamanan_f5_e2e.php, tests/penugasan_keamanan_f5_rilis.php, tests/penugasan_keamanan_f5_static.php
+[gagal] Tanpa migrasi; Auth, Penugasan, akun, master, kesehatan, BSA, notifikasi, dan rute API tidak diubah
+
+=== T-7. Lint ===
+[lulus] lint admin/_laporan_guard.php
+[lulus] lint admin/admin_guru.php
+[lulus] lint admin/admin_laporan_absensi.php
+[lulus] lint admin/laporan_absensi_cetak.php
+[lulus] lint admin/laporan_absensi_detail.php
+[lulus] lint api/v1/index.php
+[lulus] lint app/Api/ApiAuthRepository.php
+[lulus] lint app/Api/ApiAuthService.php
+[lulus] lint app/Api/IzinApiService.php
+[lulus] lint app/Audit/AuditLogger.php
+[lulus] lint app/Beranda/BerandaService.php
+[lulus] lint app/Izin/IzinLaporanRepository.php
+[lulus] lint app/Izin/IzinLaporanService.php
+[lulus] lint app/Izin/IzinRouter.php
+[lulus] lint app/Izin/IzinWaliService.php
+[lulus] lint app/Izin/IzinWorkflowService.php
+[lulus] lint app/Izin/PemisahanTugas.php
+[lulus] lint app/Keamanan/KeamananAkses.php
+[lulus] lint app/Keamanan/KeamananApiService.php
+[lulus] lint app/Keamanan/KeamananException.php
+[lulus] lint app/Keamanan/KeamananService.php
+[lulus] lint app/Penugasan/PenugasanJenis.php
+[lulus] lint app/Penugasan/PenugasanRepository.php
+[lulus] lint app/Penugasan/PenugasanService.php
+[lulus] lint app/Report/ReportFilter.php
+[lulus] lint app/Report/ReportRepository.php
+[lulus] lint app/Report/ReportService.php
+[lulus] lint app/Ui/Navigation.php
+[lulus] lint app/V3/KonselingRepository.php
+[lulus] lint app/V3/KonselingService.php
+[lulus] lint app/V3/PelanggaranRepository.php
+[lulus] lint app/V3/PelanggaranService.php
+[lulus] lint app/V3/PemisahanTugas.php
+[lulus] lint app/V4/SikapService.php
+[lulus] lint app/V4/VerifikasiService.php
+[lulus] lint app/bootstrap.php
+[lulus] lint portal/_keamanan.php
+[lulus] lint portal/izin_antrean.php
+[lulus] lint portal/izin_detail.php
+[lulus] lint portal/keamanan_izin.php
+[lulus] lint portal/keamanan_izin_cetak.php
+[lulus] lint portal/keamanan_izin_detail.php
+[lulus] lint portal/keamanan_konseling.php
+[lulus] lint portal/keamanan_konseling_cetak.php
+[lulus] lint portal/keamanan_konseling_detail.php
+[lulus] lint portal/keamanan_lampiran.php
+[lulus] lint portal/keamanan_pelanggaran.php
+[lulus] lint portal/keamanan_pelanggaran_cetak.php
+[lulus] lint portal/keamanan_pelanggaran_detail.php
+[lulus] lint portal/sikap_semester.php
+[lulus] lint portal/v3_konseling_detail.php
+[lulus] lint portal/v3_pelanggaran_detail.php
+[lulus] lint portal/verifikasi_semester.php
+[lulus] lint tests/penugasan_keamanan_f2_audit_probe.php
+[lulus] lint tests/penugasan_keamanan_f2_audit_v4.php
+[lulus] lint tests/penugasan_keamanan_f2_http.php
+[lulus] lint tests/penugasan_keamanan_f2_integration.php
+[lulus] lint tests/penugasan_keamanan_f2_seed.php
+[lulus] lint tests/penugasan_keamanan_f2_static.php
+[lulus] lint tests/penugasan_keamanan_f3_audit_probe.php
+[lulus] lint tests/penugasan_keamanan_f3_audit_report_matrix.php
+[lulus] lint tests/penugasan_keamanan_f3_http.php
+[lulus] lint tests/penugasan_keamanan_f3_integration.php
+[lulus] lint tests/penugasan_keamanan_f3_migration.php
+[lulus] lint tests/penugasan_keamanan_f3_seed.php
+[lulus] lint tests/penugasan_keamanan_f3_static.php
+[lulus] lint tests/penugasan_keamanan_f4_http.php
+[lulus] lint tests/penugasan_keamanan_f4_static.php
+[lulus] lint bin/_penugasan_keamanan_rilis.php
+[lulus] lint bin/penugasan_keamanan_backup_restore_drill.php
+[lulus] lint bin/penugasan_keamanan_manifest.php
+[lulus] lint bin/penugasan_keamanan_preflight.php
+[lulus] lint bin/penugasan_keamanan_rollback_preflight.php
+[lulus] lint bin/penugasan_keamanan_verify.php
+[lulus] lint tests/penugasan_keamanan_f5_e2e.php
+[lulus] lint tests/penugasan_keamanan_f5_rilis.php
+[lulus] lint tests/penugasan_keamanan_f5_static.php
+
+Hasil: 108 lulus, 2 gagal.

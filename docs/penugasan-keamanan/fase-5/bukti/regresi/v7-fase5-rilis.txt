@@ -1,0 +1,71 @@
+
+=== R-1. Titik awal V6, preflight dan manifest rilis ===
+[gagal] Salinan V6 (029 terakhir), tanpa kolom/tabel V7: test_pkf5_v7rilis_test
+[lulus] Data lama tersedia: tiga baris perizinan warisan V1, pengajuan dan keputusan V2
+[gagal] Preflight sebelum migrasi lulus; manifest privat 0600 memuat perizinan warisan, tanpa isi V7
+[gagal] Preflight --rilis: 31 migrasi + 2 rollback = manifest ter-commit (33 SHA cocok)
+[lulus] Manifest rilis dengan hash rollback 031 berbeda ditolak
+[lulus] Manifest rilis terpotong (tanpa 031, tanpa rollback) ditolak walau hash sisanya cocok
+
+=== R-2. Jam basis data vs aplikasi ===
+[lulus] APP_TIMEZONE berbeda dengan zona waktu DB → preflight gagal (tanggal penugasan aktif/laporan bergeser)
+
+=== R-3. Migrasi 030–031 sekaligus, verifier + manifest ===
+[gagal] migrate up memasang 030 dan 031 (hanya keduanya)
+[lulus] bin/v7_verify.php + manifest pra-migrasi lulus: jumlah dan isi seluruh tabel lama, irisan V2, perizinan warisan tetap
+    Ringkasan verifier V7: 38 lulus, 0 gagal
+[lulus] Tiga ID kanonis V1 = V2 warisan, isi/status, pelaku NULL dan riwayat impor tetap utuh sesudah 030–031
+
+=== R-4. Pemasangan sebagian ditolak ===
+[gagal] Rollback 031 tanpa data: preflight lulus, migrate rollback berhasil (030 tersisa)
+[gagal] Preflight menolak keadaan 030 tanpa 031
+[gagal] Verifier menolak rilis sebagian
+
+=== R-5. Turun ke V6 lalu naik lagi ===
+[gagal] Rollback 030 tanpa data: preflight lulus, kembali ke 029, 0 tabel V7/penjaga
+[gagal] Sesudah turun: jumlah dan isi seluruh tabel lama serta irisan V2 identik dengan pra-migrasi (ENUM/kolom 030 dilepas bersih)
+[lulus] Naik lagi: verifier + manifest pra-migrasi lulus (naik–turun–naik)
+
+=== R-6. Penjaga rollback dengan data V7 ===
+[lulus] Fixture sintetis V7 Fase 1–2 ditambahkan sesudah migrasi
+[lulus] Satu pengajuan wali di tahap Fase 1 (Menunggu Pembimbing)
+[gagal] Rollback 031 diizinkan (belum ada data Fase 2)
+[gagal] Rollback 030 berisi pengajuan wali DITOLAK oleh preflight dan penjaga SQL
+[gagal] Sesudah penolakan: 030 tetap tercatat, isi pengajuan wali utuh, tidak ada tabel penjaga
+[lulus] 031 dipasang lagi; teruskan, putus, perbaiki, batal tercatat
+[gagal] Rollback 031 berisi tinjauan/perbaikan/keputusan DITOLAK (preflight + penjaga SQL); data dan catatan migrasi tetap
+[lulus] Verifier lulus pada salinan berisi data V7 sesudah penolakan rollback
+
+=== R-7. Latihan backup → restore → verifikasi ===
+[gagal] Latihan writer: Ringkasan latihan: 8 lulus, 3 gagal
+[gagal] Latihan dump: Ringkasan latihan: 9 lulus, 3 gagal
+[lulus] Latihan menolak DB bukan test_*_test
+[lulus] Latihan menolak tanpa V7_DRILL=1
+
+=== R-8. Kontrol pengrusakan (verifier harus gagal) ===
+[lulus] Kontrol audit dihapus: verifier gagal pada "Jumlah peristiwa riwayat = jumlah audit", lulus lagi sesudah dipulihkan
+[lulus] Kontrol transisi tidak sah: verifier gagal pada "Setiap riwayat baris Wali adalah transisi sah", lulus lagi sesudah dipulihkan
+[lulus] Kontrol status kini tanpa riwayat: verifier gagal pada "Rantai riwayat tiap pengajuan Wali bersambung", lulus lagi sesudah dipulihkan
+[lulus] Kontrol keputusan untuk pengajuan dibatalkan: verifier gagal pada "Tidak ada keputusan untuk pengajuan yang belum diputus", lulus lagi sesudah dipulihkan
+[lulus] Kontrol referensi yatim: verifier gagal pada "Nol referensi yatim", lulus lagi sesudah dipulihkan
+[lulus] Kontrol isi perizinan warisan diubah: verifier gagal pada "Irisan V2 perizinan tetap", lulus lagi sesudah dipulihkan
+[lulus] Kontrol kolom V2 baris pengurus diubah: verifier gagal pada "Irisan V2 izin_pengajuan_v2 tetap", lulus lagi sesudah dipulihkan
+[lulus] Kontrol baris disisipkan ke tabel lama: verifier gagal pada "Jumlah baris seluruh tabel lama tetap", lulus lagi sesudah dipulihkan
+[lulus] Kontrol isi identitas santri diubah: verifier gagal pada "Isi seluruh", lulus lagi sesudah dipulihkan
+
+Hasil: 22 lulus, 15 gagal
+  - Salinan V6 (029 terakhir), tanpa kolom/tabel V7: test_pkf5_v7rilis_test
+  - Preflight sebelum migrasi lulus; manifest privat 0600 memuat perizinan warisan, tanpa isi V7
+  - Preflight --rilis: 31 migrasi + 2 rollback = manifest ter-commit (33 SHA cocok)
+  - migrate up memasang 030 dan 031 (hanya keduanya)
+  - Rollback 031 tanpa data: preflight lulus, migrate rollback berhasil (030 tersisa)
+  - Preflight menolak keadaan 030 tanpa 031
+  - Verifier menolak rilis sebagian
+  - Rollback 030 tanpa data: preflight lulus, kembali ke 029, 0 tabel V7/penjaga
+  - Sesudah turun: jumlah dan isi seluruh tabel lama serta irisan V2 identik dengan pra-migrasi (ENUM/kolom 030 dilepas bersih)
+  - Rollback 031 diizinkan (belum ada data Fase 2)
+  - Rollback 030 berisi pengajuan wali DITOLAK oleh preflight dan penjaga SQL
+  - Sesudah penolakan: 030 tetap tercatat, isi pengajuan wali utuh, tidak ada tabel penjaga
+  - Rollback 031 berisi tinjauan/perbaikan/keputusan DITOLAK (preflight + penjaga SQL); data dan catatan migrasi tetap
+  - Latihan writer: Ringkasan latihan: 8 lulus, 3 gagal
+  - Latihan dump: Ringkasan latihan: 9 lulus, 3 gagal

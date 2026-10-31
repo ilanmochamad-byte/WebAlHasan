@@ -1,0 +1,9 @@
+# Kontrol mutasi uji statis Fase 5 (dijalankan lalu dipulihkan; berkas asli tidak berubah)
+1. Menambah `$tulis = "UPDATE pengurus SET x = 1";` ke bin/penugasan_keamanan_verify.php:
+   [gagal] bin/penugasan_keamanan_verify.php: tanpa SQL tulis/transaksi (UPDATE)
+   Hasil: 35 lulus, 1 gagal
+2. Membuat berkas kosong app/_pkf5_kontrol.php:
+   [gagal] Hanya alat rilis, uji Fase 5, dokumen, dan AGENTS.md yang berubah: app/_pkf5_kontrol.php
+   [gagal] Tanpa perubahan app/, portal/, admin/, api/, database/, assets/
+   Hasil: 34 lulus, 2 gagal
+3. Sesudah dipulihkan: Hasil: 36 lulus, 0 gagal

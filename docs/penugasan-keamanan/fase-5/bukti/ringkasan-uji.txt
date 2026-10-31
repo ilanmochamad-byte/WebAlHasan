@@ -1,0 +1,7 @@
+statis exit=0 Hasil: 36 lulus, 0 gagal
+rilis exit=0 Hasil: 49 lulus, 0 gagal
+e2e exit=0 Hasil: 19 lulus, 0 gagal
+verifier-e2e exit=0 Ringkasan verifier penugasan Keamanan: 28 lulus, 0 gagal
+verifier-lama-v5 exit=0 gagal=0
+verifier-lama-v6 exit=0 gagal=0
+verifier-lama-v7 exit=0 gagal=0
