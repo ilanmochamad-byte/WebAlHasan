@@ -1,6 +1,6 @@
 # Perbaikan jadwal pengajian kelas gabungan — Fase 1
 
-Status: **diimplementasikan Claude Code, menunggu audit independen Codex.** Bukan izin merge, deploy, atau migrasi produksi.
+Status: **lulus audit teknis lokal Codex setelah koreksi panduan rilis/pemulihan (31 Oktober 2026).** Keputusan dan bukti independen: [AUDIT-CODEX.md](AUDIT-CODEX.md). Bukan izin merge, deploy, atau migrasi produksi.
 
 ## Keputusan dan peran
 
@@ -107,7 +107,7 @@ Catatan rilis: `bin/penugasan_keamanan_preflight.php` dan preflight V7 memeriksa
 Urutan rilis (keputusan Human Developer):
 
 1. Backup penuh terverifikasi (dump + uji pulih pada salinan).
-2. Uji `034` pada salinan berakhiran `_test` dari produksi: `DB_NAME=<salinan> php bin/migrate.php up`, lalu `DB_NAME=<salinan> php tests/jadwal_kelas_gabungan_f1_migration.php` hanya pada salinan uji.
+2. Uji `034` pada salinan berakhiran `_test` dari produksi: catat jumlah, ID, dan hash seluruh isi tabel lama, jalankan `DB_NAME=<salinan> php bin/migrate.php up`, lalu bandingkan hasilnya dan periksa relasi pada langkah 4. Suite `tests/jadwal_kelas_gabungan_f1_migration.php` membutuhkan fixture sintetis **sebelum 034** dan variabel `JKG_DB`; jangan menjalankannya sesudah `up` atau pada salinan data produksi. Jalankan suite itu pada DB terpisah yang disiapkan dengan `JKG_TANPA_034=1 JKG_DB=test_jkg_f1_mig_test bash tests/jadwal_kelas_gabungan_f1_db.sh`, lalu `JKG_DB=test_jkg_f1_mig_test php tests/jadwal_kelas_gabungan_f1_migration.php`.
 3. Pasang kode **bersama** migrasi 034. Kode sadar skema: tanpa 034 tetap berjalan satu kelas dan menolak kelas gabungan dengan pesan jelas, sehingga urutan "kode dulu" tidak merusak halaman.
 4. Periksa: jumlah `jadwal_kelas` (is_utama = 1) = jumlah jadwal berkelas sah; tiap pertemuan Dibuka/Selesai memiliki `pertemuan_kelas`; tidak ada `pertemuan_peserta` yang kelas snapshot-nya tidak tercantum di `pertemuan_kelas`.
 
@@ -115,8 +115,8 @@ Pemulihan:
 
 - **Belum ada kelas gabungan:** `php bin/migrate.php rollback` (melepas 034 saja). Kode tetap berjalan satu kelas.
 - **Sudah ada kelas gabungan:** rollback ditolak penjaga data (sengaja). Pilihan: (a) biarkan 034 dan perbaiki kode; (b) pulihkan backup sebelum rilis (kehilangan data sesudahnya); (c) migrasi korektif yang ditetapkan Human Developer. Jangan menghapus baris `jadwal_kelas`/`pertemuan_kelas` secara manual untuk memaksa rollback: kelas historis pertemuan gabungan akan hilang (peserta dan kelas asal tetap di `pertemuan_peserta`).
-- Kembali ke kode lama dengan 034 tetap terpasang aman: kode lama mengabaikan kedua tabel, tetapi jadwal gabungan akan tampil dan membuka pertemuan hanya untuk kelas utama.
+- **Jangan kembali ke kode lama ketika sudah ada jadwal/pertemuan gabungan.** Kode lama mengabaikan kedua tabel dan membuka pertemuan hanya untuk kelas utama, sehingga santri kelas tambahan terlewat. Pertahankan kode yang memahami 034 selama perbaikan, atau pulihkan kode dan database dari backup sebelum rilis dengan penulis dihentikan. Bila belum pernah ada data gabungan, rollback 034 bersama kode setelah verifikasi salinan. Kontrol auditor pada baseline `22a3645` membuktikan jadwal PA+PI hanya mendapat 3 peserta PA lewat kode lama, sedangkan kode kini mendapat seluruh 5 peserta.
 
 ## Handoff
 
-Audit independen Codex berikutnya untuk Fase 1. Tidak merge, deploy, migrasi produksi, atau memulai Fase 2/aplikasi.
+Audit independen Codex Fase 1 selesai; lihat [AUDIT-CODEX.md](AUDIT-CODEX.md) beserta batas pengujiannya. Tidak merge, deploy, migrasi produksi, atau memulai Fase 2/aplikasi. Pekerjaan berikutnya menunggu instruksi Human Developer.

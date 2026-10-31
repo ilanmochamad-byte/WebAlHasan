@@ -1,0 +1,7 @@
+RuntimeException: Access denied; you need (at least one of) the PROCESS privilege(s) for this operation in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/jadwal_kelas_gabungan_f1_audit_probe.php:28
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/jadwal_kelas_gabungan_f1_audit_probe.php(31): rows('SELECT COUNT(*)...')
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/jadwal_kelas_gabungan_f1_audit_probe.php(68): num('SELECT COUNT(*)...')
+#2 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/jadwal_kelas_gabungan_f1_audit_probe.php(84): {closure:/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/jadwal_kelas_gabungan_f1_audit_probe.php:66}()
+#3 {main}
+Access denied; you need (at least one of) the PROCESS privilege(s) for this operation

@@ -1,0 +1,8 @@
+[lulus] Simpan-dulu: SELECT jadwal FOR UPDATE milik pembukaan API teramati saat kunci masih ditahan
+[lulus] Simpan-dulu: pembukaan API memakai kelas baru PA+C setelah commit
+[lulus] Simpan-dulu: peserta PA+C utuh, PI tidak tertinggal
+[lulus] Buka-dulu: SELECT jadwal FOR UPDATE milik layanan simpan teramati saat kunci masih ditahan
+[lulus] Buka-dulu: kelas historis tetap PA+C walau layanan simpan kemudian mengubah ke PA+PI
+[lulus] Buka-dulu: kelas jadwal berikutnya PA+PI
+[lulus] Buka-dulu: peserta beku PA+C tetap utuh
+Hasil: 7 lulus, 0 gagal

@@ -33,6 +33,7 @@ $berkasPhp = [
     'admin/laporan_absensi_detail.php', 'jadwal_ngaji.php',
     'tests/jadwal_kelas_gabungan_f1_seed.php', 'tests/jadwal_kelas_gabungan_f1_worker.php', 'tests/jadwal_kelas_gabungan_f1_integration.php',
     'tests/jadwal_kelas_gabungan_f1_migration.php', 'tests/jadwal_kelas_gabungan_f1_http.php', 'tests/jadwal_kelas_gabungan_f1_static.php',
+    'tests/jadwal_kelas_gabungan_f1_audit_probe.php',
 ];
 echo "=== S-1 lint ===\n";
 foreach ($berkasPhp as $f) {
