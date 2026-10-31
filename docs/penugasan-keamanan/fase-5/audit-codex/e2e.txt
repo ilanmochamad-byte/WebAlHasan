@@ -1,0 +1,33 @@
+
+=== E-1 sesudah migrasi, tanpa data workstream ===
+[lulus] Verifier lulus pada DB 033 kosong (28 lulus, 0 gagal)
+
+=== E-2 skenario resmi Fase 1–3 ===
+[lulus] Identitas guru G dibentuk dan terhubung; dua akun Keamanan; verifier lulus (28 lulus, 0 gagal)
+
+=== E-3 baca seluruh jalur Keamanan web + API ===
+[lulus] K dan G masuk web (G memilih peran Pengurus) dan memperoleh token API
+[lulus] K: 15 halaman web Keamanan (daftar, rincian, cetak, lampiran, kehadiran) 200
+[lulus] K: 10 endpoint REST Keamanan 200
+[lulus] G: 15 halaman web Keamanan (daftar, rincian, cetak, lampiran, kehadiran) 200
+[lulus] G: 10 endpoint REST Keamanan 200
+[lulus] 43 kiriman mutasi web/API oleh K → seluruhnya 405
+[lulus] Kasus Rahasia tetap tertutup bagi Keamanan (404 web dan API)
+[lulus] Irisan data yang dibaca Keamanan = manifest sebelum membaca (seluruh baca web/API tidak mengubah data modul)
+[lulus] Jejak keamanan.* bertambah 32 baris; verifier lulus (hanya metadata, pelaku pemegang Keamanan)
+
+=== E-4 guru G dinonaktifkan lewat Data Guru ===
+[lulus] Identitas pengurus G ikut nonaktif (sinkron dalam transaksi Data Guru)
+[lulus] Token dan sesi web lama G ditolak pada permintaan berikutnya
+[lulus] Verifier lulus: identitas sinkron, resolver = SQL (1 akun), identitas nonaktif tanpa capability
+[lulus] G diaktifkan kembali → akses pulih; verifier lulus
+
+=== E-5 penugasan K dinonaktifkan ===
+[lulus] Token dan sesi web lama K ditolak sesudah penugasan dinonaktifkan
+[lulus] Verifier lulus sesudah pencabutan (28 lulus, 0 gagal)
+
+=== E-6 log server ===
+[lulus] Log server tanpa galat PHP
+[lulus] Log server tanpa alasan izin
+
+Hasil: 19 lulus, 0 gagal

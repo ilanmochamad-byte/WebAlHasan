@@ -1,0 +1,28 @@
+=== 1. Verifier per fase ===
+[lulus] v5_phase1_verify.php: exit 0, 29 pemeriksaan lulus
+[lulus] v5_phase2_verify.php: exit 0, 32 pemeriksaan lulus
+[lulus] v5_phase3_verify.php: exit 0, 44 pemeriksaan lulus
+
+=== 2. Lintas fase ===
+[lulus] Setiap kunjungan punya tepat satu audit pencatatan
+[lulus] Jumlah audit koreksi = versi − 1 untuk setiap kunjungan (0 pembaruan tanpa riwayat)
+[lulus] Setiap versi koreksi punya audit dengan pelaku sama dan versi sebelum → sesudah
+[lulus] Setiap versi mencatat pelaku dan waktu
+[lulus] kesehatan_obat: versi lahir/batal berada dalam rentang versi kunjungan; batal sesudah lahir
+[lulus] kesehatan_rujukan: versi lahir/batal berada dalam rentang versi kunjungan; batal sesudah lahir
+[lulus] kesehatan_tindak_lanjut: versi lahir/batal berada dalam rentang versi kunjungan; batal sesudah lahir
+[lulus] Satu kunjungan per (petugas, kunci idempotensi)
+[lulus] Satu klaim pencatatan per kunjungan (0 kunjungan efektif ganda)
+[lulus] Satu versi per klaim koreksi (0 versi efektif ganda)
+[lulus] Satu peristiwa ringkasan per klaim
+[lulus] Ringkasan wali hanya bersumber versi kunjungan Tercatat (tidak pernah Draf)
+[lulus] 0 notifikasi V5 efektif ganda (peristiwa × kanal × penerima)
+[lulus] 0 notifikasi V5 kanal WhatsApp
+[lulus] Laporan seluruh waktu = kueri sumber ({"total":7,"draf":1,"santri":3,"dengan_obat":5,"pemberian":8,"rujukan":5,"rujukan_menunggu":3,"tl":5,"tl_terbuka":4,"dikoreksi":1})
+[lulus] Jumlah per kelas (7) dan per bulan (7) = total kunjungan
+[lulus] Laporan ringkasan wali = kueri sumber
+
+=== 3. Identitas santri–wali ===
+[belum diperiksa] Sidik jari santri/wali: berikan manifest bin/v5_preflight.php.
+
+Ringkasan verifier V5: 20 lulus, 0 gagal

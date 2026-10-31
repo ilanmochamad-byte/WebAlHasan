@@ -1,0 +1,9 @@
+Handoff 74 entri; auditor 74 entri.
+Nama entri cocok: True
+Non-statis termasuk verifier identik exit/hitungan: 24/24
+Distribusi exit statis: {0: 18, 1: 30, 77: 2}
+statis-penugasan_keamanan_f1_static: handoff=(1, '126/4'); auditor=(1, '127/4')
+statis-penugasan_keamanan_f2_static: handoff=(1, '108/2'); auditor=(1, '109/2')
+statis-penugasan_keamanan_f3_static: handoff=(1, '92/3'); auditor=(1, '93/3')
+statis-penugasan_keamanan_f4_static: handoff=(1, '43/1'); auditor=(1, '44/1')
+Perbedaan judul assertion gagal statis (potong detail sesudah titik dua): []

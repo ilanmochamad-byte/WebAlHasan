@@ -1,0 +1,49 @@
+=== S-1 alat rilis ===
+[lulus] bin/penugasan_keamanan_preflight.php: menolak non-CLI (404) sebelum memuat aplikasi
+[lulus] bin/penugasan_keamanan_verify.php: menolak non-CLI (404) sebelum memuat aplikasi
+[lulus] bin/penugasan_keamanan_rollback_preflight.php: menolak non-CLI (404) sebelum memuat aplikasi
+[lulus] bin/penugasan_keamanan_manifest.php: menolak non-CLI (404) sebelum memuat aplikasi
+[lulus] bin/penugasan_keamanan_backup_restore_drill.php: menolak non-CLI (404) sebelum memuat aplikasi
+[lulus] bin/_penugasan_keamanan_rilis.php: tanpa SQL tulis/transaksi
+[lulus] bin/penugasan_keamanan_preflight.php: tanpa SQL tulis/transaksi
+[lulus] bin/penugasan_keamanan_verify.php: tanpa SQL tulis/transaksi
+[lulus] bin/penugasan_keamanan_rollback_preflight.php: tanpa SQL tulis/transaksi
+[lulus] bin/penugasan_keamanan_manifest.php: tanpa SQL tulis/transaksi
+[lulus] Latihan restore: wajib PK_DRILL=1, sumber test_*_test, tujuan berbeda, menolak APP_ENV=production
+[lulus] Latihan restore hanya menghapus DB tujuan pulihan, tidak pernah DB sumber
+[lulus] Verifier menjalankan verifier fondasi dan membandingkan resolver Capabilities dengan SQL independen
+[lulus] Hitungan SQL independen tidak memanggil resolver yang diperiksanya
+
+=== S-2 konstanta ===
+[lulus] Migrasi dan rollback berpasangan: 032_penugasan_keamanan_fase1_identitas_guru.sql
+[lulus] Migrasi dan rollback berpasangan: 033_penugasan_keamanan_fase3_keamanan.sql
+[lulus] Migrasi terakhir di pohon kerja = 033; prasyarat 031 ada (tanpa migrasi baru Fase 5)
+[lulus] Baseline web 39cc644 adalah leluhur HEAD
+[lulus] Kunci audit keamanan.* verifier = penyaring AuditLogger::metadataKeamanan (10 kunci)
+[lulus] Tabel yang dibaca Keamanan tidak dikecualikan dari irisan baca
+
+=== S-3 manifest rilis ===
+[lulus] Manifest rilis: migrasi 032–033, tanpa migrasi Fase 5, baseline web/mobile
+[lulus] Manifest = SHA-256 di disk untuk 35 berkas (33 migrasi + 2 rollback), daftar lengkap
+
+=== S-4 batas perubahan terhadap baseline ===
+[lulus] Hanya alat rilis, uji Fase 5, dokumen, dan AGENTS.md yang berubah (104 berkas)
+[lulus] Tanpa perubahan app/, portal/, admin/, api/, database/, assets/
+
+=== S-5 dokumen ===
+[lulus] Runbook: belum dieksekusi pada produksi; memuat preflight, verifier, dan preflight rollback
+[lulus] Checklist: 20 baris, seluruh kolom produksi "Menunggu pelaksanaan"
+[lulus] README Fase 5 ada
+
+=== S-6 lint ===
+[lulus] php -l bin/penugasan_keamanan_preflight.php
+[lulus] php -l bin/penugasan_keamanan_verify.php
+[lulus] php -l bin/penugasan_keamanan_rollback_preflight.php
+[lulus] php -l bin/penugasan_keamanan_manifest.php
+[lulus] php -l bin/penugasan_keamanan_backup_restore_drill.php
+[lulus] php -l bin/_penugasan_keamanan_rilis.php
+[lulus] php -l tests/penugasan_keamanan_f5_static.php
+[lulus] php -l tests/penugasan_keamanan_f5_rilis.php
+[lulus] php -l tests/penugasan_keamanan_f5_e2e.php
+
+Hasil: 36 lulus, 0 gagal

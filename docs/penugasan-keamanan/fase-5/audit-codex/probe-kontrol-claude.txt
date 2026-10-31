@@ -1,0 +1,16 @@
+[lulus] Dasar berisi penugasan: preflight dan verifier + manifest lulus
+[lulus] Manifest utuh mendeteksi perubahan isi 033
+[gagal] Status migrasi manifest hilang ditolak; isi 033 tidak dilewati
+[gagal] Status migrasi manifest sebagian ditolak; isi 033 tidak dilewati
+[gagal] Status migrasi manifest tipe-salah ditolak; isi 033 tidak dilewati
+[lulus] Hash isi_pk yang terpotong ditolak
+[gagal] Manifest berstatus pra-rilis tetapi memuat isi_pk pasca-rilis ditolak
+[gagal] Manifest pra-rilis dengan isi_pk kosong tidak membuktikan preservasi DB yang sudah berisi penugasan
+[lulus] Sesudah kontrol F-1 dipulihkan, manifest utuh lulus
+[gagal] CHECK bernama benar dengan ekspresi selalu benar ditolak
+[gagal] FK bernama dan induk benar tetapi kolom lokal salah ditolak
+[lulus] Sesudah skema dipulihkan, verifier dan preservasi data lulus
+[gagal] Tujuan manifest tidak dapat ditulis: nonzero dan tidak mengklaim tersimpan
+[gagal] Tujuan berupa direktori: nonzero dan tidak mengklaim tersimpan
+[lulus] Tujuan valid: manifest 0600 tersimpan dan dapat diverifikasi
+Hasil: 6 lulus, 9 gagal

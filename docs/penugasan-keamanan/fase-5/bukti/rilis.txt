@@ -1,0 +1,67 @@
+
+=== R-1. Titik awal 031, preflight dan manifest rilis ===
+[lulus] Salinan 031 (V7 Fase 2 terakhir), tanpa kolom pengurus.guru_id dan tabel keamanan_assignments: test_pk_f5_rilis_test
+[lulus] Data lama tersedia: izin V2/V7, keputusan, pembinaan V3, pengurus, dan satu akun ganda warisan
+[lulus] Preflight sebelum migrasi lulus; manifest privat 0600 tanpa isi 032/033, irisan memuat seluruh pengurus (semuanya biasa)
+[lulus] Preflight --rilis: 33 migrasi + 2 rollback = manifest ter-commit (35 SHA cocok)
+[lulus] Preflight mencetak data ganda nama dan akun ganda warisan untuk ditinjau
+[lulus] Manifest rilis dengan hash rollback 033 berbeda ditolak
+[lulus] Manifest rilis yang daftar migrasinya terpotong (tanpa 033) ditolak walau hash sisanya cocok
+
+=== R-2. Jam basis data dan migrasi asing ===
+[lulus] APP_TIMEZONE berbeda dengan zona waktu DB → preflight gagal (tanggal penugasan aktif bergeser)
+[lulus] Migrasi sesudah 033 yang tercatat ditolak preflight
+
+=== R-3. Migrasi 032–033 sekaligus, verifier + manifest ===
+[lulus] migrate up memasang 032 dan 033 (hanya keduanya)
+[lulus] migrate up ulang tidak memasang migrasi baru
+[lulus] Migrasi tidak mengisi data: tanpa identitas guru dan penugasan Keamanan
+[lulus] Verifier + manifest pra-migrasi lulus: jumlah dan isi seluruh tabel lama, irisan baca, `pengurus` tanpa kolom baru
+[lulus] Preflight sesudah migrasi tetap lulus (aman diulang pada salinan pulihan)
+
+=== R-4. Pemasangan sebagian ditolak ===
+[lulus] Preflight rollback 033 tanpa data: diizinkan
+[lulus] Rollback 033 tanpa data melepas keamanan_assignments; 032 tetap
+[lulus] Preflight menolak 032 tanpa 033 (lanjutkan ke 033 atau pulihkan backup)
+[lulus] Verifier menolak rilis sebagian
+
+=== R-5. Naik–turun–naik tanpa data ===
+[lulus] Preflight rollback 032 tanpa identitas: diizinkan
+[lulus] Turun ke 031: snapshot (jumlah, isi seluruh tabel lama, irisan baca) persis sama dengan pra-migrasi, tanpa tabel penjaga
+[lulus] Naik lagi: verifier + manifest pra-migrasi lulus
+
+=== R-6. Penjaga rollback dengan data ===
+[lulus] Dua guru (berakun dan tanpa akun) ditugaskan sebagai Petugas Kesehatan lewat layanan: dua identitas, akun guru berakun terhubung
+[lulus] Verifier lulus sesudah identitas dibentuk lewat layanan (audit pembentukan, penautan, sinkron)
+[lulus] Identitas tanpa penugasan Keamanan: rollback 033 diizinkan
+[lulus] Rollback 033 dijalankan; identitas 032 tetap
+[lulus] Preflight rollback 032 memblokir (ada identitas pengurus milik guru)
+[lulus] migrate.php rollback tanpa preflight ditolak penjaga SQL 032; kolom, identitas, penautan akun, dan catatan migrasi tetap, tanpa tabel penjaga
+[lulus] Naik lagi ke 033
+[lulus] Skenario Fase 3 (pengurus biasa + guru sebagai Keamanan) dan dua rincian izin dibaca lewat layanan (berjejak)
+[lulus] Verifier lulus: resolver = SQL independen untuk dua akun Keamanan
+[lulus] Preflight rollback 033 memblokir (ada penugasan Keamanan)
+[lulus] migrate.php rollback tanpa preflight ditolak penjaga SQL 033; penugasan dan catatan migrasi tetap, tanpa tabel penjaga
+[lulus] Penugasan yang sudah diakhiri (beralasan) tetap menahan rollback 033
+
+=== R-7. Latihan backup → restore → verifikasi ===
+[lulus] Latihan writer: 11/0 (preflight, backup, restore, verifier + manifest, hash 25 tabel dan hak Keamanan sama, rollback berisi data ditolak)
+[lulus] Latihan dump: 12/0 (preflight, backup, restore, verifier + manifest, hash 25 tabel dan hak Keamanan sama, rollback berisi data ditolak)
+[lulus] Latihan tanpa PK_DRILL=1 ditolak
+[lulus] Latihan pada DB bukan test_*_test ditolak
+
+=== R-8. Kontrol pengrusakan verifier ===
+[lulus] Keadaan dasar R-8: verifier + manifest pasca-rilis lulus
+[lulus] Nama identitas diubah langsung (tidak sinkron dengan Data Guru) → "Nama, nomor HP, status aktif, dan arsip identitas = data guru"; dipulihkan → lulus
+[lulus] Jabatan identitas diubah → "Identitas berjabatan "Guru" tanpa nomor identitas"; dipulihkan → lulus
+[lulus] Identitas guru dipindah ke akun guru lain → "Identitas hanya dipegang akun guru pemiliknya, tanpa relasi wali"; dipulihkan → lulus
+[lulus] Audit pembentukan identitas dihapus → "Setiap identitas memiliki audit penugasan.identitas_guru.buat"; dipulihkan → lulus
+[lulus] Audit pembuatan penugasan Keamanan dihapus → "Setiap penugasan Keamanan memiliki audit penugasan.buat"; dipulihkan → lulus
+[lulus] Audit keamanan.* berisi alasan izin disisipkan paksa → "Audit keamanan.* hanya memuat kunci metadata"; dipulihkan → lulus
+[lulus] Audit keamanan.* berpelaku admin (bukan pemegang Keamanan) disisipkan → "Setiap audit keamanan.* berpelaku akun yang memegang penugasan Keamanan"; dipulihkan → lulus
+[lulus] Keputusan izin sesudah rilis oleh akun pengaju disisipkan paksa → "Tidak ada keputusan izin sejak rilis oleh akun pengaju/peninjau pengajuan yang sama"; dipulihkan → lulus
+[lulus] Baris pengurus biasa diubah sesudah manifest → "Isi isi_tabel_lama ("; dipulihkan → lulus
+[lulus] Alasan izin diubah sesudah manifest (irisan baca) → "Isi irisan_baca ("; dipulihkan → lulus
+[lulus] Sesudah seluruh kontrol dipulihkan: verifier + manifest dasar lulus kembali
+
+Hasil: 49 lulus, 0 gagal

@@ -1,0 +1,11 @@
+Baseline web: 39cc6445a996c7d1b3fe3fadd351d9aa8d05d306; input audit: 9e62464d6fa2cc0118137a58e347eba31e32a53e.
+Remote diverifikasi lewat git ls-remote: web main 2a786757108021546fe03a8160e53f92693f267a, fase-4 39cc6445a996c7d1b3fe3fadd351d9aa8d05d306, fase-5 9e62464d6fa2cc0118137a58e347eba31e32a53e.
+Remote mobile main d4d792a3644accc5af795b8d45223c608e72ae9c, fase-5 1b4335ec425f316458ff39d85892ab3e9e0ddfcf.
+migrations: 33/33 SHA cocok
+rollbacks: 2/2 SHA cocok
+dependencies: 1/1 SHA cocok
+mobile HEAD package.json: SHA cocok=True
+mobile HEAD package-lock.json: SHA cocok=True
+mobile HEAD app.json: SHA cocok=True
+Diff baseline web terhadap remote main: ''
+Diff commit mobile terhadap d4d792a: docs/penugasan-keamanan-fase-5/README.md
