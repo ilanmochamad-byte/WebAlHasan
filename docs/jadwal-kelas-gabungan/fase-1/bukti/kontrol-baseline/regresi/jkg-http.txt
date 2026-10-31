@@ -1,0 +1,9 @@
+[lulus] Admin masuk web dan guru memperoleh token API
+
+=== H-1 formulir admin ===
+[gagal] Formulir memuat kelas utama + kotak centang kelas gabungan (kelas arsip tidak ditawarkan)
+RuntimeException: Table 'test_jkgk_baruh_test.jadwal_kelas' doesn't exist :: SELECT COUNT(*) FROM jadwal_kelas WHERE jadwal_id = 104 in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/tests/jadwal_kelas_gabungan_f1_http.php:45
+Stack trace:
+#0 /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/tests/jadwal_kelas_gabungan_f1_http.php(150): {closure:/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/tests/jadwal_kelas_gabungan_f1_http.php:42}('SELECT COUNT(*)...')
+#1 {main}
+Table 'test_jkgk_baruh_test.jadwal_kelas' doesn't exist :: SELECT COUNT(*) FROM jadwal_kelas WHERE jadwal_id = 104

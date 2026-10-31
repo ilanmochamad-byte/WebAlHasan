@@ -1,0 +1,36 @@
+migrasi 014_v3_fase2_pelanggaran.sql
+migrasi 015_v3_fase2_koreksi_dan_rekomendasi.sql
+migrasi 016_v3_fase3_konseling.sql
+migrasi 017_v3_fase3_kerahasiaan_dan_revisi.sql
+migrasi 018_v3_fase4_publikasi.sql
+migrasi 019_v3_fase5_laporan_retensi.sql
+migrasi 020_v4_fase1_fondasi.sql
+migrasi 021_v4_fase3_verifikasi.sql
+migrasi 022_v4_fase4_publikasi.sql
+migrasi 023_redesain_web_tahap6_data_pesantren.sql
+migrasi 024_v5_fase1_kesehatan.sql
+migrasi 025_v5_fase2_rincian_kesehatan.sql
+migrasi 026_v5_fase3_ringkasan_wali.sql
+migrasi 027_v6_fase1_bsa.sql
+migrasi 028_v6_fase2_tagihan_bulanan.sql
+migrasi 029_v6_fase3_tabungan.sql
+migrasi 030_v7_fase1_pengajuan_wali.sql
+migrasi 031_v7_fase2_tinjauan_pembimbing.sql
+migrasi 032_penugasan_keamanan_fase1_identitas_guru.sql
+migrasi 033_penugasan_keamanan_fase3_keamanan.sql
+{
+    "db": "test_jkgb_t2_test",
+    "akun": {
+        "pendidikan": 1179,
+        "guruMapel": 1180,
+        "ganda": 1181,
+        "pengurusBiasa": 1182,
+        "sandiWajib": 1183
+    },
+    "rencana": 1,
+    "santri_kelas": 3,
+    "jadwal_hari": "Sabtu",
+    "santri_binaan_poin": 1,
+    "anak_kedua": 2
+}
+DB uji Tahap 2 siap: test_jkgb_t2_test (kosong: test_jkgb_t2_kosong_test)

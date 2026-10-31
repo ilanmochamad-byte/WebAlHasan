@@ -1,0 +1,35 @@
+[lulus] Migrasi Fase 3 memuat ALTER TABLE jadwal_ngaji
+[lulus] Migrasi Fase 3 memuat ADD COLUMN hari
+[lulus] Migrasi Fase 3 memuat ADD COLUMN waktu_mulai
+[lulus] Migrasi Fase 3 memuat ADD COLUMN waktu_selesai
+[lulus] Migrasi Fase 3 memuat jam_migration_status
+[lulus] Migrasi Fase 3 memuat CREATE TABLE jadwal_jam_migration_report
+[lulus] Migrasi Fase 3 memuat CREATE TABLE pertemuan_pengajian
+[lulus] Migrasi Fase 3 memuat CREATE TABLE pertemuan_peserta
+[lulus] Migrasi Fase 3 memuat pertemuan_schedule_date_unique
+[lulus] Migrasi Fase 3 memuat pertemuan_participant_unique
+[lulus] Migrasi naik tidak menghapus tabel, kolom, atau baris lama
+[lulus] Migrasi naik tidak menimpa kolom jam lama
+[lulus] Nilai jam gagal parsing dicatat bersama nilai asli
+[lulus] Rollback berpasangan memuat peringatan produksi
+[lulus] Pemeriksaan bentrok memakai aturan overlap rentang waktu
+[lulus] Bentrok guru ditolak dengan pesan yang dapat ditindaklanjuti
+[lulus] Bentrok kelas dan tempat menghasilkan peringatan
+[lulus] Pembuatan, pembukaan, dan penyelesaian pertemuan memakai transaksi
+[gagal] Pembukaan pertemuan membekukan peserta dari keanggotaan kelas aktif
+[lulus] Status Draf, Dibuka, dan Selesai tersedia
+[lulus] Guru dibatasi ke jadwal miliknya
+[lulus] Tugas guru hanya mengambil jadwal aktif pada semester aktif
+[lulus] UI jadwal menyediakan Pencarian
+[lulus] UI jadwal menyediakan Detail
+[lulus] UI jadwal menyediakan Tambah jadwal
+[lulus] UI jadwal menyediakan Ubah
+[lulus] UI jadwal menyediakan Nonaktifkan
+[lulus] UI jadwal menyediakan Arsipkan
+[lulus] UI jadwal tidak menghapus jadwal permanen
+[lulus] UI pertemuan mendukung seluruh perubahan status
+[lulus] Form jadwal dan pertemuan dilindungi CSRF
+[lulus] Jadwal dan pertemuan saling tertaut dengan konteks terbawa
+[lulus] Format jam lama pada dump dapat diparsing tanpa mengubah sumber
+[lulus] Format ambigu ditolak parser dan harus dilaporkan
+[lulus] Rentang lintas tengah malam tidak ditebak oleh parser

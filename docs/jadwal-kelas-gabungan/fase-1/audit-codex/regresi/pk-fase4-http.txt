@@ -1,0 +1,88 @@
+[lulus] Lima akun uji memperoleh token API
+
+=== R-1 akses ===
+[lulus] K (pengurus) dan G (guru lewat identitas pengurus) pantau = true
+[lulus] Pengurus tanpa Keamanan dan orang tua: pantau = false (200, bukan galat)
+[lulus] Admin tanpa penugasan Keamanan sendiri: pantau = false (PF3-1 berlaku di REST)
+[lulus] Tanpa token → 401
+[lulus] Respons Keamanan Cache-Control private, no-store
+[lulus] N ditolak 403 pada delapan rute data Keamanan
+[lulus] W ditolak 403 pada delapan rute data Keamanan
+[lulus] A ditolak 403 pada delapan rute data Keamanan
+[lulus] Rute Keamanan tak dikenal → 404
+
+=== R-2 metode mutasi ===
+[lulus] 36 permintaan mutasi (4 metode × 9 rute) → 405 Allow: GET
+[lulus] Tidak ada perubahan izin/pembinaan/keputusan/audit Keamanan akibat permintaan mutasi
+
+=== R-3 daftar izin ===
+[lulus] Total izin REST = layanan web = oracle SQL santri aktif (1040)
+[lulus] Halaman pertama REST = halaman web (urutan sama)
+[lulus] Daftar tanpa alasan; tautan REST rincian Keamanan
+[lulus] Parameter peran/santri_id/pembimbing_id diabaikan (cakupan tetap Keamanan)
+[lulus] Saringan asal Wali = oracle (1), memuat pengajuan wali tahap pembimbing
+[lulus] Pengajuan santri nonaktif tidak di daftar
+[lulus] Saringan asal tidak valid → 422
+
+=== R-4 rincian izin ===
+[lulus] Rincian lengkap: alasan, catatan wali, riwayat (PK-T4)
+[lulus] Riwayat membawa label status yang sama dengan halaman web
+[lulus] Pembukaan rincian REST tercatat satu kali, pelaku K, tanpa alasan
+[lulus] Izin santri nonaktif → 404
+[lulus] Izin tidak ada → 404
+[lulus] G membaca rincian izin asal Pengurus santri aktif
+[lulus] Audit gagal → 503 tanpa isi pada rincian izin/pelanggaran/kasus
+
+=== R-5 pelanggaran ===
+[lulus] Daftar, total, dan angka chip pelanggaran = layanan web Keamanan
+[lulus] Jumlah seluruh chip = oracle SQL pelanggaran kini santri aktif (4)
+[lulus] Pelanggaran santri nonaktif tidak di daftar
+[lulus] Rincian lengkap; lampiran hanya metadata tanpa path/sha256; unduhan lewat website
+[lulus] Kunci yang tidak ditampilkan web Keamanan (rekomendasi, rekonsiliasi, peringatan) tidak dikirim
+[lulus] Pelanggaran yang ditindaklanjuti kasus Rahasia terbaca, tautan kasus Rahasia tidak dikirim (PF3-5)
+[lulus] Tautan kasus Internal tetap dikirim
+[lulus] Pelanggaran santri nonaktif dan yang tidak ada sama-sama 404
+[lulus] Status/halaman/periode tidak valid → 422
+[lulus] Periode rentang tanpa kejadian → 0 baris
+
+=== R-6 konseling ===
+[lulus] Daftar dan angka konseling = oracle kasus Internal santri aktif (1); Rahasia tidak ada
+[lulus] Pencarian nama santri kasus Rahasia tidak memuat kasus Rahasia
+[lulus] Kasus Rahasia dan kasus tidak ada: 404 dengan pesan identik (keberadaan tidak bocor)
+[lulus] Kasus Internal lengkap (tujuan, sesi); catatan murobi yang tidak ditampilkan web tidak dikirim
+
+=== R-7 kehadiran ===
+[lulus] Ringkasan dan halaman kehadiran REST = laporan web Keamanan (seluruh jadwal, santri aktif)
+[lulus] Kehadiran memuat jadwal lebih dari satu guru (2 dari 3 guru berjadwal)
+[lulus] Tidak ada baris peserta santri nonaktif
+[lulus] Rincian pertemuan 200 dan berjejak audit
+[lulus] Pertemuan tidak ada → 404
+[lulus] Rincian pertemuan saat audit gagal → 503 tanpa isi
+[lulus] Tanggal kehadiran tidak valid → 422
+[lulus] `/reports` lama tetap menolak K (REST lama tidak melebar)
+[lulus] `/reports` G tetap hanya jadwalnya sendiri walau G memegang Keamanan
+
+=== R-8 pencabutan ===
+[lulus] Penugasan K dinonaktifkan → token lama ditolak seketika
+[lulus] Penugasan K diaktifkan lagi → pulih
+[lulus] Guru G dinonaktifkan → identitas pengurus miliknya gugur, token lama ditolak
+[lulus] Penugasan G berakhir kemarin → token lama ditolak
+[lulus] Penugasan G dipulihkan
+
+=== R-9 identitas akun ===
+[lulus] /profile/identitas 200, no-store
+[lulus] G: identitas guru + identitas pengurus milik guru + penugasan Keamanan (identitas pengurus)
+[lulus] K: hanya identitas pengurus biasa; penugasan Keamanan
+[lulus] Orang tua: tanpa identitas guru/pengurus/penugasan
+[lulus] Admin: pengawasan admin tidak tampil sebagai penugasan
+[lulus] /profile/identitas tanpa token → 401
+[lulus] Bentuk /profile tidak berubah (tanpa kunci baru)
+[lulus] Respons login tidak berubah (tanpa kunci baru)
+[lulus] Guru nonaktif → identitas pengurus milik guru dan penugasannya tidak ditampilkan
+
+=== R-10 audit dan log ===
+[lulus] Seluruh jejak audit Keamanan tanpa alasan/uraian/isi konseling
+[lulus] Log server tanpa galat PHP
+[lulus] Log server tanpa alasan izin
+
+Hasil: 66 lulus, 0 gagal

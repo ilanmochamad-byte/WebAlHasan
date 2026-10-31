@@ -1,0 +1,102 @@
+=== I-1 data lama tanpa baris relasi ===
+[lulus] Jadwal lama tanpa baris jadwal_kelas terbaca tepat satu kelas = jadwal_ngaji.id_kelas (4 jadwal)
+[lulus] Pertemuan lama terbaca berkelas sama dengan snapshot pesertanya (3 pertemuan)
+
+=== I-2 jadwal satu kelas dan dua kelas ===
+[lulus] Jadwal satu kelas: label dan ID kelas = kelas itu saja
+[lulus] Jadwal gabungan: kedua kelas tampil, kelas utama lebih dahulu, id_kelas tetap kelas utama
+[lulus] Relasi jadwal_kelas tersimpan: PA utama, PI gabungan
+[lulus] Kelas-kelas di dalam satu jadwal gabungan tidak dianggap benturan
+
+=== I-3 validasi pilihan kelas ===
+[lulus] Kelas gabungan yang diarsipkan ditolak
+[lulus] Nilai kelas gabungan tidak valid ditolak
+[lulus] Kelas gabungan bukan larik ditolak
+[lulus] Lebih dari 10 kelas dalam satu jadwal ditolak
+[lulus] Simpan yang ditolak tidak meninggalkan jadwal (transaksi dibatalkan)
+[lulus] Kelas utama yang ikut dicentang tidak tersimpan dua kali
+
+=== I-4 benturan ===
+[lulus] Guru yang sama pada jam beririsan ditolak
+[lulus] Kelas gabungan (PI) pada jadwal lain diperingatkan dengan menyebut kelas yang sama saja
+[lulus] Tempat sama diperingatkan; kelas yang tidak beririsan dengan himpunan kelas jadwal lain bukan benturan kelas
+[lulus] Kelas utama jadwal ini beririsan dengan kelas GABUNGAN jadwal lain → peringatan
+[lulus] Menyimpan ulang jadwal gabungan tidak membentur dirinya sendiri
+
+=== I-5 saringan kelas daftar jadwal ===
+[lulus] Saringan kelas PA maupun PI menemukan jadwal gabungan
+[lulus] Saringan kelas C hanya menemukan jadwal C
+[lulus] Pilihan jadwal saat membuka pertemuan menampilkan seluruh kelas
+
+=== I-6 satu pertemuan untuk kedua kelas ===
+[lulus] Peserta = santri aktif PA (3) + PI (2) dengan kelas asal masing-masing
+[lulus] Keanggotaan yang sudah Selesai dan santri kelas lain tidak ikut
+[lulus] Tepat satu pertemuan untuk tanggal itu; tidak ada peserta ganda
+[lulus] Kelas pertemuan dibekukan saat dibuka (PA utama, PI)
+[lulus] Rincian pertemuan web menampilkan seluruh kelas
+[lulus] Pembukaan kedua (web) untuk jadwal–tanggal sama ditolak
+[lulus] Pembukaan kedua (API) untuk jadwal–tanggal sama → MEETING_CONFLICT
+
+=== I-7 API: classes aditif ===
+[lulus] Field `class` lama tetap kelas utama
+[lulus] `classes` memuat seluruh kelas jadwal, utama lebih dahulu
+[lulus] Daftar jadwal API memuat `classes` dan pertemuan yang sama
+[lulus] Rincian pertemuan API: lima santri dengan kelas asal
+[lulus] Rincian pertemuan API: task.class lama + task.classes
+[lulus] Daftar pertemuan API: class_name lama, class_names + classes aditif
+[lulus] Jadwal satu kelas: `classes` berisi satu kelas
+
+=== I-8 absensi tanpa duplikasi ===
+[lulus] Satu absensi guru dan lima absensi santri untuk pertemuan gabungan
+[lulus] Absensi yang tidak memuat seluruh peserta dua kelas ditolak
+
+=== I-9 perubahan kelas setelah pertemuan dibuka ===
+[lulus] Mengganti PI dengan C memperingatkan benturan kelas C dengan jadwal C
+[lulus] Pertemuan yang sudah dibuka tetap berkelas PA + PI dengan lima peserta
+[lulus] API pertemuan lama tetap membaca kelas historis
+[lulus] Pertemuan berikutnya (dibuka lewat API) memakai kelas baru PA + C
+
+=== I-10 laporan dan ekspor ===
+[lulus] Gabungan jadwal S2: 2 pertemuan, 2 absensi guru (tidak ganda), 10 absensi santri (5 + 5)
+[lulus] Ringkasan per jadwal satu baris untuk jadwal gabungan, tidak terpecah per kelas
+[lulus] Ringkasan jadwal menyebut kelas historis tiap pertemuan (PA+PI dan PA+C)
+[lulus] Laporan kelas PA hanya memuat santri kelas PA
+[lulus] Laporan kelas PI hanya memuat santri kelas PI
+[lulus] Laporan kelas C hanya memuat santri kelas C
+[lulus] Per kelas: PA 6 (2 pertemuan × 3), PI 2 (pertemuan pertama), C 2 (pertemuan kedua)
+[lulus] Jumlah laporan per kelas = laporan gabungan (tiap santri tepat sekali)
+[lulus] Absensi guru per kelas = satu per pertemuan yang mencakup kelas itu
+[lulus] Ekspor: 12 baris (2 guru + 10 santri), kelas santri = kelas asal
+[lulus] Baris guru di ekspor memuat seluruh kelas pertemuan
+[lulus] Pilihan saringan kelas laporan memuat kelas gabungan
+[lulus] Rincian laporan pertemuan: kelas pertemuan + kelas asal santri
+[lulus] Jadwal satu kelas: laporan tidak berubah bentuk
+
+=== I-11 rekap kehadiran rapor ===
+[lulus] Rapor santri PI: pertemuan gabungan dihitung tepat sekali
+[lulus] Rapor santri PA: dua pertemuan gabungan, masing-masing sekali
+[lulus] Rapor santri C: satu dari jadwal gabungan + satu dari jadwal C
+[lulus] Rekap kehadiran per kelas (kelas_id_snapshot) memuat santri kelas gabungan
+
+=== I-12 dua pembukaan bersamaan ===
+[lulus] Minggu +2: tiga pembukaan bersamaan → satu berhasil, dua ditolak rapi, satu pertemuan (["Pertemuan untuk jadwal dan tanggal tersebut sudah ada dan tidak dapat dibuat ulang.","ok","Pertemuan untuk jadwal dan tanggal tersebut sudah ada dan tidak dapat dibuat ulang."])
+[lulus] Minggu +2: peserta 5 tanpa ganda dan dua kelas beku
+[lulus] Minggu +3: tiga pembukaan bersamaan → satu berhasil, dua ditolak rapi, satu pertemuan (["Pertemuan untuk jadwal dan tanggal tersebut sudah ada dan tidak dapat dibuat ulang.","ok","Pertemuan untuk jadwal dan tanggal tersebut sudah ada dan tidak dapat dibuat ulang."])
+[lulus] Minggu +3: peserta 5 tanpa ganda dan dua kelas beku
+
+=== I-13 ubah kelas bersamaan dengan pembukaan ===
+[lulus] Empat putaran ubah-kelas ∥ buka: kelas beku = kelas peserta = salah satu keadaan utuh (4:340+341 5:340+342 6:340+341 7:340+341)
+
+=== I-14 audit ===
+[lulus] Audit schedule.update mencatat kelas sebelum dan sesudah
+
+=== I-15 preservasi data lama ===
+[lulus] Baris lama jadwal tidak berubah (4:9800268209)
+[lulus] Baris lama pertemuan tidak berubah (3:9783348954)
+[lulus] Baris lama peserta tidak berubah (13:35099434591)
+[lulus] Baris lama absensi_guru tidak berubah (2:3143590963)
+[lulus] Baris lama absensi_santri tidak berubah (11:25942939877)
+[lulus] Baris lama santri tidak berubah (266:557313566554)
+[lulus] Tidak ada pertemuan ganda per jadwal–tanggal, absensi santri ganda, atau lebih dari satu absensi guru per pertemuan
+
+Hasil: 71 lulus, 0 gagal

@@ -179,6 +179,10 @@ final class ReportService
                 'book' => (string) $meeting['nama_kitab'],
                 'place' => (string) $meeting['tempat'],
                 'class' => ['id' => (int) $meeting['id_kelas'], 'name' => (string) $meeting['nama_kelas'], 'level' => (string) $meeting['jenjang']],
+                // Aditif (kelas gabungan): seluruh kelas pertemuan, kelas utama lebih dahulu.
+                'classes' => $this->repository->meetingClasses((int) $meeting['id'])
+                    ?: [['id' => (int) $meeting['id_kelas'], 'name' => (string) $meeting['nama_kelas'], 'level' => (string) $meeting['jenjang'], 'is_primary' => true]],
+                'class_names' => (string) ($meeting['kelas_label'] ?? $meeting['nama_kelas']),
                 'teacher' => ['id' => (int) $meeting['id_guru'], 'nip' => $meeting['nip'] === null ? null : (string) $meeting['nip'], 'name' => (string) $meeting['nama_guru']],
                 'academic_year' => ['id' => (int) $meeting['id_tahun'], 'year' => (string) $meeting['tahun'], 'semester' => (string) $meeting['semester']],
             ],
@@ -196,6 +200,8 @@ final class ReportService
                 'student_id' => (int) $row['santri_id'],
                 'nis' => (string) $row['nis_snapshot'],
                 'name' => (string) $row['nama_santri_snapshot'],
+                // Aditif: kelas asal santri pada pertemuan.
+                'class' => ['id' => (int) $row['kelas_id_snapshot'], 'name' => (string) ($row['kelas_asal'] ?? '')],
                 'status' => $row['status'] === null ? null : (string) $row['status'],
                 'notes' => $row['catatan'],
                 'recorded_by' => $row['dicatat_oleh_nama'],

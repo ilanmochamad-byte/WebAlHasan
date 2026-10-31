@@ -1,0 +1,3 @@
+redesain-tahap2-http.txt: baseline (185, 6), kini (185, 6)
+redesain-tahap6-http.txt: baseline (125, 7), kini (125, 7)
+Tahap 2: seluruh enam teks gagal identik. Tahap 6: tujuh judul gagal sama; rincian rollback terakhir 033 pada baseline, 034 pada kode kini.

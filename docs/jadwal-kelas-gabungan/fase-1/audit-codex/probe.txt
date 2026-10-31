@@ -1,0 +1,168 @@
+[lulus] Prasyarat: salinan sebelum 034
+Lingkungan: PHP 8.4.14; DB 12.3.2-MariaDB; test_jkg_audit_test
+[lulus] Naik tepat 034
+[lulus] Preservasi seluruh kolom/ID setelah naik: absensi_guru (2 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: absensi_santri (11 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: alumni (1 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: api_idempotency_keys (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: api_tokens (334 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: audit_logs (3481 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bendahara_bulanan_assignments (4 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bendahara_psb_assignments (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: berita (25 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_idempotensi (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_pembayaran (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_pembayaran_kuitansi (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_pembayaran_pembatalan (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_penerbitan (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_penerbitan_santri (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_penyesuaian (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_setoran_transfer (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_tabungan_akun (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_tabungan_transaksi (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_tagihan (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_tagihan_komponen (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_tagihan_penyesuaian (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_tagihan_riwayat (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_tarif (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: bsa_tarif_komponen (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: download (22 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: galeri (30 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: guru (18 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: guru_mapel_assignments (13 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: izin_idempotency_keys (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: izin_keputusan (551 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: izin_keputusan_koreksi (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: izin_pembimbing_penetapan (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: izin_pembimbing_tinjauan (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: izin_pengajuan (1052 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: izin_riwayat_status (1553 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: izin_wali_perbaikan (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: jadwal_jam_migration_report (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: jadwal_ngaji (6 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kamar (21 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: keamanan_assignments (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kelas (13 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_akses_log (5 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_assignments (7 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_idempotensi (13 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_kunjungan (7 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_kunjungan_versi (8 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_obat (9 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_ringkasan (3 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_ringkasan_penerima (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_ringkasan_peristiwa (5 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_ringkasan_versi (4 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_rujukan (5 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_tindak_lanjut (5 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: kesehatan_versi_rincian (8 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: mapel (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: mata_pelajaran (4 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: mengajar (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: murobi_assignments (11 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: notifikasi_outbox (471 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: notifikasi_pengaturan_audit (25 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: notifikasi_percobaan (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: notifikasi_worker_lock (2 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: panitia_psb_assignments (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: pelanggaran (30 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: pembimbing_assignments (14 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: pembimbing_kamar (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: pendidikan_assignments (1 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: pengaturan_notifikasi (1 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: pengurus (29 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: perangkat_push (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: perizinan (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: pertemuan_pengajian (4 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: pertemuan_peserta (16 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: plotting_kamar (218 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: plotting_kelas (55 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: psb_pembayaran (26 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: psb_pendaftar (33 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: roles (4 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: santri (274 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: santri_wali (27 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: tahun_ajaran (2 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: users (48 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: user_roles (52 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_ambang (2 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_idempotency (13 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_katalog (5 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_kategori (2 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_konseling_kasus (2 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_konseling_kasus_revisi (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_konseling_sesi (2 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_konseling_tautan (2 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_lampiran (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_murobi_catatan (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_pelanggaran (5 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_poin_agregat (3 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_poin_ledger (4 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_publikasi (3 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_publikasi_outbox (4 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_publikasi_pratinjau (3 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_publikasi_riwayat (4 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v3_rekomendasi (2 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_bahan (72 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_bahan_riwayat (119 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_nilai (181 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_nilai_riwayat (172 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_penanda_tangan (3 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_rapor (2 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_rapor_operasi (3 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_rapor_versi (3 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_rencana (4 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_rencana_mapel (11 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_rencana_penanda_riwayat (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_sikap (14 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_sikap_riwayat (22 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_tanda_tangan_aset (3 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_verifikasi (3 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: v4_verifikasi_laju (0 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: wali (21 baris)
+[lulus] Preservasi seluruh kolom/ID setelah naik: wali_bukan_ganda (0 baris)
+[lulus] Seluruh ID jadwal tetap; dua jadwal lama tidak tergabung
+[lulus] Dua jadwal dengan kelas sama tetap dua relasi tunggal
+[lulus] Kelas pertemuan lama berasal dari snapshot PA meski jadwal kini PI
+[lulus] Rollback saat masih satu kelas berhasil
+[lulus] Rollback menjaga seluruh isi/ID semua tabel lama
+[lulus] Web/API tetap membaca setelah rollback
+[lulus] Naik kembali 034
+[lulus] Naik ulang menjaga seluruh isi/ID semua tabel lama
+[lulus] Tidak membuka pertemuan otomatis saat menyimpan
+[lulus] PA 3 + PI 2 tepat sekali dan kelas asal benar (pilihan kelas berulang dinormalisasi)
+[lulus] Replay pembukaan API tetap satu pertemuan
+[lulus] Guru lain ditolak: jadwal API
+[lulus] Guru lain ditolak: pertemuan API
+[lulus] Guru lain ditolak: buka API
+[lulus] Guru lain ditolak: absensi API
+[lulus] Guru lain ditolak: pertemuan web
+[lulus] Guru lain ditolak: buka web
+[lulus] Guru lain ditolak: rincian laporan
+[lulus] Replay absensi tetap satu guru dan satu absensi per santri
+[lulus] Peserta absensi berulang ditolak
+[lulus] Pindah santri dan ganti seluruh kelas jadwal tidak mengubah snapshot/absensi historis
+[lulus] API jadwal: class lama tetap kelas utama kini, classes mengikuti pilihan baru
+[lulus] API pertemuan: field class lama tetap kompatibel; classes menyimpan PA+PI historis
+[lulus] Draf dibuka pada ID yang sama setelah perubahan kelas
+[lulus] Draf belum dibuka memakai kelas baru C, bukan kelas saat pembuatan draf
+[lulus] Laporan + ekspor tanpa ganda: kelas semua, scope guru
+[lulus] Laporan + ekspor tanpa ganda: kelas semua, scope santri
+[lulus] Laporan + ekspor tanpa ganda: kelas semua, scope gabungan
+[lulus] Laporan + ekspor tanpa ganda: kelas 340, scope guru
+[lulus] Laporan + ekspor tanpa ganda: kelas 340, scope santri
+[lulus] Laporan + ekspor tanpa ganda: kelas 340, scope gabungan
+[lulus] Laporan + ekspor tanpa ganda: kelas 341, scope guru
+[lulus] Laporan + ekspor tanpa ganda: kelas 341, scope santri
+[lulus] Laporan + ekspor tanpa ganda: kelas 341, scope gabungan
+[lulus] Laporan + ekspor tanpa ganda: kelas 342, scope guru
+[lulus] Laporan + ekspor tanpa ganda: kelas 342, scope santri
+[lulus] Laporan + ekspor tanpa ganda: kelas 342, scope gabungan
+[lulus] Guru lain tidak memperoleh baris laporan/ekspor
+[lulus] Rapor tepat sekali untuk santri 1722 (Hadir)
+[lulus] Rapor tepat sekali untuk santri 1723 (Terlambat)
+[lulus] Rapor tepat sekali untuk santri 1724 (Izin)
+[lulus] Rapor tepat sekali untuk santri 1725 (Sakit)
+[lulus] Rapor tepat sekali untuk santri 1726 (Alpa)
+[lulus] Rollback sejarah gabungan ditolak meski jadwal kini satu kelas; data utuh
+Hasil: 166 lulus, 0 gagal

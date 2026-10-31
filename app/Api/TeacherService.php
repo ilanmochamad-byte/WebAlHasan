@@ -68,7 +68,7 @@ final class TeacherService
             ? new DateTimeImmutable('today', new DateTimeZone($this->timezone))
             : $this->date($date, 'date');
         $meeting = $this->repository->meetingByScheduleDate($scheduleId, $occurrence->format('Y-m-d'));
-        return $this->schedulePayload($schedule, $occurrence->format('Y-m-d'), $meeting);
+        return $this->schedulePayload($schedule, $occurrence->format('Y-m-d'), $meeting, $this->repository->scheduleClasses([$scheduleId])[$scheduleId] ?? []);
     }
 
     public function meetings(array $user, array $filters): array
@@ -83,8 +83,9 @@ final class TeacherService
             throw new ApiException('VALIDATION_FAILED', 'Tanggal akhir tidak boleh sebelum tanggal awal.', 422);
         }
         $result = $this->repository->meetingPage($user, $from, $to, $page, $perPage);
+        $classes = $this->repository->meetingClasses(array_map(static fn (array $row): int => (int) $row['id'], $result['rows']));
         return [
-            'items' => array_map(fn (array $row): array => $this->meetingSummary($row), $result['rows']),
+            'items' => array_map(fn (array $row): array => $this->meetingSummary($row, $classes[(int) $row['id']] ?? []), $result['rows']),
             'pagination' => $this->pagination($page, $perPage, (int) $result['total']),
         ];
     }
@@ -126,7 +127,7 @@ final class TeacherService
             }
 
             $meetingId = $this->repository->createOpenedMeeting($scheduleId, $date->format('Y-m-d'), $notes, (int) $user['id']);
-            $this->repository->snapshotParticipants($meetingId, (int) $schedule['id_kelas'], (int) $schedule['id_tahun']);
+            $this->repository->snapshotParticipants($meetingId, (int) $schedule['id_kelas'], (int) $schedule['id_tahun'], $scheduleId);
             $meeting = $this->repository->meetingFind($meetingId);
             if ($meeting === null) {
                 throw new ApiException('SERVER_ERROR', 'Pertemuan gagal dibaca setelah dibuat.', 500);
@@ -258,6 +259,7 @@ final class TeacherService
     {
         $patterns = $this->repository->activeSchedulePatterns($user);
         $meetings = $this->repository->meetingsInRange($user, $from->format('Y-m-d'), $to->format('Y-m-d'));
+        $classes = $this->repository->scheduleClasses(array_map(static fn (array $row): int => (int) $row['id'], $patterns));
         $meetingMap = [];
         foreach ($meetings as $meeting) {
             $meetingMap[$meeting['jadwal_id'] . ':' . $meeting['tanggal_pertemuan']] = $meeting;
@@ -270,14 +272,20 @@ final class TeacherService
                     continue;
                 }
                 $key = $pattern['id'] . ':' . $date->format('Y-m-d');
-                $items[] = $this->schedulePayload($pattern, $date->format('Y-m-d'), $meetingMap[$key] ?? null);
+                $items[] = $this->schedulePayload($pattern, $date->format('Y-m-d'), $meetingMap[$key] ?? null, $classes[(int) $pattern['id']] ?? []);
             }
         }
         usort($items, static fn (array $a, array $b): int => [$a['occurrence_date'], $a['start_time'], $a['id']] <=> [$b['occurrence_date'], $b['start_time'], $b['id']]);
         return $items;
     }
 
-    private function schedulePayload(array $row, string $date, ?array $meeting): array
+    /**
+     * `class` tetap kelas utama (klien lama); `classes` (aditif) memuat seluruh
+     * kelas jadwal gabungan, kelas utama lebih dahulu.
+     *
+     * @param list<array{id:int, name:string, level:string, is_primary:bool}> $classes
+     */
+    private function schedulePayload(array $row, string $date, ?array $meeting, array $classes): array
     {
         return [
             'id' => (int) $row['id'],
@@ -289,6 +297,7 @@ final class TeacherService
             'book' => (string) $row['nama_kitab'],
             'place' => (string) $row['tempat'],
             'class' => ['id' => (int) $row['id_kelas'], 'name' => (string) $row['nama_kelas'], 'level' => (string) $row['jenjang']],
+            'classes' => $this->classList($classes, $row),
             'teacher' => ['id' => (int) $row['id_guru'], 'nip' => $row['nip'] === null ? null : (string) $row['nip'], 'name' => (string) $row['nama_guru']],
             'academic_year' => ['id' => (int) $row['id_tahun'], 'year' => (string) $row['tahun'], 'semester' => (string) $row['semester']],
             'meeting' => $meeting === null ? null : [
@@ -319,6 +328,7 @@ final class TeacherService
                 'book' => (string) $meeting['nama_kitab'],
                 'place' => (string) $meeting['tempat'],
                 'class' => ['id' => (int) $meeting['id_kelas'], 'name' => (string) $meeting['nama_kelas'], 'level' => (string) $meeting['jenjang']],
+                'classes' => $this->classList($this->repository->meetingClasses([(int) $meeting['id']])[(int) $meeting['id']] ?? [], $meeting),
                 'teacher' => ['id' => (int) $meeting['id_guru'], 'nip' => $meeting['nip'] === null ? null : (string) $meeting['nip'], 'name' => (string) $meeting['nama_guru']],
                 'academic_year' => ['id' => (int) $meeting['id_tahun'], 'year' => (string) $meeting['tahun'], 'semester' => (string) $meeting['semester']],
             ],
@@ -327,6 +337,8 @@ final class TeacherService
                 'student_id' => (int) $row['santri_id'],
                 'nis' => (string) $row['nis_snapshot'],
                 'name' => (string) $row['nama_santri_snapshot'],
+                // Aditif: kelas asal santri pada pertemuan (kelas gabungan).
+                'class' => ['id' => (int) $row['kelas_id_snapshot'], 'name' => (string) ($row['kelas_asal'] ?? '')],
                 'attendance' => $row['attendance_id'] === null ? null : [
                     'id' => (int) $row['attendance_id'],
                     'status' => (string) $row['status'],
@@ -338,7 +350,8 @@ final class TeacherService
         ];
     }
 
-    private function meetingSummary(array $row): array
+    /** @param list<array{id:int, name:string, level:string, is_primary:bool}> $classes */
+    private function meetingSummary(array $row, array $classes): array
     {
         return [
             'id' => (int) $row['id'],
@@ -352,10 +365,27 @@ final class TeacherService
             'book' => (string) $row['nama_kitab'],
             'place' => (string) $row['tempat'],
             'class_name' => (string) $row['nama_kelas'],
+            // Aditif: seluruh kelas pertemuan (kelas beku saat dibuka).
+            'class_names' => (string) ($row['kelas_label'] ?? $row['nama_kelas']),
+            'classes' => $this->classList($classes, $row),
             'teacher_name' => (string) $row['nama_guru'],
             'start_time' => substr((string) $row['waktu_mulai'], 0, 5),
             'end_time' => substr((string) $row['waktu_selesai'], 0, 5),
         ];
+    }
+
+    /**
+     * @param list<array{id:int, name:string, level:string, is_primary:bool}> $classes
+     * @return list<array{id:int, name:string, level:string, is_primary:bool}>
+     */
+    private function classList(array $classes, array $row): array
+    {
+        if ($classes !== []) {
+            return $classes;
+        }
+        // Data yang kelasnya tidak terbaca (mis. kelas sudah tidak ada) tetap
+        // memuat kelas utama agar `classes` tidak pernah kosong.
+        return [['id' => (int) $row['id_kelas'], 'name' => (string) ($row['nama_kelas'] ?? ''), 'level' => (string) ($row['jenjang'] ?? ''), 'is_primary' => true]];
     }
 
     private function normalizeTeacherAttendance(?array $row): ?array

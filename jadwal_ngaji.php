@@ -27,19 +27,21 @@ $stmt->execute();
 $jumlahPerWaktu = array_column($stmt->get_result()->fetch_all(MYSQLI_ASSOC), 'n', 'waktu_sholat');
 $stmt->close();
 
-$stmt = $koneksi->prepare("SELECT DISTINCT k.id, k.nama_kelas FROM jadwal_ngaji j JOIN kelas k ON k.id = j.id_kelas WHERE $aktif ORDER BY k.nama_kelas");
+// Kelas gabungan (migrasi 034): pilihan kelas memuat seluruh kelas jadwal aktif.
+$mencakup = App\Schedule\KelasJadwal::jadwalMencakup($koneksi);
+$stmt = $koneksi->prepare("SELECT k.id, k.nama_kelas FROM kelas k WHERE EXISTS (SELECT 1 FROM jadwal_ngaji j WHERE $aktif AND " . App\Schedule\KelasJadwal::jadwalMencakup($koneksi, 'j', 'k.id') . ") ORDER BY k.nama_kelas");
 $stmt->bind_param('i', $idTahun);
 $stmt->execute();
 $daftarKelas = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-$sql = "SELECT j.jam, j.fan_ilmu, j.nama_kitab, j.tempat, g.nama_guru, k.nama_kelas
+$sql = "SELECT j.jam, j.fan_ilmu, j.nama_kitab, j.tempat, g.nama_guru, " . App\Schedule\KelasJadwal::labelJadwal($koneksi) . " AS nama_kelas
         FROM jadwal_ngaji j JOIN guru g ON g.id = j.id_guru JOIN kelas k ON k.id = j.id_kelas
         WHERE $aktif AND j.waktu_sholat = ?";
 $tipe = 'is';
 $nilai = [$idTahun, $waktu];
 if ($kelas > 0) {
-    $sql .= ' AND j.id_kelas = ?';
+    $sql .= ' AND ' . $mencakup;
     $tipe .= 'i';
     $nilai[] = $kelas;
 }
@@ -49,7 +51,7 @@ if ($cari !== '') {
     $tipe .= 'sss';
     array_push($nilai, $pola, $pola, $pola);
 }
-$sql .= ' ORDER BY k.nama_kelas, j.jam';
+$sql .= ' ORDER BY nama_kelas, j.jam';
 $stmt = $koneksi->prepare($sql);
 $stmt->bind_param($tipe, ...$nilai);
 $stmt->execute();

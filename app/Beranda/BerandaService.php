@@ -188,7 +188,7 @@ final class BerandaService
         }
         $rows = $this->all(
             "SELECT j.id, j.waktu_sholat, j.waktu_mulai, j.waktu_selesai, j.fan_ilmu, j.nama_kitab, j.tempat,
-                    k.nama_kelas, g.nama_guru, p.id AS pertemuan_id, p.status AS pertemuan_status
+                    " . \App\Schedule\KelasJadwal::labelJadwal($this->db) . " AS nama_kelas, g.nama_guru, p.id AS pertemuan_id, p.status AS pertemuan_status
                FROM jadwal_ngaji j
                JOIN kelas k ON k.id = j.id_kelas
                LEFT JOIN guru g ON g.id = j.id_guru

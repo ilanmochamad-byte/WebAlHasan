@@ -1,0 +1,4 @@
+[lulus] Kontrol baseline: kode lama pada 034 hanya membekukan 3 santri PA; 2 PI terlewat
+[lulus] Kontrol baseline: relasi dua kelas tetap ada tetapi kode lama tidak membekukan kelas pertemuan
+[lulus] Kontrol kode kini: jadwal yang sama membekukan 5 peserta dan dua kelas
+Hasil: 3 lulus, 0 gagal

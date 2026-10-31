@@ -1,0 +1,96 @@
+=== S-1 lint ===
+[gagal] lint app/Schedule/KelasJadwal.php
+[gagal] lint app/Schedule/PesertaPertemuan.php
+[lulus] lint app/Schedule/ScheduleRepository.php
+[lulus] lint app/Schedule/ScheduleService.php
+[lulus] lint app/Api/TeacherRepository.php
+[lulus] lint app/Api/TeacherService.php
+[lulus] lint app/Report/ReportRepository.php
+[lulus] lint app/Report/ReportService.php
+[lulus] lint app/Beranda/BerandaService.php
+[lulus] lint admin/admin_pengajian.php
+[lulus] lint admin/_pengajian_jadwal.php
+[lulus] lint admin/_pengajian_pertemuan.php
+[lulus] lint admin/laporan_absensi_detail.php
+[lulus] lint jadwal_ngaji.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_seed.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_worker.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_integration.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_migration.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_http.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_static.php
+
+=== S-2 migrasi aditif ===
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/database/migrations/034_jadwal_kelas_gabungan_fase1.sql): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/tests/jadwal_kelas_gabungan_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/database/migrations/034_jadwal_kelas_gabungan_fase1.sql): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/tests/jadwal_kelas_gabungan_f1_static.php on line 27
+[lulus] Migrasi 034 tanpa ALTER/UPDATE/DELETE/TRUNCATE/DROP/RENAME
+[gagal] Migrasi 034 hanya membuat jadwal_kelas dan pertemuan_kelas (dapat diulang)
+[gagal] Isian data lama hanya ke tabel baru
+[gagal] Setiap isian dijaga NOT EXISTS (aman dijalankan ulang)
+[gagal] 034 adalah migrasi terakhir
+[gagal] Rollback berpasangan tersedia
+
+=== S-3 rollback berpenjaga ===
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/database/rollbacks/034_jadwal_kelas_gabungan_fase1.sql): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/tests/jadwal_kelas_gabungan_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/database/rollbacks/034_jadwal_kelas_gabungan_fase1.sql): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/tests/jadwal_kelas_gabungan_f1_static.php on line 27
+[gagal] Rollback ditolak bila ada kelas gabungan atau pertemuan berkelas ganda
+[gagal] Rollback hanya melepas dua tabel baru
+[gagal] Penjaga dijalankan sebelum DROP
+
+=== S-4 saringan kelas ===
+[gagal] app/Schedule/ScheduleRepository.php tidak menyaring kelas lewat j.id_kelas saja
+[gagal] app/Report/ReportRepository.php tidak menyaring kelas lewat j.id_kelas saja
+[lulus] app/Api/TeacherRepository.php tidak menyaring kelas lewat j.id_kelas saja
+[gagal] Laporan: santri disaring menurut kelas asal, guru menurut kelas pertemuan
+[gagal] Halaman publik menyaring lewat seluruh kelas jadwal
+
+=== S-5 satu implementasi pembukaan ===
+[gagal] app/Schedule/ScheduleRepository.php memakai PesertaPertemuan, tanpa INSERT peserta sendiri
+[gagal] app/Api/TeacherRepository.php memakai PesertaPertemuan, tanpa INSERT peserta sendiri
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/app/Schedule/PesertaPertemuan.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/tests/jadwal_kelas_gabungan_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/app/Schedule/PesertaPertemuan.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/tests/jadwal_kelas_gabungan_f1_static.php on line 27
+[gagal] Peserta: satu baris per santri, keanggotaan aktif, kelas asal disimpan
+[gagal] Simpan jadwal mengunci baris jadwal sebelum menyamakan kelas
+
+=== S-6 kontrak API aditif ===
+[gagal] Jadwal/pertemuan API: `class` dan `class_name` lama dipertahankan; `classes` ditambahkan
+[gagal] Santri di API mendapat kelas asal (aditif)
+[gagal] Laporan pertemuan: class lama + classes aditif
+
+=== S-7 formulir admin ===
+[gagal] Formulir: kelas utama (id_kelas) + kotak centang kelas gabungan
+[gagal] Penanda bentrok tampilan membandingkan himpunan kelas
+
+=== S-8 batas berkas ===
+[gagal] Perubahan hanya pada berkas Fase 1 (ok)
+[lulus] Tanpa perubahan app/Auth atau router API
+[lulus] Tidak ada pembukaan pertemuan otomatis
+
+Hasil: 22 lulus, 24 gagal
+  - lint app/Schedule/KelasJadwal.php
+  - lint app/Schedule/PesertaPertemuan.php
+  - Migrasi 034 hanya membuat jadwal_kelas dan pertemuan_kelas (dapat diulang)
+  - Isian data lama hanya ke tabel baru
+  - Setiap isian dijaga NOT EXISTS (aman dijalankan ulang)
+  - 034 adalah migrasi terakhir
+  - Rollback berpasangan tersedia
+  - Rollback ditolak bila ada kelas gabungan atau pertemuan berkelas ganda
+  - Rollback hanya melepas dua tabel baru
+  - Penjaga dijalankan sebelum DROP
+  - app/Schedule/ScheduleRepository.php tidak menyaring kelas lewat j.id_kelas saja
+  - app/Report/ReportRepository.php tidak menyaring kelas lewat j.id_kelas saja
+  - Laporan: santri disaring menurut kelas asal, guru menurut kelas pertemuan
+  - Halaman publik menyaring lewat seluruh kelas jadwal
+  - app/Schedule/ScheduleRepository.php memakai PesertaPertemuan, tanpa INSERT peserta sendiri
+  - app/Api/TeacherRepository.php memakai PesertaPertemuan, tanpa INSERT peserta sendiri
+  - Peserta: satu baris per santri, keanggotaan aktif, kelas asal disimpan
+  - Simpan jadwal mengunci baris jadwal sebelum menyamakan kelas
+  - Jadwal/pertemuan API: `class` dan `class_name` lama dipertahankan; `classes` ditambahkan
+  - Santri di API mendapat kelas asal (aditif)
+  - Laporan pertemuan: class lama + classes aditif
+  - Formulir: kelas utama (id_kelas) + kotak centang kelas gabungan
+  - Penanda bentrok tampilan membandingkan himpunan kelas
+  - Perubahan hanya pada berkas Fase 1 (ok)

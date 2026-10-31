@@ -1,0 +1,482 @@
+{
+    "absensi_guru": {
+        "rows": 2,
+        "sha256": "bd9b4e14c0bd1d65f0bed5f223096f3cbc7e6a9539b04423789d388e375e79b7"
+    },
+    "absensi_santri": {
+        "rows": 11,
+        "sha256": "e004bddc944d037ecd063cd87b66bf39efe26b44e83b3dda07280a420591c769"
+    },
+    "alumni": {
+        "rows": 1,
+        "sha256": "b33eaf7e35299459191fd7452c32e8a57338a067e310063b8c5bf5616365a75e"
+    },
+    "api_idempotency_keys": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "api_tokens": {
+        "rows": 334,
+        "sha256": "56acd4ee42d34351d18ff5af973a0680b4b96c4c2035ea18ee596c6a5778fa6c"
+    },
+    "audit_logs": {
+        "rows": 3481,
+        "sha256": "4de89efbc584e4f70507409752e51363e2e40470c9a38522792e2280e2032437"
+    },
+    "bendahara_bulanan_assignments": {
+        "rows": 4,
+        "sha256": "6c3f12c0a6e9a6f5ac13fcc972477741bb99b422a77f0f6a7cd83d8cd9387bf8"
+    },
+    "bendahara_psb_assignments": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "berita": {
+        "rows": 25,
+        "sha256": "e5890c27eb887adcab37031c28e0525133c6fb2096aeb6062b3b1acf60438a79"
+    },
+    "bsa_idempotensi": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_pembayaran": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_pembayaran_kuitansi": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_pembayaran_pembatalan": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_penerbitan": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_penerbitan_santri": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_penyesuaian": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_setoran_transfer": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_tabungan_akun": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_tabungan_transaksi": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_tagihan": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_tagihan_komponen": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_tagihan_penyesuaian": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_tagihan_riwayat": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_tarif": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bsa_tarif_komponen": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "download": {
+        "rows": 22,
+        "sha256": "50632a94bf128b87f458f36dc779fd633e92f00879649b8805d2b044af0e9f0b"
+    },
+    "galeri": {
+        "rows": 30,
+        "sha256": "69121fa429858197157cd68d652e79c7189df3eab422e0ff1bf224ac4680f331"
+    },
+    "guru": {
+        "rows": 18,
+        "sha256": "e0c4fada80b0d7545b2b1ad63e73ed8f6f487370e796efa6590e446e794eceba"
+    },
+    "guru_mapel_assignments": {
+        "rows": 13,
+        "sha256": "edff5c0cd9d0e0bbd9ff9954a3655555fe5a88b6f870a3bfb8846b373bcab54a"
+    },
+    "izin_idempotency_keys": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "izin_keputusan": {
+        "rows": 551,
+        "sha256": "33af637f07ddc026058d918ca61989b96a9714af0cc47f2a8bb895479913b772"
+    },
+    "izin_keputusan_koreksi": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "izin_pembimbing_penetapan": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "izin_pembimbing_tinjauan": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "izin_pengajuan": {
+        "rows": 1052,
+        "sha256": "aca7f74719890e0d217a98c8e7b0a07cf1d6dd16b999766fd848c66a07f47018"
+    },
+    "izin_riwayat_status": {
+        "rows": 1553,
+        "sha256": "eff3c0d8903e9399e32a0e10c1c47dff833cbc332e9385de0c5cd20bee9324d7"
+    },
+    "izin_wali_perbaikan": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "jadwal_jam_migration_report": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "jadwal_ngaji": {
+        "rows": 6,
+        "sha256": "ed644ec3e4f2bfbe73f90201ac29a8d3847c32f5afd8e779de103cb6c251bfe9"
+    },
+    "kamar": {
+        "rows": 21,
+        "sha256": "ff086522180655ca91293a24692024304a57f3185b2112da7b885e220446dec1"
+    },
+    "keamanan_assignments": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "kelas": {
+        "rows": 13,
+        "sha256": "4e3407f0bd0bf64ba76be339e6404950e9f0e7ee6069db8f4dd9e244cf0f220e"
+    },
+    "kesehatan_akses_log": {
+        "rows": 5,
+        "sha256": "bdc674259e53543adb74bf8399a97f9efdc42a0a25457a3aa5830da113493169"
+    },
+    "kesehatan_assignments": {
+        "rows": 7,
+        "sha256": "58139e0aa1f90e8c416369961b01efd2e863d84195789daf425a72f2ecd45d2f"
+    },
+    "kesehatan_idempotensi": {
+        "rows": 13,
+        "sha256": "a79ba16f4d4e40cb5339711c2b0b08e1ba128d9dc9717e280312545a57457447"
+    },
+    "kesehatan_kunjungan": {
+        "rows": 7,
+        "sha256": "5a8cfabe2e576984c3a6c8f310c655519d0e502a2af90a38519d48cdde5256a1"
+    },
+    "kesehatan_kunjungan_versi": {
+        "rows": 8,
+        "sha256": "24cf596a26f9d8d9c21a45fad9fdfc52def9f6ba3769ef8eeff1948f03bf6cf6"
+    },
+    "kesehatan_obat": {
+        "rows": 9,
+        "sha256": "a7b1d3a991c4ccb778dc9125ac392b686120699c646fe228813c1e8e98965399"
+    },
+    "kesehatan_ringkasan": {
+        "rows": 3,
+        "sha256": "99a55f24aa5d75df1172289e3ff97c1fb83f32e548da92c839e92511b1c0e8fb"
+    },
+    "kesehatan_ringkasan_penerima": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "kesehatan_ringkasan_peristiwa": {
+        "rows": 5,
+        "sha256": "4f7c7db986e07cd400a5d9484d854fc4a476ac0acbe776a127e84aed056eb787"
+    },
+    "kesehatan_ringkasan_versi": {
+        "rows": 4,
+        "sha256": "8ad4b361004b97c6f609ab2c89e8f076e7c91068f6f1a3b969810c390944ea61"
+    },
+    "kesehatan_rujukan": {
+        "rows": 5,
+        "sha256": "8bbf47841be4ebaad5df73b0dc25c0f016dddcba3034fbdfc3690bcd78867d0e"
+    },
+    "kesehatan_tindak_lanjut": {
+        "rows": 5,
+        "sha256": "7c765c5f6a1f1a4dc73cf2acdca3e51894dac219fde9ab9ccff57a1b4663defb"
+    },
+    "kesehatan_versi_rincian": {
+        "rows": 8,
+        "sha256": "46f1b6303c1edada0e4306f9b7bf9a2c56e784c0855b31591c7806e9719c4853"
+    },
+    "mapel": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "mata_pelajaran": {
+        "rows": 4,
+        "sha256": "147d6db2a832b65b6aa10253e78a2845b9c5de543ae9288c3859116cd1fae086"
+    },
+    "mengajar": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "murobi_assignments": {
+        "rows": 11,
+        "sha256": "cff44d1a0e3473472efa4da14c1d66ab30bd3f761c2beba823b8bee3938798d2"
+    },
+    "notifikasi_outbox": {
+        "rows": 471,
+        "sha256": "bb6dc3dc1718ff8b55452658ce9f86eaf7ef37be4f38866061a52269618de1b9"
+    },
+    "notifikasi_pengaturan_audit": {
+        "rows": 25,
+        "sha256": "b7a74a09911ad4a57e0d48e52bb8fd96487baebc3ab372eb17b2c0efdb2d3341"
+    },
+    "notifikasi_percobaan": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "notifikasi_worker_lock": {
+        "rows": 2,
+        "sha256": "bec89a26b140c49457f62f1a8b0704d4f288c290c761b86c3b4b8c6e6d6aea95"
+    },
+    "panitia_psb_assignments": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pelanggaran": {
+        "rows": 30,
+        "sha256": "42d6a45632ab13af073a57fca48beff86582c76348169be40d3223807bdd5184"
+    },
+    "pembimbing_assignments": {
+        "rows": 14,
+        "sha256": "5e8f50b324aca8f55eaab2de0a1f4f99d7c9a9621fd9fa1c92ebcac4df77c524"
+    },
+    "pembimbing_kamar": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pendidikan_assignments": {
+        "rows": 1,
+        "sha256": "eb79f20e37fe234302c6242fccba73bbaedbf669e1bdb445eacc78a1bbbb90ca"
+    },
+    "pengaturan_notifikasi": {
+        "rows": 1,
+        "sha256": "d7bb47e97bdf2b68bd7d6b2e61cf500d4164b53c0e91b1076122bc4642816d39"
+    },
+    "pengurus": {
+        "rows": 29,
+        "sha256": "bdbe6fab52b08fa33b4a5b756d71808f55c3a783c9c3ae97f9ceaf0537f9c40e"
+    },
+    "perangkat_push": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "perizinan": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pertemuan_pengajian": {
+        "rows": 4,
+        "sha256": "3fcb2f20cf770a288a1c8e851877d69e78851aa665727db34eccd9382b0e7075"
+    },
+    "pertemuan_peserta": {
+        "rows": 16,
+        "sha256": "b490ebb303b2d2191d2ea10854449ffa51bb1a5acd841be91a37a1c799b211a7"
+    },
+    "plotting_kamar": {
+        "rows": 218,
+        "sha256": "cd7eb0db7a416c8c7cc9a8422bee035535735f7c45858304c6c4b32464af0be0"
+    },
+    "plotting_kelas": {
+        "rows": 55,
+        "sha256": "b661543f710084599ea0da634bec22ea9bd1a5eecf822ef9156afb975b4d1298"
+    },
+    "psb_pembayaran": {
+        "rows": 26,
+        "sha256": "d0bcd89e78d6a102e028b3fd645e7da9358833865ad92c4983f57157ab86d4a7"
+    },
+    "psb_pendaftar": {
+        "rows": 33,
+        "sha256": "b0770d2dcb0355b9309dc1ad746d341cc7c648c4edc9b264b47f8f87b223c65a"
+    },
+    "roles": {
+        "rows": 4,
+        "sha256": "e545a5db56c36598a657d1d036bcea6b405a1a336f34a1c898651f3e56d4ba62"
+    },
+    "santri": {
+        "rows": 274,
+        "sha256": "7df965a0565155e6746e9fcd2b1b5eec6454ed04db61934564661ba8eb03e8c1"
+    },
+    "santri_wali": {
+        "rows": 27,
+        "sha256": "54f3c890f70b8d8169b7f9c8fe0cc636cde5791c82aeb066e92b8ed8ec5d3880"
+    },
+    "tahun_ajaran": {
+        "rows": 2,
+        "sha256": "3a8273e36bb480c3fcf80c9e5c2ccd256fa8042b47d7ee073df6f817a5f281ae"
+    },
+    "users": {
+        "rows": 48,
+        "sha256": "0a764e9cddb608ff8478ccbe8d05e0c42702319243450e38c7eb689f73cce6dc"
+    },
+    "user_roles": {
+        "rows": 52,
+        "sha256": "9377f49912f4373536c9e17bde95e8ec91cd0f6b94d6946a11a46451a593f374"
+    },
+    "v3_ambang": {
+        "rows": 2,
+        "sha256": "43737ce93648d24d21a904fdda359f4967b39f5a8348bb5b5c77f4f759c5f165"
+    },
+    "v3_idempotency": {
+        "rows": 13,
+        "sha256": "7d6591429e74e251baf8f3c296baa28293cb6391a0b63e2962c4c63445725930"
+    },
+    "v3_katalog": {
+        "rows": 5,
+        "sha256": "a9b9d6a393ee06e49c2c1fd60341a88d8df54e1cd98c082b2219e6a7beefe05a"
+    },
+    "v3_kategori": {
+        "rows": 2,
+        "sha256": "3e94136575b19f8c1ab80c78744c5db626ce00600f9081ab46d3f2447da039a8"
+    },
+    "v3_konseling_kasus": {
+        "rows": 2,
+        "sha256": "a573e34feebbfb5294ea41ee70bc6b91a6efa14bface45b6677db77a0cf5dcc9"
+    },
+    "v3_konseling_kasus_revisi": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "v3_konseling_sesi": {
+        "rows": 2,
+        "sha256": "769705a7d925bc7f3fe6331531f18a70885348c2632b0833c0b1f33aed5d8aaf"
+    },
+    "v3_konseling_tautan": {
+        "rows": 2,
+        "sha256": "1ffdff4d1f99848d64cac639ad2bf4547c425dea9b0dd655d14ed53e5c8ed2a9"
+    },
+    "v3_lampiran": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "v3_murobi_catatan": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "v3_pelanggaran": {
+        "rows": 5,
+        "sha256": "003cf86a4fdff9f2db7e19e3efa01cc12bdbbd87c10b0b65bb30ae802f6ca83b"
+    },
+    "v3_poin_agregat": {
+        "rows": 3,
+        "sha256": "6348d3f2ea8c053c606abd5a4d3c8a0bcbaa1ccc5487a56ded743e7c89854246"
+    },
+    "v3_poin_ledger": {
+        "rows": 4,
+        "sha256": "f137fabf23974876f9910f5ac2fa2a24b8fcb58e3500d880406c3cded7988347"
+    },
+    "v3_publikasi": {
+        "rows": 3,
+        "sha256": "07acdc6bbde3699a1e1349df8e58537e9e6305760710367abe39893bfaaf6543"
+    },
+    "v3_publikasi_outbox": {
+        "rows": 4,
+        "sha256": "a699c36387d8ed8235e1c5d86b59ab3480e948464f7ac8b46994dadba7856b3f"
+    },
+    "v3_publikasi_pratinjau": {
+        "rows": 3,
+        "sha256": "ba4802cc86d4aaaf728e4f6a6895cd27ea4e60fc7d9ad11310d39fbf5d0abd6f"
+    },
+    "v3_publikasi_riwayat": {
+        "rows": 4,
+        "sha256": "bd5c175678a3167dce70bbc2f5d540387edf74dc81b69366eda97774b51bf77c"
+    },
+    "v3_rekomendasi": {
+        "rows": 2,
+        "sha256": "935c44a99df6990f878f6c95e826d905df332576923570448cd2e955b1813375"
+    },
+    "v4_bahan": {
+        "rows": 72,
+        "sha256": "8811e5af63df8b1845d1780a72dc5cea417dd9cec08d5d254d6e66e80f523581"
+    },
+    "v4_bahan_riwayat": {
+        "rows": 119,
+        "sha256": "63be14a08542a2fc3a65585045d2677c2f85bfa968bc708e9aaa62ec6379e23f"
+    },
+    "v4_nilai": {
+        "rows": 181,
+        "sha256": "9e991e2f4645d709a78299c38b2323d4d47f3cbddef05f9361c8c5560ae09ffc"
+    },
+    "v4_nilai_riwayat": {
+        "rows": 172,
+        "sha256": "df63e2ca958c27c906c753bf50c3b6f9b7dad1a4bb18f00eb2edff334dc8b154"
+    },
+    "v4_penanda_tangan": {
+        "rows": 3,
+        "sha256": "b47f111fa5e6d76ae4d5eac9134a0e249940d1ccc3067ec8d0975ea8c681c413"
+    },
+    "v4_rapor": {
+        "rows": 2,
+        "sha256": "634854dce6f8b20f9c9c7118704a151a00e81fb988dcfa016694e2457424acda"
+    },
+    "v4_rapor_operasi": {
+        "rows": 3,
+        "sha256": "4326f57393e6ffdd63b4d62af0f8e70924089af86c365e332eaabe3f35dfa43f"
+    },
+    "v4_rapor_versi": {
+        "rows": 3,
+        "sha256": "79bfacb899da76615b1d2631634e273a4f4ef82e0490615ff0630316aa2c04a8"
+    },
+    "v4_rencana": {
+        "rows": 4,
+        "sha256": "df1bbbae7c59c6c1a8beb78ad22589cb9ca806ad248d4022ad2529765031cb81"
+    },
+    "v4_rencana_mapel": {
+        "rows": 11,
+        "sha256": "8d4d0265ccafb5e216d47b79c7553aa12d559709a9878274402383ab0a4b5c1e"
+    },
+    "v4_rencana_penanda_riwayat": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "v4_sikap": {
+        "rows": 14,
+        "sha256": "9662248b05101abe7d63887d7ae89dea27f072212e13e6d300d62e67579930f1"
+    },
+    "v4_sikap_riwayat": {
+        "rows": 22,
+        "sha256": "6294aa9f9a0db186b3ffe2da5aed0c06a75ea0d464097f45d5b62fc441fb88fb"
+    },
+    "v4_tanda_tangan_aset": {
+        "rows": 3,
+        "sha256": "3be497f663a0748bea0cd65b72e5bc94b1e3f649f042c6518a4fe35b8613fec2"
+    },
+    "v4_verifikasi": {
+        "rows": 3,
+        "sha256": "5a6092ebca9ad293d7c66e2cfdf75824e3e3cf8d0abe1d68213c83c40937b78a"
+    },
+    "v4_verifikasi_laju": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "wali": {
+        "rows": 21,
+        "sha256": "71def2084907673eb1b288ac8deff625ab96c9a1f04bbd98c0330549954500de"
+    },
+    "wali_bukan_ganda": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+}

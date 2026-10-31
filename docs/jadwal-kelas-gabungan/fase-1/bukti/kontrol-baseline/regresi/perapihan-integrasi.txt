@@ -1,0 +1,63 @@
+
+=== KA. Akun dan hak akses ===
+[lulus] KA-1 Akun guru baru memperoleh tepat satu role guru
+[lulus] KA-2 Role Orang Tua ditolak untuk akun tanpa relasi wali [Role Orang Tua hanya dapat diberikan kepada akun yang terhubung dengan satu data wali.]
+[lulus] KA-3 Role Pengurus ditolak untuk akun tanpa relasi pengurus [Role Pengurus hanya dapat diberikan kepada akun yang terhubung dengan satu data pengurus.]
+[lulus] KA-4 Role Admin ditolak tanpa konfirmasi yang diketik ulang [Pemberian hak admin adalah tindakan khusus. Ketik ulang kalimat "BERI AKSES ADMIN" pada kolom konfirmasi untuk melanjutkan.]
+[lulus] KA-5 Penambahan role admin MEMPERTAHANKAN role guru yang sudah ada
+[lulus] KA-6 Pencabutan role admin tidak menyentuh role guru
+[lulus] KA-7/8 Dilewati: lingkungan memiliki lebih dari satu admin aktif (4)
+[lulus] KA-9 Admin tidak dapat menonaktifkan akunnya sendiri [Anda tidak dapat menonaktifkan akun sendiri. Minta admin lain melakukannya.]
+[lulus] KA-10 Penambahan dan pencabutan hak akses tercatat pada audit
+[lulus] KA-11a Role baru terbaca pada pemeriksaan server berikutnya
+[lulus] KA-11b Role yang dicabut hilang pada pemeriksaan server berikutnya
+
+=== KW. Santri dan wali ===
+[lulus] KW-1 Wali baru dibuat dan terhubung dari formulir santri
+[lulus] KW-2 Dua saudara kandung memakai SATU identitas wali yang dipilih admin
+[lulus] KW-3 Kolom lama menjadi cermin identitas wali yang dikonfirmasi
+[lulus] KW-4 Nama dan nomor HP yang sama TIDAK digabungkan otomatis menjadi satu identitas
+[lulus] KW-5 Membuat atau memilih wali tidak membuat akun login
+[lulus] KW-6 Nilai kolom lama yang bertentangan tidak ditimpa tanpa konfirmasi [Nama atau nomor HP pada kolom lama Ayah berbeda dengan identitas wali yang dipilih. Centang konfirmasi penggantian nilai lama bila memang ingin menimpanya. Nilai sebelum dan sesudah akan tercatat pada audit.]
+[lulus] KW-7 Penolakan membatalkan seluruh transaksi (kolom lama dan relasi tidak berubah)
+[lulus] KW-8 Penggantian nilai lama yang dikonfirmasi tercatat pada audit (sebelum dan sesudah)
+[lulus] KW-9 Penggabungan ditolak tanpa konfirmasi santri terdampak [Penggabungan dibatalkan: konfirmasi daftar santri terdampak belum dicentang.]
+[lulus] KW-10 Penggabungan diblokir bila identitas menyangkut akun login [Penggabungan diblokir: identitas sumber memiliki akun login (@pr.bbd2fb). Menggabungkannya akan mengubah santri yang dapat dilihat akun tersebut. Pindahkan atau nonaktifkan akun itu lebih dahulu pada halaman Akun & Hak Akses.]
+[lulus] KW-11 Wali sumber TIDAK dihapus: ID lama dipertahankan dan ditandai digabungkan
+[lulus] KW-12 Relasi dipindahkan ke identitas tujuan dan santri terdampak tercatat
+[lulus] KW-13 Penggabungan tercatat pada audit
+[lulus] KW-14 Mengubah identitas wali bersama menuntut konfirmasi setelah melihat santri terdampak [Identitas ini dipakai bersama oleh 2 santri: Adik BBD2FB, Anak Lain BBD2FB. Periksa daftar tersebut lalu centang konfirmasi sebelum menyimpan perubahan identitas.]
+[lulus] KW-15 Perubahan identitas bersama tersimpan setelah dikonfirmasi
+[lulus] KW-16 Laporan rekonsiliasi menyediakan kandidat duplikasi, konflik, dan relasi belum lengkap
+[lulus] KW-17 Impor lama menyimpan kolom lama tanpa membuat identitas wali ganda
+[lulus] KW-18 Data lama dari impor tetap terbaca (kompatibilitas ekspor dan laporan)
+
+=== KG. Data guru ===
+[lulus] KG-1 Menyimpan formulir guru TIDAK mengubah nilai tugas lama menjadi Guru
+[lulus] KG-2 Guru tanpa jadwal dan tanpa penugasan murobi dilaporkan apa adanya
+
+=== KP + KL. Pengajian dan laporan kehadiran ===
+[lulus] KP-1 Snapshot peserta dibekukan saat pertemuan dibuka (30 santri)
+[lulus] KP-2 Guru lain ditolak membuka pertemuan milik guru pengampu [Akun guru hanya dapat mengelola pertemuan dari jadwal miliknya.]
+[lulus] KL-1 Ringkasan mode santri menghasilkan 30 catatan [30]
+[lulus] KL-2 Detail mode santri menghasilkan 30 baris [30]
+[lulus] KL-3 Ekspor mode santri menghasilkan 30 baris [30]
+[lulus] KL-4 Jumlah status mode santri sama dengan jumlah baris detail
+[lulus] KL-1 Ringkasan mode guru menghasilkan 1 catatan [1]
+[lulus] KL-2 Detail mode guru menghasilkan 1 baris [1]
+[lulus] KL-3 Ekspor mode guru menghasilkan 1 baris [1]
+[lulus] KL-4 Jumlah status mode guru sama dengan jumlah baris detail
+[lulus] KL-1 Ringkasan mode gabungan menghasilkan 31 catatan [31]
+[lulus] KL-2 Detail mode gabungan menghasilkan 31 baris [31]
+[lulus] KL-3 Ekspor mode gabungan menghasilkan 31 baris [31]
+[lulus] KL-4 Jumlah status mode gabungan sama dengan jumlah baris detail
+[lulus] KL-5 Mode gabungan menampilkan jumlah santri dan guru masing-masing
+[lulus] KL-6 Mode gabungan memberi penanda jenis pada setiap baris
+[lulus] KL-7 Guru tetap tampil sebagai pengampu pada laporan santri tanpa dihitung sebagai santri
+[lulus] KL-8 Default REST API tetap gabungan bila subject_scope tidak dikirim
+[lulus] KL-9 Halaman web memakai penyajian Santri sebagai tampilan awal
+[lulus] KL-10 Nilai penyajian yang tidak dikenal ditolak 422 [Penyajian laporan tidak valid.]
+[lulus] KL-11 Absensi guru tidak dihapus oleh pemisahan penyajian
+[bersih] Fixture perapihan dihapus.
+
+SELURUH PENGUJIAN INTEGRASI PERAPIHAN LULUS.

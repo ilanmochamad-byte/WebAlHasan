@@ -69,7 +69,7 @@ $tutup = '?' . ah_query(['tab' => 'pertemuan', 'action' => null, 'schedule_id' =
                     <?php $pilihJadwal = (int) (ah_old('schedule_id', null, '_meeting_old') ?: $selectedScheduleId); ?>
                     <?php foreach ($scheduleOptions as $schedule): ?>
                         <option value="<?= (int) $schedule['id'] ?>" <?= $pilihJadwal === (int) $schedule['id'] ? 'selected' : '' ?>>
-                            <?= ah_e(ah_hari((string) $schedule['hari']) . ' ' . substr($schedule['waktu_mulai'], 0, 5) . ' · ' . $schedule['fan_ilmu'] . ' · ' . $schedule['nama_kelas'] . ' · ' . $schedule['nama_guru']) ?>
+                            <?= ah_e(ah_hari((string) $schedule['hari']) . ' ' . substr($schedule['waktu_mulai'], 0, 5) . ' · ' . $schedule['fan_ilmu'] . ' · ' . ($schedule['kelas_label'] ?? $schedule['nama_kelas']) . ' · ' . $schedule['nama_guru']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select><?= ah_field_error('schedule_id', '_meeting_old') ?>
@@ -106,6 +106,9 @@ $tutup = '?' . ah_query(['tab' => 'pertemuan', 'action' => null, 'schedule_id' =
         }
     }
     $jumlah = count($selectedMeeting['participants']);
+    // Kelas gabungan: kelas asal tiap peserta ditampilkan bila lebih dari satu kelas.
+    $banyakKelas = count(array_unique(array_map(static fn (array $p): int => (int) $p['kelas_id_snapshot'], $selectedMeeting['participants']))) > 1
+        || str_contains((string) ($selectedMeeting['kelas_label'] ?? ''), ',');
     $guruHadir = $kehadiran['teacher_attendance'] ?? null;
     $bolehBukaIzin = in_array('admin', $currentUser['roles'], true);
     ?>
@@ -147,7 +150,7 @@ $tutup = '?' . ah_query(['tab' => 'pertemuan', 'action' => null, 'schedule_id' =
                             ?>
                             <li data-ah-filter-text="<?= ah_e($participant['nama_santri_snapshot'] . ' ' . $participant['nis_snapshot']) ?>">
                                 <span class="ah-people__main"><b><?= ah_e($participant['nama_santri_snapshot']) ?></b>
-                                    <small>NIS <?= ah_e($participant['nis_snapshot']) ?><?= ($catat['notes'] ?? '') !== '' && $catat['notes'] !== null ? ' · ' . ah_e((string) $catat['notes']) : '' ?></small>
+                                    <small>NIS <?= ah_e($participant['nis_snapshot']) ?><?= $banyakKelas && ($participant['kelas_asal'] ?? '') !== '' ? ' · ' . ah_e((string) $participant['kelas_asal']) : '' ?><?= ($catat['notes'] ?? '') !== '' && $catat['notes'] !== null ? ' · ' . ah_e((string) $catat['notes']) : '' ?></small>
                                     <?php if ($izin !== null): ?>
                                         <small><?php $teksIzin = 'Sedang izin #' . $izin['id'] . ' · ' . ah_rentang($izin['tgl_izin'], $izin['tgl_kembali'], false); ?>
                                             <?= $bolehBukaIzin ? '<a href="' . ah_e(app_url('/portal/izin_detail.php?id=' . $izin['id'])) . '">' . ah_badge($teksIzin, 'info') . '</a>' : ah_badge($teksIzin, 'info') ?></small>
@@ -167,6 +170,7 @@ $tutup = '?' . ah_query(['tab' => 'pertemuan', 'action' => null, 'schedule_id' =
                     <dl class="ah-kv">
                         <dt>Jadwal</dt><dd><?= ah_e(ah_hari((string) $selectedMeeting['hari']) . ', ' . substr((string) $selectedMeeting['waktu_mulai'], 0, 5) . '–' . substr((string) $selectedMeeting['waktu_selesai'], 0, 5)) ?></dd>
                         <dt>Kitab</dt><dd><?= ah_e($selectedMeeting['nama_kitab']) ?></dd>
+                        <dt>Kelas</dt><dd><?= ah_e((string) ($selectedMeeting['kelas_label'] ?? $selectedMeeting['nama_kelas'])) ?></dd>
                         <dt>Dibuka</dt><dd><?= ah_e($selectedMeeting['opened_at'] ? ah_waktu((string) $selectedMeeting['opened_at']) : '—') ?></dd>
                         <dt>Selesai</dt><dd><?= ah_e($selectedMeeting['completed_at'] ? ah_waktu((string) $selectedMeeting['completed_at']) : '—') ?></dd>
                         <dt>Catatan pertemuan</dt><dd><?= ah_e($selectedMeeting['catatan'] ?: '—') ?></dd>
@@ -220,7 +224,7 @@ $tutup = '?' . ah_query(['tab' => 'pertemuan', 'action' => null, 'schedule_id' =
                     <tr>
                         <td><a class="ah-row-link" href="?<?= ah_e(http_build_query(['tab' => 'pertemuan', 'id' => (int) $meeting['id']])) ?>"><?= ah_e(ah_tanggal((string) $meeting['tanggal_pertemuan'])) ?></a></td>
                         <td><?= ah_e($meeting['fan_ilmu']) ?><span class="ah-cell-sub"><?= ah_e(ah_hari((string) $meeting['hari']) . ' ' . substr((string) $meeting['waktu_mulai'], 0, 5)) ?></span></td>
-                        <td><?= ah_e($meeting['nama_kelas']) ?></td>
+                        <td><?= ah_e($meeting['kelas_label'] ?? $meeting['nama_kelas']) ?></td>
                         <td class="ah-col-secondary"><?= ah_e($meeting['nama_guru']) ?></td>
                         <td><?= (int) $meeting['participant_count'] ?></td>
                         <td><?= ah_badge((string) $meeting['status'], $statusTone((string) $meeting['status'])) ?></td>
