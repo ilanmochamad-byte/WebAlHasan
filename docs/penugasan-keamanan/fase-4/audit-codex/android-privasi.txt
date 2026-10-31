@@ -1,0 +1,8 @@
+Android emulator Debug + Metro sumber 10d13c3, API fixture lokal; bukan fisik/rilis.
+Baris logcat: 73850
+PKF3: 0
+PRIVATE-T5: 0
+Bearer token mentah: 0
+Screencap Keamanan 1080x2400: 2592000/2592000 piksel RGB hitam (dekoder PNG Node, filter 0–4).
+Kontrol Beranda 1080x2400: 3252/2592000 piksel RGB hitam; gambar berisi tampilan normal.
+Gambar dan logcat lengkap tetap di /private/tmp, tidak di-commit.

@@ -1,0 +1,48 @@
+role Pengurus guru dicabut: HTTP 403,403,403,403,403,403,403,403
+[lulus] role Pengurus guru dicabut: delapan rute tanpa isi (token lama)
+[lulus] role Pengurus guru dicabut: ubin gugur
+[lulus] role Pengurus guru dicabut: pulih sesudah dikembalikan
+master Pengurus nonaktif: HTTP 403,403,403,403,403,403,403,403
+[lulus] master Pengurus nonaktif: delapan rute tanpa isi (token lama)
+[lulus] master Pengurus nonaktif: ubin gugur
+[lulus] master Pengurus nonaktif: pulih sesudah dikembalikan
+master Guru diarsipkan: HTTP 403,403,403,403,403,403,403,403
+[lulus] master Guru diarsipkan: delapan rute tanpa isi (token lama)
+[lulus] master Guru diarsipkan: ubin gugur
+[lulus] master Guru diarsipkan: pulih sesudah dikembalikan
+identitas guru dipalsukan ke pengurus orang lain: HTTP 403,403,403,403,403,403,403,403
+[lulus] identitas guru dipalsukan ke pengurus orang lain: delapan rute tanpa isi (token lama)
+[lulus] identitas guru dipalsukan ke pengurus orang lain: ubin gugur
+[lulus] identitas guru dipalsukan ke pengurus orang lain: pulih sesudah dikembalikan
+penugasan belum mulai: HTTP 403,403,403,403,403,403,403,403
+[lulus] penugasan belum mulai: delapan rute tanpa isi (token lama)
+[lulus] penugasan belum mulai: ubin gugur
+[lulus] penugasan belum mulai: pulih sesudah dikembalikan
+[lulus] Keamanan bertahan saat semester tidak aktif
+[lulus] Seluruh pengawasan admin tidak dipresentasikan sebagai penugasan
+[lulus] Sumber keduanya (admin + tugas sendiri) tetap sah
+[lulus] Array filter ditolak JSON 422: /keamanan/izin?asal[]=wali
+[lulus] Array filter ditolak JSON 422: /keamanan/pelanggaran?status[]=Dicatat
+[lulus] Array filter ditolak JSON 422: /keamanan/konseling?page[]=1
+[lulus] Array filter ditolak JSON 422: /keamanan/kehadiran?date_from[]=2026-01-01
+[lulus] Array filter ditolak JSON 422: /keamanan/kehadiran?date_to[]=2026-01-01
+[lulus] Array filter ditolak JSON 422: /keamanan/kehadiran?academic_year_id[]=2026-01-01
+[lulus] Array filter ditolak JSON 422: /keamanan/kehadiran?class_id[]=2026-01-01
+[lulus] Array filter ditolak JSON 422: /keamanan/kehadiran?teacher_id[]=2026-01-01
+[lulus] Array filter ditolak JSON 422: /keamanan/kehadiran?schedule_id[]=2026-01-01
+[lulus] Array filter ditolak JSON 422: /keamanan/kehadiran?status[]=2026-01-01
+[lulus] Array filter ditolak JSON 422: /keamanan/kehadiran?subject_scope[]=2026-01-01
+[lulus] Array filter ditolak JSON 422: /keamanan/kehadiran?page[]=2026-01-01
+[lulus] Array filter ditolak JSON 422: /keamanan/kehadiran?per_page[]=2026-01-01
+[lulus] Parameter asing tidak mengubah proyeksi konseling
+[lulus] Penyajian gabungan seperti web tetap menyaring santri aktif
+[lulus] HEAD ke delapan rute: 405 Allow GET
+[lulus] OPTIONS ke delapan rute: 405 Allow GET
+[lulus] POST ke delapan rute: 405 Allow GET
+[lulus] PUT ke delapan rute: 405 Allow GET
+[lulus] PATCH ke delapan rute: 405 Allow GET
+[lulus] DELETE ke delapan rute: 405 Allow GET
+Tabel berubah saat metode ditolak: (tidak ada)
+[lulus] Penolakan metode tidak mengubah seluruh tabel bisnis maupun audit Keamanan
+[lulus] Logout mencabut pembacaan dan identitas dari token lama
+Hasil: 41 lulus, 0 gagal

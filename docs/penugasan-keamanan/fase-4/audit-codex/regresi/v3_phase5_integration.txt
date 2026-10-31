@@ -1,0 +1,44 @@
+[lulus] Retry satu kasus
+[lulus] Dua sesi tersimpan berbeda
+[lulus] Kasus selesai tanpa menghapus sesi
+[lulus] Versi lama ditolak
+[lulus] Murobi terkait mengetahui kasus yang sama
+[lulus] Kasus lintas cakupan ditolak
+[lulus] Kasus lintas cakupan ditolak
+[lulus] Kasus lintas cakupan ditolak
+[lulus] Laporan pelanggaran sesuai akses tanpa isi rahasia
+[lulus] Laporan kasus sesuai akses tanpa isi rahasia
+[lulus] Laporan pelanggaran sesuai akses tanpa isi rahasia
+[lulus] Laporan kasus sesuai akses tanpa isi rahasia
+[lulus] Laporan pelanggaran sesuai akses tanpa isi rahasia
+[lulus] Laporan kasus sesuai akses tanpa isi rahasia
+[lulus] Laporan lintas cakupan kosong
+[lulus] Laporan lintas cakupan kosong
+[lulus] Laporan wali snapshot tanpa internal
+[lulus] Laporan wali lain kosong
+[lulus] Wali menebak jenis internal ditolak
+[lulus] Filter internal wali ditolak
+[lulus] SQL injection angka ditolak
+[lulus] SQL injection teks terikat parameter
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Formula CSV dinetralkan
+[lulus] Tanggal tidak sah ditolak
+[lulus] Options mobile katalog berhalaman
+[lulus] Halaman akhir kosong tetap mengizinkan kembali ke pilihan sebelumnya
+[lulus] Options halaman tidak sah ditolak
+[lulus] Filter pembimbing dan murobi mengikuti penugasan aktif
+[lulus] Filter periode/tingkat/poin menghasilkan data dalam cakupan
+[lulus] Halaman laporan tidak sah ditolak
+[lulus] Purge dry-run tidak menghapus draf
+[lulus] Purge gagal audit menggulung batch
+[lulus] Draf tetap ada setelah rollback
+[lulus] Purge hanya draf, snapshot/riwayat tetap
+[lulus] Purge batas batch
+[lulus] Purge bukan admin ditolak
+[lulus] Audit V3 baru hanya metadata/hash tanpa isi konseling
+[lulus] Audit kategori/katalog tetap memuat uraian sebelum/sesudah
+Publikasi fixture F5 ID=461

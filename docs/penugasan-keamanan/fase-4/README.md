@@ -1,6 +1,6 @@
 # Penugasan lintas guru/pengurus — Fase 4: aplikasi (Keamanan hanya baca dan akun dua identitas)
 
-**Status (31 Oktober 2026): implementasi Claude Code selesai, menunggu audit independen Codex.** Belum merge, belum deploy, belum rilis aplikasi. Fase 5 belum dimulai.
+**Status (31 Oktober 2026): LULUS audit teknis lokal Codex setelah satu koreksi terarah P3; lihat [`AUDIT-CODEX.md`](AUDIT-CODEX.md).** Belum merge, belum deploy, belum rilis aplikasi. Fase 5 belum dimulai. Runtime iOS, perangkat fisik dan produksi belum dinyatakan lulus.
 
 | Butir | Nilai |
 | --- | --- |

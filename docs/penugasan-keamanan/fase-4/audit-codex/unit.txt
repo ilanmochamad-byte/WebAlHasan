@@ -1,0 +1,95 @@
+(node:95718) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/pkf4audit-mobile/tests/attendance-shortcut.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/pkf4audit-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Absensi kembali ke daftar jadwal saat hari kosong atau seluruh sesi selesai (0.386417ms)
+✔ Absensi memilih sesi pertama yang belum selesai, termasuk yang belum dibuka (0.072167ms)
+(node:95719) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/pkf4audit-mobile/tests/date-time.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/pkf4audit-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ tanggal/jam lokal lengkap termasuk tengah malam dan tahun kabisat (1.214ms)
+✔ tolak bagian kosong, format manual salah dan tanggal yang dinormalisasi JS (0.11ms)
+(node:95720) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/pkf4audit-mobile/tests/izin-wali.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/pkf4audit-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Isian izin wali mengikuti aturan server (7.040375ms)
+✔ Isian dirapikan; perbaikan wajib berbeda dari versi asal (0.918917ms)
+✔ Catatan tinjauan: perbaikan/tolak wajib, teruskan opsional (0.22375ms)
+✔ Penolakan pembimbing dibedakan dari keputusan murobi (0.912166ms)
+✔ Tautan notifikasi izin wali hanya membawa penunjuk (0.714875ms)
+(node:95721) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/pkf4audit-mobile/tests/keamanan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/pkf4audit-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kueri Keamanan tanpa kunci kosong dan ter-encode (0.474ms)
+✔ Rentang tanggal: opsional, format ISO, akhir tidak mendahului awal (0.169916ms)
+✔ Nada lencana dan label status mengikuti halaman web Keamanan (0.077292ms)
+✔ Penugasan profil dikelompokkan per identitas (satu akun, dua identitas) (0.409083ms)
+(node:95722) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/pkf4audit-mobile/tests/kesehatan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/pkf4audit-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Koreksi mengirim keadaan lengkap: rincian lama ber-id dipertahankan, waktu asli tidak bergeser (1.555167ms)
+✔ Baris baru yang seluruhnya kosong diabaikan; baris lama kosong tetap dikirim agar server menolaknya (0.744083ms)
+✔ Alasan wajib minimal lima karakter, maksimal 1000; sidik jari berubah bila isi berubah (0.19625ms)
+✔ Penunjuk notifikasi kesehatan hanya ringkasan_id valid; isi/tautan lain diabaikan (0.112417ms)
+✔ Deep-link kesehatan hanya skema aplikasi dan rute ringkasan wali (0.198042ms)
+✔ Teks perubahan versi memakai label manusia (0.085125ms)
+✔ Hasil pencarian santri dikelompokkan per kelas; belum ditempatkan paling akhir (0.121167ms)
+✔ Periode laporan: bulan ini, bulan lalu (lintas tahun), dan 30 hari berakhir hari ini (0.154709ms)
+(node:95723) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/pkf4audit-mobile/tests/keuangan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/pkf4audit-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Rupiah ditampilkan bulat dengan titik ribuan tanpa Intl (0.984209ms)
+✔ Nominal dikirim sebagai teks angka; pecahan dan huruf diteruskan agar server menolak (0.616667ms)
+✔ Alasan koreksi wajib 5–500 karakter seperti website (0.350875ms)
+✔ Sidik jari sama untuk isi sama (retry memakai kunci yang sama) dan berbeda bila isi berubah (0.142416ms)
+✔ Label periode, jenis, dan nilai awal tanggal (1.526333ms)
+✔ Penunjuk notifikasi keuangan hanya id; tipe/kunci lain ditolak (0.467667ms)
+✔ Tautan skema keuangan hanya menerima jalur yang dikenal (0.197584ms)
+✔ Rentang laporan Fase 5: bulan ini, bulan lalu (lintas tahun), 3 bulan, tahun ini — paling panjang 12 bulan (0.128458ms)
+✔ Pratinjau satu santri sah hanya bila server menyaring santri itu (server lama mengabaikan santri_id) (0.085125ms)
+(node:95724) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/pkf4audit-mobile/tests/print-dialog.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/pkf4audit-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ mengenali exception pembatalan cetak iOS dari nama dan pesan (0.488291ms)
+✔ mengenali bentuk CodedError dari bridge native (0.099708ms)
+✔ tidak menyembunyikan kegagalan cetak yang sebenarnya (0.061917ms)
+✔ mengembalikan hasil normal ketika pencetakan dimulai (0.070209ms)
+✔ mengubah penutupan dialog menjadi hasil dibatalkan (0.091ms)
+✔ meneruskan kegagalan printer tanpa perubahan (0.639959ms)
+(node:95725) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/pkf4audit-mobile/tests/rapor.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/pkf4audit-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kosong tetap belum lengkap, nol sah, versi lama tetap dikirim (0.674208ms)
+✔ Validasi angka/reason tidak meloloskan nilai tak sah atau alasan kosong (0.115834ms)
+✔ Push hanya penunjuk valid; data/nilai/tautan lain tidak dipakai (0.397042ms)
+✔ Deep-link native hanya skema/rute rapor sah; ID bertahan sebagai penunjuk (0.146792ms)
+(node:95726) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/pkf4audit-mobile/tests/redesain-fase1.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/pkf4audit-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ pekan dimulai Senin, termasuk ketika tanggal terpilih hari Minggu (1.267709ms)
+✔ pekan melintasi pergantian bulan, tahun, dan 29 Februari (0.09275ms)
+✔ geser pekan maju dan mundur mempertahankan hari (0.060542ms)
+✔ pesan tanpa menu hanya muncul setelah akses pembinaan selesai diperiksa (0.053ms)
+(node:95727) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/pkf4audit-mobile/tests/redesain-fase2.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/pkf4audit-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sesi hari ini yang belum dibuka atau belum selesai ditandai perlu absen (0.70275ms)
+✔ sesi selesai tidak pernah meminta absen, kapan pun tanggalnya (0.074041ms)
+✔ sesi hari lain tidak diberi penanda absen dan dibedakan masa depan/lampau (0.062417ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 47
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 224.001792

@@ -1,0 +1,55 @@
+[lulus] fixture tersedia: dua admin, akun X (guru), murobi Y kamar 381, wali V7, pembimbing lama kamar 381
+[lulus] penyiapan: akun X memegang mode Pengurus (identitas milik guru) dan Murobi sekaligus
+[lulus] penyiapan: X satu-satunya kandidat murobi santri kamar 381 (tanpa pengecualian)
+[lulus] J-1a pengajuan oleh X: satu-satunya murobi = X sendiri → Perlu Penetapan Admin, catatan routing menyebut pengecualian
+[lulus] J-1b audit routing mencatat catatan pengecualian
+[lulus] J-1c pratinjau tujuan bagi X juga mengecualikan dirinya
+[lulus] J-1d router: dua kandidat (X dan Y) tetap ke admin tanpa pengecualian; dengan X dikecualikan → Y
+[lulus] J-1e pengajuan X dengan murobi X dan Y → langsung diarahkan ke Y
+[lulus] J-1f murobi Y (tidak terlibat) memutus seperti biasa
+[lulus] J-2a daftar murobi berhak pengajuan X tidak memuat X (daftar umum tetap memuat X)
+[lulus] J-2b kandidat routing yang ditampilkan admin tidak memuat X
+[lulus] J-2c admin menetapkan X sebagai murobi pengajuan X → 422 tanpa perubahan
+[lulus] J-3a X memutus pengajuannya yang belum diarahkan → 403
+[lulus] J-3b pengajuan dipaksa diarahkan ke X: keputusan X tetap 403, tanpa baris keputusan
+[lulus] J-3c tombol Putuskan disembunyikan bagi pengaju; kunci aksi tetap sama (kontrak aplikasi)
+[lulus] J-3d penanda terlibat: X ya, Y tidak
+[lulus] J-3e admin menetapkan Y; Y memutus pengajuan X
+[lulus] J-4a admin pembuat tidak memutus sebagai admin pengganti (403, tombol tersembunyi); admin lain melihat tombol
+[lulus] J-4b admin lain memutus sebagai admin pengganti
+[lulus] J-4c admin pembuat tidak mengoreksi keputusan pengajuannya → 403
+[lulus] J-4d admin lain mengoreksi keputusan
+[lulus] J-5a pengajuan wali diarahkan ke X sebagai pembimbing tunggal kamar 381
+[lulus] J-5b X meneruskan: X (peninjau) dikecualikan dari routing murobi → Perlu Penetapan Admin
+[lulus] J-5c daftar murobi berhak pengajuan wali tidak memuat peninjau X
+[lulus] J-5d admin menetapkan peninjau X sebagai murobi → 422
+[lulus] J-5e pengajuan wali dipaksa diarahkan ke peninjau X: keputusan X → 403 (pesan pemisahan tugas)
+[lulus] J-5f admin menetapkan Y yang mencakup santri; Y memutus pengajuan wali
+[lulus] J-5g murobi X dan Y aktif: penerusan X langsung diarahkan ke Y
+[lulus] J-5h admin yang tidak terlibat tetap melihat tindakan putuskan pengganti V7
+[lulus] J-6a X (pembimbing kelas 333) mengisi dan menyerahkan sikap santri
+[lulus] J-6b pembacaan murobi X menandai sikap diisi sendiri
+[lulus] J-6c X sebagai murobi mengetahui sikap isiannya sendiri → 403 tanpa perubahan
+[lulus] J-6d X sebagai murobi mengoreksi (yang otomatis berarti mengetahui) → 403
+[lulus] J-6e saringan "perlu diketahui" bagi X tidak menghitung sikap isiannya sendiri
+[lulus] J-6f murobi kelas lain (tidak mengisi) mengetahui; matriks Pendidikan menganggapnya sah
+[lulus] J-6g tanda diketahui oleh pengisi sendiri (data lama/paksa) tidak dihitung sah
+[lulus] J-6h seluruh murobi aktif = pengisi: bahan tertahan dengan penghalang pemisahan tugas (tanpa jalur pengganti)
+[lulus] J-7a X (Guru Mapel) menyerahkan nilai; matriks X (Pendidikan) menandai bahan itu diisi sendiri
+[lulus] J-7b X sebagai Pendidikan memverifikasi nilai isiannya sendiri → 403 tanpa perubahan
+[lulus] J-7c X mengembalikan nilai isiannya sendiri → 403
+[lulus] J-7d matriks bahan sama bagi kedua Pendidikan; penanda diisi sendiri di luar matriks (sidik jari tidak bergantung pembaca)
+[lulus] J-7e Pendidikan lain memverifikasi nilai X
+[lulus] J-7f X memverifikasi nilai yang tidak ia isi (per bahan, PK-T5)
+[lulus] J-7g nilai isian X sebagai Pendidikan pengganti juga tidak ia verifikasi
+[lulus] J-7h admin tetap jalur pengganti verifikasi
+[lulus] J-8a X mencatat pelanggaran sebagai pembimbing; tanda mengetahui X sebagai murobi → 403
+[lulus] J-8b murobi Y (bukan pencatat) menandai mengetahui
+[lulus] J-8c X mengetahui kasus Internal miliknya sendiri → 403
+[lulus] J-8d X mengetahui sesi kasusnya sendiri → 403
+[lulus] J-8e murobi Y mengetahui kasus dan sesi
+[lulus] J-8f tidak ada satu pun tanda mengetahui oleh X
+[lulus] J-9a pengurus biasa (bukan guru): routing identik dengan router tanpa pengecualian
+[lulus] J-9b murobi tujuan pengajuan pengurus biasa memutus seperti biasa
+
+Hasil: 53 lulus, 0 gagal

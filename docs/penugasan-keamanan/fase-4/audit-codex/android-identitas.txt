@@ -1,0 +1,3 @@
+[lulus] Android G: ubin Keamanan tampil setelah login akun guru
+[lulus] Android G: profil memuat dua identitas dan penugasan Keamanan milik sendiri
+Hasil: 2 lulus, 0 gagal

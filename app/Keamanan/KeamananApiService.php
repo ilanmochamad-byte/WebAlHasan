@@ -303,10 +303,18 @@ final class KeamananApiService
     public function kehadiran(array $user, array $query): array
     {
         $baca = $this->pembacaKehadiran($user);
+        $filter = $this->hanya($query,
+            ['date_from', 'date_to', 'academic_year_id', 'class_id', 'teacher_id', 'schedule_id', 'status', 'subject_scope', 'page', 'per_page']);
+        // GET dapat membawa array (mis. date_from[]=...). ReportFilter lama
+        // mengharapkan skalar; tolak di batas REST baru sebelum cast agar
+        // respons tetap JSON 422 tanpa warning atau isi rincian implementasi.
+        foreach ($filter as $nilai) {
+            if (!is_scalar($nilai)) {
+                throw new KeamananException('Saringan kehadiran tidak valid.', 422);
+            }
+        }
         try {
-            $laporan = $this->report->report($this->hanya($query,
-                ['date_from', 'date_to', 'academic_year_id', 'class_id', 'teacher_id', 'schedule_id', 'status', 'subject_scope', 'page', 'per_page']),
-                $baca, ReportFilter::SCOPE_SANTRI);
+            $laporan = $this->report->report($filter, $baca, ReportFilter::SCOPE_SANTRI);
         } catch (ApiException $exception) {
             throw new KeamananException($exception->getMessage(), $exception->status());
         }

@@ -1,0 +1,5 @@
+Salinan git archive 10d13c3, package/lock ter-commit, node_modules Expo 57.0.15 dari salinan handoff; tanpa .env lokal/produksi.
+TypeScript sesudah Metro menghasilkan deklarasi Expo: exit 0.
+Expo lint: exit 0.
+Unit: 47 lulus, 0 gagal (unit.txt).
+Percobaan tsc sebelum deklarasi Metro: dua error CSS; diagnostik-tsc-sebelum-metro.txt. Tidak mengubah kode, konfigurasi atau oracle.
