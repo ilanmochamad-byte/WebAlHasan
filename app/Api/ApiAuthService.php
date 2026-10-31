@@ -103,6 +103,58 @@ final class ApiAuthService
     }
 
     /**
+     * Identitas akun untuk tampilan profil aplikasi (PK-1: satu akun, dua
+     * identitas), dilayani `GET /profile/identitas` agar bentuk `/profile` dan
+     * respons login tetap seperti sebelumnya. Hanya informasi; hak tetap
+     * dihitung server per permintaan.
+     * Identitas pengurus milik guru hanya tampil selama sah menurut
+     * `Capabilities` (guru aktif, identitas milik guru akun itu sendiri).
+     * Penugasan = jenis yang sedang aktif dari penugasan MILIK SENDIRI, bukan
+     * pengawasan admin.
+     *
+     * @param array<string, mixed> $user
+     * @return array{guru:?array<string, mixed>, pengurus:?array<string, mixed>, penugasan:array<int, array<string, string>>}
+     */
+    public function identitasPayload(array $user): array
+    {
+        $guruId = ($user['guru_id'] ?? null) === null ? null : (int) $user['guru_id'];
+        $hasil = [
+            'guru' => $guruId === null ? null : [
+                'id' => $guruId,
+                'nip' => ($user['nip'] ?? null) === null ? null : (string) $user['nip'],
+                'nama' => (string) ($user['nama_guru'] ?? ''),
+            ],
+            'pengurus' => null,
+            'penugasan' => [],
+        ];
+        if ($this->capabilities === null) {
+            return $hasil;
+        }
+        $pengurusId = $this->capabilities->linkedPengurusId((int) $user['id']);
+        if ($pengurusId !== null) {
+            $hasil['pengurus'] = $this->repository->pengurusIdentitas($pengurusId);
+        }
+        $jenis = [];
+        try {
+            foreach ($this->capabilities->featureCapabilities(['id' => (int) $user['id'], 'roles' => [], 'guru_id' => $guruId]) as $entri) {
+                foreach ($entri['cakupan'] as $cakupan) {
+                    $jenis[(string) $cakupan['jenis']] = true;
+                }
+            }
+        } catch (\Throwable $exception) {
+            error_log('Penugasan profil gagal dihitung: ' . $exception->getMessage());
+        }
+        foreach (array_keys(\App\Penugasan\PenugasanJenis::semua()) as $kode) {
+            if (isset($jenis[$kode])) {
+                $definisi = \App\Penugasan\PenugasanJenis::definisi($kode);
+                $hasil['penugasan'][] = ['jenis' => $kode, 'label' => $definisi['label'], 'identitas' => $definisi['subjek']];
+            }
+        }
+
+        return $hasil;
+    }
+
+    /**
      * Feature capability dari penugasan fungsional V3–V6, selalu dihitung ulang
      * di server. Tidak menambah mode utama, tidak mengubah `default_mode`, dan
      * tidak membuat menu: hanya menyatakan kesiapan hak untuk modul mendatang.

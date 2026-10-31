@@ -1,0 +1,70 @@
+Bundel  6195773 bita, host produksi: 0, layar Keamanan: 1
+
+=== A-A. Beranda ===
+[lulus] K (pengurus berpenugasan Keamanan): ubin Keamanan tampil
+[lulus] Beranda K: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] G (guru lewat identitas pengurus miliknya): ubin Keamanan tampil
+[lulus] sbx_pengurus_b: tanpa ubin Keamanan
+
+=== A-H. N membuka alamat Keamanan langsung ===
+[lulus] N: pintu Keamanan menampilkan "Tidak ada penugasan Keamanan"
+[lulus] N: rincian izin langsung ditolak server, alasan tidak tampil
+[lulus] sbx_admin: tanpa ubin Keamanan
+[lulus] sbx_v7_wali_a: tanpa ubin Keamanan
+
+=== A-B. Pintu Keamanan ===
+[lulus] Empat bagian: kehadiran, perizinan, pelanggaran, konseling
+[lulus] Keterangan hanya baca dan kasus Rahasia
+[lulus] Pintu tanpa tombol mutasi
+[lulus] Pintu Keamanan: tanpa gulir horizontal pada 375 px (selisih 0px)
+
+=== A-C. Perizinan ===
+[lulus] Ringkasan perizinan aplikasi = API (1040 pengajuan)
+[lulus] Saringan asal Wali: pengajuan wali tampil, daftar tanpa alasan
+[lulus] Daftar perizinan tanpa tombol mutasi
+[lulus] Daftar perizinan: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Rincian izin lengkap: alasan, catatan wali, keputusan, riwayat (PK-T4)
+[lulus] Rincian izin tanpa tombol tinjau/putus/koreksi/batal
+[lulus] Pembukaan rincian dari aplikasi tercatat satu kali di audit
+[lulus] Rincian izin: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Izin santri nonaktif dibuka langsung → ditolak (tidak ditemukan/tidak aktif)
+
+=== A-D. Pelanggaran ===
+[lulus] Chip Semua = jumlah API (4)
+[lulus] Chip Dicatat = API
+[lulus] Daftar pelanggaran: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Rincian pelanggaran lengkap; lampiran hanya metadata, unduhan lewat website
+[lulus] Tanpa tautan unduh atau tombol mutasi
+[lulus] Rincian pelanggaran: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Pelanggaran santri nonaktif → "tidak ditemukan"
+
+=== A-E. Konseling ===
+[lulus] Daftar kasus aplikasi = API (1), tanpa kasus Rahasia
+[lulus] Pencarian nama santri kasus Rahasia tidak memunculkan kasus Rahasia
+[lulus] Kasus Rahasia ditolak dengan pesan yang sama dengan kasus tidak ada
+[lulus] Rincian kasus Internal lengkap, tanpa tombol mutasi
+[lulus] Rincian kasus: tanpa gulir horizontal pada 375 px (selisih 0px)
+
+=== A-F. Kehadiran ===
+[lulus] Ringkasan kehadiran bulan berjalan = API
+[lulus] Kehadiran: tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Rincian pertemuan berjejak audit, tanpa tombol ubah kehadiran
+
+=== A-G. Profil dua identitas ===
+[lulus] G: identitas guru dan identitas pengurus milik guru; Keamanan di bawah identitas pengurus
+[lulus] Profil G: bagian identitas di dalam 375 px (tepi kanan 359px)
+[lulus] K: hanya identitas pengurus dengan penugasan Keamanan
+
+=== A-I. Pencabutan saat layar terbuka ===
+[lulus] Kembali dari latar sesudah penugasan dicabut: isi ditutup, pesan penolakan server
+[lulus] Beranda G sesudah pencabutan: ubin Keamanan hilang
+
+=== A-J. Privasi dan jaringan ===
+[lulus] Nol permintaan non-GET ke /api/v1/keamanan (0)
+[lulus] Nol permintaan ke luar 127.0.0.1 ()
+[lulus] localStorage/sessionStorage tanpa alasan izin, isi konseling, nama santri, atau token di luar kunci sesi
+[lulus] Konsol tanpa alasan izin, isi konseling, atau token
+[lulus] Jejak audit Keamanan tanpa isi
+
+Hasil: 46 lulus, 0 gagal
+galat PHP server aplikasi: 0

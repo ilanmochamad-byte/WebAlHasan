@@ -691,6 +691,49 @@ untuk tahap murobi.
 
 Rincian, penafsiran, dan batas uji: `docs/phase-v7-4/README.md`.
 
+## Penugasan Keamanan — REST baca-saja untuk aplikasi (lintas guru/pengurus Fase 4, 31 Oktober 2026)
+
+Aditif. HANYA BACA (PK-T3): seluruh metode selain `GET` pada `/keamanan` dan
+`/keamanan/*` dijawab `405` dengan `Allow: GET` sebelum layanan apa pun
+dipanggil. Hak dihitung ulang setiap permintaan dari penugasan Keamanan aktif
+MILIK SENDIRI (`KeamananAkses::sah`); pengawasan admin, peran orang tua, atau
+parameter request tidak memberi hak. Layanan yang dipakai sama dengan halaman
+web Keamanan Fase 3, dan respons hanya memuat isi yang ditampilkan halaman itu.
+Semua respons `Cache-Control: private, no-store`. Tidak ada ekspor CSV dan
+tidak ada unduhan lampiran lewat REST; cetak PDF dan unduhan lampiran tetap di
+website (PK-T2, setiap unduhan diaudit).
+
+| Method | Endpoint | Isi |
+| --- | --- | --- |
+| GET | `/keamanan/akses` | `{pantau, terpasang, bagian, cetak:"website", csv:false}`; akun tanpa penugasan → `pantau:false` (200) |
+| GET | `/keamanan/izin?asal&tahap&hasil&basis&dari&sampai&page` | daftar lintas asal santri aktif, bentuk laporan V7 (tanpa alasan); `detail.api` → rincian Keamanan |
+| GET | `/keamanan/izin/{id}` | rincian lengkap (alasan, catatan, keputusan, koreksi, riwayat berlabel); diaudit `keamanan.izin.dilihat` |
+| GET | `/keamanan/pelanggaran?status&q&periode&mulai&sampai&page` | daftar + `jumlah_status` (chip) santri aktif |
+| GET | `/keamanan/pelanggaran/{id}` | catatan lengkap, riwayat revisi, tanda mengetahui murobi, ledger poin, lampiran (metadata), kasus Internal tertaut; diaudit |
+| GET | `/keamanan/konseling?status&q&page` | kasus Internal santri aktif + `jumlah_status`; kasus Rahasia tidak pernah terhitung |
+| GET | `/keamanan/konseling/{id}` | kasus Internal lengkap (tujuan, sesi aktif, tautan, linimasa, revisi); diaudit |
+| GET | `/keamanan/kehadiran?date_from&date_to&academic_year_id&class_id&teacher_id&schedule_id&status&subject_scope&page&per_page` | laporan kehadiran seluruh jadwal, peserta santri aktif kini (pola keputusan H) |
+| GET | `/keamanan/kehadiran/pertemuan/{id}` | rincian pertemuan + `izin_id` peserta yang sedang izin; diaudit `keamanan.kehadiran.dilihat` |
+
+Status: `401` tanpa token; `403` tanpa penugasan Keamanan aktif; `404` untuk
+ID tidak ada, santri nonaktif, dan kasus Rahasia (pesan sama); `422` saringan
+tidak valid; `503` bila jejak audit rincian gagal disimpan (isi tidak dikirim).
+`/reports` dan endpoint V1/V3/V7 lama tidak berubah dan tidak melebar karena
+penugasan Keamanan.
+
+Identitas akun: endpoint aditif `GET /profile/identitas` (PK-1, satu akun dua
+identitas), hanya untuk tampilan. `GET /profile` dan respons login TIDAK berubah.
+
+```json
+{"guru":{"id":4,"nip":"…","nama":"…"},
+ "pengurus":{"id":285,"nama":"…","jabatan":"Guru","milik_guru":true},
+ "penugasan":[{"jenis":"keamanan","label":"Keamanan","identitas":"pengurus"}]}
+```
+
+`pengurus` hanya terisi selama identitas pengurus sah menurut `Capabilities`
+(milik guru akun itu sendiri dan guru aktif). `penugasan` = jenis penugasan
+aktif milik akun, bukan pengawasan admin.
+
 ## Notifikasi V2 (Fase 4)
 
 Aditif; tidak mengubah satu pun kontrak di atas. Rincian lengkap beserta contoh

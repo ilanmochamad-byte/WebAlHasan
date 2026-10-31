@@ -1,0 +1,59 @@
+
+=== S-1. Katalog ===
+[lulus] Jenis `keamanan` dan capability `keamanan.pantau`
+[lulus] Definisi: tabel sendiri, seluruh santri aktif, tidak gugur semester, subjek pengurus, satu capability
+[lulus] Keamanan diurutkan sebelum PSB; bukan "modul mendatang"
+[lulus] Pusat penugasan memeriksa keberadaan tabel Keamanan (berjalan sebelum 033/sesudah rollback)
+
+=== S-2. Capability baca tidak dipakai jalur tulis ===
+[lulus] Capability/penanda Keamanan hanya dipakai di guard baca, layanan baca, katalog, dan menu
+[lulus] Modul App\Keamanan hanya membaca (tanpa INSERT/UPDATE/DELETE)
+[lulus] app/V3/PelanggaranService.php: penanda hanya dibaca di readMode (jalur baca)
+[lulus] app/V3/KonselingService.php: penanda hanya dibaca di readMode (jalur baca)
+
+=== S-3. Halaman Keamanan ===
+[lulus] Guard: hak penugasan sendiri, hanya GET/HEAD (405), tanpa cache
+[lulus] Sepuluh halaman Keamanan (izin 3, pelanggaran 4, konseling 3)
+[lulus] keamanan_izin.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_izin_cetak.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_izin_detail.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_konseling.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_konseling_cetak.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_konseling_detail.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_lampiran.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_pelanggaran.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_pelanggaran_cetak.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+[lulus] keamanan_pelanggaran_detail.php: guard bersama, tanpa POST/CSRF/CSV/mutasi
+
+=== S-4. Layanan dan cakupan ===
+[lulus] Hak dihitung ulang; pengawasan admin (sumber admin) tidak sah
+[lulus] app/V3/PelanggaranRepository.php: mode keamanan = santri aktif
+[lulus] app/V3/KonselingRepository.php: mode keamanan = santri aktif
+[lulus] Konseling: penyaring kerahasiaan bawaan (murobi) berlaku untuk Keamanan
+[lulus] Tautan konseling pada pelanggaran: Rahasia tersaring untuk Keamanan
+[lulus] Rincian kasus: isi internal hanya untuk kasus Internal bagi Keamanan
+[lulus] Laporan izin: cakupan keamanan = santri aktif, kedua asal
+[lulus] Laporan izin: cakupan dipilih dari penanda + hak, bukan parameter; ekspor CSV ditolak
+[lulus] Rincian izin: santri aktif
+
+=== S-5. Audit ===
+[lulus] Rincian izin diaudit sebelum isi dikembalikan; cetak diaudit
+[lulus] Rincian pelanggaran/kasus dan unduhan lampiran diaudit
+[lulus] Jejak `keamanan.*` disaring ke kunci metadata (tanpa alasan/uraian)
+
+=== S-6. Kehadiran ===
+[lulus] Guard laporan: Keamanan seluruh jadwal pada peran Pengurus; CSV ditolak
+[lulus] Tombol Ekspor CSV disembunyikan bagi Keamanan
+[lulus] Menu Keamanan hanya pada peran Pengurus, dari penugasan sendiri
+
+=== S-7. Migrasi ===
+[lulus] Migrasi 033 aditif: satu tabel baru, tanpa ALTER/DML
+[lulus] Rollback 033 berpenjaga data dan hanya melepas tabel Keamanan
+
+=== S-8. Batas Fase 3 ===
+[gagal] Hanya berkas Fase 3 yang berubah terhadap baseline 6c9d544
+[lulus] Auth, akun, master, kesehatan, BSA, notifikasi, REST, V4, dan alur tulis izin tidak diubah
+
+=== S-9. Lint ===
+
+Hasil: 38 lulus, 1 gagal.

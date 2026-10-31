@@ -3,7 +3,9 @@
 Status: **disetujui Human Developer 30 Oktober 2026** (PK-1…PK-7, PK-T1…PK-T8). Fase 1 lulus audit Codex dan digabung ke `main` (PR #103); Fase 2
 lulus audit Codex dan digabung ke `main` (PR #104, `fase-2/AUDIT-CODEX.md`); Fase 3 (Keamanan di website)
 diimplementasikan Claude Code pada `claude/penugasan-keamanan-fase-3` dan **lulus audit teknis lokal Codex
-31 Oktober 2026 setelah tiga koreksi terarah** (`fase-3/AUDIT-CODEX.md`). Fase 4 belum dimulai. Branch rancangan
+31 Oktober 2026 setelah tiga koreksi terarah** (`fase-3/AUDIT-CODEX.md`) dan digabung ke `main` (PR #105). Fase 4 (aplikasi)
+diimplementasikan Claude Code pada `claude/penugasan-keamanan-fase-4` di kedua repositori dan menunggu audit Codex
+(`fase-4/README.md`). Branch rancangan
 `claude/rancangan-penugasan-keamanan` dari `origin/main` `cbb5aa1` hanya berisi
 dokumen. Belum ada deploy atau migrasi produksi.
 

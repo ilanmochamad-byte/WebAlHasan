@@ -1,0 +1,31 @@
+Android emulator (AVD Medium_Phone, API dev client Debug app-debug.apk 24 Okt 2026 + Metro dari salinan
+/private/tmp/pkf4-mobile: sumber branch Fase 4, package.json/lock ter-commit Expo 57.0.15, node_modules
+direktori nyata, tanpa .env*). API lokal 127.0.0.1:8957 (adb reverse), DB test_pk_f4_app_test (rantai
+penugasan_keamanan_f4_db.sh + seed Fase 3). Diketuk lewat adb input + uiautomator dump. 31 Oktober 2026.
+Ini emulator, bukan perangkat fisik; binary dev client, bukan build rilis.
+
+N-1 [lulus] K (sbx_pengurus_biasa) masuk → Beranda memuat ubin "Keamanan".
+N-2 [lulus] Pintu Keamanan "Pantauan santri"; dumpsys window: atribut fl=… SECURE … pada jendela aplikasi
+            (1 baris), screencap layar rincian izin hitam penuh (15.580 bita).
+N-3 [lulus] Kembali ke Beranda (navigator Keamanan dilepas): SECURE = 0 baris, screencap normal (180.106 bita).
+N-4 [lulus] Perizinan santri → saringan asal Wali → rincian izin SBX V7 Santri Satu: alasan
+            "PKF3 alasan wali…", catatan wali, status "Menunggu tinjauan pembimbing", "Belum diputus." (PK-T4).
+N-5 [lulus] Konseling: "1 dari 1", hanya kasus Internal SBX Santri A1; tanpa kasus Rahasia.
+N-6 [lulus] Pencabutan saat layar terbuka: rincian izin terbuka → penugasan K is_active=0 di DB → HOME →
+            buka lagi dari launcher: "Informasi tidak dapat diakses…", alasan tidak tampil lagi. Penugasan dipulihkan.
+N-7 [lulus] Recents (APP_SWITCH) saat daftar perizinan Keamanan terbuka: kartu aplikasi hitam (FLAG_SECURE).
+N-8 [lulus] logcat -d 123.792 baris: "PKF3" 0, "PRIVATE-T5" 0, "Bearer <hex>" 0; seluruh 347 baris berpola
+            64-heksa berasal dari sistem (retrace launcher, nol, VBMeta/sepolicy), 0 dari ReactNative/alhasan/expo;
+            hash token terakhir di DB tidak muncul.
+N-9 [lulus] Keluar → masuk G (sbx_guru_biasa): ubin Keamanan tampil; Profil "Identitas & penugasan":
+            "Sebagai guru, SBX Guru Tanpa Murobi · NIP SBX-G-004 — tanpa penugasan guru aktif" dan
+            "Sebagai pengurus, … · dibentuk dari data guru — Keamanan".
+
+Tangkapan dan logcat lengkap tidak di-commit (memuat data sintetis dan log sistem emulator).
+
+Ulangan N-9 sesudah identitas dipindah ke GET /profile/identitas (31 Oktober 2026, emulator di-boot ulang,
+APK sama, Metro --clear dari sumber akhir; bundel rute Profil memuat klien akun.identitas):
+N-9' [lulus] Masuk G → ubin Keamanan; Profil "Identitas & penugasan": "Sebagai guru … — tanpa penugasan guru aktif"
+             dan "Sebagai pengurus … · dibentuk dari data guru — Keamanan". Tipe Profile tidak lagi memuat identitas,
+             sehingga bagian ini hanya dapat diisi dari endpoint baru.
+N-1…N-8 tidak diulang: layar Keamanan, perlindungan, dan klien /keamanan/* tidak berubah sesudah uji pertama.

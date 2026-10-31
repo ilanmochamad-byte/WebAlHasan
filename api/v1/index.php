@@ -169,6 +169,28 @@ try {
         throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
     }
 
+    // Penugasan Keamanan (lintas guru/pengurus Fase 4, PK-T3): aditif, HANYA
+    // BACA. Hak dihitung ulang layanan yang sama dengan halaman web Keamanan;
+    // metode selain GET ditolak 405 sebelum layanan apa pun dipanggil.
+    if ($path === '/keamanan' || str_starts_with($path, '/keamanan/')) {
+        header('Cache-Control: private, no-store');
+        if ($method !== 'GET') {
+            header('Allow: GET');
+            JsonResponse::error('METHOD_NOT_ALLOWED', 'Pantauan Keamanan hanya dapat dibaca.', 405);
+        }
+        $keamanan = keamanan_api_service();
+        if ($path === '/keamanan/akses') JsonResponse::success($keamanan->akses($user));
+        if ($path === '/keamanan/izin') JsonResponse::success($keamanan->izinDaftar($user, $_GET));
+        if (preg_match('#^/keamanan/izin/(\d+)$#', $path, $m)) JsonResponse::success($keamanan->izinDetail($user, (int) $m[1]));
+        if ($path === '/keamanan/pelanggaran') JsonResponse::success($keamanan->pelanggaranDaftar($user, $_GET));
+        if (preg_match('#^/keamanan/pelanggaran/(\d+)$#', $path, $m)) JsonResponse::success($keamanan->pelanggaranDetail($user, (int) $m[1]));
+        if ($path === '/keamanan/konseling') JsonResponse::success($keamanan->konselingDaftar($user, $_GET));
+        if (preg_match('#^/keamanan/konseling/(\d+)$#', $path, $m)) JsonResponse::success($keamanan->konselingDetail($user, (int) $m[1]));
+        if ($path === '/keamanan/kehadiran') JsonResponse::success($keamanan->kehadiran($user, $_GET));
+        if (preg_match('#^/keamanan/kehadiran/pertemuan/(\d+)$#', $path, $m)) JsonResponse::success($keamanan->kehadiranPertemuan($user, (int) $m[1]));
+        throw new ApiException('NOT_FOUND', 'Endpoint tidak ditemukan.', 404);
+    }
+
     // V7 Fase 1–3 (pengajuan izin wali melalui pembimbing): aditif. Hak dihitung
     // ulang `IzinWaliService` yang sama dengan halaman web; murobi tidak
     // menerima apa pun sebelum pembimbing meneruskan.
@@ -433,6 +455,12 @@ try {
     if ($method === 'GET' && $path === '/profile') {
         JsonResponse::success(api_auth_service()->profile($user));
     }
+    // Penugasan lintas guru/pengurus Fase 4 (aditif): identitas guru dan
+    // identitas pengurus akun yang sama untuk tampilan profil aplikasi.
+    if ($method === 'GET' && $path === '/profile/identitas') {
+        header('Cache-Control: private, no-store');
+        JsonResponse::success(api_auth_service()->identitasPayload($user));
+    }
     if ($method === 'POST' && $path === '/auth/logout') {
         // V2 Fase 4: logout mencabut registrasi perangkat push agar sesi lama
         // tidak meninggalkan perangkat yang masih menerima push. Aplikasi
@@ -648,6 +676,9 @@ try {
     // sendiri di IzinApiService, sehingga jalur V2 tidak berubah).
     $status = $exception->status();
     JsonResponse::error(match($status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$status);
+} catch (\App\Keamanan\KeamananException $exception) {
+    $status = $exception->status();
+    JsonResponse::error(match($status){403=>'FORBIDDEN',404=>'NOT_FOUND',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$status);
 } catch (\App\Bsa\BsaException $exception) {
     JsonResponse::error(match($exception->status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$exception->status);
 } catch (\App\Kesehatan\KesehatanException $exception) {

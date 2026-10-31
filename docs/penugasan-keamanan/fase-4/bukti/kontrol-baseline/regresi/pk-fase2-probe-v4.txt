@@ -1,0 +1,5 @@
+App\V4\V4Exception: Isi paling sedikit satu komponen, maksimal 100 harian. in /private/tmp/pkf4-baseline/app/V4/NilaiService.php:114
+Stack trace:
+#0 /private/tmp/pkf4-baseline/tests/penugasan_keamanan_f2_audit_v4.php(35): App\V4\NilaiService->save(Array, Array, true)
+#1 {main}
+Isi paling sedikit satu komponen, maksimal 100 harian.

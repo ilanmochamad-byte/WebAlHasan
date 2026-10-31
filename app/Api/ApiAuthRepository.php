@@ -77,6 +77,26 @@ final class ApiAuthRepository
         ];
     }
 
+    /**
+     * Identitas pengurus akun untuk tampilan profil aplikasi (penugasan lintas
+     * guru/pengurus Fase 4). Pemanggil hanya mengirim ID yang sudah disahkan
+     * `Capabilities::linkedPengurusId`; `milik_guru` kosong sebelum migrasi 032.
+     *
+     * @return array{id:int, nama:string, jabatan:string, milik_guru:bool}|null
+     */
+    public function pengurusIdentitas(int $pengurusId): ?array
+    {
+        $milikGuru = \App\Database\Schema::hasColumn($this->db, 'pengurus', 'guru_id') ? 'guru_id IS NOT NULL' : '0';
+        $row = $this->one("SELECT id, nama, jabatan, ($milikGuru) AS milik_guru FROM pengurus WHERE id = ? LIMIT 1", [$pengurusId]);
+
+        return $row === null ? null : [
+            'id' => (int) $row['id'],
+            'nama' => (string) $row['nama'],
+            'jabatan' => (string) $row['jabatan'],
+            'milik_guru' => (int) $row['milik_guru'] === 1,
+        ];
+    }
+
     private function normalizeUser(array $row): array
     {
         $row['id'] = (int) $row['id'];

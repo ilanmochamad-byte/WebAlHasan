@@ -1,0 +1,27 @@
+[lulus] Lima akun uji memperoleh token API
+
+=== R-1 akses ===
+[gagal] K (pengurus) dan G (guru lewat identitas pengurus) pantau = true
+[gagal] Pengurus tanpa Keamanan dan orang tua: pantau = false (200, bukan galat)
+[gagal] Admin tanpa penugasan Keamanan sendiri: pantau = false (PF3-1 berlaku di REST)
+[lulus] Tanpa token → 401
+[gagal] Respons Keamanan Cache-Control private, no-store
+[gagal] N ditolak 403 pada delapan rute data Keamanan
+[gagal] W ditolak 403 pada delapan rute data Keamanan
+[gagal] A ditolak 403 pada delapan rute data Keamanan
+[lulus] Rute Keamanan tak dikenal → 404
+
+=== R-2 metode mutasi ===
+[gagal] 36 permintaan mutasi (4 metode × 9 rute) → 405 Allow: GET: POST /keamanan/akses → 404, POST /keamanan/izin → 404, POST /keamanan/izin/2706 → 404, POST /keamanan/pelanggaran → 404, POST /keamanan/pelanggaran/1 → 404, POST /keamanan/konseling → 404, POST /keamanan/konseling/1 → 404, POST /keamanan/kehadiran → 404, POST /keamanan/kehadiran/pertemuan/1 → 404, PUT /keamanan/akses → 404, PUT /keamanan/izin → 404, PUT /keamanan/izin/2706 → 404, PUT /keamanan/pelanggaran → 404, PUT /keamanan/pelanggaran/1 → 404, PUT /keamanan/konseling → 404, PUT /keamanan/konseling/1 → 404, PUT /keamanan/kehadiran → 404, PUT /keamanan/kehadiran/pertemuan/1 → 404, PATCH /keamanan/akses → 404, PATCH /keamanan/izin → 404, PATCH /keamanan/izin/2706 → 404, PATCH /keamanan/pelanggaran → 404, PATCH /keamanan/pelanggaran/1 → 404, PATCH /keamanan/konseling → 404, PATCH /keamanan/konseling/1 → 404, PATCH /keamanan/kehadiran → 404, PATCH /keamanan/kehadiran/pertemuan/1 → 404, DELETE /keamanan/akses → 404, DELETE /keamanan/izin → 404, DELETE /keamanan/izin/2706 → 404, DELETE /keamanan/pelanggaran → 404, DELETE /keamanan/pelanggaran/1 → 404, DELETE /keamanan/konseling → 404, DELETE /keamanan/konseling/1 → 404, DELETE /keamanan/kehadiran → 404, DELETE /keamanan/kehadiran/pertemuan/1 → 404
+[lulus] Tidak ada perubahan izin/pembinaan/keputusan/audit Keamanan akibat permintaan mutasi
+
+=== R-3 daftar izin ===
+[gagal] Total izin REST = layanan web = oracle SQL santri aktif (1040)
+PHP Warning:  Trying to access array offset on null in /private/tmp/pkf4-baseline/tests/penugasan_keamanan_f4_http.php on line 172
+
+Warning: Trying to access array offset on null in /private/tmp/pkf4-baseline/tests/penugasan_keamanan_f4_http.php on line 172
+TypeError: array_column(): Argument #1 ($array) must be of type array, null given in /private/tmp/pkf4-baseline/tests/penugasan_keamanan_f4_http.php:172
+Stack trace:
+#0 /private/tmp/pkf4-baseline/tests/penugasan_keamanan_f4_http.php(172): array_column(NULL, 'id')
+#1 {main}
+array_column(): Argument #1 ($array) must be of type array, null given

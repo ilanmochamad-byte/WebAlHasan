@@ -1,0 +1,5 @@
+[lulus] Options internal menolak wali tanpa katalog
+[lulus] Options internal menolak wali tanpa katalog
+[lulus] Options tetap tersedia bagi petugas berhak: sbx_admin
+[lulus] Options tetap tersedia bagi petugas berhak: sbx_pengurus_a
+[lulus] Options tetap tersedia bagi petugas berhak: sbx_murobi_a
