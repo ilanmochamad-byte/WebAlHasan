@@ -1,0 +1,52 @@
+iOS Simulator — Fase 2 jadwal kelas gabungan (31 Oktober 2026, 23.47–23.55 WIB)
+
+Perangkat: iPhone 17 Pro SIMULATOR (iOS 26.x runtime, Xcode 27.2 / macOS 27.0.1). BUKAN perangkat fisik.
+API: 127.0.0.1:8961 (tests/redesain_web_tahap1_router.php, DB test_jkg_f2_app_test dari
+tests/jadwal_kelas_gabungan_f1_db.sh + tests/jadwal_kelas_gabungan_f2_seed.php, sfx E001DB, jadwal 104/105/106),
+melalui proksi uji tests/android/jkg_f2_proksi.py 8962 → 8961.
+Diketuk lewat alat simulator (tap/teks/tangkapan per koordinat); bukan skrip otomatis berulang.
+
+Build yang dipakai (dicatat apa adanya):
+- Build Release arm64 simulator BARU dari sumber Fase 2 (salinan /private/tmp/v7f4-codex-mobile — package.json dan
+  package-lock.json identik byte dengan HEAD mobile, Expo 57.0.15 — dengan src/ Fase 2, tanpa .env*,
+  EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:8962/api/v1): xcodebuild BUILD SUCCEEDED, tetapi aplikasi
+  crash saat start ("RCTFatalException … RCTEventEmitter.receiveEvent … not registered as callable").
+  Kontrol: binary baru + main.jsbundle LAMA juga crash (1 Terminating); binary Release audit Codex 30 Okt
+  (/private/tmp/v7f4-codex-mobile/dd, lock identik) + bundel lamanya berjalan. Penyebab crash binary baru
+  tidak didiagnosis; bukan kode Fase 2 (Fase 2 hanya JS, tanpa dependensi/modul native baru).
+- Yang DIUJI: binary Release audit Codex 30 Okt (sha256 alhasanApps 3a39fbea01ec7e5f…82e9) + main.jsbundle
+  Hermes HASIL build Fase 2 di atas (sha256 98ed87b9c483aa0b…ac22; berisi 127.0.0.1:8962 = 1,
+  alhasan.co.id = 0, "Kelas gabungan" = 1, "Satu pertemuan untuk" = 1), ditandatangani ulang ad-hoc lokal.
+
+I-1 [lulus] Login sbx_guru_biasa. Kata sandi diketik satu karakter per perintah (injeksi teks massal ke kolom
+            sandi aman tercampur; batas alat uji, bukan perilaku aplikasi).
+I-2 [lulus] Beranda: sorotan "Nahwu E001DB — 1 IBTIDA PA E001DB, 1 IBTIDA PI E001DB"; kartu "Nahwu … · PA, PI";
+            kartu Tajwid dan sorotan Fiqih tetap satu kelas "2 IBTIDA C E001DB".
+I-3 [lulus] Detail jadwal gabungan: "Kelas gabungan" dua baris kelas, "Satu pertemuan untuk 2 kelas…";
+            belum ada pertemuan sebelum "Buka pertemuan" diketuk (tanpa pembukaan otomatis).
+I-4 [lulus] Penanda gagal-buka + tunda (proksi meneruskan, server 201, aplikasi menerima 503), dua ketukan
+            "Buka pertemuan" beruntun → 1 POST (ketukan kedua saat berjalan diabaikan); galat
+            "Uji: gerbang gagal sesudah diproses." tampil; DB: 1 pertemuan (722, Dibuka).
+I-5 [lulus] Ketuk ulang → POST kedua kunci SAMA (open-mvwn233q-drmepn8mla) → layar absensi pertemuan 722.
+            DB: 1 pertemuan, 5 peserta unik, pertemuan_kelas = 340,341 (PA, PI).
+I-6 [lulus] Layar absensi: judul "Nahwu E001DB · 1 IBTIDA PA E001DB, 1 IBTIDA PI E001DB", "Santri · 5 orang",
+            "Kelas gabungan · 2 kelas dalam satu pertemuan", kelompok "1 IBTIDA PA E001DB · 3 santri" (01–03)
+            lalu "1 IBTIDA PI E001DB · 2 santri" (04–05); tiap santri "NIS … · Kelas <kelas asal>".
+I-7 [lulus] PI1 → Izin; gagal-absen + tunda; Konfirmasi → Simpan lalu Konfirmasi lagi saat berjalan → 1 PUT
+            (attendance-mvwn3n01-a5duzgegaw); server 200, aplikasi 503 + galat di panel Ringkasan.
+            DB sudah 1 absensi guru + 5 santri.
+I-8 [lulus] Kirim ulang → PUT kedua kunci SAMA → layar beralih ke mode koreksi ("Simpan koreksi").
+            DB tetap 1 guru + 5 santri, PI1 Izin, pertemuan Selesai.
+I-9 [lulus] Pertemuan selesai: "Simpan koreksi" tanpa alasan → "Alasan koreksi wajib diisi karena pertemuan
+            sudah selesai.", tanpa PUT. Isi alasan → Simpan → 1 PUT kunci BARU (attendance-mvwn5iov-…);
+            DB tetap 1 guru + 5 santri. (Satu ketukan "Simpan" pada dialog sempat meleset saat animasi dialog,
+            tanpa PUT; diulang.)
+I-10 [lulus] Jadwal satu kelas (Fiqih, 105): detail lama, buka → "Santri · 2 orang", tanpa "Kelas gabungan",
+            tanpa judul kelompok, NIS tanpa label kelas (tampilan lama); kirim → 1 POST + 1 PUT.
+I-11 [lulus] Akhir DB: pertemuan 722 Selesai, 1 guru, 5 santri, 2 kelas beku; pertemuan 723 Selesai, 1 guru,
+            2 santri, 1 kelas beku; jadwal besok (106) tidak dibuka. Log proksi lengkap: ios-proksi-kiriman.jsonl.
+I-12 [catatan] Log proses alhasanApps 10 menit terakhir: 8.297 baris, 0 pola "Bearer <token>"; 3 baris
+            "Terminating" berasal dari percobaan binary baru yang crash (di atas), bukan dari sesi uji.
+
+Tidak diuji di iOS: sesi habis (401) dan akses guru lain (keduanya diuji Expo web), cold start dari tautan,
+Push, iOS Debug/dev client, perangkat fisik.

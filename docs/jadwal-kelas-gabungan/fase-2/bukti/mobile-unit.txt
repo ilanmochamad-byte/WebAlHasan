@@ -1,0 +1,105 @@
+(node:43211) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/tests/attendance-shortcut.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Absensi kembali ke daftar jadwal saat hari kosong atau seluruh sesi selesai (3.497875ms)
+✔ Absensi memilih sesi pertama yang belum selesai, termasuk yang belum dibuka (0.119792ms)
+(node:43212) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/tests/date-time.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ tanggal/jam lokal lengkap termasuk tengah malam dan tahun kabisat (4.994792ms)
+✔ tolak bagian kosong, format manual salah dan tanggal yang dinormalisasi JS (0.219375ms)
+(node:43213) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/tests/izin-wali.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Isian izin wali mengikuti aturan server (1.331458ms)
+✔ Isian dirapikan; perbaikan wajib berbeda dari versi asal (0.418292ms)
+✔ Catatan tinjauan: perbaikan/tolak wajib, teruskan opsional (0.628084ms)
+✔ Penolakan pembimbing dibedakan dari keputusan murobi (0.102ms)
+✔ Tautan notifikasi izin wali hanya membawa penunjuk (0.481125ms)
+(node:43214) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/tests/keamanan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kueri Keamanan tanpa kunci kosong dan ter-encode (0.504875ms)
+✔ Rentang tanggal: opsional, format ISO, akhir tidak mendahului awal (0.165083ms)
+✔ Nada lencana dan label status mengikuti halaman web Keamanan (0.0745ms)
+✔ Penugasan profil dikelompokkan per identitas (satu akun, dua identitas) (0.4105ms)
+(node:43215) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/tests/kelas-jadwal.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ server lama tanpa classes tetap terbaca sebagai satu kelas utama (1.504041ms)
+✔ jadwal satu kelas dari server Fase 1 tidak ditandai gabungan (0.160583ms)
+✔ kelas gabungan: utama lebih dahulu, tanpa ganda, label dipisah koma (0.168417ms)
+✔ peserta dikelompokkan per kelas asal mengikuti urutan kelas, urutan server dipertahankan (0.26625ms)
+✔ kelas asal di luar daftar dan peserta tanpa kelas tetap tampil, kelompok kosong dibuang (0.119958ms)
+✔ nama kelas asal memakai nama dari server, lalu daftar kelas, kosong bila tidak ada (0.075375ms)
+(node:43216) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/tests/kesehatan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Koreksi mengirim keadaan lengkap: rincian lama ber-id dipertahankan, waktu asli tidak bergeser (2.693834ms)
+✔ Baris baru yang seluruhnya kosong diabaikan; baris lama kosong tetap dikirim agar server menolaknya (0.981625ms)
+✔ Alasan wajib minimal lima karakter, maksimal 1000; sidik jari berubah bila isi berubah (0.200042ms)
+✔ Penunjuk notifikasi kesehatan hanya ringkasan_id valid; isi/tautan lain diabaikan (0.113459ms)
+✔ Deep-link kesehatan hanya skema aplikasi dan rute ringkasan wali (0.177125ms)
+✔ Teks perubahan versi memakai label manusia (0.08125ms)
+✔ Hasil pencarian santri dikelompokkan per kelas; belum ditempatkan paling akhir (0.122291ms)
+✔ Periode laporan: bulan ini, bulan lalu (lintas tahun), dan 30 hari berakhir hari ini (0.142875ms)
+(node:43217) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/tests/keuangan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Rupiah ditampilkan bulat dengan titik ribuan tanpa Intl (1.084083ms)
+✔ Nominal dikirim sebagai teks angka; pecahan dan huruf diteruskan agar server menolak (0.301792ms)
+✔ Alasan koreksi wajib 5–500 karakter seperti website (0.094917ms)
+✔ Sidik jari sama untuk isi sama (retry memakai kunci yang sama) dan berbeda bila isi berubah (0.0915ms)
+✔ Label periode, jenis, dan nilai awal tanggal (2.579ms)
+✔ Penunjuk notifikasi keuangan hanya id; tipe/kunci lain ditolak (0.581708ms)
+✔ Tautan skema keuangan hanya menerima jalur yang dikenal (0.189458ms)
+✔ Rentang laporan Fase 5: bulan ini, bulan lalu (lintas tahun), 3 bulan, tahun ini — paling panjang 12 bulan (0.130416ms)
+✔ Pratinjau satu santri sah hanya bila server menyaring santri itu (server lama mengabaikan santri_id) (0.084583ms)
+(node:43218) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/tests/print-dialog.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ mengenali exception pembatalan cetak iOS dari nama dan pesan (0.446708ms)
+✔ mengenali bentuk CodedError dari bridge native (0.094417ms)
+✔ tidak menyembunyikan kegagalan cetak yang sebenarnya (0.05375ms)
+✔ mengembalikan hasil normal ketika pencetakan dimulai (0.065959ms)
+✔ mengubah penutupan dialog menjadi hasil dibatalkan (0.086375ms)
+✔ meneruskan kegagalan printer tanpa perubahan (0.322125ms)
+(node:43219) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/tests/rapor.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kosong tetap belum lengkap, nol sah, versi lama tetap dikirim (0.713667ms)
+✔ Validasi angka/reason tidak meloloskan nilai tak sah atau alasan kosong (0.121166ms)
+✔ Push hanya penunjuk valid; data/nilai/tautan lain tidak dipakai (0.39575ms)
+✔ Deep-link native hanya skema/rute rapor sah; ID bertahan sebagai penunjuk (0.143916ms)
+(node:43220) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/tests/redesain-fase1.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ pekan dimulai Senin, termasuk ketika tanggal terpilih hari Minggu (1.637625ms)
+✔ pekan melintasi pergantian bulan, tahun, dan 29 Februari (0.105417ms)
+✔ geser pekan maju dan mundur mempertahankan hari (0.066541ms)
+✔ pesan tanpa menu hanya muncul setelah akses pembinaan selesai diperiksa (0.054833ms)
+(node:43221) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/tests/redesain-fase2.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/d83f09dd-99cc-4656-b14a-02ba853fc6c6/scratchpad/jkg2-mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sesi hari ini yang belum dibuka atau belum selesai ditandai perlu absen (0.710334ms)
+✔ sesi selesai tidak pernah meminta absen, kapan pun tanggalnya (0.066417ms)
+✔ sesi hari lain tidak diberi penanda absen dan dibedakan masa depan/lampau (0.060583ms)
+ℹ tests 53
+ℹ suites 0
+ℹ pass 53
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 211.077875
