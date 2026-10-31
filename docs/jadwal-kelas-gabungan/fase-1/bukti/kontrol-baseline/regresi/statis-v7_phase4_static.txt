@@ -1,0 +1,44 @@
+=== X-1. Batas web Fase 4 ===
+[gagal] Baseline audit Fase 3 2e2acc7c9fd8e1a742e69d081faab47bd95756c5 tersedia
+[lulus] Tidak ada migrasi/rollback baru atau berubah
+[lulus] Berkas web berubah hanya dalam daftar Fase 4
+[lulus] app/Izin tidak berubah (keputusan, hak, dan notifikasi tetap di server)
+[lulus] app/Auth tidak berubah (keputusan, hak, dan notifikasi tetap di server)
+[lulus] app/Notification tidak berubah (keputusan, hak, dan notifikasi tetap di server)
+[lulus] api/v1/index.php tidak berubah (keputusan, hak, dan notifikasi tetap di server)
+[lulus] portal tidak berubah (keputusan, hak, dan notifikasi tetap di server)
+
+=== X-2. Penanda asal V2 ===
+[gagal] IzinApiService hanya bertambah satu kunci `asal`, tanpa baris dihapus
+[gagal] Nilai `asal` dari kolom 030 dengan cadangan Pengurus (sebelum 030)
+[lulus] Lint PHP IzinApiService
+
+=== X-3. Klien dan mutasi aplikasi ===
+[lulus] Checkout mobile tersedia di /Users/ilanmochamad/alhasanApps
+[lulus] Klien V7 memakai `request` bersama untuk seluruh endpoint `/v7/izin`
+[lulus] Kelima mutasi V7 mengirim kunci idempotensi
+[lulus] Tinjau, perbaiki, batal, dan penetapan mengirim `version`
+[lulus] Setiap mutasi layar lewat `useIzinWaliMutation` dengan kunci dari penjaga
+[lulus] Penjaga mutasi: kunci sama saat retry, 401/403/404 menutup data, 409 ditawarkan muat ulang
+[lulus] Keputusan murobi/admin pengganti tetap di layar V2 pada ID sama
+
+=== X-4. Tautan notifikasi ===
+[lulus] Penyedia notifikasi: `izin_wali` bertahan melewati login, rute rincian V7, tautan skema
+[lulus] Payload `{tipe:izin_wali, pengajuan_id}` dikenali
+[lulus] Penunjuk dilepas hanya setelah server mengizinkan rincian
+[lulus] Detail notifikasi menawarkan tombol "Buka pengajuan izin"
+[lulus] Navigator izin wali hanya di balik sesi masuk (logout → login dulu)
+
+=== X-5. Privasi dan keadaan layar ===
+[lulus] Perlindungan tangkapan layar dipasang sebelum layar V7 dimuat
+[lulus] Modul V7 tanpa log konsol atau penyimpanan perangkat
+[lulus] Isi ditutup saat aplikasi di latar
+[lulus] Layar V7 menangani: LoadingState
+[lulus] Layar V7 menangani: EmptyState
+[lulus] Layar V7 menangani: ErrorState
+[lulus] Layar V7 menangani: Muat versi terbaru
+
+=== X-6. Jalur pengurus V2 ===
+[lulus] Layar pengurus/murobi V2 tetap memakai endpoint V2
+
+Ringkasan: 28 lulus, 3 gagal

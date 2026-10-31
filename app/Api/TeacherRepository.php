@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Api;
 
+use App\Schedule\KelasJadwal;
+use App\Schedule\PesertaPertemuan;
+use App\Schedule\ScheduleException;
 use mysqli;
 use mysqli_stmt;
 use RuntimeException;
@@ -86,18 +89,29 @@ final class TeacherRepository
         return (int) $this->db->insert_id;
     }
 
-    public function snapshotParticipants(int $meetingId, int $classId, int $yearId): void
+    /**
+     * Kelas + peserta beku; sama dengan pembukaan dari web (`PesertaPertemuan`).
+     * Tanpa `$scheduleId` (pemanggil lama) hanya `$classId` yang dibekukan.
+     */
+    public function snapshotParticipants(int $meetingId, int $classId, int $yearId, ?int $scheduleId = null): void
     {
-        $this->execute(
-            "INSERT INTO pertemuan_peserta
-                (pertemuan_id, santri_id, plotting_kelas_id, nis_snapshot, nama_santri_snapshot, kelas_id_snapshot, tahun_ajaran_id_snapshot, created_at)
-             SELECT ?, s.id, pk.id, s.nis, s.nama_santri, ?, ?, NOW()
-             FROM plotting_kelas pk
-             JOIN santri s ON s.id = pk.id_santri
-             WHERE pk.id_kelas = ? AND pk.id_tahun = ? AND pk.status = 'Aktif'
-             ORDER BY s.nama_santri, s.id",
-            [$meetingId, $classId, $yearId, $classId, $yearId]
-        );
+        try {
+            PesertaPertemuan::bekukan($this->db, $meetingId, $scheduleId, $classId, $yearId);
+        } catch (ScheduleException) {
+            throw new ApiException('DUPLICATE', 'Data duplikat ditolak oleh basis data.', 409);
+        }
+    }
+
+    /** @return array<int, list<array{id:int, name:string, level:string, is_primary:bool}>> */
+    public function scheduleClasses(array $scheduleIds): array
+    {
+        return KelasJadwal::daftarJadwal($this->db, $scheduleIds);
+    }
+
+    /** @return array<int, list<array{id:int, name:string, level:string, is_primary:bool}>> */
+    public function meetingClasses(array $meetingIds): array
+    {
+        return KelasJadwal::daftarPertemuan($this->db, $meetingIds);
     }
 
     public function meetingFind(int $id, bool $forUpdate = false): ?array
@@ -139,7 +153,7 @@ final class TeacherRepository
         $rows = $this->all(
             'SELECT p.id, p.jadwal_id, p.tanggal_pertemuan, p.status, p.opened_at, p.completed_at,
                     j.hari, j.waktu_mulai, j.waktu_selesai, j.fan_ilmu, j.nama_kitab, j.tempat,
-                    g.nama_guru, k.nama_kelas,
+                    j.id_kelas, g.nama_guru, k.nama_kelas, k.jenjang, ' . KelasJadwal::labelPertemuan($this->db) . ' AS kelas_label,
                     (SELECT COUNT(*) FROM pertemuan_peserta pp WHERE pp.pertemuan_id = p.id) AS participant_count'
             . $fromSql . $whereSql . ' ORDER BY p.tanggal_pertemuan DESC, p.id DESC LIMIT ? OFFSET ?',
             [...$params, $perPage, $offset]
@@ -150,9 +164,10 @@ final class TeacherRepository
     public function participantsWithAttendance(int $meetingId): array
     {
         return $this->all(
-            "SELECT pp.santri_id, pp.nis_snapshot, pp.nama_santri_snapshot,
+            "SELECT pp.santri_id, pp.nis_snapshot, pp.nama_santri_snapshot, pp.kelas_id_snapshot, ks.nama_kelas AS kelas_asal,
                     a.id AS attendance_id, a.status, a.catatan AS notes, a.dicatat_pada AS recorded_at, a.updated_at
              FROM pertemuan_peserta pp
+             LEFT JOIN kelas ks ON ks.id = pp.kelas_id_snapshot
              LEFT JOIN absensi_santri a ON a.pertemuan_id = pp.pertemuan_id AND a.santri_id = pp.santri_id
              WHERE pp.pertemuan_id = ?
              ORDER BY pp.nama_santri_snapshot, pp.santri_id",

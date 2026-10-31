@@ -107,6 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (ScheduleException $exception) {
             // Isian pengguna dipertahankan agar tidak perlu mengetik ulang.
             ah_validation_keep($_POST, ['id_tahun', 'hari', 'waktu_sholat', 'waktu_mulai', 'waktu_selesai', 'id_kelas', 'id_guru', 'tempat', 'fan_ilmu', 'nama_kitab'], $exception, '_ah_old');
+            // Pilihan kelas gabungan (larik) dipertahankan sebagai daftar ID.
+            $_SESSION['_ah_old']['kelas_gabungan_csv'] = implode(',', array_map('intval', array_filter(is_array($_POST['kelas_gabungan'] ?? null) ? $_POST['kelas_gabungan'] : [], 'is_scalar')));
             ah_flash_set('danger', $exception->getMessage());
             $kembali(['action' => $id > 0 ? 'edit' : 'create', 'id' => $id > 0 ? $id : null]);
         }
@@ -256,7 +258,7 @@ if ($tab === 'jadwal') {
         $aksi = '<a class="btn btn-primary" href="?' . ah_e(ah_query(['tab' => 'jadwal', 'action' => 'create', 'id' => null])) . '"><i class="fas fa-plus" aria-hidden="true"></i> Tambah jadwal</a>';
     }
 } elseif ($selectedMeeting !== null) {
-    $heading = $selectedMeeting['fan_ilmu'] . ' · ' . $selectedMeeting['nama_kelas'];
+    $heading = $selectedMeeting['fan_ilmu'] . ' · ' . ($selectedMeeting['kelas_label'] ?? $selectedMeeting['nama_kelas']);
     $jadwalPertemuan = $service->find((int) $selectedMeeting['jadwal_id']);
     $deskripsi = ah_tanggal((string) $selectedMeeting['tanggal_pertemuan']) . ' · ' . ($jadwalPertemuan['waktu_sholat'] ?? substr((string) $selectedMeeting['waktu_mulai'], 0, 5))
         . ' · ' . $selectedMeeting['tempat'] . ' · ' . $selectedMeeting['nama_guru'];

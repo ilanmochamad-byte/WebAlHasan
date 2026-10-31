@@ -1,0 +1,5 @@
+statis exit=0 46/0
+integrasi exit=0 71/0
+migrasi exit=0 31/0
+http exit=0 32/0
+SELESAI

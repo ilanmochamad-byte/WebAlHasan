@@ -1,0 +1,5 @@
+=== I-1 data lama tanpa baris relasi ===
+Error: Class "App\Schedule\KelasJadwal" not found in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/50a0fddb-6cf8-48cc-8451-c43cca597ff1/scratchpad/baseline/tests/jadwal_kelas_gabungan_f1_integration.php:105
+Stack trace:
+#0 {main}
+Class "App\Schedule\KelasJadwal" not found

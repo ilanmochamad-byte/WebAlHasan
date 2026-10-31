@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Report;
 
+use App\Schedule\KelasJadwal;
 use mysqli;
 use mysqli_stmt;
 use RuntimeException;
@@ -36,7 +37,11 @@ final class ReportRepository
     {
         [$sql, $params] = $this->attendanceRowsSql($filter);
         return $this->all(
-            "SELECT report.schedule_id, report.teacher_id, report.teacher_name, report.class_id, report.class_name,
+            // Satu baris per jadwal: santri kelas gabungan tidak memecah jadwal
+            // menjadi beberapa baris kelas. Kelas = kelas pertemuan (beku).
+            "SELECT report.schedule_id, report.teacher_id, report.teacher_name,
+                    report.schedule_class_id AS class_id,
+                    GROUP_CONCAT(DISTINCT report.schedule_class_names ORDER BY report.schedule_class_names SEPARATOR ' | ') AS class_name,
                     report.subject, report.book, COUNT(DISTINCT report.meeting_id) AS meeting_count,
                     COUNT(*) AS detail_count,
                     SUM(report.attendance_status = 'Hadir') AS hadir,
@@ -45,9 +50,9 @@ final class ReportRepository
                     SUM(report.attendance_status = 'Sakit') AS sakit,
                     SUM(report.attendance_status = 'Alpa') AS alpa
              FROM ({$sql}) report
-             GROUP BY report.schedule_id, report.teacher_id, report.teacher_name, report.class_id,
-                      report.class_name, report.subject, report.book
-             ORDER BY report.teacher_name, report.class_name, report.subject, report.schedule_id",
+             GROUP BY report.schedule_id, report.teacher_id, report.teacher_name, report.schedule_class_id,
+                      report.subject, report.book
+             ORDER BY report.teacher_name, class_name, report.subject, report.schedule_id",
             $params
         );
     }
@@ -94,14 +99,20 @@ final class ReportRepository
                 'SELECT DISTINCT g.id, g.nip, g.nama_guru' . $base . ' ORDER BY g.nama_guru',
                 $params
             ),
+            // Kelas yang pernah ikut pertemuan: kelas jadwal, kelas beku
+            // pertemuan, dan kelas asal peserta (kelas gabungan).
             'classes' => $this->all(
-                'SELECT DISTINCT k.id, k.nama_kelas, k.jenjang' . $base . ' ORDER BY k.nama_kelas',
-                $params
+                'SELECT kc.id, kc.nama_kelas, kc.jenjang FROM kelas kc WHERE kc.id IN (
+                    SELECT j.id_kelas' . $base . '
+                    UNION SELECT pp.kelas_id_snapshot FROM pertemuan_peserta pp WHERE pp.pertemuan_id IN (SELECT p.id' . $base . ')'
+                    . (KelasJadwal::terpasang($this->db) ? ' UNION SELECT pkc.kelas_id FROM pertemuan_kelas pkc WHERE pkc.pertemuan_id IN (SELECT p.id' . $base . ')' : '') . '
+                 ) ORDER BY kc.nama_kelas',
+                KelasJadwal::terpasang($this->db) ? [...$params, ...$params, ...$params] : [...$params, ...$params]
             ),
             'schedules' => $this->all(
                 'SELECT DISTINCT j.id, j.id_guru, j.id_kelas, j.id_tahun, j.hari, j.waktu_mulai,
-                        j.fan_ilmu, j.nama_kitab, g.nama_guru, k.nama_kelas' . $base .
-                ' ORDER BY g.nama_guru, k.nama_kelas, j.fan_ilmu, j.id',
+                        j.fan_ilmu, j.nama_kitab, g.nama_guru, ' . KelasJadwal::labelJadwal($this->db) . ' AS nama_kelas' . $base .
+                ' ORDER BY g.nama_guru, nama_kelas, j.fan_ilmu, j.id',
                 $params
             ),
         ];
@@ -114,6 +125,7 @@ final class ReportRepository
                        j.id_guru, j.id_kelas, j.id_tahun, j.hari, j.waktu_mulai, j.waktu_selesai,
                        j.fan_ilmu, j.nama_kitab, j.tempat,
                        g.nip, g.nama_guru, k.nama_kelas, k.jenjang, ta.tahun, ta.semester,
+                       " . KelasJadwal::labelPertemuan($this->db) . " AS kelas_label,
                        creator.name AS created_by_name
                 FROM pertemuan_pengajian p
                 JOIN jadwal_ngaji j ON j.id = p.jadwal_id
@@ -128,6 +140,12 @@ final class ReportRepository
             $params[] = $teacherId;
         }
         return $this->one($sql, $params);
+    }
+
+    /** @return list<array{id:int, name:string, level:string, is_primary:bool}> */
+    public function meetingClasses(int $meetingId): array
+    {
+        return KelasJadwal::daftarPertemuan($this->db, [$meetingId])[$meetingId] ?? [];
     }
 
     public function meetingTeacherAttendance(int $meetingId): ?array
@@ -150,9 +168,11 @@ final class ReportRepository
             : '';
         return $this->all(
             "SELECT pp.santri_id, pp.nis_snapshot, pp.nama_santri_snapshot,
+                    pp.kelas_id_snapshot, ks.nama_kelas AS kelas_asal,
                     attendance.id AS attendance_id, attendance.status, attendance.catatan,
                     attendance.dicatat_pada, attendance.updated_at, actor.name AS dicatat_oleh_nama
              FROM pertemuan_peserta pp
+             LEFT JOIN kelas ks ON ks.id = pp.kelas_id_snapshot
              LEFT JOIN absensi_santri attendance
                ON attendance.pertemuan_id = pp.pertemuan_id AND attendance.santri_id = pp.santri_id
              LEFT JOIN users actor ON actor.id = attendance.dicatat_oleh
@@ -176,13 +196,15 @@ final class ReportRepository
 
     private function attendanceRowsSql(ReportFilter $filter): array
     {
-        [$where, $params] = $this->where($filter, 'attendance.status');
+        [$where, $params] = $this->where($filter, 'attendance.status', false);
+        $kelasPertemuan = KelasJadwal::labelPertemuan($this->db);
         $teacher = "SELECT 'Guru' AS subject_type, attendance.id AS attendance_id,
                            p.id AS meeting_id, p.jadwal_id AS schedule_id, p.tanggal_pertemuan AS meeting_date,
                            p.status AS meeting_status, j.id_tahun AS academic_year_id,
                            CONCAT(ta.tahun, ' - ', ta.semester) AS academic_year,
                            j.id_guru AS teacher_id, g.nama_guru AS teacher_name,
-                           j.id_kelas AS class_id, k.nama_kelas AS class_name,
+                           j.id_kelas AS class_id, {$kelasPertemuan} AS class_name,
+                           j.id_kelas AS schedule_class_id, {$kelasPertemuan} AS schedule_class_names,
                            j.fan_ilmu AS subject, j.nama_kitab AS book, j.tempat AS place,
                            attendance.guru_id AS subject_id, COALESCE(g.nip, '') AS identity_number,
                            g.nama_guru AS subject_name, attendance.status AS attendance_status,
@@ -197,7 +219,7 @@ final class ReportRepository
                     LEFT JOIN users actor ON actor.id = attendance.dicatat_oleh
                     {$where}";
 
-        [$studentWhere, $studentParams] = $this->where($filter, 'attendance.status');
+        [$studentWhere, $studentParams] = $this->where($filter, 'attendance.status', true);
         if ($filter->activeStudentsOnly) {
             // Satu predikat untuk daftar, angka, ringkasan jadwal, dan cetak.
             $studentWhere .= ' AND EXISTS (SELECT 1 FROM santri sk WHERE sk.id=attendance.santri_id AND sk.is_active=1 AND sk.archived_at IS NULL)';
@@ -207,7 +229,8 @@ final class ReportRepository
                            p.status AS meeting_status, j.id_tahun AS academic_year_id,
                            CONCAT(ta.tahun, ' - ', ta.semester) AS academic_year,
                            j.id_guru AS teacher_id, g.nama_guru AS teacher_name,
-                           j.id_kelas AS class_id, k.nama_kelas AS class_name,
+                           pp.kelas_id_snapshot AS class_id, COALESCE(ks.nama_kelas, k.nama_kelas) AS class_name,
+                           j.id_kelas AS schedule_class_id, {$kelasPertemuan} AS schedule_class_names,
                            j.fan_ilmu AS subject, j.nama_kitab AS book, j.tempat AS place,
                            attendance.santri_id AS subject_id, pp.nis_snapshot AS identity_number,
                            pp.nama_santri_snapshot AS subject_name, attendance.status AS attendance_status,
@@ -221,6 +244,7 @@ final class ReportRepository
                     JOIN kelas k ON k.id = j.id_kelas
                     JOIN pertemuan_peserta pp
                       ON pp.pertemuan_id = attendance.pertemuan_id AND pp.santri_id = attendance.santri_id
+                    LEFT JOIN kelas ks ON ks.id = pp.kelas_id_snapshot
                     LEFT JOIN users actor ON actor.id = attendance.dicatat_oleh
                     {$studentWhere}";
 
@@ -238,18 +262,25 @@ final class ReportRepository
         return [$teacher . ' UNION ALL ' . $student, [...$params, ...$studentParams]];
     }
 
-    private function where(ReportFilter $filter, string $statusColumn): array
+    /**
+     * Saringan kelas (kelas gabungan Fase 1):
+     *   - baris SANTRI: kelas asal santri pada pertemuan (`kelas_id_snapshot`),
+     *     sehingga laporan per kelas hanya memuat santri kelas itu;
+     *   - baris GURU: pertemuan yang mencakup kelas itu. Absensi guru tetap
+     *     satu baris per pertemuan, tidak digandakan per kelas.
+     */
+    private function where(ReportFilter $filter, string $statusColumn, bool $studentRows): array
     {
         $clauses = ['p.tanggal_pertemuan BETWEEN ? AND ?'];
         $params = [$filter->dateFrom, $filter->dateTo];
         foreach ([
-            'j.id_tahun' => $filter->academicYearId,
-            'j.id_guru' => $filter->teacherId,
-            'j.id_kelas' => $filter->classId,
-            'j.id' => $filter->scheduleId,
-        ] as $column => $value) {
+            'j.id_tahun = ?' => $filter->academicYearId,
+            'j.id_guru = ?' => $filter->teacherId,
+            ($studentRows ? 'pp.kelas_id_snapshot = ?' : KelasJadwal::pertemuanMencakup($this->db)) => $filter->classId,
+            'j.id = ?' => $filter->scheduleId,
+        ] as $clause => $value) {
             if ($value !== null) {
-                $clauses[] = $column . ' = ?';
+                $clauses[] = $clause;
                 $params[] = $value;
             }
         }

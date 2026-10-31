@@ -60,7 +60,8 @@ final class ScheduleRepository
         $count = $this->one('SELECT COUNT(*) total FROM jadwal_ngaji j ' . $where, $params);
         $offset = ($page - 1) * $perPage;
         $rows = $this->all(
-            "SELECT j.*, ta.tahun, ta.semester, ta.status AS tahun_status, k.nama_kelas, k.jenjang, g.nama_guru
+            "SELECT j.*, ta.tahun, ta.semester, ta.status AS tahun_status, k.nama_kelas, k.jenjang, g.nama_guru,
+                    {$this->kelasLabel()} AS kelas_label, {$this->kelasIds()} AS kelas_ids
              FROM jadwal_ngaji j
              JOIN tahun_ajaran ta ON ta.id = j.id_tahun
              JOIN kelas k ON k.id = j.id_kelas
@@ -77,7 +78,8 @@ final class ScheduleRepository
     {
         return $this->one(
             "SELECT j.*, ta.tahun, ta.semester, ta.status AS tahun_status, ta.archived_at AS tahun_archived_at,
-                    k.nama_kelas, k.jenjang, g.nama_guru
+                    k.nama_kelas, k.jenjang, g.nama_guru,
+                    {$this->kelasLabel()} AS kelas_label, {$this->kelasIds()} AS kelas_ids
              FROM jadwal_ngaji j
              JOIN tahun_ajaran ta ON ta.id = j.id_tahun
              JOIN kelas k ON k.id = j.id_kelas
@@ -138,19 +140,29 @@ final class ScheduleRepository
         return $this->one($sql, $params);
     }
 
+    /**
+     * Jadwal lain yang beririsan waktu dengan kelas atau tempat yang sama.
+     *
+     * Kelas dibandingkan sebagai HIMPUNAN: seluruh kelas jadwal ini (utama +
+     * gabungan) terhadap seluruh kelas jadwal lain. Kelas-kelas di dalam satu
+     * jadwal gabungan tidak pernah dibandingkan satu sama lain (jadwal sendiri
+     * dikecualikan lewat `$excludeId`).
+     */
     public function warningConflicts(array $data, ?int $excludeId = null): array
     {
-        $sql = "SELECT j.id, k.nama_kelas, j.tempat, j.waktu_mulai, j.waktu_selesai,
-                       (j.id_kelas = ?) AS class_conflict,
+        $kelas = array_values(array_map('intval', $data['kelas_ids'] ?? [$data['id_kelas']]));
+        $mencakup = implode(' OR ', array_fill(0, count($kelas), KelasJadwal::jadwalMencakup($this->db)));
+        $sql = "SELECT j.id, {$this->kelasLabel()} AS nama_kelas, {$this->kelasIds()} AS kelas_ids,
+                       j.tempat, j.waktu_mulai, j.waktu_selesai,
+                       ({$mencakup}) AS class_conflict,
                        (LOWER(TRIM(j.tempat)) = LOWER(TRIM(?))) AS place_conflict
                 FROM jadwal_ngaji j
-                JOIN kelas k ON k.id = j.id_kelas
                 JOIN tahun_ajaran ta ON ta.id = j.id_tahun
                 WHERE j.id_tahun = ? AND ta.status = 'Aktif' AND ta.archived_at IS NULL
                   AND j.hari = ? AND j.is_active = 1 AND j.archived_at IS NULL
                   AND j.waktu_mulai < ? AND j.waktu_selesai > ?
-                  AND (j.id_kelas = ? OR LOWER(TRIM(j.tempat)) = LOWER(TRIM(?)))";
-        $params = [$data['id_kelas'], $data['tempat'], $data['id_tahun'], $data['hari'], $data['waktu_selesai'], $data['waktu_mulai'], $data['id_kelas'], $data['tempat']];
+                  AND ({$mencakup} OR LOWER(TRIM(j.tempat)) = LOWER(TRIM(?)))";
+        $params = [...$kelas, $data['tempat'], $data['id_tahun'], $data['hari'], $data['waktu_selesai'], $data['waktu_mulai'], ...$kelas, $data['tempat']];
         if ($excludeId !== null) {
             $sql .= ' AND j.id <> ?';
             $params[] = $excludeId;
@@ -158,10 +170,49 @@ final class ScheduleRepository
         return $this->all($sql . ' ORDER BY j.waktu_mulai, j.id', $params);
     }
 
+    /** @return array<int, string> id kelas => nama, untuk kelas yang diminta */
+    public function classNames(array $ids): array
+    {
+        $ids = array_values(array_filter(array_map('intval', $ids), static fn (int $id): bool => $id > 0));
+        if ($ids === []) {
+            return [];
+        }
+        $rows = $this->all('SELECT id, nama_kelas FROM kelas WHERE id IN (' . implode(',', array_fill(0, count($ids), '?')) . ')', $ids);
+        return array_column($rows, 'nama_kelas', 'id');
+    }
+
+    /**
+     * Menyamakan `jadwal_kelas` dengan pilihan admin. Dipanggil di dalam
+     * transaksi sesudah baris jadwal dikunci, sehingga tidak bisa bersilang
+     * dengan pembukaan pertemuan yang mengunci baris jadwal yang sama.
+     *
+     * @param list<int> $kelasIds kelas utama di posisi pertama
+     */
+    public function syncScheduleClasses(int $scheduleId, array $kelasIds, int $actorId): void
+    {
+        if (!KelasJadwal::terpasang($this->db)) {
+            if (count($kelasIds) > 1) {
+                throw new ScheduleException('Kelas gabungan belum dapat disimpan: migrasi 034 belum dipasang.');
+            }
+            return;
+        }
+        $utama = (int) $kelasIds[0];
+        $in = implode(',', array_fill(0, count($kelasIds), '?'));
+        $this->execute("DELETE FROM jadwal_kelas WHERE jadwal_id = ? AND kelas_id NOT IN ({$in})", [$scheduleId, ...$kelasIds]);
+        foreach ($kelasIds as $kelasId) {
+            $this->execute(
+                'INSERT INTO jadwal_kelas (jadwal_id, kelas_id, is_utama, created_by, created_at) VALUES (?, ?, ?, ?, NOW())
+                 ON DUPLICATE KEY UPDATE is_utama = VALUES(is_utama)',
+                [$scheduleId, (int) $kelasId, (int) $kelasId === $utama ? 1 : 0, $actorId]
+            );
+        }
+    }
+
     public function meetingList(array $user, int $limit = 100): array
     {
         $sql = "SELECT p.*, j.hari, j.waktu_mulai, j.waktu_selesai, j.fan_ilmu, j.nama_kitab, j.tempat,
                        g.nama_guru, k.nama_kelas, ta.tahun, ta.semester,
+                       {$this->kelasPertemuanLabel()} AS kelas_label,
                        (SELECT COUNT(*) FROM pertemuan_peserta pp WHERE pp.pertemuan_id = p.id) AS participant_count
                 FROM pertemuan_pengajian p
                 JOIN jadwal_ngaji j ON j.id = p.jadwal_id
@@ -180,6 +231,7 @@ final class ScheduleRepository
     {
         $sql = "SELECT p.*, j.hari, j.waktu_mulai, j.waktu_selesai, j.fan_ilmu, j.nama_kitab, j.tempat,
                        g.nama_guru, k.nama_kelas, ta.tahun, ta.semester,
+                       {$this->kelasPertemuanLabel()} AS kelas_label,
                        (SELECT COUNT(*) FROM pertemuan_peserta pp WHERE pp.pertemuan_id = p.id) AS participant_count
                 FROM pertemuan_pengajian p
                 JOIN jadwal_ngaji j ON j.id = p.jadwal_id
@@ -191,13 +243,13 @@ final class ScheduleRepository
             $sql .= ' WHERE j.id_guru = ?';
             $params[] = (int) ($user['guru_id'] ?? 0);
         }
-        return \App\Database\PageQuery::fetch($this->db, $sql, $params, 'tanggal_pertemuan DESC, id DESC', $page, $q, ['tanggal_pertemuan', 'nama_guru', 'nama_kelas', 'fan_ilmu', 'status']);
+        return \App\Database\PageQuery::fetch($this->db, $sql, $params, 'tanggal_pertemuan DESC, id DESC', $page, $q, ['tanggal_pertemuan', 'nama_guru', 'nama_kelas', 'kelas_label', 'fan_ilmu', 'status']);
     }
 
     public function activeScheduleOptionsForUser(array $user): array
     {
         $sql = "SELECT j.id, j.hari, j.waktu_mulai, j.waktu_selesai, j.fan_ilmu, j.nama_kitab, j.tempat,
-                       g.nama_guru, k.nama_kelas, ta.tahun, ta.semester
+                       g.nama_guru, k.nama_kelas, ta.tahun, ta.semester, {$this->kelasLabel()} AS kelas_label
                 FROM jadwal_ngaji j
                 JOIN guru g ON g.id = j.id_guru
                 JOIN kelas k ON k.id = j.id_kelas
@@ -217,7 +269,8 @@ final class ScheduleRepository
     {
         return $this->one(
             "SELECT p.*, j.id_guru, j.id_kelas, j.id_tahun, j.hari, j.waktu_mulai, j.waktu_selesai,
-                    j.fan_ilmu, j.nama_kitab, j.tempat, g.nama_guru, k.nama_kelas, ta.tahun, ta.semester
+                    j.fan_ilmu, j.nama_kitab, j.tempat, g.nama_guru, k.nama_kelas, ta.tahun, ta.semester,
+                    {$this->kelasPertemuanLabel()} AS kelas_label
              FROM pertemuan_pengajian p
              JOIN jadwal_ngaji j ON j.id = p.jadwal_id
              JOIN guru g ON g.id = j.id_guru
@@ -230,7 +283,7 @@ final class ScheduleRepository
 
     public function meetingParticipants(int $meetingId): array
     {
-        return $this->all('SELECT id, santri_id, plotting_kelas_id, nis_snapshot, nama_santri_snapshot, kelas_id_snapshot, tahun_ajaran_id_snapshot, created_at FROM pertemuan_peserta WHERE pertemuan_id = ? ORDER BY nama_santri_snapshot, santri_id', [$meetingId]);
+        return $this->all('SELECT pp.id, pp.santri_id, pp.plotting_kelas_id, pp.nis_snapshot, pp.nama_santri_snapshot, pp.kelas_id_snapshot, pp.tahun_ajaran_id_snapshot, pp.created_at, k.nama_kelas AS kelas_asal FROM pertemuan_peserta pp LEFT JOIN kelas k ON k.id = pp.kelas_id_snapshot WHERE pp.pertemuan_id = ? ORDER BY pp.nama_santri_snapshot, pp.santri_id', [$meetingId]);
     }
 
     public function meetingByScheduleDate(int $scheduleId, string $date, bool $forUpdate = false): ?array
@@ -249,18 +302,13 @@ final class ScheduleRepository
         $this->execute("UPDATE pertemuan_pengajian SET status = 'Dibuka', opened_by = ?, opened_at = NOW(), updated_at = NOW() WHERE id = ? AND status = 'Draf'", [$actorId, $meetingId]);
     }
 
-    public function snapshotParticipants(int $meetingId, int $classId, int $yearId): void
+    /**
+     * Membekukan kelas dan peserta pertemuan yang sedang dibuka. Pemanggil
+     * sudah mengunci baris jadwal dan pertemuan di transaksi yang sama.
+     */
+    public function snapshotParticipants(int $meetingId, int $classId, int $yearId, ?int $scheduleId = null): void
     {
-        $this->execute(
-            "INSERT INTO pertemuan_peserta
-                (pertemuan_id, santri_id, plotting_kelas_id, nis_snapshot, nama_santri_snapshot, kelas_id_snapshot, tahun_ajaran_id_snapshot, created_at)
-             SELECT ?, s.id, pk.id, s.nis, s.nama_santri, ?, ?, NOW()
-             FROM plotting_kelas pk
-             JOIN santri s ON s.id = pk.id_santri
-             WHERE pk.id_kelas = ? AND pk.id_tahun = ? AND pk.status = 'Aktif'
-             ORDER BY s.nama_santri, s.id",
-            [$meetingId, $classId, $yearId, $classId, $yearId]
-        );
+        PesertaPertemuan::bekukan($this->db, $meetingId, $scheduleId, $classId, $yearId);
     }
 
     public function meetingComplete(int $meetingId, int $actorId): void
@@ -274,7 +322,7 @@ final class ScheduleRepository
         $params = [];
         if (!empty($filters['year_id'])) { $parts[] = 'j.id_tahun = ?'; $params[] = (int) $filters['year_id']; }
         if (!empty($filters['teacher_id'])) { $parts[] = 'j.id_guru = ?'; $params[] = (int) $filters['teacher_id']; }
-        if (!empty($filters['class_id'])) { $parts[] = 'j.id_kelas = ?'; $params[] = (int) $filters['class_id']; }
+        if (!empty($filters['class_id'])) { $parts[] = KelasJadwal::jadwalMencakup($this->db); $params[] = (int) $filters['class_id']; }
         if (!empty($filters['day'])) { $parts[] = 'j.hari = ?'; $params[] = (string) $filters['day']; }
         $query = trim((string) ($filters['q'] ?? ''));
         if ($query !== '') {
@@ -288,6 +336,21 @@ final class ScheduleRepository
         // Tampilan mingguan (redesain Tahap 4, J-1): aktif dan nonaktif, tanpa arsip.
         elseif ($state === 'all_unarchived') { $parts[] = 'j.archived_at IS NULL'; }
         return [$parts ? 'WHERE ' . implode(' AND ', $parts) : '', $params];
+    }
+
+    private function kelasLabel(): string
+    {
+        return KelasJadwal::labelJadwal($this->db);
+    }
+
+    private function kelasIds(): string
+    {
+        return KelasJadwal::idsJadwal($this->db);
+    }
+
+    private function kelasPertemuanLabel(): string
+    {
+        return KelasJadwal::labelPertemuan($this->db);
     }
 
     private function one(string $sql, array $params = []): ?array

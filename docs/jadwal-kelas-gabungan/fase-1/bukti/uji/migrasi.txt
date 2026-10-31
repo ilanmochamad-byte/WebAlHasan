@@ -1,0 +1,45 @@
+[lulus] M-0 salinan berada pada 033, tanpa tabel 034
+
+=== M-1 sebelum 034 ===
+[lulus] M-1 skema 034 tidak terpasang
+[lulus] M-1 kelas gabungan sebelum 034 ditolak dengan pesan jelas; tidak ada jadwal setengah jadi
+[lulus] M-1 label/ID kelas tetap terbaca (satu kelas) sebelum 034
+[lulus] M-1 pembukaan sebelum 034 memakai jalur satu kelas (3 santri PA)
+[lulus] M-1 laporan dengan saringan kelas berjalan sebelum 034
+
+=== M-2 naik ===
+[lulus] M-2 migrasi 034 diterapkan dan tercatat
+[lulus] M-2 tiap jadwal (7) mendapat tepat satu baris kelas utama = id_kelas; tidak ada penggabungan otomatis
+[lulus] M-2 tiap pertemuan yang sudah dibuka (5) mendapat kelas beku dengan tepat satu kelas utama
+[lulus] M-2 pertemuan yang dibuka saat jadwal masih PA tetap berkelas PA walau jadwal kini PI (historis)
+[lulus] M-2 pertemuan tanpa peserta memakai kelas utama jadwal
+[lulus] M-2 draf tidak diisi; kelasnya dibekukan saat dibuka
+[lulus] M-2 kelas beku setiap pertemuan memuat kelas snapshot seluruh pesertanya
+[lulus] M-2 tabel lama (jadwal, pertemuan, peserta, absensi, keanggotaan, santri, kelas, audit) tidak berubah
+[lulus] M-2 lima kunci asing terpasang (jadwal, kelas, pembuat; pertemuan, kelas) — 5
+[lulus] M-2 draf lama yang dibuka sesudah migrasi membekukan kelas jadwalnya
+
+=== M-3 jalankan ulang ===
+[lulus] M-3 menjalankan ulang 034 aman: tanpa galat, tanpa baris ganda, tabel lama sama
+
+=== M-4 kunci asing, UNIQUE, CHECK ===
+[lulus] M-4 kunci asing menolak kelas yang tidak ada (errno 1452)
+[lulus] M-4 kunci asing menolak jadwal yang tidak ada (errno 1452)
+[lulus] M-4 UNIQUE menolak pasangan jadwal–kelas ganda (errno 1062)
+[lulus] M-4 CHECK menolak is_utama selain 0/1 (errno 4025)
+[lulus] M-4 kunci asing menolak pertemuan yang tidak ada (errno 1452)
+[lulus] M-4 UNIQUE menolak kelas ganda pada satu pertemuan (errno 1062)
+[lulus] M-4 percobaan yang ditolak tidak meninggalkan perubahan
+
+=== M-5 rollback saat satu kelas ===
+[lulus] M-5 rollback berhasil selama masih satu kelas; tabel lama utuh
+[lulus] M-5 kode tetap berjalan sesudah rollback (perilaku satu kelas)
+[lulus] M-5 naik lagi menghasilkan isian jadwal yang sama
+
+=== M-6 rollback ditolak sesudah ada data gabungan ===
+[lulus] M-6 rollback ditolak penjaga data saat ada jadwal gabungan (Migrasi gagal pada 034_jadwal_kelas_gabungan_fase1.sql: CONSTRAINT `jadwal_gabungan_rollback_guard_kosong` failed for `test_jkg_f1_mig_test`.`jadwal_gabungan_rollback_guard`)
+[lulus] M-6 tabel, catatan migrasi, dan seluruh data tetap sesudah penolakan
+[lulus] M-6 penyiapan: jadwal dikembalikan ke satu kelas, pertemuan lama tetap berkelas dua
+[lulus] M-6 rollback tetap ditolak selama ada pertemuan berkelas ganda
+
+Hasil: 31 lulus, 0 gagal.

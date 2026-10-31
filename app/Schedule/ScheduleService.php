@@ -54,23 +54,40 @@ final class ScheduleService
         return self::PRAYER_TIMES;
     }
 
+    /**
+     * Menyimpan jadwal beserta seluruh kelasnya (kelas utama `id_kelas` +
+     * `kelas_gabungan[]`). Baris jadwal dikunci lebih dulu sehingga perubahan
+     * kelas tidak bersilang dengan pembukaan pertemuan; perubahan kelas hanya
+     * berlaku untuk pertemuan yang dibuka sesudahnya.
+     */
     public function save(array $input, int $actorId, ?int $id = null): array
     {
         $data = $this->validateSchedule($input);
-        $before = $id === null ? null : $this->mustSchedule($id);
-        $this->ensureReferences($data);
-        $willBeActive = $before === null || ((int) $before['is_active'] === 1 && $before['archived_at'] === null);
-        if ($willBeActive) {
-            $this->rejectTeacherConflict($data, $id);
-        }
-        $warnings = $willBeActive ? $this->conflictWarnings($this->repository->warningConflicts($data, $id)) : [];
+        $db = $this->repository->db();
+        $db->begin_transaction();
+        try {
+            $before = $id === null ? null : $this->repository->scheduleFind($id, true);
+            if ($id !== null && $before === null) { throw new ScheduleException('Jadwal tidak ditemukan.'); }
+            $this->ensureReferences($data);
+            $willBeActive = $before === null || ((int) $before['is_active'] === 1 && $before['archived_at'] === null);
+            if ($willBeActive) {
+                $this->rejectTeacherConflict($data, $id);
+            }
+            $warnings = $willBeActive ? $this->conflictWarnings($this->repository->warningConflicts($data, $id), $data['kelas_ids']) : [];
 
-        if ($id === null) {
-            $id = $this->repository->scheduleCreate($data, $actorId);
-            $this->audit->log('schedule.create', 'jadwal_ngaji', $id, null, $this->repository->scheduleFind($id), $actorId);
-        } else {
-            $this->repository->scheduleUpdate($id, $data, $actorId);
-            $this->audit->log('schedule.update', 'jadwal_ngaji', $id, $before, $this->repository->scheduleFind($id), $actorId);
+            if ($id === null) {
+                $id = $this->repository->scheduleCreate($data, $actorId);
+                $this->repository->syncScheduleClasses($id, $data['kelas_ids'], $actorId);
+                $this->audit->log('schedule.create', 'jadwal_ngaji', $id, null, $this->repository->scheduleFind($id), $actorId);
+            } else {
+                $this->repository->scheduleUpdate($id, $data, $actorId);
+                $this->repository->syncScheduleClasses($id, $data['kelas_ids'], $actorId);
+                $this->audit->log('schedule.update', 'jadwal_ngaji', $id, $before, $this->repository->scheduleFind($id), $actorId);
+            }
+            $db->commit();
+        } catch (Throwable $exception) {
+            $db->rollback();
+            throw $exception;
         }
         return ['id' => $id, 'warnings' => $warnings];
     }
@@ -102,7 +119,8 @@ final class ScheduleService
         $this->repository->scheduleSetState($id, $active, $archive, $actorId);
         $after = $this->repository->scheduleFind($id);
         $this->audit->log('schedule.status', 'jadwal_ngaji', $id, $before, $after, $actorId);
-        $warnings = $active ? $this->conflictWarnings($this->repository->warningConflicts($this->structuredFromRow($after ?? $before), $id)) : [];
+        $structured = $this->structuredFromRow($after ?? $before);
+        $warnings = $active ? $this->conflictWarnings($this->repository->warningConflicts($structured, $id), $structured['kelas_ids']) : [];
         return ['id' => $id, 'warnings' => $warnings];
     }
 
@@ -176,7 +194,7 @@ final class ScheduleService
             }
             $before = $this->repository->meetingFind($meetingId);
             $this->repository->meetingOpen($meetingId, $actorId);
-            $this->repository->snapshotParticipants($meetingId, (int) $schedule['id_kelas'], (int) $schedule['id_tahun']);
+            $this->repository->snapshotParticipants($meetingId, (int) $schedule['id_kelas'], (int) $schedule['id_tahun'], $scheduleId);
             $after = $this->repository->meetingFind($meetingId);
             $this->audit->log('meeting.open', 'pertemuan_pengajian', $meetingId, $before, $after, $actorId);
             $db->commit();
@@ -233,6 +251,9 @@ final class ScheduleService
         if ($data['id_tahun'] < 1 || $data['id_kelas'] < 1 || $data['id_guru'] < 1) {
             throw new ScheduleException('Tahun ajaran, kelas, dan guru wajib dipilih.');
         }
+        // Kelas utama tetap `id_kelas`; kelas lain yang belajar bersama ikut
+        // sebagai `kelas_gabungan[]`. Formulir lama tanpa kolom itu = satu kelas.
+        $data['kelas_ids'] = KelasJadwal::pilihan($data['id_kelas'], $input['kelas_gabungan'] ?? null);
         return $data;
     }
 
@@ -242,8 +263,12 @@ final class ScheduleService
         if ($year === null || $year['archived_at'] !== null) { throw new ScheduleException('Tahun ajaran tidak tersedia.'); }
         $teacher = $this->repository->teacherFind($data['id_guru']);
         if ($teacher === null || (int) $teacher['is_active'] !== 1 || $teacher['archived_at'] !== null) { throw new ScheduleException('Guru harus aktif dan tidak diarsipkan.'); }
-        $class = $this->repository->classFind($data['id_kelas']);
-        if ($class === null || (int) $class['is_active'] !== 1 || $class['archived_at'] !== null) { throw new ScheduleException('Kelas harus aktif dan tidak diarsipkan.'); }
+        foreach ($data['kelas_ids'] ?? [$data['id_kelas']] as $classId) {
+            $class = $this->repository->classFind((int) $classId);
+            if ($class === null || (int) $class['is_active'] !== 1 || $class['archived_at'] !== null) {
+                throw new ScheduleException($classId === $data['id_kelas'] ? 'Kelas harus aktif dan tidak diarsipkan.' : 'Setiap kelas gabungan harus aktif dan tidak diarsipkan.');
+            }
+        }
     }
 
     private function rejectTeacherConflict(array $data, ?int $excludeId): void
@@ -254,12 +279,17 @@ final class ScheduleService
         }
     }
 
-    private function conflictWarnings(array $rows): array
+    /** @param list<int> $kelasIds seluruh kelas jadwal yang sedang diperiksa */
+    private function conflictWarnings(array $rows, array $kelasIds): array
     {
         $warnings = [];
         foreach ($rows as $row) {
             $types = [];
-            if ((int) $row['class_conflict'] === 1) { $types[] = 'kelas ' . $row['nama_kelas']; }
+            if ((int) $row['class_conflict'] === 1) {
+                $sama = array_values(array_intersect($kelasIds, array_map('intval', explode(',', (string) $row['kelas_ids']))));
+                $nama = $this->repository->classNames($sama);
+                $types[] = 'kelas ' . ($nama === [] ? $row['nama_kelas'] : implode(', ', array_map(static fn (int $id): string => (string) ($nama[$id] ?? '#' . $id), $sama)));
+            }
             if ((int) $row['place_conflict'] === 1) { $types[] = 'tempat ' . $row['tempat']; }
             $warnings[] = sprintf('Peringatan bentrok %s dengan jadwal #%d pukul %s–%s.', implode(' dan ', $types), $row['id'], substr($row['waktu_mulai'], 0, 5), substr($row['waktu_selesai'], 0, 5));
         }
@@ -309,7 +339,8 @@ final class ScheduleService
 
     private function structuredFromRow(array $row): array
     {
-        return ['id_tahun' => (int) $row['id_tahun'], 'id_guru' => (int) $row['id_guru'], 'id_kelas' => (int) $row['id_kelas'], 'hari' => $row['hari'], 'waktu_mulai' => $row['waktu_mulai'], 'waktu_selesai' => $row['waktu_selesai'], 'tempat' => (string) $row['tempat']];
+        $kelasIds = array_values(array_unique(array_filter(array_map('intval', explode(',', (string) ($row['kelas_ids'] ?? $row['id_kelas']))))));
+        return ['id_tahun' => (int) $row['id_tahun'], 'id_guru' => (int) $row['id_guru'], 'id_kelas' => (int) $row['id_kelas'], 'kelas_ids' => $kelasIds !== [] ? $kelasIds : [(int) $row['id_kelas']], 'hari' => $row['hari'], 'waktu_mulai' => $row['waktu_mulai'], 'waktu_selesai' => $row['waktu_selesai'], 'tempat' => (string) $row['tempat']];
     }
 
     private function requireStructured(array $data, string $message): void

@@ -53,16 +53,21 @@ $tautanPertemuan = static fn (int $jadwalId): string => app_url('/admin/admin_pe
     . http_build_query(['tab' => 'pertemuan', 'action' => 'create', 'schedule_id' => $jadwalId]);
 $tutup = '?' . ah_query(['tab' => 'jadwal', 'action' => null, 'id' => null]);
 $jam = static fn (array $row): string => $row['waktu_mulai'] ? substr((string) $row['waktu_mulai'], 0, 5) . '–' . substr((string) $row['waktu_selesai'], 0, 5) : (string) $row['jam'];
+// Kelas gabungan (Fase 1): seluruh kelas jadwal, kelas utama lebih dahulu.
+$kelasJadwal = static fn (array $row): string => (string) ($row['kelas_label'] ?? $row['nama_kelas']);
+$idKelasJadwal = static fn (array $row): array => array_values(array_filter(array_map('intval', explode(',', (string) ($row['kelas_ids'] ?? $row['id_kelas'])))));
 $days = $service->days();
 
 /**
  * Bentrok di antara jadwal aktif: hari sama, jam beririsan, dan guru atau
- * kelas sama. Hanya penanda tampilan; aturan simpan tetap di ScheduleService.
+ * kelas sama. Kelas dibandingkan sebagai himpunan; kelas-kelas dalam satu
+ * jadwal gabungan bukan bentrok. Hanya penanda tampilan; aturan simpan tetap
+ * di ScheduleService.
  *
  * @param array<int, array<string, mixed>> $rows
  * @return array<int, array<int, string>>
  */
-$bentrok = static function (array $rows): array {
+$bentrok = static function (array $rows) use ($idKelasJadwal): array {
     $aktif = array_values(array_filter($rows, static fn (array $r): bool => (int) $r['is_active'] === 1 && empty($r['archived_at']) && $r['hari'] && $r['waktu_mulai'] && $r['waktu_selesai']));
     $hasil = [];
     foreach ($aktif as $i => $a) {
@@ -74,7 +79,7 @@ $bentrok = static function (array $rows): array {
                 if ((int) $x['id_guru'] === (int) $y['id_guru']) {
                     $hasil[(int) $x['id']][] = 'Guru sama dengan jadwal #' . (int) $y['id'] . ' (' . $y['fan_ilmu'] . ')';
                 }
-                if ((int) $x['id_kelas'] === (int) $y['id_kelas']) {
+                if (array_intersect($idKelasJadwal($x), $idKelasJadwal($y)) !== []) {
                     $hasil[(int) $x['id']][] = 'Kelas sama dengan jadwal #' . (int) $y['id'] . ' (' . $y['fan_ilmu'] . ')';
                 }
             }
@@ -85,14 +90,14 @@ $bentrok = static function (array $rows): array {
 };
 $konflik = $bentrok($mingguan);
 
-$menuJadwal = static function (array $row) use ($bolehKelolaJadwal, $tautanPertemuan): string {
+$menuJadwal = static function (array $row) use ($bolehKelolaJadwal, $tautanPertemuan, $kelasJadwal): string {
     $items = [['label' => 'Detail', 'icon' => 'fa-eye', 'url' => '?' . ah_query(['tab' => 'jadwal', 'action' => 'detail', 'id' => (int) $row['id']])]];
     if ((int) $row['is_active'] === 1 && !$row['archived_at'] && ($row['tahun_status'] ?? '') === 'Aktif' && $row['hari']) {
         $items[] = ['label' => 'Buka pertemuan', 'icon' => 'fa-door-open', 'url' => $tautanPertemuan((int) $row['id'])];
     }
     if ($bolehKelolaJadwal) {
         $items[] = ['label' => 'Ubah', 'icon' => 'fa-pen', 'url' => '?' . ah_query(['tab' => 'jadwal', 'action' => 'edit', 'id' => (int) $row['id']])];
-        $label = (string) $row['fan_ilmu'] . ' · ' . (string) $row['nama_kelas'];
+        $label = (string) $row['fan_ilmu'] . ' · ' . $kelasJadwal($row);
         $items[] = ['label' => (int) $row['is_active'] === 1 ? 'Nonaktifkan' : 'Aktifkan', 'icon' => 'fa-power-off',
             'action' => app_url('/admin/admin_pengajian.php') . '?' . ah_query(['tab' => 'jadwal']),
             'fields' => ['tab' => 'jadwal', 'id' => (int) $row['id'], 'action' => (int) $row['is_active'] === 1 ? 'deactivate' : 'activate'],
@@ -111,9 +116,13 @@ $menuJadwal = static function (array $row) use ($bolehKelolaJadwal, $tautanPerte
 };
 ?>
 
-<?php if ($bolehKelolaJadwal && ($mode === 'create' || ($mode === 'edit' && $selected))): $record = array_replace($selected ?? ['id_tahun' => $activeYear['id'] ?? ''], $_SESSION['_ah_old'] ?? []); ?>
+<?php if ($bolehKelolaJadwal && ($mode === 'create' || ($mode === 'edit' && $selected))): $record = array_replace($selected ?? ['id_tahun' => $activeYear['id'] ?? ''], $_SESSION['_ah_old'] ?? []);
+    $gabunganTerpilih = isset($_SESSION['_ah_old']['kelas_gabungan_csv'])
+        ? array_map('intval', array_filter(explode(',', (string) $_SESSION['_ah_old']['kelas_gabungan_csv'])))
+        : array_values(array_diff($selected ? $idKelasJadwal($selected) : [], [(int) ($record['id_kelas'] ?? 0)]));
+    $kelasAktif = array_map(static fn (array $c): int => (int) $c['id'], $classes); ?>
 <?php ah_panel_open(['title' => $selected ? 'Ubah jadwal' : 'Tambah jadwal', 'close_url' => $tutup,
-    'description' => $selected ? $selected['fan_ilmu'] . ' · ' . $selected['nama_kelas'] : 'Pola mingguan; tanggal pelaksanaan diatur di tab Pertemuan.']); ?>
+    'description' => $selected ? $selected['fan_ilmu'] . ' · ' . $kelasJadwal($selected) : 'Pola mingguan; tanggal pelaksanaan diatur di tab Pertemuan.']); ?>
     <?= ah_error_summary('_ah_old', 'Jadwal belum tersimpan.') ?>
     <?php if ($selected && !empty($konflik[(int) $selected['id']])): ?>
         <?php ah_note('warning', 'Jadwal ini bentrok: ' . implode('; ', array_unique($konflik[(int) $selected['id']])) . '.'); ?>
@@ -143,11 +152,24 @@ $menuJadwal = static function (array $row) use ($bolehKelolaJadwal, $tautanPerte
             <input class="form-control" id="waktu_mulai" type="time" name="waktu_mulai" required value="<?= ah_e(isset($record['waktu_mulai']) ? substr((string) $record['waktu_mulai'], 0, 5) : '') ?>"><?= ah_field_error('waktu_mulai', '_ah_old') ?></div>
         <div class="col-6"><label class="form-label" for="waktu_selesai">Selesai</label>
             <input class="form-control" id="waktu_selesai" type="time" name="waktu_selesai" required value="<?= ah_e(isset($record['waktu_selesai']) ? substr((string) $record['waktu_selesai'], 0, 5) : '') ?>"><?= ah_field_error('waktu_selesai', '_ah_old') ?></div>
-        <div class="col-12"><label class="form-label" for="id_kelas">Kelas</label>
-            <select class="form-select" id="id_kelas" name="id_kelas" required>
+        <div class="col-12"><label class="form-label" for="id_kelas">Kelas utama</label>
+            <select class="form-select" id="id_kelas" name="id_kelas" required aria-describedby="bantuan_kelas_gabungan">
                 <option value="">Pilih kelas</option>
                 <?php foreach ($classes as $class): ?><option value="<?= (int) $class['id'] ?>" <?= (int) ($record['id_kelas'] ?? 0) === (int) $class['id'] ? 'selected' : '' ?>><?= ah_e($class['nama_kelas'] . ' (' . $class['jenjang'] . ')') ?></option><?php endforeach; ?>
             </select><?= ah_field_error('id_kelas', '_ah_old') ?></div>
+        <fieldset class="col-12">
+            <legend class="form-label fs-6 mb-1">Kelas lain yang belajar bersama <span class="text-muted small">(opsional)</span></legend>
+            <p class="ah-fieldset__hint mb-2" id="bantuan_kelas_gabungan">Centang bila kelas lain diajar bersama oleh guru yang sama, pada waktu dan tempat yang sama, misalnya 1 IBTIDA PA bersama 1 IBTIDA PI. Satu jadwal tetap menghasilkan satu pertemuan dan satu absensi per santri. Perubahan berlaku untuk pertemuan yang dibuka sesudahnya.</p>
+            <div class="d-flex flex-wrap gap-3" style="max-height:14rem;overflow:auto">
+                <?php foreach ($classes as $class): ?>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" name="kelas_gabungan[]" id="kelas_gabungan_<?= (int) $class['id'] ?>" value="<?= (int) $class['id'] ?>" <?= in_array((int) $class['id'], $gabunganTerpilih, true) ? 'checked' : '' ?>>
+                        <label class="form-check-label" for="kelas_gabungan_<?= (int) $class['id'] ?>"><?= ah_e($class['nama_kelas']) ?></label></div>
+                <?php endforeach; ?>
+            </div>
+            <?php $tidakTersedia = array_diff($gabunganTerpilih, $kelasAktif); if ($tidakTersedia !== []): ?>
+                <p class="small text-warning mb-0 mt-2">Sebagian kelas gabungan jadwal ini sudah nonaktif atau diarsipkan dan akan dilepas saat disimpan.</p>
+            <?php endif; ?>
+        </fieldset>
         <div class="col-12"><label class="form-label" for="id_guru">Guru pengampu</label>
             <select class="form-select" id="id_guru" name="id_guru" required>
                 <option value="">Pilih guru</option>
@@ -162,7 +184,7 @@ $menuJadwal = static function (array $row) use ($bolehKelolaJadwal, $tautanPerte
         <?php if ($selected): ?>
             <p class="ah-fieldset__hint col-12 mb-0">Nilai jam lama: <strong><?= ah_e($selected['jam']) ?></strong> (status migrasi <?= ah_e($selected['jam_migration_status']) ?>). Nilai ini tetap disimpan untuk audit dan kompatibilitas.</p>
         <?php endif; ?>
-        <p class="small text-muted col-12 mb-0">Guru yang mengajar di jam beririsan pada hari yang sama ditolak saat menyimpan; kelas atau tempat yang sama diberi peringatan.</p>
+        <p class="small text-muted col-12 mb-0">Guru yang mengajar di jam beririsan pada hari yang sama ditolak saat menyimpan; kelas (salah satu kelas terpilih) atau tempat yang sama dengan jadwal lain diberi peringatan.</p>
         <div class="col-12 d-flex flex-wrap gap-2 ah-sticky-sm">
             <a class="btn btn-outline-secondary" href="<?= ah_e($tutup) ?>">Batal</a>
             <button class="btn btn-primary" type="submit">Simpan jadwal</button>
@@ -170,7 +192,7 @@ $menuJadwal = static function (array $row) use ($bolehKelolaJadwal, $tautanPerte
     </form>
 <?php ah_panel_close(); ?>
 <?php elseif ($mode === 'detail' && $selected): ?>
-<?php ah_panel_open(['title' => $selected['fan_ilmu'] . ' · ' . $selected['nama_kelas'], 'close_url' => $tutup,
+<?php ah_panel_open(['title' => $selected['fan_ilmu'] . ' · ' . $kelasJadwal($selected), 'close_url' => $tutup,
     'description' => ah_hari((string) ($selected['hari'] ?: 'Hari belum dilengkapi')) . ', ' . $jam($selected)]); ?>
     <?php if (!empty($konflik[(int) $selected['id']])): ?>
         <?php ah_note('warning', 'Bentrok: ' . implode('; ', array_unique($konflik[(int) $selected['id']])) . '.'); ?>
@@ -178,7 +200,7 @@ $menuJadwal = static function (array $row) use ($bolehKelolaJadwal, $tautanPerte
     <dl class="ah-kv">
         <dt>Semester</dt><dd><?= ah_e($selected['tahun'] . ' ' . $selected['semester']) ?></dd>
         <dt>Waktu</dt><dd><?= ah_e(ah_hari((string) $selected['hari']) . ' · ' . ($selected['waktu_sholat'] ?? '') . ' · ' . $jam($selected)) ?></dd>
-        <dt>Kelas</dt><dd><?= ah_e($selected['nama_kelas'] . ' (' . $selected['jenjang'] . ')') ?></dd>
+        <dt>Kelas</dt><dd><?= ah_e($kelasJadwal($selected) . ' (' . $selected['jenjang'] . ')') ?><?php if (count($idKelasJadwal($selected)) > 1): ?><span class="ah-cell-sub">Kelas gabungan · kelas utama <?= ah_e($selected['nama_kelas']) ?></span><?php endif; ?></dd>
         <dt>Guru</dt><dd><?= ah_e($selected['nama_guru']) ?></dd>
         <dt>Kitab</dt><dd><?= ah_e($selected['nama_kitab']) ?></dd>
         <dt>Tempat</dt><dd><?= ah_e($selected['tempat']) ?></dd>
@@ -239,11 +261,11 @@ $menuJadwal = static function (array $row) use ($bolehKelolaJadwal, $tautanPerte
     }
     $hariIni = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][(int) date('w')];
     $hariPilih = in_array($_GET['hari'] ?? '', $days, true) ? (string) $_GET['hari'] : $hariIni;
-    $blok = static function (array $row) use ($konflik, $jam): string {
+    $blok = static function (array $row) use ($konflik, $jam, $kelasJadwal): string {
         $warn = !empty($konflik[(int) $row['id']]);
         $off = (int) $row['is_active'] !== 1;
         return '<a class="ah-block' . ($warn ? ' ah-block--warn' : '') . ($off ? ' ah-block--off' : '') . '" href="?' . ah_e(ah_query(['tab' => 'jadwal', 'action' => 'detail', 'id' => (int) $row['id']])) . '">'
-            . '<b>' . ah_e($row['nama_kitab'] !== '' ? $row['nama_kitab'] : $row['fan_ilmu']) . ' · ' . ah_e($row['nama_kelas']) . '</b>'
+            . '<b>' . ah_e($row['nama_kitab'] !== '' ? $row['nama_kitab'] : $row['fan_ilmu']) . ' · ' . ah_e($kelasJadwal($row)) . '</b>'
             . '<span>' . ah_e($jam($row)) . ' · ' . ah_e($row['nama_guru']) . '</span>'
             . ($warn ? '<span>' . ah_badge('Bentrok', 'warn') . '</span>' : '') . ($off ? '<span>Nonaktif</span>' : '') . '</a>';
     };
@@ -292,7 +314,7 @@ $menuJadwal = static function (array $row) use ($bolehKelolaJadwal, $tautanPerte
             <details class="ah-fold"><summary>Jadwal tanpa hari/jam terstruktur <b><?= count($tanpaPola) ?></b></summary>
                 <ul class="ah-list-plain">
                     <?php foreach ($tanpaPola as $row): ?>
-                        <li><a href="?<?= ah_e(ah_query(['tab' => 'jadwal', 'action' => 'detail', 'id' => (int) $row['id']])) ?>"><?= ah_e($row['fan_ilmu'] . ' · ' . $row['nama_kelas']) ?></a><span class="ah-cell-sub"><?= ah_e('Jam lama: ' . $row['jam']) ?></span></li>
+                        <li><a href="?<?= ah_e(ah_query(['tab' => 'jadwal', 'action' => 'detail', 'id' => (int) $row['id']])) ?>"><?= ah_e($row['fan_ilmu'] . ' · ' . $kelasJadwal($row)) ?></a><span class="ah-cell-sub"><?= ah_e('Jam lama: ' . $row['jam']) ?></span></li>
                     <?php endforeach; ?>
                 </ul></details>
         <?php endif; ?>
@@ -353,7 +375,7 @@ $menuJadwal = static function (array $row) use ($bolehKelolaJadwal, $tautanPerte
                             <span class="ah-cell-sub"><?= ah_e(($row['waktu_sholat'] ?? '') . ' · ' . $jam($row)) ?></span>
                             <?php if ($row['jam_migration_status'] === 'Gagal'): ?><?= ah_badge('Jam perlu ditinjau', 'warn') ?><?php endif; ?></td>
                         <td><a class="ah-row-link" href="?<?= ah_e(ah_query(['tab' => 'jadwal', 'action' => 'detail', 'id' => (int) $row['id']])) ?>"><?= ah_e($row['nama_kitab'] !== '' ? $row['nama_kitab'] : $row['fan_ilmu']) ?></a>
-                            <span class="ah-cell-sub"><?= ah_e($row['fan_ilmu'] . ' · ' . $row['nama_kelas'] . ' · ' . $row['tahun'] . ' ' . $row['semester']) ?></span></td>
+                            <span class="ah-cell-sub"><?= ah_e($row['fan_ilmu'] . ' · ' . $kelasJadwal($row) . ' · ' . $row['tahun'] . ' ' . $row['semester']) ?></span></td>
                         <td><?= ah_e($row['nama_guru']) ?></td>
                         <td class="ah-col-secondary"><?= ah_e($row['tempat']) ?></td>
                         <td><?= ah_state_badge($row) ?></td>

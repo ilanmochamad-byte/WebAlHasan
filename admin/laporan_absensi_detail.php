@@ -36,9 +36,11 @@ $j6 = !empty($currentUser[ReportFilter::BACA_SEMUA_JADWAL]);
 $task = $meeting['task'];
 $labelIzin = izin_service()->approvedCovering(array_map(static fn (array $s): int => (int) $s['student_id'], $meeting['students']), (string) $meeting['date']);
 $guru = $meeting['teacher_attendance'];
+// Kelas gabungan: kolom kelas asal hanya bila pertemuan mencakup lebih dari satu kelas.
+$banyakKelas = count($task['classes'] ?? []) > 1;
 
 ah_page_open([
-    'title' => $task['subject'] . ' · ' . $task['class']['name'],
+    'title' => $task['subject'] . ' · ' . ($task['class_names'] ?? $task['class']['name']),
     'description' => ah_tanggal((string) $meeting['date']) . ' · ' . $task['teacher']['name'],
     'user' => $currentUser,
     'active' => $j6 ? 'absensi' : 'pengajian',
@@ -57,12 +59,13 @@ ah_page_open([
         <?php else: ?>
             <div class="ah-table-wrap"><table class="ah-table ah-table--cards">
                 <caption class="ah-visually-hidden">Kehadiran peserta pertemuan</caption>
-                <thead><tr><th scope="col">NIS</th><th scope="col">Nama</th><th scope="col">Kehadiran</th><th scope="col" class="ah-col-secondary">Catatan</th><th scope="col" class="ah-col-secondary">Dicatat oleh</th></tr></thead>
+                <thead><tr><th scope="col">NIS</th><th scope="col">Nama</th><?php if ($banyakKelas): ?><th scope="col">Kelas</th><?php endif; ?><th scope="col">Kehadiran</th><th scope="col" class="ah-col-secondary">Catatan</th><th scope="col" class="ah-col-secondary">Dicatat oleh</th></tr></thead>
                 <tbody>
                 <?php foreach ($meeting['students'] as $student): $izin = $labelIzin[(int) $student['student_id']] ?? null; ?>
                     <tr>
                         <td><?= ah_e($student['nis']) ?></td>
                         <td><?= ah_e($student['name']) ?><?php if ($izin !== null): ?><span class="ah-cell-sub"><?= ah_badge('Sedang izin #' . $izin['id'], 'info') ?></span><?php endif; ?></td>
+                        <?php if ($banyakKelas): ?><td><?= ah_e($student['class']['name'] ?? '') ?></td><?php endif; ?>
                         <td><?= $student['status'] === null ? ah_badge('Belum dicatat', 'muted') : ah_status((string) $student['status']) ?></td>
                         <td class="ah-col-secondary"><?= ah_e($student['notes'] ?? '—') ?></td>
                         <td class="ah-col-secondary"><?= ah_e($student['recorded_by'] ?? '—') ?><?php if ($student['updated_at'] !== null): ?><span class="ah-cell-sub" title="Perubahan terakhir"><i class="fas fa-clock" aria-hidden="true"></i> <?= ah_e(ah_waktu((string) $student['updated_at'])) ?></span><?php endif; ?></td>
@@ -78,6 +81,7 @@ ah_page_open([
             <dl class="ah-kv">
                 <dt>Guru</dt><dd><?= ah_e($task['teacher']['name']) ?> · <?= $guru === null ? 'kehadiran belum dicatat' : ah_e($guru['status']) ?></dd>
                 <dt>Jadwal</dt><dd><?= ah_e(ah_hari($task['day']) . ', ' . $task['start_time'] . '–' . $task['end_time']) ?></dd>
+                <dt>Kelas</dt><dd><?= ah_e($task['class_names'] ?? $task['class']['name']) ?></dd>
                 <dt>Kitab</dt><dd><?= ah_e($task['book']) ?></dd>
                 <dt>Tempat</dt><dd><?= ah_e($task['place']) ?></dd>
                 <dt>Semester</dt><dd><?= ah_e($task['academic_year']['year'] . ' ' . $task['academic_year']['semester']) ?></dd>
