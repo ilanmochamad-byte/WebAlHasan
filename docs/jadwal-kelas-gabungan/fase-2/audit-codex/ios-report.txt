@@ -1,0 +1,5 @@
+[lulus] Native → API laporan: satu pertemuan, satu guru, lima santri, satu ringkasan jadwal
+[lulus] DB dan rincian API: satu guru dan lima santri unik, termasuk sesudah koreksi/retry
+[lulus] Native → laporan HTML admin: tiap santri tepat sekali
+[lulus] Native → CSV: satu guru + lima santri, kelas asal dan seluruh status sama dengan API
+Ringkasan: 4 lulus, 0 gagal

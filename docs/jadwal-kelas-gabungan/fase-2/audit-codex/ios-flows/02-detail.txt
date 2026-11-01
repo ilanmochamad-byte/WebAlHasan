@@ -1,0 +1,6 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow 02-detail
+Assert that "Kelas gabungan" is visible... COMPLETED
+Assert that "(?s).*1 IBTIDA PA 299AB9.*1 IBTIDA PI 299AB9.*" is visible... COMPLETED
+Assert that "Satu pertemuan untuk 2 kelas.*" is visible... COMPLETED
+Take screenshot ios-detail... COMPLETED

@@ -1,0 +1,83 @@
+
+=== B-1. Beranda dan daftar jadwal ===
+[lulus] Beranda: sesi gabungan menampilkan kedua kelas
+[lulus] Beranda: sesi satu kelas tetap satu nama kelas
+[lulus] Daftar jadwal: satu kelas tanpa kelas tambahan
+[lulus] Label aksesibilitas kartu gabungan memuat kedua kelas
+[lulus] Daftar jadwal: konten tanpa gulir horizontal pada 375 px (selisih 0px; bilah tab web TF4-1 2px, temuan lama)
+
+=== B-2. Detail jadwal ===
+[lulus] API: classes dua kelas, utama lebih dahulu; class lama = kelas utama
+[lulus] Detail gabungan: seluruh kelas API dan keterangan satu pertemuan
+[lulus] Menyimpan/membuka layar tidak membuka pertemuan otomatis
+[lulus] Detail jadwal gabungan: konten tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Server lama tanpa `classes`: tetap terbaca sebagai kelas utama
+
+=== B-3. Buka pertemuan gabungan: ketukan ganda + jaringan putus ===
+[lulus] Ketukan ganda: satu POST pembukaan (1)
+[lulus] Server sudah membuat pertemuan walau jawaban hilang
+[lulus] Kirim ulang memakai kunci idempotensi yang sama
+[lulus] Tepat satu pertemuan; aplikasi membuka pertemuan yang sama
+[lulus] Lima peserta unik (3 PA + 2 PI)
+[lulus] Dua kelas dibekukan pada pertemuan
+[lulus] Satu baris idempotensi untuk kunci itu
+
+=== B-4. Absensi gabungan ===
+[lulus] Judul pertemuan memuat kedua kelas
+[lulus] Peserta kedua kelas tampil; keanggotaan Selesai tidak ikut
+[lulus] Judul kelompok per kelas asal (PA 3 santri, lalu PI 2 santri)
+[lulus] Santri berada di bawah kelas asalnya
+[lulus] Setiap santri berlabel kelas asal = API
+[lulus] Absensi gabungan: konten tanpa gulir horizontal pada 375 px (selisih 0px)
+
+=== B-5. Kirim absensi: ketukan ganda + jaringan putus ===
+[lulus] Ketukan ganda: satu PUT absensi (1)
+[lulus] Muatan: lima santri unik, satu entri guru
+[lulus] Server sudah menyimpan walau jawaban hilang
+[lulus] Kirim ulang absensi memakai kunci yang sama
+[lulus] Satu absensi guru + lima absensi santri
+[lulus] Status sesuai isian (PI1 Izin, empat Hadir)
+[lulus] Pertemuan berstatus Selesai
+
+=== B-6. Pertemuan selesai: koreksi ===
+[lulus] Tanpa alasan: tidak ada permintaan ke server
+[lulus] Koreksi: satu PUT, kunci baru, alasan terkirim
+[lulus] Koreksi memperbarui baris, tidak menambah
+
+=== B-7. Website dan laporan ===
+[lulus] Laporan web admin: setiap santri tepat satu baris
+[lulus] CSV: satu baris guru + lima santri (6)
+[lulus] CSV: kelas asal dan status hasil aplikasi
+[lulus] Rincian kehadiran web: setiap santri satu kali
+[lulus] Daftar pertemuan web memuat pertemuan dari aplikasi
+[lulus] REST laporan: satu pertemuan, satu guru, lima santri, satu ringkasan jadwal
+[lulus] Rincian laporan aplikasi: lima peserta sekali, kelas asal
+[lulus] Rincian kehadiran Keamanan (baca saja): kedua kelas, peserta sekali, kelas asal
+
+=== B-8. Jadwal satu kelas: alur lama ===
+[lulus] Detail satu kelas: baris "Kelas" lama, tanpa penanda gabungan
+[lulus] Satu kelas: tanpa penanda gabungan, judul kelompok, atau label kelas per santri
+[lulus] Dua santri kelas C, judul kelas C
+[lulus] Satu pertemuan, satu guru + dua santri
+[lulus] Satu kelas dibekukan
+
+=== B-9. Keadaan memuat dan gagal ===
+[lulus] Keadaan memuat tampil selama permintaan berjalan
+[lulus] Galat 5xx: tanpa data, pesan dan "Coba lagi"
+[lulus] "Coba lagi" memuat absensi
+
+=== B-10. Sesi habis saat kirim ===
+[lulus] Token dicabut: aplikasi kembali ke halaman masuk
+[lulus] Tanpa perubahan absensi sesudah 401
+
+=== B-11. Guru lain ===
+[lulus] Guru lain: rincian pertemuan ditolak server, tanpa nama santri
+[lulus] Guru lain: detail jadwal ditolak, tanpa tombol buka
+[lulus] PUT langsung guru lain ditolak (403), data tetap
+
+=== B-12. Privasi dan jaringan ===
+[lulus] Nol permintaan keluar 127.0.0.1 (tidak ada)
+[lulus] Konsol tanpa token API
+[lulus] Total: dua pertemuan (satu per jadwal hari ini), jadwal besok tidak dibuka
+
+Ringkasan: 57 lulus, 0 gagal

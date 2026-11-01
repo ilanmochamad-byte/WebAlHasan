@@ -1,0 +1,3 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[{"tapOn": "Konfirmasi dan kirim"}, {"tapOn": "Simpan"}, {"scrollUntilVisible": {"element": {"text": "Uji: gerbang gagal sesudah diproses."}, "direction": "DOWN", "timeout": 30000}}]

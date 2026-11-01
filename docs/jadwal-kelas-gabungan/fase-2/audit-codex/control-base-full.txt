@@ -1,0 +1,7 @@
+
+=== B-1. Beranda dan daftar jadwal ===
+[gagal] Beranda: sesi gabungan menampilkan kedua kelas
+[lulus] Beranda: sesi satu kelas tetap satu nama kelas
+[gagal] Uji berhenti: locator.waitFor: Timeout 20000ms exceeded.
+
+Ringkasan: 1 lulus, 2 gagal

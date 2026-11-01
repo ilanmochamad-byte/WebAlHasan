@@ -1,0 +1,3 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[{"tapOn": {"point": "50%,92%"}}, {"extendedWaitUntil": {"visible": "Santri · 5 orang", "timeout": 20000}}, {"assertVisible": "Kelas gabungan · 2 kelas dalam satu pertemuan"}, {"takeScreenshot": "ios-gabungan"}]

@@ -1,0 +1,3 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[{"tapOn": "Wajib diisi untuk menyimpan koreksi"}, {"inputText": "Koreksi audit iOS"}, {"hideKeyboard": {}}, {"tapOn": "Simpan koreksi"}, {"tapOn": "Simpan"}, {"scrollUntilVisible": {"element": {"text": "Absensi berhasil disimpan.*"}, "direction": "DOWN", "timeout": 30000}}]

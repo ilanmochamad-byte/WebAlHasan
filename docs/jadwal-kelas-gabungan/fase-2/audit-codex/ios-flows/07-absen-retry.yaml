@@ -1,0 +1,3 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[{"tapOn": "Konfirmasi dan kirim"}, {"tapOn": "Simpan"}, {"scrollUntilVisible": {"element": {"text": "Absensi berhasil disimpan.*"}, "direction": "DOWN", "timeout": 30000}}, {"assertVisible": "Simpan koreksi"}, {"takeScreenshot": "ios-tersimpan"}]

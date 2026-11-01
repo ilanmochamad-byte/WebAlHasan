@@ -1,0 +1,3 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[{"tapOn": {"point": "50%,92%", "repeat": 2, "delay": 100}}, {"extendedWaitUntil": {"visible": "Uji: gerbang gagal sesudah diproses.", "timeout": 20000}}]

@@ -1,0 +1,3 @@
+[lulus] iOS detail dua kelas; tanpa pembukaan otomatis
+[gagal] 03-buka-hilang gagal
+Ringkasan: 1 lulus, 1 gagal

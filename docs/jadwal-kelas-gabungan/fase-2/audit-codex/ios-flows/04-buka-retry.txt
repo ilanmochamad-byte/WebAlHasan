@@ -1,0 +1,6 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow 04-buka-retry
+Tap on point (50%,92%)... COMPLETED
+Assert that "Santri · 5 orang" is visible... COMPLETED
+Assert that "Kelas gabungan · 2 kelas dalam satu pertemuan" is visible... COMPLETED
+Take screenshot ios-gabungan... COMPLETED

@@ -1,0 +1,3 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[{"tapOn": "Simpan koreksi"}, {"tapOn": "Simpan"}, {"extendedWaitUntil": {"visible": "Masukkan username", "timeout": 20000}}]

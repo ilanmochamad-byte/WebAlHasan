@@ -1,0 +1,11 @@
+{"metode": "POST", "jalur": "/api/v1/schedules/104/meetings", "kunci": "open-mvx341xf-wftxonhboc"}
+{"gagal": "gagal-buka", "status_server": 201}
+{"metode": "POST", "jalur": "/api/v1/schedules/104/meetings", "kunci": "open-mvx341xf-wftxonhboc"}
+{"metode": "PUT", "jalur": "/api/v1/meetings/722/attendance", "kunci": "attendance-mvx361ac-gw1ha78ksz"}
+{"gagal": "gagal-absen", "status_server": 200}
+{"metode": "PUT", "jalur": "/api/v1/meetings/722/attendance", "kunci": "attendance-mvx361ac-gw1ha78ksz"}
+{"metode": "PUT", "jalur": "/api/v1/meetings/722/attendance", "kunci": "attendance-mvx374q7-ofumg6i1cf"}
+{"metode": "POST", "jalur": "/api/v1/schedules/105/meetings", "kunci": "open-mvx37t2h-ox58k50kok"}
+{"putus": "putus-buka", "status_server": 201}
+{"metode": "POST", "jalur": "/api/v1/schedules/105/meetings", "kunci": "open-mvx37t2h-ox58k50kok"}
+{"metode": "PUT", "jalur": "/api/v1/meetings/723/attendance", "kunci": "attendance-mvx394r5-80d69uwdev"}
