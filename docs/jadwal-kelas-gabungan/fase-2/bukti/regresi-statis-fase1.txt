@@ -1,0 +1,65 @@
+=== S-1 lint ===
+[lulus] lint app/Schedule/KelasJadwal.php
+[lulus] lint app/Schedule/PesertaPertemuan.php
+[lulus] lint app/Schedule/ScheduleRepository.php
+[lulus] lint app/Schedule/ScheduleService.php
+[lulus] lint app/Api/TeacherRepository.php
+[lulus] lint app/Api/TeacherService.php
+[lulus] lint app/Report/ReportRepository.php
+[lulus] lint app/Report/ReportService.php
+[lulus] lint app/Beranda/BerandaService.php
+[lulus] lint admin/admin_pengajian.php
+[lulus] lint admin/_pengajian_jadwal.php
+[lulus] lint admin/_pengajian_pertemuan.php
+[lulus] lint admin/laporan_absensi_detail.php
+[lulus] lint jadwal_ngaji.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_seed.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_worker.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_integration.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_migration.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_http.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_static.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_audit_probe.php
+
+=== S-2 migrasi aditif ===
+[lulus] Migrasi 034 tanpa ALTER/UPDATE/DELETE/TRUNCATE/DROP/RENAME
+[lulus] Migrasi 034 hanya membuat jadwal_kelas dan pertemuan_kelas (dapat diulang)
+[lulus] Isian data lama hanya ke tabel baru
+[lulus] Setiap isian dijaga NOT EXISTS (aman dijalankan ulang)
+[lulus] 034 adalah migrasi terakhir
+[lulus] Rollback berpasangan tersedia
+
+=== S-3 rollback berpenjaga ===
+[lulus] Rollback ditolak bila ada kelas gabungan atau pertemuan berkelas ganda
+[lulus] Rollback hanya melepas dua tabel baru
+[lulus] Penjaga dijalankan sebelum DROP
+
+=== S-4 saringan kelas ===
+[lulus] app/Schedule/ScheduleRepository.php tidak menyaring kelas lewat j.id_kelas saja
+[lulus] app/Report/ReportRepository.php tidak menyaring kelas lewat j.id_kelas saja
+[lulus] app/Api/TeacherRepository.php tidak menyaring kelas lewat j.id_kelas saja
+[lulus] Laporan: santri disaring menurut kelas asal, guru menurut kelas pertemuan
+[lulus] Halaman publik menyaring lewat seluruh kelas jadwal
+
+=== S-5 satu implementasi pembukaan ===
+[lulus] app/Schedule/ScheduleRepository.php memakai PesertaPertemuan, tanpa INSERT peserta sendiri
+[lulus] app/Api/TeacherRepository.php memakai PesertaPertemuan, tanpa INSERT peserta sendiri
+[lulus] Peserta: satu baris per santri, keanggotaan aktif, kelas asal disimpan
+[lulus] Simpan jadwal mengunci baris jadwal sebelum menyamakan kelas
+
+=== S-6 kontrak API aditif ===
+[lulus] Jadwal/pertemuan API: `class` dan `class_name` lama dipertahankan; `classes` ditambahkan
+[lulus] Santri di API mendapat kelas asal (aditif)
+[lulus] Laporan pertemuan: class lama + classes aditif
+
+=== S-7 formulir admin ===
+[lulus] Formulir: kelas utama (id_kelas) + kotak centang kelas gabungan
+[lulus] Penanda bentrok tampilan membandingkan himpunan kelas
+
+=== S-8 batas berkas ===
+[gagal] Perubahan hanya pada berkas Fase 1 (tests/android/jkg_f2_android.py, tests/android/jkg_f2_proksi.py, tests/browser/uji-jadwal-kelas-gabungan-f2-app.mjs, tests/jadwal_kelas_gabungan_f2_seed.php)
+[lulus] Tanpa perubahan app/Auth atau router API
+[lulus] Tidak ada pembukaan pertemuan otomatis
+
+Hasil: 46 lulus, 1 gagal
+  - Perubahan hanya pada berkas Fase 1 (tests/android/jkg_f2_android.py, tests/android/jkg_f2_proksi.py, tests/browser/uji-jadwal-kelas-gabungan-f2-app.mjs, tests/jadwal_kelas_gabungan_f2_seed.php)

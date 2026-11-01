@@ -1,0 +1,58 @@
+Android emulator — Fase 2 jadwal kelas gabungan (31 Oktober 2026)
+AVD Medium_Phone (sdk_gphone16k_arm64, Android 16), EMULATOR — bukan perangkat fisik.
+Binary: dev client Debug app-debug.apk 24 Okt 2026 (tanpa perubahan native sejak itu; Fase 2 hanya JS).
+JS: Metro `expo start --dev-client --port 8100 --clear` dari salinan alhasanApps tanpa .env*
+(sumber branch Fase 2, package.json/lock ter-commit Expo 57.0.15, node_modules direktori nyata),
+EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:8962/api/v1 → proksi tests/android/jkg_f2_proksi.py → API 127.0.0.1:8961
+(DB test_jkg_f2_app_test, dibangun ulang sebelum putaran ini). adb reverse 8100 dan 8962; data aplikasi dibersihkan (pm clear).
+Bundel rute: meeting/[id] memuat "Kelas gabungan" (1), schedule/[id] memuat "Satu pertemuan untuk" (1);
+bundel android: proksi 127.0.0.1:8962 = 1, alhasan.co.id = 0.
+Perintah: DB_NAME=test_jkg_f2_app_test python3 tests/android/jkg_f2_android.py ids.json <dir proksi> <out>
+Catatan N-8: penutupan sambungan tanpa jawaban sesudah server memproses membuat klien HTTP Android (OkHttp)
+mengirim ulang POST sendiri; kedua kiriman berkunci sama → tetap satu pertemuan. Karena itu ulangan oleh
+pengguna diuji dengan jawaban 503 sesudah diproses (N-3, N-5).
+logcat seluruh sesi: 112.984 baris, "E ReactNativeJS" 0, "FATAL EXCEPTION" 0.
+
+
+=== N-1. Masuk dan Beranda ===
+[lulus] Beranda: sesi gabungan (kartu atau sorotan) memuat kedua kelas
+[lulus] Beranda: sesi satu kelas tetap satu kelas
+
+=== N-2. Detail jadwal gabungan ===
+[lulus] Detail: kedua kelas dan keterangan satu pertemuan
+[lulus] Belum ada pertemuan sebelum dibuka manual
+
+=== N-3. Buka pertemuan: ketukan ganda + jawaban hilang (503 sesudah diproses) ===
+[lulus] Ketukan ganda saat permintaan berjalan: satu POST pembukaan (1)
+[lulus] Server sudah membuat pertemuan walau jawaban hilang
+[lulus] Kirim ulang: kunci idempotensi sama
+[lulus] Tepat satu pertemuan, lima peserta unik, dua kelas beku
+
+=== N-4. Absensi gabungan ===
+[lulus] Judul memuat kedua kelas dan penanda gabungan
+[lulus] Judul kelompok per kelas asal (3 dan 2 santri)
+[lulus] Peserta kedua kelas; keanggotaan Selesai tidak ikut
+[lulus] Label kelas asal tiap santri = API
+
+=== N-5. Kirim absensi: ketukan ganda + jawaban hilang (503 sesudah diproses) ===
+[lulus] Simpan + ketukan kedua saat berjalan: satu PUT (1)
+[lulus] Server sudah menyimpan walau jawaban hilang
+[lulus] Kirim ulang absensi: kunci sama
+[lulus] Satu guru + lima santri, PI1 Izin, pertemuan Selesai
+
+=== N-6. Pertemuan selesai: koreksi ===
+[lulus] Tanpa alasan: tidak ada PUT
+[lulus] Koreksi: satu PUT, kunci baru
+[lulus] Koreksi memperbarui baris (PA1 Sakit), tidak menambah
+
+=== N-7. Laporan dan website ===
+[lulus] REST laporan (layanan sama dengan website): satu pertemuan, satu guru, lima santri
+
+=== N-8. Jadwal satu kelas ===
+[lulus] Detail satu kelas tanpa penanda gabungan
+    POST pembukaan yang sampai ke proksi: 2; kunci sama
+[lulus] Sambungan putus sesudah diproses: setiap kiriman ulang memakai kunci sama, tepat satu pertemuan
+[lulus] Absensi satu kelas: tanpa judul kelompok/label kelas (tampilan lama)
+[lulus] Satu pertemuan, satu guru + dua santri
+
+Ringkasan: 24 lulus, 0 gagal

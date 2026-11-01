@@ -1,0 +1,4 @@
+Pemeriksaan bundel Expo web (salinan tanpa .env*, API 127.0.0.1:8961)
+kini b8d1825+Fase 2:  6216361 bita, alhasan.co.id 0, 'Kelas gabungan' 4
+baseline b8d1825:    6203897 bita, alhasan.co.id 0, 'Kelas gabungan' 0
+galat PHP server aplikasi (log php -S): 0

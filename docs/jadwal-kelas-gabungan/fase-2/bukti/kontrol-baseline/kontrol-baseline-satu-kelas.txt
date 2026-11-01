@@ -1,0 +1,9 @@
+
+=== B-8 (kontrol). Jadwal satu kelas saja ===
+[lulus] Detail satu kelas: baris "Kelas" lama, tanpa penanda gabungan
+[lulus] Satu kelas: tanpa penanda gabungan, judul kelompok, atau label kelas per santri
+[lulus] Dua santri kelas C, judul kelas C
+[lulus] Satu pertemuan, satu guru + dua santri
+[lulus] Satu kelas dibekukan
+
+Ringkasan: 5 lulus, 0 gagal

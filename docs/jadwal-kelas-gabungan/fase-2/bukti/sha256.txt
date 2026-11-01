@@ -1,0 +1,15 @@
+# sha256 berkas Fase 2 (web: uji/dokumen; mobile: commit e1fd8a4)
+7baa01a6698fa06b4416eaed1d96c9c1c08f5fc5704e0702b5622765b0d54dcc  tests/jadwal_kelas_gabungan_f2_seed.php
+70804bd2c3cbf39854ebabe93abce857fa56b7a9c754789f1a64c84ef48db82e  tests/browser/uji-jadwal-kelas-gabungan-f2-app.mjs
+b98d43de1787d7e931575cb5b054b35fe70e97002302dece8f0a0ada3e9936c1  tests/android/jkg_f2_proksi.py
+6e6ec757301c77283d4800a1630e11f128881f2c8192f281ba0844daee0b7136  tests/android/jkg_f2_android.py
+f2b766677f782f294fb84830aa6dc2eb930244c26e365a28e04ccd907ebd6a8a  alhasanApps/src/api/keamanan.ts
+637e7dbe0bca3022b12a04e1d6d9f5f1e4dffa7a6c0edce02da79cf3207a56a9  alhasanApps/src/api/types.ts
+6eb152753f536ed638358da41aa1d08f017d2043d4018857e7b13d745ac1600f  alhasanApps/src/app/(app)/(home)/index.tsx
+b1409e546927e85b0c4743d87d87770510cd7cd67f3df951700476d5837ce962  alhasanApps/src/app/keamanan/kehadiran/[id].tsx
+803c2275ba6d8e3c53886749f25e575ff86337f2e4890c703783182eed31ef5e  alhasanApps/src/app/meeting/[id].tsx
+df241d4934998a21d886b21c43ba3d35cceb475ee0430448223c44a9a64dfa56  alhasanApps/src/app/report/[id].tsx
+c22845f3ccff3b7b8637822d028b4fedab5af539ea2b7809ea60a7ae09c3533f  alhasanApps/src/app/schedule/[id].tsx
+01518dbb31e6bfb3eafda80a4e40d8ae6915942c90f6b6fcf96e968605400a1d  alhasanApps/src/components/schedule-card.tsx
+14afba5f24e4b14c1430da42817c38af9e4a2361c6f147980e82c41f323b7dfe  alhasanApps/src/lib/kelas-jadwal.ts
+e72a1b47d3239bca2373a1f10d9ae0c294c402cfa6f5156581880e4c9f11c569  alhasanApps/tests/kelas-jadwal.test.ts
