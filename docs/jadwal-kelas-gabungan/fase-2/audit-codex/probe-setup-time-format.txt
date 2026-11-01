@@ -1,0 +1,21 @@
+[lulus] Layar awal tidak membuka pertemuan
+[lulus] Perangkat lain membuka satu pertemuan melalui API
+[lulus] 409 memuat ulang status dan menampilkan Isi absensi, tanpa POST tambahan
+[lulus] 409 membuka ID pertemuan yang dibuat perangkat lain
+PHP Fatal error:  Uncaught App\Schedule\ScheduleException: Waktu mulai harus berformat HH:MM. in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Schedule/ScheduleService.php:361
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Schedule/ScheduleService.php(231): App\Schedule\ScheduleService->time('22:00:00', 'Waktu mulai')
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Schedule/ScheduleService.php(65): App\Schedule\ScheduleService->validateSchedule(Array)
+#2 Command line code(1): App\Schedule\ScheduleService->save(Array, 1, 104)
+#3 {main}
+  thrown in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Schedule/ScheduleService.php on line 361
+[gagal] Command failed: php -r require $argv[1].'/app/bootstrap.php'; $f=json_decode(file_get_contents($argv[2]),true); $r=app_db()->query('SELECT * FROM jadwal_ngaji WHERE id='.(int)$f['jadwal_gabungan'])->fetch_assoc(); schedule_service()->save(array_replace($r,['id_kelas'=>$f['kelas']['C'],'kelas_gabungan'=>[]]),$f['admin_id'],$f['jadwal_gabungan']); /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/ /private/tmp/jkg2-codex-run/probe-ids.json
+PHP Fatal error:  Uncaught App\Schedule\ScheduleException: Waktu mulai harus berformat HH:MM. in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Schedule/ScheduleService.php:361
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Schedule/ScheduleService.php(231): App\Schedule\ScheduleService->time('22:00:00', 'Waktu mulai')
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Schedule/ScheduleService.php(65): App\Schedule\ScheduleService->validateSchedule(Array)
+#2 Command line code(1): App\Schedule\ScheduleService->save(Array, 1, 104)
+#3 {main}
+  thrown in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Schedule/ScheduleService.php on line 361
+
+Ringkasan: 4 lulus, 1 gagal

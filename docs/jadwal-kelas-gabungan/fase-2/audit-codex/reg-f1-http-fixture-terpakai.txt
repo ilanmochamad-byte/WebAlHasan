@@ -1,0 +1,42 @@
+[lulus] Admin masuk web dan guru memperoleh token API
+
+=== H-1 formulir admin ===
+[lulus] Formulir memuat kelas utama + kotak centang kelas gabungan (kelas arsip tidak ditawarkan)
+[gagal] POST formulir menyimpan jadwal gabungan (dua baris jadwal_kelas)
+[gagal] POST tanpa CSRF ditolak tanpa jadwal baru
+
+=== H-2 tampilan jadwal ===
+[gagal] Rincian jadwal menampilkan kedua kelas dan penanda kelas gabungan
+[gagal] Formulir ubah mencentang kelas gabungan yang tersimpan saja
+[gagal] Tampilan mingguan menampilkan seluruh kelas jadwal
+[gagal] Saringan daftar kelas PI menemukan jadwal gabungan; kelas C tidak
+[gagal] Guru pengampu melihat jadwal gabungannya
+
+=== H-3 isian gagal dan hak ===
+[lulus] Simpan gagal (bentrok guru) mempertahankan pilihan kelas gabungan di formulir
+[lulus] Guru tidak dapat menyimpan jadwal lewat POST
+
+=== H-4 buka pertemuan lewat web ===
+[gagal] Pilihan jadwal di formulir buka pertemuan menampilkan seluruh kelas
+[gagal] Pertemuan dibuka lewat web: lima peserta dari dua kelas
+[gagal] Rincian pertemuan web: kedua kelas, kelas asal peserta, lima baris
+[gagal] Pembukaan ulang lewat web tidak membuat pertemuan kedua
+[gagal] Pencarian daftar pertemuan dengan nama kelas gabungan menemukan pertemuan
+
+=== H-5 REST ===
+[gagal] GET /schedules/{id}: class lama = kelas utama; classes = PA, PI; pertemuan yang sama
+[gagal] GET /meetings/{id}: lima santri dengan kelas asal, task.classes
+[gagal] POST pertemuan kedua untuk tanggal sama → 409
+[gagal] POST /schedules/{id}/meetings sesudah kelas diubah: peserta PA + C (pertemuan berikutnya)
+[gagal] Pertemuan pertama tetap PA + PI sesudah perubahan kelas
+[gagal] GET /meetings: class_name lama, class_names + classes
+
+=== H-6 absensi dan laporan ===
+PHP Warning:  Trying to access array offset on null in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/jadwal_kelas_gabungan_f1_http.php on line 223
+
+Warning: Trying to access array offset on null in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/jadwal_kelas_gabungan_f1_http.php on line 223
+TypeError: array_map(): Argument #2 ($array) must be of type array, null given in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/jadwal_kelas_gabungan_f1_http.php:223
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/jadwal_kelas_gabungan_f1_http.php(223): array_map(Object(Closure), NULL)
+#1 {main}
+array_map(): Argument #2 ($array) must be of type array, null given

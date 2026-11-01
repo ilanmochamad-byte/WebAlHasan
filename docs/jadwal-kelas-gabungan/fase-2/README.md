@@ -1,6 +1,6 @@
 # Perbaikan jadwal pengajian kelas gabungan — Fase 2 (aplikasi)
 
-Status: **diimplementasikan Claude Code, menunggu audit independen Codex (31 Oktober 2026).** Bukan izin merge, deploy, migrasi produksi, atau rilis aplikasi.
+Status terbaru (1 November 2026): **audit Codex BELUM LULUS penuh Fase 2** karena build Release iOS baru crash saat startup. Alur fungsional lulus pada lingkungan yang diuji; rincian, bukti independen dan gerbang rilis di [AUDIT-CODEX.md](AUDIT-CODEX.md). Fase 1 dan 2 bukan siap produksi atau izin rilis terpisah. Catatan implementator di bawah dipertahankan sebagai riwayat.
 
 ## Keputusan, peran, dan baseline
 

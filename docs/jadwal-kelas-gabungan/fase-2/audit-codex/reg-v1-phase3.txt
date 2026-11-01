@@ -1,0 +1,10 @@
+[lulus] Admin dapat membuat jadwal dan melihatnya pada filter semester aktif
+[lulus] Admin dapat mengubah jadwal dari service yang dipakai UI
+[lulus] Bentrok guru ditolak
+[lulus] Bentrok kelas dan tempat ditampilkan sebagai peringatan tanpa kehilangan jadwal
+[lulus] Pertemuan dibuka dan menyimpan snapshot peserta kelas
+[lulus] Pertemuan kedua untuk jadwal dan tanggal sama ditolak
+[lulus] Perubahan kelas setelah pembukaan tidak mengubah snapshot pertemuan
+[lulus] Status pertemuan berubah ke Selesai dan tercatat
+[lulus] Jadwal nonaktif tidak muncul sebagai tugas aktif
+[lulus] Constraint dan alur aplikasi menjaga duplikasi jadwal–tanggal tetap nol

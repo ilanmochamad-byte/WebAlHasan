@@ -1,0 +1,11 @@
+getpwuid_r did not find a match for uid 501
+Timestamp               Ty Process[PID:TID]
+2026-11-01 07:23:24.659 Df alhasanApps[72223:1b8add2] (CoreFoundation) *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'There doesn't seem to be a valid compiled storyboard at path '/Users/ilanmochamad/Library/Developer/CoreSimulator/Devices/05999342-AE62-44C4-B0E1-1E8504CF8512/data/Containers/Bundle/Application/659D4860-11B2-4F35-BDF4-A272A727C7CF/ios-hybrid.app/SplashScreen.storyboardc''
+*** First throw call stack:
+(
+	0   CoreFoundation                      0x00000001804f71d0 __exceptionPreprocess + 172
+	1   libobjc.A.dylib                     0x000000018009c094 objc_exception_throw + 72
+	2   UIKitCore                           0x00000001864edd08 -[UIStoryboard name] + 0
+	3   alhasanApps                         0x0000000100eee348 $s16ExpoSplashScreen0bC7ManagerC04showbC033_CB43F6B3D1A7602A68820D46E33A9648LLyyF + 460
+	4   alhasanApps                         0x0000000100eedad4 $s16ExpoSplashScreen0bC21AppDelegateSubscriberC17customizeRootViewyySo6UIViewCFTf4nd_n + 104
+	5   alhasanApps                         0x0000000100eed9ac $s16Exp<…>

@@ -1,0 +1,3 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[{"extendedWaitUntil": {"visible": "Daftar santri akan dibekukan.*", "timeout": 20000}}, {"assertNotVisible": "Kelas gabungan"}, {"tapOn": {"point": "50%,92%"}}, {"extendedWaitUntil": {"visible": "Santri · 2 orang", "timeout": 20000}}, {"assertNotVisible": "Kelas gabungan.*"}, {"takeScreenshot": "ios-satu"}, {"tapOn": "Konfirmasi dan kirim"}, {"tapOn": "Simpan"}, {"scrollUntilVisible": {"element": {"text": "Absensi berhasil disimpan.*"}, "direction": "DOWN", "timeout": 30000}}]

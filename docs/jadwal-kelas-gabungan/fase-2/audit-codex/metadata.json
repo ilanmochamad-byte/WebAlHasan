@@ -1,0 +1,22 @@
+{
+  "mobile_head": "586964cd0f1f61cf241515f9b91f2daeda9e6d78",
+  "web_head": "bfb5bc7fd50c2d815588574f09cdbb96c9b8f669",
+  "new_ios_native_sha256": "fc02342935b37d7737daa691bb8b585290b6817279ae448154a05c3ff2850b0b",
+  "control_native_before_sign_sha256": "3a39fbea01ec7e5f9774dafa4e057408fd8cb91cd78dc908400a8cf1e13d82e9",
+  "hybrid_native_signed_sha256": "f0c1c310136d402872bc20910756a4a8d7e2bcdc315ca4530c46473cb99c1166",
+  "ios_hermes_sha256": "1bea2e0b3a6c70b5229fb60f6a8f801de163768f23ba372ffc55f3f4096a3cc4",
+  "ios_port8964": 1,
+  "ios_old_port8962": 0,
+  "production_host": 0,
+  "android_debuggable": true,
+  "android_new_native_build_by_auditor": false,
+  "ios_new_native_build_by_auditor": false,
+  "physical_device_tested": false,
+  "uncommitted_user_package_files_preserved": true,
+  "remote_at_start": {
+    "web_feature": "bfb5bc7fd50c2d815588574f09cdbb96c9b8f669",
+    "web_main": "5c06722899ff7e80119bb538b1264168473f9708",
+    "mobile_feature": "586964cd0f1f61cf241515f9b91f2daeda9e6d78",
+    "mobile_main": "a1b1428eef49f3105e69f9120a6629914ccaf1be"
+  }
+}

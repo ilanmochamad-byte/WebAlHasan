@@ -1,0 +1,3 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[{"launchApp": {"stopApp": true}}, {"extendedWaitUntil": {"visible": "Masukkan username", "timeout": 20000}}, {"tapOn": "Masukkan username"}, "eraseText", {"inputText": "sbx_guru_biasa"}, {"tapOn": "Masuk ke akun Anda"}, {"tapOn": "Masukkan password"}, "eraseText", {"inputText": "S"}, {"inputText": "a"}, {"inputText": "n"}, {"inputText": "d"}, {"inputText": "b"}, {"inputText": "o"}, {"inputText": "x"}, {"inputText": "#"}, {"inputText": "1"}, {"inputText": "2"}, {"inputText": "3"}, {"hideKeyboard": {}}, {"tapOn": "Masuk"}, {"runFlow": {"when": {"visible": "Not Now"}, "commands": [{"tapOn": "Not Now"}]}}, {"extendedWaitUntil": {"visible": "Beranda", "timeout": 20000}}]

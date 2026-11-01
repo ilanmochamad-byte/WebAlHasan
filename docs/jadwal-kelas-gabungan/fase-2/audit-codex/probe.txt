@@ -1,0 +1,16 @@
+[lulus] Layar awal tidak membuka pertemuan
+[lulus] Perangkat lain membuka satu pertemuan melalui API
+[lulus] 409 memuat ulang status dan menampilkan Isi absensi, tanpa POST tambahan
+[lulus] 409 membuka ID pertemuan yang dibuat perangkat lain
+[lulus] Pertemuan menampilkan kelas beku PA+PI setelah jadwal diganti C
+[lulus] Field kompatibilitas kini C, classes pertemuan tetap snapshot
+[lulus] Grouping mempertahankan ID, lima status, catatan tiap santri dan satu status guru
+[lulus] Satu guru dan satu absensi per santri setelah grouping
+[lulus] Detail jadwal mengikuti kelas kini C dan pertemuan Selesai
+[lulus] Pertemuan Selesai dibuka kembali tanpa POST, dengan kelas historis
+[lulus] Laporan aplikasi menggunakan kelas beku dan kelas asal, bukan kelas kini
+[lulus] Rincian API laporan sama dengan lima status/catatan dan guru dari aplikasi
+[lulus] POST pembukaan oleh guru lain ditolak, tetap satu pertemuan
+[lulus] Token expires_at lampau: kembali ke login tanpa perubahan absensi
+[lulus] Probe tidak mengakses host luar
+Ringkasan: 15 lulus, 0 gagal

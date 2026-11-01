@@ -1,0 +1,38 @@
+$ php -v
+PHP 8.4.14 (cli) (built: Oct 21 2025 19:23:55) (NTS)
+Copyright (c) The PHP Group
+Built by Homebrew
+Zend Engine v4.4.14, Copyright (c) Zend Technologies
+    with Zend OPcache v8.4.14, Copyright (c), by Zend Technologies
+exit=0
+
+$ node --version
+v26.7.0
+exit=0
+
+$ xcodebuild -version
+Xcode 27.2
+Build version 27B52
+exit=0
+
+$ sw_vers
+ProductName:		macOS
+ProductVersion:		27.0.1
+BuildVersion:		26A434
+exit=0
+
+$ mysql -N -B test_jkg_f2_ios_codex_test -e SELECT VERSION()
+12.3.2-MariaDB
+exit=0
+
+$ adb shell getprop ro.build.version.release
+16
+exit=0
+
+$ adb shell getprop ro.build.version.sdk
+36
+exit=0
+
+$ adb shell getprop ro.product.model
+sdk_gphone16k_arm64
+exit=0

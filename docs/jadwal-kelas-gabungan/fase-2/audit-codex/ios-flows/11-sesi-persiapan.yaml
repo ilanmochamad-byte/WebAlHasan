@@ -1,0 +1,3 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[{"extendedWaitUntil": {"visible": "Simpan koreksi", "timeout": 20000}}, {"scrollUntilVisible": {"element": {"text": "Wajib diisi untuk menyimpan koreksi"}, "direction": "DOWN", "timeout": 30000}}, {"tapOn": "Wajib diisi untuk menyimpan koreksi"}, {"inputText": "Koreksi sesi habis"}, {"hideKeyboard": {}}]

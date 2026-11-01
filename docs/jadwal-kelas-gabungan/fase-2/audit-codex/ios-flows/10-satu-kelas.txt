@@ -1,0 +1,11 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow 10-satu-kelas
+Assert that "Daftar santri akan dibekukan.*" is visible... COMPLETED
+Assert that "Kelas gabungan" is not visible... COMPLETED
+Tap on point (50%,92%)... COMPLETED
+Assert that "Santri · 2 orang" is visible... COMPLETED
+Assert that "Kelas gabungan.*" is not visible... COMPLETED
+Take screenshot ios-satu... COMPLETED
+Tap on "Konfirmasi dan kirim"... COMPLETED
+Tap on "Simpan"... COMPLETED
+Scrolling DOWN until "Absensi berhasil disimpan.*" is visible with speed 40, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED

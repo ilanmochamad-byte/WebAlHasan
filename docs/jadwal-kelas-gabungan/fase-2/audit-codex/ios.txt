@@ -1,0 +1,11 @@
+[lulus] iOS detail dua kelas; tanpa pembukaan otomatis
+[lulus] iOS ketukan ganda: satu POST; server commit walau menerima 503
+[lulus] iOS retry POST kunci sama, satu pertemuan dan dua kelas beku
+[lulus] iOS kelima peserta terlihat dengan label kelas asal, lima ID unik
+[lulus] iOS PUT server commit, jawaban 503
+[lulus] iOS retry PUT kunci sama, tepat satu guru + lima santri
+[lulus] iOS pertemuan Selesai tanpa alasan tidak mengirim koreksi
+[lulus] iOS koreksi beralasan berkunci baru tanpa tambahan baris
+[lulus] iOS satu kelas: tampilan lama, satu guru + dua santri
+[lulus] iOS token kedaluwarsa: login kembali tanpa mengubah absensi
+Ringkasan: 10 lulus, 0 gagal

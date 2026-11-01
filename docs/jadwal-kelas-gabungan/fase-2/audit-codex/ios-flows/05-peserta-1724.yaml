@@ -1,0 +1,3 @@
+appId: com.ilanmochamad.alhasanApps
+---
+[{"scrollUntilVisible": {"element": {"text": "Santri PA3 299AB9"}, "direction": "DOWN", "timeout": 30000}}, {"assertVisible": "NIS .* · Kelas 1 IBTIDA PA 299AB9"}]
