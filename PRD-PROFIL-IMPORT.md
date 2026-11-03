@@ -2,7 +2,7 @@
 
 > **Untuk agen AI:** Dokumen ini adalah instruksi implementasi. Jika ada hal yang tidak jelas, tanyakan kepada Human Developer. Ketika keputusan berubah selama implementasi, perbarui dokumen ini agar tetap menjadi sumber kebenaran. Butir bertanda `(assumption)` belum dikonfirmasi pengguna dan harus diperiksa sebelum dijadikan dasar keputusan yang sulit dibalik.
 
-**Status:** Kebutuhan inti dan pembagian tepat dua fase disetujui Human Developer pada 3 November 2026. Dokumen ini belum menetapkan implementator, auditor, branch implementasi, atau izin migrasi/deploy produksi. Pengerjaan mengikuti `AGENTS.md` dan satu fase per giliran.
+**Status:** Kebutuhan inti dan pembagian tepat dua fase disetujui Human Developer pada 3 November 2026. Claude Code ditetapkan sebagai implementator dan Codex sebagai auditor, bergantian satu fase per giliran. Branch implementasi serta izin migrasi/deploy produksi belum ditetapkan. Pengerjaan mengikuti `AGENTS.md`.
 
 **Hubungan dengan PRD lain:** Ini adalah workstream lintas V1–V7, bukan pengganti PRD V8. Hak Guru, Murobi, Pembimbing, Pendidikan, BSA/Keuangan, Kesehatan, Keamanan, Admin, dan Orang Tua tetap bersumber dari akun serta penugasan yang sudah ada. Profil hanya menampilkan penugasan yang sah; perubahan identitas tidak memberikan hak akses.
 
@@ -49,7 +49,7 @@ Pengguna aplikasi belum dapat melengkapi profilnya sendiri, dan Beranda belum me
 
 ## 6. Persyaratan Bertahap
 
-Tepat dua fase. Fase 2 bergantung pada kontrak data dan API Fase 1. Setiap fase dikerjakan, diuji, dan diaudit secara bergantian sesuai peran yang akan ditetapkan Human Developer; ketersediaan spesifikasi bukan perintah menjalankan keduanya sekaligus.
+Tepat dua fase. Fase 2 bergantung pada kontrak data dan API Fase 1. Claude Code mengimplementasikan satu fase, lalu Codex mengauditnya sebelum fase berikutnya dimulai atas instruksi Human Developer. Ketersediaan spesifikasi bukan perintah menjalankan keduanya sekaligus.
 
 ### Fase 1: Database, API, dan Website Admin
 
