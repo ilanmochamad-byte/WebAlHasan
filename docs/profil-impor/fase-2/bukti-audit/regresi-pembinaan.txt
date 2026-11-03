@@ -1,0 +1,5 @@
+[lulus] Beranda → Pembinaan: sbx_pengurus_a
+[lulus] Daftar Pembinaan terbuka dan API berhasil: Pelanggaran & poin
+[lulus] Formulir pelanggaran memuat pemilih santri
+[lulus] Beranda → Pembinaan: sbx_ortu_a
+[lulus] Daftar Pembinaan terbuka dan API berhasil: Informasi untuk keluarga

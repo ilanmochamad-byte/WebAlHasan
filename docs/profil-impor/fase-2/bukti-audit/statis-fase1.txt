@@ -1,0 +1,89 @@
+=== S-1 lint ===
+[lulus] lint app/Profil/ProfilException.php
+[lulus] lint app/Profil/ProfilData.php
+[lulus] lint app/Profil/FotoProfilStorage.php
+[lulus] lint app/Profil/ProfilRepository.php
+[lulus] lint app/Profil/ProfilService.php
+[lulus] lint app/Profil/ImporPersonelService.php
+[lulus] lint app/MasterData/MasterDataService.php
+[lulus] lint app/Audit/AuditLogger.php
+[lulus] lint app/Auth/Authorization.php
+[lulus] lint app/Auth/AuthRepository.php
+[lulus] lint app/Auth/AuthService.php
+[lulus] lint app/Auth/ApiTokenAuthenticator.php
+[lulus] lint app/Api/ApiAuthRepository.php
+[lulus] lint app/Api/ApiAuthService.php
+[lulus] lint app/bootstrap.php
+[lulus] lint api/v1/index.php
+[lulus] lint admin/admin_guru.php
+[lulus] lint admin/admin_pengurus.php
+[lulus] lint admin/ubah_password.php
+[lulus] lint admin/proses_import_personel.php
+[lulus] lint admin/foto_profil.php
+[lulus] lint admin/_impor_personel_ui.php
+[lulus] lint admin/_profil_admin_ui.php
+[lulus] lint tests/profil_impor_f1_integration.php
+[lulus] lint tests/profil_impor_f1_migration.php
+[lulus] lint tests/profil_impor_f1_http.php
+[lulus] lint tests/profil_impor_f1_static.php
+
+=== S-2 migrasi aditif ===
+[lulus] Migrasi 035 tanpa UPDATE/DELETE/TRUNCATE/DROP/RENAME/INSERT atas data
+[lulus] Satu tabel baru profil_pribadi (dapat diulang)
+[lulus] Hanya dua kolom aditif: users.sesi_versi, api_tokens.cakupan
+[lulus] Kolom baru ber-DEFAULT yang mempertahankan makna lama (sesi 0, token penuh)
+[lulus] Penambahan kolom dijaga information_schema (aman dijalankan ulang)
+[lulus] CHECK pemilik tepat satu, NIK 16 digit, pola nama foto; NIK unik per jenis
+[lulus] 035 migrasi terakhir dengan rollback berpasangan
+
+=== S-3 rollback berpenjaga ===
+[lulus] Rollback ditolak bila profil pribadi sudah berisi
+[lulus] Token ganti_password dicabut sebelum kolom cakupan dilepas
+[lulus] Rollback tidak mengubah/menghapus data lain
+
+=== S-4 tanpa penugasan/role/akun dari impor atau profil ===
+[lulus] Tidak ada tulis ke tabel *_assignments
+[lulus] Tidak ada tulis ke user_roles; tidak membuat akun atau token
+[lulus] Profil tidak mengubah username, tautan identitas, atau status akun
+[lulus] Tugas/Kamar/Tugas Tambahan hanya informasi, tidak masuk data simpan
+[lulus] Pengurus baru berjabatan "Pengurus" (PI-8)
+[lulus] Edit diri menolak kunci di luar daftar yang disetujui
+
+=== S-5 audit tanpa data pribadi/password ===
+[lulus] AuditLogger menyaring aksi profil.* dan impor_personel.* ke metadata
+[lulus] Daftar kunci audit tidak memuat isian pribadi, password, atau token
+[lulus] Audit ganti password tidak menerima nilai password
+
+=== S-6 API ===
+[lulus] Penjaga token terbatas berjalan sebelum seluruh rute; hanya ganti password dan logout
+[lulus] Rute $path === '/profile/pribadi' tersedia
+[lulus] Rute $path === '/profile/foto' tersedia
+[lulus] Rute $path === '/profile/foto/hapus' tersedia
+[lulus] Rute #^/profile/foto(?:/(\d+))?$# tersedia
+[lulus] Rute $path === '/profile/password' tersedia
+[lulus] Login lama tetap 403 untuk password sementara; token terbatas hanya atas penanda eksplisit klien
+[lulus] Bentuk /profile lama tidak berubah
+
+=== S-7 foto dan UI ===
+[lulus] Foto di storage/private/profil (Require all denied, tidak terlacak Git)
+[lulus] Foto ≤ 2 MiB, diperiksa sebagai gambar utuh, nama acak, hanya unggahan HTTP
+[lulus] UI impor: satu innerHTML hanya untuk kartu angka; teks berkas/server lewat textContent
+[lulus] UI impor membaca nilai mentah tanpa rumus
+
+=== S-8 keputusan dan batas berkas ===
+[lulus] Keputusan PI-1 tercatat di PRD
+[lulus] Keputusan PI-2 tercatat di PRD
+[lulus] Keputusan PI-3 tercatat di PRD
+[lulus] Keputusan PI-4 tercatat di PRD
+[lulus] Keputusan PI-5 tercatat di PRD
+[lulus] Keputusan PI-6 tercatat di PRD
+[lulus] Keputusan PI-7 tercatat di PRD
+[lulus] Keputusan PI-8 tercatat di PRD
+[lulus] Keputusan PI-9 tercatat di PRD
+[lulus] Keputusan PI-10 tercatat di PRD
+[lulus] Tidak ada butir (assumption) tersisa selain penjelasan di kepala PRD
+[gagal] Perubahan hanya pada berkas yang direncanakan: docs/profil-impor/fase-2/README.md, docs/profil-impor/fase-2/regresi-statis-fase1.txt, tests/browser/uji-profil-impor-f2-android.mjs, tests/browser/uji-profil-impor-f2-app.mjs, tests/profil_impor_f2_app_seed.php, docs/profil-impor/fase-2/bukti-audit/kontrak-http.txt, docs/profil-impor/fase-2/bukti-audit/regresi-keamanan.txt, docs/profil-impor/fase-2/bukti-audit/regresi-kesehatan.txt, docs/profil-impor/fase-2/bukti-audit/regresi-keuangan.txt, docs/profil-impor/fase-2/bukti-audit/regresi-pengajian.txt, docs/profil-impor/fase-2/bukti-audit/statis-fase1.txt
+[lulus] Layanan penugasan dan Capabilities tidak diubah
+
+70 lulus, 1 gagal
+ - Perubahan hanya pada berkas yang direncanakan: docs/profil-impor/fase-2/README.md, docs/profil-impor/fase-2/regresi-statis-fase1.txt, tests/browser/uji-profil-impor-f2-android.mjs, tests/browser/uji-profil-impor-f2-app.mjs, tests/profil_impor_f2_app_seed.php, docs/profil-impor/fase-2/bukti-audit/kontrak-http.txt, docs/profil-impor/fase-2/bukti-audit/regresi-keamanan.txt, docs/profil-impor/fase-2/bukti-audit/regresi-kesehatan.txt, docs/profil-impor/fase-2/bukti-audit/regresi-keuangan.txt, docs/profil-impor/fase-2/bukti-audit/regresi-pengajian.txt, docs/profil-impor/fase-2/bukti-audit/statis-fase1.txt
