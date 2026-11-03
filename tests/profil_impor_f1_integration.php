@@ -254,6 +254,8 @@ foreach ([
     'password saat ini salah' => ['password_saat_ini' => 'Salah#123', 'password_baru' => $baru, 'konfirmasi_password' => $baru],
     'password baru lemah' => ['password_saat_ini' => 'Sandbox#123', 'password_baru' => 'pendek1A', 'konfirmasi_password' => 'pendek1A'],
     'tanpa angka' => ['password_saat_ini' => 'Sandbox#123', 'password_baru' => 'TanpaAngkaSama', 'konfirmasi_password' => 'TanpaAngkaSama'],
+    'bcrypt melebihi 72 byte' => ['password_saat_ini' => 'Sandbox#123', 'password_baru' => 'Aa1' . str_repeat('x', 70), 'konfirmasi_password' => 'Aa1' . str_repeat('x', 70)],
+    'byte NUL' => ['password_saat_ini' => 'Sandbox#123', 'password_baru' => $baru . chr(0), 'konfirmasi_password' => $baru . chr(0)],
     'konfirmasi beda' => ['password_saat_ini' => 'Sandbox#123', 'password_baru' => $baru, 'konfirmasi_password' => $baru . 'x'],
 ] as $label => $isianPw) {
     $e = $galat(static fn () => $profil->gantiPassword($uP2, $isianPw, $konteks));
@@ -367,6 +369,8 @@ $k = $impor->periksa('guru', [
     ['baris' => 7, 'nama' => 'PIF1 HP A', 'nip' => 'PIF1-HP-A', 'no_hp' => '081200000888'],
     ['baris' => 8, 'nama' => 'PIF1 HP B', 'nip' => 'PIF1-HP-B', 'no_hp' => '081200000888'],
     ['baris' => 9, 'nama' => 'PIF1 Presisi', 'nik' => '#PRESISI'],
+    ['baris' => 13, 'nama' => 'PIF1 NIK Numerik', 'nik' => 3200000000000902],
+    ['baris' => 14, 'nama' => 'PIF1 NIP Pecahan', 'nip' => 12.5],
     ['baris' => 10, 'nama' => 'Guru ' . "\u{0645}\u{062D}\u{0645}\u{062F}", 'nip' => 'PIF1-ARAB'],
 ]);
 $kSama = $impor->periksa('guru', [
@@ -380,6 +384,17 @@ $assert(str_contains(implode(' ', $masalah[4]), 'dua guru berbeda'), 'NIP dan NI
 $assert(str_contains(implode(' ', $masalah[5]), 'NIP atau NIK wajib') && str_contains(implode(' ', $masalah[6]), '16 digit'), 'Tanpa NIP/NIK atau NIK bukan 16 digit → konflik');
 $assert(str_contains(implode(' ', $masalah[7]), 'ganda') && str_contains(implode(' ', $masalah[8]), 'ganda'), 'HP ganda di dalam berkas → konflik');
 $assert(str_contains(implode(' ', $masalah[9]), 'teks') && str_contains(implode(' ', $masalah[10]), 'Latin'), 'Sel angka kehilangan presisi dan nama di luar latin1 (tabel guru) → konflik');
+$assert(str_contains(implode(' ', $masalah[13]), 'teks') && str_contains(implode(' ', $masalah[14]), 'teks'),
+    'NIK numerik 16 digit dan NIP pecahan ditolak tanpa pembulatan');
+$pastiId = $impor->periksa('guru', [
+    ['nama' => 'PIF1 Nama Berbeda', 'id_sistem' => $g1, 'nip' => 'PIF1-ID-BARU'],
+    ['nama' => 'PIF1 ID Bertentangan', 'id_sistem' => $g1, 'nip' => 'PIF1-G-003'],
+    ['nama' => 'PIF1 ID Tidak Ada', 'id_sistem' => 99999999, 'nip' => 'PIF1-ID-HILANG'],
+]);
+$assert(array_column($pastiId['hasil'], 'aksi') === ['perlu_konfirmasi', 'konflik', 'konflik']
+    && $pastiId['hasil'][0]['sasaran']['cocok_lewat'] === 'ID Sistem'
+    && str_contains(implode(' ', $pastiId['hasil'][1]['masalah']), 'bertentangan'),
+    'ID Sistem memilih sasaran tanpa mengandalkan nama; NIP milik orang lain atau ID hilang menjadi konflik');
 $masalahSama = array_column($kSama['hasil'], 'masalah', 'baris');
 $assert(array_column($kSama['hasil'], 'aksi') === ['konflik', 'konflik'] && str_contains(implode(' ', $masalahSama[11]), 'data lama yang sama') && str_contains(implode(' ', $masalahSama[12]), 'data lama yang sama'),
     'Dua baris menunjuk guru lama yang sama (lewat NIP dan lewat NIK) → keduanya konflik');

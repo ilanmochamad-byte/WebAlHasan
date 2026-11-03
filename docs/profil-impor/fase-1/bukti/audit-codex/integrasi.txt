@@ -1,0 +1,125 @@
+[lulus] Migrasi 035 terpasang dan layanan profil tersedia
+
+=== I-1 baca profil ===
+[lulus] Admin tanpa identitas: sumber akun, status Admin saja, tanpa penugasan
+[lulus] Guru: identitas dari data guru miliknya sendiri
+[lulus] Guru merangkap: status Guru, Murobi, Petugas Kesehatan, Guru Mapel; identitas pengurus milik guru tidak tampil sebagai "Pengurus" kedua
+[lulus] Target murobi bertarget kamar tampil sebagai Kamar dengan nama kamar
+[lulus] Guru Mapel: kedua pasangan mapel–kelas aktif tampil
+[lulus] Pengurus: status Pengurus + Pembimbing; target kelas berlabel Kelas; NIP = nomor identitas (PI-9)
+[lulus] Orang Tua: status Orang Tua; alamat lama wali tampil; tanpa kamar rekaan
+[lulus] Tanpa foto: inisial dari nama
+[lulus] Penugasan murobi yang diakhiri hilang dari status dan target binaan
+
+=== I-2 ubah diri ===
+[lulus] Guru merangkap pengurus: nama/HP sama pada guru, identitas pengurus, dan akun; email akun ikut
+[lulus] Satu profil pribadi milik guru; identitas pengurus milik guru tidak punya salinan profil
+[lulus] Respons memuat nilai baru dan versi 1
+[lulus] Satu audit profil.ubah_diri berisi nama isian saja, tanpa nilai pribadi
+[lulus] Isian yang sama tidak menulis apa pun (tanpa audit, versi tetap)
+[lulus] Kunci yang dikirim kosong mengosongkan isian itu; isian lain tetap
+[lulus] Orang Tua: wali, alamat lama tersusun, dan akun konsisten; profil menempel pada wali
+[lulus] Akun tanpa identitas master: profil menempel pada akun (PI-7)
+[lulus] Pengurus biasa: HP pengurus dan akun sama; NIP tidak tersentuh
+
+=== I-3 ubah diri ditolak ===
+[lulus] Username/role/penugasan/kamar/mapel/kelas/NIP/NIK/ID akun lain/foto/password lewat edit diri ditolak 422 tanpa perubahan
+[lulus] Validasi server menolak {"email":"bukan-email"} tanpa perubahan
+[lulus] Validasi server menolak {"no_hp":"12345"} tanpa perubahan
+[lulus] Validasi server menolak {"tanggal_lahir":"2999-01-01"} tanpa perubahan
+[lulus] Validasi server menolak {"tanggal_lahir":"31-02-1990"} tanpa perubahan
+[lulus] Validasi server menolak {"nama":""} tanpa perubahan
+[lulus] Validasi server menolak {"nama":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} tanpa perubahan
+[lulus] Validasi server menolak {"nama":"محمد"} tanpa perubahan
+[lulus] Versi basi → 409 tanpa perubahan
+[lulus] Email milik akun lain → 409 tanpa perubahan
+[lulus] Audit gagal → 503; guru, identitas pengurus, akun, dan profil tidak berubah sebagian
+
+=== I-4 akses foto ===
+[lulus] Pemilik membaca foto sendiri
+[lulus] Admin membaca foto akun lain
+[lulus] Akun pengurus tidak dapat membaca foto akun lain (404)
+[lulus] Akun orang tua tidak dapat membaca foto akun lain (404)
+[lulus] Akun guru lain tidak dapat membaca foto akun lain (404)
+[lulus] Akun tidak ada / tanpa foto → 404
+[lulus] Admin berpassword sementara tidak membaca foto akun lain
+[lulus] Nama berkas foto tidak pernah dikirim ke klien
+
+=== I-5 ganti password ===
+[lulus] Ganti password ditolak (password saat ini salah); hash dan token tidak berubah
+[lulus] Ganti password ditolak (password baru lemah); hash dan token tidak berubah
+[lulus] Ganti password ditolak (tanpa angka); hash dan token tidak berubah
+[lulus] Ganti password ditolak (bcrypt melebihi 72 byte); hash dan token tidak berubah
+[lulus] Ganti password ditolak (byte NUL); hash dan token tidak berubah
+[lulus] Ganti password ditolak (konfirmasi beda); hash dan token tidak berubah
+[lulus] Password baru sah diterima; wajib ganti dilepas; versi sesi naik (sesi web lain berhenti)
+[lulus] Token sekarang tetap dan menjadi penuh; dua token lain akun ini dicabut; token akun lain tidak tersentuh
+[lulus] Perangkat push lain dicabut; perangkat yang dipakai tetap
+[lulus] Audit/respons tanpa password, hash, atau token; jejak berhasil dan gagal tercatat
+[lulus] Audit ganti password gagal → password dan token tidak berubah
+
+=== I-6 impor: pratinjau dan simpan ===
+[lulus] Pratinjau: guru baru/lama dan pengurus baru/lama memperoleh tindakan per baris
+[lulus] Pratinjau tidak mengubah basis data
+[lulus] Tugas/Kamar/Tugas Tambahan tampil sebagai informasi dengan peringatan bukan penugasan
+[lulus] Sel angka Excel: nomor seri tanggal dan HP tanpa nol awal dibaca benar; NIP lama cocok tanpa membedakan huruf
+[lulus] Kolom "NIP atau NIK" otomatis: 16 digit = NIK, lainnya = NIP
+[lulus] Simpan: satu guru baru, satu guru lama, satu pengurus baru, satu pengurus lama
+[lulus] Tidak ada akun maupun token yang dibuat dari Excel
+[lulus] Pengurus baru berjabatan "Pengurus"; jabatan pengurus lama tidak diubah impor (PI-8)
+[lulus] Guru lama: isian kosong terisi, NIP lama tetap
+[lulus] Email pengurus lama ikut disamakan ke akun terhubung
+[lulus] Audit ringkasan impor + per baris tanpa data pribadi mentah (hanya ID, tindakan, nama isian, sidik berkas)
+
+=== I-7 impor ulang ===
+[lulus] Berkas yang sama: seluruh baris "tidak berubah"
+[lulus] Impor kedua: 0 guru/pengurus baru, ID/NIP/relasi tetap
+
+=== I-8 konflik ===
+[lulus] Seluruh baris bermasalah menjadi konflik
+[lulus] NIK ganda di dalam berkas → kedua baris konflik
+[lulus] NIP dan NIK yang menunjuk dua orang berbeda → konflik
+[lulus] Tanpa NIP/NIK atau NIK bukan 16 digit → konflik
+[lulus] HP ganda di dalam berkas → konflik
+[lulus] Sel angka kehilangan presisi dan nama di luar latin1 (tabel guru) → konflik
+[lulus] NIK numerik 16 digit dan NIP pecahan ditolak tanpa pembulatan
+[lulus] ID Sistem memilih sasaran tanpa mengandalkan nama; NIP milik orang lain atau ID hilang menjadi konflik
+[lulus] Dua baris menunjuk guru lama yang sama (lewat NIP dan lewat NIK) → keduanya konflik
+[lulus] Simpan baris konflik tidak membuat catatan apa pun
+[lulus] Nama sama tanpa NIP/NIK cocok → "pilih pasangan" dengan dua calon; tidak digabung otomatis
+[lulus] Pasangan ambigu tanpa pilihan admin tidak disimpan
+[lulus] Pasangan pilihan admin dengan ejaan nama berbeda → konfirmasi timpa nama
+[lulus] Admin memilih pasangan → perbarui data lama terpilih
+[lulus] Pasangan di luar daftar calon ditolak
+[lulus] Pasangan pilihan admin tersimpan pada guru yang dipilih saja
+[lulus] "Tambah baru" atas pilihan eksplisit admin membuat satu guru
+[lulus] Nilai lama terisi yang berbeda → perlu konfirmasi "timpa"
+[lulus] Tanpa konfirmasi, nilai lama tidak ditimpa
+[lulus] Dengan konfirmasi "timpa", nilai lama diganti
+[lulus] NIK lama yang berbeda membutuhkan konfirmasi "ganti NIP/NIK" terpisah
+[lulus] NIK dikoreksi atas konfirmasi admin dan tercatat di audit
+[lulus] Pengurus: NIK milik guru yang merangkap pengurus → konflik dengan petunjuk Data Guru (PI-10)
+[lulus] Nama sama dengan identitas pengurus milik guru: calon tidak dapat dipilih
+[lulus] Memaksa memilih identitas pengurus milik guru → konflik
+[lulus] Guru: NIP sama dengan pengurus biasa → peringatan data ganda, tanpa penggabungan (keputusan 30 Oktober)
+[lulus] Data berubah sejak pratinjau → simpan menolak baris (konflik), nilai yang lebih baru tidak ditimpa
+[lulus] Baris tanpa sidik pratinjau tidak disimpan
+[lulus] Audit impor_personel.simpan gagal → seluruh impor dibatalkan
+[lulus] Audit profil.impor_baris gagal → seluruh impor dibatalkan
+[lulus] Sesudah audit pulih, impor yang sama tersimpan
+[lulus] Batas jumlah baris ditegakkan server
+
+=== I-9 penugasan tidak berubah ===
+[lulus] Seluruh tabel penugasan dan role identik sebelum/sesudah impor berisi Tugas/Kamar/Tugas Tambahan
+[lulus] Tidak ada akun/username baru dari impor
+
+=== I-10 formulir admin ===
+[lulus] Data Guru: guru, identitas pengurus milik guru, akun, dan profil konsisten
+[lulus] Profil aplikasi langsung membaca nilai baru
+[lulus] Data Guru: NIK milik guru lain ditolak
+[lulus] Data Pengurus: identitas milik guru tetap tidak dapat diubah dari sini
+[lulus] Data Pengurus: pengurus, akun, dan NIK profil konsisten
+[lulus] Data Wali: nama/HP akun orang tua ikut disamakan
+[lulus] Data Guru: audit profil gagal → guru dan akun tidak berubah
+
+103 lulus, 0 gagal

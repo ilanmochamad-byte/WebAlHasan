@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errorField = array_key_first($exception->errors());
             $error = match ($errorField) {
                 'password_saat_ini' => 'Kata sandi saat ini tidak benar.',
-                'password_baru' => 'Kata sandi baru minimal 12 karakter dan memuat huruf besar, huruf kecil, serta angka.',
+                'password_baru' => str_replace('Password', 'Kata sandi', $exception->getMessage()),
                 'konfirmasi_password' => 'Ulangan kata sandi baru tidak sama.',
                 default => $exception->getMessage(),
             };

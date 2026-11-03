@@ -20,7 +20,7 @@ use Throwable;
  * Aturan:
  *   - Sedikitnya NIP atau NIK wajib ada; NIK 16 digit (PI-4); NIP pengurus =
  *     `pengurus.nomor_identitas` (PI-9), NIK di profil.
- *   - Pencocokan pasti lewat NIP/NIK. Nama yang sama hanya MENYARANKAN calon;
+ *   - Pencocokan pasti lewat ID sistem/NIP/NIK. Nama yang sama hanya MENYARANKAN calon;
  *     admin wajib memilih pasangan atau "tambah baru" (PI-3).
  *   - NIP dan NIK yang menunjuk dua orang berbeda, NIP/NIK/HP ganda di dalam
  *     berkas, dua baris yang menunjuk orang yang sama, dan identitas pengurus
@@ -38,10 +38,10 @@ final class ImporPersonelService
     public const BATAS_BARIS = 500;
 
     /** Kolom kanonis templat, urut tampil. `nip_nik` = dikenali otomatis. */
-    public const KOLOM = ['nama', 'nip', 'nik', 'tempat_lahir', 'tanggal_lahir', 'alamat_rumah', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'no_hp', 'email', 'tugas', 'kamar', 'tugas_tambahan'];
+    public const KOLOM = ['id_sistem', 'nama', 'nip', 'nik', 'tempat_lahir', 'tanggal_lahir', 'alamat_rumah', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi', 'no_hp', 'email', 'tugas', 'kamar', 'tugas_tambahan'];
 
     public const JUDUL = [
-        'nama' => 'Nama Lengkap', 'nip' => 'NIP', 'nik' => 'NIK', 'nip_nik' => 'NIP atau NIK (dikenali otomatis)', 'tempat_lahir' => 'Tempat Lahir',
+        'id_sistem' => 'ID Sistem', 'nama' => 'Nama Lengkap', 'nip' => 'NIP', 'nik' => 'NIK', 'nip_nik' => 'NIP atau NIK (dikenali otomatis)', 'tempat_lahir' => 'Tempat Lahir',
         'tanggal_lahir' => 'Tanggal Lahir', 'alamat_rumah' => 'Alamat Rumah', 'kelurahan' => 'Kelurahan/Desa', 'kecamatan' => 'Kecamatan',
         'kabupaten' => 'Kabupaten/Kota', 'provinsi' => 'Provinsi', 'no_hp' => 'No. HP', 'email' => 'Email',
         'tugas' => 'Tugas', 'kamar' => 'Kamar/Kobong', 'tugas_tambahan' => 'Tugas Tambahan',
@@ -139,7 +139,7 @@ final class ImporPersonelService
     public static function templat(string $jenis): array
     {
         $judul = array_map(static fn (string $k): string => self::JUDUL[$k], self::KOLOM);
-        $contoh = ['Contoh Nama Lengkap', $jenis === 'guru' ? 'G-0001' : 'P-0001', '3200000000000001', 'Ciamis', '1990-01-31', 'Jl. Contoh No. 1', 'Desa Contoh', 'Kecamatan Contoh', 'Kabupaten Contoh', 'Jawa Barat', '081200000000', 'contoh@example.com', $jenis === 'guru' ? 'Murobi' : 'Pembimbing', 'Kamar Contoh', '-'];
+        $contoh = ['', 'Contoh Nama Lengkap', $jenis === 'guru' ? 'G-0001' : 'P-0001', '3200000000000001', 'Ciamis', '1990-01-31', 'Jl. Contoh No. 1', 'Desa Contoh', 'Kecamatan Contoh', 'Kabupaten Contoh', 'Jawa Barat', '081200000000', 'contoh@example.com', $jenis === 'guru' ? 'Murobi' : 'Pembimbing', 'Kamar Contoh', '-'];
 
         return [$judul, $contoh];
     }
@@ -211,7 +211,10 @@ final class ImporPersonelService
         $masuk = $mentah;
         foreach (['nip', 'nik', 'nip_nik', 'no_hp'] as $kolom) {
             if (is_float($masuk[$kolom] ?? null) || is_int($masuk[$kolom] ?? null)) {
-                $masuk[$kolom] = sprintf('%.0f', $masuk[$kolom]);
+                $angka = $masuk[$kolom];
+                $masuk[$kolom] = abs($angka) >= 1e15 || floor($angka) !== (float) $angka
+                    ? '#PRESISI'
+                    : sprintf('%.0f', $angka);
             }
             if (($masuk[$kolom] ?? null) === '#PRESISI') {
                 $catatan[$kolom] = ProfilData::LABEL[$kolom === 'nip_nik' ? 'nik' : $kolom] . ' berupa sel angka yang terlalu panjang untuk dibaca dengan tepat; ubah sel menjadi teks di Excel.';
@@ -270,6 +273,14 @@ final class ImporPersonelService
             $baris['peringatan'][] = 'Tugas, Kamar/Kobong, dan Tugas Tambahan hanya informasi: tidak membuat atau mengubah penugasan. Atur penugasan di menu Penugasan.';
         }
         $baris['masalah'] = array_values(array_merge($baris['masalah'], array_values($errors), $c['ganda']));
+        $idMentah = trim((string) ($c['mentah']['id_sistem'] ?? ''));
+        $idSistem = null;
+        if ($idMentah !== '') {
+            $idSistem = filter_var($idMentah, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            if ($idSistem === false) {
+                $baris['masalah'][] = 'ID Sistem harus berupa bilangan bulat positif.';
+            }
+        }
         if (empty($data['nip']) && empty($data['nik'])) {
             $baris['masalah'][] = 'NIP atau NIK wajib diisi sedikitnya salah satu.';
         }
@@ -289,13 +300,16 @@ final class ImporPersonelService
         if ($idNip !== null && $idNik !== null && $idNip !== $idNik) {
             $baris['masalah'][] = 'NIP dan NIK menunjuk dua ' . $jenis . ' berbeda (ID ' . $idNip . ' dan ' . $idNik . ').';
         }
+        if ($idSistem !== null && (($idNip !== null && $idSistem !== $idNip) || ($idNik !== null && $idSistem !== $idNik))) {
+            $baris['masalah'][] = 'ID Sistem bertentangan dengan pemilik NIP/NIK yang sudah terdaftar.';
+        }
         $this->periksaSilang($jenis, $data, $baris);
         if ($baris['masalah'] !== []) {
             $baris['sidik'] = $this->sidik(['konflik', $c['baris']]);
             return $baris;
         }
-        $sasaranId = $idNip ?? $idNik;
-        $caraCocok = $idNip !== null ? 'NIP' : ($idNik !== null ? 'NIK' : null);
+        $sasaranId = $idSistem ?? $idNip ?? $idNik;
+        $caraCocok = $idSistem !== null ? 'ID Sistem' : ($idNip !== null ? 'NIP' : ($idNik !== null ? 'NIK' : null));
 
         // --- Tanpa kecocokan pasti: calon bernama sama (PI-3) ----------------
         if ($sasaranId === null) {

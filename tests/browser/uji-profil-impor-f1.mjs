@@ -18,13 +18,16 @@
  *   DB_NAME=test_pif1_test php -S 127.0.0.1:8991 tests/redesain_web_tahap1_router.php &
  *   BASE_URL=http://127.0.0.1:8991 node tests/browser/uji-profil-impor-f1.mjs
  *
- * Pustaka Excel dari CDN diganti pembaca CSV kecil berantarmuka sama (seperti
- * uji Tahap 6); pembacaan .xlsx/.xls nyata oleh SheetJS tidak diuji di sini.
+ * Setel SHEETJS_PATH ke salinan lokal SheetJS 0.18.5 untuk berkas Excel nyata.
+ * Tanpa variabel itu, uji memakai pembaca CSV pengganti (seperti Tahap 6).
  * Uji ini MENGUBAH data uji (guru/pengurus impor).
  */
 import { chromium } from 'playwright';
+import { createRequire } from 'node:module';
 import { mkdirSync, readFileSync, existsSync } from 'node:fs';
 
+const sheetJsPath = process.env.SHEETJS_PATH;
+const sheetJs = sheetJsPath ? createRequire(import.meta.url)(sheetJsPath) : null;
 const XLSX_SHIM = `window.XLSX = {
   read: function (buf) { return { SheetNames: ['S'], Sheets: { S: new TextDecoder().decode(buf) } }; },
   utils: { sheet_to_json: function (teks) { return teks.split(String.fromCharCode(10)).map(function (b) { return b.replace(String.fromCharCode(13), ''); }).filter(function (b) { return b !== ''; }).map(function (b) { return b.split(';'); }); } }
@@ -64,7 +67,7 @@ async function siapkan(context) {
       const jalur = new URL('./node_modules/@fortawesome/fontawesome-free/webfonts/' + url.pathname.split('/').pop(), import.meta.url);
       if (existsSync(jalur)) return route.fulfill({ contentType: 'font/woff2', body: readFileSync(jalur) });
     }
-    if (/xlsx@.*xlsx\.full\.min\.js$/.test(url.href)) return route.fulfill({ contentType: 'application/javascript', body: XLSX_SHIM });
+    if (/xlsx@.*xlsx\.full\.min\.js$/.test(url.href)) return route.fulfill({ contentType: 'application/javascript', body: sheetJsPath ? readFileSync(sheetJsPath) : XLSX_SHIM });
     return route.abort();
   });
 }
@@ -98,7 +101,12 @@ async function kerangka(page) {
   if ((await page.locator('#ah-shell').count()) !== 1) masalah.push('bukan kerangka bersama');
   return masalah;
 }
-const csv = (baris) => Buffer.from(baris.map((b) => b.join(';')).join('\n'));
+function berkasExcel(baris, bookType = 'xlsx') {
+  if (!sheetJs) return Buffer.from(baris.map((b) => b.join(';')).join('\n'));
+  const workbook = sheetJs.utils.book_new();
+  sheetJs.utils.book_append_sheet(workbook, sheetJs.utils.aoa_to_sheet(baris), 'Personel');
+  return Buffer.from(sheetJs.write(workbook, { bookType, type: 'buffer' }));
+}
 const JUDUL = ['Nama Lengkap', 'NIK', 'NIP', 'Tempat Lahir', 'Tanggal Lahir', 'Alamat Rumah', 'Kelurahan/Desa', 'Kecamatan', 'Kabupaten/Kota', 'Provinsi', 'No. HP', 'Email', 'Tugas', 'Kamar/Kobong', 'Tugas Tambahan'];
 
 const browser = await chromium.launch();
@@ -112,7 +120,7 @@ try {
     const nip = `BRW-${PUTARAN}-${lebar}`;
     const nik = `320${PUTARAN}${String(1000000 + lebar).slice(-7)}`;
     await page.setInputFiles('#impor-berkas', { name: 'guru.xlsx', mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      buffer: csv([JUDUL, [`Browser Guru ${PUTARAN} ${lebar}`, nik, nip, 'Garut', '1990-01-31', 'Jl. <b>Uji</b>', 'Desa', 'Kec', 'Kab', 'Jawa Barat', '081200009' + lebar, '', 'Murobi', 'Kamar <img src=x onerror=alert(1)>', 'Keamanan']]) });
+      buffer: berkasExcel([JUDUL, [`Browser Guru ${PUTARAN} ${lebar}`, nik, nip, 'Garut', '1990-01-31', 'Jl. <b>Uji</b>', 'Desa', 'Kec', 'Kab', 'Jawa Barat', '081200009' + lebar, '', 'Murobi', 'Kamar <img src=x onerror=alert(1)>', 'Keamanan']]) });
     await page.locator('[data-impor-peta]').waitFor({ state: 'visible' });
     const tebakan = await page.locator('[data-impor-kolom]').evaluateAll((s) => s.map((x) => x.value));
     cek(tebakan.join(',') === 'nama,nik,nip,tempat_lahir,tanggal_lahir,alamat_rumah,kelurahan,kecamatan,kabupaten,provinsi,no_hp,email,tugas,kamar,tugas_tambahan', `Pemetaan kolom ditebak dari judul ${lebar}px`, tebakan.join(','));
@@ -137,7 +145,7 @@ try {
     cek((await page.locator('#daftar-guru tbody').innerText()).includes(`Browser Guru ${PUTARAN} ${lebar}`), `Guru hasil impor muncul di daftar ${lebar}px`);
     await page.goto(BASE + '/admin/admin_guru.php?action=impor');
     await page.setInputFiles('#impor-berkas', { name: 'guru.xlsx', mimeType: 'application/octet-stream',
-      buffer: csv([JUDUL, [`Browser Guru ${PUTARAN} ${lebar}`, nik, nip, 'Garut', '1990-01-31', 'Jl. <b>Uji</b>', 'Desa', 'Kec', 'Kab', 'Jawa Barat', '081200009' + lebar, '', 'Murobi', 'Kamar <img src=x onerror=alert(1)>', 'Keamanan']]) });
+      buffer: berkasExcel([JUDUL, [`Browser Guru ${PUTARAN} ${lebar}`, nik, nip, 'Garut', '1990-01-31', 'Jl. <b>Uji</b>', 'Desa', 'Kec', 'Kab', 'Jawa Barat', '081200009' + lebar, '', 'Murobi', 'Kamar <img src=x onerror=alert(1)>', 'Keamanan']]) });
     await page.locator('[data-impor-peta]').waitFor({ state: 'visible' });
     await page.locator('[data-impor-periksa]').click();
     await page.locator('[data-impor-langkah="2"]').waitFor({ state: 'visible' });
@@ -159,7 +167,7 @@ try {
   {
     const { context, page } = await konteks(browser, 'sbx_admin', 1280);
     await page.goto(BASE + '/admin/admin_guru.php?action=impor');
-    await page.setInputFiles('#impor-berkas', { name: 'kembar.xlsx', mimeType: 'application/octet-stream', buffer: csv([['Nama', 'NIP atau NIK'], [`Browser Kembar ${PUTARAN}`, `320${PUTARAN}8888881`]]) });
+    await page.setInputFiles('#impor-berkas', { name: 'kembar.xlsx', mimeType: 'application/octet-stream', buffer: berkasExcel([['Nama', 'NIP atau NIK'], [`Browser Kembar ${PUTARAN}`, `320${PUTARAN}8888881`]]) });
     await page.locator('[data-impor-peta]').waitFor({ state: 'visible' });
     const peta = await page.locator('[data-impor-kolom]').evaluateAll((s) => s.map((x) => x.value));
     cek(peta.join(',') === 'nama,nip_nik', 'Judul "NIP atau NIK" dipetakan ke pengenal otomatis', peta.join(','));
@@ -174,7 +182,7 @@ try {
     }
     const p = k2.page;
     await p.goto(BASE + '/admin/admin_guru.php?action=impor');
-    await p.setInputFiles('#impor-berkas', { name: 'kembar.xlsx', mimeType: 'application/octet-stream', buffer: csv([['Nama Lengkap', 'NIK', 'Tempat Lahir'], [`Browser Kembar ${PUTARAN}`, `320${PUTARAN}8888881`, 'Tasik']]) });
+    await p.setInputFiles('#impor-berkas', { name: 'kembar.xlsx', mimeType: 'application/octet-stream', buffer: berkasExcel([['Nama Lengkap', 'NIK', 'Tempat Lahir'], [`Browser Kembar ${PUTARAN}`, `320${PUTARAN}8888881`, 'Tasik']]) });
     await p.locator('[data-impor-peta]').waitFor({ state: 'visible' });
     await p.locator('[data-impor-periksa]').click();
     await p.locator('[data-impor-langkah="2"]').waitFor({ state: 'visible' });
@@ -194,7 +202,7 @@ try {
     await p.goto(BASE + '/admin/admin_pengurus.php?action=impor');
     let mm = await kerangka(p);
     cek(mm.length === 0 && (await p.locator('h1').innerText()).includes('Impor pengurus'), 'Halaman impor pengurus', mm.join(', '));
-    await p.setInputFiles('#impor-berkas', { name: 'pengurus.xlsx', mimeType: 'application/octet-stream', buffer: csv([['Nama Lengkap', 'NIP', 'No. HP', 'Tugas'], [`Browser Pengurus ${PUTARAN}`, `BRW-P-${PUTARAN}`, '081200008888', 'Pembimbing']]) });
+    await p.setInputFiles('#impor-berkas', { name: 'pengurus.xls', mimeType: 'application/octet-stream', buffer: berkasExcel([['Nama Lengkap', 'NIP', 'No. HP', 'Tugas'], [`Browser Pengurus ${PUTARAN}`, `BRW-P-${PUTARAN}`, '081200008888', 'Pembimbing']], 'biff8') });
     await p.locator('[data-impor-peta]').waitFor({ state: 'visible' });
     await p.locator('[data-impor-periksa]').click();
     await p.locator('[data-impor-langkah="2"]').waitFor({ state: 'visible' });
@@ -204,6 +212,28 @@ try {
     await p.locator('[data-impor-selesai]').waitFor({ state: 'visible' });
     cek(/Ditambahkan/.test(await p.locator('[data-impor-tabel]').innerText()), 'Pengurus hasil impor tersimpan');
     await k2.context.close();
+  }
+
+  if (sheetJs) {
+    const { context, page } = await konteks(browser, 'sbx_admin');
+    await page.goto(BASE + '/admin/admin_guru.php?action=impor');
+    await page.setInputFiles('#impor-berkas', {
+      name: 'presisi.xlsx',
+      mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      buffer: berkasExcel([
+        ['Nama Lengkap', 'NIP', 'NIK'],
+        [`Audit Numerik ${PUTARAN}`, '', 3200000000000002],
+        [`Audit Teks ${PUTARAN}`, '000A-01', `00${PUTARAN}12345678`],
+      ]),
+    });
+    await page.locator('[data-impor-peta]').waitFor({ state: 'visible' });
+    await page.locator('[data-impor-periksa]').click();
+    await page.locator('[data-impor-langkah="2"]').waitFor({ state: 'visible' });
+    const rows = page.locator('[data-impor-tabel] tr');
+    cek(/Konflik.*ubah sel menjadi teks/s.test(await rows.nth(0).innerText()), 'Sel NIK angka 16 digit pada XLSX nyata ditolak meski aman bagi JavaScript');
+    const teks = await rows.nth(1).innerText();
+    cek(teks.includes('000A-01') && teks.includes(`00${PUTARAN}12345678`) && teks.includes('Tambah baru'), 'NIP alfanumerik dan NIK teks dengan nol awal dipertahankan di pratinjau');
+    await context.close();
   }
 
   console.log('\n=== PI-E tanpa JavaScript ===');

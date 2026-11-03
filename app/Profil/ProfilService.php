@@ -345,14 +345,15 @@ final class ProfilService
                 throw new ProfilException('Password baru minimal 12 karakter dan memuat huruf besar, huruf kecil, serta angka.', 422,
                     ['password_baru' => 'Minimal 12 karakter dengan huruf besar, huruf kecil, dan angka.']);
             }
-            if (strlen($baru) > 200) {
-                throw new ProfilException('Password baru terlalu panjang (maksimal 200 karakter).', 422, ['password_baru' => 'Maksimal 200 karakter.']);
+            if (strlen($baru) > 72 || str_contains($baru, "\0")) {
+                throw new ProfilException('Password baru maksimal 72 byte dan tidak boleh memuat karakter NUL.', 422,
+                    ['password_baru' => 'Maksimal 72 byte dan tanpa karakter NUL.']);
             }
             if ($baru !== $ulang) {
                 throw new ProfilException('Ulangan password baru tidak sama.', 422, ['konfirmasi_password' => 'Ulangan password baru tidak sama.']);
             }
             $tokenId = isset($konteks['token_id']) ? (int) $konteks['token_id'] : null;
-            $sesiVersi = $this->repository->gantiPassword($userId, password_hash($baru, PASSWORD_DEFAULT));
+            $sesiVersi = $this->repository->gantiPassword($userId, password_hash($baru, PASSWORD_BCRYPT));
             $tokenDicabut = $this->repository->cabutTokenLain($userId, $tokenId);
             if ($tokenId !== null) {
                 $this->repository->jadikanTokenPenuh($tokenId, (int) (app_config('api.token_ttl_days') ?: 30));
