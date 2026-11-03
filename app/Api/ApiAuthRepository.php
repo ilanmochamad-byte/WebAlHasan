@@ -38,12 +38,23 @@ final class ApiAuthRepository
         return $row === null ? null : $this->normalizeUser($row);
     }
 
-    public function createToken(int $userId, string $hash, string $name, int $ttlDays): array
+    public function createToken(int $userId, string $hash, string $name, int $ttlDays, string $cakupan = 'penuh'): array
     {
-        $this->execute(
-            'INSERT INTO api_tokens (user_id, token_hash, name, expires_at, created_at) VALUES (?, ?, ?, DATE_ADD(NOW(), INTERVAL ? DAY), NOW())',
-            [$userId, $hash, $name, $ttlDays]
-        );
+        if ($cakupan !== 'penuh') {
+            // PI-1 (migrasi 035): token terbatas hanya bila kolomnya ada.
+            if (!\App\Database\Schema::hasColumn($this->db, 'api_tokens', 'cakupan')) {
+                throw new RuntimeException('Token terbatas belum didukung skema.');
+            }
+            $this->execute(
+                'INSERT INTO api_tokens (user_id, token_hash, name, cakupan, expires_at, created_at) VALUES (?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL ? DAY), NOW())',
+                [$userId, $hash, $name, $cakupan, $ttlDays]
+            );
+        } else {
+            $this->execute(
+                'INSERT INTO api_tokens (user_id, token_hash, name, expires_at, created_at) VALUES (?, ?, ?, DATE_ADD(NOW(), INTERVAL ? DAY), NOW())',
+                [$userId, $hash, $name, $ttlDays]
+            );
+        }
         $id = (int) $this->db->insert_id;
         $row = $this->one('SELECT id, expires_at FROM api_tokens WHERE id = ?', [$id]);
         if ($row === null) {

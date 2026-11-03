@@ -32,6 +32,7 @@ final class AuthService
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['roles'] = $user['roles'];
         $_SESSION['force_password_change'] = $user['force_password_change'];
+        $_SESSION['sesi_versi'] = (int) ($user['sesi_versi'] ?? 0);
 
         // Penanda lama dipertahankan agar modul yang belum dimodernisasi tetap kompatibel.
         $_SESSION['status'] = 'login';

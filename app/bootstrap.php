@@ -183,7 +183,29 @@ function audit_logger(): AuditLogger
 function master_data_service(): MasterDataService
 {
     static $service;
-    return $service ??= new MasterDataService(new MasterDataRepository(app_db()), audit_logger());
+    return $service ??= new MasterDataService(new MasterDataRepository(app_db()), audit_logger(), profil_service());
+}
+
+/**
+ * Profil pengguna (PRD-PROFIL-IMPORT Fase 1): satu pintu baca/ubah profil diri,
+ * foto, ganti password, dan penerapan identitas guru/pengurus untuk web dan API.
+ */
+function profil_service(): \App\Profil\ProfilService
+{
+    static $service;
+    return $service ??= new \App\Profil\ProfilService(
+        new \App\Profil\ProfilRepository(app_db()),
+        new \App\Auth\Capabilities(app_db()),
+        audit_logger(),
+        new \App\Profil\FotoProfilStorage(APP_ROOT . '/storage/private/profil')
+    );
+}
+
+/** Impor Excel identitas Guru dan Pengurus (PRD-PROFIL-IMPORT Fase 1). */
+function impor_personel_service(): \App\Profil\ImporPersonelService
+{
+    static $service;
+    return $service ??= new \App\Profil\ImporPersonelService(new \App\Profil\ProfilRepository(app_db()), profil_service(), audit_logger());
 }
 
 /**

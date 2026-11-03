@@ -48,6 +48,13 @@ final class AuditLogger
                 $before = $before === null ? null : $this->metadataKeamanan($before);
                 $after = $after === null ? null : $this->metadataKeamanan($after);
             }
+            // Profil pengguna dan impor personel (PRD-PROFIL-IMPORT Fase 1): jejak
+            // hanya memuat ID, nama isian yang berubah, versi, dan jumlah — tidak
+            // pernah nilai identitas pribadi, password, atau token.
+            if (str_starts_with($action, 'profil.') || str_starts_with($action, 'impor_personel.')) {
+                $before = $before === null ? null : $this->metadataProfil($before);
+                $after = $after === null ? null : $this->metadataProfil($after);
+            }
             $actorUserId ??= isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
             $beforeJson = $before === null ? null : json_encode($before, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             $afterJson = $after === null ? null : json_encode($after, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -69,6 +76,19 @@ final class AuditLogger
             error_log('Audit log gagal disimpan.');
             return false;
         }
+    }
+
+    private function metadataProfil(array $data): array
+    {
+        $boleh = ['sumber', 'jenis', 'kanal', 'pemilik_id', 'field_berubah', 'versi', 'foto_versi', 'aksi', 'baris', 'ditambah', 'diperbarui',
+            'tidak_berubah', 'dilewati', 'berkas_sha256', 'berkas_ukuran', 'akun_disinkronkan', 'identitas_pengurus_disinkronkan',
+            'token_lain_dicabut', 'perangkat_dicabut', 'sesi_versi', 'wajib_ganti_dilepas'];
+        $hasil = array_intersect_key($data, array_flip($boleh));
+        if (isset($hasil['field_berubah']) && is_array($hasil['field_berubah'])) {
+            $hasil['field_berubah'] = array_values(array_filter($hasil['field_berubah'], static fn ($f): bool => is_string($f) && preg_match('/^[a-z_]{1,30}$/', $f) === 1));
+        }
+
+        return $hasil;
     }
 
     private function metadataBsa(array $data): array
