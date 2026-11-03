@@ -41,7 +41,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = (string) ($_POST['password_baru'] ?? '');
     $confirmation = (string) ($_POST['konfirmasi_password'] ?? '');
 
-    if (!password_verify($currentPassword, $user['password'])) {
+    if (profil_service()->tersedia()) {
+        // PRD-PROFIL-IMPORT PI-2: aturan yang sama dengan aplikasi; sesudah
+        // berhasil, sesi website lain, token aplikasi, dan perangkat push lain
+        // dicabut, sedangkan sesi ini tetap berlaku dengan versi baru.
+        try {
+            $hasil = profil_service()->gantiPassword($user['id'], [
+                'password_saat_ini' => $currentPassword, 'password_baru' => $password, 'konfirmasi_password' => $confirmation,
+            ], ['kanal' => 'web']);
+            $_SESSION['force_password_change'] = false;
+            $_SESSION['sesi_versi'] = $hasil['sesi_versi'];
+            // Jejak lama tetap ditulis agar laporan audit yang ada tidak berubah.
+            audit_logger()->log('password_changed', 'user', $user['id'], null, ['force_password_change' => false], $user['id']);
+            $success = true;
+        } catch (\App\Profil\ProfilException $exception) {
+            $errorField = array_key_first($exception->errors());
+            $error = match ($errorField) {
+                'password_saat_ini' => 'Kata sandi saat ini tidak benar.',
+                'password_baru' => 'Kata sandi baru minimal 12 karakter dan memuat huruf besar, huruf kecil, serta angka.',
+                'konfirmasi_password' => 'Ulangan kata sandi baru tidak sama.',
+                default => $exception->getMessage(),
+            };
+            if ($errorField === 'password_saat_ini') {
+                profil_service()->catatPasswordGagal($user['id'], 'web');
+            }
+        }
+    } elseif (!password_verify($currentPassword, $user['password'])) {
         $error = 'Kata sandi saat ini tidak benar.'; $errorField = 'password_saat_ini';
     } elseif (strlen($password) < 12 || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/\d/', $password)) {
         $error = 'Kata sandi baru minimal 12 karakter dan memuat huruf besar, huruf kecil, serta angka.'; $errorField = 'password_baru';

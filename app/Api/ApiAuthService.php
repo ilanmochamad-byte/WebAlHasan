@@ -48,6 +48,12 @@ final class ApiAuthService
             throw new ApiException('INVALID_CREDENTIALS', 'Username atau password tidak valid.', 401);
         }
         if ($user['force_password_change']) {
+            // PI-1 (aditif): klien yang menyatakan sanggup menangani password
+            // sementara memperoleh token terbatas yang HANYA dapat mengganti
+            // password dan logout. Klien lama tetap menerima 403 seperti dulu.
+            if (($input['izinkan_password_sementara'] ?? false) === true && $this->tokenTerbatasTersedia()) {
+                return $this->loginTerbatas($user, $deviceName);
+            }
             throw new ApiException('PASSWORD_CHANGE_REQUIRED', 'Password sementara harus diubah melalui website sebelum aplikasi dapat digunakan.', 403);
         }
 
@@ -78,6 +84,37 @@ final class ApiAuthService
             'token_type' => 'Bearer',
             'expires_at' => $expiresAt->format(DATE_ATOM),
             'profile' => $profile,
+        ];
+    }
+
+    private function tokenTerbatasTersedia(): bool
+    {
+        return profil_service()->tersedia();
+    }
+
+    /**
+     * Token `ganti_password` untuk pemegang password sementara (PI-1). Respons
+     * tidak memuat capability/menu; profil hanya identitas minimum.
+     *
+     * @param array<string, mixed> $user
+     * @return array<string, mixed>
+     */
+    private function loginTerbatas(array $user, string $deviceName): array
+    {
+        $plainToken = bin2hex(random_bytes(32));
+        $token = $this->repository->createToken((int) $user['id'], $this->hasher->hash($plainToken), $deviceName, 1, 'ganti_password');
+        $this->audit->log('api.login_password_sementara', 'user', (int) $user['id'], null, [
+            'device_name' => $deviceName, 'expires_at' => $token['expires_at'], 'cakupan' => 'ganti_password',
+        ], (int) $user['id']);
+        $expiresAt = new DateTimeImmutable($token['expires_at'], new DateTimeZone($this->timezone));
+
+        return [
+            'token' => $plainToken,
+            'token_type' => 'Bearer',
+            'expires_at' => $expiresAt->format(DATE_ATOM),
+            'password_change_required' => true,
+            'token_scope' => 'ganti_password',
+            'profile' => ['id' => (int) $user['id'], 'name' => (string) $user['name'], 'username' => (string) $user['username']],
         ];
     }
 

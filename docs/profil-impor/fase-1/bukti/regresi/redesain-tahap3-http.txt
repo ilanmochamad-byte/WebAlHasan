@@ -1,0 +1,188 @@
+
+=== H3-A. Akses, kerangka, dan menu ===
+[lulus] /admin/admin_notifikasi.php: 200 di kerangka bersama, satu h1, tanpa sidebar lama
+[lulus] /admin/admin_notifikasi.php: menu aktif Kanal notifikasi
+[lulus] /admin/admin_notifikasi.php: tanpa alert() dan DataTables
+[lulus] /admin/admin_notifikasi.php: pengurus dan guru ditolak 403
+[lulus] /admin/admin_notifikasi.php: tanpa sesi ke halaman masuk
+[lulus] /admin/admin_dashboard.php: 200 di kerangka bersama, satu h1, tanpa sidebar lama
+[lulus] /admin/admin_dashboard.php: menu aktif Beranda › tab Ringkasan administrasi
+[lulus] /admin/admin_dashboard.php: tanpa alert() dan DataTables
+[lulus] /admin/admin_dashboard.php: pengurus dan guru ditolak 403
+[lulus] /admin/admin_dashboard.php: tanpa sesi ke halaman masuk
+[lulus] /admin/admin_pelanggaran.php: 200 di kerangka bersama, satu h1, tanpa sidebar lama
+[lulus] /admin/admin_pelanggaran.php: menu aktif Data sistem lama
+[lulus] /admin/admin_pelanggaran.php: tanpa alert() dan DataTables
+[lulus] /admin/admin_pelanggaran.php: pengurus dan guru ditolak 403
+[lulus] /admin/admin_pelanggaran.php: tanpa sesi ke halaman masuk
+[lulus] /admin/admin_data.php: 200 di kerangka bersama, satu h1, tanpa sidebar lama
+[lulus] /admin/admin_data.php: menu aktif Pendaftar
+[lulus] /admin/admin_data.php: tanpa alert() dan DataTables
+[lulus] /admin/admin_data.php: pengurus dan guru ditolak 403
+[lulus] /admin/admin_data.php: tanpa sesi ke halaman masuk
+[lulus] /admin/admin_pembayaran_psb.php: 200 di kerangka bersama, satu h1, tanpa sidebar lama
+[lulus] /admin/admin_pembayaran_psb.php: menu aktif Pembayaran
+[lulus] /admin/admin_pembayaran_psb.php: tanpa alert() dan DataTables
+[lulus] /admin/admin_pembayaran_psb.php: pengurus dan guru ditolak 403
+[lulus] /admin/admin_pembayaran_psb.php: tanpa sesi ke halaman masuk
+[lulus] /admin/admin_rekap_keuangan.php: 200 di kerangka bersama, satu h1, tanpa sidebar lama
+[lulus] /admin/admin_rekap_keuangan.php: menu aktif Rekap keuangan
+[lulus] /admin/admin_rekap_keuangan.php: tanpa alert() dan DataTables
+[lulus] /admin/admin_rekap_keuangan.php: pengurus dan guru ditolak 403
+[lulus] /admin/admin_rekap_keuangan.php: tanpa sesi ke halaman masuk
+[lulus] /admin/admin_rekap_santri.php: 200 di kerangka bersama, satu h1, tanpa sidebar lama
+[lulus] /admin/admin_rekap_santri.php: menu aktif Data santri › tab Rekap jumlah
+[lulus] /admin/admin_rekap_santri.php: tanpa alert() dan DataTables
+[lulus] /admin/admin_rekap_santri.php: pengurus dan guru ditolak 403
+[lulus] /admin/admin_rekap_santri.php: tanpa sesi ke halaman masuk
+[lulus] /admin/admin_berita.php: 200 di kerangka bersama, satu h1, tanpa sidebar lama
+[lulus] /admin/admin_berita.php: menu aktif Konten website › tab Berita
+[lulus] /admin/admin_berita.php: tanpa alert() dan DataTables
+[lulus] /admin/admin_berita.php: pengurus dan guru ditolak 403
+[lulus] /admin/admin_berita.php: tanpa sesi ke halaman masuk
+[lulus] /admin/tambah_berita.php: 200 di kerangka bersama, satu h1, tanpa sidebar lama
+[lulus] /admin/tambah_berita.php: menu aktif Konten website › tab Berita
+[lulus] /admin/tambah_berita.php: tanpa alert() dan DataTables
+[lulus] /admin/tambah_berita.php: pengurus dan guru ditolak 403
+[lulus] /admin/tambah_berita.php: tanpa sesi ke halaman masuk
+[lulus] /admin/admin_galeri.php: 200 di kerangka bersama, satu h1, tanpa sidebar lama
+[lulus] /admin/admin_galeri.php: menu aktif Konten website › tab Galeri
+[lulus] /admin/admin_galeri.php: tanpa alert() dan DataTables
+[lulus] /admin/admin_galeri.php: pengurus dan guru ditolak 403
+[lulus] /admin/admin_galeri.php: tanpa sesi ke halaman masuk
+[lulus] /admin/admin_download.php: 200 di kerangka bersama, satu h1, tanpa sidebar lama
+[lulus] /admin/admin_download.php: menu aktif Konten website › tab Unduhan
+[lulus] /admin/admin_download.php: tanpa alert() dan DataTables
+[lulus] /admin/admin_download.php: pengurus dan guru ditolak 403
+[lulus] /admin/admin_download.php: tanpa sesi ke halaman masuk
+[lulus] /admin/export_psb.php: ekspor ditolak untuk pengurus
+[lulus] /admin/export_pembayaran.php: ekspor ditolak untuk pengurus
+[lulus] /admin/admin_rekap_keuangan.php?unduh=1: ekspor ditolak untuk pengurus
+[lulus] /admin/admin_rekap_santri.php?unduh=1: ekspor ditolak untuk pengurus
+
+=== H3-B. N-2 Kanal notifikasi ===
+[lulus] N-2 tab Kanal · Pengiriman gagal · Riwayat
+[lulus] AL kartu WhatsApp Ditangguhkan: tanpa Nyalakan, Kirim uji, worker; Periksa konfigurasi di ⋯
+[lulus] N-2 hanya NAMA environment yang ditampilkan
+[lulus] N-2 kanal dalam aplikasi selalu aktif dengan satu tombol utama
+[lulus] AL panel menolak sakelar WhatsApp; kanal tetap mati, tidak ada pesan
+[lulus] AL panel menolak pesan_uji WhatsApp; kanal tetap mati, tidak ada pesan
+[lulus] AL panel menolak worker WhatsApp; kanal tetap mati, tidak ada pesan
+[lulus] AL layanan menolak menyalakan WhatsApp walau pemeriksaan Lulus (409)
+[lulus] N-2 Matikan Push memakai dialog konfirmasi (bila Push aktif)
+[lulus] N-2 pengiriman gagal 20 baris/halaman dari 26
+[lulus] N-2 coba ulang per baris dan massal
+[lulus] N-2 saringan kanal pengiriman gagal
+[lulus] N-2 proses massal (JSON) menolak coba ulang WhatsApp Ditangguhkan dengan alasan, baris tetap Failed
+[lulus] F-1 baris WhatsApp di Pengiriman gagal tanpa kotak pilih dan tanpa Coba ulang
+[lulus] F-1 dispatcher/cron: sakelar lama aktif, 8 antrean, nol send, antrean utuh
+[lulus] F-1 uji coba tanpa kirim tetap tersedia dan tidak mengubah antrean
+[lulus] F-1 layanan (panel/API) menolak worker WhatsApp yang mengirim (409)
+[lulus] F-1 percobaan ulang WhatsApp ditolak 409; status dan percobaan tetap
+[lulus] F-1 regresi: worker Push uji coba tetap berjalan lewat layanan
+[lulus] F-1 fixture sakelar lama dipulihkan (rollback)
+[lulus] N-2 riwayat berhalaman (25 catatan)
+[lulus] N-2 riwayat halaman 2 terbuka
+
+=== H3-C. N-4 Ringkasan administrasi ===
+[lulus] N-4 tema PSB: total pendaftar = basis data, dua grafik
+[lulus] N-4 unit dikelompokkan, status lengkap termasuk Dimigrasi
+[lulus] N-4 tema Santri & asrama: santri aktif (bukan semua baris), hunian, tautan penempatan
+[lulus] N-4 tema Kegiatan: kehadiran 10 pekan, izin, laporan
+[lulus] N-4 grafik dari server tanpa Chart.js
+
+=== H3-D. N-5 Data sistem lama ===
+[lulus] N-5 baca-saja, rujukan ke Pembinaan, isi di-escape
+[lulus] N-5 25 baris per halaman
+[lulus] N-5 saringan tahun = basis data
+[lulus] N-5 cari santri (6 cocok)
+[lulus] N-5 masukan pencarian tidak memengaruhi SQL
+[lulus] N-5 hapus/catat lama tetap 405
+
+=== H3-E. K-5 Pendaftar PSB ===
+[lulus] K-5 chip status = basis data (Semua = belum dimigrasi)
+[lulus] K-5 20 baris per halaman
+[lulus] K-5 halaman 2 berisi sisanya
+[lulus] K-5 saringan status + L/P
+[lulus] K-5 cari + unit tujuan
+[lulus] K-5 masukan saringan tidak memengaruhi SQL
+[lulus] K-5 nama di-escape
+[lulus] K-5 panel detail dengan Biodata · Berkas · Riwayat
+[gagal] AG panel berkas tanpa pratinjau gambar
+[lulus] K-5 keputusan Terima/Cadangan/Tolak di panel; Tolak memakai dialog
+[lulus] K-5 hapus pendaftar di ⋯ dengan ketik nama
+[lulus] K-5 ubah status → pesan di halaman, saringan dipertahankan (kunci asing dibuang)
+[lulus] K-5 migrasi → satu santri baru, pesan NIS (bukan alert)
+[lulus] K-5 tambah tidak valid: pesan per isian, isian dipertahankan, tidak tersimpan
+[lulus] K-5 tambah valid: status Baru, NISN sementara TMP…, nomor PSB…, panel pendaftar baru
+[lulus] K-5 NISN ganda ditolak dengan pesan
+[lulus] K-5 impor langkah Periksa: 2 siap, 4 dilewati beserta alasan, BELUM tersimpan
+[lulus] K-5 impor langkah Simpan: 2 tersimpan, ringkasan sebagai pesan
+[lulus] K-5 token impor sekali pakai: kirim ulang tidak menambah data
+[lulus] K-5 impor menolak berkas bukan .xlsx
+[lulus] K-5 ekspor .xlsx dibuat server
+[lulus] K-5 ekspor mengikuti saringan (Baru) dan judul kolom lama
+[lulus] K-5 ekspor kosong → pesan, bukan alert
+[lulus] K-5 hapus → daftar dengan saringan, data terhapus
+
+=== H3-F. K-6 Pembayaran, K-7 Rekap keuangan, K-8 Rekap santri ===
+[lulus] K-6 ringkasan = basis data
+[lulus] K-6 berhalaman 20 dengan tombol Rincian
+[lulus] K-6 chip Belum lunas (alamat Beranda lama tetap)
+[lulus] K-6 panel rincian dengan Tandai lunas (dialog)
+[lulus] K-6 tandai lunas → pesan, tersimpan
+[lulus] F-2 batal lunas tanpa alasan ditolak sebelum UPDATE; status/waktu/audit tetap; formulir alasan tanpa JavaScript dibuka
+[lulus] F-2 batal lunas alasan spasi ditolak sebelum UPDATE; status/waktu/audit tetap; formulir alasan tanpa JavaScript dibuka
+[lulus] F-2 batal lunas alasan > 500 ditolak sebelum UPDATE; status/waktu/audit tetap; formulir alasan tanpa JavaScript dibuka
+[lulus] K-6 batal lunas dengan alasan tercatat di audit
+[lulus] K-6 batal lunas di ⋯ meminta alasan
+[lulus] K-6 ekspor Excel dari server
+[lulus] K-7 total rekap lunas = basis data; matriks + lipatan HP
+[lulus] K-7 segmen Belum lunas
+[lulus] K-7 ekspor Excel dari server
+[lulus] K-8 tabel dengan total dan dua grafik
+[lulus] K-8 unduh Excel dari server
+
+=== H3-G. W-1 s.d. W-4 Konten website ===
+[lulus] W-1 20 berita per halaman, judul di-escape
+[lulus] W-1 menu ⋯ Ubah, Lihat di situs, Hapus (dialog menyebut judul)
+[lulus] W-1 cari judul
+[lulus] W-1 saringan bulan
+[lulus] W-2 tulis tanpa judul/sampul: pesan per isian, isi dipertahankan
+[lulus] W-2 sampul sampul.jpg ditolak (bukan gambar), tidak ada berkas tersimpan
+[lulus] W-2 sampul sampul.php ditolak (jenis berkas tidak didukung), tidak ada berkas tersimpan
+[lulus] W-2 tulis berita: tersimpan dengan sampul di folder gambar/, nama berkas tanpa jalur, langsung tampil
+[lulus] W-2 ubah berita di kerangka admin dengan Pratinjau dan Simpan & tampilkan
+[lulus] W-2 ubah teks tanpa mengganti sampul; gbr_lama dari permintaan diabaikan
+[lulus] W-2 berita tidak ada → kembali ke daftar dengan pesan
+[lulus] W-2 GET ke pemroses berita ditolak 405
+[lulus] W-3 kisi 24 foto per halaman, unggah beberapa foto dengan zona tarik
+[lulus] W-3 dua foto jadi dua baris (judul dari nama berkas), berkas .php ditolak
+[lulus] W-3 klik foto membuka panel ubah/hapus
+[lulus] W-3 ubah judul dan keterangan
+[lulus] W-3 hapus foto: baris dan berkas terhapus
+[lulus] W-3 hapus foto: baris dan berkas terhapus
+[lulus] W-4 20 dokumen per halaman dengan kolom jenis
+[lulus] W-4 unggah dokumen PDF tersimpan
+[lulus] W-4 jenis berkas berbahaya ditolak, panel unggah dibuka lagi dengan pesan
+[lulus] W-4 cari judul, ukuran berkas tampil
+[lulus] W-4 hapus dokumen menghapus berkasnya
+
+=== H3-H. Keadaan kosong ===
+[lulus] Kosong /admin/admin_data.php: "Tidak ada pendaftar yang cocok"
+[lulus] Kosong /admin/admin_pembayaran_psb.php: "Tidak ada tagihan yang cocok"
+[lulus] Kosong /admin/admin_rekap_keuangan.php: "Belum ada angka untuk"
+[lulus] Kosong /admin/admin_berita.php: "Belum ada berita"
+[lulus] Kosong /admin/admin_galeri.php: "Belum ada foto"
+[lulus] Kosong /admin/admin_download.php: "Belum ada dokumen"
+[lulus] Kosong /admin/admin_pelanggaran.php: "Belum ada data warisan"
+[lulus] Kosong /admin/admin_notifikasi.php?tab=gagal: "Tidak ada pengiriman gagal"
+[lulus] Kosong /admin/admin_notifikasi.php?tab=riwayat: "Belum ada perubahan kanal"
+[lulus] Kosong /admin/admin_dashboard.php: "Belum ada pendaftar."
+
+=== H3-I. Log server ===
+[lulus] Server 8952 tanpa galat/peringatan PHP
+[lulus] Server 8953 tanpa galat/peringatan PHP
+
+Ringkasan: 166 lulus, 1 gagal
+  - AG panel berkas tanpa pratinjau gambar

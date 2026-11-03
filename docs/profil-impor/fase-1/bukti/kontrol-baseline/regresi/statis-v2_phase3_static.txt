@@ -1,0 +1,117 @@
+
+=== 1. Kompatibilitas kontrak API V1 ===
+[lulus] Rute V1 dipertahankan: '/auth/login'
+[lulus] Rute V1 dipertahankan: '/profile'
+[lulus] Rute V1 dipertahankan: '/auth/logout'
+[lulus] Rute V1 dipertahankan: '/schedules/today'
+[lulus] Rute V1 dipertahankan: '/schedules'
+[lulus] Rute V1 dipertahankan: '/meetings'
+[lulus] Rute V1 dipertahankan: '/reports'
+[lulus] Rute V1 dipertahankan: '/reports/filters'
+[lulus] Rute V1 dipertahankan: '/reports/print'
+[lulus] Rute V1 dipertahankan: #^/schedules/(\d+)$#
+[lulus] Rute V1 dipertahankan: #^/schedules/(\d+)/meetings$#
+[lulus] Rute V1 dipertahankan: #^/meetings/(\d+)(?:/attendance)?$#
+[lulus] Rute V1 dipertahankan: #^/meetings/(\d+)/attendance$#
+[lulus] Rute V1 dipertahankan: #^/reports/meetings/(\d+)$#
+[lulus] Seluruh endpoint jadwal/laporan V1 tetap memakai penjaga role admin/guru
+[lulus] Method V1 requireScheduleAccess() tetap tersedia untuk pemanggil lama
+[lulus] Envelope JSON V1 tidak diubah
+[lulus] Field profil V1 'id' => dipertahankan
+[lulus] Field profil V1 'name' => dipertahankan
+[lulus] Field profil V1 'username' => dipertahankan
+[lulus] Field profil V1 'guru' => dipertahankan
+[lulus] Field profil V1 'roles' => dipertahankan
+[lulus] Profil menambahkan capability secara aditif
+
+=== 2. Endpoint Fase 3 ===
+[lulus] Endpoint akun dan capability terpasang ('/me/capabilities')
+[lulus] Endpoint daftar santri dalam cakupan pengurus terpasang ('/izin/santri')
+[lulus] Endpoint pembuatan dan daftar pengajuan terpasang ('/izin/pengajuan')
+[lulus] Endpoint detail pengajuan terpasang (#^/izin/pengajuan/(\d+)$#)
+[lulus] Endpoint antrean murobi dan admin terpasang ('/izin/antrean')
+[lulus] Endpoint pemantauan admin terpasang ('/izin/admin/monitor')
+[lulus] Endpoint routing murobi terpasang (#^/izin/pengajuan/(\d+)/routing$#)
+[lulus] Endpoint penetapan murobi oleh admin terpasang (#^/izin/pengajuan/(\d+)/penetapan-murobi$#)
+[lulus] Endpoint keputusan murobi dan Admin Pengganti terpasang (#^/izin/pengajuan/(\d+)/keputusan$#)
+[lulus] Endpoint pembatalan pengajuan terpasang (#^/izin/pengajuan/(\d+)/pembatalan$#)
+[lulus] Endpoint koreksi keputusan terpasang (#^/izin/pengajuan/(\d+)/koreksi$#)
+[lulus] Endpoint riwayat perubahan terpasang (#^/izin/pengajuan/(\d+)/riwayat$#)
+[lulus] Endpoint status orang tua terpasang ('/izin/anak')
+[lulus] Endpoint pilihan filter terpasang ('/izin/filters')
+[lulus] Router tidak memanggil layanan domain langsung; seluruh akses lewat IzinApiService
+[lulus] bootstrap menyediakan izin_api_service()
+
+=== 3. Otorisasi dan idempotensi ===
+[lulus] `mode` dari request hanya boleh mempersempit, tidak pernah menaikkan cakupan
+[lulus] Seluruh operasi API perizinan melewati penerjemah error tunggal
+[lulus] Pemetaan status HTTP memuat 403 => 'FORBIDDEN'
+[lulus] Pemetaan status HTTP memuat 404 => 'NOT_FOUND'
+[lulus] Pemetaan status HTTP memuat 409 => 'CONFLICT'
+[lulus] Pemetaan status HTTP memuat 'VALIDATION_FAILED'
+[lulus] Mutasi create() meneruskan idempotency key ke lapisan domain
+[lulus] Mutasi decide() meneruskan idempotency key ke lapisan domain
+[lulus] Mutasi assign() meneruskan idempotency key ke lapisan domain
+[lulus] Mutasi cancel() meneruskan idempotency key ke lapisan domain
+[lulus] Mutasi correct() meneruskan idempotency key ke lapisan domain
+[lulus] Retry create/keputusan membalas 200 (pemutaran ulang), bukan 201 baru
+[lulus] Lapisan API tidak pernah menulis langsung ke basis data
+[lulus] Capability murobi tetap berasal dari penugasan aktif, bukan role terpisah
+[lulus] Login pengurus/orang tua hanya diizinkan bila relasi masternya aktif
+[lulus] Aturan login admin dan guru V1 tidak berubah
+
+=== 4. Batas ruang lingkup modul Fase 3 ===
+[lulus] Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: app/Api/IzinApiService.php
+[lulus] Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: app/Api/ApiAuthService.php
+[lulus] Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: app/Api/ApiAuthRepository.php
+[lulus] Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: app/Auth/ApiTokenAuthenticator.php
+[lulus] Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: bin/v2_phase3_sandbox_seed.php
+[lulus] Modul Fase 3 tetap bersih dari logika notifikasi Fase 4: tests/v2_phase3_api_contract.php
+[lulus] Fase 3 tidak menambah migrasi skema (seluruh tabel sudah ada sejak Fase 1–2)
+[lulus] Fase 3 sendiri tidak menambah migrasi; migrasi lain (008 Fase 4, 009 Fase 5, 010 perapihan, 011 alumni, 012 fondasi penugasan) sah
+[lulus] Migrasi 008 Fase 4 memiliki pasangan rollback
+[lulus] Setiap migrasi tetap memiliki satu berkas rollback
+[lulus] Migrasi 009 Fase 5 memiliki pasangan rollback
+[lulus] Endpoint Fase 3 tetap utuh dan endpoint laporan Fase 5 bersifat aditif
+
+=== 5. Kebersihan repositori ===
+[lulus] Seed fixture hanya dapat dijalankan dari CLI
+[lulus] Seed fixture menolak database selain *_test
+[lulus] Seed fixture memerlukan penanda lingkungan eksplisit
+[lulus] Fixture memakai data sintetis berawalan SBX dan tidak menyentuh dump produksi
+[lulus] Pengujian API menolak berjalan di luar database *_test
+[lulus] .env.example tidak memuat nilai secret sesungguhnya
+[lulus] Tidak ada password tertanam pada app/Api/IzinApiService.php
+[lulus] Tidak ada password tertanam pada api/v1/index.php
+[lulus] Tidak ada password tertanam pada tests/v2_phase3_api_contract.php
+
+=== 6. Aplikasi Expo ===
+[gagal] MOBILE_APP_ROOT tidak ditemukan: /private/tmp/claude-501/alhasanApps
+
+=== 7. Dokumentasi Fase 3 ===
+[lulus] Dokumentasi tersedia: docs/api-v1.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/endpoint-inventory.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/capability-matrix.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/testing-sandbox.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/acceptance-status.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/cpanel-deployment.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/mobile-build-and-smoke-test.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-3/migration-and-rollback.md
+[lulus] Kontrak API terdokumentasi memuat endpoint perizinan Fase 3
+
+=== 8. php -l ===
+[lulus] php -l lulus: api/v1/index.php
+[lulus] php -l lulus: app/Api/IzinApiService.php
+[lulus] php -l lulus: app/Api/ApiAuthService.php
+[lulus] php -l lulus: app/Api/ApiAuthRepository.php
+[lulus] php -l lulus: app/Auth/ApiTokenAuthenticator.php
+[lulus] php -l lulus: app/bootstrap.php
+[lulus] php -l lulus: portal/_ui.php
+[lulus] php -l lulus: bin/v2_phase3_sandbox_seed.php
+[lulus] php -l lulus: tests/v2_phase3_api_contract.php
+[lulus] php -l lulus: tests/v2_phase3_concurrency_worker.php
+[lulus] php -l lulus: tests/v2_phase3_router.php
+[lulus] php -l lulus: tests/v2_phase3_static.php
+
+GAGAL (1):
+ - MOBILE_APP_ROOT tidak ditemukan: /private/tmp/claude-501/alhasanApps

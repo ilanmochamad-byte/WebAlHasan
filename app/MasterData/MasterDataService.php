@@ -9,7 +9,12 @@ use Throwable;
 
 final class MasterDataService
 {
-    public function __construct(private MasterDataRepository $repository, private AuditLogger $audit)
+    /**
+     * `$profil` (PRD-PROFIL-IMPORT Fase 1, aditif): identitas pribadi guru/
+     * pengurus (NIK, tempat/tanggal lahir, alamat berjenjang, email) dan
+     * penyamaan nama/HP/email akun terhubung. Null/belum dipasang → perilaku lama.
+     */
+    public function __construct(private MasterDataRepository $repository, private AuditLogger $audit, private ?\App\Profil\ProfilService $profil = null)
     {
     }
 
@@ -66,22 +71,84 @@ final class MasterDataService
         $this->maxLength($data['nama_guru'], 100, 'Nama guru', $errors);
         $this->phone($data['no_hp'], $errors);
         $this->maxLength($data['no_hp'], 15, 'Nomor HP guru', $errors);
+        $pribadi = $this->pribadiFormulir($input, $errors, true);
         $this->reject($errors);
 
         if ($id === null) {
             $data['status'] = 'Guru';
-            $id = $this->repository->guruCreate($data);
-            $this->audit->log('master.create', 'guru', $id, null, $data);
-            return $id;
+            return $this->repository->transaction(function () use ($data, $pribadi): int {
+                $id = $this->repository->guruCreate($data);
+                $this->audit->log('master.create', 'guru', $id, null, $data);
+                $this->terapkanPribadi('guru', $id, $pribadi);
+                return $id;
+            });
         }
         $before = $this->mustFind($this->repository->guruFind($id), 'Guru');
         // PK-1: identitas pengurus milik guru ikut berubah di transaksi yang sama.
-        $this->repository->transaction(function () use ($id, $data, $before): void {
+        // Profil (aditif): nama/HP/NIP disamakan ke akun terhubung lebih dulu,
+        // lalu baris guru ditulis ulang dengan nilai yang sama seperti sebelumnya.
+        $this->repository->transaction(function () use ($id, $data, $before, $pribadi): void {
+            $this->terapkanPribadi('guru', $id, $pribadi + ['nama' => $data['nama_guru'], 'nip' => $data['nip'] ?: null, 'no_hp' => $data['no_hp'] ?: null]);
             $this->repository->guruUpdate($id, $data);
             $this->audit->log('master.update', 'guru', $id, $before, $this->repository->guruFind($id));
             $this->sinkronIdentitasGuru($id);
         });
         return $id;
+    }
+
+    /**
+     * Isian identitas pribadi tambahan dari formulir admin (PRD-PROFIL-IMPORT).
+     * Hanya dibaca bila fitur profil terpasang DAN formulir mengirim isiannya,
+     * sehingga pemanggil lama tidak berubah perilaku.
+     *
+     * @return array<string, ?string>
+     */
+    private function pribadiFormulir(array $input, array &$errors, bool $guru): array
+    {
+        if ($this->profil === null || !$this->profil->tersedia()) {
+            return [];
+        }
+        $fields = array_values(array_filter(array_merge(['nik'], \App\Profil\ProfilData::TAMBAHAN), static fn (string $f): bool => array_key_exists($f, $input)));
+        if ($fields === []) {
+            return [];
+        }
+        [$data, $galat] = \App\Profil\ProfilData::normalisasi($input, $fields, ['latin1_nama' => $guru]);
+        foreach ($galat as $pesan) {
+            $errors[] = $pesan;
+        }
+
+        return $data;
+    }
+
+    /** Menerapkan identitas pribadi di dalam transaksi pemanggil. */
+    private function terapkanPribadi(string $jenis, int $id, array $data): void
+    {
+        if ($this->profil === null || !$this->profil->tersedia() || $data === []) {
+            return;
+        }
+        $aktor = isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
+        try {
+            $hasil = $this->profil->terapkanIdentitas($jenis, $id, $data, $aktor);
+        } catch (\App\Profil\ProfilException $exception) {
+            throw new MasterDataException($exception->getMessage(), array_values($exception->errors()));
+        }
+        $tambahan = array_values(array_diff($hasil['berubah'], ['nama', 'nip', 'no_hp']));
+        if (($tambahan !== [] || $hasil['akun_disinkronkan'] > 0) && !$this->audit->log('profil.ubah_admin', $jenis, $id, null, [
+            'jenis' => $jenis, 'pemilik_id' => $id, 'field_berubah' => $hasil['berubah'], 'versi' => $hasil['versi'], 'akun_disinkronkan' => $hasil['akun_disinkronkan'],
+        ], $aktor)) {
+            throw new MasterDataException('Perubahan dibatalkan karena audit tidak dapat disimpan. Silakan coba lagi.');
+        }
+    }
+
+    /** Identitas pribadi tambahan untuk panel admin (kosong bila belum dipasang). */
+    public function profilPribadi(string $jenis, int $id): array
+    {
+        return $this->profil === null ? [] : $this->profil->profilMaster($jenis, $id);
+    }
+
+    public function profilTersedia(): bool
+    {
+        return $this->profil !== null && $this->profil->tersedia();
     }
 
     /**
@@ -626,11 +693,19 @@ final class MasterDataService
             );
         }
 
-        $this->repository->waliUpdate($id, $data);
-        $this->audit->log('master.update', 'wali', $id, $before, [
-            'sesudah' => $this->repository->waliFind($id),
-            'santri_terdampak' => array_map(static fn (array $r): int => (int) $r['santri_id'], $terdampak),
-        ]);
+        $this->repository->transaction(function () use ($id, $data, $before, $terdampak): void {
+            $this->repository->waliUpdate($id, $data);
+            $this->audit->log('master.update', 'wali', $id, $before, [
+                'sesudah' => $this->repository->waliFind($id),
+                'santri_terdampak' => array_map(static fn (array $r): int => (int) $r['santri_id'], $terdampak),
+            ]);
+            // Profil (aditif): nama/HP akun orang tua mengikuti identitas wali.
+            try {
+                $this->profil?->sinkronAkunWali($id, isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null);
+            } catch (\App\Profil\ProfilException $exception) {
+                throw new MasterDataException($exception->getMessage());
+            }
+        });
         return $id;
     }
 
@@ -866,16 +941,23 @@ final class MasterDataService
         $this->required($data['jabatan'], 'Jabatan wajib diisi.', $errors);
         $this->maxLength($data['nama'], 100, 'Nama pengurus', $errors);
         $this->maxLength($data['jabatan'], 100, 'Jabatan', $errors);
+        $pribadi = $this->pribadiFormulir($input, $errors, false);
         $this->reject($errors);
         if ($id === null) {
-            $id = $this->repository->pengurusCreate($data);
-            $this->audit->log('master.create', 'pengurus', $id, null, $data);
-            return $id;
+            return $this->repository->transaction(function () use ($data, $pribadi): int {
+                $id = $this->repository->pengurusCreate($data);
+                $this->audit->log('master.create', 'pengurus', $id, null, $data);
+                $this->terapkanPribadi('pengurus', $id, $pribadi);
+                return $id;
+            });
         }
         $before = $this->mustFind($this->repository->pengurusFind($id), 'Pengurus');
         $this->tolakIdentitasGuru($before);
-        $this->repository->pengurusUpdate($id, $data);
-        $this->audit->log('master.update', 'pengurus', $id, $before, $this->repository->pengurusFind($id));
+        $this->repository->transaction(function () use ($id, $data, $before, $pribadi): void {
+            $this->terapkanPribadi('pengurus', $id, $pribadi + ['nama' => $data['nama'], 'nip' => $data['nomor_identitas'] ?: null, 'no_hp' => $data['no_hp'] ?: null]);
+            $this->repository->pengurusUpdate($id, $data);
+            $this->audit->log('master.update', 'pengurus', $id, $before, $this->repository->pengurusFind($id));
+        });
         return $id;
     }
 

@@ -1,0 +1,91 @@
+=== S-1. Migrasi 026 ===
+[gagal] Migrasi 026 berurutan setelah 025 (migrasi terakhir yang ada)
+[lulus] Migrasi aditif: 4 CREATE TABLE IF NOT EXISTS, tanpa DROP/ALTER/DML
+[lulus] Tabel kesehatan_ringkasan dibuat dan dilepas rollback berpasangan
+[lulus] Tabel kesehatan_ringkasan_versi dibuat dan dilepas rollback berpasangan
+[lulus] Tabel kesehatan_ringkasan_peristiwa dibuat dan dilepas rollback berpasangan
+[lulus] Tabel kesehatan_ringkasan_penerima dibuat dan dilepas rollback berpasangan
+[lulus] Rollback hanya melepas 4 tabel 026 (024–025 dan notifikasi tetap), urut anak → induk
+[lulus] Tanpa tabel/kolom notifikasi baru: outbox V2 dipakai ulang
+[lulus] Satu kepala per kunjungan; versi unik; snapshot menunjuk versi kunjungan sumber (FK gabungan)
+[lulus] Peristiwa terkait satu klaim idempotensi; Ganti/Tarik wajib alasan (CHECK)
+[lulus] CHECK kepala: Terbit = versi terakhir berlaku, Ditarik tanpa versi berlaku, revisi monoton
+[lulus] 14 kunci asing nyata (kunjungan, santri, versi gabungan, idempotensi, users, wali)
+[lulus] Tabel ringkasan tidak memiliki kolom klinis (keluhan, catatan, obat, rujukan, tindak lanjut internal)
+
+=== S-2. Layanan publikasi ===
+[lulus] Urutan terbit: hak → konfirmasi → hash pratinjau → penugasan → klaim → replay → kunci kunjungan → Tercatat/versi → santri aktif → kepala/revisi → alasan → versi → penerima → peristiwa → outbox → idempotensi → audit
+[lulus] Penggantian: versi lama menjadi Diganti, kepala menunjuk versi baru
+[lulus] Penarikan: alasan wajib, berurutan dengan kunci, snapshot tetap, tanpa notifikasi baru
+[lulus] Pratinjau: hanya petugas, tanpa menulis apa pun, menghasilkan hash yang wajib dibawa penerbitan
+[lulus] Pratinjau, versi berlaku internal, dan detail wali memakai satu proyeksi yang sama
+[lulus] Snapshot versi tidak pernah diperbarui teksnya (satu-satunya UPDATE: status + waktu berakhir)
+[lulus] Tanpa DELETE ringkasan/versi/peristiwa
+[lulus] Kepala berpenjaga revisi (optimistic) + kunci tulis
+[lulus] terbitkan(): hanya petugas (wajibCatat) sebelum apa pun
+[lulus] tarik(): hanya petugas (wajibCatat) sebelum apa pun
+[lulus] pratinjau(): hanya petugas (wajibCatat) sebelum apa pun
+[lulus] Admin dan pembaca binaan ditolak menerbitkan; catat = petugas saja
+[lulus] Penggantian/penerbitan ulang wajib alasan ≥ 5 karakter
+
+=== S-3. Proyeksi wali ===
+[lulus] Kueri proyeksi wali tidak menyentuh tabel klinis mana pun
+[lulus] Relasi wali aktif per baris: wu.is_active = 1
+[lulus] Relasi wali aktif per baris: ww.is_active = 1 AND ww.archived_at IS NULL
+[lulus] Relasi wali aktif per baris: s.is_active = 1 AND s.archived_at IS NULL
+[lulus] Relasi wali aktif per baris: wsw.archived_at IS NULL
+[lulus] Relasi wali aktif per baris: wr.slug = 'orang_tua'
+[lulus] Detail dan daftar wali memakai syarat relasi yang sama (ID tebakan tetap tersaring)
+[lulus] Teks ringkasan ditarik tidak dikembalikan SQL
+[lulus] Detail wali: akun wali aktif, tidak berhak = 403, pembukaan tercatat (metadata)
+[lulus] Proyeksi wali tanpa kolom klinis, nama petugas, atau alasan
+
+=== S-4. Notifikasi ===
+[lulus] InApp selalu; Push hanya bila sakelar menyala dan ada perangkat aktif; WhatsApp tidak pernah diantrekan
+[lulus] Outbox gagal ditulis → publikasi dibatalkan (bukan hilang diam-diam)
+[lulus] Data notifikasi hanya penunjuk {tipe, ringkasan_id}
+[lulus] Teks notifikasi berupa kalimat tetap tanpa variabel data (nama/isi) maupun kata klinis
+[lulus] Kunci peristiwa deterministik per ringkasan × versi (deduplikasi outbox)
+[lulus] Worker Push: memeriksa ulang status/versi/relasi wali sebelum provider; teks dirakit ulang dari katalog
+[lulus] Payload Push V5 hanya {tipe, ringkasan_id}
+[lulus] Pusat notifikasi: kategori Kesehatan dan penunjuk ringkasan_id (aditif)
+
+=== S-5. Halaman web ===
+[lulus] Halaman petugas: guard kesehatan bersama (sesi, CSRF, no-store), keluaran di-escape, tanpa SQL
+[lulus] Penerbitan web: pratinjau persis tampilan wali, konfirmasi eksplisit, hash, kunci idempotensi
+[lulus] Penggantian dan penarikan web beralasan
+[lulus] Formulir ringkasan tidak diisi dari catatan klinis
+[lulus] Halaman wali: masuk wajib (tautan notifikasi sesudah logout → login), no-store, setiap tampilan lewat layanan, di-escape
+[lulus] Partial tampilan wali: di-escape, tanpa kolom klinis/nama petugas
+[lulus] Tautan notifikasi hanya penunjuk ke halaman wali yang memeriksa ulang relasi
+[lulus] Menu: Kesehatan anak bagi wali aktif (dari hak server); halaman ringkasan di bawah menu Kesehatan
+
+=== S-6. API ===
+[lulus] Rute '/v5/kesehatan/wali/akses'
+[lulus] Rute '/v5/kesehatan/wali/ringkasan'
+[lulus] Rute #^/v5/kesehatan/wali/ringkasan/(\d+)$#
+[lulus] Rute #^/v5/kesehatan/kunjungan/(\d+)/ringkasan$#
+[lulus] Rute #^/v5/kesehatan/kunjungan/(\d+)/ringkasan/pratinjau$#
+[lulus] Rute #^/v5/kesehatan/kunjungan/(\d+)/ringkasan(/tarik)?$#
+[lulus] API memakai layanan yang sama dengan web; kunci idempotensi dari badan/header
+[lulus] Rute ringkasan di bawah blok /v5/kesehatan (no-store)
+
+=== S-7. Privasi ===
+[lulus] Audit 'kesehatan.ringkasan.terbit' hanya metadata (tanpa teks ringkasan/alasan)
+[lulus] Audit 'kesehatan.ringkasan.ditarik' hanya metadata (tanpa teks ringkasan/alasan)
+[lulus] Kode ringkasan tidak menulis error_log dan pesan galat tidak menyisipkan masukan
+[lulus] Koreksi klinis (KesehatanService/Repository) tidak menyentuh tabel ringkasan: snapshot terbit tidak berubah diam-diam
+
+=== S-8. Batas fase, operasi, lint ===
+[gagal] app/Auth, app/Penugasan, AuditLogger, dan layanan/repositori klinis tidak berubah dari baseline audit Fase 2
+[gagal] Tidak mengubah modul V3/V4/izin/PSB/admin atau aplikasi mobile
+[lulus] bin/v5_phase3_preflight.php: CLI saja, hanya membaca
+[lulus] bin/v5_phase3_verify.php: CLI saja, hanya membaca
+[lulus] bin/v5_phase3_rollback_preflight.php: CLI saja, hanya membaca
+[lulus] Skrip DB/seed uji hanya untuk test_*_test
+[lulus] Lint 24 berkas PHP
+
+Lulus: 68 · Gagal: 3
+  - Migrasi 026 berurutan setelah 025 (migrasi terakhir yang ada)
+  - app/Auth, app/Penugasan, AuditLogger, dan layanan/repositori klinis tidak berubah dari baseline audit Fase 2
+  - Tidak mengubah modul V3/V4/izin/PSB/admin atau aplikasi mobile

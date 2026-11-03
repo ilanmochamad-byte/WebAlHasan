@@ -33,3 +33,4 @@ tests/browser/node_modules/
 # terlacak menunggu keputusan Human Developer dan tidak dihapus di sini.
 berkas_psb/*
 !berkas_psb/.htaccess
+tests/browser/tangkapan-profil-impor-f1/

@@ -1,0 +1,72 @@
+[lulus] fixture tersedia: admin, tahun aktif, kamar, guru berakun/tanpa akun, akun ganda warisan
+[lulus] awal: belum ada identitas pengurus milik guru
+[lulus] I-1 murobi tetap khusus guru (tanpa kelompok guru tambahan)
+[lulus] I-1 guru_mapel tetap khusus guru (tanpa kelompok guru tambahan)
+[lulus] I-1 pembimbing menawarkan seluruh guru aktif di samping pengurus
+[lulus] I-1 pendidikan menawarkan seluruh guru aktif di samping pengurus
+[lulus] I-1 kesehatan menawarkan seluruh guru aktif di samping pengurus
+[lulus] I-1 bendahara_bulanan menawarkan seluruh guru aktif di samping pengurus
+[lulus] I-1 panitia_psb menawarkan seluruh guru aktif di samping pengurus
+[lulus] I-1 bendahara_psb menawarkan seluruh guru aktif di samping pengurus
+[lulus] I-2 sebelum: guru belum memegang hak pembimbing maupun pengurus
+[lulus] I-2 identitas pengurus terbentuk dari data guru (nama sama, jabatan Guru, tanpa nomor identitas)
+[lulus] I-2 penugasan merujuk identitas pengurus guru
+[lulus] I-2 akun guru yang sama terhubung ke identitas dan memegang role guru + pengurus
+[lulus] I-2 sesudah: hak pembimbing dan capability pengurus efektif
+[lulus] I-2 audit: identitas dibuat, akun dihubungkan, penugasan dibuat
+[lulus] I-2 pusat penugasan menampilkan akun guru dan hak efektif
+[lulus] I-2 penugasan muncul di daftar pembimbing dengan nama guru
+[lulus] I-2 identitas tidak muncul ganda di kelompok Pengurus
+[lulus] I-3 penugasan kedua/ketiga memakai identitas yang sama (nilai guru:ID dan ID identitas)
+[lulus] I-3 tidak ada pembentukan/penghubungan ulang yang diaudit dua kali
+[lulus] I-3 hak kesehatan dan BSA efektif pada akun guru
+[lulus] I-4 guru tanpa akun: identitas terbentuk, tidak ada akun yang dibuat
+[lulus] I-4 pusat penugasan menjelaskan hak belum efektif karena belum ada akun
+[lulus] I-4 akun guru yang dibuat kemudian langsung terhubung ke identitas dengan role guru + pengurus
+[lulus] I-4 hak Bagian Pendidikan efektif dan penghubungan diaudit
+[lulus] I-5 menonaktifkan guru menonaktifkan identitasnya di transaksi yang sama
+[lulus] I-5 guru nonaktif: seluruh hak berbasis pengurus gugur
+[lulus] I-5 sinkronisasi identitas diaudit
+[lulus] I-5 mengaktifkan guru memulihkan identitas dan hak
+[lulus] I-5 mengarsipkan guru mengarsipkan identitas dan menggugurkan hak
+[lulus] I-5 memulihkan guru memulihkan identitas dan hak
+[lulus] I-6 penyiapan: identitas masih aktif (sinkronisasi terlewat)
+[lulus] I-6 Capabilities tetap menolak hak saat data guru nonaktif
+[lulus] I-6 identitas guru yang dipasang ke akun lain tidak memberi hak pengurus
+[lulus] I-6 keadaan dipulihkan
+[lulus] I-7 Data Pengurus menolak mengubah identitas milik guru
+[lulus] I-7 Data Pengurus menolak menonaktifkan identitas milik guru
+[lulus] I-7 nama dan nomor HP guru tersinkron ke identitas
+[lulus] I-7 panel guru menemukan identitas pengurusnya
+[lulus] I-7 pengurus biasa tetap dapat disimpan dari Data Pengurus
+[lulus] I-8 identitas guru tidak ditawarkan untuk akun pengurus terpisah
+[lulus] I-8 membuat akun pengurus untuk identitas guru ditolak server
+[lulus] I-8 akun guru tetap tidak dapat dihubungkan ke pengurus biasa
+[lulus] I-8 role Pengurus ditolak untuk akun yang memegang identitas guru lain
+[lulus] I-8 akun pengurus biasa dipulihkan dengan hak semula
+[lulus] I-8 akun ganda warisan (guru + pengurus biasa) tidak berubah aturan maupun haknya
+[lulus] I-8 mencabut role Pengurus dari akun guru menggugurkan hak berbasis pengurus
+[lulus] I-8 role Pengurus dapat diberikan lagi pada akun guru pemilik identitas
+[lulus] I-9 guru nonaktif ditolak
+[lulus] I-9 guru yang tidak ada ditolak
+[lulus] I-9 nilai subjek tidak sah ditolak
+[lulus] I-9 Murobi tidak menerima nilai berbentuk guru:ID (jalur identitas khusus jenis pengurus)
+[lulus] I-9 non-admin ditolak tanpa membentuk identitas
+[lulus] I-9 akun ganda warisan: memilih gurunya ditolak, identitas dibatalkan bersama transaksi, tautan lama utuh
+[lulus] I-9 seluruh penolakan tanpa baris pengurus/penugasan baru
+[lulus] I-10 dua penugasan bersamaan untuk guru yang sama keduanya berhasil ([{"ok":true,"id":267},{"ok":true,"id":9}])
+[lulus] I-10 tepat satu identitas dan satu audit pembentukan; kedua penugasan merujuknya
+[lulus] I-11 penugasan milik identitas guru dapat diubah tanpa mengganti subjek
+[lulus] I-11 pengurus biasa ditugaskan seperti sebelumnya tanpa identitas baru
+[lulus] I-11 hak akun ganda warisan tetap sama sampai akhir
+[lulus] I-11 akhir: seluruh identitas sinkron dengan data gurunya
+[lulus] I-11 akhir: tidak ada akun yang memegang identitas guru lain
+[lulus] I-12 fixture: ada guru tanpa akun/identitas yang namanya belum dipakai pengurus
+[lulus] I-12 akun ganda warisan (guru dan pengurus bernama sama) ditandai
+[lulus] I-12 identitas pengurus milik guru sendiri tidak memicu tanda
+[lulus] I-12 pengurus aktif bernama sama (beda huruf/spasi) menandai guru tersebut
+[lulus] I-12 jenis khusus guru tidak memuat kelompok/tanda guru tambahan
+[lulus] I-12 tanda hanya peringatan: admin tetap dapat memilih guru; pengurus bernama sama tidak diubah
+[lulus] I-12 pengurus bernama sama yang nonaktif tidak lagi menandai
+
+Hasil: 70 lulus, 0 gagal.

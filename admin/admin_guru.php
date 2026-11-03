@@ -20,6 +20,8 @@ use App\MasterData\MasterDataException;
 
 require_once __DIR__ . '/_guard.php';
 require_once __DIR__ . '/_master_ui.php';
+require_once __DIR__ . '/_profil_admin_ui.php';
+require_once __DIR__ . '/_impor_personel_ui.php';
 
 $service = master_data_service();
 $halaman = 'admin_guru.php';
@@ -37,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $service->setGuruState((int) $id, $action);
         master_flash('success', 'Status ' . ($service->guru((int) $id)['nama_guru'] ?? 'guru') . ' diperbarui. Jadwal, absensi, penugasan, dan riwayat lama tidak dihapus.');
     } catch (MasterDataException $exception) {
-        ah_validation_keep($_POST, ['nip', 'nama_guru', 'no_hp'], $exception, '_ah_old');
+        ah_validation_keep($_POST, array_merge(['nip', 'nama_guru', 'no_hp'], profil_admin_field_names()), $exception, '_ah_old');
         master_flash('danger', $exception->getMessage());
         if ($action === 'save') {
             master_redirect($halaman . '?action=' . (!empty($_POST['id']) ? 'edit&id=' . (int) $_POST['id'] : 'create'));
@@ -56,12 +58,27 @@ $jumlah = $service->stateCounts('guru', $filters['q']);
 $selected = isset($_GET['id']) ? $service->guru((int) $_GET['id']) : null;
 $mode = (string) ($_GET['action'] ?? '');
 $tutup = $halaman . (($q = ah_query(['action' => null, 'id' => null])) === '' ? '' : '?' . $q);
+$profilAda = $service->profilTersedia();
+
+// PRD-PROFIL-IMPORT Fase 1: impor identitas dari Excel (tanpa akun/penugasan).
+if ($mode === 'impor' && $profilAda) {
+    master_header('Impor ustadz/ustadzah', [
+        'active' => 'asatidz',
+        'description' => 'Berkas diperiksa per baris tanpa menyimpan apa pun; perubahan disimpan setelah Anda mengonfirmasi.',
+        'breadcrumbs' => [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => 'Data pesantren'], ['label' => 'Asatidz & pengurus', 'url' => $halaman], ['label' => 'Impor']],
+        'actions' => '<a class="btn btn-outline-primary" href="proses_import_personel.php?jenis=guru&amp;templat=1"><i class="fas fa-download" aria-hidden="true"></i> Unduh templat</a>',
+    ]);
+    impor_personel_render('guru', $halaman);
+    master_footer();
+    exit;
+}
 
 master_header('Asatidz & pengurus', [
     'active' => 'asatidz',
     'description' => 'Orang yang mengajar dan mengurus santri.',
     'breadcrumbs' => [['label' => 'Beranda', 'url' => app_url('/portal/index.php')], ['label' => 'Data pesantren'], ['label' => 'Asatidz & pengurus']],
     'actions' => '<a class="btn btn-outline-secondary" href="export_master.php?entity=guru&amp;' . master_e(http_build_query($filters)) . '"><i class="fas fa-file-csv" aria-hidden="true"></i> Ekspor CSV</a>'
+        . ($profilAda ? '<a class="btn btn-outline-secondary" href="?action=impor"><i class="fas fa-file-import" aria-hidden="true"></i> Impor Excel</a>' : '')
         . '<a class="btn btn-primary" href="?action=create"><i class="fas fa-plus" aria-hidden="true"></i> Tambah ustadz/ustadzah</a>',
 ]);
 
@@ -81,6 +98,7 @@ if ($mode === 'create' || ($mode === 'edit' && $selected)):
         <div class="mb-3"><label class="form-label" for="no_hp">Nomor HP</label>
             <input class="form-control" id="no_hp" name="no_hp" maxlength="20" inputmode="tel" aria-describedby="bantuan_hp" value="<?= master_e(ah_old('no_hp', $record)) ?>"><?= ah_field_error('no_hp', '_ah_old') ?>
             <div class="form-text" id="bantuan_hp">Diawali 0, 9–16 digit. Boleh dikosongkan.</div></div>
+        <?php if ($profilAda) { profil_admin_fields($selected ? $service->profilPribadi('guru', (int) $selected['id']) : [], '_ah_old'); } ?>
         <div class="ah-actbar mb-0"><a class="btn btn-outline-secondary" href="<?= master_e($selected ? $halaman . '?action=detail&id=' . (int) $selected['id'] : $tutup) ?>">Batal</a>
             <button class="btn btn-primary" type="submit">Simpan</button></div>
     </form>
@@ -94,6 +112,7 @@ elseif ($mode === 'detail' && $selected):
     <dl class="ah-kv">
         <div><dt>NIP</dt><dd><?= master_e($selected['nip'] ?: '—') ?></dd></div>
         <div><dt>Nomor HP</dt><dd><?= master_e($selected['no_hp'] ?: '—') ?></dd></div>
+        <?php if ($profilAda) { profil_admin_detail($service->profilPribadi('guru', $gid), 'guru', $gid, $akun); } ?>
         <div><dt>Status</dt><dd><?= ah_state_badge($selected) ?></dd></div>
         <div><dt>Akun login</dt><dd><?php if ($akun === []): ?>Belum ada · <a class="btn btn-sm btn-outline-primary" href="admin_akun.php?guru_id=<?= $gid ?>#ah-buat-guru">Buat akun</a>
             <?php else: foreach ($akun as $a): ?>@<?= master_e($a['username']) ?> · <?= master_e($a['peran'] ?: 'tanpa peran') ?><?= (int) $a['is_active'] === 1 ? '' : ' (nonaktif)' ?><br><?php endforeach; endif; ?></dd></div>

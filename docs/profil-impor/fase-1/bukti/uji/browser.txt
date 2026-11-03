@@ -1,0 +1,70 @@
+
+=== PI-A wizard impor guru 375px ===
+[lulus] Halaman impor guru 375px: kerangka
+[lulus] Pemetaan kolom ditebak dari judul 375px
+[lulus] Pemetaan kolom tanpa melebar 375px
+[lulus] Pratinjau: tindakan "Tambah baru" dan Tugas/Kamar sebagai informasi 375px
+
+=== PI-C markup sebagai teks 375px ===
+[lulus] Markup dari berkas tampil sebagai teks 375px
+[lulus] Pratinjau tanpa melebar 375px
+[lulus] Tombol Simpan aktif untuk 1 baris 375px
+[lulus] Simpan: hasil impor dan pesan penugasan/akun tidak berubah 375px
+[lulus] Guru hasil impor muncul di daftar 375px
+[lulus] Berkas yang sama diunggah ulang: "Tidak berubah", Simpan nonaktif 375px
+
+=== PI-D formulir identitas 375px ===
+[lulus] Formulir guru: isian identitas terisi, tanpa melebar 375px
+
+=== PI-A wizard impor guru 768px ===
+[lulus] Halaman impor guru 768px: kerangka
+[lulus] Pemetaan kolom ditebak dari judul 768px
+[lulus] Pemetaan kolom tanpa melebar 768px
+[lulus] Pratinjau: tindakan "Tambah baru" dan Tugas/Kamar sebagai informasi 768px
+
+=== PI-C markup sebagai teks 768px ===
+[lulus] Markup dari berkas tampil sebagai teks 768px
+[lulus] Pratinjau tanpa melebar 768px
+[lulus] Tombol Simpan aktif untuk 1 baris 768px
+[lulus] Simpan: hasil impor dan pesan penugasan/akun tidak berubah 768px
+[lulus] Guru hasil impor muncul di daftar 768px
+[lulus] Berkas yang sama diunggah ulang: "Tidak berubah", Simpan nonaktif 768px
+
+=== PI-D formulir identitas 768px ===
+[lulus] Formulir guru: isian identitas terisi, tanpa melebar 768px
+
+=== PI-A wizard impor guru 1280px ===
+[lulus] Halaman impor guru 1280px: kerangka
+[lulus] Pemetaan kolom ditebak dari judul 1280px
+[lulus] Pemetaan kolom tanpa melebar 1280px
+[lulus] Pratinjau: tindakan "Tambah baru" dan Tugas/Kamar sebagai informasi 1280px
+
+=== PI-C markup sebagai teks 1280px ===
+[lulus] Markup dari berkas tampil sebagai teks 1280px
+[lulus] Pratinjau tanpa melebar 1280px
+[lulus] Tombol Simpan aktif untuk 1 baris 1280px
+[lulus] Simpan: hasil impor dan pesan penugasan/akun tidak berubah 1280px
+[lulus] Guru hasil impor muncul di daftar 1280px
+[lulus] Berkas yang sama diunggah ulang: "Tidak berubah", Simpan nonaktif 1280px
+
+=== PI-D formulir identitas 1280px ===
+[lulus] Formulir guru: isian identitas terisi, tanpa melebar 1280px
+
+=== PI-B pilihan pasangan & impor pengurus (1280px) ===
+[lulus] Judul "NIP atau NIK" dipetakan ke pengenal otomatis
+[lulus] Nama sama: dua calon + "Tambah baru"; Simpan nonaktif
+[lulus] Memilih pasangan menahan Simpan sampai diperiksa ulang
+[lulus] Sesudah periksa ulang: baris menjadi "Perbarui" dan Simpan aktif
+[lulus] Pasangan pilihan admin tersimpan
+[lulus] Halaman impor pengurus
+[lulus] Pratinjau pengurus baru menjelaskan jabatan "Pengurus"
+[lulus] Pengurus hasil impor tersimpan
+
+=== PI-E tanpa JavaScript ===
+[lulus] Tanpa JS: catatan impor memerlukan JavaScript
+
+=== PI-F galat dan dialog bawaan ===
+[lulus] Tanpa galat JavaScript
+[lulus] Tanpa confirm()/alert() bawaan
+
+44 lulus, 0 gagal

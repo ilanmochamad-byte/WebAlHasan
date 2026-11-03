@@ -1,0 +1,67 @@
+=== S-1 lint ===
+[lulus] lint app/Schedule/KelasJadwal.php
+[lulus] lint app/Schedule/PesertaPertemuan.php
+[lulus] lint app/Schedule/ScheduleRepository.php
+[lulus] lint app/Schedule/ScheduleService.php
+[lulus] lint app/Api/TeacherRepository.php
+[lulus] lint app/Api/TeacherService.php
+[lulus] lint app/Report/ReportRepository.php
+[lulus] lint app/Report/ReportService.php
+[lulus] lint app/Beranda/BerandaService.php
+[lulus] lint admin/admin_pengajian.php
+[lulus] lint admin/_pengajian_jadwal.php
+[lulus] lint admin/_pengajian_pertemuan.php
+[lulus] lint admin/laporan_absensi_detail.php
+[lulus] lint jadwal_ngaji.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_seed.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_worker.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_integration.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_migration.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_http.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_static.php
+[lulus] lint tests/jadwal_kelas_gabungan_f1_audit_probe.php
+
+=== S-2 migrasi aditif ===
+[lulus] Migrasi 034 tanpa ALTER/UPDATE/DELETE/TRUNCATE/DROP/RENAME
+[lulus] Migrasi 034 hanya membuat jadwal_kelas dan pertemuan_kelas (dapat diulang)
+[lulus] Isian data lama hanya ke tabel baru
+[lulus] Setiap isian dijaga NOT EXISTS (aman dijalankan ulang)
+[gagal] 034 adalah migrasi terakhir
+[lulus] Rollback berpasangan tersedia
+
+=== S-3 rollback berpenjaga ===
+[lulus] Rollback ditolak bila ada kelas gabungan atau pertemuan berkelas ganda
+[lulus] Rollback hanya melepas dua tabel baru
+[lulus] Penjaga dijalankan sebelum DROP
+
+=== S-4 saringan kelas ===
+[lulus] app/Schedule/ScheduleRepository.php tidak menyaring kelas lewat j.id_kelas saja
+[lulus] app/Report/ReportRepository.php tidak menyaring kelas lewat j.id_kelas saja
+[lulus] app/Api/TeacherRepository.php tidak menyaring kelas lewat j.id_kelas saja
+[lulus] Laporan: santri disaring menurut kelas asal, guru menurut kelas pertemuan
+[lulus] Halaman publik menyaring lewat seluruh kelas jadwal
+
+=== S-5 satu implementasi pembukaan ===
+[lulus] app/Schedule/ScheduleRepository.php memakai PesertaPertemuan, tanpa INSERT peserta sendiri
+[lulus] app/Api/TeacherRepository.php memakai PesertaPertemuan, tanpa INSERT peserta sendiri
+[lulus] Peserta: satu baris per santri, keanggotaan aktif, kelas asal disimpan
+[lulus] Simpan jadwal mengunci baris jadwal sebelum menyamakan kelas
+
+=== S-6 kontrak API aditif ===
+[lulus] Jadwal/pertemuan API: `class` dan `class_name` lama dipertahankan; `classes` ditambahkan
+[lulus] Santri di API mendapat kelas asal (aditif)
+[lulus] Laporan pertemuan: class lama + classes aditif
+
+=== S-7 formulir admin ===
+[lulus] Formulir: kelas utama (id_kelas) + kotak centang kelas gabungan
+[lulus] Penanda bentrok tampilan membandingkan himpunan kelas
+
+=== S-8 batas berkas ===
+[gagal] Perubahan hanya pada berkas Fase 1 (.gitignore, PRD-PROFIL-IMPORT.md, admin/admin_guru.php, admin/admin_pengurus.php, admin/ubah_password.php, api/v1/index.php, app/Api/ApiAuthRepository.php, app/Api/ApiAuthService.php, app/Audit/AuditLogger.php, app/Auth/ApiTokenAuthenticator.php, app/Auth/AuthRepository.php, app/Auth/AuthService.php, app/Auth/Authorization.php, app/MasterData/MasterDataService.php, app/bootstrap.php, docs/profil-impor/prompts-implementasi-audit.md, tests/android/jkg_f2_android.py, tests/android/jkg_f2_proksi.py, tests/browser/uji-jadwal-kelas-gabungan-f2-app.mjs, tests/browser/uji-jadwal-kelas-gabungan-f2-audit.mjs, tests/jadwal_kelas_gabungan_f2_seed.php, admin/_impor_personel_ui.php, admin/_profil_admin_ui.php, admin/foto_profil.php, admin/proses_import_personel.php, app/Profil/FotoProfilStorage.php, app/Profil/ImporPersonelService.php, app/Profil/ProfilData.php, app/Profil/ProfilException.php, app/Profil/ProfilRepository.php, app/Profil/ProfilService.php, database/migrations/035_profil_impor_fase1.sql, database/rollbacks/035_profil_impor_fase1.sql, docs/profil-impor/fase-1/README.md, docs/profil-impor/fase-1/bukti/regresi/jkg-http.txt, docs/profil-impor/fase-1/bukti/regresi/jkg-integrasi.txt, docs/profil-impor/fase-1/bukti/regresi/kredensial-integrasi.txt, docs/profil-impor/fase-1/bukti/regresi/kredensial-web.txt, docs/profil-impor/fase-1/bukti/regresi/perapihan-integrasi.txt, docs/profil-impor/fase-1/bukti/regresi/pk-fase1-http.txt, docs/profil-impor/fase-1/bukti/regresi/pk-fase1-integrasi.txt, docs/profil-impor/fase-1/bukti/regresi/pk-fase4-http.txt, docs/profil-impor/fase-1/bukti/regresi/redesain-tahap2-http.txt, docs/profil-impor/fase-1/bukti/regresi/redesain-tahap3-http.txt, docs/profil-impor/fase-1/bukti/regresi/redesain-tahap6-http.txt, docs/profil-impor/fase-1/bukti/regresi/ringkasan.txt, docs/profil-impor/fase-1/bukti/regresi/statis-alumni_static.txt, docs/profil-impor/fase-1/bukti/regresi/statis-get_mutasi_v1_static.txt, docs/profil-impor/fase-1/bukti/regresi/statis-jadwal_kelas_gabungan_f1_static.txt, docs/profil-impor/fase-1/bukti/regresi/v1-fase2-integrasi.txt, docs/profil-impor/fase-1/bukti/regresi/v1-fase4-integrasi.txt, docs/profil-impor/fase-1/perintah-regresi.sh, docs/profil-impor/fase-1/perintah-uji.sh, storage/private/profil/.gitignore, tests/browser/uji-profil-impor-f1.mjs, tests/profil_impor_f1_db.sh, tests/profil_impor_f1_http.php, tests/profil_impor_f1_integration.php, tests/profil_impor_f1_migration.php, tests/profil_impor_f1_static.php)
+[gagal] Tanpa perubahan app/Auth atau router API
+[lulus] Tidak ada pembukaan pertemuan otomatis
+
+Hasil: 44 lulus, 3 gagal
+  - 034 adalah migrasi terakhir
+  - Perubahan hanya pada berkas Fase 1 (.gitignore, PRD-PROFIL-IMPORT.md, admin/admin_guru.php, admin/admin_pengurus.php, admin/ubah_password.php, api/v1/index.php, app/Api/ApiAuthRepository.php, app/Api/ApiAuthService.php, app/Audit/AuditLogger.php, app/Auth/ApiTokenAuthenticator.php, app/Auth/AuthRepository.php, app/Auth/AuthService.php, app/Auth/Authorization.php, app/MasterData/MasterDataService.php, app/bootstrap.php, docs/profil-impor/prompts-implementasi-audit.md, tests/android/jkg_f2_android.py, tests/android/jkg_f2_proksi.py, tests/browser/uji-jadwal-kelas-gabungan-f2-app.mjs, tests/browser/uji-jadwal-kelas-gabungan-f2-audit.mjs, tests/jadwal_kelas_gabungan_f2_seed.php, admin/_impor_personel_ui.php, admin/_profil_admin_ui.php, admin/foto_profil.php, admin/proses_import_personel.php, app/Profil/FotoProfilStorage.php, app/Profil/ImporPersonelService.php, app/Profil/ProfilData.php, app/Profil/ProfilException.php, app/Profil/ProfilRepository.php, app/Profil/ProfilService.php, database/migrations/035_profil_impor_fase1.sql, database/rollbacks/035_profil_impor_fase1.sql, docs/profil-impor/fase-1/README.md, docs/profil-impor/fase-1/bukti/regresi/jkg-http.txt, docs/profil-impor/fase-1/bukti/regresi/jkg-integrasi.txt, docs/profil-impor/fase-1/bukti/regresi/kredensial-integrasi.txt, docs/profil-impor/fase-1/bukti/regresi/kredensial-web.txt, docs/profil-impor/fase-1/bukti/regresi/perapihan-integrasi.txt, docs/profil-impor/fase-1/bukti/regresi/pk-fase1-http.txt, docs/profil-impor/fase-1/bukti/regresi/pk-fase1-integrasi.txt, docs/profil-impor/fase-1/bukti/regresi/pk-fase4-http.txt, docs/profil-impor/fase-1/bukti/regresi/redesain-tahap2-http.txt, docs/profil-impor/fase-1/bukti/regresi/redesain-tahap3-http.txt, docs/profil-impor/fase-1/bukti/regresi/redesain-tahap6-http.txt, docs/profil-impor/fase-1/bukti/regresi/ringkasan.txt, docs/profil-impor/fase-1/bukti/regresi/statis-alumni_static.txt, docs/profil-impor/fase-1/bukti/regresi/statis-get_mutasi_v1_static.txt, docs/profil-impor/fase-1/bukti/regresi/statis-jadwal_kelas_gabungan_f1_static.txt, docs/profil-impor/fase-1/bukti/regresi/v1-fase2-integrasi.txt, docs/profil-impor/fase-1/bukti/regresi/v1-fase4-integrasi.txt, docs/profil-impor/fase-1/perintah-regresi.sh, docs/profil-impor/fase-1/perintah-uji.sh, storage/private/profil/.gitignore, tests/browser/uji-profil-impor-f1.mjs, tests/profil_impor_f1_db.sh, tests/profil_impor_f1_http.php, tests/profil_impor_f1_integration.php, tests/profil_impor_f1_migration.php, tests/profil_impor_f1_static.php)
+  - Tanpa perubahan app/Auth atau router API

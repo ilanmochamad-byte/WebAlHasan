@@ -1,0 +1,4 @@
+Error: Call to undefined function profil_service() in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_integration.php:92
+Stack trace:
+#0 {main}
+Call to undefined function profil_service()

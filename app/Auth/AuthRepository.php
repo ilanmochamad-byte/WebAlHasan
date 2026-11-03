@@ -16,7 +16,7 @@ final class AuthRepository
     public function findByUsername(string $username): ?array
     {
         $statement = $this->db->prepare(
-            "SELECT u.id, u.name, u.username, u.password, u.guru_id, u.is_active, u.force_password_change,
+            "SELECT u.id, u.name, u.username, u.password, u.guru_id, u.is_active, u.force_password_change, {$this->kolomSesi()},
                     GROUP_CONCAT(DISTINCT r.slug ORDER BY r.slug SEPARATOR ',') AS roles
              FROM users u
              LEFT JOIN user_roles ur ON ur.user_id = u.id
@@ -40,7 +40,7 @@ final class AuthRepository
     public function findActiveById(int $id): ?array
     {
         $statement = $this->db->prepare(
-            "SELECT u.id, u.name, u.username, u.password, u.guru_id, u.is_active, u.force_password_change,
+            "SELECT u.id, u.name, u.username, u.password, u.guru_id, u.is_active, u.force_password_change, {$this->kolomSesi()},
                     GROUP_CONCAT(DISTINCT r.slug ORDER BY r.slug SEPARATOR ',') AS roles
              FROM users u
              LEFT JOIN user_roles ur ON ur.user_id = u.id
@@ -83,12 +83,22 @@ final class AuthRepository
         return $ok;
     }
 
+    /**
+     * PRD-PROFIL-IMPORT PI-2 (migrasi 035): versi sesi akun. NULL sebelum
+     * migrasi/sesudah rollback, sehingga sesi tidak diperiksa versinya.
+     */
+    private function kolomSesi(): string
+    {
+        return \App\Database\Schema::hasColumn($this->db, 'users', 'sesi_versi') ? 'u.sesi_versi' : 'NULL AS sesi_versi';
+    }
+
     private function normalize(array $user): array
     {
         $user['id'] = (int) $user['id'];
         $user['guru_id'] = $user['guru_id'] === null ? null : (int) $user['guru_id'];
         $user['is_active'] = (bool) $user['is_active'];
         $user['force_password_change'] = (bool) $user['force_password_change'];
+        $user['sesi_versi'] = $user['sesi_versi'] === null ? null : (int) $user['sesi_versi'];
         $user['roles'] = $user['roles'] ? explode(',', (string) $user['roles']) : [];
 
         return $user;

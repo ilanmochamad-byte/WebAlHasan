@@ -55,6 +55,11 @@ try {
     if (str_starts_with($path, '/v4/')) header('Cache-Control: private, no-store');
     $user = api_authenticator()->authenticate();
     if (str_starts_with($path, '/v3/')) header('Cache-Control: private, no-store');
+    // PRD-PROFIL-IMPORT PI-1: token terbatas atau akun berpassword sementara
+    // hanya boleh mengganti password dan logout.
+    if (!empty($user['hanya_ganti_password']) && !($method === 'POST' && in_array($path, ['/profile/password', '/auth/logout'], true))) {
+        throw new ApiException('PASSWORD_CHANGE_REQUIRED', 'Password sementara harus diganti lebih dulu melalui menu Ganti Password.', 403);
+    }
 
     if (str_starts_with($path, '/v3/publikasi')) {
         header('Cache-Control: private, no-store');
@@ -461,6 +466,47 @@ try {
         header('Cache-Control: private, no-store');
         JsonResponse::success(api_auth_service()->identitasPayload($user));
     }
+    // PRD-PROFIL-IMPORT Fase 1 (aditif): profil pribadi, foto, dan password
+    // akun sendiri. Hak, status, dan penugasan dihitung server per permintaan.
+    if (str_starts_with($path, '/profile/')) {
+        header('Cache-Control: private, no-store');
+        $profil = profil_service();
+        if ($method === 'GET' && $path === '/profile/pribadi') {
+            JsonResponse::success($profil->baca((int) $user['id']));
+        }
+        if (in_array($method, ['POST', 'PATCH'], true) && $path === '/profile/pribadi') {
+            JsonResponse::success($profil->ubahDiri($user, Request::json()));
+        }
+        if ($method === 'POST' && $path === '/profile/foto') {
+            JsonResponse::success($profil->unggahFoto($user, isset($_FILES['foto']) && is_array($_FILES['foto']) ? $_FILES['foto'] : null));
+        }
+        if ($method === 'POST' && $path === '/profile/foto/hapus') {
+            JsonResponse::success($profil->hapusFoto($user));
+        }
+        if ($method === 'GET' && preg_match('#^/profile/foto(?:/(\d+))?$#', $path, $matches)) {
+            $berkas = $profil->foto($user, isset($matches[1]) ? (int) $matches[1] : (int) $user['id']);
+            header('Content-Type: ' . $berkas['mime']);
+            header('Content-Length: ' . (string) filesize($berkas['path']));
+            header('Content-Disposition: inline; filename="foto-profil"');
+            header('X-Content-Type-Options: nosniff');
+            header("Content-Security-Policy: default-src 'none'; sandbox");
+            readfile($berkas['path']);
+            exit;
+        }
+        if ($method === 'POST' && $path === '/profile/password') {
+            $body = Request::json();
+            try {
+                JsonResponse::success($profil->gantiPassword((int) $user['id'], $body, [
+                    'token_id' => (int) $user['token_id'], 'device_id' => is_string($body['device_id'] ?? null) ? $body['device_id'] : null, 'kanal' => 'api',
+                ]));
+            } catch (\App\Profil\ProfilException $exception) {
+                if (isset($exception->errors()['password_saat_ini'])) {
+                    $profil->catatPasswordGagal((int) $user['id'], 'api');
+                }
+                throw $exception;
+            }
+        }
+    }
     if ($method === 'POST' && $path === '/auth/logout') {
         // V2 Fase 4: logout mencabut registrasi perangkat push agar sesi lama
         // tidak meninggalkan perangkat yang masih menerima push. Aplikasi
@@ -676,6 +722,9 @@ try {
     // sendiri di IzinApiService, sehingga jalur V2 tidak berubah).
     $status = $exception->status();
     JsonResponse::error(match($status){403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$status);
+} catch (\App\Profil\ProfilException $exception) {
+    $status = $exception->status();
+    JsonResponse::error(match($status){401=>'UNAUTHENTICATED',403=>'FORBIDDEN',404=>'NOT_FOUND',409=>'CONFLICT',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$status,$exception->errors());
 } catch (\App\Keamanan\KeamananException $exception) {
     $status = $exception->status();
     JsonResponse::error(match($status){403=>'FORBIDDEN',404=>'NOT_FOUND',503=>'SERVICE_UNAVAILABLE',default=>'VALIDATION_FAILED'},$exception->getMessage(),$status);

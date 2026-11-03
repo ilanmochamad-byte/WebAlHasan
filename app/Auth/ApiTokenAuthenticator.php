@@ -22,8 +22,11 @@ final class ApiTokenAuthenticator
         }
 
         $hash = $this->hasher->hash($plainToken);
+        // PRD-PROFIL-IMPORT PI-1 (migrasi 035): cakupan token. Sebelum migrasi
+        // seluruh token dianggap penuh.
+        $cakupan = \App\Database\Schema::hasColumn($this->db, 'api_tokens', 'cakupan') ? 't.cakupan' : "'penuh'";
         $statement = $this->db->prepare(
-            "SELECT t.id AS token_id, t.expires_at, u.id, u.name, u.username, u.guru_id,
+            "SELECT t.id AS token_id, t.expires_at, {$cakupan} AS token_cakupan, u.force_password_change, u.id, u.name, u.username, u.guru_id,
                     u.pengurus_id, u.wali_id,
                     g.nip, g.nama_guru,
                     GROUP_CONCAT(DISTINCT r.slug ORDER BY r.slug SEPARATOR ',') roles
@@ -55,6 +58,11 @@ final class ApiTokenAuthenticator
         $user['pengurus_id'] = ($user['pengurus_id'] ?? null) === null ? null : (int) $user['pengurus_id'];
         $user['wali_id'] = ($user['wali_id'] ?? null) === null ? null : (int) $user['wali_id'];
         $user['roles'] = $roles;
+        $user['force_password_change'] = (bool) $user['force_password_change'];
+        // PI-1: token terbatas, atau akun yang wajib mengganti password sementara
+        // (termasuk token penuh lama sesudah admin mereset password), hanya boleh
+        // mengganti password dan logout. Penjaga diterapkan router API.
+        $user['hanya_ganti_password'] = $user['token_cakupan'] === 'ganti_password' || $user['force_password_change'];
 
         if (in_array('guru', $roles, true) && !in_array('admin', $roles, true) && $user['guru_id'] === null) {
             throw new ApiException('UNAUTHENTICATED', 'Akun guru tidak lagi aktif atau terhubung.', 401);

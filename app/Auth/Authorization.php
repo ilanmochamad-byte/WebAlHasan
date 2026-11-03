@@ -22,7 +22,9 @@ final class Authorization
         }
 
         $user = $this->users->findActiveById((int) $_SESSION['user_id']);
-        if ($user === null) {
+        // PI-2: setelah password diganti, sesi lain (versi lebih lama) berhenti.
+        // Sesi tanpa penanda versi dianggap versi 0 (sesi sebelum migrasi 035).
+        if ($user === null || ($user['sesi_versi'] !== null && (int) ($_SESSION['sesi_versi'] ?? 0) !== $user['sesi_versi'])) {
             Session::destroy();
             return null;
         }

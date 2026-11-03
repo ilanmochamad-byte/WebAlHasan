@@ -1,0 +1,74 @@
+
+=== T-1. Migrasi 031 ===
+[gagal] 031 adalah migrasi terakhir dan memiliki pasangan rollback
+[lulus] Migrasi tanpa ALTER/DROP/DELETE/TRUNCATE/UPDATE/INSERT/RENAME (tabel lama tidak disentuh)
+[lulus] Hanya dua tabel baru InnoDB, idempoten (CREATE TABLE IF NOT EXISTS)
+[lulus] CHECK pasangan tindakan ↔ status: penolakan pembimbing selalu Ditolak Pembimbing
+[lulus] CHECK penerusan: murobi tunggal ↔ Diajukan, tidak tunggal ↔ Perlu Penetapan Admin
+[lulus] CHECK versi naik satu, alasan wajib minta perbaikan/tolak, perbaikan harus mengubah isi, satu perbaikan per permintaan
+[lulus] Kolom murobi bertipe sama dengan guru.id (INT) untuk kunci asing
+
+=== T-2. Rollback 031 ===
+[lulus] Penjaga data dijalankan sebelum DROP; perbaikan dilepas sebelum tinjauan (urutan kunci asing)
+[lulus] Penjaga menghitung tinjauan, perbaikan, klaim Fase 2, dan pengajuan wali di luar tahap Fase 1
+[lulus] Rollback tanpa ALTER/DELETE/UPDATE dan hanya melepas dua tabel 031
+
+=== T-3. Layanan ===
+[lulus] tinjau: kunci akun → hak pembimbing dibaca ulang → klaim → putar ulang hanya bila masih sah → kunci pengajuan → penugasan dikunci & dihitung ulang → status → versi
+[gagal] Penerusan memakai routing murobi V2 dan peristiwa routing V2 pada baris yang sama
+[lulus] Layanan V7 tidak pernah menulis izin_keputusan (penolakan pembimbing bukan keputusan murobi)
+[lulus] Tolak pembimbing → Ditolak Pembimbing, tidak pernah status Ditolak murobi
+[lulus] perbaiki: hak wali pengaju sebelum putar ulang → kunci santri lalu pengajuan → hanya saat diminta → versi → isi berubah → benturan lintas jalur → simpan versi
+[lulus] batalkan: hak wali pengaju sebelum putar ulang → kunci pengajuan → status dapat dibatalkan → pembaruan bersyarat
+[lulus] Pembatalan bersyarat versi+status; termasuk tahap sesudah diteruskan sebelum keputusan
+[lulus] applyTinjauan: pembaruan bersyarat asal, versi, dan status
+[lulus] applyTeruskan: pembaruan bersyarat asal, versi, dan status
+[lulus] applyPerbaikan: pembaruan bersyarat asal, versi, dan status
+[lulus] Wali pengaju = akun dan wali pengaju dengan relasi aktif berkunci baca; wali lain 403, tanpa relasi 404
+[lulus] Tiga audit Fase 2 hanya metadata (tanpa kunci alasan, catatan, atau tanggal)
+[lulus] Tanpa notifikasi V7 (Fase 3)
+[lulus] Tindakan Fase 2 menjawab 503 bila 031 belum dipasang
+
+=== T-4. Perubahan V2 terarah ===
+[lulus] Pembatalan V2 (pengurus/admin) menolak pengajuan wali (403)
+[lulus] Tombol batal V2 tidak ditawarkan untuk pengajuan wali
+[lulus] Notifikasi V2 dilewati untuk pengajuan wali (V7 Fase 3)
+[lulus] IzinWorkflowService::create tidak berubah perilaku untuk baris wali (aturan V2)
+[lulus] IzinWorkflowService::assignMurobi tidak berubah perilaku untuk baris wali (aturan V2)
+[lulus] IzinWorkflowService::decide tidak berubah perilaku untuk baris wali (aturan V2)
+[lulus] IzinWorkflowService::correctDecision tidak berubah perilaku untuk baris wali (aturan V2)
+[lulus] Tampilan V2 orang tua tanpa baris wali, berpenjaga skema (tetap jalan sebelum 030)
+[lulus] Laporan V2 cakupan orang tua tanpa baris wali, berpenjaga skema
+[lulus] Status penahan lintas jalur tetap: Ditolak Pembimbing melepas rentang
+
+=== T-5. Web dan API ===
+[lulus] Rincian: setiap aksi POST hanya untuk peran aktif yang sesuai (server tetap memeriksa)
+[lulus] Setiap formulir membawa CSRF, versi, dan kunci idempotensi
+[lulus] Sukses 303 (POST/Redirect/GET); 409/422 dirender ulang dengan kunci yang sama
+[lulus] Keluaran rincian di-escape (74 ekspresi)
+[lulus] Halaman V7 no-store
+[lulus] Rute API '/v7/izin/pembimbing/riwayat'
+[lulus] Rute API #^/v7/izin/pengajuan/(\d+)/tinjauan$#
+[lulus] Rute API #^/v7/izin/pengajuan/(\d+)/perbaikan$#
+[lulus] Rute API #^/v7/izin/pengajuan/(\d+)/pembatalan$#
+[lulus] Tidak ada rute keputusan V7: keputusan tetap endpoint V2
+[lulus] Rincian V2 menampilkan asal wali hanya sesudah hak V2 diperiksa
+[lulus] Label peristiwa tinjauan_minta_perbaikan
+[lulus] Label peristiwa tinjauan_ditolak_pembimbing
+[lulus] Label peristiwa tinjauan_diteruskan
+[lulus] Label peristiwa perbaikan_wali_dikirim
+[lulus] Label peristiwa pembatalan_wali
+
+=== T-6. Batas Fase 2 terhadap baseline ===
+[gagal] Hanya berkas Fase 2 yang berubah dari baseline 192711e: error: Could not access '192711e0b6bc2cadd46ffc79ee5dfa921f3a76d1', fatal: not a git repository (or any of the parent directories): .git
+[lulus] Auth, Penugasan, Navigation, notifikasi, BSA/Kesehatan/V3/V4/PSB, izin_aksi, admin, dan migrasi lama tidak berubah
+[lulus] Uji dan alat Fase 1 tidak diubah (oracle historis tidak dilonggarkan)
+
+=== T-7. Lint ===
+[gagal] php -l 0 berkas PHP baru/berubah
+
+Hasil: 50 lulus, 4 gagal
+  - 031 adalah migrasi terakhir dan memiliki pasangan rollback
+  - Penerusan memakai routing murobi V2 dan peristiwa routing V2 pada baris yang sama
+  - Hanya berkas Fase 2 yang berubah dari baseline 192711e: error: Could not access '192711e0b6bc2cadd46ffc79ee5dfa921f3a76d1', fatal: not a git repository (or any of the parent directories): .git
+  - php -l 0 berkas PHP baru/berubah
