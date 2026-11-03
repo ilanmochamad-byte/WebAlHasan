@@ -1,0 +1,12 @@
+[lulus] Guru dapat dibuat, dilihat, dicari, dan difilter
+[lulus] Santri dapat dibuat, dilihat, dicari, dan difilter
+[lulus] NIP duplikat ditolak
+[lulus] NIS duplikat ditolak
+[lulus] Nonaktif tidak menghapus guru atau santri
+[lulus] Satu wali terhubung ke dua santri dan dapat dibaca kembali
+[lulus] Tepat satu semester aktif
+[lulus] Keanggotaan kelas baru aktif dan riwayat lama tersimpan
+[lulus] Penugasan murobi tidak membuat akun atau akses approval izin
+[lulus] Jumlah ekspor guru sama dengan hasil filter UI
+[lulus] Jumlah ekspor santri sama dengan hasil filter UI
+[lulus] Audit menyimpan pelaku dan waktu tanpa nilai rahasia

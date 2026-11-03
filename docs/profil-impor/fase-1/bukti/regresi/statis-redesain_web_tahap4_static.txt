@@ -1,0 +1,115 @@
+=== S4-1. Sintaks ===
+[lulus] php -l portal/_ui.php
+[lulus] php -l portal/izin.php
+[lulus] php -l portal/izin_ringkasan.php
+[lulus] php -l portal/izin_antrean.php
+[lulus] php -l portal/izin_buat.php
+[lulus] php -l portal/izin_detail.php
+[lulus] php -l portal/izin_aksi.php
+[lulus] php -l portal/laporan.php
+[lulus] php -l portal/v3_konseling_cetak.php
+[lulus] php -l admin/admin_pengajian.php
+[lulus] php -l admin/_pengajian_jadwal.php
+[lulus] php -l admin/_pengajian_pertemuan.php
+[lulus] php -l admin/admin_laporan_absensi.php
+[lulus] php -l admin/laporan_absensi_detail.php
+[lulus] php -l admin/_laporan_guard.php
+[lulus] php -l app/Ui/functions.php
+[lulus] php -l app/Ui/Periode.php
+[lulus] php -l app/Ui/Navigation.php
+[lulus] php -l app/Ui/Status.php
+[lulus] php -l app/Izin/IzinRepository.php
+[lulus] php -l app/Izin/IzinService.php
+[lulus] php -l app/Izin/IzinWorkflowService.php
+[lulus] php -l app/Report/ReportFilter.php
+[lulus] php -l app/Report/ReportService.php
+[lulus] php -l app/Report/PrintLayout.php
+[lulus] php -l app/Report/PrintRenderer.php
+[lulus] php -l app/Report/IzinPrintRenderer.php
+[lulus] php -l app/Report/IzinReportRepository.php
+[lulus] php -l app/Report/IzinReportService.php
+[lulus] php -l app/Schedule/ScheduleRepository.php
+[lulus] php -l tests/redesain_web_tahap4_seed.php
+[lulus] php -l tests/redesain_web_tahap4_http.php
+[lulus] php -l tests/redesain_web_tahap4_cetak.php
+[lulus] node --check assets/ui/alhasan.js
+[lulus] node --check tests/browser/uji-redesain-web-tahap4.mjs
+
+=== S4-2. Tanpa dialog bawaan, tanpa label versi ===
+[lulus] portal/_ui.php tanpa confirm()/alert()
+[lulus] portal/izin.php tanpa confirm()/alert()
+[lulus] portal/izin_ringkasan.php tanpa confirm()/alert()
+[lulus] portal/izin_antrean.php tanpa confirm()/alert()
+[lulus] portal/izin_buat.php tanpa confirm()/alert()
+[lulus] portal/izin_detail.php tanpa confirm()/alert()
+[lulus] portal/izin_aksi.php tanpa confirm()/alert()
+[lulus] portal/laporan.php tanpa confirm()/alert()
+[lulus] portal/v3_konseling_cetak.php tanpa confirm()/alert()
+[lulus] admin/admin_pengajian.php tanpa confirm()/alert()
+[lulus] admin/_pengajian_jadwal.php tanpa confirm()/alert()
+[lulus] admin/_pengajian_pertemuan.php tanpa confirm()/alert()
+[lulus] admin/admin_laporan_absensi.php tanpa confirm()/alert()
+[lulus] admin/laporan_absensi_detail.php tanpa confirm()/alert()
+[lulus] admin/_laporan_guard.php tanpa confirm()/alert()
+[lulus] portal/izin.php tanpa label "V2"/"Data warisan" di layar
+[lulus] portal/izin_ringkasan.php tanpa label "V2"/"Data warisan" di layar
+[lulus] portal/izin_antrean.php tanpa label "V2"/"Data warisan" di layar
+[lulus] portal/izin_detail.php tanpa label "V2"/"Data warisan" di layar
+[lulus] portal/laporan.php tanpa label "V2"/"Data warisan" di layar
+
+=== S4-3. Keputusan H: batas perubahan hak akses ===
+[lulus] Guard laporan: Bagian Pendidikan = pengurus + penugasan Pendidikan milik sendiri
+[lulus] Guard laporan tetap hanya-baca (GET/HEAD)
+[gagal] Penanda baca-semua hanya dipasang di admin/_laporan_guard.php (app/Keamanan/KeamananApiService.php, admin/_laporan_guard.php)
+[lulus] REST API tidak memasang penanda (kontrak tidak melebar)
+[lulus] Cakupan laporan (filter, pilihan, detail pertemuan) memakai satu pemeriksaan bacaSemua
+[lulus] Modul jadwal/pertemuan tetap admin/guru; Bagian Pendidikan tidak masuk
+[lulus] Menu "Laporan absensi pengajian" di grup Laporan, hanya untuk penugasan Pendidikan sendiri
+
+=== S4-4. Peta menu & tab ===
+[lulus] Pengajian: tab Jadwal · Pertemuan · Kehadiran
+[lulus] Izin anak (O): tab Aktif · Riwayat
+[lulus] Modul Pengajian tidak lagi membuat tab halaman sendiri (tab modul dari peta menu)
+
+=== S4-5. Keputusan perizinan (M, N, O, Q) ===
+[lulus] M: alasan cepat Pulang/Berobat/Acara keluarga/Lainnya mengisi awal teks
+[gagal] Tanpa perubahan skema/migrasi (database/ tidak berubah sejak Tahap 3)
+[lulus] N: keputusan dari antrean kembali ke antrean; tujuan lain tidak diterima
+[lulus] N: tombol "Berikutnya", tanpa pindah otomatis
+[lulus] O/Q/S: filter Aktif/Riwayat, jumlah semester, dan label izin dibaca di repositori
+[lulus] Q: jumlah izin semester ini memeriksa cakupan akun di server
+[lulus] I-4: pratinjau tujuan memakai routing dan cakupan yang sama dengan pengajuan
+
+=== S4-6. Pengajian (R, S, T) ===
+[lulus] R: tidak ada isian kehadiran di web
+[lulus] S: label "Sedang izin" dari izin disetujui; status tidak diisi
+[lulus] T: hari ditampilkan lewat ah_hari() ("Minggu" → "Ahad")
+[lulus] T: Ahad dan pekan dimulai Senin
+
+=== S4-7. Cetak (X-1, AS) ===
+[lulus] PrintLayout: tanda tangan dan anggaran tinggi lembar terakhir
+[lulus] app/Report/IzinPrintRenderer.php: kop bersama, tanda tangan Bagian Pendidikan dianggarkan, kode laporan
+[lulus] app/Report/PrintRenderer.php: kop bersama, tanda tangan Bagian Pendidikan dianggarkan, kode laporan
+[lulus] Penomoran tetap dihitung server (CSS cetak tanpa counter(page))
+
+=== S4-8. Komponen bersama ===
+[lulus] alhasan.js: details[data-ah-dialog]
+[lulus] alhasan.js: [data-ah-prefix]
+[lulus] alhasan.js: input[data-ah-option-filter]
+[lulus] alhasan.js: [data-ah-izin-info]
+[lulus] alhasan.js: input[data-ah-list-filter]
+[lulus] alhasan.js: [data-ah-print]
+[lulus] alhasan.css: .ah-split
+[lulus] alhasan.css: .ah-seg
+[lulus] alhasan.css: .ah-tl
+[lulus] alhasan.css: .ah-week
+[lulus] alhasan.css: .ah-actbar
+[lulus] alhasan.css: .ah-qlist
+[lulus] alhasan.css: .ah-icard
+[lulus] alhasan.css: .ah-stack
+[lulus] alhasan.css: .ah-filter__more
+[lulus] alhasan.css: .ah-ribbon
+
+Ringkasan: 94 lulus, 2 gagal
+  - Penanda baca-semua hanya dipasang di admin/_laporan_guard.php (app/Keamanan/KeamananApiService.php, admin/_laporan_guard.php)
+  - Tanpa perubahan skema/migrasi (database/ tidak berubah sejak Tahap 3)

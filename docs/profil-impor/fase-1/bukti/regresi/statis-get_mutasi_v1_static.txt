@@ -1,0 +1,29 @@
+[lulus] _guard memvalidasi CSRF POST dan menyediakan penolakan 405
+[lulus] hapus_siswa.php memanggil admin_require_post()
+[lulus] hapus_siswa.php tanpa $_GET/$_POST mentah dalam SQL mutasi
+[lulus] hapus_siswa.php tanpa path unlink dari permintaan
+[lulus] proses_psb_admin.php memanggil admin_require_post()
+[lulus] proses_psb_admin.php tanpa $_GET/$_POST mentah dalam SQL mutasi
+[lulus] proses_psb_admin.php tanpa path unlink dari permintaan
+[lulus] admin_pembayaran_psb.php memanggil admin_require_post()
+[lulus] admin_pembayaran_psb.php tanpa $_GET/$_POST mentah dalam SQL mutasi
+[lulus] admin_pembayaran_psb.php tanpa path unlink dari permintaan
+[lulus] proses_berita.php memanggil admin_require_post()
+[lulus] proses_berita.php tanpa $_GET/$_POST mentah dalam SQL mutasi
+[lulus] proses_berita.php tanpa path unlink dari permintaan
+[lulus] admin_galeri.php memanggil admin_require_post()
+[lulus] admin_galeri.php tanpa $_GET/$_POST mentah dalam SQL mutasi
+[lulus] admin_galeri.php tanpa path unlink dari permintaan
+[lulus] admin_download.php memanggil admin_require_post()
+[lulus] admin_download.php tanpa $_GET/$_POST mentah dalam SQL mutasi
+[lulus] admin_download.php tanpa path unlink dari permintaan
+[lulus] admin_galeri.php membatasi nama berkas dari DB dengan basename()
+[lulus] admin_download.php membatasi nama berkas dari DB dengan basename()
+[lulus] proses_berita.php membatasi nama berkas dari DB dengan basename()
+[lulus] Status PSB dibatasi daftar putih
+[lulus] admin_data.php memakai formulir POST + Csrf::input(), tanpa tautan bermutasi
+[lulus] admin_pembayaran_psb.php memakai formulir POST + Csrf::input(), tanpa tautan bermutasi
+[lulus] admin_berita.php memakai formulir POST + Csrf::input(), tanpa tautan bermutasi
+[lulus] admin_galeri.php memakai formulir POST + Csrf::input(), tanpa tautan bermutasi
+[lulus] admin_download.php memakai formulir POST + Csrf::input(), tanpa tautan bermutasi
+Ringkasan: 28 lulus, 0 gagal

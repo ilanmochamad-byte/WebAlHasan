@@ -1,0 +1,174 @@
+[lulus] Migrasi 007 memuat routing_kandidat
+[lulus] Migrasi 007 memuat routing_catatan
+[lulus] Migrasi 007 memuat murobi_ditetapkan_oleh_user_id
+[lulus] Migrasi 007 memuat dibatalkan_oleh_user_id
+[lulus] Migrasi 007 memuat alasan_pembatalan
+[lulus] Migrasi 007 memuat CREATE TABLE IF NOT EXISTS izin_keputusan_koreksi
+[lulus] Migrasi 007 memuat izin_pengajuan_antrean_index
+[lulus] Migrasi 007 memuat izin_pengajuan_overlap_index
+[lulus] Migrasi naik 007 sepenuhnya aditif: tanpa DROP, DELETE, atau TRUNCATE
+[lulus] Migrasi 007 tidak pernah mengubah tabel `perizinan` lama
+[lulus] Setiap penambahan kolom/indeks dijaga pemeriksaan INFORMATION_SCHEMA (dapat dijalankan ulang)
+[lulus] Seluruh pernyataan dinamis migrasi dilepas kembali (tanpa kebocoran prepared statement)
+[lulus] Alasan koreksi wajib terisi pada tingkat basis data
+[lulus] Rollback 007 hanya melepas jejak Fase 2; pengajuan, keputusan, riwayat, dan `perizinan` tetap ada
+[lulus] Rollback 007 memperingatkan agar tidak dijalankan sembarangan di produksi
+[lulus] Rollback 007 juga dapat dijalankan ulang dengan aman
+[lulus] IzinRepository tetap baca-saja setelah Fase 2
+[lulus] IzinRepository.php tidak membaca input global secara langsung
+[lulus] IzinWriteRepository.php tidak membaca input global secara langsung
+[lulus] IzinService.php tidak membaca input global secara langsung
+[lulus] IzinWorkflowService.php tidak membaca input global secara langsung
+[lulus] IzinRouter.php tidak membaca input global secara langsung
+[lulus] IzinIdempotency.php tidak membaca input global secara langsung
+[lulus] Seluruh mutasi memakai prepared statement, bukan penggabungan string
+[lulus] Pengajuan dikunci baris sebelum diperiksa dan diperbarui
+[lulus] Pembuatan pengajuan menserialkan santri yang sama lewat penguncian baris
+[lulus] Perubahan status memakai optimistic version
+[lulus] Jumlah baris terpengaruh dibaca dari statement (bukan setelah statement ditutup)
+[lulus] Setiap mutasi berjalan dalam satu transaksi dengan rollback pada kegagalan
+[lulus] Kelima mutasi (create, assign, decide, cancel, correction) memakai idempotency key
+[lulus] Penjaga idempotensi membaca baris terkunci dan membandingkan hash request secara aman
+[lulus] Kunci idempotensi yang dipakai untuk isi berbeda menghasilkan konflik, bukan diam-diam diterima
+[lulus] Duplikasi keputusan dari kunci unik basis data diterjemahkan menjadi konflik yang jelas
+[lulus] Tersedia status konflik 409 yang eksplisit
+[lulus] Routing hanya mengarahkan bila tepat satu murobi kandidat
+[lulus] Routing menilai penugasan murobi aktif, tahun ajaran aktif, serta kamar/kelas santri
+[lulus] Cakupan pembimbing menolak target kelas yang sudah nonaktif atau diarsipkan
+[lulus] Penetapan manual admin dibatasi pada guru dengan penugasan murobi aktif
+[lulus] Keputusan Admin Pengganti wajib memuat alasan penggantian
+[lulus] Kapasitas pemberi keputusan dibedakan antara Murobi dan Admin Pengganti
+[lulus] Murobi hanya dapat memutus pengajuan yang diarahkan kepadanya
+[lulus] Pembatalan dan keputusan hanya mungkin sebelum pengajuan diputus
+[gagal] Tumpang tindih dinilai terhadap status Diajukan, Perlu Penetapan Admin, dan Disetujui
+[lulus] Koreksi menambah peristiwa dan tidak pernah menghapus keputusan atau riwayat
+[lulus] Data warisan V1 tetap baca-saja pada alur V2
+[lulus] Audit mencatat aksi izin_pengajuan_created
+[lulus] Audit mencatat aksi izin_routing_resolved
+[lulus] Audit mencatat aksi izin_murobi_assigned
+[lulus] Audit mencatat aksi izin_decision_recorded
+[lulus] Audit mencatat aksi izin_cancelled
+[lulus] Audit mencatat aksi izin_decision_corrected
+[lulus] Seluruh mutasi menulis audit (pembuatan menulis dua peristiwa: pengajuan dan routing)
+[lulus] Kegagalan audit membatalkan transaksi perizinan, bukan diabaikan
+[lulus] Setiap transisi status menulis riwayat yang tidak pernah ditimpa
+[lulus] Riwayat menyimpan IP dan user agent tanpa credential
+[lulus] Audit dan riwayat perizinan tidak menyentuh credential atau secret
+[lulus] Halaman tersedia: portal/izin_buat.php
+[lulus] izin_buat.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/izin_aksi.php
+[lulus] izin_aksi.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/izin_antrean.php
+[lulus] izin_antrean.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/izin_detail.php
+[lulus] izin_detail.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/izin.php
+[lulus] izin.php memuat guard portal sebelum output
+[lulus] Halaman tersedia: portal/index.php
+[lulus] index.php memuat guard portal sebelum output
+[lulus] Controller mutasi hanya menerima POST
+[lulus] Sukses memakai POST/Redirect/GET; kegagalan mempertahankan status HTTP asli (403/409/422)
+[lulus] Seluruh POST portal dilindungi CSRF
+[lulus] Setiap formulir mutasi membawa kunci idempotensi
+[lulus] Helper kunci idempotensi dan pesan hasil tersedia untuk seluruh halaman portal
+[lulus] Tombol pada detail hanya cermin hak yang dihitung server
+[lulus] Halaman antrean dan pengajuan menyediakan empty state yang informatif
+[lulus] Antrean admin dan murobi dibatasi server sesuai peran
+[lulus] Cakupan yang tidak dikenal tetap tidak mengembalikan baris
+[lulus] Modul izin lama TIDAK dihapus
+[lulus] Modul izin lama dialihkan secara kompatibel dengan 302
+[lulus] Keputusan cleanup 19 Oktober 2026: flag darurat tidak membuka implementasi lama
+[lulus] Implementasi tulis perizinan lama dipensiunkan; data tetap dipertahankan
+[lulus] Permintaan mutasi lama ditolak secara eksplisit tanpa diteruskan
+[lulus] Pengarsipan tidak menghapus data perizinan lama
+[lulus] Pengaturan untuk membuka penulisan lama sudah dipensiunkan
+[lulus] Router API tidak memanggil IzinWorkflowService langsung (selalu lewat IzinApiService)
+[lulus] Endpoint perizinan Fase 3 tersedia melalui IzinApiService
+[lulus] Rute V1 '/schedules/today' tetap ada setelah Fase 3
+[lulus] Rute V1 '/meetings' tetap ada setelah Fase 3
+[lulus] Rute V1 '/reports' tetap ada setelah Fase 3
+[lulus] Rute V1 '/auth/login' tetap ada setelah Fase 3
+[lulus] bootstrap menyediakan izin_workflow_service()
+[lulus] bootstrap menyediakan izin_router()
+[lulus] bootstrap menyediakan izin_repository()
+[lulus] Helper lama teacher_api_service() dipertahankan
+[lulus] Helper lama report_service() dipertahankan
+[lulus] Helper lama schedule_service() dipertahankan
+[lulus] Helper lama master_data_service() dipertahankan
+[lulus] Helper lama api_auth_service() dipertahankan
+[lulus] Helper lama izin_service() dipertahankan
+[lulus] Helper lama pembimbing_service() dipertahankan
+[lulus] Alur login V1/Fase 1 tidak diubah oleh Fase 2
+[lulus] Skrip tersedia: bin/v2_phase2_preflight.php
+[lulus] v2_phase2_preflight.php hanya dapat dijalankan dari CLI
+[lulus] Skrip tersedia: bin/v2_phase2_verify.php
+[lulus] v2_phase2_verify.php hanya dapat dijalankan dari CLI
+[lulus] Preflight menghasilkan backup, manifest jumlah baris, dan laporan konflik
+[lulus] Preflight memblokir migrasi bila menemukan konflik yang memblokir
+[lulus] Verifikasi memeriksa invarian keputusan tunggal dan keutuhan data warisan
+[lulus] Dokumentasi tersedia: docs/phase-v2-2/acceptance-status.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-2/migration-and-rollback.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-2/test-results.md
+[lulus] Dokumentasi tersedia: docs/phase-v2-2/cpanel-deployment.md
+[lulus] Runbook memuat preflight, migrasi naik, verifikasi, dan petunjuk rollback
+[lulus] Berkas uji tersedia: tests/v2_phase2_integration.php
+[lulus] v2_phase2_integration.php menolak berjalan di luar database *_test
+[lulus] Berkas uji tersedia: tests/v2_phase2_concurrency_worker.php
+[lulus] v2_phase2_concurrency_worker.php menolak berjalan di luar database *_test
+[lulus] Berkas uji tersedia: tests/v2_phase2_web_smoke.php
+[lulus] v2_phase2_web_smoke.php menolak berjalan di luar database *_test
+[lulus] Uji dua keputusan bersamaan memakai dua proses PHP yang benar-benar terpisah
+[lulus] Tujuan pasca-login punya satu sumber kebenaran: app/Auth/LandingRouter.php
+[lulus] Pintasan murobi memakai Capabilities, bukan role mentah
+[lulus] Murobi tetap mendapat pintasan ke /portal/izin_antrean.php?mode=murobi
+[lulus] LandingRouter menegaskan dirinya bukan pengganti pemeriksaan otorisasi
+[lulus] Peta navigasi menegaskan dirinya bukan pengganti pemeriksaan otorisasi
+[lulus] cek_login.php memakai LandingRouter yang sama
+[lulus] cek_login.php tidak lagi mengarahkan seluruh role guru ke jadwal tanpa memeriksa capability
+[lulus] ubah_password.php memakai LandingRouter yang sama
+[lulus] ubah_password.php tidak lagi mengarahkan seluruh role guru ke jadwal tanpa memeriksa capability
+[lulus] admin_login.php menjadi alamat lama yang mengarahkan ke pintu masuk baru dengan tujuan tervalidasi
+[lulus] bootstrap menyediakan landing_router()
+[lulus] Modul pengajian menghitung hak antrean dari capability murobi
+[lulus] Tautan Antrean Perizinan pada modul pengajian hanya dirender untuk murobi aktif
+[lulus] Modul pengajian menegaskan tautan bukan pengganti pemeriksaan server
+[lulus] Guard server modul pengajian tidak dilonggarkan
+[lulus] Beranda umum hanya menuntut sesi yang sah, bukan kemampuan perizinan
+[lulus] Pintu masuk memakai penangan login yang sudah ada, bukan sistem login kedua
+[lulus] izin.php tetap dijaga guard kemampuan perizinan
+[lulus] izin_ringkasan.php tetap dijaga guard kemampuan perizinan
+[lulus] izin_antrean.php tetap dijaga guard kemampuan perizinan
+[lulus] izin_buat.php tetap dijaga guard kemampuan perizinan
+[lulus] laporan.php tetap dijaga guard kemampuan perizinan
+[lulus] Guard portal tetap menolak akun tanpa kemampuan perizinan dengan 403
+[lulus] Tersedia uji navigasi murobi yang hanya berjalan pada database *_test
+[lulus] php -l lulus untuk app/Izin/IzinRouter.php
+[lulus] php -l lulus untuk app/Izin/IzinIdempotency.php
+[lulus] php -l lulus untuk app/Izin/IzinWriteRepository.php
+[lulus] php -l lulus untuk app/Izin/IzinWorkflowService.php
+[lulus] php -l lulus untuk app/Audit/AuditLogger.php
+[lulus] php -l lulus untuk app/Auth/Capabilities.php
+[lulus] php -l lulus untuk portal/izin_buat.php
+[lulus] php -l lulus untuk portal/izin_aksi.php
+[lulus] php -l lulus untuk portal/izin_antrean.php
+[lulus] php -l lulus untuk bin/v2_phase2_preflight.php
+[lulus] php -l lulus untuk bin/v2_phase2_verify.php
+[lulus] php -l lulus untuk tests/v2_phase2_static.php
+[lulus] php -l lulus untuk tests/v2_phase2_integration.php
+[lulus] php -l lulus untuk tests/v2_phase2_concurrency_worker.php
+[lulus] php -l lulus untuk tests/v2_phase2_web_smoke.php
+[lulus] php -l lulus untuk app/Auth/LandingRouter.php
+[lulus] php -l lulus untuk tests/v2_phase2_navigasi_murobi.php
+[lulus] php -l lulus untuk app/bootstrap.php
+[lulus] php -l lulus untuk app/Izin/IzinException.php
+[lulus] php -l lulus untuk app/Izin/IzinRepository.php
+[lulus] php -l lulus untuk app/Izin/IzinService.php
+[lulus] php -l lulus untuk portal/_ui.php
+[lulus] php -l lulus untuk portal/index.php
+[lulus] php -l lulus untuk portal/izin.php
+[lulus] php -l lulus untuk portal/izin_detail.php
+[lulus] php -l lulus untuk admin/admin_izin.php
+[lulus] php -l lulus untuk admin/cek_login.php
+[lulus] php -l lulus untuk admin/admin_login.php
+[lulus] php -l lulus untuk admin/ubah_password.php
+[lulus] php -l lulus untuk admin/pertemuan_pengajian.php

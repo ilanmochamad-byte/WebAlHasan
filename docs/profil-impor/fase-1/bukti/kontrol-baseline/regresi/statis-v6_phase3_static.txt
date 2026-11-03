@@ -1,0 +1,78 @@
+=== U-1. Migrasi 029 ===
+[lulus] Satu CREATE TABLE IF NOT EXISTS bsa_setoran_transfer
+[lulus] Tanpa DROP/DELETE/UPDATE/ALTER/INSERT terhadap tabel mana pun (027/028 tidak diubah)
+[lulus] Nominal BIGINT, tanpa tipe pecahan
+[lulus] InnoDB, 6 kunci asing, 5 CHECK
+[lulus] Sah ⇔ satu baris ledger (unik); kunci idempotensi unik per pencatat; tolak wajib beralasan
+
+=== U-2. Rollback 029 ===
+[lulus] Rollback melepas tepat satu tabel 029
+[lulus] Penjaga data (antrean transfer, jenis ledger Fase 3, pembayaran dari tabungan) dijalankan sebelum DROP
+
+=== U-3. Layanan dan repository ===
+[lulus] Tanpa float, pembulatan, atau literal pecahan di kode layanan/repository BSA
+[lulus] Layanan/repository tidak membaca superglobal
+[lulus] Repository tabungan: satu pintu prepare + bind_param; query langsung hanya untuk snapshot baca rekonsiliasi
+[lulus] Kunci/deadlock → 409, CHECK → 422 (sama dengan BsaRepository)
+[lulus] Ledger tabungan tidak pernah di-UPDATE; tidak ada DELETE pada tabel BSA
+[lulus] Setoran transfer menunggu hanya menulis antrean 029, tidak menyentuh ledger/saldo
+[lulus] Hanya tunai atau transfer yang dinyatakan sudah diperiksa yang sah seketika
+
+=== U-4. Urutan kunci, cakupan sebelum replay, atomisitas ===
+[lulus] setoranMenunggu: penugasan (kunci baca) → klaim → cakupan/status santri → baru replay
+[lulus] putusSetoran: penugasan (kunci baca) → klaim → cakupan/status santri → baru replay
+[lulus] koreksi: penugasan (kunci baca) → klaim → cakupan/status santri → baru replay
+[lulus] Verifikasi: setoran transfer (tulis) → akun (tulis) → ledger → tandai sah, satu transaksi
+[lulus] Koreksi: akun dikunci, pembalik merujuk asal, debit tagihan ditolak (lewat pembatalan), saldo tidak boleh negatif
+[lulus] Bayar dari tabungan: lewat mutasiTagihan (tagihan dikunci dulu) → akun → debit ledger → pembayaran merujuk debit → terbayar + kuitansi, satu transaksi
+[lulus] Bayar dari tabungan: persetujuan eksplisit wajib; verifikasi sisa (dikurangi transfer menunggu) dan saldo
+[lulus] Pembatalan pembayaran dari tabungan mengembalikan saldo di transaksi yang sama
+[lulus] Cerminan saldo akun diperbarui bersyarat saldo lama yang dikunci
+
+=== U-5. Halaman web ===
+[lulus] bsa_tabungan.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_rekonsiliasi.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_tabungan_aksi.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_tabungan_kuitansi.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_bayar_tabungan.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_bayar_tabungan.php: setiap formulir POST membawa CSRF dan kunci idempotensi
+[lulus] bsa_transaksi.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_transaksi.php: setiap formulir POST membawa CSRF dan kunci idempotensi
+[lulus] bsa_santri.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_santri.php: setiap formulir POST membawa CSRF dan kunci idempotensi
+[lulus] bsa_tagihan.php: lewat penjaga bersama, superglobal tidak dicetak mentah
+[lulus] bsa_tagihan.php: setiap formulir POST membawa CSRF dan kunci idempotensi
+[lulus] bsa_tabungan_aksi.php menolak selain POST (405) dan memerlukan 029
+[lulus] Formulir bayar dari tabungan memuat persetujuan eksplisit dan memanggil layanan server
+[lulus] Kuitansi tabungan lewat layanan (hak sama); referensi dan alasan hanya untuk internal
+[lulus] Formulir setoran/penarikan web memakai TabunganService (aturan verifikasi transfer satu sumber)
+
+=== U-6. Rute API ===
+[lulus] Rute '/v6/bsa/tabungan'
+[lulus] Rute '/v6/bsa/setoran-transfer'
+[lulus] Rute #^/v6/bsa/setoran-transfer/(\d+)/(verifikasi|tolak)$#
+[lulus] Rute #^/v6/bsa/tabungan/(\d+)$#
+[lulus] Rute #^/v6/bsa/tabungan/(\d+)/koreksi$#
+[lulus] Rute '/v6/bsa/rekonsiliasi'
+[lulus] Rute (revisi|batal|pembayaran|bayar-tabungan)
+[lulus] Setoran/penarikan/rincian santri API memakai TabunganService yang sama dengan web
+
+=== U-7. Audit tanpa data uang ===
+[lulus] Daftar kunci audit bsa.* bertambah ID Fase 3 saja, tanpa data uang/alasan
+[lulus] Lima panggilan audit Fase 3 (setoran menunggu, verifikasi/tolak, koreksi, bayar tabungan, pembatalan) hanya memakai kunci metadata yang diizinkan
+
+=== U-8. Batas Fase 3 ===
+[gagal] Baseline audit Fase 2 ca62c31 tersedia
+[lulus] Kode Auth, PSB, V2–V5, penugasan, master data, dan notifikasi tidak diubah
+[lulus] Migrasi/rollback ≤ 028 tidak diubah
+[lulus] Halaman dan berkas PSB tidak diubah
+[lulus] Preflight/verifier Fase 1–2 dan BsaException tidak diubah
+[lulus] Berkas berubah hanya dalam daftar Fase 3
+[lulus] Tidak ada perubahan aplikasi mobile/Expo
+
+=== U-9. Lint ===
+[gagal] Lint 0 berkas PHP
+
+Lulus: 55 · Gagal: 2
+  - Baseline audit Fase 2 ca62c31 tersedia
+  - Lint 0 berkas PHP

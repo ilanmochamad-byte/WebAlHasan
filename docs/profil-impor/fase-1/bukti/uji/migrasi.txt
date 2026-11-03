@@ -1,0 +1,39 @@
+=== M-1 sebelum 035 ===
+[lulus] Salinan DB tanpa 035
+[lulus] Layanan profil melapor belum tersedia
+[lulus] Baca profil sebelum 035 → 503 "belum dipasang", bukan galat fatal
+[lulus] Autentikasi web berjalan tanpa kolom sesi_versi (sesi tidak diperiksa versinya)
+[lulus] Data Guru tetap tersimpan sebelum 035; isian profil diabaikan
+
+=== M-2 naik ===
+[lulus] Migrasi 035 diterapkan dan tercatat
+[lulus] Isi seluruh kolom lama 16 tabel (guru, pengurus, wali, users, role, token, relasi, penugasan, santri) identik
+[lulus] Tanpa isian otomatis: profil kosong, sesi_versi 0, seluruh token lama "penuh", audit tidak bertambah
+[lulus] Layanan profil tersedia sesudah naik
+
+=== M-3 jalankan ulang ===
+[lulus] Berkas migrasi dapat dijalankan ulang tanpa perubahan
+
+=== M-4 batasan basis data ===
+[lulus] CHECK: dua pemilik sekaligus ditolak
+[lulus] CHECK: jenis pemilik tidak cocok dengan kolom ditolak
+[lulus] CHECK: NIK bukan 16 digit ditolak
+[lulus] CHECK: nama berkas foto di luar pola acak ditolak
+[lulus] FK: guru tidak ada ditolak
+[lulus] UNIQUE: satu profil per guru
+[lulus] UNIQUE: NIK unik di antara guru
+[lulus] NIK sama pada jenis lain (data ganda yang hanya diperingatkan) tidak diblokir basis data
+[lulus] ENUM cakupan token menolak nilai di luar penuh/ganti_password
+
+=== M-6 rollback ditolak bila ada profil ===
+[lulus] Rollback ditolak; profil, kolom, dan catatan migrasi tetap
+[lulus] Data lama tetap identik sesudah rollback ditolak
+
+=== M-5 rollback saat kosong ===
+[lulus] Rollback saat profil kosong berhasil
+[lulus] Token ganti_password yang masih berlaku dicabut sebelum kolom cakupan dilepas
+[lulus] Data lama lain identik sesudah rollback
+[lulus] Kode tetap berjalan sesudah rollback
+[lulus] Naik lagi berhasil
+
+26 lulus, 0 gagal

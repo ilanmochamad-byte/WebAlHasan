@@ -1,0 +1,156 @@
+=== S6-1. Lint ===
+[lulus] php -l admin/admin_master_santri.php
+[lulus] php -l admin/proses_import_santri.php
+[lulus] php -l admin/admin_penempatan_santri.php
+[lulus] php -l admin/admin_wali.php
+[lulus] php -l admin/admin_wali_rekonsiliasi.php
+[lulus] php -l admin/admin_kelulusan_santri.php
+[lulus] php -l admin/admin_alumni.php
+[lulus] php -l admin/admin_guru.php
+[lulus] php -l admin/admin_pengurus.php
+[lulus] php -l admin/admin_kelas.php
+[lulus] php -l admin/admin_kamar.php
+[lulus] php -l admin/admin_tahun.php
+[lulus] php -l admin/admin_penugasan.php
+[lulus] php -l admin/admin_murobi.php
+[lulus] php -l admin/admin_pembimbing.php
+[lulus] php -l admin/_santri_wali_field.php
+[lulus] php -l admin/export_master.php
+[lulus] php -l portal/santri_binaan.php
+[lulus] php -l app/Database/Schema.php
+[lulus] php -l app/MasterData/MasterDataRepository.php
+[lulus] php -l app/MasterData/MasterDataService.php
+[lulus] php -l app/MasterData/PenempatanRepository.php
+[lulus] php -l app/MasterData/PenempatanService.php
+[lulus] php -l app/MasterData/ProfilSantriService.php
+[lulus] php -l app/Penugasan/PenugasanJenis.php
+[lulus] php -l app/bootstrap.php
+[lulus] php -l portal/index.php
+[lulus] php -l portal/izin_detail.php
+[lulus] php -l portal/v3_pelanggaran_detail.php
+[lulus] php -l admin/admin_akun.php
+[lulus] php -l tests/redesain_web_tahap6_seed.php
+[lulus] php -l tests/redesain_web_tahap6_http.php
+[lulus] node --check assets/ui/alhasan.js
+[lulus] node --check tests/browser/uji-redesain-web-tahap6.mjs
+[lulus] bash -n tests/redesain_web_tahap6_db.sh
+
+=== S6-2. Migrasi 023 dan rollback (AD, AE) ===
+[lulus] Migrasi dan rollback 023 berpasangan
+[lulus] Migrasi aditif: tanpa DROP/DELETE/TRUNCATE/UPDATE
+[lulus] Kolom asrama NULL (tanpa tebakan) dan tabel penanda; idempoten
+[lulus] Batasan pasangan terurut, satu tanda aktif, kunci asing
+[lulus] Rollback hanya melepas kolom/tabel baru
+[lulus] Rollback mendokumentasikan kehilangan data yang disengaja
+[lulus] Kode memeriksa skema dan tetap jalan tanpa migrasi (asrama = NULL)
+
+=== S6-3. Keputusan AB: profil santri binaan ===
+[lulus] Halaman D-10: akun masuk + pemeriksaan cakupan server + 403
+[lulus] Cakupan diperiksa SEBELUM data santri dibaca
+[lulus] Jenis binaan mengikuti peran aktif; peran lain ditolak
+[lulus] Cakupan binaan mensyaratkan: r.slug = '{$role}'
+[lulus] Cakupan binaan mensyaratkan: m.is_active = 1 AND m.archived_at IS NULL
+[lulus] Cakupan binaan mensyaratkan: ta.status = 'Aktif' AND ta.archived_at IS NULL
+[lulus] Cakupan binaan mensyaratkan: a.is_active = 1 AND a.archived_at IS NULL
+[lulus] Cakupan binaan mensyaratkan: a.tanggal_mulai <= CURDATE() AND (a.tanggal_selesai IS NULL OR a.tanggal_selesai >= CURDATE())
+[lulus] Cakupan binaan mensyaratkan: s.is_active = 1 AND s.archived_at IS NULL
+[lulus] Cakupan binaan mensyaratkan: u.id = ? AND u.is_active = 1
+[lulus] Profil binaan hanya-baca (tanpa formulir/mutasi)
+[lulus] Tab Pembinaan memakai layanan V3 dengan akun sendiri (kerahasiaan tetap)
+[lulus] Tanpa tab Nilai & rapor
+[lulus] Data santri admin tetap di bawah penjaga admin
+
+=== S6-4. Keputusan AE: asrama di layanan penempatan ===
+[lulus] Aturan tidak sesuai: L ke Putri atau P ke Putra; kamar tanpa asrama tidak diperingatkan
+[lulus] apply() memeriksa konfirmasi dari rencana TERKUNCI, bukan tinjauan
+[lulus] Konfirmasi dan alasan ≥ 5 karakter wajib
+[lulus] Alasan asrama tercatat di audit per santri dan ringkasan massal
+[lulus] Kamar baru wajib asrama; ubah tanpa isian tidak mengosongkan
+
+=== S6-5. Keputusan AD dan AC ===
+[lulus] Tanda bukan ganda: kunci pasangan, hanya kandidat, tolak ganda, audit
+[lulus] Pembatalan tanda tidak menghapus baris
+[lulus] Pasangan bertanda aktif tidak muncul sebagai kemungkinan ganda
+[lulus] periksaImpor tidak menyimpan; memeriksa NIS terdaftar dan ganda dalam berkas
+[lulus] Impor memeriksa ulang setiap baris sebelum menyimpan
+[lulus] Formulir santri dan impor memakai aturan validasi yang sama
+[lulus] Impor: guard admin + CSRF, GET → 405, jawaban tanpa isi mentah
+
+=== S6-6. Layar: POST/CSRF, tanpa ID, tanpa dialog bawaan ===
+[lulus] admin/admin_master_santri.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/admin_master_santri.php: tanpa isian ID yang diketik
+[lulus] admin/admin_master_santri.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_master_santri.php: formulir POST ber-CSRF
+[lulus] admin/proses_import_santri.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/proses_import_santri.php: tanpa isian ID yang diketik
+[lulus] admin/proses_import_santri.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_penempatan_santri.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/admin_penempatan_santri.php: tanpa isian ID yang diketik
+[lulus] admin/admin_penempatan_santri.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_penempatan_santri.php: formulir POST ber-CSRF
+[lulus] admin/admin_wali.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/admin_wali.php: tanpa isian ID yang diketik
+[lulus] admin/admin_wali.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_wali.php: formulir POST ber-CSRF
+[lulus] admin/admin_wali_rekonsiliasi.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/admin_wali_rekonsiliasi.php: tanpa isian ID yang diketik
+[lulus] admin/admin_wali_rekonsiliasi.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_wali_rekonsiliasi.php: formulir POST ber-CSRF
+[lulus] admin/admin_kelulusan_santri.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/admin_kelulusan_santri.php: tanpa isian ID yang diketik
+[lulus] admin/admin_kelulusan_santri.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_kelulusan_santri.php: formulir POST ber-CSRF
+[lulus] admin/admin_alumni.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/admin_alumni.php: tanpa isian ID yang diketik
+[lulus] admin/admin_alumni.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_alumni.php: formulir POST ber-CSRF
+[lulus] admin/admin_guru.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/admin_guru.php: tanpa isian ID yang diketik
+[lulus] admin/admin_guru.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_guru.php: formulir POST ber-CSRF
+[lulus] admin/admin_pengurus.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/admin_pengurus.php: tanpa isian ID yang diketik
+[lulus] admin/admin_pengurus.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_pengurus.php: formulir POST ber-CSRF
+[lulus] admin/admin_kelas.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/admin_kelas.php: tanpa isian ID yang diketik
+[lulus] admin/admin_kelas.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_kelas.php: formulir POST ber-CSRF
+[lulus] admin/admin_kamar.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/admin_kamar.php: tanpa isian ID yang diketik
+[lulus] admin/admin_kamar.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_kamar.php: formulir POST ber-CSRF
+[lulus] admin/admin_tahun.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/admin_tahun.php: tanpa isian ID yang diketik
+[lulus] admin/admin_tahun.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_tahun.php: formulir POST ber-CSRF
+[lulus] admin/admin_penugasan.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/admin_penugasan.php: tanpa isian ID yang diketik
+[lulus] admin/admin_penugasan.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_penugasan.php: formulir POST ber-CSRF
+[lulus] admin/admin_murobi.php: tanpa isian ID yang diketik
+[lulus] admin/admin_murobi.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_murobi.php: formulir POST ber-CSRF
+[lulus] admin/admin_pembimbing.php: tanpa isian ID yang diketik
+[lulus] admin/admin_pembimbing.php: judul tanpa label versi/istilah lama
+[lulus] admin/admin_pembimbing.php: formulir POST ber-CSRF
+[lulus] admin/_santri_wali_field.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/_santri_wali_field.php: tanpa isian ID yang diketik
+[lulus] admin/_santri_wali_field.php: judul tanpa label versi/istilah lama
+[lulus] admin/export_master.php: tanpa alert()/confirm()/handler inline
+[lulus] admin/export_master.php: tanpa isian ID yang diketik
+[lulus] admin/export_master.php: judul tanpa label versi/istilah lama
+[lulus] portal/santri_binaan.php: tanpa alert()/confirm()/handler inline
+[lulus] portal/santri_binaan.php: tanpa isian ID yang diketik
+[lulus] portal/santri_binaan.php: judul tanpa label versi/istilah lama
+[lulus] Halaman Murobi/Pembimbing lama dialihkan (GET), POST tetap
+[lulus] Kartu "Tempatkan santri" ganda di Kelas dihapus
+[lulus] D-3: konfirmasi penimpaan tidak lagi kotak centang di formulir
+
+=== S6-7. Keputusan AF dan peta menu ===
+[gagal] Jenis modul mendatang dipisah dengan keterangan
+[lulus] G-1 memuat kelompok "Disiapkan untuk modul mendatang"
+[lulus] Peta menu admin tetap (tanpa menu baru Tahap 6)
+[gagal] Navigation dan app/Auth tidak diubah Tahap 6
+
+Ringkasan: 139 lulus, 2 gagal

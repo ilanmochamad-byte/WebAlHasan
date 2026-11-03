@@ -1,0 +1,164 @@
+=== S-1 lint ===
+[gagal] lint app/Profil/ProfilException.php
+[gagal] lint app/Profil/ProfilData.php
+[gagal] lint app/Profil/FotoProfilStorage.php
+[gagal] lint app/Profil/ProfilRepository.php
+[gagal] lint app/Profil/ProfilService.php
+[gagal] lint app/Profil/ImporPersonelService.php
+[lulus] lint app/MasterData/MasterDataService.php
+[lulus] lint app/Audit/AuditLogger.php
+[lulus] lint app/Auth/Authorization.php
+[lulus] lint app/Auth/AuthRepository.php
+[lulus] lint app/Auth/AuthService.php
+[lulus] lint app/Auth/ApiTokenAuthenticator.php
+[lulus] lint app/Api/ApiAuthRepository.php
+[lulus] lint app/Api/ApiAuthService.php
+[lulus] lint app/bootstrap.php
+[lulus] lint api/v1/index.php
+[lulus] lint admin/admin_guru.php
+[lulus] lint admin/admin_pengurus.php
+[lulus] lint admin/ubah_password.php
+[gagal] lint admin/proses_import_personel.php
+[gagal] lint admin/foto_profil.php
+[gagal] lint admin/_impor_personel_ui.php
+[gagal] lint admin/_profil_admin_ui.php
+[lulus] lint tests/profil_impor_f1_integration.php
+[lulus] lint tests/profil_impor_f1_migration.php
+[lulus] lint tests/profil_impor_f1_http.php
+[lulus] lint tests/profil_impor_f1_static.php
+
+=== S-2 migrasi aditif ===
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/database/migrations/035_profil_impor_fase1.sql): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/database/migrations/035_profil_impor_fase1.sql): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+[lulus] Migrasi 035 tanpa UPDATE/DELETE/TRUNCATE/DROP/RENAME/INSERT atas data
+[gagal] Satu tabel baru profil_pribadi (dapat diulang)
+[gagal] Hanya dua kolom aditif: users.sesi_versi, api_tokens.cakupan
+[gagal] Kolom baru ber-DEFAULT yang mempertahankan makna lama (sesi 0, token penuh)
+[gagal] Penambahan kolom dijaga information_schema (aman dijalankan ulang)
+[gagal] CHECK pemilik tepat satu, NIK 16 digit, pola nama foto; NIK unik per jenis
+[gagal] 035 migrasi terakhir dengan rollback berpasangan
+
+=== S-3 rollback berpenjaga ===
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/database/rollbacks/035_profil_impor_fase1.sql): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/database/rollbacks/035_profil_impor_fase1.sql): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+[gagal] Rollback ditolak bila profil pribadi sudah berisi
+[gagal] Token ganti_password dicabut sebelum kolom cakupan dilepas
+[gagal] Rollback tidak mengubah/menghapus data lain
+
+=== S-4 tanpa penugasan/role/akun dari impor atau profil ===
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/app/Profil/ProfilRepository.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/app/Profil/ProfilRepository.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/app/Profil/ProfilService.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/app/Profil/ProfilService.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/app/Profil/ImporPersonelService.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/app/Profil/ImporPersonelService.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/admin/proses_import_personel.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/admin/proses_import_personel.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+[lulus] Tidak ada tulis ke tabel *_assignments
+[lulus] Tidak ada tulis ke user_roles; tidak membuat akun atau token
+[gagal] Profil tidak mengubah username, tautan identitas, atau status akun
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/app/Profil/ImporPersonelService.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/app/Profil/ImporPersonelService.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+[gagal] Tugas/Kamar/Tugas Tambahan hanya informasi, tidak masuk data simpan
+[gagal] Pengurus baru berjabatan "Pengurus" (PI-8)
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/app/Profil/ProfilService.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/app/Profil/ProfilService.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+[gagal] Edit diri menolak kunci di luar daftar yang disetujui
+
+=== S-5 audit tanpa data pribadi/password ===
+[gagal] AuditLogger menyaring aksi profil.* dan impor_personel.* ke metadata
+[gagal] Daftar kunci audit tidak memuat isian pribadi, password, atau token
+[gagal] Audit ganti password tidak menerima nilai password
+
+=== S-6 API ===
+[gagal] Penjaga token terbatas berjalan sebelum seluruh rute; hanya ganti password dan logout
+[gagal] Rute $path === '/profile/pribadi' tersedia
+[gagal] Rute $path === '/profile/foto' tersedia
+[gagal] Rute $path === '/profile/foto/hapus' tersedia
+[gagal] Rute #^/profile/foto(?:/(\d+))?$# tersedia
+[gagal] Rute $path === '/profile/password' tersedia
+[gagal] Login lama tetap 403 untuk password sementara; token terbatas hanya atas penanda eksplisit klien
+[lulus] Bentuk /profile lama tidak berubah
+
+=== S-7 foto dan UI ===
+[gagal] Foto di storage/private/profil (Require all denied, tidak terlacak Git)
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/app/Profil/FotoProfilStorage.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/app/Profil/FotoProfilStorage.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+[gagal] Foto ≤ 2 MiB, diperiksa sebagai gambar utuh, nama acak, hanya unggahan HTTP
+PHP Warning:  file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/admin/_impor_personel_ui.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+
+Warning: file_get_contents(/private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/admin/_impor_personel_ui.php): Failed to open stream: No such file or directory in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/65cb9d1a-7f4c-476b-9016-4602f2ed92bc/scratchpad/baseline/tests/profil_impor_f1_static.php on line 27
+[gagal] UI impor: satu innerHTML hanya untuk kartu angka; teks berkas/server lewat textContent
+[gagal] UI impor membaca nilai mentah tanpa rumus
+
+=== S-8 keputusan dan batas berkas ===
+[gagal] Keputusan PI-1 tercatat di PRD
+[gagal] Keputusan PI-2 tercatat di PRD
+[gagal] Keputusan PI-3 tercatat di PRD
+[gagal] Keputusan PI-4 tercatat di PRD
+[gagal] Keputusan PI-5 tercatat di PRD
+[gagal] Keputusan PI-6 tercatat di PRD
+[gagal] Keputusan PI-7 tercatat di PRD
+[gagal] Keputusan PI-8 tercatat di PRD
+[gagal] Keputusan PI-9 tercatat di PRD
+[gagal] Keputusan PI-10 tercatat di PRD
+[gagal] Tidak ada butir (assumption) tersisa selain penjelasan di kepala PRD
+
+21 lulus, 48 gagal
+ - lint app/Profil/ProfilException.php
+ - lint app/Profil/ProfilData.php
+ - lint app/Profil/FotoProfilStorage.php
+ - lint app/Profil/ProfilRepository.php
+ - lint app/Profil/ProfilService.php
+ - lint app/Profil/ImporPersonelService.php
+ - lint admin/proses_import_personel.php
+ - lint admin/foto_profil.php
+ - lint admin/_impor_personel_ui.php
+ - lint admin/_profil_admin_ui.php
+ - Satu tabel baru profil_pribadi (dapat diulang)
+ - Hanya dua kolom aditif: users.sesi_versi, api_tokens.cakupan
+ - Kolom baru ber-DEFAULT yang mempertahankan makna lama (sesi 0, token penuh)
+ - Penambahan kolom dijaga information_schema (aman dijalankan ulang)
+ - CHECK pemilik tepat satu, NIK 16 digit, pola nama foto; NIK unik per jenis
+ - 035 migrasi terakhir dengan rollback berpasangan
+ - Rollback ditolak bila profil pribadi sudah berisi
+ - Token ganti_password dicabut sebelum kolom cakupan dilepas
+ - Rollback tidak mengubah/menghapus data lain
+ - Profil tidak mengubah username, tautan identitas, atau status akun
+ - Tugas/Kamar/Tugas Tambahan hanya informasi, tidak masuk data simpan
+ - Pengurus baru berjabatan "Pengurus" (PI-8)
+ - Edit diri menolak kunci di luar daftar yang disetujui
+ - AuditLogger menyaring aksi profil.* dan impor_personel.* ke metadata
+ - Daftar kunci audit tidak memuat isian pribadi, password, atau token
+ - Audit ganti password tidak menerima nilai password
+ - Penjaga token terbatas berjalan sebelum seluruh rute; hanya ganti password dan logout
+ - Rute $path === '/profile/pribadi' tersedia
+ - Rute $path === '/profile/foto' tersedia
+ - Rute $path === '/profile/foto/hapus' tersedia
+ - Rute #^/profile/foto(?:/(\d+))?$# tersedia
+ - Rute $path === '/profile/password' tersedia
+ - Login lama tetap 403 untuk password sementara; token terbatas hanya atas penanda eksplisit klien
+ - Foto di storage/private/profil (Require all denied, tidak terlacak Git)
+ - Foto ≤ 2 MiB, diperiksa sebagai gambar utuh, nama acak, hanya unggahan HTTP
+ - UI impor: satu innerHTML hanya untuk kartu angka; teks berkas/server lewat textContent
+ - UI impor membaca nilai mentah tanpa rumus
+ - Keputusan PI-1 tercatat di PRD
+ - Keputusan PI-2 tercatat di PRD
+ - Keputusan PI-3 tercatat di PRD
+ - Keputusan PI-4 tercatat di PRD
+ - Keputusan PI-5 tercatat di PRD
+ - Keputusan PI-6 tercatat di PRD
+ - Keputusan PI-7 tercatat di PRD
+ - Keputusan PI-8 tercatat di PRD
+ - Keputusan PI-9 tercatat di PRD
+ - Keputusan PI-10 tercatat di PRD
+ - Tidak ada butir (assumption) tersisa selain penjelasan di kepala PRD
