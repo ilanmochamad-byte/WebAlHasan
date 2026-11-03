@@ -56,7 +56,7 @@ Semua memakai `Authorization: Bearer <token>`, respons `{success, data, error}`,
 | `POST /profile/foto/hapus` | — | 200 profil sesudah (kembali ke inisial). |
 | `GET /profile/foto` | — | Berkas foto pemilik (`image/*`, `nosniff`, CSP sandbox). 404 bila tidak ada. |
 | `GET /profile/foto/{userId}` | — | Pemilik sendiri atau admin aktif; selain itu **404**. |
-| `POST /profile/password` | `password_saat_ini`, `password_baru`, `konfirmasi_password`, opsional `device_id` (perangkat push yang dipertahankan) | 200 `{sesi_versi, token_lain_dicabut, perangkat_dicabut, wajib_ganti_password:false}`. 422 per isian (salah/lemah/beda). Token yang dipakai tetap dan menjadi `penuh`. |
+| `POST /profile/password` | `password_saat_ini`, `password_baru`, `konfirmasi_password`, opsional `device_id` (perangkat push yang dipertahankan) | 200 `{sesi_versi, token_lain_dicabut, perangkat_dicabut, wajib_ganti_password:false}`. 422 per isian (salah/lemah/beda; password baru maksimal 72 byte dan tanpa NUL). Token yang dipakai tetap dan menjadi `penuh`. |
 | `POST /auth/login` | tambahan opsional `izinkan_password_sementara: true` | Akun berpassword sementara: tanpa penanda → 403 `PASSWORD_CHANGE_REQUIRED` (perilaku lama); dengan penanda → 200 `{token, token_type, expires_at, password_change_required:true, token_scope:"ganti_password", profile:{id,name,username}}` (tanpa capability, berlaku 1 hari). |
 | Endpoint lain dengan token terbatas, atau akun yang wajib ganti password | — | 403 `PASSWORD_CHANGE_REQUIRED`. |
 
@@ -89,14 +89,16 @@ Bentuk `GET /profile/pribadi`:
 
 Berkas dibaca di peramban (SheetJS `xlsx@0.18.5`, nilai mentah, `cellFormula: false`), dikirim sebagai baris berkunci kanonis. Server (`ImporPersonelService`) memakai **analisis yang sama** untuk pratinjau dan simpan:
 
-- Kolom: Nama Lengkap, NIP, NIK, (atau satu kolom "NIP atau NIK" yang dikenali otomatis: 16 digit → NIK), Tempat/Tanggal Lahir, Alamat Rumah, Kelurahan/Desa, Kecamatan, Kabupaten/Kota, Provinsi, No. HP, Email, Tugas, Kamar/Kobong, Tugas Tambahan. Pemetaan judul ditebak dan dapat diubah admin.
+- Kolom: ID Sistem opsional, Nama Lengkap, NIP, NIK, (atau satu kolom "NIP atau NIK" yang dikenali otomatis: 16 digit → NIK), Tempat/Tanggal Lahir, Alamat Rumah, Kelurahan/Desa, Kecamatan, Kabupaten/Kota, Provinsi, No. HP, Email, Tugas, Kamar/Kobong, Tugas Tambahan. Pemetaan judul ditebak dan dapat diubah admin.
 - Tindakan per baris: **Tambah baru**, **Perbarui** (mengisi kosong), **Tidak berubah**, **Perlu konfirmasi** (menimpa nilai lama terisi → centang "Timpa nilai lama"; NIP/NIK lama berbeda → centang "Ganti NIP/NIK"), **Pilih pasangan** (nama sama tanpa NIP/NIK cocok → radio calon atau "Tambah baru"), **Konflik**.
 - Konflik: tanpa NIP dan NIK, NIK bukan 16 digit, NIP/NIK/HP ganda di dalam berkas, NIP dan NIK menunjuk dua orang berbeda, dua baris menunjuk orang yang sama, NIP/NIK tercatat ganda di data lama, identitas pengurus milik guru pada impor pengurus (PI-10), nama guru di luar latin1, sel angka yang kehilangan presisi atau notasi ilmiah.
 - Sel kosong tidak pernah mengosongkan nilai lama. HP numerik tanpa nol awal dipulihkan; nomor seri tanggal Excel dan HH/BB/TTTT dibaca.
 - Simpan: seluruh baris dianalisis ulang di bawah kunci baris; sidik pratinjau yang berbeda (data berubah, pilihan berubah, atau baris belum diperiksa) → konflik, tidak menimpa. Seluruh simpan **satu transaksi** + audit ringkasan `impor_personel.simpan` (jumlah, sidik dan ukuran berkas) dan per baris `profil.impor_baris` (ID, tindakan, nama isian yang berubah). Kesalahan basis data/audit → tidak ada yang tersimpan.
 - Tugas/Kamar/Tugas Tambahan hanya tampil di pratinjau. Tidak ada akun, username, role, token, atau penugasan yang dibuat/diubah. Batas 500 baris dan 5 MB.
 
-## Hasil uji (`bukti/uji/`, `perintah-uji.sh`)
+## Hasil uji implementator (`bukti/uji/`, `perintah-uji.sh`)
+
+Hasil independen dan koreksi sesudah handoff dicatat di [audit Codex](AUDIT-CODEX.md).
 
 Sidik berkas yang dibuat/diubah: `bukti/sha256.txt`. Lingkungan: PHP 8.4.14, MariaDB 12.3.2 lokal, Chromium (Playwright), DB `test_*_test` berfixture sintetis. Tidak ada data pribadi nyata.
 
@@ -170,7 +172,7 @@ Tidak ada oracle yang dilonggarkan.
 4. Pastikan folder `storage/private/profil/` dapat ditulis PHP dan tetap di bawah `storage/private/.htaccess` (`Require all denied`).
 5. Sesudah rilis: sesi website lama tetap berlaku (versi 0) sampai pemiliknya mengganti password.
 
-Pemulihan: rollback 035 hanya berhasil selama `profil_pribadi` kosong (penjaga CHECK); token `ganti_password` yang masih berlaku dicabut lebih dulu. Bila profil sudah berisi, pulihkan dari backup atau buat migrasi korektif — jangan kembali ke kode lama sambil mempertahankan token terbatas aktif. Berkas foto tidak pernah dihapus rollback.
+Pemulihan: rollback 035 hanya berhasil selama `profil_pribadi` kosong dan semua `users.sesi_versi` bernilai 0 (penjaga CHECK); token `ganti_password` yang masih berlaku dicabut lebih dulu. Bila profil sudah berisi atau versi sesi sudah dinaikkan, pulihkan dari backup atau buat migrasi korektif — jangan kembali ke kode lama sambil mempertahankan token terbatas aktif. Berkas foto tidak pernah dihapus rollback.
 
 ## Handoff audit Codex
 

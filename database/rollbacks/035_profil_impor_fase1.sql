@@ -6,7 +6,10 @@
 -- hilang karena rollback. Pulihkan backup atau buat migrasi korektif. Berkas foto
 -- di storage/private/profil tidak pernah dihapus rollback.
 --
--- Bila tabel kosong: token aplikasi `ganti_password` yang masih berlaku DICABUT
+-- Rollback juga ditolak bila ada sesi web yang telah dicabut lewat versi.
+-- Melepas kolom saat itu akan membuat sesi lama berlaku kembali.
+--
+-- Bila kedua penjaga lolos: token aplikasi `ganti_password` yang masih berlaku DICABUT
 -- lebih dulu (kode lama tidak mengenal pembatasan itu, sehingga token tersebut
 -- akan menjadi token penuh), lalu kolom `api_tokens.cakupan`, `users.sesi_versi`,
 -- dan tabel kosong dilepas. Baris guru, pengurus, wali, users, penugasan, dan
@@ -21,6 +24,12 @@ SET @sql := IF(
     (SELECT COUNT(*) FROM information_schema.TABLES
       WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'profil_pribadi') = 1,
     'INSERT INTO profil_fase1_rollback_guard (jumlah) SELECT COUNT(*) FROM profil_pribadi',
+    'DO 0');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+SET @sql := IF(
+    (SELECT COUNT(*) FROM information_schema.COLUMNS
+      WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'users' AND COLUMN_NAME = 'sesi_versi') = 1,
+    'INSERT INTO profil_fase1_rollback_guard (jumlah) SELECT 1 FROM users WHERE sesi_versi <> 0 LIMIT 1',
     'DO 0');
 PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 DROP TEMPORARY TABLE profil_fase1_rollback_guard;

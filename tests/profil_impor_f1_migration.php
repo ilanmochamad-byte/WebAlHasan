@@ -153,6 +153,17 @@ $assert($sidik() === $sebelum, 'Data lama tetap identik sesudah rollback ditolak
 echo "\n=== M-5 rollback saat kosong ===\n";
 $db->query('DELETE FROM profil_pribadi');
 $userId = (int) $satu('SELECT id FROM users ORDER BY id LIMIT 1');
+$db->query("UPDATE users SET sesi_versi = 1 WHERE id = $userId");
+$e = null;
+try {
+    $migrator->rollbackLast();
+} catch (Throwable $x) {
+    $e = $x;
+}
+Schema::forget();
+$assert($e !== null && $terpasang() && $tercatat() && (int) $satu("SELECT sesi_versi FROM users WHERE id = $userId") === 1,
+    'Rollback ditolak walau profil kosong jika penghapusan versi akan menghidupkan sesi web lama');
+$db->query("UPDATE users SET sesi_versi = 0 WHERE id = $userId");
 $db->query("INSERT INTO api_tokens (user_id, token_hash, name, cakupan, expires_at, created_at) VALUES ($userId, '" . str_repeat('c', 64) . "', 'uji', 'ganti_password', DATE_ADD(NOW(), INTERVAL 1 DAY), NOW())");
 $tokenTerbatas = (int) $db->insert_id;
 $sebelumRollback = $sidik();

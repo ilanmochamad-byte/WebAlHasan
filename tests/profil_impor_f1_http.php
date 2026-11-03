@@ -285,6 +285,10 @@ $b->login('sbx_ortu_b');
 $csrf = $a->csrf('/admin/ubah_password.php');
 $r = $a->req('/admin/ubah_password.php', ['_csrf' => $csrf, 'password_saat_ini' => 'Salah#123456789', 'password_baru' => 'WebBaru#20262026', 'konfirmasi_password' => 'WebBaru#20262026']);
 $assert($r['status'] === 200 && str_contains($r['body'], 'Kata sandi saat ini tidak benar') && $b->req('/admin/ubah_password.php')['status'] === 200, 'Web: password saat ini salah ditolak; sesi lain tetap');
+$terlaluPanjang = 'Aa1' . str_repeat('x', 70);
+$r = $a->req('/admin/ubah_password.php', ['_csrf' => $a->csrf('/admin/ubah_password.php'), 'password_saat_ini' => 'Sandbox#123', 'password_baru' => $terlaluPanjang, 'konfirmasi_password' => $terlaluPanjang]);
+$assert($r['status'] === 200 && str_contains($r['body'], 'maksimal 72 byte') && $b->req('/admin/ubah_password.php')['status'] === 200,
+    'Web: password melebihi 72 byte ditolak dengan pesan yang tepat; sesi lain tetap');
 $r = $a->req('/admin/ubah_password.php', ['_csrf' => $a->csrf('/admin/ubah_password.php'), 'password_saat_ini' => 'Sandbox#123', 'password_baru' => 'WebBaru#20262026', 'konfirmasi_password' => 'WebBaru#20262026']);
 $assert($r['status'] === 200 && $a->req('/admin/ubah_password.php')['status'] === 200, 'Web: ganti kata sandi berhasil; sesi sendiri tetap');
 $kb = $b->req('/admin/ubah_password.php');

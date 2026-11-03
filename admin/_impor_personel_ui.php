@@ -70,6 +70,7 @@ function impor_personel_render(string $jenis, string $halaman): void
         var jenis = akar.getAttribute('data-jenis'), label = akar.getAttribute('data-label');
         var JUDUL = <?= json_encode($judul, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) ?>;
         var ALIAS = {
+            id_sistem: ['idsistem'],
             nama: ['namalengkap', 'nama', 'namaguru', 'namapengurus', 'namaustadz'], nip: ['nip'], nik: ['nik', 'noktp', 'nomorktp', 'noinduk kependudukan'],
             nip_nik: ['nipnik', 'niknip', 'nipataunik', 'nikataunip', 'nomoridentitas', 'noidentitas'], tempat_lahir: ['tempatlahir'], tanggal_lahir: ['tanggallahir', 'tgllahir'],
             alamat_rumah: ['alamatrumah', 'alamat'], kelurahan: ['kelurahandesa', 'kelurahan', 'desa', 'desakelurahan'], kecamatan: ['kecamatan'],
@@ -96,8 +97,8 @@ function impor_personel_render(string $jenis, string $halaman): void
             return hasil;
         };
         var nilaiSel = function (v) {
-            // Angka di luar presisi aman JavaScript (mis. NIK berupa sel angka) ditandai agar server menolaknya.
-            if (typeof v === 'number') { return Number.isSafeInteger(v) || !Number.isInteger(v) ? v : '#PRESISI'; }
+            // Excel menyimpan paling banyak 15 digit signifikan untuk sel angka.
+            if (typeof v === 'number') { return Math.abs(v) < 1e15 ? v : '#PRESISI'; }
             return v == null ? '' : String(v);
         };
         var bangunBaris = function () {

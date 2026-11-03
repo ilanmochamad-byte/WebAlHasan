@@ -1,0 +1,97 @@
+[lulus] Empat kelompok akun memperoleh token API
+
+=== H-1 baca profil ===
+[lulus] Profil sbx_admin: hanya akun sendiri, sumber akun, status admin dari server
+[lulus] Profil sbx_murobi_a: hanya akun sendiri, sumber guru, status murobi dari server
+[lulus] Profil sbx_pengurus_a: hanya akun sendiri, sumber pengurus, status pembimbing dari server
+[lulus] Profil sbx_ortu_a: hanya akun sendiri, sumber wali, status orang_tua dari server
+[lulus] Profil orang tua tidak memuat identitas akun lain
+[lulus] Bentuk /profile lama tidak berubah (aditif)
+[lulus] Tanpa/token palsu → 401
+[lulus] Respons profil JSON
+
+=== H-2 ubah profil ===
+[lulus] Menulis username lewat edit profil ditolak 422; akun/role/penugasan tetap
+[lulus] Menulis roles lewat edit profil ditolak 422; akun/role/penugasan tetap
+[lulus] Menulis penugasan lewat edit profil ditolak 422; akun/role/penugasan tetap
+[lulus] Menulis kamar lewat edit profil ditolak 422; akun/role/penugasan tetap
+[lulus] Menulis kelas lewat edit profil ditolak 422; akun/role/penugasan tetap
+[lulus] Menulis mapel lewat edit profil ditolak 422; akun/role/penugasan tetap
+[lulus] Menulis guru_id lewat edit profil ditolak 422; akun/role/penugasan tetap
+[lulus] Menulis user_id lewat edit profil ditolak 422; akun/role/penugasan tetap
+[lulus] Menulis nip lewat edit profil ditolak 422; akun/role/penugasan tetap
+[lulus] PATCH profil sah diterima dan dikembalikan
+[lulus] Nilai baru langsung terbaca token yang sama tanpa login ulang
+[lulus] Versi basi → 409 CONFLICT
+[lulus] Email salah → 422
+
+=== H-3 foto ===
+[lulus] Unggah PNG → foto ada, versi 1
+[lulus] Pemilik membaca foto sendiri (isi sama)
+[lulus] Ganti foto → versi naik; berkas lama dihapus
+[lulus] Admin membaca foto akun lain
+[lulus] Akun pengurus membaca foto guru → 404
+[lulus] Akun orang tua membaca foto guru → 404
+[lulus] Tanpa foto / akun tidak ada → 404
+[lulus] Unggahan skrip PHP bernama .png ditolak 422; foto lama tetap
+[lulus] Unggahan SVG berskrip ditolak 422; foto lama tetap
+[lulus] Unggahan GIF ditolak 422; foto lama tetap
+[lulus] Unggahan lebih dari 2 MB ditolak 422; foto lama tetap
+[lulus] PNG berekor skrip hanya disimpan dengan nama acak .png di folder privat (tidak dapat dieksekusi)
+[lulus] Tanpa berkas → 422
+[lulus] Folder privat foto tidak tersaji langsung (router uji = .htaccess Require all denied)
+[lulus] Admin web membaca foto lewat endpoint berpenjaga
+[lulus] Orang tua tidak dapat membaca foto lewat endpoint admin
+[lulus] Hapus foto → kembali ke inisial
+
+=== H-4 ganti password lewat API ===
+[lulus] Sesi web pengurus aktif sebelum ganti password
+[lulus] Password saat ini salah → 422; token lain tetap
+[lulus] Password baru lemah → 422
+[lulus] Password berhasil diganti; respons tanpa password
+[lulus] Token yang dipakai tetap; token lain akun ini → 401
+[lulus] Sesi web lain akun ini keluar setelah password diganti (PI-2)
+[lulus] Password lama tidak berlaku; password baru dapat dipakai login
+
+=== H-5 password sementara (PI-1) ===
+[lulus] Klien lama (tanpa penanda) tetap ditolak 403 PASSWORD_CHANGE_REQUIRED
+[lulus] Klien yang mendukung: token terbatas tanpa capability/menu
+[lulus] Token tersimpan bercakupan ganti_password
+[lulus] Token terbatas ditolak 403 pada profil, capability, izin, BSA, keamanan, dan edit profil
+[lulus] Token penuh lama juga dibatasi selama password sementara belum diganti
+[lulus] Ganti password sementara lewat token terbatas berhasil
+[lulus] Token terbatas menjadi penuh; token lama dicabut
+[lulus] Token yang menjadi penuh memperoleh masa berlaku token biasa (bukan 1 hari)
+[lulus] Token terbatas dapat logout; sesudahnya tidak berlaku
+
+=== H-6 website: ganti kata sandi ===
+[lulus] Web: password saat ini salah ditolak; sesi lain tetap
+[lulus] Web: password melebihi 72 byte ditolak dengan pesan yang tepat; sesi lain tetap
+[lulus] Web: ganti kata sandi berhasil; sesi sendiri tetap
+[lulus] Web: sesi lain akun yang sama keluar
+[lulus] Jejak audit lama password_changed tetap ditulis
+
+=== H-7 impor admin lewat HTTP ===
+[lulus] Templat impor guru berupa berkas .xlsx
+[lulus] Periksa lewat HTTP: pratinjau tanpa menyimpan
+[lulus] Simpan lewat HTTP: satu guru baru
+[lulus] Kiriman ulang sidik lama tidak menggandakan guru
+[lulus] Kolom Tugas/Kamar tidak mengubah penugasan murobi
+[lulus] POST impor tanpa CSRF ditolak
+[lulus] Guru (non-admin) tidak dapat memakai endpoint impor
+[lulus] Jenis impor tak dikenal → 404
+[lulus] Periksa impor pengurus lewat HTTP
+
+=== H-8 halaman Data Guru/Pengurus ===
+[lulus] Halaman impor guru tersedia
+[lulus] Halaman impor pengurus tersedia
+[lulus] Tombol Impor Excel tampil di Data Guru
+[lulus] Formulir guru memuat isian identitas; kolom tugas lama tidak menjadi isian
+[lulus] Simpan formulir guru: NIK, nama akun, dan pengosongan isian diterapkan
+[lulus] Detail guru menampilkan identitas pribadi
+[lulus] Formulir pengurus: label NIP / nomor identitas (PI-9) dan NIK
+
+=== H-9 log server ===
+[lulus] Log server tanpa galat PHP
+
+77 lulus, 0 gagal
