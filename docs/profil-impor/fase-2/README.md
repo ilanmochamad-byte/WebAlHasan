@@ -1,5 +1,7 @@
 # Profil pengguna aplikasi — Fase 2 (uji dan dokumen sisi web)
 
+**Status audit 4 November 2026:** lulus teknis setelah koreksi. Hasil independen dan gerbang rilis ada di [Audit Codex](AUDIT-CODEX.md). Catatan implementator di bawah dipertahankan sebagai riwayat.
+
 Implementasi Fase 2 ada di repo **alhasanApps** branch `claude/profil-impor-fase-2`, commit `b887d7b` (dari `origin/main` `b9a4e10`). Handoff lengkap, bukti, penafsiran PF2-1…PF2-8, temuan T-1…T-3, dan batas: `docs/profil-impor/fase-2/README.md` repo aplikasi.
 
 Branch web `claude/profil-impor-fase-2` dari `origin/main` `18539cd` (PR #113, memuat audit Fase 1 `c4647be`; `git diff` kosong) **hanya menambah uji dan dokumen**. Kode aplikasi web, API, migrasi, dan kontrak Fase 1 tidak berubah; tidak ada perbaikan server yang diselipkan.

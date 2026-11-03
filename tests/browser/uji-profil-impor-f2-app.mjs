@@ -64,6 +64,10 @@ async function halamanApp(user, password = PASS, gangguan = {}) {
     const metode = route.request().method();
     if (metode === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'Access-Control-Allow-Origin': app, 'Access-Control-Allow-Headers': 'authorization,content-type', 'Access-Control-Allow-Methods': 'GET,POST,PUT' } });
     if (u.pathname.endsWith('/profile/password')) kirimanPassword.push(route.request().postData() || '');
+    if (gangguan.blokirFoto && metode === 'GET' && u.pathname === '/api/v1/profile/foto') {
+      gangguan.fotoGagal = true;
+      return route.abort('internetdisconnected');
+    }
     if (gangguan.blokirPribadi && u.pathname.startsWith('/api/v1/profile/')) return route.abort('internetdisconnected');
     if (gangguan.pribadi404 && u.pathname.startsWith('/api/v1/profile/') && u.pathname !== '/api/v1/profile/identitas') {
       return route.fulfill({ status: 404, contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': app }, body: JSON.stringify({ success: false, data: null, error: { code: 'NOT_FOUND', message: 'Endpoint tidak ditemukan.' } }) });
@@ -127,7 +131,9 @@ try {
     const data = (await api(token, '/profile/pribadi')).json.data;
     const posisi = await kartuPertama(p);
     ok(posisi.pertama && posisi.jarak <= 16, `${label}: kartu = isi pertama Beranda (anak pertama wadah isi, ${Math.round(posisi.jarak)}px dari atas area gulir)`);
-    await tunggu(p, data.status[0].label);
+    // Label peran bisa muncul di luar kartu sebelum profil pribadi selesai dimuat.
+    await kartu(p).getByText(data.pribadi.nama, { exact: true }).waitFor({ timeout: 20000 });
+    await kartu(p).getByText(data.status[0].label, { exact: true }).waitFor({ timeout: 20000 });
     const isi = (await kartu(p).innerText()).replace(/\s+/g, ' ');
     ok(isi.includes(data.pribadi.nama), `${label}: nama lengkap tampil utuh (${data.pribadi.nama.length} karakter)`);
     ok(data.status.every(s => isi.includes(s.label)), `${label}: seluruh status = API (${data.status.map(s => s.label).join(', ')})`);
@@ -248,9 +254,27 @@ try {
   await kartu(pa).getByRole('img', { name: /Foto profil/ }).waitFor({ timeout: 15000 });
   ok(true, 'Kartu Beranda menampilkan foto baru');
   await foto(pa, 'beranda-foto');
+  const gangguanFoto = { blokirFoto: true, fotoGagal: false };
+  const ulangFoto = await halamanApp('sbx_pengurus_a', PASS, gangguanFoto);
+  await kartu(ulangFoto).getByText('SBX Pengurus A Diubah', { exact: true }).waitFor();
+  await ulangFoto.waitForEvent('requestfailed', {
+    predicate: r => new URL(r.url()).pathname === '/api/v1/profile/foto',
+    timeout: 5000,
+  }).catch(e => { if (!gangguanFoto.fotoGagal) throw e; });
+  ok(gangguanFoto.fotoGagal && await kartu(ulangFoto).getByRole('img', { name: /Foto profil/ }).count() === 0,
+    'Unduhan foto gagal → kartu tetap tampil dengan inisial');
+  gangguanFoto.blokirFoto = false;
+  await kartu(ulangFoto).getByRole('button', { name: /Buka profil/ }).click();
+  await ulangFoto.waitForURL(u => u.pathname === '/profil');
+  await ulangFoto.getByRole('img', { name: /Foto profil/ }).first().waitFor({ timeout: 10000 });
+  ok(true, 'Fokus Profil memuat ulang foto dengan versi sama setelah jaringan pulih');
+  await ulangFoto.context().close();
   const tokenB = await loginApi('sbx_pengurus_b');
   const lintas = await fetch(`${web}/api/v1/profile/foto/${ids.pengurus_a}`, { headers: { Authorization: `Bearer ${tokenB}` } });
   ok(lintas.status === 404, 'Foto akun lain oleh akun tanpa kewenangan → 404');
+  const bacaLintas = await api(tokenB, `/profile/pribadi?user_id=${ids.pengurus_a}`);
+  ok(bacaLintas.status === 200 && bacaLintas.json?.data?.akun?.id === ids.pengurus_b,
+    'Parameter identitas akun lain tidak memberi akses ke profilnya');
   const tulisUsername = await api(tokenB, '/profile/pribadi', { method: 'POST', body: { username: 'curian', roles: ['admin'] } });
   ok(tulisUsername.status === 422 && sql(`SELECT username FROM users WHERE id=${ids.pengurus_b}`) === 'sbx_pengurus_b', 'Menulis username/role lewat API profil → 422, tidak berubah');
   await pa.goto(app + '/akun/edit-profil');
@@ -352,8 +376,11 @@ try {
   await kartu(lama).waitFor();
   await lama.waitForTimeout(1500);
   ok((await kartu(lama).innerText()).includes('Guru'), 'Server lama (404): kartu memakai peran akun');
+  const responsLama = lama.waitForResponse(r => r.status() === 404 && new URL(r.url()).pathname === '/api/v1/profile/pribadi');
   await lama.goto(app + '/profil');
+  await responsLama;
   await tunggu(lama, 'Akun & pemberitahuan');
+  await lama.getByText('Ganti password', { exact: true }).waitFor({ state: 'hidden' });
   const lamaTeks = await teks(lama);
   ok(!lamaTeks.includes('Edit profil') && !lamaTeks.includes('Ganti password'), 'Server lama: Edit/Ganti Password tidak ditawarkan');
   await lama.context().close();
