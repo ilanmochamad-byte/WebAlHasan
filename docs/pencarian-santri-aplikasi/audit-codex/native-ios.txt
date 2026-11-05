@@ -1,0 +1,11 @@
+
+=== ios perangkat 05999342-AE62-44C4-B0E1-1E8504CF8512 ===
+[lulus] Maestro alur utama (login, buka pertemuan, tab, cari, status, simpan dengan saringan aktif)
+[lulus] Tepat satu pertemuan (['722'])
+[lulus] DB: satu absensi guru, lima santri unik
+[lulus] DB: PI1 Izin, PA1 Sakit, tiga Hadir (['Hadir', 'Hadir', 'Hadir', 'Izin', 'Sakit'])
+[lulus] Proksi: satu PUT absensi memuat lima peserta unik (1 PUT)
+[lulus] Proksi: respons rincian memuat kelas [PA, PI]
+[lulus] Buka ulang (cold start) + tautan pertemuan: tab PI, Izin PI1 terpilih dari server
+
+Ringkasan: 7 lulus, 0 gagal

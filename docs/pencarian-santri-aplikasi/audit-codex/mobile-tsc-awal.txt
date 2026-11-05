@@ -1,0 +1,2 @@
+src/components/animated-icon.web.tsx(5,21): error TS2307: Cannot find module './animated-icon.module.css' or its corresponding type declarations.
+src/constants/theme.ts(11,8): error TS2882: Cannot find module or type declarations for side-effect import of '@/global.css'.

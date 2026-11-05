@@ -1,0 +1,26 @@
+
+=== android perangkat emulator-5554 ===
+[gagal] Maestro alur utama (login, buka pertemuan, tab, cari, status, simpan dengan saringan aktif)
+[lulus] Tepat satu pertemuan (['722'])
+[gagal] DB: satu absensi guru, lima santri unik
+[gagal] DB: PI1 Izin, PA1 Sakit, tiga Hadir ([])
+[gagal] Proksi: satu PUT absensi memuat lima peserta unik (0 PUT)
+[lulus] Proksi: respons rincian memuat kelas [PA, PI]
+Traceback (most recent call last):
+  File "/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/android/pcs_native.py", line 160, in <module>
+    ok(flow('buka-ulang', ulang), 'Buka ulang (cold start) + tautan pertemuan: tab PI, Izin PI1 terpilih dari server')
+       ~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/android/pcs_native.py", line 54, in flow
+    r = subprocess.run(['maestro', '--device', a.device, 'test', '--test-output-dir', os.path.join(a.out, 'maestro-' + nama), berkas],
+                       capture_output=True, text=True, env=env, timeout=900)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 557, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 1221, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 2153, in _communicate
+    ready = selector.select(timeout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/selectors.py", line 398, in select
+    fd_event_list = self._selector.poll(timeout)
+KeyboardInterrupt

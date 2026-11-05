@@ -67,7 +67,8 @@ final class ReportFilter
         public readonly int $page,
         public readonly int $perPage,
         public readonly string $subjectScope = self::SCOPE_GABUNGAN,
-        public readonly bool $activeStudentsOnly = false
+        public readonly bool $activeStudentsOnly = false,
+        public readonly ?string $studentQuery = null
     ) {
     }
 
@@ -148,7 +149,8 @@ final class ReportFilter
                 $this->dateFrom, $this->dateTo, $this->academicYearId, $this->teacherId,
                 $this->classId, $this->scheduleId, $this->status, $this->page,
                 $this->perPage, $this->subjectScope,
-                ($user[self::SANTRI_AKTIF_SAJA] ?? false) === true
+                ($user[self::SANTRI_AKTIF_SAJA] ?? false) === true,
+                $this->studentQuery
             );
         }
         $guruId = isset($user['guru_id']) ? (int) $user['guru_id'] : 0;
@@ -170,7 +172,8 @@ final class ReportFilter
             $this->page,
             $this->perPage,
             $this->subjectScope,
-            $this->activeStudentsOnly
+            $this->activeStudentsOnly,
+            $this->studentQuery
         );
     }
 
@@ -187,7 +190,18 @@ final class ReportFilter
             max(1, $page),
             max(1, min(100, $perPage)),
             $this->subjectScope,
-            $this->activeStudentsOnly
+            $this->activeStudentsOnly,
+            $this->studentQuery
+        );
+    }
+
+    /** Pencarian santri hanya diaktifkan oleh pemanggil Keamanan yang memvalidasinya. */
+    public function withStudentQuery(?string $query): self
+    {
+        return new self(
+            $this->dateFrom, $this->dateTo, $this->academicYearId, $this->teacherId,
+            $this->classId, $this->scheduleId, $this->status, $this->page,
+            $this->perPage, $this->subjectScope, $this->activeStudentsOnly, $query
         );
     }
 

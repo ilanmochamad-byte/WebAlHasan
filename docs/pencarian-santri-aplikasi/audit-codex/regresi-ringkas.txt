@@ -1,0 +1,8 @@
+phase3_integration exit=77
+phase4_integration exit=77
+phase5_integration exit=77
+penugasan_keamanan_f3_static exit=1
+penugasan_keamanan_f4_static exit=1
+v7_phase3_static exit=1
+redesain_web_tahap5_static exit=0
+v3_phase4_static exit=0

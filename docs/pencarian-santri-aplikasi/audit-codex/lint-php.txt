@@ -1,0 +1,10 @@
+No syntax errors detected in app/Izin/IzinLaporanService.php
+No syntax errors detected in app/Izin/IzinLaporanRepository.php
+No syntax errors detected in app/Keamanan/KeamananApiService.php
+No syntax errors detected in app/V3/PelanggaranRepository.php
+No syntax errors detected in app/V3/KonselingRepository.php
+No syntax errors detected in app/Report/ReportFilter.php
+No syntax errors detected in app/Report/ReportRepository.php
+No syntax errors detected in app/Report/ReportService.php
+No syntax errors detected in tests/pencarian_santri_http.php
+No syntax errors detected in tests/pencarian_santri_audit.php

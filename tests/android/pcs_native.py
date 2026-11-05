@@ -107,6 +107,8 @@ utama = login + [
     {'tapOn': 'Semua · 5'},
     {'scrollUntilVisible': {'element': {'text': f'NIS {nisPA1}.*'}, 'direction': 'DOWN', 'timeout': 20000}},
     {'assertNotVisible': f'NIS {nisPI1}.*'},
+    # Kartu dapat berada di tepi bawah layar sesudah hasil pencarian tampil.
+    {'scrollUntilVisible': {'element': {'text': 'Sakit', 'below': {'text': f'NIS {nisPA1}.*'}}, 'direction': 'DOWN', 'timeout': 20000, 'centerElement': True}},
     {'tapOn': {'text': 'Sakit', 'below': {'text': f'NIS {nisPA1}.*'}}},
     shot('06-semua-cari-pa-sakit'),
     {'tapOn': 'Konfirmasi dan kirim'},

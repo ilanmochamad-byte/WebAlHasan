@@ -304,7 +304,7 @@ final class KeamananApiService
     {
         $baca = $this->pembacaKehadiran($user);
         $filter = $this->hanya($query,
-            ['date_from', 'date_to', 'academic_year_id', 'class_id', 'teacher_id', 'schedule_id', 'status', 'subject_scope', 'page', 'per_page']);
+            ['date_from', 'date_to', 'academic_year_id', 'class_id', 'teacher_id', 'schedule_id', 'status', 'subject_scope', 'page', 'per_page', 'q']);
         // GET dapat membawa array (mis. date_from[]=...). ReportFilter lama
         // mengharapkan skalar; tolak di batas REST baru sebelum cast agar
         // respons tetap JSON 422 tanpa warning atau isi rincian implementasi.
@@ -313,8 +313,12 @@ final class KeamananApiService
                 throw new KeamananException('Saringan kehadiran tidak valid.', 422);
             }
         }
+        $cari = trim((string) ($filter['q'] ?? ''));
+        if (mb_strlen($cari) > 100) {
+            throw new KeamananException('Pencarian terlalu panjang (paling banyak 100 karakter).', 422);
+        }
         try {
-            $laporan = $this->report->report($filter, $baca, ReportFilter::SCOPE_SANTRI);
+            $laporan = $this->report->report($filter, $baca, ReportFilter::SCOPE_SANTRI, $cari === '' ? null : $cari);
         } catch (ApiException $exception) {
             throw new KeamananException($exception->getMessage(), $exception->status());
         }

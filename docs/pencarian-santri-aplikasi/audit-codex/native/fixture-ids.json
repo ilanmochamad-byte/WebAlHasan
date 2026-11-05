@@ -1,0 +1,80 @@
+{
+    "sfx": "40F55D",
+    "admin_id": 1,
+    "guru_user_id": 7,
+    "guru_g": 4,
+    "guru_h": 644,
+    "guru_i": 645,
+    "tahun": 1,
+    "kelas": {
+        "PA": 340,
+        "PI": 341,
+        "C": 342
+    },
+    "kelas_arsip": 343,
+    "santri": {
+        "PA": [
+            1722,
+            1723,
+            1724
+        ],
+        "PI": [
+            1725,
+            1726
+        ],
+        "C": [
+            1727,
+            1728
+        ]
+    },
+    "santri_selesai": 1729,
+    "tanggal": "2026-11-05",
+    "besok": "2026-11-06",
+    "jadwal_gabungan": 104,
+    "jadwal_satu": 105,
+    "jadwal_besok": 106,
+    "nama_kelas": {
+        "PA": "1 IBTIDA PA 40F55D",
+        "PI": "1 IBTIDA PI 40F55D",
+        "C": "2 IBTIDA C 40F55D"
+    },
+    "santri_nama": {
+        "PA": [
+            {
+                "id": 1722,
+                "nama": "Santri PA1 40F55D"
+            },
+            {
+                "id": 1723,
+                "nama": "Santri PA2 40F55D"
+            },
+            {
+                "id": 1724,
+                "nama": "Santri PA3 40F55D"
+            }
+        ],
+        "PI": [
+            {
+                "id": 1725,
+                "nama": "Santri PI1 40F55D"
+            },
+            {
+                "id": 1726,
+                "nama": "Santri PI2 40F55D"
+            }
+        ],
+        "C": [
+            {
+                "id": 1727,
+                "nama": "Santri C1 40F55D"
+            },
+            {
+                "id": 1728,
+                "nama": "Santri C2 40F55D"
+            }
+        ]
+    },
+    "santri_selesai_nama": "Santri PI selesai 40F55D",
+    "murobi_user": "sbx_murobi_a",
+    "keamanan_user": "sbx_pengurus_biasa"
+}

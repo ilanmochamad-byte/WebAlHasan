@@ -1,0 +1,109 @@
+=== S5-1. Lint ===
+[lulus] php -l portal/v3_pelanggaran.php
+[lulus] php -l portal/v3_pelanggaran_detail.php
+[lulus] php -l portal/v3_konseling.php
+[lulus] php -l portal/v3_konseling_detail.php
+[lulus] php -l portal/v3_konseling_cetak.php
+[lulus] php -l portal/v3_publikasi_kelola.php
+[lulus] php -l portal/v3_publikasi.php
+[lulus] php -l portal/partials/v3_publikasi_konten.php
+[lulus] php -l portal/v3_laporan.php
+[lulus] php -l admin/admin_v3_katalog.php
+[lulus] php -l app/V3/PelanggaranRepository.php
+[lulus] php -l app/V3/PelanggaranService.php
+[lulus] php -l app/V3/KonselingRepository.php
+[lulus] php -l app/V3/KonselingService.php
+[lulus] php -l app/V3/PublikasiRepository.php
+[lulus] php -l app/V3/PublikasiService.php
+[lulus] php -l app/V3/LaporanService.php
+[lulus] php -l app/V3/KatalogService.php
+[lulus] php -l app/Ui/functions.php
+[lulus] php -l app/Ui/Status.php
+[lulus] php -l app/Ui/Navigation.php
+[lulus] php -l tests/redesain_web_tahap5_seed.php
+[lulus] php -l tests/redesain_web_tahap5_http.php
+[lulus] node --check assets/ui/alhasan.js
+[lulus] node --check tests/browser/uji-redesain-web-tahap5.mjs
+
+=== S5-2. Tanpa isian ID dan label versi (kriteria 1) ===
+[lulus] portal/v3_pelanggaran.php: tanpa isian ID yang diketik
+[lulus] portal/v3_pelanggaran.php: judul tanpa label versi
+[lulus] portal/v3_pelanggaran.php: tanpa alert()/confirm()/onclick bawaan
+[lulus] portal/v3_pelanggaran.php: tanpa "Santri #id"/"wali #id"
+[lulus] portal/v3_pelanggaran_detail.php: tanpa isian ID yang diketik
+[lulus] portal/v3_pelanggaran_detail.php: judul tanpa label versi
+[lulus] portal/v3_pelanggaran_detail.php: tanpa alert()/confirm()/onclick bawaan
+[lulus] portal/v3_pelanggaran_detail.php: tanpa "Santri #id"/"wali #id"
+[lulus] portal/v3_konseling.php: tanpa isian ID yang diketik
+[lulus] portal/v3_konseling.php: judul tanpa label versi
+[lulus] portal/v3_konseling.php: tanpa alert()/confirm()/onclick bawaan
+[lulus] portal/v3_konseling.php: tanpa "Santri #id"/"wali #id"
+[lulus] portal/v3_konseling_detail.php: tanpa isian ID yang diketik
+[lulus] portal/v3_konseling_detail.php: judul tanpa label versi
+[lulus] portal/v3_konseling_detail.php: tanpa alert()/confirm()/onclick bawaan
+[lulus] portal/v3_konseling_detail.php: tanpa "Santri #id"/"wali #id"
+[lulus] portal/v3_konseling_cetak.php: tanpa isian ID yang diketik
+[lulus] portal/v3_konseling_cetak.php: judul tanpa label versi
+[lulus] portal/v3_konseling_cetak.php: tanpa alert()/confirm()/onclick bawaan
+[lulus] portal/v3_konseling_cetak.php: tanpa "Santri #id"/"wali #id"
+[lulus] portal/v3_publikasi_kelola.php: tanpa isian ID yang diketik
+[lulus] portal/v3_publikasi_kelola.php: judul tanpa label versi
+[lulus] portal/v3_publikasi_kelola.php: tanpa alert()/confirm()/onclick bawaan
+[lulus] portal/v3_publikasi_kelola.php: tanpa "Santri #id"/"wali #id"
+[lulus] portal/v3_publikasi.php: tanpa isian ID yang diketik
+[lulus] portal/v3_publikasi.php: judul tanpa label versi
+[lulus] portal/v3_publikasi.php: tanpa alert()/confirm()/onclick bawaan
+[lulus] portal/v3_publikasi.php: tanpa "Santri #id"/"wali #id"
+[lulus] portal/partials/v3_publikasi_konten.php: tanpa isian ID yang diketik
+[lulus] portal/partials/v3_publikasi_konten.php: judul tanpa label versi
+[lulus] portal/partials/v3_publikasi_konten.php: tanpa alert()/confirm()/onclick bawaan
+[lulus] portal/partials/v3_publikasi_konten.php: tanpa "Santri #id"/"wali #id"
+[lulus] portal/v3_laporan.php: tanpa isian ID yang diketik
+[lulus] portal/v3_laporan.php: judul tanpa label versi
+[lulus] portal/v3_laporan.php: tanpa alert()/confirm()/onclick bawaan
+[lulus] portal/v3_laporan.php: tanpa "Santri #id"/"wali #id"
+[lulus] admin/admin_v3_katalog.php: tanpa isian ID yang diketik
+[lulus] admin/admin_v3_katalog.php: judul tanpa label versi
+[lulus] admin/admin_v3_katalog.php: tanpa alert()/confirm()/onclick bawaan
+[lulus] admin/admin_v3_katalog.php: tanpa "Santri #id"/"wali #id"
+[lulus] V-6: kelas/kamar/pembimbing/murobi berupa <select>, santri berupa pencarian nama
+
+=== S5-3. Keputusan Z: data orang tua ===
+[lulus] Penyaring SQL orang tua (parentFrom…parentPage) tetap tidak membaca sumber
+[lulus] senderNames hanya mengambil nama pengurus pemilik sumber
+[lulus] DTO orang tua hanya bertambah "pengirim" (page dan show), bawaan "Pesantren Al Hasan"
+[lulus] parentSerializer (allowlist Fase 3) tidak diubah
+[lulus] V-7: judul bertanggal, pengirim, tanpa jenis sumber
+[lulus] V-7: nama anak dari relasi wali akun sendiri (bukan kolom baru)
+
+=== S5-4. Kerahasiaan (kriteria 2) ===
+[lulus] Hitungan papan memakai penyaring kerahasiaan yang sama dengan daftar
+[lulus] Ringkasan laporan dihitung lewat build() yang sama (penyaring Rahasia)
+[lulus] Daftar publikasi V-5: kasus Rahasia hanya untuk pemilik (non-admin)
+[lulus] portal/v3_pelanggaran_detail.php: tombol publikasi mengikuti keputusan layanan publikasi
+[lulus] portal/v3_konseling_detail.php: tombol publikasi mengikuti keputusan layanan publikasi
+
+=== S5-5. Mutasi tetap POST + CSRF ===
+[lulus] portal/v3_pelanggaran.php: satu pintu POST dengan CSRF
+[lulus] portal/v3_pelanggaran.php: tidak ada aksi mutasi lewat GET
+[lulus] portal/v3_pelanggaran_detail.php: satu pintu POST dengan CSRF
+[lulus] portal/v3_pelanggaran_detail.php: tidak ada aksi mutasi lewat GET
+[lulus] portal/v3_konseling.php: satu pintu POST dengan CSRF
+[lulus] portal/v3_konseling.php: tidak ada aksi mutasi lewat GET
+[lulus] portal/v3_konseling_detail.php: satu pintu POST dengan CSRF
+[lulus] portal/v3_konseling_detail.php: tidak ada aksi mutasi lewat GET
+[lulus] portal/v3_publikasi_kelola.php: satu pintu POST dengan CSRF
+[lulus] portal/v3_publikasi_kelola.php: tidak ada aksi mutasi lewat GET
+[lulus] portal/v3_publikasi.php: satu pintu POST dengan CSRF
+[lulus] portal/v3_publikasi.php: tidak ada aksi mutasi lewat GET
+[lulus] M-4 khusus admin (guard + layanan)
+[lulus] Penjaga statis V3 Fase 3 tetap terpenuhi
+
+=== S5-6. Komponen & navigasi ===
+[lulus] Komponen ah_tingkat dan ah_stepper
+[lulus] JS isian bersyarat (V-4) dan pratinjau poin (V-1)
+[lulus] CSS papan, langkah, meter, sel bertingkat
+[lulus] Kamus status pembinaan
+[lulus] Peta menu: F (Informasi pembinaan · Belum dibaca/Semua), murobi tab Laporan
+
+Ringkasan: 96 lulus, 0 gagal

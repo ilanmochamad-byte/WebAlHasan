@@ -1,0 +1,15 @@
+[lulus] Target santri di luar halaman pertama dari 48 catatan
+[lulus] Cari nama/NIS mengirim q, kembali halaman 1, total seluruh cakupan
+[lulus] Hitungan API dan ID hasil sesuai oracle seluruh halaman
+[lulus] Santri sasaran terlihat pada aplikasi
+[lulus] Cari nama/NIS mengirim q, kembali halaman 1, total seluruh cakupan
+[lulus] Hitungan API dan ID hasil sesuai oracle seluruh halaman
+[lulus] Santri sasaran terlihat pada aplikasi
+[lulus] Tanpa hasil: keadaan kosong jelas
+[lulus] Hapus kata kunci mengembalikan hitungan lengkap
+[lulus] REST menolak q tidak sah 422
+[lulus] REST menolak q tidak sah 422
+[lulus] REST laporan guru lama tetap mengabaikan q (kontrak tidak berubah)
+[lulus] Kehadiran tercari: konten tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Tidak ada permintaan keluar localhost
+Ringkasan: 14 lulus, 0 gagal

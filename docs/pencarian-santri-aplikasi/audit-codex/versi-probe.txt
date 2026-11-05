@@ -1,0 +1,9 @@
+[lulus] Perubahan kerja tanpa kenaikan ditolak
+[lulus] HEAD berperilaku baru tanpa kenaikan ditolak
+[lulus] HEAD versi turun ditolak
+[lulus] Perintah minor menghasilkan 1.3.0
+[lulus] Pengulangan tidak menaikkan paket dua kali
+[lulus] HEAD 1.3.0 lulus
+[lulus] Koreksi paket sama tetap satu kenaikan
+[lulus] Baseline main lebih baru tidak diabaikan oleh merge-base
+Ringkasan: 8 lulus, 0 gagal
