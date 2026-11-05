@@ -211,7 +211,7 @@ final class KonselingRepository
         if($withStatus&&$status!==''){$where[]='k.status=?';$params[]=$status;}
         foreach(['santri_id','tahun_ajaran_id'] as $key)if(($filters[$key]??'')!==''){$where[]='k.'.$key.'=?';$params[]=(int)$filters[$key];}
         $q=trim((string)($filters['q']??''));
-        if($q!==''){if(mb_strlen($q)>100)throw new V3Exception('Pencarian terlalu panjang.');$where[]='s.nama_santri LIKE ?';$params[]='%'.addcslashes($q,'%_\\').'%';}
+        if($q!==''){if(mb_strlen($q)>100)throw new V3Exception('Pencarian terlalu panjang.');$where[]='(s.nama_santri LIKE ? OR s.nis LIKE ?)';$pola='%'.addcslashes($q,'%_\\').'%';array_push($params,$pola,$pola);}
         return [$where,$params];
     }
 

@@ -1,0 +1,142 @@
+(node:54648) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/attendance-shortcut.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Absensi kembali ke daftar jadwal saat hari kosong atau seluruh sesi selesai (0.471958ms)
+✔ Absensi memilih sesi pertama yang belum selesai, termasuk yang belum dibuka (0.126625ms)
+(node:54649) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/date-time.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ tanggal/jam lokal lengkap termasuk tengah malam dan tahun kabisat (2.578291ms)
+✔ tolak bagian kosong, format manual salah dan tanggal yang dinormalisasi JS (0.169459ms)
+(node:54650) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/izin-wali.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Isian izin wali mengikuti aturan server (8.879708ms)
+✔ Isian dirapikan; perbaikan wajib berbeda dari versi asal (1.258625ms)
+✔ Catatan tinjauan: perbaikan/tolak wajib, teruskan opsional (126.020667ms)
+✔ Penolakan pembimbing dibedakan dari keputusan murobi (0.19175ms)
+✔ Tautan notifikasi izin wali hanya membawa penunjuk (0.435583ms)
+(node:54652) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/keamanan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kueri Keamanan tanpa kunci kosong dan ter-encode (0.476208ms)
+✔ Rentang tanggal: opsional, format ISO, akhir tidak mendahului awal (0.189791ms)
+✔ Nada lencana dan label status mengikuti halaman web Keamanan (0.078458ms)
+✔ Penugasan profil dikelompokkan per identitas (satu akun, dua identitas) (1.243334ms)
+(node:54653) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/kelas-jadwal.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ server lama tanpa classes tetap terbaca sebagai satu kelas utama (2.002792ms)
+✔ jadwal satu kelas dari server Fase 1 tidak ditandai gabungan (0.169959ms)
+✔ kelas gabungan: utama lebih dahulu, tanpa ganda, label dipisah koma (0.166417ms)
+✔ peserta dikelompokkan per kelas asal mengikuti urutan kelas, urutan server dipertahankan (0.351375ms)
+✔ kelas asal di luar daftar dan peserta tanpa kelas tetap tampil, kelompok kosong dibuang (0.193833ms)
+✔ nama kelas asal memakai nama dari server, lalu daftar kelas, kosong bila tidak ada (0.18875ms)
+(node:54654) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/kesehatan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Koreksi mengirim keadaan lengkap: rincian lama ber-id dipertahankan, waktu asli tidak bergeser (1.006125ms)
+✔ Baris baru yang seluruhnya kosong diabaikan; baris lama kosong tetap dikirim agar server menolaknya (7.045833ms)
+✔ Alasan wajib minimal lima karakter, maksimal 1000; sidik jari berubah bila isi berubah (0.236708ms)
+✔ Penunjuk notifikasi kesehatan hanya ringkasan_id valid; isi/tautan lain diabaikan (0.128416ms)
+✔ Deep-link kesehatan hanya skema aplikasi dan rute ringkasan wali (0.218375ms)
+✔ Teks perubahan versi memakai label manusia (0.096ms)
+✔ Hasil pencarian santri dikelompokkan per kelas; belum ditempatkan paling akhir (0.140083ms)
+✔ Periode laporan: bulan ini, bulan lalu (lintas tahun), dan 30 hari berakhir hari ini (0.170792ms)
+(node:54655) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/keuangan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Rupiah ditampilkan bulat dengan titik ribuan tanpa Intl (10.803875ms)
+✔ Nominal dikirim sebagai teks angka; pecahan dan huruf diteruskan agar server menolak (1.517958ms)
+✔ Alasan koreksi wajib 5–500 karakter seperti website (0.601167ms)
+✔ Sidik jari sama untuk isi sama (retry memakai kunci yang sama) dan berbeda bila isi berubah (4.337875ms)
+✔ Label periode, jenis, dan nilai awal tanggal (8.928792ms)
+✔ Penunjuk notifikasi keuangan hanya id; tipe/kunci lain ditolak (0.529667ms)
+✔ Tautan skema keuangan hanya menerima jalur yang dikenal (0.256375ms)
+✔ Rentang laporan Fase 5: bulan ini, bulan lalu (lintas tahun), 3 bulan, tahun ini — paling panjang 12 bulan (0.147917ms)
+✔ Pratinjau satu santri sah hanya bila server menyaring santri itu (server lama mengabaikan santri_id) (0.100417ms)
+(node:54656) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/peserta-saring.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cari nama/NIS tanpa membedakan huruf besar, diakritik, dan urutan kata (10.057417ms)
+✔ label tab IBTIDA menjadi PA/PI; gabungan non-IBTIDA memakai nama lengkap (0.723208ms)
+✔ tab Semua/PA/PI menghitung peserta unik; kelas hilang atau di luar daftar = Kelas belum tercatat (0.230416ms)
+✔ tab PA hanya peserta kelas asal PA; nama sama di PI tidak ikut (0.277167ms)
+✔ satu kelas dan server lama: satu kelompok tanpa judul (0.069041ms)
+✔ nomor urut stabil terhadap pencarian dan tab (0.094791ms)
+✔ saringan tidak mengubah array sumber (draf/payload tetap seluruh peserta) (0.566125ms)
+(node:54658) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/print-dialog.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ mengenali exception pembatalan cetak iOS dari nama dan pesan (0.548834ms)
+✔ mengenali bentuk CodedError dari bridge native (0.108709ms)
+✔ tidak menyembunyikan kegagalan cetak yang sebenarnya (0.060583ms)
+✔ mengembalikan hasil normal ketika pencetakan dimulai (0.068917ms)
+✔ mengubah penutupan dialog menjadi hasil dibatalkan (0.096792ms)
+✔ meneruskan kegagalan printer tanpa perubahan (0.398625ms)
+(node:54659) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/profil.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Isian yang boleh diubah sama dengan kontrak Fase 1 (tanpa username/NIP/NIK/penugasan) (21.81975ms)
+✔ Hanya kunci yang berubah dikirim; kosong dikirim sebagai string kosong (0.228ms)
+✔ Validasi awal selaras pesan server (23.993458ms)
+✔ Galat server per isian; nilai bukan teks diabaikan (0.506209ms)
+✔ Aturan password sama dengan website: 12 karakter, besar, kecil, angka, ≤72 byte, sama (1.187458ms)
+✔ Inisial, status tanpa duplikat, binaan kamar vs kelas tanpa nama rekaan (0.757916ms)
+✔ Mapel–kelas dikelompokkan per mapel, kombinasi ganda dipertahankan (0.574917ms)
+✔ Rincian penugasan menyebut target, mapel–kelas, atau seluruh cakupan (0.69875ms)
+✔ Alamat lengkap satu baris dari isian berjenjang (0.33225ms)
+✔ Foto: hanya JPEG/PNG/WebP ≤ 2 MiB; mime dari ekstensi bila tidak dilaporkan (0.936791ms)
+✔ Base64 tanpa btoa sama dengan Buffer (0.753167ms)
+(node:54660) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/rapor.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kosong tetap belum lengkap, nol sah, versi lama tetap dikirim (0.844917ms)
+✔ Validasi angka/reason tidak meloloskan nilai tak sah atau alasan kosong (0.1275ms)
+✔ Push hanya penunjuk valid; data/nilai/tautan lain tidak dipakai (0.495333ms)
+✔ Deep-link native hanya skema/rute rapor sah; ID bertahan sebagai penunjuk (0.591792ms)
+(node:54662) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/redesain-fase1.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ pekan dimulai Senin, termasuk ketika tanggal terpilih hari Minggu (2.864125ms)
+✔ pekan melintasi pergantian bulan, tahun, dan 29 Februari (0.127875ms)
+✔ geser pekan maju dan mundur mempertahankan hari (0.092041ms)
+✔ pesan tanpa menu hanya muncul setelah akses pembinaan selesai diperiksa (0.059459ms)
+(node:54663) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/redesain-fase2.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sesi hari ini yang belum dibuka atau belum selesai ditandai perlu absen (0.795583ms)
+✔ sesi selesai tidak pernah meminta absen, kapan pun tanggalnya (0.083333ms)
+✔ sesi hari lain tidak diberi penanda absen dan dibedakan masa depan/lampau (0.066625ms)
+(node:54664) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://$SCRATCH/mobile/tests/versi-aplikasi.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to $SCRATCH/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ naikkan mengikuti aturan major/minor/patch (0.797708ms)
+✔ bandingkan numerik, bukan teks (0.123417ms)
+✔ perubahan dokumen/uji/skrip bukan perubahan aplikasi (1.131292ms)
+✔ nilai: menolak perubahan aplikasi tanpa kenaikan, versi turun, dan lompatan (0.230875ms)
+✔ CLI: perubahan aplikasi tanpa kenaikan gagal; naik minor sekali; periksa lulus (1793.115916ms)
+✔ CLI: versi turun dari baseline atau lompat ditolak; perubahan dokumen saja lulus (1321.4685ms)
+ℹ tests 77
+ℹ suites 0
+ℹ pass 77
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4052.247083
+exit=0

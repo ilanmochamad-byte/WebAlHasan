@@ -1,0 +1,9 @@
+Rincian pertemuan pertama (sebelum simpan):
+  android sha256 40534a29155d17082ab099221b81071d4c6a334b77254148026f37688898b22a status Dibuka
+  ios     sha256 796f051516d2afe1da3e5b4b8e99430c1caa50ff0e74b70c1483ff9920526ed8 status Dibuka
+  isi byte identik: False
+  kelas sama: True [340, 341]
+  pasangan student_id-kelas sama: True [[1722, 340], [1723, 340], [1724, 340], [1725, 341], [1726, 341]]
+PUT absensi: android 1 ios 1
+  muatan santri sama (urut): True [[1722, 'Sakit'], [1723, 'Hadir'], [1724, 'Hadir'], [1725, 'Izin'], [1726, 'Hadir']]
+  status guru sama: True Hadir

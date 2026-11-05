@@ -1,0 +1,9 @@
+web HEAD (sebelum commit): 1c652e3 baseline origin/main 1c652e3
+mobile commit diuji: e4a0642 dari origin/main bd7833f
+PHP 8.4.14
+MariaDB 12.3.2-MariaDB
+v26.7.0
+maestro 2.11.0
+Xcode 27.2
+Android emulator: sdk_gphone16k_arm64 Android 16/API 36
+iOS simulator: iPhone 17 Pro iOS 26.2 (05999342-AE62-44C4-B0E1-1E8504CF8512)

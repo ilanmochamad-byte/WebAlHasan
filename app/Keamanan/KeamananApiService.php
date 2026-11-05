@@ -93,7 +93,7 @@ final class KeamananApiService
         $this->pastikanAkses($user);
         try {
             $lap = $this->izinLaporan->laporan(KeamananAkses::tandai($user), $this->hanya($query,
-                ['asal', 'tahap', 'hasil', 'basis', 'dari', 'sampai', 'page']));
+                ['asal', 'tahap', 'hasil', 'basis', 'dari', 'sampai', 'q', 'page']));
         } catch (IzinException $exception) {
             throw new KeamananException($exception->getMessage(), $exception->status());
         }

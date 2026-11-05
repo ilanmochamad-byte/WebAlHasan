@@ -1,0 +1,1 @@
+842b193ea9668d4947877c1cc57d2154d1fafc19a7ae97631f0ddbef2b81de11  $SCRATCH/mobile/android/app/build/outputs/apk/release/app-release.apk
