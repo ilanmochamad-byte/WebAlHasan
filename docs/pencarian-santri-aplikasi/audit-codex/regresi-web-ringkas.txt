@@ -1,0 +1,13 @@
+pencarian-santri-http: Ringkasan: 26 lulus, 0 gagal exit=0
+pk-f4-http: Hasil: 66 lulus, 0 gagal exit=0
+pk-f3-http: Hasil: 44 lulus, 0 gagal. exit=0
+pk-f3-integration: Hasil: 44 lulus, 0 gagal. exit=0
+v7-f3-integration: Hasil: 112 lulus, 0 gagal exit=0
+v7-f3-http:  exit=0
+tahap5-http: Ringkasan: 106 lulus, 0 gagal exit=0
+statis-penugasan_keamanan_f4_static: Hasil: 95 lulus, 3 gagal exit=1
+statis-penugasan_keamanan_f3_static: Hasil: 136 lulus, 3 gagal. exit=1
+statis-v7_phase3_static: Hasil: 41 lulus, 3 gagal exit=1
+statis-v3_phase4_static:  exit=0
+statis-redesain_web_tahap5_static: Ringkasan: 96 lulus, 0 gagal exit=0
+lint: 6/6

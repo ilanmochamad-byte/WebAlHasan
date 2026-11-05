@@ -288,6 +288,16 @@ final class ReportRepository
             $clauses[] = $statusColumn . ' = ?';
             $params[] = $filter->status;
         }
+        if ($filter->studentQuery !== null && $filter->studentQuery !== '') {
+            if ($studentRows) {
+                // Snapshot yang sama dengan nama/NIS pada baris laporan.
+                $clauses[] = '(pp.nama_santri_snapshot LIKE ? OR pp.nis_snapshot LIKE ?)';
+                $pola = '%' . addcslashes($filter->studentQuery, '%_\\') . '%';
+                array_push($params, $pola, $pola);
+            } else {
+                $clauses[] = '1 = 0';
+            }
+        }
         return ['WHERE ' . implode(' AND ', $clauses), $params];
     }
 

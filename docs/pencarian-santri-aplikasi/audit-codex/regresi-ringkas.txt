@@ -1,0 +1,15 @@
+Diagnostik percobaan awal: tiga suite V1 belum dijalankan karena sakelar PHASE*_RUN_INTEGRATION belum diberikan (exit 77).
+phase3_integration exit=77
+phase4_integration exit=77
+phase5_integration exit=77
+penugasan_keamanan_f3_static exit=1
+penugasan_keamanan_f4_static exit=1
+v7_phase3_static exit=1
+redesain_web_tahap5_static exit=0
+v3_phase4_static exit=0
+
+Pengulangan final dengan sakelar integrasi dan DB sintetis test_pcs_codex_reg_test:
+phase3_integration: exit 0, 10 lulus / 0 gagal
+phase4_integration: exit 0, 14 lulus / 0 gagal
+phase5_integration: exit 0, 20 lulus / 0 gagal
+Log final pada regresi-phase{3,4,5}_integration.txt; statis final pada regresi-web-ringkas.txt.

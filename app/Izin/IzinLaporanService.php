@@ -115,7 +115,8 @@ final class IzinLaporanService
         fclose($stream);
         // Audit tanpa isi: peran, filter, dan jumlah baris.
         $this->audit->log('izin_v7_laporan_ekspor', 'izin_pengajuan', null, null, [
-            'peran' => $cakupan['mode'], 'filter' => array_filter($filter, static fn ($v): bool => $v !== null), 'jumlah' => count($items),
+            // Kata kunci pencarian dapat memuat nama santri: hanya penanda.
+            'peran' => $cakupan['mode'], 'filter' => array_filter(array_merge($filter, ['q' => $filter['q'] === null ? null : true]), static fn ($v): bool => $v !== null), 'jumlah' => count($items),
         ], (int) $user['id']);
 
         return [
@@ -254,6 +255,16 @@ final class IzinLaporanService
         if ($dari !== null && $sampai < $dari) {
             throw IzinException::invalid('Tanggal akhir tidak boleh mendahului tanggal awal.');
         }
+        // Pencarian nama/NIS santri (aditif 5 Nov 2026). Selalu di dalam
+        // cakupan peran yang sama; tidak memperlebar baris yang terlihat.
+        $cari = $q['q'] ?? null;
+        if ($cari !== null && !is_string($cari)) {
+            throw IzinException::invalid('Pencarian tidak valid.');
+        }
+        $cari = trim((string) $cari);
+        if (mb_strlen($cari) > 100) {
+            throw IzinException::invalid('Pencarian terlalu panjang (paling banyak 100 karakter).');
+        }
         $min = $id($q['durasi_min_jam'] ?? null, 'Lama minimum');
         $maks = $id($q['durasi_maks_jam'] ?? null, 'Lama maksimum');
         if ($min !== null && $maks !== null && $maks < $min) {
@@ -274,6 +285,7 @@ final class IzinLaporanService
             'kelas_id' => $id($q['kelas_id'] ?? null, 'Kelas'),
             'durasi_min_jam' => $min,
             'durasi_maks_jam' => $maks,
+            'q' => $cari === '' ? null : $cari,
         ];
     }
 

@@ -1,0 +1,16 @@
+[lulus] Fixture mempunyai banyak baris kehadiran
+[lulus] Target berada di luar halaman pertama (per_page=1)
+[gagal] Pencarian nama/NIS menjangkau seluruh halaman dan mempertahankan urutan
+[gagal] Ringkasan dan pagination mengikuti q
+[gagal] Pencarian nama/NIS menjangkau seluruh halaman dan mempertahankan urutan
+[gagal] Ringkasan dan pagination mengikuti q
+[gagal] Tanpa hasil / wildcard harfiah: tidak-ada-PCS-CODEX
+[gagal] Tanpa hasil / wildcard harfiah: %
+[gagal] Tanpa hasil / wildcard harfiah: _
+[gagal] q tidak sah ditolak 422
+[gagal] q tidak sah ditolak 422
+[lulus] q kosong mempertahankan ringkasan lama
+[lulus] Pencarian tidak membuka akses akun tanpa Keamanan
+[lulus] Pencarian tidak membuka akses akun tanpa Keamanan
+[lulus] Oracle hanya peserta santri aktif
+Ringkasan: 6 lulus, 9 gagal

@@ -1,0 +1,41 @@
+[lulus] Akun Keamanan, admin, dan murobi memperoleh token API
+
+=== C-1 /keamanan/izin?q= ===
+[lulus] Daftar tanpa q berhalaman (42 halaman, 1040 baris)
+[lulus] Ada santri yang izinnya hanya di halaman > 1 (kasus lintas halaman)
+[lulus] q NIS: hasil = oracle saringan seluruh halaman (5 baris), memuat santri dari halaman > 1
+[lulus] q nama (huruf besar): hasil = oracle saringan seluruh halaman (5 baris), memuat santri dari halaman > 1
+[lulus] q potongan nama: hasil = oracle saringan seluruh halaman (1000 baris), memuat santri dari halaman > 1
+[lulus] Ringkasan memakai saringan q yang sama; filter q dikembalikan
+[lulus] NIS santri nonaktif tidak membuka izinnya (cakupan tidak melebar)
+[lulus] q NIS + asal Wali digabung (oracle SQL 1, memuat pengajuan wali); peran tetap Keamanan
+
+=== C-2 validasi q ===
+[lulus] q array → 422
+[lulus] q 101 karakter → 422
+[lulus] `%` dicari harfiah, bukan wildcard
+[lulus] `_` dicari harfiah, bukan wildcard
+[lulus] q spasi saja = tanpa saringan (filter q null)
+[lulus] Admin tanpa penugasan Keamanan tetap 403 dengan q
+
+=== C-3 /keamanan/pelanggaran|konseling?q= NIS ===
+[lulus] Keamanan pelanggaran: q NIS setiap santri terlihat = oracle saringan daftar sendiri (2 santri)
+[lulus] Keamanan konseling: q NIS setiap santri terlihat = oracle saringan daftar sendiri (1 santri)
+[lulus] Kasus Rahasia tidak muncul lewat pencarian NIS; angka = baris terlihat
+
+=== C-4 /v3 daftar pembinaan aplikasi ===
+[lulus] admin pelanggaran: q NIS/nama = oracle saringan seluruh daftar akun sendiri (5 baris, 3 santri)
+[lulus] admin kasus: q NIS/nama = oracle saringan seluruh daftar akun sendiri (2 baris, 2 santri)
+[lulus] murobi pelanggaran: q NIS/nama = oracle saringan seluruh daftar akun sendiri (4 baris, 2 santri)
+[lulus] murobi kasus: q NIS/nama = oracle saringan seluruh daftar akun sendiri (1 baris, 1 santri)
+[lulus] Murobi: NIS santri di luar cakupan tidak membuka pelanggarannya
+
+=== C-5 audit ekspor tanpa kata kunci ===
+[lulus] Ekspor admin dengan q berhasil dan memuat baris santri yang dicari
+[lulus] Audit ekspor: q hanya penanda true, tanpa nama santri
+
+=== C-6 log server ===
+[lulus] Log server tanpa galat PHP
+
+Ringkasan: 26 lulus, 0 gagal
+exit=0

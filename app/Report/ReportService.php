@@ -47,9 +47,9 @@ final class ReportService
      *        `subject_scope`. Halaman web mengirim `santri`; REST API memakai
      *        default lama `gabungan` agar kontraknya tidak berubah.
      */
-    public function report(array $input, array $user, string $defaultScope = ReportFilter::DEFAULT_SCOPE_API): array
+    public function report(array $input, array $user, string $defaultScope = ReportFilter::DEFAULT_SCOPE_API, ?string $studentQuery = null): array
     {
-        $filter = ReportFilter::fromInput($input, $this->timezone, $defaultScope)->forUser($user);
+        $filter = ReportFilter::fromInput($input, $this->timezone, $defaultScope)->forUser($user)->withStudentQuery($studentQuery);
         $summary = $this->normalizeSummary($this->repository->summary($filter));
         $rows = array_map([$this, 'normalizeRow'], $this->repository->page($filter));
         return [

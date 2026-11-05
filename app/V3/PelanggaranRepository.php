@@ -316,8 +316,10 @@ final class PelanggaranRepository
         $q = trim((string) ($filters['q'] ?? ''));
         if ($q !== '') {
             if (mb_strlen($q) > 100) { throw new V3Exception('Pencarian terlalu panjang.'); }
-            $where[] = 's.nama_santri LIKE ?';
-            $params[] = '%' . addcslashes($q, '%_\\') . '%';
+            // Nama atau NIS santri (NIS aditif 5 Nov 2026), di dalam cakupan yang sama.
+            $where[] = '(s.nama_santri LIKE ? OR s.nis LIKE ?)';
+            $pola = '%' . addcslashes($q, '%_\\') . '%';
+            array_push($params, $pola, $pola);
         }
         foreach (['mulai' => '>=', 'sampai' => '<'] as $key => $op) {
             $value = (string) ($filters[$key] ?? '');

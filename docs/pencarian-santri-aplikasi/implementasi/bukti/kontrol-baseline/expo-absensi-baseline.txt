@@ -1,0 +1,10 @@
+
+=== A-1. Tab Semua/PA/PI ===
+[lulus] API: dua kelas pertemuan; kelas asal 3 PA + 2 PI
+[gagal] Tab Semua, PA, PI tampil
+[gagal] Galat tak terduga: locator.innerText: Timeout 30000ms exceeded.
+Call log:
+  - waiting for getByRole('tab', { name: /^Semua · \d+$/ })
+
+
+Ringkasan: 1 lulus, 2 gagal

@@ -251,6 +251,11 @@ final class IzinLaporanRepository
             $parts[] = "EXISTS (SELECT 1 FROM plotting_kelas pl WHERE pl.id_santri = p.santri_id AND pl.id_kelas = ? AND pl.status = 'Aktif' AND pl.id_tahun = p.tahun_ajaran_id)";
             $params[] = (int) $filter['kelas_id'];
         }
+        if (($filter['q'] ?? null) !== null && $filter['q'] !== '') {
+            $parts[] = '(s.nama_santri LIKE ? OR s.nis LIKE ?)';
+            $pola = '%' . addcslashes((string) $filter['q'], '%_\\') . '%';
+            array_push($params, $pola, $pola);
+        }
         if (($filter['durasi_min_jam'] ?? null) !== null) {
             $parts[] = $this->lamaTotal() . ' >= ?';
             $params[] = (int) $filter['durasi_min_jam'] * 3600;

@@ -1,0 +1,6 @@
+[gagal] Target santri di luar halaman pertama dari 18 catatan
+[gagal] Galat probe: locator.waitFor: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for getByText('Halaman 1').first() to be visible[22m
+
+Ringkasan: 0 lulus, 2 gagal

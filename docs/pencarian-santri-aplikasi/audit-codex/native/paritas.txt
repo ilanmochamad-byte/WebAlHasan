@@ -1,0 +1,7 @@
+Kontrak kelas/peserta sama: True
+Kelas: [340, 341]
+Peserta: [[1722, 340], [1723, 340], [1724, 340], [1725, 341], [1726, 341]]
+Guru/status/ID peserta payload sama: True
+PUT Android/iOS HTTP: 200/200
+JSON respons mentah hash sama: False (bukan klaim semua field byte-identik; pembukaan berlangsung terpisah; seluruh selisih field belum dianalisis, hash penuh tidak dijadikan oracle paritas)
+SHA256 snapshot awal DB sama sebelum kedua platform: f252cb1b67cc6fe99f0c3f2910bb88c0b9e4d881a469fbea3141eecf4243827e
