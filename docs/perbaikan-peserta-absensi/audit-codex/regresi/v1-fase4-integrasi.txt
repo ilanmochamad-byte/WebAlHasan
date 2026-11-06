@@ -1,0 +1,14 @@
+[lulus] Akun guru aktif login dan profil tidak membocorkan password/hash token
+[lulus] Server hanya menyimpan hash bearer token
+[lulus] Credential salah/nonaktif ditolak generik dengan 401
+[lulus] Credential salah/nonaktif ditolak generik dengan 401
+[lulus] Beranda/rentang jadwal hanya memuat jadwal guru yang login pada semester aktif
+[lulus] Guru A menerima 403 saat mengakses jadwal Guru B
+[lulus] Retry pembukaan dengan idempotency key sama tidak membuat pertemuan tambahan
+[lulus] Absensi guru dan seluruh santri tersimpan serta dapat dibaca kembali
+[lulus] Retry payload sama tidak membuat absensi tambahan
+[lulus] Koreksi memperbarui baris yang sama dan nilai terbaru dapat dibaca
+[lulus] Guru lintas kepemilikan menerima 403 saat menyimpan absensi
+[lulus] Kegagalan di tengah transaksi tidak meninggalkan absensi sebagian
+[lulus] Constraint unik menjaga duplikasi pertemuan–guru dan pertemuan–santri tetap nol
+[lulus] Token lama menerima 401 setelah logout

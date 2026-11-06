@@ -175,10 +175,12 @@ final class TeacherService
                 'removed' => $result['dikeluarkan'],
                 'kept_with_attendance' => $result['dipertahankan'],
             ];
-            $this->audit->log('api.meeting.refresh_participants', 'pertemuan_pengajian', $meetingId,
+            if (!$this->audit->log('api.meeting.refresh_participants', 'pertemuan_pengajian', $meetingId,
                 ['participant_count' => $before],
                 ['participant_count' => count($response['students'])] + $result,
-                (int) $user['id']);
+                (int) $user['id'])) {
+                throw new ApiException('AUDIT_FAILED', 'Daftar santri tidak diperbarui karena audit tidak dapat disimpan. Silakan coba lagi.', 500);
+            }
             $db->commit();
             return $response;
         } catch (Throwable $exception) {

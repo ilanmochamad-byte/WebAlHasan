@@ -228,10 +228,12 @@ final class ScheduleService
             }
             $before = count($this->repository->meetingParticipants($meetingId));
             $result = $this->repository->refreshParticipants($meetingId, (int) $meeting['id_kelas'], (int) $meeting['id_tahun']);
-            $this->audit->log('meeting.refresh_participants', 'pertemuan_pengajian', $meetingId,
+            if (!$this->audit->log('meeting.refresh_participants', 'pertemuan_pengajian', $meetingId,
                 ['participant_count' => $before],
                 ['participant_count' => count($this->repository->meetingParticipants($meetingId))] + $result,
-                $actorId);
+                $actorId)) {
+                throw new ScheduleException('Daftar peserta tidak diperbarui karena audit tidak dapat disimpan.');
+            }
             $db->commit();
             return $result;
         } catch (Throwable $exception) {

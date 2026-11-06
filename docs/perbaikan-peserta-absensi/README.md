@@ -1,5 +1,7 @@
 # Perbaikan peserta absensi pengajian
 
+Audit Codex 6 November 2026: hasil dan koreksi rollback audit dicatat di [`AUDIT-CODEX.md`](AUDIT-CODEX.md). Kegagalan menyimpan audit membatalkan pembaruan peserta; API mengembalikan 500 `AUDIT_FAILED` dan dapat dicoba lagi.
+
 Tanggal: 6 November 2026 · Implementator: Claude Code · Auditor berikutnya: Codex
 
 ## Laporan dan penyebab

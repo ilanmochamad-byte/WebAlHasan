@@ -1,0 +1,15 @@
+No syntax errors detected in admin/_pengajian_pertemuan.php
+No syntax errors detected in admin/admin_master_santri.php
+No syntax errors detected in admin/admin_pengajian.php
+No syntax errors detected in api/v1/index.php
+No syntax errors detected in app/Api/TeacherRepository.php
+No syntax errors detected in app/Api/TeacherService.php
+No syntax errors detected in app/MasterData/MasterDataRepository.php
+No syntax errors detected in app/MasterData/MasterDataService.php
+No syntax errors detected in app/Schedule/PesertaPertemuan.php
+No syntax errors detected in app/Schedule/ScheduleRepository.php
+No syntax errors detected in app/Schedule/ScheduleService.php
+No syntax errors detected in bin/tutup_penempatan_santri_nonaktif.php
+No syntax errors detected in tests/perbaikan_peserta_absensi_integration.php
+No syntax errors detected in tests/perbaikan_peserta_absensi_audit.php
+No syntax errors detected in tests/perbaikan_peserta_absensi_konkurensi.php

@@ -1,0 +1,22 @@
+[lulus] Tanpa token ditolak 401
+[lulus] sbx_pengurus_biasa ditolak 403
+[lulus] sbx_murobi_a ditolak 403
+[lulus] ID tidak ada ditolak 404
+[lulus] GET tidak bermutasi
+[lulus] Galat 503 mempertahankan status dan catatan draf
+[lulus] Kirim dinonaktifkan selama refresh
+[lulus] Ketukan ganda menghasilkan satu POST tambahan
+[lulus] Retry sukses mempertahankan seluruh draf
+[lulus] Aplikasi 375px tanpa overflow
+[lulus] Aplikasi 768px tanpa overflow
+[lulus] Aplikasi 1280px tanpa overflow
+[lulus] DB menyimpan status dan catatan santri setelah retry
+[lulus] DB menyimpan catatan guru
+[lulus] Selesai ditolak 409 MEETING_NOT_OPEN
+[lulus] Web POST tanpa CSRF ditolak 419 tanpa perubahan
+[lulus] Web GET tidak bermutasi
+[lulus] Web POST + CSRF bekerja tanpa JavaScript
+[lulus] Web tanpa JavaScript 375px tombol tersedia
+[lulus] Web tanpa JavaScript 768px tombol tersedia
+[lulus] Web tanpa JavaScript 1280px tombol tersedia
+Hasil: 21 lulus, 0 gagal
