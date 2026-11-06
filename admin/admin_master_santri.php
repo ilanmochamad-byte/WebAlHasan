@@ -149,11 +149,11 @@ $menuSantri = static function (array $row, bool $diProfil = false) use ($halaman
     if ($row['archived_at'] === null) {
         $items[] = (int) $row['is_active'] === 1
             ? ['label' => 'Nonaktifkan', 'icon' => 'fa-user-slash', 'action' => $halaman, 'fields' => ['id' => $id, 'action' => 'deactivate'] + $kembali,
-                'confirm' => ['title' => 'Nonaktifkan ' . $nama . '?', 'text' => 'Santri nonaktif tidak dapat dipilih di layanan baru. Relasi wali, absensi, dan perizinan lama tetap tersimpan.', 'ok' => 'Nonaktifkan']]
+                'confirm' => ['title' => 'Nonaktifkan ' . $nama . '?', 'text' => 'Santri nonaktif tidak dapat dipilih di layanan baru dan penempatan kelasnya ditutup, sehingga tidak lagi muncul di absensi. Relasi wali, riwayat kelas, absensi, dan perizinan lama tetap tersimpan.', 'ok' => 'Nonaktifkan']]
             : ['label' => 'Aktifkan', 'icon' => 'fa-user-check', 'action' => $halaman, 'fields' => ['id' => $id, 'action' => 'activate'] + $kembali,
-                'confirm' => ['title' => 'Aktifkan ' . $nama . '?', 'text' => 'Santri kembali dapat dipilih di layanan.', 'ok' => 'Aktifkan']];
+                'confirm' => ['title' => 'Aktifkan ' . $nama . '?', 'text' => 'Santri kembali dapat dipilih di layanan. Penempatan kelas yang ditutup tidak dibuka otomatis; tempatkan ulang lewat menu Penempatan bila perlu.', 'ok' => 'Aktifkan']];
         $items[] = ['label' => 'Arsipkan', 'icon' => 'fa-box-archive', 'danger' => true, 'action' => $halaman, 'fields' => ['id' => $id, 'action' => 'archive'] + $kembali,
-            'confirm' => ['title' => 'Arsipkan ' . $nama . '?', 'text' => 'Santri berhenti muncul pada daftar aktif. Relasi wali, riwayat kelas, absensi, dan perizinan lama TIDAK dihapus dan dapat dipulihkan.', 'ok' => 'Arsipkan']];
+            'confirm' => ['title' => 'Arsipkan ' . $nama . '?', 'text' => 'Santri berhenti muncul pada daftar aktif dan penempatan kelasnya ditutup. Relasi wali, riwayat kelas, absensi, dan perizinan lama TIDAK dihapus dan dapat dipulihkan.', 'ok' => 'Arsipkan']];
     } else {
         $items[] = ['label' => 'Pulihkan dari arsip', 'icon' => 'fa-rotate-left', 'action' => $halaman, 'fields' => ['id' => $id, 'action' => 'restore'] + $kembali,
             'confirm' => ['title' => 'Pulihkan ' . $nama . '?', 'text' => 'Santri kembali ke daftar aktif.', 'ok' => 'Pulihkan']];

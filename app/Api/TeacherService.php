@@ -147,6 +147,48 @@ final class TeacherService
         }
     }
 
+    /**
+     * `POST /meetings/{id}/participants/refresh` — menyelaraskan peserta
+     * pertemuan Dibuka dengan penempatan kelas aktif saat ini (lihat
+     * `PesertaPertemuan::perbarui`). Hasilnya ditentukan keadaan data, sehingga
+     * pengiriman ulang aman tanpa kunci idempotensi. Respons = isi pertemuan
+     * seperti `GET /meetings/{id}` ditambah kunci aditif `participant_changes`.
+     */
+    public function refreshParticipants(int $meetingId, array $user): array
+    {
+        $db = $this->repository->db();
+        $db->begin_transaction();
+        try {
+            $meeting = $this->repository->meetingFind($meetingId, true);
+            if ($meeting === null) {
+                throw new ApiException('NOT_FOUND', 'Pertemuan tidak ditemukan.', 404);
+            }
+            $this->authorizeOwnership($meeting, $user, 'pertemuan');
+            if ($meeting['status'] !== 'Dibuka') {
+                throw new ApiException('MEETING_NOT_OPEN', 'Daftar santri hanya dapat diperbarui pada pertemuan berstatus Dibuka.', 409);
+            }
+            $before = count($this->repository->participantsWithAttendance($meetingId));
+            $result = $this->repository->refreshParticipants($meetingId, (int) $meeting['id_kelas'], (int) $meeting['id_tahun']);
+            $response = $this->meetingPayload($meeting);
+            $response['participant_changes'] = [
+                'added' => $result['ditambah'],
+                'removed' => $result['dikeluarkan'],
+                'kept_with_attendance' => $result['dipertahankan'],
+            ];
+            if (!$this->audit->log('api.meeting.refresh_participants', 'pertemuan_pengajian', $meetingId,
+                ['participant_count' => $before],
+                ['participant_count' => count($response['students'])] + $result,
+                (int) $user['id'])) {
+                throw new ApiException('AUDIT_FAILED', 'Daftar santri tidak diperbarui karena audit tidak dapat disimpan. Silakan coba lagi.', 500);
+            }
+            $db->commit();
+            return $response;
+        } catch (Throwable $exception) {
+            $db->rollback();
+            throw $exception;
+        }
+    }
+
     public function saveAttendance(int $meetingId, array $input, array $user, ?callable $afterTeacherWrite = null): array
     {
         $key = $this->idempotencyKey((string) ($input['idempotency_key'] ?? ''));

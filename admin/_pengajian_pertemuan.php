@@ -79,7 +79,7 @@ $tutup = '?' . ah_query(['tab' => 'pertemuan', 'action' => null, 'schedule_id' =
                 <input class="form-control" id="tanggal_pertemuan" type="date" name="tanggal_pertemuan" value="<?= ah_e(ah_old('tanggal_pertemuan', ['tanggal_pertemuan' => date('Y-m-d')], '_meeting_old')) ?>" required><?= ah_field_error('tanggal_pertemuan', '_meeting_old') ?></div>
             <div class="col-12"><label class="form-label" for="catatan">Catatan pertemuan</label>
                 <textarea class="form-control" id="catatan" name="catatan" rows="2" maxlength="2000" placeholder="Opsional, mis. materi: QS Al-Baqarah 1–5"><?= ah_e(ah_old('catatan', null, '_meeting_old')) ?></textarea><?= ah_field_error('catatan', '_meeting_old') ?></div>
-            <div class="col-12"><?php ah_note('info', 'Membuka pertemuan membekukan daftar peserta saat itu juga. Santri yang berpindah kelas sesudahnya tidak mengubah peserta pertemuan ini. Kehadiran dicatat guru lewat aplikasi Al Hasan.'); ?></div>
+            <div class="col-12"><?php ah_note('info', 'Membuka pertemuan membekukan daftar peserta saat itu juga (hanya santri aktif). Selama pertemuan masih Dibuka, daftar dapat diselaraskan dengan penempatan kelas terbaru lewat “Perbarui daftar peserta”. Kehadiran dicatat guru lewat aplikasi Al Hasan.'); ?></div>
             <div class="col-12 d-flex flex-wrap gap-2 ah-sticky-sm">
                 <button class="btn btn-outline-secondary" name="action" value="draft">Simpan draf</button>
                 <button class="btn btn-primary" name="action" value="open">Buka &amp; bekukan peserta</button>
@@ -192,6 +192,15 @@ $tutup = '?' . ah_query(['tab' => 'pertemuan', 'action' => null, 'schedule_id' =
             <button class="btn btn-primary" name="action" value="open">Buka &amp; bekukan peserta</button>
         </form>
     <?php elseif ($status === 'Dibuka'): ?>
+        <form method="post" action="<?= ah_e(app_url('/admin/admin_pengajian.php') . '?tab=pertemuan') ?>" class="ah-actbar"
+              data-confirm="Santri aktif yang kini ditempatkan di kelas pertemuan ini ditambahkan; santri yang sudah keluar, pindah kelas, atau dinonaktifkan dikeluarkan bila absensinya belum tercatat."
+              data-confirm-title="Perbarui daftar peserta?" data-confirm-ok="Perbarui">
+            <?= ah_csrf() ?>
+            <input type="hidden" name="tab" value="pertemuan">
+            <input type="hidden" name="meeting_id" value="<?= (int) $selectedMeeting['id'] ?>">
+            <span class="small text-muted">Daftar peserta berbeda dengan penempatan kelas terbaru?</span>
+            <button class="btn btn-outline-primary" name="action" value="refresh_participants">Perbarui daftar peserta</button>
+        </form>
         <form method="post" action="<?= ah_e(app_url('/admin/admin_pengajian.php') . '?tab=pertemuan') ?>" class="ah-actbar"
               data-confirm="Waktu penyelesaian tercatat dan pertemuan tidak dibuka ulang. Kehadiran yang belum dicatat tetap dapat dikoreksi di aplikasi dengan alasan."
               data-confirm-title="Selesaikan pertemuan <?= ah_e($selectedMeeting['fan_ilmu']) ?>?" data-confirm-ok="Selesaikan">

@@ -1,0 +1,82 @@
+=== T-1. Migrasi 025 ===
+[gagal] Migrasi 025 berurutan setelah 024 (migrasi terakhir yang ada)
+[lulus] Migrasi aditif: 4 CREATE TABLE IF NOT EXISTS, tanpa DROP/ALTER/DML (tabel 024 pun tidak diubah)
+[lulus] Tabel kesehatan_obat dibuat dan dilepas rollback berpasangan
+[lulus] Tabel kesehatan_rujukan dibuat dan dilepas rollback berpasangan
+[lulus] Tabel kesehatan_tindak_lanjut dibuat dan dilepas rollback berpasangan
+[lulus] Tabel kesehatan_versi_rincian dibuat dan dilepas rollback berpasangan
+[lulus] Rollback hanya melepas 4 tabel 025 (024 tetap), urut anak → induk
+[lulus] Tanpa tabel/kolom stok, sisa, pembelian, atau kedaluwarsa obat
+[lulus] Rincian berversi: kolom versi_dibatalkan (tidak dihapus), induk kunjungan
+[lulus] Snapshot rincian satu per versi (FK gabungan), terkait klaim idempotensi, JSON valid
+[lulus] 12 kunci asing nyata (kunjungan, versi gabungan, idempotensi, users)
+[lulus] CHECK status rujukan/tindak lanjut konsisten dengan isinya; jumlah obat positif
+
+=== T-2. Layanan: koreksi berversi ===
+[lulus] Urutan koreksi: penugasan → klaim → banding isi → replay → kunci kunjungan → versi → alasan → UPDATE → versi → rincian → snapshot → audit
+[lulus] Alasan wajib untuk kunjungan Tercatat; Tercatat tidak dapat kembali Draf
+[lulus] Koreksi tanpa perubahan ditolak; versi lama → 409
+[lulus] koreksi(): hanya petugas (wajibCatat) sebelum apa pun
+[lulus] hasilRujukan(): hanya petugas (wajibCatat) sebelum apa pun
+[lulus] buat(): hanya petugas (wajibCatat) sebelum apa pun
+[lulus] UPDATE kunjungan berpenjaga versi + kunci tulis baris + kunci baca penugasan
+[lulus] Tanpa DELETE rincian/kunjungan: rincian dihapus = versi_dibatalkan
+[lulus] Replay koreksi menjawab versi yang dihasilkan klaim yang sama
+[lulus] Validasi rincian: batas baris, jumlah positif, pesan tanpa nilai masukan
+
+=== T-3. Pembaca pembimbing/murobi ===
+[lulus] Binaan hanya bila tanpa hak seluruh; catat hanya petugas; riwayat versi hanya petugas/admin
+[lulus] Cakupan binaan sama dengan profil D-10: m.is_active = 1 AND m.archived_at IS NULL
+[lulus] Cakupan binaan sama dengan profil D-10: ta.status = 'Aktif' AND ta.archived_at IS NULL
+[lulus] Cakupan binaan sama dengan profil D-10: s.is_active = 1 AND s.archived_at IS NULL
+[lulus] Cakupan binaan sama dengan profil D-10: u.is_active = 1
+[lulus] Cakupan binaan sama dengan profil D-10: a.is_active = 1 AND a.archived_at IS NULL
+[lulus] Cakupan binaan sama dengan profil D-10: a.tanggal_mulai <= CURDATE() AND (a.tanggal_selesai IS NULL OR a.tanggal_selesai >= CURDATE())
+[lulus] Cakupan binaan sama dengan profil D-10: pm.id_tahun = a.tahun_ajaran_id AND pm.id_kamar = a.kamar_id
+[lulus] Cakupan binaan sama dengan profil D-10: kl.is_active = 1 AND kl.archived_at IS NULL
+[lulus] Cakupan binaan sama dengan profil D-10: pk.id_kelas = a.kelas_id AND pk.status = 'Aktif'
+[lulus] Pembaca binaan hanya Tercatat; tanpa jenis binaan → 0 baris
+[lulus] Saring dipasang pada SQL detail dan daftar (per baris)
+[lulus] Binaan: di luar cakupan dan tidak ada sama-sama 403; log akses sebelum isi
+[lulus] Penyaring status (draf) hanya untuk cakupan seluruh
+
+=== T-4. Halaman web ===
+[lulus] portal/kesehatan.php: guard bersama, keluaran di-escape, tanpa SQL di halaman
+[lulus] portal/kesehatan_buat.php: guard bersama, keluaran di-escape, tanpa SQL di halaman
+[lulus] portal/kesehatan_detail.php: guard bersama, keluaran di-escape, tanpa SQL di halaman
+[lulus] portal/kesehatan_koreksi.php: guard bersama, keluaran di-escape, tanpa SQL di halaman
+[lulus] portal/kesehatan_hasil_rujukan.php: guard bersama, keluaran di-escape, tanpa SQL di halaman
+[lulus] portal/kesehatan_riwayat.php: guard bersama, keluaran di-escape, tanpa SQL di halaman
+[lulus] Formulir rincian bersama: di-escape, tanpa SQL, tanpa isian stok
+[lulus] portal/kesehatan_koreksi.php: hanya petugas (403 sebelum formulir), kunci idempotensi
+[lulus] portal/kesehatan_hasil_rujukan.php: hanya petugas (403 sebelum formulir), kunci idempotensi
+[lulus] portal/kesehatan_buat.php: hanya petugas (403 sebelum formulir), kunci idempotensi
+[lulus] Koreksi: versi dibawa formulir, konflik menawarkan muat ulang, isian tidak disimpan ke sesi
+[lulus] Detail: tombol Koreksi/Catat hasil hanya petugas, Riwayat versi hanya petugas/admin
+[lulus] Menu Kesehatan binaan: pembimbing (Santri binaan) dan murobi (Murobi), dari hak server
+
+=== T-5. API ===
+[lulus] Rute koreksi, hasil rujukan, dan riwayat versi di bawah /v5/kesehatan
+[lulus] Respons tulis hanya {id, versi, replayed}; kunci dari header/badan
+[lulus] API memakai layanan yang sama dengan web
+
+=== T-6. Privasi ===
+[lulus] Audit koreksi hanya metadata dan kode bagian
+[lulus] Kode bagian isi klinis disatukan (nama kolom klinis tidak masuk audit)
+[lulus] Kode kesehatan tidak menulis error_log dan pesan galat tidak menyisipkan masukan
+[lulus] AuditLogger tetap membuang kolom klinis untuk aksi kesehatan.*
+
+=== T-7. Batas fase ===
+[lulus] Fase 3 belum dimulai: tanpa ringkasan wali, notifikasi, atau outbox
+[gagal] app/Auth, app/Penugasan, dan AuditLogger tidak berubah dari baseline audit Fase 1 (1852fdb)
+
+=== T-8. Operasi dan lint ===
+[lulus] bin/v5_phase2_preflight.php: CLI saja, hanya membaca
+[lulus] bin/v5_phase2_verify.php: CLI saja, hanya membaca
+[lulus] bin/v5_phase2_rollback_preflight.php: CLI saja, hanya membaca
+[lulus] Skrip DB/seed uji hanya untuk test_*_test
+[lulus] Lint 21 berkas PHP
+
+Lulus: 61 · Gagal: 2
+  - Migrasi 025 berurutan setelah 024 (migrasi terakhir yang ada)
+  - app/Auth, app/Penugasan, dan AuditLogger tidak berubah dari baseline audit Fase 1 (1852fdb)

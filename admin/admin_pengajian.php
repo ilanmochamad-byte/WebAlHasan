@@ -131,6 +131,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ah_flash_set('success', 'Pertemuan diselesaikan dan waktu selesai tercatat.');
             $kembali(['id' => $meetingId, 'schedule_id' => null, 'action' => null]);
         }
+        if ($action === 'refresh_participants') {
+            $meetingId = (int) ($_POST['meeting_id'] ?? 0);
+            $hasil = $service->refreshParticipants($meetingId, $currentUser);
+            $ubah = [];
+            if ($hasil['ditambah'] !== []) { $ubah[] = count($hasil['ditambah']) . ' santri ditambahkan'; }
+            if ($hasil['dikeluarkan'] !== []) { $ubah[] = count($hasil['dikeluarkan']) . ' santri dikeluarkan'; }
+            if ($hasil['dipertahankan'] !== []) { $ubah[] = count($hasil['dipertahankan']) . ' santri tetap tercantum karena absensinya sudah tercatat'; }
+            ah_flash_set('success', $ubah === []
+                ? 'Daftar peserta sudah sesuai dengan penempatan kelas saat ini.'
+                : 'Daftar peserta diperbarui: ' . implode(', ', $ubah) . '.');
+            $kembali(['id' => $meetingId, 'schedule_id' => null, 'action' => null]);
+        }
         throw new ScheduleException('Aksi pertemuan tidak valid.');
     } catch (ScheduleException $exception) {
         if (in_array($action, ['draft','open'], true)) { ah_validation_keep($_POST, ['schedule_id','tanggal_pertemuan','catatan'], $exception, '_meeting_old'); }

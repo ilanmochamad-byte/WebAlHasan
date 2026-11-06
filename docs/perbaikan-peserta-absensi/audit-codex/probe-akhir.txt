@@ -1,0 +1,12 @@
+[lulus] web menolak perubahan ketika audit gagal
+[lulus] web rollback peserta ketika audit gagal
+[lulus] api menolak perubahan ketika audit gagal
+[lulus] api rollback peserta ketika audit gagal
+[lulus] Status santri rollback ketika audit gagal
+[lulus] Penempatan rollback ketika audit gagal
+[lulus] Retry setelah audit pulih benar-benar menghapus peserta
+[lulus] Retry menghasilkan satu audit
+[lulus] Status API tepat 404
+[lulus] Status API tepat 403
+[lulus] Selesai ditolak 409 MEETING_NOT_OPEN
+Hasil: 11 lulus, 0 gagal

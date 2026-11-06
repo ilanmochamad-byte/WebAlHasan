@@ -102,6 +102,12 @@ final class TeacherRepository
         }
     }
 
+    /** @return array{ditambah:list<int>, dikeluarkan:list<int>, dipertahankan:list<int>} */
+    public function refreshParticipants(int $meetingId, int $classId, int $yearId): array
+    {
+        return PesertaPertemuan::perbarui($this->db, $meetingId, $classId, $yearId);
+    }
+
     /** @return array<int, list<array{id:int, name:string, level:string, is_primary:bool}>> */
     public function scheduleClasses(array $scheduleIds): array
     {

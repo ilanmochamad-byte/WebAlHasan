@@ -27,7 +27,10 @@ final class MasterDataRepository
             'archived' => ' WHERE k.archived_at IS NOT NULL',
             default => '',
         };
+        // Perbaikan peserta absensi: hanya santri aktif (tidak nonaktif/arsip) yang dihitung,
+        // sama dengan daftar Penempatan dan peserta pertemuan.
         $sql = "SELECT k.*, (SELECT COUNT(*) FROM plotting_kelas pk JOIN tahun_ajaran ta ON ta.id = pk.id_tahun AND ta.status = 'Aktif' AND ta.archived_at IS NULL
+                              JOIN santri s ON s.id = pk.id_santri AND s.is_active = 1 AND s.archived_at IS NULL
                               WHERE pk.id_kelas = k.id AND pk.status = 'Aktif') anggota FROM kelas k" . $where;
         return \App\Database\PageQuery::fetch($this->db, $sql, [], 'jenjang, nama_kelas, id', $page, $q, ['nama_kelas', 'jenjang']);
     }
@@ -310,9 +313,26 @@ final class MasterDataRepository
         return [$where, $params];
     }
 
-    public function santriFind(int $id): ?array
+    public function santriFind(int $id, bool $forUpdate = false): ?array
     {
-        return $this->one('SELECT * FROM santri WHERE id = ?', [$id]);
+        return $this->one('SELECT * FROM santri WHERE id = ?' . ($forUpdate ? ' FOR UPDATE' : ''), [$id]);
+    }
+
+    /**
+     * Menutup seluruh penempatan kelas Aktif milik santri (semua tahun ajaran).
+     *
+     * @return list<int> ID baris `plotting_kelas` yang ditutup
+     */
+    public function santriTutupPenempatanKelas(int $santriId, string $endDate): array
+    {
+        $ids = array_map(
+            static fn (array $row): int => (int) $row['id'],
+            $this->all("SELECT id FROM plotting_kelas WHERE id_santri = ? AND status = 'Aktif' ORDER BY id FOR UPDATE", [$santriId])
+        );
+        if ($ids !== []) {
+            $this->execute("UPDATE plotting_kelas SET status = 'Selesai', tanggal_selesai = ?, updated_at = NOW() WHERE id_santri = ? AND status = 'Aktif'", [$endDate, $santriId]);
+        }
+        return $ids;
     }
 
     public function santriCreate(array $data): int

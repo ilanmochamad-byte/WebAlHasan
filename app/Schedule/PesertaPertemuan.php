@@ -22,9 +22,19 @@ use RuntimeException;
  *      `kelas_id_snapshot`. Santri yang tercatat aktif di lebih dari satu kelas
  *      terpilih tetap satu peserta (keanggotaan dengan ID terkecil), sehingga
  *      tidak ada peserta atau absensi ganda.
+ *
+ * Perbaikan peserta absensi (6 November 2026):
+ *   - hanya santri yang statusnya AKTIF dan tidak diarsipkan yang menjadi
+ *     peserta. Sebelumnya santri yang dinonaktifkan di Data Santri tetapi
+ *     penempatan kelasnya masih "Aktif" tetap ikut dibekukan;
+ *   - `perbarui()` menyelaraskan peserta pertemuan berstatus Dibuka dengan
+ *     keanggotaan aktif saat ini pada kelas yang SAMA dengan saat dibuka.
  */
 final class PesertaPertemuan
 {
+    /** Syarat santri yang boleh menjadi peserta (alias `s` = tabel santri). */
+    private const SANTRI_AKTIF = 's.is_active = 1 AND s.archived_at IS NULL';
+
     /**
      * @param int|null $scheduleId jadwal pertemuan; `null` = pemanggil lama yang
      *        menyebut satu kelas saja (`$classId`), yang kemudian dibekukan apa adanya.
@@ -41,6 +51,7 @@ final class PesertaPertemuan
                  FROM plotting_kelas pk
                  JOIN santri s ON s.id = pk.id_santri
                  WHERE pk.id_kelas = ? AND pk.id_tahun = ? AND pk.status = 'Aktif'
+                   AND " . self::SANTRI_AKTIF . "
                  ORDER BY s.nama_santri, s.id",
                 [$meetingId, $classId, $yearId, $classId, $yearId]
             );
@@ -78,6 +89,7 @@ final class PesertaPertemuan
              FROM plotting_kelas pk
              JOIN santri s ON s.id = pk.id_santri
              WHERE pk.id_tahun = ? AND pk.status = 'Aktif'
+               AND " . self::SANTRI_AKTIF . "
                AND pk.id = (SELECT MIN(pk2.id)
                               FROM plotting_kelas pk2
                               JOIN pertemuan_kelas mk ON mk.pertemuan_id = ? AND mk.kelas_id = pk2.id_kelas
@@ -87,7 +99,115 @@ final class PesertaPertemuan
         );
     }
 
-    /** @param list<int> $params */
+    /**
+     * Menyelaraskan peserta pertemuan berstatus Dibuka dengan keanggotaan kelas
+     * yang aktif SAAT INI.
+     *
+     *   - Kelas pertemuan tetap kelas yang dibekukan saat dibuka
+     *     (`pertemuan_kelas`; sebelum 034 = kelas utama jadwal). Perubahan kelas
+     *     jadwal sesudah pertemuan dibuka tidak ikut.
+     *   - Santri aktif yang kini ditempatkan di kelas itu tetapi belum menjadi
+     *     peserta → ditambahkan.
+     *   - Peserta yang tidak lagi memenuhi syarat (penempatan ditutup/pindah
+     *     kelas, santri nonaktif/diarsipkan) → dikeluarkan, KECUALI sudah memiliki
+     *     absensi pada pertemuan ini; absensi yang tercatat tidak pernah dihapus.
+     *
+     * Pemanggil WAJIB sudah mengunci baris `pertemuan_pengajian` (FOR UPDATE)
+     * dan memastikan statusnya `Dibuka` di transaksi yang sama. Penyimpanan
+     * absensi mengunci baris yang sama, sehingga keduanya berjalan berurutan.
+     *
+     * @return array{ditambah:list<int>, dikeluarkan:list<int>, dipertahankan:list<int>}
+     *         ID santri; `dipertahankan` = tidak lagi memenuhi syarat tetapi sudah berabsensi.
+     */
+    public static function perbarui(mysqli $db, int $meetingId, int $classId, int $yearId): array
+    {
+        if (KelasJadwal::terpasang($db)) {
+            $kelasSyarat = 'EXISTS (SELECT 1 FROM pertemuan_kelas mk WHERE mk.pertemuan_id = ? AND mk.kelas_id = pk2.id_kelas)';
+            $kelasParams = [$meetingId];
+        } else {
+            $kelasSyarat = 'pk2.id_kelas = ?';
+            $kelasParams = [$classId];
+        }
+
+        $layak = [];
+        foreach (self::query(
+            $db,
+            "SELECT s.id AS santri_id, pk.id AS plotting_id, pk.id_kelas, s.nis, s.nama_santri
+               FROM plotting_kelas pk
+               JOIN santri s ON s.id = pk.id_santri
+              WHERE pk.id_tahun = ? AND pk.status = 'Aktif'
+                AND " . self::SANTRI_AKTIF . "
+                AND pk.id = (SELECT MIN(pk2.id) FROM plotting_kelas pk2
+                              WHERE pk2.id_santri = pk.id_santri AND pk2.id_tahun = ? AND pk2.status = 'Aktif'
+                                AND " . $kelasSyarat . ")
+              ORDER BY s.nama_santri, s.id",
+            [$yearId, $yearId, ...$kelasParams]
+        ) as $row) {
+            $layak[(int) $row['santri_id']] = $row;
+        }
+
+        $sekarang = [];
+        foreach (self::query(
+            $db,
+            'SELECT pp.santri_id,
+                    EXISTS (SELECT 1 FROM absensi_santri a WHERE a.pertemuan_id = pp.pertemuan_id AND a.santri_id = pp.santri_id) AS berabsensi
+               FROM pertemuan_peserta pp WHERE pp.pertemuan_id = ?',
+            [$meetingId]
+        ) as $row) {
+            $sekarang[(int) $row['santri_id']] = (int) $row['berabsensi'] === 1;
+        }
+
+        $hasil = ['ditambah' => [], 'dikeluarkan' => [], 'dipertahankan' => []];
+        foreach ($layak as $santriId => $row) {
+            if (array_key_exists($santriId, $sekarang)) {
+                continue;
+            }
+            self::execute(
+                $db,
+                'INSERT INTO pertemuan_peserta
+                    (pertemuan_id, santri_id, plotting_kelas_id, nis_snapshot, nama_santri_snapshot, kelas_id_snapshot, tahun_ajaran_id_snapshot, created_at)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, NOW())',
+                [$meetingId, $santriId, (int) $row['plotting_id'], (string) $row['nis'], (string) $row['nama_santri'], (int) $row['id_kelas'], $yearId]
+            );
+            $hasil['ditambah'][] = $santriId;
+        }
+        foreach ($sekarang as $santriId => $berabsensi) {
+            if (isset($layak[$santriId])) {
+                continue;
+            }
+            if ($berabsensi) {
+                $hasil['dipertahankan'][] = $santriId;
+                continue;
+            }
+            self::execute($db, 'DELETE FROM pertemuan_peserta WHERE pertemuan_id = ? AND santri_id = ?', [$meetingId, $santriId]);
+            $hasil['dikeluarkan'][] = $santriId;
+        }
+
+        return $hasil;
+    }
+
+    /**
+     * @param list<int|string> $params
+     * @return list<array<string, mixed>>
+     */
+    private static function query(mysqli $db, string $sql, array $params): array
+    {
+        $statement = $db->prepare($sql);
+        if ($statement === false) {
+            throw new RuntimeException('Query peserta pertemuan tidak dapat disiapkan: ' . $db->error);
+        }
+        try {
+            if (!$statement->execute($params)) {
+                throw new RuntimeException('Query peserta pertemuan gagal: ' . $statement->error);
+            }
+            $result = $statement->get_result();
+            return $result === false ? [] : array_values($result->fetch_all(MYSQLI_ASSOC));
+        } finally {
+            $statement->close();
+        }
+    }
+
+    /** @param list<int|string> $params */
     private static function execute(mysqli $db, string $sql, array $params): void
     {
         $statement = $db->prepare($sql);

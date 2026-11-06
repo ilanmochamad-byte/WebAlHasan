@@ -1,0 +1,22 @@
+=== P-1 pertemuan baru hanya memuat santri aktif ===
+[lulus] Fixture: dua santri nonaktif/arsip masih punya penempatan kelas Aktif
+[gagal] Web: pertemuan baru hanya memuat santri aktif (nonaktif & arsip tidak ikut)
+[gagal] API: pertemuan baru hanya memuat santri aktif
+
+=== P-2 Nonaktifkan/Arsipkan menutup penempatan kelas ===
+[gagal] Nonaktifkan: penempatan kelas Aktif ditutup
+[gagal] Baris penempatan tetap ada sebagai riwayat (Selesai, tanggal hari ini)
+[gagal] Audit Nonaktifkan memuat ID penempatan yang ditutup
+[gagal] Aktifkan kembali tidak membuka penempatan otomatis
+[gagal] Arsipkan: santri diarsipkan dan penempatan kelas ditutup
+[lulus] Arsipkan tidak menghapus baris penempatan
+
+=== P-3 jumlah anggota Data Kelas ===
+[gagal] Data Kelas C menghitung hanya santri aktif (1), bukan 3 penempatan Aktif
+
+=== P-4 Perbarui daftar peserta (web) ===
+[gagal] Pertemuan gabungan dibuka dengan 3 peserta aktif
+Error: Call to undefined method App\Schedule\ScheduleService::refreshParticipants() in /private/tmp/claude-501/-Users-ilanmochamad-Documents-GitHub-webalhasan-WebAlHasan/928b7fee-5f30-4b0a-b2f6-8fae06156995/scratchpad/baseline/tests/perbaikan_peserta_absensi_integration.php:162
+Stack trace:
+#0 {main}
+Call to undefined method App\Schedule\ScheduleService::refreshParticipants()

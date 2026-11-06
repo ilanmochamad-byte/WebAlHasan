@@ -1,0 +1,4 @@
+PHP 8.4.14 (cli) (built: Oct 21 2025 19:23:55) (NTS)
+Copyright (c) The PHP Group
+v26.7.0
+mariadb from 12.3.2-MariaDB, client 15.2 for osx10.21 (arm64) using  EditLine wrapper
