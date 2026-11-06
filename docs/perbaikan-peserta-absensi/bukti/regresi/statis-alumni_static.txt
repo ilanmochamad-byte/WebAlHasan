@@ -1,0 +1,182 @@
+[lulus] AS-1 lint bersih: app/MasterData/AlumniRepository.php
+[lulus] AS-1 lint bersih: app/MasterData/AlumniService.php
+[lulus] AS-1 lint bersih: app/MasterData/AlumniConflictException.php
+[lulus] AS-1 lint bersih: admin/admin_kelulusan_santri.php
+[lulus] AS-1 lint bersih: bin/alumni_preflight.php
+[lulus] AS-1 lint bersih: bin/alumni_backfill.php
+[lulus] AS-1 lint bersih: bin/alumni_verify.php
+[lulus] AS-1 lint bersih: tests/alumni_static.php
+[lulus] AS-1 lint bersih: tests/alumni_integration.php
+[lulus] AS-1 lint bersih: tests/alumni_web_smoke.php
+[lulus] AS-1 lint bersih: tests/alumni_concurrency.php
+[lulus] AS-1 lint bersih: tests/alumni_concurrency_worker.php
+[lulus] AS-1 lint bersih: app/bootstrap.php
+[lulus] AS-1 lint bersih: tests/penempatan_static.php
+[lulus] AS-1 lint bersih: app/Ui/Navigation.php
+[lulus] AS-1 lint bersih: admin/admin_alumni.php
+[lulus] AS-1 lint bersih: admin/proses_mutasi_alumni.php
+[lulus] AS-1 lint bersih: admin/admin_master_santri.php
+[lulus] AS-2 tidak ada penghapusan permanen catatan alumni: admin/admin_alumni.php
+[lulus] AS-12 tidak ada penghapusan berkas foto: admin/admin_alumni.php
+[lulus] AS-2 tidak ada penghapusan permanen catatan alumni: admin/proses_mutasi_alumni.php
+[lulus] AS-12 tidak ada penghapusan berkas foto: admin/proses_mutasi_alumni.php
+[lulus] AS-2 tidak ada penghapusan permanen catatan alumni: admin/admin_kelulusan_santri.php
+[lulus] AS-12 tidak ada penghapusan berkas foto: admin/admin_kelulusan_santri.php
+[lulus] AS-2 tidak ada penghapusan permanen catatan alumni: app/MasterData/AlumniService.php
+[lulus] AS-12 tidak ada penghapusan berkas foto: app/MasterData/AlumniService.php
+[lulus] AS-2 tidak ada penghapusan permanen catatan alumni: app/MasterData/AlumniRepository.php
+[lulus] AS-12 tidak ada penghapusan berkas foto: app/MasterData/AlumniRepository.php
+[lulus] AS-2 penghapusan digantikan pasangan arsip dan pemulihan
+[lulus] AS-3 alamat lama ?hapus=ID ditangani secara eksplisit
+[lulus] AS-3 alamat lama ?hapus=ID dijawab 405, bukan dijalankan
+[lulus] AS-3 tidak ada nilai GET yang langsung dieksekusi sebagai query
+[lulus] AS-3 aksi koreksi hanya ditangani pada cabang POST
+[lulus] AS-3 aksi arsip hanya ditangani pada cabang POST
+[lulus] AS-3 aksi pulihkan hanya ditangani pada cabang POST
+[lulus] AS-3 aksi batalkan hanya ditangani pada cabang POST
+[lulus] AS-3 aksi hubungkan hanya ditangani pada cabang POST
+[lulus] AS-3 seluruh aksi alumni berada di dalam cabang REQUEST_METHOD === POST
+[lulus] AS-3 aksi proses lewat GET ditolak sebelum apa pun dikerjakan
+[lulus] AS-4 halaman alumni tidak menyentuh basis data langsung: mysqli_query
+[lulus] AS-4 halaman kelulusan tidak menyentuh basis data langsung: mysqli_query
+[lulus] AS-4 halaman alumni tidak menyentuh basis data langsung: mysqli_real_escape_string
+[lulus] AS-4 halaman kelulusan tidak menyentuh basis data langsung: mysqli_real_escape_string
+[lulus] AS-4 halaman alumni tidak menyentuh basis data langsung: mysqli_fetch_array
+[lulus] AS-4 halaman kelulusan tidak menyentuh basis data langsung: mysqli_fetch_array
+[lulus] AS-4 halaman alumni tidak menyentuh basis data langsung: ->query(
+[lulus] AS-4 halaman kelulusan tidak menyentuh basis data langsung: ->query(
+[lulus] AS-4 halaman alumni tidak menyentuh basis data langsung: INSERT INTO alumni
+[lulus] AS-4 halaman kelulusan tidak menyentuh basis data langsung: INSERT INTO alumni
+[lulus] AS-4 halaman alumni tidak menyentuh basis data langsung: SELECT * FROM alumni
+[lulus] AS-4 halaman kelulusan tidak menyentuh basis data langsung: SELECT * FROM alumni
+[lulus] AS-5 repository menyiapkan seluruh query lewat prepare()
+[lulus] AS-5 repository tidak memakai escape string
+[lulus] AS-5 seluruh parameter diikat dengan bind_param
+[lulus] AS-5 tidak ada nilai variabel yang disambung ke SQL selain potongan internal repository
+[lulus] AS-5 penyusun klausa WHERE daftar alumni dapat diperiksa
+[lulus] AS-5 penyusun klausa WHERE ditemukan untuk diperiksa
+[lulus] AS-5 tidak ada nilai filter yang disambung ke potongan SQL klausa WHERE
+[lulus] AS-5 seluruh nilai filter dikirim sebagai parameter terikat
+[lulus] AS-5 daftar ID dan NIS dikirim sebagai placeholder, bukan nilai yang disambung
+[lulus] AS-5 kolom pencarian berasal dari konstanta repository, bukan input URL
+[lulus] AS-5 nilai LIMIT selalu melewati pembatas repository
+[lulus] AS-6 admin/admin_alumni.php dijaga guard admin
+[lulus] AS-6 admin/admin_alumni.php memakai adaptor kerangka bersama
+[lulus] AS-6 admin/admin_alumni.php membuka kerangka bersama
+[lulus] AS-6 admin/admin_alumni.php menutup kerangka bersama
+[lulus] AS-6 admin/admin_alumni.php tidak menggambar kerangka HTML sendiri
+[lulus] AS-6 admin/admin_alumni.php tidak memuat sidebar lama
+[lulus] AS-6 admin/admin_alumni.php tidak memuat DataTables lama
+[lulus] AS-6 admin/admin_alumni.php memakai komponen kartu bersama
+[lulus] AS-6 admin/admin_kelulusan_santri.php dijaga guard admin
+[lulus] AS-6 admin/admin_kelulusan_santri.php memakai adaptor kerangka bersama
+[lulus] AS-6 admin/admin_kelulusan_santri.php membuka kerangka bersama
+[lulus] AS-6 admin/admin_kelulusan_santri.php menutup kerangka bersama
+[lulus] AS-6 admin/admin_kelulusan_santri.php tidak menggambar kerangka HTML sendiri
+[lulus] AS-6 admin/admin_kelulusan_santri.php tidak memuat sidebar lama
+[lulus] AS-6 admin/admin_kelulusan_santri.php tidak memuat DataTables lama
+[lulus] AS-6 admin/admin_kelulusan_santri.php memakai komponen kartu bersama
+[lulus] AS-7 navigasi mengenali halaman kelulusan
+[lulus] AS-7 alamat lama tetap menandai menu yang sama
+[lulus] AS-7 menu Kelulusan & Mutasi Keluar tersedia untuk admin (tab di Data santri)
+[lulus] AS-7 menu Data Alumni lama tetap ada
+[lulus] AS-8 alamat lama menolak POST dengan 410
+[lulus] AS-8 alamat lama mengalihkan GET secara permanen
+[lulus] AS-8 pemrosesan INSERT IGNORE lama sudah hilang
+[lulus] AS-8 endpoint massal lama tanpa transaksi sudah hilang
+[lulus] AS-8 alamat lama tidak lagi menyentuh basis data
+[lulus] AS-8 alamat lama tetap memeriksa peran admin sebelum menjawab apa pun
+[lulus] AS-9 formulir proses menyertakan token CSRF
+[lulus] AS-9 formulir alumni menyertakan token CSRF
+[lulus] AS-9 layar konfirmasi memakai token sekali pakai
+[lulus] AS-9 token sekali pakai dikonsumsi saat penerapan
+[lulus] AS-9 formulir koreksi dilindungi token sekali pakai
+[lulus] AS-9 seluruh tindakan alumni dikirim lewat POST
+[lulus] AS-9 tidak ada tautan GET yang mengubah data
+[lulus] AS-10 transaksi memakai isolasi READ COMMITTED
+[lulus] AS-10 layanan membuka transaksi
+[lulus] AS-10 setiap jalur galat melakukan rollback
+[lulus] AS-10 commit hanya pada akhir jalur sukses
+[lulus] AS-10 baris dikunci menurut ID menaik
+[lulus] AS-10 baris santri dikunci lebih dahulu
+[lulus] AS-10 catatan alumni aktif dikunci setelah santri
+[lulus] AS-10 catatan alumni ber-NIS sama ikut dikunci
+[lulus] AS-10 urutan penguncian tetap: santri lebih dahulu, lalu alumni
+[lulus] AS-10 batas operasi massal ditetapkan di server
+[lulus] AS-11 audit wajib berhasil disimpan
+[lulus] AS-11 kegagalan audit menghasilkan pembatalan, bukan diabaikan
+[lulus] AS-11 seluruh penulisan audit melewati satu jalur yang memeriksa hasilnya
+[lulus] AS-11 aksi audit alumni.proses tercatat
+[lulus] AS-11 aksi audit alumni.massal tercatat
+[lulus] AS-11 aksi audit alumni.koreksi tercatat
+[lulus] AS-11 aksi audit alumni.arsip tercatat
+[lulus] AS-11 aksi audit alumni.pulihkan tercatat
+[lulus] AS-11 aksi audit alumni.batalkan tercatat
+[lulus] AS-11 aksi audit alumni.hubungkan tercatat
+[lulus] AS-11 tidak ada sistem audit kedua; memakai audit_logs yang sudah ada
+[lulus] AS-12 preflight hanya membaca
+[lulus] AS-12 verifikasi hanya membaca
+[lulus] AS-12 pembatalan tidak membuat penempatan kelas atau kamar baru secara otomatis
+[lulus] AS-12 pelepasan kamar dibatasi pada tahun ajaran berjalan saja
+[lulus] AS-12 riwayat kelas, santri, relasi wali, dan akun tidak pernah dihapus
+[lulus] AS-13 tidak ada nilai basis data yang dicetak tanpa escaping di halaman alumni
+[lulus] AS-13 tidak ada nilai basis data yang dicetak tanpa escaping di halaman kelulusan
+[lulus] AS-13 keluaran halaman alumni di-escape secara konsisten
+[lulus] AS-13 keluaran halaman kelulusan di-escape secara konsisten
+[lulus] AS-14 halaman alumni menyediakan pencarian nama atau NIS
+[lulus] AS-14 halaman alumni menyediakan filter status keluar
+[lulus] AS-14 halaman alumni menyediakan filter tahun
+[lulus] AS-14 halaman alumni menyediakan filter tingkat
+[lulus] AS-14 halaman alumni menyediakan filter status catatan (aktif/arsip)
+[lulus] AS-14 halaman alumni menyediakan filter referensi santri
+[lulus] AS-14 daftar alumni memakai pagination bersama
+[lulus] AS-14 keadaan kosong dibedakan antara "tanpa data" dan "tidak cocok filter"
+[lulus] AS-14 tabel dibungkus pembungkus responsif bersama
+[lulus] AS-14 keadaan arsip dapat disaring dan data warisan diperingatkan
+[lulus] AS-14 detail menunjukkan siapa yang memproses
+[lulus] AS-14 detail menunjukkan kelas dan kamar terakhir
+[lulus] AS-15 tidak ada keputusan yang bergantung pada handler inline JavaScript
+[lulus] AS-15 seluruh ID divalidasi di server
+[lulus] AS-15 status, tingkat, tanggal, dan tahun divalidasi ulang di server
+[lulus] AS-15 daftar nilai sah berasal dari konstanta layanan, bukan dari hidden field
+[lulus] AS-16 migrasi 011 tersedia
+[lulus] AS-16 rollback 011 berpasangan tersedia
+[lulus] AS-16 setiap perubahan skema dijaga pemeriksaan information_schema (idempoten)
+[lulus] AS-16 migrasi tidak memuat DROP TABLE
+[lulus] AS-16 migrasi tidak memuat TRUNCATE
+[lulus] AS-16 migrasi tidak memuat DELETE FROM alumni
+[lulus] AS-16 migrasi tidak memuat DROP COLUMN
+[lulus] AS-16 rollback tidak menghapus satu baris alumni pun
+[lulus] AS-16 migrasi memasang kunci unik pencegah alumni aktif ganda
+[lulus] AS-16 kunci unik pengganti dipasang SEBELUM kunci unik lama dilepas
+[lulus] AS-16 rollback menyertakan pemeriksaan sebelum memasang kembali kunci unik lama
+[lulus] AS-16 baris warisan tidak dipaksa mengaku dibuat saat migrasi dijalankan
+[lulus] AS-17 tidak ada pencocokan alumni berdasarkan nama_ayah
+[lulus] AS-17 tidak ada pencocokan alumni berdasarkan nama_ibu
+[lulus] AS-17 tidak ada deduplikasi berdasarkan kesamaan nama santri
+[lulus] AS-17 backfill hanya memasangkan bila NIS cocok persis satu
+[lulus] AS-17 backfill tidak memakai nama orang tua sebagai kunci
+[lulus] AS-18 baris santri menyediakan tindakan Luluskan / Mutasi keluar
+[lulus] AS-18 tindakan itu hanya tampil untuk santri yang masih aktif
+[lulus] AS-18 alur massal dapat dibuka dari halaman Kelulusan & alumni
+[lulus] AS-19 status keluar terbatas pada Lulus, Pindah, dan Berhenti — tanpa status baru
+[lulus] AS-19 tingkat mengikuti ENUM kolom yang sudah ada
+[lulus] AS-20 bin/alumni_preflight.php hanya dapat dijalankan dari CLI
+[lulus] AS-20 bin/alumni_backfill.php hanya dapat dijalankan dari CLI
+[lulus] AS-20 bin/alumni_verify.php hanya dapat dijalankan dari CLI
+[lulus] AS-20 backfill hanya menulis bila diminta --terapkan
+[lulus] AS-20 mode bawaan backfill adalah laporan, bukan perubahan data
+[lulus] AS-20 backfill tidak pernah menghapus baris
+[lulus] AS-21 dokumentasi tersedia: docs/koreksi-alumni/README.md
+[lulus] AS-21 dokumentasi tersedia: docs/koreksi-alumni/aturan-bisnis.md
+[lulus] AS-21 dokumentasi tersedia: docs/koreksi-alumni/migrasi-dan-rollback.md
+[lulus] AS-21 dokumentasi tersedia: docs/koreksi-alumni/cpanel-deployment.md
+[lulus] AS-21 dokumentasi tersedia: docs/koreksi-alumni/test-results.md
+[lulus] AS-21 dokumentasi tersedia: docs/koreksi-alumni/acceptance-status.md
+[lulus] AS-21 laporan pengujian membedakan label "LULUS"
+[lulus] AS-21 laporan pengujian membedakan label "BELUM DIJALANKAN"
+[lulus] AS-21 laporan pengujian membedakan label "MEMERLUKAN UJI PRODUKSI/STAGING"
+[lulus] AS-21 panduan cPanel memuat ceklis smoke test
+[lulus] AS-21 penjalan seluruh pengujian tersedia dan dapat dieksekusi
+
+SELURUH PEMERIKSAAN STATIS ALUMNI LULUS.

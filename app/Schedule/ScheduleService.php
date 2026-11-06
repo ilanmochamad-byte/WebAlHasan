@@ -205,6 +205,41 @@ final class ScheduleService
         }
     }
 
+    /**
+     * "Perbarui daftar peserta" pada pertemuan berstatus Dibuka: menambah santri
+     * aktif yang kini ditempatkan di kelas pertemuan dan mengeluarkan peserta
+     * yang tidak lagi memenuhi syarat dan belum berabsensi. Pertemuan Draf belum
+     * punya peserta; pertemuan Selesai tidak diubah (riwayat).
+     *
+     * @return array{ditambah:list<int>, dikeluarkan:list<int>, dipertahankan:list<int>}
+     */
+    public function refreshParticipants(int $meetingId, array $user): array
+    {
+        $this->requireScheduleUser($user);
+        $actorId = (int) $user['id'];
+        $db = $this->repository->db();
+        $db->begin_transaction();
+        try {
+            $meeting = $this->repository->meetingFind($meetingId, true);
+            if ($meeting === null) { throw new ScheduleException('Pertemuan tidak ditemukan.'); }
+            $this->requireOwnership($meeting, $user);
+            if ($meeting['status'] !== 'Dibuka') {
+                throw new ScheduleException('Daftar peserta hanya dapat diperbarui pada pertemuan berstatus Dibuka.');
+            }
+            $before = count($this->repository->meetingParticipants($meetingId));
+            $result = $this->repository->refreshParticipants($meetingId, (int) $meeting['id_kelas'], (int) $meeting['id_tahun']);
+            $this->audit->log('meeting.refresh_participants', 'pertemuan_pengajian', $meetingId,
+                ['participant_count' => $before],
+                ['participant_count' => count($this->repository->meetingParticipants($meetingId))] + $result,
+                $actorId);
+            $db->commit();
+            return $result;
+        } catch (Throwable $exception) {
+            $db->rollback();
+            throw $exception;
+        }
+    }
+
     public function complete(int $meetingId, array $user): void
     {
         $this->requireScheduleUser($user);

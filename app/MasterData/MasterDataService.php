@@ -638,9 +638,37 @@ final class MasterDataService
         }
     }
 
+    /**
+     * Perbaikan peserta absensi (6 November 2026): menonaktifkan atau
+     * mengarsipkan santri juga menutup penempatan kelas yang masih Aktif
+     * (status `Selesai`, tanggal selesai hari ini), dalam transaksi yang sama
+     * dengan perubahan status dan auditnya. Sebelumnya penempatan tetap Aktif,
+     * sehingga santri yang sudah keluar masih muncul di absensi dan layanan
+     * berbasis kelas. Baris penempatan tetap ada sebagai riwayat; mengaktifkan
+     * kembali TIDAK membuat penempatan baru (ditempatkan ulang lewat menu
+     * Penempatan), sama dengan aturan pembatalan kelulusan/mutasi.
+     * Penempatan kamar tidak diubah di sini (lihat saringan "nonaktif berkamar").
+     */
     public function setSantriState(int $id, string $action): void
     {
-        $this->setState('santri', $id, $action, fn () => $this->repository->santriFind($id), fn (bool $active, bool $archive) => $this->repository->santriSetState($id, $active, $archive));
+        $this->repository->transaction(function () use ($id, $action): void {
+            $before = $this->mustFind($this->repository->santriFind($id, true), 'Santri');
+            [$active, $archive] = match ($action) {
+                'activate', 'restore' => [true, false],
+                'deactivate' => [false, false],
+                'archive' => [false, true],
+                default => throw new MasterDataException('Aksi status tidak valid.'),
+            };
+            $this->repository->santriSetState($id, $active, $archive);
+            $ditutup = $active ? [] : $this->repository->santriTutupPenempatanKelas($id, date('Y-m-d'));
+            $after = $this->repository->santriFind($id);
+            if ($ditutup !== []) {
+                $after['penempatan_kelas_ditutup'] = $ditutup;
+            }
+            if (!$this->audit->log('master.' . $action, 'santri', $id, $before, $after) && $ditutup !== []) {
+                throw new MasterDataException('Penempatan kelas tidak ditutup karena audit tidak dapat disimpan.');
+            }
+        });
     }
 
     public function waliList(array $filters, int $page, int $perPage = 20): array

@@ -311,6 +311,12 @@ final class ScheduleRepository
         PesertaPertemuan::bekukan($this->db, $meetingId, $scheduleId, $classId, $yearId);
     }
 
+    /** @return array{ditambah:list<int>, dikeluarkan:list<int>, dipertahankan:list<int>} */
+    public function refreshParticipants(int $meetingId, int $classId, int $yearId): array
+    {
+        return PesertaPertemuan::perbarui($this->db, $meetingId, $classId, $yearId);
+    }
+
     public function meetingComplete(int $meetingId, int $actorId): void
     {
         $this->execute("UPDATE pertemuan_pengajian SET status = 'Selesai', completed_by = ?, completed_at = NOW(), updated_at = NOW() WHERE id = ? AND status = 'Dibuka'", [$actorId, $meetingId]);

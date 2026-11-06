@@ -711,6 +711,9 @@ try {
     if ($method === 'GET' && preg_match('#^/meetings/(\d+)(?:/attendance)?$#', $path, $matches)) {
         JsonResponse::success(teacher_api_service()->meeting((int) $matches[1], api_authenticator()->assertScheduleAccess($user)));
     }
+    if ($method === 'POST' && preg_match('#^/meetings/(\d+)/participants/refresh$#', $path, $matches)) {
+        JsonResponse::success(teacher_api_service()->refreshParticipants((int) $matches[1], api_authenticator()->assertScheduleAccess($user)));
+    }
     if ($method === 'PUT' && preg_match('#^/meetings/(\d+)/attendance$#', $path, $matches)) {
         $result = teacher_api_service()->saveAttendance((int) $matches[1], Request::json(), api_authenticator()->assertScheduleAccess($user));
         JsonResponse::success($result['data']);
