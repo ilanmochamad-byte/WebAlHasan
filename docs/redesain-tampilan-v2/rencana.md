@@ -1,6 +1,6 @@
 # Rencana redesain tampilan aplikasi alhasanApps (gelombang 2) — 7 November 2026
 
-Status: **rencana disetujui Human Developer 12 November 2026** (seluruh usulan K-1…K-7 dan tambahan K-8, K-9, dan K-10, lihat §5). Belum ada perubahan kode, branch implementasi, commit kode, atau penetapan peran implementator/auditor. Persetujuan rencana bukan perintah memulai fase.
+Status: **rencana disetujui Human Developer 12 November 2026** (seluruh usulan K-1…K-7 dan tambahan K-8, K-9, dan K-10, lihat §5). Peran ditetapkan 12 November 2026: **Claude Code implementator, Codex auditor**. Belum ada perubahan kode atau branch implementasi. Persetujuan rencana dan penetapan peran bukan perintah memulai fase.
 
 Sumber inspirasi: sepuluh lembar contoh desain "Academy Finance" (30 layar) yang dikirim Human Developer 7 November 2026. Contoh itu adalah aplikasi keuangan akademi berbahasa Inggris dengan dolar; rencana ini **mengambil bahasa visualnya**, bukan isi, istilah, atau fiturnya.
 
@@ -251,7 +251,7 @@ K-8 mengubah keputusan gelombang 1 nomor 4 ("tanpa tombol + mengambang") **hanya
 
 - **Letak:** hanya di kepala halaman Beranda, kiri atas, setinggi ±28 pt (lebar mengikuti rasio ±2,8 : 1); lonceng tetap di kanan. Kartu identitas tetap isi pertama sesudah kepala.
 - **Tidak dipakai di layar lain.** Layar Masuk tetap memakai logo Al Hasan yang sekarang; layar tab memakai judul besar dan layar stack memakai judul tengah (K-7).
-- **Aset:** PNG latar transparan dalam tiga kerapatan (1x/2x/3x) di `assets/images/brand/`, ditampilkan dengan `expo-image` yang sudah terpasang; tidak memakai SVG karena butuh dependensi baru (K-4). Berkas sumber berkualitas tinggi (PNG transparan lebar ≥ 2000 px, atau berkas vektor bila ada) disediakan Human Developer; yang dikirim lewat percakapan 12 November 2026 belum tersimpan di repositori.
+- **Aset:** PNG latar transparan dalam tiga kerapatan (1x/2x/3x) di `assets/images/brand/`, ditampilkan dengan `expo-image` yang sudah terpasang; tidak memakai SVG karena butuh dependensi baru (K-4). Berkas sumber dari Human Developer: `docs/redesain-tampilan-v2/aset/Logo_alhasanApps.png` (PNG RGBA latar transparan, 2161 × 761 px, rasio ±2,84 : 1). Implementator menurunkan tiga kerapatan dari berkas ini tanpa mengubah warna atau bentuk.
 - **Aksesibilitas:** gambar berlabel "Alhasan apps" dengan peran gambar; tidak ikut skala teks sistem.
 - **Mode gelap:** logo yang sama di atas latar gelap. Di mode terang, bagian lime pada latar krem diperiksa keterbacaannya saat implementasi; warna logo **tidak diubah** tanpa persetujuan Human Developer.
 - Ikon aplikasi dan layar splash **tidak termasuk** K-9 (butuh build native baru).
@@ -269,7 +269,7 @@ K-8 mengubah keputusan gelombang 1 nomor 4 ("tanpa tombol + mengambang") **hanya
 
 ## 6. Fase usulan
 
-Satu fase per giliran, implementator lalu auditor, sesuai SOP `AGENTS.md`. Peran belum ditetapkan.
+Satu fase per giliran, implementator lalu auditor, sesuai SOP `AGENTS.md`. Implementator Claude Code, auditor Codex (penetapan Human Developer 12 November 2026).
 
 1. **Fondasi + Masuk + Beranda + Profil/Akun** — token, tipografi, seluruh komponen §3.3, `ScreenHeader` dua varian, layar 4.1 dan 4.2 (kecuali Jadwal/Perizinan).
 2. **Pengajian, Perizinan, Izin wali, Notifikasi** — 4.2 Jadwal/Perizinan, 4.3, 4.4, 4.5, 4.11.
