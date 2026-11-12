@@ -1,0 +1,6 @@
+[lulus] Daftar sah orang tua HTTP 200 dengan cakupan hanya baca
+[lulus] Mode pengurus pada daftar dikembalikan ke cakupan wali dan baris yang identik
+[lulus] Pemilih santri pengurus HTTP 403
+[lulus] Orang tua membuat izin V2 untuk anak sendiri HTTP 403
+[lulus] Orang tua membuat izin V2 dengan mode pengurus HTTP 403
+Hasil: 5 lulus / 0 gagal

@@ -1,0 +1,20 @@
+
+=== N-F. Guru: Jadwal, rincian tugas, absensi ===
+[lulus] Jadwal: ← di atas judul besar + subjudul
+[lulus] Jadwal: pil tampilan dan pil status sesi
+[lulus] Rincian tugas: kepala stack ber-←, kelas gabungan
+[lulus] Rincian tugas: tombol kembali Android kembali ke Jadwal
+[lulus] Absensi: kepala stack ← · judul · ⋯
+[lulus] Absensi: "Perbarui daftar" bukan tombol langsung; ringkasan mini tampil
+  (tombol Tools dev client dimatikan: true)
+[lulus] ⋯ → "Perbarui daftar": pesan hasil tampil
+[lulus] Absensi: tombol status santri 64×44 dp ≥ 44
+[lulus] Absensi: ringkasan mini mengikuti draf (Sakit: 1)
+[lulus] Absensi: ← tetap terlihat (kepala di luar area gulir)
+[lulus] Kirim absensi: panel hasil tampil
+
+=== N-E. Mode gelap dan teks 2,0× (guru) ===
+[lulus] Absensi gelap: ← dan isi tampil
+[lulus] Absensi gelap-teks-2.0: ← dan isi tampil
+
+Hasil (pengajian): 13 lulus / 0 gagal

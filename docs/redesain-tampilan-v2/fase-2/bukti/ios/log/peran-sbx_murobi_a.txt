@@ -1,0 +1,27 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow fab-diam
+Run masuk.yaml...
+  Launch app "com.ilanmochamad.alhasanApps" with clear state and clear keychain... COMPLETED
+  Assert that "Alhasan Apps" is visible... COMPLETED
+  Scrolling DOWN until "Masukkan username" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan username"... COMPLETED
+  Input text ${AKUN}... COMPLETED
+  Scrolling DOWN until "Masukkan password" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan password"... COMPLETED
+  Input text ${SANDI}... COMPLETED
+  Press Enter key... COMPLETED
+  Assert that ".*Buka profil|Not Now" is visible... COMPLETED
+  Run flow when "Not Now" is visible...
+    Tap on "Not Now"... COMPLETED
+  Run flow when "Not Now" is visible... COMPLETED
+  Assert that ".*Buka profil" is visible... COMPLETED
+Run masuk.yaml... COMPLETED
+Tap on "Izin"... COMPLETED
+Assert that "Kembali ke Beranda" is visible... COMPLETED
+Run flow when ${HARAP == 'ada'} is true...
+Run flow when false is true... SKIPPED
+Run flow when ${HARAP == 'tidak'} is true...
+  Assert that ".* pengajuan|Tidak ada.*|Belum ada.*" is visible... COMPLETED
+  Assert that "Ajukan izin baru" is not visible... COMPLETED
+Run flow when true is true... COMPLETED
+Take screenshot ios-perizinan-${NAMA}... COMPLETED

@@ -1,0 +1,12 @@
+[sama] sbx_guru_biasa 0-masuk (11 permintaan)
+[sama] sbx_guru_biasa 1-jadwal (4 permintaan)
+[sama] sbx_guru_biasa 2-rincian-tugas (1 permintaan)
+[sama] sbx_guru_biasa 3-buka-pertemuan (2 permintaan)
+[sama] sbx_guru_biasa 4-perbarui-daftar (1 permintaan)
+[sama] sbx_guru_biasa 5-kirim-absensi (1 permintaan)
+[sama] sbx_guru_biasa 6-koreksi (1 permintaan)
+[sama] sbx_guru_biasa 7-laporan (6 permintaan)
+[sama] sbx_guru_biasa 8-rincian-laporan (1 permintaan)
+[sama] sbx_guru_biasa 9-jadwal-rincian-selesai (4 permintaan)
+
+Hasil: 10 langkah sama / 0 berbeda; 32 permintaan dibandingkan

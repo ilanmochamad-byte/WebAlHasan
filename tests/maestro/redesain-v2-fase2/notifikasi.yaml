@@ -1,0 +1,66 @@
+# Redesain gelombang 2 Fase 2 — Notifikasi di iOS: kepala stack ← · judul · ⋯,
+# menu ⋯, rincian, dan tautan saat aplikasi MATI (tanpa riwayat, seperti
+# ketukan notifikasi) → ← membuka Beranda.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- tapOn: "Notifikasi.*"
+- extendedWaitUntil:
+    visible: "Sudah dibaca"
+    timeout: 20000
+- assertVisible: "Kembali"
+- assertVisible: "Tindakan lain"
+- takeScreenshot: ios-notifikasi
+- tapOn: "Tindakan lain"
+- extendedWaitUntil:
+    visible: "Perangkat & push"
+    timeout: 10000
+- takeScreenshot: ios-notifikasi-menu
+- tapOn: "Perangkat & push"
+- extendedWaitUntil:
+    visible: "Seluruh perangkat akun ini"
+    timeout: 20000
+- assertVisible: "Kembali"
+- takeScreenshot: ios-notifikasi-perangkat
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Sudah dibaca"
+    timeout: 15000
+- tapOn: ".*Belum dibaca"
+- extendedWaitUntil:
+    visible: "Notifikasi hanya memberi pemberitahuan.*"
+    timeout: 20000
+- assertVisible: "Rincian notifikasi"
+- assertVisible: "Kembali"
+- takeScreenshot: ios-notifikasi-rincian
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Sudah dibaca"
+    timeout: 15000
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Ringkasan hari ini"
+    timeout: 15000
+# Dibuka langsung saat aplikasi mati: tidak ada halaman sebelumnya → ← membuka Beranda.
+- stopApp
+- openLink: alhasanapps://notifikasi
+- extendedWaitUntil:
+    visible: "Sudah dibaca"
+    timeout: 40000
+- takeScreenshot: ios-tautan-notifikasi
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Ringkasan hari ini"
+    timeout: 20000
+- assertVisible: "Alhasan apps"
+- stopApp
+- openLink: alhasanapps://izin/laporan
+- extendedWaitUntil:
+    visible: "Laporan perizinan"
+    timeout: 40000
+- assertVisible: "Bagikan PDF"
+- takeScreenshot: ios-tautan-laporan-izin
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Ringkasan hari ini"
+    timeout: 20000

@@ -1,0 +1,37 @@
+# Redesain gelombang 2 Fase 2 — daftar Izin melalui pembimbing (orang tua) di
+# iOS: kepala stack ber-←, FAB "Ajukan izin" (K-8), formulir, geser-tepi.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- tapOn: "Izin"
+- extendedWaitUntil:
+    visible: "Buka izin orang tua melalui pembimbing"
+    timeout: 20000
+- assertNotVisible: "Ajukan izin baru"
+- takeScreenshot: ios-perizinan-${AKUN}
+- tapOn: "Buka izin orang tua melalui pembimbing"
+- extendedWaitUntil:
+    visible: "Izin anak melalui pembimbing"
+    timeout: 30000
+- assertVisible: "Kembali"
+- assertVisible: "Izin melalui pembimbing"
+- assertVisible: "Ajukan izin baru"
+- takeScreenshot: ios-izin-wali-daftar
+- tapOn: "Ajukan izin baru"
+- extendedWaitUntil:
+    visible: "Rentang izin"
+    timeout: 20000
+- assertVisible: "Kembali"
+- assertVisible: "Tinjau pengajuan"
+- takeScreenshot: ios-izin-wali-buat
+- swipe:
+    start: 0%,50%
+    end: 85%,50%
+    duration: 400
+- extendedWaitUntil:
+    visible: "Izin anak melalui pembimbing"
+    timeout: 15000
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 15000

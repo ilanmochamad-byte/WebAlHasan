@@ -1,0 +1,95 @@
+# Redesain gelombang 2 Fase 2 — pengajian di iOS (guru, DB kelas gabungan):
+# Jadwal ber-←, rincian tugas, absensi (⋯ → Perbarui daftar, kirim), laporan.
+#   maestro --device <UDID> test -e AKUN=sbx_guru_biasa -e SANDI='Sandbox#123' -e MAPEL='Nahwu <sfx>' pengajian.yaml
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+# Tab Jadwal di bilah tab (akun guru: Beranda · Jadwal · Profil). Teks "Jadwal"
+# juga dimiliki ubin menu Beranda, jadi tab diketuk menurut posisinya.
+- tapOn:
+    point: "50%,95%"
+- extendedWaitUntil:
+    visible: "Sesi mengajar pekan ini"
+    timeout: 20000
+- assertVisible: "Kembali ke Beranda"
+- assertVisible: "Per pekan"
+- extendedWaitUntil:
+    visible: "${MAPEL}.*"
+    timeout: 30000
+- takeScreenshot: ios-jadwal
+- tapOn: "${MAPEL}.*"
+- extendedWaitUntil:
+    visible: "Rincian tugas"
+    timeout: 20000
+- assertVisible: "Kembali"
+- assertVisible: "Kelas gabungan.*"
+- takeScreenshot: ios-rincian-tugas
+- swipe:
+    start: 0%,50%
+    end: 85%,50%
+    duration: 400
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 15000
+- tapOn: "${MAPEL}.*"
+- extendedWaitUntil:
+    visible: "Rincian tugas"
+    timeout: 20000
+- tapOn:
+    text: "Buka pertemuan"
+    index: 1
+- extendedWaitUntil:
+    visible: "Santri · 5 orang"
+    timeout: 30000
+- assertVisible: "Absensi pertemuan"
+- assertVisible: "Kembali"
+- assertVisible: "Tindakan lain"
+- assertVisible: "Hadir: 5"
+- takeScreenshot: ios-absensi
+- tapOn: "Tindakan lain"
+- extendedWaitUntil:
+    visible: "Perbarui daftar"
+    timeout: 10000
+- takeScreenshot: ios-absensi-menu
+- tapOn: "Perbarui daftar"
+- scrollUntilVisible:
+    element: "Daftar santri sudah sesuai dengan penempatan kelas terbaru."
+    direction: DOWN
+    timeout: 40000
+- scrollUntilVisible:
+    element: "Cari santri menurut nama atau NIS"
+    direction: DOWN
+    timeout: 40000
+- takeScreenshot: ios-absensi-daftar
+- assertVisible: "Kembali"
+- tapOn: "Konfirmasi dan kirim"
+- tapOn: "Simpan"
+- scrollUntilVisible:
+    element: "Absensi berhasil disimpan.*"
+    direction: DOWN
+    timeout: 60000
+- takeScreenshot: ios-absensi-tersimpan
+- assertNotVisible: "Tindakan lain"
+# Rincian tugas digantikan layar absensi saat pertemuan dibuka (perilaku lama),
+# jadi ← dari absensi kembali ke Jadwal.
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 15000
+- tapOn: "Kembali ke Beranda"
+- extendedWaitUntil:
+    visible: "Ringkasan hari ini"
+    timeout: 15000
+# Laporan dibuka langsung saat aplikasi mati → ← membuka Beranda.
+- stopApp
+- openLink: alhasanapps://reports
+- extendedWaitUntil:
+    visible: "Persentase hadir"
+    timeout: 40000
+- assertVisible: "Laporan kehadiran"
+- assertVisible: "Tindakan lain"
+- takeScreenshot: ios-laporan
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Ringkasan hari ini"
+    timeout: 20000

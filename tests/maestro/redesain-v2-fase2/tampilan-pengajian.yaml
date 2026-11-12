@@ -1,0 +1,43 @@
+# Redesain gelombang 2 Fase 2 — tangkapan pengajian pada tampilan sistem yang
+# disetel dari luar. Pertemuan sudah Selesai (dibuat alur pengajian.yaml).
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+# Tab Jadwal di bilah tab (akun guru: Beranda · Jadwal · Profil). Teks "Jadwal"
+# juga dimiliki ubin menu Beranda, jadi tab diketuk menurut posisinya.
+- tapOn:
+    point: "50%,95%"
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 20000
+- takeScreenshot: ios-jadwal-${NAMA}
+# Pada teks sangat besar satu kartu dapat lebih tinggi daripada layar.
+- scrollUntilVisible:
+    element: "${MAPEL}.*"
+    direction: DOWN
+    timeout: 60000
+    visibilityPercentage: 25
+- tapOn: "${MAPEL}.*"
+- extendedWaitUntil:
+    visible: "Rincian tugas"
+    timeout: 20000
+- assertVisible: "Kembali"
+- takeScreenshot: ios-rincian-tugas-${NAMA}
+- scrollUntilVisible:
+    element: "Buka absensi tersimpan"
+    direction: DOWN
+    timeout: 40000
+    visibilityPercentage: 50
+- tapOn: "Buka absensi tersimpan"
+- extendedWaitUntil:
+    visible: "Absensi pertemuan"
+    timeout: 20000
+- assertVisible: "Kembali"
+- takeScreenshot: ios-absensi-${NAMA}
+- scrollUntilVisible:
+    element: "Cari santri menurut nama atau NIS"
+    direction: DOWN
+    timeout: 90000
+    visibilityPercentage: 50
+- takeScreenshot: ios-absensi-${NAMA}-gulir
+- assertVisible: "Kembali"

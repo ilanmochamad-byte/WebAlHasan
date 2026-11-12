@@ -1,0 +1,34 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow tampilan-pengajian
+Run masuk.yaml...
+  Launch app "com.ilanmochamad.alhasanApps" with clear state and clear keychain... COMPLETED
+  Assert that "Alhasan Apps" is visible... COMPLETED
+  Scrolling DOWN until "Masukkan username" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan username"... COMPLETED
+  Input text ${AKUN}... COMPLETED
+  Scrolling DOWN until "Masukkan password" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan password"... COMPLETED
+  Input text ${SANDI}... COMPLETED
+  Press Enter key... COMPLETED
+  Assert that ".*Buka profil|Not Now" is visible... COMPLETED
+  Run flow when "Not Now" is visible...
+    Tap on "Not Now"... COMPLETED
+  Run flow when "Not Now" is visible... COMPLETED
+  Assert that ".*Buka profil" is visible... COMPLETED
+Run masuk.yaml... COMPLETED
+Tap on point (50%,95%)... COMPLETED
+Assert that "Kembali ke Beranda" is visible... COMPLETED
+Take screenshot ios-jadwal-${NAMA}... COMPLETED
+Scrolling DOWN until "${MAPEL}.*" is visible with speed 40, visibility percentage 25%, timeout 60000 ms, with centering disabled... COMPLETED
+Tap on "${MAPEL}.*"... COMPLETED
+Assert that "Rincian tugas" is visible... COMPLETED
+Assert that "Kembali" is visible... COMPLETED
+Take screenshot ios-rincian-tugas-${NAMA}... COMPLETED
+Scrolling DOWN until "Buka absensi tersimpan" is visible with speed 40, visibility percentage 50%, timeout 40000 ms, with centering disabled... COMPLETED
+Tap on "Buka absensi tersimpan"... COMPLETED
+Assert that "Absensi pertemuan" is visible... COMPLETED
+Assert that "Kembali" is visible... COMPLETED
+Take screenshot ios-absensi-${NAMA}... COMPLETED
+Scrolling DOWN until "Cari santri menurut nama atau NIS" is visible with speed 40, visibility percentage 50%, timeout 90000 ms, with centering disabled... COMPLETED
+Take screenshot ios-absensi-${NAMA}-gulir... COMPLETED
+Assert that "Kembali" is visible... COMPLETED

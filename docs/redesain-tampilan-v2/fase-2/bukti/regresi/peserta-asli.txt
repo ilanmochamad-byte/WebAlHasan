@@ -1,0 +1,9 @@
+=== A-1 aplikasi: perbarui daftar santri ===
+[lulus] Pertemuan gabungan Dibuka dengan 5 peserta
+[gagal] Tombol "Perbarui daftar" tampil pada pertemuan Dibuka
+[gagal] Galat uji: locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Perbarui daftar', exact: true })
+
+
+Hasil: 1 lulus, 2 gagal
