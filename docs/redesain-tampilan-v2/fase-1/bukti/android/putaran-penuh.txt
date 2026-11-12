@@ -1,0 +1,83 @@
+
+=== N-A. Tujuh peran: Beranda dan Profil ===
+[lulus] Guru: kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Guru: Beranda tanpa tombol ←
+[lulus] Guru: ringkasan dan menu tampil
+[lulus] Guru: Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Guru: ← di Profil membuka tab Beranda
+[lulus] Pengurus (hanya perizinan): kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Pengurus (hanya perizinan): Beranda tanpa tombol ←
+[lulus] Pengurus (hanya perizinan): ringkasan dan menu tampil
+[lulus] Pengurus (hanya perizinan): Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Pengurus (hanya perizinan): ← di Profil membuka tab Beranda
+[lulus] Orang tua: kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Orang tua: Beranda tanpa tombol ←
+[lulus] Orang tua: ringkasan dan menu tampil
+[lulus] Orang tua: Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Orang tua: ← di Profil membuka tab Beranda
+[lulus] Petugas BSA: kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Petugas BSA: Beranda tanpa tombol ←
+[lulus] Petugas BSA: ringkasan dan menu tampil
+[lulus] Petugas BSA: Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Petugas BSA: ← di Profil membuka tab Beranda
+[lulus] Petugas kesehatan: kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Petugas kesehatan: Beranda tanpa tombol ←
+[lulus] Petugas kesehatan: ringkasan dan menu tampil
+[lulus] Petugas kesehatan: Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Petugas kesehatan: ← di Profil membuka tab Beranda
+[lulus] Keamanan: kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Keamanan: Beranda tanpa tombol ←
+[lulus] Keamanan: ringkasan dan menu tampil
+[lulus] Keamanan: Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Keamanan: ← di Profil membuka tab Beranda
+[lulus] Admin: kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Admin: Beranda tanpa tombol ←
+[lulus] Admin: ringkasan dan menu tampil
+[lulus] Admin: Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Admin: ← di Profil membuka tab Beranda
+
+=== N-B. ← pada layar stack, tombol kembali Android, tautan ===
+[lulus] Edit profil: kepala stack — ← kiri, judul di tengah (pusat 541 dari 540)
+[gagal] Edit profil: isian terkunci admin tampil
+[lulus] Edit profil: tombol "Simpan perubahan" tetap terlihat saat digulir
+[lulus] Edit profil: ← kembali ke Profil
+[lulus] Edit profil: tombol kembali Android kembali ke Profil
+[lulus] Ganti password: kepala stack ber-←
+[lulus] Ganti password: ← kembali ke Profil
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+[lulus] Tautan alhasanapps://akun/ganti-password membuka layar Ganti password
+[lulus] ← dari layar yang dibuka lewat tautan membawa ke layar aplikasi (bukan diam/menutup)
+
+=== N-C. Mode gelap dan teks sistem 1,3× / 2,0× (sbx_admin) ===
+[lulus] Beranda gelap: logo, nama, ringkasan tampil
+[lulus] Beranda gelap: logo tetap ±28 dp (tidak ikut skala teks): 27.8
+[lulus] Beranda gelap: ubin Jadwal/Absensi/Perizinan tampil (kisi 3 kolom diperiksa pada tangkapan)
+[lulus] Profil gelap: tombol Edit profil terjangkau
+[lulus] Edit profil gelap: ← tampil
+[lulus] Ganti password gelap: ← tampil
+[lulus] Beranda teks-1.3: logo, nama, ringkasan tampil
+[lulus] Beranda teks-1.3: logo tetap ±28 dp (tidak ikut skala teks): 27.8
+[lulus] Beranda teks-1.3: ubin Jadwal/Absensi/Perizinan tampil (kisi 3 kolom diperiksa pada tangkapan)
+[lulus] Profil teks-1.3: tombol Edit profil terjangkau
+[lulus] Edit profil teks-1.3: ← tampil
+[lulus] Ganti password teks-1.3: ← tampil
+[lulus] Beranda teks-2.0: logo, nama, ringkasan tampil
+[lulus] Beranda teks-2.0: logo tetap ±28 dp (tidak ikut skala teks): 27.8
+[lulus] Beranda teks-2.0: ubin Jadwal/Absensi/Perizinan tampil (kisi 3 kolom diperiksa pada tangkapan)
+[lulus] Profil teks-2.0: tombol Edit profil terjangkau
+[lulus] Edit profil teks-2.0: ← tampil
+[lulus] Ganti password teks-2.0: ← tampil
+[lulus] Beranda gelap-teks-2.0: logo, nama, ringkasan tampil
+[lulus] Beranda gelap-teks-2.0: logo tetap ±28 dp (tidak ikut skala teks): 27.8
+[lulus] Beranda gelap-teks-2.0: ubin Jadwal/Absensi/Perizinan tampil (kisi 3 kolom diperiksa pada tangkapan)
+[lulus] Profil gelap-teks-2.0: tombol Edit profil terjangkau
+[lulus] Edit profil gelap-teks-2.0: ← tampil
+[lulus] Ganti password gelap-teks-2.0: ← tampil
+
+=== N-D. Masuk dan Ganti password wajib ===
+[lulus] Masuk: tanpa ←, logo lama, tanpa logo teks K-9
+[lulus] Ganti password wajib: tanpa ←, judul dan penjelas tampil
+[lulus] Ganti password wajib: tombol Keluar terjangkau
+
+Hasil: 70 lulus / 1 gagal
+exit=1

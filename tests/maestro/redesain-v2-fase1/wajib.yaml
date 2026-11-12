@@ -1,0 +1,34 @@
+# Redesain gelombang 2 Fase 1 — Masuk dan Ganti password wajib tanpa ← (pengecualian K-10).
+appId: com.ilanmochamad.alhasanApps
+---
+- launchApp:
+    clearState: true
+    clearKeychain: true
+- extendedWaitUntil:
+    visible: "Masukkan username"
+    timeout: 60000
+- assertVisible: "Alhasan Apps"
+- assertNotVisible: "Kembali.*"
+- takeScreenshot: ios-masuk
+- tapOn: "Masukkan username"
+- inputText: sbx_murobi_c
+- tapOn: "Masukkan password"
+- inputText: "Sementara#2026A"
+- pressKey: Enter
+- extendedWaitUntil:
+    visible: "Buat password baru|Not Now"
+    timeout: 40000
+- runFlow:
+    when:
+      visible: "Not Now"
+    commands:
+      - tapOn: "Not Now"
+- extendedWaitUntil:
+    visible: "Buat password baru"
+    timeout: 40000
+- assertVisible: "Ganti password sementara"
+- assertNotVisible: "Kembali.*"
+- takeScreenshot: ios-ganti-password-wajib
+- scrollUntilVisible:
+    element: "Keluar"
+    direction: DOWN

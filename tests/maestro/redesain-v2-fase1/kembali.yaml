@@ -1,0 +1,76 @@
+# Redesain gelombang 2 Fase 1 — tombol ← (K-10) di iOS: Edit profil, Ganti
+# password, geser-tepi iOS, dan rute yang dibuka langsung dari tautan saat
+# aplikasi mati (tanpa riwayat) → ← membuka Beranda.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- tapOn: ".*Buka profil"
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 15000
+# Edit profil: kepala stack, ← kembali ke Profil.
+- tapOn: "Edit profil"
+- extendedWaitUntil:
+    visible: "JPEG, PNG, atau WebP.*"
+    timeout: 15000
+- assertVisible: "Kembali"
+- assertVisible: "Simpan perubahan"
+- takeScreenshot: ios-edit-profil
+- scrollUntilVisible:
+    element: "Diatur admin.*"
+    direction: DOWN
+- assertVisible: "Kembali"
+- assertVisible: "Simpan perubahan"
+- takeScreenshot: ios-edit-profil-gulir
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 15000
+# Geser dari tepi kiri (gestur kembali iOS) tetap bekerja.
+- tapOn: "Edit profil"
+- extendedWaitUntil:
+    visible: "JPEG, PNG, atau WebP.*"
+    timeout: 15000
+- swipe:
+    start: 0%,50%
+    end: 85%,50%
+    duration: 400
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 15000
+# Ganti password: kepala stack, ← kembali ke Profil.
+- scrollUntilVisible:
+    element: "Ganti password.*"
+    direction: DOWN
+- tapOn: "Ganti password.*"
+- extendedWaitUntil:
+    visible: "Ulangi password baru"
+    timeout: 15000
+- assertVisible: "Kembali"
+- takeScreenshot: ios-ganti-password
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Akun & pemberitahuan"
+    timeout: 15000
+# Tautan saat aplikasi mati: tidak ada halaman sebelumnya → ← membuka Beranda.
+- stopApp
+- openLink: alhasanapps://akun/ganti-password
+- extendedWaitUntil:
+    visible: "Ulangi password baru"
+    timeout: 40000
+- takeScreenshot: ios-tautan-ganti-password
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Ringkasan hari ini"
+    timeout: 20000
+- assertVisible: "Alhasan apps"
+- takeScreenshot: ios-tautan-kembali-beranda
+- stopApp
+- openLink: alhasanapps://akun/edit-profil
+- extendedWaitUntil:
+    visible: "JPEG, PNG, atau WebP.*"
+    timeout: 40000
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Ringkasan hari ini"
+    timeout: 20000

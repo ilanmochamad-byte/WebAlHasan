@@ -1,0 +1,31 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow peran
+Run masuk.yaml...
+  Launch app "com.ilanmochamad.alhasanApps" with clear state and clear keychain... COMPLETED
+  Assert that "Alhasan Apps" is visible... COMPLETED
+  Scrolling DOWN until "Masukkan username" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan username"... COMPLETED
+  Input text ${AKUN}... COMPLETED
+  Scrolling DOWN until "Masukkan password" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan password"... COMPLETED
+  Input text ${SANDI}... COMPLETED
+  Press Enter key... COMPLETED
+  Assert that ".*Buka profil|Not Now" is visible... COMPLETED
+  Run flow when "Not Now" is visible...
+    Tap on "Not Now"... COMPLETED
+  Run flow when "Not Now" is visible... COMPLETED
+  Assert that ".*Buka profil" is visible... COMPLETED
+Run masuk.yaml... COMPLETED
+Assert that "Alhasan apps" is visible... COMPLETED
+Assert that "Notifikasi.*" is visible... COMPLETED
+Assert that "Ringkasan hari ini" is visible... COMPLETED
+Assert that "Kembali.*" is not visible... COMPLETED
+Take screenshot ios-beranda-${AKUN}... COMPLETED
+Tap on ".*Buka profil"... COMPLETED
+Assert that "Kembali ke Beranda" is visible... COMPLETED
+Assert that "Profil" is visible... COMPLETED
+Assert that "@${AKUN}" is visible... COMPLETED
+Take screenshot ios-profil-${AKUN}... COMPLETED
+Tap on "Kembali ke Beranda"... COMPLETED
+Assert that "Ringkasan hari ini" is visible... COMPLETED
+Assert that "Kembali ke Beranda" is not visible... COMPLETED
