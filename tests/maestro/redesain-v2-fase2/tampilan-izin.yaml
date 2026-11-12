@@ -1,0 +1,40 @@
+# Redesain gelombang 2 Fase 2 — tangkapan pada tampilan sistem yang disetel dari
+# luar (mode gelap, AX-XL, AX-XXXL): Perizinan (FAB atau alternatif tombol
+# atas), rincian izin, Notifikasi.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- tapOn: "Izin"
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 20000
+- takeScreenshot: ios-perizinan-${NAMA}
+# Skala normal: FAB. Teks sangat besar: alternatif K-8 (tombol lebar penuh di
+# atas kotak cari) yang dapat berada di bawah lipatan.
+- scrollUntilVisible:
+    element: "Ajukan izin baru"
+    direction: DOWN
+    timeout: 40000
+- takeScreenshot: ios-perizinan-${NAMA}-tombol
+# Pada teks sangat besar satu baris dapat lebih tinggi daripada layar.
+- scrollUntilVisible:
+    element: "Pengajuan .* untuk .*"
+    direction: DOWN
+    timeout: 60000
+    visibilityPercentage: 25
+- takeScreenshot: ios-perizinan-${NAMA}-gulir
+- tapOn: "Pengajuan .* untuk .*"
+- extendedWaitUntil:
+    visible: "Rincian izin"
+    timeout: 20000
+- assertVisible: "Kembali"
+- takeScreenshot: ios-rincian-izin-${NAMA}
+- tapOn: "Kembali"
+# Notifikasi dibuka lewat tautan saat aplikasi berjalan (lonceng dapat berada di
+# luar layar pada teks sangat besar).
+- openLink: alhasanapps://notifikasi
+- extendedWaitUntil:
+    visible: "Tindakan lain"
+    timeout: 30000
+- assertVisible: "Kembali"
+- takeScreenshot: ios-notifikasi-${NAMA}

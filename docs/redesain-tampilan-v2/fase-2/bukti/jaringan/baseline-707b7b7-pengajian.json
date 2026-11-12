@@ -1,0 +1,54 @@
+{
+ "sbx_guru_biasa 0-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_guru_biasa\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_guru_biasa 1-jadwal": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/schedules ?date_from=2026-11-09&date_to=2026-11-15&page=1&per_page=100"
+ ],
+ "sbx_guru_biasa 2-rincian-tugas": [
+  "GET /api/v1/schedules/{id} ?date=2026-11-12"
+ ],
+ "sbx_guru_biasa 3-buka-pertemuan": [
+  "POST /api/v1/schedules/{id}/meetings badan={\"date\":\"2026-11-12\",\"idempotency_key\":\"<kunci>\",\"notes\":\"\"}",
+  "GET /api/v1/meetings/{id}"
+ ],
+ "sbx_guru_biasa 4-perbarui-daftar": [
+  "POST /api/v1/meetings/{id}/participants/refresh badan={}"
+ ],
+ "sbx_guru_biasa 5-kirim-absensi": [
+  "PUT /api/v1/meetings/{id}/attendance badan={\"correction_reason\":null,\"idempotency_key\":\"<kunci>\",\"students\":[{\"notes\":\"Catatan uji jaringan\",\"status\":\"Sakit\",\"student_id\":1722},{\"notes\":\"\",\"status\":\"Hadir\",\"student_id\":1723},{\"notes\":\"\",\"status\":\"Hadir\",\"student_id\":1724},{\"notes\":\"\",\"status\":\"Hadir\",\"student_id\":1725},{\"notes\":\"\",\"status\":\"Hadir\",\"student_id\":1726}],\"teacher\":{\"notes\":\"\",\"status\":\"Hadir\"}}"
+ ],
+ "sbx_guru_biasa 6-koreksi": [
+  "PUT /api/v1/meetings/{id}/attendance badan={\"correction_reason\":\"Koreksi uji jaringan\",\"idempotency_key\":\"<kunci>\",\"students\":[{\"notes\":\"Catatan uji jaringan\",\"status\":\"Sakit\",\"student_id\":1722},{\"notes\":\"\",\"status\":\"Izin\",\"student_id\":1723},{\"notes\":\"\",\"status\":\"Hadir\",\"student_id\":1724},{\"notes\":\"\",\"status\":\"Hadir\",\"student_id\":1725},{\"notes\":\"\",\"status\":\"Hadir\",\"student_id\":1726}],\"teacher\":{\"notes\":\"\",\"status\":\"Hadir\"}}"
+ ],
+ "sbx_guru_biasa 7-laporan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/reports ?date_from=2026-11-01&date_to=2026-11-12&page=1&per_page=25",
+  "GET /api/v1/reports/filters",
+  "GET /api/v1/reports ?date_from=2026-11-01&date_to=2026-11-12&page=1&per_page=25"
+ ],
+ "sbx_guru_biasa 8-rincian-laporan": [
+  "GET /api/v1/reports/meetings/{id}"
+ ],
+ "sbx_guru_biasa 9-jadwal-rincian-selesai": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/schedules/{id} ?date=2026-11-12"
+ ]
+}

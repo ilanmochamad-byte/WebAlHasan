@@ -1,0 +1,83 @@
+# Redesain gelombang 2 Fase 2 — Perizinan di iOS (bilah tab Liquid Glass):
+# ← ke Beranda, FAB K-8 (tampil, hilang saat papan ketik, tidak menutupi
+# paginasi), formulir dari FAB, geser-tepi, rincian izin.
+#   maestro --device <UDID> test -e AKUN=sbx_pengurus_a -e SANDI='Sandbox#123' perizinan.yaml
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- tapOn: "Izin"
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 20000
+- extendedWaitUntil:
+    visible: "Ajukan izin baru"
+    timeout: 20000
+- assertVisible: "Perizinan"
+- takeScreenshot: ios-perizinan-${AKUN}
+# Kotak cari aktif → papan ketik terbuka → FAB disembunyikan.
+- tapOn: "Cari pengajuan izin"
+- assertNotVisible: "Ajukan izin baru"
+- takeScreenshot: ios-perizinan-papan-ketik
+- tapOn: "Perizinan"
+- extendedWaitUntil:
+    visible: "Ajukan izin baru"
+    timeout: 10000
+# Ujung daftar "Semua": paginasi tetap dapat diketuk (tidak tertutup FAB/bilah tab).
+- tapOn: "Semua"
+- scrollUntilVisible:
+    element: "Berikutnya"
+    direction: DOWN
+    timeout: 60000
+- swipe:
+    direction: UP
+- takeScreenshot: ios-perizinan-ujung-daftar
+- assertVisible: "Ajukan izin baru"
+- tapOn: "Berikutnya"
+- extendedWaitUntil:
+    visible: "Halaman 2 dari.*"
+    timeout: 15000
+# FAB membuka formulir; ← (label khusus) dan geser-tepi iOS kembali ke Perizinan.
+- tapOn: "Ajukan izin baru"
+- extendedWaitUntil:
+    visible: "Lanjut isi data izin"
+    timeout: 20000
+- assertVisible: "Kembali ke halaman sebelumnya"
+- assertVisible: "Ajukan izin"
+- takeScreenshot: ios-buat-izin
+- tapOn: "Kembali ke halaman sebelumnya"
+# Daftar masih pada posisi gulir semula (halaman 2); kepala akar berada di atas lipatan.
+- extendedWaitUntil:
+    visible: "Halaman 2 dari.*"
+    timeout: 15000
+- tapOn: "Ajukan izin baru"
+- extendedWaitUntil:
+    visible: "Lanjut isi data izin"
+    timeout: 20000
+- swipe:
+    start: 0%,50%
+    end: 85%,50%
+    duration: 400
+- extendedWaitUntil:
+    visible: "Halaman 2 dari.*"
+    timeout: 15000
+# Rincian izin: kepala stack ber-←. Gulir ke atas dulu agar baris yang diketuk
+# berada di tengah layar (bukan di bawah bilah status, yang memicu gulir-ke-atas iOS).
+- scrollUntilVisible:
+    element: "Kembali ke Beranda"
+    direction: UP
+    timeout: 60000
+- tapOn: "Pengajuan .* untuk .*"
+- extendedWaitUntil:
+    visible: "Rincian izin"
+    timeout: 20000
+- assertVisible: "Kembali"
+- takeScreenshot: ios-rincian-izin
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 15000
+- tapOn: "Kembali ke Beranda"
+- extendedWaitUntil:
+    visible: "Ringkasan hari ini"
+    timeout: 15000
+- assertNotVisible: "Kembali ke Beranda"

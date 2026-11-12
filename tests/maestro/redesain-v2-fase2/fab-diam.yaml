@@ -1,0 +1,25 @@
+# Membuka Perizinan dan berhenti di sana agar geometri FAB dan bilah tab dapat
+# dibaca dari hierarki aksesibilitas (lihat jalankan-ios.sh).
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- tapOn: "Izin"
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 20000
+- runFlow:
+    when:
+      true: ${HARAP == 'ada'}
+    commands:
+      - extendedWaitUntil:
+          visible: "Ajukan izin baru"
+          timeout: 20000
+- runFlow:
+    when:
+      true: ${HARAP == 'tidak'}
+    commands:
+      - extendedWaitUntil:
+          visible: ".* pengajuan|Tidak ada.*|Belum ada.*"
+          timeout: 20000
+      - assertNotVisible: "Ajukan izin baru"
+- takeScreenshot: ios-perizinan-${NAMA}

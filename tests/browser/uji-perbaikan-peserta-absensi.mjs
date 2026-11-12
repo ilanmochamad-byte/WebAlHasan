@@ -74,6 +74,23 @@ async function halamanApp(user) {
 const teks = async p => (await p.locator('body').innerText()).replace(/\s+/g, ' ');
 const tunggu = (p, t, timeout = 20000) => p.getByText(t, { exact: false }).first().waitFor({ timeout });
 const tombol = (p, nama) => p.getByRole('button', { name: nama, exact: true });
+// Redesain gelombang 2 Fase 2 (12 November 2026): "Perbarui daftar" pindah ke
+// menu ⋯ ("Tindakan lain") kepala layar. Hanya PENCARI tombol yang disesuaikan
+// — pernyataan (assertion) tidak berubah; pada tampilan lama (tombol langsung)
+// pembantu ini tidak melakukan apa-apa.
+const bukaMenu = async p => {
+  await p.waitForTimeout(600); // lembar bawah yang baru ditutup selesai beranimasi
+  if (!(await tombol(p, 'Perbarui daftar').isVisible()) && await tombol(p, 'Tindakan lain').isVisible()) {
+    await tombol(p, 'Tindakan lain').click();
+    await p.waitForTimeout(500); // animasi lembar bawah
+  }
+};
+const tutupMenu = async p => {
+  if (await tombol(p, 'Tutup').last().isVisible().catch(() => false)) {
+    await tombol(p, 'Tutup').last().click();
+    await p.waitForTimeout(500);
+  }
+};
 const kartuSantri = (p, nama) => p.locator('div').filter({ has: p.getByText(nama, { exact: true }) }).filter({ has: p.getByRole('radiogroup') }).last();
 const foto = (p, nama) => p.screenshot({ path: path.join(out, `ppa-${nama}.png`), fullPage: true });
 
@@ -86,12 +103,15 @@ try {
   const g = await halamanApp(G);
   await g.goto(`${app}/meeting/${MG}`);
   await tunggu(g, 'Santri · 5 orang');
+  await bukaMenu(g);
   ok(await tombol(g, 'Perbarui daftar').isVisible(), 'Tombol "Perbarui daftar" tampil pada pertemuan Dibuka');
+  await tutupMenu(g);
   await kartuSantri(g, pa2.nama).getByRole('radio', { name: 'Sakit' }).click();
   // Sesudah dibuka: satu santri keluar, dua santri baru ditempatkan.
   nonaktifkan(pi1.id);
   const nama1 = `Santri Baru Satu ${ids.sfx}`, nama2 = `Santri Baru Dua ${ids.sfx}`;
   const b1 = santriBaru(nama1, ids.kelas.PA), b2 = santriBaru(nama2, ids.kelas.PI);
+  await bukaMenu(g);
   await tombol(g, 'Perbarui daftar').click();
   await tunggu(g, 'Daftar santri diperbarui: 2 santri ditambahkan, 1 santri dikeluarkan.');
   const isi = await teks(g);
@@ -100,6 +120,7 @@ try {
   ok(await kartuSantri(g, pa2.nama).getByRole('radio', { name: 'Sakit' }).getAttribute('aria-checked') === 'true', 'Isian guru (Sakit) untuk santri yang tetap tercantum tidak hilang');
   ok(await kartuSantri(g, nama1).getByRole('radio', { name: 'Hadir' }).getAttribute('aria-checked') === 'true', 'Santri baru terisi "Hadir"');
   await foto(g, 'app-sesudah-perbarui-375');
+  await bukaMenu(g);
   await tombol(g, 'Perbarui daftar').click();
   await tunggu(g, 'Daftar santri sudah sesuai dengan penempatan kelas terbaru.');
   ok(true, 'Ulangan: pesan "sudah sesuai"');
@@ -111,7 +132,8 @@ try {
     && angka(`SELECT COUNT(*) FROM absensi_santri WHERE pertemuan_id=${MG} AND santri_id IN (${b1},${b2})`) === 2
     && angka(`SELECT COUNT(*) FROM absensi_santri WHERE pertemuan_id=${MG} AND santri_id=${pi1.id}`) === 0, 'DB: 6 absensi, termasuk santri baru, tanpa santri keluar');
   ok(sql(`SELECT status FROM absensi_santri WHERE pertemuan_id=${MG} AND santri_id=${pa2.id}`) === 'Sakit', 'DB: status Sakit tersimpan');
-  ok(await tombol(g, 'Perbarui daftar').count() === 0, 'Tombol tidak tampil lagi setelah pertemuan Selesai');
+  // Menu ⋯ juga harus hilang: di tampilan baru tombolnya berada di dalam menu.
+  ok(await tombol(g, 'Perbarui daftar').count() === 0 && await tombol(g, 'Tindakan lain').count() === 0, 'Tombol tidak tampil lagi setelah pertemuan Selesai');
   ok(angka(`SELECT COUNT(*) FROM audit_logs WHERE action='api.meeting.refresh_participants' AND entity_id=${MG}`) === 2, 'Dua audit pembaruan tercatat');
 
   console.log('\n=== W-1 website: Perbarui daftar peserta ===');

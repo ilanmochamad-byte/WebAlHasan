@@ -1,0 +1,55 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow notifikasi
+Run masuk.yaml...
+  Launch app "com.ilanmochamad.alhasanApps" with clear state and clear keychain... COMPLETED
+  Assert that "Alhasan Apps" is visible... COMPLETED
+  Scrolling DOWN until "Masukkan username" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan username"... COMPLETED
+  Input text ${AKUN}... COMPLETED
+  Scrolling DOWN until "Masukkan password" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan password"... COMPLETED
+  Input text ${SANDI}... COMPLETED
+  Press Enter key... COMPLETED
+  Assert that ".*Buka profil|Not Now" is visible... COMPLETED
+  Run flow when "Not Now" is visible...
+    Tap on "Not Now"... COMPLETED
+  Run flow when "Not Now" is visible... COMPLETED
+  Assert that ".*Buka profil" is visible... COMPLETED
+Run masuk.yaml... COMPLETED
+Tap on "Notifikasi.*"... COMPLETED
+Assert that "Sudah dibaca" is visible... COMPLETED
+Assert that "Kembali" is visible... COMPLETED
+Assert that "Tindakan lain" is visible... COMPLETED
+Take screenshot ios-notifikasi... COMPLETED
+Tap on "Tindakan lain"... COMPLETED
+Assert that "Perangkat & push" is visible... COMPLETED
+Take screenshot ios-notifikasi-menu... COMPLETED
+Tap on "Perangkat & push"... COMPLETED
+Assert that "Seluruh perangkat akun ini" is visible... COMPLETED
+Assert that "Kembali" is visible... COMPLETED
+Take screenshot ios-notifikasi-perangkat... COMPLETED
+Tap on "Kembali"... COMPLETED
+Assert that "Sudah dibaca" is visible... COMPLETED
+Tap on ".*Belum dibaca"... COMPLETED
+Assert that "Notifikasi hanya memberi pemberitahuan.*" is visible... COMPLETED
+Assert that "Rincian notifikasi" is visible... COMPLETED
+Assert that "Kembali" is visible... COMPLETED
+Take screenshot ios-notifikasi-rincian... COMPLETED
+Tap on "Kembali"... COMPLETED
+Assert that "Sudah dibaca" is visible... COMPLETED
+Tap on "Kembali"... COMPLETED
+Assert that "Ringkasan hari ini" is visible... COMPLETED
+Stop com.ilanmochamad.alhasanApps... COMPLETED
+Open alhasanapps://notifikasi... COMPLETED
+Assert that "Sudah dibaca" is visible... COMPLETED
+Take screenshot ios-tautan-notifikasi... COMPLETED
+Tap on "Kembali"... COMPLETED
+Assert that "Ringkasan hari ini" is visible... COMPLETED
+Assert that "Alhasan apps" is visible... COMPLETED
+Stop com.ilanmochamad.alhasanApps... COMPLETED
+Open alhasanapps://izin/laporan... COMPLETED
+Assert that "Laporan perizinan" is visible... COMPLETED
+Assert that "Bagikan PDF" is visible... COMPLETED
+Take screenshot ios-tautan-laporan-izin... COMPLETED
+Tap on "Kembali"... COMPLETED
+Assert that "Ringkasan hari ini" is visible... COMPLETED

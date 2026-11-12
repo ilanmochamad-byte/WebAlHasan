@@ -1,0 +1,185 @@
+
+=== A. Masuk ===
+[lulus] Masuk memakai logo Al Hasan yang sekarang
+[lulus] Logo teks K-9 tidak dipakai di layar Masuk
+[lulus] Masuk tanpa tombol ← (pengecualian K-10)
+[lulus] Judul dan petunjuk lupa password tampil
+[lulus] Tanpa daftar akun, masuk sosial, atau "ingat saya"
+[lulus] Tombol utama setinggi ≥ 52 pt (52)
+[lulus] Password salah: tetap di Masuk dengan pesan galat
+[lulus] Masuk: isi tanpa luapan horizontal
+
+=== B. Beranda tujuh peran ===
+[lulus] Guru: logo "Alhasan apps" di kepala Beranda, tinggi 28 pt, rasio 2.86
+[lulus] Guru: lonceng di kanan kepala, di atas kartu identitas, target ≥ 44 pt
+[lulus] Guru: Beranda tanpa tombol ← (K-9)
+[lulus] Guru: kartu identitas tetap isi pertama sesudah kepala
+[lulus] Guru: ringkasan = /schedules/today yang sudah dimuat (sesi 1, belum selesai 0)
+[lulus] Guru: tanpa angka pembanding karangan
+[lulus] Guru: 3 ubin, kisi tetap 3 kolom, lebar seragam 104 px
+[lulus] Guru: bilah 3 tab (Beranda, Jadwal, Profil), tanpa tombol + (K-2)
+[lulus] Beranda Guru: isi tanpa luapan horizontal
+--- C. Profil (Guru) ---
+[lulus] Guru: Profil punya ← "Kembali ke Beranda" ≥ 44 pt di atas judul besar
+[lulus] Guru: kepala profil memuat nama, username, dan status dari API
+[lulus] Guru: tanpa penugasan/mapel → strip angka tidak digambar
+[lulus] Guru: kelompok Profil lengkap
+[lulus] Profil Guru: isi tanpa luapan horizontal
+[lulus] Guru: ← di Profil membuka tab Beranda
+[lulus] Pengurus (hanya perizinan): logo "Alhasan apps" di kepala Beranda, tinggi 28 pt, rasio 2.86
+[lulus] Pengurus (hanya perizinan): lonceng di kanan kepala, di atas kartu identitas, target ≥ 44 pt
+[lulus] Pengurus (hanya perizinan): Beranda tanpa tombol ← (K-9)
+[lulus] Pengurus (hanya perizinan): kartu identitas tetap isi pertama sesudah kepala
+[lulus] Pengurus (hanya perizinan): ringkasan = profil/notifikasi yang sudah dimuat (penugasan 0), tanpa angka jadwal
+[lulus] Pengurus (hanya perizinan): tanpa angka pembanding karangan
+[lulus] Pengurus (hanya perizinan): 2 ubin, kisi tetap 3 kolom, lebar seragam 107 px
+[lulus] Pengurus (hanya perizinan): bilah 3 tab (Beranda, Izin, Profil), tanpa tombol + (K-2)
+[lulus] Beranda Pengurus (hanya perizinan): isi tanpa luapan horizontal
+--- C. Profil (Pengurus (hanya perizinan)) ---
+[lulus] Pengurus (hanya perizinan): Profil punya ← "Kembali ke Beranda" ≥ 44 pt di atas judul besar
+[lulus] Pengurus (hanya perizinan): kepala profil memuat nama, username, dan status dari API
+[lulus] Pengurus (hanya perizinan): tanpa penugasan/mapel → strip angka tidak digambar
+[lulus] Pengurus (hanya perizinan): kelompok Profil lengkap
+[lulus] Profil Pengurus (hanya perizinan): isi tanpa luapan horizontal
+[lulus] Pengurus (hanya perizinan): ← di Profil membuka tab Beranda
+[lulus] Orang tua: logo "Alhasan apps" di kepala Beranda, tinggi 28 pt, rasio 2.86
+[lulus] Orang tua: lonceng di kanan kepala, di atas kartu identitas, target ≥ 44 pt
+[lulus] Orang tua: Beranda tanpa tombol ← (K-9)
+[lulus] Orang tua: kartu identitas tetap isi pertama sesudah kepala
+[lulus] Orang tua: ringkasan = profil/notifikasi yang sudah dimuat (penugasan 0), tanpa angka jadwal
+[lulus] Orang tua: tanpa angka pembanding karangan
+[lulus] Orang tua: 6 ubin, kisi tetap 3 kolom, lebar seragam 104 px
+[lulus] Orang tua: bilah 3 tab (Beranda, Izin, Profil), tanpa tombol + (K-2)
+[lulus] Beranda Orang tua: isi tanpa luapan horizontal
+--- C. Profil (Orang tua) ---
+[lulus] Orang tua: Profil punya ← "Kembali ke Beranda" ≥ 44 pt di atas judul besar
+[lulus] Orang tua: kepala profil memuat nama, username, dan status dari API
+[lulus] Orang tua: tanpa penugasan/mapel → strip angka tidak digambar
+[lulus] Orang tua: kelompok Profil lengkap
+[lulus] Profil Orang tua: isi tanpa luapan horizontal
+[lulus] Orang tua: ← di Profil membuka tab Beranda
+[lulus] Petugas BSA: logo "Alhasan apps" di kepala Beranda, tinggi 28 pt, rasio 2.86
+[lulus] Petugas BSA: lonceng di kanan kepala, di atas kartu identitas, target ≥ 44 pt
+[lulus] Petugas BSA: Beranda tanpa tombol ← (K-9)
+[lulus] Petugas BSA: kartu identitas tetap isi pertama sesudah kepala
+[lulus] Petugas BSA: ringkasan = profil/notifikasi yang sudah dimuat (penugasan 0), tanpa angka jadwal
+[lulus] Petugas BSA: tanpa angka pembanding karangan
+[lulus] Petugas BSA: 2 ubin, kisi tetap 3 kolom, lebar seragam 107 px
+[lulus] Petugas BSA: bilah 3 tab (Beranda, Izin, Profil), tanpa tombol + (K-2)
+[lulus] Beranda Petugas BSA: isi tanpa luapan horizontal
+--- C. Profil (Petugas BSA) ---
+[lulus] Petugas BSA: Profil punya ← "Kembali ke Beranda" ≥ 44 pt di atas judul besar
+[lulus] Petugas BSA: kepala profil memuat nama, username, dan status dari API
+[lulus] Petugas BSA: tanpa penugasan/mapel → strip angka tidak digambar
+[lulus] Petugas BSA: kelompok Profil lengkap
+[lulus] Profil Petugas BSA: isi tanpa luapan horizontal
+[lulus] Petugas BSA: ← di Profil membuka tab Beranda
+[lulus] Petugas kesehatan: logo "Alhasan apps" di kepala Beranda, tinggi 28 pt, rasio 2.86
+[lulus] Petugas kesehatan: lonceng di kanan kepala, di atas kartu identitas, target ≥ 44 pt
+[lulus] Petugas kesehatan: Beranda tanpa tombol ← (K-9)
+[lulus] Petugas kesehatan: kartu identitas tetap isi pertama sesudah kepala
+[lulus] Petugas kesehatan: ringkasan = profil/notifikasi yang sudah dimuat (penugasan 0), tanpa angka jadwal
+[lulus] Petugas kesehatan: tanpa angka pembanding karangan
+[lulus] Petugas kesehatan: 2 ubin, kisi tetap 3 kolom, lebar seragam 107 px
+[lulus] Petugas kesehatan: bilah 3 tab (Beranda, Izin, Profil), tanpa tombol + (K-2)
+[lulus] Beranda Petugas kesehatan: isi tanpa luapan horizontal
+--- C. Profil (Petugas kesehatan) ---
+[lulus] Petugas kesehatan: Profil punya ← "Kembali ke Beranda" ≥ 44 pt di atas judul besar
+[lulus] Petugas kesehatan: kepala profil memuat nama, username, dan status dari API
+[lulus] Petugas kesehatan: tanpa penugasan/mapel → strip angka tidak digambar
+[lulus] Petugas kesehatan: kelompok Profil lengkap
+[lulus] Profil Petugas kesehatan: isi tanpa luapan horizontal
+[lulus] Petugas kesehatan: ← di Profil membuka tab Beranda
+[lulus] Keamanan: logo "Alhasan apps" di kepala Beranda, tinggi 28 pt, rasio 2.86
+[lulus] Keamanan: lonceng di kanan kepala, di atas kartu identitas, target ≥ 44 pt
+[lulus] Keamanan: Beranda tanpa tombol ← (K-9)
+[lulus] Keamanan: kartu identitas tetap isi pertama sesudah kepala
+[lulus] Keamanan: ringkasan = profil/notifikasi yang sudah dimuat (penugasan 2), tanpa angka jadwal
+[lulus] Keamanan: tanpa angka pembanding karangan
+[lulus] Keamanan: 6 ubin, kisi tetap 3 kolom, lebar seragam 104 px
+[lulus] Keamanan: bilah 3 tab (Beranda, Izin, Profil), tanpa tombol + (K-2)
+[lulus] Beranda Keamanan: isi tanpa luapan horizontal
+--- C. Profil (Keamanan) ---
+[lulus] Keamanan: Profil punya ← "Kembali ke Beranda" ≥ 44 pt di atas judul besar
+[lulus] Keamanan: kepala profil memuat nama, username, dan status dari API
+[lulus] Keamanan: strip angka = API (penugasan 2)
+[lulus] Keamanan: kelompok Profil lengkap
+[lulus] Profil Keamanan: isi tanpa luapan horizontal
+[lulus] Keamanan: ← di Profil membuka tab Beranda
+[lulus] Admin: logo "Alhasan apps" di kepala Beranda, tinggi 28 pt, rasio 2.86
+[lulus] Admin: lonceng di kanan kepala, di atas kartu identitas, target ≥ 44 pt
+[lulus] Admin: Beranda tanpa tombol ← (K-9)
+[lulus] Admin: kartu identitas tetap isi pertama sesudah kepala
+[lulus] Admin: ringkasan = /schedules/today yang sudah dimuat (sesi 4, belum selesai 2)
+[lulus] Admin: tanpa angka pembanding karangan
+[lulus] Admin: 9 ubin, kisi tetap 3 kolom, lebar seragam 104 px
+[lulus] Admin: bilah 4 tab (Beranda, Jadwal, Izin, Profil), tanpa tombol + (K-2)
+[lulus] Beranda Admin: isi tanpa luapan horizontal
+--- C. Profil (Admin) ---
+[lulus] Admin: Profil punya ← "Kembali ke Beranda" ≥ 44 pt di atas judul besar
+[lulus] Admin: kepala profil memuat nama, username, dan status dari API
+[lulus] Admin: tanpa penugasan/mapel → strip angka tidak digambar
+[lulus] Admin: kelompok Profil lengkap
+[lulus] Profil Admin: isi tanpa luapan horizontal
+[lulus] Admin: ← di Profil membuka tab Beranda
+
+=== D. Edit profil & Ganti password: kepala stack dan ← ===
+[lulus] Edit profil: kepala stack — ← ≥ 44 pt di kiri, judul di tengah (pusat 187.5 dari 187,5)
+[lulus] Edit profil: isi tanpa luapan horizontal
+[lulus] Edit profil: ← kembali ke halaman sebelumnya (Profil)
+[lulus] Ganti password: kepala stack — ← ≥ 44 pt di kiri, judul di tengah (pusat 187.5 dari 187,5)
+[lulus] Ganti password: isi tanpa luapan horizontal
+[lulus] Ganti password: ← kembali ke halaman sebelumnya (Profil)
+[lulus] Edit profil: kelompok Data diri → Kontak → Alamat → Diatur admin
+[lulus] Username tampil sebagai baris terkunci, bukan isian
+[lulus] Avatar besar berlencana kamera dapat diketuk
+[lulus] Tombol "Simpan perubahan" tetap di bawah layar
+[lulus] Tombol kembali peramban tetap bekerja dari Edit profil
+[lulus] /akun/edit-profil dibuka langsung: ← membuka Beranda (tanpa riwayat)
+[lulus] /akun/ganti-password dibuka langsung: ← membuka Beranda (tanpa riwayat)
+[lulus] /notifikasi/perangkat (belum diubah) dibuka langsung tetap terbuka
+
+=== E. Ganti password wajib ===
+[lulus] Judul "Buat password baru" + penjelas password sementara
+[lulus] Tanpa ← (pengecualian K-10); tombol Keluar tersedia
+[lulus] Tanpa logo teks K-9
+[lulus] Ganti password wajib: isi tanpa luapan horizontal
+
+=== F. Layar yang belum diubah tetap terbuka ===
+[lulus] /schedules: terbuka tanpa pageerror
+[lulus] /perizinan: terbuka tanpa pageerror
+[lulus] /reports: terbuka tanpa pageerror
+[lulus] /notifikasi: terbuka tanpa pageerror
+[lulus] Laporan (kepala lama): tombol Kembali tetap ke Beranda
+
+=== G. Mode gelap dan lebar 768/1280 ===
+[lulus] Beranda 375-gelap: latar rgb(13, 23, 17), kartu sorot rgb(22, 63, 45) (token K-1)
+[lulus] Beranda 375-gelap: isi tanpa luapan horizontal
+[lulus] Profil 375-gelap: isi tanpa luapan horizontal
+[lulus] Edit profil 375-gelap: isi tanpa luapan horizontal
+[lulus] Ganti password 375-gelap: isi tanpa luapan horizontal
+[lulus] Beranda 768-terang: latar rgb(246, 244, 238), kartu sorot rgb(23, 77, 54) (token K-1)
+[lulus] Beranda 768-terang: isi tanpa luapan horizontal
+[lulus] Profil 768-terang: isi tanpa luapan horizontal
+[lulus] Edit profil 768-terang: isi tanpa luapan horizontal
+[lulus] Ganti password 768-terang: isi tanpa luapan horizontal
+[lulus] Beranda 1280-terang: latar rgb(246, 244, 238), kartu sorot rgb(23, 77, 54) (token K-1)
+[lulus] Beranda 1280-terang: isi tanpa luapan horizontal
+[lulus] Profil 1280-terang: isi tanpa luapan horizontal
+[lulus] Edit profil 1280-terang: isi tanpa luapan horizontal
+[lulus] Ganti password 1280-terang: isi tanpa luapan horizontal
+[lulus] Beranda 1280-gelap: latar rgb(13, 23, 17), kartu sorot rgb(22, 63, 45) (token K-1)
+[lulus] Beranda 1280-gelap: isi tanpa luapan horizontal
+[lulus] Profil 1280-gelap: isi tanpa luapan horizontal
+[lulus] Edit profil 1280-gelap: isi tanpa luapan horizontal
+[lulus] Ganti password 1280-gelap: isi tanpa luapan horizontal
+
+=== H. Pratinjau komponen fondasi (rute sementara) ===
+[lewati] rute pratinjau sementara tidak dipasang
+
+=== I. Privasi & jaringan ===
+[lulus] Nol permintaan ke luar 127.0.0.1 (—)
+[lulus] Tanpa pageerror (—)
+[lulus] Bundel (6.6 MB) tanpa alamat produksi; API = http://127.0.0.1:8971
+
+Hasil: 159 lulus / 0 gagal / 1 dilewati

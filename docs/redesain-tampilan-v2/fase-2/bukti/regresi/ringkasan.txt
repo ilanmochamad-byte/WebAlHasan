@@ -1,0 +1,16 @@
+Regresi Expo web pada kode akhir Fase 2 (12 November 2026, APP = salinan fase tanpa .env*, API 127.0.0.1:8971)
+fase2-pengajian: 67 lulus / 0 gagal
+fase2-izin: 144 lulus / 0 gagal
+fase1: 159 lulus / 0 gagal / 1 dilewati (bagian H: rute pratinjau komponen sementara tidak dipasang)
+profil: 105 lulus / 0 gagal
+gabungan: 57 lulus / 0 gagal
+cari-absensi: 53 lulus / 0 gagal
+cari-daftar: 24 lulus / 0 gagal
+peserta: 18 lulus / 0 gagal
+peserta-asli: 1 lulus / 2 gagal (suite sebelum pencari tombol disesuaikan; gagal pada tombol "Perbarui daftar" yang pindah ke ⋯ — diharapkan)
+v7f4: 48 lulus / 0 gagal
+keamanan: 46 lulus / 0 gagal
+v6f4: 45 lulus / 0 gagal
+v5f4: 78 lulus / 0 gagal
+v5f5: 36 lulus / 0 gagal
+galat PHP server API: 0

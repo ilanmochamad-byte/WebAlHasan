@@ -1,0 +1,288 @@
+{
+ "sbx_pengurus_a 0-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_pengurus_a\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_pengurus_a 1a-perizinan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/akses",
+  "GET /api/v1/izin/antrean ?mode=pengurus&page=1&per_page=20"
+ ],
+ "sbx_pengurus_a 2a-buat-pilih-santri": [
+  "GET /api/v1/izin/santri ?mode=pengurus&page=1&per_page=50"
+ ],
+ "sbx_pengurus_a 3a-buat-kirim": [
+  "POST /api/v1/izin/pengajuan ?mode=pengurus badan={\"alasan\":\"Uji jaringan satu\",\"catatan_pengurus\":\"\",\"idempotency_key\":\"<kunci>\",\"santri_id\":1,\"tgl_izin\":\"2027-12-01\",\"tgl_kembali\":\"2027-12-02\"}",
+  "GET /api/v1/izin/pengajuan/{id} ?mode=pengurus"
+ ],
+ "sbx_pengurus_a 1b-perizinan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/akses",
+  "GET /api/v1/izin/antrean ?mode=pengurus&page=1&per_page=20"
+ ],
+ "sbx_pengurus_a 2b-buat-pilih-santri": [
+  "GET /api/v1/izin/santri ?mode=pengurus&page=1&per_page=50"
+ ],
+ "sbx_pengurus_a 3b-buat-kirim": [
+  "POST /api/v1/izin/pengajuan ?mode=pengurus badan={\"alasan\":\"Uji jaringan dua\",\"catatan_pengurus\":\"\",\"idempotency_key\":\"<kunci>\",\"santri_id\":1,\"tgl_izin\":\"2027-12-10\",\"tgl_kembali\":\"2027-12-10\"}",
+  "GET /api/v1/izin/pengajuan/{id} ?mode=pengurus"
+ ],
+ "sbx_pengurus_a 1c-perizinan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/akses",
+  "GET /api/v1/izin/antrean ?mode=pengurus&page=1&per_page=20"
+ ],
+ "sbx_pengurus_a 2c-buat-pilih-santri": [
+  "GET /api/v1/izin/santri ?mode=pengurus&page=1&per_page=50"
+ ],
+ "sbx_pengurus_a 3c-buat-kirim": [
+  "POST /api/v1/izin/pengajuan ?mode=pengurus badan={\"alasan\":\"Uji jaringan tiga\",\"catatan_pengurus\":\"\",\"idempotency_key\":\"<kunci>\",\"santri_id\":1,\"tgl_izin\":\"2027-12-20\",\"tgl_kembali\":\"2027-12-21\"}",
+  "GET /api/v1/izin/pengajuan/{id} ?mode=pengurus"
+ ],
+ "sbx_admin 0-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_admin\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_admin 1a-antrean-admin": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/akses",
+  "GET /api/v1/izin/antrean ?mode=admin&page=1&per_page=20",
+  "GET /api/v1/izin/antrean ?mode=admin&page=1&per_page=20&q=Uji jaringan satu"
+ ],
+ "sbx_admin 2a-rincian-admin": [
+  "GET /api/v1/izin/pengajuan/{id} ?mode=admin",
+  "GET /api/v1/izin/pengajuan/{id}/routing"
+ ],
+ "sbx_admin 3a-tetapkan-murobi": [
+  "POST /api/v1/izin/pengajuan/{id}/penetapan-murobi badan={\"alasan\":\"Penetapan uji jaringan\",\"idempotency_key\":\"<kunci>\",\"murobi_guru_id\":1,\"version\":1}",
+  "GET /api/v1/izin/pengajuan/{id} ?mode=admin",
+  "GET /api/v1/izin/pengajuan/{id}/routing"
+ ],
+ "sbx_admin 1b-antrean-admin": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/akses",
+  "GET /api/v1/izin/antrean ?mode=admin&page=1&per_page=20",
+  "GET /api/v1/izin/antrean ?mode=admin&page=1&per_page=20&q=Uji jaringan dua"
+ ],
+ "sbx_admin 2b-rincian-admin": [
+  "GET /api/v1/izin/pengajuan/{id} ?mode=admin",
+  "GET /api/v1/izin/pengajuan/{id}/routing"
+ ],
+ "sbx_admin 3b-tetapkan-murobi": [
+  "POST /api/v1/izin/pengajuan/{id}/penetapan-murobi badan={\"alasan\":\"Penetapan uji jaringan\",\"idempotency_key\":\"<kunci>\",\"murobi_guru_id\":1,\"version\":1}",
+  "GET /api/v1/izin/pengajuan/{id} ?mode=admin",
+  "GET /api/v1/izin/pengajuan/{id}/routing"
+ ],
+ "sbx_admin 1c-antrean-admin": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/akses",
+  "GET /api/v1/izin/antrean ?mode=admin&page=1&per_page=20",
+  "GET /api/v1/izin/antrean ?mode=admin&page=1&per_page=20&q=Uji jaringan tiga"
+ ],
+ "sbx_admin 2c-rincian-admin": [
+  "GET /api/v1/izin/pengajuan/{id} ?mode=admin",
+  "GET /api/v1/izin/pengajuan/{id}/routing"
+ ],
+ "sbx_admin 3c-tetapkan-murobi": [
+  "POST /api/v1/izin/pengajuan/{id}/penetapan-murobi badan={\"alasan\":\"Penetapan uji jaringan\",\"idempotency_key\":\"<kunci>\",\"murobi_guru_id\":1,\"version\":1}",
+  "GET /api/v1/izin/pengajuan/{id} ?mode=admin",
+  "GET /api/v1/izin/pengajuan/{id}/routing"
+ ],
+ "sbx_murobi_a 0-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_murobi_a\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi",
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_murobi_a\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_murobi_a 1a-antrean": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/akses",
+  "GET /api/v1/izin/antrean ?mode=murobi&page=1&per_page=20",
+  "GET /api/v1/izin/antrean ?mode=murobi&page=1&per_page=20&q=Uji jaringan satu"
+ ],
+ "sbx_murobi_a 2a-rincian": [
+  "GET /api/v1/izin/pengajuan/{id} ?mode=murobi"
+ ],
+ "sbx_murobi_a 3a-putuskan": [
+  "POST /api/v1/izin/pengajuan/{id}/keputusan ?mode=murobi badan={\"alasan\":\"Alasan setujui uji\",\"hasil\":\"Disetujui\",\"idempotency_key\":\"<kunci>\",\"version\":2}",
+  "GET /api/v1/izin/pengajuan/{id} ?mode=murobi"
+ ],
+ "sbx_murobi_a 1b-antrean": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/akses",
+  "GET /api/v1/izin/antrean ?mode=murobi&page=1&per_page=20",
+  "GET /api/v1/izin/antrean ?mode=murobi&page=1&per_page=20&q=Uji jaringan dua"
+ ],
+ "sbx_murobi_a 2b-rincian": [
+  "GET /api/v1/izin/pengajuan/{id} ?mode=murobi"
+ ],
+ "sbx_murobi_a 3b-putuskan": [
+  "POST /api/v1/izin/pengajuan/{id}/keputusan ?mode=murobi badan={\"alasan\":\"Alasan tolak uji\",\"hasil\":\"Ditolak\",\"idempotency_key\":\"<kunci>\",\"version\":2}",
+  "GET /api/v1/izin/pengajuan/{id} ?mode=murobi"
+ ],
+ "sbx_murobi_a 4-laporan-izin": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/izin/laporan ?date_from=2026-11-01&date_to=2026-11-12&mode=murobi&page=1&per_page=20",
+  "GET /api/v1/izin/laporan/filters ?mode=murobi"
+ ],
+ "sbx_v7_wali_a 0-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_v7_wali_a\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_v7_wali_a 1-pintu-daftar": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/akses",
+  "GET /api/v1/izin/pengajuan ?mode=orang_tua&page=1&per_page=20",
+  "GET /api/v1/izin/anak",
+  "GET /api/v1/v7/izin/akses",
+  "GET /api/v1/v7/izin/wali/anak",
+  "GET /api/v1/v7/izin/wali/pengajuan ?page=1"
+ ],
+ "sbx_v7_wali_a 2-buat-buka": [
+  "GET /api/v1/v7/izin/wali/anak"
+ ],
+ "sbx_v7_wali_a 3-buat-kirim": [
+  "POST /api/v1/v7/izin/wali/pengajuan badan={\"alasan\":\"Acara keluarga uji jaringan\",\"catatan\":\"Dijemput ayah\",\"idempotency_key\":\"<kunci>\",\"santri_id\":1714,\"tgl_izin\":\"2027-11-02\",\"tgl_kembali\":\"2027-11-03\"}",
+  "GET /api/v1/v7/izin/pengajuan/{id}"
+ ],
+ "sbx_v7_pembimbing_satu 0-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_v7_pembimbing_satu\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_v7_pembimbing_satu 1-antrean": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/akses",
+  "GET /api/v1/v7/izin/pembimbing/antrean ?page=1"
+ ],
+ "sbx_v7_pembimbing_satu 2-rincian": [
+  "GET /api/v1/v7/izin/pengajuan/{id}"
+ ],
+ "sbx_v7_pembimbing_satu 3-minta-perbaikan": [
+  "POST /api/v1/v7/izin/pengajuan/{id}/tinjauan badan={\"catatan\":\"Mohon perjelas jam penjemputan\",\"idempotency_key\":\"<kunci>\",\"tindakan\":\"minta_perbaikan\",\"version\":1}",
+  "GET /api/v1/v7/izin/pengajuan/{id}"
+ ],
+ "sbx_v7_wali_a 4-perbaiki-buka": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/pengajuan/{id}",
+  "GET /api/v1/v7/izin/pengajuan/{id}"
+ ],
+ "sbx_v7_wali_a 5-perbaiki-kirim": [
+  "POST /api/v1/v7/izin/pengajuan/{id}/perbaikan badan={\"alasan\":\"Acara keluarga uji jaringan, dijemput 15.00\",\"catatan\":\"Dijemput ayah\",\"idempotency_key\":\"<kunci>\",\"tgl_izin\":\"2027-11-02\",\"tgl_kembali\":\"2027-11-03\",\"version\":2}",
+  "GET /api/v1/v7/izin/pengajuan/{id}"
+ ],
+ "sbx_v7_pembimbing_satu 4-teruskan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/pengajuan/{id}",
+  "POST /api/v1/v7/izin/pengajuan/{id}/tinjauan badan={\"catatan\":\"\",\"idempotency_key\":\"<kunci>\",\"tindakan\":\"teruskan\",\"version\":3}",
+  "GET /api/v1/v7/izin/pengajuan/{id}"
+ ],
+ "sbx_v7_pembimbing_satu 5-riwayat": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v7/izin/akses",
+  "GET /api/v1/v7/izin/pembimbing/antrean ?page=1",
+  "GET /api/v1/v7/izin/pembimbing/riwayat ?page=1"
+ ],
+ "sbx_murobi_a 5-notifikasi-daftar": [
+  "GET /api/v1/notifikasi ?page=1&per_page=20&status=semua",
+  "GET /api/v1/notifikasi/belum-dibaca"
+ ],
+ "sbx_murobi_a 6-notifikasi-buka": [
+  "POST /api/v1/notifikasi/{id}/dibaca badan={}",
+  "GET /api/v1/notifikasi/belum-dibaca"
+ ],
+ "sbx_murobi_a 7-notifikasi-tandai-semua": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/notifikasi ?page=1&per_page=20&status=semua",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "POST /api/v1/notifikasi/dibaca-semua badan={}",
+  "GET /api/v1/notifikasi ?page=1&per_page=20&status=semua",
+  "GET /api/v1/notifikasi/belum-dibaca"
+ ],
+ "sbx_murobi_a 8-perangkat": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/notifikasi/perangkat"
+ ]
+}

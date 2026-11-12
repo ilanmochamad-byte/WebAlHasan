@@ -1,0 +1,6 @@
+layar 402×791 pt · FAB [238,719,386,775] · tepi atas butir bilah tab 795
+[lulus] Tinggi FAB 56 pt (≥ 56)
+[lulus] FAB 16 pt dari tepi kanan (16)
+[lulus] Lebar FAB 148 pt ≤ setengah layar (201)
+[lulus] FAB (bawah 775) tidak bertabrakan dengan bilah tab Liquid Glass (butir mulai 795); jarak 20 pt
+Hasil ukur FAB: 4 lulus / 0 gagal
