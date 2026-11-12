@@ -1,0 +1,28 @@
+
+=== N-B. ← pada layar stack, tombol kembali Android, tautan ===
+ERROR: null root node returned by UiTestAutomationBridge.
+[lulus] Edit profil: kepala stack — ← kiri, judul di tengah (pusat 541 dari 540)
+[lulus] Edit profil: isian terkunci admin tampil
+[lulus] Edit profil: tombol "Simpan perubahan" tetap terlihat saat digulir
+[lulus] Edit profil: ← kembali ke Profil
+[lulus] Edit profil: tombol kembali Android kembali ke Profil
+[lulus] Ganti password: kepala stack ber-←
+[lulus] Ganti password: ← kembali ke Profil
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+[lulus] Tautan alhasanapps://akun/ganti-password membuka layar Ganti password
+[lulus] ← dari layar yang dibuka lewat tautan membawa ke layar aplikasi (bukan diam/menutup)
+
+=== N-C. Mode gelap dan teks sistem 1,3× / 2,0× (sbx_admin) ===
+[lulus] Beranda gelap-teks-2.0: logo, nama, ringkasan tampil
+[lulus] Beranda gelap-teks-2.0: logo tetap ±28 dp (tidak ikut skala teks): 27.8
+[lulus] Beranda gelap-teks-2.0: ubin Jadwal/Absensi/Perizinan tampil (kisi 3 kolom diperiksa pada tangkapan)
+[lulus] Profil gelap-teks-2.0: tombol Edit profil terjangkau
+[lulus] Edit profil gelap-teks-2.0: ← tampil
+[lulus] Ganti password gelap-teks-2.0: ← tampil
+
+=== N-D. Masuk dan Ganti password wajib ===
+[lulus] Masuk: tanpa ←, logo lama, tanpa logo teks K-9
+[lulus] Ganti password wajib: tanpa ←, judul dan penjelas tampil
+[lulus] Ganti password wajib: tombol Keluar terjangkau
+
+Hasil: 18 lulus / 0 gagal

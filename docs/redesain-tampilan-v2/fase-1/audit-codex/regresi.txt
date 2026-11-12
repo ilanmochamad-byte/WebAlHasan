@@ -1,0 +1,13 @@
+Regresi Expo web pada fixture sintetis lokal, tanpa perubahan oracle.
+profil Hasil: 105 lulus / 0 gagal
+keamanan Hasil: 46 lulus, 0 gagal
+gabungan Ringkasan: 57 lulus, 0 gagal
+cari-absensi Ringkasan: 53 lulus, 0 gagal
+cari-daftar Ringkasan: 24 lulus, 0 gagal
+peserta Hasil: 18 lulus, 0 gagal
+v6f4 Ringkasan: 45 lulus, 0 gagal
+v7f4 Ringkasan: 48 lulus, 0 gagal
+v5f4 Hasil: 78 lulus, 0 gagal
+v5f5 Lulus: 36 · Gagal: 0
+galat PHP server API: 0
+profil (source akhir) Hasil: 105 lulus / 0 gagal

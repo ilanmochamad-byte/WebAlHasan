@@ -1,0 +1,39 @@
+
+=== N-A. Tujuh peran: Beranda dan Profil ===
+[lulus] Guru: kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Guru: Beranda tanpa tombol ←
+[lulus] Guru: ringkasan dan menu tampil
+[lulus] Guru: Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Guru: ← di Profil membuka tab Beranda
+[lulus] Pengurus (hanya perizinan): kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Pengurus (hanya perizinan): Beranda tanpa tombol ←
+[lulus] Pengurus (hanya perizinan): ringkasan dan menu tampil
+[lulus] Pengurus (hanya perizinan): Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Pengurus (hanya perizinan): ← di Profil membuka tab Beranda
+[lulus] Orang tua: kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Orang tua: Beranda tanpa tombol ←
+[lulus] Orang tua: ringkasan dan menu tampil
+[lulus] Orang tua: Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Orang tua: ← di Profil membuka tab Beranda
+[lulus] Petugas BSA: kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Petugas BSA: Beranda tanpa tombol ←
+[lulus] Petugas BSA: ringkasan dan menu tampil
+[lulus] Petugas BSA: Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Petugas BSA: ← di Profil membuka tab Beranda
+[lulus] Petugas kesehatan: kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Petugas kesehatan: Beranda tanpa tombol ←
+[lulus] Petugas kesehatan: ringkasan dan menu tampil
+[lulus] Petugas kesehatan: Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Petugas kesehatan: ← di Profil membuka tab Beranda
+[lulus] Keamanan: kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Keamanan: Beranda tanpa tombol ←
+[lulus] Keamanan: ringkasan dan menu tampil
+[lulus] Keamanan: Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Keamanan: ← di Profil membuka tab Beranda
+[lulus] Admin: kepala Beranda — logo "Alhasan apps" kiri, lonceng kanan, di atas kartu identitas
+[lulus] Admin: Beranda tanpa tombol ←
+[lulus] Admin: ringkasan dan menu tampil
+[lulus] Admin: Profil ber-← "Kembali ke Beranda" (44×44 dp), judul dan username
+[lulus] Admin: ← di Profil membuka tab Beranda
+
+Hasil: 35 lulus / 0 gagal

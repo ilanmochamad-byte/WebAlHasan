@@ -1,0 +1,36 @@
+
+=== D-1. Izin Keamanan: cari lewat server ===
+[lulus] Ada izin santri yang hanya muncul di halaman ≥ 3 tanpa saringan
+[lulus] Santri target tidak tampil di halaman pertama tanpa saringan
+[lulus] Berpindah ke halaman 2 sebelum mencari
+[lulus] Aplikasi mengirim q ke server dan kembali ke halaman 1
+[lulus] Hasil = API (5 pengajuan), memuat santri dari halaman jauh
+[lulus] Izin Keamanan tercari: konten tanpa gulir horizontal pada 375 px (selisih 0px)
+
+=== D-2. Kosongkan, jaringan gagal, pencabutan ===
+[lulus] Kata kunci kosong: tanpa q, daftar penuh kembali
+[lulus] Galat jaringan: kata kunci tetap, tombol Coba lagi tampil
+[lulus] Coba lagi memuat hasil pencarian nama (huruf besar)
+[lulus] Penugasan dicabut: pencarian ditolak server, tanpa data santri
+
+=== D-3. Pelanggaran Keamanan: cari NIS ===
+[lulus] Cari NIS pelanggaran: 1 catatan santri itu saja
+
+=== D-4. Pembinaan murobi ===
+[lulus] Pembinaan pelanggaran: kolom cari tersedia
+[lulus] Pembinaan pelanggaran: q NIS dikirim ke server
+[lulus] Pembinaan pelanggaran: 1 baris santri yang dicari
+[lulus] Pembinaan pelanggaran: cari potongan nama huruf kecil
+[lulus] Pembinaan pelanggaran: tanpa hasil → pesan jelas
+[lulus] Pembinaan kasus: kolom cari tersedia
+[lulus] Pembinaan kasus: q NIS dikirim ke server
+[lulus] Pembinaan kasus: 1 baris santri yang dicari
+[lulus] Pembinaan kasus: cari potongan nama huruf kecil
+[lulus] Pembinaan kasus: tanpa hasil → pesan jelas
+[lulus] Murobi: NIS santri di luar cakupan → 0 hasil, nama tidak tampil
+[lulus] Pembinaan tercari: konten tanpa gulir horizontal pada 375 px (selisih 0px)
+
+=== D-5. Jaringan ===
+[lulus] Tanpa permintaan keluar 127.0.0.1 (nol)
+
+Ringkasan: 24 lulus, 0 gagal

@@ -1,0 +1,134 @@
+
+=== B-A/B-B. Kartu identitas di Beranda ===
+[lulus] Admin: kartu = isi pertama Beranda (anak pertama wadah isi, 8px dari atas area gulir)
+[lulus] Admin: nama lengkap tampil utuh (17 karakter)
+[lulus] Admin: seluruh status = API (Admin)
+[lulus] Admin: target binaan = API (tidak ada)
+[lulus] Admin: tanpa target → tanpa nama kamar/kelas rekaan
+[lulus] Admin: tanpa foto → inisial SA
+[lulus] Admin: tidak ada teks kartu yang terpotong
+[lulus] Beranda Admin: isi tanpa gulir horizontal pada 375 px (dokumen +33px hanya bilah tab web, TF4-1)
+
+=== Kartu membuka Profil (Admin) ===
+[lulus] Admin: ketuk kartu → Profil
+[lulus] Guru (Murobi): kartu = isi pertama Beranda (anak pertama wadah isi, 8px dari atas area gulir)
+[lulus] Guru (Murobi): nama lengkap tampil utuh (12 karakter)
+[lulus] Guru (Murobi): seluruh status = API (Guru, Murobi)
+[lulus] Guru (Murobi): target binaan = API (Kamar SBX Kamar A; Kamar SBX V7 Kamar Satu; Kamar SBX V7 Kamar Dua Murobi)
+[lulus] Guru (Murobi): tanpa foto → inisial SM
+[lulus] Guru (Murobi): tidak ada teks kartu yang terpotong
+[lulus] Beranda Guru (Murobi): isi tanpa gulir horizontal pada 375 px (dokumen +33px hanya bilah tab web, TF4-1)
+[lulus] Murobi bertarget kamar diberi label "Kamar"
+
+=== Kartu membuka Profil (Guru (Murobi)) ===
+[lulus] Guru (Murobi): ketuk kartu → Profil
+[lulus] Pengurus (Pembimbing): kartu = isi pertama Beranda (anak pertama wadah isi, 8px dari atas area gulir)
+[lulus] Pengurus (Pembimbing): nama lengkap tampil utuh (14 karakter)
+[lulus] Pengurus (Pembimbing): seluruh status = API (Pengurus, Pembimbing)
+[lulus] Pengurus (Pembimbing): target binaan = API (Kamar SBX Kamar A; Kamar SBX Kamar C; Kelas SBX T7 Kelas 30)
+[lulus] Pengurus (Pembimbing): tanpa foto → inisial SP
+[lulus] Pengurus (Pembimbing): tidak ada teks kartu yang terpotong
+[lulus] Beranda Pengurus (Pembimbing): isi tanpa gulir horizontal pada 375 px (dokumen +0px)
+[lulus] Pembimbing bertarget kelas diberi label "Kelas"
+[lulus] Orang Tua: kartu = isi pertama Beranda (anak pertama wadah isi, 8px dari atas area gulir)
+[lulus] Orang Tua: nama lengkap tampil utuh (10 karakter)
+[lulus] Orang Tua: seluruh status = API (Orang Tua)
+[lulus] Orang Tua: target binaan = API (tidak ada)
+[lulus] Orang Tua: tanpa target → tanpa nama kamar/kelas rekaan
+[lulus] Orang Tua: tanpa foto → inisial SW
+[lulus] Orang Tua: tidak ada teks kartu yang terpotong
+[lulus] Beranda Orang Tua: isi tanpa gulir horizontal pada 375 px (dokumen +0px)
+[lulus] Banyak tugas: kartu = isi pertama Beranda (anak pertama wadah isi, 8px dari atas area gulir)
+[lulus] Banyak tugas: nama lengkap tampil utuh (79 karakter)
+[lulus] Banyak tugas: seluruh status = API (Guru, Pengurus, Murobi, Pembimbing)
+[lulus] Banyak tugas: target binaan = API (Kelas SBX V5 Kelas X; Kamar SBX V5 Kamar B)
+[lulus] Banyak tugas: tanpa foto → inisial SV
+[lulus] Banyak tugas: tidak ada teks kartu yang terpotong
+[lulus] Beranda Banyak tugas: isi tanpa gulir horizontal pada 375 px (dokumen +33px hanya bilah tab web, TF4-1)
+[lulus] Guru Mapel: kartu = isi pertama Beranda (anak pertama wadah isi, 8px dari atas area gulir)
+[lulus] Guru Mapel: nama lengkap tampil utuh (12 karakter)
+[lulus] Guru Mapel: seluruh status = API (Guru, Guru Mata Pelajaran)
+[lulus] Guru Mapel: target binaan = API (tidak ada)
+[lulus] Guru Mapel: tanpa target → tanpa nama kamar/kelas rekaan
+[lulus] Guru Mapel: tanpa foto → inisial PM
+[lulus] Guru Mapel: tidak ada teks kartu yang terpotong
+[lulus] Beranda Guru Mapel: isi tanpa gulir horizontal pada 375 px (dokumen +2px hanya bilah tab web, TF4-1)
+
+=== B-C. Profil Guru Mapel: pasangan mapel–kelas ===
+[lulus] Seluruh 7 pasangan mapel–kelas tampil per mapel
+[lulus] Penugasan Guru Mata Pelajaran tampil hanya baca
+[lulus] Profil tanpa isian yang dapat diedit
+[lulus] Profil Guru Mapel: isi tanpa gulir horizontal pada 375 px (dokumen +2px hanya bilah tab web, TF4-1)
+
+=== B-D. Edit Profil setiap isian (sbx_pengurus_a) ===
+[lulus] Profil: username, penugasan aktif tampil
+[lulus] Username hanya baca, bukan isian
+[lulus] Isian hanya data pribadi (Nama lengkap, Tempat lahir, Tanggal lahir, Alamat rumah, Kelurahan/Desa, Kecamatan, Kabupaten/Kota, Provinsi, No. HP, Email)
+[lulus] Validasi lokal: HP salah tidak dikirim, tidak ada perubahan DB
+[lulus] B-E 409 email milik akun lain: ditolak tanpa pembaruan sebagian
+[lulus] Profil menampilkan seluruh nilai baru tanpa masuk ulang
+[lulus] DB: identitas pengurus dan akun sinkron (nama, HP, email)
+[lulus] DB: profil_pribadi menyimpan setiap isian tambahan
+[lulus] Satu mutasi berhasil = satu catatan audit profil
+[lulus] Kartu Beranda memakai nama baru tanpa masuk ulang
+
+=== B-E. Versi basi (perubahan dari perangkat lain) ===
+[lulus] Perangkat lain mengubah kecamatan lebih dulu
+[lulus] 409 versi basi: draf tidak menimpa perubahan perangkat lain
+[lulus] Muat data terbaru: formulir memakai versi server (kecamatan Coblong)
+
+=== B-F. Foto profil ===
+[lulus] profil.gif: pemilih berkas bawaan, satu berkas
+[lulus] GIF ditolak di aplikasi tanpa unggahan
+[lulus] besar.png: pemilih berkas bawaan, satu berkas
+[lulus] Berkas > 2 MB ditolak di aplikasi
+[lulus] profil.png: pemilih berkas bawaan, satu berkas
+[lulus] PNG terunggah; foto tampil di Edit Profil
+[lulus] profil.jpg: pemilih berkas bawaan, satu berkas
+[lulus] Ganti foto (JPEG): versi foto naik satu
+[lulus] Foto dimuat lewat endpoint berotorisasi sebagai data, bukan URL publik
+[lulus] Kartu Beranda menampilkan foto baru
+[lulus] Unduhan foto gagal → kartu tetap tampil dengan inisial
+[lulus] Fokus Profil memuat ulang foto dengan versi sama setelah jaringan pulih
+[lulus] Foto akun lain oleh akun tanpa kewenangan → 404
+[lulus] Parameter identitas akun lain tidak memberi akses ke profilnya
+[lulus] Menulis username/role lewat API profil → 422, tidak berubah
+[lulus] Hapus foto → inisial
+[lulus] Edit Profil: isi tanpa gulir horizontal pada 375 px (dokumen +0px)
+
+=== B-G. Ganti Password (sbx_pengurus_a) ===
+[lulus] Password lemah/ulangan beda ditolak di aplikasi tanpa permintaan
+[lulus] Password saat ini salah → ditolak server, sesi lain tetap
+[lulus] Berhasil → token perangkat lain dicabut (401)
+[lulus] Password lama tidak berlaku, password baru berlaku
+[lulus] Isian password dikosongkan/ditutup setelah berhasil
+[lulus] Sesi aplikasi ini tetap berlaku sesudah ganti password
+[lulus] Password tidak tersimpan di localStorage/sessionStorage
+
+=== B-H. Password sementara dari admin (PI-1) ===
+[lulus] Login password sementara → hanya layar Ganti Password, tanpa tab menu
+[lulus] Token aplikasi bercakupan ganti_password
+[lulus] Alamat Profil langsung tidak terbuka sebelum password diganti
+[lulus] Sesudah diganti: Beranda terbuka, token menjadi penuh, wajib ganti dilepas
+
+=== B-I. Admin mereset password saat sesi berjalan (PF-1) ===
+[lulus] Sesi lama yang ditandai wajib ganti dialihkan ke layar Ganti Password
+
+=== B-J. Pencabutan penugasan pada sesi berjalan ===
+[lulus] API sesudah pencabutan: status Guru saja, tanpa binaan
+[lulus] Murobi dan kamar hilang dari kartu/Profil setelah dimuat ulang (kartu: Kamis, 12 November 2026 7 SM Assalamu’alaikum, SBX Murobi A Guru)
+
+=== B-K. Gagal jaringan, server lama, sesi kedaluwarsa ===
+[lulus] Offline: kartu tetap menampilkan nama dan peran dari sesi (SBX Orang Tua A)
+[lulus] Offline: Profil menampilkan galat + Coba lagi, menu lain tetap
+[lulus] Server lama (404): kartu memakai peran akun
+[lulus] Server lama: Edit/Ganti Password tidak ditawarkan
+[lulus] Sesi kedaluwarsa (token dicabut) → kembali ke layar masuk
+
+=== B-L. Privasi & jaringan ===
+[lulus] Nol permintaan ke luar 127.0.0.1 (—)
+[lulus] Konsol tanpa password
+[lulus] Password hanya dikirim ke POST /profile/password
+
+Hasil: 105 lulus / 0 gagal
+pif2 exit=0

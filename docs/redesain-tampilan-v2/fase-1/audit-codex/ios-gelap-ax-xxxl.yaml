@@ -1,0 +1,22 @@
+appId: com.ilanmochamad.alhasanApps
+---
+- launchApp
+- openLink: alhasanapps://
+- extendedWaitUntil:
+    visible: ".*Buka profil"
+    timeout: 30000
+- assertVisible: "Alhasan apps"
+- takeScreenshot: ios-audit-beranda-gelap-ax-xxxl
+- tapOn: ".*Buka profil"
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 20000
+- takeScreenshot: ios-audit-profil-gelap-ax-xxxl
+- openLink: alhasanapps://akun/edit-profil
+- assertVisible: "Edit profil"
+- assertVisible: "Kembali"
+- takeScreenshot: ios-audit-edit-profil-gelap-ax-xxxl
+- openLink: alhasanapps://akun/ganti-password
+- assertVisible: "Ganti password"
+- assertVisible: "Kembali"
+- takeScreenshot: ios-audit-ganti-password-gelap-ax-xxxl

@@ -1,0 +1,23 @@
+# Redesain gelombang 2 Fase 1 — satu peran: Beranda (logo + lonceng, tanpa ←),
+# Profil ber-← "Kembali ke Beranda", ← membuka tab Beranda.
+#   maestro --device <UDID> test -e AKUN=sbx_admin -e SANDI='Sandbox#123' peran.yaml
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- assertVisible: "Alhasan apps"
+- assertVisible: "Notifikasi.*"
+- assertVisible: "Ringkasan hari ini"
+- assertNotVisible: "Kembali.*"
+- takeScreenshot: ios-beranda-${AKUN}
+- tapOn: ".*Buka profil"
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 15000
+- assertVisible: "Profil"
+- assertVisible: "@${AKUN}"
+- takeScreenshot: ios-profil-${AKUN}
+- tapOn: "Kembali ke Beranda"
+- extendedWaitUntil:
+    visible: "Ringkasan hari ini"
+    timeout: 15000
+- assertNotVisible: "Kembali ke Beranda"

@@ -1,0 +1,12 @@
+GAGAL target mata di Masuk minimal 44×44: {"x":295,"y":572.5,"width":20,"height":20}
+GAGAL target isian Masuk minimal 44×44: {"x":88,"y":481,"width":227,"height":19}
+GAGAL ringkasan tidak menampilkan angka notifikasi saat respons belum tersedia: Expected values to be strictly equal:
+
+1 !== 0
+
+GAGAL status identitas Beranda memakai ikon dan teks: Expected values to be strictly equal:
+
+0 !== 1
+
+GAGAL target ketiga mata di Ganti password minimal 44×44: {"x":304,"y":305.5,"width":19,"height":19}
+LULUS semua tujuan jaringan di 127.0.0.1

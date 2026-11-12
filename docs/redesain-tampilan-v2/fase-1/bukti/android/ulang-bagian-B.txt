@@ -1,0 +1,14 @@
+
+=== N-B. ← pada layar stack, tombol kembali Android, tautan ===
+[lulus] Edit profil: kepala stack — ← kiri, judul di tengah (pusat 541 dari 540)
+[lulus] Edit profil: isian terkunci admin tampil
+[lulus] Edit profil: tombol "Simpan perubahan" tetap terlihat saat digulir
+[lulus] Edit profil: ← kembali ke Profil
+[lulus] Edit profil: tombol kembali Android kembali ke Profil
+[lulus] Ganti password: kepala stack ber-←
+[lulus] Ganti password: ← kembali ke Profil
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+[lulus] Tautan alhasanapps://akun/ganti-password membuka layar Ganti password
+[lulus] ← dari layar yang dibuka lewat tautan membawa ke layar aplikasi (bukan diam/menutup)
+
+Hasil: 9 lulus / 0 gagal

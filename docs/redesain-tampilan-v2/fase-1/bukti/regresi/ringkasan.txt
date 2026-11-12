@@ -1,0 +1,11 @@
+keamanan exit=0 :: Hasil: 46 lulus, 0 gagal
+gabungan exit=0 :: 
+cari-absensi exit=0 :: 
+cari-daftar exit=0 :: 
+peserta exit=0 :: Hasil: 18 lulus, 0 gagal
+v6f4 exit=0 :: 
+v7f4 exit=0 :: 
+v5f4 exit=0 :: Hasil: 78 lulus, 0 gagal
+v5f5 exit=0 :: 
+galat PHP server API: 0
+selesai

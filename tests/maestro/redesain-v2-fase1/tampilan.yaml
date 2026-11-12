@@ -1,0 +1,47 @@
+# Redesain gelombang 2 Fase 1 — tangkapan empat layar pada tampilan sistem yang
+# sudah disetel dari luar (mode gelap, ukuran teks AX-XL / AX-XXXL):
+#   xcrun simctl ui <UDID> appearance dark|light
+#   xcrun simctl ui <UDID> content_size accessibility-extra-large|accessibility-extra-extra-extra-large|large
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- assertVisible: "Alhasan apps"
+- assertNotVisible: "Kembali.*"
+- takeScreenshot: ios-beranda-${NAMA}
+- scrollUntilVisible:
+    element: "Menu"
+    direction: DOWN
+- takeScreenshot: ios-beranda-${NAMA}-gulir
+# Kartu identitas lebih tinggi dari layar pada teks sangat besar; Profil dibuka dari bilah tab.
+- tapOn: "Profil"
+- extendedWaitUntil:
+    visible: "Kembali ke Beranda"
+    timeout: 15000
+- takeScreenshot: ios-profil-${NAMA}
+- scrollUntilVisible:
+    element: "Edit profil"
+    direction: DOWN
+- tapOn: "Edit profil"
+- extendedWaitUntil:
+    visible: "JPEG, PNG, atau WebP.*"
+    timeout: 15000
+- assertVisible: "Kembali"
+- takeScreenshot: ios-edit-profil-${NAMA}
+- tapOn: "Kembali"
+# Profil kembali pada posisi gulir semula (tombol Edit profil terlihat).
+- extendedWaitUntil:
+    visible: "Edit profil"
+    timeout: 15000
+- scrollUntilVisible:
+    element: "Ganti password.*"
+    direction: DOWN
+- tapOn: "Ganti password.*"
+- extendedWaitUntil:
+    visible: "Kembali"
+    timeout: 15000
+- takeScreenshot: ios-ganti-password-${NAMA}
+# Pada teks sangat besar isian berada di bawah lipatan; kepala (←) tetap di atas.
+- scrollUntilVisible:
+    element: "Password saat ini"
+    direction: DOWN
+- assertVisible: "Kembali"

@@ -1,0 +1,191 @@
+{
+ "sbx_guru_biasa 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_guru_biasa 2-profil": [
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/profile/identitas"
+ ],
+ "sbx_guru_biasa 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_pengurus_biasa 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_pengurus_biasa 2-profil": [
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/profile/identitas"
+ ],
+ "sbx_pengurus_biasa 4-edit-profil-simpan": [
+  "POST /api/v1/profile/pribadi badan{tempat_lahir,versi}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/profile/identitas"
+ ],
+ "sbx_pengurus_biasa 6-ganti-password-simpan": [
+  "POST /api/v1/profile/password badan{device_id,konfirmasi_password,password_baru,password_saat_ini}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/profile/identitas"
+ ],
+ "sbx_pengurus_biasa 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_ortu_a 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_ortu_a 2-profil": [
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/profile/identitas"
+ ],
+ "sbx_ortu_a 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_v6_bsa 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_v6_bsa 2-profil": [
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/profile/identitas"
+ ],
+ "sbx_v6_bsa 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_v5_petugas 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_v5_petugas 2-profil": [
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/profile/identitas"
+ ],
+ "sbx_v5_petugas 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_pengurus_b 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_pengurus_b 2-profil": [
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/profile/identitas"
+ ],
+ "sbx_pengurus_b 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_admin 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_admin 2-profil": [
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/profile/identitas"
+ ],
+ "sbx_admin 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ]
+}
