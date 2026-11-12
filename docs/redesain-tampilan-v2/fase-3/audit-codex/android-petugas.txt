@@ -1,0 +1,19 @@
+
+=== A-1. Petugas ===
+[lulus] Menu petugas: ubin Keuangan tampil (layar pertama)
+[lulus] Menu Keuangan: ← "Kembali" 43.8×44.2 dp (≈ 44)
+[lulus] Tangkapan layar Keuangan terlindungi: 16274 B (Beranda 248364 B)
+  (tombol Tools dev client dimatikan: true)
+[lulus] Rincian santri: strip Saldo tabungan · Sisa tagihan · Transfer menunggu
+[lulus] Rincian santri: tab Ringkasan / Tagihan / Tabungan
+[lulus] Rincian santri: ← "Kembali" 43.8×44.2 dp (≈ 44)
+[lulus] Ketukan ganda "Catat setoran" → tepat satu transaksi baru
+[lulus] Panel hasil "Setoran tercatat" + bukti setoran
+[lulus] Tombol kembali Android: formulir → rincian santri
+[lulus] ← rincian santri → daftar santri (riwayat)
+
+=== A-2. Tautan tanpa riwayat ===
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+[gagal] Uji berhenti: Tidak ditemukan: /Rincian biaya/
+
+Ringkasan: 10 lulus, 1 gagal

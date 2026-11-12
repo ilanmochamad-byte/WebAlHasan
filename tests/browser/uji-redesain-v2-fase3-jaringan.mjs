@@ -60,7 +60,7 @@ function kanonik(nilai, kunci = '') {
 }
 
 async function sesi(user) {
-  const ctx = await browser.newContext({ viewport: { width: 375, height: 812 }, timezoneId: 'Asia/Jakarta' });
+  const ctx = await browser.newContext({ viewport: { width: 375, height: 812 }, timezoneId: 'Asia/Jakarta', serviceWorkers: 'block' });
   const page = await ctx.newPage();
   const langkah = { nama: `${user} 00-masuk` };
   await page.route('**/*', async route => {
@@ -138,6 +138,38 @@ try {
   await tombol(p, 'Sudah diperiksa — verifikasi').dblclick();
   await tunggu(p, 'Setoran transfer diverifikasi');
 
+  await g.mulai('06a-penarikan-tunai');
+  await ke(p, `/keuangan/transaksi?santri_id=${sSmp}&mode=keluar`);
+  await p.getByRole('radio', { name: 'Penarikan', exact: true }).click();
+  await p.getByLabel('Nominal (rupiah)').fill('5000');
+  await p.getByLabel('Tujuan (wajib)').fill('Uji penarikan');
+  await tombol(p, 'Catat penarikan').dblclick();
+  await tunggu(p, 'Penarikan Rp5.000 tercatat sah');
+
+  await g.mulai('06b-belanja-transfer');
+  await p.getByRole('radio', { name: 'Belanja', exact: true }).click();
+  await p.getByRole('radio', { name: 'Transfer', exact: true }).click();
+  await p.getByLabel('Nominal (rupiah)').fill('6000');
+  await p.getByLabel('Tujuan (wajib)').fill('Uji belanja');
+  await p.getByLabel('Referensi transfer (wajib)').fill('NET-BELANJA');
+  await tombol(p, 'Catat belanja').dblclick();
+  await tunggu(p, 'Belanja Rp6.000 tercatat sah');
+
+  await g.mulai('06c-setoran-transfer-untuk-ditolak');
+  await ke(p, `/keuangan/transaksi?santri_id=${sSmp}`);
+  await p.getByRole('radio', { name: 'Transfer' }).click();
+  await p.getByLabel('Nominal (rupiah)').fill('4000');
+  await p.getByLabel('Referensi transfer (wajib)').fill('NET-TOLAK-SETOR');
+  await tombol(p, 'Catat setoran').dblclick();
+  await tunggu(p, 'masuk antrean verifikasi');
+
+  await g.mulai('06d-tolak-setoran-transfer');
+  await ke(p, '/keuangan/verifikasi');
+  await tombol(p, 'Tolak').click();
+  await p.getByLabel('Alasan penolakan (wajib)').fill('Uji penolakan setoran');
+  await tombol(p, 'Tolak setoran ini').dblclick();
+  await tunggu(p, 'Setoran transfer ditolak');
+
   await g.mulai('07-terbit-satu-santri-ketukan-ganda');
   await ke(p, `/keuangan/terbit-santri?santri_id=${sSmp}`);
   await tombol(p, 'Tampilkan tagihan').click();
@@ -162,6 +194,26 @@ try {
   await g.mulai('10-verifikasi-pembayaran');
   await tombol(p, 'Dana sudah diperiksa — verifikasi').click();
   await tunggu(p, 'Pembayaran diverifikasi');
+
+  await g.mulai('10a-bayar-transfer-untuk-ditolak');
+  await ke(p, `/keuangan/bayar?tagihan_id=${T}`);
+  await p.getByRole('radio', { name: 'Transfer' }).click();
+  await p.getByLabel('Nominal (rupiah)').fill('7000');
+  await p.getByLabel('Referensi transfer (wajib)').fill('NET-TOLAK-BAYAR');
+  await tombol(p, 'Catat pembayaran').dblclick();
+  await tombol(p, 'Tolak transfer…').waitFor({ timeout: 20000 });
+
+  await g.mulai('10b-tolak-pembayaran-transfer');
+  await tombol(p, 'Tolak transfer…').click();
+  await p.getByLabel('Alasan penolakan (wajib)').fill('Uji penolakan pembayaran');
+  await tombol(p, 'Tolak transfer').dblclick();
+  await tunggu(p, 'Pembayaran dibatalkan');
+
+  const pengeluaran = Number(sql(`SELECT COUNT(*) FROM bsa_tabungan_transaksi WHERE santri_id=${sSmp} AND tujuan IN ('Uji penarikan', 'Uji belanja')`));
+  const ditolak = Number(sql("SELECT COUNT(*) FROM bsa_setoran_transfer WHERE referensi='NET-TOLAK-SETOR' AND status='Ditolak'"));
+  const batal = Number(sql("SELECT COUNT(*) FROM bsa_pembayaran WHERE referensi='NET-TOLAK-BAYAR' AND status='Dibatalkan'"));
+  if (pengeluaran !== 2 || ditolak !== 1 || batal !== 1) throw Error('Hasil DB penarikan, belanja, atau penolakan tidak sesuai');
+  console.log('[lulus] DB: dua pengeluaran, satu penolakan setoran, satu penolakan pembayaran');
 
   await g.mulai('11-bayar-dari-tabungan-ketukan-ganda');
   await ke(p, `/keuangan/tagihan/${T}`);
@@ -276,7 +328,7 @@ try {
 // Ketukan ganda: tiap langkah mutasi tepat satu kunci idempotensi (satu operasi).
 for (const [nama, set] of Object.entries(kunciLangkah)) {
   const post = (hasil[nama] ?? []).filter(x => x.startsWith('POST ') && x.includes('<kunci>')).length;
-  const satu = set.size === 1;
+  const satu = set.size === 1 && post === 1;
   console.log(`${satu ? '[lulus]' : '[gagal]'} ${nama}: ${set.size} kunci idempotensi, ${post} POST berkunci`);
   if (!satu) gagal++;
 }

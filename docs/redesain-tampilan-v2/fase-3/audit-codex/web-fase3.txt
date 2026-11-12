@@ -1,0 +1,268 @@
+[lulus] Data uji siap lewat API resmi (tagihan 2, transaksi 6, pembayaran menunggu 4, sah 5)
+
+=== A. K-7/K-10 dan aturan tampilan pada setiap layar (petugas, dibuka langsung) ===
+[lulus] /keuangan: judul kepala "Keuangan"
+[lulus] /keuangan: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan: rupiah selalu dengan pemisah titik
+[lulus] /keuangan: isi tanpa luapan horizontal
+[lulus] /keuangan: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/santri: judul kepala "Santri & saldo"
+[lulus] /keuangan/santri: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/santri: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/santri: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/santri: isi tanpa luapan horizontal
+[lulus] /keuangan/santri: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/santri: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/santri: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/santri/1710: judul kepala "Keuangan santri"
+[lulus] /keuangan/santri/1710: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/santri/1710: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/santri/1710: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/santri/1710: isi tanpa luapan horizontal
+[lulus] /keuangan/santri/1710: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/santri/1710: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/santri/1710: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/transaksi?santri_id=1710&mode=setoran: judul kepala "Setoran tabungan"
+[lulus] /keuangan/transaksi?santri_id=1710&mode=setoran: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/transaksi?santri_id=1710&mode=setoran: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/transaksi?santri_id=1710&mode=setoran: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/transaksi?santri_id=1710&mode=setoran: isi tanpa luapan horizontal
+[lulus] /keuangan/transaksi?santri_id=1710&mode=setoran: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/transaksi?santri_id=1710&mode=setoran: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/transaksi?santri_id=1710&mode=setoran: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/transaksi?santri_id=1710&mode=keluar: judul kepala "Penarikan atau belanja"
+[lulus] /keuangan/transaksi?santri_id=1710&mode=keluar: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/transaksi?santri_id=1710&mode=keluar: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/transaksi?santri_id=1710&mode=keluar: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/transaksi?santri_id=1710&mode=keluar: isi tanpa luapan horizontal
+[lulus] /keuangan/transaksi?santri_id=1710&mode=keluar: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/transaksi?santri_id=1710&mode=keluar: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/transaksi?santri_id=1710&mode=keluar: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/tagihan/2: judul kepala "Rincian tagihan"
+[lulus] /keuangan/tagihan/2: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/tagihan/2: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/tagihan/2: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/tagihan/2: isi tanpa luapan horizontal
+[lulus] /keuangan/tagihan/2: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/tagihan/2: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/tagihan/2: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/bayar?tagihan_id=2: judul kepala "Catat pembayaran"
+[lulus] /keuangan/bayar?tagihan_id=2: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/bayar?tagihan_id=2: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/bayar?tagihan_id=2: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/bayar?tagihan_id=2: isi tanpa luapan horizontal
+[lulus] /keuangan/bayar?tagihan_id=2: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/bayar?tagihan_id=2: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/bayar?tagihan_id=2: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/bayar-tabungan?tagihan_id=2: judul kepala "Bayar dari tabungan"
+[lulus] /keuangan/bayar-tabungan?tagihan_id=2: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/bayar-tabungan?tagihan_id=2: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/bayar-tabungan?tagihan_id=2: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/bayar-tabungan?tagihan_id=2: isi tanpa luapan horizontal
+[lulus] /keuangan/bayar-tabungan?tagihan_id=2: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/bayar-tabungan?tagihan_id=2: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/bayar-tabungan?tagihan_id=2: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/ubah-tagihan?tagihan_id=2: judul kepala "Revisi atau batal tagihan"
+[lulus] /keuangan/ubah-tagihan?tagihan_id=2: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/ubah-tagihan?tagihan_id=2: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/ubah-tagihan?tagihan_id=2: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/ubah-tagihan?tagihan_id=2: isi tanpa luapan horizontal
+[lulus] /keuangan/ubah-tagihan?tagihan_id=2: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/ubah-tagihan?tagihan_id=2: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/ubah-tagihan?tagihan_id=2: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/pembayaran: judul kepala "Pembayaran tagihan"
+[lulus] /keuangan/pembayaran: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/pembayaran: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/pembayaran: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/pembayaran: isi tanpa luapan horizontal
+[lulus] /keuangan/pembayaran: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/pembayaran: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/pembayaran: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/pembayaran/4: judul kepala "Kuitansi pembayaran"
+[lulus] /keuangan/pembayaran/4: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/pembayaran/4: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/pembayaran/4: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/pembayaran/4: isi tanpa luapan horizontal
+[lulus] /keuangan/pembayaran/4: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/pembayaran/4: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/pembayaran/4: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/tabungan: judul kepala "Mutasi tabungan"
+[lulus] /keuangan/tabungan: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/tabungan: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/tabungan: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/tabungan: isi tanpa luapan horizontal
+[lulus] /keuangan/tabungan: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/tabungan: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/tabungan: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/tabungan/6: judul kepala "Kuitansi tabungan"
+[lulus] /keuangan/tabungan/6: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/tabungan/6: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/tabungan/6: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/tabungan/6: isi tanpa luapan horizontal
+[lulus] /keuangan/tabungan/6: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/tabungan/6: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/tabungan/6: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/verifikasi: judul kepala "Verifikasi transfer"
+[lulus] /keuangan/verifikasi: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/verifikasi: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/verifikasi: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/verifikasi: isi tanpa luapan horizontal
+[lulus] /keuangan/verifikasi: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/verifikasi: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/verifikasi: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/tunggakan: judul kepala "Tunggakan"
+[lulus] /keuangan/tunggakan: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/tunggakan: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/tunggakan: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/tunggakan: isi tanpa luapan horizontal
+[lulus] /keuangan/tunggakan: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/tunggakan: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/tunggakan: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/rekonsiliasi: judul kepala "Rekonsiliasi harian"
+[lulus] /keuangan/rekonsiliasi: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/rekonsiliasi: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/rekonsiliasi: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/rekonsiliasi: isi tanpa luapan horizontal
+[lulus] /keuangan/rekonsiliasi: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/rekonsiliasi: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/rekonsiliasi: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/laporan: judul kepala "Laporan keuangan"
+[lulus] /keuangan/laporan: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/laporan: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/laporan: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/laporan: isi tanpa luapan horizontal
+[lulus] /keuangan/laporan: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/laporan: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/laporan: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/penerbitan: judul kepala "Terbitkan tagihan"
+[lulus] /keuangan/penerbitan: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/penerbitan: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/penerbitan: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/penerbitan: isi tanpa luapan horizontal
+[lulus] /keuangan/penerbitan: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/penerbitan: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/penerbitan: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+[lulus] /keuangan/terbit-santri?santri_id=1710: judul kepala "Tagihan satu santri"
+[lulus] /keuangan/terbit-santri?santri_id=1710: tanpa tombol Bagikan/Cetak (cetak tetap di website)
+[lulus] /keuangan/terbit-santri?santri_id=1710: tanpa istilah "pendapatan"/"laba"
+[lulus] /keuangan/terbit-santri?santri_id=1710: rupiah selalu dengan pemisah titik
+[lulus] /keuangan/terbit-santri?santri_id=1710: isi tanpa luapan horizontal
+[lulus] /keuangan/terbit-santri?santri_id=1710: tidak ada teks yang meluber/menimpa
+[lulus] /keuangan/terbit-santri?santri_id=1710: tepat satu ← terlihat, 44×44 ≥ 44
+[lulus] /keuangan/terbit-santri?santri_id=1710: dibuka tanpa riwayat → ← membuka Beranda (kini /)
+
+=== B. ← dengan riwayat ===
+[lulus] Menu → Santri → ← kembali ke menu Keuangan (kini /keuangan)
+[lulus] Rincian santri → tagihan → ← kembali ke rincian santri (kini /keuangan/santri/1710)
+
+=== C. Isi menurut peran dan angka = API ===
+[lulus] Menu petugas: 8 ubin (lengkap)
+[lulus] Menu petugas: tanpa angka (respons akses tidak memuat angka; tanpa angka karangan)
+[lulus] Kepala profil petugas: Saldo Rp130.000 · Sisa tagihan Rp180.000 · Transfer menunggu Rp15.000 = API
+[lulus] Petugas melihat setoran transfer menunggu beserta referensinya
+[lulus] Tab segmen Ringkasan / Tagihan / Tabungan
+[lulus] Tab Tagihan: hanya bagian tagihan
+[lulus] Tab Tabungan: hanya bagian tabungan
+[lulus] Mutasi: 5 baris bernominal bertanda sesuai arah API
+[lulus] Kuitansi transfer menunggu: panel "Menunggu verifikasi" berikon jam, bukan "Pembayaran sah"
+[lulus] Kuitansi sah: panel "Pembayaran sah" + kartu kuitansi bergaris putus
+[lulus] Laporan bulan ini: grafik tidak tampil (seri 1 bulan)
+[lulus] Laporan tahun ini: 11 batang = 11 bulan seri dari server
+[lulus] Laporan: kartu sorot "Penerimaan kas baru" Rp220.000 = API
+[lulus] Target sentuh: seluruh kontrol terlihat pada 19 layar ≥ 44 pt (0 di bawah)
+[lulus] Menu admin: 7 ubin hanya baca, tanpa penerbitan
+[lulus] Rincian santri admin: tanpa tombol mutasi (server tetap memutuskan)
+[lulus] Rincian tagihan admin: tanpa bilah tindakan dan tanpa ⋯
+[lulus] Menu orang tua: kartu sorot saldo + sisa tagihan per anak = API (Rp130.000/Rp180.000, Rp0/Rp0)
+[lulus] Rincian anak (orang tua): strip Saldo · Sisa tagihan tanpa transfer menunggu/referensi
+
+=== E. 768/1280 px dan mode gelap ===
+[lulus] 375 dark /keuangan: isi tanpa luapan horizontal
+[lulus] 375 dark /keuangan: tidak ada teks yang meluber/menimpa
+[lulus] 375 dark /keuangan/santri/1710: isi tanpa luapan horizontal
+[lulus] 375 dark /keuangan/santri/1710: tidak ada teks yang meluber/menimpa
+[lulus] 375 dark /keuangan/tagihan/2: isi tanpa luapan horizontal
+[lulus] 375 dark /keuangan/tagihan/2: tidak ada teks yang meluber/menimpa
+[lulus] 375 dark /keuangan/transaksi?santri_id=1710&mode=setoran: isi tanpa luapan horizontal
+[lulus] 375 dark /keuangan/transaksi?santri_id=1710&mode=setoran: tidak ada teks yang meluber/menimpa
+[lulus] 375 dark /keuangan/pembayaran/5: isi tanpa luapan horizontal
+[lulus] 375 dark /keuangan/pembayaran/5: tidak ada teks yang meluber/menimpa
+[lulus] 375 dark /keuangan/laporan: isi tanpa luapan horizontal
+[lulus] 375 dark /keuangan/laporan: tidak ada teks yang meluber/menimpa
+[lulus] 375 dark /keuangan/rekonsiliasi: isi tanpa luapan horizontal
+[lulus] 375 dark /keuangan/rekonsiliasi: tidak ada teks yang meluber/menimpa
+[lulus] 375 dark /keuangan/verifikasi: isi tanpa luapan horizontal
+[lulus] 375 dark /keuangan/verifikasi: tidak ada teks yang meluber/menimpa
+[lulus] 768 light /keuangan: isi tanpa luapan horizontal
+[lulus] 768 light /keuangan: tidak ada teks yang meluber/menimpa
+[lulus] 768 light /keuangan/santri/1710: isi tanpa luapan horizontal
+[lulus] 768 light /keuangan/santri/1710: tidak ada teks yang meluber/menimpa
+[lulus] 768 light /keuangan/tagihan/2: isi tanpa luapan horizontal
+[lulus] 768 light /keuangan/tagihan/2: tidak ada teks yang meluber/menimpa
+[lulus] 768 light /keuangan/transaksi?santri_id=1710&mode=setoran: isi tanpa luapan horizontal
+[lulus] 768 light /keuangan/transaksi?santri_id=1710&mode=setoran: tidak ada teks yang meluber/menimpa
+[lulus] 768 light /keuangan/pembayaran/5: isi tanpa luapan horizontal
+[lulus] 768 light /keuangan/pembayaran/5: tidak ada teks yang meluber/menimpa
+[lulus] 768 light /keuangan/laporan: isi tanpa luapan horizontal
+[lulus] 768 light /keuangan/laporan: tidak ada teks yang meluber/menimpa
+[lulus] 768 light /keuangan/rekonsiliasi: isi tanpa luapan horizontal
+[lulus] 768 light /keuangan/rekonsiliasi: tidak ada teks yang meluber/menimpa
+[lulus] 768 light /keuangan/verifikasi: isi tanpa luapan horizontal
+[lulus] 768 light /keuangan/verifikasi: tidak ada teks yang meluber/menimpa
+[lulus] 768 dark /keuangan: isi tanpa luapan horizontal
+[lulus] 768 dark /keuangan: tidak ada teks yang meluber/menimpa
+[lulus] 768 dark /keuangan/santri/1710: isi tanpa luapan horizontal
+[lulus] 768 dark /keuangan/santri/1710: tidak ada teks yang meluber/menimpa
+[lulus] 768 dark /keuangan/tagihan/2: isi tanpa luapan horizontal
+[lulus] 768 dark /keuangan/tagihan/2: tidak ada teks yang meluber/menimpa
+[lulus] 768 dark /keuangan/transaksi?santri_id=1710&mode=setoran: isi tanpa luapan horizontal
+[lulus] 768 dark /keuangan/transaksi?santri_id=1710&mode=setoran: tidak ada teks yang meluber/menimpa
+[lulus] 768 dark /keuangan/pembayaran/5: isi tanpa luapan horizontal
+[lulus] 768 dark /keuangan/pembayaran/5: tidak ada teks yang meluber/menimpa
+[lulus] 768 dark /keuangan/laporan: isi tanpa luapan horizontal
+[lulus] 768 dark /keuangan/laporan: tidak ada teks yang meluber/menimpa
+[lulus] 768 dark /keuangan/rekonsiliasi: isi tanpa luapan horizontal
+[lulus] 768 dark /keuangan/rekonsiliasi: tidak ada teks yang meluber/menimpa
+[lulus] 768 dark /keuangan/verifikasi: isi tanpa luapan horizontal
+[lulus] 768 dark /keuangan/verifikasi: tidak ada teks yang meluber/menimpa
+[lulus] 1280 light /keuangan: isi tanpa luapan horizontal
+[lulus] 1280 light /keuangan: tidak ada teks yang meluber/menimpa
+[lulus] 1280 light /keuangan/santri/1710: isi tanpa luapan horizontal
+[lulus] 1280 light /keuangan/santri/1710: tidak ada teks yang meluber/menimpa
+[lulus] 1280 light /keuangan/tagihan/2: isi tanpa luapan horizontal
+[lulus] 1280 light /keuangan/tagihan/2: tidak ada teks yang meluber/menimpa
+[lulus] 1280 light /keuangan/transaksi?santri_id=1710&mode=setoran: isi tanpa luapan horizontal
+[lulus] 1280 light /keuangan/transaksi?santri_id=1710&mode=setoran: tidak ada teks yang meluber/menimpa
+[lulus] 1280 light /keuangan/pembayaran/5: isi tanpa luapan horizontal
+[lulus] 1280 light /keuangan/pembayaran/5: tidak ada teks yang meluber/menimpa
+[lulus] 1280 light /keuangan/laporan: isi tanpa luapan horizontal
+[lulus] 1280 light /keuangan/laporan: tidak ada teks yang meluber/menimpa
+[lulus] 1280 light /keuangan/rekonsiliasi: isi tanpa luapan horizontal
+[lulus] 1280 light /keuangan/rekonsiliasi: tidak ada teks yang meluber/menimpa
+[lulus] 1280 light /keuangan/verifikasi: isi tanpa luapan horizontal
+[lulus] 1280 light /keuangan/verifikasi: tidak ada teks yang meluber/menimpa
+[lulus] 1280 dark /keuangan: isi tanpa luapan horizontal
+[lulus] 1280 dark /keuangan: tidak ada teks yang meluber/menimpa
+[lulus] 1280 dark /keuangan/santri/1710: isi tanpa luapan horizontal
+[lulus] 1280 dark /keuangan/santri/1710: tidak ada teks yang meluber/menimpa
+[lulus] 1280 dark /keuangan/tagihan/2: isi tanpa luapan horizontal
+[lulus] 1280 dark /keuangan/tagihan/2: tidak ada teks yang meluber/menimpa
+[lulus] 1280 dark /keuangan/transaksi?santri_id=1710&mode=setoran: isi tanpa luapan horizontal
+[lulus] 1280 dark /keuangan/transaksi?santri_id=1710&mode=setoran: tidak ada teks yang meluber/menimpa
+[lulus] 1280 dark /keuangan/pembayaran/5: isi tanpa luapan horizontal
+[lulus] 1280 dark /keuangan/pembayaran/5: tidak ada teks yang meluber/menimpa
+[lulus] 1280 dark /keuangan/laporan: isi tanpa luapan horizontal
+[lulus] 1280 dark /keuangan/laporan: tidak ada teks yang meluber/menimpa
+[lulus] 1280 dark /keuangan/rekonsiliasi: isi tanpa luapan horizontal
+[lulus] 1280 dark /keuangan/rekonsiliasi: tidak ada teks yang meluber/menimpa
+[lulus] 1280 dark /keuangan/verifikasi: isi tanpa luapan horizontal
+[lulus] 1280 dark /keuangan/verifikasi: tidak ada teks yang meluber/menimpa
+[lulus] wali 768 light /keuangan: isi tanpa luapan horizontal
+[lulus] wali 768 dark /keuangan: isi tanpa luapan horizontal
+[lulus] Nol permintaan ke luar 127.0.0.1 (tidak ada)
+[lulus] Tanpa galat halaman (tidak ada)
+
+Ringkasan: 258 lulus, 0 gagal

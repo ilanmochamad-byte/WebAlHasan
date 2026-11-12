@@ -1,0 +1,10 @@
+v6f4 Ringkasan: 45 lulus, 0 gagal
+v6f5 Ringkasan aplikasi Fase 5: 20 lulus, 0 gagal
+ss Ringkasan: 27 lulus, 0 gagal
+ss-audit Ringkasan probe: 3 lulus, 0 gagal
+probe-f1 Ringkasan: 16 lulus, 0 gagal
+probe-v1 Ringkasan: 5 lulus, 0 gagal
+SHA-256 rekaman baseline, handoff, akhir
+cf346747e99cf8d9fff146e9d8db23a4ba01c393a0a463e1db2d611bc440e0c4 web-baseline/jaringan.json
+cf346747e99cf8d9fff146e9d8db23a4ba01c393a0a463e1db2d611bc440e0c4 web-final/jaringan.json
+cf346747e99cf8d9fff146e9d8db23a4ba01c393a0a463e1db2d611bc440e0c4 final-net/jaringan-final.json

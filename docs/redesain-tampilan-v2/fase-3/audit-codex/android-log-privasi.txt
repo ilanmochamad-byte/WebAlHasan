@@ -1,0 +1,2 @@
+349 baris; 0 baris berisi penanda sintetis/bearer
+FLAG_SECURE=1
