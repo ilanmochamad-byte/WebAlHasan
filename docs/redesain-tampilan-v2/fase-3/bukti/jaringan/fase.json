@@ -1,0 +1,224 @@
+{
+ "sbx_v6_bsa_b 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_v6_bsa_b\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_v6_bsa_b 01-menu": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/akses"
+ ],
+ "sbx_v6_bsa_b 02-daftar-santri-cari": [
+  "GET /api/v1/v6/bsa/santri ?page=1",
+  "GET /api/v1/v6/bsa/santri ?page=1&q=V6S0001"
+ ],
+ "sbx_v6_bsa_b 03-rincian-santri": [
+  "GET /api/v1/v6/bsa/santri/1710 ?page=1"
+ ],
+ "sbx_v6_bsa_b 04-setoran-tunai-ketukan-ganda": [
+  "GET /api/v1/v6/bsa/santri/1710 ?page=1",
+  "POST /api/v1/v6/bsa/santri/1710/setoran badan={\"catatan\":\"\",\"idempotency_key\":\"<kunci>\",\"metode\":\"Tunai\",\"nominal\":\"50000\",\"referensi\":\"\"}",
+  "GET /api/v1/v6/bsa/santri/1710 ?page=1"
+ ],
+ "sbx_v6_bsa_b 05-setoran-transfer": [
+  "POST /api/v1/v6/bsa/santri/1710/setoran badan={\"catatan\":\"\",\"idempotency_key\":\"<kunci>\",\"metode\":\"Transfer\",\"nominal\":\"20000\",\"referensi\":\"NET-REF-1\",\"terverifikasi\":false}",
+  "GET /api/v1/v6/bsa/santri/1710 ?page=1"
+ ],
+ "sbx_v6_bsa_b 06-verifikasi-setoran-ketukan-ganda": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/setoran-transfer ?page=1&status=Menunggu",
+  "GET /api/v1/v6/bsa/pembayaran ?page=1&status=Menunggu&sumber=Transfer",
+  "POST /api/v1/v6/bsa/setoran-transfer/1/verifikasi badan={\"idempotency_key\":\"<kunci>\"}",
+  "GET /api/v1/v6/bsa/setoran-transfer ?page=1&status=Menunggu",
+  "GET /api/v1/v6/bsa/pembayaran ?page=1&status=Menunggu&sumber=Transfer"
+ ],
+ "sbx_v6_bsa_b 07-terbit-satu-santri-ketukan-ganda": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/santri/1710 ?page=1",
+  "POST /api/v1/v6/bsa/penerbitan/pratinjau badan={\"jatuh_tempo\":\"2026-11-10\",\"periode\":\"2026-11\",\"santri_id\":1710,\"unit\":\"\"}",
+  "POST /api/v1/v6/bsa/penerbitan badan={\"idempotency_key\":\"<kunci>\",\"jatuh_tempo\":\"2026-11-10\",\"periode\":\"2026-11\",\"pratinjau_hash\":\"8ca70b590f2aa4a6397acfafeeccb5d2213405080a9b51bd4f4792a021f9cd80\",\"santri_id\":1710,\"unit\":\"\"}",
+  "GET /api/v1/v6/bsa/santri/1710 ?page=1",
+  "GET /api/v1/v6/bsa/tagihan/1"
+ ],
+ "sbx_v6_bsa_b 08-bayar-tunai-ketukan-ganda": [
+  "GET /api/v1/v6/bsa/tagihan/1",
+  "POST /api/v1/v6/bsa/tagihan/1/pembayaran badan={\"catatan\":\"\",\"idempotency_key\":\"<kunci>\",\"nominal\":\"20000\",\"referensi\":\"\",\"sumber\":\"Tunai\",\"tanggal_transaksi\":\"2026-11-13\"}",
+  "GET /api/v1/v6/bsa/pembayaran/1"
+ ],
+ "sbx_v6_bsa_b 09-bayar-transfer-menunggu": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/tagihan/1",
+  "POST /api/v1/v6/bsa/tagihan/1/pembayaran badan={\"catatan\":\"\",\"idempotency_key\":\"<kunci>\",\"nominal\":\"10000\",\"referensi\":\"NET-REF-2\",\"sumber\":\"Transfer\",\"tanggal_transaksi\":\"2026-11-13\",\"terverifikasi\":false}",
+  "GET /api/v1/v6/bsa/pembayaran/2"
+ ],
+ "sbx_v6_bsa_b 10-verifikasi-pembayaran": [
+  "POST /api/v1/v6/bsa/pembayaran/2/verifikasi badan={\"idempotency_key\":\"<kunci>\"}",
+  "GET /api/v1/v6/bsa/pembayaran/2"
+ ],
+ "sbx_v6_bsa_b 11-bayar-dari-tabungan-ketukan-ganda": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/tagihan/1",
+  "GET /api/v1/v6/bsa/tagihan/1",
+  "GET /api/v1/v6/bsa/santri/1710 ?page=1",
+  "POST /api/v1/v6/bsa/tagihan/1/bayar-tabungan badan={\"catatan\":\"\",\"idempotency_key\":\"<kunci>\",\"nominal\":\"30000\",\"setuju\":true}",
+  "GET /api/v1/v6/bsa/pembayaran/3"
+ ],
+ "sbx_v6_bsa_b 12-batal-pembayaran": [
+  "POST /api/v1/v6/bsa/pembayaran/3/batal badan={\"alasan\":\"Uji jaringan batal\",\"idempotency_key\":\"<kunci>\"}",
+  "GET /api/v1/v6/bsa/pembayaran/3"
+ ],
+ "sbx_v6_bsa_b 13-revisi-tagihan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/tagihan/1",
+  "POST /api/v1/v6/bsa/tagihan/1/revisi badan={\"alasan\":\"Uji jaringan revisi\",\"idempotency_key\":\"<kunci>\",\"jatuh_tempo\":\"\",\"jenis\":\"Tambahan\",\"nama\":\"\",\"nominal\":\"5000\",\"versi\":1}"
+ ],
+ "sbx_v6_bsa_b 14-koreksi-tabungan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/tabungan/1",
+  "POST /api/v1/v6/bsa/tabungan/1/koreksi badan={\"alasan\":\"Uji jaringan koreksi\",\"idempotency_key\":\"<kunci>\"}",
+  "GET /api/v1/v6/bsa/tabungan/1"
+ ],
+ "sbx_v6_bsa_b 15-penerbitan-massal-ketukan-ganda": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/tunggakan ?page=1",
+  "POST /api/v1/v6/bsa/penerbitan/pratinjau badan={\"jatuh_tempo\":\"2026-11-15\",\"periode\":\"2026-11\",\"unit\":\"\"}",
+  "POST /api/v1/v6/bsa/penerbitan badan={\"idempotency_key\":\"<kunci>\",\"jatuh_tempo\":\"2026-11-15\",\"periode\":\"2026-11\",\"pratinjau_hash\":\"c1233311664506e43b1a2365d8724ac0b50b657137dcd9607f7185065656305a\",\"unit\":\"\"}"
+ ],
+ "sbx_v6_bsa_b 16-batal-tagihan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/tagihan/2",
+  "POST /api/v1/v6/bsa/tagihan/2/batal badan={\"alasan\":\"Uji jaringan batal tagihan\",\"idempotency_key\":\"<kunci>\",\"versi\":1}"
+ ],
+ "sbx_v6_bsa_b 17-tunggakan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/tunggakan ?page=1",
+  "GET /api/v1/v6/bsa/tunggakan ?lewat=1&page=1"
+ ],
+ "sbx_v6_bsa_b 18-pembayaran-saring": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/pembayaran ?page=1",
+  "GET /api/v1/v6/bsa/pembayaran ?page=1&sumber=Tunai"
+ ],
+ "sbx_v6_bsa_b 19-mutasi-saring": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/tabungan ?page=1",
+  "GET /api/v1/v6/bsa/tabungan ?jenis=Setoran&page=1"
+ ],
+ "sbx_v6_bsa_b 20-rekonsiliasi": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/rekonsiliasi ?tanggal=2026-11-13"
+ ],
+ "sbx_v6_bsa_b 21-laporan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/laporan ?dari=2026-11&page=1&sampai=2026-11",
+  "GET /api/v1/v6/bsa/laporan ?dari=2026-09&page=1&sampai=2026-11",
+  "GET /api/v1/v6/bsa/laporan ?dari=2026-01&page=1&sampai=2026-11"
+ ],
+ "sbx_admin 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_admin\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_admin 01-menu": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/akses"
+ ],
+ "sbx_admin 02-rincian-santri": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/santri/1710 ?page=1"
+ ],
+ "sbx_admin 03-verifikasi": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/setoran-transfer ?page=1&status=Menunggu",
+  "GET /api/v1/v6/bsa/pembayaran ?page=1&status=Menunggu&sumber=Transfer"
+ ],
+ "sbx_v6_wali_dua 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_v6_wali_dua\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_v6_wali_dua 01-menu": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/v6/bsa/santri ?page=1"
+ ],
+ "sbx_v6_wali_dua 02-rincian-anak": [
+  "GET /api/v1/v6/bsa/santri/1710 ?page=1"
+ ],
+ "sbx_v6_wali_dua 03-tagihan-anak": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/tagihan/1"
+ ],
+ "sbx_v6_wali_dua 04-riwayat-pembayaran": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/pembayaran ?page=1"
+ ],
+ "sbx_v6_wali_dua 05-laporan-anak": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v6/bsa/laporan ?dari=2026-11&page=1&sampai=2026-11"
+ ]
+}

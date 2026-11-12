@@ -1,0 +1,17 @@
+[lulus] setoran: penolakan sesi lama tanpa mutasi uang
+[lulus] setoran: 403 membuang data dan draf lama (tanpa nama, referensi, kolom isian)
+[lulus] pembayaran tunai: penolakan sesi lama tanpa mutasi uang
+[lulus] pembayaran tunai: 403 membuang data dan draf lama (tanpa nama, referensi, kolom isian)
+[lulus] bayar tabungan: penolakan sesi lama tanpa mutasi uang
+[lulus] bayar tabungan: 403 membuang data dan draf lama (tanpa nama, referensi, kolom isian)
+[lulus] revisi: penolakan sesi lama tanpa mutasi uang
+[lulus] revisi: 403 membuang data dan draf lama (tanpa nama, referensi, kolom isian)
+[lulus] verifikasi pembayaran: penolakan sesi lama tanpa mutasi uang
+[lulus] verifikasi pembayaran: 403 membuang data dan draf lama (tanpa nama, referensi, kolom isian)
+[lulus] batal pembayaran: penolakan sesi lama tanpa mutasi uang
+[lulus] batal pembayaran: 403 membuang data dan draf lama (tanpa nama, referensi, kolom isian)
+[lulus] koreksi tabungan: penolakan sesi lama tanpa mutasi uang
+[lulus] koreksi tabungan: 403 membuang data dan draf lama (tanpa nama, referensi, kolom isian)
+[lulus] verifikasi setoran: penolakan sesi lama tanpa mutasi uang
+[lulus] verifikasi setoran: 403 membuang data dan draf lama (tanpa nama, referensi, kolom isian)
+Ringkasan: 16 lulus, 0 gagal

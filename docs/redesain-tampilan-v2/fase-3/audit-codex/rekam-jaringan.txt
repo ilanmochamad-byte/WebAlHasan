@@ -1,0 +1,21 @@
+[lulus] DB: dua pengeluaran, satu penolakan setoran, satu penolakan pembayaran
+[lulus] sbx_v6_bsa_b 04-setoran-tunai-ketukan-ganda: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 05-setoran-transfer: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 06-verifikasi-setoran-ketukan-ganda: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 06a-penarikan-tunai: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 06b-belanja-transfer: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 06c-setoran-transfer-untuk-ditolak: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 06d-tolak-setoran-transfer: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 07-terbit-satu-santri-ketukan-ganda: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 08-bayar-tunai-ketukan-ganda: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 09-bayar-transfer-menunggu: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 10-verifikasi-pembayaran: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 10a-bayar-transfer-untuk-ditolak: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 10b-tolak-pembayaran-transfer: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 11-bayar-dari-tabungan-ketukan-ganda: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 12-batal-pembayaran: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 13-revisi-tagihan: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 14-koreksi-tabungan: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 15-penerbitan-massal-ketukan-ganda: 1 kunci idempotensi, 1 POST berkunci
+[lulus] sbx_v6_bsa_b 16-batal-tagihan: 1 kunci idempotensi, 1 POST berkunci
+Direkam 38 langkah, 188 permintaan; keluar 127.0.0.1: 0

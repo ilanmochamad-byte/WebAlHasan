@@ -1,0 +1,79 @@
+
+=== A-1. Tab Semua/PA/PI ===
+[lulus] API: dua kelas pertemuan; kelas asal 3 PA + 2 PI
+[lulus] Tab Semua, PA, PI tampil
+[lulus] Hitungan tab = peserta unik (5/3/2)
+[lulus] Tanpa tab "Kelas belum tercatat" bila semua kelas asal cocok
+[lulus] Tab awal = Semua
+[lulus] Tampilan Semua memiliki judul pemisah per kelas
+[lulus] Absensi tab Semua: konten tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Tab PA hanya peserta kelas asal PA
+[lulus] Tab PI hanya peserta kelas asal PI
+[lulus] Keterangan jumlah tampil
+
+=== A-2. Cari nama/NIS ===
+[lulus] Cari nama huruf besar menemukan santri tanpa menggulir
+[lulus] Cari potongan NIS
+[lulus] Hasil kosong menampilkan pesan
+[lulus] "Tampilkan semua santri" mengosongkan pencarian
+[lulus] Tombol hapus pencarian menampilkan kembali semua peserta
+
+=== A-3. Nama sama, NIS berbeda ===
+[lulus] Dua santri bernama sama tampil sebagai dua kartu
+[lulus] Kelas asal masing-masing benar (PA dan PI)
+[lulus] Cari NIS memisahkan santri bernama sama
+
+=== A-4. Draf lintas tab dan pencarian ===
+[lulus] Tab PI + NIS santri PA: tidak tampil (saringan digabung)
+[lulus] Draf PA tetap setelah pindah tab dan mencari
+[lulus] Draf PI tetap setelah pindah tab dan mencari
+[lulus] Ringkasan tetap menghitung seluruh peserta saat tab PA (3 Hadir)
+[lulus] Judul jumlah tetap seluruh peserta
+
+=== A-5. Semua hadir ===
+[lulus] Tombol berlabel "Semua hadir (5)"
+[lulus] Keterangan jangkauan Semua hadir eksplisit
+[lulus] Semua hadir dari tab PA juga mengubah santri PI yang tersembunyi
+[lulus] Semua hadir hanya mengubah status, catatan tetap
+
+=== A-6. Simpan dari tab tersaring ===
+[lulus] Payload: seluruh 5 peserta unik tepat sekali walau hanya 1 tampil
+[lulus] Payload membawa status/catatan pada student_id yang benar
+[lulus] DB: satu absensi guru, lima absensi santri unik
+[lulus] DB: status/catatan per santri_id benar
+[lulus] Muat ulang: status/catatan PI dari server
+[lulus] Muat ulang: status PA dari server
+
+=== A-7. Kelas asal hilang / di luar daftar ===
+[lulus] Dua peserta tanpa kelas terverifikasi → tab "Kelas belum tercatat · 2", PA turun ke 2
+[lulus] Kelompok "Kelas belum tercatat" memuat keduanya, tidak ditebak PA/PI
+
+=== A-8. Gabungan non-IBTIDA ===
+[lulus] Tab memakai nama kelas lengkap (bukan PA/PI)
+
+=== A-9. Server lama tanpa classes/class ===
+[lulus] Tanpa tab dan penanda gabungan
+[lulus] Pencarian tetap bekerja
+[lulus] Koreksi menyimpan seluruh peserta, baris tidak bertambah
+
+=== A-10. Satu kelas ===
+[lulus] Satu kelas: tanpa tab dan tanpa keterangan saringan
+[lulus] Satu kelas: cari NIS
+[lulus] Satu kelas: simpan dua santri + satu guru
+
+=== A-11. Rincian laporan dan Keamanan ===
+[lulus] Rincian laporan: tab PA/PI
+[lulus] Rincian laporan: tab PI hanya PI
+[lulus] Rincian laporan: cari NIS
+[lulus] Rincian laporan: konten tanpa gulir horizontal pada 375 px (selisih 0px)
+[lulus] Keamanan: tab PA/PI berhitungan
+[lulus] Keamanan: tab PA hanya PA
+[lulus] Keamanan: cari nama menemukan dua santri bernama sama
+[lulus] Keamanan: tetap hanya baca (tanpa pemilih status)
+[lulus] Rincian kehadiran Keamanan: konten tanpa gulir horizontal pada 375 px (selisih 0px)
+
+=== A-12. Jaringan dan konsol ===
+[lulus] Tanpa permintaan keluar 127.0.0.1 (nol)
+[lulus] Konsol tanpa token
+
+Ringkasan: 53 lulus, 0 gagal

@@ -1,0 +1,1 @@
+ketukan ganda setoran: transaksi 4 → 5 (harus +1)

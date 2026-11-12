@@ -1,0 +1,7 @@
+[lulus] Formulir: 403 menutup layar tanpa nama santri (F-1 tetap)
+[lulus] Formulir: sesudah hak dipulihkan dan "Coba lagi", pesan penolakan lama tidak tampil
+[lulus] Antrean: 403 menutup layar tanpa referensi transfer (F-1 tetap)
+[lulus] Antrean: sesudah "Coba lagi", kartu tampil tanpa pesan penolakan lama
+[lulus] Tanpa mutasi saat ditolak (transfer tetap Menunggu)
+
+Ringkasan: 5 lulus, 0 gagal

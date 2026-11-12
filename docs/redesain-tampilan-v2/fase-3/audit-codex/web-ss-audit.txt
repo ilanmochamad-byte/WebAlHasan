@@ -1,0 +1,4 @@
+[lulus] B-1 respons pratinjau lama sesudah periode/jatuh tempo diubah tidak mengaktifkan tombol terbit
+[lulus] B-2 respons pratinjau dari sebelum latar tidak dimunculkan kembali setelah hak dimuat ulang
+[lulus] Probe pratinjau tidak menerbitkan tagihan
+Ringkasan probe: 3 lulus, 0 gagal

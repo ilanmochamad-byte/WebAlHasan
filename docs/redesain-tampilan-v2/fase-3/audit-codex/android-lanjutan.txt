@@ -1,0 +1,32 @@
+
+=== A-2. Tautan tanpa riwayat ===
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+[lulus] alhasanapps://keuangan/tagihan/1 membuka rincian tagihan (invoice)
+[lulus] Rincian tagihan (tautan): ← "Kembali" 43.8×44.2 dp (≈ 44)
+[lulus] ← dari tautan membuka Beranda
+
+=== A-3. Penugasan dicabut saat formulir terbuka ===
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+[lulus] Ditolak 403: tanpa mutasi, nama dan kolom isian ditutup, ← tetap ada
+[lulus] Keadaan ditolak tetap ber-← (K-10)
+
+=== A-4. Admin dan orang tua ===
+[lulus] Admin: menu hanya baca, tanpa ubin penerbitan
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+[lulus] Admin: rincian santri tanpa tombol mutasi (Penarikan/belanja, Terbitkan tagihan)
+[lulus] Orang tua: dua kartu anak (Buka keuangan …)
+  (tombol Tools dev client dimatikan: true)
+[lulus] Rincian anak: strip tanpa "Transfer menunggu"
+[lulus] Relasi wali dicabut → muat ulang ditolak, nama anak hilang
+
+=== A-5. Mode gelap dan teks 2,0× ===
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+[lulus] Gelap + 2,0×: kepala, strip, dan judul tampil
+[lulus] Gelap + 2,0× rincian santri: ← "Kembali" 43.8×44.2 dp (≈ 44)
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+[lulus] Gelap + 2,0× rincian tagihan: kedua tombol tindakan terjangkau dengan menggulir
+[lulus] Gelap + 2,0× rincian tagihan: ← "Kembali" 43.8×44.2 dp (≈ 44)
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+[lulus] Gelap + 2,0× laporan tampil
+
+Ringkasan: 15 lulus, 0 gagal

@@ -197,12 +197,14 @@ try {
       await tunggu(q, 'tidak dapat diakses');
       ok(!(await tombol(q, 'Tampilkan tagihan').count()) && postTerbit.length === n, `${label}: alamat langsung ditolak tanpa formulir dan tanpa POST`);
     }
+    await q.unrouteAll({ behavior: 'wait' });
     await q.context().close();
   }
   const ts = await halamanApp('sbx_v6_bsa_tsanawi');
   await ts.goto(app + `/keuangan/terbit-santri?santri_id=${sSmp}`);
   await tunggu(ts, 'Data mungkin sudah dihapus');
   ok(!(await tombol(ts, 'Tampilkan tagihan').count()), 'Petugas Tsanawi: santri SMP di luar cakupan → 404, tanpa formulir');
+  await ts.unrouteAll({ behavior: 'wait' });
   await ts.context().close();
 
   console.log('\n=== A-8. Privasi ===');

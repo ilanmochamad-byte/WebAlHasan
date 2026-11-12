@@ -1,0 +1,53 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow peran
+Run masuk.yaml...
+  Launch app "com.ilanmochamad.alhasanApps" with clear state and clear keychain... COMPLETED
+  Assert that "Alhasan Apps" is visible... COMPLETED
+  Scrolling DOWN until "Masukkan username" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan username"... COMPLETED
+  Input text ${AKUN}... COMPLETED
+  Hide Keyboard... COMPLETED
+  Scrolling DOWN until "Masukkan password" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan password"... COMPLETED
+  Input text ${SANDI}... COMPLETED
+  Press Enter key... COMPLETED
+  Assert that ".*Buka profil|Not Now" is visible... COMPLETED
+  Run flow when "Not Now" is visible...
+    Tap on "Not Now"... COMPLETED
+  Run flow when "Not Now" is visible... COMPLETED
+  Assert that ".*Buka profil" is visible... COMPLETED
+Run masuk.yaml... COMPLETED
+Open alhasanapps://keuangan... COMPLETED
+Assert that ".*Admin — hanya membaca.*" is visible... COMPLETED
+Assert that "Terbitkan tagihan bulanan" is not visible... COMPLETED
+Open alhasanapps://keuangan/santri/${SANTRI}... COMPLETED
+Assert that ".*Saldo tabungan.*" is visible... COMPLETED
+Assert that "Setoran" is not visible... COMPLETED
+Assert that "Penarikan/belanja" is not visible... COMPLETED
+Run masuk.yaml...
+  Launch app "com.ilanmochamad.alhasanApps" with clear state and clear keychain... COMPLETED
+  Assert that "Alhasan Apps" is visible... COMPLETED
+  Scrolling DOWN until "Masukkan username" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan username"... COMPLETED
+  Input text ${AKUN}... COMPLETED
+  Hide Keyboard... COMPLETED
+  Scrolling DOWN until "Masukkan password" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan password"... COMPLETED
+  Input text ${SANDI}... COMPLETED
+  Press Enter key... COMPLETED
+  Assert that ".*Buka profil|Not Now" is visible... COMPLETED
+  Run flow when "Not Now" is visible...
+    Tap on "Not Now"... COMPLETED
+  Run flow when "Not Now" is visible... COMPLETED
+  Assert that ".*Buka profil" is visible... COMPLETED
+Run masuk.yaml... COMPLETED
+Open alhasanapps://keuangan... COMPLETED
+Assert that "Keuangan anak" is visible... COMPLETED
+Assert that "Buka keuangan SBX V6 Santri SMP" is visible... COMPLETED
+Assert that "Buka keuangan SBX V6 Santri Tsanawi" is visible... COMPLETED
+Tap on "Buka keuangan SBX V6 Santri SMP"... COMPLETED
+Assert that ".*Saldo tabungan.*" is visible... COMPLETED
+Assert that ".*Transfer menunggu.*" is not visible... COMPLETED
+Tap on "Kembali"... COMPLETED
+Assert that "Buka keuangan SBX V6 Santri Tsanawi" is visible... COMPLETED
+Assert that "Keuangan anak" is visible... COMPLETED
