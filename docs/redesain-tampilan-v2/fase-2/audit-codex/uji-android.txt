@@ -1,0 +1,76 @@
+Pengajian — AVD Medium_Phone API 36, dev client Debug 1.5.0 + Metro sumber audit
+[lulus] Jadwal: ← di atas judul besar + subjudul
+[lulus] Jadwal: pil tampilan dan pil status sesi
+[lulus] Rincian tugas: kepala stack ber-←, kelas gabungan
+[lulus] Rincian tugas: tombol kembali Android kembali ke Jadwal
+[lulus] Absensi: kepala stack ← · judul · ⋯
+[lulus] Absensi: "Perbarui daftar" bukan tombol langsung; ringkasan mini tampil
+[lulus] ⋯ → "Perbarui daftar": pesan hasil tampil
+[lulus] Absensi: tombol status santri 64×44 dp ≥ 44
+[lulus] Absensi: ringkasan mini mengikuti draf (Sakit: 1)
+[lulus] Absensi: ← tetap terlihat (kepala di luar area gulir)
+[lulus] Kirim absensi: panel hasil tampil
+[lulus] Absensi gelap: ← dan isi tampil
+[lulus] Absensi gelap-teks-2.0: ← dan isi tampil
+Hasil (pengajian): 13 lulus / 0 gagal
+
+Izin — dev client Debug 1.6.0 + Metro, putaran awal sebelum ADB putus
+[lulus] Perizinan: ← "Kembali ke Beranda" ≥ 44 dp di atas judul besar
+[lulus] Perizinan: SearchBar di atas pil penyaring
+[lulus] Perizinan pengurus: tinggi FAB 56 dp (≥ 56)
+[lulus] Perizinan pengurus: FAB 16 dp dari tepi kanan (16)
+[lulus] Perizinan pengurus: lebar FAB 149 dp ≤ setengah layar (206 dp)
+[lulus] Perizinan pengurus: FAB di atas bilah tab sistem, jarak 16 dp (16; tepi atas bilah 2126px dari sistem)
+[lulus] Perizinan pengurus: FAB berteks "Ajukan izin" (ikon + teks)
+[lulus] Papan ketik terbuka (true): FAB disembunyikan
+[lulus] Papan ketik ditutup: FAB kembali
+[lulus] Ujung daftar: elemen terakhir (Sebelumnya, bawah 1832) di atas FAB (atas 1937)
+[lulus] FAB membuka formulir; kepala stack ber-← (label khusus)
+[lulus] Buat izin: ← kembali ke Perizinan
+[lulus] Buat izin: tombol kembali Android kembali ke Perizinan
+[lulus] Rincian izin: kepala stack ber-←
+[lulus] Rincian izin: ← kembali ke Perizinan
+[lulus] Perizinan: ← membuka tab Beranda
+[lulus] Tautan alhasanapps://notifikasi membuka Notifikasi
+[lulus] Notifikasi: kepala stack ← · judul · ⋯
+[lulus] ⋯ membuka lembar bawah berisi tindakan sekunder
+[lulus] Notifikasi: ← membawa ke layar aplikasi
+[lulus] Admin: FAB tampil (sama dengan capability server di uji web)
+Hasil (izin): 21 lulus / 1 gagal
+
+Lanjutan bagian peran dan skala teks, APK sama setelah cold boot
+[lulus] Admin: FAB tampil (sama dengan capability server di uji web)
+[lulus] Pembimbing: FAB tampil (sama dengan capability server di uji web)
+[lulus] Murobi: FAB tidak tampil (sama dengan capability server di uji web)
+[lulus] Orang tua: FAB tidak tampil (sama dengan capability server di uji web)
+[lulus] Daftar izin wali: kepala stack ber-←
+[lulus] Izin wali (orang tua): tinggi FAB 56 dp (≥ 56)
+[lulus] Izin wali (orang tua): FAB 16 dp dari tepi kanan (16)
+[lulus] Izin wali (orang tua): lebar FAB 149 dp ≤ setengah layar (206 dp)
+[lulus] Izin wali (orang tua): FAB 40 dp dari dasar layar (16 + area aman bawah)
+[lulus] Izin wali (orang tua): FAB berteks "Ajukan izin" (ikon + teks)
+[lulus] Ajukan izin anak: ← tampil
+[lulus] Ajukan izin anak: tombol kembali Android kembali ke daftar
+[lulus] Perizinan gelap: FAB tampil
+[lulus] Perizinan gelap: tinggi FAB 56 dp (≥ 56)
+[lulus] Perizinan gelap: FAB 16 dp dari tepi kanan (16)
+[lulus] Perizinan gelap: lebar FAB 149 dp ≤ setengah layar (206 dp)
+[lulus] Perizinan gelap: FAB di atas bilah tab sistem, jarak 16 dp (16; tepi atas bilah 2126px dari sistem)
+[lulus] Perizinan gelap: FAB berteks "Ajukan izin" (ikon + teks)
+[lulus] Perizinan gelap: judul dan ← tampil
+[lulus] Rincian izin gelap: ← tampil
+[lulus] Perizinan teks-1.3: FAB tampil
+[lulus] Perizinan teks-1.3: tinggi FAB 56 dp (≥ 56)
+[lulus] Perizinan teks-1.3: FAB 16 dp dari tepi kanan (16)
+[lulus] Perizinan teks-1.3: lebar FAB 172 dp ≤ setengah layar (206 dp)
+[lulus] Perizinan teks-1.3: FAB di atas bilah tab sistem, jarak 16 dp (16; tepi atas bilah 2120px dari sistem)
+[lulus] Perizinan teks-1.3: FAB berteks "Ajukan izin" (ikon + teks)
+[lulus] Perizinan teks-1.3: judul dan ← tampil
+[lulus] Rincian izin teks-1.3: ← tampil
+[lulus] Perizinan teks-2.0: FAB akan melewati setengah layar → alternatif tombol lebar penuh di atas kotak cari
+[lulus] Perizinan teks-2.0: judul dan ← tampil
+[lulus] Rincian izin teks-2.0: ← tampil
+[lulus] Perizinan gelap-teks-2.0: FAB akan melewati setengah layar → alternatif tombol lebar penuh di atas kotak cari
+[lulus] Perizinan gelap-teks-2.0: judul dan ← tampil
+[lulus] Rincian izin gelap-teks-2.0: ← tampil
+Hasil (izin): 34 lulus / 0 gagal

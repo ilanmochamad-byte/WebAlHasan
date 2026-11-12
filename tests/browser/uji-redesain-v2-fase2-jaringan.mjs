@@ -2,12 +2,11 @@ import fs from 'node:fs';
 import { chromium } from 'playwright';
 
 // Redesain tampilan aplikasi gelombang 2 Fase 2 — rekam permintaan API untuk
-// alur yang sama pada baseline dan kode fase, lalu bandingkan. Hanya memakai
-// pemilih yang ada di KEDUA versi (nama aksesibilitas, placeholder, label);
-// satu-satunya cabang: "Perbarui daftar" dibuka dari ⋯ bila tidak tampil
-// langsung (di kode fase tombol itu pindah ke menu ⋯).
+// alur yang sama pada baseline dan kode fase, lalu bandingkan. Pemilih
+// menyesuaikan letak kontrol yang pindah ke ⋯ atau lembar keputusan, serta
+// label aksesibilitas tombol pengajuan wali.
 //
-// Yang direkam per langkah: metode, path (ID di path → {id}), query (kunci =
+// Yang direkam per langkah: metode, path lengkap termasuk ID, query (kunci =
 // nilai), dan badan JSON kanonik. Password disamarkan; kunci idempotensi
 // (acak per percobaan) diganti penanda. Token tidak pernah ditulis.
 // Dijalankan pada DB yang dipulihkan ke keadaan sama sebelum tiap perekaman.
@@ -72,7 +71,7 @@ async function sesi(user) {
       try { badan = ' badan=' + JSON.stringify(kanonik(JSON.parse(mentah))); } catch { badan = ' badan(bukan JSON)'; }
     }
     const query = [...u.searchParams].sort().map(([k, v]) => `${k}=${v}`).join('&');
-    (hasil[langkah.nama] ??= []).push(`${req.method()} ${u.pathname.replace(/\/\d+(?=\/|$)/g, '/{id}')}${query ? ' ?' + query : ''}${badan}`);
+    (hasil[langkah.nama] ??= []).push(`${req.method()} ${u.pathname}${query ? ' ?' + query : ''}${badan}`);
     try {
       const response = await route.fetch({ maxRedirects: 0 });
       await route.fulfill({ response, headers: { ...response.headers(), 'Access-Control-Allow-Origin': app } });
@@ -90,7 +89,7 @@ async function sesi(user) {
 }
 const tombol = (p, nama) => p.getByRole('button', { name: nama, exact: true });
 const tunggu = (p, t, timeout = 20000) => p.getByText(t, { exact: false }).first().waitFor({ timeout });
-/** Navigasi di dalam aplikasi tanpa muat ulang (riwayat browser), agar sesi tidak dimuat ulang. */
+/** Membuka rute langsung dengan cara yang sama pada kedua versi. */
 const ke = async (p, jalur) => { await p.goto(app + jalur); };
 
 try {
@@ -206,8 +205,14 @@ try {
       await p.getByRole('button', { name: /^Pengajuan \d+ untuk / }).filter({ hasText: alasanCari }).first().click();
       await tombol(p, keputusan).waitFor({ timeout: 20000 });
       await mu.mulai(`3${n}-putuskan`);
-      await p.getByPlaceholder('Minimal 3 karakter').first().fill(`Alasan ${keputusan.toLowerCase()} uji`);
-      await tombol(p, keputusan).click();
+      const alasan = p.getByPlaceholder('Minimal 3 karakter').first();
+      let kirim = tombol(p, keputusan);
+      if (!(await alasan.isVisible())) {
+        await kirim.click();
+        kirim = tombol(p, keputusan === 'Setujui' ? 'Konfirmasi setujui' : 'Konfirmasi tolak');
+      }
+      await alasan.fill(`Alasan ${keputusan.toLowerCase()} uji`);
+      await kirim.click();
       await tunggu(p, pesan);
     }
     await mu.mulai('4-laporan-izin');
@@ -223,7 +228,7 @@ try {
     await p.getByRole('button', { name: 'Buka izin orang tua melalui pembimbing' }).click();
     await tunggu(p, 'Izin anak melalui pembimbing');
     await wa.mulai('2-buat-buka');
-    await tombol(p, 'Ajukan izin').click();
+    await p.getByRole('button', { name: /^Ajukan izin(?: baru)?$/ }).click();
     await tunggu(p, 'Rentang izin');
     await wa.mulai('3-buat-kirim');
     await p.getByRole('radio', { name: 'SBX V7 Santri Satu (V7S0001)' }).click();

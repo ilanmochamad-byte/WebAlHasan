@@ -1,0 +1,49 @@
+iPhone 17 Pro simulator iOS 26.2. Host Release 1.6.0 arm64 handoff, bundel Hermes v98 audit.
+fab-pengurus.txt — Take screenshot ios-perizinan-${NAMA}... COMPLETED
+notifikasi.txt — Assert that "Ringkasan hari ini" is visible... COMPLETED
+peran-sbx_admin.txt — Take screenshot ios-perizinan-${NAMA}... COMPLETED
+peran-sbx_murobi_a.txt — Take screenshot ios-perizinan-${NAMA}... COMPLETED
+peran-sbx_ortu_a.txt — Take screenshot ios-perizinan-${NAMA}... COMPLETED
+peran-sbx_v7_pembimbing_satu.txt — Take screenshot ios-perizinan-${NAMA}... COMPLETED
+perizinan.txt — Assert that "Kembali ke Beranda" is not visible... COMPLETED
+tampilan-izin-ax-xl.txt — Take screenshot ios-notifikasi-${NAMA}... COMPLETED
+tampilan-izin-ax-xxxl.txt — Take screenshot ios-notifikasi-${NAMA}... COMPLETED
+tampilan-izin-gelap-ax-xxxl.txt — Take screenshot ios-notifikasi-${NAMA}... COMPLETED
+tampilan-izin-gelap.txt — Take screenshot ios-notifikasi-${NAMA}... COMPLETED
+wali.txt — Assert that "Kembali ke Beranda" is visible... COMPLETED
+pengajian.txt — Assert that "Ringkasan hari ini" is visible... COMPLETED
+tampilan-pengajian-ax-xl.txt — Assert that "Kembali" is visible... COMPLETED
+tampilan-pengajian-ax-xxxl.txt — Assert that "Kembali" is visible... COMPLETED
+tampilan-pengajian-gelap-ax-xxxl.txt — Assert that "Kembali" is visible... COMPLETED
+tampilan-pengajian-gelap.txt — Assert that "Kembali" is visible... COMPLETED
+layar 402×791 pt · FAB [238,719,386,775] · tepi atas butir bilah tab 795
+[lulus] Tinggi FAB 56 pt (≥ 56)
+[lulus] FAB 16 pt dari tepi kanan (16)
+[lulus] Lebar FAB 148 pt ≤ setengah layar (201)
+[lulus] FAB (bawah 775) tidak bertabrakan dengan bilah tab Liquid Glass (butir mulai 795); jarak 20 pt
+Hasil ukur FAB: 4 lulus / 0 gagal
+
+Bundel sumber akhir — keputusan V2 dan papan ketik
+Assert that "Setujui" is visible... COMPLETED
+Tap on "Setujui"... COMPLETED
+Assert that "Setujui pengajuan" is visible... COMPLETED
+Tap on "Minimal 3 karakter"... COMPLETED
+Input text Alasan audit simulator... COMPLETED
+Scrolling DOWN until "Konfirmasi setujui" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+Assert that "Konfirmasi setujui" is visible... COMPLETED
+Tap on "Konfirmasi setujui"... COMPLETED
+Scrolling UP until "Keputusan Disetujui tersimpan.*" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+Assert that "Setujui" is not visible... COMPLETED
+Tap on "Kembali"... COMPLETED
+Assert that ".*Buka profil" is visible... COMPLETED
+
+Bundel dengan kegagalan proteksi terinjeksi — ← dan fail-closed
+Stop com.ilanmochamad.alhasanApps... COMPLETED
+Open alhasanapps://izin-wali... COMPLETED
+Assert that "Perlindungan informasi perizinan belum tersedia.*" is visible... COMPLETED
+Assert that "Izin melalui pembimbing" is visible... COMPLETED
+Assert that "Kembali" is visible... COMPLETED
+Assert that "Izin anak melalui pembimbing" is not visible... COMPLETED
+Assert that "Ajukan izin baru" is not visible... COMPLETED
+Tap on "Kembali"... COMPLETED
+Assert that ".*Buka profil" is visible... COMPLETED

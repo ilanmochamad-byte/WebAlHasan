@@ -15,9 +15,9 @@ appId: com.ilanmochamad.alhasanApps
     timeout: 30000
 - assertVisible: "Kembali"
 - assertVisible: "Izin melalui pembimbing"
-- assertVisible: "Ajukan izin"
+- assertVisible: "Ajukan izin baru"
 - takeScreenshot: ios-izin-wali-daftar
-- tapOn: "Ajukan izin"
+- tapOn: "Ajukan izin baru"
 - extendedWaitUntil:
     visible: "Rentang izin"
     timeout: 20000

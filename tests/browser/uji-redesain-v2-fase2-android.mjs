@@ -304,9 +304,9 @@ try {
     await tidur(2000);
     d = dump();
     ok(d.some(n => n.desc === 'Kembali') && d.some(n => n.text === 'Izin melalui pembimbing'), 'Daftar izin wali: kepala stack ber-←');
-    await ukurFab('Izin wali (orang tua)', 'Ajukan izin', { bilah: false });
+    await ukurFab('Izin wali (orang tua)', 'Ajukan izin baru', { bilah: false });
     foto('izin-wali-daftar');
-    await ketuk(/^Ajukan izin$/);
+    await ketuk(/^Ajukan izin baru$/);
     await cari(/Rentang izin/, { timeout: 20000 });
     ok(dump().some(n => n.desc === 'Kembali'), 'Ajukan izin anak: ← tampil');
     foto('izin-wali-buat');

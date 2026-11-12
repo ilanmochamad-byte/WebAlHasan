@@ -107,7 +107,7 @@ try {
   await tunggu(w, 'Izin anak melalui pembimbing');
   await lebar(w, 'Pintu izin wali');
   await foto(w, 'wali-pintu');
-  await tombol(w, 'Ajukan izin').click();
+  await w.getByRole('button', { name: /^Ajukan izin(?: baru)?$/ }).click();
   await tunggu(w, 'Rentang izin');
   await tombol(w, 'Tinjau pengajuan').click();
   await tunggu(w, 'Pilih anak terlebih dahulu.');
@@ -227,9 +227,15 @@ try {
   await tunggu(m, 'Diajukan orang tua');
   await lebar(m, 'Rincian V2 murobi (asal wali)');
   ok((await tombol(m, 'Batalkan pengajuan').count()) === 0, 'Layar V2 murobi tidak menawarkan pembatalan pengajuan wali');
-  await m.getByPlaceholder('Minimal 3 karakter').first().fill('Sesuai jadwal pulang');
+  const alasanKeputusan = m.getByPlaceholder('Minimal 3 karakter').first();
+  let kirimKeputusan = tombol(m, 'Setujui');
+  if (!(await alasanKeputusan.isVisible())) {
+    await kirimKeputusan.click();
+    kirimKeputusan = tombol(m, 'Konfirmasi setujui');
+  }
+  await alasanKeputusan.fill('Sesuai jadwal pulang');
   const sebelumK = postV7.length;
-  await tombol(m, 'Setujui').dblclick();
+  await kirimKeputusan.dblclick();
   await tunggu(m, 'Keputusan Disetujui tersimpan');
   ok(postV7.length - sebelumK === 1 && Number(sql(`SELECT COUNT(*) FROM izin_keputusan WHERE pengajuan_id=${id}`)) === 1, 'Ketukan ganda "Setujui" → satu POST, satu keputusan efektif');
   await foto(m, 'murobi-v2');

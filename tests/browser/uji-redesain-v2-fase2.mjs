@@ -176,6 +176,13 @@ try {
       ok(t.includes('Sesi mengajar pekan ini'), 'Jadwal: subjudul penjelas');
       ok(await terlihat(g.getByRole('radio', { name: 'Per pekan' })).getAttribute('aria-checked') === 'true' && await terlihat(g.getByRole('radio', { name: 'Rentang kustom' })).count() === 1, 'Jadwal: pil Per pekan (terpilih) / Rentang kustom');
       ok(await terlihat(g.getByRole('button', { name: /hari ini$/ })).getAttribute('aria-selected') === 'true' || (await terlihat(g.getByRole('button', { name: /hari ini$/ })).count()) === 1, 'Jadwal: WeekStrip menandai hari ini');
+      const tanggalPekan = g.getByRole('button', { name: /^(Senin|Selasa|Rabu|Kamis|Jumat|Sabtu|Minggu),? \d+ / });
+      const ukuranTanggal = await tanggalPekan.evaluateAll((items) => items.map((item) => {
+        const { width, height } = item.getBoundingClientRect();
+        return { width, height };
+      }));
+      ok(ukuranTanggal.length === 7 && ukuranTanggal.every(({ width, height }) => width >= 44 && height >= 44),
+        `Jadwal 375: tujuh target tanggal ≥ 44 × 44 (${ukuranTanggal.map(({ width }) => width.toFixed(1)).join(', ')} pt)`);
       const kartu = terlihat(g.getByRole('button', { name: new RegExp(`^Nahwu ${sfx}, `) }));
       const tk = (await kartu.first().innerText()).replace(/\s+/g, ' ');
       ok(kelas.every(n => tk.includes(n)), `Jadwal: kartu sesi gabungan memuat seluruh kelas (${kelas.length})`);
@@ -479,14 +486,21 @@ try {
       await mu.goto(app + `/izin/${idBaru}?mode=murobi`);
       await tombol(mu, 'Setujui').waitFor({ timeout: 20000 });
       ok(await terlihat(tombol(mu, 'Tolak')).count() === 1 && await terlihat(tombol(mu, 'Batalkan pengajuan')).count() === 0, 'Murobi: Setujui/Tolak di bilah bawah sesuai aksi server');
+      await tombol(mu, 'Tolak').click();
+      await judul(mu, 'Tolak pengajuan').waitFor();
+      await tombol(mu, 'Tutup').last().click();
+      await judul(mu, 'Tolak pengajuan').waitFor({ state: 'hidden' });
+      ok(tm.filter(r => r.method === 'POST' && /keputusan$/.test(r.path)).length === 0, 'Membuka dan menutup lembar Tolak tanpa konfirmasi tidak mengirim keputusan');
       await tombol(mu, 'Setujui').click();
+      await judul(mu, 'Setujui pengajuan').waitFor();
+      await tombol(mu, 'Konfirmasi setujui').click();
       await mu.waitForTimeout(1500);
       const tolak = tm.filter(r => r.method === 'POST' && /keputusan$/.test(r.path));
       const status1 = (await api(MU, `/izin/pengajuan/${idBaru}?mode=murobi`)).json.data.pengajuan.status;
-      ok(status1 === 'Diajukan' && !(await teks(mu)).includes('tersimpan sebagai'), `Setujui tanpa alasan: tidak ada keputusan (status tetap ${status1}; ${tolak.length} permintaan ditolak server)`);
+      ok(tolak.length === 1 && status1 === 'Diajukan' && !(await teks(mu)).includes('tersimpan sebagai'), `Setujui tanpa alasan: tidak ada keputusan (status tetap ${status1}; ${tolak.length} permintaan ditolak server)`);
       await foto(mu, 'rincian-izin-murobi-375-tanpa-alasan');
       await mu.getByPlaceholder('Minimal 3 karakter').first().fill('Alasan uji fase dua');
-      await tombol(mu, 'Setujui').click();
+      await tombol(mu, 'Konfirmasi setujui').click();
       await tunggu(mu, 'Keputusan Disetujui tersimpan');
       ok((await api(MU, `/izin/pengajuan/${idBaru}?mode=murobi`)).json.data.pengajuan.status === 'Disetujui', 'Setujui dengan alasan: tersimpan');
       ok(await terlihat(tombol(mu, 'Setujui')).count() === 0, 'Sesudah diputus: bilah keputusan hilang (aksi server)');
@@ -525,10 +539,10 @@ try {
       await tunggu(w, 'Izin anak melalui pembimbing');
       await w.waitForTimeout(800);
       ok(await judul(w, 'Izin melalui pembimbing').count() === 1 && await kembali(w).count() === 1, 'Daftar izin wali: kepala stack ber-←');
-      await periksaFab(w, 'Izin wali (orang tua) 375', 'Ajukan izin');
+      await periksaFab(w, 'Izin wali (orang tua) 375', 'Ajukan izin baru');
       await foto(w, 'izin-wali-daftar-375');
       await tanpaLuapan(w, 'Izin wali daftar 375');
-      await tombol(w, 'Ajukan izin').click();
+      await tombol(w, 'Ajukan izin baru').click();
       await tunggu(w, 'Rentang izin');
       ok(await judul(w, 'Ajukan izin anak').count() === 1, 'Ajukan izin anak: kepala stack');
       await w.getByRole('radio', { name: 'SBX V7 Santri Satu (V7S0001)' }).click();
@@ -555,7 +569,7 @@ try {
       const pb = await masuk(PB);
       await pb.goto(app + '/izin-wali');
       await terlihat(pb.getByRole('button', { name: `Buka pengajuan izin SBX V7 Santri Satu nomor ${idWali}` })).waitFor({ timeout: 20000 });
-      ok(await terlihat(tombol(pb, 'Ajukan izin')).count() === 0, 'Pembimbing: daftar tanpa FAB');
+      ok(await terlihat(tombol(pb, 'Ajukan izin baru')).count() === 0, 'Pembimbing: daftar tanpa FAB');
       ok(await terlihat(pb.getByRole('radio', { name: 'Perlu ditinjau' })).getAttribute('aria-checked') === 'true' && await terlihat(pb.getByRole('radio', { name: 'Sudah ditinjau' })).count() === 1, 'Pembimbing: pil Perlu ditinjau / Sudah ditinjau');
       await foto(pb, 'izin-wali-daftar-pembimbing-375');
       await pb.getByRole('button', { name: `Buka pengajuan izin SBX V7 Santri Satu nomor ${idWali}` }).click();
@@ -587,7 +601,7 @@ try {
       const ad = await masuk(AD);
       await ad.goto(app + '/izin-wali');
       await tunggu(ad, 'Perlu tindakan admin');
-      ok(await terlihat(tombol(ad, 'Ajukan izin')).count() === 0, 'Admin: daftar izin wali tanpa FAB');
+      ok(await terlihat(tombol(ad, 'Ajukan izin baru')).count() === 0, 'Admin: daftar izin wali tanpa FAB');
       await ad.context().close();
     }
 

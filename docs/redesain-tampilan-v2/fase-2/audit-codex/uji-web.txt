@@ -1,0 +1,50 @@
+Fase 2. Ukuran target tanggal, lembar keputusan, mode gelap dan navigasi.
+[gagal] Jadwal 375: tujuh target tanggal ≥ 44 × 44 (42.7, 42.7, 42.7, 42.7, 42.7, 42.7, 42.7 pt)
+Hasil (pengajian): 67 lulus / 1 gagal
+[lulus] Jadwal 375: tujuh target tanggal ≥ 44 × 44 (44.0, 44.0, 44.0, 44.0, 44.0, 44.0, 44.0 pt)
+[lulus] Absensi: ringkasan mini mengikuti draf
+[lulus] Kirim saat tersaring: satu PUT berkunci idempotensi, payload seluruh 5 peserta (1 Sakit)
+Hasil (pengajian): 68 lulus / 0 gagal
+[lulus] Membuka dan menutup lembar Tolak tanpa konfirmasi tidak mengirim keputusan
+[lulus] Setujui tanpa alasan: tidak ada keputusan (status tetap Diajukan; 1 permintaan ditolak server)
+[lulus] Setujui dengan alasan: tersimpan
+[lulus] Nol permintaan ke host selain 127.0.0.1 (0)
+Hasil (izin): 145 lulus / 0 gagal
+
+gabungan
+=== B-3. Buka pertemuan gabungan: ketukan ganda + jaringan putus ===
+[lulus] Ketukan ganda: satu POST pembukaan (1)
+[lulus] Kirim ulang memakai kunci idempotensi yang sama
+=== B-5. Kirim absensi: ketukan ganda + jaringan putus ===
+[lulus] Ketukan ganda: satu PUT absensi (1)
+Ringkasan: 57 lulus, 0 gagal
+
+cari-absensi
+Ringkasan: 53 lulus, 0 gagal
+
+cari-daftar
+Ringkasan: 24 lulus, 0 gagal
+
+peserta
+Hasil: 18 lulus, 0 gagal
+
+peserta-asli
+[gagal] Tombol "Perbarui daftar" tampil pada pertemuan Dibuka
+[gagal] Galat uji: locator.click: Timeout 30000ms exceeded.
+Hasil: 1 lulus, 2 gagal
+
+v7f4
+[lulus] Ketukan ganda "Kirim pengajuan" → satu POST (terhitung 1); jawaban hilang tampil sebagai pesan jaringan
+[lulus] Kirim ulang memakai kunci idempotensi yang SAMA
+[lulus] Ketukan ganda "Teruskan" → satu POST, status Diajukan (murobi tunggal)
+[lulus] Ketukan ganda "Setujui" → satu POST, satu keputusan efektif
+[lulus] Konfirmasi + ketukan ganda batal → satu POST, status Dibatalkan
+Ringkasan: 48 lulus, 0 gagal
+
+keamanan
+Hasil: 46 lulus, 0 gagal
+
+Kontrol baseline
+web-baseline/peserta-asli.txt:Hasil: 18 lulus, 0 gagal
+web-baseline/peserta.txt:Hasil: 18 lulus, 0 gagal
+Ringkasan: 48 lulus, 0 gagal
