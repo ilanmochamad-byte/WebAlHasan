@@ -1,0 +1,191 @@
+{
+ "sbx_guru_biasa 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username} nilai=33a1eb0787e746baca2b5bc4d3f610d84408e526044564aff9a8d24e5d4f9242",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/notifikasi/belum-dibaca nilai=4125f9357a1ffffb902a798378812d1c06bfd7a2f58a91a328dcc912e7ea3c53",
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/schedules/today nilai=c7a45c60dfb91f4b66c90d91cc04cc3ea3f3da4bfef9536bad54552b0c2bd224",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_guru_biasa 2-profil": [
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/profile/identitas nilai=c36993df83ab5721e574196ceedff21c780fb42ce2130a9aad10476a613cbf69"
+ ],
+ "sbx_guru_biasa 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/schedules/today nilai=c7a45c60dfb91f4b66c90d91cc04cc3ea3f3da4bfef9536bad54552b0c2bd224",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_pengurus_biasa 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username} nilai=b1a8df6e14bfce477cbaa116e3697fc7f18f077e22c2d7e20e7ab6f6415253e5",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/notifikasi/belum-dibaca nilai=4125f9357a1ffffb902a798378812d1c06bfd7a2f58a91a328dcc912e7ea3c53",
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_pengurus_biasa 2-profil": [
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/profile/identitas nilai=c36993df83ab5721e574196ceedff21c780fb42ce2130a9aad10476a613cbf69"
+ ],
+ "sbx_pengurus_biasa 4-edit-profil-simpan": [
+  "POST /api/v1/profile/pribadi badan{tempat_lahir,versi} nilai=04098fbd8006881c9c4057da537440fd939339285e7904eb7be5686cba44af9f",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/profile/identitas nilai=c36993df83ab5721e574196ceedff21c780fb42ce2130a9aad10476a613cbf69"
+ ],
+ "sbx_pengurus_biasa 6-ganti-password-simpan": [
+  "POST /api/v1/profile/password badan{device_id,konfirmasi_password,password_baru,password_saat_ini} nilai=3aabc75840fda1f6314656b38fc756f4d078580fd71aee2859c5f22bdadf786b",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/profile/identitas nilai=c36993df83ab5721e574196ceedff21c780fb42ce2130a9aad10476a613cbf69"
+ ],
+ "sbx_pengurus_biasa 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_ortu_a 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username} nilai=fcfe26013b91a1d3bafbc406be983e272a203665ee08e7d4cf9a20b36ac79620",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/notifikasi/belum-dibaca nilai=4125f9357a1ffffb902a798378812d1c06bfd7a2f58a91a328dcc912e7ea3c53",
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_ortu_a 2-profil": [
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/profile/identitas nilai=c36993df83ab5721e574196ceedff21c780fb42ce2130a9aad10476a613cbf69"
+ ],
+ "sbx_ortu_a 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_v6_bsa 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username} nilai=aee800f4ee7472b3cf7866ee3de7ec352793bf91ca3f2130999bf5c76da03f5c",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/notifikasi/belum-dibaca nilai=4125f9357a1ffffb902a798378812d1c06bfd7a2f58a91a328dcc912e7ea3c53",
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_v6_bsa 2-profil": [
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/profile/identitas nilai=c36993df83ab5721e574196ceedff21c780fb42ce2130a9aad10476a613cbf69"
+ ],
+ "sbx_v6_bsa 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_v5_petugas 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username} nilai=6f308be0b6fb95caad1d0ebc3b32e3a8e8ca4c91a9eb08422e6110013a005d39",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/notifikasi/belum-dibaca nilai=4125f9357a1ffffb902a798378812d1c06bfd7a2f58a91a328dcc912e7ea3c53",
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_v5_petugas 2-profil": [
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/profile/identitas nilai=c36993df83ab5721e574196ceedff21c780fb42ce2130a9aad10476a613cbf69"
+ ],
+ "sbx_v5_petugas 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_pengurus_b 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username} nilai=d3f98698dc00809c0e9474e24ef39468a92f296fd88d5da42f23c0ec064d22bb",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/notifikasi/belum-dibaca nilai=4125f9357a1ffffb902a798378812d1c06bfd7a2f58a91a328dcc912e7ea3c53",
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_pengurus_b 2-profil": [
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/profile/identitas nilai=c36993df83ab5721e574196ceedff21c780fb42ce2130a9aad10476a613cbf69"
+ ],
+ "sbx_pengurus_b 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_admin 1-masuk-beranda": [
+  "POST /api/v1/auth/login badan{device_name,izinkan_password_sementara,password,username} nilai=2f079c99cb245166f9991b674a161b555a225d753153d8e73f174fca3cb27175",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/notifikasi/belum-dibaca nilai=4125f9357a1ffffb902a798378812d1c06bfd7a2f58a91a328dcc912e7ea3c53",
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/schedules/today nilai=c7a45c60dfb91f4b66c90d91cc04cc3ea3f3da4bfef9536bad54552b0c2bd224",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ],
+ "sbx_admin 2-profil": [
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747",
+  "GET /api/v1/profile/identitas nilai=c36993df83ab5721e574196ceedff21c780fb42ce2130a9aad10476a613cbf69"
+ ],
+ "sbx_admin 7-kembali-beranda": [
+  "GET /api/v1/v3/capabilities nilai=c7337459f537190a7ac9d9413939ccfcc6466cf3f290372f82f60777cfc10062",
+  "GET /api/v1/v4/capabilities nilai=27dd4bcaf0d1be51431ec69a5caaf54bc5789cf1aa8112ab16e340855ff82b0b",
+  "GET /api/v1/v5/kesehatan/akses nilai=b23ebbc9215b1024aea1f8156ccb8a5810ed42cff96f8bb7756e1f6070c61da5",
+  "GET /api/v1/v5/kesehatan/wali/akses nilai=3faed9e3ed1ae9e1c07460383b5ce0f67c293991a3bd69ad6f0bb80f352ae968",
+  "GET /api/v1/v6/bsa/akses nilai=cc595e55ddc1315f0009721ca461569ccc790b1a0d35a3b6f4c1c51c466a106f",
+  "GET /api/v1/keamanan/akses nilai=121c0189a2b669f1045a19688bd4f52dc33ecafedff223a8cfd429e04d36cbcf",
+  "GET /api/v1/schedules/today nilai=c7a45c60dfb91f4b66c90d91cc04cc3ea3f3da4bfef9536bad54552b0c2bd224",
+  "GET /api/v1/profile/pribadi nilai=048913ac6b226855bc9e3c6acee2b6525d58fac096b871c62307e55ccd813747"
+ ]
+}

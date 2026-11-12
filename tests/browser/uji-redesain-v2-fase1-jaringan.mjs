@@ -1,3 +1,4 @@
+import { createHmac } from 'node:crypto';
 import fs from 'node:fs';
 import { chromium } from 'playwright';
 
@@ -34,6 +35,16 @@ const web = process.env.RTV2_WEB, app = process.env.RTV2_APP;
 if (mode !== 'rekam' || !a || ![web, app].every(u => /^http:\/\/127\.0\.0\.1:\d+$/.test(u || ''))) throw Error('Pemakaian: rekam <keluaran.json>, hanya 127.0.0.1');
 const PASS = 'Sandbox#123';
 const AKUN = ['sbx_guru_biasa', 'sbx_pengurus_biasa', 'sbx_ortu_a', 'sbx_v6_bsa', 'sbx_v5_petugas', 'sbx_pengurus_b', 'sbx_admin'];
+// Opsi audit: bandingkan juga nilai query/JSON tanpa menyimpan nilai rahasia.
+const auditKey = process.env.RTV2_AUDIT_HMAC;
+const digest = value => createHmac('sha256', auditKey).update(JSON.stringify(value)).digest('hex');
+function canonical(value) {
+  if (Array.isArray(value)) return value.map(canonical);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.keys(value).sort().map(key => [key, canonical(value[key])]));
+  }
+  return value;
+}
 const hasil = {};
 const luar = [];
 const browser = await chromium.launch({ headless: true });
@@ -49,12 +60,25 @@ for (const user of AKUN) {
     if (u.origin !== web || !u.pathname.startsWith('/api/v1')) return route.fallback();
     if (req.method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'Access-Control-Allow-Origin': app, 'Access-Control-Allow-Headers': 'authorization,content-type', 'Access-Control-Allow-Methods': 'GET,POST,PUT' } });
     let badan = '';
+    let payload = null;
     const mentah = req.postData();
-    if (mentah) { try { badan = ' badan{' + Object.keys(JSON.parse(mentah)).sort().join(',') + '}'; } catch { badan = ' badan(bukan JSON)'; } }
+    if (mentah) {
+      try {
+        payload = JSON.parse(mentah);
+        badan = ' badan{' + Object.keys(payload).sort().join(',') + '}';
+      } catch {
+        badan = ' badan(bukan JSON)';
+        payload = mentah;
+      }
+    }
     const query = [...u.searchParams.keys()].sort().join(',');
-    (hasil[langkah] ??= []).push(`${req.method()} ${u.pathname.replace(/\/\d+(?=\/|$)/g, '/{id}')}${query ? ' ?' + query : ''}${badan}`);
+    let signature = `${req.method()} ${u.pathname.replace(/\/\d+(?=\/|$)/g, '/{id}')}${query ? ' ?' + query : ''}${badan}`;
+    if (auditKey) {
+      signature += ` nilai=${digest([u.pathname, [...u.searchParams].sort(), canonical(payload)])}`;
+    }
+    (hasil[langkah] ??= []).push(signature);
     try {
-      const response = await route.fetch();
+      const response = await route.fetch({ maxRedirects: 0 });
       await route.fulfill({ response, headers: { ...response.headers(), 'Access-Control-Allow-Origin': app } });
     } catch { /* konteks ditutup */ }
   });

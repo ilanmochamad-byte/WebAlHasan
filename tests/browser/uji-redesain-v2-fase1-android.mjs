@@ -94,13 +94,24 @@ async function masuk(user, password = PASS) {
   await cari(/Masukkan username/, { timeout: 150000 });
   await tidur(2500); // beri waktu perkenalan menu pengembang muncul, lalu disingkirkan `cari`
   await ketuk(/Masukkan username/, { kelas: 'EditText' });
-  ketik(user);
+  // Emulator yang lambat dapat menjatuhkan karakter saat React memperbarui
+  // TextInput terkontrol. Tunggu fokus dan periksa input sebelum mengirim.
+  await tidur(800);
+  for (const karakter of user) {
+    ketik(karakter);
+    await tidur(70);
+  }
+  await cari(new RegExp(`^${user}$`), { kelas: 'EditText' });
   tutupKeyboard();
   await tidur(500);
   geser(1700, 800);
   await tidur(600);
   await ketuk(/Masukkan password/, { kelas: 'EditText' });
-  ketik(password);
+  await tidur(800);
+  for (const karakter of password) {
+    ketik(karakter);
+    await tidur(70);
+  }
   adb('shell', 'input', 'keyevent', 'KEYCODE_ENTER');
 }
 const diBeranda = (timeout = 40000) => cari(/Assalamu/, { timeout });

@@ -1,0 +1,23 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow wajib-setelah-keluar
+Launch app "com.ilanmochamad.alhasanApps"... COMPLETED
+Open alhasanapps://profil... COMPLETED
+Scrolling DOWN until "Keluar dari aplikasi" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+Tap on "Keluar dari aplikasi"... COMPLETED
+Tap on "Keluar"... COMPLETED
+Assert that "Masukkan username" is visible... COMPLETED
+Assert that "Alhasan Apps" is visible... COMPLETED
+Assert that "Kembali.*" is not visible... COMPLETED
+Take screenshot ios-masuk... COMPLETED
+Tap on "Masukkan username"... COMPLETED
+Tap on "Masukkan password"... COMPLETED
+Press Enter key... COMPLETED
+Assert that "Buat password baru|Not Now" is visible... COMPLETED
+Run flow when "Not Now" is visible...
+  Tap on "Not Now"... COMPLETED
+Run flow when "Not Now" is visible... COMPLETED
+Assert that "Buat password baru" is visible... COMPLETED
+Assert that "Ganti password sementara" is visible... COMPLETED
+Assert that "Kembali.*" is not visible... COMPLETED
+Take screenshot ios-ganti-password-wajib... COMPLETED
+Scrolling DOWN until "Keluar" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED

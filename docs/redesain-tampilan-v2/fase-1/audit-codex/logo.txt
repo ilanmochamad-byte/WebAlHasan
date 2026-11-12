@@ -1,0 +1,7 @@
+Sumber RGBA: docs/redesain-tampilan-v2/aset/Logo_alhasanApps.png (2161 × 761)
+Turunkan ulang dari sumber menggunakan sips -z <tinggi> <lebar>.
+Dekode kedua hasil sebagai RGBA 8-bit dan bandingkan seluruh piksel.
+
+alhasan-apps.png     80 × 28: 0 dari 2240 piksel RGBA berbeda
+alhasan-apps@2x.png 159 × 56: 0 dari 8904 piksel RGBA berbeda
+alhasan-apps@3x.png 239 × 84: 0 dari 20076 piksel RGBA berbeda

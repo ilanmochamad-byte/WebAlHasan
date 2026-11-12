@@ -1,0 +1,7 @@
+peran-sbx_guru_biasa exit=0
+peran-sbx_pengurus_biasa exit=0
+peran-sbx_ortu_a exit=0
+peran-sbx_v6_bsa exit=0
+peran-sbx_v5_petugas exit=0
+peran-sbx_pengurus_b exit=0
+peran-sbx_admin exit=0

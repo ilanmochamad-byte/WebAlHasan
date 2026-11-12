@@ -1,0 +1,6 @@
+LULUS target mata di Masuk minimal 44×44
+LULUS target isian Masuk minimal 44×44
+LULUS ringkasan tidak menampilkan angka notifikasi saat respons belum tersedia
+LULUS status identitas Beranda memakai ikon dan teks
+LULUS target ketiga mata di Ganti password minimal 44×44
+LULUS semua tujuan jaringan di 127.0.0.1
