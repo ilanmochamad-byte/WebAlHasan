@@ -1,0 +1,60 @@
+# Redesain gelombang 2 Fase 3 — petugas BSA: menu, rincian santri (strip, tab),
+# setoran dengan ketukan ganda, ← dengan riwayat, tautan tanpa riwayat → Beranda.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- openLink: alhasanapps://keuangan
+- extendedWaitUntil:
+    visible: "Santri, saldo, dan tagihan"
+    timeout: 30000
+- assertVisible: "Verifikasi transfer"
+- assertVisible: "Kembali"
+- takeScreenshot: ios-f3-menu-petugas
+- tapOn: "Santri, saldo, dan tagihan"
+- tapOn: "Cari nama atau NIS"
+- inputText: "V6S0001"
+- tapOn:
+    text: "Cari"
+    index: 0
+- tapOn: "Buka keuangan SBX V6 Santri SMP"
+- extendedWaitUntil:
+    visible: ".*Saldo tabungan.*"
+    timeout: 30000
+- assertVisible: ".*Sisa tagihan.*"
+- assertVisible: ".*Transfer menunggu.*"
+- assertVisible: "Ringkasan"
+- takeScreenshot: ios-f3-rincian-santri
+- tapOn: "Tabungan"
+- assertNotVisible: "Tagihan bulanan.*"
+- tapOn: "Ringkasan"
+- tapOn: "Setoran"
+- extendedWaitUntil:
+    visible: ".*Saldo saat ini.*"
+    timeout: 30000
+# Elemen pertama bernama ini adalah label; kolomnya elemen kedua.
+- tapOn:
+    text: "Nominal \\(rupiah\\)"
+    index: 1
+- inputText: "25000"
+# Papan ketik tetap terbuka: tombol harus menerima ketukan ganda.
+- doubleTapOn: "Catat setoran"
+- extendedWaitUntil:
+    visible: ".*Saldo kini.*"
+    timeout: 30000
+- assertVisible: "Setoran tercatat"
+- takeScreenshot: ios-f3-setoran-sukses
+- tapOn: "Kembali ke santri"
+- extendedWaitUntil:
+    visible: ".*Saldo tabungan.*"
+    timeout: 20000
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Cari nama atau NIS"
+    timeout: 20000
+# Tautan saat aplikasi berjalan, ← sesudah tautan.
+- openLink: alhasanapps://keuangan/tagihan/${TAGIHAN}
+- extendedWaitUntil:
+    visible: "Rincian biaya"
+    timeout: 30000
+- assertVisible: "Catat pembayaran tunai/transfer"
+- takeScreenshot: ios-f3-tagihan

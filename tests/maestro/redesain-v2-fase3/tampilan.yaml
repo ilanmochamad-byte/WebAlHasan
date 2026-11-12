@@ -1,0 +1,65 @@
+# Tampilan sistem disetel dari luar (gelap, AX-XL, AX-XXXL): kepala ber-←,
+# strip, invoice, kuitansi menunggu (jam), laporan.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- openLink: alhasanapps://keuangan/santri/${SANTRI}
+- extendedWaitUntil:
+    visible: "Keuangan santri"
+    timeout: 40000
+- assertVisible: "Kembali"
+# Pada teks sangat besar strip angka berada di bawah lipatan.
+- scrollUntilVisible:
+    element: ".*Saldo tabungan.*"
+    direction: DOWN
+    timeout: 40000
+    visibilityPercentage: 25
+- scrollUntilVisible:
+    element: ".*Sisa tagihan.*"
+    direction: DOWN
+    timeout: 30000
+    visibilityPercentage: 25
+- takeScreenshot: ios-f3-santri-${NAMA}
+- openLink: alhasanapps://keuangan/tagihan/${TAGIHAN}
+- extendedWaitUntil:
+    visible: "Rincian tagihan"
+    timeout: 30000
+- assertVisible: "Kembali"
+- scrollUntilVisible:
+    element: "Rincian biaya"
+    direction: DOWN
+    timeout: 30000
+    visibilityPercentage: 25
+# Teks besar: tombol berada di akhir isi bergulir (bukan bilah tetap).
+- scrollUntilVisible:
+    element: "Catat pembayaran tunai/transfer"
+    direction: DOWN
+    timeout: 40000
+    visibilityPercentage: 25
+- takeScreenshot: ios-f3-tagihan-${NAMA}
+- openLink: alhasanapps://keuangan/pembayaran/${PEMBAYARAN}
+- extendedWaitUntil:
+    visible: "Kuitansi pembayaran"
+    timeout: 30000
+- scrollUntilVisible:
+    element: "Menunggu verifikasi"
+    direction: DOWN
+    timeout: 30000
+    visibilityPercentage: 25
+- scrollUntilVisible:
+    element: "Dana sudah diperiksa — verifikasi"
+    direction: DOWN
+    timeout: 40000
+    visibilityPercentage: 25
+- takeScreenshot: ios-f3-kuitansi-${NAMA}
+- openLink: alhasanapps://keuangan/laporan
+- extendedWaitUntil:
+    visible: "Laporan keuangan"
+    timeout: 30000
+- scrollUntilVisible:
+    element: ".*Penerimaan kas baru.*"
+    direction: DOWN
+    timeout: 30000
+    visibilityPercentage: 25
+- assertVisible: "Kembali"
+- takeScreenshot: ios-f3-laporan-${NAMA}

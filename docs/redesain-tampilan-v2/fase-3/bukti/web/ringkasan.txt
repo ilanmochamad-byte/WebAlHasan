@@ -1,0 +1,19 @@
+v6f4 exit=0 :: 45 lulus / 0 gagal :: Ringkasan: 45 lulus, 0 gagal
+docs/redesain-tampilan-v2/fase-3/perintah-uji.sh: line 32: 61530 Terminated: 15          DB_NAME="$1" PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8971 tests/redesain_web_tahap1_router.php >> "$OUT/api.log" 2>&1
+v6f5 exit=0 :: 20 lulus / 0 gagal :: Ringkasan aplikasi Fase 5: 20 lulus, 0 gagal
+docs/redesain-tampilan-v2/fase-3/perintah-uji.sh: line 32: 62345 Terminated: 15          DB_NAME="$1" PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8971 tests/redesain_web_tahap1_router.php >> "$OUT/api.log" 2>&1
+ss exit=0 :: 27 lulus / 0 gagal :: Ringkasan: 27 lulus, 0 gagal
+docs/redesain-tampilan-v2/fase-3/perintah-uji.sh: line 32: 62897 Terminated: 15          DB_NAME="$1" PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8971 tests/redesain_web_tahap1_router.php >> "$OUT/api.log" 2>&1
+ss-audit exit=0 :: 3 lulus / 0 gagal :: Ringkasan probe: 3 lulus, 0 gagal
+docs/redesain-tampilan-v2/fase-3/perintah-uji.sh: line 32: 63525 Terminated: 15          DB_NAME="$1" PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8971 tests/redesain_web_tahap1_router.php >> "$OUT/api.log" 2>&1
+probe-f1 exit=0 :: 16 lulus / 0 gagal :: Ringkasan: 16 lulus, 0 gagal
+docs/redesain-tampilan-v2/fase-3/perintah-uji.sh: line 32: 63955 Terminated: 15          DB_NAME="$1" PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8971 tests/redesain_web_tahap1_router.php >> "$OUT/api.log" 2>&1
+probe-v1 exit=0 :: 5 lulus / 0 gagal :: Ringkasan: 5 lulus, 0 gagal
+docs/redesain-tampilan-v2/fase-3/perintah-uji.sh: line 32: 64783 Terminated: 15          DB_NAME="$1" PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8971 tests/redesain_web_tahap1_router.php >> "$OUT/api.log" 2>&1
+fase3 exit=0 :: 258 lulus / 0 gagal :: Ringkasan: 258 lulus, 0 gagal
+galat PHP server API: 0
+docs/redesain-tampilan-v2/fase-3/perintah-uji.sh: line 86: 65252 Terminated: 15          DB_NAME="$1" PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8971 tests/redesain_web_tahap1_router.php >> "$OUT/api.log" 2>&1
+jaringan exit=0 :: 13 lulus / 0 gagal :: 
+galat PHP server API: 0
+docs/redesain-tampilan-v2/fase-3/perintah-uji.sh: line 86: 65425 Terminated: 15          DB_NAME="$1" PHP_CLI_SERVER_WORKERS=4 php -S 127.0.0.1:8971 tests/redesain_web_tahap1_router.php >> "$OUT/api.log" 2>&1
+banding exit 1

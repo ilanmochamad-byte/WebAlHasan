@@ -1,0 +1,25 @@
+=== A-1 aplikasi: perbarui daftar santri ===
+[lulus] Pertemuan gabungan Dibuka dengan 5 peserta
+[lulus] Tombol "Perbarui daftar" tampil pada pertemuan Dibuka
+[lulus] Jumlah santri menjadi 6
+[lulus] Santri keluar hilang, dua santri baru tampil
+[lulus] Isian guru (Sakit) untuk santri yang tetap tercantum tidak hilang
+[lulus] Santri baru terisi "Hadir"
+[lulus] Ulangan: pesan "sudah sesuai"
+
+=== A-2 aplikasi: kirim absensi dengan daftar baru ===
+[lulus] DB: 6 absensi, termasuk santri baru, tanpa santri keluar
+[lulus] DB: status Sakit tersimpan
+[lulus] Tombol tidak tampil lagi setelah pertemuan Selesai
+[lulus] Dua audit pembaruan tercatat
+
+=== W-1 website: Perbarui daftar peserta ===
+[lulus] Pertemuan Selesai: tanpa tombol
+[lulus] Pertemuan Dibuka menampilkan 2 peserta tanpa santri baru
+[lulus] Konfirmasi diminta sebelum memperbarui
+[lulus] Website: santri baru ditambahkan dan pesan tampil
+[lulus] DB: peserta baru tersimpan
+[lulus] Website 375 px tanpa gulir horizontal
+[lulus] Tanpa galat JavaScript halaman
+
+Hasil: 18 lulus, 0 gagal

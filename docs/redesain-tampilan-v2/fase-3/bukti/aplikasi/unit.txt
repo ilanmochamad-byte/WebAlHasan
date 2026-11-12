@@ -1,0 +1,189 @@
+(node:67264) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/attendance-shortcut.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Absensi kembali ke daftar jadwal saat hari kosong atau seluruh sesi selesai (0.369166ms)
+✔ Absensi memilih sesi pertama yang belum selesai, termasuk yang belum dibuka (0.068042ms)
+(node:67265) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/date-time.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ tanggal/jam lokal lengkap termasuk tengah malam dan tahun kabisat (7.656792ms)
+✔ tolak bagian kosong, format manual salah dan tanggal yang dinormalisasi JS (0.095417ms)
+(node:67266) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/izin-wali.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Isian izin wali mengikuti aturan server (12.0955ms)
+✔ Isian dirapikan; perbaikan wajib berbeda dari versi asal (1.2975ms)
+✔ Catatan tinjauan: perbaikan/tolak wajib, teruskan opsional (0.36425ms)
+✔ Penolakan pembimbing dibedakan dari keputusan murobi (0.378291ms)
+✔ Tautan notifikasi izin wali hanya membawa penunjuk (0.6355ms)
+(node:67267) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/keamanan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kueri Keamanan tanpa kunci kosong dan ter-encode (0.942792ms)
+✔ Rentang tanggal: opsional, format ISO, akhir tidak mendahului awal (0.324709ms)
+✔ Nada lencana dan label status mengikuti halaman web Keamanan (0.166166ms)
+✔ Penugasan profil dikelompokkan per identitas (satu akun, dua identitas) (0.824666ms)
+(node:67268) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/kelas-jadwal.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ server lama tanpa classes tetap terbaca sebagai satu kelas utama (1.332709ms)
+✔ jadwal satu kelas dari server Fase 1 tidak ditandai gabungan (0.072834ms)
+✔ kelas gabungan: utama lebih dahulu, tanpa ganda, label dipisah koma (0.083458ms)
+✔ peserta dikelompokkan per kelas asal mengikuti urutan kelas, urutan server dipertahankan (0.135417ms)
+✔ kelas asal di luar daftar dan peserta tanpa kelas tetap tampil, kelompok kosong dibuang (0.088208ms)
+✔ nama kelas asal memakai nama dari server, lalu daftar kelas, kosong bila tidak ada (0.069708ms)
+(node:67269) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/kesehatan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Koreksi mengirim keadaan lengkap: rincian lama ber-id dipertahankan, waktu asli tidak bergeser (0.799042ms)
+✔ Baris baru yang seluruhnya kosong diabaikan; baris lama kosong tetap dikirim agar server menolaknya (0.94475ms)
+✔ Alasan wajib minimal lima karakter, maksimal 1000; sidik jari berubah bila isi berubah (0.168583ms)
+✔ Penunjuk notifikasi kesehatan hanya ringkasan_id valid; isi/tautan lain diabaikan (0.096458ms)
+✔ Deep-link kesehatan hanya skema aplikasi dan rute ringkasan wali (0.154ms)
+✔ Teks perubahan versi memakai label manusia (0.07675ms)
+✔ Hasil pencarian santri dikelompokkan per kelas; belum ditempatkan paling akhir (0.113208ms)
+✔ Periode laporan: bulan ini, bulan lalu (lintas tahun), dan 30 hari berakhir hari ini (0.143125ms)
+(node:67270) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/keuangan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Rupiah ditampilkan bulat dengan titik ribuan tanpa Intl (0.496166ms)
+✔ Nominal dikirim sebagai teks angka; pecahan dan huruf diteruskan agar server menolak (0.233875ms)
+✔ Alasan koreksi wajib 5–500 karakter seperti website (0.080125ms)
+✔ Sidik jari sama untuk isi sama (retry memakai kunci yang sama) dan berbeda bila isi berubah (0.076041ms)
+✔ Label periode, jenis, dan nilai awal tanggal (1.691833ms)
+✔ Penunjuk notifikasi keuangan hanya id; tipe/kunci lain ditolak (0.471791ms)
+✔ Tautan skema keuangan hanya menerima jalur yang dikenal (0.198292ms)
+✔ Rentang laporan Fase 5: bulan ini, bulan lalu (lintas tahun), 3 bulan, tahun ini — paling panjang 12 bulan (0.141625ms)
+✔ Pratinjau satu santri sah hanya bila server menyaring santri itu (server lama mengabaikan santri_id) (0.090791ms)
+(node:67271) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/perbarui-peserta.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ draf santri yang tetap tercantum dipertahankan, santri keluar dibuang, santri baru Hadir (0.66425ms)
+✔ santri baru yang sudah berabsensi memakai absensi tersimpan (0.067ms)
+✔ ringkasan perubahan (0.120792ms)
+(node:67272) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/peserta-saring.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cari nama/NIS tanpa membedakan huruf besar, diakritik, dan urutan kata (0.628458ms)
+✔ label tab IBTIDA menjadi PA/PI; gabungan non-IBTIDA memakai nama lengkap (0.568542ms)
+✔ tab Semua/PA/PI menghitung peserta unik; kelas hilang atau di luar daftar = Kelas belum tercatat (0.2ms)
+✔ tab PA hanya peserta kelas asal PA; nama sama di PI tidak ikut (0.244833ms)
+✔ satu kelas dan server lama: satu kelompok tanpa judul (0.06725ms)
+✔ nomor urut stabil terhadap pencarian dan tab (0.081208ms)
+✔ saringan tidak mengubah array sumber (draf/payload tetap seluruh peserta) (0.091291ms)
+(node:67273) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/print-dialog.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ mengenali exception pembatalan cetak iOS dari nama dan pesan (0.551834ms)
+✔ mengenali bentuk CodedError dari bridge native (0.091625ms)
+✔ tidak menyembunyikan kegagalan cetak yang sebenarnya (0.058ms)
+✔ mengembalikan hasil normal ketika pencetakan dimulai (0.069375ms)
+✔ mengubah penutupan dialog menjadi hasil dibatalkan (0.0875ms)
+✔ meneruskan kegagalan printer tanpa perubahan (0.3505ms)
+(node:67274) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/profil.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Isian yang boleh diubah sama dengan kontrak Fase 1 (tanpa username/NIP/NIK/penugasan) (0.736ms)
+✔ Hanya kunci yang berubah dikirim; kosong dikirim sebagai string kosong (0.12875ms)
+✔ Validasi awal selaras pesan server (1.717166ms)
+✔ Galat server per isian; nilai bukan teks diabaikan (0.083042ms)
+✔ Aturan password sama dengan website: 12 karakter, besar, kecil, angka, ≤72 byte, sama (0.164083ms)
+✔ Inisial, status tanpa duplikat, binaan kamar vs kelas tanpa nama rekaan (0.141292ms)
+✔ Mapel–kelas dikelompokkan per mapel, kombinasi ganda dipertahankan (0.085ms)
+✔ Rincian penugasan menyebut target, mapel–kelas, atau seluruh cakupan (0.104917ms)
+✔ Alamat lengkap satu baris dari isian berjenjang (0.077208ms)
+✔ Foto: hanya JPEG/PNG/WebP ≤ 2 MiB; mime dari ekstensi bila tidak dilaporkan (0.161917ms)
+✔ Base64 tanpa btoa sama dengan Buffer (0.245ms)
+(node:67275) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/rapor.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kosong tetap belum lengkap, nol sah, versi lama tetap dikirim (0.685334ms)
+✔ Validasi angka/reason tidak meloloskan nilai tak sah atau alasan kosong (0.12ms)
+✔ Push hanya penunjuk valid; data/nilai/tautan lain tidak dipakai (0.4115ms)
+✔ Deep-link native hanya skema/rute rapor sah; ID bertahan sebagai penunjuk (0.14975ms)
+(node:67276) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/redesain-fase1.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ pekan dimulai Senin, termasuk ketika tanggal terpilih hari Minggu (1.327416ms)
+✔ pekan melintasi pergantian bulan, tahun, dan 29 Februari (0.09075ms)
+✔ geser pekan maju dan mundur mempertahankan hari (0.059875ms)
+✔ pesan tanpa menu hanya muncul setelah akses pembinaan selesai diperiksa (0.052084ms)
+(node:67277) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/redesain-fase2.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sesi hari ini yang belum dibuka atau belum selesai ditandai perlu absen (0.68025ms)
+✔ sesi selesai tidak pernah meminta absen, kapan pun tanggalnya (0.065875ms)
+✔ sesi hari lain tidak diberi penanda absen dan dibedakan masa depan/lampau (0.0615ms)
+(node:67278) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/redesain-v2-fase1.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ K-10: layar tab selalu kembali ke Beranda, berlabel "Kembali ke Beranda" (0.399875ms)
+✔ K-10: layar stack kembali ke halaman sebelumnya; tanpa riwayat membuka Beranda (0.056291ms)
+✔ avatar inisial: kata pertama dan terakhir, melewati kata berawalan angka (0.275541ms)
+✔ grafik batang: tinggi relatif terhadap nilai terbesar, tanpa nilai negatif atau NaN (0.3795ms)
+✔ kisi statistik: 2 kolom, butir ganjil terakhir sendiri; 1 kolom pada teks besar (0.730167ms)
+(node:67279) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/redesain-v2-fase2.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ K-10: setiap layar Fase 2 menggambar kepala ber-← (akar atau stack) dan kepala native dimatikan (1.597958ms)
+✔ K-8: FAB hanya di Perizinan dan daftar izin wali, tinggi 56, ruang bawah FAB + 16 (0.297875ms)
+✔ K-8: alternatif tombol atas dipakai hanya bila FAB dapat melewati setengah layar (0.0715ms)
+✔ §4.3: "Perbarui daftar" berada di menu ⋯ dan payload absensi tetap seluruh peserta (0.140875ms)
+✔ §4.5: garis waktu tahap mengikuti tahap dan status server, selalu berketerangan teks (0.54075ms)
+✔ §4.11: waktu relatif notifikasi dari waktu server WIB; tidak mengarang di luar jangkauan (1.219ms)
+✔ layar tab: jarak atas tidak ganda di iOS (inset otomatis native tabs), tetap area aman + 8 di Android/web (0.125625ms)
+(node:67280) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/redesain-v2-fase3.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ K-7/K-10: setiap layar Keuangan memakai kerangka ber-← dan kepala native dimatikan (1.573416ms)
+✔ cetak/PDF tetap dari website: layar Keuangan tidak menambah tombol Bagikan atau cetak (0.961875ms)
+✔ istilah BSA: tidak ada "pendapatan" atau "laba" di layar Keuangan (0.874584ms)
+✔ nada status: Menunggu = jam (bukan centang); sah/lunas = centang; batal/tolak = silang (0.434208ms)
+✔ nominal bertanda dan arah ikon dari arah ledger; rupiah tetap bertitik (0.1355ms)
+✔ sisa tagihan: hanya tagihan Terbit; daftar mencapai batas server → null (bukan angka karangan) (0.094625ms)
+✔ grafik per bulan hanya bila respons memuat seri (≥ 2 bulan); nilai apa adanya (0.144958ms)
+(node:67281) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/redesain-v2-kontras.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ kontras token light: teks ≥ 4,5:1, ikon/teks besar ≥ 3:1 (1.056292ms)
+✔ kontras token dark: teks ≥ 4,5:1, ikon/teks besar ≥ 3:1 (0.144666ms)
+✔ token K-1: latar krem, hijau lebih tua, kartu sorot lebih tua (0.0885ms)
+✔ warna status kehadiran, warning, danger, info, dan violet tidak berubah (0.106666ms)
+✔ emas hiasan tidak dipakai sebagai warna teks (kontras di bawah 3:1 di mode terang) (0.052459ms)
+(node:67282) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file://<salinan>/app-fase/tests/versi-aplikasi.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to <salinan>/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ naikkan mengikuti aturan major/minor/patch (0.545458ms)
+✔ bandingkan numerik, bukan teks (0.098917ms)
+✔ perubahan dokumen/uji/skrip bukan perubahan aplikasi (0.924375ms)
+✔ nilai: menolak perubahan aplikasi tanpa kenaikan, versi turun, dan lompatan (0.145083ms)
+✔ CLI: perubahan aplikasi tanpa kenaikan gagal; naik minor sekali; periksa lulus (620.046833ms)
+✔ CLI: versi turun dari baseline atau lompat ditolak; perubahan dokumen saja lulus (383.789291ms)
+ℹ tests 104
+ℹ suites 0
+ℹ pass 104
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1346.414
+unit exit 0

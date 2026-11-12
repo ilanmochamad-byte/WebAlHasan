@@ -1,0 +1,13 @@
+fase2-pengajian exit=0 :: Hasil (pengajian): 68 lulus / 0 gagal
+fase2-izin exit=0 :: Hasil (izin): 145 lulus / 0 gagal
+fase1 exit=0 :: Hasil: 159 lulus / 0 gagal / 1 dilewati
+profil exit=0 :: Hasil: 105 lulus / 0 gagal
+gabungan exit=0 :: 
+cari-absensi exit=0 :: 
+cari-daftar exit=0 :: 
+peserta exit=0 :: Hasil: 18 lulus, 0 gagal
+v7f4 exit=0 :: 
+keamanan exit=0 :: Hasil: 46 lulus, 0 gagal
+v5f4 exit=0 :: Hasil: 78 lulus, 0 gagal
+v5f5 exit=0 :: 
+galat PHP server API: 0

@@ -1,0 +1,38 @@
+# Admin hanya membaca; orang tua per anak tanpa "Transfer menunggu".
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow:
+    file: masuk.yaml
+    env:
+      AKUN: sbx_admin
+- openLink: alhasanapps://keuangan
+- extendedWaitUntil:
+    visible: ".*Admin — hanya membaca.*"
+    timeout: 30000
+- assertNotVisible: "Terbitkan tagihan bulanan"
+- openLink: alhasanapps://keuangan/santri/${SANTRI}
+- extendedWaitUntil:
+    visible: ".*Saldo tabungan.*"
+    timeout: 30000
+- assertNotVisible: "Setoran"
+- assertNotVisible: "Penarikan/belanja"
+- runFlow:
+    file: masuk.yaml
+    env:
+      AKUN: sbx_v6_wali_dua
+- openLink: alhasanapps://keuangan
+- extendedWaitUntil:
+    visible: "Keuangan anak"
+    timeout: 30000
+- assertVisible: "Buka keuangan SBX V6 Santri SMP"
+- assertVisible: "Buka keuangan SBX V6 Santri Tsanawi"
+- tapOn: "Buka keuangan SBX V6 Santri SMP"
+- extendedWaitUntil:
+    visible: ".*Saldo tabungan.*"
+    timeout: 30000
+- assertNotVisible: ".*Transfer menunggu.*"
+- tapOn: "Kembali"
+- extendedWaitUntil:
+    visible: "Buka keuangan SBX V6 Santri Tsanawi"
+    timeout: 20000
+- assertVisible: "Keuangan anak"

@@ -1,0 +1,52 @@
+Running on iPhone 17 Pro - iOS 26.2 - 05999342-AE62-44C4-B0E1-1E8504CF8512
+ > Flow petugas
+Run masuk.yaml...
+  Launch app "com.ilanmochamad.alhasanApps" with clear state and clear keychain... COMPLETED
+  Assert that "Alhasan Apps" is visible... COMPLETED
+  Scrolling DOWN until "Masukkan username" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan username"... COMPLETED
+  Input text ${AKUN}... COMPLETED
+  Scrolling DOWN until "Masukkan password" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan password"... COMPLETED
+  Input text ${SANDI}... COMPLETED
+  Press Enter key... COMPLETED
+  Assert that ".*Buka profil|Not Now" is visible... COMPLETED
+  Run flow when "Not Now" is visible...
+    Tap on "Not Now"... COMPLETED
+  Run flow when "Not Now" is visible... COMPLETED
+  Assert that ".*Buka profil" is visible... COMPLETED
+Run masuk.yaml... COMPLETED
+Open alhasanapps://keuangan... COMPLETED
+Assert that "Santri, saldo, dan tagihan" is visible... COMPLETED
+Assert that "Verifikasi transfer" is visible... COMPLETED
+Assert that "Kembali" is visible... COMPLETED
+Take screenshot ios-f3-menu-petugas... COMPLETED
+Tap on "Santri, saldo, dan tagihan"... COMPLETED
+Tap on "Cari nama atau NIS"... COMPLETED
+Input text V6S0001... COMPLETED
+Tap on "Cari", Index: 0... COMPLETED
+Tap on "Buka keuangan SBX V6 Santri SMP"... COMPLETED
+Assert that ".*Saldo tabungan.*" is visible... COMPLETED
+Assert that ".*Sisa tagihan.*" is visible... COMPLETED
+Assert that ".*Transfer menunggu.*" is visible... COMPLETED
+Assert that "Ringkasan" is visible... COMPLETED
+Take screenshot ios-f3-rincian-santri... COMPLETED
+Tap on "Tabungan"... COMPLETED
+Assert that "Tagihan bulanan.*" is not visible... COMPLETED
+Tap on "Ringkasan"... COMPLETED
+Tap on "Setoran"... COMPLETED
+Assert that ".*Saldo saat ini.*" is visible... COMPLETED
+Tap on "Nominal \(rupiah\)", Index: 1... COMPLETED
+Input text 25000... COMPLETED
+Double tap on "Catat setoran"... COMPLETED
+Assert that ".*Saldo kini.*" is visible... COMPLETED
+Assert that "Setoran tercatat" is visible... COMPLETED
+Take screenshot ios-f3-setoran-sukses... COMPLETED
+Tap on "Kembali ke santri"... COMPLETED
+Assert that ".*Saldo tabungan.*" is visible... COMPLETED
+Tap on "Kembali"... COMPLETED
+Assert that "Cari nama atau NIS" is visible... COMPLETED
+Open alhasanapps://keuangan/tagihan/${TAGIHAN}... COMPLETED
+Assert that "Rincian biaya" is visible... COMPLETED
+Assert that "Catat pembayaran tunai/transfer" is visible... COMPLETED
+Take screenshot ios-f3-tagihan... COMPLETED

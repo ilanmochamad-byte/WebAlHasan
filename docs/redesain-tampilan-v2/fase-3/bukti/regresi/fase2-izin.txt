@@ -1,0 +1,165 @@
+
+=== I-A. Perizinan: P-Akar + P-Daftar + FAB (K-8) ===
+[lulus] Perizinan: ← "Kembali ke Beranda" ≥ 44 pt di atas judul besar
+[lulus] Perizinan: SearchBar di bawah judul dan di atas pil penyaring
+[lulus] Perizinan: FilterPills Perlu tindakan (terpilih) / Semua / Disetujui / Ditolak
+[lulus] Perizinan: baris entitas (avatar, nama, NIS · nomor, rentang, pil status)
+[lulus] Perizinan 375: FAB "Ajukan izin baru" berteks "Ajukan izin" (ikon + teks), tepat satu
+[lulus] Perizinan 375: tinggi FAB 56 pt (≥ 56)
+[lulus] Perizinan 375: FAB 16 pt dari kanan (16) dan 16 pt dari dasar (16)
+[lulus] Perizinan 375: lebar FAB 147 ≤ setengah layar (187.5)
+[lulus] Perizinan: alternatif tombol atas TIDAK dipakai pada skala teks 1,0 (hanya FAB)
+[lulus] Perizinan: FAB disembunyikan saat kotak cari aktif (papan ketik)
+[lulus] Perizinan: FAB kembali saat kotak cari tidak aktif
+[lulus] Perizinan pengurus: di ujung daftar, elemen terakhir (bawah 700) berada di atas FAB (atas 740)
+[lulus] Perizinan pengurus: titik tengah elemen terakhir tidak tertutup FAB (Berikutnya)
+[lulus] Perizinan 375: isi tanpa luapan horizontal
+[lulus] FAB membuka formulir pengajuan
+[lulus] Admin: FAB tampil sesuai capability server (dapat_membuat_pengajuan=true)
+[lulus] Perizinan admin (berhalaman): di ujung daftar, elemen terakhir (bawah 700) berada di atas FAB (atas 740)
+[lulus] Perizinan admin (berhalaman): titik tengah elemen terakhir tidak tertutup FAB (Berikutnya)
+[lulus] Admin: tombol paginasi "Berikutnya" dapat diketuk di ujung daftar
+[lulus] Murobi: FAB tidak tampil = capability server
+[lulus] Murobi: Perizinan ber-←
+[lulus] Orang tua: FAB tidak tampil = capability server
+[lulus] Orang tua: Perizinan ber-←
+[lulus] Pembimbing V7: FAB tampil = capability server
+[lulus] Pembimbing V7: Perizinan ber-←
+[lulus] Perizinan 768-terang: FAB "Ajukan izin baru" berteks "Ajukan izin" (ikon + teks), tepat satu
+[lulus] Perizinan 768-terang: tinggi FAB 56 pt (≥ 56)
+[lulus] Perizinan 768-terang: FAB 16 pt dari kanan (16) dan 16 pt dari dasar (16)
+[lulus] Perizinan 768-terang: lebar FAB 147 ≤ setengah layar (384)
+[lulus] Perizinan 768-terang: FAB tidak bertabrakan dengan bilah navigasi web (bilah sampai 58, FAB mulai 952)
+[lulus] Perizinan 768-terang: isi tanpa luapan horizontal
+[lulus] Perizinan 1280-gelap: FAB "Ajukan izin baru" berteks "Ajukan izin" (ikon + teks), tepat satu
+[lulus] Perizinan 1280-gelap: tinggi FAB 56 pt (≥ 56)
+[lulus] Perizinan 1280-gelap: FAB 16 pt dari kanan (16) dan 16 pt dari dasar (16)
+[lulus] Perizinan 1280-gelap: lebar FAB 147 ≤ setengah layar (640)
+[lulus] Perizinan 1280-gelap: FAB tidak bertabrakan dengan bilah navigasi web (bilah sampai 58, FAB mulai 728)
+[lulus] Perizinan 1280-gelap: isi tanpa luapan horizontal
+[lulus] Perizinan 375-gelap: FAB "Ajukan izin baru" berteks "Ajukan izin" (ikon + teks), tepat satu
+[lulus] Perizinan 375-gelap: tinggi FAB 56 pt (≥ 56)
+[lulus] Perizinan 375-gelap: FAB 16 pt dari kanan (16) dan 16 pt dari dasar (16)
+[lulus] Perizinan 375-gelap: lebar FAB 147 ≤ setengah layar (187.5)
+[lulus] Perizinan 375-gelap: FAB tidak bertabrakan dengan bilah navigasi web (bilah sampai 58, FAB mulai 740)
+[lulus] Perizinan 375-gelap: isi tanpa luapan horizontal
+
+=== I-B. Buat izin (P-Form langkah) ===
+[lulus] Buat izin: kepala stack
+[lulus] Langkah 1: ← "Kembali ke halaman sebelumnya" (label khusus: layar ini punya kolom tanggal "Kembali")
+[lulus] Langkah 1: SearchBar + baris santri
+[lulus] Langkah 1: baris santri terpilih (radio)
+[lulus] Langkah 2: ← berlabel "Kembali ke langkah sebelumnya"
+[lulus] K-10: ← kembali ke langkah sebelumnya dulu; pilihan santri tidak hilang
+[lulus] Langkah 2: kartu santri terpilih di atas, penghitung karakter alasan
+[lulus] Penghitung mengikuti isian
+[lulus] Buat izin 375: isi tanpa luapan horizontal
+[lulus] Kirim: tepat satu POST /izin/pengajuan berkunci idempotensi
+[lulus] P-Sukses: rincian menampilkan "Pengajuan terkirim"
+
+=== I-C. Rincian izin (P-Rincian) ===
+[lulus] Rincian izin: kartu kepala (avatar, nama, pil status), baris Alasan/Pengurus/Murobi
+[lulus] Pengurus pengaju: hanya "Batalkan pengajuan" (aksi server), tanpa Setujui/Tolak
+[lulus] Rincian izin 375: isi tanpa luapan horizontal
+[lulus] Rincian izin: tepat satu ←
+[lulus] Admin: "Tetapkan murobi" (aksi server) tersimpan
+[lulus] Murobi: Setujui/Tolak di bilah bawah sesuai aksi server
+[lulus] Membuka dan menutup lembar Tolak tanpa konfirmasi tidak mengirim keputusan
+[lulus] Setujui tanpa alasan: tidak ada keputusan (status tetap Diajukan; 1 permintaan ditolak server)
+[lulus] Setujui dengan alasan: tersimpan
+[lulus] Sesudah diputus: bilah keputusan hilang (aksi server)
+
+=== I-D. Laporan izin (P-Laporan) ===
+[lulus] Laporan izin: kepala stack
+[lulus] Laporan izin: kartu angka Total dan per status = API (total 1)
+[lulus] Laporan izin: Cetak, Bagikan PDF, Bagikan CSV di bilah bawah
+[lulus] Laporan izin: penyaring tanggal/status di lembar bawah
+[lulus] Laporan izin 375: isi tanpa luapan horizontal
+[lulus] Laporan izin dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Laporan izin dibuka langsung: ← membuka / (kini /)
+
+=== I-E. Izin melalui pembimbing ===
+[lulus] Daftar izin wali: kepala stack ber-←
+[lulus] Izin wali (orang tua) 375: FAB "Ajukan izin baru" berteks "Ajukan izin" (ikon + teks), tepat satu
+[lulus] Izin wali (orang tua) 375: tinggi FAB 56 pt (≥ 56)
+[lulus] Izin wali (orang tua) 375: FAB 16 pt dari kanan (16) dan 16 pt dari dasar (16)
+[lulus] Izin wali (orang tua) 375: lebar FAB 147 ≤ setengah layar (187.5)
+[lulus] Izin wali daftar 375: isi tanpa luapan horizontal
+[lulus] Ajukan izin anak: kepala stack
+[lulus] K-10: ← dari Tinjau kembali ke isian; draf tidak hilang
+[lulus] P-Sukses: rincian menampilkan "Pengajuan terkirim"
+[lulus] Rincian izin wali: garis waktu tahap Wali → Pembimbing → Murobi (berketerangan teks)
+[lulus] Wali pengaju: "Batalkan pengajuan" di bilah bawah (tindakan server)
+[lulus] Izin wali rincian 375: isi tanpa luapan horizontal
+[lulus] Pembimbing: daftar tanpa FAB
+[lulus] Pembimbing: pil Perlu ditinjau / Sudah ditinjau
+[lulus] Pembimbing: tindakan tinjauan di bilah bawah
+[lulus] Perlu perbaikan: garis waktu kembali ke Wali
+[lulus] Perbaiki: catatan pembimbing di kartu peringatan, kolom terisi isi lama
+[lulus] Izin wali perbaiki 375: isi tanpa luapan horizontal
+[lulus] Perbaiki: ← kembali ke rincian
+[lulus] Admin: daftar izin wali tanpa FAB
+
+=== I-F. Notifikasi ===
+[lulus] Notifikasi: kepala stack ber-←
+[lulus] Notifikasi: FilterPills Semua / Belum dibaca / Sudah dibaca
+[lulus] Notifikasi: hitungan = API
+[lulus] Notifikasi: baris berikon modul, judul, waktu relatif, penanda "Belum dibaca" (ikon + teks)
+[lulus] Notifikasi: "Tandai semua dibaca" tidak lagi tombol di badan
+[lulus] Notifikasi: ⋯ memuat "Tandai semua dibaca" dan "Perangkat & push"
+[lulus] Notifikasi 375: isi tanpa luapan horizontal
+[lulus] Membuka notifikasi: tepat satu permintaan tandai dibaca (tidak berubah)
+[lulus] Rincian notifikasi: kartu pesan + tombol "Buka …" sesuai tujuan
+[lulus] Rincian izin dari notifikasi: ← kembali ke notifikasi
+[lulus] Rincian notifikasi: ← kembali ke daftar
+[lulus] ⋯ → "Tandai semua dibaca": satu permintaan, hitungan server 0
+[lulus] Perangkat: kepala stack
+[lulus] Perangkat 375: isi tanpa luapan horizontal
+[lulus] Perangkat: ← kembali ke Notifikasi
+
+=== K. K-10: rute dibuka langsung (tanpa riwayat, seperti dari notifikasi) → ← membuka Beranda ===
+[lulus] Rincian notifikasi dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Rincian notifikasi dibuka langsung: ← membuka / (kini /)
+[lulus] Notifikasi dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Notifikasi dibuka langsung: ← membuka / (kini /)
+[lulus] Perangkat dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Perangkat dibuka langsung: ← membuka / (kini /)
+[lulus] Rincian izin dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Rincian izin dibuka langsung: ← membuka / (kini /)
+[lulus] Rincian izin yang ditolak server dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Rincian izin yang ditolak server dibuka langsung: ← membuka / (kini /)
+[lulus] Rincian izin wali dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Rincian izin wali dibuka langsung: ← membuka / (kini /)
+[lulus] Daftar izin wali dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Daftar izin wali dibuka langsung: ← membuka / (kini /)
+[lulus] Ajukan izin anak dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Ajukan izin anak dibuka langsung: ← membuka / (kini /)
+[lulus] Perbaiki pengajuan dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Perbaiki pengajuan dibuka langsung: ← membuka / (kini /)
+[lulus] Rincian izin wali yang ditolak server dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Rincian izin wali yang ditolak server dibuka langsung: ← membuka / (kini /)
+[lulus] Buat izin dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Buat izin dibuka langsung: ← membuka / (kini /)
+
+=== L. Mode gelap dan lebar 768/1280 ===
+[lulus] rincian-izin 375-gelap: isi tanpa luapan horizontal
+[lulus] notifikasi 375-gelap: isi tanpa luapan horizontal
+[lulus] laporan-izin 375-gelap: isi tanpa luapan horizontal
+[lulus] izin-wali-daftar 375-gelap: isi tanpa luapan horizontal
+[lulus] izin-wali-rincian 375-gelap: isi tanpa luapan horizontal
+[lulus] rincian-izin 768-terang: isi tanpa luapan horizontal
+[lulus] notifikasi 768-terang: isi tanpa luapan horizontal
+[lulus] laporan-izin 768-terang: isi tanpa luapan horizontal
+[lulus] izin-wali-daftar 768-terang: isi tanpa luapan horizontal
+[lulus] izin-wali-rincian 768-terang: isi tanpa luapan horizontal
+[lulus] rincian-izin 1280-gelap: isi tanpa luapan horizontal
+[lulus] notifikasi 1280-gelap: isi tanpa luapan horizontal
+[lulus] laporan-izin 1280-gelap: isi tanpa luapan horizontal
+[lulus] izin-wali-daftar 1280-gelap: isi tanpa luapan horizontal
+[lulus] izin-wali-rincian 1280-gelap: isi tanpa luapan horizontal
+
+=== Z. Jaringan dan galat ===
+[lulus] Nol permintaan ke host selain 127.0.0.1 (0)
+[lulus] Tanpa pageerror (0)
+
+Hasil (izin): 145 lulus / 0 gagal

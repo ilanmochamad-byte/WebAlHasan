@@ -1,0 +1,24 @@
+# Tautan kuitansi saat aplikasi MATI (sesi tersimpan): ← membuka Beranda (K-10).
+appId: com.ilanmochamad.alhasanApps
+---
+- stopApp
+- openLink: alhasanapps://keuangan/pembayaran/${PEMBAYARAN}
+- extendedWaitUntil:
+    visible: "Kuitansi pembayaran"
+    timeout: 60000
+- extendedWaitUntil:
+    visible: "Menunggu verifikasi"
+    timeout: 30000
+- takeScreenshot: ios-f3-kuitansi-dingin
+# Saat menjadi aktif layar memuat ulang data dari server (kerangka diganti
+# sesaat); tunggu kuitansi tampil stabil sebelum mengetuk ←.
+- extendedWaitUntil:
+    visible: "Bukti pembayaran"
+    timeout: 30000
+- waitForAnimationToEnd
+- tapOn:
+    text: "Kembali"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible: ".*Buka profil"
+    timeout: 30000
