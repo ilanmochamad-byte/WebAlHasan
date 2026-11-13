@@ -1,0 +1,1052 @@
+[
+ {
+  "user": "sbx_admin",
+  "jalur": "/schedules",
+  "varian": "akar",
+  "kembali": "Kembali ke Beranda",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/perizinan",
+  "varian": "akar",
+  "kembali": "Kembali ke Beranda",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/profil",
+  "varian": "akar",
+  "kembali": "Kembali ke Beranda",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/akun/edit-profil",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/akun/ganti-password",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/schedule/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/meeting/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/reports",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/report/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/izin/buat",
+  "varian": "stack",
+  "kembali": "Kembali ke halaman sebelumnya",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/izin/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/izin/laporan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/izin-wali",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/izin-wali/buat",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/izin-wali/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/izin-wali/perbaiki?id=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/notifikasi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/notifikasi/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/notifikasi/perangkat",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/pembinaan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/pembinaan/daftar?jenis=pelanggaran",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/pembinaan/daftar?jenis=kasus",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/pembinaan/daftar?jenis=rekomendasi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/pembinaan/daftar?jenis=publikasi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/pembinaan/buat?jenis=pelanggaran",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/pembinaan/buat?jenis=kasus",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/pembinaan/detail?jenis=pelanggaran&id=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/pembinaan/detail?jenis=kasus&id=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/publikasi/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/rapor",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/rapor/nilai",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/rapor/nilai?pengganti=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/rapor/sikap",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/rapor/sikap?mode=murobi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/rapor/verifikasi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/rapor/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/kesehatan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/kesehatan/daftar",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/kesehatan/catat",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/kesehatan/kunjungan/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/kesehatan/hasil-rujukan?id=1&rujukan=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/kesehatan/versi?id=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/kesehatan/akses?id=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/kesehatan/ringkasan?id=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/kesehatan/penugasan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/kesehatan/laporan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/kesehatan/wali",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/kesehatan/wali/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/santri",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/santri/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/transaksi?santri=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/tagihan/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/bayar?tagihan=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/bayar-tabungan?tagihan=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/ubah-tagihan?tagihan=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/pembayaran",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/pembayaran/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/tabungan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/tabungan/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/verifikasi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/tunggakan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/rekonsiliasi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/laporan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/penerbitan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keuangan/terbit-santri?santri=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keamanan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keamanan/izin",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keamanan/izin/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keamanan/pelanggaran",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keamanan/pelanggaran/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keamanan/konseling",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keamanan/konseling/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keamanan/kehadiran",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_admin",
+  "jalur": "/keamanan/kehadiran/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/schedules",
+  "varian": "akar",
+  "kembali": "Kembali ke Beranda",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/perizinan",
+  "varian": "akar",
+  "kembali": "(dialihkan ke Beranda)",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/profil",
+  "varian": "akar",
+  "kembali": "Kembali ke Beranda",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/akun/edit-profil",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/akun/ganti-password",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/schedule/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/meeting/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/reports",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/report/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/izin/buat",
+  "varian": "stack",
+  "kembali": "Kembali ke halaman sebelumnya",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/izin/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/izin/laporan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/izin-wali",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/izin-wali/buat",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/izin-wali/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/izin-wali/perbaiki?id=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/notifikasi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/notifikasi/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/notifikasi/perangkat",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/pembinaan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/pembinaan/daftar?jenis=pelanggaran",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/pembinaan/daftar?jenis=kasus",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/pembinaan/daftar?jenis=rekomendasi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/pembinaan/daftar?jenis=publikasi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/pembinaan/buat?jenis=pelanggaran",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/pembinaan/buat?jenis=kasus",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/pembinaan/detail?jenis=pelanggaran&id=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/pembinaan/detail?jenis=kasus&id=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/publikasi/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/rapor",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/rapor/nilai",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/rapor/nilai?pengganti=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/rapor/sikap",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/rapor/sikap?mode=murobi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/rapor/verifikasi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/rapor/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/kesehatan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/kesehatan/daftar",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/kesehatan/catat",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/kesehatan/kunjungan/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/kesehatan/hasil-rujukan?id=1&rujukan=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/kesehatan/versi?id=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/kesehatan/akses?id=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/kesehatan/ringkasan?id=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/kesehatan/penugasan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/kesehatan/laporan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/kesehatan/wali",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/kesehatan/wali/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/santri",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/santri/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/transaksi?santri=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/tagihan/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/bayar?tagihan=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/bayar-tabungan?tagihan=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/ubah-tagihan?tagihan=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/pembayaran",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/pembayaran/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/tabungan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/tabungan/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/verifikasi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/tunggakan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/rekonsiliasi",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/laporan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/penerbitan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keuangan/terbit-santri?santri=1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keamanan",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keamanan/izin",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keamanan/izin/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keamanan/pelanggaran",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keamanan/pelanggaran/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keamanan/konseling",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keamanan/konseling/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keamanan/kehadiran",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ },
+ {
+  "user": "sbx_guru_mapel",
+  "jalur": "/keamanan/kehadiran/1",
+  "varian": "stack",
+  "kembali": "Kembali",
+  "tujuan": "/"
+ }
+]

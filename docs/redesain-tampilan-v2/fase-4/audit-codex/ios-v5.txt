@@ -1,0 +1,3 @@
+kesehatan-terang exit=0
+kesehatan-gelap exit=0
+kesehatan-gelap-ax-xxxl exit=1

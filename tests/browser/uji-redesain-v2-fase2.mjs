@@ -105,14 +105,13 @@ const kotak = async l => (await terlihat(l).first().boundingBox()) ?? { x: -1, y
 const kembali = p => terlihat(p.getByRole('button', { name: /^Kembali/ }));
 const judul = (p, nama) => terlihat(p.getByRole('heading', { name: nama, exact: true }));
 /**
- * Isi layar tidak meluap; bilah tab web (T-3, sejak baseline) dikecualikan,
- * begitu pula isi wadah yang memang digeser ke samping (FilterPills).
+ * Seluruh layar termasuk bilah tab harus muat, kecuali isi wadah yang
+ * sengaja digeser ke samping (FilterPills).
  */
 async function tanpaLuapan(p, nama) {
   const peluap = await p.evaluate(() => {
-    const tab = [...document.querySelectorAll('div')].filter(el => /^Al Hasan\s/.test(el.innerText || '') && /Beranda/.test(el.innerText)).pop();
     return [...document.querySelectorAll('body *')]
-      .filter(el => el.getBoundingClientRect().width > 0 && el.getBoundingClientRect().right > innerWidth + 1 && !(tab && (el.contains(tab) || tab.contains(el))))
+      .filter(el => el.getBoundingClientRect().width > 0 && el.getBoundingClientRect().right > innerWidth + 1)
       .filter(el => { for (let a = el.parentElement; a; a = a.parentElement) if (['auto', 'scroll', 'hidden'].includes(getComputedStyle(a).overflowX)) return a.getBoundingClientRect().right > innerWidth + 1; return true; })
       .map(el => (el.innerText || el.tagName).slice(0, 30));
   });
@@ -130,27 +129,38 @@ async function periksaKembali(p, nama, kembaliKe = '/') {
   await p.waitForURL(u => u.pathname === kembaliKe, { timeout: 15000 }).catch(() => {});
   ok(jalur(p) === kembaliKe, `${nama}: ← membuka ${kembaliKe} (kini ${jalur(p)})`);
 }
-/** Geometri FAB di layar web: 56 pt, 16 pt dari kanan dan dari dasar jendela. */
+/** Geometri FAB di layar web: 56 pt dan jarak 16 pt dari tepi kanan dan bilah bawah. */
 async function periksaFab(p, nama, label) {
   const fab = terlihat(p.getByRole('button', { name: label, exact: true }));
   const b = await kotak(fab);
   const vp = p.viewportSize();
+  const bilah = p.getByTestId('bilah-tab-web');
+  const tab = await bilah.count() ? await bilah.boundingBox() : null;
+  const batasBawah = tab?.y ?? vp.height;
   const isiTeks = (await fab.first().innerText().catch(() => '')).replace(/\s+/g, ' ').trim();
   ok(await fab.count() === 1 && isiTeks === 'Ajukan izin', `${nama}: FAB "${label}" berteks "Ajukan izin" (ikon + teks), tepat satu`);
   ok(b.height >= 56 && b.height <= 60, `${nama}: tinggi FAB ${Math.round(b.height)} pt (≥ 56)`);
-  ok(Math.abs(vp.width - (b.x + b.width) - 16) <= 1.5 && Math.abs(vp.height - (b.y + b.height) - 16) <= 1.5,
-    `${nama}: FAB 16 pt dari kanan (${Math.round(vp.width - b.x - b.width)}) dan 16 pt dari dasar (${Math.round(vp.height - b.y - b.height)})`);
+  ok(Math.abs(vp.width - (b.x + b.width) - 16) <= 1.5 && Math.abs(batasBawah - (b.y + b.height) - 16) <= 1.5,
+    `${nama}: FAB 16 pt dari kanan (${Math.round(vp.width - b.x - b.width)}) dan 16 pt dari batas bawah isi (${Math.round(vp.height - b.y - b.height)})`);
   ok(b.width <= vp.width / 2, `${nama}: lebar FAB ${Math.round(b.width)} ≤ setengah layar (${vp.width / 2})`);
   return { fab, b };
 }
 /** Gulir daftar sampai habis; elemen terakhir yang dapat diketuk harus berada di atas FAB. */
 async function fabTidakMenutupi(p, nama, label, terakhir) {
-  await terakhir.last().scrollIntoViewIfNeeded();
-  await p.mouse.wheel(0, 20000);
+  const baris = terlihat(terakhir).last();
+  await baris.scrollIntoViewIfNeeded();
+  await baris.evaluate(el => {
+    for (let parent = el.parentElement; parent; parent = parent.parentElement) {
+      if (['auto', 'scroll'].includes(getComputedStyle(parent).overflowY)) {
+        parent.scrollTop = parent.scrollHeight;
+        break;
+      }
+    }
+  });
   await p.waitForTimeout(600);
   const fab = await kotak(p.getByRole('button', { name: label, exact: true }));
-  const t = (await terlihat(terakhir).last().boundingBox()) ?? { y: 9999, height: 0, x: 0, width: 0 };
-  ok(t.y + t.height <= fab.y, `${nama}: di ujung daftar, elemen terakhir (bawah ${Math.round(t.y + t.height)}) berada di atas FAB (atas ${Math.round(fab.y)})`);
+  const t = (await baris.boundingBox()) ?? { y: 9999, height: 0, x: 0, width: 0 };
+  ok(t.y >= 0 && t.y + t.height <= fab.y, `${nama}: di ujung daftar, elemen terakhir (bawah ${Math.round(t.y + t.height)}) berada di atas FAB (atas ${Math.round(fab.y)})`);
   const tengah = await p.evaluate(([x, y]) => document.elementFromPoint(x, y)?.closest('[role="button"],button')?.getAttribute('aria-label') ?? document.elementFromPoint(x, y)?.textContent?.slice(0, 40) ?? '', [t.x + t.width / 2, t.y + t.height / 2]);
   ok(!/Ajukan izin/.test(tengah), `${nama}: titik tengah elemen terakhir tidak tertutup FAB (${tengah.slice(0, 30)})`);
 }
@@ -418,8 +428,8 @@ try {
         await p.waitForTimeout(800);
         const nama = `${lebar}-${skema === 'dark' ? 'gelap' : 'terang'}`;
         const { b } = await periksaFab(p, `Perizinan ${nama}`, 'Ajukan izin baru');
-        const bilah = await p.evaluate(() => [...document.querySelectorAll('div')].filter(el => /^Al Hasan\s/.test(el.innerText || '') && /Beranda/.test(el.innerText)).pop()?.getBoundingClientRect().bottom ?? 0);
-        ok(b.y > bilah, `Perizinan ${nama}: FAB tidak bertabrakan dengan bilah navigasi web (bilah sampai ${Math.round(bilah)}, FAB mulai ${Math.round(b.y)})`);
+        const bilah = await p.getByTestId('bilah-tab-web').boundingBox();
+        ok(bilah && b.y + b.height < bilah.y, `Perizinan ${nama}: FAB berada di atas bilah tab web`);
         await tanpaLuapan(p, `Perizinan ${nama}`);
         await foto(p, `perizinan-${nama}`);
         await p.context().close();

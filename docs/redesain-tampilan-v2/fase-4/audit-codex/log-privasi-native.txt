@@ -1,0 +1,6 @@
+android-pk-raw: 48 baris; 0 kecocokan penanda
+android-t7-raw: 51 baris; 0 kecocokan penanda
+android-v5-raw: 47 baris; 0 kecocokan penanda
+ios-pk-raw: 17552 baris; 0 kecocokan penanda
+ios-t7-raw: 22586 baris; 0 kecocokan penanda
+ios-v5-raw: 18191 baris; 0 kecocokan penanda
