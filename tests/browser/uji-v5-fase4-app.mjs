@@ -208,6 +208,8 @@ try {
   await w.goto(`${web}/portal/kesehatan_riwayat.php?id=${kid}`);
   const tRiwayat = await teks(w);
   ok(tRiwayat.includes(`${tanda}-ALASAN aplikasi`) && tRiwayat.includes('Hasil rujukan diterima'), 'Riwayat versi web memuat alasan koreksi dari aplikasi');
+  // Tindak lanjut TL-16: riwayat versi/akses di menu ⋯ rincian kunjungan.
+  await tombol(p, 'Tindakan lain').click();
   await tombol(p, 'Riwayat versi (4)').click();
   await p.getByText('Versi 4', { exact: true }).waitFor();
   const tVersi = await teks(p);
@@ -321,6 +323,7 @@ try {
   await tombol(ad, 'Penugasan petugas kesehatan').waitFor();
   ok(!(await teks(ad)).includes('Catat kunjungan'), 'Admin tidak ditawari Catat kunjungan');
   await ad.goto(`${app}/kesehatan/kunjungan/${kid}`);
+  await tombol(ad, 'Tindakan lain').click();
   await tombol(ad, 'Riwayat akses').click();
   await ad.getByText('kanal api', { exact: false }).first().waitFor();
   ok(true, 'Admin membaca riwayat akses yang memuat pembukaan dari aplikasi (kanal api)');

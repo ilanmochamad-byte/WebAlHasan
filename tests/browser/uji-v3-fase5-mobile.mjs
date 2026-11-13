@@ -64,6 +64,8 @@ try{
  await page.getByRole('button',{name:'Simpan',exact:true}).click();
  await page.waitForURL(u=>u.pathname.includes('/pembinaan/detail'),{timeout:30000});cid=Number(new URL(page.url()).searchParams.get('id'));
  check(Number.isSafeInteger(cid)&&cid>0,'Kasus dibuat melalui UI aplikasi');
+ // Tindak lanjut TL-14: isian sesi dan tindakan kasus berada di tab "Sesi".
+ await page.getByRole('tab',{name:/^Sesi/}).click();
   await page.getByRole('button',{name:'Mulai pendampingan',exact:true}).waitFor();
  await context.request.post(api+`/api/v1/v3/konseling/kasus/${cid}/status`,{headers,data:{version:1,status:'Dalam Pendampingan',idempotency_key:`f5-conflict-${crypto.randomUUID()}`}});
  await page.getByRole('button',{name:'Mulai pendampingan',exact:true}).click();await page.getByText(/Muat ulang data sebelum mencoba kembali/).waitFor();check(true,'Konflik versi nyata UI menampilkan tindakan muat ulang');

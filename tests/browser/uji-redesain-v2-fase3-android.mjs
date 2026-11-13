@@ -304,7 +304,8 @@ try {
   tautan(`alhasanapps://keuangan/tagihan/${T}`);
   await cari(/Rincian biaya/, { timeout: 30000 });
   // Teks > 1,35×: tombol tindakan berada di akhir isi bergulir (bukan bilah tetap).
-  ok(await gulirKe(/^Catat pembayaran tunai\/transfer$/, 20) && await gulirKe(/^Bayar dari tabungan$/, 6), 'Gelap + 2,0× rincian tagihan: kedua tombol tindakan terjangkau dengan menggulir');
+  // TL-11: "Bayar dari tabungan" kini di menu ⋯ (Tindakan lain) di kepala.
+  ok(await gulirKe(/^Catat pembayaran tunai\/transfer$/, 20) && await ada(/^Tindakan lain$/, 3000), 'Gelap + 2,0× rincian tagihan: tombol tindakan terjangkau dengan menggulir; ⋯ tersedia');
   await ukurKembali('Gelap + 2,0× rincian tagihan');
   tautan('alhasanapps://keuangan/laporan');
   await cari(/Saldo akhir|Penerimaan kas baru/, { timeout: 30000 });

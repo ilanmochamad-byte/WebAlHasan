@@ -97,6 +97,8 @@ try {
   check((await button('Kerahasiaan (wajib dipilih)').innerText()).includes('Internal') && await page.getByLabel('Tujuan pendampingan', { exact: true }).inputValue() === 'Tujuan uji', 'Kerahasiaan dan tujuan bertahan setelah layar kembali aktif');
   await button('Simpan').click(); await page.waitForURL('**/pembinaan/detail?**');
   check(writes.at(-1).kerahasiaan === 'Internal', 'Pilihan kerahasiaan dikirim sesuai dropdown');
+  // Tindak lanjut TL-14: isian sesi berada di tab "Sesi".
+  await page.getByRole('tab', { name: /^Sesi/ }).click();
   await page.getByLabel('Jadwal sesi baru / jadwal ulang', { exact: true }).fill('2026-10-05T14:30');
   await page.getByLabel('Ringkasan internal sesi / ringkasan penutupan', { exact: true }).fill('Ringkasan uji');
   await visibility('hidden'); await visibility('visible'); await button('Tambahkan sesi baru').waitFor();
