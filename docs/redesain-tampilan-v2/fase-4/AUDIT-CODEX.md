@@ -37,12 +37,12 @@ Arsip Git terpisah tanpa berkas `.env*`, Expo 57.0.15 dari `npm ci --offline`, N
 | Expo web Fase 4 Kesehatan, Keamanan, BSA, K-10 | 70/0, 60/0, 18/0, 304/0 |
 | Rahasia Pembinaan pada tautan langsung | 5/0. Pemilik dan admin 200, murobi terkait/pembimbing lain/wali 403. Isi privat hanya muncul pada dua akun berhak. |
 | V5 Fase 4 | 78/0. Wali melihat ringkasan tanpa keluhan/catatan klinis/obat; wali lain dan relasi dicabut 403. Penyimpanan browser dan 113 baris konsol lulus pemeriksaan penanda. |
-| Regresi Expo web lama | Suite Fase 1 asli 159/0 dengan satu dilewati, pengajian Fase 2 68/0, profil 105/0, kelas gabungan 57/0, pencarian absensi 53/0, pencarian daftar 24/0, Keamanan Fase 4 46/0, dan V6 Fase 4 45/0. Regresi izin dengan oracle yang diperketat membuktikan posisi FAB, dan paginasi. Dua putaran regresi izin berhenti pada locator sebelum rangkaian selesai. Kembali antar langkah dan pilihan santri terbukti pada salah satu putaran. |
+| Regresi Expo web lama | Suite Fase 1 asli 159/0 dengan satu dilewati, pengajian Fase 2 68/0, profil 105/0, kelas gabungan 57/0, pencarian absensi 53/0, pencarian daftar 24/0, perbaikan peserta absensi 18/0, Keamanan Fase 4 46/0, dan V6 Fase 4 45/0. Regresi izin dengan oracle yang diperketat membuktikan posisi FAB, dan paginasi. Dua putaran regresi izin berhenti pada locator sebelum rangkaian selesai. Kembali antar langkah dan pilihan santri terbukti pada salah satu putaran. |
 | Kontrol gelombang 1 | Tiga oracle historis dicoba pada fixture yang sama. Ketiganya berhenti pada penanda Masuk/Beranda dalam kontrol ini; hasil Fase 3 dari handoff (17/4) tidak berhasil direproduksi dengan fixture audit ini. |
 | Kontrol V3 mobile lama | Baseline dan koreksi berhenti pada fixture katalog yang kurang dari 26 pilihan dan timeout sesudah simpan. Kegagalan portal `#case-privacy` yang dilaporkan Claude belum direproduksi secara independen. |
 | V4 Fase 5 lama | Rantai ID/tokens dan DB fixture lama tidak tersedia. Jalur rapor diuji dengan fixture Tahap 7 di suite fase, perekam jaringan, dan native. |
 
-Sebagian regresi aplikasi yang dilaporkan implementator masih belum mendapat hasil audit yang dapat dibandingkan, termasuk kelanjutan matriks BSA, V5 Fase 5, V7 Fase 4, dan perbaikan peserta absensi. Percobaan lokal pada subset menemukan fixture jadwal yang telah bermutasi serta path alat uji yang berbeda setelah penyalinan. Hasil tersebut tidak ditetapkan sebagai regresi aplikasi dan tidak dihitung lulus.
+Sebagian regresi aplikasi yang dilaporkan implementator masih belum mendapat hasil audit yang dapat dibandingkan, termasuk kelanjutan matriks BSA, V5 Fase 5, dan V7 Fase 4. Percobaan lokal pada subset menemukan fixture jadwal yang telah bermutasi serta path alat uji yang berbeda setelah penyalinan. Hasil tersebut tidak ditetapkan sebagai regresi aplikasi dan tidak dihitung lulus.
 
 ## Paritas jaringan dan hak
 
