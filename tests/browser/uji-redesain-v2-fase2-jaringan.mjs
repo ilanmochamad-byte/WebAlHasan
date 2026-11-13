@@ -120,7 +120,8 @@ try {
     await p.getByRole('radio', { name: 'Sakit' }).nth(1).click(); // nth(0) = kehadiran guru
     await p.getByPlaceholder('Catatan santri (opsional)').first().fill('Catatan uji jaringan');
     await p.getByPlaceholder('Cari nama atau NIS').fill('zzz'); // saringan tidak boleh mengubah payload
-    await tombol(p, 'Konfirmasi dan kirim').click();
+    // Label baru (TL-06) atau lama (baseline) — perekam dijalankan pada keduanya.
+    await p.getByRole('button', { name: /^(Kirim absensi|Konfirmasi dan kirim)$/ }).click();
     await tunggu(p, 'Absensi berhasil disimpan');
 
     await g.mulai('6-koreksi');
@@ -171,6 +172,10 @@ try {
       await p.getByPlaceholder('Minimal 3 karakter').fill(alasan);
       await tombol(p, 'Tinjau pengajuan').click();
       await tombol(p, 'Kirim pengajuan').click();
+      // Baseline: rincian langsung. TL-07: layar sukses → "Lihat pengajuan"
+      // (menutup layar sukses tanpa permintaan baru).
+      await p.getByText(/Riwayat perubahan|Lihat pengajuan/).first().waitFor({ timeout: 20000 });
+      if (await p.getByRole('button', { name: 'Lihat pengajuan', exact: true }).count()) await tombol(p, 'Lihat pengajuan').click();
       await tunggu(p, 'Riwayat perubahan');
     }
     await pg.tutup();
@@ -185,10 +190,16 @@ try {
       await tunggu(p, alasan);
       await ad.mulai(`2${n}-rincian-admin`);
       await p.getByRole('button', { name: /^Pengajuan \d+ untuk / }).filter({ hasText: alasan }).first().click();
-      await tombol(p, 'Tetapkan murobi').waitFor({ timeout: 20000 });
+      await tunggu(p, 'Riwayat perubahan');
       await ad.mulai(`3${n}-tetapkan-murobi`);
+      // Baseline: panel di badan layar. TL-08: tindakan sekunder di ⋯ → lembar bawah
+      // (membuka menu/lembar tidak membuat permintaan).
+      if (await p.getByRole('button', { name: 'Tetapkan murobi', exact: true }).count() === 0) {
+        await tombol(p, 'Tindakan lain').click();
+        await tombol(p, 'Tetapkan murobi').click();
+      }
       await p.getByPlaceholder('Wajib diisi').last().fill('Penetapan uji jaringan');
-      await tombol(p, 'Tetapkan murobi').click();
+      await tombol(p, 'Tetapkan murobi').last().click();
       await tunggu(p, 'Murobi tujuan ditetapkan');
     }
     await ad.tutup();

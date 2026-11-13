@@ -117,7 +117,10 @@ async function kartuPertama(p) {
   });
 }
 
-const keProfil = async p => { await p.goto(app + '/profil'); await tunggu(p, 'Akun & pemberitahuan'); };
+// Tindak lanjut TL-03: kelompok "Akun & pemberitahuan" dipecah; penanda Profil termuat = baris "Perangkat & push".
+const keProfil = async p => { await p.goto(app + '/profil'); await tunggu(p, 'Perangkat & push'); };
+// TL-03: nilai data diri kini di rincian "Data diri ›" (akun/data-diri).
+const keDataDiri = async p => { await p.getByRole('button', { name: /^Data diri/ }).click(); await p.waitForURL(u => u.pathname === '/akun/data-diri'); await tunggu(p, 'Tempat, tanggal lahir'); };
 
 try {
   console.log('\n=== B-A/B-B. Kartu identitas di Beranda ===');
@@ -201,6 +204,7 @@ try {
   await pa.getByRole('button', { name: 'Simpan perubahan' }).click();
   await pa.waitForURL(u => u.pathname === '/profil', { timeout: 20000 });
   await tunggu(pa, 'SBX Pengurus A Diubah');
+  await keDataDiri(pa);
   const sesudah = await teks(pa);
   ok(['Garut', '5 April 1991', 'Jl. Uji Profil No. 2, Sukamaju, Cibeunying, Bandung, Jawa Barat', '081299990001', 'pengurus.a@sbx.test'].every(t => sesudah.includes(t)), 'Profil menampilkan seluruh nilai baru tanpa masuk ulang');
   const pg = sql(`SELECT p.nama, p.no_hp, u.name, u.phone, u.email FROM pengurus p JOIN users u ON u.pengurus_id=p.id WHERE u.id=${ids.pengurus_a}`).split('\t');
@@ -229,6 +233,8 @@ try {
 
   console.log('\n=== B-F. Foto profil ===');
   const pilih = async (nama, mimeType, buffer) => {
+    // TL-02: ubah/hapus foto lewat lembar bawah "Foto profil".
+    await pa.getByRole('button', { name: 'Ubah foto', exact: true }).click();
     const [chooser] = await Promise.all([pa.waitForEvent('filechooser'), pa.getByRole('button', { name: /^(Pilih|Ganti) foto$/ }).click()]);
     ok(chooser.isMultiple() === false, `${nama}: pemilih berkas bawaan, satu berkas`);
     await chooser.setFiles({ name: nama, mimeType, buffer });
@@ -278,7 +284,8 @@ try {
   const tulisUsername = await api(tokenB, '/profile/pribadi', { method: 'POST', body: { username: 'curian', roles: ['admin'] } });
   ok(tulisUsername.status === 422 && sql(`SELECT username FROM users WHERE id=${ids.pengurus_b}`) === 'sbx_pengurus_b', 'Menulis username/role lewat API profil → 422, tidak berubah');
   await pa.goto(app + '/akun/edit-profil');
-  await tunggu(pa, 'Hapus foto');
+  await tunggu(pa, 'Ubah foto');
+  await pa.getByRole('button', { name: 'Ubah foto', exact: true }).click();
   pa.once('dialog', d => d.accept());
   await pa.getByRole('button', { name: 'Hapus foto' }).click();
   await tunggu(pa, 'Foto profil dihapus');
@@ -327,7 +334,7 @@ try {
   ok(sql(`SELECT cakupan FROM api_tokens WHERE user_id=${ids.wajib} AND revoked_at IS NULL ORDER BY id DESC LIMIT 1`) === 'ganti_password', 'Token aplikasi bercakupan ganti_password');
   await w.goto(app + '/profil');
   await w.waitForTimeout(1500);
-  ok(!(await teks(w)).includes('Akun & pemberitahuan') && w.url().includes('ganti-password-wajib'), 'Alamat Profil langsung tidak terbuka sebelum password diganti');
+  ok(!(await teks(w)).includes('Perangkat & push') && w.url().includes('ganti-password-wajib'), 'Alamat Profil langsung tidak terbuka sebelum password diganti');
   await w.getByLabel('Password saat ini', { exact: true }).fill('Sementara#2026A');
   await w.getByLabel('Password baru', { exact: true }).fill('PasswordTetap2026');
   await w.getByLabel('Ulangi password baru', { exact: true }).fill('PasswordTetap2026');
@@ -379,7 +386,7 @@ try {
   const responsLama = lama.waitForResponse(r => r.status() === 404 && new URL(r.url()).pathname === '/api/v1/profile/pribadi');
   await lama.goto(app + '/profil');
   await responsLama;
-  await tunggu(lama, 'Akun & pemberitahuan');
+  await tunggu(lama, 'Perangkat & push');
   await lama.getByText('Ganti password', { exact: true }).waitFor({ state: 'hidden' });
   const lamaTeks = await teks(lama);
   ok(!lamaTeks.includes('Edit profil') && !lamaTeks.includes('Ganti password'), 'Server lama: Edit/Ganti Password tidak ditawarkan');

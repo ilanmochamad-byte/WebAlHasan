@@ -43,7 +43,7 @@ await page.goto(app + '/login');
 await page.getByPlaceholder('Masukkan username').fill('sbx_murobi_a');
 await page.getByPlaceholder('Masukkan password').fill('Sandbox#123');
 await page.getByPlaceholder('Masukkan password').press('Enter');
-await page.getByText('Assalamu', { exact: false }).waitFor({ timeout: 15000 });
+await page.getByText(/Assalamu.alaikum,/).waitFor({ timeout: 15000 });
 
 await page.goto(app + '/perizinan');
 await page.getByRole('radio', { name: 'Pengurus' }).waitFor({ timeout: 15000 });

@@ -217,7 +217,7 @@ try {
   await tab(g, 'PI').click();
   await cari(g).fill(sPI.nis);
   await foto(g, 'sebelum-simpan-tersaring');
-  await tombol(g, 'Konfirmasi dan kirim').click();
+  await tombol(g, 'Kirim absensi').click();
   await tunggu(g, 'Absensi berhasil disimpan');
   const body = kiriman.at(-1);
   ok(kiriman.length === 1 && body.students.length === 5 && new Set(body.students.map(s => s.student_id)).size === 5
@@ -274,7 +274,7 @@ try {
   const nisC = ids.santri_nama.C.map(s => nisDari(s.id));
   await cari(g).fill(nisC[1]);
   ok(JSON.stringify(await nisTampil(g)) === JSON.stringify([nisC[1]]) && (await teks(g)).includes('Menampilkan 1 dari 2 santri'), 'Satu kelas: cari NIS');
-  await tombol(g, 'Konfirmasi dan kirim').click();
+  await tombol(g, 'Kirim absensi').click();
   await tunggu(g, 'Absensi berhasil disimpan');
   ok(kiriman.at(-1).students.length === 2 && angka(`SELECT COUNT(*) FROM absensi_santri WHERE pertemuan_id=${MS}`) === 2 && angka(`SELECT COUNT(*) FROM absensi_guru WHERE pertemuan_id=${MS}`) === 1, 'Satu kelas: simpan dua santri + satu guru');
 

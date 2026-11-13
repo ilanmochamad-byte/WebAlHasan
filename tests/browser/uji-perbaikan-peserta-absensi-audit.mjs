@@ -52,12 +52,12 @@ try {
   const draft = async () => await card.getByRole('radio', { name: 'Sakit' }).getAttribute('aria-checked') === 'true' && await card.getByPlaceholder('Catatan santri (opsional)').inputValue() === 'Catatan draf audit';
   ok(await draft(), 'Galat 503 mempertahankan status dan catatan draf');
   await button('Perbarui daftar').evaluate(el => { el.click(); el.click(); });
-  ok(await button('Konfirmasi dan kirim').isDisabled(), 'Kirim dinonaktifkan selama refresh');
+  ok(await button('Kirim absensi').isDisabled(), 'Kirim dinonaktifkan selama refresh');
   await page.getByText('Daftar santri sudah sesuai', { exact: false }).waitFor();
   ok(posts === 2, 'Ketukan ganda menghasilkan satu POST tambahan');
   ok(await draft() && await page.getByPlaceholder('Catatan guru (opsional)').inputValue() === 'Catatan guru audit', 'Retry sukses mempertahankan seluruh draf');
   for (const width of [375, 768, 1280]) { await page.setViewportSize({ width, height: 812 }); ok(await button('Perbarui daftar').isVisible() && await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `Aplikasi ${width}px tanpa overflow`); }
-  await button('Konfirmasi dan kirim').click(); await page.getByText('Absensi berhasil disimpan', { exact: false }).waitFor();
+  await button('Kirim absensi').click(); await page.getByText('Absensi berhasil disimpan', { exact: false }).waitFor();
   ok(sql(`SELECT CONCAT(status,'|',catatan) FROM absensi_santri WHERE pertemuan_id=${mid} AND santri_id=${pa.id}`) === 'Sakit|Catatan draf audit', 'DB menyimpan status dan catatan santri setelah retry');
   ok(sql(`SELECT catatan FROM absensi_guru WHERE pertemuan_id=${mid}`) === 'Catatan guru audit', 'DB menyimpan catatan guru');
   const done = await call('POST', endpoint, token, {}); ok(done.status === 409 && done.json.error.code === 'MEETING_NOT_OPEN', 'Selesai ditolak 409 MEETING_NOT_OPEN');

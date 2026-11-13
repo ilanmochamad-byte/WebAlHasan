@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const app = process.env.APP, web = 'http://127.0.0.1:8971';
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 375, height: 812 } }); const p = await ctx.newPage();
+await p.route('**/*', async r => { const u = new URL(r.request().url()); if (u.hostname !== '127.0.0.1') return r.abort();
+  if (u.origin !== web) return r.fallback(); if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: { 'Access-Control-Allow-Origin': app, 'Access-Control-Allow-Headers': 'authorization,content-type', 'Access-Control-Allow-Methods': 'GET,POST,PUT' } });
+  const res = await r.fetch(); await r.fulfill({ response: res, headers: { ...res.headers(), 'Access-Control-Allow-Origin': app } }); });
+p.on('pageerror', e => console.log('PAGEERR', e.message));
+await p.goto(app + '/login'); await p.getByPlaceholder('Masukkan username').fill(process.env.U); await p.getByPlaceholder('Masukkan password').fill('Sandbox#123');
+await p.getByRole('button', { name: 'Masuk', exact: true }).click(); await p.waitForURL(u => !u.pathname.includes('login')); await p.waitForTimeout(1500);
+await p.goto(app + process.env.PATHX); await p.waitForTimeout(6000);
+console.log((await p.locator('body').innerText()).replace(/\s+/g, ' ').slice(0, 1500));
+await p.screenshot({ path: process.env.OUT, fullPage: true }); await b.close();

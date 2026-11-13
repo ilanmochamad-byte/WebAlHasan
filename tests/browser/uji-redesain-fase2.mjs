@@ -44,7 +44,7 @@ async function sesi(browser, user, { sisipSesiHariIni = false } = {}) {
   await page.getByPlaceholder('Masukkan username').fill(user);
   await page.getByPlaceholder('Masukkan password').fill('Sandbox#123');
   await page.getByPlaceholder('Masukkan password').press('Enter');
-  await page.getByText('Assalamu', { exact: false }).waitFor({ timeout: 15000 });
+  await page.getByText(/Assalamu.alaikum,/).waitFor({ timeout: 15000 });
   return { context, page, errors, permintaan };
 }
 

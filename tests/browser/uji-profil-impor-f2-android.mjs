@@ -77,7 +77,7 @@ async function bukaApp() {
 }
 async function masuk(user, password = PASS) {
   await bukaApp();
-  const awal = await cari(/Masukkan username|Assalamu|Ganti password sementara/, { timeout: 90000 });
+  const awal = await cari(/Masukkan username|Assalamu.alaikum,|Ganti password sementara/, { timeout: 90000 });
   if (!/Masukkan username/.test(isi(awal.nodes))) throw Error('Sesi lama masih aktif');
   await ketuk(/Masukkan username/, { kelas: 'EditText' });
   ketik(user);
@@ -94,7 +94,7 @@ async function masuk(user, password = PASS) {
 async function bukaProfil() {
   for (let i = 0; i < 4; i++) {
     await ketuk(/Buka profil/, { timeout: 60000 });
-    try { await cari(/Akun & pemberitahuan|Data diri|Edit profil/, { timeout: 8000 }); return; } catch { await tidur(1500); }
+    try { await cari(/Perangkat & push|Data diri|Edit profil/, { timeout: 8000 }); return; } catch { await tidur(1500); }
   }
   throw Error('Profil tidak terbuka dari kartu');
 }
@@ -117,7 +117,7 @@ try {
   for (const skala of ['1.0', '2.0']) {
     adb('shell', 'settings', 'put', 'system', 'font_scale', skala);
     await masuk('sbx_v5_ganda');
-    const { nodes } = await cari(/Assalamu/, { timeout: 60000 });
+    const { nodes } = await cari(/Assalamu.alaikum,/, { timeout: 60000 });
     const kartuNode = nodes.find(n => /Buka profil/.test(n.desc));
     const namaPanjang = 'SBX V5 Ganda Muhammad Abdurrahman Nurhidayatullah Al-Fatih Ramadhan Syarifuddin';
     const namaNode = nodes.find(n => n.text === namaPanjang);
@@ -143,6 +143,8 @@ try {
   await cari(/Diatur admin|Foto profil/);
   await isiKolom(/^Tempat lahir$/, 'Garut Native');
   tutupKeyboard();
+  // TL-02: pilihan foto lewat lembar bawah "Foto profil".
+  await ketuk(/^Ubah foto$/);
   await ketuk(/^Pilih foto$/);
   const pemilih = await cari(/^Photo taken on|^Foto diambil/, { timeout: 30000, luar: true });
   const pkgPemilih = [...new Set(pemilih.nodes.map(n => n.pkg))].filter(p => p && p !== PKG);
@@ -208,7 +210,7 @@ try {
   await isiKolom(/^Ulangi password baru$/, 'NativeTetap2026');
   tutupKeyboard();
   await ketuk(/^Simpan dan lanjutkan$/);
-  await cari(/Assalamu/, { timeout: 30000 });
+  await cari(/Assalamu.alaikum,/, { timeout: 30000 });
   ok(sql(`SELECT force_password_change FROM users WHERE id=${ids.wajib}`) === '0', 'Sesudah diganti: Beranda terbuka, wajib ganti dilepas');
   await keluar();
 

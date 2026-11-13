@@ -118,7 +118,7 @@ async function masuk(user, password = PASS) {
   }
   adb('shell', 'input', 'keyevent', 'KEYCODE_ENTER');
 }
-const diBeranda = (timeout = 40000) => cari(/Assalamu/, { timeout });
+const diBeranda = (timeout = 40000) => cari(/Assalamu.alaikum,/, { timeout });
 const dp = () => Number((adb('shell', 'wm', 'density').match(/(\d+)\s*$/m) || [0, 420])[1]) / 160;
 const layar = () => (adb('shell', 'wm', 'size').match(/(\d+)x(\d+)\s*$/m) || [0, 1080, 2400]).slice(1).map(Number);
 /** Gulir sampai pola terlihat (maks. `maks` kali). */
@@ -177,7 +177,7 @@ function ukuranTangkapan(nama) {
 const tautan = url => adb('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', `'${url}'`, PKG);
 /** Tekan ← sampai Beranda (layar pertama tanpa riwayat stack di atasnya). */
 async function keBeranda() {
-  for (let i = 0; i < 8 && !(await ada(/Assalamu/, 1500)); i++) { if (await ada(/^Kembali$/, 1500)) await ketuk(/^Kembali$/); else adb('shell', 'input', 'keyevent', 'KEYCODE_BACK'); await tidur(1200); }
+  for (let i = 0; i < 8 && !(await ada(/Assalamu.alaikum,/, 1500)); i++) { if (await ada(/^Kembali$/, 1500)) await ketuk(/^Kembali$/); else adb('shell', 'input', 'keyevent', 'KEYCODE_BACK'); await tidur(1200); }
 }
 const sid = nis => Number(sql(`SELECT id FROM santri WHERE nis='${nis}'`));
 const sSmp = sid('V6S0001');
@@ -239,7 +239,7 @@ try {
   await ukurKembali('Rincian tagihan (tautan)');
   await ketuk(/^Kembali$/);
   await tidur(1500);
-  ok(await ada(/Assalamu/, 5000), '← dari tautan membuka Beranda');
+  ok(await ada(/Assalamu.alaikum,/, 5000), '← dari tautan membuka Beranda');
 
   console.log('\n=== A-3. Penugasan dicabut saat formulir terbuka ===');
   tautan(`alhasanapps://keuangan/transaksi?santri_id=${sSmp}&mode=setoran`);

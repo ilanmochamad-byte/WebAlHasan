@@ -126,7 +126,7 @@ try {
   ok(true, 'Ulangan: pesan "sudah sesuai"');
 
   console.log('\n=== A-2 aplikasi: kirim absensi dengan daftar baru ===');
-  await tombol(g, 'Konfirmasi dan kirim').click();
+  await tombol(g, 'Kirim absensi').click();
   await tunggu(g, 'Absensi berhasil disimpan');
   ok(angka(`SELECT COUNT(*) FROM absensi_santri WHERE pertemuan_id=${MG}`) === 6
     && angka(`SELECT COUNT(*) FROM absensi_santri WHERE pertemuan_id=${MG} AND santri_id IN (${b1},${b2})`) === 2

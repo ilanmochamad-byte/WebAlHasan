@@ -188,7 +188,7 @@ try {
     console.log(`--- C. Profil (${label}) ---`);
     await kartu(p).getByRole('button', { name: /Buka profil/ }).click();
     await p.waitForURL(u => u.pathname === '/profil');
-    await p.getByText('Akun & pemberitahuan', { exact: false }).first().waitFor({ timeout: 20000 });
+    await p.getByText('Perangkat & push', { exact: false }).first().waitFor({ timeout: 20000 });
     await p.waitForTimeout(1200);
     const kembali = p.getByRole('button', { name: 'Kembali ke Beranda', exact: true });
     const kKembali = await kotak(kembali);
@@ -205,7 +205,8 @@ try {
     } else {
       ok(await terlihat(p.getByLabel(/^Penugasan aktif: /)) === 0, `${label}: tanpa penugasan/mapel → strip angka tidak digambar`);
     }
-    ok(['Data diri', 'Rincian penugasan aktif', 'Akun & pemberitahuan', 'Tampilan', 'Tentang', 'Keluar dari aplikasi'].every(x => tp.includes(x)), `${label}: kelompok Profil lengkap`);
+    // Tindak lanjut TL-03 (§4.2): Akun dan Pemberitahuan terpisah; Data diri berupa baris ›.
+    ok(['Data diri', 'Rincian penugasan aktif', 'Akun', 'Pemberitahuan', 'Perangkat & push', 'Tampilan', 'Tentang', 'Keluar dari aplikasi'].every(x => tp.includes(x)) && !tp.includes('Akun & pemberitahuan'), `${label}: kelompok Profil lengkap`);
     await tanpaLuapan(p, `Profil ${label}`);
     await foto(p, `profil-${user}-375-terang`);
     await kembali.click();
@@ -318,7 +319,7 @@ try {
     await tanpaLuapan(p, `Beranda ${nama}`);
     await foto(p, `beranda-sbx_admin-${nama}`);
     await p.goto(app + '/profil');
-    await p.getByText('Akun & pemberitahuan', { exact: false }).first().waitFor({ timeout: 20000 });
+    await p.getByText('Perangkat & push', { exact: false }).first().waitFor({ timeout: 20000 });
     await p.waitForTimeout(1200);
     await tanpaLuapan(p, `Profil ${nama}`);
     await foto(p, `profil-sbx_admin-${nama}`);
