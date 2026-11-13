@@ -1,0 +1,24 @@
+# Petugas kesehatan (DB V5): rincian kunjungan dengan penanda privat; ← Beranda.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- openLink: alhasanapps://kesehatan/kunjungan/${KUNJUNGAN}
+- extendedWaitUntil:
+    visible: "Detail kunjungan"
+    timeout: 40000
+- assertVisible: "Kembali"
+- scrollUntilVisible:
+    element: "Privat: hanya petugas kesehatan.*"
+    direction: DOWN
+    timeout: 40000
+- takeScreenshot: ios-f4-kunjungan-${NAMA}
+- scrollUntilVisible:
+    element: "Kembali"
+    direction: UP
+    timeout: 20000
+- tapOn:
+    text: "Kembali"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible: ".*Buka profil"
+    timeout: 30000

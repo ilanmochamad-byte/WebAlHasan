@@ -1,0 +1,18 @@
+# Orang tua (DB Tahap 7): rapor dua versi — "Versi sebelumnya", satu "Unduh PDF rapor", ← Beranda.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- openLink: alhasanapps://rapor/${RAPOR}
+- extendedWaitUntil:
+    visible: ".*Status rapor.*"
+    timeout: 40000
+- assertVisible: "Kembali"
+- scrollUntilVisible:
+    element: "Unduh PDF rapor"
+    direction: DOWN
+    timeout: 120000
+- scrollUntilVisible:
+    element: "Versi sebelumnya"
+    direction: DOWN
+    timeout: 120000
+- takeScreenshot: ios-f4-rapor-${NAMA}

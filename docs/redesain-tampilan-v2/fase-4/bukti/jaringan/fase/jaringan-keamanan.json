@@ -1,0 +1,65 @@
+{
+ "sbx_pengurus_biasa 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_pengurus_biasa\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_pengurus_biasa 01-menu": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/keamanan/akses"
+ ],
+ "sbx_pengurus_biasa 02-izin": [
+  "GET /api/v1/keamanan/izin ?page=1"
+ ],
+ "sbx_pengurus_biasa 03-izin-asal-wali": [
+  "GET /api/v1/keamanan/izin ?asal=wali&page=1"
+ ],
+ "sbx_pengurus_biasa 04-izin-cari": [
+  "GET /api/v1/keamanan/izin ?asal=wali&page=1&q=SBX"
+ ],
+ "sbx_pengurus_biasa 05-izin-rincian": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/keamanan/izin/2706"
+ ],
+ "sbx_pengurus_biasa 06-pelanggaran": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/keamanan/pelanggaran ?page=1"
+ ],
+ "sbx_pengurus_biasa 07-pelanggaran-rincian": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/keamanan/pelanggaran/2"
+ ],
+ "sbx_pengurus_biasa 08-konseling": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/keamanan/konseling ?page=1"
+ ],
+ "sbx_pengurus_biasa 09-konseling-rincian": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/keamanan/konseling/1"
+ ],
+ "sbx_pengurus_biasa 10-kehadiran": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/keamanan/kehadiran ?page=1"
+ ]
+}

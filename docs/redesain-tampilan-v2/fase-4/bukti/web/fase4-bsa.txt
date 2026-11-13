@@ -1,0 +1,20 @@
+[lulus] petugas BSA Beranda: tanpa ←
+[lulus] petugas BSA menu keuangan: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas BSA menu keuangan: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas BSA menu keuangan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] bsa-menu 375 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] bsa-menu 375 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] bsa-menu 375 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] bsa-menu 768 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] bsa-menu 768 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] bsa-menu 768 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] bsa-menu 768 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] bsa-menu 768 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] bsa-menu 1280 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] bsa-menu 1280 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] bsa-menu 1280 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] bsa-menu 1280 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] bsa-menu 1280 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] tanpa permintaan keluar 127.0.0.1 ()
+
+Ringkasan: 18 lulus, 0 gagal

@@ -1,0 +1,268 @@
+{
+ "sbx_pengurus_a 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_pengurus_a\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_pengurus_a 01-menu-pembinaan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities"
+ ],
+ "sbx_pengurus_a 02-daftar-pelanggaran": [
+  "GET /api/v1/v3/pelanggaran ?page=1"
+ ],
+ "sbx_pengurus_a 03-cari-nis": [
+  "GET /api/v1/v3/pelanggaran ?page=1&q=SBX"
+ ],
+ "sbx_pengurus_a 04-rincian-pelanggaran": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v3/pelanggaran/1"
+ ],
+ "sbx_pengurus_a 05-catat-pelanggaran-ketukan-ganda": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/mobile/options ?page=1",
+  "GET /api/v1/v3/mobile/options ?page=2",
+  "POST /api/v1/v3/pelanggaran badan={\"idempotency_key\":\"<kunci>\",\"katalog_id\":1,\"santri_id\":1,\"tahun_ajaran_id\":1,\"uraian\":\"Jaringan F4 uraian pelanggaran\",\"waktu_kejadian\":\"2026-10-04T09:00\"}",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v3/pelanggaran/6"
+ ],
+ "sbx_pengurus_a 06-buka-kasus": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/mobile/options ?page=1",
+  "GET /api/v1/v3/mobile/options ?page=2",
+  "POST /api/v1/v3/konseling/kasus badan={\"idempotency_key\":\"<kunci>\",\"kerahasiaan\":\"Internal\",\"rekomendasi_ids\":[],\"santri_id\":1,\"tahun_ajaran_id\":1,\"tujuan\":\"Jaringan F4 tujuan kasus\"}",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v3/konseling/kasus/3"
+ ],
+ "sbx_pengurus_a 07-tambah-sesi": [
+  "POST /api/v1/v3/konseling/kasus/3/sesi badan={\"idempotency_key\":\"<kunci>\",\"jadwal\":\"2026-10-05T10:00\",\"tindak_lanjut\":\"\"}",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v3/konseling/kasus/3"
+ ],
+ "sbx_pengurus_a 08-selesaikan-sesi": [
+  "POST /api/v1/v3/konseling/sesi/3/status badan={\"hasil\":\"Jaringan F4 hasil sesi\",\"idempotency_key\":\"<kunci>\",\"ringkasan_internal\":\"Jaringan F4 ringkasan sesi\",\"status\":\"Selesai\",\"tindak_lanjut\":\"\",\"version\":1}",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v3/konseling/kasus/3"
+ ],
+ "sbx_pengurus_a 09-sikap-pembimbing-draf": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v4/sikap/options ?mode=pembimbing",
+  "GET /api/v1/v4/sikap/options ?mode=pembimbing",
+  "GET /api/v1/v4/sikap ?mode=pembimbing&rencana_id=4&santri_id=1682",
+  "POST /api/v1/v4/sikap badan={\"action\":\"draf\",\"adab\":\"Baik\",\"alasan\":\"\",\"catatan\":\"Jaringan F4 catatan sikap\",\"kedisiplinan\":\"Baik\",\"rencana_id\":4,\"santri_id\":1682,\"tanggung_jawab\":\"Baik\",\"version\":0}",
+  "GET /api/v1/v4/sikap/options ?mode=pembimbing",
+  "GET /api/v1/v4/sikap ?mode=pembimbing&rencana_id=4&santri_id=1682"
+ ],
+ "sbx_murobi_c 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_murobi_c\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_murobi_c 10-menu-pembinaan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities"
+ ],
+ "sbx_murobi_c 11-sikap-murobi-diketahui": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v4/sikap/options ?mode=murobi",
+  "GET /api/v1/v4/sikap/options ?mode=murobi",
+  "GET /api/v1/v4/sikap ?mode=murobi&rencana_id=4&santri_id=1680",
+  "POST /api/v1/v4/sikap/murobi badan={\"action\":\"diketahui\",\"alasan\":\"\",\"rencana_id\":4,\"santri_id\":1680,\"version\":1}",
+  "GET /api/v1/v4/sikap/options ?mode=murobi"
+ ],
+ "sbx_murobi_a 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_murobi_a\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_murobi_a 12-kasus-tandai-mengetahui": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v3/konseling/kasus/3",
+  "POST /api/v1/v3/konseling/kasus/3/diketahui badan={\"catatan\":\"Jaringan F4 catatan murobi\",\"idempotency_key\":\"<kunci>\",\"version\":2}",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v3/konseling/kasus/3"
+ ],
+ "sbx_guru_mapel 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_guru_mapel\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_guru_mapel 13-menu-rapor": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v4/capabilities"
+ ],
+ "sbx_guru_mapel 14-nilai-pilih": [
+  "GET /api/v1/v4/nilai/options ?pengganti=0",
+  "GET /api/v1/v4/nilai/options ?pengganti=0",
+  "GET /api/v1/v4/nilai ?pengganti=0&rencana_mapel_id=9&santri_id=0",
+  "GET /api/v1/v4/nilai/options ?pengganti=0",
+  "GET /api/v1/v4/nilai ?pengganti=0&rencana_mapel_id=9&santri_id=1694"
+ ],
+ "sbx_guru_mapel 15-simpan-draf-nilai": [
+  "POST /api/v1/v4/nilai badan={\"action\":\"draf\",\"alasan\":\"\",\"komponen\":[{\"catatan\":\"\",\"komponen\":\"Harian\",\"nilai\":\"81\",\"nomor_harian\":1,\"version\":0},{\"catatan\":\"\",\"komponen\":\"Tengah\",\"nilai\":\"82\",\"nomor_harian\":0,\"version\":0},{\"catatan\":\"\",\"komponen\":\"Akhir\",\"nilai\":\"83\",\"nomor_harian\":0,\"version\":0}],\"rencana_mapel_id\":9,\"santri_id\":1694}",
+  "GET /api/v1/v4/nilai/options ?pengganti=0",
+  "GET /api/v1/v4/nilai ?pengganti=0&rencana_mapel_id=9&santri_id=1694"
+ ],
+ "sbx_guru_mapel 16-serahkan-nilai-ketukan-ganda": [
+  "POST /api/v1/v4/nilai badan={\"action\":\"serahkan\",\"alasan\":\"\",\"komponen\":[{\"catatan\":\"\",\"komponen\":\"Harian\",\"nilai\":\"81.00\",\"nomor_harian\":1,\"version\":1},{\"catatan\":\"\",\"komponen\":\"Tengah\",\"nilai\":\"82.00\",\"nomor_harian\":0,\"version\":1},{\"catatan\":\"\",\"komponen\":\"Akhir\",\"nilai\":\"83.00\",\"nomor_harian\":0,\"version\":1}],\"rencana_mapel_id\":9,\"santri_id\":1694}",
+  "GET /api/v1/v4/nilai/options ?pengganti=0",
+  "GET /api/v1/v4/nilai ?pengganti=0&rencana_mapel_id=9&santri_id=1694"
+ ],
+ "sbx_pendidikan 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_pendidikan\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_pendidikan 17-verifikasi-pilih": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v4/verifikasi/options",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v4/verifikasi/options",
+  "GET /api/v1/v4/verifikasi ?rencana_id=4&santri_id=0",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v4/verifikasi/options",
+  "GET /api/v1/v4/verifikasi ?rencana_id=4&santri_id=1680"
+ ],
+ "sbx_pendidikan 18-verifikasi-sikap": [
+  "POST /api/v1/v4/verifikasi badan={\"action\":\"verifikasi\",\"alasan\":\"\",\"jenis\":\"sikap\",\"mapel_key\":0,\"rencana_id\":4,\"santri_id\":1680,\"sumber_hash\":\"<hash-server>\",\"version\":2}",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v4/verifikasi/options",
+  "GET /api/v1/v4/verifikasi ?rencana_id=4&santri_id=1680"
+ ],
+ "sbx_pendidikan 19-pratinjau-rapor": [
+  "POST /api/v1/v4/rapor/pratinjau badan={\"catatan_umum\":\"\",\"rencana_id\":4,\"santri_id\":1680}"
+ ],
+ "sbx_t7_ortu 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_t7_ortu\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_t7_ortu 20-menu-rapor-wali": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v4/rapor"
+ ],
+ "sbx_t7_ortu 21-lihat-rapor": [
+  "GET /api/v1/v4/rapor/1"
+ ],
+ "sbx_ortu_a 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_ortu_a\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_ortu_a 22-informasi-keluarga": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v3/publikasi ?page=1"
+ ],
+ "sbx_ortu_a 23-buka-publikasi": [
+  "GET /api/v1/v3/publikasi/3"
+ ],
+ "sbx_ortu_a 24-tandai-dibaca": [
+  "POST /api/v1/v3/publikasi/3/dibaca badan={\"version\":2}"
+ ],
+ "sbx_admin 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_admin\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_admin 25-pembinaan-admin": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities"
+ ],
+ "sbx_admin 26-rapor-admin": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v4/capabilities"
+ ]
+}

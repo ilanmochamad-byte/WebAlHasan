@@ -1,0 +1,35 @@
+# Sub-alur: mulai bersih lalu masuk sebagai ${AKUN}. Dipanggil alur lain.
+# Penanda Beranda di iOS adalah label kartu identitas ("… Buka profil"): teks
+# di dalam kartu digabung menjadi satu elemen aksesibilitas.
+appId: com.ilanmochamad.alhasanApps
+---
+- launchApp:
+    clearState: true
+    clearKeychain: true
+- extendedWaitUntil:
+    visible: "Alhasan Apps"
+    timeout: 60000
+# Pada teks sistem sangat besar kolom isian berada di bawah lipatan.
+- scrollUntilVisible:
+    element: "Masukkan username"
+    direction: DOWN
+- tapOn: "Masukkan username"
+- inputText: ${AKUN}
+- scrollUntilVisible:
+    element: "Masukkan password"
+    direction: DOWN
+- tapOn: "Masukkan password"
+- inputText: ${SANDI}
+- pressKey: Enter
+- extendedWaitUntil:
+    visible: ".*Buka profil|Not Now"
+    timeout: 40000
+# iOS menawarkan menyimpan password (dialog sistem) sesudah masuk.
+- runFlow:
+    when:
+      visible: "Not Now"
+    commands:
+      - tapOn: "Not Now"
+- extendedWaitUntil:
+    visible: ".*Buka profil"
+    timeout: 40000

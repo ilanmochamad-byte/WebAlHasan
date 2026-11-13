@@ -1,0 +1,202 @@
+(node:68638) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/attendance-shortcut.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Absensi kembali ke daftar jadwal saat hari kosong atau seluruh sesi selesai (0.36875ms)
+✔ Absensi memilih sesi pertama yang belum selesai, termasuk yang belum dibuka (0.068125ms)
+(node:68639) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/date-time.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ tanggal/jam lokal lengkap termasuk tengah malam dan tahun kabisat (3.397458ms)
+✔ tolak bagian kosong, format manual salah dan tanggal yang dinormalisasi JS (0.214209ms)
+(node:68640) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/izin-wali.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Isian izin wali mengikuti aturan server (2.266292ms)
+✔ Isian dirapikan; perbaikan wajib berbeda dari versi asal (0.966375ms)
+✔ Catatan tinjauan: perbaikan/tolak wajib, teruskan opsional (0.103ms)
+✔ Penolakan pembimbing dibedakan dari keputusan murobi (0.094417ms)
+✔ Tautan notifikasi izin wali hanya membawa penunjuk (0.192834ms)
+(node:68641) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/keamanan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kueri Keamanan tanpa kunci kosong dan ter-encode (0.426917ms)
+✔ Rentang tanggal: opsional, format ISO, akhir tidak mendahului awal (0.167916ms)
+✔ Nada lencana dan label status mengikuti halaman web Keamanan (0.076959ms)
+✔ Penugasan profil dikelompokkan per identitas (satu akun, dua identitas) (0.417375ms)
+(node:68642) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/kelas-jadwal.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ server lama tanpa classes tetap terbaca sebagai satu kelas utama (6.561417ms)
+✔ jadwal satu kelas dari server Fase 1 tidak ditandai gabungan (0.099333ms)
+✔ kelas gabungan: utama lebih dahulu, tanpa ganda, label dipisah koma (0.09075ms)
+✔ peserta dikelompokkan per kelas asal mengikuti urutan kelas, urutan server dipertahankan (0.141291ms)
+✔ kelas asal di luar daftar dan peserta tanpa kelas tetap tampil, kelompok kosong dibuang (0.092125ms)
+✔ nama kelas asal memakai nama dari server, lalu daftar kelas, kosong bila tidak ada (0.068791ms)
+(node:68643) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/kesehatan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Koreksi mengirim keadaan lengkap: rincian lama ber-id dipertahankan, waktu asli tidak bergeser (0.82325ms)
+✔ Baris baru yang seluruhnya kosong diabaikan; baris lama kosong tetap dikirim agar server menolaknya (6.311417ms)
+✔ Alasan wajib minimal lima karakter, maksimal 1000; sidik jari berubah bila isi berubah (0.197667ms)
+✔ Penunjuk notifikasi kesehatan hanya ringkasan_id valid; isi/tautan lain diabaikan (0.113291ms)
+✔ Deep-link kesehatan hanya skema aplikasi dan rute ringkasan wali (0.441291ms)
+✔ Teks perubahan versi memakai label manusia (0.1105ms)
+✔ Hasil pencarian santri dikelompokkan per kelas; belum ditempatkan paling akhir (0.124916ms)
+✔ Periode laporan: bulan ini, bulan lalu (lintas tahun), dan 30 hari berakhir hari ini (0.15125ms)
+(node:68644) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/keuangan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Rupiah ditampilkan bulat dengan titik ribuan tanpa Intl (1.011916ms)
+✔ Nominal dikirim sebagai teks angka; pecahan dan huruf diteruskan agar server menolak (0.51475ms)
+✔ Alasan koreksi wajib 5–500 karakter seperti website (0.185958ms)
+✔ Sidik jari sama untuk isi sama (retry memakai kunci yang sama) dan berbeda bila isi berubah (0.155042ms)
+✔ Label periode, jenis, dan nilai awal tanggal (1.812042ms)
+✔ Penunjuk notifikasi keuangan hanya id; tipe/kunci lain ditolak (0.457208ms)
+✔ Tautan skema keuangan hanya menerima jalur yang dikenal (0.182833ms)
+✔ Rentang laporan Fase 5: bulan ini, bulan lalu (lintas tahun), 3 bulan, tahun ini — paling panjang 12 bulan (0.123416ms)
+✔ Pratinjau satu santri sah hanya bila server menyaring santri itu (server lama mengabaikan santri_id) (0.093709ms)
+(node:68645) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/perbarui-peserta.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ draf santri yang tetap tercantum dipertahankan, santri keluar dibuang, santri baru Hadir (0.696875ms)
+✔ santri baru yang sudah berabsensi memakai absensi tersimpan (0.067458ms)
+✔ ringkasan perubahan (0.125208ms)
+(node:68646) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/peserta-saring.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cari nama/NIS tanpa membedakan huruf besar, diakritik, dan urutan kata (1.030208ms)
+✔ label tab IBTIDA menjadi PA/PI; gabungan non-IBTIDA memakai nama lengkap (0.546125ms)
+✔ tab Semua/PA/PI menghitung peserta unik; kelas hilang atau di luar daftar = Kelas belum tercatat (0.18825ms)
+✔ tab PA hanya peserta kelas asal PA; nama sama di PI tidak ikut (0.230542ms)
+✔ satu kelas dan server lama: satu kelompok tanpa judul (0.060791ms)
+✔ nomor urut stabil terhadap pencarian dan tab (0.079375ms)
+✔ saringan tidak mengubah array sumber (draf/payload tetap seluruh peserta) (0.086042ms)
+(node:68647) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/print-dialog.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ mengenali exception pembatalan cetak iOS dari nama dan pesan (0.445542ms)
+✔ mengenali bentuk CodedError dari bridge native (0.084084ms)
+✔ tidak menyembunyikan kegagalan cetak yang sebenarnya (0.059833ms)
+✔ mengembalikan hasil normal ketika pencetakan dimulai (0.061375ms)
+✔ mengubah penutupan dialog menjadi hasil dibatalkan (0.073375ms)
+✔ meneruskan kegagalan printer tanpa perubahan (0.319416ms)
+(node:68648) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/profil.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Isian yang boleh diubah sama dengan kontrak Fase 1 (tanpa username/NIP/NIK/penugasan) (2.307ms)
+✔ Hanya kunci yang berubah dikirim; kosong dikirim sebagai string kosong (0.154292ms)
+✔ Validasi awal selaras pesan server (1.366292ms)
+✔ Galat server per isian; nilai bukan teks diabaikan (0.094083ms)
+✔ Aturan password sama dengan website: 12 karakter, besar, kecil, angka, ≤72 byte, sama (0.175917ms)
+✔ Inisial, status tanpa duplikat, binaan kamar vs kelas tanpa nama rekaan (0.142459ms)
+✔ Mapel–kelas dikelompokkan per mapel, kombinasi ganda dipertahankan (0.091917ms)
+✔ Rincian penugasan menyebut target, mapel–kelas, atau seluruh cakupan (0.212791ms)
+✔ Alamat lengkap satu baris dari isian berjenjang (0.3485ms)
+✔ Foto: hanya JPEG/PNG/WebP ≤ 2 MiB; mime dari ekstensi bila tidak dilaporkan (1.166667ms)
+✔ Base64 tanpa btoa sama dengan Buffer (0.9535ms)
+(node:68649) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/rapor.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kosong tetap belum lengkap, nol sah, versi lama tetap dikirim (0.703375ms)
+✔ Validasi angka/reason tidak meloloskan nilai tak sah atau alasan kosong (0.116917ms)
+✔ Push hanya penunjuk valid; data/nilai/tautan lain tidak dipakai (0.410708ms)
+✔ Deep-link native hanya skema/rute rapor sah; ID bertahan sebagai penunjuk (0.152833ms)
+(node:68650) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/redesain-fase1.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ pekan dimulai Senin, termasuk ketika tanggal terpilih hari Minggu (1.313291ms)
+✔ pekan melintasi pergantian bulan, tahun, dan 29 Februari (0.100583ms)
+✔ geser pekan maju dan mundur mempertahankan hari (0.063625ms)
+✔ pesan tanpa menu hanya muncul setelah akses pembinaan selesai diperiksa (0.055917ms)
+(node:68651) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/redesain-fase2.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sesi hari ini yang belum dibuka atau belum selesai ditandai perlu absen (0.69625ms)
+✔ sesi selesai tidak pernah meminta absen, kapan pun tanggalnya (0.068209ms)
+✔ sesi hari lain tidak diberi penanda absen dan dibedakan masa depan/lampau (0.060708ms)
+(node:68652) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/redesain-v2-fase1.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ K-10: layar tab selalu kembali ke Beranda, berlabel "Kembali ke Beranda" (0.407625ms)
+✔ K-10: layar stack kembali ke halaman sebelumnya; tanpa riwayat membuka Beranda (0.062208ms)
+✔ avatar inisial: kata pertama dan terakhir, melewati kata berawalan angka (0.317041ms)
+✔ grafik batang: tinggi relatif terhadap nilai terbesar, tanpa nilai negatif atau NaN (0.391167ms)
+✔ kisi statistik: 2 kolom, butir ganjil terakhir sendiri; 1 kolom pada teks besar (0.0855ms)
+(node:68653) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/redesain-v2-fase2.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ K-10: setiap layar Fase 2 menggambar kepala ber-← (akar atau stack) dan kepala native dimatikan (1.625209ms)
+✔ K-8: FAB hanya di Perizinan dan daftar izin wali, tinggi 56, ruang bawah FAB + 16 (0.316542ms)
+✔ K-8: alternatif tombol atas dipakai hanya bila FAB dapat melewati setengah layar (0.074541ms)
+✔ §4.3: "Perbarui daftar" berada di menu ⋯ dan payload absensi tetap seluruh peserta (0.151792ms)
+✔ §4.5: garis waktu tahap mengikuti tahap dan status server, selalu berketerangan teks (0.447709ms)
+✔ §4.11: waktu relatif notifikasi dari waktu server WIB; tidak mengarang di luar jangkauan (1.26625ms)
+✔ layar tab: jarak atas tidak ganda di iOS (inset otomatis native tabs), tetap area aman + 8 di Android/web (0.117917ms)
+(node:68654) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/redesain-v2-fase3.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ K-7/K-10: setiap layar Keuangan memakai kerangka ber-← dan kepala native dimatikan (2.564958ms)
+✔ cetak/PDF tetap dari website: layar Keuangan tidak menambah tombol Bagikan atau cetak (0.890333ms)
+✔ istilah BSA: tidak ada "pendapatan" atau "laba" di layar Keuangan (0.819416ms)
+✔ nada status: Menunggu = jam (bukan centang); sah/lunas = centang; batal/tolak = silang (0.407958ms)
+✔ nominal bertanda dan arah ikon dari arah ledger; rupiah tetap bertitik (0.133958ms)
+✔ sisa tagihan: hanya tagihan Terbit; daftar mencapai batas server → null (bukan angka karangan) (0.095083ms)
+✔ grafik per bulan hanya bila respons memuat seri (≥ 2 bulan); nilai apa adanya (0.134542ms)
+(node:68655) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/redesain-v2-fase4.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ K-7/K-10: setiap layar Fase 4 memakai kerangka ber-judul (← di luar area gulir) (1.844292ms)
+✔ K-10 menyeluruh: setiap rute selain Beranda, Masuk, dan Ganti password wajib menggambar ← (3.447833ms)
+✔ kepala native dimatikan untuk navigator dan rute Fase 4 (0.484917ms)
+✔ perlindungan expo-screen-capture Kesehatan dan Keamanan tetap dipasang sebelum layar mana pun (0.132416ms)
+✔ Keamanan hanya baca: layar tidak memanggil mutasi atau menggambar tombol tindakan (0.561458ms)
+✔ Kesehatan: catatan klinis ditandai privat; ringkasan wali terpisah; laporan tanpa pembanding karangan (0.212208ms)
+✔ Pembinaan: kerahasiaan tampil dengan gembok; Rahasia tetap mengikuti server (0.112541ms)
+✔ Rapor: koreksi beralasan, versi sebelumnya, dan unduh PDF tetap (0.121041ms)
+✔ nada status kesehatan dan pembinaan: ikon + teks, menunggu = jam, selesai = centang, batal = silang (0.092ms)
+(node:68656) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/redesain-v2-kontras.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ kontras token light: teks ≥ 4,5:1, ikon/teks besar ≥ 3:1 (0.999833ms)
+✔ kontras token dark: teks ≥ 4,5:1, ikon/teks besar ≥ 3:1 (0.138625ms)
+✔ token K-1: latar krem, hijau lebih tua, kartu sorot lebih tua (0.135167ms)
+✔ warna status kehadiran, warning, danger, info, dan violet tidak berubah (0.138625ms)
+✔ emas hiasan tidak dipakai sebagai warna teks (kontras di bawah 3:1 di mode terang) (0.065625ms)
+(node:68657) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/tests/versi-aplikasi.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/claude-501/-Users-ilanmochamad--claude-spares-spare-ZVY440/7ec0d5c1-e1b7-4d07-862c-e5e76035f81a/scratchpad/app-fase/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ naikkan mengikuti aturan major/minor/patch (0.507292ms)
+✔ bandingkan numerik, bukan teks (0.094125ms)
+✔ perubahan dokumen/uji/skrip bukan perubahan aplikasi (0.432125ms)
+✔ nilai: menolak perubahan aplikasi tanpa kenaikan, versi turun, dan lompatan (0.133917ms)
+✔ CLI: perubahan aplikasi tanpa kenaikan gagal; naik minor sekali; periksa lulus (588.88825ms)
+✔ CLI: versi turun dari baseline atau lompat ditolak; perubahan dokumen saja lulus (368.838584ms)
+ℹ tests 113
+ℹ suites 0
+ℹ pass 113
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1314.510708
+unit exit 0

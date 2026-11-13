@@ -1,0 +1,18 @@
+[lulus] pembimbing: masuk ke Beranda (dev client Debug + Metro, API lokal)
+[lulus] Beranda: tanpa ←
+[lulus] tautan saat berjalan: menu Pembinaan
+[lulus] daftar kasus terbuka dari menu
+[lulus] daftar kasus: kerahasiaan "Internal" tampil (pil bergembok)
+[lulus] daftar kasus: ← "Kembali" 43.8×44.2 dp di kepala (y 32 dp)
+[lulus] ← dengan riwayat kembali ke menu Pembinaan
+[lulus] tombol kembali Android tetap bekerja
+[lulus] tautan saat berjalan: rincian kasus terbuka
+[lulus] rincian kasus (dari tautan): ← "Kembali" 43.8×44.2 dp di kepala (y 32 dp)
+[lulus] rincian kasus (dari tautan): ← kembali ke layar sebelumnya (menu Pembinaan)
+[lulus] orang tua: rapor terbuka
+[lulus] rapor: tombol Unduh PDF rapor
+[lulus] rapor: bagian "Versi sebelumnya"
+[lulus] gelap + 2,0×: rapor terbuka
+[lulus] rapor gelap + 2,0×: ← "Kembali" 43.8×44.2 dp di kepala (y 32 dp)
+[lulus] menu rapor gelap + 2,0×: ← "Kembali" 43.8×44.2 dp di kepala (y 32 dp)
+Ringkasan: 17 lulus, 0 gagal

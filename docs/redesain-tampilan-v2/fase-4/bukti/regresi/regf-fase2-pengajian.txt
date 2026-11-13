@@ -1,0 +1,86 @@
+
+=== P-A. Jadwal (P-Akar) ===
+[lulus] Jadwal: ← "Kembali ke Beranda" ≥ 44 pt di atas judul besar
+[lulus] Jadwal: subjudul penjelas
+[lulus] Jadwal: pil Per pekan (terpilih) / Rentang kustom
+[lulus] Jadwal: WeekStrip menandai hari ini
+[lulus] Jadwal 375: tujuh target tanggal ≥ 44 × 44 (44.0, 44.0, 44.0, 44.0, 44.0, 44.0, 44.0 pt)
+[lulus] Jadwal: kartu sesi gabungan memuat seluruh kelas (2)
+[lulus] Jadwal: kartu berpil status (ikon + teks), blok jam, dan penanda Absen
+[lulus] Jadwal: lonceng notifikasi tetap tersedia
+[lulus] Jadwal 375: isi tanpa luapan horizontal
+[lulus] Jadwal: rentang kustom tetap tersedia
+[lulus] Jadwal: ← membuka Beranda
+
+=== P-B. Rincian tugas (P-Rincian) ===
+[lulus] Rincian tugas: satu judul kepala stack (kepala native tidak ganda)
+[lulus] Rincian tugas: kartu kepala, pil status, baris Guru/Kelas/Kitab/Tempat
+[lulus] Rincian tugas 375: isi tanpa luapan horizontal
+[lulus] Rincian tugas: tepat satu ←
+[lulus] Rincian tugas: ← kembali ke halaman sebelumnya (Jadwal)
+
+=== P-C. Absensi pertemuan ===
+[lulus] Absensi: kepala stack
+[lulus] Absensi: "Perbarui daftar" tidak lagi tombol langsung; ⋯ tersedia
+[lulus] Absensi: ringkasan mini Hadir/Izin/Terlambat/Sakit/Alpa
+[lulus] Absensi: tombol status santri 56×44 ≥ 44
+[lulus] Absensi: pemilih status ikon + huruf, nama status lengkap sebagai label
+[lulus] Absensi: ringkasan mini mengikuti draf
+[lulus] Absensi: saat tersaring, ringkasan dan jumlah tetap seluruh peserta
+[lulus] Absensi: tab kelas asal (Semua/PA/PI) tetap ada
+[lulus] ⋯ → "Perbarui daftar": tepat satu POST participants/refresh
+[lulus] Perbarui daftar: isian guru (Sakit) dipertahankan
+[lulus] Absensi 375: isi tanpa luapan horizontal
+[lulus] Kirim saat tersaring: satu PUT berkunci idempotensi, payload seluruh 5 peserta (1 Sakit)
+[lulus] P-Sukses ringkas: panel "Absensi tersimpan"
+[lulus] Pertemuan Selesai: ⋯ (Perbarui daftar) tidak ditawarkan
+
+=== P-D. Laporan kehadiran (P-Laporan) ===
+[lulus] Laporan: kartu sorot "Persentase hadir" = ringkasan server (73%)
+[lulus] Laporan: keterangan angka = API, tanpa pembanding
+[lulus] Laporan: pil rentang, bawaan "Bulan ini" (permintaan awal tidak berubah)
+[lulus] Laporan: grafik batang per status berlabel nilai API
+[lulus] Laporan: Cetak tidak lagi tombol di badan
+[lulus] Laporan: ⋯ memuat Cetak PDF dan Simpan PDF
+[lulus] Pil "7 hari": endpoint dan nama parameter sama, hanya nilai tanggal (2026-11-07)
+[lulus] Laporan: penyaring membuka lembar bawah
+[lulus] Laporan 375: isi tanpa luapan horizontal
+
+=== P-E. Rincian laporan pertemuan ===
+[lulus] Rincian laporan: kepala stack
+[lulus] Rincian laporan: angka per status = ringkasan server
+[lulus] Rincian laporan: cari + tab kelas asal, hanya baca
+[lulus] Rincian laporan 375: isi tanpa luapan horizontal
+[lulus] Rincian laporan: ← kembali ke Laporan
+
+=== K. K-10: rute dibuka langsung (tanpa riwayat) → ← membuka Beranda ===
+[lulus] Rincian tugas dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Rincian tugas dibuka langsung: ← membuka / (kini /)
+[lulus] Absensi pertemuan dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Absensi pertemuan dibuka langsung: ← membuka / (kini /)
+[lulus] Laporan kehadiran dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Laporan kehadiran dibuka langsung: ← membuka / (kini /)
+[lulus] Rincian laporan dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Rincian laporan dibuka langsung: ← membuka / (kini /)
+[lulus] Absensi yang ditolak server dibuka langsung: tepat satu ← terlihat, target 44×44 ≥ 44
+[lulus] Absensi yang ditolak server dibuka langsung: ← membuka / (kini /)
+
+=== L. Mode gelap dan lebar 768/1280 ===
+[lulus] jadwal 375-gelap: isi tanpa luapan horizontal
+[lulus] absensi 375-gelap: isi tanpa luapan horizontal
+[lulus] laporan 375-gelap: isi tanpa luapan horizontal
+[lulus] rincian-laporan 375-gelap: isi tanpa luapan horizontal
+[lulus] jadwal 768-terang: isi tanpa luapan horizontal
+[lulus] absensi 768-terang: isi tanpa luapan horizontal
+[lulus] laporan 768-terang: isi tanpa luapan horizontal
+[lulus] rincian-laporan 768-terang: isi tanpa luapan horizontal
+[lulus] jadwal 1280-gelap: isi tanpa luapan horizontal
+[lulus] absensi 1280-gelap: isi tanpa luapan horizontal
+[lulus] laporan 1280-gelap: isi tanpa luapan horizontal
+[lulus] rincian-laporan 1280-gelap: isi tanpa luapan horizontal
+
+=== Z. Jaringan dan galat ===
+[lulus] Nol permintaan ke host selain 127.0.0.1 (0)
+[lulus] Tanpa pageerror (0)
+
+Hasil (pengajian): 68 lulus / 0 gagal

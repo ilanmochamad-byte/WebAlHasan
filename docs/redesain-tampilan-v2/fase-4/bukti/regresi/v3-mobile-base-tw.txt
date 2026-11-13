@@ -1,0 +1,22 @@
+[lulus] Menu pembimbing berbasis capability
+[lulus] Memilih katalog lintas halaman tidak menghapus uraian
+[lulus] Santri halaman 1 dapat dipadukan dengan katalog halaman 2 melalui dropdown
+[lulus] Isian privat bertahan di memori setelah latar/aktif sesuai keputusan 4 Oktober
+[lulus] Pelanggaran dicatat melalui UI aplikasi
+[lulus] Kasus dibuat melalui UI aplikasi
+[lulus] Konflik versi nyata UI menampilkan tindakan muat ulang
+[lulus] Rekomendasi ditautkan ke kasus UI yang sama
+[lulus] Dua sesi berbeda dan penutupan UI tanpa duplikasi
+[lulus] UI detail 375px tanpa luapan
+[lulus] Murobi menandai kasus yang sama melalui UI
+[lulus] Menu wali hanya publikasi
+[lulus] Wali membaca snapshot aplikasi tanpa isi internal
+[lulus] Deep-link wali ke data internal ditolak server dengan pesan netral
+[lulus] Deep-link pembimbing lain ditolak server
+[lulus] Deep-link murobi lain ditolak server
+[lulus] Admin mengikuti capability pengawasan tanpa memperoleh tombol kelola
+[lulus] Keadaan kosong UI terarah
+[lulus] Galat server UI menyediakan retry setelah percobaan GET terbatas
+[lulus] Retry UI memuat capability nyata kembali
+[lulus] 401 UI menghapus sesi dan meminta login
+[lulus] Detail deep-link tanpa login tidak membaca isi

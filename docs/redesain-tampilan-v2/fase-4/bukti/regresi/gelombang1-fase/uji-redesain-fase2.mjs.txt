@@ -1,0 +1,16 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.isVisible: Error: strict mode violation: getByText('Rentang tanggal') resolved to 2 elements:
+    1) <div dir="auto" class="css-text-146c3p1 r-fontSize-a023e6 r-lineHeight-10yl4k r-userSelect-1xnzce8">Sesi mengajar pada rentang tanggal</div> aka getByText('Sesi mengajar pada rentang')
+    2) <div dir="auto" class="css-text-146c3p1 r-fontSize-1gkfh8e r-letterSpacing-3b040n r-lineHeight-1f529hi r-userSelect-1xnzce8">Rentang tanggal</div> aka getByText('Rentang tanggal', { exact: true })
+
+Call log:
+    - checking visibility of getByText('Rentang tanggal')
+
+    at /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/browser/uji-redesain-fase2.mjs:82:57 {
+  log: [ "    - checking visibility of getByText('Rentang tanggal')" ]
+}
+
+Node.js v26.7.0
