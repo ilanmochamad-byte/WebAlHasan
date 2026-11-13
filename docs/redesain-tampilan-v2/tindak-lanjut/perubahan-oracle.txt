@@ -1,0 +1,13 @@
+TL-01: 11 suite aplikasi, penanda Beranda 'Assalamu' -> /Assalamu.alaikum,/ (sapaan berkoma kartu identitas)
+TL-02: uji-profil-impor-f2-app (pilih/hapus foto) dan -android: ketuk "Ubah foto" dulu (lembar bawah), lalu tombol lama
+TL-03: penanda Profil termuat 'Akun & pemberitahuan' -> 'Perangkat & push' (profil-impor-f2-app/android, rtv2-fase1, rtv2-fase1-jaringan, rtv2-fase1-android, redesain-fase3 gel.1); profil-impor B-D: buka "Data diri ›" sebelum memeriksa nilai; rtv2-fase1 C: daftar kelompok jadi Akun + Pemberitahuan (spesifikasi §4.2)
+TL-06: label 'Konfirmasi dan kirim' -> 'Kirim absensi' di 8 suite (kelas gabungan app/audit, pencarian absensi, peserta + audit, rtv2-fase2 + jaringan + android)
+TL-07: rtv2-fase2 (I-B, wali): tunggu layar sukses 'Lihat pengajuan' lalu ketuk, sebelum memeriksa rincian; rtv2-fase2-jaringan: terima rincian langsung (baseline) atau layar sukses (ketuk Lihat pengajuan, tanpa permintaan)
+TL-08: rtv2-fase2 I-C admin dan rtv2-fase2-jaringan: Tetapkan murobi dibuka dari ⋯ (Tindakan lain) bila tidak di badan layar; perekam menunggu 'Riwayat perubahan' sebagai penanda rincian termuat
+TL-11: v6-fase4-app K-C dan rtv2-fase3-jaringan (11): buka ⋯ sebelum 'Bayar dari tabungan'; rtv2-fase3-android: periksa ⋯ tersedia, bukan tombol kedua di akhir isi
+TL-14: v3-fase5-mobile, form-pembinaan: ketuk tab 'Sesi' sesudah kasus dibuat; rtv2-fase4-jaringan (06): ketuk tab 'Sesi' bila ada (baseline tanpa tab)
+TL-16: v5-fase4-app: buka ⋯ sebelum 'Riwayat versi (4)' dan 'Riwayat akses'
+K-10: rtv2-fase4 k10: rute baru /akun/data-diri ditambahkan ke daftar (perluasan, bukan pelonggaran)
+TL-03 (Android F1): penanda 'kembali ke Profil' diperluas ke Data diri|Rincian penugasan aktif|Cakupan perizinan|Perangkat & push|Kembali ke Beranda — baris Data diri baru menggeser penanda lama ke luar layar saat Profil tergulir; pernyataan produk tidak diubah
+TL-03 (Maestro iOS F1 kembali.yaml): penanda Profil 'Akun & pemberitahuan' -> 'Rincian penugasan aktif' (kelompok dipecah)
+TL-06 (Maestro iOS F2 pengajian.yaml): tapOn 'Konfirmasi dan kirim' -> 'Kirim absensi'
