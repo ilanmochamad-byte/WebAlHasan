@@ -150,7 +150,10 @@ try {
       await pilih(p, 'Santri dalam cakupan aktif', santri1);
       await p.getByLabel('Tujuan pendampingan', { exact: true }).fill('Jaringan F4 tujuan kasus');
       await pilih(p, 'Kerahasiaan (wajib dipilih)', 'Internal');
-      await tombol(p, 'Simpan').click(); await p.waitForURL(u => u.pathname === '/pembinaan/detail', { timeout: 30000 }); await tombol(p, 'Mulai pendampingan').waitFor({ timeout: 20000 });
+      await tombol(p, 'Simpan').click(); await p.waitForURL(u => u.pathname === '/pembinaan/detail', { timeout: 30000 });
+      // TL-14: tab "Sesi" (tanpa permintaan); baseline tanpa tab.
+      await tunggu(p, 'Muat ulang versi terbaru'); if (await p.getByRole('tab', { name: /^Sesi/ }).count()) await p.getByRole('tab', { name: /^Sesi/ }).click();
+      await tombol(p, 'Mulai pendampingan').waitFor({ timeout: 20000 });
       await g.mulai('07-tambah-sesi'); await p.getByLabel('Jadwal sesi baru / jadwal ulang', { exact: true }).fill('2026-10-05T10:00');
       await tombol(p, 'Tambahkan sesi baru').click(); await tunggu(p, 'Dijadwalkan');
       // Server memindahkan kasus ke Dalam Pendampingan saat sesi pertama ditambahkan.

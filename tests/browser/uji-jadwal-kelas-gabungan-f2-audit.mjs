@@ -76,7 +76,7 @@ try {
     await card.getByPlaceholder('Catatan santri (opsional)').fill('Catatan ID ' + s.student_id);
   }
   await page.getByRole('radiogroup').first().getByRole('radio', { name: 'Terlambat', exact: true }).click();
-  await button('Konfirmasi dan kirim').click();
+  await button('Kirim absensi').click();
   await wait('Absensi berhasil disimpan');
   const saved = (await api(G, `/meetings/${mid}`)).data;
   check(saved.teacher_attendance.status === 'Terlambat' && saved.students.every((s, i) => s.attendance.status === statuses[i] && s.attendance.notes === 'Catatan ID ' + s.student_id), 'Grouping mempertahankan ID, lima status, catatan tiap santri dan satu status guru');

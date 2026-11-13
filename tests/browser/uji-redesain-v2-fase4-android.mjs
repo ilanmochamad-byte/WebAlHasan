@@ -122,7 +122,7 @@ async function masuk(user, password = PASS) {
   }
   adb('shell', 'input', 'keyevent', 'KEYCODE_ENTER');
 }
-const diBeranda = (timeout = 40000) => cari(/Assalamu/, { timeout });
+const diBeranda = (timeout = 40000) => cari(/Assalamu.alaikum,/, { timeout });
 const dp = () => Number((adb('shell', 'wm', 'density').match(/(\d+)\s*$/m) || [0, 420])[1]) / 160;
 const layar = () => (adb('shell', 'wm', 'size').match(/(\d+)x(\d+)\s*$/m) || [0, 1080, 2400]).slice(1).map(Number);
 /** Gulir sampai pola terlihat (maks. `maks` kali). */
@@ -146,7 +146,7 @@ async function periksaKembali(nama) {
 const tapNode = n => adb('shell', 'input', 'tap', String((n.b[0] + n.b[2]) >> 1), String((n.b[1] + n.b[3]) >> 1));
 async function keBerandaLewatKembali(nama) {
   const n = await periksaKembali(nama); tapNode(n);
-  ok(await ada(/Assalamu/, 20000), `${nama}: ← membuka Beranda`);
+  ok(await ada(/Assalamu.alaikum,/, 20000), `${nama}: ← membuka Beranda`);
 }
 
 try {

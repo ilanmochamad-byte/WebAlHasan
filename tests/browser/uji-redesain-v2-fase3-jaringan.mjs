@@ -217,6 +217,9 @@ try {
 
   await g.mulai('11-bayar-dari-tabungan-ketukan-ganda');
   await ke(p, `/keuangan/tagihan/${T}`);
+  // Baseline: tombol di bilah. TL-11: di menu ⋯ (membuka menu tanpa permintaan).
+  await tunggu(p, 'Rincian biaya');
+  if (await p.getByRole('button', { name: 'Bayar dari tabungan', exact: true }).count() === 0) await tombol(p, 'Tindakan lain').click();
   await tombol(p, 'Bayar dari tabungan').click();
   await p.getByLabel('Nominal dipotong dari tabungan').fill('30.000');
   await p.getByRole('checkbox').click();

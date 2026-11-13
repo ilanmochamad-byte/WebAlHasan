@@ -125,7 +125,7 @@ try {
     const id = 1;
     const RUTE = [
       ['/schedules', 'akar'], ['/perizinan', 'akar'], ['/profil', 'akar'],
-      ['/akun/edit-profil'], ['/akun/ganti-password'],
+      ['/akun/edit-profil'], ['/akun/ganti-password'], ['/akun/data-diri'], // akun/data-diri: rute baru tindak lanjut TL-03
       ['/schedule/1'], ['/meeting/1'], ['/reports'], ['/report/1'],
       ['/izin/buat'], ['/izin/1'], ['/izin/laporan'],
       ['/izin-wali'], ['/izin-wali/buat'], ['/izin-wali/1'], ['/izin-wali/perbaiki?id=1'],

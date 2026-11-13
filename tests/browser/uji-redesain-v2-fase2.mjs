@@ -259,7 +259,7 @@ try {
       await foto(g, 'absensi-375-terang');
       await tanpaLuapan(g, 'Absensi 375');
       tangkap.length = 0;
-      await tombol(g, 'Konfirmasi dan kirim').click();
+      await tombol(g, 'Kirim absensi').click();
       await tunggu(g, 'Absensi berhasil disimpan');
       const put = tangkap.filter(r => r.method === 'PUT');
       ok(put.length === 1 && put[0].body.students.length === 5 && put[0].body.students.filter(s => s.status === 'Sakit').length === 1 && typeof put[0].body.idempotency_key === 'string',
@@ -463,11 +463,14 @@ try {
       await tanpaLuapan(pg, 'Buat izin 375');
       tangkap.length = 0;
       await tombol(pg, 'Kirim pengajuan').click();
-      await tunggu(pg, 'Riwayat perubahan');
+      // TL-07: P-Sukses berupa layar "Pengajuan terkirim" + "Lihat pengajuan".
+      await tunggu(pg, 'Lihat pengajuan');
       const post = tangkap.filter(r => r.method === 'POST');
       ok(post.length === 1 && post[0].path === '/izin/pengajuan' && typeof post[0].body.idempotency_key === 'string', 'Kirim: tepat satu POST /izin/pengajuan berkunci idempotensi');
       idBaru = Number(jalur(pg).split('/').pop());
-      ok((await teks(pg)).includes('Pengajuan terkirim') && idBaru > 0, 'P-Sukses: rincian menampilkan "Pengajuan terkirim"');
+      ok((await teks(pg)).includes('Pengajuan terkirim') && idBaru > 0, 'P-Sukses: layar "Pengajuan terkirim"');
+      await tombol(pg, 'Lihat pengajuan').click();
+      await tunggu(pg, 'Riwayat perubahan');
     }
 
     console.log('\n=== I-C. Rincian izin (P-Rincian) ===');
@@ -480,12 +483,17 @@ try {
       await tanpaLuapan(pg, 'Rincian izin 375');
       const k = kembali(pg);
       ok(await k.count() === 1, 'Rincian izin: tepat satu ←');
-      // Admin menetapkan murobi dari bilah bawah.
+      // TL-08: admin yang dapat memutus memegang Setujui/Tolak di bilah bawah;
+      // "Tetapkan murobi" menjadi tindakan sekunder di ⋯ → lembar bawah.
       const ad = await masuk(AD);
       await ad.goto(app + `/izin/${idBaru}?mode=admin`);
-      await tombol(ad, 'Tetapkan murobi').waitFor({ timeout: 20000 });
-      await ad.getByPlaceholder('Wajib diisi').last().fill('Penetapan uji fase dua');
+      await tunggu(ad, 'Riwayat perubahan');
+      ok(await terlihat(tombol(ad, 'Setujui')).count() === 1 && await terlihat(tombol(ad, 'Tetapkan murobi')).count() === 0, 'Admin: Setujui/Tolak di bilah, Tetapkan murobi tidak di badan layar');
+      await tombol(ad, 'Tindakan lain').click();
       await tombol(ad, 'Tetapkan murobi').click();
+      await ad.getByText('Penetapan / perbaikan routing murobi').or(ad.getByRole('radiogroup', { name: 'Pilih murobi tujuan' })).first().waitFor({ timeout: 10000 });
+      await ad.getByPlaceholder('Wajib diisi').last().fill('Penetapan uji fase dua');
+      await tombol(ad, 'Tetapkan murobi').last().click();
       await tunggu(ad, 'Murobi tujuan ditetapkan');
       const guru = (await api(AD, `/izin/pengajuan/${idBaru}?mode=admin`)).json.data.pengajuan.murobi.guru_id;
       ok(guru > 0, 'Admin: "Tetapkan murobi" (aksi server) tersimpan');
@@ -566,10 +574,14 @@ try {
       ok(jalur(w) === '/izin-wali/buat' && await terlihat(tombol(w, 'Tinjau pengajuan')).count() === 1 && await w.getByLabel('Alasan izin').inputValue() === 'Uji fase dua wali', 'K-10: ← dari Tinjau kembali ke isian; draf tidak hilang');
       await tombol(w, 'Tinjau pengajuan').click();
       await tombol(w, 'Kirim pengajuan').click();
-      await tunggu(w, 'Menunggu tinjauan pembimbing');
+      // TL-07: layar sukses dengan keterangan tahap berikutnya, lalu "Lihat pengajuan".
+      await tunggu(w, 'Lihat pengajuan');
       idWali = Number(jalur(w).split('/').pop());
+      const ts = await teks(w);
+      ok(ts.includes('Pengajuan terkirim') && ts.includes('Menunggu tinjauan pembimbing') && await judul(w, 'Pengajuan izin wali').count() === 1, 'P-Sukses: layar "Pengajuan terkirim" + "Menunggu tinjauan pembimbing"');
+      await tombol(w, 'Lihat pengajuan').click();
+      await tunggu(w, 'Rentang izin');
       const t = await teks(w);
-      ok(t.includes('Pengajuan terkirim') && await judul(w, 'Pengajuan izin wali').count() === 1, 'P-Sukses: rincian menampilkan "Pengajuan terkirim"');
       ok(await terlihat(w.getByLabel('Tahap pengajuan: Wali selesai, Pembimbing sedang berjalan, Murobi belum sampai', { exact: true })).count() === 1, 'Rincian izin wali: garis waktu tahap Wali → Pembimbing → Murobi (berketerangan teks)');
       ok(await terlihat(tombol(w, 'Batalkan pengajuan')).count() === 1 && await terlihat(tombol(w, 'Muat ulang')).count() === 1, 'Wali pengaju: "Batalkan pengajuan" di bilah bawah (tindakan server)');
       await foto(w, 'izin-wali-rincian-wali-375');

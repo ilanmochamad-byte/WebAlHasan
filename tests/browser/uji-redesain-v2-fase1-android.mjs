@@ -114,7 +114,7 @@ async function masuk(user, password = PASS) {
   }
   adb('shell', 'input', 'keyevent', 'KEYCODE_ENTER');
 }
-const diBeranda = (timeout = 40000) => cari(/Assalamu/, { timeout });
+const diBeranda = (timeout = 40000) => cari(/Assalamu.alaikum,/, { timeout });
 async function bukaProfil() {
   for (let i = 0; i < 4; i++) {
     await ketuk(/Buka profil/);
@@ -201,13 +201,13 @@ try {
     ok(d.some(n => n.desc === 'Kembali') && d.some(n => n.text === 'Ganti password'), 'Ganti password: kepala stack ber-←');
     foto('ganti-password');
     await ketuk(/^Kembali$/);
-    ok(await ada(/Akun & pemberitahuan|Kembali ke Beranda/, 10000), 'Ganti password: ← kembali ke Profil');
+    ok(await ada(/Data diri|Rincian penugasan aktif|Cakupan perizinan|Perangkat & push|Kembali ke Beranda/, 10000), 'Ganti password: ← kembali ke Profil');
     // Tautan saat aplikasi berjalan (ada riwayat): layar terbuka dan ← kembali.
     adb('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', 'alhasanapps://akun/ganti-password', PKG);
     ok(await ada(/Ulangi password baru/, 20000), 'Tautan alhasanapps://akun/ganti-password membuka layar Ganti password');
     await ketuk(/^Kembali$/);
     await tidur(1500);
-    ok(!(await ada(/Ulangi password baru/, 1500)) && await ada(/Assalamu|Akun & pemberitahuan|Kembali ke Beranda/, 8000), '← dari layar yang dibuka lewat tautan membawa ke layar aplikasi (bukan diam/menutup)');
+    ok(!(await ada(/Ulangi password baru/, 1500)) && await ada(/Assalamu.alaikum,|Data diri|Rincian penugasan aktif|Cakupan perizinan|Perangkat & push|Kembali ke Beranda/, 8000), '← dari layar yang dibuka lewat tautan membawa ke layar aplikasi (bukan diam/menutup)');
     foto('sesudah-tautan');
   }
 

@@ -173,6 +173,8 @@ try {
   await p.goto(app + `/keuangan/tagihan/${tid}`);
   await tunggu(p, 'Tagihan Oktober 2026');
   await lebar(p, 'Rincian tagihan');
+  // Tindak lanjut TL-11: "Bayar dari tabungan" di menu ⋯ rincian tagihan.
+  await tombol(p, 'Tindakan lain').click();
   await tombol(p, 'Bayar dari tabungan').click();
   await tunggu(p, 'Saldo tabungan Rp90.000');
   await p.getByLabel('Nominal dipotong dari tabungan').fill('50.000');

@@ -49,8 +49,10 @@ appId: com.ilanmochamad.alhasanApps
 - assertVisible: "Kembali"
 - takeScreenshot: ios-ganti-password
 - tapOn: "Kembali"
+# TL-03: kelompok Profil dipecah (Akun / Pemberitahuan) dan "Data diri" menjadi
+# baris rincian; penanda memakai judul kelompok yang pasti ada di Profil.
 - extendedWaitUntil:
-    visible: "Akun & pemberitahuan"
+    visible: "Rincian penugasan aktif"
     timeout: 15000
 # Tautan saat aplikasi mati: tidak ada halaman sebelumnya → ← membuka Beranda.
 - stopApp

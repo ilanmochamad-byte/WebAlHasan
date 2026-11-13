@@ -94,7 +94,7 @@ async function masuk(context, username, password = 'Sandbox#123') {
   // Halaman login sendiri memuat kata "jadwal", jadi tunggu URL berpindah,
   // bukan sekadar kemunculan teks.
   await page.waitForURL((url) => !url.pathname.endsWith('/login'), { timeout: 30000 });
-  await tungguTeks(page, /Assalamu|Beranda|Perizinan/i, 25000);
+  await tungguTeks(page, /Assalamu.alaikum,|Beranda|Perizinan/i, 25000);
   return page;
 }
 

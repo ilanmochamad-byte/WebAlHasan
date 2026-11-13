@@ -93,7 +93,7 @@ for (const user of AKUN) {
   langkah = `${user} 2-profil`;
   await page.getByTestId('kartu-identitas').getByRole('button', { name: /Buka profil/ }).click();
   await page.waitForURL(u => u.pathname === '/profil');
-  await page.getByText('Akun & pemberitahuan', { exact: false }).first().waitFor({ timeout: 20000 });
+  await page.getByText('Perangkat & push', { exact: false }).first().waitFor({ timeout: 20000 });
   await tenang();
 
   if (user === 'sbx_pengurus_biasa') {

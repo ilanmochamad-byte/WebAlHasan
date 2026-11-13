@@ -144,7 +144,7 @@ async function alurSatuKelas(g) {
   ok(!t.includes('Kelas gabungan') && !t.includes('· Kelas ') && !(await teksKecil(g)).includes(`${NK.C.toLowerCase()} 2 santri`), 'Satu kelas: tanpa penanda gabungan, judul kelompok, atau label kelas per santri');
   ok(ids.santri_nama.C.every(s => t.includes(s.nama)) && t.includes(`· ${NK.C}`), 'Dua santri kelas C, judul kelas C');
   await foto(g, 'absensi-satu');
-  await tombol(g, 'Konfirmasi dan kirim').click();
+  await tombol(g, 'Kirim absensi').click();
   await tunggu(g, 'Absensi berhasil disimpan');
   ok(pertemuan(JS).length === 1 && angka(`SELECT COUNT(*) FROM absensi_guru WHERE pertemuan_id=${MS}`) === 1 && angka(`SELECT COUNT(*) FROM absensi_santri WHERE pertemuan_id=${MS}`) === 2, 'Satu pertemuan, satu guru + dua santri');
   ok(angka(`SELECT COUNT(*) FROM pertemuan_kelas WHERE pertemuan_id=${MS}`) === 1, 'Satu kelas dibekukan');
@@ -225,12 +225,12 @@ try {
   const pi1 = ids.santri_nama.PI[0];
   await kartuSantri(g, pi1.nama).getByRole('radio', { name: 'Izin' }).click();
   jaringan.putusAbsen = true;
-  await tombol(g, 'Konfirmasi dan kirim').dblclick();
+  await tombol(g, 'Kirim absensi').dblclick();
   await tunggu(g, 'server tidak terjangkau');
   ok(kiriman.absen.length === 1, `Ketukan ganda: satu PUT absensi (${kiriman.absen.length})`);
   ok(kiriman.absen[0].body.students.length === 5 && new Set(kiriman.absen[0].body.students.map(s => s.student_id)).size === 5, 'Muatan: lima santri unik, satu entri guru');
   ok(angka(`SELECT COUNT(*) FROM absensi_santri WHERE pertemuan_id=${MG}`) === 5, 'Server sudah menyimpan walau jawaban hilang');
-  await tombol(g, 'Konfirmasi dan kirim').click();
+  await tombol(g, 'Kirim absensi').click();
   await tunggu(g, 'Absensi berhasil disimpan');
   ok(kiriman.absen.length === 2 && kiriman.absen[0].key === kiriman.absen[1].key, 'Kirim ulang absensi memakai kunci yang sama');
   ok(angka(`SELECT COUNT(*) FROM absensi_guru WHERE pertemuan_id=${MG}`) === 1 && angka(`SELECT COUNT(*) FROM absensi_santri WHERE pertemuan_id=${MG}`) === 5, 'Satu absensi guru + lima absensi santri');

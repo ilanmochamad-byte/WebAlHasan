@@ -62,7 +62,8 @@ appId: com.ilanmochamad.alhasanApps
     timeout: 40000
 - takeScreenshot: ios-absensi-daftar
 - assertVisible: "Kembali"
-- tapOn: "Konfirmasi dan kirim"
+# TL-06: label tombol kirim absensi.
+- tapOn: "Kirim absensi"
 - tapOn: "Simpan"
 - scrollUntilVisible:
     element: "Absensi berhasil disimpan.*"

@@ -32,7 +32,7 @@ async function sesi(browser, user, colorScheme = 'light') {
   await page.getByPlaceholder('Masukkan username').fill(user);
   await page.getByPlaceholder('Masukkan password').fill('Sandbox#123');
   await page.getByPlaceholder('Masukkan password').press('Enter');
-  await page.getByText('Assalamu', { exact: false }).waitFor({ timeout: 15000 });
+  await page.getByText(/Assalamu.alaikum,/).waitFor({ timeout: 15000 });
   return { context, page, errors, permintaan };
 }
 async function tutup(context) {
@@ -71,7 +71,7 @@ const browser = await chromium.launch();
   await page.goBack();
   await page.getByText('Laporan kehadiran', { exact: true }).waitFor({ timeout: 15000 });
   await page.getByRole('button', { name: 'Kembali' }).first().click();
-  await page.getByText('Assalamu', { exact: false }).waitFor({ timeout: 15000 });
+  await page.getByText(/Assalamu.alaikum,/).waitFor({ timeout: 15000 });
   cek('laporan: tombol Kembali kembali ke Beranda', new URL(page.url()).pathname === '/', page.url());
   cek('laporan: tidak ada pageerror', errors.length === 0, errors.join('; '));
   await tutup(context);
@@ -96,7 +96,7 @@ for (const [user, harapRole, harapCakupan] of [
 ]) {
   const { context, page, errors } = await sesi(browser, user);
   await page.goto(app + '/profil');
-  await page.getByText('Akun & pemberitahuan', { exact: false }).waitFor({ timeout: 15000 });
+  await page.getByText('Perangkat & push', { exact: false }).waitFor({ timeout: 15000 });
   await page.waitForTimeout(800);
   await page.screenshot({ path: `${out}/web-profil-${user}.png`, fullPage: true });
   const role = await page.getByText(harapRole, { exact: true }).count();
@@ -108,7 +108,7 @@ for (const [user, harapRole, harapCakupan] of [
   await page.waitForURL('**/notifikasi/perangkat', { timeout: 15000 }).catch(() => {});
   const keP = page.url().includes('/notifikasi/perangkat');
   await page.goBack();
-  await page.getByText('Akun & pemberitahuan', { exact: false }).waitFor({ timeout: 15000 });
+  await page.getByText('Perangkat & push', { exact: false }).waitFor({ timeout: 15000 });
   cek(`profil ${user}: baris Perangkat & push membuka layar perangkat`, keP);
   if (user === 'sbx_guru_biasa') {
     await page.getByRole('button', { name: 'Keluar dari aplikasi' }).click();
