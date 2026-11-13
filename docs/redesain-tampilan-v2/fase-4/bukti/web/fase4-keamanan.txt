@@ -1,0 +1,62 @@
+[lulus] keamanan menu: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan menu: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan menu: seluruh kontrol terlihat ≥ 44 pt
+[lulus] keamanan menu: tanpa tombol tindakan
+[lulus] keamanan daftar izin: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan daftar izin: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan daftar izin: seluruh kontrol terlihat ≥ 44 pt
+[lulus] keamanan daftar izin: tanpa tombol tindakan
+[lulus] keamanan rincian izin: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan rincian izin: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan rincian izin: seluruh kontrol terlihat ≥ 44 pt
+[lulus] keamanan rincian izin: tanpa tombol tindakan
+[lulus] keamanan daftar pelanggaran: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan daftar pelanggaran: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan daftar pelanggaran: seluruh kontrol terlihat ≥ 44 pt
+[lulus] keamanan daftar pelanggaran: tanpa tombol tindakan
+[lulus] keamanan rincian pelanggaran: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan rincian pelanggaran: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan rincian pelanggaran: seluruh kontrol terlihat ≥ 44 pt
+[lulus] keamanan rincian pelanggaran: tanpa tombol tindakan
+[lulus] keamanan daftar konseling: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan daftar konseling: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan daftar konseling: seluruh kontrol terlihat ≥ 44 pt
+[lulus] keamanan daftar konseling: tanpa tombol tindakan
+[lulus] keamanan rincian kasus: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan rincian kasus: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan rincian kasus: seluruh kontrol terlihat ≥ 44 pt
+[lulus] keamanan rincian kasus: tanpa tombol tindakan
+[lulus] keamanan kehadiran: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan kehadiran: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan kehadiran: seluruh kontrol terlihat ≥ 44 pt
+[lulus] keamanan kehadiran: tanpa tombol tindakan
+[lulus] keamanan: layar termuat
+[lulus] keamanan: kepala menyatakan Hanya melihat
+[lulus] keamanan: kasus Rahasia tidak tampil di daftar
+[lulus] keamanan rincian pertemuan: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan rincian pertemuan: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan rincian pertemuan: tanpa tombol tindakan
+[lulus] keamanan-rincian-izin 375 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan-rincian-izin 375 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan-rincian-izin 375 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] keamanan-rincian-izin 768 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan-rincian-izin 768 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan-rincian-izin 768 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan-rincian-izin 768 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan-rincian-izin 768 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] keamanan-rincian-izin 1280 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan-rincian-izin 1280 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan-rincian-izin 1280 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] keamanan-rincian-izin 1280 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] keamanan-rincian-izin 1280 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] guru berpenugasan Keamanan: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] guru berpenugasan Keamanan: tanpa luapan horizontal (selisih 0px)
+[lulus] guru berpenugasan Keamanan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] guru berpenugasan Keamanan: menu tampil
+[lulus] admin tanpa penugasan Keamanan: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] admin tanpa penugasan Keamanan: tanpa luapan horizontal (selisih 0px)
+[lulus] admin tanpa penugasan Keamanan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] admin tanpa penugasan Keamanan: ditolak, tanpa data
+[lulus] tanpa permintaan keluar 127.0.0.1 ()
+
+Ringkasan: 60 lulus, 0 gagal

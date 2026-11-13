@@ -75,14 +75,13 @@ const jalur = p => new URL(p.url()).pathname;
 const foto = (p, nama) => p.screenshot({ path: path.join(out, `${nama}.png`), fullPage: true });
 const tombolKembali = p => p.getByRole('button', { name: /^Kembali( ke Beranda)?$/ });
 /**
- * Isi layar tidak meluap; bilah tab web (TF4-1, sejak baseline) dikecualikan,
- * begitu pula isi wadah yang memang digeser ke samping (FilterPills).
+ * Seluruh layar termasuk bilah tab harus muat, kecuali isi wadah yang
+ * sengaja digeser ke samping (FilterPills).
  */
 async function tanpaLuapan(p, nama) {
   const peluap = await p.evaluate(() => {
-    const tab = [...document.querySelectorAll('div')].filter(el => /^Al Hasan\s/.test(el.innerText || '') && /Beranda/.test(el.innerText)).pop();
     return [...document.querySelectorAll('body *')]
-      .filter(el => el.getBoundingClientRect().right > innerWidth + 1 && !(tab && (el.contains(tab) || tab.contains(el))))
+      .filter(el => el.getBoundingClientRect().right > innerWidth + 1)
       .filter(el => { for (let a = el.parentElement; a; a = a.parentElement) if (['auto', 'scroll'].includes(getComputedStyle(a).overflowX)) return a.getBoundingClientRect().right > innerWidth + 1; return true; })
       .map(el => (el.innerText || el.tagName).slice(0, 30));
   });
@@ -175,11 +174,14 @@ try {
         `${label}: ${ubin.jumlah} ubin, kisi tetap 3 kolom, lebar seragam ${ubin.lebar.join('/')} px`);
     } else ok(t.includes('Akun ini belum memiliki menu'), `${label}: tanpa menu → keterangan`);
 
-    const tab = await p.evaluate(() => {
-      const bilah = [...document.querySelectorAll('div')].filter(el => /^Al Hasan\s/.test(el.innerText || '') && /Beranda/.test(el.innerText)).pop();
-      return bilah ? bilah.innerText.split('\n').map(s => s.trim()).filter(Boolean).slice(1) : [];
-    });
+    const tautanTab = p.getByTestId('bilah-tab-web').getByRole('link');
+    const tab = await tautanTab.allInnerTexts();
     ok(tab.length >= 2 && tab.length <= 4 && tab[0] === 'Beranda' && tab.at(-1) === 'Profil' && !tab.includes('+'), `${label}: bilah ${tab.length} tab (${tab.join(', ')}), tanpa tombol + (K-2)`);
+    const targetTab = await tautanTab.evaluateAll(links => links.every(link => {
+      const { width, height } = link.getBoundingClientRect();
+      return width >= 44 && height >= 44;
+    }));
+    ok(tab.length > 0 && targetTab, `${label}: setiap target tab ≥ 44 × 44 px`);
     await tanpaLuapan(p, `Beranda ${label}`);
     await foto(p, `beranda-${user}-375-terang`);
 

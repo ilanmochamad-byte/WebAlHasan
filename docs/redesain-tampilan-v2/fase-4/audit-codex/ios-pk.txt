@@ -1,0 +1,3 @@
+keamanan-terang exit=0
+keamanan-gelap exit=0
+keamanan-gelap-ax-xxxl exit=0

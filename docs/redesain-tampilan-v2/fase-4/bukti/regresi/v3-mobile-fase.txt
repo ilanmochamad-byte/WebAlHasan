@@ -1,0 +1,24 @@
+[lulus] Menu pembimbing berbasis capability
+[lulus] Memilih katalog lintas halaman tidak menghapus uraian
+[lulus] Santri halaman 1 dapat dipadukan dengan katalog halaman 2 melalui dropdown
+[lulus] Isian privat bertahan di memori setelah latar/aktif sesuai keputusan 4 Oktober
+[lulus] Pelanggaran dicatat melalui UI aplikasi
+[lulus] Kasus dibuat melalui UI aplikasi
+[lulus] Konflik versi nyata UI menampilkan tindakan muat ulang
+[lulus] Rekomendasi ditautkan ke kasus UI yang sama
+[lulus] Dua sesi berbeda dan penutupan UI tanpa duplikasi
+[lulus] UI detail 375px tanpa luapan
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.inputValue: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('#case-privacy')
+
+    at /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/browser/uji-v3-fase5-mobile.mjs:87:43 {
+  log: [ "  - waiting for locator('#case-privacy')" ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.7.0

@@ -1,0 +1,13 @@
+[sama] sbx_pengurus_biasa 00-masuk (10 permintaan)
+[sama] sbx_pengurus_biasa 01-menu (4 permintaan)
+[sama] sbx_pengurus_biasa 02-izin (1 permintaan)
+[sama] sbx_pengurus_biasa 03-izin-asal-wali (1 permintaan)
+[sama] sbx_pengurus_biasa 04-izin-cari (1 permintaan)
+[sama] sbx_pengurus_biasa 05-izin-rincian (4 permintaan)
+[sama] sbx_pengurus_biasa 06-pelanggaran (4 permintaan)
+[sama] sbx_pengurus_biasa 07-pelanggaran-rincian (4 permintaan)
+[sama] sbx_pengurus_biasa 08-konseling (4 permintaan)
+[sama] sbx_pengurus_biasa 09-konseling-rincian (4 permintaan)
+[sama] sbx_pengurus_biasa 10-kehadiran (4 permintaan)
+
+Hasil: 11 langkah sama / 0 berbeda; 41 permintaan dibandingkan

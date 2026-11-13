@@ -1,0 +1,99 @@
+[lulus] pembimbing menu pembinaan: tepat satu ← ≥ 44 pt di kepala (44×44@15)
+[lulus] pembimbing menu pembinaan: tanpa luapan horizontal (selisih 0px)
+[lulus] pembimbing menu pembinaan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] pembimbing: tombol cepat Catat pelanggaran / Buka kasus
+[lulus] pembimbing daftar kasus: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] pembimbing daftar kasus: tanpa luapan horizontal (selisih 0px)
+[lulus] pembimbing daftar kasus: seluruh kontrol terlihat ≥ 44 pt
+[lulus] pembimbing: kerahasiaan kasus tampil dengan gembok (4 ikon)
+[lulus] pembimbing rincian kasus: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] pembimbing rincian kasus: tanpa luapan horizontal (selisih 0px)
+[lulus] pembimbing rincian kasus: seluruh kontrol terlihat ≥ 44 pt
+[lulus] pembimbing rincian pelanggaran: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] pembimbing rincian pelanggaran: tanpa luapan horizontal (selisih 0px)
+[lulus] pembimbing rincian pelanggaran: seluruh kontrol terlihat ≥ 44 pt
+[lulus] pembimbing buka kasus: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] pembimbing buka kasus: tanpa luapan horizontal (selisih 0px)
+[lulus] pembimbing buka kasus: seluruh kontrol terlihat ≥ 44 pt
+[lulus] pembimbing: pilihan kerahasiaan dijelaskan
+[lulus] pembimbing sikap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] pembimbing sikap: tanpa luapan horizontal (selisih 0px)
+[lulus] pembimbing sikap: seluruh kontrol terlihat ≥ 44 pt
+[lulus] pembimbing-rincian-kasus 375 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] pembimbing-rincian-kasus 375 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] pembimbing-rincian-kasus 375 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] pembimbing-rincian-kasus 768 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] pembimbing-rincian-kasus 768 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] pembimbing-rincian-kasus 768 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] pembimbing-rincian-kasus 768 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] pembimbing-rincian-kasus 768 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] pembimbing-rincian-kasus 1280 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] pembimbing-rincian-kasus 1280 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] pembimbing-rincian-kasus 1280 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] pembimbing-rincian-kasus 1280 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] pembimbing-rincian-kasus 1280 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] murobi rincian kasus: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] murobi rincian kasus: tanpa luapan horizontal (selisih 0px)
+[lulus] murobi rincian kasus: seluruh kontrol terlihat ≥ 44 pt
+[lulus] murobi: Tandai mengetahui tersedia (hak dari server)
+[lulus] murobi sikap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] murobi sikap: tanpa luapan horizontal (selisih 0px)
+[lulus] murobi sikap: seluruh kontrol terlihat ≥ 44 pt
+[lulus] guru menu rapor: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] guru menu rapor: tanpa luapan horizontal (selisih 0px)
+[lulus] guru menu rapor: seluruh kontrol terlihat ≥ 44 pt
+[lulus] guru nilai: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] guru nilai: tanpa luapan horizontal (selisih 0px)
+[lulus] guru nilai: seluruh kontrol terlihat ≥ 44 pt
+[lulus] guru-menu-rapor 375 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] guru-menu-rapor 375 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] guru-menu-rapor 375 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] guru-menu-rapor 768 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] guru-menu-rapor 768 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] guru-menu-rapor 768 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] guru-menu-rapor 768 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] guru-menu-rapor 768 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] guru-menu-rapor 1280 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] guru-menu-rapor 1280 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] guru-menu-rapor 1280 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] guru-menu-rapor 1280 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] guru-menu-rapor 1280 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] pendidikan verifikasi: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] pendidikan verifikasi: tanpa luapan horizontal (selisih 0px)
+[lulus] pendidikan verifikasi: seluruh kontrol terlihat ≥ 44 pt
+[lulus] pengurus tanpa akses pembinaan: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] pengurus tanpa akses pembinaan: tanpa luapan horizontal (selisih 0px)
+[lulus] pengurus tanpa akses pembinaan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] admin pembinaan: tepat satu ← ≥ 44 pt di kepala (44×44@15)
+[lulus] admin pembinaan: tanpa luapan horizontal (selisih 0px)
+[lulus] admin pembinaan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] admin: pengawasan tanpa tombol kelola
+[lulus] admin rapor: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] admin rapor: tanpa luapan horizontal (selisih 0px)
+[lulus] admin rapor: seluruh kontrol terlihat ≥ 44 pt
+[lulus] wali daftar informasi keluarga: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali daftar informasi keluarga: tanpa luapan horizontal (selisih 0px)
+[lulus] wali daftar informasi keluarga: seluruh kontrol terlihat ≥ 44 pt
+[lulus] wali rincian publikasi: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali rincian publikasi: tanpa luapan horizontal (selisih 0px)
+[lulus] wali: satu tombol Tandai dibaca
+[lulus] wali rapor: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali rapor: tanpa luapan horizontal (selisih 0px)
+[lulus] wali rapor: seluruh kontrol terlihat ≥ 44 pt
+[lulus] wali rapor: "Versi sebelumnya" dan tepat satu Unduh PDF rapor (versi terbaru)
+[lulus] wali-rapor 375 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali-rapor 375 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] wali-rapor 375 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] wali-rapor 768 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali-rapor 768 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] wali-rapor 768 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali-rapor 768 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] wali-rapor 768 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] wali-rapor 1280 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali-rapor 1280 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] wali-rapor 1280 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali-rapor 1280 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] wali-rapor 1280 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] tanpa permintaan keluar 127.0.0.1 ()
+
+Ringkasan: 97 lulus, 0 gagal

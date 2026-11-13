@@ -1,0 +1,5 @@
+[lulus] sbx_pengurus_a rincian 200, isi sesuai hak, ← Beranda
+[lulus] sbx_admin rincian 200, isi sesuai hak, ← Beranda
+[lulus] sbx_murobi_a rincian 403, isi sesuai hak, ← Beranda
+[lulus] sbx_pengurus_b rincian 403, isi sesuai hak, ← Beranda
+[lulus] sbx_ortu_a rincian 403, isi sesuai hak, ← Beranda

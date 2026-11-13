@@ -1,0 +1,11 @@
+[lulus] Keamanan: rincian izin terbuka
+[lulus] rincian izin: tanpa tombol tindakan
+[lulus] rincian izin Keamanan: ← "Kembali" 43.8×44.2 dp di kepala (y 32 dp)
+[lulus] rincian izin Keamanan: ← membuka Beranda
+[lulus] guru berpenugasan Keamanan (identitas pengurus): menu Keamanan
+[lulus] Keamanan guru: ← "Kembali" 43.8×44.2 dp di kepala (y 32 dp)
+[lulus] Keamanan guru: ← membuka Beranda
+[lulus] admin tanpa penugasan Keamanan: ditolak server
+[lulus] Keamanan ditolak: ← "Kembali" 43.8×44.2 dp di kepala (y 32 dp)
+[lulus] Keamanan ditolak: ← membuka Beranda
+Ringkasan: 10 lulus, 0 gagal

@@ -1,0 +1,21 @@
+LULUS laporan: judul "Laporan kehadiran" dan subjudul penjelas tampil
+LULUS laporan: filter rentang memakai date_from=2026-01-01 dan kartu ringkasan menampilkan rekap yang konsisten — /api/v1/reports?date_from=2026-01-01&date_to=2026-11-13&page=1&per_page=25
+GAGAL laporan: tombol Cetak PDF dan Simpan PDF ada di kartu ringkasan
+LULUS laporan: ringkasan jadwal tampil sebagai baris berketerangan — baris 1
+LULUS laporan: kartu detail kehadiran membuka detail pertemuan — http://127.0.0.1:8082/report/113
+LULUS laporan: tombol Kembali kembali ke Beranda — http://127.0.0.1:8082/
+LULUS laporan: tidak ada pageerror
+LULUS laporan gelap: tampil tanpa pageerror
+GAGAL profil sbx_admin: label peran dan baris cakupan sesuai — peran 0, cakupan 1
+LULUS profil sbx_admin: baris menu berketerangan tampil
+LULUS profil sbx_admin: baris Perangkat & push membuka layar perangkat
+LULUS profil sbx_admin: tidak ada pageerror
+GAGAL profil sbx_ortu_a: label peran dan baris cakupan sesuai — peran 0, cakupan 1
+LULUS profil sbx_ortu_a: baris menu berketerangan tampil
+LULUS profil sbx_ortu_a: baris Perangkat & push membuka layar perangkat
+LULUS profil sbx_ortu_a: tidak ada pageerror
+GAGAL profil sbx_guru_biasa: label peran dan baris cakupan sesuai — peran 0, cakupan 0
+LULUS profil sbx_guru_biasa: baris menu berketerangan tampil
+LULUS profil sbx_guru_biasa: baris Perangkat & push membuka layar perangkat
+LULUS profil: tombol Keluar meminta konfirmasi (dibatalkan) dan tetap di Profil
+LULUS profil sbx_guru_biasa: tidak ada pageerror

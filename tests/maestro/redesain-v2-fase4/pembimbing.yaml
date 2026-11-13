@@ -1,0 +1,37 @@
+# Pembimbing (DB Tahap 7): menu Pembinaan → daftar kasus (kerahasiaan bergembok),
+# ← dengan riwayat kembali ke menu; rincian kasus dibuka tautan saat aplikasi MATI → ← Beranda.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- openLink: alhasanapps://pembinaan
+- extendedWaitUntil:
+    visible: "Pelanggaran & poin"
+    timeout: 40000
+- assertVisible: "Kembali"
+- tapOn: "Kasus & sesi konseling"
+- extendedWaitUntil:
+    visible: "Halaman 1"
+    timeout: 30000
+# iOS menggabungkan baris menjadi satu elemen (label "nama · status"); kerahasiaan
+# dibacakan sebagai petunjuk aksesibilitas dan terlihat pada tangkapan.
+- assertVisible: ".*Dalam Pendampingan.*"
+- takeScreenshot: ios-f4-daftar-kasus
+- tapOn:
+    text: "Kembali"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible: "Pelanggaran & poin"
+    timeout: 20000
+- stopApp
+- openLink: alhasanapps://pembinaan/detail?jenis=kasus&id=${KASUS}
+- extendedWaitUntil:
+    visible: "Muat ulang versi terbaru"
+    timeout: 60000
+- takeScreenshot: ios-f4-rincian-kasus-dingin
+- waitForAnimationToEnd
+- tapOn:
+    text: "Kembali"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible: ".*Buka profil"
+    timeout: 30000

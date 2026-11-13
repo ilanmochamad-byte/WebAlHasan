@@ -1,0 +1,8 @@
+[lulus] petugas: rincian kunjungan terbuka
+[lulus] rincian: catatan klinis bertanda privat
+[lulus] perlindungan layar Kesehatan aktif (tangkapan 16274 B)
+[lulus] rincian kunjungan: ← "Kembali" 43.8×44.2 dp di kepala (y 32 dp)
+[lulus] rincian kunjungan: ← membuka Beranda
+[lulus] gelap + 2,0×: laporan klinik terbuka
+[lulus] laporan gelap + 2,0×: ← "Kembali" 43.8×44.2 dp di kepala (y 32 dp)
+Ringkasan: 7 lulus, 0 gagal

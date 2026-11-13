@@ -1,0 +1,4 @@
+pembimbing exit=0
+wali-rapor-terang exit=0
+wali-rapor-gelap exit=0
+wali-rapor-gelap-ax-xxxl exit=0

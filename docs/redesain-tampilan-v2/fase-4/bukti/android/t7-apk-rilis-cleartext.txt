@@ -1,0 +1,11 @@
+args: [-p, com.ilanmochamad.alhasanApps, -c, android.intent.category.LAUNCHER, 1]
+ arg: "-p"
+ arg: "com.ilanmochamad.alhasanApps"
+ arg: "-c"
+ arg: "android.intent.category.LAUNCHER"
+ arg: "1"
+data="com.ilanmochamad.alhasanApps"
+data="android.intent.category.LAUNCHER"
+[gagal] galat: Tidak ditemukan: /Assalamu/
+
+Ringkasan: 0 lulus, 1 gagal

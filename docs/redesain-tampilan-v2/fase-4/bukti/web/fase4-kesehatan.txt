@@ -1,0 +1,72 @@
+[lulus] fixture: kunjungan dicatat lewat API (201)
+[lulus] petugas menu kesehatan: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas menu kesehatan: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas menu kesehatan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] petugas daftar kunjungan: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas daftar kunjungan: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas daftar kunjungan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] petugas daftar: pil cepat Rujukan menunggu
+[lulus] petugas rincian kunjungan: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas rincian kunjungan: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas rincian kunjungan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] petugas rincian: catatan klinis bertanda privat
+[lulus] petugas catat: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas catat: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas catat: seluruh kontrol terlihat ≥ 44 pt
+[lulus] petugas ringkasan wali: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas ringkasan wali: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas ringkasan wali: seluruh kontrol terlihat ≥ 44 pt
+[lulus] ringkasan wali ditandai terpisah dari catatan klinis
+[lulus] petugas riwayat versi: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas riwayat versi: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas riwayat versi: seluruh kontrol terlihat ≥ 44 pt
+[lulus] petugas laporan: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas laporan: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas laporan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] laporan klinik tanpa angka pembanding/persentase karangan
+[lulus] petugas-rincian-kunjungan 375 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas-rincian-kunjungan 375 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas-rincian-kunjungan 375 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] petugas-rincian-kunjungan 768 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas-rincian-kunjungan 768 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas-rincian-kunjungan 768 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas-rincian-kunjungan 768 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas-rincian-kunjungan 768 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] petugas-rincian-kunjungan 1280 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas-rincian-kunjungan 1280 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas-rincian-kunjungan 1280 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] petugas-rincian-kunjungan 1280 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] petugas-rincian-kunjungan 1280 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] admin penugasan kesehatan: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] admin penugasan kesehatan: tanpa luapan horizontal (selisih 0px)
+[lulus] admin penugasan kesehatan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] admin riwayat akses: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] admin riwayat akses: tanpa luapan horizontal (selisih 0px)
+[lulus] admin riwayat akses: seluruh kontrol terlihat ≥ 44 pt
+[lulus] admin: tanpa Catat kunjungan
+[lulus] sbx_v5_pembimbing menu kesehatan: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] sbx_v5_pembimbing menu kesehatan: tanpa luapan horizontal (selisih 0px)
+[lulus] sbx_v5_pembimbing menu kesehatan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] sbx_v5_murobi menu kesehatan: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] sbx_v5_murobi menu kesehatan: tanpa luapan horizontal (selisih 0px)
+[lulus] sbx_v5_murobi menu kesehatan: seluruh kontrol terlihat ≥ 44 pt
+[lulus] wali daftar kesehatan anak: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali daftar kesehatan anak: tanpa luapan horizontal (selisih 0px)
+[lulus] wali daftar kesehatan anak: seluruh kontrol terlihat ≥ 44 pt
+[lulus] wali: belum ada ringkasan terbit pada fixture (keadaan kosong ber-←)
+[lulus] wali-kesehatan 375 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali-kesehatan 375 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] wali-kesehatan 375 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] wali-kesehatan 768 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali-kesehatan 768 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] wali-kesehatan 768 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali-kesehatan 768 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] wali-kesehatan 768 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] wali-kesehatan 1280 terang: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali-kesehatan 1280 terang: tanpa luapan horizontal (selisih 0px)
+[lulus] wali-kesehatan 1280 gelap: tepat satu ← ≥ 44 pt di kepala (44×44@8)
+[lulus] wali-kesehatan 1280 gelap: tanpa luapan horizontal (selisih 0px)
+[lulus] wali-kesehatan 1280 gelap: latar gelap (rgb(1, 1, 1))
+[lulus] tanpa permintaan keluar 127.0.0.1 ()
+
+Ringkasan: 70 lulus, 0 gagal

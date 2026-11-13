@@ -1,0 +1,146 @@
+{
+ "sbx_v5_petugas_f 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_v5_petugas_f\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_v5_petugas_f 01-menu": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses"
+ ],
+ "sbx_v5_petugas_f 02-daftar": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v5/kesehatan/kunjungan ?page=1"
+ ],
+ "sbx_v5_petugas_f 03-cari": [
+  "GET /api/v1/v5/kesehatan/kunjungan ?page=1&q=V5S0201"
+ ],
+ "sbx_v5_petugas_f 04-catat-ketukan-ganda": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v5/kesehatan/santri/kelas",
+  "GET /api/v1/v5/kesehatan/santri ?q=V5S0201",
+  "POST /api/v1/v5/kesehatan/kunjungan badan={\"catatan_klinis\":\"Jaringan F4 catatan klinis\",\"idempotency_key\":\"<kunci>\",\"keluhan\":\"Jaringan F4 keluhan demam\",\"obat\":[{\"jumlah\":\"2\",\"nama_obat\":\"Jaringan F4 obat\",\"petunjuk\":\"\",\"satuan\":\"\"}],\"rujukan\":[{\"alasan\":\"\",\"hasil\":\"\",\"tanggal_hasil\":\"\",\"tanggal_rujukan\":\"\",\"tujuan\":\"Jaringan F4 Puskesmas\"}],\"santri_id\":1705,\"status\":\"Tercatat\",\"tindak_lanjut\":[{\"status\":\"Terbuka\",\"tanggal_selesai\":\"\",\"tanggal_target\":\"\",\"uraian\":\"Jaringan F4 kontrol\"}],\"tindakan\":\"Jaringan F4 tindakan\",\"waktu_kunjungan\":\"2026-11-13T00:30\"}",
+  "GET /api/v1/v5/kesehatan/kunjungan/1"
+ ],
+ "sbx_v5_petugas_f 05-koreksi": [
+  "GET /api/v1/v5/kesehatan/kunjungan/1",
+  "POST /api/v1/v5/kesehatan/kunjungan/1/koreksi badan={\"alasan\":\"Jaringan F4 alasan koreksi\",\"catatan_klinis\":\"Jaringan F4 catatan klinis\",\"idempotency_key\":\"<kunci>\",\"keluhan\":\"Jaringan F4 keluhan demam\",\"obat\":[{\"id\":1,\"jumlah\":\"2\",\"nama_obat\":\"Jaringan F4 obat\",\"petunjuk\":\"\",\"satuan\":\"\",\"waktu_pemberian\":\"2026-11-13 00:30:00\"}],\"rujukan\":[{\"alasan\":\"\",\"hasil\":\"\",\"id\":1,\"tanggal_hasil\":\"\",\"tanggal_rujukan\":\"2026-11-13\",\"tujuan\":\"Jaringan F4 Puskesmas\"}],\"status\":\"\",\"tindak_lanjut\":[{\"id\":1,\"status\":\"Terbuka\",\"tanggal_selesai\":\"\",\"tanggal_target\":\"\",\"uraian\":\"Jaringan F4 kontrol\"}],\"tindakan\":\"Jaringan F4 tindakan dikoreksi\",\"versi\":1,\"waktu_kunjungan\":\"2026-11-13 00:30:00\"}",
+  "GET /api/v1/v5/kesehatan/kunjungan/1"
+ ],
+ "sbx_v5_petugas_f 06-hasil-rujukan": [
+  "GET /api/v1/v5/kesehatan/kunjungan/1",
+  "POST /api/v1/v5/kesehatan/kunjungan/1/rujukan/1/hasil badan={\"alasan\":\"Jaringan F4 hasil diterima\",\"hasil\":\"Jaringan F4 hasil\",\"idempotency_key\":\"<kunci>\",\"tanggal_hasil\":\"\",\"versi\":2}",
+  "GET /api/v1/v5/kesehatan/kunjungan/1"
+ ],
+ "sbx_v5_petugas_f 07-ringkasan-pratinjau": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v5/kesehatan/kunjungan/1/ringkasan",
+  "POST /api/v1/v5/kesehatan/kunjungan/1/ringkasan/pratinjau badan={\"alasan\":\"\",\"kunjungan_versi\":3,\"revisi_ringkasan\":0,\"ringkasan\":\"Jaringan F4 ringkasan untuk wali.\",\"tindak_lanjut_wali\":\"Jaringan F4 perhatian\",\"tindakan_umum\":\"Jaringan F4 penanganan\"}"
+ ],
+ "sbx_v5_petugas_f 08-terbitkan-ketukan-ganda": [
+  "POST /api/v1/v5/kesehatan/kunjungan/1/ringkasan badan={\"alasan\":\"\",\"idempotency_key\":\"<kunci>\",\"konfirmasi\":true,\"kunjungan_versi\":3,\"pratinjau_hash\":\"<hash-server>\",\"revisi_ringkasan\":0,\"ringkasan\":\"Jaringan F4 ringkasan untuk wali.\",\"tindak_lanjut_wali\":\"Jaringan F4 perhatian\",\"tindakan_umum\":\"Jaringan F4 penanganan\"}",
+  "GET /api/v1/v5/kesehatan/kunjungan/1/ringkasan"
+ ],
+ "sbx_v5_petugas_f 09-tarik": [
+  "POST /api/v1/v5/kesehatan/kunjungan/1/ringkasan/tarik badan={\"alasan\":\"Jaringan F4 alasan tarik\",\"idempotency_key\":\"<kunci>\",\"revisi_ringkasan\":1}",
+  "GET /api/v1/v5/kesehatan/kunjungan/1/ringkasan"
+ ],
+ "sbx_v5_petugas_f 10-riwayat-versi": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v5/kesehatan/kunjungan/1/versi"
+ ],
+ "sbx_v5_petugas_f 11-laporan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v5/kesehatan/laporan ?dari=2026-11-01&sampai=2026-11-13",
+  "GET /api/v1/v5/kesehatan/laporan ?dari=2026-10-01&sampai=2026-10-31"
+ ],
+ "sbx_admin 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_admin\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/schedules/today",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_admin 12-penugasan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v5/kesehatan/penugasan ?page=1"
+ ],
+ "sbx_admin 13-riwayat-akses": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v5/kesehatan/kunjungan/1/akses ?page=1"
+ ],
+ "sbx_v5_pembimbing 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_v5_pembimbing\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_v5_pembimbing 14-binaan": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v5/kesehatan/kunjungan ?page=1"
+ ],
+ "sbx_v5_wali_1 00-masuk": [
+  "POST /api/v1/auth/login badan={\"device_name\":\"Macintosh\",\"izinkan_password_sementara\":true,\"password\":\"<sandi>\",\"username\":\"sbx_v5_wali_1\"}",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v3/capabilities",
+  "GET /api/v1/v4/capabilities",
+  "GET /api/v1/v5/kesehatan/akses",
+  "GET /api/v1/v5/kesehatan/wali/akses",
+  "GET /api/v1/v6/bsa/akses",
+  "GET /api/v1/keamanan/akses",
+  "GET /api/v1/profile/pribadi"
+ ],
+ "sbx_v5_wali_1 15-wali-daftar": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v5/kesehatan/wali/ringkasan ?page=1"
+ ],
+ "sbx_v5_wali_1 16-wali-rincian": [
+  "GET /api/v1/profile",
+  "GET /api/v1/profile/pribadi",
+  "GET /api/v1/notifikasi/belum-dibaca",
+  "GET /api/v1/v5/kesehatan/wali/ringkasan/1"
+ ]
+}

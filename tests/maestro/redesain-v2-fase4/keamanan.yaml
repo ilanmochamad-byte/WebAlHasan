@@ -1,0 +1,26 @@
+# Keamanan (DB penugasan Keamanan): rincian izin hanya baca; ← Beranda.
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow: masuk.yaml
+- openLink: alhasanapps://keamanan/izin/${IZIN}
+- extendedWaitUntil:
+    visible: "Rincian izin"
+    timeout: 40000
+- assertVisible: "Kembali"
+- assertNotVisible: "Setujui"
+- assertNotVisible: "Tolak"
+- scrollUntilVisible:
+    element: "Keputusan"
+    direction: DOWN
+    timeout: 30000
+- takeScreenshot: ios-f4-keamanan-${NAMA}
+- scrollUntilVisible:
+    element: "Kembali"
+    direction: UP
+    timeout: 20000
+- tapOn:
+    text: "Kembali"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible: ".*Buka profil"
+    timeout: 30000
