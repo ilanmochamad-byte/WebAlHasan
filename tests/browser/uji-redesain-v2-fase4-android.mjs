@@ -92,7 +92,7 @@ async function bukaApp() {
   adb('shell', 'am', 'force-stop', PKG);
   if (metro) adb('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', `alhasanapps://expo-development-client/?url=${encodeURIComponent(metro)}`);
   // Build RILIS: bundel tertanam, tanpa Metro/dev client.
-  else adb('shell', 'monkey', '-p', PKG, '-c', 'android.intent.category.LAUNCHER', '1');
+  else adb('shell', 'am', 'start', '-a', 'android.intent.action.MAIN', '-c', 'android.intent.category.LAUNCHER', '-n', `${PKG}/.MainActivity`);
   await tidur(4000);
 }
 /** Sesi dihapus dengan mengosongkan data aplikasi (SecureStore ikut terhapus). */

@@ -16,7 +16,7 @@ import path from 'node:path';
 //   N-D  Ganti Password: salah ditolak, berhasil; password sementara → layar khusus → Beranda
 //   N-E  logcat tanpa password/bearer mentah
 const db = process.env.DB_NAME || '', metro = process.env.METRO || '';
-if (!/^test_.*_test$/.test(db) || !/^http:\/\/127\.0\.0\.1:\d+$/.test(metro)) throw Error('Hanya DB test_*_test dan Metro localhost');
+if (!/^test_.*_test$/.test(db) || !(process.env.RILIS === '1' ? metro === '' : /^http:\/\/127\.0\.0\.1:\d+$/.test(metro))) throw Error('Hanya DB test_*_test dan Metro localhost');
 const ADB = process.env.ADB || `${process.env.HOME}/Library/Android/sdk/platform-tools/adb`;
 const PKG = 'com.ilanmochamad.alhasanApps';
 const out = process.env.OUT_DIR || '/tmp/pif2-android';
@@ -72,7 +72,9 @@ const tutupKeyboard = () => {
 const foto = nama => fs.writeFileSync(path.join(out, `android-pif2-${nama}.png`), execFileSync(ADB, ['exec-out', 'screencap', '-p'], { maxBuffer: 64 << 20 }));
 async function bukaApp() {
   adb('shell', 'am', 'force-stop', PKG);
-  adb('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', `alhasanapps://expo-development-client/?url=${encodeURIComponent(metro)}`);
+  if (metro) adb('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', `alhasanapps://expo-development-client/?url=${encodeURIComponent(metro)}`);
+  // Build RILIS (RILIS=1, METRO kosong): bundel tertanam, tanpa Metro/dev client.
+  else adb('shell', 'am', 'start', '-a', 'android.intent.action.MAIN', '-c', 'android.intent.category.LAUNCHER', '-n', `${PKG}/.MainActivity`);
   await tidur(4000);
 }
 async function masuk(user, password = PASS) {
@@ -93,8 +95,11 @@ async function masuk(user, password = PASS) {
 /** Ketuk kartu identitas → Profil; diulang bila ketukan jatuh sebelum layar siap. */
 async function bukaProfil() {
   for (let i = 0; i < 4; i++) {
+    // Kartu berada di puncak Beranda; pada teks 2,0× halaman bisa tertinggal tergulir oleh
+    // langkah sebelumnya, jadi gulir ke atas dulu (pencari elemen, bukan perilaku aplikasi).
+    for (let j = 0; j < 3; j++) { adb('shell', 'input', 'swipe', '540', '700', '540', '1800', '300'); await tidur(300); }
     await ketuk(/Buka profil/, { timeout: 60000 });
-    try { await cari(/Perangkat & push|Data diri|Edit profil/, { timeout: 8000 }); return; } catch { await tidur(1500); }
+    try { await cari(/Identitas, penugasan, dan pengaturan akun|Perangkat & push|Data diri|Edit profil/, { timeout: 8000 }); return; } catch { await tidur(1500); }
   }
   throw Error('Profil tidak terbuka dari kartu');
 }
@@ -140,7 +145,7 @@ try {
   await cari(/Rincian penugasan aktif|Data diri/);
   foto('profil');
   await ketuk(/^Edit profil$/);
-  await cari(/Diatur admin|Foto profil/);
+  await cari(/Diatur admin|Foto profil|^Ubah foto$/);
   await isiKolom(/^Tempat lahir$/, 'Garut Native');
   tutupKeyboard();
   // TL-02: pilihan foto lewat lembar bawah "Foto profil".
@@ -151,7 +156,7 @@ try {
   ok(pkgPemilih.some(p => /photopicker|providers\.media|documentsui|mediaprovider/i.test(p)), `Pemilih sistem terbuka (${pkgPemilih.join(', ')})`);
   ok(!pemilih.nodes.some(n => /permissioncontroller/.test(n.pkg)) && !/Allow|Izinkan/.test(isi(pemilih.nodes)), 'Tanpa dialog izin akses galeri');
   foto('pemilih-foto');
-  ok(/only have access to the photos you select|hanya akan memiliki akses/i.test(isi(pemilih.nodes)), 'Pemilih menyatakan aplikasi hanya mendapat akses foto yang dipilih');
+  ok(/only have access to the photos you select|can only access the photos you select|hanya akan memiliki akses/i.test(isi(pemilih.nodes)), 'Pemilih menyatakan aplikasi hanya mendapat akses foto yang dipilih');
   const target = pemilih.n;
   adb('shell', 'input', 'tap', String((target.b[0] + target.b[2]) >> 1), String((target.b[1] + target.b[3]) >> 1));
   // Pemotong (allowsEditing): konfirmasi potongan.
@@ -164,11 +169,17 @@ try {
   await cari(/Foto profil SBX Pengurus A/);
   ok(true, 'Foto tampil di Edit Profil');
   await tidur(1000);
-  const sisaCache = String(adb('shell', 'run-as', PKG, 'ls', '-1', 'cache/ImagePicker').split('\n').filter(b => b.trim() !== '').length);
-  ok(sisaCache === '0', `Salinan lokal pemilih/pemotong dibuang setelah unggah (sisa ${sisaCache} berkas di cache/ImagePicker)`);
+  // `run-as` hanya tersedia pada APK debuggable; pada build RILIS pemeriksaan ini dilewati (bukan lulus).
+  if (process.env.RILIS === '1') console.log('[lewati] Cache pemilih/pemotong tidak dapat diperiksa: run-as tidak tersedia pada APK rilis (non-debuggable)');
+  else {
+    const sisaCache = String(adb('shell', 'run-as', PKG, 'ls', '-1', 'cache/ImagePicker').split('\n').filter(b => b.trim() !== '').length);
+    ok(sisaCache === '0', `Salinan lokal pemilih/pemotong dibuang setelah unggah (sisa ${sisaCache} berkas di cache/ImagePicker)`);
+  }
   foto('edit-foto');
   for (let i = 0; i < 4; i++) { geserAtas(); await tidur(400); }
   await ketuk(/^Simpan perubahan$/);
+  // TL-03: nilai data diri tampil di halaman "Data diri ›", bukan di Profil.
+  await ketuk(/^Data diri$/, { timeout: 25000 });
   await cari(/Garut Native/, { timeout: 25000 });
   ok(sql(`SELECT tempat_lahir FROM profil_pribadi WHERE pengurus_id=(SELECT pengurus_id FROM users WHERE id=${ids.pengurus_a})`) === 'Garut Native', 'Tempat lahir tersimpan dan tampil di Profil tanpa masuk ulang');
   const dump1 = adb('shell', 'dumpsys', 'package', PKG);
