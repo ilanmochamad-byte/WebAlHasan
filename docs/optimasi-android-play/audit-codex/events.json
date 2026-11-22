@@ -1,0 +1,41 @@
+{
+  "note": "Overlapping captures are not summed; no inference of physical/pre-launch stability. API36 main buffer retains entire main run.",
+  "captures": [
+    {
+      "private_path": "/private/tmp/oap-codex-audit/native/api36/events.txt",
+      "sha256": "bdfe4a772cd22495f5fd27fe4750a23963a37f580d218b20818da9c848171a31",
+      "lines": 7125,
+      "first_timestamp": "11-22 11:24:59.749",
+      "last_timestamp": "11-22 12:14:51.825",
+      "target_am_crash": 0,
+      "target_am_anr": 0
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/events-api35.txt",
+      "sha256": "611b2b1dcba42da71b11aa90fe2b556186a0a20ff164eb6293055c430ea3a9b8",
+      "lines": 2079,
+      "first_timestamp": "11-22 12:50:43.713",
+      "last_timestamp": "11-22 12:57:51.867",
+      "target_am_crash": 0,
+      "target_am_anr": 0
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/events-api31.txt",
+      "sha256": "d62695fd8f6f058cae2964fec343597f04a40686c5116ca9c131a39584e20baf",
+      "lines": 12620,
+      "first_timestamp": "11-22 12:58:12.003",
+      "last_timestamp": "11-22 13:03:16.901",
+      "target_am_crash": 0,
+      "target_am_anr": 0
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/retry31-events.txt",
+      "sha256": "89188e3ab05b1e7189ec0ffd8951853eb88323ac3010faaa3334dae425aa6b00",
+      "lines": 10270,
+      "first_timestamp": "01-01 07:00:00.040",
+      "last_timestamp": "11-22 13:08:24.548",
+      "target_am_crash": 0,
+      "target_am_anr": 0
+    }
+  ]
+}

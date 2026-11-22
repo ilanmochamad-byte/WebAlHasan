@@ -1,0 +1,18 @@
+[
+  {
+    "pass": true,
+    "label": "rapor: login pada Release dengan bundel tertanam"
+  },
+  {
+    "pass": true,
+    "label": "expo-file-system unduh rapor + expo-sharing: chooser sistem terbuka setelah PDF dibuat/diunduh"
+  },
+  {
+    "pass": true,
+    "label": "expo-file-system unduh rapor + expo-sharing: chooser menampilkan dokumen PDF"
+  },
+  {
+    "pass": true,
+    "label": "logcat tanpa password atau bearer mentah"
+  }
+]

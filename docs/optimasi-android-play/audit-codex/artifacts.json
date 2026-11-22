@@ -1,0 +1,67 @@
+{
+  "aab_final": {
+    "private_path": "/private/tmp/oap-codex-audit/artifacts/final/app-release.aab",
+    "sha256": "92229e95e5f718a65e21a590da5e060293609fcca11477177f8658190d68e50d",
+    "bytes": 70104881
+  },
+  "apk_final": {
+    "private_path": "/private/tmp/oap-codex-audit/artifacts/final/app-release.apk",
+    "sha256": "f6e6ba5ef3546642979fda6f23f42e71e5e0f14928673eb26633bef92f2b5d74",
+    "bytes": 94397987
+  },
+  "apk_test": {
+    "private_path": "/private/tmp/oap-codex-audit/artifacts/test/app-release-test.apk",
+    "sha256": "df8bc814600a938f9f3427aecbbe97af4cd300a2d979b810a17137da32f49838",
+    "bytes": 94398411
+  },
+  "mapping_final": {
+    "private_path": "/private/tmp/oap-codex-audit/artifacts/final/mapping/mapping.txt",
+    "sha256": "43799e8cf9bbbe33e6b300b4fba791ccbaf078f9da0db8491d799cb8e5d8ed82",
+    "bytes": 104166728
+  },
+  "mapping_test": {
+    "private_path": "/private/tmp/oap-codex-audit/artifacts/test/mapping/mapping.txt",
+    "sha256": "43799e8cf9bbbe33e6b300b4fba791ccbaf078f9da0db8491d799cb8e5d8ed82",
+    "bytes": 104166728
+  },
+  "rilis19_eas": {
+    "private_path": "/private/tmp/oap-codex-audit/rilis19-eas-independent.aab",
+    "sha256": "015f4ddd6045c7666cf60a6cf0d3ec7f2761782c379d7bd519b0ad1ad553c908",
+    "bytes": 74355173
+  },
+  "rilis19_play": {
+    "private_path": "/Users/ilanmochamad/Downloads/19.aab",
+    "sha256": "015f4ddd6045c7666cf60a6cf0d3ec7f2761782c379d7bd519b0ad1ad553c908",
+    "bytes": 74355173
+  },
+  "source": {
+    "web": "757c15d3e516a8bc271929c4c60ae2781644d045",
+    "mobile": "4b20d257574df2a23e38ac623a1f6a4a20aa8af4",
+    "mobile_code": "747e55d757f14366ea916b5b2ef77df4c1c59733",
+    "eas19": "24ad663e-8f31-444c-b593-9dced22e89bf"
+  },
+  "ios_executable": {
+    "private_path": "/private/tmp/oap-codex-audit/ios-derived/Build/Products/Release-iphonesimulator/alhasanApps.app/alhasanApps",
+    "sha256": "1204ce3ed3cc72a5bcb34bf1be040912bd11336f5e033807b50404abaab0a25d",
+    "bytes": 34440600
+  },
+  "ios_hermes": {
+    "private_path": "/private/tmp/oap-codex-audit/ios-derived/Build/Products/Release-iphonesimulator/alhasanApps.app/main.jsbundle",
+    "sha256": "1790a7ddddbb7c216fb0d60b96d14d72b4267bfd02bbe4fc9f31579ef697e0a4",
+    "bytes": 3904532
+  },
+  "apk_baseline_reconstruction": {
+    "private_path": "/private/tmp/oap-codex-audit/artifacts/baseline/app-release-baseline.apk",
+    "sha256": "e37d67edfc9e98a7e11dae798de7b10e01fc86b61017c264d3f79629d3e50754",
+    "bytes": 46123239,
+    "source": "82f156ab98cb62fd5a97259be944f4cfcf75ffd0",
+    "label": "reconstruction, not original Play binary"
+  },
+  "ios_baseline_executable": {
+    "private_path": "/private/tmp/oap-codex-audit/ios-baseline-derived/Build/Products/Release-iphonesimulator/alhasanApps.app/alhasanApps",
+    "sha256": "81fd9b393bc148bbffd326e2118299b645630765b9596a5f01a86bb31ce071fe",
+    "bytes": 17277320,
+    "source": "82f156ab98cb62fd5a97259be944f4cfcf75ffd0",
+    "label": "reconstruction, not original Play binary"
+  }
+}

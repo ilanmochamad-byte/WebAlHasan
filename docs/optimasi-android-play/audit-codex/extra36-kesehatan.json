@@ -1,0 +1,18 @@
+[
+  {
+    "pass": true,
+    "label": "kesehatan: login pada Release dengan bundel tertanam"
+  },
+  {
+    "pass": true,
+    "label": "kesehatan: screenshot terlindungi 15580 B vs Beranda 254591 B"
+  },
+  {
+    "pass": true,
+    "label": "kesehatan: kembali dari latar memuat ulang layar berhak"
+  },
+  {
+    "pass": true,
+    "label": "logcat tanpa password atau bearer mentah"
+  }
+]

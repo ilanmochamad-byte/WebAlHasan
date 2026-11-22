@@ -94,12 +94,23 @@ async function masuk(user, password = PASS) {
 }
 /** Ketuk kartu identitas → Profil; diulang bila ketukan jatuh sebelum layar siap. */
 async function bukaProfil() {
+  // Profil dapat sudah terbuka ketika helper dipanggil/diulang. Nama yang panjang
+  // mendorong penanda lama ke bawah lipatan; cocokkan kepala yang benar-benar
+  // terlihat, dengan whitespace UI dinormalisasi. Jangan mengetuk kartu Beranda
+  // lagi ketika tujuan sudah terbuka. Assertion kartu/data/foto/password tetap.
+  const diProfil = nodes => nodes.some(n => n.desc === 'Kembali ke Beranda')
+    && /Identitas, penugasan, dan pengaturan akun/.test(isi(nodes));
   for (let i = 0; i < 4; i++) {
+    if (diProfil(dump())) return;
     // Kartu berada di puncak Beranda; pada teks 2,0× halaman bisa tertinggal tergulir oleh
     // langkah sebelumnya, jadi gulir ke atas dulu (pencari elemen, bukan perilaku aplikasi).
     for (let j = 0; j < 3; j++) { adb('shell', 'input', 'swipe', '540', '700', '540', '1800', '300'); await tidur(300); }
     await ketuk(/Buka profil/, { timeout: 60000 });
-    try { await cari(/Identitas, penugasan, dan pengaturan akun|Perangkat & push|Data diri|Edit profil/, { timeout: 8000 }); return; } catch { await tidur(1500); }
+    try {
+      const tujuan = await cari(/Identitas,\s+penugasan,\s+dan\s+pengaturan\s+akun|Perangkat & push|Data diri|Edit profil/, { timeout: 8000 });
+      if (diProfil(tujuan.nodes)) return;
+    } catch { /* periksa lagi keadaan tujuan sebelum mengulang ketukan */ }
+    await tidur(1500);
   }
   throw Error('Profil tidak terbuka dari kartu');
 }

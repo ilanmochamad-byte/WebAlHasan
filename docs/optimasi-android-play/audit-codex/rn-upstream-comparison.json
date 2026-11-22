@@ -1,0 +1,12 @@
+{
+  "StatusBarModule.kt": {
+    "sha256_0862": "e72c8e4635471bba994ea8cf9908e3102c97ce25a4c181737fe5bec6c7b9d1f5",
+    "sha256_0863": "e72c8e4635471bba994ea8cf9908e3102c97ce25a4c181737fe5bec6c7b9d1f5",
+    "equal": true
+  },
+  "WindowUtil.kt": {
+    "sha256_0862": "a3a79dfcd1ecc7f3f9d056227d031c8584545734d5ffe1b5819d56790deb2bf5",
+    "sha256_0863": "a3a79dfcd1ecc7f3f9d056227d031c8584545734d5ffe1b5819d56790deb2bf5",
+    "equal": true
+  }
+}

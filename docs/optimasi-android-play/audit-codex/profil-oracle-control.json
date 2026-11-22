@@ -1,0 +1,14 @@
+{
+  "original_file_sha256": "e84e77f0bc2a85480183a10d167ae9dd0fc75db338e7ad620e95a70bc90ce981",
+  "business_assertion_lines_unchanged": true,
+  "assertion_source_lines": 19,
+  "assertion_lines_sha256": "35bff23ed5fb4f89178ed6a43e69ffcb2aa2dbb67d9b31dfc8864a3a796228e7",
+  "changed": "bukaProfil destination/readiness only; business assertions unchanged",
+  "final_helper_sha256": "5b36c345da79ec3107c6c4cdf52c4edf200f2b19a6ab9f55ffe36501911b3ba6",
+  "navigation_helper_control": {
+    "baseline_original": "24/0",
+    "baseline_navigation_helper": "24/0",
+    "final_navigation_helper": "24/0"
+  },
+  "note": "Android12 original profile suite failed with uiautomator idle errors; no passing profile result claimed there. Fresh XML and slow input exist only in the new auditor probe."
+}

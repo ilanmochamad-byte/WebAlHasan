@@ -1,0 +1,26 @@
+{
+  "results": [
+    {
+      "optimization": {
+        "apkAnalysisResult": {
+          "agpVersion": "8.12.0",
+          "r8DexMarkerMetadata": {
+            "r8Enabled": false,
+            "d8Enabled": true,
+            "fullModeEnabled": false
+          },
+          "dexHeuristicObfuscationRatio": 0.013244147,
+          "uncompressedDexSizeBytes": "46992248"
+        }
+      },
+      "artifactPath": "audit/baseline-reconstruction/app-release-baseline.apk",
+      "basic": {
+        "appInfo": {
+          "packageName": "com.ilanmochamad.alhasanApps",
+          "versionName": "1.9.0",
+          "versionCode": "1"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,397 @@
+[
+  {
+    "configuration_line": 190,
+    "rule": "-dontwarn android.support.**",
+    "origin": "proguard-android-optimize.txt-8.12.3"
+  },
+  {
+    "configuration_line": 191,
+    "rule": "-dontwarn androidx.**",
+    "origin": "proguard-android-optimize.txt-8.12.3"
+  },
+  {
+    "configuration_line": 229,
+    "rule": "-keep class com.swmansion.reanimated.** { *; }",
+    "origin": "proguard-rules.pro"
+  },
+  {
+    "configuration_line": 230,
+    "rule": "-keep class com.facebook.react.turbomodule.** { *; }",
+    "origin": "proguard-rules.pro"
+  },
+  {
+    "configuration_line": 236,
+    "rule": "-keep class com.swmansion.reanimated.** { *; }",
+    "origin": "react-native-reanimated/android/build/intermediates/consumer_proguard_dir/release/exportReleaseConsumerProguardFiles/lib0/proguard.txt"
+  },
+  {
+    "configuration_line": 237,
+    "rule": "-keep class com.facebook.react.turbomodule.** { *; }",
+    "origin": "react-native-reanimated/android/build/intermediates/consumer_proguard_dir/release/exportReleaseConsumerProguardFiles/lib0/proguard.txt"
+  },
+  {
+    "configuration_line": 238,
+    "rule": "-keep class com.facebook.react.fabric.** { *; }",
+    "origin": "react-native-reanimated/android/build/intermediates/consumer_proguard_dir/release/exportReleaseConsumerProguardFiles/lib0/proguard.txt"
+  },
+  {
+    "configuration_line": 275,
+    "rule": "-keep class com.squareup.zstd.** { *; }",
+    "origin": "expo/android/build/intermediates/consumer_proguard_dir/release/exportReleaseConsumerProguardFiles/lib0/proguard.txt"
+  },
+  {
+    "configuration_line": 327,
+    "rule": "-keep class com.swmansion.worklets.** { *; }",
+    "origin": "react-native-worklets/android/build/intermediates/consumer_proguard_dir/release/exportReleaseConsumerProguardFiles/lib0/proguard.txt"
+  },
+  {
+    "configuration_line": 328,
+    "rule": "-keep class com.facebook.react.turbomodule.** { *; }",
+    "origin": "react-native-worklets/android/build/intermediates/consumer_proguard_dir/release/exportReleaseConsumerProguardFiles/lib0/proguard.txt"
+  },
+  {
+    "configuration_line": 329,
+    "rule": "-keep class com.facebook.react.fabric.** { *; }",
+    "origin": "react-native-worklets/android/build/intermediates/consumer_proguard_dir/release/exportReleaseConsumerProguardFiles/lib0/proguard.txt"
+  },
+  {
+    "configuration_line": 352,
+    "rule": "-dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder",
+    "origin": "expo.modules.image-57.0.3/proguard.txt"
+  },
+  {
+    "configuration_line": 412,
+    "rule": "-dontwarn com.facebook.react.**",
+    "origin": "react-android-0.86.2-release/proguard.txt"
+  },
+  {
+    "configuration_line": 413,
+    "rule": "-keep,includedescriptorclasses class com.facebook.react.bridge.** { *; }",
+    "origin": "react-android-0.86.2-release/proguard.txt"
+  },
+  {
+    "configuration_line": 414,
+    "rule": "-keep,includedescriptorclasses class com.facebook.react.turbomodule.core.** { *; }",
+    "origin": "react-android-0.86.2-release/proguard.txt"
+  },
+  {
+    "configuration_line": 415,
+    "rule": "-keep,includedescriptorclasses class com.facebook.react.internal.turbomodule.core.** { *; }",
+    "origin": "react-android-0.86.2-release/proguard.txt"
+  },
+  {
+    "configuration_line": 418,
+    "rule": "-keep class com.facebook.jni.** { *; }",
+    "origin": "react-android-0.86.2-release/proguard.txt"
+  },
+  {
+    "configuration_line": 424,
+    "rule": "-dontwarn java.nio.file.*",
+    "origin": "react-android-0.86.2-release/proguard.txt"
+  },
+  {
+    "configuration_line": 425,
+    "rule": "-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement",
+    "origin": "react-android-0.86.2-release/proguard.txt"
+  },
+  {
+    "configuration_line": 426,
+    "rule": "-dontwarn okio.**",
+    "origin": "react-android-0.86.2-release/proguard.txt"
+  },
+  {
+    "configuration_line": 436,
+    "rule": "-keep public class com.facebook.imageutils.** {",
+    "origin": "react-android-0.86.2-release/proguard.txt"
+  },
+  {
+    "configuration_line": 442,
+    "rule": "-keep class expo.modules.notifications.** {*;}",
+    "origin": "expo.modules.notifications-57.0.13/proguard.txt"
+  },
+  {
+    "configuration_line": 447,
+    "rule": "-dontwarn java.lang.ClassValue",
+    "origin": "shrink-rules/lib/META-INF/proguard/pika-api.pro"
+  },
+  {
+    "configuration_line": 601,
+    "rule": "-dontwarn jp.co.cyberagent.android.gpuimage.**",
+    "origin": "glide-transformations-4.3.0/proguard.txt"
+  },
+  {
+    "configuration_line": 638,
+    "rule": "-dontwarn com.google.firebase.platforminfo.KotlinDetector",
+    "origin": "firebase-common-22.0.1/proguard.txt"
+  },
+  {
+    "configuration_line": 639,
+    "rule": "-dontwarn com.google.auto.value.AutoValue",
+    "origin": "firebase-common-22.0.1/proguard.txt"
+  },
+  {
+    "configuration_line": 640,
+    "rule": "-dontwarn com.google.auto.value.AutoValue$Builder",
+    "origin": "firebase-common-22.0.1/proguard.txt"
+  },
+  {
+    "configuration_line": 677,
+    "rule": "-keepclassmembers,allowshrinking,allowobfuscation class androidx.compose.**.* {",
+    "origin": "foundation/proguard.txt"
+  },
+  {
+    "configuration_line": 703,
+    "rule": "-keepclassmembers,allowshrinking,allowobfuscation class androidx.compose.**.* {",
+    "origin": "animation-core/proguard.txt"
+  },
+  {
+    "configuration_line": 743,
+    "rule": "-keepclassmembers,allowshrinking,allowobfuscation class androidx.compose.**.* {",
+    "origin": "foundation-layout/proguard.txt"
+  },
+  {
+    "configuration_line": 770,
+    "rule": "-keepclassmembers,allowshrinking,allowobfuscation class androidx.compose.**.* {",
+    "origin": "ui-graphics/proguard.txt"
+  },
+  {
+    "configuration_line": 804,
+    "rule": "-keepclassmembers,allowshrinking,allowobfuscation class androidx.compose.**.* {",
+    "origin": "ui-unit/proguard.txt"
+  },
+  {
+    "configuration_line": 831,
+    "rule": "-keepclassmembers,allowshrinking,allowobfuscation class androidx.compose.**.* {",
+    "origin": "ui-util/proguard.txt"
+  },
+  {
+    "configuration_line": 858,
+    "rule": "-keepclassmembers,allowshrinking,allowobfuscation class androidx.compose.**.* {",
+    "origin": "ui-text/proguard.txt"
+  },
+  {
+    "configuration_line": 885,
+    "rule": "-dontwarn android.view.RenderNode",
+    "origin": "ui/proguard.txt"
+  },
+  {
+    "configuration_line": 886,
+    "rule": "-dontwarn android.view.DisplayListCanvas",
+    "origin": "ui/proguard.txt"
+  },
+  {
+    "configuration_line": 887,
+    "rule": "-dontwarn android.view.HardwareCanvas",
+    "origin": "ui/proguard.txt"
+  },
+  {
+    "configuration_line": 905,
+    "rule": "-keepclassmembers,allowshrinking,allowobfuscation class androidx.compose.**.* {",
+    "origin": "ui/proguard.txt"
+  },
+  {
+    "configuration_line": 1014,
+    "rule": "-keepclassmembers class com.facebook.** {",
+    "origin": "fbcore-3.6.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1023,
+    "rule": "-dontwarn okio.**",
+    "origin": "fbcore-3.6.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1024,
+    "rule": "-dontwarn com.squareup.okhttp.**",
+    "origin": "fbcore-3.6.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1025,
+    "rule": "-dontwarn okhttp3.**",
+    "origin": "fbcore-3.6.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1026,
+    "rule": "-dontwarn javax.annotation.**",
+    "origin": "fbcore-3.6.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1027,
+    "rule": "-dontwarn com.android.volley.toolbox.**",
+    "origin": "fbcore-3.6.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1028,
+    "rule": "-dontwarn com.facebook.infer.**",
+    "origin": "fbcore-3.6.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1114,
+    "rule": "-keepclasseswithmembers class androidx.graphics.path.** {",
+    "origin": "graphics-path-1.0.1/proguard.txt"
+  },
+  {
+    "configuration_line": 1203,
+    "rule": "-keepclassmembers,allowshrinking,allowobfuscation class androidx.compose.runtime.** {",
+    "origin": "runtime/proguard.txt"
+  },
+  {
+    "configuration_line": 1364,
+    "rule": "-keepclassmembers class kotlinx.coroutines.** {",
+    "origin": "shrink-rules/lib/META-INF/com.android.tools/r8/coroutines.pro"
+  },
+  {
+    "configuration_line": 1375,
+    "rule": "-dontwarn java.lang.instrument.ClassFileTransformer",
+    "origin": "shrink-rules/lib/META-INF/com.android.tools/r8/coroutines.pro"
+  },
+  {
+    "configuration_line": 1376,
+    "rule": "-dontwarn sun.misc.SignalHandler",
+    "origin": "shrink-rules/lib/META-INF/com.android.tools/r8/coroutines.pro"
+  },
+  {
+    "configuration_line": 1377,
+    "rule": "-dontwarn java.lang.instrument.Instrumentation",
+    "origin": "shrink-rules/lib/META-INF/com.android.tools/r8/coroutines.pro"
+  },
+  {
+    "configuration_line": 1378,
+    "rule": "-dontwarn sun.misc.Signal",
+    "origin": "shrink-rules/lib/META-INF/com.android.tools/r8/coroutines.pro"
+  },
+  {
+    "configuration_line": 1382,
+    "rule": "-dontwarn java.lang.ClassValue",
+    "origin": "shrink-rules/lib/META-INF/com.android.tools/r8/coroutines.pro"
+  },
+  {
+    "configuration_line": 1385,
+    "rule": "-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement",
+    "origin": "shrink-rules/lib/META-INF/com.android.tools/r8/coroutines.pro"
+  },
+  {
+    "configuration_line": 1393,
+    "rule": "-dontwarn android.security.NetworkSecurityPolicy",
+    "origin": "play-services-basement-18.3.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1396,
+    "rule": "-dontwarn android.app.Notification",
+    "origin": "play-services-basement-18.3.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1399,
+    "rule": "-dontwarn sun.misc.Unsafe",
+    "origin": "play-services-basement-18.3.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1400,
+    "rule": "-dontwarn libcore.io.Memory",
+    "origin": "play-services-basement-18.3.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1403,
+    "rule": "-dontwarn com.google.android.apps.common.proguard.UsedBy*",
+    "origin": "play-services-basement-18.3.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1404,
+    "rule": "-dontwarn com.google.android.apps.common.proguard.SideEffectFree",
+    "origin": "play-services-basement-18.3.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1408,
+    "rule": "-dontwarn javax.annotation.**",
+    "origin": "play-services-basement-18.3.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1409,
+    "rule": "-dontwarn org.checkerframework.**",
+    "origin": "play-services-basement-18.3.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1410,
+    "rule": "-dontwarn com.google.errorprone.annotations.**",
+    "origin": "play-services-basement-18.3.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1411,
+    "rule": "-dontwarn org.jspecify.nullness.NullMarked",
+    "origin": "play-services-basement-18.3.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1415,
+    "rule": "-dontwarn com.google.android.gms.common.util.VisibleForTesting",
+    "origin": "play-services-basement-18.3.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1512,
+    "rule": "-dontwarn javax.annotation.**",
+    "origin": "shrink-rules/lib/META-INF/proguard/okhttp3.pro"
+  },
+  {
+    "configuration_line": 1518,
+    "rule": "-dontwarn org.codehaus.mojo.animal_sniffer.*",
+    "origin": "shrink-rules/lib/META-INF/proguard/okhttp3.pro"
+  },
+  {
+    "configuration_line": 1521,
+    "rule": "-dontwarn okhttp3.internal.platform.ConscryptPlatform",
+    "origin": "shrink-rules/lib/META-INF/proguard/okhttp3.pro"
+  },
+  {
+    "configuration_line": 1540,
+    "rule": "-dontwarn kotlin.reflect.jvm.internal.**",
+    "origin": "shrink-rules/lib/META-INF/com.android.tools/r8-from-1.6.0/kotlin-reflect.pro"
+  },
+  {
+    "configuration_line": 1543,
+    "rule": "-dontwarn java.lang.ClassValue",
+    "origin": "shrink-rules/lib/META-INF/com.android.tools/r8-from-1.6.0/kotlin-reflect.pro"
+  },
+  {
+    "configuration_line": 1571,
+    "rule": "-dontwarn com.google.firebase.components.Component$Instantiation",
+    "origin": "firebase-components-19.0.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1572,
+    "rule": "-dontwarn com.google.firebase.components.Component$ComponentType",
+    "origin": "firebase-components-19.0.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1579,
+    "rule": "-dontwarn com.google.auto.value.AutoValue",
+    "origin": "transport-backend-cct-3.1.9/proguard.txt"
+  },
+  {
+    "configuration_line": 1580,
+    "rule": "-dontwarn com.google.auto.value.AutoValue$Builder",
+    "origin": "transport-backend-cct-3.1.9/proguard.txt"
+  },
+  {
+    "configuration_line": 1587,
+    "rule": "-dontwarn com.google.auto.value.AutoValue",
+    "origin": "transport-api-3.1.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1588,
+    "rule": "-dontwarn com.google.auto.value.AutoValue$Builder",
+    "origin": "transport-api-3.1.0/proguard.txt"
+  },
+  {
+    "configuration_line": 1593,
+    "rule": "-keep public class android.support.**Parcelizer { *; }",
+    "origin": "versionedparcelable-1.1.1/proguard.txt"
+  },
+  {
+    "configuration_line": 1594,
+    "rule": "-keep public class androidx.**Parcelizer { *; }",
+    "origin": "versionedparcelable-1.1.1/proguard.txt"
+  },
+  {
+    "configuration_line": 1662,
+    "rule": "-dontwarn kotlinx.serialization.internal.ClassValueReferences",
+    "origin": "shrink-rules/lib/META-INF/com.android.tools/r8/kotlinx-serialization-common.pro"
+  }
+]
