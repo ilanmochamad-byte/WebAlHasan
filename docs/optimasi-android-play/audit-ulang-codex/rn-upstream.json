@@ -1,0 +1,59 @@
+[
+  {
+    "ref": "v0.86.3",
+    "url": "https://raw.githubusercontent.com/facebook/react-native/v0.86.3/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/views/view/WindowUtil.kt",
+    "sha256": "a3a79dfcd1ecc7f3f9d056227d031c8584545734d5ffe1b5819d56790deb2bf5",
+    "symbols": {
+      "statusBarColor": [
+        170
+      ],
+      "navigationBarColor": [
+        173,
+        195
+      ],
+      "layoutInDisplayCutoutMode": [
+        136,
+        154,
+        201
+      ]
+    }
+  },
+  {
+    "ref": "v0.88.1",
+    "url": "https://raw.githubusercontent.com/facebook/react-native/v0.88.1/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/views/view/WindowUtil.kt",
+    "sha256": "7a9d98619c9acd56de5fa6d828562c266229a6c6c9504b35c9ab25a3833a807d",
+    "symbols": {
+      "statusBarColor": [
+        172
+      ],
+      "navigationBarColor": [
+        175,
+        197
+      ],
+      "layoutInDisplayCutoutMode": [
+        137,
+        156,
+        203
+      ]
+    }
+  },
+  {
+    "ref": "main",
+    "url": "https://raw.githubusercontent.com/facebook/react-native/main/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/views/view/WindowUtil.kt",
+    "sha256": "7a9d98619c9acd56de5fa6d828562c266229a6c6c9504b35c9ab25a3833a807d",
+    "symbols": {
+      "statusBarColor": [
+        172
+      ],
+      "navigationBarColor": [
+        175,
+        197
+      ],
+      "layoutInDisplayCutoutMode": [
+        137,
+        156,
+        203
+      ]
+    }
+  }
+]

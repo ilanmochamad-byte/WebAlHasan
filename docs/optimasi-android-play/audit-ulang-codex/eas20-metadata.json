@@ -1,0 +1,14 @@
+{
+  "id": "1d6ddb37-7b8a-41d0-ac5a-f8ae00c97ffc",
+  "status": "FINISHED",
+  "platform": "ANDROID",
+  "distribution": "STORE",
+  "buildProfile": "production",
+  "sdkVersion": "57.0.0",
+  "appVersion": "1.9.1",
+  "appBuildVersion": "20",
+  "gitCommitHash": "3705c2f89297ea08098f1c4db18d6745d35e71aa",
+  "createdAt": "2026-11-22T07:47:16.304Z",
+  "completedAt": "2026-11-22T08:07:52.793Z",
+  "artifact_sha256": "6137013cb53851cd004d7f276d3dd574217165214951261bc91e150ba30610c1"
+}

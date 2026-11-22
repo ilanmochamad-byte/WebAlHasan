@@ -31,8 +31,12 @@ const sql = q => execFileSync('mysql', ['-N', '-B', db, '-e', q], { encoding: 'u
 const tidur = ms => new Promise(r => setTimeout(r, ms));
 
 function dump() {
+  // uiautomator dapat keluar tanpa snapshot baru pada Android 12. Hapus
+  // snapshot sebelumnya agar pemeriksaan foto/profil tidak memakai XML usang.
+  adb('shell', 'rm', '-f', '/sdcard/ui.xml');
   adb('shell', 'uiautomator', 'dump', '/sdcard/ui.xml');
   const xml = adb('shell', 'cat', '/sdcard/ui.xml');
+  if (!xml.includes('<?xml') || !xml.includes('<hierarchy')) throw Error('Snapshot UI baru tidak tersedia');
   return [...xml.matchAll(/<node [^>]*>/g)].map(m => {
     const a = k => (m[0].match(new RegExp(`${k}="([^"]*)"`)) || [])[1] || '';
     const b = a('bounds').match(/\d+/g)?.map(Number) || [0, 0, 0, 0];

@@ -1,0 +1,9 @@
+{
+  "home_identity_labels": [
+    "SBX Pengurus A. Pengurus, Pembimbing. Buka profil"
+  ],
+  "old_prefix_accepts_home": false,
+  "exact_suffix_accepts_home": true,
+  "fresh_login_has_username_input": true,
+  "suffix_rejects_login": true
+}

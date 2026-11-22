@@ -1,0 +1,43 @@
+{
+  "eas20": {
+    "path": "/private/tmp/oap-codex-followup/artifacts/eas20.aab",
+    "bytes": 70285517,
+    "sha256": "6137013cb53851cd004d7f276d3dd574217165214951261bc91e150ba30610c1"
+  },
+  "local_aab": {
+    "path": "/private/tmp/oap-codex-followup/artifacts/local-final/app.aab",
+    "bytes": 30819715,
+    "sha256": "ada2cd800e903adc9b0364da5417c3196aa74a145159f91ea2023c3322ee9d50"
+  },
+  "local_apk": {
+    "path": "/private/tmp/oap-codex-followup/artifacts/local-final/app.apk",
+    "bytes": 33827348,
+    "sha256": "fd3eaafac2638ed3d4883565221c02d625d8436d5968e7c4a3294c7cc5492848"
+  },
+  "test_apk": {
+    "path": "/private/tmp/oap-codex-followup/artifacts/test.apk",
+    "bytes": 33827772,
+    "sha256": "8414270e6f30fc2670917b2a6f0c70c394d49c58d128bbf1ebf8fbe884caaa9f"
+  },
+  "mapping": {
+    "path": "/private/tmp/oap-codex-followup/artifacts/local-final/mapping.txt",
+    "bytes": 104914166,
+    "sha256": "fdedb1a924c39da22934b8e85bd480dd318b480cea16de4df0e04f75b1b96221"
+  },
+  "ios_executable": {
+    "path": "/private/tmp/oap-codex-followup/ios-derived/Build/Products/Release-iphonesimulator/alhasanApps.app/alhasanApps",
+    "bytes": 17940416,
+    "sha256": "72fcf3c4865b9993234c806cf204201aa5f058c219f887c1d450924ebd793906"
+  },
+  "ios_hermes": {
+    "path": "/private/tmp/oap-codex-followup/ios-derived/Build/Products/Release-iphonesimulator/alhasanApps.app/main.jsbundle",
+    "bytes": 3922442,
+    "sha256": "363c69f48bf26f92ccf947691cde936961e74b2c03b99b10e1099472a397f3a9"
+  },
+  "upgrade_baseline_apk": {
+    "path": "/private/tmp/oap-codex-audit/artifacts/baseline/app-release-baseline.apk",
+    "bytes": 46123239,
+    "sha256": "e37d67edfc9e98a7e11dae798de7b10e01fc86b61017c264d3f79629d3e50754",
+    "source": "82f156a; auditor reconstruction 1.9.0; debug signer; versionCode 1"
+  }
+}

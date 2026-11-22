@@ -1,0 +1,72 @@
+{
+  "tsc": "pass",
+  "lint": "pass",
+  "unit": {
+    "pass": 128,
+    "fail": 0
+  },
+  "expo_dependency_check": "pass",
+  "version_check": "1.9.0 -> 1.9.1 patch once",
+  "web": {
+    "akun": [
+      8,
+      0
+    ],
+    "izin": [
+      10,
+      0
+    ],
+    "keuangan": [
+      7,
+      0
+    ],
+    "pembinaan": [
+      4,
+      0
+    ],
+    "kesehatan": [
+      6,
+      0
+    ]
+  },
+  "ios_build": "Release arm64, SDK/runtime 27.2, success",
+  "ios_prebuild_repeat": {
+    "source_refs": 1,
+    "build_entries": 1
+  },
+  "android_scope": "independent arm64 local rebuild; all-ABI EAS distribution artifact scanned separately",
+  "ios": {
+    "cold_start": true,
+    "original_perizinan_flow_exit": 0,
+    "master_original_child_flows": 7,
+    "master_exit": 0,
+    "theme_flows_exit": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "fab": [
+      4,
+      0
+    ],
+    "physical_device": false,
+    "push": false,
+    "foreground_revoke_assertions": {
+      "pass": 2,
+      "fail": 0
+    }
+  },
+  "android31": "See android31-results.json; gesture dark2 7/0, 3button/cutout and photo incomplete",
+  "android35": {
+    "layout_gesture_light1": [
+      8,
+      0
+    ],
+    "layout_3button_cutout_dark2": [
+      7,
+      0
+    ]
+  },
+  "android36": "See native-results.json and report, preserving initial failures/cap and controlled reruns"
+}

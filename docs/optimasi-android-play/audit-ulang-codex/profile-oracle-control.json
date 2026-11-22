@@ -1,0 +1,13 @@
+{
+  "assertion_count": 19,
+  "assertions_sha256_before": "d266d29fbe7c87ba97a3555070991bd77023fd5785720ef12a824f3ad0ed3132",
+  "assertions_sha256_after": "d266d29fbe7c87ba97a3555070991bd77023fd5785720ef12a824f3ad0ed3132",
+  "stale_xml_old": {
+    "stale_node_count": 1,
+    "rejected": false
+  },
+  "stale_xml_new": {
+    "rejected": true,
+    "error": "Snapshot UI baru tidak tersedia"
+  }
+}

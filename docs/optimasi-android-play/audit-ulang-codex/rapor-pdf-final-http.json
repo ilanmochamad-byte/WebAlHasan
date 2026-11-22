@@ -1,0 +1,13 @@
+{
+  "fixture": "new T7",
+  "download_requests": [
+    {
+      "time": 1795348376.03387,
+      "method": "GET",
+      "uri": "/api/v1/v4/rapor/1/pdf/2",
+      "status": 200
+    }
+  ],
+  "native_chooser": "PDF visible; no target selected",
+  "before": "old probe tapped zero-bounds label; direct PDF v1 diagnostic403 is withdrawn historical version, not active-version regression"
+}

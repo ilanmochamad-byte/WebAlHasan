@@ -18,6 +18,14 @@ Ini BUKAN bukti Play App Signing/upgrade dari Play Store.
 import os, re, subprocess, sys, time
 sys.path.insert(0, os.path.dirname(__file__))
 from adbui import sh, tap, wait, find, ketik, layar, teks_layar
+import adbui
+
+# Jangan menerima snapshot sebelum uiautomator gagal membuat XML baru.
+_dump_original = adbui.dump
+def fresh_dump():
+    sh('shell', 'rm', '-f', '/sdcard/ui.xml')
+    return _dump_original()
+adbui.dump = fresh_dump
 
 LAMA, BARU, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
 os.makedirs(OUT, exist_ok=True)
@@ -40,15 +48,28 @@ def buka():
 
 def di_beranda(timeout=60):
     try:
-        wait('Assalamu', timeout); return 'Masukkan username' not in teks_layar()
+        # Assalamu juga ada di Masuk, dan placeholder hilang setelah isian
+        # diketik. Kartu beridentitas hanya muncul setelah autentikasi sah.
+        wait('Buka profil', timeout)
+        return any((n.get('content-desc') or '').endswith('. Buka profil')
+                   for n in adbui.dump().iter('node'))
     except TimeoutError:
         return False
 
 
 def masuk(user):
-    tap('Masukkan username', cls='android.widget.EditText', timeout=90); ketik(user)
+    tap('Masukkan username', cls='android.widget.EditText', timeout=90)
+    # Input per karakter menghindari pengetikan adb terpotong. Nilai akun dan
+    # password tetap fixture asli; verifikasi input sebelum mengirim login.
+    for char in user:
+        ketik('\\#' if char == '#' else char)
     sh('shell', 'input', 'keyevent', '111')
-    tap('Masukkan password', cls='android.widget.EditText'); ketik(PASS)
+    if not any(n.get('class') == 'android.widget.EditText' and n.get('text') == user
+               for n in adbui.dump().iter('node')):
+        raise RuntimeError('Input username fixture tidak lengkap; login belum dikirim')
+    tap('Masukkan password', cls='android.widget.EditText')
+    for char in PASS:
+        ketik('\\#' if char == '#' else char)
     sh('shell', 'input', 'keyevent', 'KEYCODE_ENTER')
 
 
@@ -63,7 +84,10 @@ try:
     print(subprocess.run(['adb', 'install', LAMA], capture_output=True, text=True).stdout.strip().splitlines()[-1])
     ok(versi() == '1.9.0', f'U-1 APK lama terpasang ({versi()})')
     buka(); masuk('sbx_guru_biasa')
-    ok(di_beranda(), 'U-1 APK lama: masuk sbx_guru_biasa → Beranda'); layar(f'{OUT}/u1-lama-beranda.png')
+    old_home = di_beranda()
+    ok(old_home, 'U-1 APK lama: masuk sbx_guru_biasa → Beranda'); layar(f'{OUT}/u1-lama-beranda.png')
+    if not old_home:
+        raise RuntimeError('Login baseline belum tervalidasi; upgrade tidak dijalankan')
 
     r = subprocess.run(['adb', 'install', '-r', BARU], capture_output=True, text=True).stdout.strip().splitlines()[-1]
     print(r)

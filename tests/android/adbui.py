@@ -18,6 +18,10 @@ def find(pat, exact=False, cls=None):
         cand = [n.get('text') or '', n.get('content-desc') or '']
         if any((c == pat) if exact else (pat in c) for c in cand):
             b = list(map(int, re.findall(r'\d+', n.get('bounds'))))
+            # ScrollView dapat tetap mengekspos label di luar viewport dengan
+            # rectangle kosong. Mengetuk (0,0) bukan mengetuk kontrol tersebut.
+            if len(b) != 4 or b[2] <= b[0] or b[3] <= b[1]:
+                continue
             return ((b[0]+b[2])//2, (b[1]+b[3])//2), n
     return None, None
 def wait(pat, timeout=40, exact=False):

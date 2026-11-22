@@ -1,0 +1,41 @@
+{
+  "results": [
+    {
+      "optimization": {
+        "bundleAnalysisResult": {
+          "agpVersion": "8.12.3",
+          "r8Json": {
+            "version": "8.12.22",
+            "options": {
+              "isRepackageClassesEnabled": false,
+              "isProguardCompatibilityModeEnabled": false
+            },
+            "stats": {
+              "shrinkingRatio": 0.8081,
+              "optimizationRatio": 0.8018,
+              "obfuscationRatio": 0.8068
+            },
+            "resourceOptimizationStatus": "R8_RESOURCE_OPTIMIZATION_STATUS_STANDARD",
+            "r8DexChecksumStatus": "EXACT_MATCH"
+          },
+          "r8DexMarkerMetadata": {
+            "r8Enabled": true,
+            "d8Enabled": false,
+            "fullModeEnabled": true
+          },
+          "mappingObfuscationRatio": 0.89320195,
+          "dexHeuristicObfuscationRatio": 0.8936946,
+          "uncompressedDexSizeBytes": "10497352"
+        }
+      },
+      "artifactPath": "auditor-arm64.aab",
+      "basic": {
+        "appInfo": {
+          "packageName": "com.ilanmochamad.alhasanApps",
+          "versionName": "1.9.1",
+          "versionCode": "1"
+        }
+      }
+    }
+  ]
+}
