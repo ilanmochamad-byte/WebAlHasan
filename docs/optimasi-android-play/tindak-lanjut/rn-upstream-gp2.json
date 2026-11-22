@@ -1,0 +1,59 @@
+{
+ "sumber": "raw.githubusercontent.com/facebook/react-native/<tag>/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/{modules/statusbar/StatusBarModule.kt,views/view/WindowUtil.kt}",
+ "diambil": "2026-11-22",
+ "hasil": {
+  "rn-0.86.3": {
+   "WindowUtil.kt": {
+    "sha256": "a3a79dfcd1ecc7f3f9d056227d031c8584545734d5ffe1b5819d56790deb2bf5",
+    "baris_pemanggil": [
+     136,
+     154,
+     170,
+     173,
+     195,
+     201
+    ]
+   },
+   "StatusBarModule.kt": {
+    "sha256": "e72c8e4635471bba994ea8cf9908e3102c97ce25a4c181737fe5bec6c7b9d1f5",
+    "baris_pemanggil": [
+     70,
+     71,
+     104,
+     107,
+     112
+    ]
+   }
+  },
+  "rn-0.88.1": {
+   "WindowUtil.kt": {
+    "sha256": "7a9d98619c9acd56de5fa6d828562c266229a6c6c9504b35c9ab25a3833a807d",
+    "baris_pemanggil": [
+     137,
+     156,
+     172,
+     175,
+     197,
+     203
+    ]
+   },
+   "StatusBarModule.kt": {
+    "sha256": "ea39051d2f4ae3ff4b6f37428a059ce92abffffe555d95d513c9c0a1f080b0ab",
+    "baris_pemanggil": []
+   }
+  },
+  "rn-main": {
+   "WindowUtil.kt": {
+    "sha256": "7a9d98619c9acd56de5fa6d828562c266229a6c6c9504b35c9ab25a3833a807d",
+    "baris_pemanggil": [
+     137,
+     156,
+     172,
+     175,
+     197,
+     203
+    ]
+   }
+  }
+ }
+}

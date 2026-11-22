@@ -1,0 +1,131 @@
+[
+  {
+    "file": "app-release.aab",
+    "sha256": "de945988ecc6f4db516b718b009d391e7afc7433c8267b83a66ab2d2bf963756",
+    "bytes": 70285983,
+    "dex": [
+      {
+        "name": "base/dex/classes.dex",
+        "bytes": 10497352,
+        "sha256": "17c0fb858aa8ae9f20365591f3175aa1b428b569ab3b43fb635523a6b6d0ce85"
+      }
+    ],
+    "dex_total_bytes": 10497352,
+    "native_abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "metadata": {
+      "BUNDLE-METADATA/com.android.tools.build.gradle/app-metadata.properties": "appMetadataVersion=1.1\nandroidGradlePluginVersion=8.12.3\n",
+      "BUNDLE-METADATA/com.android.tools/r8.json": "{\"options\":{\"hasObfuscationDictionary\":false,\"hasClassObfuscationDictionary\":false,\"hasPackageObfuscationDictionary\":false,\"keepAttributes\":{\"isAnnotationDefaultKept\":true,\"isEnclosingMethodKept\":true,\"isExceptionsKept\":false,\"isInnerClassesKept\":true,\"isLocalVariableTableKept\":false,\"isLocalVariableTypeTableKept\":false,\"isMethodParametersKept\":false,\"isPermittedSubclassesKept\":false,\"isRuntimeInvisibleAnnotationsKept\":false,\"isRuntimeInvisibleParameterAnnotationsKept\":false,\"isRuntimeInvisibleTypeAnnotationsKept\":false,\"isRuntimeVisibleAnnotationsKept\":true,\"isRuntimeVisibleParameterAnnotationsKept\":true,\"isRuntimeVisibleTypeAnnotationsKept\":true,\"isSignatureKept\":true,\"isSourceDebugExtensionKept\":false,\"isSourceDirKept\":false,\"isSourceFileKept\":false,\"isStackMapTableKept\":false},\"isAccessModificationEnabled\":true,\"isFlattenPackageHierarchyEnabled\":false,\"isObfuscationEnabled\":true,\"isOptimizationsEnabled\":true,\"isProGuardCompatibilityModeEnabled\":false,\"isProtoLiteOptimizationEnabled\":false,\"isRepackageClassesEnabled\":false,\"isShrinkingEnabled\":true,\"apiModeling\":{},\"minApiLevel\":\"24\",\"isDebugModeEnabled\":false},\"baselineProfileRewriting\":{},\"dexFiles\":[{\"checksum\":\"17c0fb858aa8ae9f20365591f3175aa1b428b569ab3b43fb635523a6b6d0ce85\",\"startup\":false}],\"stats\":{\"noObfuscationPercentage\":19.32,\"noOptimizationPercentage\":19.82,\"noShrinkingPercentage\":19.19},\"featureSplits\":{\"featureSplits\":[{\"dexFiles\":[]}],\"isolatedSplits\":false},\"resourceOptimization\":{\"isOptimizedShrinkingEnabled\":false},\"version\":\"8.12.22\"}",
+      "base/root/META-INF/com/android/build/gradle/app-metadata.properties": "appMetadataVersion=1.1\nandroidGradlePluginVersion=8.12.3\n"
+    },
+    "mapping_sha256": "fdedb1a924c39da22934b8e85bd480dd318b480cea16de4df0e04f75b1b96221",
+    "gp2_instruction_count": 20,
+    "gp2_host_count": 11,
+    "gp2_calls": [
+      {
+        "host": "expo.modules.application.ApplicationModuleKt$$ExternalSyntheticApiModelOutline0",
+        "obfuscated_host": "A9.f",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "expo.modules.application.ApplicationModuleKt$$ExternalSyntheticApiModelOutline0",
+        "obfuscated_host": "A9.f",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "androidx.compose.ui.window.Api28Impl",
+        "obfuscated_host": "I1.q",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "com.facebook.react.modules.statusbar.StatusBarModule$setColor$1$$ExternalSyntheticLambda0",
+        "obfuscated_host": "R5.b",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "com.facebook.react.modules.statusbar.StatusBarModule$setColor$1",
+        "obfuscated_host": "R5.c",
+        "symbol": "getStatusBarColor"
+      },
+      {
+        "host": "com.facebook.react.modules.statusbar.StatusBarModule$setColor$1",
+        "obfuscated_host": "R5.c",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "com.swmansion.rnscreens.gamma.modals.formsheet.FormSheetDialog",
+        "obfuscated_host": "a9.l",
+        "symbol": "getNavigationBarColor"
+      },
+      {
+        "host": "com.swmansion.rnscreens.gamma.modals.formsheet.FormSheetDialog",
+        "obfuscated_host": "a9.l",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "com.facebook.react.modules.statusbar.StatusBarModule",
+        "obfuscated_host": "com.facebook.react.modules.statusbar.StatusBarModule",
+        "symbol": "getStatusBarColor"
+      },
+      {
+        "host": "com.facebook.react.views.view.WindowUtilKt",
+        "obfuscated_host": "com.facebook.react.views.view.WindowUtilKt",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "com.facebook.react.views.view.WindowUtilKt",
+        "obfuscated_host": "com.facebook.react.views.view.WindowUtilKt",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "com.facebook.react.views.view.WindowUtilKt",
+        "obfuscated_host": "com.facebook.react.views.view.WindowUtilKt",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "com.google.android.material.datepicker.MaterialDatePicker",
+        "obfuscated_host": "com.google.android.material.datepicker.m",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "com.google.android.material.datepicker.MaterialDatePicker",
+        "obfuscated_host": "com.google.android.material.datepicker.m",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "androidx.core.splashscreen.SplashScreen$Impl31$$ExternalSyntheticLambda6",
+        "obfuscated_host": "e2.c",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "androidx.core.splashscreen.SplashScreen$Impl31$$ExternalSyntheticLambda6",
+        "obfuscated_host": "e2.c",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "expo.modules.imagepicker.ExpoCropImageActivity",
+        "obfuscated_host": "expo.modules.imagepicker.ExpoCropImageActivity",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "expo.modules.imagepicker.ExpoCropImageActivity",
+        "obfuscated_host": "expo.modules.imagepicker.ExpoCropImageActivity",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "androidx.core.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityActionCompat$$ExternalSyntheticApiModelOutline9",
+        "obfuscated_host": "h2.c",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "androidx.core.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityActionCompat$$ExternalSyntheticApiModelOutline9",
+        "obfuscated_host": "h2.c",
+        "symbol": "layoutInDisplayCutoutMode"
+      }
+    ]
+  }
+]

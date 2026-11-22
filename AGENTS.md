@@ -722,3 +722,10 @@ Human Developer akan menggunakan format berikut untuk memicu pergantian agen AI.
 - Play masih 19 (1.9.0), internal 4 (1.0.0); final 1.9.1/pre-launch belum tersedia. Fisik, Push nyata, signing/upgrade Play serta gerbang produksi terdahulu tetap terbuka. Commit/push hanya branch fitur; tidak merge/deploy/OTA/publikasi. Keputusan produksi tetap Human Developer.
 
 - Batas tambahan F-3 P2 (K-5): API31 gestur terang 8/0, tetapi gelap2×/profil belum tervalidasi karena input/snapshot UI gagal; probe baru yang menolak XML lama juga gagal dump pada baseline dan final (0/1 masing-masing). Tidak menghitung ini sebagai lulus atau regresi aplikasi terbukti. Profil API35/API36 24/0; oracle bisnis tetap identik. Rincian semua percobaan di laporan lengkap.
+
+## Tindak lanjut Claude Code — Optimasi Android Google Play (22 November 2026)
+
+- Atas perintah Human Developer menindaklanjuti F-1/F-2/F-3/K-7 audit Codex; branch `claude/optimasi-android-play` kedua repo (sudah memuat PR #125/#36). Mobile `3705c2f` dari klon bersih; versi tetap **1.9.1**. Laporan implementator, bukan audit independen: `docs/optimasi-android-play/TINDAK-LANJUT-CLAUDE.md`.
+- **F-2 diperbaiki:** patch SDK 57 diselaraskan (`expo` 57.0.33, RN 0.86.3) dan plugin `plugins/with-ios-scene-lifecycle.js` (SceneDelegate turunan `ExpoAppSceneDelegate`, manifest scene). iOS 27.2 simulator Release: cold start, 13 alur Maestro, ukur FAB 4/0, tautan saat aplikasi mati lulus. Unit 128/0, tsc/lint 0.
+- **F-1/GP-2 tetap terbuka:** percobaan build SDK 58/RN 0.88.1 hanya 20/11 → 15/7; RN `main` masih memanggil API yang sama. Upgrade mayor tidak diadopsi; pilihan terima residual / upgrade terpisah / patch native menunggu keputusan Human Developer.
+- **F-3 belum teruji:** emulator API31 macet saat boot di mesin ini. **K-7:** AAB EAS 1.9.1 (20) `6137013c…10c1`, R8 aktif ±80%, 1 DEX; `eas submit` ditolak karena EAS tanpa Google Service Account Key — unggahan internal dan pre-launch report menunggu Human Developer. Tidak merge/deploy/OTA/publikasi produksi.
