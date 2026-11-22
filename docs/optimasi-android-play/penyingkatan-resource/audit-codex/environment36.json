@@ -1,0 +1,8 @@
+{
+  "android_release": "16",
+  "sdk": "36",
+  "size": "Physical size: 1080x2400",
+  "density": "Physical density: 420",
+  "installed_apk_sha256": "60c7dc1b2a7a12971e2f556eb68bfcbff03a27fc84e9b6d6f547192697945b20",
+  "test_apk_sha256": "60c7dc1b2a7a12971e2f556eb68bfcbff03a27fc84e9b6d6f547192697945b20"
+}

@@ -1,0 +1,151 @@
+{
+  "final_attempts": [
+    {
+      "suite": "date36",
+      "environment": "Android16",
+      "passed": 10,
+      "failed": 0,
+      "labels": [
+        "Layar Masuk tampil",
+        "Beranda tampil sesudah masuk",
+        "FAB Ajukan izin",
+        "Langkah 1: santri sintetis tampil",
+        "Kolom tanggal pada formulir izin",
+        "Dialog pemilih tanggal terbuka dengan Pilih/Batal (2)",
+        "Pemilih memuat tahun/kalender",
+        "Tanggal terisi sesudah Pilih",
+        "Tanpa crash di logcat buffer crash",
+        "Proses aplikasi masih hidup"
+      ]
+    },
+    {
+      "suite": "profile36-retry",
+      "environment": "Android16",
+      "passed": 24,
+      "failed": 0,
+      "labels": [
+        "Teks 1.0\u00d7: nama panjang tampil utuh tanpa elipsis",
+        "Teks 1.0\u00d7: empat status tampil",
+        "Teks 1.0\u00d7: target Kelas dan Kamar berlabel",
+        "Teks 1.0\u00d7: kartu adalah isi paling atas (teks pertama di y=275 = tanggal kartu)",
+        "Teks 1.0\u00d7: nama di dalam lebar layar",
+        "Teks 2.0\u00d7: nama panjang tampil utuh tanpa elipsis",
+        "Teks 2.0\u00d7: empat status tampil",
+        "Teks 2.0\u00d7: target Kelas dan Kamar berlabel",
+        "Teks 2.0\u00d7: kartu adalah isi paling atas (teks pertama di y=275 = tanggal kartu)",
+        "Teks 2.0\u00d7: nama di dalam lebar layar",
+        "Pemilih sistem terbuka (com.google.android.photopicker)",
+        "Tanpa dialog izin akses galeri",
+        "Pemilih menyatakan aplikasi hanya mendapat akses foto yang dipilih",
+        "Foto dari pemilih sistem terunggah (DB foto, versi 1)",
+        "Foto tampil di Edit Profil",
+        "Tempat lahir tersimpan dan tampil di Profil tanpa masuk ulang",
+        "Paket tidak meminta/memiliki izin media, penyimpanan, atau kamera (tidak ada)",
+        "Kartu Beranda menampilkan foto baru",
+        "Password saat ini salah ditolak server",
+        "Ganti password berhasil: hash baru berlaku",
+        "Hanya layar Ganti Password, tanpa tab menu",
+        "Sesudah diganti: Beranda terbuka, wajib ganti dilepas",
+        "Logcat tanpa password",
+        "Logcat tanpa bearer mentah"
+      ]
+    },
+    {
+      "suite": "documents36",
+      "environment": "Android16",
+      "passed": 7,
+      "failed": 0,
+      "labels": [
+        "documents: login pada Release dengan bundel tertanam",
+        "expo-print: dialog cetak sistem terbuka",
+        "batal cetak kembali ke laporan",
+        "expo-print + expo-sharing: chooser sistem terbuka setelah PDF dibuat/diunduh",
+        "expo-print + expo-sharing: chooser menampilkan dokumen PDF",
+        "batal berbagi kembali ke laporan",
+        "logcat tanpa password atau bearer mentah"
+      ]
+    },
+    {
+      "suite": "date35",
+      "environment": "Android15",
+      "passed": 10,
+      "failed": 0,
+      "labels": [
+        "Layar Masuk tampil",
+        "Beranda tampil sesudah masuk",
+        "FAB Ajukan izin",
+        "Langkah 1: santri sintetis tampil",
+        "Kolom tanggal pada formulir izin",
+        "Dialog pemilih tanggal terbuka dengan Pilih/Batal (2)",
+        "Pemilih memuat tahun/kalender",
+        "Tanggal terisi sesudah Pilih",
+        "Tanpa crash di logcat buffer crash",
+        "Proses aplikasi masih hidup"
+      ]
+    },
+    {
+      "suite": "layout35",
+      "environment": "Android15",
+      "passed": 7,
+      "failed": 0,
+      "labels": [
+        "layout: login pada Release dengan bundel tertanam",
+        "kepala di bawah status/cutout (bawah status 63)",
+        "label tab di atas navigasi sistem (atas nav 2274)",
+        "tindakan Ajukan izin tidak tertutup tab",
+        "kolom aktif tidak tertutup keyboard (atas IME 1517)",
+        "aksi lembar bawah berada di dalam inset sistem",
+        "logcat tanpa password atau bearer mentah"
+      ]
+    },
+    {
+      "suite": "date31",
+      "environment": "Android12",
+      "passed": 10,
+      "failed": 0,
+      "labels": [
+        "Layar Masuk tampil",
+        "Beranda tampil sesudah masuk",
+        "FAB Ajukan izin",
+        "Langkah 1: santri sintetis tampil",
+        "Kolom tanggal pada formulir izin",
+        "Dialog pemilih tanggal terbuka dengan Pilih/Batal (2)",
+        "Pemilih memuat tahun/kalender",
+        "Tanggal terisi sesudah Pilih",
+        "Tanpa crash di logcat buffer crash",
+        "Proses aplikasi masih hidup"
+      ]
+    }
+  ],
+  "total_final_assertions": 68,
+  "total_final_failures": 0,
+  "initial_attempts": [
+    {
+      "suite": "profile36 initial",
+      "passed": 0,
+      "failed": 1,
+      "reason": "Date probe left an authenticated session; pm clear before unchanged suite produced 24/0."
+    }
+  ],
+  "skipped": [
+    "Private picker/crop cache inaccessible with run-as on non-debuggable Release APK."
+  ],
+  "api_php_errors": 0,
+  "unit": {
+    "passed": 129,
+    "failed": 0
+  },
+  "tsc_prepared_exit": 0,
+  "lint_exit": 0,
+  "visual_review": [
+    "API36 calendar complete; form date updated",
+    "API31 calendar complete; form date updated",
+    "API36 crop controls and selected synthetic image visible",
+    "API36 PDF preview populated with synthetic attendance data",
+    "API35 dark 2x three-button/cutout layout supports scroll; no claim of redesign audit"
+  ],
+  "limitations": [
+    "Targeted native regression only; previous full matrix not repeated",
+    "Old GP-2 and API31 3-button/cutout/2x plus photo/crop audit limits remain open"
+  ]
+}

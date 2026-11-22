@@ -1,0 +1,26 @@
+{
+  "handoff": "f70eb803a700675f61b53dfc945b7b2d0e17edcf",
+  "baseline": "5726bfb5b82250e9d4dcf993e3067349463b0ab3",
+  "changed_files": [
+    "app.json",
+    "docs/optimasi-android-play/PENYINGKATAN-RESOURCE.md",
+    "plugins/with-android-r8-optimize.js",
+    "tests/optimasi-android.test.ts"
+  ],
+  "package_unchanged": true,
+  "application_sources_unchanged": true,
+  "version": "1.9.2",
+  "baseline_version": "1.9.1",
+  "optimized_property_count": 1,
+  "r8_minify": true,
+  "resource_shrink": true,
+  "prebuild_repeat_exit": 0,
+  "tsc_initial_exit": 2,
+  "tsc_initial_reason": "Expo generated expo-env.d.ts missing on clean clone; CSS import declarations unavailable",
+  "tsc_prepared_exit": 0,
+  "lint_exit": 0,
+  "unit_pass": 129,
+  "unit_fail": 0,
+  "expo_type_file": "/// <reference types=\"expo/types\" />",
+  "no_added_keep_directives_in_plugin_diff": true
+}

@@ -1,0 +1,7 @@
+{
+  "old_stale_nodes_on_failed_dump": 1,
+  "new_stale_nodes_on_failed_dump": 0,
+  "assertion_count": 10,
+  "assertions_unchanged": true,
+  "assertions_sha256": "28046432ea71e3b13cd657cf1c1476709f3283e2926c520d3f12cbe74466301e"
+}

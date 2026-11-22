@@ -1,0 +1,21 @@
+{
+  "android_release": "15",
+  "sdk": "35",
+  "size": "Physical size: 1080x2400",
+  "density": "Physical density: 420",
+  "layout_font_scale": "2.0",
+  "night_mode": "Night mode: yes",
+  "overlays": [
+    "[ ] com.android.internal.display.cutout.emulation.corner",
+    "[ ] com.android.internal.display.cutout.emulation.double",
+    "[ ] com.android.internal.display.cutout.emulation.hole",
+    "[x] com.android.internal.display.cutout.emulation.tall",
+    "[x] com.android.internal.systemui.navbar.threebutton",
+    "[ ] com.android.internal.systemui.navbar.twobutton",
+    "[ ] com.android.internal.display.cutout.emulation.emu01",
+    "[ ] com.android.internal.display.cutout.emulation.waterfall",
+    "[ ] com.android.internal.systemui.navbar.transparent",
+    "[ ] com.android.internal.systemui.navbar.gestural"
+  ],
+  "installed_apk_sha256": "60c7dc1b2a7a12971e2f556eb68bfcbff03a27fc84e9b6d6f547192697945b20"
+}

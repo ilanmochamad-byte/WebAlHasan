@@ -1,0 +1,9 @@
+{
+  "rebuild_vs_implementor": {
+    "base/dex/classes.dex": true,
+    "base/resources.pb": true,
+    "BUNDLE-METADATA/com.android.tools.build.obfuscation/proguard.map": true
+  },
+  "res_same_names": true,
+  "warning": "Auditor rebuilt arm64 only; implementor AAB has four ABIs. Full archive hashes and native binaries differ."
+}

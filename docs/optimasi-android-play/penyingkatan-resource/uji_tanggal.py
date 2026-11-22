@@ -12,6 +12,8 @@ def adb(*a, text=True):
     return subprocess.run([ADB, *a], capture_output=True, text=text).stdout
 
 def dump():
+    # Jangan menerima XML dari layar sebelumnya ketika uiautomator gagal idle.
+    adb('shell', 'rm', '-f', '/sdcard/ui.xml')
     adb('shell', 'uiautomator', 'dump', '/sdcard/ui.xml')
     x = adb('shell', 'cat', '/sdcard/ui.xml')
     try:
@@ -89,3 +91,4 @@ crash = adb('logcat', '-d', '-b', 'crash')
 ok(PKG not in crash, 'Tanpa crash di logcat buffer crash')
 ok(adb('shell', 'pidof', PKG).strip(), 'Proses aplikasi masih hidup')
 print(f'Hasil: {sum(hasil)} lulus / {len(hasil) - sum(hasil)} gagal')
+sys.exit(0 if hasil and all(hasil) else 1)

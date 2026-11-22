@@ -10,7 +10,7 @@ Sesudah Human Developer mengunggah 1.9.1 (21) ke Play Console, muncul dua rekome
 | --- | --- |
 | R8: "Penyingkatan resource yang dioptimalkan tidak diaktifkan" | **Dikerjakan** di paket ini (1.9.2). |
 | R8: "Upgrade plugin Android Gradle ke versi 9.0 atau lebih tinggi" | **Tidak dikerjakan.** React Native 0.86 / Expo SDK 57 terikat AGP 8.12; sudah patch terbaru 8.12.3. Memerlukan upgrade SDK/RN tersendiri. |
-| "API atau parameter tata letak layar penuh yang tidak digunakan lagi" | Residual GP-2 (F-1) yang sudah tercatat; daftarnya sama (RN `StatusBarModule`, `WindowUtilKt.enableEdgeToEdge`, Material `datepicker`, dua kelas library ter-obfuscate). Tidak berubah oleh paket ini. Keputusan O-1/O-2/O-3 tetap pada Human Developer. |
+| "API atau parameter tata letak layar penuh yang tidak digunakan lagi" | Residual GP-2 (F-1) tetap ada. Koreksi audit Codex 23 November: DEX aktual 1.9.2 memuat 18 instruksi/10 kelas, turun dari 20/11; dua panggilan `MaterialDatePicker` hilang. Lihat [audit independen](AUDIT-CODEX.md). Keputusan O-1/O-2/O-3 tetap pada Human Developer. |
 
 Human Developer memerintahkan "Ya, kerjakan" untuk butir pertama.
 
@@ -21,7 +21,7 @@ Human Developer memerintahkan "Ya, kerjakan" untuk butir pertama.
 
 ## 3. Perubahan
 
-- `plugins/with-android-r8-optimize.js`: tambahan `withGradleProperties` yang menulis `android.r8.optimizedResourceShrinking=true` tepat satu kali (idempoten; nilai lama ditimpa). Mode opt-in sejak AGP 8.6, bawaan AGP 9. Hanya bekerja bersama `shrinkResources` yang sudah diaktifkan `expo-build-properties`.
+- `plugins/with-android-r8-optimize.js`: tambahan `withGradleProperties` yang menulis `android.r8.optimizedResourceShrinking=true` tepat satu kali (idempoten; nilai lama ditimpa). Mode opt-in sejak AGP 8.12, bawaan AGP 9. Hanya bekerja bersama `shrinkResources` yang sudah diaktifkan `expo-build-properties`.
 - `tests/optimasi-android.test.ts`: satu uji baru (satu properti, bernilai `true`, idempoten, properti lain tetap).
 - `app.json`: versi **1.9.1 → 1.9.2** (`npm run versi:naik patch`; `versi:periksa` lulus). Nomor build tetap diurus EAS remote.
 - Tanpa perubahan kode aplikasi, dependensi/lockfile, manifest, aturan keep, hak, API, atau skema. AGP tetap 8.12.3, R8 8.12.22.
@@ -56,7 +56,7 @@ Ringkasan analisis: [android-analyze.json](android-analyze.json). Daftar resourc
 
 ### Resource yang terbuang
 
-Seluruhnya resource library yang tidak terjangkau kode hidup: layout/drawable Material `mtrl_calendar_*`/`mtrl_picker_*`/`material_timepicker_*`, templat notifikasi lama AndroidX (`notification_template_*`, `notification_bg_*`), `browser_actions_*`, `redbox_*`/`paused_in_debugger_view` (layar debug RN), dan sejenisnya. **Nol** resource aset aplikasi (`assets_images_*`, 142 → 142) terbuang; `splashscreen_logo`, `ic_launcher`, dan font tetap ada.
+Seluruhnya resource library yang tidak terjangkau kode hidup: layout/drawable Material `mtrl_calendar_*`/`mtrl_picker_*`/`material_timepicker_*`, templat notifikasi lama AndroidX (`notification_template_*`, `notification_bg_*`), `browser_actions_*`, `redbox_*`/`paused_in_debugger_view` (layar debug RN), dan sejenisnya. **Nol** resource aset aplikasi (`assets_*`, 142 → 142; subset `assets_images_*` 116 → 116) terbuang; `splashscreen_logo`, `ic_launcher`, dan font tetap ada.
 
 Pemilih tanggal aplikasi memakai `@expo/ui` (Compose Material 3), bukan Material Components, sehingga terbuangnya layout `mtrl_calendar_*` diuji langsung (§5).
 
@@ -77,3 +77,5 @@ Belum diuji: build EAS 1.9.2, unggahan Play dan apakah kartu rekomendasi hilang 
 ## 7. Handoff
 
 Tidak merge, deploy, OTA, atau unggah Play. Langkah berikutnya: audit independen Codex atas mobile `f70eb80` dan dokumen ini, lalu keputusan Human Developer untuk build EAS dan unggah 1.9.2.
+
+**Pembaruan 23 November 2026:** audit independen Codex memverifikasi optimized resource shrinking dan regresi terarah (unit 129/0, native 68/0), tanpa temuan kode baru pada penerapan flag. Koreksi komentar/dokumentasi dan helper uji tercatat di [AUDIT-CODEX.md](AUDIT-CODEX.md). Keseluruhan paket Optimasi Android tetap belum lulus teknis lokal penuh karena residual GP-2 serta batas audit terdahulu; EAS/Play/pre-launch 1.9.2 belum terkonfirmasi.

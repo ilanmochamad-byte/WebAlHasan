@@ -1,0 +1,51 @@
+{
+  "baseline_instruction_count": 20,
+  "final_instruction_count": 18,
+  "baseline_host_count": 11,
+  "final_host_count": 10,
+  "removed": [
+    {
+      "host": "expo.modules.application.ApplicationModuleKt$$ExternalSyntheticApiModelOutline0",
+      "symbol": "layoutInDisplayCutoutMode",
+      "count": 2
+    },
+    {
+      "host": "com.facebook.react.modules.statusbar.StatusBarModule$setColor$1$$ExternalSyntheticLambda0",
+      "symbol": "setStatusBarColor",
+      "count": 1
+    },
+    {
+      "host": "com.google.android.material.datepicker.MaterialDatePicker",
+      "symbol": "setStatusBarColor",
+      "count": 1
+    },
+    {
+      "host": "com.google.android.material.datepicker.MaterialDatePicker",
+      "symbol": "setNavigationBarColor",
+      "count": 1
+    },
+    {
+      "host": "androidx.core.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityActionCompat$$ExternalSyntheticApiModelOutline9",
+      "symbol": "layoutInDisplayCutoutMode",
+      "count": 2
+    }
+  ],
+  "added": [
+    {
+      "host": "com.facebook.react.modules.dialog.AlertFragment$Companion$$ExternalSyntheticApiModelOutline0",
+      "symbol": "layoutInDisplayCutoutMode",
+      "count": 2
+    },
+    {
+      "host": "com.swmansion.rnscreens.bottomsheet.DimmingViewManager$AnimateDimmingViewCallback$$ExternalSyntheticLambda0",
+      "symbol": "setStatusBarColor",
+      "count": 1
+    },
+    {
+      "host": "androidx.compose.ui.platform.Api28ClipboardManagerClipClear$$ExternalSyntheticApiModelOutline0",
+      "symbol": "layoutInDisplayCutoutMode",
+      "count": 2
+    }
+  ],
+  "interpretation": "Counts compare actual DEX instructions. R8 may reassign synthetic outline hosts; added/removed synthetic host labels do not imply new app callers. MaterialDatePicker no longer contributes the two color calls. Residual GP-2 remains open."
+}
