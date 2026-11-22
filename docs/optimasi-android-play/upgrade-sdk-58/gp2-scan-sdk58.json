@@ -1,0 +1,106 @@
+[
+  {
+    "file": "app-release.aab",
+    "sha256": "324d6fe3137ba6b23887250c621704b3759e5db345f7c91870572d23125b8a1e",
+    "bytes": 73229890,
+    "dex": [
+      {
+        "name": "base/dex/classes.dex",
+        "bytes": 10536500,
+        "sha256": "cdd2ed987dc8028411f86bcb6256bcaf4fa8fff1905c127ff8770b54c54cd032"
+      }
+    ],
+    "dex_total_bytes": 10536500,
+    "native_abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "metadata": {
+      "BUNDLE-METADATA/com.android.tools.build.gradle/app-metadata.properties": "appMetadataVersion=1.1\nandroidGradlePluginVersion=9.2.1\n",
+      "BUNDLE-METADATA/com.android.tools/r8.json": "{\"options\":{\"hasObfuscationDictionary\":false,\"hasClassObfuscationDictionary\":false,\"hasPackageObfuscationDictionary\":false,\"keepAnnotations\":{\"numberOfKeepAnnotations\":0},\"keepAttributes\":{\"isAnnotationDefaultKept\":true,\"isEnclosingMethodKept\":true,\"isExceptionsKept\":false,\"isInnerClassesKept\":true,\"isMethodParametersKept\":false,\"isPermittedSubclassesKept\":false,\"isRuntimeInvisibleAnnotationsKept\":false,\"isRuntimeInvisibleParameterAnnotationsKept\":false,\"isRuntimeInvisibleTypeAnnotationsKept\":false,\"isRuntimeVisibleAnnotationsKept\":true,\"isRuntimeVisibleParameterAnnotationsKept\":true,\"isRuntimeVisibleTypeAnnotationsKept\":true,\"isSignatureKept\":true,\"isSourceDebugExtensionKept\":false,\"isSourceFileKept\":false,\"isStackMapTableKept\":false},\"isAccessModificationEnabled\":true,\"isFlattenPackageHierarchyEnabled\":false,\"isObfuscationEnabled\":true,\"isOptimizationsEnabled\":true,\"isProGuardCompatibilityModeEnabled\":false,\"isProtoLiteOptimizationEnabled\":false,\"isRepackageClassesEnabled\":true,\"isShrinkingEnabled\":true,\"apiModeling\":{},\"minApiLevel\":\"24\",\"isDebugModeEnabled\":false},\"baselineProfileRewriting\":{},\"dexFiles\":[{\"checksum\":\"cdd2ed987dc8028411f86bcb6256bcaf4fa8fff1905c127ff8770b54c54cd032\",\"startup\":false}],\"stats\":{\"noObfuscationPercentage\":22.54,\"noOptimizationPercentage\":23.11,\"noShrinkingPercentage\":22.32},\"featureSplits\":{\"featureSplits\":[{\"dexFiles\":[]}],\"isolatedSplits\":false},\"resourceOptimization\":{\"isOptimizedShrinkingEnabled\":true},\"version\":\"9.2.14\"}",
+      "base/root/META-INF/com/android/build/gradle/app-metadata.properties": "appMetadataVersion=1.1\nandroidGradlePluginVersion=9.2.1\n"
+    },
+    "mapping_sha256": "5a2793bf74b18e1a93fe446e71a2b8fc0dc598062ff72a6c3fd7d45e136483ae",
+    "gp2_instruction_count": 15,
+    "gp2_host_count": 7,
+    "gp2_calls": [
+      {
+        "host": "com.facebook.react.views.view.WindowUtilKt",
+        "obfuscated_host": "com.facebook.react.views.view.WindowUtilKt",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "com.facebook.react.views.view.WindowUtilKt",
+        "obfuscated_host": "com.facebook.react.views.view.WindowUtilKt",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "com.facebook.react.views.view.WindowUtilKt",
+        "obfuscated_host": "com.facebook.react.views.view.WindowUtilKt",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "expo.modules.imagepicker.ExpoCropImageActivity",
+        "obfuscated_host": "expo.modules.imagepicker.ExpoCropImageActivity",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "expo.modules.imagepicker.ExpoCropImageActivity",
+        "obfuscated_host": "expo.modules.imagepicker.ExpoCropImageActivity",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "com.swmansion.rnscreens.gamma.modals.formsheet.FormSheetDialog",
+        "obfuscated_host": "gh2",
+        "symbol": "getNavigationBarColor"
+      },
+      {
+        "host": "com.swmansion.rnscreens.gamma.modals.formsheet.FormSheetDialog",
+        "obfuscated_host": "gh2",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "androidx.core.splashscreen.SplashScreen$Impl31$$ExternalSyntheticLambda6",
+        "obfuscated_host": "ho6",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "androidx.core.splashscreen.SplashScreen$Impl31$$ExternalSyntheticLambda6",
+        "obfuscated_host": "ho6",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "androidx.core.view.WindowInsetsCompat$Impl28$$ExternalSyntheticApiModelOutline1",
+        "obfuscated_host": "wx7",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "androidx.core.view.WindowInsetsCompat$Impl28$$ExternalSyntheticApiModelOutline1",
+        "obfuscated_host": "wx7",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "androidx.core.view.WindowInsetsCompat$Impl28$$ExternalSyntheticApiModelOutline1",
+        "obfuscated_host": "wx7",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "androidx.compose.ui.window.Api28Impl",
+        "obfuscated_host": "xl",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "androidx.compose.foundation.text.selection.PlatformSelectionBehaviorsImpl$suggestSelectionForLongPressOrDoubleClick$2$$ExternalSyntheticApiModelOutline8",
+        "obfuscated_host": "zz4",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "androidx.compose.foundation.text.selection.PlatformSelectionBehaviorsImpl$suggestSelectionForLongPressOrDoubleClick$2$$ExternalSyntheticApiModelOutline8",
+        "obfuscated_host": "zz4",
+        "symbol": "layoutInDisplayCutoutMode"
+      }
+    ]
+  }
+]

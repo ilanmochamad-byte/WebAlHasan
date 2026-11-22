@@ -1,0 +1,10 @@
+[lulus] TL-01: layar Masuk menyapa "Assalamu'alaikum" (tanpa koma Beranda) + ajakan masuk
+[lulus] TL-03: kelompok Akun dan Pemberitahuan terpisah
+[lulus] TL-03: Data diri berupa baris ›, nilai tidak tampil langsung di Profil
+[lulus] TL-03: Data diri › membuka rincian akun/data-diri
+[lulus] TL-02: tombol pilih/ganti foto tidak langsung di halaman
+[lulus] TL-02: "Ubah foto" membuka lembar bawah Foto profil (Pilih/Ganti foto, Batal)
+[lulus] TL-09: sakelar "Push di perangkat ini" menggantikan tombol Nyalakan/Matikan
+[lulus] tanpa permintaan keluar 127.0.0.1 ()
+
+Ringkasan (akun): 8 lulus, 0 gagal

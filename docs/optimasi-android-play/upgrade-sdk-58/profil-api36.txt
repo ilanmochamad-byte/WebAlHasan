@@ -1,0 +1,37 @@
+
+=== N-A. Kartu identitas, teks normal dan besar ===
+[lulus] Teks 1.0×: nama panjang tampil utuh tanpa elipsis
+[lulus] Teks 1.0×: empat status tampil
+[lulus] Teks 1.0×: target Kelas dan Kamar berlabel
+[lulus] Teks 1.0×: kartu adalah isi paling atas (teks pertama di y=275 = tanggal kartu)
+[lulus] Teks 1.0×: nama di dalam lebar layar
+[lulus] Teks 2.0×: nama panjang tampil utuh tanpa elipsis
+[lulus] Teks 2.0×: empat status tampil
+[lulus] Teks 2.0×: target Kelas dan Kamar berlabel
+[lulus] Teks 2.0×: kartu adalah isi paling atas (teks pertama di y=275 = tanggal kartu)
+[lulus] Teks 2.0×: nama di dalam lebar layar
+
+=== N-B/N-C. Edit Profil dan foto (sbx_pengurus_a) ===
+[lulus] Pemilih sistem terbuka (com.google.android.photopicker)
+[lulus] Tanpa dialog izin akses galeri
+[lulus] Pemilih menyatakan aplikasi hanya mendapat akses foto yang dipilih
+[lulus] Foto dari pemilih sistem terunggah (DB foto, versi 1)
+[lulus] Foto tampil di Edit Profil
+[lewati] Cache pemilih/pemotong tidak dapat diperiksa: run-as tidak tersedia pada APK rilis (non-debuggable)
+[lulus] Tempat lahir tersimpan dan tampil di Profil tanpa masuk ulang
+[lulus] Paket tidak meminta/memiliki izin media, penyimpanan, atau kamera (tidak ada)
+[lulus] Kartu Beranda menampilkan foto baru
+
+=== N-D. Ganti Password ===
+[lulus] Password saat ini salah ditolak server
+[lulus] Ganti password berhasil: hash baru berlaku
+
+=== N-D. Password sementara (sbx_murobi_c) ===
+[lulus] Hanya layar Ganti Password, tanpa tab menu
+[lulus] Sesudah diganti: Beranda terbuka, wajib ganti dilepas
+
+=== N-E. Logcat ===
+[lulus] Logcat tanpa password
+[lulus] Logcat tanpa bearer mentah
+
+Hasil: 24 lulus / 0 gagal

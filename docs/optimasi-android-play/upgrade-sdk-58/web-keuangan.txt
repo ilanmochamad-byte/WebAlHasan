@@ -1,0 +1,9 @@
+[lulus] fixture: tagihan dibuat lewat API (201)
+[lulus] TL-11: bilah rincian tagihan hanya "Catat pembayaran tunai/transfer"
+[lulus] TL-11: "Bayar dari tabungan" di ⋯
+[lulus] TL-13: pratinjau terbit satu santri berupa StatGrid Akan terbit / Sudah ada / Dilewati / Total terbit
+[lulus] TL-12: kartu anak memuat pintasan Tagihan dan Mutasi tabungan
+[lulus] TL-12: pintasan membuka rincian anak pada tab Tabungan
+[lulus] tanpa permintaan keluar 127.0.0.1 ()
+
+Ringkasan (keuangan): 7 lulus, 0 gagal

@@ -1,0 +1,6 @@
+[lulus] TL-14: rincian kasus bertab Ringkasan / Sesi / Riwayat
+[lulus] TL-14: tab Ringkasan bawaan
+[lulus] TL-14: tab Sesi dapat dipilih
+[lulus] tanpa permintaan keluar 127.0.0.1 ()
+
+Ringkasan (pembinaan): 4 lulus, 0 gagal
