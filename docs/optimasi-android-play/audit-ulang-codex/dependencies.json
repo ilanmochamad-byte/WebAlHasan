@@ -1,0 +1,512 @@
+[
+  {
+    "package": "node_modules/@babel/generator",
+    "old": "7.29.8",
+    "new": "7.29.15"
+  },
+  {
+    "package": "node_modules/@babel/helper-create-class-features-plugin",
+    "old": "7.29.7",
+    "new": "7.29.13"
+  },
+  {
+    "package": "node_modules/@babel/helper-skip-transparent-expression-wrappers",
+    "old": "7.29.7",
+    "new": "7.29.13"
+  },
+  {
+    "package": "node_modules/@babel/helper-string-parser",
+    "old": "7.29.7",
+    "new": "7.29.15"
+  },
+  {
+    "package": "node_modules/@babel/parser",
+    "old": "7.29.8",
+    "new": "7.29.15"
+  },
+  {
+    "package": "node_modules/@babel/plugin-transform-class-static-block",
+    "old": "7.29.7",
+    "new": "7.29.14"
+  },
+  {
+    "package": "node_modules/@babel/plugin-transform-export-namespace-from",
+    "old": "7.29.7",
+    "new": "7.29.15"
+  },
+  {
+    "package": "node_modules/@babel/plugin-transform-regenerator",
+    "old": "7.29.8",
+    "new": "7.29.15"
+  },
+  {
+    "package": "node_modules/@babel/traverse",
+    "old": "7.29.8",
+    "new": "7.29.15"
+  },
+  {
+    "package": "node_modules/@babel/types",
+    "old": "7.29.8",
+    "new": "7.29.15"
+  },
+  {
+    "package": "node_modules/@expo-google-fonts/material-symbols",
+    "old": "0.4.44",
+    "new": "0.4.54"
+  },
+  {
+    "package": "node_modules/@expo/config",
+    "old": "57.0.8",
+    "new": "57.0.11"
+  },
+  {
+    "package": "node_modules/@expo/config-plugins",
+    "old": "57.0.8",
+    "new": "57.0.13"
+  },
+  {
+    "package": "node_modules/@expo/devcert",
+    "old": "1.2.1",
+    "new": "1.2.2"
+  },
+  {
+    "package": "node_modules/@expo/env",
+    "old": "2.4.2",
+    "new": "2.6.0"
+  },
+  {
+    "package": "node_modules/@expo/fingerprint",
+    "old": "0.20.9",
+    "new": "0.20.16"
+  },
+  {
+    "package": "node_modules/@expo/image-utils",
+    "old": "0.11.4",
+    "new": "0.11.7"
+  },
+  {
+    "package": "node_modules/@expo/inline-modules",
+    "old": "0.1.6",
+    "new": "0.1.9"
+  },
+  {
+    "package": "node_modules/@expo/local-build-cache-provider",
+    "old": "57.0.7",
+    "new": "57.0.10"
+  },
+  {
+    "package": "node_modules/@expo/log-box",
+    "old": "57.0.3",
+    "new": "57.0.5"
+  },
+  {
+    "package": "node_modules/@expo/metro-config",
+    "old": "57.0.9",
+    "new": "57.0.14"
+  },
+  {
+    "package": "node_modules/@expo/metro-config/node_modules/@expo/env",
+    "old": null,
+    "new": "2.4.4"
+  },
+  {
+    "package": "node_modules/@expo/metro-file-map",
+    "old": "57.0.1",
+    "new": "57.0.5"
+  },
+  {
+    "package": "node_modules/@expo/metro-runtime",
+    "old": "57.0.12",
+    "new": "57.0.18"
+  },
+  {
+    "package": "node_modules/@expo/osascript",
+    "old": "2.7.1",
+    "new": "2.8.1"
+  },
+  {
+    "package": "node_modules/@expo/package-manager",
+    "old": "1.13.1",
+    "new": "1.14.2"
+  },
+  {
+    "package": "node_modules/@expo/package-manager/node_modules/@expo/json-file",
+    "old": null,
+    "new": "11.2.1"
+  },
+  {
+    "package": "node_modules/@expo/plist",
+    "old": "0.8.1",
+    "new": "0.8.2"
+  },
+  {
+    "package": "node_modules/@expo/prebuild-config",
+    "old": "57.0.13",
+    "new": "57.0.21"
+  },
+  {
+    "package": "node_modules/@expo/require-utils",
+    "old": "57.0.4",
+    "new": "57.0.7"
+  },
+  {
+    "package": "node_modules/@expo/ui",
+    "old": "57.0.12",
+    "new": "57.0.26"
+  },
+  {
+    "package": "node_modules/@expo/xcpretty",
+    "old": "4.4.4",
+    "new": "4.4.7"
+  },
+  {
+    "package": "node_modules/@isaacs/nonrecursive-glob-match",
+    "old": null,
+    "new": "1.1.0"
+  },
+  {
+    "package": "node_modules/@react-native/assets-registry",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/babel-plugin-codegen",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/babel-preset",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/codegen",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/community-cli-plugin",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/debugger-frontend",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/debugger-shell",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/dev-middleware",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/gradle-plugin",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/js-polyfills",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/metro-babel-transformer",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/metro-config",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/normalize-colors",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/@react-native/virtualized-lists",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/agent-cli-detector",
+    "old": "0.1.6",
+    "new": "0.1.7"
+  },
+  {
+    "package": "node_modules/babel-plugin-react-native-web",
+    "old": "0.21.2",
+    "new": "0.21.4"
+  },
+  {
+    "package": "node_modules/babel-preset-expo",
+    "old": "57.0.7",
+    "new": "57.0.17"
+  },
+  {
+    "package": "node_modules/brace-expansion",
+    "old": "5.0.9",
+    "new": "5.0.13"
+  },
+  {
+    "package": "node_modules/compression",
+    "old": "1.8.1",
+    "new": "1.8.2"
+  },
+  {
+    "package": "node_modules/eslint-config-expo",
+    "old": "57.0.1",
+    "new": "57.0.2"
+  },
+  {
+    "package": "node_modules/expo",
+    "old": "57.0.15",
+    "new": "57.0.33"
+  },
+  {
+    "package": "node_modules/expo-application",
+    "old": "57.0.2",
+    "new": "57.0.3"
+  },
+  {
+    "package": "node_modules/expo-asset",
+    "old": "57.0.13",
+    "new": "57.0.21"
+  },
+  {
+    "package": "node_modules/expo-constants",
+    "old": "57.0.13",
+    "new": "57.0.24"
+  },
+  {
+    "package": "node_modules/expo-constants/node_modules/@expo/env",
+    "old": null,
+    "new": "2.4.4"
+  },
+  {
+    "package": "node_modules/expo-dev-client",
+    "old": "57.0.14",
+    "new": "57.0.21"
+  },
+  {
+    "package": "node_modules/expo-dev-launcher",
+    "old": "57.0.14",
+    "new": "57.0.22"
+  },
+  {
+    "package": "node_modules/expo-dev-menu",
+    "old": "57.0.14",
+    "new": "57.0.21"
+  },
+  {
+    "package": "node_modules/expo-device",
+    "old": "57.0.1",
+    "new": "57.0.2"
+  },
+  {
+    "package": "node_modules/expo-file-system",
+    "old": "57.0.5",
+    "new": "57.0.7"
+  },
+  {
+    "package": "node_modules/expo-font",
+    "old": "57.0.1",
+    "new": "57.0.4"
+  },
+  {
+    "package": "node_modules/expo-glass-effect",
+    "old": "57.0.1",
+    "new": "57.0.5"
+  },
+  {
+    "package": "node_modules/expo-image",
+    "old": "57.0.3",
+    "new": "57.0.5"
+  },
+  {
+    "package": "node_modules/expo-image-picker",
+    "old": "57.0.20",
+    "new": "57.0.21"
+  },
+  {
+    "package": "node_modules/expo-json-utils",
+    "old": "57.0.1",
+    "new": "57.0.2"
+  },
+  {
+    "package": "node_modules/expo-keep-awake",
+    "old": "57.0.1",
+    "new": "57.0.2"
+  },
+  {
+    "package": "node_modules/expo-linking",
+    "old": "57.0.7",
+    "new": "57.0.14"
+  },
+  {
+    "package": "node_modules/expo-manifests",
+    "old": "57.0.1",
+    "new": "57.0.2"
+  },
+  {
+    "package": "node_modules/expo-modules-autolinking",
+    "old": "57.0.10",
+    "new": "57.0.18"
+  },
+  {
+    "package": "node_modules/expo-modules-core",
+    "old": "57.0.12",
+    "new": "57.0.26"
+  },
+  {
+    "package": "node_modules/expo-modules-jsi",
+    "old": "57.0.5",
+    "new": "57.1.3"
+  },
+  {
+    "package": "node_modules/expo-notifications",
+    "old": "57.0.13",
+    "new": "57.0.25"
+  },
+  {
+    "package": "node_modules/expo-print",
+    "old": "57.0.1",
+    "new": "57.0.2"
+  },
+  {
+    "package": "node_modules/expo-router",
+    "old": "57.0.15",
+    "new": "57.0.31"
+  },
+  {
+    "package": "node_modules/expo-secure-store",
+    "old": "57.0.1",
+    "new": "57.0.4"
+  },
+  {
+    "package": "node_modules/expo-sharing",
+    "old": "57.0.14",
+    "new": "57.0.26"
+  },
+  {
+    "package": "node_modules/expo-splash-screen",
+    "old": "57.0.7",
+    "new": "57.0.11"
+  },
+  {
+    "package": "node_modules/expo-symbols",
+    "old": "57.0.2",
+    "new": "57.0.3"
+  },
+  {
+    "package": "node_modules/expo-system-ui",
+    "old": "57.0.2",
+    "new": "57.0.4"
+  },
+  {
+    "package": "node_modules/expo-updates-interface",
+    "old": "57.0.1",
+    "new": "57.0.2"
+  },
+  {
+    "package": "node_modules/expo-web-browser",
+    "old": "57.0.2",
+    "new": "57.0.3"
+  },
+  {
+    "package": "node_modules/expo/node_modules/@expo/cli",
+    "old": "57.0.17",
+    "new": "57.0.34"
+  },
+  {
+    "package": "node_modules/expo/node_modules/@expo/cli/node_modules/@expo/router-server",
+    "old": "57.0.7",
+    "new": "57.0.15"
+  },
+  {
+    "package": "node_modules/expo/node_modules/@expo/env",
+    "old": null,
+    "new": "2.4.4"
+  },
+  {
+    "package": "node_modules/expo/node_modules/@expo/ws-tunnel",
+    "old": "2.0.0",
+    "new": "2.0.1"
+  },
+  {
+    "package": "node_modules/expo/node_modules/ws",
+    "old": "8.21.3",
+    "new": "8.23.0"
+  },
+  {
+    "package": "node_modules/glob",
+    "old": "13.0.6",
+    "new": "14.0.6"
+  },
+  {
+    "package": "node_modules/glob/node_modules/minimatch",
+    "old": null,
+    "new": "11.0.9"
+  },
+  {
+    "package": "node_modules/hermes-compiler",
+    "old": "250829098.0.16",
+    "new": "250829098.0.17"
+  },
+  {
+    "package": "node_modules/nanoid",
+    "old": "3.3.18",
+    "new": "3.3.20"
+  },
+  {
+    "package": "node_modules/node-forge",
+    "old": "1.4.0",
+    "new": "1.4.3"
+  },
+  {
+    "package": "node_modules/path-scurry",
+    "old": "2.0.2",
+    "new": "3.0.0"
+  },
+  {
+    "package": "node_modules/path-scurry/node_modules/lru-cache",
+    "old": "11.5.2",
+    "new": "11.5.3"
+  },
+  {
+    "package": "node_modules/plist/node_modules/@xmldom/xmldom",
+    "old": "0.9.11",
+    "new": "0.9.12"
+  },
+  {
+    "package": "node_modules/postcss",
+    "old": "8.5.26",
+    "new": "8.5.33"
+  },
+  {
+    "package": "node_modules/react-native",
+    "old": "0.86.2",
+    "new": "0.86.3"
+  },
+  {
+    "package": "node_modules/react-native-drawer-layout",
+    "old": "4.2.10",
+    "new": "4.2.13"
+  },
+  {
+    "package": "node_modules/source-map-js",
+    "old": "1.2.1",
+    "new": "1.2.4"
+  },
+  {
+    "package": "node_modules/xcode",
+    "old": "3.0.1",
+    "new": "4.0.0"
+  }
+]

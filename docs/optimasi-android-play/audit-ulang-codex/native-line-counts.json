@@ -1,0 +1,168 @@
+[
+  {
+    "log": "android36-bsa.log",
+    "pass_lines": 4,
+    "fail_lines": 0,
+    "summary": [
+      "Ringkasan: 4 lulus / 0 gagal"
+    ]
+  },
+  {
+    "log": "android36-documents.log",
+    "pass_lines": 7,
+    "fail_lines": 0,
+    "summary": [
+      "Ringkasan: 7 lulus / 0 gagal"
+    ]
+  },
+  {
+    "log": "android36-home.log",
+    "pass_lines": 62,
+    "fail_lines": 0,
+    "summary": []
+  },
+  {
+    "log": "android36-izin.log",
+    "pass_lines": 4,
+    "fail_lines": 0,
+    "summary": [
+      "Ringkasan: 4 lulus / 0 gagal"
+    ]
+  },
+  {
+    "log": "android36-keamanan.log",
+    "pass_lines": 10,
+    "fail_lines": 0,
+    "summary": [
+      "Ringkasan: 10 lulus, 0 gagal"
+    ]
+  },
+  {
+    "log": "android36-kesehatan.log",
+    "pass_lines": 4,
+    "fail_lines": 0,
+    "summary": [
+      "Ringkasan: 4 lulus / 0 gagal"
+    ]
+  },
+  {
+    "log": "android36-layout-dark2.log",
+    "pass_lines": 0,
+    "fail_lines": 1,
+    "summary": [
+      "Ringkasan: 0 lulus / 1 gagal"
+    ]
+  },
+  {
+    "log": "android36-pembinaan-rapor.log",
+    "pass_lines": 17,
+    "fail_lines": 0,
+    "summary": [
+      "Ringkasan: 17 lulus, 0 gagal"
+    ]
+  },
+  {
+    "log": "android36-pengajian.log",
+    "pass_lines": 2,
+    "fail_lines": 1,
+    "summary": [
+      "Hasil (pengajian): 2 lulus / 1 gagal"
+    ]
+  },
+  {
+    "log": "android36-profile.log",
+    "pass_lines": 24,
+    "fail_lines": 0,
+    "summary": [
+      "Hasil: 24 lulus / 0 gagal"
+    ]
+  },
+  {
+    "log": "android36-rapor.log",
+    "pass_lines": 2,
+    "fail_lines": 1,
+    "summary": [
+      "Ringkasan: 2 lulus / 1 gagal"
+    ]
+  },
+  {
+    "log": "android36-replay-home-remaining.log",
+    "pass_lines": 9,
+    "fail_lines": 0,
+    "summary": [
+      "Hasil: 9 lulus / 0 gagal"
+    ]
+  },
+  {
+    "log": "android36-replay-layout-dark2.log",
+    "pass_lines": 7,
+    "fail_lines": 0,
+    "summary": [
+      "Ringkasan: 7 lulus / 0 gagal"
+    ]
+  },
+  {
+    "log": "android36-replay-pengajian.log",
+    "pass_lines": 12,
+    "fail_lines": 1,
+    "summary": [
+      "Hasil (pengajian): 12 lulus / 1 gagal"
+    ]
+  },
+  {
+    "log": "android36-replay-upgrade.log",
+    "pass_lines": 9,
+    "fail_lines": 0,
+    "summary": [
+      "Ringkasan: 9 lulus, 0 gagal"
+    ]
+  },
+  {
+    "log": "android36-upgrade.log",
+    "pass_lines": 3,
+    "fail_lines": 3,
+    "summary": [
+      "Ringkasan: 3 lulus, 3 gagal"
+    ]
+  },
+  {
+    "log": "pengajian-final-baseline.log",
+    "pass_lines": 13,
+    "fail_lines": 0,
+    "summary": [
+      "Hasil (pengajian): 13 lulus / 0 gagal"
+    ]
+  },
+  {
+    "log": "pengajian-final-final.log",
+    "pass_lines": 13,
+    "fail_lines": 0,
+    "summary": [
+      "Hasil (pengajian): 13 lulus / 0 gagal"
+    ]
+  },
+  {
+    "log": "rapor-final.log",
+    "pass_lines": 4,
+    "fail_lines": 0,
+    "summary": [
+      "Ringkasan: 4 lulus / 0 gagal"
+    ]
+  },
+  {
+    "log": "android35-3button-cutout-dark2.log",
+    "pass_lines": 7,
+    "fail_lines": 0,
+    "summary": [
+      "Ringkasan: 7 lulus / 0 gagal"
+    ]
+  },
+  {
+    "log": "android35-gesture-light1.log",
+    "pass_lines": 8,
+    "fail_lines": 0,
+    "summary": [
+      "Ringkasan: 8 lulus / 0 gagal"
+    ]
+  }
+]

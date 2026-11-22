@@ -131,7 +131,10 @@ try:
     tap("Masukkan password", cls="android.widget.EditText")
     type_input("Sandbox#123")
     sh("shell", "input", "keyevent", "KEYCODE_ENTER")
-    if not until(lambda: any((n.get("content-desc") or "").startswith("Buka profil") for n in dump().iter("node")), 90):
+    # Label kartu identitas adalah "<nama>. <status>. Buka profil".
+    # Awalan "Buka profil" menolak Beranda yang sudah terautentikasi; tetap
+    # wajib kartu profil, bukan teks Assalamu yang juga ada di layar Masuk.
+    if not until(lambda: any((n.get("content-desc") or "").endswith(". Buka profil") for n in dump().iter("node")), 90):
         raise RuntimeError("Beranda terautentikasi tidak terbuka")
     ok(True, MODE + ": login pada Release dengan bundel tertanam")
     control = screenshot("beranda-kontrol")

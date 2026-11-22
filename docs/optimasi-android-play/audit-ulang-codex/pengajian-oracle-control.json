@@ -1,0 +1,7 @@
+{
+  "assertion_lines": 41,
+  "before": "c3b70ccec0c7bcb4a0619f9c43bc87e4cd3564c6a054082126fa09f8fd393047",
+  "after": "c3b70ccec0c7bcb4a0619f9c43bc87e4cd3564c6a054082126fa09f8fd393047",
+  "threshold_dp": 43.5,
+  "reason": "observed Sakit button clipped by pinned submit bar; scroll before measuring, never accept 22 dp"
+}

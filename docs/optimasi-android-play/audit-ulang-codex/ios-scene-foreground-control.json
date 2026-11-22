@@ -1,0 +1,38 @@
+{
+  "db": "test_oap_followup_android36_test",
+  "actor": "sbx_v5_ganda (read-only pembimbing/murobi)",
+  "authorized_health_scope_before": true,
+  "background_via": "launch Settings, no setting changed",
+  "revoked_token_rows": 1,
+  "http_401_after_foreground": [
+    {
+      "time": 1795347255.527663,
+      "method": "GET",
+      "uri": "/api/v1/profile/pribadi",
+      "status": 401
+    },
+    {
+      "time": 1795347255.536069,
+      "method": "GET",
+      "uri": "/api/v1/v5/kesehatan/akses",
+      "status": 401
+    },
+    {
+      "time": 1795347255.546002,
+      "method": "GET",
+      "uri": "/api/v1/v5/kesehatan/wali/akses",
+      "status": 401
+    }
+  ],
+  "screenshot_after": "ios-private-after.png (login visible)",
+  "clinical_data_claim": "scope closure only; not physical device/Push/Recents proof",
+  "maestro_after_assertions": {
+    "pass": 2,
+    "fail": 0
+  },
+  "precondition_corrections": [
+    "initial attempt raced fixture DB switch; target actor absent in T7 fixture",
+    "actor ganda is read-only health pembimbing/murobi; Catat kunjungan was inappropriate marker; authorized health scope verified by UI and API 200"
+  ],
+  "result": "foreground revalidated revoked session (401) and removed authorized health scope; login visible"
+}

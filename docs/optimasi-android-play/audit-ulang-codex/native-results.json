@@ -1,0 +1,131 @@
+{
+  "scope": "new Release arm64 loopback variant; native DEX and 24 so identical to archived distribution-config APK; EAS artifact scanned separately",
+  "raw_matrix": [
+    {
+      "name": "home",
+      "exit": 124
+    },
+    {
+      "name": "profile",
+      "exit": 0
+    },
+    {
+      "name": "documents",
+      "exit": 0
+    },
+    {
+      "name": "bsa",
+      "exit": 0
+    },
+    {
+      "name": "kesehatan",
+      "exit": 0
+    },
+    {
+      "name": "izin",
+      "exit": 0
+    },
+    {
+      "name": "layout-dark2",
+      "exit": 1
+    },
+    {
+      "name": "upgrade",
+      "exit": 1
+    },
+    {
+      "name": "rapor",
+      "exit": 1
+    },
+    {
+      "name": "pembinaan-rapor",
+      "exit": 0
+    },
+    {
+      "name": "keamanan",
+      "exit": 0
+    },
+    {
+      "name": "pengajian",
+      "exit": 1
+    }
+  ],
+  "controlled_replay": [
+    {
+      "name": "home-remaining",
+      "exit": 0
+    },
+    {
+      "name": "layout-dark2",
+      "exit": 0
+    },
+    {
+      "name": "upgrade",
+      "exit": 0
+    },
+    {
+      "name": "pengajian",
+      "exit": 1
+    }
+  ],
+  "interpretation": {
+    "home": "exit124 after62 pass;9 remaining unique cases separately9/0; do not call entire original execution exit0",
+    "profile": "24/0; run-as cache skipped on non-debuggable",
+    "layout_initial": "fixture password changed by profile suite; reset targeted fixture password only, replay7/0",
+    "upgrade_initial": "3/3; old baseline login positive invalidated by screenshot; stronger identity/input/freshXML guard replay9/0",
+    "pengajian_initial": "2/1 stale closed meeting; fresh seed12/1 clipping before scroll; baseline/final viewport control recorded separately",
+    "rapor_initial": "2/1; zero-bounds helper clicked0,0; fresh fixture/new helper4/0 active PDF200 and native chooser",
+    "pengajian_pair_initial": "setup exited before UI cases on duplicate active Keamanan assignment; final pair clones independent fresh fixtures before seeding",
+    "ios_initial": "one driver disconnection then original child flows replayed in one XCTest session; extra private scope preconditions corrected from racing DB/readonly role marker",
+    "privacy_visual": "BSA black Recents card; kesehatan/izin full black screenshot after App Switch; no sensitive content visible, not all screenshots prove Recents panel"
+  },
+  "final_controls": [
+    {
+      "name": "rapor-final",
+      "exit": 0
+    },
+    {
+      "name": "pengajian-final-baseline",
+      "exit": 0
+    },
+    {
+      "name": "pengajian-final-final",
+      "exit": 0
+    }
+  ],
+  "final_counts": {
+    "rapor": [
+      4,
+      0
+    ],
+    "pengajian_baseline": [
+      13,
+      0
+    ],
+    "pengajian_final": [
+      13,
+      0
+    ]
+  },
+  "android35": {
+    "runs": [
+      {
+        "name": "gesture-light1",
+        "exit": 0
+      },
+      {
+        "name": "3button-cutout-dark2",
+        "exit": 0
+      }
+    ],
+    "gesture_light1": [
+      8,
+      0
+    ],
+    "threebutton_cutout_dark2": [
+      7,
+      0
+    ],
+    "scope": "layout only, not all business modules/photo again"
+  }
+}

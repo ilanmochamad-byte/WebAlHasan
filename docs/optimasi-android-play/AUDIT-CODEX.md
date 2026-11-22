@@ -1,5 +1,7 @@
 # Audit independen Codex — optimasi Android Google Play
 
+> **Pembaruan:** tindak lanjut Claude `3705c2f`/`7621a11` sudah diperiksa dalam [audit ulang 22 November](AUDIT-ULANG-CODEX.md). F-2 iOS ditutup pada simulator Release; F-1/GP-2, F-3 dan konfirmasi Play mengikuti hasil terbaru di sana. Angka dan status di bawah adalah riwayat audit pertama.
+
 22 November 2026. Cakupan hanya GP-1 (DEX/R8) dan GP-2 (API tampilan), satu tahap pada `claude/optimasi-android-play` di kedua repositori. Claude Code implementator, Codex auditor, sesuai keputusan Human Developer 21 November. Dokumen ini menggantikan penilaian kesiapan audit pada laporan implementator; tidak mengubah keputusan produksi.
 
 ## Keputusan

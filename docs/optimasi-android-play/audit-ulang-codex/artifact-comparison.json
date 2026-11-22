@@ -1,0 +1,14 @@
+{
+  "source": "7621a11614696e0e575bda3a4045f862cc55e46e (code 3705c2f)",
+  "local_arm64_aab_sha256": "ada2cd800e903adc9b0364da5417c3196aa74a145159f91ea2023c3322ee9d50",
+  "local_dex_sha256": "17c0fb858aa8ae9f20365591f3175aa1b428b569ab3b43fb635523a6b6d0ce85",
+  "eas20_dex_sha256": "e4f4b45873d5c54acc3c53971c1571b2ecc950fe1256f992b497850d6da93dc8",
+  "mapping_identical_local_and_eas20": true,
+  "local_dex_identical_to_implementor_local_hash": true,
+  "dex_bytes": 10497352,
+  "dex_reduction_percent_vs_19": 77.6615,
+  "gp2": {
+    "instructions": 20,
+    "hosts": 11
+  }
+}

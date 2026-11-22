@@ -1,0 +1,14 @@
+{
+  "test_apk_sha256": "8414270e6f30fc2670917b2a6f0c70c394d49c58d128bbf1ebf8fbe884caaa9f",
+  "dex_identical": true,
+  "native_so_identical": true,
+  "native_so_count": 24,
+  "embedded_loopback_url": true,
+  "embedded_invalid_url": false,
+  "changed_zip_members": [
+    "assets/app.config",
+    "assets/index.android.bundle",
+    "AndroidManifest.xml",
+    "resources.arsc"
+  ]
+}

@@ -384,8 +384,16 @@ try {
     await gulirKe(/Catatan santri \(opsional\)/, 10);
     d = dump();
     // Tombol status santri (ringkas, lima sama lebar) — bukan pemilih kehadiran guru di atasnya.
-    const catatan = d.find(n => /Catatan santri \(opsional\)/.test(n.text));
-    const sakit = d.filter(n => n.desc === 'Sakit' && n.b[3] <= catatan.b[1]).sort((x, y) => y.b[1] - x.b[1])[0];
+    let catatan = d.find(n => /Catatan santri \(opsional\)/.test(n.text));
+    let sakit = d.filter(n => n.desc === 'Sakit' && n.b[3] <= catatan.b[1]).sort((x, y) => y.b[1] - x.b[1])[0];
+    // Bounds uiautomator dipotong pada tepi viewport/bilah Kirim. Bawa
+    // tombol utuh ke viewport sebelum mengukur; ambang 44 dp tetap sama.
+    for (let i = 0; i < 2 && sakit && (sakit.b[3] - sakit.b[1]) / dp() < 43.5; i++) {
+      geser(1700, 1150); await tidur(500);
+      d = dump();
+      catatan = d.find(n => /Catatan santri \(opsional\)/.test(n.text));
+      sakit = d.filter(n => n.desc === 'Sakit' && n.b[3] <= catatan.b[1]).sort((x, y) => y.b[1] - x.b[1])[0];
+    }
     ok(Boolean(sakit) && (sakit.b[3] - sakit.b[1]) / dp() >= 43.5 && (sakit.b[2] - sakit.b[0]) / dp() >= 43.5, `Absensi: tombol status santri ${sakit ? ((sakit.b[2] - sakit.b[0]) / dp()).toFixed(0) : '—'}×${sakit ? ((sakit.b[3] - sakit.b[1]) / dp()).toFixed(0) : '—'} dp ≥ 44`);
     adb('shell', 'input', 'tap', String((sakit.b[0] + sakit.b[2]) >> 1), String((sakit.b[1] + sakit.b[3]) >> 1));
     await tidur(800);

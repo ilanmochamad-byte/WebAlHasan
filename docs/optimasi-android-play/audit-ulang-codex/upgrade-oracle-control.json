@@ -1,0 +1,7 @@
+{
+  "assertion_label_nodes": 11,
+  "labels_identical": true,
+  "labels_sha256": "8bc01902230ad8197c6bffd0a77b23feb3ae96b5768b8604464f12564a823bf5",
+  "old_initial_positive_invalidated_by_screenshot": "u1-lama-beranda.png shows login with invalid credentials, not authenticated home",
+  "new_preconditions": "fresh XML + exact profile-card suffix; username typed slowly and checked exactly; abort before install update if baseline login unverified"
+}

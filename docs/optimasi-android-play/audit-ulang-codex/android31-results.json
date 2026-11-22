@@ -1,0 +1,112 @@
+[
+  {
+    "case": "android31-dark2",
+    "binary": "final",
+    "oracle": "old prefix",
+    "pass": 0,
+    "fail": 1,
+    "results": [
+      {
+        "pass": false,
+        "label": "Pengecualian: Beranda terautentikasi tidak terbuka"
+      }
+    ]
+  },
+  {
+    "case": "android31-baseline-dark2",
+    "binary": "baseline",
+    "oracle": "old prefix",
+    "pass": 0,
+    "fail": 1,
+    "results": [
+      {
+        "pass": false,
+        "label": "Pengecualian: dump gagal"
+      }
+    ]
+  },
+  {
+    "case": "android31-light1",
+    "binary": "final",
+    "oracle": "old prefix",
+    "pass": 0,
+    "fail": 1,
+    "results": [
+      {
+        "pass": false,
+        "label": "Pengecualian: Beranda terautentikasi tidak terbuka"
+      }
+    ]
+  },
+  {
+    "case": "android31-corrected-dark2",
+    "binary": "final",
+    "oracle": "correct suffix; gesture",
+    "pass": 7,
+    "fail": 0,
+    "results": [
+      {
+        "pass": true,
+        "label": "layout: login pada Release dengan bundel tertanam"
+      },
+      {
+        "pass": true,
+        "label": "kepala di bawah status/cutout (bawah status 63)"
+      },
+      {
+        "pass": true,
+        "label": "label tab di atas navigasi sistem (atas nav 2358)"
+      },
+      {
+        "pass": true,
+        "label": "tindakan Ajukan izin tidak tertutup tab"
+      },
+      {
+        "pass": true,
+        "label": "kolom aktif tidak tertutup keyboard (atas IME 1523)"
+      },
+      {
+        "pass": true,
+        "label": "aksi lembar bawah berada di dalam inset sistem"
+      },
+      {
+        "pass": true,
+        "label": "logcat tanpa password atau bearer mentah"
+      }
+    ]
+  },
+  {
+    "case": "android31-baseline-3button-dark2",
+    "binary": "baseline",
+    "oracle": "correct suffix; 3button+cutout",
+    "pass": 0,
+    "fail": 1,
+    "results": [
+      {
+        "pass": false,
+        "label": "Pengecualian: Masukkan username"
+      }
+    ]
+  },
+  {
+    "case": "android31-final-3button-dark2",
+    "binary": "final",
+    "oracle": "correct suffix; 3button+cutout",
+    "pass": 0,
+    "fail": 1,
+    "results": [
+      {
+        "pass": false,
+        "label": "Pengecualian: Masukkan username"
+      }
+    ]
+  },
+  {
+    "case": "android31-profile",
+    "binary": "final",
+    "oracle": "fresh XML guard; 19 business assertions unchanged",
+    "pass": 0,
+    "fail": 1,
+    "reason": "uiautomator could not get idle state; deleted snapshot not recreated; no stale XML accepted"
+  }
+]
