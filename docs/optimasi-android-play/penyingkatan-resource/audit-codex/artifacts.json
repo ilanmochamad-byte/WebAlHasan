@@ -1,0 +1,91 @@
+{
+  "final": {
+    "app.aab": {
+      "sha256": "4db00e18a11fa63c5ab697dc6365733b18ac9d7d441bf40ff3cf1ca4d1b6ffa6",
+      "bytes": 29944363,
+      "dex": [
+        {
+          "name": "base/dex/classes.dex",
+          "bytes": 10104488,
+          "sha256": "6167187a1e91ac754e9503b5784d4a6f7ecd05bd82a647b7c05fe64954af938f"
+        }
+      ],
+      "resources": 874,
+      "native_abis": [
+        "arm64-v8a"
+      ]
+    },
+    "app.apk": {
+      "sha256": "5e54db444cec9ca97568af4911e149fc7cdb3a033b57fcbc7278781481537188",
+      "bytes": 33221320,
+      "dex": [
+        {
+          "name": "classes.dex",
+          "bytes": 10104488,
+          "sha256": "6167187a1e91ac754e9503b5784d4a6f7ecd05bd82a647b7c05fe64954af938f"
+        }
+      ],
+      "resources": 874,
+      "native_abis": [
+        "arm64-v8a"
+      ]
+    },
+    "mapping.txt": {
+      "sha256": "5ae5641b9e8b724449b5468587b362d89b66e93dace2bed122a8ba02b6e8d6cc",
+      "bytes": 100303938
+    }
+  },
+  "control": {
+    "app.aab": {
+      "sha256": "482c6c09904af50810e3839b37f1b90699033084d911f51448d6234e7ae65af6",
+      "bytes": 30819720,
+      "dex": [
+        {
+          "name": "base/dex/classes.dex",
+          "bytes": 10497352,
+          "sha256": "17c0fb858aa8ae9f20365591f3175aa1b428b569ab3b43fb635523a6b6d0ce85"
+        }
+      ],
+      "resources": 1041,
+      "native_abis": [
+        "arm64-v8a"
+      ]
+    },
+    "app.apk": {
+      "sha256": "2f8d82e05c6d76a976c9196916d05a537e0117cc26c72436716fd4103674a141",
+      "bytes": 33827344,
+      "dex": [
+        {
+          "name": "classes.dex",
+          "bytes": 10497352,
+          "sha256": "17c0fb858aa8ae9f20365591f3175aa1b428b569ab3b43fb635523a6b6d0ce85"
+        }
+      ],
+      "resources": 1041,
+      "native_abis": [
+        "arm64-v8a"
+      ]
+    },
+    "mapping.txt": {
+      "sha256": "fdedb1a924c39da22934b8e85bd480dd318b480cea16de4df0e04f75b1b96221",
+      "bytes": 104914166
+    }
+  },
+  "test": {
+    "app.apk": {
+      "sha256": "60c7dc1b2a7a12971e2f556eb68bfcbff03a27fc84e9b6d6f547192697945b20",
+      "bytes": 33221752,
+      "dex": [
+        {
+          "name": "classes.dex",
+          "bytes": 10104488,
+          "sha256": "6167187a1e91ac754e9503b5784d4a6f7ecd05bd82a647b7c05fe64954af938f"
+        }
+      ],
+      "resources": 875,
+      "native_abis": [
+        "arm64-v8a"
+      ]
+    }
+  }
+}

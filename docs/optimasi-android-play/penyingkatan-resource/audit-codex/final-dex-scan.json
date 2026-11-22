@@ -1,0 +1,118 @@
+[
+  {
+    "file": "app.aab",
+    "sha256": "4db00e18a11fa63c5ab697dc6365733b18ac9d7d441bf40ff3cf1ca4d1b6ffa6",
+    "bytes": 29944363,
+    "dex": [
+      {
+        "name": "base/dex/classes.dex",
+        "bytes": 10104488,
+        "sha256": "6167187a1e91ac754e9503b5784d4a6f7ecd05bd82a647b7c05fe64954af938f"
+      }
+    ],
+    "dex_total_bytes": 10104488,
+    "native_abis": [
+      "arm64-v8a"
+    ],
+    "metadata": {
+      "BUNDLE-METADATA/com.android.tools.build.gradle/app-metadata.properties": "appMetadataVersion=1.1\nandroidGradlePluginVersion=8.12.3\n",
+      "BUNDLE-METADATA/com.android.tools/r8.json": "{\"options\":{\"hasObfuscationDictionary\":false,\"hasClassObfuscationDictionary\":false,\"hasPackageObfuscationDictionary\":false,\"keepAttributes\":{\"isAnnotationDefaultKept\":true,\"isEnclosingMethodKept\":true,\"isExceptionsKept\":false,\"isInnerClassesKept\":true,\"isLocalVariableTableKept\":false,\"isLocalVariableTypeTableKept\":false,\"isMethodParametersKept\":false,\"isPermittedSubclassesKept\":false,\"isRuntimeInvisibleAnnotationsKept\":false,\"isRuntimeInvisibleParameterAnnotationsKept\":false,\"isRuntimeInvisibleTypeAnnotationsKept\":false,\"isRuntimeVisibleAnnotationsKept\":true,\"isRuntimeVisibleParameterAnnotationsKept\":true,\"isRuntimeVisibleTypeAnnotationsKept\":true,\"isSignatureKept\":true,\"isSourceDebugExtensionKept\":false,\"isSourceDirKept\":false,\"isSourceFileKept\":false,\"isStackMapTableKept\":false},\"isAccessModificationEnabled\":true,\"isFlattenPackageHierarchyEnabled\":false,\"isObfuscationEnabled\":true,\"isOptimizationsEnabled\":true,\"isProGuardCompatibilityModeEnabled\":false,\"isProtoLiteOptimizationEnabled\":false,\"isRepackageClassesEnabled\":false,\"isShrinkingEnabled\":true,\"apiModeling\":{},\"minApiLevel\":\"24\",\"isDebugModeEnabled\":false},\"baselineProfileRewriting\":{},\"dexFiles\":[{\"checksum\":\"6167187a1e91ac754e9503b5784d4a6f7ecd05bd82a647b7c05fe64954af938f\",\"startup\":false}],\"stats\":{\"noObfuscationPercentage\":19.47,\"noOptimizationPercentage\":20.07,\"noShrinkingPercentage\":19.28},\"featureSplits\":{\"featureSplits\":[{\"dexFiles\":[]}],\"isolatedSplits\":false},\"resourceOptimization\":{\"isOptimizedShrinkingEnabled\":true},\"version\":\"8.12.22\"}",
+      "base/root/META-INF/com/android/build/gradle/app-metadata.properties": "appMetadataVersion=1.1\nandroidGradlePluginVersion=8.12.3\n"
+    },
+    "mapping_sha256": "5ae5641b9e8b724449b5468587b362d89b66e93dace2bed122a8ba02b6e8d6cc",
+    "gp2_instruction_count": 18,
+    "gp2_host_count": 10,
+    "gp2_calls": [
+      {
+        "host": "com.facebook.react.modules.dialog.AlertFragment$Companion$$ExternalSyntheticApiModelOutline0",
+        "obfuscated_host": "B5.a",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "com.facebook.react.modules.dialog.AlertFragment$Companion$$ExternalSyntheticApiModelOutline0",
+        "obfuscated_host": "B5.a",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "androidx.compose.ui.window.Api28Impl",
+        "obfuscated_host": "I1.r",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "com.swmansion.rnscreens.bottomsheet.DimmingViewManager$AnimateDimmingViewCallback$$ExternalSyntheticLambda0",
+        "obfuscated_host": "J8.b",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "com.facebook.react.modules.statusbar.StatusBarModule$setColor$1",
+        "obfuscated_host": "L5.b",
+        "symbol": "getStatusBarColor"
+      },
+      {
+        "host": "com.facebook.react.modules.statusbar.StatusBarModule$setColor$1",
+        "obfuscated_host": "L5.b",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "com.swmansion.rnscreens.gamma.modals.formsheet.FormSheetDialog",
+        "obfuscated_host": "S8.l",
+        "symbol": "getNavigationBarColor"
+      },
+      {
+        "host": "com.swmansion.rnscreens.gamma.modals.formsheet.FormSheetDialog",
+        "obfuscated_host": "S8.l",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "androidx.core.splashscreen.SplashScreen$Impl31$$ExternalSyntheticLambda6",
+        "obfuscated_host": "Y1.c",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "androidx.core.splashscreen.SplashScreen$Impl31$$ExternalSyntheticLambda6",
+        "obfuscated_host": "Y1.c",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "com.facebook.react.modules.statusbar.StatusBarModule",
+        "obfuscated_host": "com.facebook.react.modules.statusbar.StatusBarModule",
+        "symbol": "getStatusBarColor"
+      },
+      {
+        "host": "com.facebook.react.views.view.WindowUtilKt",
+        "obfuscated_host": "com.facebook.react.views.view.WindowUtilKt",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "com.facebook.react.views.view.WindowUtilKt",
+        "obfuscated_host": "com.facebook.react.views.view.WindowUtilKt",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "com.facebook.react.views.view.WindowUtilKt",
+        "obfuscated_host": "com.facebook.react.views.view.WindowUtilKt",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "expo.modules.imagepicker.ExpoCropImageActivity",
+        "obfuscated_host": "expo.modules.imagepicker.ExpoCropImageActivity",
+        "symbol": "setStatusBarColor"
+      },
+      {
+        "host": "expo.modules.imagepicker.ExpoCropImageActivity",
+        "obfuscated_host": "expo.modules.imagepicker.ExpoCropImageActivity",
+        "symbol": "setNavigationBarColor"
+      },
+      {
+        "host": "androidx.compose.ui.platform.Api28ClipboardManagerClipClear$$ExternalSyntheticApiModelOutline0",
+        "obfuscated_host": "i1.S",
+        "symbol": "layoutInDisplayCutoutMode"
+      },
+      {
+        "host": "androidx.compose.ui.platform.Api28ClipboardManagerClipClear$$ExternalSyntheticApiModelOutline0",
+        "obfuscated_host": "i1.S",
+        "symbol": "layoutInDisplayCutoutMode"
+      }
+    ]
+  }
+]

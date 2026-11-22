@@ -1,0 +1,7 @@
+{
+  "source": "auditor control generated R8 configuration (same dependencies/plugin keep directives as final)",
+  "lines": 1721,
+  "forbidden_directives": [],
+  "blanket_keep_all": false,
+  "blanket_dontwarn": false
+}
