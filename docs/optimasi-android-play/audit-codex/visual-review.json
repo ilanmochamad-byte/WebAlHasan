@@ -1,0 +1,62 @@
+[
+  {
+    "private_path": "/private/tmp/oap-codex-audit/native/extra36/documents/print-preview.png",
+    "sha256": "6bf3385f984da934d4f05f4472fbc7db596a497ec444fb7711a230d4f16db13f",
+    "observed": "Preview sistem menampilkan laporan sintetis dua halaman; pemilihan printer/ukuran kertas tidak dijalankan"
+  },
+  {
+    "private_path": "/private/tmp/oap-codex-audit/native/extra36/rapor/share.png",
+    "sha256": "8a3f7208bb6f037a5323a0c1a8d3f64a8027e21f40b9e53f577deec02574c354",
+    "observed": "Chooser menampilkan berkas PDF rapor; tidak memilih tujuan"
+  },
+  {
+    "private_path": "/private/tmp/oap-codex-audit/native/extra36/bsa/recents.png",
+    "sha256": "6b5da2911c5c6d1e05ca134137cf8b1c4600b2d5b0250118f58dd33958e4a61c",
+    "observed": "Kartu aplikasi hitam; isi BSA tidak terlihat"
+  },
+  {
+    "private_path": "/private/tmp/oap-codex-audit/native/extra36/kesehatan/recents.png",
+    "sha256": "3e7b785c97aab4d682d369a731f49f39b01505c61a5bbf62a6c5043cba34e9db",
+    "observed": "Kartu aplikasi hitam; isi kesehatan tidak terlihat"
+  },
+  {
+    "private_path": "/private/tmp/oap-codex-audit/native/extra36/izin/recents.png",
+    "sha256": "bde9fa73b10aa84704e63806a21458b0c335d670242e07f8460c884f1f916abb",
+    "observed": "Kartu aplikasi hitam; isi izin terlindungi tidak terlihat"
+  },
+  {
+    "private_path": "/private/tmp/oap-codex-audit/native/control36-baseline/screens/android-beranda-teks-2.0-gulir.png",
+    "sha256": "34617231e7517557969037a563dd76bf230cc443bd9d428691632a365ea6fe2e",
+    "observed": "Kontrol baseline C, teks 2×, satu gesture: menu terlihat; bukan reproduksi gagal awal final. Oracle tetap."
+  },
+  {
+    "private_path": "/private/tmp/oap-codex-audit/native/control36-final/screens/android-beranda-gelap-teks-2.0-gulir.png",
+    "sha256": "7b19bac5519f26a82f9bcf7fed54fa62b6ac47660c91bfe959d1f9fa217075ee",
+    "observed": "Kisi tiga kolom terlihat pada kontrol final; Perizinan berada lebih bawah dan tidak seluruh ubin terlihat sekaligus. Oracle C tetap asli, bukan bukti semua menu terlihat setelah satu swipe."
+  },
+  {
+    "private_path": "/private/tmp/oap-codex-audit/native/control36-final/screens/android-ganti-password-gelap-teks-2.0.png",
+    "sha256": "a81a0c2121df6215f7891b201ba206310bd73d142f2caf156d379d3b17a11b17",
+    "observed": "Layar gulir teks2x gelap; tombol bawah melewati viewport awal, tidak diklaim seluruh formulir sekaligus terlihat."
+  },
+  {
+    "private_path": "/private/tmp/oap-codex-audit/native/layout-35-3tombol-cutout-gelap-2x/layout-perizinan.png",
+    "sha256": "e31ff9131020701b9a0eaf8107ddf71f3c2a47b0b575e836fe2f2eb343adca03",
+    "observed": "Header tidak masuk cutout, aksi alternatif teks2x di atas tab dan bilah3tombol."
+  },
+  {
+    "private_path": "/private/tmp/oap-codex-audit/native/layout-36-3tombol-cutout-gelap-2x/layout-keyboard.png",
+    "sha256": "c0422304fb60a45c2ff3e1a2c6c38e475c1e82857fbd29109af9ac2f31d1c812",
+    "observed": "Kolom pencarian berada di atas keyboard; konten atas bergulir/autopan hingga bagian di bawah statusbar, bukan bukti header fixed terlihat saat IME."
+  },
+  {
+    "private_path": "/private/tmp/oap-codex-audit/native/layout-31-gestur-terang/layout-dialog.png",
+    "sha256": "0b7f27c54c2c85dee68f6e71a06bd55301b4e1b1e002e82b9d8e16f7ee7e4d5d",
+    "observed": "Bottom sheet terang pada Android12; tindakan berada di atas navigasi gestur."
+  },
+  {
+    "private_path": "/private/tmp/oap-codex-audit/native/layout-31-3tombol-cutout-gelap-2x/error.png",
+    "sha256": "d9faf4f277a7034ac11151e550a40d920d823d2f307a7cd887a9a4f114bb3fcc",
+    "observed": "Probe pertama masih di layar Masuk: password masuk ke username; label login awal tidak sah untuk kasus ini. Hasil 1/1 dicatat gagal dan tidak dianggap berhasil login."
+  }
+]

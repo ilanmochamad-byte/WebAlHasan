@@ -1,0 +1,302 @@
+{
+  "apk_test_sha256": "df8bc814600a938f9f3427aecbbe97af4cd300a2d979b810a17137da32f49838",
+  "baseline_apk_reconstruction_sha256": "e37d67edfc9e98a7e11dae798de7b10e01fc86b61017c264d3f79629d3e50754",
+  "note": "Runs are not summed as unique tests. Initial failures and skips retained. Baseline reconstruction is not original production AAB. Extra modes have separate results JSON.",
+  "runs": [
+    {
+      "private_path": "/private/tmp/oap-codex-audit/control36-baseline.txt",
+      "log_sha256": "888e008eb1b35cca0af453f08b086a2e8ffb4b519b3ce6c880eaa6973752811a",
+      "pass": 24,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": [
+        "Hasil: 24 lulus / 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/control36-final.txt",
+      "log_sha256": "888e008eb1b35cca0af453f08b086a2e8ffb4b519b3ce6c880eaa6973752811a",
+      "pass": 24,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": [
+        "Hasil: 24 lulus / 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/layout-31-3tombol-cutout-gelap-2x.txt",
+      "log_sha256": "230f75141383e90e8ec97cb59e7870328005d8c5a9eeff168cf1a7b55e69e4f3",
+      "pass": 1,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Pengecualian: Ajukan izin"
+      ],
+      "summary": [
+        "Ringkasan: 1 lulus / 1 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/layout-31-gestur-terang.txt",
+      "log_sha256": "7698819c8abbbc9ebb8b3af3abcd16bd727feb2f21c519e98300678e037a19a2",
+      "pass": 8,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": [
+        "Ringkasan: 8 lulus / 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/layout-35-3tombol-cutout-gelap-2x.txt",
+      "log_sha256": "898a2d698144d2c3f3c6a0ca0c955931413328a333aad661eb7eaf0aac4a5f7d",
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": [
+        "Ringkasan: 7 lulus / 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/layout-35-gestur-terang.txt",
+      "log_sha256": "4cf122d34a1e2ba2e49a4d3b216e71279901b5afa54a5983d7b6cd34eea978e2",
+      "pass": 8,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": [
+        "Ringkasan: 8 lulus / 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/layout-36-3tombol-cutout-gelap-2x.txt",
+      "log_sha256": "898a2d698144d2c3f3c6a0ca0c955931413328a333aad661eb7eaf0aac4a5f7d",
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": [
+        "Ringkasan: 7 lulus / 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/layout-36-3tombol-cutout-terang.txt",
+      "log_sha256": "ef5fac6ae327df50291c09c26126feb1d1646a62d4f207b97381b427bfc197ce",
+      "pass": 8,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": [
+        "Ringkasan: 8 lulus / 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/native/api36/f1.txt",
+      "log_sha256": "bd3a0c6859a48684ab30d3d3ff5f0c4e3cf94b9a942aa80cc6baa59456290e99",
+      "pass": 69,
+      "fail": 2,
+      "skip": 0,
+      "negative_labels": [
+        "Beranda teks-2.0: ubin Jadwal/Absensi/Perizinan tampil (kisi 3 kolom diperiksa pada tangkapan)",
+        "Beranda gelap-teks-2.0: ubin Jadwal/Absensi/Perizinan tampil (kisi 3 kolom diperiksa pada tangkapan)"
+      ],
+      "summary": [
+        "Hasil: 69 lulus / 2 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/native/api36/izin.txt",
+      "log_sha256": "7c91864871a969f1d475f6b4b96751828cc9eb236e773ca87e2cf126f7f78ba7",
+      "pass": 54,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": []
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/native/api36/keuangan.txt",
+      "log_sha256": "bb12f9b7a8af7f3036548eec55bd73346de2a80d76bc9f3a8ed68977966389b0",
+      "pass": 25,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": [
+        "Ringkasan: 25 lulus, 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/native/api36/pengajian.txt",
+      "log_sha256": "f44f9d2abd8afb010a792924e2684b9a695577e2b2876311ea4dbfd054f53168",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": []
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/native/api36/pk.txt",
+      "log_sha256": "6528f65f570087d2bccd191f4f3b7969986ffad8cf5826be9ee7e51e9f8e1d31",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": [
+        "Ringkasan: 10 lulus, 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/native/api36/profil.txt",
+      "log_sha256": "8854bf9f3e820c9e5edf853e3cb4f0e4bc00e4091d442a2536591a093f70e725",
+      "pass": 5,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Pengecualian: Tidak ditemukan: /Buka profil/"
+      ],
+      "summary": [
+        "Hasil: 5 lulus / 1 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/native/api36/t7.txt",
+      "log_sha256": "608f1488c356c3c1adde89d698955d44b4acea1060aece0d21850ff6e44fadd0",
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": [
+        "Ringkasan: 17 lulus, 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/native/api36/v5.txt",
+      "log_sha256": "63dde390c205cc01ce8a81aa53f28d92252628a036001416e7c5a9f96d8f6715",
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": [
+        "Ringkasan: 7 lulus, 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/profil-api31.txt",
+      "log_sha256": "fecd830d4cf90985a6aee6ff248247255963853a4c2a536fb9bdeaddc59599eb",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Pengecualian: Tidak ditemukan: /Assalamu.alaikum,/"
+      ],
+      "summary": [
+        "Hasil: 0 lulus / 1 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/profil-api35.txt",
+      "log_sha256": "c2e7c8374c02e8746fcd8cabea4a4ef792bc6055f68dc958a6a7eb47d1bd412c",
+      "pass": 24,
+      "fail": 0,
+      "skip": 1,
+      "negative_labels": [
+        "Cache pemilih/pemotong tidak dapat diperiksa: run-as tidak tersedia pada APK rilis (non-debuggable)"
+      ],
+      "summary": [
+        "Hasil: 24 lulus / 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/profil-ulang.txt",
+      "log_sha256": "dba877d8374e341f269d0bcc2f67c71e1ee90a248ca45c4bda52bd19f54875cf",
+      "pass": 18,
+      "fail": 1,
+      "skip": 1,
+      "negative_labels": [
+        "Cache pemilih/pemotong tidak dapat diperiksa: run-as tidak tersedia pada APK rilis (non-debuggable)",
+        "Pengecualian: Tidak ditemukan: /Buka profil/"
+      ],
+      "summary": [
+        "Hasil: 18 lulus / 1 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/profile-baseline-asli.txt",
+      "log_sha256": "8cdff2d569e4cabe8449d12c7d328d02272579f53f130033dfa68ea61d3daaf2",
+      "pass": 24,
+      "fail": 0,
+      "skip": 1,
+      "negative_labels": [
+        "Cache pemilih/pemotong tidak dapat diperiksa: run-as tidak tersedia pada APK rilis (non-debuggable)"
+      ],
+      "summary": [
+        "Hasil: 24 lulus / 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/profile-baseline-koreksi.txt",
+      "log_sha256": "8cdff2d569e4cabe8449d12c7d328d02272579f53f130033dfa68ea61d3daaf2",
+      "pass": 24,
+      "fail": 0,
+      "skip": 1,
+      "negative_labels": [
+        "Cache pemilih/pemotong tidak dapat diperiksa: run-as tidak tersedia pada APK rilis (non-debuggable)"
+      ],
+      "summary": [
+        "Hasil: 24 lulus / 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/profile-final-koreksi.txt",
+      "log_sha256": "8cdff2d569e4cabe8449d12c7d328d02272579f53f130033dfa68ea61d3daaf2",
+      "pass": 24,
+      "fail": 0,
+      "skip": 1,
+      "negative_labels": [
+        "Cache pemilih/pemotong tidak dapat diperiksa: run-as tidak tersedia pada APK rilis (non-debuggable)"
+      ],
+      "summary": [
+        "Hasil: 24 lulus / 0 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/retry31-baseline.txt",
+      "log_sha256": "7b88c3f367e2c2827ec017a79e681978da23d171a16983d855a1c06df84847fd",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Pengecualian: dump gagal"
+      ],
+      "summary": [
+        "Ringkasan: 0 lulus / 1 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/retry31-final.txt",
+      "log_sha256": "7b88c3f367e2c2827ec017a79e681978da23d171a16983d855a1c06df84847fd",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Pengecualian: dump gagal"
+      ],
+      "summary": [
+        "Ringkasan: 0 lulus / 1 gagal"
+      ]
+    },
+    {
+      "private_path": "/private/tmp/oap-codex-audit/upgrade.txt",
+      "log_sha256": "29acc84fc75fbc647f7fdc033b8a0c9d88efcf5b738c4cca7573b97f37225fe6",
+      "pass": 9,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": [],
+      "summary": [
+        "Ringkasan: 9 lulus, 0 gagal"
+      ]
+    }
+  ]
+}

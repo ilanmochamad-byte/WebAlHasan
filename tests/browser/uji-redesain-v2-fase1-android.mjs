@@ -16,7 +16,7 @@ import path from 'node:path';
 //   N-C  mode gelap, teks sistem 1,3× dan 2,0× (tangkapan + teks kunci tetap ada)
 //   N-D  Masuk dan Ganti password wajib tanpa ←
 const metro = process.env.METRO || '';
-if (!/^http:\/\/127\.0\.0\.1:\d+$/.test(metro)) throw Error('Metro harus 127.0.0.1');
+if (!(process.env.RILIS === '1' ? metro === '' : /^http:\/\/127\.0\.0\.1:\d+$/.test(metro))) throw Error('Metro harus 127.0.0.1');
 const ADB = process.env.ADB || `${process.env.HOME}/Library/Android/sdk/platform-tools/adb`;
 const PKG = 'com.ilanmochamad.alhasanApps';
 const out = process.env.OUT_DIR || '/tmp/rtv2-android';
@@ -84,7 +84,9 @@ const gelap = ya => adb('shell', 'cmd', 'uimode', 'night', ya ? 'yes' : 'no');
 
 async function bukaApp() {
   adb('shell', 'am', 'force-stop', PKG);
-  adb('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', `alhasanapps://expo-development-client/?url=${encodeURIComponent(metro)}`);
+  if (metro) adb('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', `alhasanapps://expo-development-client/?url=${encodeURIComponent(metro)}`);
+  // Build RILIS (RILIS=1, METRO kosong): bundel tertanam, tanpa Metro/dev client.
+  else adb('shell', 'am', 'start', '-a', 'android.intent.action.MAIN', '-c', 'android.intent.category.LAUNCHER', '-n', `${PKG}/.MainActivity`);
   await tidur(4000);
 }
 /** Sesi dihapus dengan mengosongkan data aplikasi (SecureStore ikut terhapus). */
