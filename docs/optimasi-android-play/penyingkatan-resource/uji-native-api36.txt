@@ -1,0 +1,4 @@
+f1: 71 lulus / 0 gagal
+profil: 24 lulus / 0 gagal
+keuangan: 25 lulus / 0 gagal
+izin: 54 lulus / 0 gagal

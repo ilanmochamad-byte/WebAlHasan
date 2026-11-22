@@ -1,0 +1,12 @@
+Starting: Intent { cmp=com.ilanmochamad.alhasanApps/.MainActivity }
+[lulus] Layar Masuk tampil
+[lulus] Beranda tampil sesudah masuk
+[lulus] FAB Ajukan izin
+[lulus] Langkah 1: santri sintetis tampil
+[lulus] Kolom tanggal pada formulir izin
+[lulus] Dialog pemilih tanggal terbuka dengan Pilih/Batal (2)
+[lulus] Pemilih memuat tahun/kalender
+[lulus] Tanggal terisi sesudah Pilih
+[lulus] Tanpa crash di logcat buffer crash
+[lulus] Proses aplikasi masih hidup
+Hasil: 10 lulus / 0 gagal
