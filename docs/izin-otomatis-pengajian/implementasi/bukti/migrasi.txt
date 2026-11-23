@@ -1,0 +1,29 @@
+=== Naik (036 terpasang) ===
+[lulus] 036 tercatat terakhir; dua kolom ada
+[lulus] Kunci asing usulan → izin_pengajuan
+[lulus] Migrasi tidak mengisi ulang peserta lama (seluruhnya NULL)
+[lulus] Migrasi tanpa UPDATE/DELETE/TRUNCATE/INSERT
+[lulus] Migrasi dapat dijalankan ulang tanpa galat
+[lulus] Fixture: pertemuan Dibuka berusulan
+[lulus] Kueri pemeriksaan pra-rollback (README): 1 usulan pada pertemuan Dibuka
+
+=== Rollback ===
+[lulus] Rollback 036 berhasil walau usulan berisi
+[lulus] Kolom 036 dilepas dan catatan migrasi dihapus
+[lulus] Preservasi: isi 123 tabel lama (kolom lama) identik sesudah rollback
+[lulus] Absensi tersimpan tidak tersentuh rollback
+
+=== K-7 perilaku sesudah rollback (baseline) ===
+[lulus] Web: buka pertemuan tanpa 036 berjalan seperti baseline
+[lulus] REST tanpa 036: kunci lama tetap, `izin` selalu null
+[lulus] Perbarui tanpa 036: hasil/audit identik baseline (tanpa kunci izin_*)
+[lulus] REST perbarui tanpa 036: participant_changes identik baseline
+[lulus] Laporan tanpa 036: `izin` null; label "Sedang izin" dihitung tetap tersedia
+
+=== Naik lagi ===
+[lulus] Naik lagi berhasil
+[lulus] Preservasi: isi tabel lama identik sesudah naik lagi
+[lulus] Naik lagi tidak mengisi ulang usulan lama (pertemuan lama tidak diisi ulang)
+[lulus] Sesudah naik lagi, "Perbarui daftar" mengisi kembali usulan pertemuan Dibuka
+
+Hasil: 20 lulus, 0 gagal

@@ -1,0 +1,3 @@
+./ios/2026-11-23_213503/absensi-izin/logs/maestro.log:      291 baris; RAHASIA=0 Bearer=0 sandi=3
+./android/2026-11-23_213150/absensi-izin/logs/maestro.log:      582 baris; RAHASIA=0 Bearer=0 sandi=3
+./android/2026-11-23_213150/absensi-izin/logs/device-logcat.txt:    10628 baris; RAHASIA=0 Bearer=0 sandi=0

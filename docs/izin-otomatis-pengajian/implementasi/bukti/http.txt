@@ -1,0 +1,34 @@
+[lulus] Admin masuk web; guru dan Keamanan memperoleh token API
+
+=== H-1 buka pertemuan lewat web ===
+[lulus] Buka lewat web membekukan usulan dengan keterangan IP-3
+[lulus] Halaman pertemuan web: keterangan usulan dari snapshot, satu baris
+[lulus] Pertemuan berusulan tidak memakai label lama; hitungan "1 sedang izin"
+[lulus] Tanpa formulir absensi web (keputusan R)
+
+=== H-2 REST rincian pertemuan ===
+[lulus] GET /meetings/{id}: `izin` aditif sesuai §3.4
+
+=== H-3 simpan lewat REST (guru ubah ke Hadir) dan rincian laporan web ===
+[lulus] Simpan REST: status Hadir pilihan guru tersimpan (server tidak memaksa Izin)
+[lulus] Kunci idempotensi sama → satu penyimpanan
+[lulus] Rincian laporan web: keterangan usulan tampil
+
+=== H-4 REST Keamanan rincian kehadiran ===
+[lulus] Keamanan: keterangan usulan + izin_id dari snapshot, status tersimpan Hadir
+
+=== H-5 pertemuan tanpa usulan: label lama tetap ===
+[lulus] Pertemuan tanpa usulan (seperti pertemuan lama): label "Sedang izin #" yang dihitung
+[lulus] Rincian laporan pertemuan tanpa usulan: label lama
+
+=== H-6 perbarui lewat web dan REST ===
+[lulus] Perbarui web: pesan "1 usulan izin diisi" dan keterangan admin pengganti tampil
+[lulus] Perbarui REST: izin dibatalkan → izin_cleared 1 dan `izin` null
+
+=== H-7 tanpa isi izin; log server ===
+[lulus] Halaman dan respons tidak memuat alasan/catatan/keputusan izin
+[lulus] Audit tanpa isi izin
+[lulus] Log server tanpa isi izin
+[lulus] Log server tanpa galat/peringatan PHP
+
+Hasil: 18 lulus, 0 gagal

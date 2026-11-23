@@ -1,0 +1,27 @@
+[lulus] Kontrol login Keamanan
+[lulus] Kontrol peserta aktif terbaca pada cetak
+[lulus] F-1 seluruh baris cetak tepat sama oracle master aktif
+[lulus] F-1 ringkasan, halaman, dan angka per jadwal sama oracle
+[lulus] F-1 batas peserta aktif bertahan saat pagination diganti
+[lulus] Kontrol admin tetap membaca riwayat nonaktif; parameter HTTP tidak memasang pembatas internal
+[lulus] F-1 santri nonaktif disaring: /admin/admin_laporan_absensi.php
+[lulus] F-1 santri nonaktif disaring: /admin/laporan_absensi_cetak.php
+[lulus] F-1 santri nonaktif disaring: /admin/laporan_absensi_detail.php
+[lulus] F-1 santri diarsipkan disaring dari cetak
+[lulus] F-1 pemulihan status aktif langsung terbaca pada sesi sama
+[lulus] F-2 setiap rincian pertemuan menulis audit Keamanan
+[lulus] F-2 cetak kehadiran menulis audit Keamanan
+[lulus] F-2 audit gagal menutup isi dengan 503: /admin/laporan_absensi_detail.php
+[lulus] F-2 audit gagal menutup isi dengan 503: /admin/laporan_absensi_cetak.php
+[lulus] F-2 audit gagal menutup isi dengan 503: /portal/keamanan_izin_detail.php
+[lulus] F-2 audit gagal menutup isi dengan 503: /portal/keamanan_pelanggaran_detail.php
+[lulus] F-2 audit gagal menutup isi dengan 503: /portal/keamanan_konseling_detail.php
+[lulus] F-2 audit gagal menutup isi dengan 503: /portal/keamanan_lampiran.php
+[lulus] POST ditolak 405 pada seluruh 14 rute
+[lulus] PUT ditolak 405 pada seluruh 14 rute
+[lulus] PATCH ditolak 405 pada seluruh 14 rute
+[lulus] DELETE ditolak 405 pada seluruh 14 rute
+[lulus] Penugasan Keamanan tetap berlaku setelah semester nonaktif
+[lulus] Penugasan berakhir menutup seluruh rute pada sesi lama
+[lulus] Server probe tanpa galat PHP (audit gagal dicatat umum)
+Hasil: 26 lulus, 0 gagal.

@@ -1,0 +1,51 @@
+=== P-1 pertemuan baru hanya memuat santri aktif ===
+[lulus] Fixture: dua santri nonaktif/arsip masih punya penempatan kelas Aktif
+[lulus] Web: pertemuan baru hanya memuat santri aktif (nonaktif & arsip tidak ikut)
+[lulus] API: pertemuan baru hanya memuat santri aktif
+
+=== P-2 Nonaktifkan/Arsipkan menutup penempatan kelas ===
+[lulus] Nonaktifkan: penempatan kelas Aktif ditutup
+[lulus] Baris penempatan tetap ada sebagai riwayat (Selesai, tanggal hari ini)
+[lulus] Audit Nonaktifkan memuat ID penempatan yang ditutup
+[lulus] Aktifkan kembali tidak membuka penempatan otomatis
+[lulus] Arsipkan: santri diarsipkan dan penempatan kelas ditutup
+[lulus] Arsipkan tidak menghapus baris penempatan
+
+=== P-3 jumlah anggota Data Kelas ===
+[lulus] Data Kelas C menghitung hanya santri aktif (1), bukan 3 penempatan Aktif
+
+=== P-4 Perbarui daftar peserta (web) ===
+[lulus] Pertemuan gabungan dibuka dengan 3 peserta aktif
+[lulus] Santri baru di kelas pertemuan ditambahkan
+[lulus] Santri yang keluar (tanpa absensi) dikeluarkan
+[lulus] Santri yang sudah berabsensi tetap tercantum
+[lulus] Peserta akhir sesuai; santri kelas C (ditambahkan ke jadwal sesudah dibuka) tidak ikut
+[lulus] Kelas asal peserta baru tersimpan
+[lulus] Absensi yang sudah tercatat tidak dihapus
+[lulus] Pengulangan tidak mengubah apa pun
+[lulus] Audit web mencatat perubahan dan jumlah peserta
+
+=== P-5 hanya Dibuka; guru lain ditolak ===
+[lulus] Pertemuan Draf ditolak
+[lulus] Pertemuan Selesai ditolak (riwayat tidak diubah)
+[lulus] API: pertemuan Selesai ditolak
+[lulus] Web: guru lain tidak dapat memperbarui pertemuan bukan miliknya
+[lulus] API: guru lain ditolak
+[lulus] API: pertemuan tidak ada → tidak ditemukan
+
+=== P-6 API refresh + simpan absensi ===
+[lulus] API participant_changes tepat
+[lulus] API mengembalikan isi pertemuan terbaru (bentuk sama dengan GET)
+[lulus] Simpan dengan daftar lama ditolak (daftar harus sama dengan peserta)
+[lulus] Simpan dengan daftar baru berhasil dan pertemuan selesai
+[lulus] Audit API tercatat
+
+=== P-7 alat rapikan data lama ===
+[lulus] Laporan saja: mendaftar santri tanpa menulis
+[lulus] --terapkan menutup penempatan santri nonaktif dan arsip
+[lulus] Tidak ada lagi santri nonaktif/arsip dengan penempatan Aktif
+[lulus] Audit alat rapikan tercatat per santri
+[lulus] Status santri tidak diubah alat rapikan
+[lulus] Ulangan: tidak ada yang perlu ditutup
+
+Hasil: 36 lulus, 0 gagal

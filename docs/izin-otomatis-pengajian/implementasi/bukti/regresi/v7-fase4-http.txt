@@ -1,0 +1,68 @@
+[lulus] Token API untuk delapan akun (seperti aplikasi)
+[lulus] Fixture V7 tersedia; belum ada pengajuan wali
+
+=== A-A. Akses, buat, idempotensi ===
+[lulus] Akses wali A: wali, boleh mengajukan, bukan petugas
+[lulus] Akses pembimbing, admin, dan murobi sesuai peran server
+[lulus] Daftar anak wali A memuat V7S0001 (pilih anak di aplikasi)
+[lulus] Kirim ulang berkunci sama (retry jaringan/ketukan ganda) → ID sama, replay 200
+[lulus] Tepat satu baris pengajuan wali
+[lulus] Kunci sama isi berbeda → 409 tanpa baris baru
+[lulus] Rentang bertumpang tindih (kunci baru) → 409 berpesan Indonesia
+[lulus] Respons V7 no-store (tidak disimpan cache perangkat/proksi)
+
+=== A-B. Wali kedua, wali asing, pengguna di luar cakupan ===
+[lulus] Wali pengaju: isi + tombol batal; perbaiki belum (belum diminta)
+[lulus] Wali kedua: daftar/rincian ringkas tanpa alasan, catatan, atau tindakan
+[lulus] Wali kedua membatalkan → 403 tanpa perubahan
+[lulus] Wali asing: rincian ditolak (404) tanpa isi
+[lulus] Pembimbing lain: rincian ditolak (404) tanpa isi
+[lulus] Murobi sebelum penerusan: rincian ditolak (404) tanpa isi
+[lulus] ID tebakan → 404
+[lulus] Daftar wali asing tidak memuat pengajuan
+[lulus] Antrean pembimbing lain tidak memuat pengajuan
+[lulus] Antrean murobi V2 belum memuat pengajuan sebelum diteruskan
+[lulus] Pembimbing lain meninjau → 404
+
+=== A-C. Perbaikan, penerusan, keputusan V2 ===
+[lulus] Pembimbing tujuan melihat satu item di antrean
+[lulus] Minta perbaikan diulang → satu tinjauan
+[lulus] Versi lama (layar basi) → 409
+[lulus] Wali pengaju melihat catatan perbaikan dan tombol perbaiki
+[lulus] Wali kedua memperbaiki → 403
+[lulus] Perbaikan diulang → satu versi perbaikan
+[lulus] Teruskan diulang → satu penerusan, ID sama, status Diajukan (murobi tunggal)
+[lulus] V2 murobi: `asal:"Wali"`, dapat memutus, tidak dapat membatalkan
+[lulus] Antrean murobi V2 memuat pengajuan dengan `asal:"Wali"`
+[lulus] Rincian V7 murobi: tindakan putuskan (lewat V2)
+[lulus] Murobi lain → ditolak V2
+[lulus] Ketukan ganda keputusan murobi → satu keputusan efektif
+[lulus] Status sama bagi wali pengaju, wali kedua, murobi, admin, dan basis data
+[lulus] Wali pengaju melihat keputusan murobi; batal tidak lagi ditawarkan
+[lulus] Pembatalan sesudah keputusan → 409, keputusan tetap satu
+
+=== A-D. Routing ambigu, penetapan admin, pembatalan wali ===
+[lulus] Dua kandidat pembimbing → antrean admin
+[lulus] Antrean admin memuat pengajuan; murobi tidak
+[lulus] Admin: tindakan tetapkan pembimbing, dua kandidat sah
+[lulus] Penetapan pengurus bukan pembimbing sah → 422
+[lulus] Wali menetapkan pembimbing → 403
+[lulus] Admin menetapkan pembimbing sah → masuk antrean pembimbing tersebut
+[lulus] Wali pengaju membatalkan; diulang → replay
+[lulus] Pembimbing meneruskan sesudah dibatalkan → 409
+
+=== A-E. Pencabutan hak, notifikasi, asal Pengurus ===
+[lulus] Notifikasi tautan `izin_wali`: wali pengaju (perbaikan/diteruskan/diputus), pembimbing, murobi; wali kedua tidak
+[lulus] Notifikasi tanpa nama santri/alasan; hanya penunjuk tautan
+[lulus] Sebelum pencabutan: pembimbing membuka rincian
+[lulus] Penugasan dicabut → token lama: rincian 404 tanpa isi, tinjauan ditolak
+[lulus] Sebelum pencabutan relasi: wali kedua melihat status ringkas
+[lulus] Relasi wali kedua dicabut → token lama: rincian 404, daftar kosong
+[lulus] Monitor admin V2: setiap item memuat `asal` (Wali dan Pengurus)
+[lulus] Tanpa token/token tidak sah → 401 (aplikasi meminta masuk ulang)
+
+=== A-F. Log server ===
+[lulus] Log server tanpa galat PHP
+[lulus] Log server tanpa alasan izin
+
+Ringkasan: 54 lulus, 0 gagal

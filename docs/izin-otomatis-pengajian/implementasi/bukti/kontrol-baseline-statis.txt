@@ -1,0 +1,34 @@
+[gagal] Lint app/Schedule/IzinPeserta.php
+[lulus] Lint app/Schedule/PesertaPertemuan.php
+[lulus] Lint app/Schedule/ScheduleRepository.php
+[lulus] Lint app/Api/TeacherRepository.php
+[lulus] Lint app/Api/TeacherService.php
+[lulus] Lint app/Report/ReportRepository.php
+[lulus] Lint app/Report/ReportService.php
+[lulus] Lint app/Keamanan/KeamananApiService.php
+[lulus] Lint admin/admin_pengajian.php
+[lulus] Lint admin/_pengajian_pertemuan.php
+[lulus] Lint admin/laporan_absensi_detail.php
+[lulus] Lint tests/izin_otomatis_pengajian_integration.php
+[lulus] Lint tests/izin_otomatis_pengajian_migration.php
+[lulus] Lint tests/izin_otomatis_pengajian_http.php
+[gagal] Migrasi 036 dan rollback berpasangan ada
+[gagal] Dua kolom NULL sesuai rencana §3.2
+[gagal] Kunci asing ke izin_pengajuan
+[lulus] Migrasi aditif: tanpa UPDATE/DELETE/TRUNCATE/INSERT/DROP
+[gagal] Setiap langkah migrasi dijaga information_schema (dapat diulang)
+[lulus] Migrasi/rollback tidak menyentuh absensi_santri atau tabel izin_*
+[gagal] Aturan IP-4: status Disetujui + baris keputusan Disetujui
+[gagal] Aturan IP-2 inklusif; tumpang tindih → ID terbesar
+[gagal] Format keterangan IP-3
+[lulus] Pembantu tidak membaca alasan/catatan/keputusan/pengaju
+[gagal] Hanya peserta belum berabsensi yang diselaraskan
+[lulus] Pembantu tidak menulis baris absensi
+[gagal] selaraskan dipanggil di bekukan (dua jalur) dan perbarui
+[gagal] Kunci izin_* perbarui hanya sesudah 036 (K-7)
+[gagal] REST: kunci aditif izin dan izin_suggested/izin_cleared
+[lulus] saveAttendance tidak memaksa status Izin
+[gagal] Web: keterangan snapshot + label lama untuk pertemuan tanpa usulan
+[lulus] Web tanpa formulir absensi (keputusan R)
+
+Hasil: 19 lulus, 13 gagal
