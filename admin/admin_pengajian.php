@@ -138,6 +138,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($hasil['ditambah'] !== []) { $ubah[] = count($hasil['ditambah']) . ' santri ditambahkan'; }
             if ($hasil['dikeluarkan'] !== []) { $ubah[] = count($hasil['dikeluarkan']) . ' santri dikeluarkan'; }
             if ($hasil['dipertahankan'] !== []) { $ubah[] = count($hasil['dipertahankan']) . ' santri tetap tercantum karena absensinya sudah tercatat'; }
+            // Migrasi 036: jumlah usulan Izin otomatis yang diselaraskan (tanpa isi izin).
+            if (($hasil['izin_diisi'] ?? 0) > 0) { $ubah[] = $hasil['izin_diisi'] . ' usulan izin diisi'; }
+            if (($hasil['izin_dikosongkan'] ?? 0) > 0) { $ubah[] = $hasil['izin_dikosongkan'] . ' usulan izin dihapus'; }
             ah_flash_set('success', $ubah === []
                 ? 'Daftar peserta sudah sesuai dengan penempatan kelas saat ini.'
                 : 'Daftar peserta diperbarui: ' . implode(', ', $ubah) . '.');
@@ -246,8 +249,9 @@ if ($tab === 'jadwal') {
         } catch (App\Api\ApiException) {
             $kehadiran = null;
         }
-        // Keputusan S: santri yang izinnya disetujui pada tanggal pertemuan
-        // hanya diberi label; status kehadiran tidak diisi otomatis.
+        // Keputusan S: label "Sedang izin" dihitung langsung. Revisi S (migrasi
+        // 036): pertemuan yang berusulan menampilkan keterangan beku peserta
+        // (`izin_keterangan`); label ini tetap untuk pertemuan tanpa usulan.
         $labelIzin = izin_service()->approvedCovering(
             array_map(static fn (array $p): int => (int) $p['santri_id'], $selectedMeeting['participants']),
             (string) $selectedMeeting['tanggal_pertemuan']

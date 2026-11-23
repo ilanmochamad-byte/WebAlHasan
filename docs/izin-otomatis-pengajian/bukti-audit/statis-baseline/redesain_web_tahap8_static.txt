@@ -1,0 +1,86 @@
+[lulus] T8-A header.php/footer.php memakai kerangka situs bersama
+[lulus] T8-A tanpa style.css yang hilang dan tanpa pustaka animasi/galeri/tanggal CDN
+[lulus] T8-A warna situs hanya dari token :root (alhasan.css + situs.css)
+[lulus] T8-A tidak ada tautan "#" di halaman publik dan kerangka
+[lulus] T8-A tautan "Masuk" di navbar (AM): Masuk Sistem dan Portal Pendaftar
+[lulus] T8-A bilah pintasan Beranda: PSB, Portal Pendaftar, Cek rapor, Masuk Sistem (AM)
+[lulus] T8-A Profil 6 bagian beralamat sendiri (U-2)
+[lulus] T8-A alamat bersih /profil, /pendidikan; /privacy tetap
+[lulus] T8-A berita berhalaman 12 tanpa status/kategori (AH)
+[lulus] T8-A galeri tanpa album, keterangan tetap (AI), muat 24
+[lulus] T8-A jadwal ngaji per waktu sholat (segmen) dan kartu di HP
+[lulus] T8-A cek keaslian rapor di kerangka situs, CSP/CSRF tetap, tanpa CDN
+[lulus] T8-B tanpa "[Tahun Berdiri]", nomor contoh, atau foto stok
+[lulus] T8-B bahan resmi dikosongkan untuk diisi manual (keputusan butir 1)
+[lulus] T8-B gambar isi resmi hanya berkas lokal yang ada
+[lulus] T8-B bagian Profil kosong menampilkan keadaan kosong jujur, bukan teks contoh
+[lulus] T8-C formulir 4 langkah (P-1)
+[lulus] T8-C jenjang dikelompokkan Unit Al Hasan / Sekolah Mitra (AN)
+[lulus] T8-C RA/MI belum dibuka ditegakkan server (butir 2b)
+[lulus] T8-C MI tidak masuk katalog unit/biaya; biaya MI/RA tidak ditetapkan
+[lulus] T8-C nisn isian teks inputmode numeric
+[lulus] T8-C nik isian teks inputmode numeric
+[lulus] T8-C no_hp_wali isian teks inputmode numeric
+[lulus] T8-C no_hp_wali_ulang isian teks inputmode numeric
+[lulus] T8-C tidak ada type=number di PSB (angka 0 di depan aman)
+[lulus] T8-C persetujuan privasi wajib di peramban dan server, tidak disimpan (AO)
+[lulus] T8-C masuk tetap NISN + No. HP wali, disamarkan (AP)
+[lulus] T8-D unggah per dokumen (P-6)
+[lulus] T8-D pembiayaan tetap di biaya_psb.php, dibuka dari menu Pembiayaan portal (butir 3)
+[lulus] T8-D aturan biaya wajib tetap (AJ), kwitansi di tab yang sama
+[lulus] T8-D katalog dan simpan biaya tidak berubah dari baseline
+[lulus] T8-E bukti dan kwitansi memakai kop dan huruf templat X-1 (P-8)
+[lulus] T8-E penanda tangan tetap (Panitia PSB, Bendahara)
+[lulus] T8-E pratinjau berkas admin lewat lihat_berkas_psb.php (AG)
+[lulus] T8-F tidak berubah dari baseline: app/Psb/PsbAkses.php
+[lulus] T8-F tidak berubah dari baseline: app/Psb/BerkasPsb.php
+[lulus] T8-F tidak berubah dari baseline: app/Psb/PendaftarSesi.php
+[lulus] T8-F tidak berubah dari baseline: lihat_berkas_psb.php
+[lulus] T8-F tidak berubah dari baseline: auth_pendaftar.php
+[gagal] T8-F tidak berubah dari baseline: app/Auth
+[gagal] T8-F tidak berubah dari baseline: app/V4
+[gagal] T8-F tidak berubah dari baseline: database
+[gagal] T8-F tidak berubah dari baseline: api
+[lulus] T8-F tidak berubah dari baseline: portal/rapor_ttd.php
+[lulus] T8-F tidak berubah dari baseline: berkas_psb
+[lulus] T8-F enam berkas pendaftar lama + .htaccess tetap terlacak (tidak dihapus)
+[lulus] T8-F tanpa alert()/confirm() bawaan: psb.php
+[lulus] T8-F tanpa alert()/confirm() bawaan: portal_pendaftar.php
+[lulus] T8-F tanpa alert()/confirm() bawaan: biaya_psb.php
+[lulus] T8-F tanpa alert()/confirm() bawaan: login_pendaftar.php
+[lulus] T8-F tanpa alert()/confirm() bawaan: galeri.php
+[lulus] T8-F tanpa alert()/confirm() bawaan: assets/ui/situs.js
+[lulus] T8-F lint index.php
+[lulus] T8-F lint profil.php
+[lulus] T8-F lint pendidikan.php
+[lulus] T8-F lint berita.php
+[lulus] T8-F lint detail.php
+[lulus] T8-F lint galeri.php
+[lulus] T8-F lint jadwal_ngaji.php
+[lulus] T8-F lint download.php
+[lulus] T8-F lint privacy.php
+[lulus] T8-F lint verifikasi_rapor.php
+[lulus] T8-F lint psb.php
+[lulus] T8-F lint login_pendaftar.php
+[lulus] T8-F lint logout_pendaftar.php
+[lulus] T8-F lint portal_pendaftar.php
+[lulus] T8-F lint biaya_psb.php
+[lulus] T8-F lint cetak_bukti.php
+[lulus] T8-F lint cetak_biaya_psb.php
+[lulus] T8-F lint header.php
+[lulus] T8-F lint footer.php
+[lulus] T8-F lint app/Situs/Kerangka.php
+[lulus] T8-F lint proses_psb.php
+[lulus] T8-F lint proses_upload_berkas.php
+[lulus] T8-F lint app/Situs/IsiSitus.php
+[lulus] T8-F lint app/Situs/isi-situs.php
+[lulus] T8-F lint app/Psb/Jenjang.php
+[lulus] T8-F lint app/Psb/PendaftarData.php
+[lulus] T8-F lint admin/admin_data.php
+[lulus] T8-F sintaks assets/ui/situs.js
+
+Hasil: 76 lulus, 4 gagal
+  - T8-F tidak berubah dari baseline: app/Auth
+  - T8-F tidak berubah dari baseline: app/V4
+  - T8-F tidak berubah dari baseline: database
+  - T8-F tidak berubah dari baseline: api

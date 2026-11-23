@@ -1,0 +1,61 @@
+[lulus] Fixture: ada wali dan pengurus untuk pengajuan sintetis
+=== K-1 / K-2 buka pertemuan (web) ===
+[lulus] K-1 web: izin murobi (asal Pengurus) mulai tepat pada tanggal pertemuan → keterangan persis IP-3
+[lulus] K-1 web: izin admin pengganti (asal Wali) berakhir tepat pada tanggal pertemuan → "admin pengganti"
+[lulus] K-1: izin tumpang tindih memakai ID terbesar
+[lulus] K-2: Diajukan/Perlu Penetapan Admin/tahap pembimbing V7/Ditolak/Ditolak Pembimbing/Dibatalkan → tanpa usulan
+[lulus] K-2: di luar rentang dan warisan tanpa keputusan → tanpa usulan
+[lulus] K-2: izin santri lain tidak menambah atau memengaruhi peserta
+[lulus] Prinsip §3.1: pembukaan tidak menulis baris absensi
+[lulus] K-4: kolom peserta tidak memuat alasan/catatan/keputusan izin
+
+=== K-1 / K-4 buka pertemuan (REST) ===
+[lulus] K-4 REST buka: kunci aditif `izin` {pengajuan_id, keterangan, sampai} persis
+[lulus] K-4 REST: santri tanpa izin → `izin: null`
+[lulus] K-4: kunci lama tetap, `izin` hanya ditambahkan di akhir; belum ada absensi
+[lulus] K-4: payload REST tanpa alasan/catatan/keputusan
+[lulus] K-4 REST rincian GET /meetings/{id} memuat `izin` yang sama
+
+=== K-5 (server) status tidak dipaksa; K-6 rekap ===
+[lulus] K-5: guru mengubah santri izin menjadi Hadir → tersimpan Hadir (server tidak memaksa Izin)
+[lulus] Respons simpan tetap memuat `izin` (usulan beku tidak dihapus)
+[lulus] K-4: audit simpan absensi tanpa isi izin
+
+=== K-3 perbarui daftar peserta (web) ===
+[lulus] K-3: izin dibatalkan → usulan peserta belum berabsensi dikosongkan
+[lulus] K-3: izin baru disetujui → usulan diisi
+[lulus] K-3: peserta yang sudah berabsensi tidak diubah walau izinnya dibatalkan
+[lulus] K-3: usulan yang tetap berlaku tidak berubah
+[lulus] K-3: hasil perbarui memuat jumlah usulan diisi/dikosongkan
+[lulus] K-3/K-4: audit perbarui hanya jumlah, tanpa isi/keterangan izin
+[lulus] K-3: perbarui ulang tanpa perubahan
+
+=== K-3 perbarui (REST) dan pertemuan Selesai ===
+[lulus] K-3 REST: participant_changes memuat izin_suggested/izin_cleared
+[lulus] K-3 REST: respons perbarui memuat usulan terbaru
+[lulus] K-3: pertemuan Selesai tidak diperbarui (409) dan usulannya tetap
+[lulus] K-3 web: pertemuan Selesai ditolak, usulan tetap
+
+=== K-3 dua urutan kunci perbarui ↔ simpan absensi (proses terpisah) ===
+[lulus] Fixture urutan A: usulan terisi saat dibuka
+[lulus] Proses kedua siap
+[lulus] Proses kedua menunggu kunci pertemuan
+[lulus] Urutan A: perbarui menunggu lalu ditolak 409 sesudah simpan
+[lulus] Urutan A: status guru (Hadir) tersimpan; usulan beku tidak berubah
+[lulus] Fixture urutan B: belum ada usulan saat dibuka
+[lulus] Proses kedua siap
+[lulus] Proses kedua menunggu kunci pertemuan
+[lulus] Urutan B: simpan menunggu perbarui, lalu 200
+[lulus] Urutan B: status Izin tersimpan dan usulan tetap
+
+=== K-6 rekap kehadiran rapor V4 dan laporan ===
+[lulus] K-6 rapor V4: Izin hasil usulan yang disimpan terhitung Izin; yang diubah guru terhitung Hadir
+[lulus] K-6 rapor V4: santri yang usulannya diubah guru ke Hadir terhitung Hadir
+[lulus] K-6 laporan: baris santri izin berstatus Izin, santri lain Hadir
+[lulus] K-6 rincian laporan: hitungan Izin 1 dan keterangan usulan tersedia
+
+=== K-4 log server tanpa isi izin ===
+[lulus] K-4: log PHP/aplikasi tidak memuat alasan izin
+[lulus] K-4: tidak ada audit yang memuat isi izin
+
+Hasil: 44 lulus, 0 gagal

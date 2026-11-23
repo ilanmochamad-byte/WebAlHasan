@@ -1,0 +1,49 @@
+[lulus] Server: pertemuan dibuka dengan usulan izin beku
+=== A-1 draf awal dan penanda pada 1280/768/375 ===
+[lulus] 1280px: santri izin murobi terisi "Izin" + keterangan IP-3
+[lulus] 1280px: santri izin admin pengganti terisi "Izin" + keterangan
+[lulus] 1280px: santri tanpa izin tetap "Hadir"
+[lulus] 1280px: penanda "Izin s.d. 23 Des" terlihat
+[lulus] 1280px: tanpa luapan horizontal
+[lulus] 768px: santri izin murobi terisi "Izin" + keterangan IP-3
+[lulus] 768px: santri izin admin pengganti terisi "Izin" + keterangan
+[lulus] 768px: santri tanpa izin tetap "Hadir"
+[lulus] 768px: penanda "Izin s.d. 23 Des" terlihat
+[lulus] 768px: tanpa luapan horizontal
+[lulus] 375px: santri izin murobi terisi "Izin" + keterangan IP-3
+[lulus] 375px: santri izin admin pengganti terisi "Izin" + keterangan
+[lulus] 375px: santri tanpa izin tetap "Hadir"
+[lulus] 375px: penanda "Izin s.d. 23 Des" terlihat
+[lulus] 375px: tanpa luapan horizontal
+
+=== A-2 "Semua hadir" melewati santri izin ===
+[lulus] Tombol "Semua hadir (3)": 5 peserta − 2 izin
+[lulus] Teks penjelas menyebut 2 santri izin yang dilewati
+[lulus] "Semua hadir": santri lain menjadi Hadir, santri izin tetap Izin
+
+=== A-3 guru mengubah status santri izin ===
+[lulus] Ubah ke Hadir: catatan izin otomatis dikosongkan
+[lulus] Penanda izin tetap tampil walau status diubah
+[lulus] Catatan yang sudah diedit guru dipertahankan saat status diubah
+
+=== A-4 Perbarui daftar mengikuti usulan terbaru ===
+[lulus] Santri yang belum diubah guru mengikuti izin baru (Izin + keterangan)
+[lulus] Isian yang diubah guru tidak ditimpa
+[lulus] Tombol mengikuti jumlah izin terbaru: "Semua hadir (2)"
+
+=== A-5 kirim dengan ketukan ganda ===
+[lulus] Ketukan ganda → satu PUT, satu penyimpanan
+[lulus] DB: status pilihan guru tersimpan (Hadir/Izin)
+[lulus] DB: catatan Izin = keterangan IP-3
+[lulus] Payload dan layar tanpa alasan/catatan/keputusan izin
+
+=== A-6 rincian laporan dan Keamanan ===
+[lulus] Rincian laporan guru menampilkan keterangan izin
+[lulus] Keamanan: penanda + keterangan, tanpa isi izin
+
+=== A-7 server lama tanpa kunci izin ===
+[lulus] Respons tanpa `izin`: draf Hadir dan "Semua hadir" seluruh peserta (perilaku lama)
+[lulus] Tanpa galat halaman
+[lulus] Tanpa permintaan ke host selain 127.0.0.1
+
+Hasil: 34 lulus, 0 gagal

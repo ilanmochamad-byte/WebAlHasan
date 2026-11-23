@@ -346,7 +346,10 @@ final class KeamananApiService
         }
         $izin = $this->izin->approvedCovering(array_map(static fn (array $s): int => (int) $s['student_id'], $meeting['students']), (string) $meeting['date']);
         $meeting['students'] = array_map(static fn (array $s): array => $s + [
-            'izin_id' => isset($izin[(int) $s['student_id']]) ? (int) $izin[(int) $s['student_id']]['id'] : null,
+            // Usulan beku (migrasi 036) diutamakan; label dihitung tetap untuk pertemuan tanpa usulan.
+            'izin_id' => ($s['izin'] ?? null) !== null
+                ? (int) $s['izin']['pengajuan_id']
+                : (isset($izin[(int) $s['student_id']]) ? (int) $izin[(int) $s['student_id']]['id'] : null),
         ], $meeting['students']);
         $meeting['cetak_web'] = '/admin/laporan_absensi_detail.php?id=' . $id;
 

@@ -1,0 +1,46 @@
+[lulus] H-1 K: grup menu Keamanan (kehadiran, perizinan, pembinaan) pada peran Pengurus
+[lulus] H-1 N tanpa penugasan: tanpa menu Keamanan
+[lulus] H-1 admin: peta menu admin tidak berubah (tanpa Keamanan)
+[lulus] H-2 daftar izin: baris wali, tanpa formulir POST, cetak tanpa CSV, tanpa alasan di daftar
+[lulus] H-2 saringan asal/tahap bekerja
+[lulus] H-2 saringan tidak valid: pesan + daftar tanpa saringan
+[lulus] H-2 rincian izin wali: alasan dan catatan lengkap, tanpa tombol tindakan
+[lulus] H-2 rincian izin pengurus: keputusan dan riwayat
+[lulus] H-2 rincian santri nonaktif dan ID tidak ada → 404
+[lulus] H-2 POST /portal/keamanan_izin.php → 405
+[lulus] H-2 POST /portal/keamanan_izin_detail.php?id=2706 → 405
+[lulus] H-2 POST /portal/keamanan_pelanggaran.php → 405
+[lulus] H-2 POST /portal/keamanan_konseling_detail.php?id=1 → 405
+[lulus] H-2 N dan admin (tanpa penugasan Keamanan sendiri) → 403
+[lulus] H-2 cetak izin 200, memuat baris saringan, dan tercatat di audit
+[lulus] H-2 parameter peran=keamanan tidak membuka ekspor CSV cakupan Keamanan (jatuh ke cakupan Pengurus milik akun)
+[lulus] H-3 daftar pelanggaran: tanpa formulir/Catat; santri nonaktif tidak muncul
+[lulus] H-3 rincian pelanggaran bertaut Rahasia: tautan kasus tidak tampil; tanpa tindakan
+[lulus] H-3 rincian pelanggaran bertaut Internal: tautan kasus tampil
+[lulus] H-3 pelanggaran santri nonaktif → 404
+[lulus] H-3 cetak pelanggaran 200
+[lulus] H-3 lampiran pelanggaran terunduh
+[lulus] H-3 lampiran tidak ada → 404; N → 403
+[lulus] H-4 daftar konseling: Internal tampil, Rahasia tidak
+[lulus] H-4 rincian dan cetak kasus Rahasia → 404 (keberadaan tidak bocor)
+[lulus] H-4 rincian kasus Internal: tujuan lengkap, tanpa formulir
+[lulus] H-4 cetak kasus Internal 200
+[lulus] H-5 K: laporan kehadiran seluruh jadwal, Cetak tanpa tombol CSV
+[lulus] H-5 K: ekspor CSV kehadiran → 403 (PK-T2)
+[lulus] H-5 K: cetak kehadiran 200
+[lulus] H-5 K: POST laporan kehadiran → 405
+[lulus] H-5 N tanpa penugasan: laporan kehadiran → 403
+[lulus] H-5 kontrol: Bagian Pendidikan tetap dapat mengekspor CSV
+[lulus] H-6 G pada peran Guru: halaman Keamanan menawarkan "Buka sebagai Pengurus"
+[lulus] H-6 G pada peran Guru: laporan kehadiran tetap jadwal sendiri dan CSV
+[lulus] H-6 G pada peran Pengurus: halaman Keamanan 200
+[lulus] H-6 G pada peran Pengurus: kehadiran seluruh jadwal tanpa CSV
+[lulus] H-6 G pada peran Pengurus: ekspor CSV → 403
+[lulus] H-7 halaman pembinaan biasa tetap menolak K
+[lulus] H-7 rincian izin V7/V2 biasa tetap menolak K (Keamanan memakai rinciannya sendiri)
+[lulus] H-8 pusat penugasan: jenis Keamanan, cakupan seluruh santri aktif, dua penugasan aktif
+[lulus] H-8 Keamanan tidak berada di kelompok "modul mendatang"
+[lulus] H-9 jejak audit Keamanan tanpa alasan/uraian/tujuan
+[lulus] H-9 log server tanpa galat PHP
+
+Hasil: 44 lulus, 0 gagal.

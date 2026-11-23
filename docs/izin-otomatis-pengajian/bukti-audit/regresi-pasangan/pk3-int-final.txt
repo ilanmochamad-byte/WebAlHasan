@@ -1,0 +1,47 @@
+[lulus] I-1 jenis Keamanan: seluruh santri aktif, tidak gugur semester, subjek pengurus, satu capability baca
+[lulus] I-1 K (pengurus biasa) memegang keamanan.pantau dari penugasan sendiri
+[lulus] I-1 G (guru) memperoleh peran pengurus dan Keamanan lewat identitas pengurus miliknya (PK-1/PK-3)
+[lulus] I-1 N (pengurus tanpa penugasan Keamanan) tidak sah
+[lulus] I-1 admin hanya memegang pengawasan (sumber admin), tidak membuka mode Keamanan
+[lulus] I-1 daftar kemampuan perizinan V2 (`forUser`) tidak berubah bentuk
+[lulus] I-2 total daftar dan kartu = oracle SQL santri aktif (1040 = 1040)
+[lulus] I-2 memuat izin asal Wali (tahap pembimbing) dan Pengurus; izin santri nonaktif tidak
+[lulus] I-2 cetak memuat seluruh baris kriteria yang sama dengan daftar
+[lulus] I-2 baris menunjuk rincian Keamanan; daftar tanpa alasan izin
+[lulus] I-2 saringan asal/tahap mempersempit di dalam cakupan Keamanan
+[lulus] I-3 rincian wali: alasan, catatan wali, dan riwayat lengkap (PK-T4)
+[lulus] I-3 rincian pengurus: keputusan, status, tanggal keluar/kembali
+[lulus] I-3 setiap pembukaan rincian diaudit dengan ID/asal/status saja, tanpa alasan
+[lulus] I-3 izin santri nonaktif dan ID tidak ada sama-sama 404
+[lulus] I-3 N dan admin (tanpa penugasan sendiri) ditolak 403 pada rincian Keamanan
+Audit log gagal disimpan.
+[lulus] I-3 audit gagal disimpan → 503, rincian tidak dikembalikan
+[lulus] I-4 daftar pelanggaran = oracle SQL santri aktif; santri nonaktif tidak muncul
+[lulus] I-4 angka chip = total daftar
+[lulus] I-4 pelanggaran bertaut kasus Rahasia: Keamanan tidak melihat tautannya (admin melihat)
+[lulus] I-4 pelanggaran bertaut kasus Internal: tautan dan uraian lengkap terbaca (PK-T4)
+[lulus] I-4 pembukaan rincian diaudit; pelanggaran santri nonaktif ditolak
+[lulus] I-4 jejak audit Keamanan tidak memuat uraian pelanggaran
+[lulus] I-5 daftar dan angka chip konseling tanpa kasus Rahasia (= oracle SQL)
+[lulus] I-5 pencarian nama santri kasus Rahasia tidak memunculkan kasus itu
+[lulus] I-5 rincian kasus Rahasia dan ID tidak ada diperlakukan sama
+[lulus] I-5 kasus Internal terbaca lengkap; satu pembukaan = satu jejak audit (timeline memakai detail yang sama)
+[lulus] I-6 lampiran pelanggaran terbaca dan unduhannya diaudit
+[lulus] I-7 ekspor CSV izin ditolak bagi Keamanan (PK-T2)
+[lulus] I-7 Keamanan tidak dapat mencatat pelanggaran (dengan maupun tanpa penanda)
+[lulus] I-7 Keamanan tidak dapat membuka kasus konseling
+[lulus] I-7 Keamanan tidak dapat menandai mengetahui
+[lulus] I-7 Keamanan tidak dapat meninjau pengajuan wali (ditolak 403/404)
+[lulus] I-7 tidak ada baris pembinaan/izin yang berubah
+[lulus] I-8 penanda Keamanan pada akun tanpa penugasan (N, admin) ditolak di layanan
+[lulus] I-8 parameter `peran=keamanan` tanpa penanda diabaikan
+[lulus] I-8 halaman pembinaan biasa tetap menolak K (hak tidak melebar)
+[lulus] I-9 penugasan dinonaktifkan: hak gugur pada pemeriksaan berikutnya (daftar, rincian, V3)
+[lulus] I-9 diaktifkan lagi: hak pulih
+[lulus] I-9 data guru G nonaktif: Keamanan lewat identitas guru gugur walau sinkronisasi terlewat
+[lulus] I-9 data guru G aktif lagi: hak pulih
+[lulus] I-10 pusat penugasan memuat dua penugasan Keamanan aktif; jenis bukan modul mendatang
+[lulus] I-10 Keamanan tampil sebelum kelompok modul mendatang dan berlabel
+[lulus] I-10 hak efektif subjek K menyebut keamanan.pantau
+
+Hasil: 44 lulus, 0 gagal.

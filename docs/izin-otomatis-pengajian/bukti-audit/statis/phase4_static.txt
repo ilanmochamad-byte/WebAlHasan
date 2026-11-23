@@ -1,0 +1,38 @@
+[lulus] Kontrak API mendokumentasikan POST /api/v1/auth/login
+[lulus] Kontrak API mendokumentasikan GET /api/v1/profile
+[lulus] Kontrak API mendokumentasikan POST /api/v1/auth/logout
+[lulus] Kontrak API mendokumentasikan GET /api/v1/schedules/today
+[lulus] Kontrak API mendokumentasikan GET /api/v1/schedules
+[lulus] Kontrak API mendokumentasikan POST /api/v1/schedules/{schedule_id}/meetings
+[lulus] Kontrak API mendokumentasikan GET /api/v1/meetings/{meeting_id}
+[lulus] Kontrak API mendokumentasikan PUT /api/v1/meetings/{meeting_id}/attendance
+[lulus] Kontrak API mendokumentasikan pagination
+[lulus] Kontrak API mendokumentasikan 401
+[lulus] Kontrak API mendokumentasikan 403
+[lulus] Kontrak API mendokumentasikan 409
+[lulus] Kontrak API mendokumentasikan 422
+[lulus] Migrasi Fase 4 memuat CREATE TABLE absensi_guru
+[lulus] Migrasi Fase 4 memuat CREATE TABLE absensi_santri
+[lulus] Migrasi Fase 4 memuat CREATE TABLE api_idempotency_keys
+[lulus] Migrasi Fase 4 memuat absensi_guru_meeting_teacher_unique
+[lulus] Migrasi Fase 4 memuat absensi_santri_meeting_student_unique
+[lulus] Migrasi Fase 4 memuat api_idempotency_user_key_unique
+[lulus] Migrasi naik Fase 4 tidak menghapus tabel, kolom, atau baris lama
+[lulus] Rollback Fase 4 memperingatkan risiko produksi
+[lulus] Bearer token acak dan hanya dicocokkan melalui hash HMAC
+[lulus] Profil dan response API tidak mengembalikan hash token
+[lulus] Password salah dan akun nonaktif memakai kegagalan generik
+[lulus] Logout mencabut token dan autentikasi menolak token tercabut
+[lulus] Service menerapkan kepemilikan jadwal dengan pengecualian admin
+[lulus] Pembukaan pertemuan dan penyimpanan absensi memakai transaksi
+[lulus] Pembukaan dan absensi memakai idempotency key persisten
+[lulus] Koreksi memperbarui baris yang sama dan mewajibkan alasan
+[lulus] Daftar absensi wajib sama persis dengan snapshot peserta
+[lulus] Router API memuat route /auth/login
+[lulus] Router API memuat route /auth/logout
+[lulus] Router API memuat route /profile
+[lulus] Router API memuat route /schedules/today
+[lulus] Router API memuat route /meetings
+[lulus] Router API memuat route /attendance
+[lulus] Secret token dan TTL dikonfigurasi melalui environment
+[lulus] Backup SQL mengecualikan generated column dan menulis daftar kolom eksplisit

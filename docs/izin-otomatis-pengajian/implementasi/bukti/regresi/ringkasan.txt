@@ -1,0 +1,37 @@
+== Kelas gabungan Fase 1 ==
+jkg-integrasi exit=0 71/0
+jkg-http exit=0 32/0
+jkg-probe-audit exit=2 0/1
+jkg-migrasi exit=1 0/3
+== Perbaikan peserta absensi ==
+ppa-integrasi exit=1 35/1
+ppa-konkurensi exit=0 8/0
+ppa-probe-audit exit=0 11/0
+== Pencarian santri ==
+pcs-http exit=0 26/0
+pcs-probe-audit exit=0 15/0 (diulang dengan seed Keamanan dan DB_NAME; lihat README)
+== Keamanan Fase 3/4 ==
+pk-fase3-integrasi exit=0 44/0
+pk-fase3-http exit=0 44/0
+pk-fase3-probe-audit exit=0 26/0
+pk-fase4-http exit=0 66/0
+== Izin V7 Fase 1–5 dan V2 ==
+v7-fase5-e2e exit=1 82/1
+v7-fase5-http exit=0 40/0
+v7-fase4-http exit=0 54/0
+v7-fase3-integrasi exit=0 112/0
+v7-fase2-integrasi exit=0 119/0
+v7-fase1-integrasi exit=1 73/2
+v2-fase4-integrasi exit=0 124/0
+v2-fase5-integrasi exit=0 145/0
+v2-fase1-integrasi exit=0 39/0
+v2-fase2-integrasi exit=0 94/0
+== V1 pengajian/laporan, redesain HTTP Tahap 4 (kehadiran & cetak) dan Tahap 7 (rapor V4) ==
+v1-fase3-integrasi exit=0 10/0
+v1-fase4-integrasi exit=0 14/0
+v1-fase5-integrasi exit=0 20/0
+redesain-tahap4-http exit=0 132/0
+redesain-tahap7-http exit=0 122/0
+== Statis (seluruh suite) ==
+(Suite statis dari pohon kerja tidak dipakai: arsip baseline bukan repo Git dan pohon kerja belum ber-commit. Perbandingan statis yang sah: ../statis-klon-baseline-044b0e7.txt vs ../statis-klon-head-3e6592a.txt.)
+SELESAI

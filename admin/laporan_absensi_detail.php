@@ -64,7 +64,7 @@ ah_page_open([
                 <?php foreach ($meeting['students'] as $student): $izin = $labelIzin[(int) $student['student_id']] ?? null; ?>
                     <tr>
                         <td><?= ah_e($student['nis']) ?></td>
-                        <td><?= ah_e($student['name']) ?><?php if ($izin !== null): ?><span class="ah-cell-sub"><?= ah_badge('Sedang izin #' . $izin['id'], 'info') ?></span><?php endif; ?></td>
+                        <td><?= ah_e($student['name']) ?><?php if (($student['izin'] ?? null) !== null): ?><span class="ah-cell-sub" data-izin-usulan><?= ah_badge((string) $student['izin']['keterangan'], 'info') ?></span><?php elseif ($izin !== null): ?><span class="ah-cell-sub"><?= ah_badge('Sedang izin #' . $izin['id'], 'info') ?></span><?php endif; ?></td>
                         <?php if ($banyakKelas): ?><td><?= ah_e($student['class']['name'] ?? '') ?></td><?php endif; ?>
                         <td><?= $student['status'] === null ? ah_badge('Belum dicatat', 'muted') : ah_status((string) $student['status']) ?></td>
                         <td class="ah-col-secondary"><?= ah_e($student['notes'] ?? '—') ?></td>

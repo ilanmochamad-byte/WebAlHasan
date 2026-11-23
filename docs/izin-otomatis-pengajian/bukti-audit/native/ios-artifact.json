@@ -1,0 +1,10 @@
+{
+  "configuration": "Release",
+  "architecture": "arm64",
+  "simulator": "iPhone 17 Pro iOS 27.2",
+  "version": "1.11.0",
+  "signing": "ad-hoc, empty simulator entitlement dictionary (successful run)",
+  "bundle_sha256": "f48992645edca7023c54d3c2156ed092aa11af0df37b53cfcd3d77159e8f4de6",
+  "bundle_bytes": 4080320,
+  "api_local_count": 1
+}

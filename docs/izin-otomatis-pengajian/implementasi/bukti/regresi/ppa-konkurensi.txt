@@ -1,0 +1,9 @@
+[lulus] Proses kedua siap mencoba transaksi
+[lulus] Proses kedua menunggu kunci pertemuan
+[lulus] Simpan lebih dahulu: refresh menunggu lalu ditolak 409
+[lulus] Seluruh absensi tetap tersimpan
+[lulus] Proses kedua siap mencoba transaksi
+[lulus] Proses kedua menunggu kunci pertemuan
+[lulus] Refresh lebih dahulu: simpan daftar lama ditolak 422 setelah menunggu
+[lulus] Peserta berubah dan penulisan absensi lama rollback utuh
+Hasil: 8 lulus, 0 gagal

@@ -1,0 +1,582 @@
+[
+  {
+    "suite": "alumni_static",
+    "baseline": [
+      180,
+      0
+    ],
+    "final": [
+      180,
+      0
+    ]
+  },
+  {
+    "suite": "get_mutasi_v1_static",
+    "baseline": [
+      28,
+      0
+    ],
+    "final": [
+      28,
+      0
+    ]
+  },
+  {
+    "suite": "izin_otomatis_pengajian_static",
+    "baseline": null,
+    "final": [
+      32,
+      0
+    ]
+  },
+  {
+    "suite": "jadwal_kelas_gabungan_f1_static",
+    "baseline": [
+      44,
+      3
+    ],
+    "final": [
+      44,
+      3
+    ]
+  },
+  {
+    "suite": "keamanan_psb_static",
+    "baseline": [
+      82,
+      1
+    ],
+    "final": [
+      82,
+      1
+    ]
+  },
+  {
+    "suite": "kredensial_static",
+    "baseline": [
+      105,
+      0
+    ],
+    "final": [
+      105,
+      0
+    ]
+  },
+  {
+    "suite": "navigasi_ikon_static",
+    "baseline": [
+      37,
+      0
+    ],
+    "final": [
+      37,
+      0
+    ]
+  },
+  {
+    "suite": "penempatan_static",
+    "baseline": [
+      138,
+      0
+    ],
+    "final": [
+      138,
+      0
+    ]
+  },
+  {
+    "suite": "penugasan_keamanan_f1_static",
+    "baseline": [
+      173,
+      4
+    ],
+    "final": [
+      179,
+      4
+    ]
+  },
+  {
+    "suite": "penugasan_keamanan_f2_static",
+    "baseline": [
+      158,
+      2
+    ],
+    "final": [
+      164,
+      2
+    ]
+  },
+  {
+    "suite": "penugasan_keamanan_f3_static",
+    "baseline": [
+      143,
+      3
+    ],
+    "final": [
+      149,
+      3
+    ]
+  },
+  {
+    "suite": "penugasan_keamanan_f4_static",
+    "baseline": [
+      101,
+      4
+    ],
+    "final": [
+      107,
+      4
+    ]
+  },
+  {
+    "suite": "penugasan_keamanan_f5_static",
+    "baseline": [
+      32,
+      4
+    ],
+    "final": [
+      32,
+      4
+    ]
+  },
+  {
+    "suite": "penugasan_static",
+    "baseline": [
+      285,
+      2
+    ],
+    "final": [
+      285,
+      2
+    ]
+  },
+  {
+    "suite": "perapihan_static",
+    "baseline": [
+      131,
+      0
+    ],
+    "final": [
+      131,
+      0
+    ]
+  },
+  {
+    "suite": "phase1_static",
+    "baseline": [
+      81,
+      0
+    ],
+    "final": [
+      81,
+      0
+    ]
+  },
+  {
+    "suite": "phase2_static",
+    "baseline": [
+      46,
+      0
+    ],
+    "final": [
+      46,
+      0
+    ]
+  },
+  {
+    "suite": "phase3_static",
+    "baseline": [
+      34,
+      1
+    ],
+    "final": [
+      34,
+      1
+    ]
+  },
+  {
+    "suite": "phase4_static",
+    "baseline": [
+      38,
+      0
+    ],
+    "final": [
+      38,
+      0
+    ]
+  },
+  {
+    "suite": "phase5_static",
+    "baseline": [
+      41,
+      3
+    ],
+    "final": [
+      41,
+      3
+    ]
+  },
+  {
+    "suite": "profil_impor_f1_static",
+    "baseline": [
+      71,
+      0
+    ],
+    "final": [
+      69,
+      2
+    ]
+  },
+  {
+    "suite": "redesain_web_tahap1_static",
+    "baseline": [
+      69,
+      0
+    ],
+    "final": [
+      69,
+      0
+    ]
+  },
+  {
+    "suite": "redesain_web_tahap2_static",
+    "baseline": [
+      120,
+      1
+    ],
+    "final": [
+      120,
+      1
+    ]
+  },
+  {
+    "suite": "redesain_web_tahap3_static",
+    "baseline": [
+      151,
+      1
+    ],
+    "final": [
+      151,
+      1
+    ]
+  },
+  {
+    "suite": "redesain_web_tahap4_static",
+    "baseline": [
+      94,
+      2
+    ],
+    "final": [
+      94,
+      2
+    ]
+  },
+  {
+    "suite": "redesain_web_tahap5_static",
+    "baseline": [
+      96,
+      0
+    ],
+    "final": [
+      96,
+      0
+    ]
+  },
+  {
+    "suite": "redesain_web_tahap6_static",
+    "baseline": [
+      140,
+      1
+    ],
+    "final": [
+      140,
+      1
+    ]
+  },
+  {
+    "suite": "redesain_web_tahap7_static",
+    "baseline": [
+      96,
+      6
+    ],
+    "final": [
+      96,
+      6
+    ]
+  },
+  {
+    "suite": "redesain_web_tahap8_static",
+    "baseline": [
+      76,
+      4
+    ],
+    "final": [
+      76,
+      4
+    ]
+  },
+  {
+    "suite": "v2_phase1_static",
+    "baseline": [
+      126,
+      0
+    ],
+    "final": [
+      126,
+      0
+    ]
+  },
+  {
+    "suite": "v2_phase2_static",
+    "baseline": [
+      173,
+      1
+    ],
+    "final": [
+      173,
+      1
+    ]
+  },
+  {
+    "suite": "v2_phase3_static",
+    "baseline": [
+      97,
+      1
+    ],
+    "final": [
+      97,
+      1
+    ]
+  },
+  {
+    "suite": "v2_phase4_static",
+    "baseline": [
+      247,
+      1
+    ],
+    "final": [
+      247,
+      1
+    ]
+  },
+  {
+    "suite": "v2_phase5_static",
+    "baseline": [
+      310,
+      0
+    ],
+    "final": [
+      310,
+      0
+    ]
+  },
+  {
+    "suite": "v3_phase1_static",
+    "baseline": [
+      15,
+      0
+    ],
+    "final": [
+      15,
+      0
+    ]
+  },
+  {
+    "suite": "v3_phase2_static",
+    "baseline": [
+      0,
+      0
+    ],
+    "final": [
+      0,
+      0
+    ]
+  },
+  {
+    "suite": "v3_phase3_static",
+    "baseline": [
+      0,
+      0
+    ],
+    "final": [
+      0,
+      0
+    ]
+  },
+  {
+    "suite": "v3_phase4_static",
+    "baseline": [
+      18,
+      0
+    ],
+    "final": [
+      18,
+      0
+    ]
+  },
+  {
+    "suite": "v5_phase1_static",
+    "baseline": [
+      44,
+      4
+    ],
+    "final": [
+      44,
+      4
+    ]
+  },
+  {
+    "suite": "v5_phase2_static",
+    "baseline": [
+      61,
+      2
+    ],
+    "final": [
+      61,
+      2
+    ]
+  },
+  {
+    "suite": "v5_phase3_static",
+    "baseline": [
+      68,
+      3
+    ],
+    "final": [
+      68,
+      3
+    ]
+  },
+  {
+    "suite": "v5_phase5_static",
+    "baseline": [
+      57,
+      1
+    ],
+    "final": [
+      57,
+      1
+    ]
+  },
+  {
+    "suite": "v6_phase1_static",
+    "baseline": [
+      69,
+      6
+    ],
+    "final": [
+      69,
+      6
+    ]
+  },
+  {
+    "suite": "v6_phase2_static",
+    "baseline": [
+      55,
+      7
+    ],
+    "final": [
+      55,
+      7
+    ]
+  },
+  {
+    "suite": "v6_phase3_static",
+    "baseline": [
+      53,
+      4
+    ],
+    "final": [
+      53,
+      4
+    ]
+  },
+  {
+    "suite": "v6_phase4_static",
+    "baseline": [
+      19,
+      3
+    ],
+    "final": [
+      19,
+      3
+    ]
+  },
+  {
+    "suite": "v6_phase5_static",
+    "baseline": [
+      63,
+      11
+    ],
+    "final": [
+      63,
+      11
+    ]
+  },
+  {
+    "suite": "v6_tagihan_satu_santri_static",
+    "baseline": [
+      18,
+      6
+    ],
+    "final": [
+      18,
+      6
+    ]
+  },
+  {
+    "suite": "v7_phase1_static",
+    "baseline": [
+      44,
+      5
+    ],
+    "final": [
+      44,
+      5
+    ]
+  },
+  {
+    "suite": "v7_phase2_static",
+    "baseline": [
+      50,
+      4
+    ],
+    "final": [
+      50,
+      4
+    ]
+  },
+  {
+    "suite": "v7_phase3_static",
+    "baseline": [
+      41,
+      3
+    ],
+    "final": [
+      41,
+      3
+    ]
+  },
+  {
+    "suite": "v7_phase4_static",
+    "baseline": [
+      22,
+      9
+    ],
+    "final": [
+      22,
+      9
+    ]
+  },
+  {
+    "suite": "v7_phase5_static",
+    "baseline": [
+      49,
+      7
+    ],
+    "final": [
+      49,
+      7
+    ]
+  }
+]

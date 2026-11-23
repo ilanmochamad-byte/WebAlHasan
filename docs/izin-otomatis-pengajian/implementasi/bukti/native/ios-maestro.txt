@@ -1,0 +1,41 @@
+Running on iPhone 17 Pro - iOS 27.2 - D0478170-2B0A-4DC8-B670-7568C3096919
+ > Flow absensi-izin
+Run ../redesain-v2-fase2/masuk.yaml...
+  Launch app "com.ilanmochamad.alhasanApps" with clear state and clear keychain... COMPLETED
+  Assert that "Alhasan Apps" is visible... COMPLETED
+  Scrolling DOWN until "Masukkan username" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan username"... COMPLETED
+  Input text ${AKUN}... COMPLETED
+  Scrolling DOWN until "Masukkan password" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan password"... COMPLETED
+  Input text ${SANDI}... COMPLETED
+  Press Enter key... COMPLETED
+  Assert that ".*Buka profil|Not Now" is visible... COMPLETED
+  Run flow when "Not Now" is visible...
+    Tap on "Not Now"... COMPLETED
+  Run flow when "Not Now" is visible... COMPLETED
+  Assert that ".*Buka profil" is visible... COMPLETED
+Run ../redesain-v2-fase2/masuk.yaml... COMPLETED
+Open alhasanapps://meeting/${MEETING}... COMPLETED
+Assert that "Santri · 2 orang" is visible... COMPLETED
+Assert that "Izin: 1" is visible... COMPLETED
+Assert that "Hadir: 1" is visible... COMPLETED
+Scrolling DOWN until "Semua hadir \(1\)" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+Scrolling DOWN until "${LABEL}.*" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+Take screenshot ${PLATFORM}-iop-draf-izin... COMPLETED
+Tap on "Hadir", Below "${LABEL}.*"... COMPLETED
+Take screenshot ${PLATFORM}-iop-diubah-hadir-kartu... COMPLETED
+Scrolling UP until "Hadir: 2" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+Assert that "Izin: 0" is visible... COMPLETED
+Scrolling DOWN until "${LABEL}.*" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+Take screenshot ${PLATFORM}-iop-diubah-hadir... COMPLETED
+Scrolling DOWN until "Kirim absensi" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+Tap on "Kirim absensi"... COMPLETED
+Assert that "Simpan|SIMPAN" is visible... COMPLETED
+Tap on "Simpan|SIMPAN"... COMPLETED
+Scrolling DOWN until "Absensi berhasil disimpan.*" is visible with speed 40, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Take screenshot ${PLATFORM}-iop-tersimpan... COMPLETED
+Open alhasanapps://report/${MEETING}... COMPLETED
+Assert that "Peserta \(2/2\)" is visible... COMPLETED
+Scrolling DOWN until "Usulan izin: .*" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+Take screenshot ${PLATFORM}-iop-laporan... COMPLETED

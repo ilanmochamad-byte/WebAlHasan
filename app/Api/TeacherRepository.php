@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Api;
 
 use App\Schedule\KelasJadwal;
+use App\Schedule\IzinPeserta;
 use App\Schedule\PesertaPertemuan;
 use App\Schedule\ScheduleException;
 use mysqli;
@@ -102,7 +103,7 @@ final class TeacherRepository
         }
     }
 
-    /** @return array{ditambah:list<int>, dikeluarkan:list<int>, dipertahankan:list<int>} */
+    /** @return array{ditambah:list<int>, dikeluarkan:list<int>, dipertahankan:list<int>, izin_diisi?:int, izin_dikosongkan?:int} */
     public function refreshParticipants(int $meetingId, int $classId, int $yearId): array
     {
         return PesertaPertemuan::perbarui($this->db, $meetingId, $classId, $yearId);
@@ -170,7 +171,7 @@ final class TeacherRepository
     public function participantsWithAttendance(int $meetingId): array
     {
         return $this->all(
-            "SELECT pp.santri_id, pp.nis_snapshot, pp.nama_santri_snapshot, pp.kelas_id_snapshot, ks.nama_kelas AS kelas_asal,
+            "SELECT pp.santri_id, pp.nis_snapshot, pp.nama_santri_snapshot, pp.kelas_id_snapshot, ks.nama_kelas AS kelas_asal" . IzinPeserta::kolom($this->db) . ",
                     a.id AS attendance_id, a.status, a.catatan AS notes, a.dicatat_pada AS recorded_at, a.updated_at
              FROM pertemuan_peserta pp
              LEFT JOIN kelas ks ON ks.id = pp.kelas_id_snapshot

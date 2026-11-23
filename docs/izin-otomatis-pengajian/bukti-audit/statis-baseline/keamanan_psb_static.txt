@@ -1,0 +1,86 @@
+[lulus] S1 psb.php tanpa query berinterpolasi
+[lulus] S1 psb.php memakai sesi aplikasi (bootstrap), bukan session_start mentah
+[lulus] S1 psb.php tidak menampilkan parameter mentah
+[lulus] S1 proses_psb.php tanpa query berinterpolasi
+[lulus] S1 proses_psb.php memakai sesi aplikasi (bootstrap), bukan session_start mentah
+[lulus] S1 proses_psb.php tidak menampilkan parameter mentah
+[lulus] S1 login_pendaftar.php tanpa query berinterpolasi
+[lulus] S1 login_pendaftar.php memakai sesi aplikasi (bootstrap), bukan session_start mentah
+[lulus] S1 login_pendaftar.php tidak menampilkan parameter mentah
+[lulus] S1 auth_pendaftar.php tanpa query berinterpolasi
+[lulus] S1 auth_pendaftar.php memakai sesi aplikasi (bootstrap), bukan session_start mentah
+[lulus] S1 auth_pendaftar.php tidak menampilkan parameter mentah
+[lulus] S1 logout_pendaftar.php tanpa query berinterpolasi
+[lulus] S1 logout_pendaftar.php memakai sesi aplikasi (bootstrap), bukan session_start mentah
+[lulus] S1 logout_pendaftar.php tidak menampilkan parameter mentah
+[lulus] S1 portal_pendaftar.php tanpa query berinterpolasi
+[lulus] S1 portal_pendaftar.php memakai sesi aplikasi (bootstrap), bukan session_start mentah
+[lulus] S1 portal_pendaftar.php tidak menampilkan parameter mentah
+[lulus] S1 proses_upload_berkas.php tanpa query berinterpolasi
+[lulus] S1 proses_upload_berkas.php memakai sesi aplikasi (bootstrap), bukan session_start mentah
+[lulus] S1 proses_upload_berkas.php tidak menampilkan parameter mentah
+[lulus] S1 biaya_psb.php tanpa query berinterpolasi
+[lulus] S1 biaya_psb.php memakai sesi aplikasi (bootstrap), bukan session_start mentah
+[lulus] S1 biaya_psb.php tidak menampilkan parameter mentah
+[lulus] S1 cetak_biaya_psb.php tanpa query berinterpolasi
+[lulus] S1 cetak_biaya_psb.php memakai sesi aplikasi (bootstrap), bukan session_start mentah
+[lulus] S1 cetak_biaya_psb.php tidak menampilkan parameter mentah
+[lulus] S1 cetak_bukti.php tanpa query berinterpolasi
+[lulus] S1 cetak_bukti.php memakai sesi aplikasi (bootstrap), bukan session_start mentah
+[lulus] S1 cetak_bukti.php tidak menampilkan parameter mentah
+[lulus] S1 lihat_berkas_psb.php tanpa query berinterpolasi
+[lulus] S1 lihat_berkas_psb.php memakai sesi aplikasi (bootstrap), bukan session_start mentah
+[lulus] S1 lihat_berkas_psb.php tidak menampilkan parameter mentah
+[lulus] S2 formulir POST psb.php membawa token CSRF
+[lulus] S2 formulir POST login_pendaftar.php membawa token CSRF
+[lulus] S2 formulir POST logout_pendaftar.php membawa token CSRF
+[lulus] S2 formulir POST portal_pendaftar.php membawa token CSRF
+[lulus] S2 formulir POST biaya_psb.php membawa token CSRF
+[lulus] S2 proses_psb.php memeriksa token CSRF
+[lulus] S2 auth_pendaftar.php memeriksa token CSRF
+[lulus] S2 logout_pendaftar.php memeriksa token CSRF
+[lulus] S2 portal_pendaftar.php memeriksa token CSRF
+[lulus] S2 proses_upload_berkas.php memeriksa token CSRF
+[lulus] S2 biaya_psb.php memeriksa token CSRF
+[lulus] S2 jalur berkas hanya GET/HEAD
+[lulus] S3 portal_pendaftar.php tidak mencetak kolom pendaftar tanpa escape
+[lulus] S3 biaya_psb.php tidak mencetak kolom pendaftar tanpa escape
+[lulus] S3 cetak_bukti.php tidak mencetak kolom pendaftar tanpa escape
+[lulus] S3 cetak_biaya_psb.php tidak mencetak kolom pendaftar tanpa escape
+[lulus] S3 nama komponen kwitansi di-escape
+[lulus] S4 .htaccess akar menolak berkas_psb/ dan storage/
+[lulus] S4 berkas_psb/.htaccess menolak semua
+[lulus] S4 berkas baru tidak ikut repositori
+[lulus] S4 panel admin menautkan jalur berpenjaga
+[gagal] S4 pratinjau (AG) tetap belum dipasang
+[lulus] S4 nama berkas dari baris basis data, bukan parameter
+[lulus] S4 unggahan baru privat bernama acak
+[lulus] S5 katalog biaya identik dengan baseline untuk 36 kombinasi unit × jenis kelamin × asal sekolah
+[lulus] S5 biaya MI/RA tidak ditetapkan (tetap kategori lama)
+[lulus] S6 batas 2 MB dan jenis JPG/PNG/PDF
+[lulus] S6 regenerasi sesi, perbandingan waktu-tetap, pembatasan percobaan
+[lulus] S6 login tetap NISN + No. HP wali (AP)
+[lulus] S6 lint psb.php
+[lulus] S6 lint proses_psb.php
+[lulus] S6 lint login_pendaftar.php
+[lulus] S6 lint auth_pendaftar.php
+[lulus] S6 lint logout_pendaftar.php
+[lulus] S6 lint portal_pendaftar.php
+[lulus] S6 lint proses_upload_berkas.php
+[lulus] S6 lint biaya_psb.php
+[lulus] S6 lint cetak_biaya_psb.php
+[lulus] S6 lint cetak_bukti.php
+[lulus] S6 lint lihat_berkas_psb.php
+[lulus] S6 lint BerkasPsb.php
+[lulus] S6 lint BiayaPsb.php
+[lulus] S6 lint Jenjang.php
+[lulus] S6 lint PendaftarData.php
+[lulus] S6 lint PendaftarSesi.php
+[lulus] S6 lint PsbAdmin.php
+[lulus] S6 lint PsbAkses.php
+[lulus] S6 lint PsbException.php
+[lulus] S6 lint PsbPembayaran.php
+[lulus] S6 lint admin_data.php
+
+Hasil: 82 lulus, 1 gagal
+  - S4 pratinjau (AG) tetap belum dipasang

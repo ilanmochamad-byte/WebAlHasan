@@ -1,0 +1,50 @@
+[lulus] Admin masuk web dan guru memperoleh token API
+
+=== H-1 formulir admin ===
+[lulus] Formulir memuat kelas utama + kotak centang kelas gabungan (kelas arsip tidak ditawarkan)
+[lulus] POST formulir menyimpan jadwal gabungan (dua baris jadwal_kelas)
+[lulus] POST tanpa CSRF ditolak tanpa jadwal baru
+
+=== H-2 tampilan jadwal ===
+[lulus] Rincian jadwal menampilkan kedua kelas dan penanda kelas gabungan
+[lulus] Formulir ubah mencentang kelas gabungan yang tersimpan saja
+[lulus] Tampilan mingguan menampilkan seluruh kelas jadwal
+[lulus] Saringan daftar kelas PI menemukan jadwal gabungan; kelas C tidak
+[lulus] Guru pengampu melihat jadwal gabungannya
+
+=== H-3 isian gagal dan hak ===
+[lulus] Simpan gagal (bentrok guru) mempertahankan pilihan kelas gabungan di formulir
+[lulus] Guru tidak dapat menyimpan jadwal lewat POST
+
+=== H-4 buka pertemuan lewat web ===
+[lulus] Pilihan jadwal di formulir buka pertemuan menampilkan seluruh kelas
+[lulus] Pertemuan dibuka lewat web: lima peserta dari dua kelas
+[lulus] Rincian pertemuan web: kedua kelas, kelas asal peserta, lima baris
+[lulus] Pembukaan ulang lewat web tidak membuat pertemuan kedua
+[lulus] Pencarian daftar pertemuan dengan nama kelas gabungan menemukan pertemuan
+
+=== H-5 REST ===
+[lulus] GET /schedules/{id}: class lama = kelas utama; classes = PA, PI; pertemuan yang sama
+[lulus] GET /meetings/{id}: lima santri dengan kelas asal, task.classes
+[lulus] POST pertemuan kedua untuk tanggal sama → 409
+[lulus] POST /schedules/{id}/meetings sesudah kelas diubah: peserta PA + C (pertemuan berikutnya)
+[lulus] Pertemuan pertama tetap PA + PI sesudah perubahan kelas
+[lulus] GET /meetings: class_name lama, class_names + classes
+
+=== H-6 absensi dan laporan ===
+[lulus] Absensi pertemuan #722 lewat API: satu guru + lima santri
+[lulus] Absensi pertemuan #723 lewat API: satu guru + lima santri
+[lulus] Laporan web kelas PI: santri PI saja
+[lulus] Laporan web kelas C: santri C saja
+[lulus] Rincian kehadiran web: kolom kelas asal dan seluruh kelas pertemuan
+[lulus] CSV gabungan: dua baris absensi guru (satu per pertemuan, tidak ganda) — 2
+[lulus] CSV: santri PI tepat sekali dengan kelas asal PI
+
+=== H-7 halaman publik ===
+[lulus] Jadwal publik menampilkan seluruh kelas jadwal gabungan
+[lulus] Saringan kelas publik: kelas gabungan sekarang (C) menemukan jadwal; kelas lama (PI) tidak
+
+=== H-8 log server ===
+[lulus] Log server tanpa galat/peringatan PHP
+
+Hasil: 32 lulus, 0 gagal

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Report;
 
+use App\Schedule\IzinPeserta;
 use App\Api\ApiException;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -207,6 +208,8 @@ final class ReportService
                 'recorded_by' => $row['dicatat_oleh_nama'],
                 'recorded_at' => $row['dicatat_pada'],
                 'updated_at' => $row['updated_at'],
+                // Aditif (migrasi 036): usulan Izin otomatis yang dibekukan, hanya teks IP-3.
+                'izin' => IzinPeserta::payload($row),
             ], $students),
             'student_summary' => [
                 'participant_count' => count($students),

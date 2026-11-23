@@ -1,0 +1,11 @@
+[gagal] M-0 salinan berada pada 033, tanpa tabel 034
+
+=== M-1 sebelum 034 ===
+[gagal] M-1 skema 034 tidak terpasang
+[gagal] M-1 kelas gabungan sebelum 034 ditolak dengan pesan jelas; tidak ada jadwal setengah jadi
+App\Schedule\ScheduleException: Bentrok guru: SBX Guru Tanpa Murobi sudah memiliki jadwal #104 pada Kamis pukul 20:00–20:45 di semester aktif. in /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Schedule/ScheduleService.php:315
+Stack trace:
+#0 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/app/Schedule/ScheduleService.php(74): App\Schedule\ScheduleService->rejectTeacherConflict(Array, NULL)
+#1 /Users/ilanmochamad/Documents/GitHub/webalhasan/WebAlHasan/tests/jadwal_kelas_gabungan_f1_migration.php(112): App\Schedule\ScheduleService->save(Array, 1)
+#2 {main}
+Bentrok guru: SBX Guru Tanpa Murobi sudah memiliki jadwal #104 pada Kamis pukul 20:00–20:45 di semester aktif.
