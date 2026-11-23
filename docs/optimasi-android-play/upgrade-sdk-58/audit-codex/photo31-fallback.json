@@ -1,0 +1,12 @@
+{
+  "sdk": "58",
+  "android_api": 31,
+  "picker_fallback_action_open_document": true,
+  "documents_ui_seen": true,
+  "crop_button_visible": true,
+  "upload_success_ui": true,
+  "photo_db": "1\t1",
+  "emulated_cutout_enabled": false,
+  "test_apk_sha256": "53f262fa1912c2f13cb819ca217e7a6e82aac4f42b6c71e7610cba477a10d264",
+  "note": "targeted manual fallback probe; does not turn original 9/2 suite into a pass"
+}

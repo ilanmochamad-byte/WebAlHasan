@@ -1,0 +1,20 @@
+{
+  "build": "Release arm64 simulator iOS27.2",
+  "signing": "Xcode local ad-hoc; synthetic Keychain entitlement embedded at link",
+  "code_commit": "0e002d5",
+  "api": "127.0.0.1 fixture",
+  "files": {
+    "alhasanApps": {
+      "bytes": 20053152,
+      "sha256": "fba0c02bab622ba8bedbe6f6057e2e0b11db4ed843b28523839e43af102413c3"
+    },
+    "main.jsbundle": {
+      "bytes": 4075666,
+      "sha256": "7b7e7ee095210016fb20931a02e132718e57872ff4a101c97ab25e9d60da5773"
+    },
+    "Info.plist": {
+      "bytes": 4326,
+      "sha256": "e246a69f795cde61c3ba5f92fba9bf209a64e9de3416b540dd4ce28e12738a93"
+    }
+  }
+}

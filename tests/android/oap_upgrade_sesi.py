@@ -8,6 +8,10 @@ Ini BUKAN bukti Play App Signing/upgrade dari Play Store.
   adb reverse tcp:8971 tcp:8971   (API uji, DB test_*_test)
   python3 tests/android/oap_upgrade_sesi.py <apk-lama> <apk-baru> <keluaran>
 
+Versi pasangan lain harus ditetapkan secara eksplisit, misalnya
+OAP_OLD_VERSION=1.9.2 OAP_NEW_VERSION=1.10.0 untuk audit SDK 58.
+Nilai bawaan tetap pasangan audit awal; assertion versi tidak dihapus.
+
   U-1 install bersih APK lama, masuk sbx_guru_biasa → Beranda
   U-2 install -r APK baru (data dipertahankan) → cold start tanpa Metro langsung Beranda
       (token SecureStore + Keystore terbaca oleh kode R8), versionName 1.9.1
@@ -28,6 +32,8 @@ def fresh_dump():
 adbui.dump = fresh_dump
 
 LAMA, BARU, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
+VERSI_LAMA = os.environ.get('OAP_OLD_VERSION', '1.9.0')
+VERSI_BARU = os.environ.get('OAP_NEW_VERSION', '1.9.1')
 os.makedirs(OUT, exist_ok=True)
 PKG = 'com.ilanmochamad.alhasanApps'
 PASS = 'Sandbox#123'
@@ -48,6 +54,13 @@ def buka():
 
 def di_beranda(timeout=60):
     try:
+        # ScrollView dapat memulihkan offset sesudah install -r/cold start.
+        # Kartu identitas tetap wajib terlihat; ubin menu saja tidak cukup
+        # membuktikan sesi. Pastikan kartu di awal Beranda dapat diperiksa.
+        sh('shell', 'input', 'keyevent', '111')
+        for _ in range(2):
+            sh('shell', 'input', 'swipe', '540', '500', '540', '1800', '350')
+        time.sleep(0.5)
         # Assalamu juga ada di Masuk, dan placeholder hilang setelah isian
         # diketik. Kartu beridentitas hanya muncul setelah autentikasi sah.
         wait('Buka profil', timeout)
@@ -82,8 +95,10 @@ try:
     sh('logcat', '-c')
     sh('uninstall', PKG)
     print(subprocess.run(['adb', 'install', LAMA], capture_output=True, text=True).stdout.strip().splitlines()[-1])
-    ok(versi() == '1.9.0', f'U-1 APK lama terpasang ({versi()})')
-    buka(); masuk('sbx_guru_biasa')
+    ok(versi() == VERSI_LAMA, f'U-1 APK lama terpasang ({versi()}; diharapkan {VERSI_LAMA})')
+    buka()
+    ok(not di_beranda(2), 'U-1 kontrol negatif: layar Masuk tidak dianggap Beranda')
+    masuk('sbx_guru_biasa')
     old_home = di_beranda()
     ok(old_home, 'U-1 APK lama: masuk sbx_guru_biasa → Beranda'); layar(f'{OUT}/u1-lama-beranda.png')
     if not old_home:
@@ -91,7 +106,7 @@ try:
 
     r = subprocess.run(['adb', 'install', '-r', BARU], capture_output=True, text=True).stdout.strip().splitlines()[-1]
     print(r)
-    ok(versi() == '1.9.1', f'U-2 APK baru dipasang sebagai pembaruan ({versi()})')
+    ok(versi() == VERSI_BARU, f'U-2 APK baru dipasang sebagai pembaruan ({versi()}; diharapkan {VERSI_BARU})')
     sh('shell', 'am', 'force-stop', PKG); buka()
     ok(di_beranda(), 'U-2 cold start APK baru (tanpa Metro): sesi SecureStore lama terbaca → Beranda tanpa masuk ulang')
     layar(f'{OUT}/u2-baru-beranda.png')

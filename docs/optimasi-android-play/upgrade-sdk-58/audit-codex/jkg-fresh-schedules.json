@@ -1,0 +1,19 @@
+{
+    "database": "test_sdk58_jkg_test",
+    "changes": {
+        "jadwal_gabungan": {
+            "old": 104,
+            "new": 107
+        },
+        "jadwal_satu": {
+            "old": 105,
+            "new": 108
+        },
+        "jadwal_besok": {
+            "old": 106,
+            "new": 109
+        }
+    },
+    "reason": "copied fixture already had completed meetings today; keep history, create fresh active schedules through ScheduleService",
+    "business_assertions_changed": false
+}

@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "root_subflows_completed": 7,
+  "signed_with_xcode": true,
+  "claim": "7 subflows, not seven individual assertions; conditional skipped branches retained",
+  "bsa_role_flow_exit": 0,
+  "total_flow_runs": 8
+}

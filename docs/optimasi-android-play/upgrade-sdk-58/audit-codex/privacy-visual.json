@@ -1,0 +1,8 @@
+{
+  "visual_inspection": {
+    "bsa": "Recents black app card; app icon and system Screenshot/Select controls visible",
+    "kesehatan": "Raster black; fresh Recents UI hierarchy contains app name and Screenshot/Select; no underlying content visible",
+    "izin": "Raster black; fresh Recents UI hierarchy contains app name and Screenshot/Select; no underlying content visible"
+  },
+  "scope": "static emulator snapshots only, not physical-device transition recording"
+}

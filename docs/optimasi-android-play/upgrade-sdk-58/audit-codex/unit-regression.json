@@ -1,0 +1,38 @@
+{
+  "unit": {
+    "sha256": "b6d21f48ebefbd224f2806aa70e2d405d4bb597162bd030b78b9d9d7865978b0",
+    "summary": [
+      "\u2139 tests 130",
+      "\u2139 pass 130",
+      "\u2139 fail 0",
+      "\u2139 skipped 0"
+    ]
+  },
+  "unit-final": {
+    "sha256": "3a04fd431a8520306ae334ba1e461a711d4a4579e8f0bf9095f26ef2600fded8",
+    "summary": [
+      "\u2139 tests 135",
+      "\u2139 pass 135",
+      "\u2139 fail 0",
+      "\u2139 skipped 0"
+    ]
+  },
+  "async-write-control": {
+    "sha256": "4d4f26c2c5d2e4c1e39ed05477038f73336cff2de5ca9996ec1a3dd55ddad58d",
+    "summary": [
+      "\u2139 tests 5",
+      "\u2139 pass 0",
+      "\u2139 fail 5",
+      "\u2139 skipped 0"
+    ]
+  },
+  "async-write-after": {
+    "sha256": "4a4e6fac5665ac9a8607c11f6241bb178f7345812d1205c0ba6503db737f374f",
+    "summary": [
+      "\u2139 tests 5",
+      "\u2139 pass 5",
+      "\u2139 fail 0",
+      "\u2139 skipped 0"
+    ]
+  }
+}

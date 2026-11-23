@@ -1,0 +1,258 @@
+{
+  "code_commit": "0e002d5",
+  "apk_sha256": "53f262fa1912c2f13cb819ca217e7a6e82aac4f42b6c71e7610cba477a10d264",
+  "note": "final runs are context-specific assertions, not summed as unique tests; initial/partial failures retained separately; API31 original profile and cutout are not marked passed",
+  "final": [
+    {
+      "suite": "android36-home",
+      "log_sha256": "eddfd21749d4cb243b553476a2f654ee7a4d27f5295e553b0f87b48c432df208",
+      "pass": 44,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android36-home-large",
+      "log_sha256": "98ac56cdb3ffc51247301db3c10c4668c0a2422200e1580efbfe5b6d08ae128d",
+      "pass": 9,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android36-date",
+      "log_sha256": "30f2819576e9c1ddaf8b573e1bcaf58c7c21de6236b8c8a07b69b2a58dda67df",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android36-profile",
+      "log_sha256": "fd03873fd4da1d6a8989a27d5331b27e162fc693dff97000219de0ec10f7c005",
+      "pass": 24,
+      "fail": 0,
+      "skip": 1,
+      "negative_labels": [
+        "Cache pemilih/pemotong tidak dapat diperiksa: run-as tidak tersedia pada APK rilis (non-debuggable)"
+      ]
+    },
+    {
+      "suite": "android36-documents",
+      "log_sha256": "e51ed33eee66608eee1141b4d0fa4ba726b2886557faa717d0036138b47d4db8",
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android36-bsa",
+      "log_sha256": "ed39b1da2a584c1f81aa48b1040ecd3451611490cd06ad95f2079057d0dc41b0",
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android36-kesehatan",
+      "log_sha256": "9769adf99ddf5c0d4733e11fadc9078fa86859abcce5ef75ca9cec725d14583f",
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android36-izin",
+      "log_sha256": "161cc2a5200ecad272ed2dd704c880164c99d23ca71ce9142075d3e1f33c2ed3",
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android36-layout-dark2",
+      "log_sha256": "585d964b60b5146fec7663b148a9d9ccb663635eb1a57a48a40000a1c99ce06c",
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android36-rapor",
+      "log_sha256": "ebe602aae361a23df73215172065326f49185ebee1f338d81147cb5ec5a2ef03",
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android36-pembinaan-rapor",
+      "log_sha256": "44cd7b29981e94320316f1daa5ec5785c44926465f548e28d05b31ca3eb9795d",
+      "pass": 17,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android36-keamanan",
+      "log_sha256": "5c29ef4dd62a83d9819f17ddc234daaeb6d8d522f3d240dc17563228b9e4e956",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android36-upgrade",
+      "log_sha256": "68bdd3056cf12f341842950fcd04e598be30a4316f61b69db770dd5ad3d2947b",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android35-layout",
+      "log_sha256": "585d964b60b5146fec7663b148a9d9ccb663635eb1a57a48a40000a1c99ce06c",
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android35-date",
+      "log_sha256": "30f2819576e9c1ddaf8b573e1bcaf58c7c21de6236b8c8a07b69b2a58dda67df",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android31-date",
+      "log_sha256": "30f2819576e9c1ddaf8b573e1bcaf58c7c21de6236b8c8a07b69b2a58dda67df",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android31-upgrade",
+      "log_sha256": "36fa0880df8d963808b8fa170e75612db2e9c0240876cd805ae6d14559d1a1f5",
+      "pass": 9,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    },
+    {
+      "suite": "android31-pengajian",
+      "log_sha256": "f44f9d2abd8afb010a792924e2684b9a695577e2b2876311ea4dbfd054f53168",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "negative_labels": []
+    }
+  ],
+  "initial_or_partial": [
+    {
+      "suite": "serial-initial-android36-home-large",
+      "log_sha256": "7602d2e418a1ce8b58e57abaf6a59106d07f4f08484a7eec38b22b3579bae476",
+      "pass": 6,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Pengecualian: Command failed: /Users/ilanmochamad/Library/Android/sdk/platform-tools/adb shell settings put system font_scale 1"
+      ]
+    },
+    {
+      "suite": "android36-profile-initial",
+      "log_sha256": "96d646a5d575482b592a5710b9d93490fc91cb9b1cb98cd6abd9c0e6f0847ec2",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Pengecualian: Sesi lama masih aktif"
+      ]
+    },
+    {
+      "suite": "android36-upgrade-initial",
+      "log_sha256": "7d047baaaea3d2cf13cea19a8f6c8a7282735be25c9ca257f066fbbb806b4472",
+      "pass": 6,
+      "fail": 3,
+      "skip": 0,
+      "negative_labels": [
+        "U-2 cold start APK baru (tanpa Metro): sesi SecureStore lama terbaca \u2192 Beranda tanpa masuk ulang",
+        "U-3 kembali dari latar: tetap Beranda",
+        "U-4 force-stop + cold start: sesi baru bertahan"
+      ]
+    },
+    {
+      "suite": "android36-pengajian",
+      "log_sha256": "ea1230a31641d897d6a26f8ec5e12747d05097ba71ab74b039f0e3b5f4b0be86",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Pengecualian: Tidak ditemukan: /^Nahwu 2236EA, /"
+      ]
+    },
+    {
+      "suite": "android35-date-initial",
+      "log_sha256": "67fe34e9765cd44cf6f0eff1650d9774bb6d848290d4f89ddcc1cdc6761137e0",
+      "pass": 1,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Beranda tampil sesudah masuk"
+      ]
+    },
+    {
+      "suite": "android31-layout",
+      "log_sha256": "8a349d75b2a05ed5caafa39ca4b3c6d5b2218393e5e9a5e38363570279eb2f41",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Pengecualian: Masukkan username"
+      ]
+    },
+    {
+      "suite": "android31-profile",
+      "log_sha256": "78505c3c528b6f0698c6171d1f3c2651de90f180c2bfd7c7329f241a44339382",
+      "pass": 9,
+      "fail": 2,
+      "skip": 0,
+      "negative_labels": [
+        "Teks 2.0\u00d7: target Kelas dan Kamar berlabel",
+        "Pengecualian: Tidak ditemukan: /^Photo taken on|^Foto diambil/"
+      ]
+    },
+    {
+      "suite": "android31-card-baseline",
+      "log_sha256": "cc9045a48ad46442ffbc804b18a533e6f5421f4c98b27c7ee730b11eadd4c937",
+      "pass": 4,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Teks 2.0\u00d7: target Kelas dan Kamar berlabel"
+      ]
+    },
+    {
+      "suite": "android31-pengajian-initial",
+      "log_sha256": "ea1230a31641d897d6a26f8ec5e12747d05097ba71ab74b039f0e3b5f4b0be86",
+      "pass": 0,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Pengecualian: Tidak ditemukan: /^Nahwu 2236EA, /"
+      ]
+    },
+    {
+      "suite": "android31-pengajian-completed-fixture",
+      "log_sha256": "886162ef0538e576448d4353baa098d2c4ecebeee4691fbbf548d606efe93c8d",
+      "pass": 2,
+      "fail": 1,
+      "skip": 0,
+      "negative_labels": [
+        "Pengecualian: Tidak ditemukan: /^Buka pertemuan$/"
+      ]
+    }
+  ]
+}

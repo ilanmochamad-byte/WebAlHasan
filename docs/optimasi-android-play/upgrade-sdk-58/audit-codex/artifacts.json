@@ -1,0 +1,101 @@
+{
+  "handoff": {
+    "app.aab": {
+      "sha256": "d40741d12b4c81b2ddeed157b733eeaee69fa8bd5e78eb7f34e0f97d8f5fa92e",
+      "bytes": 31452269,
+      "dex": [
+        {
+          "name": "base/dex/classes.dex",
+          "bytes": 10536500,
+          "sha256": "cdd2ed987dc8028411f86bcb6256bcaf4fa8fff1905c127ff8770b54c54cd032"
+        }
+      ],
+      "native_abis": [
+        "arm64-v8a"
+      ],
+      "hermes_bundle": {
+        "entry": "base/assets/index.android.bundle",
+        "bytes": 3419860,
+        "sha256": "e92cd42b5969356a1bcf3f08a072cd5d31b298d212b4c03b9b5212e3899cdc1c"
+      }
+    },
+    "app.apk": {
+      "sha256": "db0eba3c483c78733bd9b2fc4dcc06d52a87e1a986870b906f251bb730b45749",
+      "bytes": 35676568,
+      "dex": [
+        {
+          "name": "classes.dex",
+          "bytes": 10536500,
+          "sha256": "cdd2ed987dc8028411f86bcb6256bcaf4fa8fff1905c127ff8770b54c54cd032"
+        }
+      ],
+      "native_abis": [
+        "arm64-v8a"
+      ],
+      "hermes_bundle": {
+        "entry": "assets/index.android.bundle",
+        "bytes": 3419860,
+        "sha256": "e92cd42b5969356a1bcf3f08a072cd5d31b298d212b4c03b9b5212e3899cdc1c"
+      }
+    },
+    "mapping.txt": {
+      "sha256": "5a2793bf74b18e1a93fe446e71a2b8fc0dc598062ff72a6c3fd7d45e136483ae",
+      "bytes": 105010675
+    }
+  },
+  "final": {
+    "app.aab": {
+      "sha256": "1700960db1519b36e3005aba22bb591377af50e06eca27c2c5a28303f7d8ce41",
+      "bytes": 31452302,
+      "dex": [
+        {
+          "name": "base/dex/classes.dex",
+          "bytes": 10536500,
+          "sha256": "cdd2ed987dc8028411f86bcb6256bcaf4fa8fff1905c127ff8770b54c54cd032"
+        }
+      ],
+      "native_abis": [
+        "arm64-v8a"
+      ],
+      "hermes_bundle": {
+        "entry": "base/assets/index.android.bundle",
+        "bytes": 3420092,
+        "sha256": "1bf2bb1552bcac74c5831f5773803b4f9a3b541ac565ee410856c30c6531c1a0"
+      }
+    },
+    "app.apk": {
+      "sha256": "82e342ba3734749b4525635808943365b1306c23c68941c5892dff4be758b250",
+      "bytes": 35676800,
+      "dex": [
+        {
+          "name": "classes.dex",
+          "bytes": 10536500,
+          "sha256": "cdd2ed987dc8028411f86bcb6256bcaf4fa8fff1905c127ff8770b54c54cd032"
+        }
+      ],
+      "native_abis": [
+        "arm64-v8a"
+      ],
+      "hermes_bundle": {
+        "entry": "assets/index.android.bundle",
+        "bytes": 3420092,
+        "sha256": "1bf2bb1552bcac74c5831f5773803b4f9a3b541ac565ee410856c30c6531c1a0"
+      }
+    },
+    "mapping.txt": {
+      "sha256": "5a2793bf74b18e1a93fe446e71a2b8fc0dc598062ff72a6c3fd7d45e136483ae",
+      "bytes": 105010675
+    }
+  },
+  "test": {
+    "app.apk": {
+      "sha256": "53f262fa1912c2f13cb819ca217e7a6e82aac4f42b6c71e7610cba477a10d264",
+      "bytes": 35677232,
+      "hermes_bundle": {
+        "entry": "assets/index.android.bundle",
+        "bytes": 3420088,
+        "sha256": "b36eabeb55255a660f16c321537d6bb2f2050333ae56e1551fe3fdc053f4226a"
+      }
+    }
+  }
+}
