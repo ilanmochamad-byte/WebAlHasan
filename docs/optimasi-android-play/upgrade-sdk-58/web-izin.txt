@@ -1,0 +1,12 @@
+[lulus] fixture: pengajuan V2 dibuat lewat API (201)
+[lulus] TL-07: pengajuan baru → layar sukses "Pengajuan terkirim" + "Lihat pengajuan"
+[lulus] TL-07: "Lihat pengajuan" membuka rincian
+[lulus] TL-08: admin pemutus — Tetapkan murobi tidak di badan layar
+[lulus] TL-08: Tetapkan murobi tersedia di ⋯
+[lulus] fixture: pengajuan wali dibuat lewat API (201)
+[lulus] TL-07: izin wali baru → layar sukses + "Lihat pengajuan"
+[lulus] TL-08: "Muat ulang" rincian izin wali di kepala layar
+[lulus] TL-10: teks FAB diperbesar — FAB ≤ setengah layar atau beralih ke tombol lebar penuh (lebar 335 px)
+[lulus] tanpa permintaan keluar 127.0.0.1 ()
+
+Ringkasan (izin): 10 lulus, 0 gagal

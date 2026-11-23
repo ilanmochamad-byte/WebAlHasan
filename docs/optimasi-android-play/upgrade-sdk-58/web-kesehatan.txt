@@ -1,0 +1,8 @@
+[lulus] fixture: kunjungan dicatat lewat API (201)
+[lulus] TL-16: riwayat versi/akses tidak lagi baris di badan layar
+[lulus] TL-16: riwayat akses di ⋯
+[lulus] TL-31: penanda privat tampil di layar pertama, di atas rincian (y=350 vs 491)
+[lulus] smoke: halaman riwayat akses termuat (bukan bukti perbaikan)
+[lulus] tanpa permintaan keluar 127.0.0.1 ()
+
+Ringkasan (kesehatan): 6 lulus, 0 gagal
