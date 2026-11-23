@@ -43,7 +43,7 @@ Hasilnya 17 menu dalam 7 grup: Beranda · Kegiatan santri (Perizinan, Pengajian,
 | # | Keputusan |
 | --- | --- |
 | R | Absensi tidak dicatat di website. Halaman pertemuan web (J-2) menampilkan kehadiran dari aplikasi, ditambah buka/selesaikan pertemuan seperti sekarang. |
-| S | Santri yang sedang izin diberi label saja; status tidak diisi otomatis. Label di aplikasi HP di luar cakupan (fitur lanjutan). |
+| S | Santri yang sedang izin diberi label saja; status tidak diisi otomatis. Label di aplikasi HP di luar cakupan (fitur lanjutan). **Direvisi 23 November 2026** — lihat "Revisi keputusan S" di bawah. |
 | T | Hari ditulis "Ahad"; minggu dimulai Senin. |
 
 ## Penilaian & rapor
@@ -195,3 +195,7 @@ Rincian: `../phase-v5-3/README.md` (R-1).
 | BE | **Menu Keuangan dipertahankan untuk admin, petugas BSA, dan orang tua.** Admin: grup baru "Keuangan" (sesudah "Akademik", sebelum "Data pesantren") berisi "Keuangan santri" — hanya baca; peta admin menjadi 19 menu dalam 8 grup. Pengurus dengan penugasan Petugas BSA aktif: grup "Keuangan" berisi "BSA" (juga kandidat terakhir bilah bawah HP pengurus). Orang tua: "Keuangan anak" sesudah "Kesehatan anak" dan sebelum "Notifikasi", bagi akun orang tua aktif dengan master wali aktif bila migrasi 027 terpasang (daftar kosong menjelaskan bila belum ada anak berelasi); bilah bawah HP orang tua tidak berubah. Seluruh menu tidak tampil sebelum migrasi 027/sesudah rollback. Hak baca/mutasi tetap ditegakkan server oleh `BsaService` per santri, bukan oleh menu. Isi dan urutan menu lain tidak berubah. Oracle historis Tahap 2 ("admin 17 menu/7 grup", menu `sbx_ortu_a`, grup menu yang disorot) tidak diubah dan dicatat sebagai kegagalan yang diharapkan. Keputusan ini tidak mengubah larangan rilis parsial: tagihan dan tabungan tetap dirilis bersama sesudah Fase 5. |
 
 Rincian: `../phase-v6-1/README.md` (P-1).
+
+## Revisi keputusan S (23 November 2026)
+
+Human Developer merevisi keputusan S: status santri yang izinnya berlaku pada tanggal pertemuan **terisi "Izin" otomatis** di absensi pengajian (guru tetap boleh mengubah), per hari penuh, dengan keterangan umum "Izin No. 123 — disetujui murobi s.d. 25 Nov", hanya untuk izin Disetujui murobi/admin pengganti, diisi saat pertemuan dibuka dan saat perbarui daftar peserta, ditampilkan di aplikasi HP, dan ikut rekap rapor. Keputusan R tetap. Rincian IP-1…IP-6: `../izin-otomatis-pengajian/rencana.md`.
