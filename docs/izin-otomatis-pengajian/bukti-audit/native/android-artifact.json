@@ -1,0 +1,14 @@
+{
+  "apk": {
+    "sha256": "c9e63e41a03ec89567e2973f6bbc5e6db38a0743c1cb866d978fd3015d56c0de",
+    "bytes": 35681008
+  },
+  "hermes_sha256": "99e5674e9d183bb0ac051353639eb1be66f50c239ab1769aa8ada03d7b5a813d",
+  "api_local_count": 1,
+  "dex": [
+    {
+      "name": "classes.dex",
+      "sha256": "1fbc26e2fc9fcfb038fa2296e548fb29800c529663d8d83c2208c395b09f726a"
+    }
+  ]
+}

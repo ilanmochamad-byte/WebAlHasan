@@ -1,0 +1,16 @@
+[lulus] tiga draf Izin pada pembukaan baru
+[lulus] pembatalan: draf otomatis belum diedit kembali Hadir dan catatan kosong
+[lulus] pembatalan: pilihan Hadir manual dipertahankan
+[lulus] pembatalan: status dan catatan manual dipertahankan
+[lulus] penanda hilang sesudah pembatalan dan perbarui
+[lulus] izin baru sesudah pembatalan kembali mengisi draf dan catatan terbaru
+[lulus] Semua hadir melewati usulan terbaru dan mempertahankan catatan guru
+[lulus] respons hilang sesudah commit: satu penyimpanan terjadi
+[lulus] ulang setelah respons hilang menggunakan kunci idempotensi sama dan dua PUT total
+[lulus] ulang sesudah respons hilang tidak menyimpan dua kali
+[lulus] status Izin terbaru tersimpan
+[lulus] memuat ulang Selesai memakai status tersimpan
+[lulus] layar laporan dan kiriman absensi tanpa isi izin privat
+[lulus] tanpa galat halaman atau permintaan host luar
+Pertemuan audit UI: 727
+Hasil: 14 lulus, 0 gagal

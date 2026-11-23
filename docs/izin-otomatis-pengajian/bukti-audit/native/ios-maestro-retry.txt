@@ -1,0 +1,35 @@
+Running on iPhone 17 Pro - iOS 27.2 - D0478170-2B0A-4DC8-B670-7568C3096919
+ > Flow absensi-izin
+Run ../redesain-v2-fase2/masuk.yaml...
+  Launch app "com.ilanmochamad.alhasanApps" with clear state and clear keychain...java.lang.IllegalStateException: An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to launch com.ilanmochamad.alhasanApps.
+No such process
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	Application launch for 'com.ilanmochamad.alhasanApps' did not return a process handle nor launch error.
+	No such process
+
+	at util.CommandLineUtils.runCommand(CommandLineUtils.kt:50)
+	at util.CommandLineUtils.runCommand$default(CommandLineUtils.kt:16)
+	at util.LocalSimulatorUtils.launch(LocalSimulatorUtils.kt:328)
+	at device.SimctlIOSDevice.launch(SimctlIOSDevice.kt:94)
+	at ios.LocalIOSDevice.launch(LocalIOSDevice.kt:107)
+	at maestro.drivers.IOSDriver.launchApp$lambda$7(IOSDriver.kt:123)
+	at maestro.utils.Metrics.measured(Metrics.kt:48)
+	at maestro.drivers.IOSDriver.launchApp(IOSDriver.kt:122)
+	at maestro.Maestro.launchApp$lambda$5(Maestro.kt:95)
+	at kotlinx.coroutines.InterruptibleKt.runInterruptibleInExpectedContext(Interruptible.kt:48)
+	at kotlinx.coroutines.InterruptibleKt.access$runInterruptibleInExpectedContext(Interruptible.kt:1)
+	at kotlinx.coroutines.InterruptibleKt$runInterruptible$2.invokeSuspend(Interruptible.kt:40)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+
+
+==== Debug output (logs & screenshots) ====
+
+/private/tmp/iop-codex-audit/ios-maestro-retry/2026-11-23_231521

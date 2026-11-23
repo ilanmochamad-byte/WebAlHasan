@@ -1,0 +1,65 @@
+# Status "Izin" otomatis (migrasi 036) — uji native K-9 (Android emulator dan
+# iOS simulator, build Release dengan bundel tertanam, tanpa Metro):
+# buka pertemuan berizin, santri izin terisi "Izin" + penanda, ubah ke Hadir,
+# simpan, lalu rincian laporan menampilkan keterangan usulan.
+#   IOP_DB=test_iop_app_test php tests/izin_otomatis_pengajian_native_seed.php > native-ids.json
+#   maestro --device <id> test -e AKUN=sbx_guru_biasa -e SANDI='Sandbox#123' \
+#     -e MEETING=<id> -e LABEL='Izin s.d. 2 Des' -e PLATFORM=android absensi-izin.yaml
+appId: com.ilanmochamad.alhasanApps
+---
+- runFlow:
+    when:
+      visible: "Not Now"
+    commands:
+      - tapOn: "Not Now"
+- extendedWaitUntil:
+    visible: ".*Buka profil"
+    timeout: 40000
+- openLink: "alhasanapps://meeting/${MEETING}"
+- extendedWaitUntil:
+    visible: "Santri · 2 orang"
+    timeout: 40000
+- assertVisible: "Izin: 1"
+- assertVisible: "Hadir: 1"
+- scrollUntilVisible:
+    element: "Semua hadir \\(1\\)"
+    direction: DOWN
+- scrollUntilVisible:
+    element: "${LABEL}.*"
+    direction: DOWN
+- takeScreenshot: ${PLATFORM}-iop-draf-izin
+# Radio "Hadir" milik santri izin = radio "Hadir" pertama di bawah penandanya.
+- tapOn:
+    text: "Hadir"
+    below: "${LABEL}.*"
+- takeScreenshot: ${PLATFORM}-iop-diubah-hadir-kartu
+# Ringkasan mini di atas: draf mengikuti perubahan guru.
+- scrollUntilVisible:
+    element: "Hadir: 2"
+    direction: UP
+- assertVisible: "Izin: 0"
+- scrollUntilVisible:
+    element: "${LABEL}.*"
+    direction: DOWN
+- takeScreenshot: ${PLATFORM}-iop-diubah-hadir
+- scrollUntilVisible:
+    element: "Kirim absensi"
+    direction: DOWN
+- tapOn: "Kirim absensi"
+- extendedWaitUntil:
+    visible: "Simpan|SIMPAN"
+    timeout: 10000
+- tapOn: "Simpan|SIMPAN"
+- scrollUntilVisible:
+    element: "Absensi berhasil disimpan.*"
+    direction: DOWN
+    timeout: 30000
+- takeScreenshot: ${PLATFORM}-iop-tersimpan
+- openLink: "alhasanapps://report/${MEETING}"
+- extendedWaitUntil:
+    visible: "Peserta \\(2/2\\)"
+    timeout: 30000
+- scrollUntilVisible:
+    element: "Usulan izin: .*"
+    direction: DOWN
+- takeScreenshot: ${PLATFORM}-iop-laporan

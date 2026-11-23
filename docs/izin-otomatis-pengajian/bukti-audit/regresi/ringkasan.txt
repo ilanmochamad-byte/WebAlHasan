@@ -1,0 +1,8 @@
+== Kelas gabungan Fase 1 ==
+jkg-integrasi exit=0 71/0
+jkg-http exit=0 32/0
+jkg-probe-audit exit=2 0/1
+jkg-migrasi exit=1 0/3
+== Perbaikan peserta absensi ==
+ppa-integrasi exit=1 35/1
+ppa-konkurensi exit=0 8/0

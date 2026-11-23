@@ -1,0 +1,249 @@
+(node:21030) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/async-document-write.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ csv: waits for the complete file before sharing (53.463792ms)
+✔ csv: write failure rejects export without opening sharing (8.015792ms)
+✔ rapor: waits for the complete file before sharing (8.740292ms)
+✔ rapor: write failure rejects export without opening sharing (5.718542ms)
+✔ rapor: revoked access during file writing suppresses sharing and removes cache (8.767125ms)
+(node:21031) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/attendance-shortcut.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Absensi kembali ke daftar jadwal saat hari kosong atau seluruh sesi selesai (0.467625ms)
+✔ Absensi memilih sesi pertama yang belum selesai, termasuk yang belum dibuka (0.099667ms)
+(node:21032) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/date-time.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ tanggal/jam lokal lengkap termasuk tengah malam dan tahun kabisat (6.148416ms)
+✔ tolak bagian kosong, format manual salah dan tanggal yang dinormalisasi JS (0.09525ms)
+(node:21033) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/ios-scene-lifecycle.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ AppDelegate menjadi penyedia factory dan tidak lagi membuat jendela sendiri (0.570709ms)
+✔ idempoten dan gagal keras bila pola template berubah (0.204875ms)
+✔ manifest scene satu jendela dengan SceneDelegate turunan ExpoAppSceneDelegate (0.059042ms)
+✔ app.json mendaftarkan plugin UIScene dan expo mendukung ExpoAppSceneDelegate (3.616625ms)
+(node:21034) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/izin-otomatis.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ draf awal: usulan izin → Izin + keterangan; tanpa izin → Hadir; absensi tersimpan menang (0.838917ms)
+✔ server lama tanpa kunci izin tetap Hadir (K-7) (0.072334ms)
+✔ ubah status: catatan otomatis dikosongkan hanya bila masih sama dengan keterangan (0.956625ms)
+✔ Semua hadir melewati santri ber-izin (0.420208ms)
+✔ sesudah perbarui: belum diubah guru mengikuti usulan terbaru; diubah guru & berabsensi dipertahankan (0.237042ms)
+✔ penanda dan ringkasan (0.299792ms)
+(node:21035) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/izin-wali.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Isian izin wali mengikuti aturan server (2.345666ms)
+✔ Isian dirapikan; perbaikan wajib berbeda dari versi asal (0.944167ms)
+✔ Catatan tinjauan: perbaikan/tolak wajib, teruskan opsional (0.122416ms)
+✔ Penolakan pembimbing dibedakan dari keputusan murobi (0.112875ms)
+✔ Tautan notifikasi izin wali hanya membawa penunjuk (0.266208ms)
+(node:21036) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/keamanan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kueri Keamanan tanpa kunci kosong dan ter-encode (0.7725ms)
+✔ Rentang tanggal: opsional, format ISO, akhir tidak mendahului awal (0.183583ms)
+✔ Nada lencana dan label status mengikuti halaman web Keamanan (0.077834ms)
+✔ Penugasan profil dikelompokkan per identitas (satu akun, dua identitas) (0.799333ms)
+(node:21037) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/kelas-jadwal.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ server lama tanpa classes tetap terbaca sebagai satu kelas utama (0.801042ms)
+✔ jadwal satu kelas dari server Fase 1 tidak ditandai gabungan (0.073792ms)
+✔ kelas gabungan: utama lebih dahulu, tanpa ganda, label dipisah koma (0.084084ms)
+✔ peserta dikelompokkan per kelas asal mengikuti urutan kelas, urutan server dipertahankan (0.131625ms)
+✔ kelas asal di luar daftar dan peserta tanpa kelas tetap tampil, kelompok kosong dibuang (0.092084ms)
+✔ nama kelas asal memakai nama dari server, lalu daftar kelas, kosong bila tidak ada (0.067584ms)
+(node:21038) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/kesehatan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Koreksi mengirim keadaan lengkap: rincian lama ber-id dipertahankan, waktu asli tidak bergeser (1.67225ms)
+✔ Baris baru yang seluruhnya kosong diabaikan; baris lama kosong tetap dikirim agar server menolaknya (1.710125ms)
+✔ Alasan wajib minimal lima karakter, maksimal 1000; sidik jari berubah bila isi berubah (0.384125ms)
+✔ Penunjuk notifikasi kesehatan hanya ringkasan_id valid; isi/tautan lain diabaikan (0.225167ms)
+✔ Deep-link kesehatan hanya skema aplikasi dan rute ringkasan wali (0.342167ms)
+✔ Teks perubahan versi memakai label manusia (0.175625ms)
+✔ Hasil pencarian santri dikelompokkan per kelas; belum ditempatkan paling akhir (0.242583ms)
+✔ Periode laporan: bulan ini, bulan lalu (lintas tahun), dan 30 hari berakhir hari ini (0.341541ms)
+(node:21039) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/keuangan.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Rupiah ditampilkan bulat dengan titik ribuan tanpa Intl (2.714ms)
+✔ Nominal dikirim sebagai teks angka; pecahan dan huruf diteruskan agar server menolak (0.664875ms)
+✔ Alasan koreksi wajib 5–500 karakter seperti website (0.249542ms)
+✔ Sidik jari sama untuk isi sama (retry memakai kunci yang sama) dan berbeda bila isi berubah (0.181334ms)
+✔ Label periode, jenis, dan nilai awal tanggal (2.411625ms)
+✔ Penunjuk notifikasi keuangan hanya id; tipe/kunci lain ditolak (0.474042ms)
+✔ Tautan skema keuangan hanya menerima jalur yang dikenal (0.193709ms)
+✔ Rentang laporan Fase 5: bulan ini, bulan lalu (lintas tahun), 3 bulan, tahun ini — paling panjang 12 bulan (0.127958ms)
+✔ Pratinjau satu santri sah hanya bila server menyaring santri itu (server lama mengabaikan santri_id) (0.091292ms)
+(node:21040) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/optimasi-android.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ AGP diambil dari katalog React Native tanpa versi eksplisit, idempoten (1.597042ms)
+✔ katalog React Native terpasang memakai AGP 9 atau lebih baru (1.097375ms)
+✔ template release diganti ke proguard-android-optimize.txt tepat sekali (0.234416ms)
+✔ idempoten: prebuild berulang tidak mengubah hasil yang sudah benar (0.066458ms)
+✔ gagal keras bila pola template tidak ada atau ganda (0.103834ms)
+✔ app.json mengaktifkan minify dan shrink release lewat expo-build-properties dan plugin lokal (0.259042ms)
+✔ optimized resource shrinking diaktifkan tepat satu kali di gradle.properties, idempoten (0.462542ms)
+(node:21041) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/perbarui-peserta.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ draf santri yang tetap tercantum dipertahankan, santri keluar dibuang, santri baru Hadir (0.713625ms)
+✔ santri baru yang sudah berabsensi memakai absensi tersimpan (0.066666ms)
+✔ ringkasan perubahan (0.127292ms)
+(node:21042) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/peserta-saring.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cari nama/NIS tanpa membedakan huruf besar, diakritik, dan urutan kata (2.352042ms)
+✔ label tab IBTIDA menjadi PA/PI; gabungan non-IBTIDA memakai nama lengkap (0.595542ms)
+✔ tab Semua/PA/PI menghitung peserta unik; kelas hilang atau di luar daftar = Kelas belum tercatat (0.207667ms)
+✔ tab PA hanya peserta kelas asal PA; nama sama di PI tidak ikut (0.257833ms)
+✔ satu kelas dan server lama: satu kelompok tanpa judul (0.068ms)
+✔ nomor urut stabil terhadap pencarian dan tab (0.084667ms)
+✔ saringan tidak mengubah array sumber (draf/payload tetap seluruh peserta) (0.352375ms)
+(node:21043) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/print-dialog.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ mengenali exception pembatalan cetak iOS dari nama dan pesan (0.461333ms)
+✔ mengenali bentuk CodedError dari bridge native (0.089958ms)
+✔ tidak menyembunyikan kegagalan cetak yang sebenarnya (0.053042ms)
+✔ mengembalikan hasil normal ketika pencetakan dimulai (0.062958ms)
+✔ mengubah penutupan dialog menjadi hasil dibatalkan (0.078959ms)
+✔ meneruskan kegagalan printer tanpa perubahan (0.343042ms)
+(node:21044) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/profil.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Isian yang boleh diubah sama dengan kontrak Fase 1 (tanpa username/NIP/NIK/penugasan) (0.947042ms)
+✔ Hanya kunci yang berubah dikirim; kosong dikirim sebagai string kosong (0.163916ms)
+✔ Validasi awal selaras pesan server (2.634209ms)
+✔ Galat server per isian; nilai bukan teks diabaikan (0.092375ms)
+✔ Aturan password sama dengan website: 12 karakter, besar, kecil, angka, ≤72 byte, sama (0.172708ms)
+✔ Inisial, status tanpa duplikat, binaan kamar vs kelas tanpa nama rekaan (0.141375ms)
+✔ Mapel–kelas dikelompokkan per mapel, kombinasi ganda dipertahankan (0.08875ms)
+✔ Rincian penugasan menyebut target, mapel–kelas, atau seluruh cakupan (0.117583ms)
+✔ Alamat lengkap satu baris dari isian berjenjang (0.0805ms)
+✔ Foto: hanya JPEG/PNG/WebP ≤ 2 MiB; mime dari ekstensi bila tidak dilaporkan (0.166416ms)
+✔ Base64 tanpa btoa sama dengan Buffer (0.258083ms)
+(node:21045) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/rapor.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Kosong tetap belum lengkap, nol sah, versi lama tetap dikirim (0.775625ms)
+✔ Validasi angka/reason tidak meloloskan nilai tak sah atau alasan kosong (0.120208ms)
+✔ Push hanya penunjuk valid; data/nilai/tautan lain tidak dipakai (0.851833ms)
+✔ Deep-link native hanya skema/rute rapor sah; ID bertahan sebagai penunjuk (0.364541ms)
+(node:21046) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/redesain-fase1.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ pekan dimulai Senin, termasuk ketika tanggal terpilih hari Minggu (2.621625ms)
+✔ pekan melintasi pergantian bulan, tahun, dan 29 Februari (0.345708ms)
+✔ geser pekan maju dan mundur mempertahankan hari (0.16425ms)
+✔ pesan tanpa menu hanya muncul setelah akses pembinaan selesai diperiksa (0.074625ms)
+(node:21047) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/redesain-fase2.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sesi hari ini yang belum dibuka atau belum selesai ditandai perlu absen (0.724625ms)
+✔ sesi selesai tidak pernah meminta absen, kapan pun tanggalnya (0.071167ms)
+✔ sesi hari lain tidak diberi penanda absen dan dibedakan masa depan/lampau (0.060292ms)
+(node:21048) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/redesain-v2-fase1.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ K-10: layar tab selalu kembali ke Beranda, berlabel "Kembali ke Beranda" (0.430083ms)
+✔ K-10: layar stack kembali ke halaman sebelumnya; tanpa riwayat membuka Beranda (0.121792ms)
+✔ avatar inisial: kata pertama dan terakhir, melewati kata berawalan angka (0.303416ms)
+✔ grafik batang: tinggi relatif terhadap nilai terbesar, tanpa nilai negatif atau NaN (0.4075ms)
+✔ kisi statistik: 2 kolom, butir ganjil terakhir sendiri; 1 kolom pada teks besar (0.084959ms)
+(node:21049) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/redesain-v2-fase2.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ K-10: setiap layar Fase 2 menggambar kepala ber-← (akar atau stack) dan kepala native dimatikan (5.516625ms)
+✔ K-8: FAB hanya di Perizinan dan daftar izin wali, tinggi 56, ruang bawah FAB + 16 (0.556875ms)
+✔ K-8: alternatif tombol atas dipakai hanya bila FAB dapat melewati setengah layar (0.07575ms)
+✔ §4.3: "Perbarui daftar" berada di menu ⋯ dan payload absensi tetap seluruh peserta (0.162042ms)
+✔ §4.5: garis waktu tahap mengikuti tahap dan status server, selalu berketerangan teks (0.458833ms)
+✔ §4.11: waktu relatif notifikasi dari waktu server WIB; tidak mengarang di luar jangkauan (1.061084ms)
+✔ layar tab: jarak atas tidak ganda di iOS (inset otomatis native tabs), tetap area aman + 8 di Android/web (0.121ms)
+(node:21050) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/redesain-v2-fase3.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ K-7/K-10: setiap layar Keuangan memakai kerangka ber-← dan kepala native dimatikan (5.322334ms)
+✔ cetak/PDF tetap dari website: layar Keuangan tidak menambah tombol Bagikan atau cetak (0.987584ms)
+✔ istilah BSA: tidak ada "pendapatan" atau "laba" di layar Keuangan (0.798209ms)
+✔ nada status: Menunggu = jam (bukan centang); sah/lunas = centang; batal/tolak = silang (0.454167ms)
+✔ nominal bertanda dan arah ikon dari arah ledger; rupiah tetap bertitik (0.138125ms)
+✔ sisa tagihan: hanya tagihan Terbit; daftar mencapai batas server → null (bukan angka karangan) (0.098625ms)
+✔ grafik per bulan hanya bila respons memuat seri (≥ 2 bulan); nilai apa adanya (0.145541ms)
+(node:21051) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/redesain-v2-fase4.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ K-7/K-10: setiap layar Fase 4 memakai kerangka ber-judul (← di luar area gulir) (5.790792ms)
+✔ K-10 menyeluruh: setiap rute selain Beranda, Masuk, dan Ganti password wajib menggambar ← (5.296417ms)
+✔ kepala native dimatikan untuk navigator dan rute Fase 4 (0.629875ms)
+✔ perlindungan expo-screen-capture Kesehatan dan Keamanan tetap dipasang sebelum layar mana pun (0.364417ms)
+✔ Keamanan hanya baca: layar tidak memanggil mutasi atau menggambar tombol tindakan (0.606334ms)
+✔ Kesehatan: catatan klinis ditandai privat; ringkasan wali terpisah; laporan tanpa pembanding karangan (0.217166ms)
+✔ Pembinaan: kerahasiaan tampil dengan gembok; Rahasia tetap mengikuti server (0.123625ms)
+✔ Rapor: koreksi beralasan, versi sebelumnya, dan unduh PDF tetap (0.1145ms)
+✔ nada status kesehatan dan pembinaan: ikon + teks, menunggu = jam, selesai = centang, batal = silang (0.094375ms)
+(node:21052) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/redesain-v2-kontras.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ kontras token light: teks ≥ 4,5:1, ikon/teks besar ≥ 3:1 (1.097541ms)
+✔ kontras token dark: teks ≥ 4,5:1, ikon/teks besar ≥ 3:1 (0.127167ms)
+✔ token K-1: latar krem, hijau lebih tua, kartu sorot lebih tua (0.08625ms)
+✔ warna status kehadiran, warning, danger, info, dan violet tidak berubah (0.1015ms)
+✔ emas hiasan tidak dipakai sebagai warna teks (kontras di bawah 3:1 di mode terang) (0.0495ms)
+(node:21053) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/tindak-lanjut-v2.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ TL-20: warna status kehadiran hanya untuk ikon/batang, bukan teks biasa (19.3645ms)
+✔ TL-01: layar Masuk menyapa; penanda Beranda (sapaan berkoma) tetap khusus Beranda (0.17425ms)
+✔ TL-03: Profil memecah Akun dan Pemberitahuan; Data diri berupa rincian sendiri (0.122833ms)
+✔ TL-10: aturan perkiraan FAB native tidak berubah; web memakai lebar terukur (0.100625ms)
+✔ TL-22: layar dengan ActionBar langsung memindahkan tindakan ke akhir isi pada teks sangat besar (0.262333ms)
+✔ TL-23: status pil ikut dibacakan pada baris entitas tanpa mengubah nama tombol (0.067084ms)
+(node:21054) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/tmp/iop-codex-audit/mobile/tests/versi-aplikasi.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/tmp/iop-codex-audit/mobile/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ naikkan mengikuti aturan major/minor/patch (0.544125ms)
+✔ bandingkan numerik, bukan teks (0.661083ms)
+✔ perubahan dokumen/uji/skrip bukan perubahan aplikasi (0.52475ms)
+✔ nilai: menolak perubahan aplikasi tanpa kenaikan, versi turun, dan lompatan (0.153417ms)
+✔ CLI: perubahan aplikasi tanpa kenaikan gagal; naik minor sekali; periksa lulus (549.2975ms)
+✔ CLI: versi turun dari baseline atau lompat ditolak; perubahan dokumen saja lulus (334.386542ms)
+ℹ tests 141
+ℹ suites 0
+ℹ pass 141
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1433.722666

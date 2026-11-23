@@ -1,0 +1,124 @@
+=== PK-1. Teks baku pesan ===
+[lulus] PK-1a teks pesan sama persis dengan teks baku keputusan produk
+[lulus] PK-1b alamat masuk adalah /portal/ produksi
+[lulus] PK-1c teks baku tidak memuat markup
+[lulus] PK-1d instruksi ganti password pada login pertama ada di dalam pesan
+
+=== PK-2. Hanya dari akun yang benar-benar tersimpan ===
+[lulus] PK-2a akun tanpa id ditolak
+[lulus] PK-2b akun tanpa nama ditolak
+[lulus] PK-2c akun tanpa username ditolak
+[lulus] PK-2d password kosong ditolak (tidak ada pesan palsu)
+[lulus] PK-2e jenis akun di luar guru/pengurus/orang tua ditolak
+[lulus] PK-2f cakupan tepat tiga jalur pembuatan akun yang didukung admin
+
+=== PK-3. Nilai berasal dari pembacaan ulang server ===
+[lulus] PK-3a pesan memakai username hasil normalisasi server
+[lulus] PK-3b createTeacher membaca ulang akun dari server setelah simpan
+[lulus] PK-3c createTeacher mengembalikan baris akun hasil pembacaan ulang
+[lulus] PK-3d create() pengurus/orang tua membaca ulang akun dari server setelah simpan
+[lulus] PK-3e create() mengembalikan baris akun hasil pembacaan ulang
+
+=== PK-4. Flash kredensial satu kali ===
+[lulus] PK-4a sesi bersih tidak menghasilkan pesan
+[lulus] PK-4b muatan tersimpan setelah pembuatan akun berhasil
+[lulus] PK-4c muatan sesi berupa DATA terstruktur, bukan potongan HTML
+[lulus] PK-4d pembacaan pertama mengembalikan muatan utuh
+[lulus] PK-4e muatan langsung dihapus dari sesi ketika dibaca
+[lulus] PK-4f pembacaan kedua (muat ulang / tombol kembali) tidak menghasilkan apa pun
+[lulus] PK-4g forget() membersihkan muatan pada jalur kegagalan
+
+=== PK-5 s.d. PK-9. Panel kredensial ===
+[lulus] PK-5a nama bermuatan skrip tidak lolos mentah
+[lulus] PK-5b username bermuatan tag tidak lolos mentah
+[lulus] PK-5c email bermuatan tag tidak lolos mentah
+[lulus] PK-5d nama tampil sebagai teks yang di-escape
+[lulus] PK-5e hanya ada satu blok skrip, yaitu skrip tombol salin milik panel
+[lulus] PK-6a panel memuat kotak pesan siap salin
+[lulus] PK-6b isi kotak pesan sama persis dengan teks pesan (yang akan disalin tombol)
+[lulus] PK-6c hasil salinan berupa teks biasa, tanpa entitas atau tag HTML
+[lulus] PK-6d tombol menyalin textContent, bukan markup
+[lulus] PK-7a password sementara tidak berada pada atribut HTML mana pun
+[lulus] PK-7b tidak ada atribut data-* yang membawa password
+[lulus] PK-7c password tidak ditaruh pada nilai input
+[lulus] PK-7d password muncul tepat dua kali sebagai teks: ringkasan akun dan isi pesan
+[lulus] PK-8a status penyalinan berada pada area aria-live yang sopan
+[lulus] PK-8b keberhasilan menyalin diumumkan dengan status "Pesan berhasil disalin"
+[lulus] PK-8c status ditulis sebagai teks, bukan markup
+[lulus] PK-9a tersedia jalur Clipboard API sekaligus jalur sorot manual
+[lulus] PK-9b petunjuk penyalinan manual disebutkan kepada pengguna
+[lulus] PK-9c petunjuk manual tetap ada meski JavaScript mati
+[lulus] PK-9d tombol salin bukan tombol formulir: kegagalan menyalin tidak membuat akun/password baru
+[lulus] PK-9e peringatan membersihkan papan klip setelah email terkirim ditampilkan
+[lulus] PK-5f panel memuat nama pengguna
+[lulus] PK-5f panel memuat alamat email tujuan
+[lulus] PK-5f panel memuat username
+[lulus] PK-5f panel memuat password sementara
+[lulus] PK-5f panel memuat alamat masuk portal
+[lulus] PK-5f panel memuat instruksi wajib ganti password
+[lulus] PK-5f panel memuat peringatan tidak boleh dibagikan
+[lulus] PK-5f panel memuat tombol Salin pesan
+[lulus] PK-5f panel memuat URL portal
+[lulus] PK-5g akun tanpa email dijelaskan, email tetap opsional seperti sebelumnya
+
+=== PK-10. Tidak ada pengiriman email otomatis ===
+[lulus] PK-10a panel tidak memuat "mailto:"
+[lulus] PK-10a panel tidak memuat "smtp"
+[lulus] PK-10a panel tidak memuat "SMTP"
+[lulus] PK-10a panel tidak memuat "sendmail"
+[lulus] PK-10a panel tidak memuat "PHPMailer"
+[lulus] PK-10a panel tidak memuat "fetch("
+[lulus] PK-10a panel tidak memuat "XMLHttpRequest"
+[lulus] PK-10a panel tidak memuat "navigator.sendBeacon"
+[lulus] PK-10b berkas fitur tidak memanggil mail()
+[lulus] PK-10b berkas fitur tidak memanggil mail()
+
+=== PK-11 s.d. PK-13. Halaman Akun & Hak Akses ===
+[lulus] PK-11a tersedia header Cache-Control private, no-store
+[lulus] PK-11b halaman akun mengirim header no-store saat panel akan tampil
+[lulus] PK-11c muatan diambil dan header dikirim SEBELUM keluaran halaman dimulai
+[lulus] PK-12a jalur kegagalan langsung membuang pesan kredensial
+[lulus] PK-12b sisa pesan permintaan sebelumnya dibersihkan sebelum aksi baru diproses
+[lulus] PK-12c pembersihan dilakukan pada awal POST dan pada jalur gagal
+[lulus] PK-12d hasil POST tetap memakai pola redirect: retry tidak mengirim ulang formulir
+[lulus] PK-12e password dan muatan pesan tidak pernah masuk URL atau query string
+[lulus] PK-13a aksi reset password tetap seperti semula
+[lulus] PK-13b tampilan hasil reset password tidak diubah
+[lulus] PK-13c reset password tidak ikut membuat pesan kredensial baru
+
+=== PK-14. Pengamanan password sementara ===
+[lulus] PK-14a jalur guru hanya menyimpan hash password
+[lulus] PK-14b jalur pengurus/orang tua hanya menyimpan hash password
+[lulus] PK-14c app/Account/AccountService.php tidak menulis password ke log aplikasi
+[lulus] PK-14d app/Account/AccountService.php tidak menulis apa pun ke konsol peramban
+[lulus] PK-14e app/Account/AccountService.php tidak menyentuh storage peramban
+[lulus] PK-14c app/Account/PerizinanAccountService.php tidak menulis password ke log aplikasi
+[lulus] PK-14d app/Account/PerizinanAccountService.php tidak menulis apa pun ke konsol peramban
+[lulus] PK-14e app/Account/PerizinanAccountService.php tidak menyentuh storage peramban
+[lulus] PK-14c app/Account/CredentialMessage.php tidak menulis password ke log aplikasi
+[lulus] PK-14d app/Account/CredentialMessage.php tidak menulis apa pun ke konsol peramban
+[lulus] PK-14e app/Account/CredentialMessage.php tidak menyentuh storage peramban
+[lulus] PK-14c app/Account/CredentialFlash.php tidak menulis password ke log aplikasi
+[lulus] PK-14d app/Account/CredentialFlash.php tidak menulis apa pun ke konsol peramban
+[lulus] PK-14e app/Account/CredentialFlash.php tidak menyentuh storage peramban
+[lulus] PK-14c app/Ui/CredentialPanel.php tidak menulis password ke log aplikasi
+[lulus] PK-14d app/Ui/CredentialPanel.php tidak menulis apa pun ke konsol peramban
+[lulus] PK-14e app/Ui/CredentialPanel.php tidak menyentuh storage peramban
+[lulus] PK-14c admin/admin_akun.php tidak menulis password ke log aplikasi
+[lulus] PK-14d admin/admin_akun.php tidak menulis apa pun ke konsol peramban
+[lulus] PK-14e admin/admin_akun.php tidak menyentuh storage peramban
+[lulus] PK-14f audit pembuatan akun tidak memuat password
+[lulus] PK-14g audit tetap mencatat identitas akun dan role, bukan password
+[lulus] PK-14h panel kredensial tidak ikut tercetak
+[lulus] PK-14i gaya panel tersedia pada lapisan desain bersama
+
+=== PK-15. Lint sintaks ===
+[lulus] PK-15 sintaks app/Account/CredentialMessage.php valid
+[lulus] PK-15 sintaks app/Account/CredentialFlash.php valid
+[lulus] PK-15 sintaks app/Ui/CredentialPanel.php valid
+[lulus] PK-15 sintaks app/Account/AccountService.php valid
+[lulus] PK-15 sintaks app/Account/PerizinanAccountService.php valid
+[lulus] PK-15 sintaks admin/admin_akun.php valid
+[lulus] PK-15 sintaks tests/kredensial_static.php valid
+
+SELURUH PEMERIKSAAN STATIS PESAN KREDENSIAL LULUS.

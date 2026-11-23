@@ -1,0 +1,42 @@
+[lulus] Admin masuk web; guru dan Keamanan memperoleh token API
+
+=== H-1 buka pertemuan lewat web ===
+[gagal] Buka lewat web membekukan usulan dengan keterangan IP-3
+[gagal] Halaman pertemuan web: keterangan usulan dari snapshot, satu baris
+[gagal] Pertemuan berusulan tidak memakai label lama; hitungan "1 sedang izin"
+[lulus] Tanpa formulir absensi web (keputusan R)
+
+=== H-2 REST rincian pertemuan ===
+[gagal] GET /meetings/{id}: `izin` aditif sesuai §3.4
+
+=== H-3 simpan lewat REST (guru ubah ke Hadir) dan rincian laporan web ===
+[lulus] Simpan REST: status Hadir pilihan guru tersimpan (server tidak memaksa Izin)
+[lulus] Kunci idempotensi sama → satu penyimpanan
+[gagal] Rincian laporan web: keterangan usulan tampil
+
+=== H-4 REST Keamanan rincian kehadiran ===
+[gagal] Keamanan: keterangan usulan + izin_id dari snapshot, status tersimpan Hadir
+
+=== H-5 pertemuan tanpa usulan: label lama tetap ===
+[lulus] Pertemuan tanpa usulan (seperti pertemuan lama): label "Sedang izin #" yang dihitung
+[lulus] Rincian laporan pertemuan tanpa usulan: label lama
+
+=== H-6 perbarui lewat web dan REST ===
+[gagal] Perbarui web: pesan "1 usulan izin diisi" dan keterangan admin pengganti tampil
+[gagal] Perbarui REST: izin dibatalkan → izin_cleared 1 dan `izin` null
+
+=== H-7 tanpa isi izin; log server ===
+[lulus] Halaman dan respons tidak memuat alasan/catatan/keputusan izin
+[lulus] Audit tanpa isi izin
+[lulus] Log server tanpa isi izin
+[lulus] Log server tanpa galat/peringatan PHP
+
+Hasil: 10 lulus, 8 gagal
+  - Buka lewat web membekukan usulan dengan keterangan IP-3
+  - Halaman pertemuan web: keterangan usulan dari snapshot, satu baris
+  - Pertemuan berusulan tidak memakai label lama; hitungan "1 sedang izin"
+  - GET /meetings/{id}: `izin` aditif sesuai §3.4
+  - Rincian laporan web: keterangan usulan tampil
+  - Keamanan: keterangan usulan + izin_id dari snapshot, status tersimpan Hadir
+  - Perbarui web: pesan "1 usulan izin diisi" dan keterangan admin pengganti tampil
+  - Perbarui REST: izin dibatalkan → izin_cleared 1 dan `izin` null

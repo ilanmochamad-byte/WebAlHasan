@@ -1,0 +1,69 @@
+=== S-1. Migrasi 024 ===
+[gagal] Migrasi 024 berurutan setelah 023 (migrasi terakhir yang ada)
+[lulus] Migrasi aditif: 5 CREATE TABLE IF NOT EXISTS, tanpa DROP/ALTER/DML
+[lulus] Tabel kesehatan_assignments dibuat dan dilepas rollback berpasangan
+[lulus] Tabel kesehatan_kunjungan dibuat dan dilepas rollback berpasangan
+[lulus] Tabel kesehatan_kunjungan_versi dibuat dan dilepas rollback berpasangan
+[lulus] Tabel kesehatan_idempotensi dibuat dan dilepas rollback berpasangan
+[lulus] Tabel kesehatan_akses_log dibuat dan dilepas rollback berpasangan
+[lulus] Rollback hanya melepas 5 tabel baru, urut anak → induk
+[lulus] Kunci unik idempotensi pada kunjungan dan klaim
+[lulus] 18 kunci asing nyata (santri, users, pengurus, tahun ajaran, penugasan)
+[lulus] Log akses tanpa kolom isi klinis
+[lulus] Klaim idempotensi tidak menyimpan salinan respons/isi klinis
+
+=== S-2. Penugasan dan capability ===
+[lulus] Jenis penugasan kesehatan + capability kesehatan.catat ditambahkan
+[lulus] Kesehatan: role dasar pengurus, cakupan seluruh santri, tidak gugur saat semester berganti
+[lulus] Bendahara bulanan lama tidak disulap menjadi petugas kesehatan
+[lulus] Capabilities perizinan V2 dan resolver tidak berubah (kesehatan lewat katalog fondasi)
+[lulus] Tidak ada role login baru
+[lulus] Repository penugasan mengenal cakupan seluruh + pemeriksaan tabel
+[lulus] Pusat penugasan tetap terbuka sebelum migrasi/sesudah rollback dan menjelaskan cakupan
+
+=== S-3. Layanan kesehatan ===
+[lulus] Hak dihitung ulang dari basis data setiap panggilan (forget + featureSource)
+[lulus] Hanya sumber penugasan murni yang boleh mencatat; admin dan admin+petugas hanya baca
+[lulus] Pencatatan: wajib catat, transaksi, penugasan diperiksa ulang di dalam transaksi
+[lulus] Kunci baca penugasan: akun aktif, peran pengurus, penugasan aktif
+[lulus] Urutan: penugasan → klaim → banding isi (409) → replay → simpan
+[lulus] Audit pencatatan hanya metadata (tanpa keluhan/catatan/tindakan)
+[lulus] Audit wajib: kegagalan membatalkan transaksi
+[lulus] Detail mencatat akses sebelum isi klinis dikembalikan (gagal tertutup)
+[lulus] Daftar tidak memilih kolom klinis
+[gagal] Fase 1 tanpa jalur ubah/hapus kunjungan (koreksi berversi = Fase 2)
+[gagal] Validasi: status Tercatat, waktu tidak di masa depan, kunci aman
+
+=== S-4. Halaman web ===
+[lulus] Guard bersama: wajib masuk, CSRF untuk POST, no-store
+[lulus] portal/kesehatan.php: guard bersama, keluaran di-escape, tanpa SQL di halaman
+[lulus] portal/kesehatan_buat.php: guard bersama, keluaran di-escape, tanpa SQL di halaman
+[lulus] portal/kesehatan_detail.php: guard bersama, keluaran di-escape, tanpa SQL di halaman
+[lulus] Formulir: hanya petugas, kunci idempotensi + CSRF, isi klinis tidak disimpan ke sesi
+[gagal] Tanpa tombol ubah/hapus pada daftar dan detail
+[lulus] Menu Kesehatan: admin (pengawasan) dan petugas (penugasan sendiri)
+
+=== S-5. API ===
+[lulus] API memakai layanan yang sama dengan web, no-store
+[lulus] POST: kunci dari header/badan; respons tanpa isi klinis
+[lulus] Rute kesehatan sesudah autentikasi token; galat layanan dipetakan ke kode API
+
+=== S-6. Privasi log ===
+[lulus] AuditLogger membuang kolom klinis untuk aksi kesehatan.*
+[lulus] Kode kesehatan tidak menulis error_log dan pesan galat tidak menyisipkan masukan
+
+=== S-7. Operasi dan batas fase ===
+[lulus] bin/v5_phase1_preflight.php: CLI saja, hanya membaca
+[lulus] bin/v5_phase1_verify.php: CLI saja, hanya membaca
+[lulus] bin/v5_phase1_rollback_preflight.php: CLI saja, hanya membaca
+[lulus] Skrip DB/seed uji hanya untuk test_*_test
+[lulus] Fase 2–3 belum dimulai: tanpa obat, rujukan, ringkasan wali, atau notifikasi
+
+=== S-8. Lint ===
+[lulus] Lint 25 berkas PHP
+
+Lulus: 44 · Gagal: 4
+  - Migrasi 024 berurutan setelah 023 (migrasi terakhir yang ada)
+  - Fase 1 tanpa jalur ubah/hapus kunjungan (koreksi berversi = Fase 2)
+  - Validasi: status Tercatat, waktu tidak di masa depan, kunci aman
+  - Tanpa tombol ubah/hapus pada daftar dan detail

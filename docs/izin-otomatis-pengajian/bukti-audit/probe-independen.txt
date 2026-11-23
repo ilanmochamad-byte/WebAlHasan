@@ -1,0 +1,48 @@
+[lulus] status Diajukan sendiri tidak mengusulkan Izin
+[lulus] status Perlu Penetapan Admin sendiri tidak mengusulkan Izin
+[lulus] status Menunggu Pembimbing sendiri tidak mengusulkan Izin
+[lulus] status Perlu Penetapan Pembimbing sendiri tidak mengusulkan Izin
+[lulus] status Perlu Perbaikan Wali sendiri tidak mengusulkan Izin
+[lulus] status Ditolak sendiri tidak mengusulkan Izin
+[lulus] status Ditolak Pembimbing sendiri tidak mengusulkan Izin
+[lulus] status Dibatalkan sendiri tidak mengusulkan Izin
+[lulus] negatif keputusan/rentang [null,0]
+[lulus] negatif keputusan/rentang ["Ditolak",0]
+[lulus] negatif keputusan/rentang ["Disetujui",1]
+[lulus] negatif keputusan/rentang ["Disetujui",-1]
+[lulus] Pengurus / Murobi, rentang satu hari dan kapasitas tepat
+[lulus] penggantian usulan dihitung satu
+[lulus] Pengurus / Admin Pengganti, rentang satu hari dan kapasitas tepat
+[lulus] penggantian usulan dihitung satu
+[lulus] Wali / Murobi, rentang satu hari dan kapasitas tepat
+[lulus] penggantian usulan dihitung satu
+[lulus] Wali / Admin Pengganti, rentang satu hari dan kapasitas tepat
+[lulus] penggantian usulan dihitung satu
+[lulus] koreksi resmi Disetujui → Ditolak memilih izin tumpang tindih sah berikutnya
+[lulus] koreksi resmi Ditolak → Disetujui mengisi usulan
+[lulus] hak meeting guru lain tetap 403
+[lulus] hak refreshParticipants guru lain tetap 403
+[lulus] ulang simpan kunci sama mengembalikan respons identik
+[lulus] ulang simpan hanya satu audit/penyimpanan
+[lulus] klien lama boleh simpan Hadir berizin dan Izin tanpa usulan
+[lulus] kunci sama isi berbeda tetap ditolak 409
+[lulus] koreksi Selesai tanpa alasan tetap 422
+[lulus] Selesai tetap identik setelah pembatalan dan percobaan perbarui
+[lulus] payload absensi tidak mengandung penanda privat
+[lulus] audit absensi/buka/perbarui tanpa alasan/catatan/keputusan izin
+Audit log gagal disimpan.
+[lulus] audit gagal: seluruh penyelarasan usulan rollback
+[lulus] sesudah audit pulih perbarui berhasil
+[lulus] IP-3 bulan Jan
+[lulus] IP-3 bulan Feb
+[lulus] IP-3 bulan Mar
+[lulus] IP-3 bulan Apr
+[lulus] IP-3 bulan Mei
+[lulus] IP-3 bulan Jun
+[lulus] IP-3 bulan Jul
+[lulus] IP-3 bulan Agu
+[lulus] IP-3 bulan Sep
+[lulus] IP-3 bulan Okt
+[lulus] IP-3 bulan Nov
+[lulus] IP-3 bulan Des
+Hasil: 46 lulus, 0 gagal

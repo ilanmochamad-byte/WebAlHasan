@@ -1,0 +1,27 @@
+Running on iPhone 17 Pro - iOS 27.2 - D0478170-2B0A-4DC8-B670-7568C3096919
+ > Flow absensi-izin
+Run ../redesain-v2-fase2/masuk.yaml...
+  Launch app "com.ilanmochamad.alhasanApps" with clear state and clear keychain... COMPLETED
+  Assert that "Alhasan Apps" is visible... COMPLETED
+  Scrolling DOWN until "Masukkan username" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan username"... COMPLETED
+  Input text ${AKUN}... COMPLETED
+  Scrolling DOWN until "Masukkan password" is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+  Tap on "Masukkan password"... COMPLETED
+  Input text ${SANDI}... COMPLETED
+  Press Enter key... COMPLETED
+  Assert that ".*Buka profil|Not Now" is visible... FAILED
+Run ../redesain-v2-fase2/masuk.yaml... FAILED
+
+Assertion is false: ".*Buka profil|Not Now" is visible
+
+Assertion '".*Buka profil|Not Now" is visible' failed. Check the UI hierarchy in debug artifacts to verify the element state and properties.
+
+Possible causes:
+- Element selector may be incorrect - check if there are similar elements with slightly different names/properties.
+- Element may be temporarily unavailable due to loading state
+- This could be a real regression that needs to be addressed
+
+==== Debug output (logs & screenshots) ====
+
+/private/tmp/iop-codex-audit/ios-maestro/2026-11-23_231118

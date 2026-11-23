@@ -1,0 +1,411 @@
+{
+    "open": {
+        "id": 726,
+        "schedule_id": 104,
+        "date": "2027-04-15",
+        "status": "Dibuka",
+        "notes": null,
+        "opened_at": "2026-11-23 19:00:00",
+        "completed_at": null,
+        "task": {
+            "day": "Kamis",
+            "start_time": "05:00",
+            "end_time": "05:30",
+            "subject": "Migrasi 5A7BE7",
+            "book": "Uji",
+            "place": "Uji",
+            "class": {
+                "id": 342,
+                "name": "2 IBTIDA C 5A7BE7",
+                "level": "Uji"
+            },
+            "classes": [
+                {
+                    "id": 342,
+                    "name": "2 IBTIDA C 5A7BE7",
+                    "level": "Uji",
+                    "is_primary": true
+                }
+            ],
+            "teacher": {
+                "id": 4,
+                "nip": "SBX-G-004",
+                "name": "SBX Guru Tanpa Murobi"
+            },
+            "academic_year": {
+                "id": 1,
+                "year": "2026\/2027",
+                "semester": "Ganjil"
+            }
+        },
+        "teacher_attendance": null,
+        "students": [
+            {
+                "student_id": 1727,
+                "nis": "JKG5A7BE76",
+                "name": "Santri C1 5A7BE7",
+                "class": {
+                    "id": 342,
+                    "name": "2 IBTIDA C 5A7BE7"
+                },
+                "attendance": null
+            },
+            {
+                "student_id": 1728,
+                "nis": "JKG5A7BE77",
+                "name": "Santri C2 5A7BE7",
+                "class": {
+                    "id": 342,
+                    "name": "2 IBTIDA C 5A7BE7"
+                },
+                "attendance": null
+            }
+        ]
+    },
+    "refresh": {
+        "id": 726,
+        "schedule_id": 104,
+        "date": "2027-04-15",
+        "status": "Dibuka",
+        "notes": null,
+        "opened_at": "2026-11-23 19:00:00",
+        "completed_at": null,
+        "task": {
+            "day": "Kamis",
+            "start_time": "05:00",
+            "end_time": "05:30",
+            "subject": "Migrasi 5A7BE7",
+            "book": "Uji",
+            "place": "Uji",
+            "class": {
+                "id": 342,
+                "name": "2 IBTIDA C 5A7BE7",
+                "level": "Uji"
+            },
+            "classes": [
+                {
+                    "id": 342,
+                    "name": "2 IBTIDA C 5A7BE7",
+                    "level": "Uji",
+                    "is_primary": true
+                }
+            ],
+            "teacher": {
+                "id": 4,
+                "nip": "SBX-G-004",
+                "name": "SBX Guru Tanpa Murobi"
+            },
+            "academic_year": {
+                "id": 1,
+                "year": "2026\/2027",
+                "semester": "Ganjil"
+            }
+        },
+        "teacher_attendance": null,
+        "students": [
+            {
+                "student_id": 1727,
+                "nis": "JKG5A7BE76",
+                "name": "Santri C1 5A7BE7",
+                "class": {
+                    "id": 342,
+                    "name": "2 IBTIDA C 5A7BE7"
+                },
+                "attendance": null
+            },
+            {
+                "student_id": 1728,
+                "nis": "JKG5A7BE77",
+                "name": "Santri C2 5A7BE7",
+                "class": {
+                    "id": 342,
+                    "name": "2 IBTIDA C 5A7BE7"
+                },
+                "attendance": null
+            }
+        ],
+        "participant_changes": {
+            "added": [],
+            "removed": [],
+            "kept_with_attendance": []
+        }
+    },
+    "save": {
+        "id": 726,
+        "schedule_id": 104,
+        "date": "2027-04-15",
+        "status": "Selesai",
+        "notes": null,
+        "opened_at": "2026-11-23 19:00:00",
+        "completed_at": "2026-11-23 19:00:00",
+        "task": {
+            "day": "Kamis",
+            "start_time": "05:00",
+            "end_time": "05:30",
+            "subject": "Migrasi 5A7BE7",
+            "book": "Uji",
+            "place": "Uji",
+            "class": {
+                "id": 342,
+                "name": "2 IBTIDA C 5A7BE7",
+                "level": "Uji"
+            },
+            "classes": [
+                {
+                    "id": 342,
+                    "name": "2 IBTIDA C 5A7BE7",
+                    "level": "Uji",
+                    "is_primary": true
+                }
+            ],
+            "teacher": {
+                "id": 4,
+                "nip": "SBX-G-004",
+                "name": "SBX Guru Tanpa Murobi"
+            },
+            "academic_year": {
+                "id": 1,
+                "year": "2026\/2027",
+                "semester": "Ganjil"
+            }
+        },
+        "teacher_attendance": {
+            "id": 717,
+            "teacher_id": 4,
+            "status": "Hadir",
+            "notes": null,
+            "recorded_at": "2026-11-23 19:00:00",
+            "updated_at": "2026-11-23 19:00:00"
+        },
+        "students": [
+            {
+                "student_id": 1727,
+                "nis": "JKG5A7BE76",
+                "name": "Santri C1 5A7BE7",
+                "class": {
+                    "id": 342,
+                    "name": "2 IBTIDA C 5A7BE7"
+                },
+                "attendance": {
+                    "id": 13396,
+                    "status": "Hadir",
+                    "notes": "Kontrol baseline",
+                    "recorded_at": "2026-11-23 19:00:00",
+                    "updated_at": "2026-11-23 19:00:00"
+                }
+            },
+            {
+                "student_id": 1728,
+                "nis": "JKG5A7BE77",
+                "name": "Santri C2 5A7BE7",
+                "class": {
+                    "id": 342,
+                    "name": "2 IBTIDA C 5A7BE7"
+                },
+                "attendance": {
+                    "id": 13397,
+                    "status": "Hadir",
+                    "notes": "Kontrol baseline",
+                    "recorded_at": "2026-11-23 19:00:00",
+                    "updated_at": "2026-11-23 19:00:00"
+                }
+            }
+        ]
+    },
+    "report": {
+        "id": 726,
+        "schedule_id": 104,
+        "date": "2027-04-15",
+        "status": "Selesai",
+        "notes": null,
+        "opened_at": "2026-11-23 19:00:00",
+        "completed_at": "2026-11-23 19:00:00",
+        "updated_at": "2026-11-23 19:00:00",
+        "created_by": "SBX Guru Tanpa Murobi",
+        "task": {
+            "day": "Kamis",
+            "start_time": "05:00",
+            "end_time": "05:30",
+            "subject": "Migrasi 5A7BE7",
+            "book": "Uji",
+            "place": "Uji",
+            "class": {
+                "id": 342,
+                "name": "2 IBTIDA C 5A7BE7",
+                "level": "Uji"
+            },
+            "classes": [
+                {
+                    "id": 342,
+                    "name": "2 IBTIDA C 5A7BE7",
+                    "level": "Uji",
+                    "is_primary": true
+                }
+            ],
+            "class_names": "2 IBTIDA C 5A7BE7",
+            "teacher": {
+                "id": 4,
+                "nip": "SBX-G-004",
+                "name": "SBX Guru Tanpa Murobi"
+            },
+            "academic_year": {
+                "id": 1,
+                "year": "2026\/2027",
+                "semester": "Ganjil"
+            }
+        },
+        "teacher_attendance": {
+            "teacher_id": 4,
+            "nip": "SBX-G-004",
+            "name": "SBX Guru Tanpa Murobi",
+            "status": "Hadir",
+            "notes": null,
+            "recorded_by": "SBX Guru Tanpa Murobi",
+            "recorded_at": "2026-11-23 19:00:00",
+            "updated_at": "2026-11-23 19:00:00"
+        },
+        "students": [
+            {
+                "student_id": 1727,
+                "nis": "JKG5A7BE76",
+                "name": "Santri C1 5A7BE7",
+                "class": {
+                    "id": 342,
+                    "name": "2 IBTIDA C 5A7BE7"
+                },
+                "status": "Hadir",
+                "notes": "Kontrol baseline",
+                "recorded_by": "SBX Guru Tanpa Murobi",
+                "recorded_at": "2026-11-23 19:00:00",
+                "updated_at": "2026-11-23 19:00:00"
+            },
+            {
+                "student_id": 1728,
+                "nis": "JKG5A7BE77",
+                "name": "Santri C2 5A7BE7",
+                "class": {
+                    "id": 342,
+                    "name": "2 IBTIDA C 5A7BE7"
+                },
+                "status": "Hadir",
+                "notes": "Kontrol baseline",
+                "recorded_by": "SBX Guru Tanpa Murobi",
+                "recorded_at": "2026-11-23 19:00:00",
+                "updated_at": "2026-11-23 19:00:00"
+            }
+        ],
+        "student_summary": {
+            "participant_count": 2,
+            "recorded_count": 2,
+            "statuses": {
+                "Hadir": 2,
+                "Terlambat": 0,
+                "Izin": 0,
+                "Sakit": 0,
+                "Alpa": 0
+            }
+        }
+    },
+    "audit": [
+        {
+            "action": "api.meeting.open",
+            "before_json": null,
+            "after_json": {
+                "jadwal_id": 104,
+                "tanggal_pertemuan": "2027-04-15",
+                "participant_count": 2
+            }
+        },
+        {
+            "action": "api.meeting.refresh_participants",
+            "before_json": {
+                "participant_count": 2
+            },
+            "after_json": {
+                "participant_count": 2,
+                "ditambah": [],
+                "dikeluarkan": [],
+                "dipertahankan": []
+            }
+        },
+        {
+            "action": "api.attendance.save",
+            "before_json": {
+                "teacher": null,
+                "students": [
+                    {
+                        "santri_id": 1727,
+                        "nis_snapshot": "JKG5A7BE76",
+                        "nama_santri_snapshot": "Santri C1 5A7BE7",
+                        "kelas_id_snapshot": 342,
+                        "kelas_asal": "2 IBTIDA C 5A7BE7",
+                        "attendance_id": null,
+                        "status": null,
+                        "notes": null,
+                        "recorded_at": null,
+                        "updated_at": null
+                    },
+                    {
+                        "santri_id": 1728,
+                        "nis_snapshot": "JKG5A7BE77",
+                        "nama_santri_snapshot": "Santri C2 5A7BE7",
+                        "kelas_id_snapshot": 342,
+                        "kelas_asal": "2 IBTIDA C 5A7BE7",
+                        "attendance_id": null,
+                        "status": null,
+                        "notes": null,
+                        "recorded_at": null,
+                        "updated_at": null
+                    }
+                ],
+                "meeting_status": "Dibuka"
+            },
+            "after_json": {
+                "teacher": {
+                    "id": 717,
+                    "teacher_id": 4,
+                    "status": "Hadir",
+                    "notes": null,
+                    "recorded_at": "2026-11-23 19:00:00",
+                    "updated_at": "2026-11-23 19:00:00"
+                },
+                "students": [
+                    {
+                        "student_id": 1727,
+                        "nis": "JKG5A7BE76",
+                        "name": "Santri C1 5A7BE7",
+                        "class": {
+                            "id": 342,
+                            "name": "2 IBTIDA C 5A7BE7"
+                        },
+                        "attendance": {
+                            "id": 13396,
+                            "status": "Hadir",
+                            "notes": "Kontrol baseline",
+                            "recorded_at": "2026-11-23 19:00:00",
+                            "updated_at": "2026-11-23 19:00:00"
+                        }
+                    },
+                    {
+                        "student_id": 1728,
+                        "nis": "JKG5A7BE77",
+                        "name": "Santri C2 5A7BE7",
+                        "class": {
+                            "id": 342,
+                            "name": "2 IBTIDA C 5A7BE7"
+                        },
+                        "attendance": {
+                            "id": 13397,
+                            "status": "Hadir",
+                            "notes": "Kontrol baseline",
+                            "recorded_at": "2026-11-23 19:00:00",
+                            "updated_at": "2026-11-23 19:00:00"
+                        }
+                    }
+                ],
+                "meeting_status": "Selesai",
+                "correction_reason": null
+            }
+        }
+    ]
+}

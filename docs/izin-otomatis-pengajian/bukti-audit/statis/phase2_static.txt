@@ -1,0 +1,46 @@
+[lulus] Migrasi Fase 2 memuat ALTER TABLE guru
+[lulus] Migrasi Fase 2 memuat ALTER TABLE santri
+[lulus] Migrasi Fase 2 memuat CREATE TABLE wali
+[lulus] Migrasi Fase 2 memuat CREATE TABLE santri_wali
+[lulus] Migrasi Fase 2 memuat CREATE TABLE pengurus
+[lulus] Migrasi Fase 2 memuat CREATE TABLE murobi_assignments
+[lulus] Migrasi Fase 2 memuat active_guard
+[lulus] Migrasi Fase 2 memuat plotting_kelas_one_active_unique
+[lulus] Migrasi Fase 2 memuat guru_nip_unique
+[lulus] Migrasi naik tidak menghapus tabel atau kolom lama
+[lulus] Migrasi wali memiliki jejak sumber dan mempertahankan kolom ayah/ibu
+[lulus] Rollback berpasangan memperingatkan agar tidak dijalankan sembarang di produksi
+[lulus] Akses data baru memakai prepared statement dengan tipe parameter
+[lulus] Create, update, dan arsip dicatat ke audit
+[lulus] Perubahan relasi penting memakai transaksi
+[lulus] Perubahan kelas menutup keanggotaan lama tanpa menghapus riwayat
+[lulus] admin_guru.php menyediakan Pencarian
+[lulus] admin_guru.php menyediakan Detail
+[lulus] admin_guru.php menyediakan Tambah
+[lulus] admin_guru.php menyediakan Ubah
+[lulus] admin_guru.php menyediakan Nonaktifkan
+[lulus] admin_guru.php menyediakan Arsipkan
+[lulus] admin_guru.php tidak menghapus guru/santri permanen
+[lulus] admin_master_santri.php menyediakan Pencarian
+[lulus] admin_master_santri.php menyediakan Detail
+[lulus] admin_master_santri.php menyediakan Tambah
+[lulus] admin_master_santri.php menyediakan Ubah
+[lulus] admin_master_santri.php menyediakan Nonaktifkan
+[lulus] admin_master_santri.php menyediakan Arsipkan
+[lulus] admin_master_santri.php tidak menghapus guru/santri permanen
+[lulus] admin/admin_wali.php tersedia
+[lulus] admin/admin_pengurus.php tersedia
+[lulus] admin/admin_murobi.php tersedia
+[lulus] admin/admin_tahun.php tersedia
+[lulus] admin/admin_kelas.php tersedia
+[lulus] admin/export_master.php tersedia
+[lulus] UI wali mendukung relasi ke banyak santri
+[lulus] UI murobi menjelaskan bahwa approval izin tidak diberikan
+[lulus] Guru dan santri dapat diekspor CSV sesuai filter
+[lulus] Impor lama memvalidasi dan melaporkan baris gagal secara terpisah
+[lulus] Username, email, dan nomor HP akun dinormalisasi dan divalidasi
+[lulus] Mutasi alumni mengarsipkan santri dan tidak menghapus data sumber
+[lulus] Modul penempatan lama tidak lagi menghapus riwayat kelas
+[lulus] NIS/NIP dinormalisasi konsisten
+[lulus] Nomor HP dinormalisasi ke format lokal
+[lulus] Tanggal tidak valid ditolak
