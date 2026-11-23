@@ -1,0 +1,10 @@
+{
+  "android_api": 31,
+  "package": "com.android.systemui",
+  "thread": "ScreenDecorations",
+  "exception": "NullPointerException: parameter bottomLeft null",
+  "top_frame": "PrivacyDotViewController.initialize",
+  "trigger": "emulated tall cutout + three-button navigation + dark + font 2x",
+  "status": "K-5 / previous F-3 remains unvalidated for this configuration",
+  "log_sha256": "412baa5b9410bb6a7d272d354ecd44056f708f245858e632a4786eaf31748bd6"
+}

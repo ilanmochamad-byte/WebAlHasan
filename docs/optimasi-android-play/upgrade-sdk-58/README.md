@@ -63,3 +63,8 @@ APK uji = APK hasil build yang sama ditambah `network_security_config_uji.xml` (
 ## Batas (belum diuji)
 
 EAS build 1.10.0 dan skor/rekomendasi Play Console, pre-launch report, Android 12/15, iOS Debug, perangkat fisik, Push nyata, upgrade 1.9.2 → 1.10.0 dengan sesi tersimpan, suite native lain (rapor, kesehatan, Keamanan, pemilih tanggal), MySQL/cPanel, UAT. Binary native baru wajib (bukan OTA). Tidak merge, deploy, OTA, atau unggah Play. Audit independen Codex berikutnya.
+
+
+## Audit independen Codex (23 November 2026)
+
+Lihat [AUDIT-CODEX.md](AUDIT-CODEX.md). AGP 9 terverifikasi pada rebuild independen; koreksi File.write asinkron menutup F-4/P2. GP-2 tetap 15/7 dan batas Android 12 cutout belum tertutup, sehingga paket keseluruhan belum lulus penuh. Play/kesiapan produksi 1.10.0 belum terkonfirmasi; tidak ada penerimaan residual atau izin rilis dari auditor.

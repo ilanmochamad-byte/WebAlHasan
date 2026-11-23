@@ -1,0 +1,7 @@
+{
+  "test_apk_sha256": "53f262fa1912c2f13cb819ca217e7a6e82aac4f42b6c71e7610cba477a10d264",
+  "dex_identical_to_final": true,
+  "test_cleartext_domain": "127.0.0.1",
+  "distribution_has_no_transport_override": true,
+  "code_commit": "0e002d5"
+}

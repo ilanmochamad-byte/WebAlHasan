@@ -1,0 +1,137 @@
+{
+  "handoff": "1a915bdca18b3c588483a9019df34f95889a55d6",
+  "baseline": "6328517",
+  "correction": "0e002d5a26fed441565785c112953550240492fc",
+  "version": "1.10.0",
+  "packages": {
+    "@expo-google-fonts/plus-jakarta-sans": "0.4.2",
+    "@expo/ui": "58.0.29",
+    "expo": "58.0.26",
+    "expo-build-properties": "58.0.12",
+    "expo-constants": "58.0.16",
+    "expo-dev-client": "58.0.21",
+    "expo-device": "58.0.5",
+    "expo-file-system": "58.0.14",
+    "expo-font": "58.0.12",
+    "expo-glass-effect": "58.0.5",
+    "expo-image": "58.0.18",
+    "expo-image-picker": "58.0.10",
+    "expo-linking": "58.0.17",
+    "expo-notifications": "58.1.9",
+    "expo-print": "58.0.9",
+    "expo-router": "58.0.32",
+    "expo-screen-capture": "58.0.6",
+    "expo-secure-store": "58.0.3",
+    "expo-sharing": "58.0.23",
+    "expo-splash-screen": "58.0.14",
+    "expo-status-bar": "58.0.5",
+    "expo-symbols": "58.0.5",
+    "expo-system-ui": "58.0.7",
+    "expo-web-browser": "58.1.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-gesture-handler": "3.3.0",
+    "react-native-reanimated": "4.7.1",
+    "react-native-safe-area-context": "5.11.1",
+    "react-native-screens": "4.30.1",
+    "react-native-web": "0.21.4",
+    "react-native-worklets": "0.13.0"
+  },
+  "scene_delegate_files": [
+    "ios/alhasanApps/SceneDelegate.swift"
+  ],
+  "eas_remote": "remote",
+  "optimized_property": [
+    "true"
+  ],
+  "npm_ci_exit": 0,
+  "unit_before": {
+    "pass": 130,
+    "fail": 0
+  },
+  "unit_after": {
+    "pass": 135,
+    "fail": 0
+  },
+  "tsc_exit": 0,
+  "lint_exit": 0,
+  "async_regression": {
+    "control": {
+      "pass": 0,
+      "fail": 5
+    },
+    "corrected": {
+      "pass": 5,
+      "fail": 0
+    },
+    "control_test_sha": "c781a056bc1ba8051c1e309953f6601d80c3ff35435a5746a4cc9a497c3139c8",
+    "final_test_sha": "c781a056bc1ba8051c1e309953f6601d80c3ff35435a5746a4cc9a497c3139c8"
+  },
+  "expo_doctor": "20/20",
+  "web_final": {
+    "akun": {
+      "pass": 8,
+      "fail": 0
+    },
+    "izin": {
+      "pass": 10,
+      "fail": 0
+    },
+    "keuangan": {
+      "pass": 7,
+      "fail": 0
+    },
+    "pembinaan": {
+      "pass": 4,
+      "fail": 0
+    },
+    "kesehatan": {
+      "pass": 6,
+      "fail": 0
+    }
+  },
+  "web_finance_fixture_change": {
+    "periode": "2025-02",
+    "jatuh_tempo": "2025-02-28",
+    "assertions_unchanged": true,
+    "reason": "old complete synthetic fixture already contained the earlier Probe TL invoice; fresh fixture lacked preview tariff setup"
+  },
+  "ios_smoke": {
+    "core_subflows": 7,
+    "core_exit": 0,
+    "keychain_link_signing_required_for_audit": true
+  },
+  "android31_upgrade": {
+    "pass": 9,
+    "fail": 0,
+    "signing": "same template debug key, not Play App Signing",
+    "versions": "1.9.2 -> 1.10.0",
+    "helper": "card identity required; scroll normalized"
+  },
+  "android35_final": {
+    "layout": {
+      "pass": 7,
+      "fail": 0
+    },
+    "calendar": {
+      "pass": 10,
+      "fail": 0
+    }
+  },
+  "android36_profile": {
+    "pass": 24,
+    "fail": 0,
+    "skipped": 1,
+    "skip": "cache inspection requires run-as on debuggable APK"
+  },
+  "android36_upgrade": {
+    "pass": 10,
+    "fail": 0,
+    "negative_login_control_passed": true
+  },
+  "android31_pengajian": {
+    "pass": 13,
+    "fail": 0
+  }
+}

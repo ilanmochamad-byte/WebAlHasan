@@ -1,0 +1,19 @@
+{
+  "baseline_version": "1.9.2",
+  "final_version": "1.10.0",
+  "baseline_card_2x": {
+    "pass": 4,
+    "fail": 1
+  },
+  "final_card_2x": {
+    "pass": 4,
+    "fail": 1
+  },
+  "same_failure": "Teks 2.0\u00d7: target Kelas dan Kamar berlabel",
+  "original_full_sdk58_profile_suite": {
+    "pass": 9,
+    "fail": 2
+  },
+  "full_suite_second_failure": "Photo Picker label unavailable on DocumentsUI fallback; targeted crop/upload verified separately",
+  "assertions_unchanged_in_card_control": true
+}

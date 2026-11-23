@@ -1,0 +1,16 @@
+{
+  "lines": 1686,
+  "forbidden_rule_matches": [],
+  "configuration_sha256": "7214b1d8038171c0ac1e646141259bb7280270e7ece56d9743aca38b00d654bd",
+  "gradle": "9.4.1",
+  "node": "26.7.0",
+  "jdk": "Temurin17.0.16",
+  "android_cli": "1.1.16919734",
+  "android_sdk": {
+    "min": 24,
+    "compile": 37,
+    "target": 36
+  },
+  "xcode": "27.2 (27B52)",
+  "ios_minimum": "16.4"
+}

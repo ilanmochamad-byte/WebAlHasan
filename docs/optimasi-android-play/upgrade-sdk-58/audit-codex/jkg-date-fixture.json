@@ -1,0 +1,39 @@
+{
+  "before": {
+    "tanggal": "2026-11-22",
+    "besok": "2026-11-23"
+  },
+  "after": {
+    "tanggal": "2026-11-23",
+    "besok": "2026-11-24"
+  },
+  "baseline_ids_sha256": "6dcb81b466a13e5a747fa02bf37d3f029f00fb583cd8efb557273ca66b95ea21",
+  "business_assertions_changed": false,
+  "database": "test_sdk58_jkg_test",
+  "reason": "copied fixture described yesterday; align same IDs to current test date",
+  "name_manifest_alignment": {
+    "before": "2236EA",
+    "after": "505822",
+    "verified_db_schedule_ids": [
+      104,
+      105,
+      106
+    ],
+    "class_ids": [
+      340,
+      341,
+      342,
+      343
+    ],
+    "student_ids": [
+      1722,
+      1723,
+      1724,
+      1725,
+      1726,
+      1727,
+      1728,
+      1729
+    ]
+  }
+}
