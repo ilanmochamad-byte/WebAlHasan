@@ -55,6 +55,7 @@ final class PesertaPertemuan
                  ORDER BY s.nama_santri, s.id",
                 [$meetingId, $classId, $yearId, $classId, $yearId]
             );
+            IzinPeserta::selaraskan($db, $meetingId);
             return;
         }
 
@@ -97,6 +98,8 @@ final class PesertaPertemuan
              ORDER BY s.nama_santri, s.id",
             [$meetingId, $yearId, $yearId, $meetingId, $yearId]
         );
+        // Usulan status Izin otomatis (migrasi 036, IP-5): diisi saat dibuka.
+        IzinPeserta::selaraskan($db, $meetingId);
     }
 
     /**
@@ -116,8 +119,12 @@ final class PesertaPertemuan
      * dan memastikan statusnya `Dibuka` di transaksi yang sama. Penyimpanan
      * absensi mengunci baris yang sama, sehingga keduanya berjalan berurutan.
      *
-     * @return array{ditambah:list<int>, dikeluarkan:list<int>, dipertahankan:list<int>}
-     *         ID santri; `dipertahankan` = tidak lagi memenuhi syarat tetapi sudah berabsensi.
+     * Usulan status Izin otomatis (migrasi 036, IP-5) diselaraskan sesudahnya
+     * untuk seluruh peserta yang belum berabsensi (`IzinPeserta::selaraskan`).
+     *
+     * @return array{ditambah:list<int>, dikeluarkan:list<int>, dipertahankan:list<int>, izin_diisi?:int, izin_dikosongkan?:int}
+     *         ID santri; `dipertahankan` = tidak lagi memenuhi syarat tetapi sudah berabsensi;
+     *         `izin_*` = jumlah usulan Izin yang diisi/diganti dan dikosongkan (tanpa isi izin).
      */
     public static function perbarui(mysqli $db, int $meetingId, int $classId, int $yearId): array
     {
@@ -181,6 +188,14 @@ final class PesertaPertemuan
             }
             self::execute($db, 'DELETE FROM pertemuan_peserta WHERE pertemuan_id = ? AND santri_id = ?', [$meetingId, $santriId]);
             $hasil['dikeluarkan'][] = $santriId;
+        }
+
+        // Kunci izin_* hanya ada sesudah 036, sehingga hasil (audit/respons)
+        // sebelum migrasi/sesudah rollback identik dengan baseline (K-7).
+        if (IzinPeserta::terpasang($db)) {
+            $izin = IzinPeserta::selaraskan($db, $meetingId);
+            $hasil['izin_diisi'] = $izin['diisi'];
+            $hasil['izin_dikosongkan'] = $izin['dikosongkan'];
         }
 
         return $hasil;

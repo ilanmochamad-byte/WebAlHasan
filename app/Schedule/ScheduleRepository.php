@@ -283,7 +283,7 @@ final class ScheduleRepository
 
     public function meetingParticipants(int $meetingId): array
     {
-        return $this->all('SELECT pp.id, pp.santri_id, pp.plotting_kelas_id, pp.nis_snapshot, pp.nama_santri_snapshot, pp.kelas_id_snapshot, pp.tahun_ajaran_id_snapshot, pp.created_at, k.nama_kelas AS kelas_asal FROM pertemuan_peserta pp LEFT JOIN kelas k ON k.id = pp.kelas_id_snapshot WHERE pp.pertemuan_id = ? ORDER BY pp.nama_santri_snapshot, pp.santri_id', [$meetingId]);
+        return $this->all('SELECT pp.id, pp.santri_id, pp.plotting_kelas_id, pp.nis_snapshot, pp.nama_santri_snapshot, pp.kelas_id_snapshot, pp.tahun_ajaran_id_snapshot, pp.created_at, k.nama_kelas AS kelas_asal' . IzinPeserta::kolom($this->db) . ' FROM pertemuan_peserta pp LEFT JOIN kelas k ON k.id = pp.kelas_id_snapshot WHERE pp.pertemuan_id = ? ORDER BY pp.nama_santri_snapshot, pp.santri_id', [$meetingId]);
     }
 
     public function meetingByScheduleDate(int $scheduleId, string $date, bool $forUpdate = false): ?array
@@ -311,7 +311,7 @@ final class ScheduleRepository
         PesertaPertemuan::bekukan($this->db, $meetingId, $scheduleId, $classId, $yearId);
     }
 
-    /** @return array{ditambah:list<int>, dikeluarkan:list<int>, dipertahankan:list<int>} */
+    /** @return array{ditambah:list<int>, dikeluarkan:list<int>, dipertahankan:list<int>, izin_diisi?:int, izin_dikosongkan?:int} */
     public function refreshParticipants(int $meetingId, int $classId, int $yearId): array
     {
         return PesertaPertemuan::perbarui($this->db, $meetingId, $classId, $yearId);

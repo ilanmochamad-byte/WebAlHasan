@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Report;
 
+use App\Schedule\IzinPeserta;
 use App\Schedule\KelasJadwal;
 use mysqli;
 use mysqli_stmt;
@@ -168,7 +169,7 @@ final class ReportRepository
             : '';
         return $this->all(
             "SELECT pp.santri_id, pp.nis_snapshot, pp.nama_santri_snapshot,
-                    pp.kelas_id_snapshot, ks.nama_kelas AS kelas_asal,
+                    pp.kelas_id_snapshot, ks.nama_kelas AS kelas_asal" . IzinPeserta::kolom($this->db) . ",
                     attendance.id AS attendance_id, attendance.status, attendance.catatan,
                     attendance.dicatat_pada, attendance.updated_at, actor.name AS dicatat_oleh_nama
              FROM pertemuan_peserta pp

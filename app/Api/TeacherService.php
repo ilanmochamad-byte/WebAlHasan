@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api;
 
+use App\Schedule\IzinPeserta;
 use App\Audit\AuditLogger;
 use DateInterval;
 use DateTimeImmutable;
@@ -175,6 +176,11 @@ final class TeacherService
                 'removed' => $result['dikeluarkan'],
                 'kept_with_attendance' => $result['dipertahankan'],
             ];
+            if (array_key_exists('izin_diisi', $result)) {
+                // Aditif (migrasi 036): jumlah usulan Izin, tanpa isi izin.
+                $response['participant_changes']['izin_suggested'] = $result['izin_diisi'];
+                $response['participant_changes']['izin_cleared'] = $result['izin_dikosongkan'];
+            }
             if (!$this->audit->log('api.meeting.refresh_participants', 'pertemuan_pengajian', $meetingId,
                 ['participant_count' => $before],
                 ['participant_count' => count($response['students'])] + $result,
@@ -388,6 +394,10 @@ final class TeacherService
                     'recorded_at' => $row['recorded_at'],
                     'updated_at' => $row['updated_at'],
                 ],
+                // Aditif (migrasi 036, IP-1/IP-3): usulan status Izin otomatis yang
+                // dibekukan pada peserta. Hanya nomor, teks umum, dan tanggal kembali;
+                // server tidak memaksa status (guru boleh menyimpan status apa pun).
+                'izin' => IzinPeserta::payload($row),
             ], $students),
         ];
     }

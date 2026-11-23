@@ -25,9 +25,10 @@ if (!defined('AH_PARTIAL')) {
  * Dengan `id`: pertemuan & kehadiran (J-2). Keputusan R: absensi tidak
  * dicatat di website — kehadiran guru dan santri tampil hanya-baca dari
  * aplikasi; web hanya membuka (membekukan peserta) dan menyelesaikan
- * pertemuan seperti sebelumnya. Keputusan S: santri yang izinnya disetujui
- * pada tanggal pertemuan diberi label "Sedang izin"; status tidak diisi
- * otomatis. Keunikan jadwal–tanggal, status Draf/Dibuka/Selesai, snapshot
+ * pertemuan seperti sebelumnya. Keputusan S (direvisi 23 November 2026,
+ * migrasi 036): peserta dengan usulan Izin otomatis menampilkan keterangan
+ * beku IP-3 (status Izin baru tersimpan saat guru menyimpan dari aplikasi);
+ * pertemuan tanpa usulan tetap memakai label "Sedang izin" yang dihitung. Keunikan jadwal–tanggal, status Draf/Dibuka/Selesai, snapshot
  * peserta, dan audit tetap ditegakkan `App\Schedule\ScheduleService`.
  *
  * @var array<string, mixed> $currentUser
@@ -137,7 +138,7 @@ $tutup = '?' . ah_query(['tab' => 'pertemuan', 'action' => null, 'schedule_id' =
                         : 'Tidak ada keanggotaan aktif di kelas ini saat pertemuan dibuka.' ?></p></div>
                 <?php else: ?>
                     <div class="ah-sumline"><span><b><?= $ringkas['Hadir'] ?> hadir</b> · <?= $ringkas['Terlambat'] ?> terlambat · <?= $ringkas['Izin'] ?> izin · <?= $ringkas['Sakit'] ?> sakit · <?= $ringkas['Alpa'] ?> alpa<?= $belum > 0 ? ' · ' . $belum . ' belum dicatat' : '' ?></span>
-                        <span class="text-muted small"><?= count($labelIzin) ?> sedang izin</span></div>
+                        <span class="text-muted small"><?= count(array_filter($selectedMeeting['participants'], static fn (array $p): bool => ($p['izin_keterangan'] ?? null) !== null || isset($labelIzin[(int) $p['santri_id']]))) ?> sedang izin</span></div>
                     <div class="ah-card__body pb-0 ah-no-print" hidden>
                         <label class="ah-visually-hidden" for="cari-peserta">Cari santri</label>
                         <input class="form-control" type="search" id="cari-peserta" placeholder="Cari santri…" data-ah-list-filter="daftar-peserta" autocomplete="off">
@@ -151,7 +152,9 @@ $tutup = '?' . ah_query(['tab' => 'pertemuan', 'action' => null, 'schedule_id' =
                             <li data-ah-filter-text="<?= ah_e($participant['nama_santri_snapshot'] . ' ' . $participant['nis_snapshot']) ?>">
                                 <span class="ah-people__main"><b><?= ah_e($participant['nama_santri_snapshot']) ?></b>
                                     <small>NIS <?= ah_e($participant['nis_snapshot']) ?><?= $banyakKelas && ($participant['kelas_asal'] ?? '') !== '' ? ' · ' . ah_e((string) $participant['kelas_asal']) : '' ?><?= ($catat['notes'] ?? '') !== '' && $catat['notes'] !== null ? ' · ' . ah_e((string) $catat['notes']) : '' ?></small>
-                                    <?php if ($izin !== null): ?>
+                                    <?php if (($participant['izin_keterangan'] ?? null) !== null): $usulanId = (int) $participant['izin_pengajuan_id']; ?>
+                                        <small data-izin-usulan><?= $bolehBukaIzin ? '<a href="' . ah_e(app_url('/portal/izin_detail.php?id=' . $usulanId)) . '">' . ah_badge((string) $participant['izin_keterangan'], 'info') . '</a>' : ah_badge((string) $participant['izin_keterangan'], 'info') ?></small>
+                                    <?php elseif ($izin !== null): ?>
                                         <small><?php $teksIzin = 'Sedang izin #' . $izin['id'] . ' · ' . ah_rentang($izin['tgl_izin'], $izin['tgl_kembali'], false); ?>
                                             <?= $bolehBukaIzin ? '<a href="' . ah_e(app_url('/portal/izin_detail.php?id=' . $izin['id'])) . '">' . ah_badge($teksIzin, 'info') . '</a>' : ah_badge($teksIzin, 'info') ?></small>
                                     <?php endif; ?>
